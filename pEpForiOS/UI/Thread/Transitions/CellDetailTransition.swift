@@ -44,7 +44,7 @@ class CellDetailTransition: NSObject, UIViewControllerAnimatedTransitioning {
                 return
         }
 
-        tableView.bringSubview(toFront: cell)
+        tableView.bringSubviewToFront(cell)
 
         let fromCellView:UIView = fullCell.roundedView
         let originalFrame = fromCellView.frame
@@ -91,7 +91,7 @@ class CellDetailTransition: NSObject, UIViewControllerAnimatedTransitioning {
                 return
         }
 
-        tableView.bringSubview(toFront: cell)
+        tableView.bringSubviewToFront(cell)
 
         let toCellView:UIView = fullCell.roundedView
         let originalFrame = toCellView.frame

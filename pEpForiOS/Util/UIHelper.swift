@@ -11,7 +11,7 @@ import PEPObjCAdapterFramework
 
 class UIHelper {
     static func variableCellHeightsTableView(_ tableView: UITableView) {
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
     }
     

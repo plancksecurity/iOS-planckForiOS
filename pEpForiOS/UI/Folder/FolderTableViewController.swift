@@ -42,9 +42,9 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
     private func initialConfig() {
         self.title = NSLocalizedString("Folders", comment: "FoldersView")
         tableView.estimatedRowHeight = 44.0
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
-        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
         refreshControl = UIRefreshControl()
         refreshControl?.tintColor = UIColor.pEpGreen
         if #available(iOS 10.0, *) {
@@ -55,7 +55,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
             action:#selector(showSettingsViewController),
             target: self)
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
             target: nil,
             action: nil)
         self.toolbarItems = [flexibleSpace,item]

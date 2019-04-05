@@ -46,7 +46,7 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
             return secondaryNavigationController
     }
 
-    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewControllerDisplayMode) {
+    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewController.DisplayMode) {
 
 
         guard let nav = viewControllers.last as? UINavigationController,
