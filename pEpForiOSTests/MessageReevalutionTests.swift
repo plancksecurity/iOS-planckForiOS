@@ -12,6 +12,7 @@ import XCTest
 @testable import MessageModel //FIXME:
 import PEPObjCAdapterFramework
 
+//!!!: uses a mix of Cd*Objects and MMObjects. Fix!
 class MessageReevalutionTests: XCTestCase {
     var cdOwnAccount: CdAccount!
     var pEpOwnIdentity: PEPIdentity!
@@ -60,7 +61,8 @@ class MessageReevalutionTests: XCTestCase {
                                                     userName: senderUserName,
                                                     isMySelf: false)
         senderIdentityBuilder.save()
-        guard let sender = CdIdentity.search(address: senderAddress) else {
+        let moc = senderIdentityBuilder.moc
+        guard let sender = CdIdentity.search(address: senderAddress, context: moc) else {
             XCTFail("Can't find")
             return
         }

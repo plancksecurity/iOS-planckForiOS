@@ -10,7 +10,7 @@ import Foundation
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel //FIXME:
+@testable import MessageModel
 import PEPObjCAdapterFramework
 import PantomimeFramework
 
@@ -742,6 +742,7 @@ class TestUtil {
      After this function, you should have a self with generated key, and a partner ID
      you can do handshakes on.
      */
+    //!!!: uses a mix of Cd*Objects and MMObjects. Fix!
     static func setUpPepFromMail(emailFilePath: String,
                                  decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
         -> (mySelf: Identity, partner: Identity, message: Message)? {
@@ -767,7 +768,8 @@ class TestUtil {
             let mySelfID = Identity(identity: safeOptId, isMySelf: true)
             mySelfID.save()
 
-            let cdMySelfIdentity = CdIdentity.search(address: mySelfID.address)
+            let moc = mySelfID.moc
+            let cdMySelfIdentity = CdIdentity.search(address: mySelfID.address, context: moc)
             XCTAssertNotNil(cdMySelfIdentity)
 
             let cdMyAccount = CdAccount.create()
