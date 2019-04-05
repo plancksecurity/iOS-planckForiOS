@@ -752,7 +752,6 @@ class TestUtil {
     /**
      Uses 'cdMessageAndSetUpPepFromMail', but returns the message as 'Message'.
      */
-    @available(*, deprecated, message: "777")
     static func setUpPepFromMail(emailFilePath: String,
                                  decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
         -> (mySelf: Identity, partner: Identity, message: Message)? {
