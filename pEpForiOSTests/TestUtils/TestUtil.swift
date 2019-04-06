@@ -772,10 +772,10 @@ class TestUtil {
             let cdMySelfIdentity = CdIdentity.search(address: mySelfID.address, context: moc)
             XCTAssertNotNil(cdMySelfIdentity)
 
-            let cdMyAccount = CdAccount.create()
+            let cdMyAccount = CdAccount(context: moc)
             cdMyAccount.identity = cdMySelfIdentity
 
-            let cdInbox = CdFolder.create()
+            let cdInbox = CdFolder(context: moc)
             cdInbox.name = ImapSync.defaultImapInboxName
             cdInbox.account = cdMyAccount
 
@@ -796,7 +796,7 @@ class TestUtil {
 
             guard let cdMessage = CdMessage.insertOrUpdate(
                 pantomimeMessage: pantomimeMail, account: cdMyAccount,
-                messageUpdate: CWMessageUpdate()) else {
+                messageUpdate: CWMessageUpdate(), context: moc) else {
                     XCTFail()
                     return nil
             }
@@ -861,9 +861,12 @@ class TestUtil {
             return nil
         }
 
-        guard let cdMessage = CdMessage.insertOrUpdate(
-            pantomimeMessage: pantomimeMail, account: cdOwnAccount,
-            messageUpdate: CWMessageUpdate()) else {
+        let moc = Record.Context.default
+        guard let cdMessage = CdMessage.insertOrUpdate(pantomimeMessage: pantomimeMail,
+                                                       account: cdOwnAccount,
+                                                       messageUpdate: CWMessageUpdate(),
+                                                       context: moc)
+            else {
                 XCTFail()
                 return nil
         }

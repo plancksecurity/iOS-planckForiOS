@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
 @testable import MessageModel
@@ -17,6 +18,7 @@ import PEPObjCAdapterFramework
  and does not rely on outside data/services).
  */
 class DecryptionTestsInternal: XCTestCase {
+    var moc: NSManagedObjectContext!
     var cdOwnAccount: CdAccount!
     var pEpOwnIdentity: PEPIdentity!
     var cdSenderAccount: CdAccount!
@@ -35,6 +37,8 @@ class DecryptionTestsInternal: XCTestCase {
         XCTAssertTrue(PEPUtil.pEpClean())
 
         persistentSetup = PersistentSetup()
+
+        moc = Record.Context.default
 
         let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0)
         guard let myPepIdentity = pEpIdentity(cdAccount: cdMyAccount) else {
@@ -166,9 +170,11 @@ class DecryptionTestsInternal: XCTestCase {
         }
 
         guard
-            let cdMsg = CdMessage.insertOrUpdate(
-                pantomimeMessage: pantMail, account: cdOwnAccount,
-                messageUpdate: CWMessageUpdate.newComplete()) else {
+            let cdMsg = CdMessage.insertOrUpdate(pantomimeMessage: pantMail,
+                                                 account: cdOwnAccount,
+                                                 messageUpdate: CWMessageUpdate.newComplete(),
+                                                 context: moc)
+            else {
                     XCTFail()
                     return
         }

@@ -14,10 +14,15 @@ import CoreData
 @testable import pEpForiOS
 
 class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
-    
+    var moc: NSManagedObjectContext!
+
+    override func setUp() {
+        super.setUp()
+        moc = Record.Context.default
+    }
     //IOS-815 pEpRating undefined
     func testPepratingUndefined() {
-        let folder = CdFolder.create()
+        let folder = CdFolder(context: moc)
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
         Record.saveAndWait()
@@ -32,7 +37,8 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
         message.setUID(1)
         guard let msg = CdMessage.insertOrUpdate(  pantomimeMessage: message,
                                                    account: cdAccount,
-                                                   messageUpdate: CWMessageUpdate.newComplete())
+                                                   messageUpdate: CWMessageUpdate.newComplete(),
+                                                   context: moc)
             else {
                 XCTFail("error parsing message")
                 return

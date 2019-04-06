@@ -7,17 +7,20 @@
 //
 
 import XCTest
+import CoreData
 
-import MessageModel
+@testable import MessageModel
 import pEpForiOS
 import PEPObjCAdapterFramework
 
 class MessagePantomimeTests: XCTestCase {
     var persistentSetup: PersistentSetup!
+    var moc: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
         persistentSetup = PersistentSetup()
+        moc = Record.Context.default
     }
 
     override func tearDown() {
@@ -79,7 +82,7 @@ class MessagePantomimeTests: XCTestCase {
 
         let cdAccount = testData.createWorkingCdAccount()
 
-        let cdFolder = CdFolder.create()
+        let cdFolder = CdFolder(context: moc)
         let folderName = "inbox"
         cdFolder.folderType = FolderType.inbox
         cdFolder.name = folderName
@@ -95,7 +98,7 @@ class MessagePantomimeTests: XCTestCase {
         let update = CWMessageUpdate()
         update.rfc822 = true
         guard let cdMsg = CdMessage.insertOrUpdate(
-            pantomimeMessage: cwMsg, account: cdAccount, messageUpdate: update) else {
+            pantomimeMessage: cwMsg, account: cdAccount, messageUpdate: update, context: moc) else {
                 XCTFail()
                 return
         }
