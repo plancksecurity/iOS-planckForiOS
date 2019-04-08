@@ -624,48 +624,48 @@ class TestMasterViewController: EmailListViewModelDelegate {
     }
 }
 
-class TestServer: MessageQueryResults {
-    var results: [Message] = [Message]()
-
-    required init(withFolder folder: Folder) {
-        super.init(withFolder: folder)
-    }
-
-
-    override var count: Int {
-        return results.count
-    }
-
-    override subscript(index: Int) -> Message {
-        return results[index]
-    }
-
-    override func startMonitoring() throws {
-
-    }
-
-    func insertData(message: Message) {
-        results.append(message)
-        let ip = IndexPath(row: results.firstIndex(of: message)!, section: 0)
-        delegate?.didInsert(indexPath: ip)
-    }
-
-    func updateData(message: Message) {
-        let ip = IndexPath(row: results.firstIndex(of: message)!, section: 0)
-        delegate?.didUpdate(indexPath: ip)
-    }
-
-    func deleteData(message: Message) {
-        let index = results.firstIndex(of: message)
-        results.remove(at: index!)
-        let ip = IndexPath(row: index!, section: 0)
-        delegate?.didDelete(indexPath: ip)
-    }
-
-    func insertMessagesWithoutDelegate(messages: [Message]) {
-        results.append(contentsOf: messages)
-    }
-}
+//class TestServer: MessageQueryResults {
+//    var results: [Message] = [Message]()
+//
+//    required init(withFolder folder: Folder) {
+//        super.init(withDisplayableFolder: folder)
+//    }
+//
+//
+//    override var count: Int {
+//        return results.count
+//    }
+//
+//    override subscript(index: Int) -> Message {
+//        return results[index]
+//    }
+//
+//    override func startMonitoring() throws {
+//
+//    }
+//
+//    func insertData(message: Message) {
+//        results.append(message)
+//        let ip = IndexPath(row: results.firstIndex(of: message)!, section: 0)
+//        delegate?.didInsert(indexPath: ip)
+//    }
+//
+//    func updateData(message: Message) {
+//        let ip = IndexPath(row: results.firstIndex(of: message)!, section: 0)
+//        delegate?.didUpdate(indexPath: ip)
+//    }
+//
+//    func deleteData(message: Message) {
+//        let index = results.firstIndex(of: message)
+//        results.remove(at: index!)
+//        let ip = IndexPath(row: index!, section: 0)
+//        delegate?.didDelete(indexPath: ip)
+//    }
+//
+//    func insertMessagesWithoutDelegate(messages: [Message]) {
+//        results.append(contentsOf: messages)
+//    }
+//}
 
 class TestDetailsViewController {
     var emailDisplayDelegate : EmailDisplayDelegate
