@@ -31,7 +31,7 @@ public class UnifiedInbox: VirtualFolderProtocol {
         }
     }
 
-    public var getMessagesPredicate: NSPredicate {
+    public var MessagesPredicate: NSPredicate {
         get {
             return NSPredicate(value: false)
         }
