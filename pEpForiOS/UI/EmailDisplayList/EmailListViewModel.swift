@@ -91,7 +91,7 @@ class EmailListViewModel {
          folderToShow: DisplayableFolderProtocol = UnifiedInbox()) {
 
         //!!!: need a fix on messageQueryResults
-        //self.messageQueryResults = MessageQueryResults(withFolder: folderToShow)
+        self.messageQueryResults = MessageQueryResults(withFolder: folderToShow as! Folder)
         self.emailListViewModelDelegate = emailListViewModelDelegate
         self.messageSyncService = messageSyncService
 
@@ -127,12 +127,12 @@ class EmailListViewModel {
 
     //instead using actual folder, use the message parent folder.
     func shouldEditMessage(indexPath: IndexPath) -> Bool {
-        /*if folderToShow.folderType == .drafts || folderToShow.folderType == .outbox {
+        let message = messageQueryResults[indexPath.row]
+        if message.parent.folderType == .drafts || message.parent.folderType == .outbox {
             return true
         } else {
             return false
-        }*/
-        
+        }
     }
 
     //check if there are some important settings that have changed to force a reload
@@ -613,12 +613,12 @@ extension EmailListViewModel {
     }
 
     //if it's virutalfolder user is nil, compose must select the default account.
-    func composeViewModelForNewMessage() -> ComposeViewModel {
+    func composeViewModelForNewMessage(fromIndexPath: IndexPath) -> ComposeViewModel {
         //!!!: composite must get the account from the messsage or from the defoult one
-        let user = folderToShow.account.user
-        let composeVM = ComposeViewModel(resultDelegate: self,
-                                         prefilledFrom: user)
-        return composeVM
+        //let user = folderToShow.account.user
+        //let composeVM = ComposeViewModel(resultDelegate: self, prefilledFrom: user)
+        //!!!: care here the indexPath in reallity what is needed is to use the message instead but compose have to change
+        return composeViewModel(withOriginalMessageAt: fromIndexPath)
     }
 }
 

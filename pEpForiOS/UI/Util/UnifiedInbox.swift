@@ -10,13 +10,19 @@ import MessageModel
 
 public class UnifiedInbox: VirtualFolderProtocol {
 
-    public var selectable: Bool {
-        return true
+    public var agregatedFolderType: FolderType? {
+        return FolderType.inbox
     }
 
-    
-    public func fetchFolder() {
-        //missing get all the folders
+
+    public func fetchOlder() {
+        for folder in Folder.getAll(folderType: .inbox) {
+            folder.fetchOlder()
+        }
+    }
+
+    public var selectable: Bool {
+        return true
     }
 
     public var title: String {
@@ -25,7 +31,7 @@ public class UnifiedInbox: VirtualFolderProtocol {
         }
     }
 
-    public var predicate: NSPredicate {
+    public var getMessagesPredicate: NSPredicate {
         get {
             return NSPredicate(value: false)
         }

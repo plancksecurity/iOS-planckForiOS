@@ -12,4 +12,6 @@ import MessageModel
 
 public protocol VirtualFolderProtocol: DisplayableFolderProtocol {
 
+    var agregatedFolderType : FolderType? { get }
+
 }

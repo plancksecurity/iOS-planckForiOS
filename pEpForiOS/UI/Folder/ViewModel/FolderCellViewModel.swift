@@ -18,7 +18,13 @@ public class FolderCellViewModel {
     }
 
     public var image : UIImage? {
-       return folder.folderType.getIcon()
+        if let f = folder as? VirtualFolderProtocol {
+            return f.agregatedFolderType?.getIcon()
+        } else if let f = folder as? Folder {
+            return f.folderType.getIcon()
+        } else {
+            return nil
+        }
     }
 
     private var name: String {
