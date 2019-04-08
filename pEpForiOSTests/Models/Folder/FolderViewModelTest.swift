@@ -59,7 +59,6 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
     func testCreateEmailListViewModel() {
         let account = givenThereIsAnAccountWithAFolder()
         givenThereIsAViewModel(withUniFiedInBox: false, and: [account])
-        let emailListViewModel = viewmodel.createEmailListViewModel(forAccountAt: 0, andFolderAt: 0, messageSyncService: MessageSyncServiceMock())
         guard let emailListVM = emailListViewModel else {
             XCTFail()
             return
@@ -104,16 +103,10 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         viewmodel = FolderViewModel(withFoldersIn: nil, includeUnifiedInbox: withUnifiedInbox)
     }
     
-    class MessageSyncServiceMock: MessageSyncServiceProtocol {
+    class VerificationServiceMock: VerificationServiceProtocol {
         func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
             
         }
-        
-        func requestFetchOlderMessages(inFolder folder: Folder) {
-            
-        }
-        
-        
     }
 
 }

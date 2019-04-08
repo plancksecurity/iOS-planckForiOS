@@ -40,7 +40,7 @@ extension EmailListViewModel: FilterUpdateProtocol {
 class EmailListViewModel {
     let contactImageTool = IdentityImageTool()
     let messageQueryResults: MessageQueryResults
-    let messageSyncService: MessageSyncServiceProtocol
+
     var dataSourceIsUsable = false
     var indexPathShown: IndexPath?
 
@@ -87,13 +87,13 @@ class EmailListViewModel {
 
     //!!!: This init must be reviewed when unifiedInobx works again
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
-         messageSyncService: MessageSyncServiceProtocol,
+         fetchOlderImapMessagesService: FetchOlderImapMessagesService,
          folderToShow: DisplayableFolderProtocol = UnifiedInbox()) {
 
         //!!!: need a fix on messageQueryResults
         self.messageQueryResults = MessageQueryResults(withFolder: folderToShow as! Folder)
         self.emailListViewModelDelegate = emailListViewModelDelegate
-        self.messageSyncService = messageSyncService
+        self.fetchOlderImapMessagesService = fetchOlderImapMessagesService
 
         self.folderToShow = folderToShow
         self.defaultFilter = folderToShow.defaultFilter
@@ -584,7 +584,7 @@ class EmailListViewModel {
         DispatchQueue.main.async { [weak self] in
             for folder in folders {
                 folder.fetchOlder()
-                self?.messageSyncService.requestFetchOlderMessages(inFolder: folder)
+                //self?.messageSyncService.requestFetchOlderMessages(inFolder: folder)
             }
         }
     }

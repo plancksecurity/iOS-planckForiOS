@@ -24,7 +24,7 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
 }
 
 class LoginViewModelTests: CoreDataDrivenTestBase {
-    class TestMessageSyncService: MessageSyncServiceProtocol {
+    class TestVerificationService: VerificationServiceProtocol {
         let accountSettings: TestDataBase.AccountSettings
         let expLookedUp: XCTestExpectation
 
@@ -95,8 +95,9 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
 //        }
 
         let expLookedUp = expectation(description: "expLookedUp")
-        let ms = TestMessageSyncService(accountSettings: accountSettings, expLookedUp: expLookedUp)
-        let vm = LoginViewModel(messageSyncService: ms)
+        let verificationService =
+            TestVerificationService(accountSettings: accountSettings, expLookedUp: expLookedUp)
+        let vm = LoginViewModel(verificationService: verificationService)
         let errorHandler = ErrorHandler()
         vm.loginViewModelLoginErrorDelegate = errorHandler
         vm.login(accountName: accountSettings.idAddress,

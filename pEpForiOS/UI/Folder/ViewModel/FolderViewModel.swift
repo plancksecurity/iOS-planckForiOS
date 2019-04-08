@@ -48,9 +48,6 @@ public class FolderViewModel {
         return Account.all().isEmpty
     }
 
-    func createEmailListViewModel(forAccountAt accountIndex: Int?, andFolderAt folderIndex: Int?,
-                                  messageSyncService: MessageSyncServiceProtocol)
-        -> EmailListViewModel? {
             guard let safeAccountIndex = accountIndex,
                 let safeFolderIndex = folderIndex else {
                     return nil
