@@ -235,6 +235,7 @@
 		4334CF302020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334CF2F2020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift */; };
 		4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4336229D1DC76B8100133B3D /* MessageModelTests.swift */; };
 		433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433BCD941D5388C100DD98EF /* ReplyUtil.swift */; };
+		433E7438225B564400B84CD9 /* Account+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E7437225B564400B84CD9 /* Account+Extension.swift */; };
 		433F2E2A21E3581800E1CA49 /* ENGINE-505_Mail_NullInnerMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = 433F2E2921E3581800E1CA49 /* ENGINE-505_Mail_NullInnerMimeType.txt */; };
 		43425EDB1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDA1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift */; };
 		43425EDD1FE3DF3B004A2728 /* OAuth2Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDC1FE3DF3B004A2728 /* OAuth2Provider.swift */; };
@@ -716,6 +717,7 @@
 		4336229D1DC76B8100133B3D /* MessageModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModelTests.swift; sourceTree = "<group>"; };
 		433724FC1DA2C2B1005E8DF5 /* pEp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = pEp.entitlements; path = ../pEp.entitlements; sourceTree = "<group>"; };
 		433BCD941D5388C100DD98EF /* ReplyUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyUtil.swift; sourceTree = "<group>"; };
+		433E7437225B564400B84CD9 /* Account+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Extension.swift"; sourceTree = "<group>"; };
 		433F2E2921E3581800E1CA49 /* ENGINE-505_Mail_NullInnerMimeType.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ENGINE-505_Mail_NullInnerMimeType.txt"; sourceTree = "<group>"; };
 		43425EDA1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2ProviderProtocol.swift; sourceTree = "<group>"; };
 		43425EDC1FE3DF3B004A2728 /* OAuth2Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Provider.swift; sourceTree = "<group>"; };
@@ -2013,6 +2015,7 @@
 				1594C1CF21281FCD00CB06E2 /* Server+Fetching.swift */,
 				15547567213931BC005A52D0 /* Folder+Threading.swift */,
 				15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */,
+				433E7437225B564400B84CD9 /* Account+Extension.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2860,6 +2863,7 @@
 				15D4399C216E698E00EB3933 /* AccountPickerViewModel.swift in Sources */,
 				43985D0E204438480080FA9A /* AccountSettingsProtocol+Extension.swift in Sources */,
 				B7DB7FCA2215D69C003968DA /* CredentialTextField.swift in Sources */,
+				433E7438225B564400B84CD9 /* Account+Extension.swift in Sources */,
 				005A21FB20CAA5F50082D19F /* ThreadedEmailViewModel.swift in Sources */,
 				15874BD12127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift in Sources */,
 				4351C2DC1F4441190053381F /* xml.c in Sources */,
