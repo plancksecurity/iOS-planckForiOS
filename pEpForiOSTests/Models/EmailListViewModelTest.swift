@@ -57,27 +57,6 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(emailListVM.rowCount, 10)
     }
 
-    /*func test10MessagesThatEngineHasNotProcessedYet() {
-        TestUtil.createMessages(number: 10, engineProccesed: false, inFolder: folder)
-        setupViewModel()
-        emailListVM.startMonitoring()
-        XCTAssertEqual(emailListVM.rowCount, 0)
-    }*/
-
-    func testLastLookAtIsUpdated(){
-        setupViewModel()
-
-        emailListVM.updateLastLookAt()
-
-        let lastLookAtBeforeUpdate: Date = getSafeLastLookAt()
-        emailListVM.updateLastLookAt()
-        let lastLookAtAfterUpdate: Date = getSafeLastLookAt()
-
-        //Check dates are diferent and after is greater than before. 
-        let comparison = lastLookAtBeforeUpdate.compare(lastLookAtAfterUpdate)
-        XCTAssertEqual(comparison, ComparisonResult.orderedAscending)
-    }
-
     func testGetFolderName() {
         setupViewModel()
         XCTAssertEqual(Folder.localizedName(folder:self.folder), emailListVM.getFolderName())
@@ -561,7 +540,6 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
 class TestMasterViewController: EmailListViewModelDelegate {
 
-
     var expectationUpdateViewCalled: XCTestExpectation?
     var excpectationDidInsertDataAtCalled: XCTestExpectation?
     var expectationDidUpdateDataAtCalled: XCTestExpectation?
@@ -585,6 +563,11 @@ class TestMasterViewController: EmailListViewModelDelegate {
     func allUpdatesReceived(viewModel: EmailListViewModel) {
         //not yet defined
     }
+
+    func reloadData(viewModel: EmailListViewModel) {
+        //not yet defined
+    }
+
 
     func emailListViewModel(viewModel: EmailListViewModel,
                             didInsertDataAt indexPaths: [IndexPath]) {

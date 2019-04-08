@@ -1680,7 +1680,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
         }
 
-        func composeViewModelDidComposeNewMail() {
+        func composeViewModelDidComposeNewMail(message: Message) {
             guard let exp = expDidComposeNewMailCalled else {
                 // We ignore called or not
                 return
@@ -1688,7 +1688,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             exp.fulfill()
         }
 
-        func composeViewModelDidModifyMessage() {
+        func composeViewModelDidModifyMessage(message: Message) {
             guard let exp = expDidModifyMessageCalled else {
                 // We ignore called or not
                 return
@@ -1696,7 +1696,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             exp.fulfill()
         }
 
-        func composeViewModelDidDeleteMessage() {
+        func composeViewModelDidDeleteMessage(message: Message) {
             guard let exp = expDidDeleteMessageCalled else {
                 // We ignore called or not
                 return
