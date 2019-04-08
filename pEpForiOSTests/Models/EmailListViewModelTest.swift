@@ -15,9 +15,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     var folder: Folder!
     var trashFolder: Folder!
     var emailListVM : EmailListViewModel!
-    //var server: TestServer!
     var masterViewController: TestMasterViewController!
-    //var messageQueryResults: MessageQueryResults!
 
     /** this set up a view model with one account and one folder saved **/
     override func setUp() {
@@ -32,8 +30,6 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
                              account: folder.account,
                              folderType: .trash)
         trashFolder.save()
-        //messageQueryResults = MessageQueryResults(withFolder: folder)
-        //server = TestServer(withFolder: folder)
     }
 
     // MARK: - Test section
@@ -51,7 +47,6 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func test10MessagesInInitialSetup() {
          TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder, setUids: true)
-        //server.insertMessagesWithoutDelegate(messages: msg)
         setupViewModel()
         emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 10)
@@ -59,7 +54,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func testGetFolderName() {
         setupViewModel()
-        XCTAssertEqual(Folder.localizedName(folder:self.folder), emailListVM.getFolderName())
+        XCTAssertEqual(Folder.localizedName(realName: self.folder.realName), emailListVM.getFolderName())
     }
 
     func testGetDestructiveAction() {
@@ -160,14 +155,14 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     func testIsDraftFolder() {
         setupViewModel()
 
-        var isDraft = emailListVM.folderIsDraft()
+        var isDraft = emailListVM.folderIsDraft(self.folder)
 
         XCTAssertFalse(isDraft)
 
         givenThereIsA(folderType: .drafts)
         setupViewModel()
 
-        isDraft = emailListVM.folderIsDraft()
+        isDraft = emailListVM.folderIsDraft(self.folder)
 
         XCTAssertTrue(isDraft)
     }
@@ -175,7 +170,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     func testIsOutboxFolder() {
         setupViewModel()
 
-        var isOutBox = emailListVM.folderIsOutbox()
+        var isOutBox = emailListVM.folderIsOutbox(self.folder)
 
         XCTAssertFalse(isOutBox)
 
@@ -452,11 +447,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     // Mark: - setting up
 
     fileprivate func setUpViewModel(masterViewController: TestMasterViewController) {
-        let msgsyncservice = MessageSyncService()
-        self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController,
-                                              messageSyncService: msgsyncservice,
-                                              folderToShow: folder, messageQueryResults: MessageQueryResults(withFolder: folder))
-
+        self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController)
     }
 
     fileprivate func setupViewModel() {

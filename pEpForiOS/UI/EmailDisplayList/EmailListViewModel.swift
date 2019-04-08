@@ -533,7 +533,7 @@ class EmailListViewModel {
             Logger.frontendLogger.errorAndCrash("No parent.")
             return false
         }
-        return folder.folderType == .drafts
+        return folderIsDraft(folder)
     }
 
     func folderIsOutbox(_ parentFolder: Folder?) -> Bool {
@@ -541,7 +541,7 @@ class EmailListViewModel {
             Logger.frontendLogger.errorAndCrash("No parent.")
             return false
         }
-        return folder.folderType == .outbox
+        return folderIsOutbox(folder)
     }
 
     func folderIsDraftsOrOutbox(_ parentFolder: Folder?) -> Bool {
