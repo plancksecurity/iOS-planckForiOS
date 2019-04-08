@@ -48,14 +48,6 @@ public class FolderViewModel {
         return Account.all().isEmpty
     }
 
-            guard let safeAccountIndex = accountIndex,
-                let safeFolderIndex = folderIndex else {
-                    return nil
-            }
-            return EmailListViewModel(messageSyncService: messageSyncService, folderToShow: self[safeAccountIndex][safeFolderIndex].folder
-            )
-    }
-    
     func refreshFolderList() {
         DispatchQueue.global(qos: .userInitiated).async {
             MessageModelUtil.perform {

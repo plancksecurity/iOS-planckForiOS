@@ -193,12 +193,15 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
                     return
         }
         vc.appConfig = appConfig
-        let emailListViewModel =
-            folderVM?.createEmailListViewModel(
-                forAccountAt: indexPath?.section,
-                andFolderAt: indexPath?.row,
-                fetchOlderImapMessagesService: FetchOlderImapMessagesService())
-        vc.model = emailListViewModel
+        var emailListVM : EmailListViewModel
+        if let viewModel = folderVM, let row = indexPath?.row, let section = indexPath?.section {
+            emailListVM =
+                EmailListViewModel(emailListViewModelDelegate: vc, folderToShow: viewModel[section][row].folder)
+        } else {
+            emailListVM =
+                EmailListViewModel(emailListViewModelDelegate: vc)
+        }
+        vc.model = emailListVM
         vc.hidesBottomBarWhenPushed = false
 
         let animated =  showNext ? false : true

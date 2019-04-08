@@ -87,16 +87,19 @@ class EmailListViewModel {
 
     //!!!: This init must be reviewed when unifiedInobx works again
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
-         fetchOlderImapMessagesService: FetchOlderImapMessagesService,
-         folderToShow: DisplayableFolderProtocol = UnifiedInbox()) {
+         folderToShow: DisplayableFolderProtocol? = UnifiedInbox()) {
 
         //!!!: need a fix on messageQueryResults
         self.messageQueryResults = MessageQueryResults(withFolder: folderToShow as! Folder)
         self.emailListViewModelDelegate = emailListViewModelDelegate
-        self.fetchOlderImapMessagesService = fetchOlderImapMessagesService
 
-        self.folderToShow = folderToShow
-        self.defaultFilter = folderToShow.defaultFilter
+        if let folder = folderToShow {
+            self.folderToShow = folder
+            self.defaultFilter = folder.defaultFilter
+        } else {
+            self.folderToShow = UnifiedInbox()
+            self.defaultFilter = self.folderToShow.defaultFilter
+        }
         self.oldThreadSetting = AppSettings.threadedViewEnabled
 
     }
