@@ -11,21 +11,6 @@ import UIKit
 import MessageModel
 
 class FlagImages {
-    public static func create(imageSize: CGSize) -> FlagImages {
-        let val = NSValue(cgSize: imageSize)
-        if let o = sharedDict[val] {
-            return o
-        } else {
-            let o = FlagImages(imageSize: imageSize)
-            sharedDict[val] = o
-            return o
-        }
-    }
-
-    private static var sharedDict: [NSValue:FlagImages] = {
-        let instance = [NSValue:FlagImages]()
-        return instance
-    }()
 
     let imageSize: CGSize
 
@@ -120,16 +105,5 @@ class FlagImages {
         UIGraphicsEndImageContext()
 
         return theImage
-    }
-}
-
-extension FlagImages {
-    public func flagsImage(message: Message) -> UIImage? {
-        let flagged = message.imapFlags?.flagged ?? false
-        if flagged {
-            return flaggedImage
-        } else {
-            return nil
-        }
     }
 }
