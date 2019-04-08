@@ -56,60 +56,12 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertNil(error)
         })
 
+        TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: self)
+
         XCTAssertNotNil(del.accountInfo)
         XCTAssertNotNil(CdFolder.all())
 
-        guard let cdFolder = CdFolder.first(
-            attributes: ["folderTypeRawValue": FolderType.inbox.rawValue]) else {
-                XCTFail()
-                return
-        }
-        XCTAssertGreaterThanOrEqual(cdFolder.messages?.count ?? 0, 0)
-        let allCdMessages = cdFolder.messages?.sortedArray(
-            using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] ?? []
-        XCTAssertGreaterThanOrEqual(allCdMessages.count, 0)
 
-        for cdMsg in allCdMessages {
-            guard let parentF = cdMsg.parent else {
-                XCTFail()
-                continue
-            }
-            XCTAssertEqual(parentF.folderType, FolderType.inbox)
-        }
-
-        let unifiedInbox = UnifiedInbox()
-
-        let unifiedMessageCount = unifiedInbox.messageCount()
-        XCTAssertGreaterThanOrEqual(unifiedMessageCount, 0)
-        for i in 0..<unifiedMessageCount {
-            guard let msg = unifiedInbox.messageAt(index: i) else {
-                XCTFail()
-                continue
-            }
-
-            XCTAssertTrue(msg.isValidMessage())
-
-            let pEpRating = Int16(msg.pEpRatingInt ?? -1)
-            XCTAssertNotEqual(pEpRating, PEPUtil.pEpRatingNone)
-            if !modelDelegate.contains(messageID: msg.messageID) {
-                XCTFail()
-            }
-        }
-
-        let inbox = Folder.from(cdFolder: cdFolder)
-        XCTAssertEqual(modelDelegate.messages.count, unifiedMessageCount)
-
-        for msg in modelDelegate.messages {
-            let msgIsFlaggedDeleted = msg.imapFlags?.deleted ?? false
-            XCTAssertTrue(!msgIsFlaggedDeleted)
-            XCTAssertTrue(inbox.contains(message: msg))
-            if !unifiedInbox.contains(message: msg) {
-                XCTFail()
-            }
-        }
-        XCTAssertFalse(modelDelegate.hasChangedMessages)
-
-        TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: self)
     }
 
     func testCancelSyncImmediately() {
