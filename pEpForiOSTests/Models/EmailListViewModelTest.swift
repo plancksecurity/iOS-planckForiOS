@@ -177,7 +177,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         givenThereIsA(folderType: .outbox)
         setupViewModel()
 
-        isOutBox = emailListVM.folderIsOutbox()
+        isOutBox = emailListVM.folderIsOutbox(self.folder)
 
         XCTAssertTrue(isOutBox)
     }
