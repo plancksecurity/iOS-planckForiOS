@@ -8,6 +8,7 @@
 
 import Foundation
 
+import PantomimeFramework
 import MessageModel
 
 extension CWInternetAddress {

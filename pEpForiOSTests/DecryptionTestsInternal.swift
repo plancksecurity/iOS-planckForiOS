@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
+import PantomimeFramework
 import PEPObjCAdapterFramework
 
 /**
