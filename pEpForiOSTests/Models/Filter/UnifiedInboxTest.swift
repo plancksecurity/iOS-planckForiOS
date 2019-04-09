@@ -13,6 +13,10 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 class UnifiedInboxTest: CoreDataDrivenTestBase {
+    let unifiedInbox = UnifiedInbox()
 
+    func test<#Name#>() {
+        unifiedInbox.messagesPredicate
+    }
     
 }

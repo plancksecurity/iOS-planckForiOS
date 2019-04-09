@@ -33,7 +33,8 @@ public class UnifiedInbox: VirtualFolderProtocol {
 
     public var messagesPredicate: NSPredicate {
         get {
-            return NSPredicate(value: false)
+            var compoundPredicate: NSCompoundPredicate
+            CdMessage.PredicateFactory
         }
     }
 
