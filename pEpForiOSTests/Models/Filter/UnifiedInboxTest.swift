@@ -26,17 +26,17 @@ class UnifiedInboxTest: CoreDataDrivenTestBase {
         folder1.save()
         let folder2 = Folder(name: "inbox", parent: nil, account: account2, folderType: .inbox)
         folder2.save()
-        let folder3 = Folder(name: "inbox", parent: nil, account: account1, folderType: .normal)
+        let folder3 = Folder(name: "folder", parent: nil, account: account1, folderType: .normal)
         folder3.save()
-        let folder4 = Folder(name: "inbox", parent: nil, account: account2, folderType: .sent)
+        let folder4 = Folder(name: "sent", parent: nil, account: account2, folderType: .sent)
         folder4.save()
         let msg1 = Message(uuid: "uuidm1", parentFolder: folder1)
         msg1.save()
         let msg2 = Message(uuid: "uuidm2", parentFolder: folder2)
         msg2.save()
-        let msg3 = Message(uuid: "uuidm2", parentFolder: folder3)
+        let msg3 = Message(uuid: "uuidm3", parentFolder: folder3)
         msg3.save()
-        let msg4 = Message(uuid: "uuidm2", parentFolder: folder4)
+        let msg4 = Message(uuid: "uuidm4", parentFolder: folder4)
         msg4.save()
     }
 
@@ -51,7 +51,6 @@ class UnifiedInboxTest: CoreDataDrivenTestBase {
         }
         XCTAssertNotEqual(mgqr.count, 0)
         XCTAssertEqual(mgqr.count, 2)
-
     }
     
 }
