@@ -89,7 +89,6 @@ class EmailListViewModel {
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
          folderToShow: DisplayableFolderProtocol = UnifiedInbox()) {
 
-        //!!!: need a fix on messageQueryResults
         self.messageQueryResults = MessageQueryResults(withDisplayableFolder: folderToShow)
         self.emailListViewModelDelegate = emailListViewModelDelegate
 
@@ -346,8 +345,10 @@ class EmailListViewModel {
         emailListViewModelDelegate?.reloadData(viewModel: self)
     }
 
+    //!!!: temp patch to be able to build, this funcion needs to be reviewed.
     public func shouldShowToolbarEditButtons() -> Bool {
-        return !folderIsOutbox(getParentFolder(forMessageAt: 0))
+        //return !folderIsOutbox(getParentFolder(forMessageAt: 0))
+        return true
     }
 
     public func getDestructiveActtion(forMessageAt index: Int) -> SwipeActionDescriptor {

@@ -69,7 +69,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     func testGetDestructiveActionInOutgoingFolderIsTrash() {
         _ = givenThereIsAMessageIn(folderType: .outbox)
         setupViewModel()
-
+        emailListVM.startMonitoring()
         let destructiveAction = emailListVM.getDestructiveActtion(forMessageAt: 0)
 
         XCTAssertEqual(destructiveAction, .trash)
@@ -77,13 +77,13 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func testShouldShowToolbarEditButtonsIfItsNotOutboxFolder() {
         setupViewModel()
-
+        emailListVM.startMonitoring()
         var showToolbarButtons = emailListVM.shouldShowToolbarEditButtons()
         XCTAssertTrue(showToolbarButtons)
 
         givenThereIsA(folderType: .outbox)
         setupViewModel()
-
+        emailListVM.startMonitoring()
         showToolbarButtons = emailListVM.shouldShowToolbarEditButtons()
         XCTAssertFalse(showToolbarButtons)
     }
@@ -144,7 +144,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     func testGetFlagAndMoreActionInDraftFolderIsNil() {
         givenThereIsAMessageIn(folderType: .drafts)
         setupViewModel()
-
+        emailListVM.startMonitoring()
         let flagAction = emailListVM.getFlagAction(forMessageAt: 0)
         let moreAction = emailListVM.getMoreAction(forMessageAt: 0)
 
@@ -154,14 +154,14 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func testIsDraftFolder() {
         setupViewModel()
-
+        emailListVM.startMonitoring()
         var isDraft = emailListVM.folderIsDraft(self.folder)
 
         XCTAssertFalse(isDraft)
 
         givenThereIsA(folderType: .drafts)
         setupViewModel()
-
+        emailListVM.startMonitoring()
         isDraft = emailListVM.folderIsDraft(self.folder)
 
         XCTAssertTrue(isDraft)
@@ -169,14 +169,14 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func testIsOutboxFolder() {
         setupViewModel()
-
+        emailListVM.startMonitoring()
         var isOutBox = emailListVM.folderIsOutbox(self.folder)
 
         XCTAssertFalse(isOutBox)
 
         givenThereIsA(folderType: .outbox)
         setupViewModel()
-
+        emailListVM.startMonitoring()
         isOutBox = emailListVM.folderIsOutbox(self.folder)
 
         XCTAssertTrue(isOutBox)
@@ -184,14 +184,14 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func testAccountExists() {
         setupViewModel()
-
+        emailListVM.startMonitoring()
         var noAccounts = emailListVM.noAccountsExist()
 
         XCTAssertFalse(noAccounts)
 
         cdAccount.delete()
         setupViewModel()
-
+        emailListVM.startMonitoring()
         noAccounts = emailListVM.noAccountsExist()
 
         XCTAssertTrue(noAccounts)
@@ -447,7 +447,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     // Mark: - setting up
 
     fileprivate func setUpViewModel(masterViewController: TestMasterViewController) {
-        self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController)
+        self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController, folderToShow: self.folder)
     }
 
     fileprivate func setupViewModel() {
