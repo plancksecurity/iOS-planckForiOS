@@ -194,13 +194,12 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
         }
         vc.appConfig = appConfig
         var emailListVM : EmailListViewModel
-        if let viewModel = folderVM, let row = indexPath?.row, let section = indexPath?.section {
-            emailListVM =
-                EmailListViewModel(emailListViewModelDelegate: vc, folderToShow: viewModel[section][row].folder)
-        } else {
-            emailListVM =
-                EmailListViewModel(emailListViewModelDelegate: vc)
+        guard let viewModel = folderVM, let row = indexPath?.row, let section = indexPath?.section else {
+            Logger.frontendLogger.errorAndCrash("this could never happen")
+            return
         }
+        emailListVM = EmailListViewModel(emailListViewModelDelegate: vc,
+                                         folderToShow: viewModel[section][row].folder)
         vc.model = emailListVM
         vc.hidesBottomBarWhenPushed = false
 

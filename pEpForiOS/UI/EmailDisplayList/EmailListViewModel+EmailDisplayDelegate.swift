@@ -72,9 +72,10 @@ extension EmailListViewModel: EmailDisplayDelegate {
         }
     }
 
-    ///!!!: change this to work with the proccees like messageQuery
+    ///!!!: change this to work with the proccees like messageQueryResults
     private func informUpdateRow(at index: Int) {
         let indexPath = self.indexPath(for: index)
+        //!!!: example of how messageQueryResults communicates with the EmailListVM
         emailListViewModelDelegate?.willReceiveUpdates(viewModel: self)
         emailListViewModelDelegate?.emailListViewModel(viewModel: self,
                                                        didUpdateDataAt: [indexPath])
