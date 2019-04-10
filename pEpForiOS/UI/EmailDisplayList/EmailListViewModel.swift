@@ -478,6 +478,7 @@ class EmailListViewModel {
     }
 
     //!!!: search is not a filter
+    //!!!: we have to create MessageQueryResultsSearch and pass it to the MessageQueryResults.
     public func setSearchFilter(forSearchText txt: String = "") {
 //        if txt == lastSearchTerm {
 //            // Happens e.g. when initially setting the cursor in search bar.
@@ -494,12 +495,14 @@ class EmailListViewModel {
 //        }
         reloadData()
     }
-    //!!!:searchh is not a filter rename
+    //!!!:search is not a filter rename
     public func removeSearchFilter() {
         do {
             try messageQueryResults.set(search: nil)
+            //???: it's necessary to reaload or messageQueryResults will inform
+            reloadData()
         } catch {
-            Logger.frontendLogger.error("SearchFilter can not be removed")
+            Logger.frontendLogger.errorAndCrash("SearchFilter can not be removed")
         }
     }
 
