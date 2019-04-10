@@ -41,7 +41,6 @@ class EmailListViewModel {
     let contactImageTool = IdentityImageTool()
     let messageQueryResults: MessageQueryResults
 
-    var dataSourceIsUsable = false
     var indexPathShown: IndexPath?
 
     private let queue: OperationQueue = {
@@ -85,7 +84,6 @@ class EmailListViewModel {
     
     // MARK: - Life Cycle
 
-    //!!!: This init must be reviewed when unifiedInobx works again
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
          folderToShow: DisplayableFolderProtocol = UnifiedInbox()) {
 
@@ -98,23 +96,12 @@ class EmailListViewModel {
 
     }
 
-    //!!!: workarround for unified inbox missing rm when it's usable
-    func isFolderReady() -> Bool {
-        if let cdaccount = CdAccount.first(), let _ = CdFolder.by(folderType: .inbox, account: cdaccount) {
-            return true
-        }
-        return false
-    }
-
     func startMonitoring() {
-        if isFolderReady() {
-            do {
+        do {
                 self.messageQueryResults.delegate = self
                 try messageQueryResults.startMonitoring()
-                dataSourceIsUsable = true
             } catch {
                 Logger.frontendLogger.errorAndCrash("MessageQueryResult crash")
-            }
         }
     }
 
@@ -153,16 +140,17 @@ class EmailListViewModel {
     }
 
     var rowCount: Int {
-        if dataSourceIsUsable {
-            return messageQueryResults.count
+        if let f = try? messageQueryResults.count() {
+            return f
         } else {
             return 0
         }
     }
 
     private func cachedSenderImage(forCellAt indexPath:IndexPath) -> UIImage? {
-        guard indexPath.row < messageQueryResults.count else {
-            // The model has been updated.
+
+        guard let count = try? messageQueryResults.count(), indexPath.row < count else {
+            // The model has been updated or it's not ready to use.
             return nil
         }
         let message = messageQueryResults[indexPath.row]
@@ -173,7 +161,7 @@ class EmailListViewModel {
     }
 
     func pEpRatingColorImage(forCellAt indexPath: IndexPath) -> UIImage? {
-        guard indexPath.row < messageQueryResults.count else {
+        guard let count = try? messageQueryResults.count(), indexPath.row < count else {
             // The model has been updated.
             return nil
         }
@@ -580,10 +568,9 @@ class EmailListViewModel {
     }
 
     private func requestFetchOlder(forFolders folders: [Folder]) {
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async { 
             for folder in folders {
                 folder.fetchOlder()
-                //self?.messageSyncService.requestFetchOlderMessages(inFolder: folder)
             }
         }
     }
