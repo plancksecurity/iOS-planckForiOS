@@ -91,7 +91,7 @@ public class FilterViewModel {
         switch type {
         case .accouts:
             var accountRow: [Row] = []
-            //!!!: Stop in the middle of implementing this, we need to have unifiedInbox first
+            //!!!: Stop in the middle of implementing this, we need unifiedInbox first
             for item in filter.accounts {
                 guard let row = createRow(type: .account , account: item, state: true) else {
                     return
