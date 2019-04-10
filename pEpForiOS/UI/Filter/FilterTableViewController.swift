@@ -97,6 +97,7 @@ class FilterTableViewController: BaseTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //!!!: we have to go to the filter property of the view mode an change directly the value on there.
         if let model = viewModel {
             var cellvm = model[indexPath.section][indexPath.row]
             cellvm.state = !cellvm.state

@@ -51,7 +51,9 @@ extension FilterViewModel {
 }
 
 public class FilterViewModel {
+    //!!!:this filter could be modified.
     let filter: MessageQueryResultsFilter
+
 
     var sections: [Section] = []
 
