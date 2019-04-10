@@ -661,7 +661,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
         guard let vm = model, let searchText = searchController.searchBar.text else {
             return
         }
-        vm.setSearchFilter(forSearchText: searchText)
+        vm.setSearch(forSearchText: searchText)
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
@@ -669,7 +669,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
             Logger.frontendLogger.errorAndCrash("No chance to remove filter, sorry.")
             return
         }
-        vm.removeSearchFilter()
+        vm.removeSearch()
     }
 }
 

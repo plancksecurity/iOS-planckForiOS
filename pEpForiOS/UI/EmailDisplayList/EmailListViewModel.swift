@@ -139,9 +139,9 @@ class EmailListViewModel {
     }
 
     var rowCount: Int {
-        if let f = try? messageQueryResults.count() {
-            return f
-        } else {
+        do {
+            return try messageQueryResults.count()
+        } catch {
             return 0
         }
     }
@@ -477,26 +477,32 @@ class EmailListViewModel {
         reloadData()
     }
 
-    //!!!: search is not a filter
-    //!!!: we have to create MessageQueryResultsSearch and pass it to the MessageQueryResults.
-    public func setSearchFilter(forSearchText txt: String = "") {
-//        if txt == lastSearchTerm {
-//            // Happens e.g. when initially setting the cursor in search bar.
-//            return
-//        }
-//        lastSearchTerm = txt
-//        if txt == "" {
-//            assuredFilterOfFolderToShow().removeSearchFilter()
-//        } else {
-//            let folderFilter = assuredFilterOfFolderToShow()
-//            folderFilter.removeSearchFilter()
-//            let searchFilter = SearchFilter(searchTerm: txt)
-//            folderFilter.add(filter: searchFilter)
-//        }
-        reloadData()
+    public func setSearch(forSearchText txt: String = "") {
+        if txt == lastSearchTerm {
+            // Happens e.g. when initially setting the cursor in search bar.
+            return
+        }
+        lastSearchTerm = txt
+        if txt == "" {
+            do {
+                try messageQueryResults.set(search: nil)
+            } catch {
+                Logger.frontendLogger.errorAndCrash("Set search crash")
+            }
+
+        } else {
+            do {
+                try messageQueryResults.set(search: MessageQueryResultsSearch(searchTerm: lastSearchTerm))
+            } catch {
+                Logger.frontendLogger.errorAndCrash("Set search crash")
+            }
+
+        }
+        //???: it's necessary to reaload or messageQueryResults will inform
+            reloadData()
     }
-    //!!!:search is not a filter rename
-    public func removeSearchFilter() {
+     
+    public func removeSearch() {
         do {
             try messageQueryResults.set(search: nil)
             //???: it's necessary to reaload or messageQueryResults will inform

@@ -24,7 +24,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
         super.viewWillAppear(animated)
         setup()
         if showNext {
-            showFolder(indexPath: nil)
+            show(folder: UnifiedInbox())
         }
         self.navigationController?.setToolbarHidden(false, animated: false)
     }
@@ -180,10 +180,10 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
             tableView.deselectRow(at: indexPath, animated: true)
             return
         }
-        showFolder(indexPath: indexPath)
+        show(folder: cellViewModel.folder)
     }
 
-    private func showFolder(indexPath: IndexPath?) {
+    private func show(folder: DisplayableFolderProtocol) {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard
             let vc = sb.instantiateViewController(
@@ -194,12 +194,8 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
         }
         vc.appConfig = appConfig
         var emailListVM : EmailListViewModel
-        guard let viewModel = folderVM, let row = indexPath?.row, let section = indexPath?.section else {
-            Logger.frontendLogger.errorAndCrash("this could never happen")
-            return
-        }
         emailListVM = EmailListViewModel(emailListViewModelDelegate: vc,
-                                         folderToShow: viewModel[section][row].folder)
+                                         folderToShow: folder)
         vc.model = emailListVM
         vc.hidesBottomBarWhenPushed = false
 
