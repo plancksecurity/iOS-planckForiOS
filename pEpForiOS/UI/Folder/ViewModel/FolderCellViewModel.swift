@@ -36,16 +36,12 @@ public class FolderCellViewModel {
     }
 
     public var isSelectable: Bool {
-        if folder.selectable {
+        if let f = folder as? Folder {
+            return f.selectable
+        } else if folder is VirtualFolderProtocol{
             return true
         }
         return false
-        /*if folder is UnifiedInbox {
-            return true
-        } else if folder.isLocalFolder {
-            return true
-        }
-        return folder.selectable*/
     }
 
     public init(folder: DisplayableFolderProtocol, level: Int) {
