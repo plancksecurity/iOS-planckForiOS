@@ -10,6 +10,8 @@ import XCTest
 
 import CoreData
 
+import PantomimeFramework
+
 @testable import MessageModel
 @testable import pEpForiOS
 
@@ -31,9 +33,10 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
         }
         message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         message.setUID(1)
-        guard let msg = CdMessage.insertOrUpdate(  pantomimeMessage: message,
-                                                   account: cdAccount,
-                                                   messageUpdate: CWMessageUpdate.newComplete())
+
+        guard let _ = CdMessage.insertOrUpdate(pantomimeMessage: message,
+                                                 account: cdAccount,
+                                                 messageUpdate: CWMessageUpdate.newComplete())
             else {
                 XCTFail("error parsing message")
                 return
@@ -62,11 +65,11 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
             XCTAssertNil(error)
         })
 
-        guard let temp = msg.message(),  let testee = CdMessage.search(message: temp) else {
+        guard let again = CdMessage.search(message: message, inAccount: cdAccount) else {
             XCTFail("No message")
             return
         }
 
-        XCTAssertTrue(testee.pEpRating != notSeenByPepYet)
+        XCTAssertTrue(again.pEpRating != notSeenByPepYet)
     }
 }
