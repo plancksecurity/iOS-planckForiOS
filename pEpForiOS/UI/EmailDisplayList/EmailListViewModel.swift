@@ -603,13 +603,16 @@ extension EmailListViewModel {
         return composeVM
     }
 
-    //if it's virutalfolder user is nil, compose must select the default account.
-    func composeViewModelForNewMessage(fromIndexPath: IndexPath) -> ComposeViewModel {
-        //!!!: composite must get the account from the messsage or from the defoult one
-        //let user = folderToShow.account.user
-        //let composeVM = ComposeViewModel(resultDelegate: self, prefilledFrom: user)
-        //!!!: care here the indexPath in reallity what is needed is to use the message instead but compose have to change
-        return composeViewModel(withOriginalMessageAt: fromIndexPath)
+    func composeViewModelForNewMessage() -> ComposeViewModel {
+        if let f = folderToShow as? RealFolder {
+            return ComposeViewModel(resultDelegate:self, composeMode: .normal,
+                                    prefilledFrom: f.account.user)
+        } else {
+            let account = Account.defaultAccount()
+            return ComposeViewModel(resultDelegate:self, composeMode: .normal,
+                                    prefilledFrom: account?.user)
+
+        }
     }
 }
 

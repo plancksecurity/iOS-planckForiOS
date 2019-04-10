@@ -1130,10 +1130,9 @@ extension EmailListViewController: SegueHandlerType {
 
             composeVc.viewModel = vm.composeViewModel(withOriginalMessageAt: indexPath,
                                                       composeMode: composeMode)
+        } else {
+            composeVc.viewModel = vm.composeViewModelForNewMessage()
         }
-        /*else {
-            composeVc.viewModel = vm.composeViewModelForNewMessage(fromIndexPath: <#IndexPath#>)
-        }*/
     }
 
     private func composeMode(for segueId: SegueIdentifier) -> ComposeUtil.ComposeMode? {
