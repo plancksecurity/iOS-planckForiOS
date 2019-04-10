@@ -109,7 +109,6 @@ class EmailListViewModel {
         return Folder.localizedName(realName: folderToShow.title)
     }
 
-    //instead using actual folder, use the message parent folder.
     func shouldEditMessage(indexPath: IndexPath) -> Bool {
         let message = messageQueryResults[indexPath.row]
         if message.parent.folderType == .drafts || message.parent.folderType == .outbox {
@@ -333,9 +332,12 @@ class EmailListViewModel {
         emailListViewModelDelegate?.reloadData(viewModel: self)
     }
 
-    //!!!: temp patch to be able to build, this funcion needs to be reviewed.
     public func shouldShowToolbarEditButtons() -> Bool {
-        //return !folderIsOutbox(getParentFolder(forMessageAt: 0))
+        if folderToShow is VirtualFolderProtocol {
+            return true
+        } else if let f = folderToShow as? Folder {
+            return !(f.folderType == .outbox)
+        }
         return true
     }
 
