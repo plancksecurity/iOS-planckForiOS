@@ -85,7 +85,7 @@ class EmailListViewModel {
     // MARK: - Life Cycle
 
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
-         folderToShow: DisplayableFolderProtocol = UnifiedInbox()) {
+         folderToShow: DisplayableFolderProtocol) {
 
         self.messageQueryResults = MessageQueryResults(withDisplayableFolder: folderToShow)
         self.emailListViewModelDelegate = emailListViewModelDelegate
