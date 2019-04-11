@@ -8,6 +8,7 @@
 
 import Foundation
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
 @testable import MessageModel
@@ -316,6 +317,7 @@ class TestUtil {
     ///   - encrypt: Whether or not to import a key for the receipient. Is ignored if `toIdentity`
     ///              is not nil
     ///   - forceUnencrypted: mark mails force unencrypted
+    ///   - context: context to create messages in. If no context is given, main context is used
     /// - Returns: created mails
     /// - Throws: error importing key
     static func createOutgoingMails(cdAccount: CdAccount,
@@ -327,7 +329,8 @@ class TestUtil {
                                     withAttachments: Bool = true,
                                     attachmentsInlined: Bool = false,
                                     encrypt: Bool = true,
-                                    forceUnencrypted: Bool = false) throws -> [CdMessage] {
+                                    forceUnencrypted: Bool = false,
+                                    context: NSManagedObjectContext = Stack.shared.mainContext) throws -> [CdMessage] {
         let cdAccount = fromIdentity?.accounts?.allObjects.first as? CdAccount ?? cdAccount 
         testCase.continueAfterFailure = false
 
@@ -335,14 +338,18 @@ class TestUtil {
             return []
         }
 
-        let existingSentFolder = CdFolder.by(folderType: .sent, account: cdAccount)
+        let existingSentFolder = CdFolder.by(folderType: .sent,
+                                             account: cdAccount,
+                                             context: context)
 
         if existingSentFolder == nil {
             // Make sure folders are synced
             syncAndWait(testCase: testCase)
         }
 
-        guard let outbox = CdFolder.by(folderType: .outbox, account: cdAccount) else {
+        guard let outbox = CdFolder.by(folderType: .outbox,
+                                       account: cdAccount,
+                                       context: context) else {
             XCTFail()
             return []
         }
@@ -351,7 +358,7 @@ class TestUtil {
         if let fromIdentity = fromIdentity {
             from = fromIdentity
         } else {
-            from = CdIdentity.create()
+            from = CdIdentity(context: context)
             from.userName = cdAccount.identity?.userName ?? "Unit 004"
             from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
         }
@@ -369,7 +376,7 @@ class TestUtil {
                 try TestUtil.importKeyByFileName(
                     session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
             }
-            let toWithKey = CdIdentity.create()
+            let toWithKey = CdIdentity(context: context)
             toWithKey.userName = "Unit 001"
             toWithKey.address = "unittest.ios.1@peptest.ch"
             to = toWithKey
@@ -378,7 +385,7 @@ class TestUtil {
         // Build emails
         var messagesInTheQueue = [CdMessage]()
         for i in 1...numberOfMails {
-            let message = CdMessage.create()
+            let message = CdMessage(context: context)
             message.from = from
             message.parent = outbox
             message.shortMessage = "Some subject \(i)"
@@ -402,7 +409,7 @@ class TestUtil {
 
             messagesInTheQueue.append(message)
         }
-        Record.saveAndWait() //!!!: crash saving. Probalby mandatory field missing. Repro: testSyncOutgoing
+        context.saveAndLogErrors() //!!!: crash saving. Probalby mandatory field missing. Repro: testSyncOutgoing
         /*
          //!!!:
          Fatal error: ERROR #file - saveAndLogErrors()[23]: Error Domain=NSCocoaErrorDomain Code=1570 "The operation couldn’t be completed. (Cocoa error 1570.)" UserInfo={NSValidationErrorObject=<CdMessage: 0x607000045370> (entity: CdMessage; id: 0x6030001aeea0 <x-coredata:///CdMessage/t04E43D11-80A8-4C4D-BA8E-60F54AD8F79187> ; data: {
@@ -499,15 +506,15 @@ class TestUtil {
     }
 
     @discardableResult static func createMessages(number: Int,
-                                    engineProccesed: Bool = true,
-                                    inFolder: Folder,
-                                    setUids: Bool = true) -> [Message]{
+                                                  engineProccesed: Bool = true,
+                                                  inFolder: Folder,
+                                                  setUids: Bool = true) -> [Message]{
         var messages : [Message] = []
         for i in 1...number {
             let uid = setUids ? i : nil
 
             let msg = createMessage(inFolder: inFolder,
-                                    from: Identity.create(address: "mail@mail.com"),
+                                    from: Identity(address: "mail@mail.com"),
                                     tos: [inFolder.account.user],
                                     engineProccesed: engineProccesed,
                                     uid: uid)
@@ -518,17 +525,17 @@ class TestUtil {
     }
 
     static func createMessage(inFolder folder: Folder,
-                                   from: Identity,
-                                   tos: [Identity] = [],
-                                   ccs: [Identity] = [],
-                                   bccs: [Identity] = [],
-                                   engineProccesed: Bool = true,
-                                   shortMessage: String = "",
-                                   longMessage: String = "",
-                                   longMessageFormatted: String = "",
-                                   dateSent: Date = Date(),
-                                   attachments: Int = 0,
-                                   uid: Int? = nil) -> Message {
+                              from: Identity,
+                              tos: [Identity] = [],
+                              ccs: [Identity] = [],
+                              bccs: [Identity] = [],
+                              engineProccesed: Bool = true,
+                              shortMessage: String = "",
+                              longMessage: String = "",
+                              longMessageFormatted: String = "",
+                              dateSent: Date = Date(),
+                              attachments: Int = 0,
+                              uid: Int? = nil) -> Message {
         let msg = Message(uuid: MessageID.generate(), parentFolder: folder)
         msg.from = from
         msg.replaceTo(with: tos)
@@ -601,7 +608,7 @@ class TestUtil {
         let blueprintData = [
             Blueprint(
                 uuid: "ID1",
-                from: Identity.create(address: "ar"),
+                from: Identity(address: "ar"),
                 references: ["ID2",
                              "ID3",
                              "ID4",
@@ -613,7 +620,7 @@ class TestUtil {
                              "ID2"]),
             Blueprint(
                 uuid: "ID10",
-                from: Identity.create(address: "ba"),
+                from: Identity(address: "ba"),
                 references: ["ID1",
                              "ID3",
                              "ID4",
@@ -626,7 +633,7 @@ class TestUtil {
                              "ID1"]),
             Blueprint(
                 uuid: "ID11",
-                from: Identity.create(address: "be"),
+                from: Identity(address: "be"),
                 references: ["ID9",
                              "ID3",
                              "ID4",
@@ -734,18 +741,18 @@ class TestUtil {
 
     /**
      Does the following steps:
-     
-      * Loads an Email from the given path
-      * Creates a self-Identity according to the receiver of the mail
-      * Decrypts the mail, which should import the key
-     
+
+     * Loads an Email from the given path
+     * Creates a self-Identity according to the receiver of the mail
+     * Decrypts the mail, which should import the key
+
      After this function, you should have a self with generated key, and a partner ID
      you can do handshakes on.
      */
-    //!!!: uses a mix of Cd*Objects and MMObjects. Fix!
-    static func setUpPepFromMail(emailFilePath: String,
-                                 decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
-        -> (mySelf: Identity, partner: Identity, message: Message)? {
+    static func cdMessageAndSetUpPepFromMail(emailFilePath: String,
+                                             decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil,
+                                             context: NSManagedObjectContext = Stack.shared.mainContext)
+        -> (mySelf: CdIdentity, partner: CdIdentity, message: CdMessage)? {
             guard let pantomimeMail = cwImapMessage(fileName: emailFilePath) else {
                 XCTFail()
                 return nil
@@ -755,27 +762,26 @@ class TestUtil {
                 XCTFail("Expected array of recipients")
                 return nil
             }
-            var mySelfIdentityOpt: Identity?
+            var mySelfIdentityOpt: CdIdentity?
             for rec in recipients {
                 if rec.type() == .toRecipient {
-                    mySelfIdentityOpt = rec.identity(userID: "!MYSELF!")
+                    mySelfIdentityOpt = rec.cdIdentity(userID: "!MYSELF!", context: context)
                 }
             }
             guard let safeOptId = mySelfIdentityOpt else {
                 XCTFail("Could not derive own identity from message")
                 return nil
             }
-            let mySelfID = Identity(identity: safeOptId, isMySelf: true)
-            mySelfID.save()
 
-            let moc = mySelfID.moc
-            let cdMySelfIdentity = CdIdentity.search(address: mySelfID.address, context: moc)
+            Record.saveAndWait()
+
+            let cdMySelfIdentity = safeOptId
             XCTAssertNotNil(cdMySelfIdentity)
 
-            let cdMyAccount = CdAccount(context: moc)
+            let cdMyAccount = CdAccount(context: context)
             cdMyAccount.identity = cdMySelfIdentity
 
-            let cdInbox = CdFolder(context: moc)
+            let cdInbox = CdFolder(context: context)
             cdInbox.name = ImapSync.defaultImapInboxName
             cdInbox.account = cdMyAccount
 
@@ -783,20 +789,20 @@ class TestUtil {
                 XCTFail("Expected the mail to have a sender")
                 return nil
             }
-            let partnerID = pantFrom.identity(userID: "THE PARTNER ID")
-            partnerID.save()
+            let partnerID = pantFrom.cdIdentity(userID: "THE PARTNER ID", context: context)
 
-            Record.saveAndWait()
+            context.saveAndLogErrors()
 
             let session = PEPSession()
-            let mySelfIdentity = mySelfID.pEpIdentity()
+            let mySelfIdentity = cdMySelfIdentity.pEpIdentity()
             try! session.mySelf(mySelfIdentity)
             XCTAssertNotNil(mySelfIdentity.fingerPrint)
             XCTAssertTrue(try! mySelfIdentity.isPEPUser(session).boolValue)
 
-            guard let cdMessage = CdMessage.insertOrUpdate(
-                pantomimeMessage: pantomimeMail, account: cdMyAccount,
-                messageUpdate: CWMessageUpdate(), context: moc) else {
+            guard let cdMessage = CdMessage.insertOrUpdate(pantomimeMessage: pantomimeMail,
+                                                           account: cdMyAccount,
+                                                           messageUpdate: CWMessageUpdate(),
+                                                           context: context) else {
                     XCTFail()
                     return nil
             }
@@ -822,12 +828,23 @@ class TestUtil {
                 XCTAssertEqual(ownDecryptDelegate.numberOfMessageDecryptAttempts, 1)
             }
 
-        guard let msg = cdMessage.message() else {
-            XCTFail("Need to be able to convert the CdMessage into a Message")
-            return nil
-        }
+            return (mySelf: cdMySelfIdentity, partner: partnerID, message: cdMessage)
+    }
 
-        return (mySelf: mySelfID, partner: partnerID, message: msg)
+    /**
+     Uses 'cdMessageAndSetUpPepFromMail', but returns the message as 'Message'.
+     */
+    static func setUpPepFromMail(emailFilePath: String,
+                                 decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
+        -> (mySelf: Identity, partner: Identity, message: Message)? {
+            if let (mySelfID, partnerID, message) = cdMessageAndSetUpPepFromMail(
+                emailFilePath: emailFilePath, decryptDelegate: decryptDelegate),
+                let msg = message.message(),
+                let mySelf = mySelfID.identity(),
+                let partner = partnerID.identity() {
+                return (mySelf: mySelf, partner: partner, message: msg)
+            }
+            return nil
     }
 
     /**

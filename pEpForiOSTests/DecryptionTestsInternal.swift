@@ -11,6 +11,7 @@ import CoreData
 
 @testable import pEpForiOS
 @testable import MessageModel
+import PantomimeFramework
 import PEPObjCAdapterFramework
 
 /**
@@ -40,13 +41,13 @@ class DecryptionTestsInternal: XCTestCase {
 
         moc = Record.Context.default
 
-        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0)
+        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
         guard let myPepIdentity = pEpIdentity(cdAccount: cdMyAccount) else {
             fatalError("Error PEPIdentity") //XCTFail() does can not be used here, sorry.
         }
         pEpOwnIdentity = myPepIdentity
 
-        let cdSenderAccount = SecretTestData().createWorkingCdAccount(number: 1)
+        let cdSenderAccount = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
         guard let senderPepIdentity = cdSenderAccount.identity?.pEpIdentity() else {
             fatalError("Error PEPIdentity") //XCTFail() does can not be used here, sorry.
         }
@@ -56,10 +57,10 @@ class DecryptionTestsInternal: XCTestCase {
         pEpSenderIdentity = senderPepIdentity
         try! session.mySelf(senderPepIdentity)
 
-        cdInbox = CdFolder.create()
+        cdInbox = CdFolder(context: moc)
         cdInbox.name = ImapSync.defaultImapInboxName
         cdInbox.account = cdMyAccount
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         self.backgroundQueue = OperationQueue()
     }
@@ -187,7 +188,7 @@ class DecryptionTestsInternal: XCTestCase {
             XCTAssertTrue(cdMsg.isProbablyPGPMime())
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEPUtil.pEpRatingNone))
 
@@ -211,7 +212,7 @@ class DecryptionTestsInternal: XCTestCase {
 
         XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
 
-        Record.Context.main.refreshAllObjects()
+        moc.refreshAllObjects()
         if shouldEncrypt {
             XCTAssertGreaterThanOrEqual(cdMsg.pEpRating, Int16(PEPRating.reliable.rawValue))
             if useSubject {
@@ -278,12 +279,11 @@ class DecryptionTestsInternal: XCTestCase {
         testBasicDecryption(shouldEncrypt: false, useSubject: true)
     }
 
-    //!!!: never returns. Should be fixed with not using MM anymore
-//    func testIncomingUnencryptedOutlookProbingMessage() {
-//        guard let _ = TestUtil.setUpPepFromMail(
-//            emailFilePath: "Microsoft_Outlook_Probing_Message_001.txt") else {
-//                XCTFail()
-//                return
-//        }
-//    }
+    func testIncomingUnencryptedOutlookProbingMessage() {
+        guard let _ = TestUtil.cdMessageAndSetUpPepFromMail(
+            emailFilePath: "Microsoft_Outlook_Probing_Message_001.txt") else {
+                XCTFail()
+                return
+        }
+    }
 }

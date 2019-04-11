@@ -10,6 +10,7 @@ import XCTest
 
 import pEpForiOS
 import MessageModel
+import PantomimeFramework
 
 class ImapFlagsTests: XCTestCase {
     func loopAllFlags(

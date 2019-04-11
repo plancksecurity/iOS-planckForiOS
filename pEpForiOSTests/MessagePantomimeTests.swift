@@ -10,17 +10,19 @@ import XCTest
 import CoreData
 
 @testable import MessageModel
+import PantomimeFramework
 import pEpForiOS
 import PEPObjCAdapterFramework
 
-class MessagePantomimeTests: XCTestCase {
+//!!!: must be moved to MM
+class MessagePantomimeTests: XCTestCase { //!!!: se base class
     var persistentSetup: PersistentSetup!
     var moc: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
         persistentSetup = PersistentSetup()
-        moc = Record.Context.default
+        moc = Stack.shared.mainContext
     }
 
     override func tearDown() {
@@ -29,10 +31,10 @@ class MessagePantomimeTests: XCTestCase {
     }
 
     func testPantomimeFlagsFromMessage() {
-        let m = CdMessage.create()
-        m.imap = CdImapFields.create()
+        let m = CdMessage(context: moc)
+        m.imap = CdImapFields(context: moc)
 
-        let cdFlags = CdImapFlags.create()
+        let cdFlags = CdImapFlags(context: moc)
         m.imap?.localFlags = cdFlags
 
         cdFlags.flagFlagged = true
@@ -80,7 +82,7 @@ class MessagePantomimeTests: XCTestCase {
         var allRefs = refs
         allRefs.append(inReplyTo)
 
-        let cdAccount = testData.createWorkingCdAccount()
+        let cdAccount = testData.createWorkingCdAccount(context: moc)
 
         let cdFolder = CdFolder(context: moc)
         let folderName = "inbox"
@@ -104,13 +106,6 @@ class MessagePantomimeTests: XCTestCase {
         }
         let cdRefs = cdMsg.references?.array as? [CdMessageReference] ?? []
         XCTAssertEqual(cdRefs.count, refs.count + 1)
-
-        guard let testee = cdMsg.references?.array as? [CdMessageReference] else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual(testee.count, refs.count + 1)
-        XCTAssertEqual(testee.map { $0.reference }, allRefs)
 
         let pEpMsgDict = cdMsg.pEpMessageDict()
         XCTAssertEqual(pEpMsgDict[kPepReferences] as? [String] ?? [], allRefs)

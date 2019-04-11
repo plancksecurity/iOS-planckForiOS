@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
 @testable import MessageModel //FIXME:
@@ -14,6 +15,8 @@ import PEPObjCAdapterFramework
 
 class HandshakeTests: XCTestCase {
     var persistentSetup: PersistentSetup!
+    var moc: NSManagedObjectContext!
+
     var cdOwnAccount: CdAccount!
     var fromIdent: PEPIdentity!
 
@@ -22,8 +25,9 @@ class HandshakeTests: XCTestCase {
 
         XCTAssertTrue(PEPUtil.pEpClean())
         persistentSetup = PersistentSetup()
+        moc = Record.Context.default
 
-        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0)
+        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
         cdMyAccount.identity?.userName = "iOS Test 002"
         cdMyAccount.identity?.userID = "iostest002@peptest.ch_ID"
         cdMyAccount.identity?.address = "iostest002@peptest.ch"
@@ -31,7 +35,7 @@ class HandshakeTests: XCTestCase {
         let cdInbox = CdFolder.create()
         cdInbox.name = ImapSync.defaultImapInboxName
         cdInbox.account = cdMyAccount
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         cdOwnAccount = cdMyAccount
 

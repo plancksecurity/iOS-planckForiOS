@@ -32,26 +32,23 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
 
-        externalFrom1 = Identity.create(
-            address: "1@example.com",
-            userID: "1",
-            addressBookID: "1",
-            userName: "user1",
-            isMySelf: false)
+        externalFrom1 = Identity(address: "1@example.com",
+                                 userID: "1",
+                                 addressBookID: "1",
+                                 userName: "user1",
+                                 isMySelf: false)
 
-        otherRecipient1 = Identity.create(
-            address: "2@example.com",
-            userID: "2",
-            addressBookID: "2",
-            userName: "user2",
-            isMySelf: false)
+        otherRecipient1 = Identity(address: "2@example.com",
+                                   userID: "2",
+                                   addressBookID: "2",
+                                   userName: "user2",
+                                   isMySelf: false)
 
-        otherRecipient2 = Identity.create(
-            address: "3@example.com",
-            userID: "3",
-            addressBookID: "3",
-            userName: "user3",
-            isMySelf: false)
+        otherRecipient2 = Identity(address: "3@example.com",
+                                   userID: "3",
+                                   addressBookID: "3",
+                                   userName: "user3",
+                                   isMySelf: false)
 
         replyAllChecker = ReplyAllPossibleChecker()
 

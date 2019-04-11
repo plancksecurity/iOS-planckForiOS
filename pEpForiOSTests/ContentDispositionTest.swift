@@ -29,12 +29,12 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
     func attchmentRoundTrip(attachmentsInlined: Bool) {
         // Setup 2 accounts
         cdAccount.createRequiredFoldersAndWait(testCase: self)
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
-        let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
-        Record.saveAndWait()
+        let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
+        moc.saveAndLogErrors()
         cdAccount2.createRequiredFoldersAndWait(testCase: self)
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         guard let id1 = cdAccount.identity,
             let id2 = cdAccount2.identity else {
@@ -59,7 +59,8 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
                                          withAttachments: true,
                                          attachmentsInlined: attachmentsInlined,
                                          encrypt: false,
-                                         forceUnencrypted: true)
+                                         forceUnencrypted: true,
+                                         context: moc)
         XCTAssertEqual(mailsToSend.count, numMailsToSend)
 
         // ... and send them.

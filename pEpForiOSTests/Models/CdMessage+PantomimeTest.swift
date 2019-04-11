@@ -9,27 +9,21 @@
 import XCTest
 
 import CoreData
+import PantomimeFramework
 @testable import MessageModel
 @testable import pEpForiOS
 
 class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
-    var moc: NSManagedObjectContext!
-
-    override func setUp() {
-        super.setUp()
-        moc = Record.Context.default
-    }
-
     // MARK: - StoreCommandForFlagsToRemoved / Add
 
     func testStoreCommandForFlagsToRemove_someServerFlagsSet() {
-        let m = CdMessage.create()
-        m.imap = CdImapFields.create()
+        let m = CdMessage(context: moc)
+        m.imap = CdImapFields(context: moc)
 
-        let localFlags = CdImapFlags.create()
+        let localFlags = CdImapFlags(context: moc)
         m.imap?.localFlags = localFlags
 
-        let serverFlags = CdImapFlags.create()
+        let serverFlags = CdImapFlags(context: moc)
         m.imap?.serverFlags = serverFlags
 
         m.uid = 1024
@@ -68,10 +62,10 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     }
 
     func testStoreCommandForFlagsToAdd_noServerFlagsSet() {
-        let m = CdMessage.create()
-        m.imap = CdImapFields.create()
+        let m = CdMessage(context: moc)
+        m.imap = CdImapFields(context: moc)
 
-        let localFlags = CdImapFlags.create()
+        let localFlags = CdImapFlags(context: moc)
         m.imap?.localFlags = localFlags
 
         m.uid = 1024
@@ -103,13 +97,13 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     }
 
     func testStoreCommandForFlagsToAdd_someServerFlagsSet() {
-        let m = CdMessage.create()
-        m.imap = CdImapFields.create()
+        let m = CdMessage(context: moc)
+        m.imap = CdImapFields(context: moc)
 
-        let localFlags = CdImapFlags.create()
+        let localFlags = CdImapFlags(context: moc)
         m.imap?.localFlags = localFlags
 
-        let serverFlags = CdImapFlags.create()
+        let serverFlags = CdImapFlags(context: moc)
         m.imap?.serverFlags = serverFlags
 
         m.uid = 1024
@@ -146,7 +140,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     }
 
     func testInsertOrUpdatePantomimeMessage() {
-        let cdAccount = SecretTestData().createWorkingCdAccount()
+        let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
 
         let folder = CdFolder(context: moc)
         folder.account = cdAccount

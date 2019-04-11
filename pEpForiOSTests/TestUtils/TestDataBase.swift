@@ -68,17 +68,17 @@ class TestDataBase {
             self.password = password
         }
 
-        func cdAccount() -> CdAccount {
-            let id = CdIdentity.create()
+        func cdAccount(context: NSManagedObjectContext) -> CdAccount {
+            let id = CdIdentity(context: context)
             id.address = idAddress
             id.userName = idUserName
             id.userID = CdIdentity.pEpOwnUserID
 
-            let acc = CdAccount.create()
+            let acc = CdAccount(context: context)
             acc.identity = id
 
             //SMTP
-            let smtp = CdServer.create()
+            let smtp = CdServer(context: context)
             smtp.serverType = smtpServerType
             smtp.port = Int16(smtpServerPort)
             smtp.address = smtpServerAddress
@@ -86,7 +86,7 @@ class TestDataBase {
 
             let keySmtp = UUID().uuidString
             CdServerCredentials.add(password: password, forKey: keySmtp)
-            let credSmtp = CdServerCredentials.create()
+            let credSmtp = CdServerCredentials(context: context)
             credSmtp.loginName = smtpLoginName ?? id.address
             credSmtp.key = keySmtp
             smtp.credentials = credSmtp
@@ -94,7 +94,7 @@ class TestDataBase {
             acc.addToServers(smtp)
 
             //IMAP
-            let imap = CdServer.create()
+            let imap = CdServer(context: context)
             imap.serverType = imapServerType
             imap.port = Int16(imapServerPort)
             imap.address = imapServerAddress
@@ -102,7 +102,7 @@ class TestDataBase {
 
             let keyImap = UUID().uuidString
             CdServerCredentials.add(password: password, forKey: keyImap)
-            let credImap = CdServerCredentials.create()
+            let credImap = CdServerCredentials(context: context)
             credImap.loginName = imapLoginName ?? id.address
             credImap.key = keyImap
             imap.credentials = credImap
@@ -112,8 +112,9 @@ class TestDataBase {
             return acc
         }
 
-        func cdIdentityWithoutAccount(isMyself: Bool = false) -> CdIdentity {
-            let id = CdIdentity.create()
+        func cdIdentityWithoutAccount(isMyself: Bool = false,
+                                      context: NSManagedObjectContext) -> CdIdentity {
+            let id = CdIdentity(context: context)
             id.address = idAddress
             id.userName = idUserName
             if isMyself {
@@ -125,7 +126,7 @@ class TestDataBase {
         }
 
         func account() -> Account {
-            let id = Identity.create(address: idAddress, userName: idUserName, isMySelf: true)
+            let id = Identity(address: idAddress, userName: idUserName, isMySelf: true)
 
             let credSmtp = ServerCredentials.create(loginName: id.address)
             credSmtp.password = password
@@ -232,8 +233,8 @@ class TestDataBase {
     /**
      - Returns: A valid `CdAccount`.
      */
-    func createWorkingCdAccount(number: Int = 0) -> CdAccount {
-        let result = createWorkingAccountSettings(number: number).cdAccount()
+    func createWorkingCdAccount(number: Int = 0, context: NSManagedObjectContext) -> CdAccount {
+        let result = createWorkingAccountSettings(number: number).cdAccount(context: context)
         // The identity of an account is mySelf by definion.
         result.identity?.userID = CdIdentity.pEpOwnUserID
         return result
@@ -242,8 +243,8 @@ class TestDataBase {
     /**
      - Returns: A valid `CdAccount`.
      */
-    func createVerifiableCdAccount(number: Int = 0) -> CdAccount {
-        let result = createVerifiableAccountSettings(number: number).cdAccount()
+    func createVerifiableCdAccount(number: Int = 0, context: NSManagedObjectContext) -> CdAccount {
+        let result = createVerifiableAccountSettings(number: number).cdAccount(context: context)
         // The identity of an account is mySelf by definion.
         result.identity?.userID = CdIdentity.pEpOwnUserID
         return result
@@ -252,21 +253,26 @@ class TestDataBase {
     /**
      - Returns: A valid `CdIdentity` without parent account.
      */
-    func createWorkingCdIdentity(number: Int = 0, isMyself: Bool = false) -> CdIdentity {
-        let result = createWorkingAccountSettings(number: number).cdIdentityWithoutAccount(isMyself: isMyself)
+    func createWorkingCdIdentity(number: Int = 0,
+                                 isMyself: Bool = false,
+                                 context: NSManagedObjectContext? = nil) -> CdIdentity {
+        let moc = context ?? Stack.MessageModelObjectContext.default
+        let result =
+            createWorkingAccountSettings(number: number).cdIdentityWithoutAccount(isMyself: isMyself,
+                                                                                  context: moc)
         return result
     }
 
     /**
      - Returns: A `CdAccount` that should not be able to be verified.
      */
-    func createDisfunctionalCdAccount() -> CdAccount {
+    func createDisfunctionalCdAccount(context: NSManagedObjectContext) -> CdAccount {
         var accountSettings = createWorkingAccountSettings(number: 0)
         accountSettings.smtpServerAddress = "localhost"
         accountSettings.smtpServerPort = 2323
         accountSettings.imapServerPort = 2323
         accountSettings.imapServerAddress = "localhost"
-        return accountSettings.cdAccount()
+        return accountSettings.cdAccount(context: context)
     }
 
     func createWorkingAccountSettings(number: Int = 0) -> AccountSettings {
@@ -326,8 +332,8 @@ class TestDataBase {
     /**
      - Returns: A `CdAccount` around `createSmtpTimeOutAccountSettings`.
      */
-    func createSmtpTimeOutCdAccount() -> CdAccount {
-        return createSmtpTimeOutAccountSettings().cdAccount()
+    func createSmtpTimeOutCdAccount(context: NSManagedObjectContext) -> CdAccount {
+        return createSmtpTimeOutAccountSettings().cdAccount(context: context)
     }
 
     /**

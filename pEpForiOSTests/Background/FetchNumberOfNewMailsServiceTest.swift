@@ -11,55 +11,62 @@
 //
 //import CoreData
 //
-//@testable import pEpForiOS
-//@testable import MessageModel
-//
-//class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
-//    var errorContainer: ServiceErrorProtocol!
-//    var queue: OperationQueue!
-//
-//    override func setUp() {
-//        super.setUp()
-//        errorContainer = ErrorContainer()
-//        queue = OperationQueue()
-//    }
-//
-//    func testUnreadMail() {
-//        loginIMAP(imapSyncData: imapSyncData, errorContainer: errorContainer, queue: queue)
-//        fetchFoldersIMAP(imapSyncData: imapSyncData, queue: queue)
-//
-//        guard let numNewMailsOrig = fetchNumberOfNewMails(errorContainer: errorContainer) else {
-//            XCTFail()
-//            return
-//        }
-//
-//        guard let inbox = Folder.by(account: account, folderType: .inbox) else {
-//            XCTFail()
-//            return
-//        }
-//
-//        let partnerId = Identity(address: "somepartner@example.com",
-//                                 userID: "ID_somepartner@example.com",
-//                                 addressBookID: nil,
-//                                 userName: "USER_somepartner@example.com",
-//                                 isMySelf: false)
-//
-//        let mail1 = Message(uuid: "message_1", uid: 0, parentFolder: inbox)
-//        mail1.from = account.user
-//        mail1.replaceTo(with: [partnerId])
-//        mail1.shortMessage = "Are you ok?"
-//        mail1.longMessage = "Hi there!"
-//        mail1.save()
-//
-//        appendMailsIMAP(folder: inbox,
-//                        imapSyncData: imapSyncData,
-//                        errorContainer: errorContainer,
-//                        queue: queue)
-//
-//        guard let numNewMails = fetchNumberOfNewMails(errorContainer: errorContainer) else {
-//            XCTFail()
-//            return
-//        }
-//        XCTAssertEqual(numNewMails, numNewMailsOrig + 1)
-//    }
-//}
+
+import XCTest
+
+import CoreData
+
+@testable import pEpForiOS
+@testable import MessageModel
+
+class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
+    var errorContainer: ServiceErrorProtocol!
+    var queue: OperationQueue!
+
+    override func setUp() {
+        super.setUp()
+        errorContainer = ErrorContainer()
+        queue = OperationQueue()
+    }
+
+    func testUnreadMail() {
+        loginIMAP(imapSyncData: imapSyncData, errorContainer: errorContainer, queue: queue)
+        fetchFoldersIMAP(imapSyncData: imapSyncData, queue: queue)
+
+        guard let numNewMailsOrig = fetchNumberOfNewMails(errorContainer: errorContainer) else {
+            XCTFail()
+            return
+        }
+
+        guard let cdInbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        let partnerId = CdIdentity.create()
+        partnerId.address = "somepartner@example.com"
+        partnerId.userID = "ID_somepartner@example.com"
+        partnerId.addressBookID = nil
+        partnerId.userName = "USER_somepartner@example.com"
+
+        let mail1 = CdMessage.create()
+        mail1.uuid = MessageID.generateUUID(localPart: "testUnreadMail")
+        mail1.uid = 0
+        mail1.parent = cdInbox
+        mail1.addToTo(partnerId)
+        mail1.shortMessage = "Are you ok?"
+        mail1.longMessage = "Hi there!"
+        Record.saveAndWait()
+
+        appendMailsIMAP(folder: cdInbox,
+                        imapSyncData: imapSyncData,
+                        errorContainer: errorContainer,
+                        queue: queue)
+
+        guard let numNewMails = fetchNumberOfNewMails(errorContainer: errorContainer) else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(numNewMails, numNewMailsOrig + 1)
+    }
+}

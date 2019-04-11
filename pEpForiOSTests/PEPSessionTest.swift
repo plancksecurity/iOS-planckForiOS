@@ -7,13 +7,15 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 import PEPObjCAdapterFramework
 
 class PEPSessionTest: XCTestCase {
     var persistentSetup: PersistentSetup!
+    var moc: NSManagedObjectContext!
 
     // MARK: - Setup
 
@@ -21,7 +23,7 @@ class PEPSessionTest: XCTestCase {
         super.setUp()
         XCTAssertTrue(PEPUtil.pEpClean())
         persistentSetup = PersistentSetup()
-
+        moc = Record.Context.default
     }
     override func tearDown() {
         persistentSetup = nil
@@ -120,9 +122,9 @@ class PEPSessionTest: XCTestCase {
     }
 
     func testParseMessageHeapBufferOverflow() {
-        let cdAccount = SecretTestData().createWorkingCdAccount()
+        let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
 
-        let folder = CdFolder.create()
+        let folder = CdFolder(context: moc)
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
 
@@ -141,12 +143,12 @@ class PEPSessionTest: XCTestCase {
     }
 
     func testDecryptMessageHeapBufferOverflow() {
-        let cdAccount = SecretTestData().createWorkingCdAccount()
+        let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
 
-        let folder = CdFolder.create()
+        let folder = CdFolder(context: moc)
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
-        Record.saveAndWait()
+       moc.saveAndLogErrors()
 
         guard let cdMessage = TestUtil.cdMessage(
             fileName: "MessageHeapBufferOverflow.txt", cdOwnAccount: cdAccount) else {
@@ -164,9 +166,9 @@ class PEPSessionTest: XCTestCase {
 
     // IOS-211
     func testAttachmentsDoNotGetDuplilcated() {
-        let cdAccount = SecretTestData().createWorkingCdAccount()
+        let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
 
-        let folder = CdFolder.create()
+        let folder = CdFolder(context: moc)
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
 

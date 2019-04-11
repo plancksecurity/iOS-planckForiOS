@@ -10,16 +10,13 @@ import XCTest
 
 import CoreData
 
+import PantomimeFramework
+
 @testable import MessageModel
 @testable import pEpForiOS
 
 class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
-    var moc: NSManagedObjectContext!
-
-    override func setUp() {
-        super.setUp()
-        moc = Record.Context.default
-    }
+    
     //IOS-815 pEpRating undefined
     func testPepratingUndefined() {
         let folder = CdFolder(context: moc)
@@ -35,7 +32,7 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
         }
         message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         message.setUID(1)
-        guard let msg = CdMessage.insertOrUpdate(  pantomimeMessage: message,
+        guard let _ = CdMessage.insertOrUpdate(  pantomimeMessage: message,
                                                    account: cdAccount,
                                                    messageUpdate: CWMessageUpdate.newComplete(),
                                                    context: moc)
@@ -67,11 +64,11 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
             XCTAssertNil(error)
         })
 
-        guard let temp = msg.message(),  let testee = CdMessage.search(message: temp) else {
+        guard let again = CdMessage.search(message: message, inAccount: cdAccount) else {
             XCTFail("No message")
             return
         }
 
-        XCTAssertTrue(testee.pEpRating != notSeenByPepYet)
+        XCTAssertTrue(again.pEpRating != notSeenByPepYet)
     }
 }
