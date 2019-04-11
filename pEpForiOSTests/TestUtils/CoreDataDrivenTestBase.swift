@@ -17,7 +17,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
     var moc : NSManagedObjectContext!
 
     var account: Account {
-        return cdAccount.account()
+        return Account(cdObject: cdAccount, context: moc)
     }
     var cdAccount: CdAccount!
     var persistentSetup: PersistentSetup!
@@ -36,7 +36,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
         XCTAssertTrue(PEPUtil.pEpClean())
         
         persistentSetup = PersistentSetup()
-        moc = Stack.shared.newPrivateConcurrentContext
+        moc = Stack.MessageModelObjectContext.default
 
         let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
         moc.saveAndLogErrors()
