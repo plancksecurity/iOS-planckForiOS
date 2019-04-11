@@ -43,13 +43,13 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
             return
         }
 
-        let partnerId = CdIdentity.create()
+        let partnerId = CdIdentity(context: moc)
         partnerId.address = "somepartner@example.com"
         partnerId.userID = "ID_somepartner@example.com"
         partnerId.addressBookID = nil
         partnerId.userName = "USER_somepartner@example.com"
 
-        let mail1 = CdMessage.create()
+        let mail1 = CdMessage(context: moc)
         mail1.uuid = MessageID.generateUUID(localPart: "testUnreadMail")
         mail1.uid = 0
         mail1.parent = cdInbox
