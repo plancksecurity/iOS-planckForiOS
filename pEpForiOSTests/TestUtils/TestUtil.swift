@@ -267,39 +267,6 @@ class TestUtil {
 
     // MARK: - Messages
 
-    /// Calls createOutgoingMails for Cd...Objcets. See docs there.
-    static func createOutgoingMails(account: Account,
-                                    fromIdentity: Identity? = nil,
-                                    toIdentity: Identity? = nil,
-                                    setSentTimeOffsetForManualOrdering: Bool = false,
-                                    testCase: XCTestCase,
-                                    numberOfMails: Int,
-                                    withAttachments: Bool = true,
-                                    attachmentsInlined: Bool = false,
-                                    encrypt: Bool = true,
-                                    forceUnencrypted: Bool = false) throws -> [Message] {
-        let cdAccount = account.cdAccount()
-        guard
-            let cdFromIdentity = fromIdentity?.cdIdentity(),
-            let cdToIdentity = toIdentity?.cdIdentity()
-            else {
-                XCTFail("No account.")
-                return []
-        }
-
-        let cdMessages = try createOutgoingMails(cdAccount: cdAccount,
-                                                 fromIdentity: cdFromIdentity,
-                                                 toIdentity: cdToIdentity,
-                                                 setSentTimeOffsetForManualOrdering: setSentTimeOffsetForManualOrdering,
-                                                 testCase: testCase,
-                                                 numberOfMails: numberOfMails,
-                                                 withAttachments: withAttachments,
-                                                 attachmentsInlined: attachmentsInlined,
-                                                 encrypt: encrypt,
-                                                 forceUnencrypted: forceUnencrypted)
-        return cdMessages.map { $0.message()! }
-    }
-
     /// Creates outgoing messages
     ///
     /// - Parameters:
@@ -330,7 +297,7 @@ class TestUtil {
                                     attachmentsInlined: Bool = false,
                                     encrypt: Bool = true,
                                     forceUnencrypted: Bool = false,
-                                    context: NSManagedObjectContext = Stack.shared.mainContext) throws -> [CdMessage] {
+                                    context: NSManagedObjectContext) throws -> [CdMessage] {
         let cdAccount = fromIdentity?.accounts?.allObjects.first as? CdAccount ?? cdAccount 
         testCase.continueAfterFailure = false
 
