@@ -92,7 +92,7 @@ class MessageReevalutionTests: XCTestCase {
 
     override func tearDown() {
         persistentSetup = nil
-        backgroundQueue.cancelAllOperations()
+        backgroundQueue?.cancelAllOperations() //!!!: serious issue. BackgroundQueue is randomly nil here. WTF?
         backgroundQueue = nil
         PEPSession.cleanup()
         super.tearDown()
