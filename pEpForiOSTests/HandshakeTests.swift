@@ -32,7 +32,7 @@ class HandshakeTests: XCTestCase {
         cdMyAccount.identity?.userID = "iostest002@peptest.ch_ID"
         cdMyAccount.identity?.address = "iostest002@peptest.ch"
 
-        let cdInbox = CdFolder.create()
+        let cdInbox = CdFolder(context: moc)
         cdInbox.name = ImapSync.defaultImapInboxName
         cdInbox.account = cdMyAccount
         moc.saveAndLogErrors()
@@ -128,19 +128,23 @@ class HandshakeTests: XCTestCase {
         XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
     }
 
+    //!!!:
     func testRestTruestOnYellowIdentity() {
         let session = PEPSession()
         try! session.update(fromIdent)
         XCTAssertNotNil(fromIdent.fingerPrint)
-        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+        XCTAssertTrue((try? session.isPEPUser(fromIdent).boolValue) ?? false)
 
-        var numRating = try! session.rating(for: fromIdent)
-        XCTAssertEqual(numRating.pEpRating, .reliable)
-
-        try! session.keyResetTrust(fromIdent)
-        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
-
-        numRating = try! session.rating(for: fromIdent)
-        XCTAssertEqual(numRating.pEpRating, .reliable)
+        do {
+            var numRating =  try! session.rating(for: fromIdent)
+            XCTAssertEqual(numRating.pEpRating, .reliable)
+            XCTAssertNoThrow(try session.keyResetTrust(fromIdent))
+            let isPepUser = try session.isPEPUser(fromIdent).boolValue
+            XCTAssertTrue(isPepUser)
+            numRating = try session.rating(for: fromIdent)
+            XCTAssertEqual(numRating.pEpRating, .reliable)
+        } catch {
+            XCTFail()
+        }
     }
 }
