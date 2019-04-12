@@ -47,7 +47,7 @@ public class AccountSettingsViewModel {
         // We are using a copy here. The outside world must not know changed settings until they
         // have been verified.
         self.account = Account(withDataFrom: account)
-        isOAuth2 = account.server(with: .imap)?.authMethod == AuthMethod.saslXoauth2.rawValue
+        isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
     }
 
     var email: String {
@@ -59,7 +59,7 @@ public class AccountSettingsViewModel {
     var loginName: String {
         get {
             // the email model is based on the assumption that imap.loginName == smtp.loginName
-            return account.server(with: .imap)?.credentials.loginName ?? ""
+            return account.imapServer?.credentials.loginName ?? ""
         }
     }
 
