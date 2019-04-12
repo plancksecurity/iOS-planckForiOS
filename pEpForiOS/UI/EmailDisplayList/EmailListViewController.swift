@@ -65,10 +65,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         if let vm = model, !vm.noAccountsExist() {
             updateFilterButtonView()
-            vm.startMonitoring()
-            if vm.checkIfSettingsChanged() {
-                settingsChanged()
-            }
+            vm.startMonitoring() //???: should UI know about startMonitoring?
+
+            // Threading feature is currently non-existing. Keep this code, might help later.
+//            if vm.checkIfSettingsChanged() {
+//                settingsChanged()
+//            }
         }
     }
 
@@ -217,7 +219,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     @objc private func settingsChanged() {
-        model?.reloadData()
+        model?.informDelegateToReloadData()
         tableView.reloadData()
     }
 
@@ -658,8 +660,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDelegate {
 
     public func updateSearchResults(for searchController: UISearchController) {
-        guard let vm = model, let searchText = searchController.searchBar.text else {
-            return
+        guard
+            let vm = model,
+            let searchText = searchController.searchBar.text
+            else {
+                return
         }
         vm.setSearch(forSearchText: searchText)
     }
@@ -810,7 +815,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
             // currently filtered by unread.
             return
         } else if isIphone && unreadFilterActive {
-            vm.reloadData()
+            vm.informDelegateToReloadData()
         } else {
             //  ... otherwize we forward to update
             emailListViewModel(viewModel: viewModel, didUpdateDataAt: indexPaths)

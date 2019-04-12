@@ -8,11 +8,20 @@
 
 import Foundation
 
+import PantomimeFramework
 import MessageModel
 
 extension CWInternetAddress {
     func identity(userID: String?) -> Identity {
         return Identity.create(address: address(), userID: userID,
                                userName: personal()?.fullyUnquoted())
+    }
+
+    func cdIdentity(userID: String?) -> CdIdentity {
+        let cdIdent = CdIdentity.create()
+        cdIdent.address = address()
+        cdIdent.userID = userID
+        cdIdent.userName = personal()?.fullyUnquoted()
+        return cdIdent
     }
 }

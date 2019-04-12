@@ -40,17 +40,18 @@ class UnifiedInboxTest: CoreDataDrivenTestBase {
         msg4.save()
     }
 
-    func testUnifiedInboxPredicateRetunrAllMessagesInInbox() {
+    func testUnifiedInboxPredicateReturnAllMessagesInInbox() {
 
-        let mgqr = MessageQueryResults(withDisplayableFolder: unifiedInbox)
+        let mgqr = MessageQueryResults(withFolder: unifiedInbox)
         do {
             try mgqr.startMonitoring()
+            let count = try mgqr.count()
+            XCTAssertEqual(count, 2)
         }
         catch {
             XCTFail()
         }
-        XCTAssertNotEqual(mgqr.count, 0)
-        XCTAssertEqual(mgqr.count, 2)
+
     }
     
 }

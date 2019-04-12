@@ -18,7 +18,7 @@ extension EmailListViewModel: MoveToFolderDelegate {
     }
 
     func didMove() {
-        reloadData()
+        informDelegateToReloadData()
     }
 
 }

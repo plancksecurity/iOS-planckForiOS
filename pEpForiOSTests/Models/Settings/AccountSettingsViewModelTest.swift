@@ -129,7 +129,8 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
     }
 
 
-    private func setUpViewModel(){
+    private func setUpViewModel() {
+        account.save()
         viewModel = AccountSettingsViewModel(account: account)
         viewModel.verificationService = VerificationService()
     }

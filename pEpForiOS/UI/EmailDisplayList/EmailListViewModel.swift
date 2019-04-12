@@ -39,7 +39,7 @@ extension EmailListViewModel: FilterUpdateProtocol {
 
 class EmailListViewModel {
     let contactImageTool = IdentityImageTool()
-    let messageQueryResults: MessageQueryResults
+    var messageQueryResults: MessageQueryResults
 
     var indexPathShown: IndexPath?
 
@@ -80,20 +80,42 @@ class EmailListViewModel {
     weak var updateThreadListDelegate: UpdateThreadListDelegate?
     var defaultFilter: MessageQueryResultsFilter
 
-    var oldThreadSetting : Bool
-    
+    // Threading feature is currently non-existing. Keep this code, might help later.
+//    var oldThreadSetting : Bool
+
     // MARK: - Life Cycle
 
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
          folderToShow: DisplayableFolderProtocol) {
-
-        self.messageQueryResults = MessageQueryResults(withDisplayableFolder: folderToShow)
         self.emailListViewModelDelegate = emailListViewModelDelegate
-
         self.folderToShow = folderToShow
         self.defaultFilter = folderToShow.defaultFilter
-        self.oldThreadSetting = AppSettings.threadedViewEnabled
 
+        // We intentionally do *not* start monitoring.
+        self.messageQueryResults = MessageQueryResults(withFolder: folderToShow,
+                                                       filter: folderToShow.defaultFilter,
+                                                       search: nil)
+
+        // Threading feature is currently non-existing. Keep this code, might help later.
+//        self.oldThreadSetting = AppSettings.threadedViewEnabled
+
+    }
+
+    //!!!: BUFF: move
+    // Every time filter or search changes, we have to
+    private func resetQueryResultsAndReload(with filter: MessageQueryResultsFilter? = nil,
+                                            search: MessageQueryResultsSearch? = nil) {
+        defer { informDelegateToReloadData() }
+        messageQueryResults = MessageQueryResults(withFolder: folderToShow,
+                                                  filter: filter,
+                                                  search: search)
+        do {
+            try messageQueryResults.startMonitoring()
+
+        } catch {
+            Logger.modelLogger.errorAndCrash("Failed to fetch data")
+            return
+        }
     }
 
     func startMonitoring() {
@@ -118,14 +140,15 @@ class EmailListViewModel {
         }
     }
 
-    //check if there are some important settings that have changed to force a reload
-    func checkIfSettingsChanged() -> Bool {
-        if AppSettings.threadedViewEnabled != oldThreadSetting {
-            oldThreadSetting = AppSettings.threadedViewEnabled
-            return true
-        }
-        return false
-    }
+    // Threading feature is currently non-existing. Keep this code, might help later.
+//    //check if there are some important settings that have changed to force a reload
+//    func checkIfSettingsChanged() -> Bool {
+//        if AppSettings.threadedViewEnabled != oldThreadSetting {
+//            oldThreadSetting = AppSettings.threadedViewEnabled
+//            return true
+//        }
+//        return false
+//    }
 
     // MARK: - Public Data Access & Manipulation
 
@@ -328,7 +351,7 @@ class EmailListViewModel {
         }
     }
 
-    public func reloadData() {
+    public func informDelegateToReloadData() {
         emailListViewModelDelegate?.reloadData(viewModel: self)
     }
 
@@ -447,6 +470,7 @@ class EmailListViewModel {
         return MessageQueryResultsFilter(mustBeFlagged: false, mustBeUnread: true, mustContainAttachments: false, accounts: [])
     }
 
+    //rn lastusedFilter
     static let defaultFilterViewFilter = defaultFilter()
     private var _filterViewFilter: MessageQueryResultsFilter = defaultFilterViewFilter
     private var filterViewFilter: MessageQueryResultsFilter {
@@ -458,73 +482,57 @@ class EmailListViewModel {
         }
     }
 
+    //rename
     private func setFilterViewFilter(filter: MessageQueryResultsFilter) {
         if isFilterEnabled {
-            let folderFilter = assuredFilterOfFolderToShow()
+            resetQueryResultsAndReload(with: filter,
+                                       search: messageQueryResults.search)
+            //            let folderFilter = assuredFilterOfFolderToShow()
            /* folderFilter.without(filters: filterViewFilter)
             folderFilter.with(filters: filter)*/
-            reloadData()
         }
         filterViewFilter = filter
     }
 
     private func handleFilterEnabledSwitch() {
-        do {
-            try self.messageQueryResults.set(filter: self.filterViewFilter)
-        } catch {
-            Logger.frontendLogger.errorAndCrash("crash from messageQuery at set filter")
-        }
-        reloadData()
+        setFilterViewFilter(filter: filterViewFilter)
     }
 
-    public func setSearch(forSearchText txt: String = "") {
+    public func setSearch(forSearchText txt: String) {
         if txt == lastSearchTerm {
             // Happens e.g. when initially setting the cursor in search bar.
             return
         }
         lastSearchTerm = txt
-        if txt == "" {
-            do {
-                try messageQueryResults.set(search: nil)
-            } catch {
-                Logger.frontendLogger.errorAndCrash("Set search crash")
-            }
 
-        } else {
-            do {
-                try messageQueryResults.set(search: MessageQueryResultsSearch(searchTerm: lastSearchTerm))
-            } catch {
-                Logger.frontendLogger.errorAndCrash("Set search crash")
-            }
+        let search = txt == "" ? nil : MessageQueryResultsSearch(searchTerm: lastSearchTerm)
+        setSearch(search: search)
+    }
 
-        }
-        //???: it's necessary to reaload or messageQueryResults will inform
-            reloadData()
+    //BUFF: move
+    private func setSearch(search: MessageQueryResultsSearch?) {
+        resetQueryResultsAndReload(with: messageQueryResults.filter,
+                                   search: search)
     }
      
     public func removeSearch() {
-        do {
-            try messageQueryResults.set(search: nil)
-            //???: it's necessary to reaload or messageQueryResults will inform
-            reloadData()
-        } catch {
-            Logger.frontendLogger.errorAndCrash("SearchFilter can not be removed")
-        }
+        setSearch(search: nil)
     }
 
-    //!!!: this is needed?
-    private func assuredFilterOfFolderToShow() -> MessageQueryResultsFilter {
-//        if folderToShow.filter == nil {
-//            folderToShow.resetFilter()
-//        }
-//
-//        guard let folderFilter = folderToShow.filter else {
-//            Logger.frontendLogger.errorAndCrash("We just set the filter but do not have one?")
-//            return defaultFilter
-//        }
-//        return folderFilter
-        return MessageQueryResultsFilter.init()
-    }
+//    //!!!: this is needed?
+    //!!!: BUFF: I don't think so
+//    private func assuredFilterOfFolderToShow() -> MessageQueryResultsFilter {
+////        if folderToShow.filter == nil {
+////            folderToShow.resetFilter()
+////        }
+////
+////        guard let folderFilter = folderToShow.filter else {
+////            Logger.frontendLogger.errorAndCrash("We just set the filter but do not have one?")
+////            return defaultFilter
+////        }
+////        return folderFilter
+//        return MessageQueryResultsFilter.init()
+//    }
 
     // MARK: - Util
 
@@ -627,7 +635,7 @@ extension EmailListViewModel {
 extension EmailListViewModel: ComposeViewModelResultDelegate {
     func composeViewModelDidComposeNewMail(message: Message) {
         if folderIsOutbox(message.parent) || folderIsDraft(message.parent){
-            reloadData()
+            informDelegateToReloadData()
         }
 //        if folderIsDraftsOrOutbox(folderToShow){
 //            // In outbox, a new mail must show up after composing it.
@@ -637,7 +645,7 @@ extension EmailListViewModel: ComposeViewModelResultDelegate {
 
     func composeViewModelDidDeleteMessage(message: Message) {
         if folderIsOutbox(message.parent) || folderIsDraft(message.parent){
-            reloadData()
+            informDelegateToReloadData()
         }
 //        if folderIsDraftOrOutbox(folderToShow) {
 //            // A message from outbox has been deleted in outbox
@@ -648,7 +656,7 @@ extension EmailListViewModel: ComposeViewModelResultDelegate {
 
     func composeViewModelDidModifyMessage(message: Message) {
         if folderIsDraft(message.parent){
-            reloadData()
+            informDelegateToReloadData()
         }
 //        if folderIsDraft(folderToShow) {
 //            reloadData()

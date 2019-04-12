@@ -271,14 +271,15 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(emailListVM.rowCount, 2)
     }*/
 
-    //thread view nos is totaly disabled that means always false
-    func testCheckIfSettingsChanged() {
-        setupViewModel()
-        emailListVM.startMonitoring()
-        XCTAssertFalse(AppSettings.threadedViewEnabled)
-        AppSettings.threadedViewEnabled = true
-        XCTAssertFalse(emailListVM.checkIfSettingsChanged())
-    }
+    // Threading feature is currently non-existing. Keep this code, might help later.
+//    //thread view nos is totaly disabled that means always false
+//    func testCheckIfSettingsChanged() {
+//        setupViewModel()
+//        emailListVM.startMonitoring()
+//        XCTAssertFalse(AppSettings.threadedViewEnabled)
+//        AppSettings.threadedViewEnabled = true
+//        XCTAssertFalse(emailListVM.checkIfSettingsChanged())
+//    }
 
     // MARK: - cell for row
 /*

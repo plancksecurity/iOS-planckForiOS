@@ -235,6 +235,7 @@
 		4334CF302020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334CF2F2020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift */; };
 		4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4336229D1DC76B8100133B3D /* MessageModelTests.swift */; };
 		433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433BCD941D5388C100DD98EF /* ReplyUtil.swift */; };
+		433E7438225B564400B84CD9 /* Account+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E7437225B564400B84CD9 /* Account+Extension.swift */; };
 		433F2E2A21E3581800E1CA49 /* ENGINE-505_Mail_NullInnerMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = 433F2E2921E3581800E1CA49 /* ENGINE-505_Mail_NullInnerMimeType.txt */; };
 		43425EDB1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDA1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift */; };
 		43425EDD1FE3DF3B004A2728 /* OAuth2Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDC1FE3DF3B004A2728 /* OAuth2Provider.swift */; };
@@ -355,6 +356,8 @@
 		43D213412237CB3900C060A1 /* PantomimeFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D2133F2237CB3900C060A1 /* PantomimeFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43D3379021A3F32500E40114 /* ImapUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D3378F21A3F32500E40114 /* ImapUtil.swift */; };
 		43D3F8A121EDDF19002D5AFC /* ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43D3F8A021EDDF19002D5AFC /* ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt */; };
+		43D47AC0225DD1C500E97C5B /* PantomimeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D47ABF225DD1C500E97C5B /* PantomimeFramework.framework */; };
+		43D47AC2225DD1CE00E97C5B /* PEPObjCAdapterFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D47AC1225DD1CE00E97C5B /* PEPObjCAdapterFramework.framework */; };
 		43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */; };
 		43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */; };
 		43DFB0331E36083D00175C9C /* MessageHeapBufferOverflow.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */; };
@@ -687,7 +690,6 @@
 		431394A81E4B03AA00D92F33 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2Type+Extension.swift"; sourceTree = "<group>"; };
 		431798761CF87FE6007DD655 /* ReferenceCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceCounter.swift; sourceTree = "<group>"; };
-		431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PorpoiseGalaxy_HubbleFraile_960.jpg; sourceTree = "<group>"; };
 		431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
 		431C2B181F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ConnectionTransport+AccountSettings.swift"; sourceTree = "<group>"; };
@@ -718,6 +720,7 @@
 		4336229D1DC76B8100133B3D /* MessageModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModelTests.swift; sourceTree = "<group>"; };
 		433724FC1DA2C2B1005E8DF5 /* pEp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = pEp.entitlements; path = ../pEp.entitlements; sourceTree = "<group>"; };
 		433BCD941D5388C100DD98EF /* ReplyUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyUtil.swift; sourceTree = "<group>"; };
+		433E7437225B564400B84CD9 /* Account+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Extension.swift"; sourceTree = "<group>"; };
 		433F2E2921E3581800E1CA49 /* ENGINE-505_Mail_NullInnerMimeType.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ENGINE-505_Mail_NullInnerMimeType.txt"; sourceTree = "<group>"; };
 		43425EDA1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2ProviderProtocol.swift; sourceTree = "<group>"; };
 		43425EDC1FE3DF3B004A2728 /* OAuth2Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Provider.swift; sourceTree = "<group>"; };
@@ -871,6 +874,8 @@
 		43D2133F2237CB3900C060A1 /* PantomimeFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D3378F21A3F32500E40114 /* ImapUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImapUtil.swift; sourceTree = "<group>"; };
 		43D3F8A021EDDF19002D5AFC /* ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt"; sourceTree = "<group>"; };
+		43D47ABF225DD1C500E97C5B /* PantomimeFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D47AC1225DD1CE00E97C5B /* PEPObjCAdapterFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PEPObjCAdapterFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
 		43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAccountSetupUITest.swift; sourceTree = "<group>"; };
 		43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageHeapBufferOverflow.txt; sourceTree = "<group>"; };
@@ -988,6 +993,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43D47AC2225DD1CE00E97C5B /* PEPObjCAdapterFramework.framework in Frameworks */,
+				43D47AC0225DD1C500E97C5B /* PantomimeFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1822,7 +1829,6 @@
 				438D253B1D4B9E7500BFF7AA /* MimeTests.swift */,
 				43C7B9D01CEC4DDF007A612F /* MiscTests.swift */,
 				430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */,
-				431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */,
 				432F7D601D2102F10094F097 /* PEPSessionTest.swift */,
 				43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */,
 				436F8E131D36706A007E9829 /* StringExtensionsTest.swift */,
@@ -2018,6 +2024,7 @@
 				1594C1CF21281FCD00CB06E2 /* Server+Fetching.swift */,
 				15547567213931BC005A52D0 /* Folder+Threading.swift */,
 				15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */,
+				433E7437225B564400B84CD9 /* Account+Extension.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2158,6 +2165,8 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43D47AC1225DD1CE00E97C5B /* PEPObjCAdapterFramework.framework */,
+				43D47ABF225DD1C500E97C5B /* PantomimeFramework.framework */,
 				43D213332237C8CA00C060A1 /* libAccountSettingsAdapter.a */,
 			);
 			name = Frameworks;
@@ -2870,6 +2879,7 @@
 				15D4399C216E698E00EB3933 /* AccountPickerViewModel.swift in Sources */,
 				43985D0E204438480080FA9A /* AccountSettingsProtocol+Extension.swift in Sources */,
 				B7DB7FCA2215D69C003968DA /* CredentialTextField.swift in Sources */,
+				433E7438225B564400B84CD9 /* Account+Extension.swift in Sources */,
 				005A21FB20CAA5F50082D19F /* ThreadedEmailViewModel.swift in Sources */,
 				15874BD12127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift in Sources */,
 				4351C2DC1F4441190053381F /* xml.c in Sources */,
@@ -3434,10 +3444,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"@executable_path/Frameworks",
-					"$(inherited)",
-				);
 				INFOPLIST_FILE = pEpForiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				ONLY_ACTIVE_ARCH = "$(inherited)";
@@ -3445,7 +3451,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_COMPILATION_MODE = singlefile;
-				SWIFT_OBJC_BRIDGING_HEADER = "pEpForiOSTests/pEpForiOSTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/pEp.app/pEp";
@@ -3457,17 +3462,12 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"@executable_path/Frameworks",
-					"$(inherited)",
-				);
 				INFOPLIST_FILE = pEpForiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OBJC_BRIDGING_HEADER = "pEpForiOSTests/pEpForiOSTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/pEp.app/pEp";
 			};
