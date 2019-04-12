@@ -30,7 +30,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
     private let spinner: UIActivityIndicatorView = {
         let createe = UIActivityIndicatorView()
         createe.hidesWhenStopped = true
-        createe.activityIndicatorViewStyle = .gray
+        createe.style = .gray
         return createe
     }()
 
@@ -54,7 +54,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
         configureView()
         if let vm = viewModel {
             vm.delegate = self
-            vm.messageSyncService = appConfig.messageSyncService
+            vm.verificationService = VerificationService()
         }
         passwordTextfield.delegate = self
     }
@@ -352,7 +352,7 @@ extension AccountSettingsTableViewController {
                     y:
                 (tableView.frame.height / 2) - (navigationController?.navigationBar.frame.height
                     ?? 0.0))
-        spinner.superview?.bringSubview(toFront: spinner)
+        spinner.superview?.bringSubviewToFront(spinner)
         tableView.isUserInteractionEnabled = false
         spinner.startAnimating()
     }

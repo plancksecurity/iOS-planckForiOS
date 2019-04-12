@@ -9,13 +9,16 @@
 import XCTest
 
 import CoreData
+
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
+import PEPObjCAdapterFramework
+import PantomimeFramework
 
 class SimpleOperationsTest: CoreDataDrivenTestBase {
     func testComp() {
         guard let f = SyncFoldersFromServerOperation(parentName: #function,
-                                                                 imapSyncData: imapSyncData)
+                                                     imapSyncData: imapSyncData)
             else {
                 XCTFail()
                 return
@@ -62,15 +65,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertNotNil(m.imap)
             XCTAssertNotNil(m.sent)
             XCTAssertNotNil(m.received)
-
-            // Transform the message from CdMessage to Message to check conversion
-            guard let normalMessage = Message.from(cdMessage: m) else {
-                XCTFail()
-                return
-            }
-
-            XCTAssertEqual(m.from?.address, normalMessage.from?.address)
-            XCTAssertNotNil(normalMessage.uuid)
 
             guard let uuid = m.uuid else {
                 XCTFail()
@@ -516,7 +510,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTFail()
         }
 
-        appendMailsIMAP(folder: folder.folder(),
+        appendMailsIMAP(folder: folder,
                         imapSyncData: imapSyncData,
                         errorContainer: errorContainer,
                         queue: queue)
@@ -597,7 +591,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         let expDraftsStored = expectation(description: "expDraftsStored")
 
         let appendOp = AppendMailsOperation(parentName: #function,
-                                            folder: folder.folder(),
+                                            folder: folder,
                                             imapSyncData: imapSyncData,
                                             errorContainer: errorContainer)
         appendOp.completionBlock = {
@@ -624,7 +618,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         XCTAssertNotNil(myself.fingerPrint)
 
         let numRating = try! session.rating(for: myself)
-        XCTAssertGreaterThanOrEqual(numRating.pEpRating.rawValue, PEP_rating_reliable.rawValue)
+        XCTAssertGreaterThanOrEqual(numRating.pEpRating.rawValue, PEPRating.reliable.rawValue)
     }
 
     func testOutgoingMailColorPerformanceWithMySelf() {
@@ -632,10 +626,14 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         try! session.mySelf(myself)
         XCTAssertNotNil(myself.fingerPrint)
 
-        let id = Identity.from(pEpIdentity: myself)
-        let account = SecretTestData().createWorkingAccount()
-        account.user = id
-        account.save()
+        guard let id = CdIdentity.from(pEpContact: myself) else {
+            XCTFail()
+            return
+        }
+
+        let account = SecretTestData().createWorkingCdAccount()
+        account.identity = id
+        Record.saveAndWait()
 
         self.measure {
             for _ in [1...1000] {
@@ -645,10 +643,13 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testOutgoingMessageColor() {
-        let identity = SecretTestData().createWorkingAccount().user
-        let account = SecretTestData().createWorkingAccount()
-        account.user = identity
-        account.save()
+        let account = SecretTestData().createWorkingCdAccount()
+
+        guard let identity = account.identity else {
+            XCTFail()
+            return
+        }
+
         self.measure {
             for _ in [1...1000] {
                 let _ = self.session.outgoingMessageRating(from: identity, to: [identity],
@@ -658,12 +659,17 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testOutgoingMailColorPerformanceWithoutMySelf() {
-        let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
+        let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
 
-        let id = Identity.from(pEpIdentity: identity)
-        let account = SecretTestData().createWorkingAccount()
-        account.user = id
-        account.save()
+        guard let id = CdIdentity.from(pEpContact: myself) else {
+            XCTFail()
+            return
+        }
+
+        let account = SecretTestData().createWorkingCdAccount()
+        account.identity = id
+        Record.saveAndWait()
+
         self.measure {
             for _ in [1...1000] {
                 let _ = self.session.outgoingMessageRating(from: id, to: [id], cc: [id], bcc: [id])

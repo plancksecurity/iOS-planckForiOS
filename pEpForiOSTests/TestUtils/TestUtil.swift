@@ -10,7 +10,9 @@ import Foundation
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel //FIXME:
+import PEPObjCAdapterFramework
+import PantomimeFramework
 
 class TestUtil {
     /**
@@ -43,21 +45,6 @@ class TestUtil {
 
     static var initialNumberOfRunningConnections = 0
     static var initialNumberOfServices = 0
-
-    /**
-     Waits and verifies that all connection threads are finished.
-     */
-    static func waitForConnectionShutdown() {
-        for _ in 1...numberOfTriesConnectonShutDown {
-            if CWTCPConnection.numberOfRunningConnections() == initialNumberOfRunningConnections {
-                break
-            }
-            Thread.sleep(forTimeInterval: connectonShutDownWaitTime)
-        }
-        // This only works if there are no accounts configured in the app.
-        XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(),
-                       initialNumberOfRunningConnections)
-    }
 
     /**
      Some code for accessing `NSBundle`s from Swift.
@@ -476,7 +463,7 @@ class TestUtil {
         msg.sent = dateSent
         msg.received = Date(timeIntervalSinceNow: minute)
         if engineProccesed {
-            msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
+            msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
         }
         msg.attachments = createAttachments(number: attachments)
         var result = msg
@@ -489,7 +476,7 @@ class TestUtil {
     static func createMessage(uid: Int, inFolder folder: Folder) -> Message {
         let msg = Message(uuid: "\(uid)", uid: uid, parentFolder: folder)
         XCTAssertEqual(msg.uid, uid)
-        msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
+        msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
         msg.received = Date(timeIntervalSince1970: Double(uid))
         msg.sent = msg.received
         return msg
@@ -580,7 +567,7 @@ class TestUtil {
                           parentFolder: folder)
         msg.from = blueprint.from
         msg.to = [receiver]
-        msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
+        msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
         msg.received = Date(timeIntervalSince1970: Double(number))
         msg.sent = msg.received
         msg.references = blueprint.references
@@ -673,17 +660,17 @@ class TestUtil {
 
     /**
      Does the following steps:
-     
-      * Loads an Email from the given path
-      * Creates a self-Identity according to the receiver of the mail
-      * Decrypts the mail, which should import the key
-     
+
+     * Loads an Email from the given path
+     * Creates a self-Identity according to the receiver of the mail
+     * Decrypts the mail, which should import the key
+
      After this function, you should have a self with generated key, and a partner ID
      you can do handshakes on.
      */
-    static func setUpPepFromMail(emailFilePath: String,
+    static func cdMessageAndSetUpPepFromMail(emailFilePath: String,
                                  decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
-        -> (mySelf: Identity, partner: Identity, message: Message)? {
+        -> (mySelf: CdIdentity, partner: CdIdentity, message: CdMessage)? {
             guard let pantomimeMail = cwImapMessage(fileName: emailFilePath) else {
                 XCTFail()
                 return nil
@@ -693,20 +680,20 @@ class TestUtil {
                 XCTFail("Expected array of recipients")
                 return nil
             }
-            var mySelfIdentityOpt: Identity?
+            var mySelfIdentityOpt: CdIdentity?
             for rec in recipients {
                 if rec.type() == .toRecipient {
-                    mySelfIdentityOpt = rec.identity(userID: "!MYSELF!")
+                    mySelfIdentityOpt = rec.cdIdentity(userID: "!MYSELF!")
                 }
             }
             guard let safeOptId = mySelfIdentityOpt else {
                 XCTFail("Could not derive own identity from message")
                 return nil
             }
-            let mySelfID = Identity(identity: safeOptId, isMySelf: true)
-            mySelfID.save()
 
-            let cdMySelfIdentity = CdIdentity.search(identity: mySelfID)
+            Record.saveAndWait()
+
+            let cdMySelfIdentity = safeOptId
             XCTAssertNotNil(cdMySelfIdentity)
 
             let cdMyAccount = CdAccount.create()
@@ -721,21 +708,19 @@ class TestUtil {
                 XCTFail("Expected the mail to have a sender")
                 return nil
             }
-            let partnerID = pantFrom.identity(userID: "THE PARTNER ID")
-            partnerID.save()
+            let partnerID = pantFrom.cdIdentity(userID: "THE PARTNER ID")
 
             Record.saveAndWait()
 
             let session = PEPSession()
-            let mySelfIdentity = mySelfID.pEpIdentity()
+            let mySelfIdentity = cdMySelfIdentity.pEpIdentity()
             try! session.mySelf(mySelfIdentity)
             XCTAssertNotNil(mySelfIdentity.fingerPrint)
             XCTAssertTrue(try! mySelfIdentity.isPEPUser(session).boolValue)
 
             guard let cdMessage = CdMessage.insertOrUpdate(
                 pantomimeMessage: pantomimeMail, account: cdMyAccount,
-                messageUpdate: CWMessageUpdate(),
-                forceParseAttachments: true) else {
+                messageUpdate: CWMessageUpdate()) else {
                     XCTFail()
                     return nil
             }
@@ -761,12 +746,23 @@ class TestUtil {
                 XCTAssertEqual(ownDecryptDelegate.numberOfMessageDecryptAttempts, 1)
             }
 
-        guard let msg = cdMessage.message() else {
-            XCTFail("Need to be able to convert the CdMessage into a Message")
-            return nil
-        }
+            return (mySelf: cdMySelfIdentity, partner: partnerID, message: cdMessage)
+    }
 
-        return (mySelf: mySelfID, partner: partnerID, message: msg)
+    /**
+     Uses 'cdMessageAndSetUpPepFromMail', but returns the message as 'Message'.
+     */
+    static func setUpPepFromMail(emailFilePath: String,
+                                 decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
+        -> (mySelf: Identity, partner: Identity, message: Message)? {
+            if let (mySelfID, partnerID, message) = cdMessageAndSetUpPepFromMail(
+                emailFilePath: emailFilePath, decryptDelegate: decryptDelegate),
+                let msg = message.message(),
+                let mySelf = mySelfID.identity(),
+                let partner = partnerID.identity() {
+                return (mySelf: mySelf, partner: partner, message: msg)
+            }
+            return nil
     }
 
     /**
@@ -802,8 +798,7 @@ class TestUtil {
 
         guard let cdMessage = CdMessage.insertOrUpdate(
             pantomimeMessage: pantomimeMail, account: cdOwnAccount,
-            messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true) else {
+            messageUpdate: CWMessageUpdate()) else {
                 XCTFail()
                 return nil
         }

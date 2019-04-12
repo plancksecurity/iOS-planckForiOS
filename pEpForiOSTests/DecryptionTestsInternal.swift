@@ -9,7 +9,9 @@
 import XCTest
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
+import PantomimeFramework
+import PEPObjCAdapterFramework
 
 /**
  Tests internal encryption and decryption (that is, the test creates encrypted messages itself,
@@ -174,9 +176,7 @@ class DecryptionTestsInternal: XCTestCase {
         }
 
         cdMsg.parent = cdInbox
-        cdMsg.bodyFetched = true
 
-        XCTAssertTrue(cdMsg.bodyFetched)
         XCTAssertFalse(cdMsg.imap?.localFlags?.flagDeleted ?? true)
         XCTAssertEqual(cdMsg.pEpRating, PEPUtil.pEpRatingNone)
         if shouldEncrypt {
@@ -209,7 +209,7 @@ class DecryptionTestsInternal: XCTestCase {
 
         Record.Context.main.refreshAllObjects()
         if shouldEncrypt {
-            XCTAssertGreaterThanOrEqual(Int32(cdMsg.pEpRating), PEP_rating_reliable.rawValue)
+            XCTAssertGreaterThanOrEqual(cdMsg.pEpRating, Int16(PEPRating.reliable.rawValue))
             if useSubject {
                 XCTAssertEqual(cdMsg.shortMessage, msgShortMessage)
             } else {
@@ -227,7 +227,7 @@ class DecryptionTestsInternal: XCTestCase {
                 XCTFail()
             }
         } else {
-            XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEP_rating_unencrypted.rawValue))
+            XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEPRating.unencrypted.rawValue))
         }
 
         XCTAssertEqual(cdMsg.uuid, messageID)
@@ -239,7 +239,9 @@ class DecryptionTestsInternal: XCTestCase {
             XCTAssertNotNil(optFields)
         }
         for header in [kXEncStatus, kXpEpVersion, kXKeylist] {
-            let p = NSPredicate(format: "message = %@ and name = %@", cdMsg, header)
+            let p = NSPredicate(format: "%K = %@ and %K = %@",
+                                 CdHeaderField.RelationshipName.message, cdMsg,
+                                 CdHeaderField.AttributeName.name, header)
             let headerField = CdHeaderField.first(predicate: p)
             if shouldEncrypt {
                 // check header in core data
@@ -273,7 +275,7 @@ class DecryptionTestsInternal: XCTestCase {
     }
 
     func testIncomingUnencryptedOutlookProbingMessage() {
-        guard let _ = TestUtil.setUpPepFromMail(
+        guard let _ = TestUtil.cdMessageAndSetUpPepFromMail(
             emailFilePath: "Microsoft_Outlook_Probing_Message_001.txt") else {
                 XCTFail()
                 return

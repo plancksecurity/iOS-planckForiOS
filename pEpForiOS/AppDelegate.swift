@@ -7,8 +7,10 @@
 //
 
 import CoreData
+
 import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,12 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var appConfig: AppConfig?
 
     /** The SMTP/IMAP backend */
-    var networkService: NetworkService?
-
-    /**
-     UI triggerable actions for syncing messages.
-     */
-    var messageSyncService: MessageSyncService?
+    var messageModelService: MessageModelService?
 
     /**
      Error Handler to connect backend with UI
@@ -35,15 +32,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let mySelfQueue = LimitedOperationQueue()
 
-    let sendLayerDelegate = DefaultUISendLayerDelegate()
-
     /**
      This is used to handle OAuth2 requests.
      */
     let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
-    var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskInvalid
-    var mySelfTaskId = UIBackgroundTaskInvalid
+    var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
+    var mySelfTaskId = UIBackgroundTaskIdentifier.invalid
 
     /**
      Set to true whever the app goes into background, so the main session gets cleaned up.
@@ -81,7 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals al services to start/resume.
     /// Also signals it is save to use PEPSessions (again)
     private func startServices() {
-        networkService?.start()
+        messageModelService?.start()
     }
 
     /// Signals all PEPSession users to stop using a session as soon as possible.
@@ -89,19 +84,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// and call it's delegate (me) after the last sync operation has finished.
     private func stopUsingPepSession() {
         syncUserActionsAndCleanupbackgroundTaskId =
-            application.beginBackgroundTask(expirationHandler: { [weak self] in
-                guard let me = self else {
-                    Logger.frontendLogger.lostMySelf()
-                    return
-                }
+            application.beginBackgroundTask(expirationHandler: { [unowned self] in
                 Logger.appDelegateLogger.errorAndCrash(
                     "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
-                    me.syncUserActionsAndCleanupbackgroundTaskId)
+                    self.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
                 // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
                 // that brutally shuts down everything.
-                me.application.endBackgroundTask(me.syncUserActionsAndCleanupbackgroundTaskId)
+                self.application.endBackgroundTask(UIBackgroundTaskIdentifier(
+                    rawValue: self.syncUserActionsAndCleanupbackgroundTaskId.rawValue))
             })
-        networkService?.processAllUserActionsAndstop()
+        messageModelService?.processAllUserActionsAndStop()
     }
 
     func cleanupPEPSessionIfNeeded() {
@@ -111,32 +103,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func kickOffMySelf() {
-        mySelfTaskId = application.beginBackgroundTask(expirationHandler: { [weak self] in
-            guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
-                return
-            }
-            Logger.appDelegateLogger.log(
-                "mySelfTaskId with ID %{public}@ expired.",
-                me.mySelfTaskId)
+        mySelfTaskId = application.beginBackgroundTask(expirationHandler: { [unowned self] in
+            Logger.appDelegateLogger.log("mySelfTaskId with ID expired.")
             // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
             // that brutally shuts down everything.
-            me.application.endBackgroundTask(me.mySelfTaskId)
+            self.application.endBackgroundTask(
+                UIBackgroundTaskIdentifier(rawValue:self.mySelfTaskId.rawValue))
         })
         let op = MySelfOperation()
-        op.completionBlock = { [weak self] in
-            guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
-                return
-            }
+        op.completionBlock = { [unowned self] in
             // We might be the last service that finishes, so we have to cleanup.
-            self?.cleanupPEPSessionIfNeeded()
-            if me.mySelfTaskId == UIBackgroundTaskInvalid {
+            self.cleanupPEPSessionIfNeeded()
+            if self.mySelfTaskId == UIBackgroundTaskIdentifier.invalid {
                 return
             }
-            me.application.endBackgroundTask(me.mySelfTaskId)
-            me.mySelfTaskId = UIBackgroundTaskInvalid
-
+            self.application.endBackgroundTask(
+                UIBackgroundTaskIdentifier(rawValue: self.mySelfTaskId.rawValue))
+            self.mySelfTaskId = UIBackgroundTaskIdentifier.invalid
         }
         mySelfQueue.addOperation(op)
     }
@@ -191,12 +174,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
-        let theMessageSyncService = MessageSyncService()
-        messageSyncService = theMessageSyncService
-        let theAppConfig = AppConfig(mySelfer: self,
-                                     messageSyncService: theMessageSyncService,
-                                     errorPropagator: errorPropagator,
-                                     oauth2AuthorizationFactory: oauth2Provider)
+        let theAppConfig = AppConfig(
+            mySelfer: self,
+            errorPropagator: errorPropagator,
+            oauth2AuthorizationFactory: oauth2Provider)
         appConfig = theAppConfig
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = theAppConfig
@@ -206,18 +187,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // TODO: IOS-1276 set MessageModelConfig.logger
 
         loadCoreDataStack()
-
-        networkService = NetworkService(mySelfer: self, errorPropagator: errorPropagator)
-        networkService?.sendLayerDelegate = sendLayerDelegate
-        networkService?.delegate = self
-        CdAccount.sendLayer = networkService
+        messageModelService = MessageModelService(mySelfer: self, errorPropagator: errorPropagator)
+        messageModelService?.delegate = self
     }
 
     // Safely restarts all services
     private func shutdownAndPrepareServicesForRestart() {
         // We cancel the Network Service to make sure it is idle and ready for a clean restart.
         // The actual restart of the services happens in NetworkServiceDelegate callbacks.
-        networkService?.cancel()
+        messageModelService?.cancel()
     }
 
     private func prepareUserNotifications() {
@@ -228,7 +206,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // The calls are nested to avoid simultaniously showing permissions alert for notifications
             // and contact access.
             DispatchQueue.global(qos: .userInitiated).async {
-                MessageModel.perform {
+                MessageModelUtil.perform {
                     AddressBook.checkAndTransfer()
                 }
             }
@@ -243,7 +221,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
-        launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them
@@ -283,7 +261,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         DispatchQueue.global(qos: .userInitiated).async {
-            MessageModel.perform {
+            MessageModelUtil.perform {
                 AddressBook.checkAndTransfer()
             }
         }
@@ -319,40 +297,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, performFetchWithCompletionHandler
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
-        guard let networkService = networkService else {
+        guard let messageModelService = messageModelService else {
             Logger.appDelegateLogger.error("no networkService")
             return
         }
         
-        networkService.checkForNewMails() {[weak self] (numMails: Int?) in
-            guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
-                return
-            }
+        messageModelService.checkForNewMails() {[unowned self] (numMails: Int?) in
             guard let numMails = numMails else {
-                me.cleanupAndCall(completionHandler: completionHandler, result: .failed)
+                self.cleanupAndCall(completionHandler: completionHandler, result: .failed)
                 return
             }
             switch numMails {
             case 0:
-                me.cleanupAndCall(completionHandler: completionHandler, result: .noData)
+                self.cleanupAndCall(completionHandler: completionHandler, result: .noData)
             default:
-                me.informUser(numNewMails: numMails) {
-                    me.cleanupAndCall(completionHandler: completionHandler, result: .newData)
+                self.informUser(numNewMails: numMails) {
+                    self.cleanupAndCall(completionHandler: completionHandler, result: .newData)
                 }
             }
         }
     }
 
     func application(_ app: UIApplication, open url: URL,
-                     options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         // Unclear if this is needed, presumabley doesn't get invoked for OAuth2 because
         // SFSafariViewController is involved there.
         return oauth2Provider.processAuthorizationRedirect(url: url)
     }
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity,
-                     restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb,
             let theUrl = userActivity.webpageURL {
             return oauth2Provider.processAuthorizationRedirect(url: theUrl)
@@ -379,11 +353,12 @@ extension AppDelegate: KickOffMySelfProtocol {
 
 // MARK: - NetworkServiceDelegate
 
-extension AppDelegate: NetworkServiceDelegate {
-    func networkServiceDidFinishLastSyncLoop(service: NetworkService) {
+extension AppDelegate: MessageModelServiceDelegate {
+
+    func messageModelServiceDidFinishLastSyncLoop() {
         // Cleanup sessions.
         PEPSession.cleanup()
-        if syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskInvalid {
+        if syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid {
             return
         }
         if UIApplication.shared.applicationState != .background {
@@ -391,11 +366,11 @@ extension AppDelegate: NetworkServiceDelegate {
             // No problem, start regular sync loop.
             startServices()
         }
-        application.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
-        syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskInvalid
+        application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: syncUserActionsAndCleanupbackgroundTaskId.rawValue))
+        syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
 
-    func networkServiceDidCancel(service: NetworkService) {
+    func messageModelServiceDidCancel() {
         switch UIApplication.shared.applicationState {
         case .background:
             // We have been cancelled because we are entering background.

@@ -7,8 +7,9 @@
 //
 
 import XCTest
-import MessageModel
 import CoreData
+
+@testable import MessageModel
 @testable import pEpForiOS
 
 class NetworkServiceObserver: NetworkServiceUnitTestDelegate, NetworkServiceDelegate, CustomDebugStringConvertible {
@@ -58,25 +59,5 @@ class NetworkServiceObserver: NetworkServiceUnitTestDelegate, NetworkServiceDele
 
     func networkServiceDidCancel(service: NetworkService) {
         expCanceled?.fulfill()
-    }
-}
-
-class SendLayerObserver: SendLayerDelegate {
-    var messageIDs = [String]()
-
-    func didFetch(cdMessage: CdMessage) {
-        if let msg = cdMessage.message() {
-            messageIDs.append(msg.messageID)
-        } else {
-            XCTFail()
-        }
-    }
-
-    func didRemove(cdFolder: CdFolder) {
-        XCTFail()
-    }
-
-    func didRemove(cdMessage: CdMessage) {
-        XCTFail()
     }
 }

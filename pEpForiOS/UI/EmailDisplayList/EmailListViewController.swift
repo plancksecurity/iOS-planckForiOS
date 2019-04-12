@@ -9,6 +9,7 @@
 import UIKit
 import SwipeCellKit
 import pEpIOSToolbox
+import MessageModel
 
 class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     static let FILTER_TITLE_MAX_XAR = 20
@@ -81,7 +82,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     private func setup() {
 
         if (model == nil) {
-            model = EmailListViewModel(messageSyncService: appConfig.messageSyncService)
+            model = EmailListViewModel(
+                fetchOlderImapMessagesService: FetchOlderImapMessagesService())
         }
 
         if let accountExists = model?.noAccountsExist(),
@@ -96,7 +98,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             action: #selector(showSettingsViewController),
             target: self)
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
             target: nil,
             action: nil)
         toolbarItems?.append(contentsOf: [flexibleSpace,item])
@@ -110,9 +112,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         let fontSize:CGFloat = 10;
         let font:UIFont = UIFont.boldSystemFont(ofSize: fontSize);
-        let attributes = [NSAttributedStringKey.font: font];
+        let attributes = [NSAttributedString.Key.font: font];
 
-        textFilterButton.setTitleTextAttributes(attributes, for: UIControlState.normal)
+        textFilterButton.setTitleTextAttributes(attributes, for: UIControl.State.normal)
     }
 
     // MARK: - Search Bar
@@ -135,12 +137,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(didBecomeActiveInstallSearchBar10),
-                name: NSNotification.Name.UIApplicationDidBecomeActive,
+                name: UIApplication.didBecomeActiveNotification,
                 object: nil)
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(didBecomeInactiveUninstallSearchbar10),
-                name: NSNotification.Name.UIApplicationDidEnterBackground,
+                name: UIApplication.didEnterBackgroundNotification,
                 object: nil)
         }
     }
@@ -246,14 +248,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         // Flexible Space separation between the buttons
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
             target: nil,
             action: nil)
 
         var img = UIImage(named: "icon-flagged")
 
         flagToolbarButton = UIBarButtonItem(image: img,
-                                   style: UIBarButtonItemStyle.plain,
+                                   style: UIBarButtonItem.Style.plain,
                                    target: self,
                                    action: #selector(flagToolbar(_:)))
         flagToolbarButton?.isEnabled = false
@@ -261,7 +263,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         img = UIImage(named: "icon-unflagged")
 
         unflagToolbarButton = UIBarButtonItem(image: img,
-                                            style: UIBarButtonItemStyle.plain,
+                                            style: UIBarButtonItem.Style.plain,
                                             target: self,
                                             action: #selector(unflagToolbar(_:)))
         unflagToolbarButton?.isEnabled = false
@@ -269,7 +271,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         img = UIImage(named: "icon-read")
 
         readToolbarButton = UIBarButtonItem(image: img,
-                                   style: UIBarButtonItemStyle.plain,
+                                   style: UIBarButtonItem.Style.plain,
                                    target: self,
                                    action: #selector(readToolbar(_:)))
         readToolbarButton?.isEnabled = false
@@ -277,7 +279,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         img = UIImage(named: "icon-unread")
 
         unreadToolbarButton = UIBarButtonItem(image: img,
-                                            style: UIBarButtonItemStyle.plain,
+                                            style: UIBarButtonItem.Style.plain,
                                             target: self,
                                             action: #selector(unreadToolbar(_:)))
         unreadToolbarButton?.isEnabled = false
@@ -285,7 +287,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         img = UIImage(named: "folders-icon-trash")
 
         deleteToolbarButton = UIBarButtonItem(image: img,
-                                     style: UIBarButtonItemStyle.plain,
+                                     style: UIBarButtonItem.Style.plain,
                                      target: self,
                                      action: #selector(deleteToolbar(_:)))
 
@@ -294,7 +296,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         img = UIImage(named: "swipe-archive")
 
         moveToolbarButton = UIBarButtonItem(image: img,
-                                     style: UIBarButtonItemStyle.plain,
+                                     style: UIBarButtonItem.Style.plain,
                                      target: self,
                                      action: #selector(moveToolbar(_:)))
 
@@ -310,7 +312,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         //right navigation button to ensure the logic
         let cancel = UIBarButtonItem(title: "Cancel",
-                                     style: UIBarButtonItemStyle.plain,
+                                     style: UIBarButtonItem.Style.plain,
                                      target: self,
                                      action: #selector(cancelToolbar(_:)))
 
@@ -426,7 +428,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         vm.isFilterEnabled = !vm.isFilterEnabled
         if vm.isFilterEnabled {
             let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+                barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
                 target: nil,
                 action: nil)
             toolbarItems?.insert(textFilterButton, at: 1)

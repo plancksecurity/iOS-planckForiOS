@@ -8,6 +8,8 @@
 
 import UIKit
 
+import MessageModel
+
 open class PeriodicTask {
     public typealias OperationProvider = () -> Operation
 

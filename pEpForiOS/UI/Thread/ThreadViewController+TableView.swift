@@ -23,7 +23,7 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if model?.messageisExpanded(at: indexPath.section) == true {
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
         }
         else {
             return 100

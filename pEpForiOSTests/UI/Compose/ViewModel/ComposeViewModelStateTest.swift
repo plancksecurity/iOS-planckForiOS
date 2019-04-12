@@ -10,10 +10,9 @@ import XCTest
 
 @testable import pEpForiOS
 import MessageModel
+import PEPObjCAdapterFramework
 
 class ComposeViewModelStateTest: CoreDataDrivenTestBase {
-    /// Async PEPSession calls that take quite some time
-    let asyncPEPSessionCallWaitTime = 2.0
     private var testDelegate: TestDelegate?
     var testee: ComposeViewModel.ComposeViewModelState?
     var draftedMessageAllButBccSet: Message?
@@ -101,39 +100,39 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         assertValidatation(expectedStateIsValid: false,
                            expectedNewRating: nil)
         testee?.toRecipients = recipients
-        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
     func testValidate_changeTos_grey() {
         let recipients = [someone, account.user]
         assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: PEP_rating_unencrypted)
+                           expectedNewRating: .unencrypted)
         testee?.toRecipients = recipients
-        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
     func testValidate_changeTos_green() {
         let recipients = [account.user]
         assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: PEP_rating_trusted_and_anonymized)
+                           expectedNewRating: .trustedAndAnonymized)
         testee?.toRecipients = recipients
-        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
     func testValidate_changeCcs_grey() {
         let recipients = [someone, account.user]
         assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: PEP_rating_unencrypted)
+                           expectedNewRating: .unencrypted)
         testee?.ccRecipients = recipients
-        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
     func testValidate_changeCCs_green() {
         let recipients = [account.user]
         assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: PEP_rating_trusted_and_anonymized)
+                           expectedNewRating: .trustedAndAnonymized)
         testee?.ccRecipients = recipients
-        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
     // MARK: - edited
@@ -225,9 +224,9 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         // Setup green state ...
         let recipients = [account.user]
         assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: PEP_rating_trusted_and_anonymized)
+                           expectedNewRating: .trustedAndAnonymized)
         testee?.toRecipients = recipients
-        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
         // ... and assert can toggle works correctly
         guard let canToggleProtection = testee?.userCanToggleProtection() else {
             XCTFail()
@@ -242,9 +241,9 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         // Setup green state ...
         let recipients = [account.user]
         assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: PEP_rating_trusted_and_anonymized)
+                           expectedNewRating: .trustedAndAnonymized)
         testee?.toRecipients = recipients
-        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
         // ... set BCC ...
         testDelegate?.ignoreAll = true
         testee?.bccRecipients = recipients
@@ -260,7 +259,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
 
     private func assertValidatation(didChangeValidationStateMustBeCalled: Bool = true,
                                     expectedStateIsValid: Bool,
-                                    expectedNewRating: PEP_rating? = nil) {
+                                    expectedNewRating: PEPRating? = nil) {
         try! PEPSession().mySelf(account.user.pEpIdentity())
         assert(ignoreDelegateCallsWhileInitializing: true,
                didChangeValidationStateMustBeCalled: true,
@@ -274,7 +273,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
                         didChangeValidationStateMustBeCalled: Bool? = nil,
                         expectedStateIsValid: Bool? = nil,
                         didChangePEPRatingMustBeCalled: Bool? = nil,
-                        expectedNewRating: PEP_rating? = nil,
+                        expectedNewRating: PEPRating? = nil,
                         didChangeProtectionMustBeCalled: Bool? = nil,
                         expectedNewProtection: Bool? = nil) {
         var expDidChangeValidationStateToCalled: XCTestExpectation? = nil
@@ -330,7 +329,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         let expectedStateIsValid: Bool?
 
         let expDidChangePEPRatingToCalled: XCTestExpectation?
-        let expectedNewRating: PEP_rating?
+        let expectedNewRating: PEPRating?
 
         let expDidChangeProtectionCalled: XCTestExpectation?
         let expectedNewProtection: Bool?
@@ -338,7 +337,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         init(expDidChangeValidationStateToCalled: XCTestExpectation? = nil,
              expectedStateIsValid: Bool? = nil,
              expDidChangePEPRatingToCalled: XCTestExpectation? = nil,
-             expectedNewRating: PEP_rating? = nil,
+             expectedNewRating: PEPRating? = nil,
              expDidChangeProtectionCalled: XCTestExpectation? = nil,
              expectedNewProtection: Bool? = nil) {
             self.expDidChangeValidationStateToCalled = expDidChangeValidationStateToCalled
@@ -362,7 +361,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         }
 
         func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
-                                   didChangePEPRatingTo newRating: PEP_rating) {
+                                   didChangePEPRatingTo newRating: PEPRating) {
             guard let exp = expDidChangePEPRatingToCalled, !ignoreAll  else {
                 // We ignore called or not
                 return

@@ -9,6 +9,7 @@
 import Foundation
 import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
 
 protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath])
@@ -35,7 +36,8 @@ extension EmailListViewModel: FilterUpdateProtocol {
 
 class EmailListViewModel {
     let contactImageTool = IdentityImageTool()
-    let messageSyncService: MessageSyncServiceProtocol
+    let fetchOlderImapMessagesService: FetchOlderImapMessagesService
+
     internal var messages: SortedSet<MessageViewModel>
     private let queue: OperationQueue = {
         let createe = OperationQueue()
@@ -78,11 +80,11 @@ class EmailListViewModel {
     // MARK: - Life Cycle
     
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
-         messageSyncService: MessageSyncServiceProtocol,
+         fetchOlderImapMessagesService: FetchOlderImapMessagesService,
          folderToShow: Folder = UnifiedInbox()) {
         self.messages = SortedSet(array: [], sortBlock: sortByDateSentAscending)
         self.emailListViewModelDelegate = emailListViewModelDelegate
-        self.messageSyncService = messageSyncService
+        self.fetchOlderImapMessagesService = fetchOlderImapMessagesService
 
         self.folderToShow = folderToShow
         self.defaultFilter = folderToShow.filter?.clone()
@@ -106,7 +108,7 @@ class EmailListViewModel {
             return false
         }
     }
-    
+
     //check if there are some important settings that have changed to force a reload
     func checkIfSettingsChanged() -> Bool {
         if AppSettings.threadedViewEnabled != oldThreadSetting {
@@ -194,7 +196,7 @@ class EmailListViewModel {
                 return nil
         }
         let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
-        if color != PEP_color_no_color {
+        if color != PEPColor.noColor {
             return color.statusIcon()
         } else {
             return nil
@@ -336,7 +338,7 @@ class EmailListViewModel {
                 "Not sure if this is a valid case. Remove this log if so.")
             return
         }
-        didDelete(messageFolder: deletedMessage)
+        didDelete(message: deletedMessage)
     }
 
     private func deleteMessage(at indexPath: IndexPath) -> Message? {
@@ -357,7 +359,7 @@ class EmailListViewModel {
     }
 
     internal func requestEmailViewIfNeeded(for message:Message) {
-        MessageModel.performAndWait {
+        MessageModelUtil.performAndWait {
             DispatchQueue.main.async {
                 self.screenComposer?.emailListViewModel(self, requestsShowEmailViewFor: message)
             }
@@ -633,7 +635,7 @@ class EmailListViewModel {
     private func requestFetchOlder(forFolders folders: [Folder]) {
         DispatchQueue.main.async { [weak self] in
             for folder in folders {
-                self?.messageSyncService.requestFetchOlderMessages(inFolder: folder)
+                self?.fetchOlderImapMessagesService.fetchOlderMessages(inFolder: folder)
             }
         }
     }

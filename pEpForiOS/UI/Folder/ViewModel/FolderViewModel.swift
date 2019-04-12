@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import MessageModel
 
+import MessageModel
 
 /// View Model for folder hierarchy.
 public class FolderViewModel {
@@ -48,20 +48,22 @@ public class FolderViewModel {
         return Account.all().isEmpty
     }
 
-    func createEmailListViewModel(forAccountAt accountIndex: Int?, andFolderAt folderIndex: Int?,
-                                  messageSyncService: MessageSyncServiceProtocol)
+    func createEmailListViewModel(forAccountAt accountIndex: Int?,
+                                  andFolderAt folderIndex: Int?,
+                                  fetchOlderImapMessagesService: FetchOlderImapMessagesService)
         -> EmailListViewModel {
             guard let safeAccountIndex = accountIndex,
                 let safeFolderIndex = folderIndex else {
-                    return EmailListViewModel(messageSyncService: messageSyncService)
+                    return EmailListViewModel(fetchOlderImapMessagesService: fetchOlderImapMessagesService)
             }
-            return EmailListViewModel(messageSyncService: messageSyncService,
-                                      folderToShow: self[safeAccountIndex][safeFolderIndex].folder)
+            return EmailListViewModel(
+                fetchOlderImapMessagesService: fetchOlderImapMessagesService,
+                folderToShow: self[safeAccountIndex][safeFolderIndex].folder)
     }
     
     func refreshFolderList() {
         DispatchQueue.global(qos: .userInitiated).async {
-            MessageModel.perform {
+            MessageModelUtil.perform {
                 self.folderSyncService.requestFolders(inAccounts: Account.all())
             }
         }
@@ -79,7 +81,7 @@ public class FolderViewModel {
 }
 
 extension FolderViewModel : FolderSyncServiceDelegate {
-    func finishedSyncingFolders() {
+    public func finishedSyncingFolders() {
         DispatchQueue.main.async {
             self.delegate?.folderViewModelDidUpdateFolderList(viewModel: self)
         }

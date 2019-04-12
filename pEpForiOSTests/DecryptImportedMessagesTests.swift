@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
+import PEPObjCAdapterFramework
 
 class DecryptImportedMessagesTests: XCTestCase {
     var persistentSetup: PersistentSetup!
@@ -59,7 +60,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRating.unencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage, "needed")
 
         let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
@@ -91,21 +92,13 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRating.unencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage, "blah")
         XCTAssertEqual(theCdMessage.longMessage, "\n\n")
 
         let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
         XCTAssertEqual(attachments.count, 2)
-        check(attachments: attachments as [MimeProtocol])
-
-        guard let msg = theCdMessage.message() else {
-            XCTFail()
-            return
-        }
-
-        XCTAssertEqual(msg.attachments.count, 2)
-        check(attachments: msg.attachments as [MimeProtocol])
+        check(attachments: attachments)
     }
 
     /**
@@ -139,8 +132,8 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        // After ENGINE-465 is done, this should be PEP_rating_reliable
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unreliable.rawValue))
+        // After ENGINE-465 is done, this should be .reliable
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRating.unreliable.rawValue))
 
         XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")
         XCTAssertEqual(
@@ -150,15 +143,8 @@ class DecryptImportedMessagesTests: XCTestCase {
         let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
         XCTAssertEqual(attachments.count, 0)
 
-        guard let msg = theCdMessage.message() else {
-            XCTFail()
-            return
-        }
-
-        XCTAssertEqual(msg.attachments.count, 0)
-
         let leon = PEPIdentity(address: "iostest002@peptest.ch",
-                               userID: PEP_OWN_USERID,
+                               userID: CdIdentity.pEpOwnUserID,
                                userName: "Leon Kowalski",
                                isOwn: true)
         try! session.update(leon)
@@ -186,7 +172,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(.unencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage,
                        "Re: Help needed debugging segfault with Guile 1.8.7")
         XCTAssertNil(theCdMessage.longMessage)
@@ -223,7 +209,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(.unencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage,
                        "Re: Help needed debugging segfault with Guile 1.8.7")
         XCTAssertNil(theCdMessage.longMessage)
@@ -242,14 +228,14 @@ class DecryptImportedMessagesTests: XCTestCase {
 
     // MARK: - Helpers
 
-    func check(attachments: [MimeProtocol]) {
+    func check(attachments: [CdAttachment]) {
         for i in 0..<attachments.count {
             let theAttachment = attachments[i]
             if i == 0 {
-                XCTAssertEqual(theAttachment.mimeTypeFunc(), "image/jpeg")
+                XCTAssertEqual(theAttachment.mimeType, "image/jpeg")
             } else if i == 1 {
-                XCTAssertEqual(theAttachment.mimeTypeFunc(), "text/plain")
-                guard let theData = theAttachment.dataFunc(),
+                XCTAssertEqual(theAttachment.mimeType, "text/plain")
+                guard let theData = theAttachment.data,
                     let dataString = String(data: theData, encoding: .utf8)  else {
                         XCTFail()
                         continue
@@ -257,32 +243,5 @@ class DecryptImportedMessagesTests: XCTestCase {
                 XCTAssertEqual(dataString, "\n\nSent from my iPhone")
             }
         }
-    }
-}
-
-// MARK: - Protocols
-
-protocol MimeProtocol {
-    func mimeTypeFunc() -> String?
-    func dataFunc() -> Data?
-}
-
-extension Attachment: MimeProtocol {
-    func mimeTypeFunc() -> String? {
-        return mimeType
-    }
-
-    func dataFunc() -> Data? {
-        return data
-    }
-}
-
-extension CdAttachment: MimeProtocol {
-    func mimeTypeFunc() -> String? {
-        return mimeType
-    }
-
-    func dataFunc() -> Data? {
-        return data
     }
 }

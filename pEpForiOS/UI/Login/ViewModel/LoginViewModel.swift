@@ -7,8 +7,10 @@
 //
 
 import Foundation
+
 import MessageModel
 import pEpIOSToolbox
+import PantomimeFramework
 
 enum LoginCellType {
     case Text, Button
@@ -22,7 +24,7 @@ class LoginViewModel {
     }
 
     var loginAccount: Account?
-    var messageSyncService: MessageSyncServiceProtocol?
+    var verificationService: VerificationServiceProtocol?
 
     /** If the last login attempt was via OAuth2, this will collect temporary parameters */
     private var lastOAuth2Parameters: OAuth2Parameters?
@@ -54,8 +56,8 @@ class LoginViewModel {
 
     let qualifyServerService = QualifyServerIsLocalService()
 
-    init(messageSyncService: MessageSyncServiceProtocol? = nil) {
-        self.messageSyncService = messageSyncService
+    init(verificationService: VerificationServiceProtocol? = nil) {
+        self.verificationService = verificationService
     }
 
     func isThereAnAccount() -> Bool {
@@ -164,8 +166,8 @@ class LoginViewModel {
     }
 
     func accountHasBeenQualified(trusted: Bool) {
-        guard let ms = messageSyncService else {
-            Logger.frontendLogger.errorAndCrash("no MessageSyncService")
+        guard let verificationService = verificationService else {
+            Logger.frontendLogger.errorAndCrash("no VerificationService")
             return
         }
         guard let account = loginAccount else {
@@ -173,7 +175,7 @@ class LoginViewModel {
             return
         }
         account.imapServer?.trusted = trusted
-        ms.requestVerification(account: account, delegate: self)
+        verificationService.requestVerification(account: account, delegate: self)
     }
 
     /**
@@ -194,7 +196,7 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
                   result: AccountVerificationResult) {
         if result == .ok {
             //remove obsolete code on EmailListViewController
-            MessageModel.performAndWait {
+            MessageModelUtil.performAndWait {
                 account.save()
             }
             mySelfer?.startMySelf()

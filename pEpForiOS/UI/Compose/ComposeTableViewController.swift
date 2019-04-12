@@ -11,6 +11,7 @@ import MessageModel
 import SwipeCellKit
 import Photos
 import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 class ComposeTableViewController: BaseTableViewController {
     @IBOutlet var sendButton: UIBarButtonItem!
@@ -57,7 +58,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     private func setupView() {
         registerXibs()
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
          //An arbitrary value auto resize seems to require for some reason.
         tableView.estimatedRowHeight = 1000
     }
@@ -80,7 +81,7 @@ class ComposeTableViewController: BaseTableViewController {
         suggestionsChildViewController = suggestVc
         suggestionsChildViewController?.appConfig = appConfig
         suggestionsChildViewController?.viewModel = vm.suggestViewModel()
-        addChildViewController(suggestVc)
+        addChild(suggestVc)
         suggestView.isHidden = true
         tableView.addSubview(suggestView)
     }
@@ -108,7 +109,7 @@ class ComposeTableViewController: BaseTableViewController {
 // MARK: - PEP Color View
 
 extension ComposeTableViewController {
-    private func setupPepColorView(for pEpRating: PEP_rating, pEpProtected: Bool) {
+    private func setupPepColorView(for pEpRating: PEPRating, pEpProtected: Bool) {
         guard let vm = viewModel else {
             Logger.frontendLogger.errorAndCrash("No VM")
             return
@@ -242,7 +243,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         tableView.endUpdates()
     }
 
-    func colorBatchNeedsUpdate(for rating: PEP_rating, protectionEnabled: Bool) {
+    func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool) {
         setupPepColorView(for: rating, pEpProtected: protectionEnabled)
     }
 

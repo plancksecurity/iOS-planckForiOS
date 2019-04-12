@@ -12,8 +12,8 @@ import MessageModel
 
 extension UIAlertController {
     public func action(_ title: String,
-                       _ style: UIAlertActionStyle = .default,
-                       _ closure: Tasks.simple? = nil) ->  UIAlertAction {
+                       _ style: UIAlertAction.Style = .default,
+                       _ closure: (() -> ())? = nil) ->  UIAlertAction {
         return UIAlertAction(title: title, style: style) { (action) in
             if let clos = closure {
                 clos()
@@ -24,7 +24,7 @@ extension UIAlertController {
     public static func pEpAlertController(
         title: String? = nil,
         message: String? = nil,
-        preferredStyle: UIAlertControllerStyle = .actionSheet) -> UIAlertController {
+        preferredStyle: UIAlertController.Style = .actionSheet) -> UIAlertController {
         let alertCtrl = UIAlertController(title: title, message: message,
                                           preferredStyle: preferredStyle)
         alertCtrl.view.tintColor = .pEpGreen

@@ -7,8 +7,10 @@
 //
 
 import Foundation
+
 import MessageModel
 import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 class MessageViewModel: CustomDebugStringConvertible {
 
@@ -252,7 +254,7 @@ class MessageViewModel: CustomDebugStringConvertible {
         }
         let finalText = NSMutableAttributedString()
         if message.underAttack {
-            let status = String.pEpRatingTranslation(pEpRating: PEP_rating_under_attack)
+            let status = String.pEpRatingTranslation(pEpRating: .underAttack)
             let messageString = String.localizedStringWithFormat(
                 NSLocalizedString(
                     "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n",
@@ -280,8 +282,8 @@ class MessageViewModel: CustomDebugStringConvertible {
         let attributed = NSMutableAttributedString(
             string: NSLocalizedString("To:", comment: "Compose field title"))
         let attributes = [
-            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15.0),
-            NSAttributedStringKey.foregroundColor: UIColor.lightGray
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15.0),
+            NSAttributedString.Key.foregroundColor: UIColor.lightGray
         ]
         var temp: [String] = []
         message()?.allRecipients.forEach { (recepient) in
@@ -327,7 +329,7 @@ extension MessageViewModel {
             guard let me = self else {
                 return
             }
-            MessageModel.performAndWait {
+            MessageModelUtil.performAndWait {
                 guard
                     let operation = operation,
                     !operation.isCancelled else {
@@ -353,7 +355,7 @@ extension MessageViewModel {
                 !operation.isCancelled else {
                     return
             }
-            MessageModel.performAndWait {
+            MessageModelUtil.performAndWait {
                 guard !operation.isCancelled else {
                     return
                 }
@@ -378,7 +380,7 @@ extension MessageViewModel {
             guard let me = self else {
                 return
             }
-            MessageModel.performAndWait {
+            MessageModelUtil.performAndWait {
                 guard
                     let operation = operation,
                     !operation.isCancelled,
@@ -400,7 +402,7 @@ extension MessageViewModel {
             guard let me = self else {
                 return
             }
-            MessageModel.performAndWait {
+            MessageModelUtil.performAndWait {
                 guard
                     let operation = operation,
                     !operation.isCancelled else {

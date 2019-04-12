@@ -9,7 +9,8 @@
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel //FIXME:
+import PEPObjCAdapterFramework
 
 class MailParsingTests: XCTestCase {
     var persistentSetup: PersistentSetup!
@@ -55,7 +56,7 @@ class MailParsingTests: XCTestCase {
                 return
         }
 
-        let pEpMessage = cdMessage.pEpMessage()
+        let pEpMessage = PEPUtil.pEp(cdMessage: cdMessage, outgoing: true)
 
         let theAttachments = pEpMessage.attachments ?? []
         XCTAssertEqual(theAttachments.count, 1)
@@ -92,7 +93,7 @@ class MailParsingTests: XCTestCase {
                 return
         }
 
-        let pEpMessage = cdMessage.pEpMessage()
+        let pEpMessage = PEPUtil.pEp(cdMessage: cdMessage, outgoing: true)
 
         let theAttachments = pEpMessage.attachments ?? []
         XCTAssertEqual(theAttachments.count, 2)
@@ -129,7 +130,7 @@ class MailParsingTests: XCTestCase {
                 return
         }
 
-        let pEpMessage = cdMessage.pEpMessage()
+        let pEpMessage = PEPUtil.pEp(cdMessage: cdMessage, outgoing: true)
 
         XCTAssertEqual(pEpMessage.shortMessage, "blah")
         XCTAssertNotNil(pEpMessage.longMessage)

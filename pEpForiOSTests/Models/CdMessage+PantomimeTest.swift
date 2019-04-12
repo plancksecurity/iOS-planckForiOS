@@ -9,6 +9,7 @@
 import XCTest
 
 import CoreData
+import PantomimeFramework
 @testable import MessageModel
 @testable import pEpForiOS
 
@@ -155,15 +156,13 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         }
         message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         let msg = CdMessage.insertOrUpdate(
-            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true)
+            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate())
         XCTAssertNotNil(msg)
         if let m = msg {
             XCTAssertNotNil(m.longMessage)
             XCTAssertNotNil(m.longMessageFormatted)
         }
     }
-    
 
     //IOS-211 hi_there
     func testInsertOrUpdatePantomimeMessage_attachmentNotDuplicated_file1() {
@@ -180,8 +179,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         }
         message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         guard let _ = CdMessage.insertOrUpdate(
-            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true) else {
+            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate()) else {
                 XCTFail("error parsing message")
                 return
         }
@@ -210,8 +208,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         }
         message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         guard let _ = CdMessage.insertOrUpdate(
-            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true) else {
+            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate()) else {
                 XCTFail("error parsing message")
                 return
         }
@@ -233,7 +230,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         localFlags.flagFlagged = true
         cwFlags.add(.seen)
         XCTAssertTrue(cwFlags.contain(.seen))
-        XCTAssertTrue(m.updateFromServer(cwFlags: cwFlags))
+        m.updateFromServer(cwFlags: cwFlags)
         XCTAssertTrue(localFlags.flagFlagged)
         XCTAssertTrue(localFlags.flagSeen)
         XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
@@ -241,7 +238,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         // No user action, server adds .seen -> .seen locally
         localFlags.reset()
         serverFlags.reset()
-        XCTAssertTrue(m.updateFromServer(cwFlags: cwFlags))
+        m.updateFromServer(cwFlags: cwFlags)
         XCTAssertTrue(localFlags.flagSeen)
         XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
 
@@ -251,7 +248,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         cwFlags.removeAll()
         cwFlags.add(.flagged)
         serverFlags.flagFlagged = true
-        XCTAssertFalse(m.updateFromServer(cwFlags: cwFlags))
+        m.updateFromServer(cwFlags: cwFlags)
         XCTAssertFalse(localFlags.flagFlagged)
         XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
 
@@ -262,7 +259,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         cwFlags.add(.recent)
         cwFlags.add(.flagged)
         serverFlags.flagRecent = true
-        XCTAssertFalse(m.updateFromServer(cwFlags: cwFlags))
+        m.updateFromServer(cwFlags: cwFlags)
         XCTAssertTrue(localFlags.flagRecent)
         XCTAssertTrue(localFlags.flagFlagged)
         XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())

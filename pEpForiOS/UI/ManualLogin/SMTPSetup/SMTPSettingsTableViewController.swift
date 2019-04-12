@@ -7,8 +7,10 @@
 //
 
 import UIKit
+
 import pEpIOSToolbox
 import MessageModel
+import PantomimeFramework
 
 class SMTPSettingsTableViewController: BaseTableViewController, TextfieldResponder {
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
@@ -60,7 +62,7 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     private func updateView() {
         serverValue.text = model.serverSMTP
         portValue.text = String(model.portSMTP)
-        transportSecurity.setTitle(model.transportSMTP.localizedString(), for: UIControlState())
+        transportSecurity.setTitle(model.transportSMTP.localizedString(), for: UIControl.State())
 
         if isCurrentlyVerifying {
             activityIndicatorView.startAnimating()
@@ -77,14 +79,14 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
         isCurrentlyVerifying =  true
         let account = try model.account()
         currentlyVerifiedAccount = account
-        appConfig.messageSyncService.requestVerification(account: account, delegate: self)
+        VerificationService().requestVerification(account: account, delegate: self)
     }
 
     private func informUser(about error: Error, title: String) {
         let alert = UIAlertController.pEpAlertController(
             title: title,
             message: error.localizedDescription,
-            preferredStyle: UIAlertControllerStyle.alert)
+            preferredStyle: UIAlertController.Style.alert)
         let cancelAction = UIAlertAction(title:
             NSLocalizedString("OK", comment: "OK button for invalid accout settings user input alert"),
                                          style: .cancel, handler: nil)
@@ -157,7 +159,7 @@ extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         if result == .ok {
-            MessageModel.performAndWait { [weak self] in
+            MessageModelUtil.performAndWait { [weak self] in
                 guard let me = self else {
                     Logger.frontendLogger.lostMySelf()
                     return

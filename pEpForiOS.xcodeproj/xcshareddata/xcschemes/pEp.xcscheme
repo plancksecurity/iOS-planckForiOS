@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0940"
+   LastUpgradeVersion = "1010"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "NO"
@@ -56,6 +56,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43E3985A221D7E56008E7983"
+               BuildableName = "PEPObjCAdapterFramework.framework"
+               BlueprintName = "PEPObjCAdapterFramework"
+               ReferencedContainer = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "43CB60811DA4EB4E0015281E"
                BuildableName = "MessageModel.framework"
                BlueprintName = "MessageModel"
@@ -98,38 +112,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43980E5A1CBD1B3E00A7FC3C"
-               BuildableName = "libPantomimeStatic.a"
-               BlueprintName = "PantomimeStatic"
-               ReferencedContainer = "container:../pantomime-iOS/Pantomime.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "352988A91AEF964100FA7E2E"
-               BuildableName = "libpEpObjCAdapter.a"
-               BlueprintName = "pEpObjCAdapter"
-               ReferencedContainer = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B72A64D71EC0525500F71131"
-               BuildableName = "AccountSettingsAdapterTests.xctest"
-               BlueprintName = "AccountSettingsAdapterTests"
-               ReferencedContainer = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
+               BlueprintIdentifier = "4329CA572238FCBF007D377E"
+               BuildableName = "PantomimeFramework.framework"
+               BlueprintName = "PantomimeFramework"
+               ReferencedContainer = "container:../pantomime-iOS/PantomimeFramework/PantomimeFramework.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -144,6 +130,34 @@
                BuildableName = "libAccountSettingsAdapter.a"
                BlueprintName = "AccountSettingsAdapter"
                ReferencedContainer = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B72A64D71EC0525500F71131"
+               BuildableName = "AccountSettingsAdapterTests.xctest"
+               BlueprintName = "AccountSettingsAdapterTests"
+               ReferencedContainer = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43980E441CBD0BCA00A7FC3C"
+               BuildableName = "pEpForiOSUITests.xctest"
+               BlueprintName = "pEpForiOSUITests"
+               ReferencedContainer = "container:pEpForiOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -165,16 +179,6 @@
                BuildableName = "pEpForiOSTests.xctest"
                BlueprintName = "pEpForiOSTests"
                ReferencedContainer = "container:pEpForiOS.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43E854CE1CB7EA9B006867C0"
-               BuildableName = "PantomimeTests.xctest"
-               BlueprintName = "PantomimeTests"
-               ReferencedContainer = "container:../pantomime-iOS/Pantomime.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -215,6 +219,16 @@
                BuildableName = "pEpIOSToolboxTests.xctest"
                BlueprintName = "pEpIOSToolboxTests"
                ReferencedContainer = "container:subModules/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4329CB8622391DBD007D377E"
+               BuildableName = "PantomimeFrameworkTests.xctest"
+               BlueprintName = "PantomimeFrameworkTests"
+               ReferencedContainer = "container:../pantomime-iOS/PantomimeFramework/PantomimeFramework.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

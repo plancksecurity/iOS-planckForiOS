@@ -7,7 +7,9 @@
 //
 
 import UIKit
+
 import pEpIOSToolbox
+import MessageModel
 
 extension LoginViewController {
     enum LoginError: Error {
@@ -86,7 +88,7 @@ class LoginViewController: BaseViewController {
 
     override func didSetAppConfig() {
         super.didSetAppConfig()
-        loginViewModel.messageSyncService = appConfig.messageSyncService
+        loginViewModel.verificationService = VerificationService()
     }
 
     override func viewDidLoad() {

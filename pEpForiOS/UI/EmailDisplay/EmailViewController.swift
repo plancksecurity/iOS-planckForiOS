@@ -8,10 +8,11 @@
 
 import Foundation
 import UIKit
-import pEpIOSToolbox
 import QuickLook
 
+import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
 
 class EmailViewController: BaseTableViewController {
     @IBOutlet var flagButton: UIBarButtonItem!
@@ -54,7 +55,7 @@ class EmailViewController: BaseTableViewController {
         setupToolbar()
 
         tableView.estimatedRowHeight = 72.0
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
     }
@@ -117,7 +118,7 @@ class EmailViewController: BaseTableViewController {
             target: self)
         item.tag = BarButtonType.settings.rawValue
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
             target: nil,
             action: nil)
         flexibleSpace.tag = BarButtonType.space.rawValue
@@ -198,7 +199,7 @@ class EmailViewController: BaseTableViewController {
 
     // MARK: - UISplitViewcontrollerDelegate
 
-    func splitViewController(willChangeTo displayMode: UISplitViewControllerDisplayMode) {
+    func splitViewController(willChangeTo displayMode: UISplitViewController.DisplayMode) {
         switch displayMode {
         case .primaryHidden:
             var leftBarButtonItems: [UIBarButtonItem] = [nextMessage, previousMessage]
