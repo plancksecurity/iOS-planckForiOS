@@ -100,10 +100,12 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         viewmodel = FolderViewModel(withFoldersIn: nil, includeUnifiedInbox: withUnifiedInbox)
     }
     
-    class VerificationServiceMock: VerificationServiceProtocol {
-        func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
-            
-        }
+    class VerificationServiceMock: AccountVerificationServiceProtocol {
+        var delegate: AccountVerificationServiceDelegate?
+        var accountVerificationState  = AccountVerificationState.idle
+
+        func verify(account: Account) {}
+
     }
 
 }

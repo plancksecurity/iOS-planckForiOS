@@ -91,7 +91,7 @@ public class AccountSettingsViewModel {
         }
     }
 
-    var verificationService: VerificationService?
+    var verificationService: AccountVerificationService?
     weak var delegate: AccountVerificationResultDelegate?
 
     //Currently we assume imap and smtp servers exist already (update).
@@ -132,7 +132,7 @@ public class AccountSettingsViewModel {
             Logger.frontendLogger.errorAndCrash("no VerificationService")
             return
         }
-        verificationService.requestVerification(account: account, delegate: self)
+        verificationService.verify(account: account)
     }
 
     func sectionIsValid(section: Int) -> Bool {

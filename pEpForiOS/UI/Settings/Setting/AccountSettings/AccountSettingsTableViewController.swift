@@ -54,7 +54,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
         configureView()
         if let vm = viewModel {
             vm.delegate = self
-            vm.verificationService = VerificationService()
+            vm.verificationService = AccountVerificationService()
         }
         passwordTextfield.delegate = self
     }

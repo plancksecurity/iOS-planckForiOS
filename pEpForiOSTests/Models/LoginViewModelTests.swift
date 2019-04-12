@@ -24,16 +24,20 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
 }
 
 class LoginViewModelTests: CoreDataDrivenTestBase {
-    class TestVerificationService: VerificationServiceProtocol {
+    class TestVerificationService: AccountVerificationServiceProtocol {
+        var delegate: AccountVerificationServiceDelegate?
+
+        var accountVerificationState = AccountVerificationState.idle
+
         let accountSettings: TestDataBase.AccountSettings
         let expLookedUp: XCTestExpectation
-
+        
         init(accountSettings: TestDataBase.AccountSettings, expLookedUp: XCTestExpectation) {
             self.accountSettings = accountSettings
             self.expLookedUp = expLookedUp
         }
 
-        func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
+        func verify(account: Account) {
             XCTAssertEqual(account.user.address, accountSettings.idAddress)
             guard let imapServer = account.imapServer else {
                 XCTFail("expecting IMAP server")
@@ -52,10 +56,6 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
             XCTAssertEqual(smtpServer.address, accountSettings.smtpServerAddress)
 
             expLookedUp.fulfill()
-        }
-
-        func requestFetchOlderMessages(inFolder folder: Folder) {
-            XCTFail("unexpected call to \(#function)")
         }
     }
 

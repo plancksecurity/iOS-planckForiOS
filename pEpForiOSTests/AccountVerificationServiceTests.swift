@@ -93,13 +93,13 @@ class AccountVerificationServiceTests: XCTestCase {
         let delegate = AccountVerificationTestDelegate(expVerified: expVerified)
 
         let asService = AccountVerificationService()
-        let verificationService = VerificationService(parentName: #function)
+        let verificationService = AccountVerificationService(delegate: delegate)
 
         if testDirectly {
             asService.delegate = delegate
             asService.verify(account: account)
         } else {
-            verificationService.requestVerification(account: account, delegate: delegate)
+            verificationService.verify(account: account)
         }
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in

@@ -24,7 +24,7 @@ class LoginViewModel {
     }
 
     var loginAccount: Account?
-    var verificationService: VerificationServiceProtocol?
+    var verificationService: AccountVerificationServiceProtocol?
 
     /** If the last login attempt was via OAuth2, this will collect temporary parameters */
     private var lastOAuth2Parameters: OAuth2Parameters?
@@ -56,8 +56,9 @@ class LoginViewModel {
 
     let qualifyServerService = QualifyServerIsLocalService()
 
-    init(verificationService: VerificationServiceProtocol? = nil) {
+    init(verificationService: AccountVerificationServiceProtocol? = nil) {
         self.verificationService = verificationService
+        self.verificationService?.delegate = self
     }
 
     func isThereAnAccount() -> Bool {
@@ -175,7 +176,7 @@ class LoginViewModel {
             return
         }
         account.imapServer?.trusted = trusted
-        verificationService.requestVerification(account: account, delegate: self)
+        verificationService.verify(account: account)
     }
 
     /**

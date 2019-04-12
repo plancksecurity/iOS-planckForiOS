@@ -23,6 +23,7 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
 
     var model: AccountUserInput!
     private var currentlyVerifiedAccount: Account?
+    private var accountVerificationService = AccountVerificationService()
     var fields = [UITextField]()
     var responder = 0
 
@@ -40,6 +41,7 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
         self.title = NSLocalizedString("SMTP", comment: "Manual account setup")
         UIHelper.variableCellHeightsTableView(tableView)
         fields = [serverValue, portValue]
+        accountVerificationService.delegate = self
     }
 
     public override func viewWillAppear(_ animated: Bool) {
@@ -79,7 +81,7 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
         isCurrentlyVerifying =  true
         let account = try model.account()
         currentlyVerifiedAccount = account
-        VerificationService().requestVerification(account: account, delegate: self)
+        accountVerificationService.verify(account: account)
     }
 
     private func informUser(about error: Error, title: String) {
