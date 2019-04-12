@@ -462,7 +462,7 @@ class EmailListViewModel {
         }
     }
     public var activeFilter : MessageQueryResultsFilter {
-        //!!!: always is used default filter could be wrong check latter
+        //!!!: always is used default filter could be wrong check later
         return folderToShow.defaultFilter
     }
 
