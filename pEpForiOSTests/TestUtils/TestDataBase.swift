@@ -11,6 +11,7 @@ import CoreData
 
 import MessageModel
 import PEPObjCAdapterFramework
+import PantomimeFramework
 
 class TestDataBase {
     struct AccountSettings {
@@ -143,6 +144,19 @@ class TestDataBase {
             let ident = PEPIdentity(address: idAddress)
             ident.userName = accountName
             return ident
+        }
+
+        func basicConnectInfoIMAP() -> BasicConnectInfo {
+            return BasicConnectInfo(
+                accountEmailAddress: idAddress,
+                loginName: imapLoginName ?? idAddress,
+                loginPasswordKeyChainKey: "",
+                loginPassword: password,
+                networkAddress: imapServerAddress,
+                networkPort: imapServerPort,
+                connectionTransport: ConnectionTransport(transport: imapServerTransport),
+                authMethod: nil,
+                emailProtocol: .imap)
         }
     }
 
