@@ -314,6 +314,7 @@
 		43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */; };
 		43A5DE381D631D49001153AF /* UnencryptedHTMLMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43A5DE371D631D49001153AF /* UnencryptedHTMLMail.txt */; };
 		43A60116226467410099B45C /* ConnectionTransport+Transport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A60115226467410099B45C /* ConnectionTransport+Transport.swift */; };
+		43A6012A2264B5340099B45C /* BasicVerificationServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A601292264B5340099B45C /* BasicVerificationServiceTest.swift */; };
 		43A6E04B1E5726C8005BEE69 /* ReevaluateMessageRatingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A6E04A1E5726C8005BEE69 /* ReevaluateMessageRatingOperation.swift */; };
 		43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A6E0571E57400E005BEE69 /* RatingReEvaluator.swift */; };
 		43AA825B1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AA825A1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift */; };
@@ -833,6 +834,7 @@
 		43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSwipeTableViewCell.swift; sourceTree = "<group>"; };
 		43A5DE371D631D49001153AF /* UnencryptedHTMLMail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UnencryptedHTMLMail.txt; sourceTree = "<group>"; };
 		43A60115226467410099B45C /* ConnectionTransport+Transport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConnectionTransport+Transport.swift"; sourceTree = "<group>"; };
+		43A601292264B5340099B45C /* BasicVerificationServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicVerificationServiceTest.swift; sourceTree = "<group>"; };
 		43A6E04A1E5726C8005BEE69 /* ReevaluateMessageRatingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReevaluateMessageRatingOperation.swift; sourceTree = "<group>"; };
 		43A6E0571E57400E005BEE69 /* RatingReEvaluator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingReEvaluator.swift; sourceTree = "<group>"; };
 		43AA825A1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentViewContainer.swift; sourceTree = "<group>"; };
@@ -1823,6 +1825,7 @@
 				150707DD21006D0200AA213F /* UI */,
 				151F7202202A06D30057C74D /* Util */,
 				15F82A072006552B0084F9EA /* Tests from MessageModel in Exile due to Apple Bug */,
+				43A601252264B5050099B45C /* Service */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
 				4336229D1DC76B8100133B3D /* MessageModelTests.swift */,
 				438D253B1D4B9E7500BFF7AA /* MimeTests.swift */,
@@ -1914,6 +1917,14 @@
 				439D406F1CC78930009A4E7C /* libz.tbd */,
 			);
 			name = Raw;
+			sourceTree = "<group>";
+		};
+		43A601252264B5050099B45C /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				43A601292264B5340099B45C /* BasicVerificationServiceTest.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 		43A6E0491E5726C8005BEE69 /* Background */ = {
@@ -3039,6 +3050,7 @@
 				00227E6A21635DED000D9BDB /* FilterViewModelTest.swift in Sources */,
 				437795C82154D6FD00CC62C2 /* PEPMessage+TestExtension.swift in Sources */,
 				153CA6E41FB60D99003C9629 /* DercyptMessagesOperationTest.swift in Sources */,
+				43A6012A2264B5340099B45C /* BasicVerificationServiceTest.swift in Sources */,
 				151F71F7202A06760057C74D /* TestDataBase.swift in Sources */,
 				15BBBC681FD04DFC00B9DCC8 /* ReportingErrorContainerTest.swift in Sources */,
 				1541D7F01FC81ED900D52A5D /* URL+ExtensionsTest.swift in Sources */,
