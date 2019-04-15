@@ -150,13 +150,26 @@ class TestDataBase {
             return BasicConnectInfo(
                 accountEmailAddress: idAddress,
                 loginName: imapLoginName ?? idAddress,
-                loginPasswordKeyChainKey: "",
+                loginPasswordKeyChainKey: nil,
                 loginPassword: password,
                 networkAddress: imapServerAddress,
                 networkPort: imapServerPort,
                 connectionTransport: ConnectionTransport(transport: imapServerTransport),
                 authMethod: nil,
                 emailProtocol: .imap)
+        }
+
+        func basicConnectInfoSMTP() -> BasicConnectInfo {
+            return BasicConnectInfo(
+                accountEmailAddress: idAddress,
+                loginName: imapLoginName ?? idAddress,
+                loginPasswordKeyChainKey: nil,
+                loginPassword: password,
+                networkAddress: imapServerAddress,
+                networkPort: imapServerPort,
+                connectionTransport: ConnectionTransport(transport: imapServerTransport),
+                authMethod: nil,
+                emailProtocol: .smtp)
         }
     }
 
