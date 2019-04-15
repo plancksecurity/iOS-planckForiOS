@@ -13,10 +13,49 @@ import pEpIOSToolbox
 extension FilterViewModel {
     enum SectionType {
         case accouts, include, other
+
+        var localizedTitle: String {
+            switch self {
+            case .accouts:
+                return NSLocalizedString("INCLUDE MAIL FROM:",
+                                         comment: "title for the accounts section")
+            case .include:
+                return NSLocalizedString("INCLUDE:",
+                                         comment: "title for the include section")
+            case .other:
+                return NSLocalizedString("OTHER:",  //!!!: I have invented this title (no one existed in code). Please set it to what it was before refactoring
+                    comment: "title for the attachment section")            }
+        }
     }
 
     enum RowType {
         case account, flagg, unread, attachments
+
+        func defaultState() -> Bool {
+            switch self {
+            case .account:
+                return true
+            case .flagg:
+                return false
+            case .unread:
+                return true
+            case .attachments:
+                return false
+            }
+        }
+
+        var icon: UIImage {
+            switch self {
+            case .account:
+                return UIImage(named: "folders-icon-inbox")!
+            case .attachments:
+                return UIImage(named: "attachment-list-icon")!
+            case .flagg:
+                return UIImage(named: "icon-flagged")!
+            case .unread:
+                return UIImage(named: "icon-unread")!
+            }
+        }
     }
 
     struct Section {
@@ -28,15 +67,8 @@ extension FilterViewModel {
             return rows.count
         }
 
-        private func isValidIndex(index: Int) -> Bool {
-            return index >= 0 && index < rows.count
-        }
-
         subscript(index: Int) -> Row {
             get {
-                guard isValidIndex(index: index) else {
-                    fatalError("index out of bounds")
-                }
                 return rows[index]
             }
         }
@@ -45,84 +77,92 @@ extension FilterViewModel {
     struct Row {
         let type: RowType
         let title: String
-        let icon: UIImage
         var state: Bool
+
+        var icon: UIImage {
+            return type.icon
+        }
+
     }
 }
 
-public class FilterViewModel {
+public struct FilterViewModel {
     //!!!:this filter could be modified.
-    let filter: MessageQueryResultsFilter
-
-
-    var sections: [Section] = []
+    private let filter: MessageQueryResultsFilter
+    private var sections: [Section] = []
 
     init(filter: MessageQueryResultsFilter) {
         self.filter = filter
-        generateStructure()
+        resetData()
     }
 
     var count : Int {
         return self.sections.count
     }
 
-    private func isValidIndex(index: Int) -> Bool {
-        return index >= 0 && index < sections.count
-    }
-
     subscript(index: Int) -> Section {
         get {
-            guard isValidIndex(index: index) else {
-                fatalError("index out of bounds")
-            }
-                return self.sections[index]
+            return self.sections[index]
         }
     }
 
-    private func generateStructure() {
-        if filter.accounts.count > 1 {
-            generateSection(type: .accouts)
-        }
+    mutating private func resetData() {
+        sections = []
+        generateSection(type: .accouts)
         generateSection(type: .include)
         generateSection(type: .other)
     }
 
-    private func generateSection(type: SectionType) {
+    mutating private func generateSection(type: SectionType) {
         switch type {
+
         case .accouts:
-            var accountRow: [Row] = []
-            //!!!: Stop in the middle of implementing this, we need unifiedInbox first
-            for item in filter.accounts {
-                guard let row = createRow(type: .account , account: item, state: true) else {
-                    return
-                }
-                accountRow.append(row)
+            guard filter.accounts.count >= 2 else {
+                // We show the accounts section only if there are multiple accounts.
+                // Example: UnifiedInbox
+                return
             }
-            let title = NSLocalizedString("INCLUDE MAIL FROM:", comment: "title for the accounts section")
-            let section = Section(type: .accouts, title: title, rows: accountRow)
+            let sectionType = SectionType.accouts
+            let rows: [Row] = filter.accounts.map {
+                let rowType = RowType.account
+                return createRow(type: rowType , account: $0, state: rowType.defaultState())
+            }
+            let section = Section(type: sectionType, title: sectionType.localizedTitle, rows: rows)
             sections.append(section)
-            break
+
         case .include:
-            //self.title = NSLocalizedString("INCLUDE:", comment: "title for the include section")
-            //TODO: Not yet implemented
-            break
+            let sectionType = SectionType.include
+
+            var rows = [Row]()
+            var rowType = RowType.unread
+            var nextRow = createRow(type: rowType, state: rowType.defaultState())
+            rows.append(nextRow)
+
+            rowType = RowType.flagg
+            nextRow = createRow(type: rowType , state: rowType.defaultState())
+            rows.append(nextRow)
+
+            let section = Section(type: sectionType, title: sectionType.localizedTitle, rows: rows)
+            sections.append(section)
+
         case .other:
-            //TODO: Not yet implemented
-            //self.title = ""
-            break
+            let sectionType = SectionType.other
+            var rows = [Row]()
+            let rowType = RowType.attachments
+            let nextRow = createRow(type: rowType, state: rowType.defaultState())
+            rows.append(nextRow)
+
+            let section = Section(type: sectionType, title: sectionType.localizedTitle, rows: rows)
+            sections.append(section)
         }
     }
 
-    private func createRow(type: RowType, account: Account?, state: Bool) -> Row? {
-        guard let icon = getIconRow(type: type) else {
-            Logger.frontendLogger.errorAndCrash("Error generating row")
-            return nil
-        }
-        let title = getTitleRow(type: type, account: account)
-        return Row(type: type, title: title, icon: icon, state: state)
+    private func createRow(type: RowType, account: Account? = nil, state: Bool) -> Row {
+        let title = rowTitel(type: type, account: account)
+        return Row(type: type, title: title, state: state)
     }
 
-    func getTitleRow(type: RowType, account: Account? = nil) -> String {
+    func rowTitel(type: RowType, account: Account? = nil) -> String {
         switch type {
         case .account:
             guard let accountAddress = account?.user.address else {
@@ -137,35 +177,6 @@ public class FilterViewModel {
             return NSLocalizedString("Flagged", comment: "title unread filter cell")
         case .unread:
             return NSLocalizedString("Unread", comment: "title unread filter cell")
-        }
-    }
-
-    func getIconRow(type: RowType) -> UIImage? {
-        switch type {
-        case .account:
-            guard let icon = UIImage(named: "folders-icon-inbox" ) else {
-                Logger.frontendLogger.errorAndCrash("Error Loading images")
-                return nil
-            }
-            return icon
-        case .attachments:
-            guard let icon = UIImage(named: "attachment-list-icon" ) else {
-                Logger.frontendLogger.errorAndCrash("Error Loading images")
-                return nil
-            }
-            return icon
-        case .flagg:
-            guard let icon = UIImage(named: "icon-flagged" ) else {
-                Logger.frontendLogger.errorAndCrash("Error Loading images")
-                return nil
-            }
-            return icon
-        case .unread:
-            guard let icon = UIImage(named: "icon-unread" ) else {
-                Logger.frontendLogger.errorAndCrash("Error Loading images")
-                return nil
-            }
-            return icon
         }
     }
 }
