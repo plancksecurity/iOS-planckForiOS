@@ -14,6 +14,7 @@
 		37904565223FA486006DAB3B /* ReachabilityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904561223FA486006DAB3B /* ReachabilityProtocol.swift */; };
 		37904569223FA52B006DAB3B /* NetworkReachibilityMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904567223FA52B006DAB3B /* NetworkReachibilityMock.swift */; };
 		3790456A223FA52B006DAB3B /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904568223FA52B006DAB3B /* ReachabilityTests.swift */; };
+		37C3C0E92264BFB7003E290C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C3C0E82264BFB7003E290C /* Log.swift */; };
 		435F5129221FF9D7006EB11F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F5128221FF9D7006EB11F /* Constants.swift */; };
 		B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5422005BD400EDCE61 /* Date+Extension.swift */; };
 		B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */; };
@@ -62,6 +63,7 @@
 		37904561223FA486006DAB3B /* ReachabilityProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityProtocol.swift; sourceTree = "<group>"; };
 		37904567223FA52B006DAB3B /* NetworkReachibilityMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachibilityMock.swift; sourceTree = "<group>"; };
 		37904568223FA52B006DAB3B /* ReachabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityTests.swift; sourceTree = "<group>"; };
+		37C3C0E82264BFB7003E290C /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Log.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Modules/Log.swift; sourceTree = "<group>"; };
 		435F5128221FF9D7006EB11F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Other/Constants.swift; sourceTree = "<group>"; };
 		B70A3A5422005BD400EDCE61 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
@@ -165,6 +167,14 @@
 			path = ReachabilityUtilsTest;
 			sourceTree = "<group>";
 		};
+		37C3C0E72264BF96003E290C /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				37C3C0E82264BFB7003E290C /* Log.swift */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
 		B70A3A5222005A7600EDCE61 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,6 +228,7 @@
 		B7911EB621F7358500D7F66F /* pEpIOSToolbox */ = {
 			isa = PBXGroup;
 			children = (
+				37C3C0E72264BF96003E290C /* Modules */,
 				B70A3A5222005A7600EDCE61 /* Foundation */,
 				B70A3A5322005B9600EDCE61 /* UIKit */,
 				B7DB7FEC221B086A003968DA /* Other */,
@@ -390,6 +401,7 @@
 				B7DB7F5022130DE9003968DA /* Weak.swift in Sources */,
 				37904564223FA486006DAB3B /* NetworkReachability.swift in Sources */,
 				B7A46C52220C732E0027CCB5 /* Data+Extensions.swift in Sources */,
+				37C3C0E92264BFB7003E290C /* Log.swift in Sources */,
 				B7465DE32211C890008A1708 /* CGImageSource+Extension.swift in Sources */,
 				B7465DE12211C6E9008A1708 /* UIImage+GIF.swift in Sources */,
 				B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */,
