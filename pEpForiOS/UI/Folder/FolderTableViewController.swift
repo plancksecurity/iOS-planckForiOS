@@ -193,9 +193,8 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
                     return
         }
         vc.appConfig = appConfig
-        var emailListVM : EmailListViewModel
-        emailListVM = EmailListViewModel(emailListViewModelDelegate: vc,
-                                         folderToShow: folder)
+        let emailListVM = EmailListViewModel(emailListViewModelDelegate: vc,
+                                             folderToShow: folder)
         vc.model = emailListVM
         vc.hidesBottomBarWhenPushed = false
 

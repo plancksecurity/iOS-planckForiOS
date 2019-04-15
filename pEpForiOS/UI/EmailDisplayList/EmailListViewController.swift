@@ -63,14 +63,19 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         setUpTextFilter()
         // Mark this folder as having been looked at by the user
 
-        if let vm = model, !vm.noAccountsExist() {
+        guard let vm = model else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return
+        }
+
+        if !vm.showLoginView {
             updateFilterButtonView()
             vm.startMonitoring() //???: should UI know about startMonitoring?
 
             // Threading feature is currently non-existing. Keep this code, might help later.
-//            if vm.checkIfSettingsChanged() {
-//                settingsChanged()
-//            }
+            //            if vm.checkIfSettingsChanged() {
+            //                settingsChanged()
+            //            }
         }
     }
 
@@ -83,21 +88,23 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return
     }
 
-
     // MARK: - Setup
 
     private func setup() {
+
+        guard let vm = model else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return
+        }
         
         if model == nil {
         }
 
-        if let vm = model {
-            if vm.noAccountsExist() {
-                showLoginScreen()
-            }
+        if vm.showLoginView {
+            showLoginScreen()
         }
 
-        title = model?.getFolderName()
+        title = model?.folderName
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
             target: self)

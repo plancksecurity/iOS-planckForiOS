@@ -54,7 +54,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func testGetFolderName() {
         setupViewModel()
-        XCTAssertEqual(Folder.localizedName(realName: self.folder.realName), emailListVM.getFolderName())
+        XCTAssertEqual(Folder.localizedName(realName: self.folder.realName), emailListVM.folderName)
     }
 
     func testGetDestructiveAction() {
@@ -185,14 +185,14 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     func testAccountExists() {
         setupViewModel()
         emailListVM.startMonitoring()
-        var noAccounts = emailListVM.noAccountsExist()
+        var noAccounts = emailListVM.showLoginView
 
         XCTAssertFalse(noAccounts)
 
         cdAccount.delete()
         setupViewModel()
         emailListVM.startMonitoring()
-        noAccounts = emailListVM.noAccountsExist()
+        noAccounts = emailListVM.showLoginView
 
         XCTAssertTrue(noAccounts)
     }

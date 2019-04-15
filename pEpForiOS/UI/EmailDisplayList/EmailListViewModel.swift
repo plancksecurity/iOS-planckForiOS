@@ -91,11 +91,11 @@ class EmailListViewModel {
         self.folderToShow = folderToShow
         self.defaultFilter = folderToShow.defaultFilter
 
-        // We intentionally do *not* start monitoring.
-        self.messageQueryResults = MessageQueryResults(withFolder: folderToShow,
+        // We intentionally do *not* start monitoring. Respiosibility is on currently on VC.
+        messageQueryResults = MessageQueryResults(withFolder: folderToShow,
                                                        filter: folderToShow.defaultFilter,
                                                        search: nil)
-
+        messageQueryResults.delegate = self
         // Threading feature is currently non-existing. Keep this code, might help later.
 //        self.oldThreadSetting = AppSettings.threadedViewEnabled
 
@@ -108,10 +108,10 @@ class EmailListViewModel {
         defer { informDelegateToReloadData() }
         messageQueryResults = MessageQueryResults(withFolder: folderToShow,
                                                   filter: filter,
-                                                  search: search)
+                                                  search: search,
+                                                  delegate: self)
         do {
             try messageQueryResults.startMonitoring()
-
         } catch {
             Logger.modelLogger.errorAndCrash("Failed to fetch data")
             return
@@ -120,14 +120,13 @@ class EmailListViewModel {
 
     func startMonitoring() {
         do {
-                self.messageQueryResults.delegate = self
-                try messageQueryResults.startMonitoring()
-            } catch {
-                Logger.frontendLogger.errorAndCrash("MessageQueryResult crash")
+            try messageQueryResults.startMonitoring()
+        } catch {
+            Logger.frontendLogger.errorAndCrash("MessageQueryResult crash")
         }
     }
 
-    func getFolderName() -> String {
+    var folderName: String {
         return Folder.localizedName(realName: folderToShow.title)
     }
 
@@ -394,7 +393,7 @@ class EmailListViewModel {
         }
     }
 
-    public func noAccountsExist() -> Bool {
+    public var showLoginView: Bool {
         return Account.all().isEmpty
     }
 

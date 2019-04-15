@@ -9,6 +9,7 @@ import pEpIOSToolbox
 import MessageModel
 
 public class UnifiedInbox: VirtualFolderProtocol {
+    static public let defaultUnifiedInboxName = "Unified Inbox"
 
     public var agregatedFolderType: FolderType? {
         return FolderType.inbox
@@ -45,8 +46,6 @@ public class UnifiedInbox: VirtualFolderProtocol {
             return MessageQueryResultsFilter(accounts: Account.all())
         }
     }
-
-    static public let defaultUnifiedInboxName = "Unified Inbox"
 
     public var name: String {
         return UnifiedInbox.defaultUnifiedInboxName
