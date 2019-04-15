@@ -31,7 +31,7 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
 
 extension EmailListViewModel: FilterUpdateProtocol {
     public func addFilter(_ filter: MessageQueryResultsFilter) {
-        setFilterViewFilter(filter: filter)
+        setNewFilterAndReload(filter: filter)
     }
 }
 
@@ -55,7 +55,7 @@ class EmailListViewModel {
 
     public var emailListViewModelDelegate: EmailListViewModelDelegate?
 
-    internal let folderToShow: DisplayableFolderProtocol
+    let folderToShow: DisplayableFolderProtocol
 
     public var currentDisplayedMessage: DisplayedMessage?
     public var screenComposer: ScreenComposerProtocol?
@@ -77,8 +77,7 @@ class EmailListViewModel {
 
     private var selectedItems: Set<IndexPath>?
 
-    weak var updateThreadListDelegate: UpdateThreadListDelegate?
-    var defaultFilter: MessageQueryResultsFilter
+    weak var updateThreadListDelegate: UpdateThreadListDelegate? //!!!: sounds like belonging to message thread. If so, comment out
 
     // Threading feature is currently non-existing. Keep this code, might help later.
 //    var oldThreadSetting : Bool
@@ -89,7 +88,6 @@ class EmailListViewModel {
          folderToShow: DisplayableFolderProtocol) {
         self.emailListViewModelDelegate = emailListViewModelDelegate
         self.folderToShow = folderToShow
-        self.defaultFilter = folderToShow.defaultFilter
 
         // We intentionally do *not* start monitoring. Respiosibility is on currently on VC.
         messageQueryResults = MessageQueryResults(withFolder: folderToShow,
@@ -98,11 +96,19 @@ class EmailListViewModel {
         messageQueryResults.delegate = self
         // Threading feature is currently non-existing. Keep this code, might help later.
 //        self.oldThreadSetting = AppSettings.threadedViewEnabled
-
     }
 
     //!!!: BUFF: move
-    // Every time filter or search changes, we have to
+
+    private func setNewFilterAndReload(filter: MessageQueryResultsFilter?) {
+        resetQueryResultsAndReload(with: filter, search: messageQueryResults.search)
+    }
+
+    private func setNewSearchAndReload(search: MessageQueryResultsSearch?) {
+        resetQueryResultsAndReload(with: messageQueryResults.filter, search: search)
+    }
+
+    // Every time filter or search changes, we have to rest QueryResults
     private func resetQueryResultsAndReload(with filter: MessageQueryResultsFilter? = nil,
                                             search: MessageQueryResultsSearch? = nil) {
         defer { informDelegateToReloadData() }
@@ -337,7 +343,7 @@ class EmailListViewModel {
         }
     }
 
-    func freeMemory() {
+    private func freeMemory() {
         contactImageTool.clearCache()
     }
     
@@ -397,35 +403,11 @@ class EmailListViewModel {
         return Account.all().isEmpty
     }
 
-//    public func folderIsDraft() -> Bool {
-//        return folderIsDraft( folderToShow)
-//    }
-//
-//    public func folderIsOutbox() -> Bool {
-//        return folderIsOutbox(folderToShow)
-//    }
-
     public func unreadFilterEnabled() -> Bool {
-        guard let unread = activeFilter.mustBeUnread else {
+        guard let unread = currentFilter.mustBeUnread else {
             return false
         }
         return isFilterEnabled && unread
-    }
-
-    private func getParentFolder(forMessageAt index: Int) -> Folder {
-        return messageQueryResults[index].parent
-    }
-
-    private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
-        return parentFolder.folderType == .outbox
-    }
-
-    private func folderIsDraft(_ parentFolder: Folder) -> Bool {
-        return parentFolder.folderType == .drafts
-    }
-
-    private func folderIsDraftOrOutbox(_ parentFoldder: Folder) -> Bool {
-        return folderIsDraft(parentFoldder) || folderIsOutbox(parentFoldder)
     }
 
     public func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])
@@ -437,69 +419,32 @@ class EmailListViewModel {
             return nil
     }
 
-    //TODO: remove when Segues of EmailListViewController are refactored.
-    public func getFolderToShow() -> DisplayableFolderProtocol {
-        return folderToShow
-    }
-
-    //TODO: remove when Segues of EmailListViewController are refactored.
-    public func getFolderIsUnified() -> Bool {
-        return folderToShow is UnifiedInbox
-    }
-
-    //TODO: remove when Segues of EmailListViewController are refactored.
-    public func getFolderFilters() -> MessageQueryResultsFilter {
-        //!!!: do not know yet if will need another filter
-        return folderToShow.defaultFilter
-    }
-
     // MARK: - Filter
     
     public var isFilterEnabled = false {
         didSet {
-            handleFilterEnabledSwitch()
+            if oldValue != isFilterEnabled {
+                handleFilterEnabledStateChange()
+            }
         }
     }
 
-    //!!!: double check if obsolete
-    public var activeFilter : MessageQueryResultsFilter {
-        //!!!: always is used default filter could be wrong check later
-        return folderToShow.defaultFilter
-    }
-
-    public static func defaultFilter() -> MessageQueryResultsFilter {
-        return MessageQueryResultsFilter(mustBeFlagged: false,
-                                         mustBeUnread: true,
-                                         mustContainAttachments: false,
-                                         accounts: [])
-    }
-
-    //rn lastusedFilter
-    static let defaultFilterViewFilter = defaultFilter()
-    private var _filterViewFilter: MessageQueryResultsFilter = defaultFilterViewFilter
-    private var filterViewFilter: MessageQueryResultsFilter {
+    private var _currentFilter: MessageQueryResultsFilter?
+    private var currentFilter: MessageQueryResultsFilter {
         get {
-            return _filterViewFilter
+            return _currentFilter ?? folderToShow.defaultFilter
         }
         set {
-            _filterViewFilter = newValue
+            _currentFilter = newValue
         }
     }
 
-    //rename
-    private func setFilterViewFilter(filter: MessageQueryResultsFilter) {
+    private func handleFilterEnabledStateChange() {
         if isFilterEnabled {
-            resetQueryResultsAndReload(with: filter,
-                                       search: messageQueryResults.search)
-            //            let folderFilter = assuredFilterOfFolderToShow()
-           /* folderFilter.without(filters: filterViewFilter)
-            folderFilter.with(filters: filter)*/
+            setNewFilterAndReload(filter: currentFilter)
+        } else {
+            setNewFilterAndReload(filter: nil)
         }
-        filterViewFilter = filter
-    }
-
-    private func handleFilterEnabledSwitch() {
-        setFilterViewFilter(filter: filterViewFilter)
     }
 
     public func setSearch(forSearchText txt: String) {
@@ -510,33 +455,12 @@ class EmailListViewModel {
         lastSearchTerm = txt
 
         let search = txt == "" ? nil : MessageQueryResultsSearch(searchTerm: lastSearchTerm)
-        setSearch(search: search)
-    }
-
-    //BUFF: move
-    private func setSearch(search: MessageQueryResultsSearch?) {
-        resetQueryResultsAndReload(with: messageQueryResults.filter,
-                                   search: search)
+        setNewSearchAndReload(search: search)
     }
      
     public func removeSearch() {
-        setSearch(search: nil)
+        setNewSearchAndReload(search: nil)
     }
-
-//    //!!!: this is needed?
-    //!!!: BUFF: I don't think so
-//    private func assuredFilterOfFolderToShow() -> MessageQueryResultsFilter {
-////        if folderToShow.filter == nil {
-////            folderToShow.resetFilter()
-////        }
-////
-////        guard let folderFilter = folderToShow.filter else {
-////            Logger.frontendLogger.errorAndCrash("We just set the filter but do not have one?")
-////            return defaultFilter
-////        }
-////        return folderFilter
-//        return MessageQueryResultsFilter.init()
-//    }
 
     // MARK: - Util
 
@@ -665,5 +589,26 @@ extension EmailListViewModel: ComposeViewModelResultDelegate {
 //        if folderIsDraft(folderToShow) {
 //            reloadData()
 //        }
+    }
+}
+
+// MARK: - Convenience Methods
+
+extension EmailListViewModel {
+
+    private func getParentFolder(forMessageAt index: Int) -> Folder {
+        return messageQueryResults[index].parent
+    }
+
+    private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType == .outbox
+    }
+
+    private func folderIsDraft(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType == .drafts
+    }
+
+    private func folderIsDraftOrOutbox(_ parentFoldder: Folder) -> Bool {
+        return folderIsDraft(parentFoldder) || folderIsOutbox(parentFoldder)
     }
 }
