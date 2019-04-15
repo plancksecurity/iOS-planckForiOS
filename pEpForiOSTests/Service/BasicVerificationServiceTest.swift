@@ -10,7 +10,7 @@ import XCTest
 
 import MessageModel
 
-class TestDelegate: BasicVerificationServiceDelegate {
+class BasicVerificationServiceTestDelegate: BasicVerificationServiceDelegate {
     private let expectation: XCTestExpectation
     public var error: Error?
 
@@ -36,7 +36,7 @@ class BasicVerificationServiceTest: XCTestCase {
               connectInfo: BasicConnectInfo,
               verify: (Error?) -> ()) {
         let expVerificationDone = expectation(description: "expVerificationDone")
-        let myDelegate = TestDelegate(expectation: expVerificationDone)
+        let myDelegate = BasicVerificationServiceTestDelegate(expectation: expVerificationDone)
         service.delegate = myDelegate
         service.verify(connectInfo: connectInfo)
         wait(for: [expVerificationDone], timeout: TestUtil.waitTime)
