@@ -32,10 +32,14 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
     // MARK: - Setup
 
     private func setup() {
-        DispatchQueue.main.async {
-            self.folderVM =  FolderViewModel()
-            self.folderVM?.delegate = self
-            self.tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.folderVM =  FolderViewModel()
+            me.folderVM?.delegate = self
+            me.tableView.reloadData()
         }
     }
     
