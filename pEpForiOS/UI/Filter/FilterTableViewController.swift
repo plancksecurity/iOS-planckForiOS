@@ -12,6 +12,7 @@ import MessageModel
 class FilterTableViewController: BaseTableViewController {
 
     open var filterEnabled: MessageQueryResultsFilter?
+    //!!!: this should be in the VM, not the VC
     open var filterDelegate: FilterUpdateProtocol?
 
     open var viewModel : FilterViewModel?
@@ -29,13 +30,12 @@ class FilterTableViewController: BaseTableViewController {
 
 
     @objc func ok(sender: UIBarButtonItem) {
-//        guard let model = viewModel else {
-//            fatalError("no view model")
-//            return
-//        }
-//
-//        filterDelegate?.addFilter(model.getFilters())
-//       _ = self.navigationController?.popViewController(animated: true)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return
+        }
+        filterDelegate?.addFilter(vm.filter)
+       _ = self.navigationController?.popViewController(animated: true)
     }
 
 
