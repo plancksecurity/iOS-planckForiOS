@@ -263,6 +263,20 @@ class TestDataBase {
     }
 
     /**
+     - Returns: A valid `BasicConnectInfo` for IMAP.
+     */
+    func createVerifiableBasicConnectInfoIMAP(number: Int = 0) -> BasicConnectInfo {
+        return createVerifiableAccountSettings(number: number).basicConnectInfoIMAP()
+    }
+
+    /**
+     - Returns: A valid `BasicConnectInfo` for SMTP.
+     */
+    func createVerifiableBasicConnectInfoSMTP(number: Int = 0) -> BasicConnectInfo {
+        return createVerifiableAccountSettings(number: number).basicConnectInfoSMTP()
+    }
+
+    /**
      - Returns: A valid `CdIdentity` without parent account.
      */
     func createWorkingCdIdentity(number: Int = 0, isMyself: Bool = false) -> CdIdentity {
