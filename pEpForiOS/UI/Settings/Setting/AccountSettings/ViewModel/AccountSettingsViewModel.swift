@@ -100,7 +100,7 @@ public class AccountSettingsViewModel {
                 smtp: ServerViewModel) {
         guard let serverImap = account.imapServer,
             let serverSmtp = account.smtpServer else {
-                Logger.frontendLogger.errorAndCrash("Account misses imap or smtp server.")
+                Log.shared.errorAndCrash("Account misses imap or smtp server.")
                 return
         }
         let pass : String?
@@ -119,7 +119,7 @@ public class AccountSettingsViewModel {
                                           password: pass,
                                           key: serverSmtp.credentials.key)
             else {
-                Logger.frontendLogger.errorAndCrash("Invalid input.")
+                Log.shared.errorAndCrash("Invalid input.")
                 return
         }
 
@@ -129,7 +129,7 @@ public class AccountSettingsViewModel {
         self.account.user.userName = name
 
         guard let verificationService = verificationService else {
-            Logger.frontendLogger.errorAndCrash("no VerificationService")
+            Log.shared.errorAndCrash("no VerificationService")
             return
         }
         verificationService.requestVerification(account: account, delegate: self)
@@ -157,7 +157,7 @@ public class AccountSettingsViewModel {
         guard let viewModelPort = viewModel.port,
             let port = UInt16(viewModelPort),
             let address = viewModel.address else {
-                Logger.frontendLogger.errorAndCrash("viewModel misses required data.")
+                Log.shared.errorAndCrash("viewModel misses required data.")
                 return nil
         }
         let transport = Server.Transport(fromString: viewModel.transport)
@@ -197,7 +197,7 @@ extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
         }
         GCD.onMainWait { [weak self] in
             guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             me.delegate?.didVerify(result: result, accountInput: nil)

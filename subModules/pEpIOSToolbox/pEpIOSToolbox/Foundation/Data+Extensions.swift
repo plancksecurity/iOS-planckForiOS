@@ -30,6 +30,7 @@ extension Data {
         do {
             try write(to: url)
         } catch {
+            
             Logger.utilLogger.error("Could not save to %{public}@", url.absoluteString)
         }
     }

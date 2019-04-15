@@ -28,7 +28,7 @@ extension ThreadViewController: SegueHandlerType {
                 let appConfig = self.appConfig,
                 let indexPath = tableView.indexPathForSelectedRow,
                 let message = model?.message(at: indexPath.section) else {
-                    Logger.frontendLogger.errorAndCrash("Segue issue")
+                    Log.shared.errorAndCrash("Segue issue")
                     return
             }
             vc.appConfig = appConfig
@@ -41,7 +41,7 @@ extension ThreadViewController: SegueHandlerType {
         case .segueShowMoveToFolder:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? MoveToAccountViewController else {
-                    Logger.frontendLogger.errorAndCrash("No DVC?")
+                    Log.shared.errorAndCrash("No DVC?")
                     break
             }
             destination.appConfig = appConfig
@@ -54,7 +54,7 @@ extension ThreadViewController: SegueHandlerType {
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController,
                 let appConfig = appConfig else {
-                    Logger.frontendLogger.errorAndCrash("No DVC?")
+                    Log.shared.errorAndCrash("No DVC?")
                     break
             }
             destination.appConfig = appConfig

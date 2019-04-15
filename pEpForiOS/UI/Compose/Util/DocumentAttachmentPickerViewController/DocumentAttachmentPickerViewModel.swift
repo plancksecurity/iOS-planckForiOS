@@ -31,11 +31,11 @@ class DocumentAttachmentPickerViewModel {
             createAttachment(forSecurityScopedResource: url) {
                 [weak self] (attachment: Attachment?) in
                 guard let me = self else {
-                    Logger.frontendLogger.lostMySelf()
+                    Log.shared.errorAndCrash("Lost MySelf")
                     return
                 }
                 guard let safeAttachment = attachment else {
-                    Logger.frontendLogger.errorAndCrash("No attachment")
+                    Log.shared.errorAndCrash("No attachment")
                     return
                 }
                 GCD.onMain {
@@ -63,7 +63,7 @@ class DocumentAttachmentPickerViewModel {
             CFURLStartAccessingSecurityScopedResource(cfUrl)
             defer { CFURLStopAccessingSecurityScopedResource(cfUrl) }
             guard  let resourceData = try? Data(contentsOf: resourceUrl)  else {
-                Logger.frontendLogger.errorAndCrash("No data for URL.")
+                Log.shared.errorAndCrash("No data for URL.")
                 completion(nil)
                 return
             }

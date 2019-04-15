@@ -26,7 +26,7 @@ extension PrimarySplitViewController: ScreenComposerProtocol {
             storyboard.instantiateViewController(withIdentifier: "threadViewController")
                 as? ThreadViewController
             else {
-                Logger.frontendLogger.errorAndCrash("Segue issue")
+                Log.shared.errorAndCrash("Segue issue")
                 return
         }
         vc.appConfig = singleViewController.appConfig
@@ -53,7 +53,7 @@ extension PrimarySplitViewController: ScreenComposerProtocol {
                 as? EmailViewController,
             let index = emailListViewModel.index(of: message)
             else {
-                Logger.frontendLogger.errorAndCrash("Segue issues")
+                Log.shared.errorAndCrash("Segue issues")
                 return
         }
 

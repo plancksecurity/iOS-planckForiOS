@@ -105,7 +105,7 @@ class LoginViewModel {
 
         func statusOk() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
-                Logger.frontendLogger.error("%{public}@", error.localizedDescription)
+                Log.shared.error("%{public}@", error.localizedDescription)
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
                 return
             }
@@ -139,7 +139,7 @@ class LoginViewModel {
             do {
                 try verifyAccount(model: newAccount)
             } catch {
-                Logger.frontendLogger.error("%{public}@", error.localizedDescription)
+                Log.shared.error("%{public}@", error.localizedDescription)
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
             }
         }
@@ -167,11 +167,11 @@ class LoginViewModel {
 
     func accountHasBeenQualified(trusted: Bool) {
         guard let verificationService = verificationService else {
-            Logger.frontendLogger.errorAndCrash("no VerificationService")
+            Log.shared.errorAndCrash("no VerificationService")
             return
         }
         guard let account = loginAccount else {
-            Logger.frontendLogger.errorAndCrash("have lost loginAccount")
+            Log.shared.errorAndCrash("have lost loginAccount")
             return
         }
         account.imapServer?.trusted = trusted
