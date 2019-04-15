@@ -461,13 +461,18 @@ class EmailListViewModel {
             handleFilterEnabledSwitch()
         }
     }
+
+    //!!!: double check if obsolete
     public var activeFilter : MessageQueryResultsFilter {
         //!!!: always is used default filter could be wrong check later
         return folderToShow.defaultFilter
     }
 
     public static func defaultFilter() -> MessageQueryResultsFilter {
-        return MessageQueryResultsFilter(mustBeFlagged: false, mustBeUnread: true, mustContainAttachments: false, accounts: [])
+        return MessageQueryResultsFilter(mustBeFlagged: false,
+                                         mustBeUnread: true,
+                                         mustContainAttachments: false,
+                                         accounts: [])
     }
 
     //rn lastusedFilter
