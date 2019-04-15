@@ -18,25 +18,16 @@ class TestDataBase {
         var idAddress: String
         var idUserName: String?
         var smtpLoginName: String?
-        var smtpServerAddress: String?
+        var smtpServerAddress: String
         var smtpServerType: Server.ServerType = .smtp
         var smtpServerTransport: Server.Transport = .tls
         var smtpServerPort: UInt16 = 587
         var imapLoginName: String?
-        var imapServerAddress: String?
+        var imapServerAddress: String
         var imapServerType: Server.ServerType = .imap
         var imapServerTransport: Server.Transport = .startTls
         var imapServerPort: UInt16 = 993
         var password: String?
-
-        init(accountName: String?, address: String) {
-            self.accountName = accountName
-            self.idAddress = address
-        }
-
-        init(address: String) {
-            self.init(accountName: nil, address: address)
-        }
 
         init(accountName: String,
              idAddress: String,
