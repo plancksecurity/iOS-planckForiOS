@@ -100,7 +100,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
         let filter = CompositeFilter<FilterBase>()
         filter.add(filter: UnreadFilter())
-        emailListVM.addFilter(filter)
+        emailListVM.filterChanged(newFilter: filter)
         setUpViewModelExpectations(expectedUpdateView: true)
         emailListVM.isFilterEnabled = true
 

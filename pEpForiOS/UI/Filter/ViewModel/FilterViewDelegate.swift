@@ -1,5 +1,5 @@
 //
-//  FilterUpdateProtocol.swift
+//  FilterViewDelegate.swift
 //  pEpForiOS
 //
 //  Created by Xavier Algarra on 17/03/2017.
@@ -9,6 +9,6 @@
 import Foundation
 import MessageModel
 
-public protocol FilterUpdateProtocol {
-    func addFilter(_ filter: MessageQueryResultsFilter)
+public protocol FilterViewDelegate {
+    func filterChanged(newFilter: MessageQueryResultsFilter)
 }

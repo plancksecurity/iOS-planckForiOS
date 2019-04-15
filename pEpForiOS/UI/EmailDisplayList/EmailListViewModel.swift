@@ -29,9 +29,9 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
 
 // MARK: - FilterUpdateProtocol
 
-extension EmailListViewModel: FilterUpdateProtocol {
-    public func addFilter(_ filter: MessageQueryResultsFilter) {
-        setNewFilterAndReload(filter: filter)
+extension EmailListViewModel: FilterViewDelegate {
+    public func filterChanged(newFilter: MessageQueryResultsFilter) {
+        setNewFilterAndReload(filter: newFilter)
     }
 }
 
@@ -343,7 +343,7 @@ class EmailListViewModel {
         }
     }
 
-    private func freeMemory() {
+    func freeMemory() {
         contactImageTool.clearCache()
     }
     
