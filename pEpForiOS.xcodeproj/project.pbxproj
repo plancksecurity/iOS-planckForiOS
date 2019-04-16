@@ -277,6 +277,7 @@
 		435F7C75215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt in Resources */ = {isa = PBXBuildFile; fileRef = 435F7C74215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt */; };
 		43628766213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43628765213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt */; };
 		4365E85F2265DC3F00929D07 /* VerifiableAccountTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365E85E2265DC3F00929D07 /* VerifiableAccountTest.swift */; };
+		4365E8612265FBCC00929D07 /* BasicConnectInfo+VerifiableAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365E8602265FBCC00929D07 /* BasicConnectInfo+VerifiableAccount.swift */; };
 		436795F81EE98B9A00B03E23 /* MessageReevalutionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */; };
 		436795FB1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 436795F91EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc */; };
 		436795FC1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc in Resources */ = {isa = PBXBuildFile; fileRef = 436795FA1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc */; };
@@ -782,6 +783,7 @@
 		435F7C74215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 1364_Mail_missing_attached_image.txt; sourceTree = "<group>"; };
 		43628765213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1300_odt_attachment.txt"; sourceTree = "<group>"; };
 		4365E85E2265DC3F00929D07 /* VerifiableAccountTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiableAccountTest.swift; sourceTree = "<group>"; };
+		4365E8602265FBCC00929D07 /* BasicConnectInfo+VerifiableAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BasicConnectInfo+VerifiableAccount.swift"; sourceTree = "<group>"; };
 		436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageReevalutionTests.swift; sourceTree = "<group>"; };
 		436795F91EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CommunicationTypeTests_test002@peptest.ch_sec.asc"; sourceTree = "<group>"; };
 		436795FA1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CommunicationTypeTests_test002@peptest.ch.asc"; sourceTree = "<group>"; };
@@ -2037,6 +2039,7 @@
 				15547567213931BC005A52D0 /* Folder+Threading.swift */,
 				15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */,
 				433E7437225B564400B84CD9 /* Account+Extension.swift */,
+				4365E8602265FBCC00929D07 /* BasicConnectInfo+VerifiableAccount.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2931,6 +2934,7 @@
 				15547568213931BC005A52D0 /* Folder+Threading.swift in Sources */,
 				4330278E1F7BABFF00D685F8 /* GradientView.swift in Sources */,
 				434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */,
+				4365E8612265FBCC00929D07 /* BasicConnectInfo+VerifiableAccount.swift in Sources */,
 				15874BD02127493E00A3A4A6 /* LogViewController.swift in Sources */,
 				152A39E121905C3E00D9F8E4 /* RecipientCellViewModel+FieldType.swift in Sources */,
 				4351C2CC1F4441190053381F /* cmark_ctype.c in Sources */,
