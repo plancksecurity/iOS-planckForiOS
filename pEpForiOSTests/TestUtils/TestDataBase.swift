@@ -123,7 +123,7 @@ class TestDataBase {
             credSmtp.password = password
             let smtp = Server.create(serverType: .smtp,
                                      port: smtpServerPort,
-                                     address: smtpServerAddress ?? "",
+                                     address: smtpServerAddress,
                                      transport: smtpServerTransport,
                                      credentials:credSmtp)
 
@@ -131,7 +131,7 @@ class TestDataBase {
             credImap.password = password
             let imap = Server.create(serverType: .imap,
                                      port: imapServerPort,
-                                     address: imapServerAddress ?? "",
+                                     address: imapServerAddress,
                                      transport: imapServerTransport,
                                      credentials:credImap)
             
