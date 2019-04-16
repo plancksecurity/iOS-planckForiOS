@@ -278,6 +278,7 @@
 		43628766213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43628765213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt */; };
 		4365E85F2265DC3F00929D07 /* VerifiableAccountTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365E85E2265DC3F00929D07 /* VerifiableAccountTest.swift */; };
 		4365E8612265FBCC00929D07 /* BasicConnectInfo+VerifiableAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365E8602265FBCC00929D07 /* BasicConnectInfo+VerifiableAccount.swift */; };
+		4365E86A226615F200929D07 /* VerifiableAccountIMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365E869226615F200929D07 /* VerifiableAccountIMAP.swift */; };
 		436795F81EE98B9A00B03E23 /* MessageReevalutionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */; };
 		436795FB1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 436795F91EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc */; };
 		436795FC1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc in Resources */ = {isa = PBXBuildFile; fileRef = 436795FA1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc */; };
@@ -783,6 +784,7 @@
 		43628765213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1300_odt_attachment.txt"; sourceTree = "<group>"; };
 		4365E85E2265DC3F00929D07 /* VerifiableAccountTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiableAccountTest.swift; sourceTree = "<group>"; };
 		4365E8602265FBCC00929D07 /* BasicConnectInfo+VerifiableAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BasicConnectInfo+VerifiableAccount.swift"; sourceTree = "<group>"; };
+		4365E869226615F200929D07 /* VerifiableAccountIMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiableAccountIMAP.swift; sourceTree = "<group>"; };
 		436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageReevalutionTests.swift; sourceTree = "<group>"; };
 		436795F91EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CommunicationTypeTests_test002@peptest.ch_sec.asc"; sourceTree = "<group>"; };
 		436795FA1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CommunicationTypeTests_test002@peptest.ch.asc"; sourceTree = "<group>"; };
@@ -1739,6 +1741,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		4365E868226615E400929D07 /* VerifiableAccount */ = {
+			isa = PBXGroup;
+			children = (
+				4365E869226615F200929D07 /* VerifiableAccountIMAP.swift */,
+			);
+			path = VerifiableAccount;
+			sourceTree = "<group>";
+		};
 		43800D8C1D112A0800821E34 /* HTMLParser */ = {
 			isa = PBXGroup;
 			children = (
@@ -2028,6 +2038,7 @@
 		43E58EB21CBF8301008AA7A7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				4365E868226615E400929D07 /* VerifiableAccount */,
 				15F835231F34BE1300FCE887 /* VerifiableAccount.swift */,
 				43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */,
 				155475632137FD96005A52D0 /* FolderType+Extensions.swift */,
@@ -2752,6 +2763,7 @@
 				002375D420DCF59D00663961 /* MoveToAccountViewController.swift in Sources */,
 				496C0EEB20BC4B370009B5B9 /* EmailListViewModel+EmailDisplayDelegate.swift in Sources */,
 				B70A3A9422089D5000EDCE61 /* Log.swift in Sources */,
+				4365E86A226615F200929D07 /* VerifiableAccountIMAP.swift in Sources */,
 				4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */,
 				4351C2D11F4441190053381F /* houdini_html_u.c in Sources */,
 				B70A3C401E817CFA0036876F /* FolderViewModel.swift in Sources */,
