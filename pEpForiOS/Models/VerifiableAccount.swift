@@ -10,6 +10,9 @@ import MessageModel
 import PantomimeFramework
 
 public struct VerifiableAccount: VerifiableAccountProtocol {
+
+    // MARK: - VerifiableAccountProtocol (data)
+
     public var verifiableAccountDelegate: VerifiableAccountDelegate?
 
     public var address: String?
@@ -44,16 +47,15 @@ public struct VerifiableAccount: VerifiableAccountProtocol {
     public var portSMTP: UInt16 = 587
     public var transportSMTP = ConnectionTransport.startTLS
 
-    public var isValidEmail: Bool {
-        return address?.isProbablyValidEmail() ?? false
+    // MARK: - VerifiableAccountProtocol (behavior)
+
+    public func verify() throws {
     }
 
-    public var isValidPassword: Bool {
-        if let pass = password {
-            return pass.count > 0
-        }
-        return false
+    public func save() throws {
     }
+
+    // MARK: - Used by the UI, when using class directly
 
     public var isValidName: Bool {
         return (userName?.count ?? 0) >= 1
@@ -63,13 +65,26 @@ public struct VerifiableAccount: VerifiableAccountProtocol {
         return isValidName && isValidEmail && isValidPassword
     }
 
-    public var isValidImap: Bool {
+    private var isValidEmail: Bool {
+        return address?.isProbablyValidEmail() ?? false
+    }
+
+    private var isValidPassword: Bool {
+        if let pass = password {
+            return pass.count > 0
+        }
         return false
     }
 
-    public var isValidSmtp: Bool {
+    private var isValidImap: Bool {
         return false
     }
+
+    private var isValidSmtp: Bool {
+        return false
+    }
+
+    // MARK: - Legacy
 
     /// Returns an Account instance filled with data of self.
     /// It does not deal with Core Data (does not persist).
@@ -139,11 +154,5 @@ public struct VerifiableAccount: VerifiableAccountProtocol {
 
         let account = Account(user: identity, servers: [imapServer, smtpServer])
         return account
-    }
-
-    public func verify() throws {
-    }
-
-    public func save() throws {
     }
 }
