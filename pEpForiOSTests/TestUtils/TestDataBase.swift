@@ -166,6 +166,25 @@ class TestDataBase {
         func basicConnectInfoSMTP() -> BasicConnectInfo {
             return basicConnectInfo(emailProtocol: .smtp)
         }
+
+        /// Transfers the account data into a `VerifiableAccountProtocol`
+        /// that you then can verify the acconut data with.
+        func populate(verifiableAccount: inout VerifiableAccountProtocol) {
+            verifiableAccount.address = idAddress
+            verifiableAccount.loginName = imapLoginName
+            verifiableAccount.accessToken = nil
+            verifiableAccount.password = password
+
+            verifiableAccount.serverIMAP = imapServerAddress
+            verifiableAccount.portIMAP = imapServerPort
+            verifiableAccount.transportIMAP = ConnectionTransport(transport: imapServerTransport)
+
+            verifiableAccount.serverSMTP = smtpServerAddress
+            verifiableAccount.portSMTP = smtpServerPort
+            verifiableAccount.transportSMTP = ConnectionTransport(transport: smtpServerTransport)
+
+            verifiableAccount.authMethod = nil
+        }
     }
 
     private var testAccounts = [AccountSettings]()
