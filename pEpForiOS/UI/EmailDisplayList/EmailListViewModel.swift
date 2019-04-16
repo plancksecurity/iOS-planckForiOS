@@ -27,7 +27,7 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func showUnreadButton(enabled: Bool)
 }
 
-// MARK: - FilterUpdateProtocol
+// MARK: - FilterViewDelegate
 
 extension EmailListViewModel: FilterViewDelegate {
     public func filterChanged(newFilter: MessageQueryResultsFilter) {
@@ -101,6 +101,9 @@ class EmailListViewModel {
     //!!!: BUFF: move
 
     private func setNewFilterAndReload(filter: MessageQueryResultsFilter?) {
+        if let newFilter = filter {
+            currentFilter = newFilter
+        }
         resetQueryResultsAndReload(with: filter, search: messageQueryResults.search)
     }
 
@@ -167,6 +170,12 @@ class EmailListViewModel {
     }
 
     var rowCount: Int {
+        if messageQueryResults.filter?.accountsEnabledStates.count == 0 {
+            // This is a dirty hack to workaround that we are (inccorectly) showning an
+            // EmailListView without having an account.
+            return 0
+        }
+
         do {
             return try messageQueryResults.count()
         } catch {
@@ -430,7 +439,7 @@ class EmailListViewModel {
     }
 
     private var _currentFilter: MessageQueryResultsFilter?
-    private var currentFilter: MessageQueryResultsFilter {
+    public private(set) var currentFilter: MessageQueryResultsFilter {
         get {
             return _currentFilter ?? folderToShow.defaultFilter
         }

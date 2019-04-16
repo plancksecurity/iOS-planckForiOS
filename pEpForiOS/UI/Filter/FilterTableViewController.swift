@@ -11,17 +11,20 @@ import MessageModel
 
 class FilterTableViewController: BaseTableViewController {
 
-    open var filterEnabled: MessageQueryResultsFilter?
+    public var filterEnabled: MessageQueryResultsFilter?
     //!!!: this should be in the VM, not the VC
-    open var filterDelegate: FilterViewDelegate?
+    public var filterDelegate: FilterViewDelegate?
 
-    open var viewModel : FilterViewModel?
+    public var viewModel : FilterViewModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.hidesBackButton = true
-        self.navigationItem.rightBarButtonItem =  UIBarButtonItem(title: NSLocalizedString("OK", comment: "Filter accept text"), style: .plain, target: self, action: #selector(ok(sender:)))
-
+        self.navigationItem.rightBarButtonItem =
+            UIBarButtonItem(title: NSLocalizedString("OK",  comment: "Filter accept text"),
+                            style: .plain,
+                            target: self,
+                            action: #selector(ok(sender:)))
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -38,14 +41,11 @@ class FilterTableViewController: BaseTableViewController {
     }
 
     func initViewModel() {
-        //self.viewModel = FilterViewModel(inFolder: inFolder, filter: filterEnabled)
-        //!!!: remove!
-        self.viewModel = FilterViewModel(filter: filterEnabled!)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        guard let filter = filterEnabled else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No Filter in FilterView")
+            return
+        }
+        self.viewModel = FilterViewModel(filter: filter)
     }
 
     // MARK: - Table view data source

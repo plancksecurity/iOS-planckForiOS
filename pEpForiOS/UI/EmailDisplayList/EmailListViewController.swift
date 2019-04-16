@@ -96,9 +96,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             Log.shared.errorAndCrash(component: #function, errorString: "No VM")
             return
         }
-        
-        if model == nil {
-        }
 
         if vm.showLoginView {
             showLoginScreen()
@@ -246,6 +243,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         showEditToolbar()
         tableView.setEditing(true, animated: true)
 
+        //!!!: English is the ONLY used language in our code base
         //modificar toolbar
         //hacer aparecer check de marcado
         //hacer la accion solicitada
@@ -1061,11 +1059,13 @@ extension EmailListViewController: SegueHandlerType {
                 Logger.frontendLogger.errorAndCrash("Segue issue")
                 return
             }
-            //!!!:warning
+            guard let vm = model else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+                return
+            }
             destiny.appConfig = appConfig
-            destiny.filterDelegate = model
-            //destiny.inFolder = model?.getFolderIsUnified() ?? false
-            //destiny.filterEnabled = model?.getFolderFilters()
+            destiny.filterDelegate = vm
+            destiny.filterEnabled = vm.currentFilter
             destiny.hidesBottomBarWhenPushed = true
         case .segueAddNewAccount:
             guard
@@ -1084,6 +1084,7 @@ extension EmailListViewController: SegueHandlerType {
                 return
             }
             vC.appConfig = appConfig
+            //!!!: was commented. Is this dead code? if so, rm!
             //vC.hidesBottomBarWhenPushed = true
             break
         case .segueShowMoveToFolder:

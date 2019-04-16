@@ -15,7 +15,6 @@ public class UnifiedInbox: VirtualFolderProtocol {
         return FolderType.inbox
     }
 
-
     public func fetchOlder() {
         for folder in Folder.getAll(folderType: .inbox) {
             folder.fetchOlder()
