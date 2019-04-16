@@ -23,7 +23,34 @@ class VerifiableAccountTest: XCTestCase {
         wait(for: [expDidVerify], timeout: TestUtil.waitTime)
     }
 
+    func testFailingValidation() {
+        XCTAssertTrue(checkFailingValidation() {
+            var newOne = $0
+            newOne.address = nil
+            return newOne
+        })
+    }
+
     // MARK: Helpers
+
+    func checkFailingValidation(
+        modifier: (VerifiableAccountProtocol) -> VerifiableAccountProtocol) -> Bool {
+        let verifier = VerifiableAccount()
+        var verifierType: VerifiableAccountProtocol = verifier
+        SecretTestData().populateWorkingAccount(
+            verifiableAccount: &verifierType)
+
+        // Invalidate it
+        var verifierToBeUsed = modifier(verifierType)
+
+        var exceptionHit = false
+        do {
+            try check(verifier: &verifierToBeUsed, delegate: nil)
+        } catch {
+            exceptionHit = true
+        }
+        return exceptionHit
+    }
 
     func check(verifier: inout VerifiableAccountProtocol,
                delegate: VerifiableAccountDelegate?) throws {
