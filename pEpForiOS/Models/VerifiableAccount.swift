@@ -9,7 +9,9 @@
 import MessageModel
 import PantomimeFramework
 
-public struct VerifiableAccount {
+public struct VerifiableAccount: VerifiableAccountProtocol {
+    public var verifiableAccountDelegate: VerifiableAccountDelegate?
+
     public var address: String?
 
     /**
@@ -26,14 +28,14 @@ public struct VerifiableAccount {
      Currently, the only use case for this is .saslXoauth2. In all other cases,
      this should be nil.
      */
-    public let authMethod: AuthMethod?
+    public var authMethod: AuthMethod?
 
     public var password: String?
 
     /**
      If the user chose OAuth2, this is the token. `password` then should be nil.
      */
-    var accessToken: OAuth2AccessTokenProtocol?
+    public var accessToken: OAuth2AccessTokenProtocol?
 
     public var serverIMAP: String?
     public var portIMAP: UInt16 = 993
@@ -138,16 +140,10 @@ public struct VerifiableAccount {
         let account = Account(user: identity, servers: [imapServer, smtpServer])
         return account
     }
-}
 
-extension VerifiableAccount {
-    init() {
-        self.address = nil
-        self.userName = nil
-        self.loginName = nil
-        self.authMethod = nil
-        self.password = nil
-        self.serverIMAP = nil
-        self.serverSMTP = nil
+    public func verify() throws {
+    }
+
+    public func save() throws {
     }
 }
