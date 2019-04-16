@@ -80,7 +80,7 @@ class LoginViewController: BaseViewController {
     /**
      The last account input as determined by LAS, and delivered via didVerify.
      */
-    var lastAccountInput: AccountUserInput?
+    var lastAccountInput: VerifiableAccount?
 
     override var prefersStatusBarHidden: Bool {
         return true
@@ -309,7 +309,7 @@ extension LoginViewController: SegueHandlerType {
 // MARK: - AccountVerificationResultDelegate
 
 extension LoginViewController: AccountVerificationResultDelegate {
-    func didVerify(result: AccountVerificationResult, accountInput: AccountUserInput?) {
+    func didVerify(result: AccountVerificationResult, accountInput: VerifiableAccount?) {
         GCD.onMain() { [weak self] in
             guard let me = self else {
                 Logger.frontendLogger.lostMySelf()

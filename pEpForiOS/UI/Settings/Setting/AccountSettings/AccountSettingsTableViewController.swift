@@ -306,7 +306,7 @@ extension AccountSettingsTableViewController {
 // MARK: - AccountVerificationResultDelegate
 
 extension AccountSettingsTableViewController: AccountVerificationResultDelegate {
-    func didVerify(result: AccountVerificationResult, accountInput: AccountUserInput?) {
+    func didVerify(result: AccountVerificationResult, accountInput: VerifiableAccount?) {
         GCD.onMain() {
             self.hideSpinner()
             switch result {

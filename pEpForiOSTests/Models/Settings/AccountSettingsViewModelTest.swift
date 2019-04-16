@@ -140,7 +140,7 @@ class AccountVerificationResultDelegateMock: AccountVerificationResultDelegate {
     static let DID_VERIFY_EXPECTATION = "DID_VERIFY_CALLED"
     var expectationDidVerifyCalled: XCTestExpectation?
 
-    func didVerify(result: AccountVerificationResult, accountInput: AccountUserInput?) {
+    func didVerify(result: AccountVerificationResult, accountInput: VerifiableAccount?) {
         guard let expectation = expectationDidVerifyCalled else {
             XCTFail()
             return

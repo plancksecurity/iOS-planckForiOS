@@ -1,5 +1,5 @@
 //
-//  AccountUserInput.swift
+//  VerifiableAccount.swift
 //  pEpForiOS
 //
 //  Created by buff on 04.08.17.
@@ -9,7 +9,7 @@
 import MessageModel
 import PantomimeFramework
 
-public struct AccountUserInput {
+public struct VerifiableAccount {
     public var address: String?
 
     /**
@@ -140,7 +140,7 @@ public struct AccountUserInput {
     }
 }
 
-extension AccountUserInput {
+extension VerifiableAccount {
     init() {
         self.address = nil
         self.userName = nil

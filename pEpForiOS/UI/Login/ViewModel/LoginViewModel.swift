@@ -47,7 +47,7 @@ class LoginViewModel {
     /**
      The most current account in verification.
      */
-    var accountInVerification: AccountUserInput?
+    var accountInVerification: VerifiableAccount?
 
     /**
      Helper model to handle most of the OAuth2 authorization.
@@ -122,7 +122,7 @@ class LoginViewModel {
 
             // Note: auth method is never taken from LAS. We either have OAuth2,
             // as determined previously, or we will defer to pantomime to find out the best method.
-            let newAccount = AccountUserInput(
+            let newAccount = VerifiableAccount(
                 address: accountName, userName: userName,
                 loginName: loginName,
                 authMethod: accessToken != nil ? .saslXoauth2 : nil,
@@ -149,7 +149,7 @@ class LoginViewModel {
     ///
     /// - Parameter model: account data
     /// - Throws: AccountVerificationError
-    func verifyAccount(model: AccountUserInput) throws {
+    func verifyAccount(model: VerifiableAccount) throws {
         do {
             let account = try model.account()
             loginAccount = account // have to store that for callback use
