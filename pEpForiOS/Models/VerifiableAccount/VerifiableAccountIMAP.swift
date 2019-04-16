@@ -11,16 +11,20 @@ import Foundation
 import PantomimeFramework
 import MessageModel
 
+public protocol VerifiableAccountIMAPDelegate: class {
+    func verified(basicConnectInfo: BasicConnectInfo, result: Result<Void, Error>)
+}
+
 /// Helper for `VerifiableAccount` (verifies IMAP servers).
 class VerifiableAccountIMAP {
-    public weak var verifiableAccountDelegate: VerifiableAccountDelegate?
+    public weak var verifiableAccountDelegate: VerifiableAccountIMAPDelegate?
 
     private var sync: ImapSync?
-    private var syncDelegate: VerifiableAccountIMAPDelegate?
+    private var syncDelegate: VerifiableAccountSyncDelegate?
 
     /// Tries to verify the given IMAP account.
     public func verify(basicConnectInfo: BasicConnectInfo) {
-        let theSyncDelegate = VerifiableAccountIMAPDelegate(errorHandler: self)
+        let theSyncDelegate = VerifiableAccountSyncDelegate(errorHandler: self)
         syncDelegate = theSyncDelegate
 
         sync = ImapSync(connectInfo: basicConnectInfo)
@@ -33,7 +37,7 @@ extension VerifiableAccountIMAP: ImapSyncDelegateErrorHandlerProtocol {
     }
 }
 
-class VerifiableAccountIMAPDelegate: DefaultImapSyncDelegate {
+class VerifiableAccountSyncDelegate: DefaultImapSyncDelegate {
     override func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
     }
 
