@@ -28,7 +28,6 @@ class FilterTableViewController: BaseTableViewController {
         initViewModel()
     }
 
-
     @objc func ok(sender: UIBarButtonItem) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash(component: #function, errorString: "No VM")
@@ -37,7 +36,6 @@ class FilterTableViewController: BaseTableViewController {
         filterDelegate?.filterChanged(newFilter: vm.filter)
        _ = self.navigationController?.popViewController(animated: true)
     }
-
 
     func initViewModel() {
         //self.viewModel = FilterViewModel(inFolder: inFolder, filter: filterEnabled)
