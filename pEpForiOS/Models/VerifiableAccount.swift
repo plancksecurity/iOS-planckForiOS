@@ -13,7 +13,7 @@ public struct VerifiableAccount: VerifiableAccountProtocol {
 
     // MARK: - VerifiableAccountProtocol (data)
 
-    public var verifiableAccountDelegate: VerifiableAccountDelegate?
+    public weak var verifiableAccountDelegate: VerifiableAccountDelegate?
 
     public var address: String?
 
