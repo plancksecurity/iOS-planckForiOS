@@ -49,10 +49,29 @@ public struct VerifiableAccount: VerifiableAccountProtocol {
 
     // MARK: - VerifiableAccountProtocol (behavior)
 
+    private func isValid() -> Bool {
+        let isValid =
+            (address?.count ?? 0) > 0 &&
+                ((authMethod == nil && accessToken != nil) ||
+                    (authMethod != nil && accessToken == nil) ||
+                    (authMethod == nil && accessToken == nil)) &&
+                portIMAP > 0 &&
+                portSMTP > 0 &&
+                (serverIMAP?.count ?? 0) > 0 &&
+                (serverSMTP?.count ?? 0) > 0
+        return isValid
+    }
+
     public func verify() throws {
+        if !isValid() {
+            throw VerifiableAccountError.invalidUserData
+        }
     }
 
     public func save() throws {
+        if !isValid() {
+            throw VerifiableAccountError.invalidUserData
+        }
     }
 
     // MARK: - Used by the UI, when using class directly
