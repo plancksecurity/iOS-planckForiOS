@@ -31,6 +31,36 @@ class VerifiableAccountTest: XCTestCase {
         })
     }
 
+    func testBasicFailingVerification() {
+        let verifier = VerifiableAccount()
+        var verifierType: VerifiableAccountProtocol = verifier
+        SecretTestData().populateWorkingAccount(
+            verifiableAccount: &verifierType)
+
+        // This should make it fail quickly
+        verifierType.serverIMAP = "localhost"
+        verifierType.portIMAP = 5
+        verifierType.serverSMTP = "localhost"
+        verifierType.portSMTP = 5
+
+        let expDidVerify = expectation(description: "expDidVerify")
+        let delegate = VerifiableAccountTestDelegate(expDidVerify: expDidVerify)
+        try! check(verifier: &verifierType, delegate: delegate)
+        wait(for: [expDidVerify], timeout: TestUtil.waitTime)
+
+        guard let result = delegate.result else {
+            XCTFail()
+            return
+        }
+
+        switch result {
+        case .success(_):
+            XCTFail()
+        case .failure(_):
+            break
+        }
+    }
+
     // MARK: Helpers
 
     func checkFailingValidation(
@@ -60,6 +90,8 @@ class VerifiableAccountTest: XCTestCase {
 }
 
 class VerifiableAccountTestDelegate: VerifiableAccountDelegate {
+    var result: Result<Void, Error>?
+
     let expDidVerify: XCTestExpectation
 
     init(expDidVerify: XCTestExpectation) {
@@ -67,6 +99,7 @@ class VerifiableAccountTestDelegate: VerifiableAccountDelegate {
     }
 
     func didEndVerification(result: Result<Void, Error>) {
+        self.result = result
         expDidVerify.fulfill()
     }
 }
