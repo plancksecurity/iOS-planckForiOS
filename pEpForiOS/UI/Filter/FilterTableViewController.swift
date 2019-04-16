@@ -13,7 +13,7 @@ class FilterTableViewController: BaseTableViewController {
 
     open var filterEnabled: MessageQueryResultsFilter?
     //!!!: this should be in the VM, not the VC
-    open var filterDelegate: FilterUpdateProtocol?
+    open var filterDelegate: FilterViewDelegate?
 
     open var viewModel : FilterViewModel?
 
@@ -34,7 +34,7 @@ class FilterTableViewController: BaseTableViewController {
             Log.shared.errorAndCrash(component: #function, errorString: "No VM")
             return
         }
-        filterDelegate?.addFilter(vm.filter)
+        filterDelegate?.filterChanged(newFilter: vm.filter)
        _ = self.navigationController?.popViewController(animated: true)
     }
 
@@ -54,7 +54,7 @@ class FilterTableViewController: BaseTableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         if let model = viewModel {
-            return model.count
+            return model.sectionCount
         } else {
             return 0
         }
@@ -97,15 +97,22 @@ class FilterTableViewController: BaseTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //!!!: we have to go to the filter property of the view mode an change directly the value on there.
-        if let model = viewModel {
-            var cellvm = model[indexPath.section][indexPath.row]
-            cellvm.state = !cellvm.state
-            let cell = self.tableView.cellForRow(at: indexPath)
-            cell?.accessoryType = (cellvm.state) ? .checkmark : .none
+        //!!!: we have to go to the filter property of the view mode an change directly the value on there. (Buff: why?)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return
         }
+        vm.toggleEnabledState(forRowAt: indexPath)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+
+//        var cellvm = vm[indexPath.section][indexPath.row]
+//        vm.setEnabledState(!cellvm.state, forRowAt: indexPath)
+//        //        cellvm.state = !cellvm.state //!!!: adapt
+//        let cell = self.tableView.cellForRow(at: indexPath)
+//        cell?.accessoryType = (cellvm.state) ? .checkmark : .none
     }
 
+    //!!!: I think we need it!
     /*func canDisable(accountFilters: FilterSectionViewModel) -> Bool{
         return accountFilters.accountsEnabled() > 1
     }*/
