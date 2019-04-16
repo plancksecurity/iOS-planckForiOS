@@ -150,8 +150,8 @@ class TestDataBase {
             return BasicConnectInfo(
                 accountEmailAddress: idAddress,
                 loginName: imapLoginName ?? idAddress,
-                loginPasswordKeyChainKey: nil,
                 loginPassword: password,
+                accessToken: nil,
                 networkAddress: imapServerAddress,
                 networkPort: imapServerPort,
                 connectionTransport: ConnectionTransport(transport: imapServerTransport),
