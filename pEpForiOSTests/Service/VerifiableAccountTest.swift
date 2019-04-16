@@ -24,11 +24,13 @@ class VerifiableAccountTest: XCTestCase {
     }
 
     func testFailingValidation() {
-        XCTAssertTrue(checkFailingValidation() {
+        let (exceptionOnVerify, exceptionOnSave) = checkFailingValidation() {
             var newOne = $0
             newOne.address = nil
             return newOne
-        })
+        }
+        XCTAssertTrue(exceptionOnVerify)
+        XCTAssertTrue(exceptionOnSave)
     }
 
     func testBasicFailingVerification() {
@@ -63,8 +65,10 @@ class VerifiableAccountTest: XCTestCase {
 
     // MARK: Helpers
 
+    /// Tries `verify()` and `save()` on the given `VerifiableAccountProtocol`.
+    /// - Returns: A tuple of Bool denoting if `verify()` and `save()` threw exceptions.
     func checkFailingValidation(
-        modifier: (VerifiableAccountProtocol) -> VerifiableAccountProtocol) -> Bool {
+        modifier: (VerifiableAccountProtocol) -> VerifiableAccountProtocol) -> (Bool, Bool) {
         let verifier = VerifiableAccount()
         var verifierType: VerifiableAccountProtocol = verifier
         SecretTestData().populateWorkingAccount(
@@ -73,13 +77,21 @@ class VerifiableAccountTest: XCTestCase {
         // Invalidate it
         var verifierToBeUsed = modifier(verifierType)
 
-        var exceptionHit = false
+        var exceptionHit1 = false
         do {
             try check(verifier: &verifierToBeUsed, delegate: nil)
         } catch {
-            exceptionHit = true
+            exceptionHit1 = true
         }
-        return exceptionHit
+
+        var exceptionHit2 = false
+        do {
+            try check(verifier: &verifierToBeUsed, delegate: nil)
+        } catch {
+            exceptionHit2 = true
+        }
+
+        return (exceptionHit1, exceptionHit2)
     }
 
     func check(verifier: inout VerifiableAccountProtocol,
