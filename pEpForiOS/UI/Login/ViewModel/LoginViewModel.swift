@@ -123,7 +123,9 @@ class LoginViewModel {
             // Note: auth method is never taken from LAS. We either have OAuth2,
             // as determined previously, or we will defer to pantomime to find out the best method.
             let newAccount = VerifiableAccount(
-                address: accountName, userName: userName,
+                verifiableAccountDelegate: self,
+                address: accountName,
+                userName: userName,
                 loginName: loginName,
                 authMethod: accessToken != nil ? .saslXoauth2 : nil,
                 password: accessToken == nil ? password : nil,
@@ -134,6 +136,7 @@ class LoginViewModel {
                 serverSMTP: outgoingServer.hostname,
                 portSMTP: UInt16(outgoingServer.port),
                 transportSMTP: smtpTransport)
+
             accountInVerification = newAccount
 
             do {
@@ -241,5 +244,12 @@ extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
             }
             self?.accountHasBeenQualified(trusted: isLocal ?? false)
         }
+    }
+}
+
+// MARK: - VerifiableAccountDelegate
+
+extension LoginViewModel: VerifiableAccountDelegate {
+    func didEndVerification(result: Result<Void, Error>) {
     }
 }
