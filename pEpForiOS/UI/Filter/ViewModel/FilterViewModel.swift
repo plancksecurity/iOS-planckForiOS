@@ -17,6 +17,9 @@ public class FilterViewModel {
     public var sectionCount : Int {
         return self.sections.count
     }
+    private var canDisableAccount: Bool {
+        return filter.numEnabledAccounts > 1
+    }
     public subscript(index: Int) -> Section {
         get {
             return self.sections[index]
@@ -40,6 +43,9 @@ public class FilterViewModel {
         var accountsEnabledStates = filter.accountsEnabledStates
         switch row.type {
         case .account:
+            guard isOkToAlterAccountsEnabledState(with: newState) else {
+                return
+            }
             guard let account = filter.account(at: indexPath.row) else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No Account for row")
                 return
@@ -217,5 +223,21 @@ extension FilterViewModel {
         var icon: UIImage {
             return type.icon
         }
+    }
+}
+
+// MARK: - Convenience
+
+extension FilterViewModel {
+
+    /// We do not allow to disable all accounts (as the result would always be zero mails)
+    private func isOkToAlterAccountsEnabledState(with newState: Bool) -> Bool {
+        let isDisable = newState == false
+        if isDisable {
+            guard canDisableAccount else {
+                return false
+            }
+        }
+        return true
     }
 }

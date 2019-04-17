@@ -101,17 +101,6 @@ class FilterTableViewController: BaseTableViewController {
             return
         }
         vm.toggleEnabledState(forRowAt: indexPath)
-        tableView.reloadRows(at: [indexPath], with: .automatic)
-
-//        var cellvm = vm[indexPath.section][indexPath.row]
-//        vm.setEnabledState(!cellvm.state, forRowAt: indexPath)
-//        //        cellvm.state = !cellvm.state //!!!: adapt
-//        let cell = self.tableView.cellForRow(at: indexPath)
-//        cell?.accessoryType = (cellvm.state) ? .checkmark : .none
+        tableView.reloadRows(at: [indexPath], with: .automatic) //!!!: not sure about which animation type fits best. Double check.
     }
-
-    //!!!: I think we need it!
-    /*func canDisable(accountFilters: FilterSectionViewModel) -> Bool{
-        return accountFilters.accountsEnabled() > 1
-    }*/
 }
