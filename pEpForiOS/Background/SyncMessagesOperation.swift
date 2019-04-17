@@ -130,11 +130,22 @@ public class SyncMessagesOperation: ImapSyncOperation {
         let messages = CdMessage.all(
             predicate: NSCompoundPredicate(
                 andPredicateWithSubpredicates: [p1, p2])) as? [CdMessage] ?? []
+
+
+        var debugDeleteCounter = 0
         for msg in messages {
             if !existingUIDs.contains(NSNumber(value: msg.uid)) {
+                debugDeleteCounter += 1
                 msg.deleteAndInformDelegate(context: context)
             }
         }
+
+        if debugDeleteCounter > 0 {
+            UIUtils.showAlertWithOnlyPositiveButton(title: "!! SYNC MESSAGES !!!",
+                                                    message: "We just deleted \(debugDeleteCounter) messages because they do not exist on server any more.\nFolder: \(String(describing: folder.name)):\(String(describing: folder.account?.identity?.address)).",
+                inViewController: UIApplication.topViewController()!)
+        }
+
     }
 
     // MARK: - ImapSyncDelegate (internal)
