@@ -1,12 +1,12 @@
-v0.0.42_b1
-pEpEngine f344cad791f2 (sync)
-pEpObjCAdapter f5eeb38557f3
+vleonbug_1.0
+pEpEngine 3fe4b41696d3 (sync)
+pEpObjCAdapter 9278efa027f3
 netpgp-et 8848ce82014d
-MessageModel 20449892372f
+MessageModel 80408b063c1c
 pantomime-iOS e05d5f2d02bc
 libAccountSettings 3d94e78b587e
 ldns 70cfa2739c2a71db098e738d2fd16ae1025b2362
 OpenSSL-for-iPhone 10019638e80e8a8a5fc19642a840d8a69fac7349
 libetpan af2aad552dd0ecc6a943f78e5c77dc03ebbc0028
 AppAuth-iOS b9d3ce7f02d817beea002241c3de45dbe9504d16
-SwipeCellKit 338db33b96fe79a4149844be0685d3614dac36a0
+SwipeCellKit 00cd0cb5f9ceb4ae7a245fe21bf45643285d454b
