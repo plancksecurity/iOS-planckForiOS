@@ -9,7 +9,7 @@
 import MessageModel
 import PantomimeFramework
 
-public struct VerifiableAccount: VerifiableAccountProtocol {
+public class VerifiableAccount: VerifiableAccountProtocol {
     // MARK: - VerifiableAccountProtocol (data)
 
     public weak var verifiableAccountDelegate: VerifiableAccountDelegate?
@@ -46,6 +46,50 @@ public struct VerifiableAccount: VerifiableAccountProtocol {
     public var portSMTP: UInt16 = 587
     public var transportSMTP = ConnectionTransport.startTLS
 
+    public init(verifiableAccountDelegate: VerifiableAccountDelegate?,
+                address: String?,
+                userName: String?,
+                loginName: String?,
+                authMethod: AuthMethod?,
+                password: String?,
+                accessToken: OAuth2AccessTokenProtocol?,
+                serverIMAP: String?,
+                portIMAP: UInt16,
+                transportIMAP: ConnectionTransport,
+                serverSMTP: String?,
+                portSMTP: UInt16,
+                transportSMTP: ConnectionTransport) {
+        self.verifiableAccountDelegate = verifiableAccountDelegate
+        self.address = address
+        self.userName = userName
+        self.loginName = loginName
+        self.authMethod = authMethod
+        self.password = password
+        self.accessToken = accessToken
+        self.serverIMAP = serverIMAP
+        self .portIMAP = portIMAP
+        self.transportIMAP = transportIMAP
+        self.serverSMTP = serverSMTP
+        self.portSMTP = portSMTP
+        self.transportSMTP = transportSMTP
+    }
+
+    public convenience init() {
+        self.init(verifiableAccountDelegate: nil,
+                  address: nil,
+                  userName: nil,
+                  loginName: nil,
+                  authMethod: nil,
+                  password: nil,
+                  accessToken: nil,
+                  serverIMAP: nil,
+                  portIMAP: 993,
+                  transportIMAP: ConnectionTransport.TLS,
+                  serverSMTP: nil,
+                  portSMTP: 587,
+                  transportSMTP: ConnectionTransport.startTLS)
+    }
+
     // MARK: - Internal
 
     private var verifier: VerifiableAccountIMAP?
@@ -65,13 +109,12 @@ public struct VerifiableAccount: VerifiableAccountProtocol {
         return isValid
     }
 
-    public mutating func verify() throws {
+    public func verify() throws {
         if !isValid() {
             throw VerifiableAccountError.invalidUserData
         }
         verifier = VerifiableAccountIMAP()
         verifier?.verifiableAccountDelegate = self
-        // TODO Start verification
     }
 
     public func save() throws {
