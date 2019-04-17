@@ -115,10 +115,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         return isValid
     }
 
-    public func verify() throws {
-        if !isValid() {
-            throw VerifiableAccountError.invalidUserData
-        }
+    private func startImapVerification() throws {
         let theVerifier = VerifiableAccountIMAP()
         self.verifier = theVerifier
         theVerifier.verifiableAccountDelegate = self
@@ -128,6 +125,14 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                 throw VerifiableAccountError.invalidUserData
         }
         theVerifier.verify(basicConnectInfo: imapConnectInfo)
+    }
+
+    public func verify() throws {
+        if !isValid() {
+            throw VerifiableAccountError.invalidUserData
+        }
+
+        try startImapVerification()
     }
 
     public func save() throws {
