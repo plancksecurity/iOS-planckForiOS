@@ -293,7 +293,9 @@ extension PersistentImapFolder: CWIMAPCache {
                     //                        cdMessage.deleteAndInformDelegate(context: context)
                     //                    }
 
-                    UIUtils.showAlertWithOnlyPositiveButton(title: "!! UIDVALIDITY !!!", message: "In the real app, we would delete all \(messages.count) messages in this folder). \nReason: UIDValidity changed.\nold: \(folder.uidValidity)\nnew: \(theUIDValidity)\nFolder:  (\(String(describing: self.folder.name)):\(String(describing: self.folder.account?.identity?.address)).\n\n!! If \(messages.count) is greater zero, please report !!" ,inViewController: UIApplication.topViewController()!)
+                    if messages.count > 0 {
+                        UIUtils.showAlertWithOnlyPositiveButton(title: "!! UIDVALIDITY !!!", message: "In the real app, we would delete all \(messages.count) messages in this folder). \nReason: UIDValidity changed.\nold: \(folder.uidValidity)\nnew: \(theUIDValidity)\nFolder:  (\(String(describing: self.folder.name)):\(String(describing: self.folder.account?.identity?.address)).\n\n!! Pease report !!" ,inViewController: UIApplication.topViewController()!)
+                    }
                 }
                 self.folder.uidValidity = Int32(theUIDValidity)
                 context.saveAndLogErrors()
