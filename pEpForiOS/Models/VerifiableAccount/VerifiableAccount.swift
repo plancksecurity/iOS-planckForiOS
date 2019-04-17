@@ -93,6 +93,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     // MARK: - Internal
 
     private var imapVerifier: VerifiableAccountIMAP?
+    private var smtpVerifier: VerifiableAccountSMTP?
 
     var imapResult: Result<Void, Error>? = nil
     var smtpResult: Result<Void, Error>? = nil
@@ -127,12 +128,25 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         theVerifier.verify(basicConnectInfo: imapConnectInfo)
     }
 
+    private func startSmtpVerification() throws {
+        let theVerifier = VerifiableAccountSMTP()
+        self.smtpVerifier = theVerifier
+        theVerifier.verifiableAccountDelegate = self
+        guard let smtpConnectInfo = BasicConnectInfo(
+            verifiableAccount: self, emailProtocol: .smtp) else {
+                // Assuming this is caused by invalid data.
+                throw VerifiableAccountError.invalidUserData
+        }
+        theVerifier.verify(basicConnectInfo: smtpConnectInfo)
+    }
+
     public func verify() throws {
         if !isValid() {
             throw VerifiableAccountError.invalidUserData
         }
 
         try startImapVerification()
+        try startSmtpVerification()
     }
 
     public func save() throws {
@@ -241,22 +255,36 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         let account = Account(user: identity, servers: [imapServer, smtpServer])
         return account
     }
-}
 
-extension VerifiableAccount: VerifiableAccountIMAPDelegate {
+    // MARK: - Internal (Behaviour)
+
     private func checkSuccess() {
         guard let theImapResult = imapResult, let theSmtpResult = smtpResult else {
             return
         }
         // TODO: Check the results of IMAP an SMTP
     }
+}
 
+extension VerifiableAccount: VerifiableAccountIMAPDelegate {
     public func verified(verifier: VerifiableAccountIMAP,
                          basicConnectInfo: BasicConnectInfo,
                          result: Result<Void, Error>) {
         verifier.verifiableAccountDelegate = nil
         syncQueue.async { [weak self] in
             self?.imapResult = result
+            self?.checkSuccess()
+        }
+    }
+}
+
+extension VerifiableAccount: VerifiableAccountSMTPDelegate {
+    public func verified(verifier: VerifiableAccountSMTP,
+                         basicConnectInfo: BasicConnectInfo,
+                         result: Result<Void, Error>) {
+        verifier.verifiableAccountDelegate = nil
+        syncQueue.async { [weak self] in
+            self?.smtpResult = result
             self?.checkSuccess()
         }
     }
