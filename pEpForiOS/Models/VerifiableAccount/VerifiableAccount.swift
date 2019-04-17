@@ -262,7 +262,18 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         guard let theImapResult = imapResult, let theSmtpResult = smtpResult else {
             return
         }
-        // TODO: Check the results of IMAP an SMTP
+
+        switch theImapResult {
+        case .failure(let error):
+            verifiableAccountDelegate?.didEndVerification(result: .failure(error))
+        case .success(()):
+            switch theSmtpResult {
+            case .failure(let error):
+                verifiableAccountDelegate?.didEndVerification(result: .failure(error))
+            case .success(()):
+                verifiableAccountDelegate?.didEndVerification(result: .success(()))
+            }
+        }
     }
 }
 
