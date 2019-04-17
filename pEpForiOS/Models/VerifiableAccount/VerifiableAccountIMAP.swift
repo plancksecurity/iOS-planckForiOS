@@ -11,13 +11,17 @@ import Foundation
 import PantomimeFramework
 import MessageModel
 
-public protocol VerifiableAccountIMAPDelegate: class {
-    func verified(basicConnectInfo: BasicConnectInfo, result: Result<Void, Error>)
+public protocol VerifiableAccountIMAPDelegate {
+    func verified(verifier: VerifiableAccountIMAP,
+                  basicConnectInfo: BasicConnectInfo,
+                  result: Result<Void, Error>)
 }
 
 /// Helper for `VerifiableAccount` (verifies IMAP servers).
-class VerifiableAccountIMAP {
-    public weak var verifiableAccountDelegate: VerifiableAccountIMAPDelegate?
+public class VerifiableAccountIMAP {
+    /// - Note: This is not weak, in order to enable structs as delegate.
+    ///   Break up any reference cycle yourself.
+    public var verifiableAccountDelegate: VerifiableAccountIMAPDelegate?
 
     private var sync: ImapSync?
     private var syncDelegate: VerifiableAccountSyncDelegate?

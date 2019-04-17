@@ -10,7 +10,6 @@ import MessageModel
 import PantomimeFramework
 
 public struct VerifiableAccount: VerifiableAccountProtocol {
-
     // MARK: - VerifiableAccountProtocol (data)
 
     public weak var verifiableAccountDelegate: VerifiableAccountDelegate?
@@ -47,6 +46,10 @@ public struct VerifiableAccount: VerifiableAccountProtocol {
     public var portSMTP: UInt16 = 587
     public var transportSMTP = ConnectionTransport.startTLS
 
+    // MARK: - Internal
+
+    private var verifier: VerifiableAccountIMAP?
+
     // MARK: - VerifiableAccountProtocol (behavior)
 
     private func isValid() -> Bool {
@@ -62,10 +65,13 @@ public struct VerifiableAccount: VerifiableAccountProtocol {
         return isValid
     }
 
-    public func verify() throws {
+    public mutating func verify() throws {
         if !isValid() {
             throw VerifiableAccountError.invalidUserData
         }
+        verifier = VerifiableAccountIMAP()
+        verifier?.verifiableAccountDelegate = self
+        // TODO Start verification
     }
 
     public func save() throws {
@@ -177,6 +183,9 @@ public struct VerifiableAccount: VerifiableAccountProtocol {
 }
 
 extension VerifiableAccount: VerifiableAccountIMAPDelegate {
-    func verified(basicConnectInfo: BasicConnectInfo, result: Result<Void, Error>) {
+    public func verified(verifier: VerifiableAccountIMAP,
+                         basicConnectInfo: BasicConnectInfo,
+                         result: Result<Void, Error>) {
+        verifier.verifiableAccountDelegate = nil
     }
 }
