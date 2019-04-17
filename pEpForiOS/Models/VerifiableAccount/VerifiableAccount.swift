@@ -175,3 +175,8 @@ public struct VerifiableAccount: VerifiableAccountProtocol {
         return account
     }
 }
+
+extension VerifiableAccount: VerifiableAccountIMAPDelegate {
+    func verified(basicConnectInfo: BasicConnectInfo, result: Result<Void, Error>) {
+    }
+}
