@@ -135,7 +135,8 @@ class LoginViewModel {
                 transportIMAP: imapTransport,
                 serverSMTP: outgoingServer.hostname,
                 portSMTP: UInt16(outgoingServer.port),
-                transportSMTP: smtpTransport)
+                transportSMTP: smtpTransport,
+                trustedImapServer: false)
 
             accountInVerification = newAccount
 

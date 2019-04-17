@@ -46,6 +46,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     public var portSMTP: UInt16 = 587
     public var transportSMTP = ConnectionTransport.startTLS
 
+    public var trustedImapServer: Bool
+
     public init(verifiableAccountDelegate: VerifiableAccountDelegate?,
                 address: String?,
                 userName: String?,
@@ -58,7 +60,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                 transportIMAP: ConnectionTransport,
                 serverSMTP: String?,
                 portSMTP: UInt16,
-                transportSMTP: ConnectionTransport) {
+                transportSMTP: ConnectionTransport,
+                trustedImapServer: Bool) {
         self.verifiableAccountDelegate = verifiableAccountDelegate
         self.address = address
         self.userName = userName
@@ -72,6 +75,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         self.serverSMTP = serverSMTP
         self.portSMTP = portSMTP
         self.transportSMTP = transportSMTP
+        self.trustedImapServer = trustedImapServer
     }
 
     public convenience init() {
@@ -87,7 +91,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                   transportIMAP: ConnectionTransport.TLS,
                   serverSMTP: nil,
                   portSMTP: 587,
-                  transportSMTP: ConnectionTransport.startTLS)
+                  transportSMTP: ConnectionTransport.startTLS,
+                  trustedImapServer: false)
     }
 
     // MARK: - Internal
