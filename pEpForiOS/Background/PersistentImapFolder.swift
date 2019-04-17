@@ -274,6 +274,7 @@ extension PersistentImapFolder: CWIMAPCache {
 
     override func setUIDValidity(_ theUIDValidity: UInt) {
         guard let context = self.folder.managedObjectContext else {
+            UIUtils.showAlertWithOnlyPositiveButton(title: "No Context", message: "self.folder.managedObjectContext is nil", inViewController: UIApplication.topViewController()!)
             Logger.backendLogger.errorAndCrash("Dangling folder")
             return
         }
@@ -287,9 +288,12 @@ extension PersistentImapFolder: CWIMAPCache {
                 // as it holds invalid messages that have no parent folder.
                 // That is why we are deleting the messages manually.
                 if let messages =  self.folder.messages?.allObjects as? [CdMessage] {
-                    for cdMessage in messages  {
-                        cdMessage.deleteAndInformDelegate(context: context)
-                    }
+
+                    //                    for cdMessage in messages  {
+                    //                        cdMessage.deleteAndInformDelegate(context: context)
+                    //                    }
+
+                    UIUtils.showAlertWithOnlyPositiveButton(title: "!! UIDVALIDITY !!!", message: "In the real app, we would delete all \(messages.count) messages in this folder). \nReason: UIDValidity changed.\nold: \(folder.uidValidity)\nnew: \(theUIDValidity)\nFolder:  (\(String(describing: self.folder.name)):\(String(describing: self.folder.account?.identity?.address)).\n\n!! If \(messages.count) is greater zero, please report !!" ,inViewController: UIApplication.topViewController()!)
                 }
                 self.folder.uidValidity = Int32(theUIDValidity)
                 context.saveAndLogErrors()
