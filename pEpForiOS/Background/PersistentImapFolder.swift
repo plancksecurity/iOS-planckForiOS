@@ -288,13 +288,12 @@ extension PersistentImapFolder: CWIMAPCache {
                 // as it holds invalid messages that have no parent folder.
                 // That is why we are deleting the messages manually.
                 if let messages =  self.folder.messages?.allObjects as? [CdMessage] {
-
-                    //                    for cdMessage in messages  {
-                    //                        cdMessage.deleteAndInformDelegate(context: context)
-                    //                    }
-
                     if messages.count > 0 {
-                        UIUtils.showAlertWithOnlyPositiveButton(title: "!! UIDVALIDITY !!!", message: "In the real app, we would delete all \(messages.count) messages in this folder). \nReason: UIDValidity changed.\nold: \(folder.uidValidity)\nnew: \(theUIDValidity)\nFolder:  (\(String(describing: self.folder.name)):\(String(describing: self.folder.account?.identity?.address)).\n\n!! Pease report !!" ,inViewController: UIApplication.topViewController()!)
+                        UIUtils.showAlertWithOnlyPositiveButton(title: "!! UIDVALIDITY !!!", message: "We are about to delete \(messages.count) messages in this folder. \nReason: UIDValidity changed.\nold: \(folder.uidValidity)\nnew: \(theUIDValidity)\nFolder:  (\(String(describing: self.folder.name)):\(String(describing: self.folder.account?.identity?.address)).\n\n!! Pease report !!" ,inViewController: UIApplication.topViewController()!)
+                    }
+
+                    for cdMessage in messages  {
+                        cdMessage.deleteAndInformDelegate(context: context)
                     }
                 }
                 self.folder.uidValidity = Int32(theUIDValidity)
