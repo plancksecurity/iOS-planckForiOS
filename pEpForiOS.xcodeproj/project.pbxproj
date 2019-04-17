@@ -276,7 +276,6 @@
 		435F7C75215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt in Resources */ = {isa = PBXBuildFile; fileRef = 435F7C74215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt */; };
 		43628766213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43628765213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt */; };
 		4365E85F2265DC3F00929D07 /* VerifiableAccountTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365E85E2265DC3F00929D07 /* VerifiableAccountTest.swift */; };
-		4365E8612265FBCC00929D07 /* BasicConnectInfo+VerifiableAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365E8602265FBCC00929D07 /* BasicConnectInfo+VerifiableAccount.swift */; };
 		4365E86A226615F200929D07 /* VerifiableAccountIMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365E869226615F200929D07 /* VerifiableAccountIMAP.swift */; };
 		4365E87222661B9700929D07 /* VerifiableAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365E87122661B9700929D07 /* VerifiableAccount.swift */; };
 		436795F81EE98B9A00B03E23 /* MessageReevalutionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */; };
@@ -364,6 +363,7 @@
 		43D47AC0225DD1C500E97C5B /* PantomimeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D47ABF225DD1C500E97C5B /* PantomimeFramework.framework */; };
 		43D47AC2225DD1CE00E97C5B /* PEPObjCAdapterFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D47AC1225DD1CE00E97C5B /* PEPObjCAdapterFramework.framework */; };
 		43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */; };
+		43D541022267029400E74427 /* BasicConnectInfo+VerifiableAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D541012267029400E74427 /* BasicConnectInfo+VerifiableAccount.swift */; };
 		43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */; };
 		43DFB0331E36083D00175C9C /* MessageHeapBufferOverflow.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */; };
 		43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */; };
@@ -782,7 +782,6 @@
 		435F7C74215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 1364_Mail_missing_attached_image.txt; sourceTree = "<group>"; };
 		43628765213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1300_odt_attachment.txt"; sourceTree = "<group>"; };
 		4365E85E2265DC3F00929D07 /* VerifiableAccountTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiableAccountTest.swift; sourceTree = "<group>"; };
-		4365E8602265FBCC00929D07 /* BasicConnectInfo+VerifiableAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BasicConnectInfo+VerifiableAccount.swift"; sourceTree = "<group>"; };
 		4365E869226615F200929D07 /* VerifiableAccountIMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiableAccountIMAP.swift; sourceTree = "<group>"; };
 		4365E87122661B9700929D07 /* VerifiableAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifiableAccount.swift; sourceTree = "<group>"; };
 		436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageReevalutionTests.swift; sourceTree = "<group>"; };
@@ -884,6 +883,7 @@
 		43D47ABF225DD1C500E97C5B /* PantomimeFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D47AC1225DD1CE00E97C5B /* PEPObjCAdapterFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PEPObjCAdapterFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
+		43D541012267029400E74427 /* BasicConnectInfo+VerifiableAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BasicConnectInfo+VerifiableAccount.swift"; sourceTree = "<group>"; };
 		43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAccountSetupUITest.swift; sourceTree = "<group>"; };
 		43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageHeapBufferOverflow.txt; sourceTree = "<group>"; };
 		43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateThreadListDelegate.swift; sourceTree = "<group>"; };
@@ -1746,6 +1746,7 @@
 			children = (
 				4365E87122661B9700929D07 /* VerifiableAccount.swift */,
 				4365E869226615F200929D07 /* VerifiableAccountIMAP.swift */,
+				43D541012267029400E74427 /* BasicConnectInfo+VerifiableAccount.swift */,
 			);
 			path = VerifiableAccount;
 			sourceTree = "<group>";
@@ -2047,7 +2048,6 @@
 				15547567213931BC005A52D0 /* Folder+Threading.swift */,
 				15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */,
 				433E7437225B564400B84CD9 /* Account+Extension.swift */,
-				4365E8602265FBCC00929D07 /* BasicConnectInfo+VerifiableAccount.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2900,6 +2900,7 @@
 				B7DB7FCA2215D69C003968DA /* CredentialTextField.swift in Sources */,
 				433E7438225B564400B84CD9 /* Account+Extension.swift in Sources */,
 				005A21FB20CAA5F50082D19F /* ThreadedEmailViewModel.swift in Sources */,
+				43D541022267029400E74427 /* BasicConnectInfo+VerifiableAccount.swift in Sources */,
 				15874BD12127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift in Sources */,
 				4351C2DC1F4441190053381F /* xml.c in Sources */,
 				430E0BE71EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift in Sources */,
@@ -2943,7 +2944,6 @@
 				15547568213931BC005A52D0 /* Folder+Threading.swift in Sources */,
 				4330278E1F7BABFF00D685F8 /* GradientView.swift in Sources */,
 				434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */,
-				4365E8612265FBCC00929D07 /* BasicConnectInfo+VerifiableAccount.swift in Sources */,
 				15874BD02127493E00A3A4A6 /* LogViewController.swift in Sources */,
 				152A39E121905C3E00D9F8E4 /* RecipientCellViewModel+FieldType.swift in Sources */,
 				4351C2CC1F4441190053381F /* cmark_ctype.c in Sources */,
