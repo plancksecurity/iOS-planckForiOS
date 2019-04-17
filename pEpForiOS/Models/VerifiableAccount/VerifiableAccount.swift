@@ -94,6 +94,12 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
     private var verifier: VerifiableAccountIMAP?
 
+    var imapResult: Result<Void, Error>? = nil
+    var smtpResult: Result<Void, Error>? = nil
+
+    /// Used for synchronizing the 2 asynchronous results (IMAP and SMTP verification).
+    private let syncQueue = DispatchQueue(label: "VerifiableAccountSynchronization")
+
     // MARK: - VerifiableAccountProtocol (behavior)
 
     private func isValid() -> Bool {
@@ -233,9 +239,20 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 }
 
 extension VerifiableAccount: VerifiableAccountIMAPDelegate {
+    private func checkSuccess() {
+        guard let theImapResult = imapResult, let theSmtpResult = smtpResult else {
+            return
+        }
+        // TODO: Check the results of IMAP an SMTP
+    }
+
     public func verified(verifier: VerifiableAccountIMAP,
                          basicConnectInfo: BasicConnectInfo,
                          result: Result<Void, Error>) {
         verifier.verifiableAccountDelegate = nil
+        syncQueue.async { [weak self] in
+            self?.imapResult = result
+            self?.checkSuccess()
+        }
     }
 }
