@@ -89,6 +89,9 @@ class MessageViewModel: CustomDebugStringConvertible {
 
         //Debug version
         isDeleted = message.imapFlags?.deleted
+        if let deleted = isDeleted, !deleted {
+            isDeleted = message.targetFolder != nil && message.targetFolder != message.parent
+        }
     }
 
     static private func getDisplayedUsername(for message: Message)-> String{
