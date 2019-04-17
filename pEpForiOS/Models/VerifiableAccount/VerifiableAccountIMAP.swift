@@ -30,6 +30,7 @@ public class VerifiableAccountIMAP {
         syncDelegate = theSyncDelegate
 
         sync = ImapSync(connectInfo: basicConnectInfo)
+        sync?.delegate = syncDelegate
         sync?.start()
     }
 }
