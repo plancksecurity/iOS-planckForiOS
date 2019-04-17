@@ -28,36 +28,6 @@ public class FilterViewModel {
         resetData()
     }
 
-    //!!!: rm
-//    public func setEnabledState(_ state: Bool, forRowAt indexPath: IndexPath) {
-//        // Set new state in UI data source ...
-//        var row = sections[indexPath.section][indexPath.row]
-//        row.state = state
-//        // ... and create a new filter taking the state change into account
-//        var mustBeUnread = filter.mustBeUnread
-//        var mustBeFlagged = filter.mustBeFlagged
-//        var mustContainAttachments = filter.mustContainAttachments
-//        var accountsEnabledStates = filter.accountsEnabledStates
-//        switch row.type {
-//        case .account:
-//            guard let account = filter.account(at: indexPath.row) else {
-//                Log.shared.errorAndCrash(component: #function, errorString: "No Account for row")
-//                return
-//            }
-//            accountsEnabledStates[indexPath.row] = [account:state]
-//        case .flagg:
-//            mustBeFlagged = state
-//        case .unread:
-//            mustBeUnread = state
-//        case .attachments:
-//            mustContainAttachments = state
-//        }
-//        filter = MessageQueryResultsFilter(mustBeFlagged: mustBeFlagged,
-//                                           mustBeUnread: mustBeUnread,
-//                                           mustContainAttachments: mustContainAttachments,
-//                                           accountEnabledStates: accountsEnabledStates)
-//    }
-
     public func toggleEnabledState(forRowAt indexPath: IndexPath) {
         // Set new state in UI data source ...
         var row = sections[indexPath.section][indexPath.row]
