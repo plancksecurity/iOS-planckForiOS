@@ -10,6 +10,7 @@ import Foundation
 
 import PantomimeFramework
 import MessageModel
+import pEpIOSToolbox
 
 public protocol VerifiableAccountIMAPDelegate: class {
     func verified(verifier: VerifiableAccountIMAP,
@@ -23,15 +24,32 @@ public class VerifiableAccountIMAP {
 
     private var sync: ImapSync?
     private var syncDelegate: VerifiableAccountSyncDelegate?
+    private var basicConnectInfo: BasicConnectInfo?
 
     /// Tries to verify the given IMAP account.
     public func verify(basicConnectInfo: BasicConnectInfo) {
+        self.basicConnectInfo = basicConnectInfo
+
         let theSyncDelegate = VerifiableAccountSyncDelegate(errorHandler: self)
         syncDelegate = theSyncDelegate
 
         sync = ImapSync(connectInfo: basicConnectInfo)
         sync?.delegate = syncDelegate
         sync?.start()
+    }
+
+    func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
+        self.sync = nil
+
+        guard let connectInfo = basicConnectInfo else {
+            Logger.backendLogger.errorAndCrash("Missing basicConnectInfo")
+            return
+        }
+
+        verifiableAccountDelegate?.verified(
+            verifier: self,
+            basicConnectInfo: connectInfo,
+            result: .success(()))
     }
 }
 
@@ -42,14 +60,7 @@ extension VerifiableAccountIMAP: ImapSyncDelegateErrorHandlerProtocol {
 
 class VerifiableAccountSyncDelegate: DefaultImapSyncDelegate {
     override func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
-    }
-
-    override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
-    }
-
-    override func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {
-    }
-
-    override func idleFinished(_ sync: ImapSync, notification: Notification?) {
+        (errorHandler as? VerifiableAccountIMAP)?.authenticationCompleted(
+            sync, notification: notification)
     }
 }
