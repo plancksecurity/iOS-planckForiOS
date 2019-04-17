@@ -357,17 +357,6 @@ open class NetworkServiceWorker {
                                                   folderID: inboxFolder.objectID))
                 }
             }
-            // Sent folder must always be interesting. Message Threading relies on this.
-            if !sentFolderIsInteresting {
-                if let sentFolder = CdFolder.by(folderType: .sent, account: account),
-                    let name = sentFolder.name {
-                    folderInfos.append(FolderInfo(name: name,
-                                                  folderType: sentFolder.folderType,
-                                                  firstUID: sentFolder.firstUID(),
-                                                  lastUID: sentFolder.lastUID(),
-                                                  folderID: sentFolder.objectID))
-                }
-            }
         }
         if folderInfos.count == 0 {
             // If no interesting folders have been found, at least sync the inbox.
