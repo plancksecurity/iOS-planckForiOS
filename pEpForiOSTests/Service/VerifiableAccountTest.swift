@@ -34,27 +34,17 @@ class VerifiableAccountTest: XCTestCase {
     }
 
     func testBasicFailingVerification() {
-        let verifier = VerifiableAccount()
-        var verifierType: VerifiableAccountProtocol = verifier
-        SecretTestData().populateWorkingAccount(
-            verifiableAccount: &verifierType)
+        let result = checkBasicVerification() { v in
+            var verifiable = v
 
-        // This should make it fail quickly
-        verifierType.serverIMAP = "localhost"
-        verifierType.portIMAP = 5
-        verifierType.serverSMTP = "localhost"
-        verifierType.portSMTP = 5
+            // This should make it fail quickly
+            verifiable.serverIMAP = "localhost"
+            verifiable.portIMAP = 5
+            verifiable.serverSMTP = "localhost"
+            verifiable.portSMTP = 5
 
-        let expDidVerify = expectation(description: "expDidVerify")
-        let delegate = VerifiableAccountTestDelegate(expDidVerify: expDidVerify)
-        try! check(verifier: &verifierType, delegate: delegate)
-        wait(for: [expDidVerify], timeout: TestUtil.waitTime)
-
-        guard let result = delegate.result else {
-            XCTFail()
-            return
+            return verifiable
         }
-
         switch result {
         case .success(_):
             XCTFail()
@@ -98,6 +88,34 @@ class VerifiableAccountTest: XCTestCase {
                delegate: VerifiableAccountDelegate?) throws {
         verifier.verifiableAccountDelegate = delegate
         try verifier.verify()
+    }
+
+    enum TestError: Error {
+        case noResult
+    }
+
+    /// Expects a failure, lets caller modify the `VerifiableAccountProtocol`.
+    func checkBasicVerification(
+        modifier: (VerifiableAccountProtocol) -> VerifiableAccountProtocol)
+        -> Result<Void, Error> {
+            let verifier = VerifiableAccount()
+            var verifiable: VerifiableAccountProtocol = verifier
+            SecretTestData().populateWorkingAccount(
+                verifiableAccount: &verifiable)
+
+            verifiable = modifier(verifiable)
+
+            let expDidVerify = expectation(description: "expDidVerify")
+            let delegate = VerifiableAccountTestDelegate(expDidVerify: expDidVerify)
+            try! check(verifier: &verifiable, delegate: delegate)
+            wait(for: [expDidVerify], timeout: TestUtil.waitTime)
+
+            guard let result = delegate.result else {
+                XCTFail()
+                return .failure(TestError.noResult)
+            }
+
+            return result
     }
 }
 
