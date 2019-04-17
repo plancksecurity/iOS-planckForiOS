@@ -53,6 +53,22 @@ class VerifiableAccountTest: XCTestCase {
         }
     }
 
+    func testBasicFailingVerificationWithWrongPassword() {
+        let result = checkBasicVerification() { v in
+            var verifiable = v
+
+            verifiable.password = "xxxxxxxxxx"
+
+            return verifiable
+        }
+        switch result {
+        case .success(_):
+            XCTFail()
+        case .failure(_):
+            break
+        }
+    }
+
     // MARK: Helpers
 
     /// Tries `verify()` and `save()` on the given `VerifiableAccountProtocol`.
