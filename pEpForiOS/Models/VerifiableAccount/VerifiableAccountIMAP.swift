@@ -55,6 +55,15 @@ public class VerifiableAccountIMAP {
 
 extension VerifiableAccountIMAP: ImapSyncDelegateErrorHandlerProtocol {
     public func handle(error: Error) {
+        guard let connectInfo = basicConnectInfo else {
+            Logger.backendLogger.errorAndCrash("Missing basicConnectInfo")
+            return
+        }
+
+        verifiableAccountDelegate?.verified(
+            verifier: self,
+            basicConnectInfo: connectInfo,
+            result: .failure(error))
     }
 }
 
