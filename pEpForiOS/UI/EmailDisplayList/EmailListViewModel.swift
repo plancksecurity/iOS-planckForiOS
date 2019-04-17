@@ -131,11 +131,15 @@ class EmailListViewModel {
         queue.cancelAllOperations()
         let op = BlockOperation()
         weak var weakOp = op
+        scheduleFetchTimeoutTimer()//DEBUG
         op.addExecutionBlock { [weak self] in
             guard
                 let me = self,
                 let op = weakOp,
                 !op.isCancelled else {
+                    DispatchQueue.main.async {
+                        UIUtils.showAlertWithOnlyPositiveButton(title: "Guard fails silently", message: "no me, op or op.canceled", inViewController: UIApplication.topViewController()!)
+                    }
                 return
             }
             let messagesToDisplay = me.folderToShow.allMessagesNonThreaded()
@@ -147,6 +151,7 @@ class EmailListViewModel {
                 return
             }
             DispatchQueue.main.sync {
+                me.invalidateFetchTimeoutTimer() //DEBUG
                 me.messages = sortedMessages
                 me.emailListViewModelDelegate?.updateView()
                 me.startListeningToChanges()
@@ -154,6 +159,34 @@ class EmailListViewModel {
         }
         queue.addOperation(op)
     }
+
+    //DEBUG version
+    private let timeoutTime = 2.0
+    private var timer: Timer?
+    private func scheduleFetchTimeoutTimer() {
+        timer?.invalidate()
+        if #available(iOS 10.0, *) {
+            timer = Timer.scheduledTimer(withTimeInterval: timeoutTime, repeats: false) {_ in
+                self.showFetchTimeoutAlert()
+            }
+        }
+    }
+    private func invalidateFetchTimeoutTimer() {
+        guard let time = timer else {
+            DispatchQueue.main.async {
+                UIUtils.showAlertWithOnlyPositiveButton(title: "No Timer", message: "!", inViewController: UIApplication.topViewController()!)
+            }
+            return
+        }
+        time.invalidate()
+    }
+    private func showFetchTimeoutAlert() {
+        DispatchQueue.main.async {
+            UIUtils.showAlertWithOnlyPositiveButton(title: "Fetch Timeout", message: "The fetch from DB did not return in time", inViewController: UIApplication.topViewController()!)
+        }
+    }
+
+    //
 
     // MARK: - Public Data Access & Manipulation
 
