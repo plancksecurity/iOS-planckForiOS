@@ -173,17 +173,13 @@ class EmailListViewModel {
     }
     private func invalidateFetchTimeoutTimer() {
         guard let time = timer else {
-            DispatchQueue.main.async {
-                UIUtils.showAlertWithOnlyPositiveButton(title: "No Timer", message: "!", inViewController: UIApplication.topViewController()!)
-            }
+            UIUtils.showAlertWithOnlyPositiveButton(title: "No Timer", message: "!", inViewController: UIApplication.topViewController()!)
             return
         }
         time.invalidate()
     }
     private func showFetchTimeoutAlert() {
-        DispatchQueue.main.async {
-            UIUtils.showAlertWithOnlyPositiveButton(title: "Fetch Timeout", message: "The fetch from DB did not return in time", inViewController: UIApplication.topViewController()!)
-        }
+        UIUtils.showAlertWithOnlyPositiveButton(title: "Fetch Timeout", message: "The fetch from DB did not return in time", inViewController: UIApplication.topViewController()!)
     }
 
     //

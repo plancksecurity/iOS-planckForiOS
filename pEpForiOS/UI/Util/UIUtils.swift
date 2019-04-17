@@ -32,22 +32,25 @@ struct UIUtils {
 
     static func showAlertWithOnlyPositiveButton(title: String?, message: String?,
                                                 inViewController vc: UIViewController) {
-        // Do not show alerts when app is in background.
-        if UIApplication.shared.applicationState != .active {
-            #if DEBUG
+        //DEBUG:
+        DispatchQueue.main.async {
+            // Do not show alerts when app is in background.
+            if UIApplication.shared.applicationState != .active {
+                #if DEBUG
                 // show alert in background when in debug.
-            #else
+                #else
                 return
-            #endif
+                #endif
+            }
+            let alertView = UIAlertController.pEpAlertController(title: title,
+                                                                 message: message,
+                                                                 preferredStyle: .alert)
+            alertView.addAction(UIAlertAction(title: NSLocalizedString("OK", comment:
+                "General alert positive button"),
+                                              style: .default,
+                                              handler: nil))
+            vc.present(alertView, animated: true, completion: nil)
         }
-        let alertView = UIAlertController.pEpAlertController(title: title,
-                                                             message: message,
-                                                             preferredStyle: .alert)
-        alertView.addAction(UIAlertAction(title: NSLocalizedString("OK", comment:
-            "General alert positive button"),
-                                          style: .default,
-                                          handler: nil))
-        vc.present(alertView, animated: true, completion: nil)
     }
 
     // MARK: - Compose View
