@@ -152,36 +152,6 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(moreAction, nil)
     }
 
-    func testIsDraftFolder() {
-        setupViewModel()
-        emailListVM.startMonitoring()
-        var isDraft = emailListVM.folderIsDraft(self.folder)
-
-        XCTAssertFalse(isDraft)
-
-        givenThereIsA(folderType: .drafts)
-        setupViewModel()
-        emailListVM.startMonitoring()
-        isDraft = emailListVM.folderIsDraft(self.folder)
-
-        XCTAssertTrue(isDraft)
-    }
-
-    func testIsOutboxFolder() {
-        setupViewModel()
-        emailListVM.startMonitoring()
-        var isOutBox = emailListVM.folderIsOutbox(self.folder)
-
-        XCTAssertFalse(isOutBox)
-
-        givenThereIsA(folderType: .outbox)
-        setupViewModel()
-        emailListVM.startMonitoring()
-        isOutBox = emailListVM.folderIsOutbox(self.folder)
-
-        XCTAssertTrue(isOutBox)
-    }
-
     func testAccountExists() {
         setupViewModel()
         emailListVM.startMonitoring()
