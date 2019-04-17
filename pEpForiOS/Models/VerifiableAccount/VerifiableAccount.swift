@@ -113,8 +113,15 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         if !isValid() {
             throw VerifiableAccountError.invalidUserData
         }
-        verifier = VerifiableAccountIMAP()
-        verifier?.verifiableAccountDelegate = self
+        let theVerifier = VerifiableAccountIMAP()
+        self.verifier = theVerifier
+        theVerifier.verifiableAccountDelegate = self
+        guard let imapConnectInfo = BasicConnectInfo(
+            verifiableAccount: self, emailProtocol: .imap) else {
+                // Assuming this is caused by invalid data.
+                throw VerifiableAccountError.invalidUserData
+        }
+        theVerifier.verify(basicConnectInfo: imapConnectInfo)
     }
 
     public func save() throws {
