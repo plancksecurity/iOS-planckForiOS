@@ -12,6 +12,10 @@ import pEpIOSToolbox
 
 class MessageViewModel: CustomDebugStringConvertible {
 
+    // Debug verion
+    var isDeleted: Bool?
+    //
+
     static var maxBodyPreviewCharacters = 120
     var queue: OperationQueue
 
@@ -82,6 +86,9 @@ class MessageViewModel: CustomDebugStringConvertible {
         profilePictureComposer = PepProfilePictureComposer()
         displayedUsername = MessageViewModel.getDisplayedUsername(for: message)
         setBodyPeek(for: message)
+
+        //Debug version
+        isDeleted = message.imapFlags?.deleted
     }
 
     static private func getDisplayedUsername(for message: Message)-> String{
