@@ -92,7 +92,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
     // MARK: - Internal
 
-    private var verifier: VerifiableAccountIMAP?
+    private var imapVerifier: VerifiableAccountIMAP?
 
     var imapResult: Result<Void, Error>? = nil
     var smtpResult: Result<Void, Error>? = nil
@@ -117,7 +117,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
     private func startImapVerification() throws {
         let theVerifier = VerifiableAccountIMAP()
-        self.verifier = theVerifier
+        self.imapVerifier = theVerifier
         theVerifier.verifiableAccountDelegate = self
         guard let imapConnectInfo = BasicConnectInfo(
             verifiableAccount: self, emailProtocol: .imap) else {
