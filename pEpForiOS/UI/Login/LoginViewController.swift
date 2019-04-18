@@ -88,7 +88,7 @@ class LoginViewController: BaseViewController {
 
     override func didSetAppConfig() {
         super.didSetAppConfig()
-        loginViewModel.verificationService = VerificationService()
+        loginViewModel.verificationService = VerifiableAccount()
     }
 
     override func viewDidLoad() {
