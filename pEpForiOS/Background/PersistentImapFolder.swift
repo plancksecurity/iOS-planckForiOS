@@ -279,7 +279,8 @@ extension PersistentImapFolder: CWIMAPCache {
             return
         }
         context.performAndWait() {
-            if self.folder.uidValidity != Int32(theUIDValidity) {
+            let uidValidityNeverFetchedFromServer = self.folder.uidValidity == 0
+            if !uidValidityNeverFetchedFromServer && self.folder.uidValidity != Int32(theUIDValidity) {
                 Logger.backendLogger.warn(
                     "UIValidity changed, deleting all messages. %{public}@",
                     String(describing: self.folder.name))
@@ -296,6 +297,8 @@ extension PersistentImapFolder: CWIMAPCache {
                         cdMessage.deleteAndInformDelegate(context: context)
                     }
                 }
+            }
+            if self.folder.uidValidity != Int32(theUIDValidity) {
                 self.folder.uidValidity = Int32(theUIDValidity)
                 context.saveAndLogErrors()
             }
