@@ -221,25 +221,38 @@ extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
 // MARK: - VerifiableAccountDelegate
 
 extension LoginViewModel: VerifiableAccountDelegate {
+    func informAccountVerificationResultDelegate(error: Error?) {
+        guard let theService = verificationService else {
+            Logger.frontendLogger.error(
+                "Lost the verificationService, was about to inform the delegate")
+            if let err = error {
+                Logger.frontendLogger.log(error: err)
+            }
+            return
+        }
+        if let imapError = error as? ImapSyncError {
+            accountVerificationResultDelegate?.didVerify(
+                result: .imapError(imapError), accountInput: theService)
+        } else if let smtpError = error as? SmtpSendError {
+            accountVerificationResultDelegate?.didVerify(
+                result: .smtpError(smtpError), accountInput: theService)
+        } else {
+            // TODO General error, or OK
+        }
+    }
+
     func didEndVerification(result: Result<Void, Error>) {
         switch result {
         case .success(()):
-            //remove obsolete code on EmailListViewController
-            // TODO save
-            /*
-            MessageModelUtil.performAndWait {
-                account.save()
+            do {
+                try verificationService?.save()
+                informAccountVerificationResultDelegate(error: nil)
+                mySelfer?.startMySelf()
+            } catch {
+                informAccountVerificationResultDelegate(error: error)
             }
-             */
-            mySelfer?.startMySelf()
         case .failure(let error):
-            break
+            informAccountVerificationResultDelegate(error: error)
         }
-
-        // Notify
-        /*
-        accountVerificationResultDelegate?.didVerify(result: result,
-                                                     accountInput: verificationService)
-         */
     }
 }
