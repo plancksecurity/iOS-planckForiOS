@@ -28,7 +28,7 @@ class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, 
     var responder = 0
     var accounts = [Account]()
     
-    public var model = VerifiableAccount()
+    public var model: VerifiableAccountProtocol = VerifiableAccount()
 
     let viewWidthAligner = ViewWidthsAligner()
 
