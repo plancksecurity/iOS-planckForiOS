@@ -22,7 +22,6 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     @IBOutlet weak var portTitle: UILabel!
 
     var model: VerifiableAccountProtocol!
-    private var currentlyVerifiedAccount: Account?
     var fields = [UITextField]()
     var responder = 0
 
@@ -77,9 +76,8 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     /// - Throws: AccountVerificationError
     private func verifyAccount() throws {
         isCurrentlyVerifying =  true
-        let account = try model.account()
-        currentlyVerifiedAccount = account
-        VerificationService().requestVerification(account: account, delegate: self)
+        model.verifiableAccountDelegate = self
+        try model.verify()
     }
 
     private func informUser(about error: Error, title: String) {
@@ -153,43 +151,6 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     }
 }
 
-// MARK: - AccountVerificationServiceDelegate
-
-extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
-    func verified(account: Account, service: AccountVerificationServiceProtocol,
-                  result: AccountVerificationResult) {
-        if result == .ok {
-            MessageModelUtil.performAndWait { [weak self] in
-                guard let me = self else {
-                    Logger.frontendLogger.lostMySelf()
-                    return
-                }
-                guard let account = me.currentlyVerifiedAccount else {
-                    Logger.backendLogger.errorAndCrash(
-                        "We verified an non-existing account? Now what?")
-                    return
-                }
-                account.save()
-            }
-        }
-        GCD.onMain() {
-            self.isCurrentlyVerifying =  false
-            switch result {
-            case .ok:
-                // unwind back to INBOX or folder list on success
-                self.performSegue(withIdentifier: .backToEmailListSegue, sender: self)
-            case .imapError(let err):
-                UIUtils.show(error: err, inViewController: self)
-            case .smtpError(let err):
-                UIUtils.show(error: err, inViewController: self)
-            case .noImapConnectData, .noSmtpConnectData:
-                let error = LoginViewController.LoginError.noConnectData
-                UIUtils.show(error: error, inViewController: self)
-            }
-        }
-    }
-}
-
 // MARK: - SegueHandlerType
 
 extension SMTPSettingsTableViewController: SegueHandlerType {
@@ -219,5 +180,28 @@ extension SMTPSettingsTableViewController: UITextFieldDelegate {
 
     public func textFieldDidEndEditing(_ textField: UITextField) {
         changedResponder(textField)
+    }
+}
+
+extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
+    func didEndVerification(result: Result<Void, Error>) {
+        switch result {
+        case .success(()):
+                MessageModelUtil.performAndWait { [weak self] in
+                    do {
+                        try self?.model.save()
+                    } catch {
+                        Logger.frontendLogger.log(error: error)
+                        Logger.frontendLogger.errorAndCrash("Unexpected error")
+                    }
+                }
+                GCD.onMain() {
+                    self.performSegue(withIdentifier: .backToEmailListSegue, sender: self)
+            }
+        case .failure(let error):
+            GCD.onMain() {
+                UIUtils.show(error: error, inViewController: self)
+            }
+        }
     }
 }
