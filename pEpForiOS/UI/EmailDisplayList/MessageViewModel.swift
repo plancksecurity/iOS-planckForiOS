@@ -14,6 +14,7 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     // Debug verion
     var isDeleted: Bool?
+    var notSeenByEngine: Bool
     //
 
     static var maxBodyPreviewCharacters = 120
@@ -85,13 +86,28 @@ class MessageViewModel: CustomDebugStringConvertible {
         dateText =  (message.sent ?? Date()).smartString()
         profilePictureComposer = PepProfilePictureComposer()
         displayedUsername = MessageViewModel.getDisplayedUsername(for: message)
-        setBodyPeek(for: message)
 
         //Debug version
         isDeleted = message.imapFlags?.deleted
         if let deleted = isDeleted, !deleted {
             isDeleted = message.targetFolder != nil && message.targetFolder != message.parent
         }
+        notSeenByEngine = true
+        MessageModel.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            if let cdMsg = message.cdMessage() {
+                let defaultPepRating = -32768
+                me.notSeenByEngine = cdMsg.pEpRating == defaultPepRating
+            } else {
+                me.notSeenByEngine = true
+            }
+        }
+        //
+
+        setBodyPeek(for: message)
     }
 
     static private func getDisplayedUsername(for message: Message)-> String{

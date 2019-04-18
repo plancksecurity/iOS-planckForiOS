@@ -492,6 +492,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 cell.backgroundColor = UIColor.green
             } else if let isDeleted = viewModel.isDeleted, isDeleted {
                 cell.backgroundColor = UIColor.red
+            } else if viewModel.notSeenByEngine {
+                cell.backgroundColor = UIColor.yellow
             }
         } else {
             Logger.frontendLogger.errorAndCrash("dequeued wrong cell")
