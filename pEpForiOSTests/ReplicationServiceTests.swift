@@ -42,7 +42,7 @@ class ReplicationServiceTests: XCTestCase {
 
         let replicationService = ReplicationService(parentName: #function)
 
-        let del = NetworkServiceObserver(
+        let del = ReplicationServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
         replicationService.unitTestDelegate = del
         replicationService.delegate = del

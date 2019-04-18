@@ -234,7 +234,7 @@ class TestUtil {
 
         let expAccountsSynced = testCase.expectation(description: "allAccountsSynced")
         // A temp variable is necassary, since the replicationServiceUnitTestDelegate is weak
-        let del = NetworkServiceObserver(numAccountsToSync: numAccountsToSync,
+        let del = ReplicationServiceObserver(numAccountsToSync: numAccountsToSync,
                                          expAccountsSynced: expAccountsSynced,
                                          failOnError: true)
 
@@ -252,7 +252,7 @@ class TestUtil {
 
     // MARK: - ReplicationService
     static public func cancelReplicationServiceAndWait(replicationService: ReplicationService, testCase: XCTestCase) {
-        let del = NetworkServiceObserver(
+        let del = ReplicationServiceObserver(
             expCanceled: testCase.expectation(description: "expCanceled"))
         replicationService.unitTestDelegate = del
         replicationService.delegate = del

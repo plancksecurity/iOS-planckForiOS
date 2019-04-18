@@ -1,5 +1,5 @@
 //
-//  NetworkServiceObserver.swift
+//  ReplicationServiceObserver.swift
 //  pEpForiOS
 //
 //  Created by Andreas Buff on 29.08.17.
@@ -12,7 +12,7 @@ import CoreData
 @testable import MessageModel
 @testable import pEpForiOS
 
-class NetworkServiceObserver: CustomDebugStringConvertible {
+class ReplicationServiceObserver: CustomDebugStringConvertible {
     let expAllSynced: XCTestExpectation?
     var expCanceled: XCTestExpectation?
     var accountInfo: AccountConnectInfo?
@@ -38,7 +38,7 @@ class NetworkServiceObserver: CustomDebugStringConvertible {
 
 // MARK: - ReplicationServiceUnitTestDelegate
 
-extension NetworkServiceObserver: ReplicationServiceUnitTestDelegate {
+extension ReplicationServiceObserver: ReplicationServiceUnitTestDelegate {
     func replicationServiceDidSync(service: ReplicationService, accountInfo: AccountConnectInfo,
                  errorProtocol: ServiceErrorProtocol) {
         if errorProtocol.hasErrors() && failOnError {
@@ -55,7 +55,7 @@ extension NetworkServiceObserver: ReplicationServiceUnitTestDelegate {
 }
 
 // MARK: - ReplicationServiceDelegate
-extension NetworkServiceObserver: ReplicationServiceDelegate {
+extension ReplicationServiceObserver: ReplicationServiceDelegate {
     func replicationServiceDidFinishLastSyncLoop(service: ReplicationService) {
         // ignore
     }
