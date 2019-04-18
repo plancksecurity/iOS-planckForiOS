@@ -12,7 +12,7 @@ import CoreData
 @testable import MessageModel
 @testable import pEpForiOS
 
-class NetworkServiceObserver: NetworkServiceUnitTestDelegate, NetworkServiceDelegate, CustomDebugStringConvertible {
+class NetworkServiceObserver: CustomDebugStringConvertible {
     let expAllSynced: XCTestExpectation?
     var expCanceled: XCTestExpectation?
     var accountInfo: AccountConnectInfo?
@@ -34,10 +34,12 @@ class NetworkServiceObserver: NetworkServiceUnitTestDelegate, NetworkServiceDele
         self.expCanceled = expCanceled
         self.failOnError = failOnError
     }
+}
 
-    // MARK: - NetworkServiceUnitTestDelegate
+// MARK: - ReplicationServiceUnitTestDelegate
 
-    func networkServiceDidSync(service: NetworkService, accountInfo: AccountConnectInfo,
+extension NetworkServiceObserver: ReplicationServiceUnitTestDelegate {
+    func replicationServiceDidSync(service: ReplicationService, accountInfo: AccountConnectInfo,
                  errorProtocol: ServiceErrorProtocol) {
         if errorProtocol.hasErrors() && failOnError {
             XCTFail()
@@ -50,14 +52,15 @@ class NetworkServiceObserver: NetworkServiceUnitTestDelegate, NetworkServiceDele
             expAllSynced?.fulfill()
         }
     }
+}
 
-    // MARK: - NetworkServiceDelegate
-    
-    func networkServiceDidFinishLastSyncLoop(service: NetworkService) {
+// MARK: - ReplicationServiceDelegate
+extension NetworkServiceObserver: ReplicationServiceDelegate {
+    func replicationServiceDidFinishLastSyncLoop(service: ReplicationService) {
         // ignore
     }
 
-    func networkServiceDidCancel(service: NetworkService) {
+    func replicationServiceDidCancel(service: ReplicationService) {
         expCanceled?.fulfill()
     }
 }
