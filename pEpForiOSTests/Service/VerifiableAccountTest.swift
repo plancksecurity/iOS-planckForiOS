@@ -21,6 +21,17 @@ class VerifiableAccountTest: XCTestCase {
         let delegate = VerifiableAccountTestDelegate(expDidVerify: expDidVerify)
         try! check(verifier: &verifierType, delegate: delegate)
         wait(for: [expDidVerify], timeout: TestUtil.waitTime)
+
+        guard let theResult = delegate.result else {
+            XCTFail()
+            return
+        }
+        switch theResult {
+        case .success(()):
+            break
+        case .failure(_):
+            XCTFail()
+        }
     }
 
     func testFailingValidation() {
