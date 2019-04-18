@@ -3944,7 +3944,6 @@
 		43980E4F1CBD0BCA00A7FC3C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = pEp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -3986,7 +3985,6 @@
 		43980E501CBD0BCA00A7FC3C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = pEp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
