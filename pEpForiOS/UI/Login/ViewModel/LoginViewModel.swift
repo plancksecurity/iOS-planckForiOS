@@ -237,7 +237,13 @@ extension LoginViewModel: VerifiableAccountDelegate {
             accountVerificationResultDelegate?.didVerify(
                 result: .smtpError(smtpError), accountInput: theService)
         } else {
-            // TODO General error, or OK
+            if let theError = error {
+                Logger.frontendLogger.log(error: theError)
+                Logger.frontendLogger.errorAndCrash("Unexpected error")
+
+            } else {
+                accountVerificationResultDelegate?.didVerify(result: .ok, accountInput: theService)
+            }
         }
     }
 
@@ -249,7 +255,8 @@ extension LoginViewModel: VerifiableAccountDelegate {
                 informAccountVerificationResultDelegate(error: nil)
                 mySelfer?.startMySelf()
             } catch {
-                informAccountVerificationResultDelegate(error: error)
+                Logger.frontendLogger.log(error: error)
+                Logger.frontendLogger.errorAndCrash("Unexpected error on saving the account")
             }
         case .failure(let error):
             informAccountVerificationResultDelegate(error: error)

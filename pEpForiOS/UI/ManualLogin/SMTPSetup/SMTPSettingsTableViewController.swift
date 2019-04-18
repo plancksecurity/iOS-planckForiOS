@@ -192,7 +192,8 @@ extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
                         try self?.model.save()
                     } catch {
                         Logger.frontendLogger.log(error: error)
-                        Logger.frontendLogger.errorAndCrash("Unexpected error")
+                        Logger.frontendLogger.errorAndCrash(
+                            "Unexpected error on saving the account")
                     }
                 }
                 GCD.onMain() {
