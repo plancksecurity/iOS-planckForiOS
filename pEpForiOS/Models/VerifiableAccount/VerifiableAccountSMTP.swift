@@ -136,6 +136,7 @@ extension VerifiableAccountSMTP: SmtpSendDelegate {
     }
 
     public func serviceInitialized(_ smtp: SmtpSend, theNotification: Notification?) {
+        // TODO: OK
         notifyUnexpectedCallback(name: #function)
     }
 
