@@ -175,6 +175,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                                                        address: address,
                                                        userName: userName)
 
+            let cdAccount = createOrUpdateAccount(context: moc, identity: cdIdentity)
+
             let imapServer = createServer(context: moc,
                                           address: addressImap,
                                           port: portIMAP,
@@ -201,8 +203,6 @@ public class VerifiableAccount: VerifiableAccountProtocol {
             credentialsSmtp.servers = NSSet(array: [imapServer])
             smtpServer.credentials = credentialsSmtp
 
-            let cdAccount = CdAccount.create(context: moc)
-            cdAccount.identity = cdIdentity
             cdAccount.servers = NSSet(array: [imapServer, smtpServer])
 
             moc.saveAndLogErrors()
