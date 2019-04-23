@@ -171,37 +171,33 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         let moc = Record.Context.background
 
         moc.performAndWait {
-            let cdId = CdIdentity.create(context: moc)
-            cdId.address = address
-            cdId.userName = userName
+            let cdId = createOrUpdateOwnIdentity(context: moc,
+                                                 address: address,
+                                                 userName: userName)
 
-            let imapServer = createOrUpdateServer(context: moc,
+            let imapServer = createServer(context: moc,
                                                   address: addressImap,
                                                   port: portIMAP,
                                                   authMethod: authMethod,
                                                   trusted: trustedImapServer,
                                                   transport: transportIMAP)
 
-            let smtpServer = createOrUpdateServer(context: moc,
+            let smtpServer = createServer(context: moc,
                                                   address: addressSmtp,
                                                   port: portSMTP,
                                                   authMethod: authMethod,
                                                   trusted: false,
                                                   transport: transportSMTP)
 
-            let credentialsImap = CdServerCredentials.create(context: moc)
-            credentialsImap.loginName = loginName ?? address
-            // For OAUTH2, deal with the password
-            //let thePassword = accessToken?.persistBase64Encoded() ?? password
-            credentialsImap.key = accessToken?.keyChainID // TODO Check if that is set by OAUTH2
+            let credentialsImap = createCredentials(context: moc,
+                                                    loginName: loginName,
+                                                    address: address)
             credentialsImap.servers = NSSet(array: [imapServer])
             imapServer.credentials = credentialsImap
 
-            let credentialsSmtp = CdServerCredentials.create(context: moc)
-            credentialsSmtp.loginName = loginName ?? address
-            // For OAUTH2, deal with the password
-            //let thePassword = accessToken?.persistBase64Encoded() ?? password
-            credentialsSmtp.key = accessToken?.keyChainID // TODO Check if that is set by OAUTH2
+            let credentialsSmtp = createCredentials(context: moc,
+                                                    loginName: loginName,
+                                                    address: address)
             credentialsSmtp.servers = NSSet(array: [imapServer])
             smtpServer.credentials = credentialsSmtp
 
@@ -236,28 +232,67 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
     // MARK: - Helpers for saving
 
-    private func createOrUpdateServer(context: NSManagedObjectContext,
-                                      address: String,
-                                      port: UInt16,
-                                      authMethod: AuthMethod?,
-                                      trusted: Bool,
-                                      transport: ConnectionTransport) -> CdServer {
-        let server = CdServer.create(context: context)
-        updateServer(server: server,
-                     address: address,
-                     port: port,
-                     authMethod: authMethod,
-                     trusted: trusted,
-                     transport: transport)
-        return server
+    private func createOrUpdateAccount(context: NSManagedObjectContext,
+                                       identity: CdIdentity) -> CdAccount {
+        let cdAccount = CdAccount.create(context: context)
+        cdAccount.identity = identity
+        return cdAccount
     }
 
-    private func updateServer(server: CdServer,
+    private func createOrUpdateOwnIdentity(context: NSManagedObjectContext,
+                                           address: String?,
+                                           userName: String?) -> CdIdentity {
+        if let theAddress = address,
+            let identity = CdIdentity.search(address: theAddress) {
+            update(identity: identity, address: address, userName: userName)
+            return identity
+        } else {
+        let cdId = CdIdentity.create(context: context)
+            update(identity: cdId, address: address, userName: userName)
+            return cdId
+        }
+    }
+
+    private func update(identity: CdIdentity,
+                        address: String?,
+                        userName: String?) {
+        identity.address = address
+        identity.userName = userName
+    }
+
+    private func createCredentials(context: NSManagedObjectContext,
+                                   loginName: String?,
+                                   address: String?) -> CdServerCredentials {
+        let credentials = CdServerCredentials.create(context: context)
+        credentials.loginName = loginName ?? address
+        // For OAUTH2, deal with the password
+        //let thePassword = accessToken?.persistBase64Encoded() ?? password
+        credentials.key = accessToken?.keyChainID // TODO Check if that is set by OAUTH2
+        return credentials
+    }
+
+    private func createServer(context: NSManagedObjectContext,
                               address: String,
                               port: UInt16,
                               authMethod: AuthMethod?,
                               trusted: Bool,
-                              transport: ConnectionTransport) {
+                              transport: ConnectionTransport) -> CdServer {
+        let server = CdServer.create(context: context)
+        update(server: server,
+               address: address,
+               port: port,
+               authMethod: authMethod,
+               trusted: trusted,
+               transport: transport)
+        return server
+    }
+
+    private func update(server: CdServer,
+                        address: String,
+                        port: UInt16,
+                        authMethod: AuthMethod?,
+                        trusted: Bool,
+                        transport: ConnectionTransport) {
         server.address = serverIMAP
         server.port = NSNumber.init(value: portIMAP)
         server.authMethod = authMethod?.rawValue
