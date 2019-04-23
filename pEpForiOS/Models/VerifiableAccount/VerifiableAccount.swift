@@ -8,6 +8,7 @@
 
 import MessageModel
 import PantomimeFramework
+import CoreData
 
 public class VerifiableAccount: VerifiableAccountProtocol {
     // MARK: - VerifiableAccountProtocol (data)
@@ -159,6 +160,14 @@ public class VerifiableAccount: VerifiableAccountProtocol {
             throw VerifiableAccountError.invalidUserData
         }
 
+        guard let addressImap = serverIMAP else {
+            throw VerifiableAccountError.invalidUserData
+        }
+
+        guard let addressSmtp = serverSMTP else {
+            throw VerifiableAccountError.invalidUserData
+        }
+
         let moc = Record.Context.background
 
         moc.performAndWait {
@@ -166,20 +175,19 @@ public class VerifiableAccount: VerifiableAccountProtocol {
             cdId.address = address
             cdId.userName = userName
 
-            let imapServer = CdServer.create(context: moc)
-            imapServer.address = serverIMAP
-            imapServer.port = NSNumber.init(value: portIMAP)
-            imapServer.authMethod = authMethod?.rawValue
-            imapServer.serverType = Server.ServerType.imap
-            imapServer.trusted = trustedImapServer
-            imapServer.transport = transportIMAP.toServerTransport()
+            let imapServer = createOrUpdateServer(context: moc,
+                                                  address: addressImap,
+                                                  port: portIMAP,
+                                                  authMethod: authMethod,
+                                                  trusted: trustedImapServer,
+                                                  transport: transportIMAP)
 
-            let smtpServer = CdServer.create(context: moc)
-            smtpServer.address = serverSMTP
-            smtpServer.port = NSNumber.init(value: portSMTP)
-            smtpServer.authMethod = authMethod?.rawValue
-            smtpServer.serverType = Server.ServerType.smtp
-            smtpServer.transport = transportSMTP.toServerTransport()
+            let smtpServer = createOrUpdateServer(context: moc,
+                                                  address: addressSmtp,
+                                                  port: portSMTP,
+                                                  authMethod: authMethod,
+                                                  trusted: false,
+                                                  transport: transportSMTP)
 
             let credentialsImap = CdServerCredentials.create(context: moc)
             credentialsImap.loginName = loginName ?? address
@@ -224,6 +232,38 @@ public class VerifiableAccount: VerifiableAccountProtocol {
             return pass.count > 0
         }
         return false
+    }
+
+    // MARK: - Helpers for saving
+
+    private func createOrUpdateServer(context: NSManagedObjectContext,
+                                      address: String,
+                                      port: UInt16,
+                                      authMethod: AuthMethod?,
+                                      trusted: Bool,
+                                      transport: ConnectionTransport) -> CdServer {
+        let server = CdServer.create(context: context)
+        updateServer(server: server,
+                     address: address,
+                     port: port,
+                     authMethod: authMethod,
+                     trusted: trusted,
+                     transport: transport)
+        return server
+    }
+
+    private func updateServer(server: CdServer,
+                              address: String,
+                              port: UInt16,
+                              authMethod: AuthMethod?,
+                              trusted: Bool,
+                              transport: ConnectionTransport) {
+        server.address = serverIMAP
+        server.port = NSNumber.init(value: portIMAP)
+        server.authMethod = authMethod?.rawValue
+        server.serverType = Server.ServerType.imap
+        server.trusted = trustedImapServer
+        server.transport = transportIMAP.toServerTransport()
     }
 
     // MARK: - Legacy
