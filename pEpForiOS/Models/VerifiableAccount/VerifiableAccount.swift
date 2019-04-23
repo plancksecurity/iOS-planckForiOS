@@ -197,6 +197,10 @@ public class VerifiableAccount: VerifiableAccountProtocol {
             credentialsSmtp.servers = NSSet(array: [imapServer])
             smtpServer.credentials = credentialsSmtp
 
+            let cdAccount = CdAccount.create(context: moc)
+            cdAccount.identity = cdId
+            cdAccount.servers = NSSet(array: [imapServer, smtpServer])
+
             moc.saveAndLogErrors()
         }
     }
