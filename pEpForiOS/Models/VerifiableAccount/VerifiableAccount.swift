@@ -232,6 +232,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
     // MARK: - Helpers for saving
 
+    /// Deletes the given server from the account, including its credentials
+    /// and entries in the key chain.
     private func delete(server: CdServer, fromAccount: CdAccount) {
         if let creds = server.credentials {
             if let key = creds.key {
