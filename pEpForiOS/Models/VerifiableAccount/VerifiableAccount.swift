@@ -304,9 +304,18 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         -> CdServerCredentials {
             let credentials = CdServerCredentials.create(context: context)
             credentials.loginName = loginName ?? address
-            // For OAUTH2, deal with the password
-            //let thePassword = accessToken?.persistBase64Encoded() ?? password
-            credentials.key = accessToken?.keyChainID // TODO Check if that is set by OAUTH2
+
+            let keyChainId = UUID().uuidString
+            var payload: String? = nil
+            if let token = accessToken {
+                payload = token.persistBase64Encoded()
+            } else {
+                payload = password
+            }
+
+            KeyChain.updateCreateOrDelete(password: payload, forKey: keyChainId)
+            credentials.key = keyChainId
+
             return credentials
     }
 
