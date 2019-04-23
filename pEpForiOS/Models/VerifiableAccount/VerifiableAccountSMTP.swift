@@ -73,35 +73,35 @@ extension VerifiableAccountSMTP: SmtpSendDelegate {
     }
 
     public func messageSent(_ smtp: SmtpSend, theNotification: Notification?) {
-        notifyUnexpectedCallback(name: "messageSent")
+        notifyUnexpectedCallback(name: #function)
     }
 
     public func messageNotSent(_ smtp: SmtpSend, theNotification: Notification?) {
-        notifyUnexpectedCallback(name: "messageNotSent")
+        notifyUnexpectedCallback(name: #function)
     }
 
     public func transactionInitiationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {
-        notifyUnexpectedCallback(name: "transactionInitiationCompleted")
+        notifyUnexpectedCallback(name: #function)
     }
 
     public func transactionInitiationFailed(_ smtp: SmtpSend, theNotification: Notification?) {
-        notifyUnexpectedCallback(name: "transactionInitiationFailed")
+        notifyUnexpectedCallback(name: #function)
     }
 
     public func recipientIdentificationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {
-        notifyUnexpectedCallback(name: "recipientIdentificationCompleted")
+        notifyUnexpectedCallback(name: #function)
     }
 
     public func recipientIdentificationFailed(_ smtp: SmtpSend, theNotification: Notification?) {
-        notifyUnexpectedCallback(name: "recipientIdentificationFailed")
+        notifyUnexpectedCallback(name: #function)
     }
 
     public func transactionResetCompleted(_ smtp: SmtpSend, theNotification: Notification?) {
-        notifyUnexpectedCallback(name: "transactionResetCompleted")
+        notifyUnexpectedCallback(name: #function)
     }
 
     public func transactionResetFailed(_ smtp: SmtpSend, theNotification: Notification?) {
-        notifyUnexpectedCallback(name: "transactionResetFailed")
+        notifyUnexpectedCallback(name: #function)
     }
 
     public func authenticationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {
@@ -132,14 +132,14 @@ extension VerifiableAccountSMTP: SmtpSendDelegate {
     }
 
     public func requestCancelled(_ smtp: SmtpSend, theNotification: Notification?) {
-        notifyUnexpectedCallback(name: "transactionResetFailed")
+        notifyUnexpectedCallback(name: #function)
     }
 
     public func serviceInitialized(_ smtp: SmtpSend, theNotification: Notification?) {
-        notifyUnexpectedCallback(name: "transactionResetFailed")
+        notifyUnexpectedCallback(name: #function)
     }
 
     public func serviceReconnected(_ smtp: SmtpSend, theNotification: Notification?) {
-        notifyUnexpectedCallback(name: "transactionResetFailed")
+        notifyUnexpectedCallback(name: #function)
     }
 }
