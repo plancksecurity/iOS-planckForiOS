@@ -20,11 +20,6 @@ public protocol VerifiableAccountSMTPDelegate: class {
 
 /// Helper for `VerifiableAccount` (verifies SMTP servers).
 public class VerifiableAccountSMTP {
-    public enum SmtpVerificationError: Error {
-        /// The SMTP delegate got invoked with an unexpected method.
-        case unexpected(String)
-    }
-
     public weak var verifiableAccountDelegate: VerifiableAccountSMTPDelegate?
 
     private var smtpSend: SmtpSend?
@@ -58,7 +53,7 @@ extension VerifiableAccountSMTP: SmtpSendDelegate {
     }
 
     private func notifyUnexpectedCallback(name: String) {
-        let error = SmtpVerificationError.unexpected(name)
+        let error = SmtpSendError.badResponse(name)
         verifiableAccountDelegate?.verified(
             verifier: self,
             basicConnectInfo: forcedConnectInfo(),
