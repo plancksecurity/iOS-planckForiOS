@@ -232,6 +232,17 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
     // MARK: - Helpers for saving
 
+    private func delete(server: CdServer, fromAccount: CdAccount) {
+        if let creds = server.credentials {
+            if let key = creds.key {
+                KeyChain.updateCreateOrDelete(password: nil, forKey: key)
+            }
+            server.credentials = nil
+            creds.delete()
+        }
+        fromAccount.removeFromServers(server)
+    }
+
     private func createOrUpdateAccount(context: NSManagedObjectContext,
                                        identity: CdIdentity) -> CdAccount {
         let p = NSPredicate(
