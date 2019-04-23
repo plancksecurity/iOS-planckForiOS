@@ -188,6 +188,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
             let imapServer = createServer(context: moc,
                                           address: addressImap,
                                           port: portIMAP,
+                                          serverType: .imap,
                                           authMethod: authMethod,
                                           trusted: trustedImapServer,
                                           transport: transportIMAP)
@@ -195,6 +196,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
             let smtpServer = createServer(context: moc,
                                           address: addressSmtp,
                                           port: portSMTP,
+                                          serverType: .smtp,
                                           authMethod: authMethod,
                                           trusted: false,
                                           transport: transportSMTP)
@@ -323,6 +325,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     private func createServer(context: NSManagedObjectContext,
                               address: String,
                               port: UInt16,
+                              serverType: Server.ServerType,
                               authMethod: AuthMethod?,
                               trusted: Bool,
                               transport: ConnectionTransport) -> CdServer {
@@ -330,6 +333,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         update(server: server,
                address: address,
                port: port,
+               serverType: serverType,
                authMethod: authMethod,
                trusted: trusted,
                transport: transport)
@@ -339,6 +343,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     private func update(server: CdServer,
                         address: String,
                         port: UInt16,
+                        serverType: Server.ServerType,
                         authMethod: AuthMethod?,
                         trusted: Bool,
                         transport: ConnectionTransport) {
@@ -348,6 +353,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         server.serverType = Server.ServerType.imap
         server.trusted = trustedImapServer
         server.transport = transportIMAP.toServerTransport()
+        server.serverType = serverType
     }
 
     // MARK: - Legacy
