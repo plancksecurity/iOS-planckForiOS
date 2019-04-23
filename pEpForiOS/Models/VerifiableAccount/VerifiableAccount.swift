@@ -201,13 +201,17 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
             let credentialsImap = createCredentials(context: moc,
                                                     loginName: loginName,
-                                                    address: address)
+                                                    address: address,
+                                                    password: password,
+                                                    accessToken: accessToken)
             credentialsImap.servers = NSSet(array: [imapServer])
             imapServer.credentials = credentialsImap
 
             let credentialsSmtp = createCredentials(context: moc,
                                                     loginName: loginName,
-                                                    address: address)
+                                                    address: address,
+                                                    password: password,
+                                                    accessToken: accessToken)
             credentialsSmtp.servers = NSSet(array: [imapServer])
             smtpServer.credentials = credentialsSmtp
 
@@ -287,15 +291,23 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         identity.userName = userName
     }
 
+    /// Create credentials for the given parameters.
+    ///
+    /// - Note: There is either an ordinary password, so a key chain entry
+    ///         gets produced, or an access token (for OAUTH2),
+    ///         in which case the token gets persisted into the key chain.
     private func createCredentials(context: NSManagedObjectContext,
                                    loginName: String?,
-                                   address: String?) -> CdServerCredentials {
-        let credentials = CdServerCredentials.create(context: context)
-        credentials.loginName = loginName ?? address
-        // For OAUTH2, deal with the password
-        //let thePassword = accessToken?.persistBase64Encoded() ?? password
-        credentials.key = accessToken?.keyChainID // TODO Check if that is set by OAUTH2
-        return credentials
+                                   address: String?,
+                                   password: String?,
+                                   accessToken: OAuth2AccessTokenProtocol?)
+        -> CdServerCredentials {
+            let credentials = CdServerCredentials.create(context: context)
+            credentials.loginName = loginName ?? address
+            // For OAUTH2, deal with the password
+            //let thePassword = accessToken?.persistBase64Encoded() ?? password
+            credentials.key = accessToken?.keyChainID // TODO Check if that is set by OAUTH2
+            return credentials
     }
 
     private func createServer(context: NSManagedObjectContext,
