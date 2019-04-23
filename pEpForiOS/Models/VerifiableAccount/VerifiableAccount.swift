@@ -171,11 +171,11 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         let moc = Record.Context.background
 
         moc.performAndWait {
-            let cdIdentity = createOrUpdateOwnIdentity(context: moc,
+            let cdIdentity = updateOrCreateOwnIdentity(context: moc,
                                                        address: address,
                                                        userName: userName)
 
-            let cdAccount = createOrUpdateAccount(context: moc, identity: cdIdentity)
+            let cdAccount = findOrCreateAccount(context: moc, identity: cdIdentity)
 
             if let theServer = cdAccount.imapCdServer {
                 delete(server: theServer, fromAccount: cdAccount)
@@ -253,8 +253,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         fromAccount.removeFromServers(server)
     }
 
-    private func createOrUpdateAccount(context: NSManagedObjectContext,
-                                       identity: CdIdentity) -> CdAccount {
+    private func findOrCreateAccount(context: NSManagedObjectContext,
+                                     identity: CdIdentity) -> CdAccount {
         let p = NSPredicate(
             format: "%K = %@" , CdAccount.RelationshipName.identity, identity)
         if let cdAccount = CdAccount.first(predicate: p, in: context) {
@@ -266,7 +266,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         }
     }
 
-    private func createOrUpdateOwnIdentity(context: NSManagedObjectContext,
+    private func updateOrCreateOwnIdentity(context: NSManagedObjectContext,
                                            address: String?,
                                            userName: String?) -> CdIdentity {
         if let theAddress = address,
