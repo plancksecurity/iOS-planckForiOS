@@ -158,6 +158,47 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         if !isValid() {
             throw VerifiableAccountError.invalidUserData
         }
+
+        let moc = Record.Context.background
+
+        moc.performAndWait {
+            let cdId = CdIdentity.create(context: moc)
+            cdId.address = address
+            cdId.userName = userName
+
+            let imapServer = CdServer.create(context: moc)
+            imapServer.address = serverIMAP
+            imapServer.port = NSNumber.init(value: portIMAP)
+            imapServer.authMethod = authMethod?.rawValue
+            imapServer.serverType = Server.ServerType.imap
+            imapServer.trusted = trustedImapServer
+            imapServer.transport = transportIMAP.toServerTransport()
+
+            let smtpServer = CdServer.create(context: moc)
+            smtpServer.address = serverSMTP
+            smtpServer.port = NSNumber.init(value: portSMTP)
+            smtpServer.authMethod = authMethod?.rawValue
+            smtpServer.serverType = Server.ServerType.smtp
+            smtpServer.transport = transportSMTP.toServerTransport()
+
+            let credentialsImap = CdServerCredentials.create(context: moc)
+            credentialsImap.loginName = loginName ?? address
+            // For OAUTH2, deal with the password
+            //let thePassword = accessToken?.persistBase64Encoded() ?? password
+            credentialsImap.key = accessToken?.keyChainID // TODO Check if that is set by OAUTH2
+            credentialsImap.servers = NSSet(array: [imapServer])
+            imapServer.credentials = credentialsImap
+
+            let credentialsSmtp = CdServerCredentials.create(context: moc)
+            credentialsSmtp.loginName = loginName ?? address
+            // For OAUTH2, deal with the password
+            //let thePassword = accessToken?.persistBase64Encoded() ?? password
+            credentialsSmtp.key = accessToken?.keyChainID // TODO Check if that is set by OAUTH2
+            credentialsSmtp.servers = NSSet(array: [imapServer])
+            smtpServer.credentials = credentialsSmtp
+
+            moc.saveAndLogErrors()
+        }
     }
 
     // MARK: - Used by the UI, when using class directly
