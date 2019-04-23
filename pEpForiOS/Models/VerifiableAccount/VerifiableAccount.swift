@@ -181,14 +181,6 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         return false
     }
 
-    private var isValidImap: Bool {
-        return false
-    }
-
-    private var isValidSmtp: Bool {
-        return false
-    }
-
     // MARK: - Legacy
 
     /// Returns an Account instance filled with data of self.
