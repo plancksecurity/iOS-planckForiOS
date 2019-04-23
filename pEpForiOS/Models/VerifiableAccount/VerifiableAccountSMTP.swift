@@ -37,19 +37,7 @@ public class VerifiableAccountSMTP {
 
 extension VerifiableAccountSMTP: SmtpSendDelegate {
     private func forcedConnectInfo() -> BasicConnectInfo {
-        guard let theConnectInfo = basicConnectInfo else {
-            return BasicConnectInfo(
-                accountEmailAddress: "",
-                loginName: nil,
-                loginPassword: nil,
-                accessToken: nil,
-                networkAddress: "",
-                networkPort: 0,
-                connectionTransport: nil,
-                authMethod: nil,
-                emailProtocol: nil)
-        }
-        return theConnectInfo
+        return BasicConnectInfo.force(basicConnectInfo: basicConnectInfo)
     }
 
     private func notifyUnexpectedCallback(name: String) {
