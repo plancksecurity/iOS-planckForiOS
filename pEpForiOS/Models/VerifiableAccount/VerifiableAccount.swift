@@ -177,6 +177,14 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
             let cdAccount = createOrUpdateAccount(context: moc, identity: cdIdentity)
 
+            if let theServer = cdAccount.imapCdServer {
+                delete(server: theServer, fromAccount: cdAccount)
+            }
+
+            if let theServer = cdAccount.smtpCdServer {
+                delete(server: theServer, fromAccount: cdAccount)
+            }
+
             let imapServer = createServer(context: moc,
                                           address: addressImap,
                                           port: portIMAP,
