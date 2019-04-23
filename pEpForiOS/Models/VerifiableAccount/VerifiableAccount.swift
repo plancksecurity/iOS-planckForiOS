@@ -171,23 +171,23 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         let moc = Record.Context.background
 
         moc.performAndWait {
-            let cdId = createOrUpdateOwnIdentity(context: moc,
-                                                 address: address,
-                                                 userName: userName)
+            let cdIdentity = createOrUpdateOwnIdentity(context: moc,
+                                                       address: address,
+                                                       userName: userName)
 
             let imapServer = createServer(context: moc,
-                                                  address: addressImap,
-                                                  port: portIMAP,
-                                                  authMethod: authMethod,
-                                                  trusted: trustedImapServer,
-                                                  transport: transportIMAP)
+                                          address: addressImap,
+                                          port: portIMAP,
+                                          authMethod: authMethod,
+                                          trusted: trustedImapServer,
+                                          transport: transportIMAP)
 
             let smtpServer = createServer(context: moc,
-                                                  address: addressSmtp,
-                                                  port: portSMTP,
-                                                  authMethod: authMethod,
-                                                  trusted: false,
-                                                  transport: transportSMTP)
+                                          address: addressSmtp,
+                                          port: portSMTP,
+                                          authMethod: authMethod,
+                                          trusted: false,
+                                          transport: transportSMTP)
 
             let credentialsImap = createCredentials(context: moc,
                                                     loginName: loginName,
@@ -202,7 +202,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
             smtpServer.credentials = credentialsSmtp
 
             let cdAccount = CdAccount.create(context: moc)
-            cdAccount.identity = cdId
+            cdAccount.identity = cdIdentity
             cdAccount.servers = NSSet(array: [imapServer, smtpServer])
 
             moc.saveAndLogErrors()
@@ -234,9 +234,15 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
     private func createOrUpdateAccount(context: NSManagedObjectContext,
                                        identity: CdIdentity) -> CdAccount {
-        let cdAccount = CdAccount.create(context: context)
-        cdAccount.identity = identity
-        return cdAccount
+        let p = NSPredicate(
+            format: "%K = %@" , CdAccount.RelationshipName.identity, identity)
+        if let cdAccount = CdAccount.first(predicate: p, in: context) {
+            return cdAccount
+        } else {
+            let cdAccount = CdAccount.create(context: context)
+            cdAccount.identity = identity
+            return cdAccount
+        }
     }
 
     private func createOrUpdateOwnIdentity(context: NSManagedObjectContext,
