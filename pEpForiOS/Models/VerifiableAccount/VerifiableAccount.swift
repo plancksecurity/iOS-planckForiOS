@@ -289,6 +289,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                         userName: String?) {
         identity.address = address
         identity.userName = userName
+        identity.userID = CdIdentity.pEpOwnUserID
     }
 
     /// Create credentials for the given parameters.
