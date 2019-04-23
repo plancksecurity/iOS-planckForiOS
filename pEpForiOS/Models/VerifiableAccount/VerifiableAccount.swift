@@ -112,9 +112,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     private func isValid() -> Bool {
         let isValid =
             (address?.count ?? 0) > 0 &&
-                ((authMethod == nil && accessToken != nil) ||
-                    (authMethod != nil && accessToken == nil) ||
-                    (authMethod == nil && accessToken == nil)) &&
+                ((authMethod == .saslXoauth2 && accessToken != nil && password == nil) ||
+                    (accessToken == nil && password != nil)) &&
                 portIMAP > 0 &&
                 portSMTP > 0 &&
                 (serverIMAP?.count ?? 0) > 0 &&
