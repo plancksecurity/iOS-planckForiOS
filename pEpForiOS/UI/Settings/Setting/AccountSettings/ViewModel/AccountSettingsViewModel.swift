@@ -83,6 +83,10 @@ public class AccountSettingsViewModel {
     var verificationService: VerificationService?
     weak var delegate: AccountVerificationResultDelegate?
 
+    /// Holding both the data of the current account in verification,
+    /// and also the implementation of the verification.
+    private var verifiableAccount: VerifiableAccountProtocol?
+
     // Currently we assume imap and smtp servers exist already (update).
     // If we run into problems here modify to updateOrCreate.
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
