@@ -107,12 +107,23 @@ public class AccountSettingsViewModel {
             // TODO: Set correct auth method, etc.
         }
 
+        // IMAP
         theVerifier.serverIMAP = imap.address
         if let portString = imap.port, let port = UInt16(portString) {
             theVerifier.portIMAP = port
         }
-        let _ = Server.Transport(fromString: imap.transport)
-        //  TODO: Set the correct transport
+        if let transport = Server.Transport(fromString: imap.transport) {
+            theVerifier.transportIMAP = ConnectionTransport.init(transport: transport)
+        }
+
+        // SMTP
+        theVerifier.serverSMTP = smtp.address
+        if let portString = smtp.port, let port = UInt16(portString) {
+            theVerifier.portSMTP = port
+        }
+        if let transport = Server.Transport(fromString: smtp.transport) {
+            theVerifier.transportSMTP = ConnectionTransport.init(transport: transport)
+        }
 
         // TODO: Implement
         /*
