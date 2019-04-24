@@ -214,5 +214,25 @@ extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
 
 extension AccountSettingsViewModel: VerifiableAccountDelegate {
     public func didEndVerification(result: Result<Void, Error>) {
+        switch result {
+        case .success(()):
+            do {
+                try verifiableAccount?.save()
+            } catch {
+                Logger.frontendLogger.log(error: error)
+                Logger.frontendLogger.errorAndCrash("Unexpected error on saving the account")
+            }
+        case .failure(let error):
+            if let imapError = error as? ImapSyncError {
+                delegate?.didVerify(
+                    result: .imapError(imapError), accountInput: verifiableAccount)
+            } else if let smtpError = error as? SmtpSendError {
+                delegate?.didVerify(
+                    result: .smtpError(smtpError), accountInput: verifiableAccount)
+            } else {
+                Logger.frontendLogger.log(error: error)
+                Logger.frontendLogger.errorAndCrash("Unexpected error")
+            }
+        }
     }
 }
