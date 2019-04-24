@@ -135,45 +135,6 @@ public class AccountSettingsViewModel {
         } catch {
             delegate?.didVerify(result: .noImapConnectData, accountInput: theVerifier)
         }
-
-        // TODO: Implement
-        /*
-        guard let serverImap = account.imapServer,
-            let serverSmtp = account.smtpServer else {
-                Logger.frontendLogger.errorAndCrash("Account misses imap or smtp server.")
-                return
-        }
-        let pass : String?
-        if let p = password {
-            pass = p
-        } else {
-            pass = serverImap.credentials.password
-        }
-        guard let editedServerImap = server(from: imap, serverType: .imap,
-                                            loginName: loginName,
-                                            password: pass,
-                                            key: serverImap.credentials.key),
-            let editedServerSmtp = server(from: smtp,
-                                          serverType: .smtp,
-                                          loginName: loginName,
-                                          password: pass,
-                                          key: serverSmtp.credentials.key)
-            else {
-                Logger.frontendLogger.errorAndCrash("Invalid input.")
-                return
-        }
-
-        serverImap.updateValues(with: editedServerImap)
-        serverSmtp.updateValues(with: editedServerSmtp)
-
-        self.account.user.userName = name
-
-        guard let verificationService = verificationService else {
-            Logger.frontendLogger.errorAndCrash("no VerificationService")
-            return
-        }
-        verificationService.requestVerification(account: account, delegate: self)
-         */
     }
 
     func sectionIsValid(section: Int) -> Bool {
