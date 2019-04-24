@@ -128,7 +128,7 @@ public class AccountSettingsViewModel {
             theVerifier.transportSMTP = ConnectionTransport.init(transport: transport)
         }
 
-        // TODO: Set delegate.
+        theVerifier.verifiableAccountDelegate = self
 
         do {
             try theVerifier.verify()
@@ -207,5 +207,12 @@ extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
             }
             me.delegate?.didVerify(result: result, accountInput: nil)
         }
+    }
+}
+
+// MARK: - VerifiableAccountDelegate
+
+extension AccountSettingsViewModel: VerifiableAccountDelegate {
+    public func didEndVerification(result: Result<Void, Error>) {
     }
 }
