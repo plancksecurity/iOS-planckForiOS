@@ -74,11 +74,21 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
                                                               port: "123",
                                                               transport: "StartTls")
 
+        let verifyExpectation =
+            expectation(description: AccountVerificationResultDelegateMock.DID_VERIFY_EXPECTATION)
+
+        let delegate = AccountVerificationResultDelegateMock()
+        delegate.expectationDidVerifyCalled = verifyExpectation
+        viewModel.delegate = delegate
+
         viewModel.update(loginName: login,
                          name: name,
                          password: password,
                          imap: server,
                          smtp: server)
+
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+
         // TODO: What to test here?
         /*
         let smtp = viewModel.account.smtpServer
@@ -140,8 +150,24 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 class AccountVerificationResultDelegateMock: AccountVerificationResultDelegate {
     static let DID_VERIFY_EXPECTATION = "DID_VERIFY_CALLED"
     var expectationDidVerifyCalled: XCTestExpectation?
+    var error: Error? = nil
 
     func didVerify(result: AccountVerificationResult, accountInput: VerifiableAccountProtocol?) {
+        switch result {
+        case .ok:
+            self.error = nil
+        case .noImapConnectData, .noSmtpConnectData:
+            let theError = NSError(
+                domain: #function,
+                code: 777,
+                userInfo: [NSLocalizedDescriptionKey: "SMTP/IMAP ERROR"])
+            self.error = theError
+        case .imapError(let error):
+            self.error = error
+        case .smtpError(let error):
+            self.error = error
+        }
+
         guard let expectation = expectationDidVerifyCalled else {
             XCTFail()
             return
