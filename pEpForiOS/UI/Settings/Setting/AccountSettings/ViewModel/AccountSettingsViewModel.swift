@@ -98,7 +98,10 @@ public class AccountSettingsViewModel {
 
         theVerifier.address = email
         theVerifier.userName = name
+
+        // TODO: How to handle if the password got changed or not?
         theVerifier.password = password
+
         if loginName != email {
             theVerifier.loginName = loginName
         }
@@ -123,6 +126,14 @@ public class AccountSettingsViewModel {
         }
         if let transport = Server.Transport(fromString: smtp.transport) {
             theVerifier.transportSMTP = ConnectionTransport.init(transport: transport)
+        }
+
+        // TODO: Set delegate.
+
+        do {
+            try theVerifier.verify()
+        } catch {
+            delegate?.didVerify(result: .noImapConnectData, accountInput: theVerifier)
         }
 
         // TODO: Implement
