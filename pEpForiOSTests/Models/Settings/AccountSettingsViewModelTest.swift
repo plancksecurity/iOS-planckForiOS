@@ -148,8 +148,4 @@ class AccountVerificationResultDelegateMock: AccountVerificationResultDelegate {
         }
         expectation.fulfill()
     }
-
-
 }
-
-
