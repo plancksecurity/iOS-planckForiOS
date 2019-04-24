@@ -32,7 +32,6 @@ public class AccountSettingsViewModel {
         }
     }
 
-    private (set) var account: Account
     private let headers = [
         NSLocalizedString("Account", comment: "Account settings"),
         NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
@@ -44,60 +43,52 @@ public class AccountSettingsViewModel {
     public let isOAuth2: Bool
 
     public init(account: Account) {
-        // We are using a copy here. The outside world must not know changed settings until they
-        // have been verified.
-        self.account = Account(withDataFrom: account)
+        // We are using a copy of the data here.
+        // The outside world must not know changed settings until they have been verified.
         isOAuth2 = account.server(with: .imap)?.authMethod == AuthMethod.saslXoauth2.rawValue
-    }
+        self.email = account.user.address
+        self.loginName = account.server(with: .imap)?.credentials.loginName ?? ""
+        self.name = account.user.userName ?? ""
 
-    var email: String {
-        get {
-            return account.user.address
+        if let server = account.smtpServer {
+            self.smtpServer = ServerViewModel(
+                address: server.address,
+                port: "\(server.port)",
+                transport: server.transport?.asString())
+        } else {
+            self.smtpServer = ServerViewModel()
+        }
+
+        if let server = account.imapServer {
+            self.imapServer = ServerViewModel(
+                address: server.address,
+                port: "\(server.port)",
+                transport: server.transport?.asString())
+        } else {
+            self.imapServer = ServerViewModel()
         }
     }
+
+    var email: String
 
     /// - Note: The email model is based on the assumption that imap.loginName == smtp.loginName
-    var loginName: String {
-        get {
-            return account.server(with: .imap)?.credentials.loginName ?? ""
-        }
-    }
+    var loginName: String
 
-    var name: String {
-        get {
-            return account.user.userName ?? ""
-        }
-    }
+    var name: String
 
-    var smtpServer: ServerViewModel {
-        get {
-            if let server = account.smtpServer {
-                return ServerViewModel(address: server.address,
-                                       port: "\(server.port)",
-                    transport: server.transport?.asString())
-            }
-            return ServerViewModel()
-        }
-    }
+    var smtpServer: ServerViewModel
 
-    var imapServer: ServerViewModel {
-        get {
-            if let server = account.imapServer {
-                return ServerViewModel(address: server.address,
-                                       port: "\(server.port)",
-                    transport: server.transport?.asString())
-            }
-            return ServerViewModel()
-        }
-    }
+    var imapServer: ServerViewModel
 
     var verificationService: VerificationService?
     weak var delegate: AccountVerificationResultDelegate?
 
-    //Currently we assume imap and smtp servers exist already (update).
-    // If we run into problems here modify to updateOrCreate
+    // Currently we assume imap and smtp servers exist already (update).
+    // If we run into problems here modify to updateOrCreate.
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
                 smtp: ServerViewModel) {
+        // TODO: Implement
+        /*
         guard let serverImap = account.imapServer,
             let serverSmtp = account.smtpServer else {
                 Logger.frontendLogger.errorAndCrash("Account misses imap or smtp server.")
@@ -133,6 +124,7 @@ public class AccountSettingsViewModel {
             return
         }
         verificationService.requestVerification(account: account, delegate: self)
+         */
     }
 
     func sectionIsValid(section: Int) -> Bool {
@@ -174,6 +166,8 @@ public class AccountSettingsViewModel {
     }
 
     func updateToken(accessToken: OAuth2AccessTokenProtocol) {
+        // TODO: What to do here? When does this get called?
+        /*
         guard let imapServer = account.imapServer,
             let smtpServer = account.smtpServer else {
                 return
@@ -181,6 +175,7 @@ public class AccountSettingsViewModel {
         let password = accessToken.persistBase64Encoded()
         imapServer.credentials.password = password
         smtpServer.credentials.password = password
+         */
     }
 }
 
