@@ -150,7 +150,7 @@ class EmailListViewModel {
             if op.isCancelled {
                 return
             }
-            DispatchQueue.main.sync {
+            DispatchQueue.main.async {
                 me.invalidateFetchTimeoutTimer() //DEBUG
                 me.messages = sortedMessages
                 me.emailListViewModelDelegate?.updateView()
@@ -161,7 +161,7 @@ class EmailListViewModel {
     }
 
     //DEBUG version
-    private let timeoutTime = 2.0
+    private let timeoutTime = 10.0
     private var timer: Timer?
     private func scheduleFetchTimeoutTimer() {
         timer?.invalidate()

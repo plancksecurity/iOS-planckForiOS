@@ -214,7 +214,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     @objc private func settingsChanged() {
         model?.reloadData()
-        tableView.reloadData()
+//        tableView.reloadData()
     }
 
     // MARK: - Action Edit Button
