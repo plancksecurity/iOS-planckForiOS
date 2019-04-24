@@ -87,7 +87,7 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
                          imap: server,
                          smtp: server)
 
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
 
         // TODO: What to test here?
         /*
