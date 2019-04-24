@@ -10,6 +10,8 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
+import PantomimeFramework
+
 public class AccountSettingsViewModel {
     public struct ServerViewModel {
         var address: String?
@@ -32,7 +34,6 @@ public class AccountSettingsViewModel {
         }
     }
 
-    private (set) var account: Account
     private let headers = [
         NSLocalizedString("Account", comment: "Account settings"),
         NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
@@ -44,95 +45,95 @@ public class AccountSettingsViewModel {
     public let isOAuth2: Bool
 
     public init(account: Account) {
-        // We are using a copy here. The outside world must not know changed settings until they
-        // have been verified.
-        self.account = Account(withDataFrom: account)
+        // We are using a copy of the data here.
+        // The outside world must not know changed settings until they have been verified.
         isOAuth2 = account.server(with: .imap)?.authMethod == AuthMethod.saslXoauth2.rawValue
-    }
+        self.email = account.user.address
+        self.loginName = account.server(with: .imap)?.credentials.loginName ?? ""
+        self.name = account.user.userName ?? ""
 
-    var email: String {
-        get {
-            return account.user.address
+        if let server = account.smtpServer {
+            self.smtpServer = ServerViewModel(
+                address: server.address,
+                port: "\(server.port)",
+                transport: server.transport?.asString())
+        } else {
+            self.smtpServer = ServerViewModel()
+        }
+
+        if let server = account.imapServer {
+            self.imapServer = ServerViewModel(
+                address: server.address,
+                port: "\(server.port)",
+                transport: server.transport?.asString())
+        } else {
+            self.imapServer = ServerViewModel()
         }
     }
 
-    var loginName: String {
-        get {
-            // the email model is based on the assumption that imap.loginName == smtp.loginName
-            return account.server(with: .imap)?.credentials.loginName ?? ""
-        }
-    }
+    private(set) var email: String
 
-    var name: String {
-        get {
-            return account.user.userName ?? ""
-        }
-    }
+    /// - Note: The email model is based on the assumption that imap.loginName == smtp.loginName
+    private(set) var loginName: String
 
-    var smtpServer: ServerViewModel {
-        get {
-            if let server = account.smtpServer {
-                return ServerViewModel(address: server.address,
-                                       port: "\(server.port)",
-                    transport: server.transport?.asString())
-            }
-            return ServerViewModel()
-        }
-    }
+    private(set) var name: String
 
-    var imapServer: ServerViewModel {
-        get {
-            if let server = account.imapServer {
-                return ServerViewModel(address: server.address,
-                                       port: "\(server.port)",
-                    transport: server.transport?.asString())
-            }
-            return ServerViewModel()
-        }
-    }
+    private(set) var smtpServer: ServerViewModel
 
-    var verificationService: VerificationService?
+    private(set) var imapServer: ServerViewModel
+
     weak var delegate: AccountVerificationResultDelegate?
 
-    //Currently we assume imap and smtp servers exist already (update).
-    // If we run into problems here modify to updateOrCreate
+    /// Holding both the data of the current account in verification,
+    /// and also the implementation of the verification.
+    private var verifiableAccount: VerifiableAccountProtocol?
+
+    // Currently we assume imap and smtp servers exist already (update).
+    // If we run into problems here modify to updateOrCreate.
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
                 smtp: ServerViewModel) {
-        guard let serverImap = account.imapServer,
-            let serverSmtp = account.smtpServer else {
-                Logger.frontendLogger.errorAndCrash("Account misses imap or smtp server.")
-                return
-        }
-        let pass : String?
-        if let p = password {
-            pass = p
-        } else {
-            pass = serverImap.credentials.password
-        }
-        guard let editedServerImap = server(from: imap, serverType: .imap,
-                                            loginName: loginName,
-                                            password: pass,
-                                            key: serverImap.credentials.key),
-            let editedServerSmtp = server(from: smtp,
-                                          serverType: .smtp,
-                                          loginName: loginName,
-                                          password: pass,
-                                          key: serverSmtp.credentials.key)
-            else {
-                Logger.frontendLogger.errorAndCrash("Invalid input.")
-                return
+        var theVerifier = verifiableAccount ?? VerifiableAccount()
+        verifiableAccount = theVerifier
+
+        theVerifier.address = email
+        theVerifier.userName = name
+
+        // TODO: How to handle if the password got changed or not?
+        theVerifier.password = password
+
+        if loginName != email {
+            theVerifier.loginName = loginName
         }
 
-        serverImap.updateValues(with: editedServerImap)
-        serverSmtp.updateValues(with: editedServerSmtp)
-
-        self.account.user.userName = name
-
-        guard let verificationService = verificationService else {
-            Logger.frontendLogger.errorAndCrash("no VerificationService")
-            return
+        if isOAuth2 {
+            // TODO: Set correct auth method, etc.
         }
-        verificationService.requestVerification(account: account, delegate: self)
+
+        // IMAP
+        theVerifier.serverIMAP = imap.address
+        if let portString = imap.port, let port = UInt16(portString) {
+            theVerifier.portIMAP = port
+        }
+        if let transport = Server.Transport(fromString: imap.transport) {
+            theVerifier.transportIMAP = ConnectionTransport.init(transport: transport)
+        }
+
+        // SMTP
+        theVerifier.serverSMTP = smtp.address
+        if let portString = smtp.port, let port = UInt16(portString) {
+            theVerifier.portSMTP = port
+        }
+        if let transport = Server.Transport(fromString: smtp.transport) {
+            theVerifier.transportSMTP = ConnectionTransport.init(transport: transport)
+        }
+
+        theVerifier.verifiableAccountDelegate = self
+
+        do {
+            try theVerifier.verify()
+        } catch {
+            delegate?.didVerify(result: .noImapConnectData, accountInput: theVerifier)
+        }
     }
 
     func sectionIsValid(section: Int) -> Bool {
@@ -174,6 +175,8 @@ public class AccountSettingsViewModel {
     }
 
     func updateToken(accessToken: OAuth2AccessTokenProtocol) {
+        // TODO: What to do here? When does this get called?
+        /*
         guard let imapServer = account.imapServer,
             let smtpServer = account.smtpServer else {
                 return
@@ -181,6 +184,7 @@ public class AccountSettingsViewModel {
         let password = accessToken.persistBase64Encoded()
         imapServer.credentials.password = password
         smtpServer.credentials.password = password
+         */
     }
 }
 
@@ -201,6 +205,33 @@ extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
                 return
             }
             me.delegate?.didVerify(result: result, accountInput: nil)
+        }
+    }
+}
+
+// MARK: - VerifiableAccountDelegate
+
+extension AccountSettingsViewModel: VerifiableAccountDelegate {
+    public func didEndVerification(result: Result<Void, Error>) {
+        switch result {
+        case .success(()):
+            do {
+                try verifiableAccount?.save()
+            } catch {
+                Logger.frontendLogger.log(error: error)
+                Logger.frontendLogger.errorAndCrash("Unexpected error on saving the account")
+            }
+        case .failure(let error):
+            if let imapError = error as? ImapSyncError {
+                delegate?.didVerify(
+                    result: .imapError(imapError), accountInput: verifiableAccount)
+            } else if let smtpError = error as? SmtpSendError {
+                delegate?.didVerify(
+                    result: .smtpError(smtpError), accountInput: verifiableAccount)
+            } else {
+                Logger.frontendLogger.log(error: error)
+                Logger.frontendLogger.errorAndCrash("Unexpected error")
+            }
         }
     }
 }
