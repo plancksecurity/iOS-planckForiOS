@@ -69,16 +69,16 @@ public class AccountSettingsViewModel {
         }
     }
 
-    var email: String
+    private(set) var email: String
 
     /// - Note: The email model is based on the assumption that imap.loginName == smtp.loginName
-    var loginName: String
+    private(set) var loginName: String
 
-    var name: String
+    private(set) var name: String
 
-    var smtpServer: ServerViewModel
+    private(set) var smtpServer: ServerViewModel
 
-    var imapServer: ServerViewModel
+    private(set) var imapServer: ServerViewModel
 
     var verificationService: VerificationService?
     weak var delegate: AccountVerificationResultDelegate?
