@@ -10,6 +10,8 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
+import PantomimeFramework
+
 public class AccountSettingsViewModel {
     public struct ServerViewModel {
         var address: String?
@@ -91,6 +93,27 @@ public class AccountSettingsViewModel {
     // If we run into problems here modify to updateOrCreate.
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
                 smtp: ServerViewModel) {
+        var theVerifier = verifiableAccount ?? VerifiableAccount()
+        verifiableAccount = theVerifier
+
+        theVerifier.address = email
+        theVerifier.userName = name
+        theVerifier.password = password
+        if loginName != email {
+            theVerifier.loginName = loginName
+        }
+
+        if isOAuth2 {
+            // TODO: Set correct auth method, etc.
+        }
+
+        theVerifier.serverIMAP = imap.address
+        if let portString = imap.port, let port = UInt16(portString) {
+            theVerifier.portIMAP = port
+        }
+        let _ = Server.Transport(fromString: imap.transport)
+        //  TODO: Set the correct transport
+
         // TODO: Implement
         /*
         guard let serverImap = account.imapServer,
