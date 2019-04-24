@@ -176,10 +176,12 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
             let cdAccount = findOrCreateAccount(context: moc, identity: cdIdentity)
 
+            // TODO: Reuse server!
             if let theServer = cdAccount.imapCdServer {
                 delete(server: theServer, fromAccount: cdAccount)
             }
 
+            // TODO: Reuse server!
             if let theServer = cdAccount.smtpCdServer {
                 delete(server: theServer, fromAccount: cdAccount)
             }
