@@ -348,12 +348,12 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                         authMethod: AuthMethod?,
                         trusted: Bool,
                         transport: ConnectionTransport) {
-        server.address = serverIMAP
-        server.port = NSNumber.init(value: portIMAP)
+        server.address = address
+        server.port = NSNumber.init(value: port)
         server.authMethod = authMethod?.rawValue
-        server.serverType = Server.ServerType.imap
-        server.trusted = trustedImapServer
-        server.transport = transportIMAP.toServerTransport()
+        server.serverType = serverType
+        server.trusted = trusted
+        server.transport = transport.toServerTransport()
         server.serverType = serverType
     }
 
