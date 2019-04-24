@@ -82,7 +82,6 @@ public class AccountSettingsViewModel {
 
     private(set) var imapServer: ServerViewModel
 
-    var verificationService: VerificationService?
     weak var delegate: AccountVerificationResultDelegate?
 
     /// Holding both the data of the current account in verification,
