@@ -56,9 +56,9 @@ public class AccountSettingsViewModel {
         }
     }
 
+    /// - Note: The email model is based on the assumption that imap.loginName == smtp.loginName
     var loginName: String {
         get {
-            // the email model is based on the assumption that imap.loginName == smtp.loginName
             return account.server(with: .imap)?.credentials.loginName ?? ""
         }
     }
