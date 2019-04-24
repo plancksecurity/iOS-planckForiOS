@@ -215,7 +215,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                                                     address: address,
                                                     password: password,
                                                     accessToken: accessToken)
-            credentialsSmtp.servers = NSSet(array: [imapServer])
+            credentialsSmtp.servers = NSSet(array: [smtpServer])
             smtpServer.credentials = credentialsSmtp
 
             cdAccount.servers = NSSet(array: [imapServer, smtpServer])
