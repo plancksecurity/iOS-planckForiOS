@@ -75,6 +75,16 @@ public class AccountSettingsViewModel {
         } else {
             self.smtpServer = ServerViewModel()
         }
+
+        if isOAuth2,
+            let payload = account.imapServer?.credentials.password ??
+                account.smtpServer?.credentials.password,
+            let token = OAuth2AccessToken.from(base64Encoded: payload)
+                as? OAuth2AccessTokenProtocol {
+            self.accessToken = token
+        } else {
+            Logger.frontendLogger.errorAndCrash("Supposed to do OAUTH2, but no existing token")
+        }
     }
 
     private(set) var email: String
