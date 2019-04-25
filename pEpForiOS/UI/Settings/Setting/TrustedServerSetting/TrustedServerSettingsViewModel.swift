@@ -55,7 +55,7 @@ struct TrustedServerSettingsViewModel {
     }
 
     private func serversAllowedToManuallyTrust() -> [String] {
-        let accounts = Server.Fetch.allAccountsAllowedToManuallyTrust()
+        let accounts = Server.Fetch.getAllAccountsAllowedToManuallyTrust()
         let addresses = accounts.map { $0.user.address }
         return addresses
     }
