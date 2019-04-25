@@ -53,6 +53,7 @@ public class AccountSettingsViewModel {
         self.name = account.user.userName ?? ""
 
         if let server = account.imapServer {
+            self.originalPassword = server.credentials.password
             self.imapServer = ServerViewModel(
                 address: server.address,
                 port: "\(server.port)",
@@ -62,6 +63,7 @@ public class AccountSettingsViewModel {
         }
 
         if let server = account.smtpServer {
+            self.originalPassword = self.originalPassword ?? server.credentials.password
             self.smtpServer = ServerViewModel(
                 address: server.address,
                 port: "\(server.port)",
@@ -88,6 +90,8 @@ public class AccountSettingsViewModel {
     /// and also the implementation of the verification.
     private var verifiableAccount: VerifiableAccountProtocol?
 
+    private var originalPassword: String?
+
     // Currently we assume imap and smtp servers exist already (update).
     // If we run into problems here modify to updateOrCreate.
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
@@ -98,8 +102,10 @@ public class AccountSettingsViewModel {
         theVerifier.address = email
         theVerifier.userName = name
 
-        // TODO: How to handle if the password got changed or not?
-        theVerifier.password = password
+        theVerifier.password = originalPassword
+        if password != nil {
+            theVerifier.password = password
+        }
 
         if loginName != email {
             theVerifier.loginName = loginName
