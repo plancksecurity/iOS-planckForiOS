@@ -176,49 +176,65 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
             let cdAccount = findOrCreateAccount(context: moc, identity: cdIdentity)
 
-            // TODO: Reuse server!
+            var imapServer: CdServer?
             if let theServer = cdAccount.imapCdServer {
-                delete(server: theServer, fromAccount: cdAccount)
+                update(server: theServer,
+                       address: addressImap,
+                       port: portIMAP,
+                       serverType: .imap,
+                       authMethod: authMethod,
+                       trusted: trustedImapServer,
+                       transport: transportIMAP)
+                imapServer = theServer
             }
 
-            // TODO: Reuse server!
+            let theImapServer = imapServer ?? createServer(context: moc,
+                                                           address: addressImap,
+                                                           port: portIMAP,
+                                                           serverType: .imap,
+                                                           authMethod: authMethod,
+                                                           trusted: trustedImapServer,
+                                                           transport: transportIMAP)
+
+            var smtpServer: CdServer?
             if let theServer = cdAccount.smtpCdServer {
-                delete(server: theServer, fromAccount: cdAccount)
+                update(server: theServer,
+                       address: addressSmtp,
+                       port: portSMTP,
+                       serverType: .smtp,
+                       authMethod: authMethod,
+                       trusted: false,
+                       transport: transportSMTP)
+                smtpServer = theServer
             }
 
-            let imapServer = createServer(context: moc,
-                                          address: addressImap,
-                                          port: portIMAP,
-                                          serverType: .imap,
-                                          authMethod: authMethod,
-                                          trusted: trustedImapServer,
-                                          transport: transportIMAP)
+            let theSmtpServer = smtpServer ?? createServer(context: moc,
+                                                           address: addressSmtp,
+                                                           port: portSMTP,
+                                                           serverType: .smtp,
+                                                           authMethod: authMethod,
+                                                           trusted: false,
+                                                           transport: transportSMTP)
 
-            let smtpServer = createServer(context: moc,
-                                          address: addressSmtp,
-                                          port: portSMTP,
-                                          serverType: .smtp,
-                                          authMethod: authMethod,
-                                          trusted: false,
-                                          transport: transportSMTP)
+            let credentialsImap = theImapServer.credentials ?? createCredentials(
+                context: moc,
+                loginName: loginName,
+                address: address,
+                password: password,
+                accessToken: accessToken)
+            credentialsImap.servers = NSSet(array: [theImapServer])
+            theImapServer.credentials = credentialsImap
 
-            let credentialsImap = createCredentials(context: moc,
-                                                    loginName: loginName,
-                                                    address: address,
-                                                    password: password,
-                                                    accessToken: accessToken)
-            credentialsImap.servers = NSSet(array: [imapServer])
-            imapServer.credentials = credentialsImap
+            let credentialsSmtp = theSmtpServer.credentials ?? createCredentials(
+                context: moc,
+                loginName: loginName,
+                address: address,
+                password: password,
+                accessToken: accessToken)
+            credentialsSmtp.servers = NSSet(array: [theSmtpServer])
+            theSmtpServer.credentials = credentialsSmtp
 
-            let credentialsSmtp = createCredentials(context: moc,
-                                                    loginName: loginName,
-                                                    address: address,
-                                                    password: password,
-                                                    accessToken: accessToken)
-            credentialsSmtp.servers = NSSet(array: [smtpServer])
-            smtpServer.credentials = credentialsSmtp
-
-            cdAccount.servers = NSSet(array: [imapServer, smtpServer])
+            cdAccount.servers = NSSet(array: [theImapServer, theSmtpServer])
 
             moc.saveAndLogErrors()
         }
