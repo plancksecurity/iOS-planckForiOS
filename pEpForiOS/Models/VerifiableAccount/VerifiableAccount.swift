@@ -286,7 +286,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                         userName: String?) {
         identity.address = address
         identity.userName = userName
-        identity.userID = CdIdentity.pEpOwnUserID
+        identity.userID = identity.userID ?? CdIdentity.pEpOwnUserID
     }
 
     /// Updates credentials with the given parameters.
