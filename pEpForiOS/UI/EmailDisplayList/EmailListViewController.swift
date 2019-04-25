@@ -101,6 +101,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             showLoginScreen()
         }
 
+        ///if we are in setup and the folder is unifiedInbox
+        ///we have to reload the unifiedInbox to ensure that all the accounts are present.
+        if vm.folderToShow is UnifiedInbox {
+            model = EmailListViewModel(emailListViewModelDelegate: self,
+                                       folderToShow: UnifiedInbox())
+        }
+
         title = model?.folderName
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
