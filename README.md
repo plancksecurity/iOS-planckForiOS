@@ -26,9 +26,17 @@ sudo port install libtool
 sudo port install automake
 
 sudo port install gmake
+
+# To run the `greenmail` mailserver for tests
+sudo port install openjdk11
 ```
 
-### Other dependecies
+### Set up Xcode
+You need to have an Apple ID configured in Xcode, for code signing. You can add one in the `Accounts` tab of the settings (menu `Xcode > Preferences...`).
+
+For some things (TODO: what exactly?), your Apple ID needs to be part of the pEp team account. Ask `#service`, if you want to be added to the team account. When you are a member of the team, the information on your Apple ID in the Xcode Preferences should have a record `Team: pEp Security SA`, `Role: Member`.
+
+### Other dependencies
 
 #### pEpEngine: [yml2](https://fdik.org/yml/toolchain)
 
@@ -104,3 +112,61 @@ OAUTH2_YAHOO_CLIENT_ID = some_content
 OAUTH2_YAHOO_CLIENT_SECRET = some_content
 
 ```
+
+# Notes on debugging build problems
+Depending on whether you use a distribution of bash from macports or Apple, and the contents of your `PATH` variable, the build might fail. Especially the engine makes many assumptions about the environment on the build machine.
+
+If you have any build issues, they may also be fixed by changing some of the variables the engine build system uses in `~/src/pEpEngine/local.conf`. This is an example configuration file:
+
+~~~
+YML2_PROC=/opt/local/bin/python2 $(YML2_PATH)/yml2proc
+
+ASN1C=/opt/local/bin/asn1c
+ASN1C_INC=/opt/local/share/asn1c/
+~~~
+
+Note that some of these variables may be overridden in the build system elsewhere, for example the variable `YML2_PATH`. Check the build steps in `pEpEngine.xcodeproj` for details.
+
+# Misc
+For a quick update of all the code repositories cloned in the instructions above, use this shell script snipped:
+
+~~~
+cd ~/yml2/
+hg pull -u
+
+cd ~/src/libetpan/
+git pull
+
+cd ~/src/OpenSSL-for-iPhone/
+git pull
+
+cd ~/src/SwipeCellKit/
+git pull
+
+cd ~/src/AppAuth-iOS/
+git pull
+
+cd ~/src/ldns/
+git pull
+
+cd ~/src/pantomime-iOS/
+hg pull -u
+
+cd ~/src/netpgp-et/
+hg pull -u
+
+cd ~/src/pEpEngine/
+hg pull -u
+
+cd ~/src/pEpObjCAdapter/
+hg pull -u
+
+cd ~/src/MessageModel/
+hg pull -u
+
+cd ~/src/libAccountSettings/
+hg pull -u
+
+cd ~/src/pEp_for_iOS/
+hg pull -u
+~~~
