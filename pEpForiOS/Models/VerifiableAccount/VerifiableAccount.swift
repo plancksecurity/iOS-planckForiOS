@@ -194,8 +194,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                 trusted: false,
                 transport: transportSMTP)
 
-            let credentialsImap = theImapServer.credentials ?? createCredentials(
-                context: moc,
+            let credentialsImap = update(
+                credentials: theImapServer.credentials ?? CdServerCredentials.create(context: moc),
                 loginName: loginName,
                 address: address,
                 password: password,
@@ -203,8 +203,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
             credentialsImap.servers = NSSet(array: [theImapServer])
             theImapServer.credentials = credentialsImap
 
-            let credentialsSmtp = theSmtpServer.credentials ?? createCredentials(
-                context: moc,
+            let credentialsSmtp = update(
+                credentials: theSmtpServer.credentials ?? CdServerCredentials.create(context: moc),
                 loginName: loginName,
                 address: address,
                 password: password,
@@ -289,32 +289,32 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         identity.userID = CdIdentity.pEpOwnUserID
     }
 
-    /// Create credentials for the given parameters.
+    /// Updates credentials with the given parameters.
     ///
     /// - Note: There is either an ordinary password, so a key chain entry
     ///         gets produced, or an access token (for OAUTH2),
     ///         in which case the token gets persisted into the key chain.
-    private func createCredentials(context: NSManagedObjectContext,
-                                   loginName: String?,
-                                   address: String?,
-                                   password: String?,
-                                   accessToken: OAuth2AccessTokenProtocol?)
-        -> CdServerCredentials {
-            let credentials = CdServerCredentials.create(context: context)
-            credentials.loginName = loginName ?? address
+    private func update(credentials: CdServerCredentials,
+                        loginName: String?,
+                        address: String?,
+                        password: String?,
+                        accessToken: OAuth2AccessTokenProtocol?) -> CdServerCredentials {
+        credentials.loginName = loginName ?? address
 
-            let keyChainId = UUID().uuidString
-            var payload: String? = nil
-            if let token = accessToken {
-                payload = token.persistBase64Encoded()
-            } else {
-                payload = password
-            }
+        var payload: String? = nil
+        if let token = accessToken {
+            payload = token.persistBase64Encoded()
+        } else {
+            payload = password
+        }
 
-            KeyChain.updateCreateOrDelete(password: payload, forKey: keyChainId)
-            credentials.key = keyChainId
+        // Reuse key, or create a new one.
+        // In any case, update the payload (the password or a current OAUTH2 token).
+        let keyChainId = credentials.key ?? UUID().uuidString
+        credentials.key = keyChainId
+        KeyChain.updateCreateOrDelete(password: payload, forKey: keyChainId)
 
-            return credentials
+        return credentials
     }
 
     private func update(server: CdServer,
