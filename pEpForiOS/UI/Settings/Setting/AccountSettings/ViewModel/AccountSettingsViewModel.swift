@@ -52,15 +52,6 @@ public class AccountSettingsViewModel {
         self.loginName = account.server(with: .imap)?.credentials.loginName ?? ""
         self.name = account.user.userName ?? ""
 
-        if let server = account.smtpServer {
-            self.smtpServer = ServerViewModel(
-                address: server.address,
-                port: "\(server.port)",
-                transport: server.transport?.asString())
-        } else {
-            self.smtpServer = ServerViewModel()
-        }
-
         if let server = account.imapServer {
             self.imapServer = ServerViewModel(
                 address: server.address,
@@ -68,6 +59,15 @@ public class AccountSettingsViewModel {
                 transport: server.transport?.asString())
         } else {
             self.imapServer = ServerViewModel()
+        }
+
+        if let server = account.smtpServer {
+            self.smtpServer = ServerViewModel(
+                address: server.address,
+                port: "\(server.port)",
+                transport: server.transport?.asString())
+        } else {
+            self.smtpServer = ServerViewModel()
         }
     }
 
