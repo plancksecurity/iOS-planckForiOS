@@ -211,7 +211,6 @@
 		431C6E041FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431C6E031FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift */; };
 		431D60DB1E93BB2D001266D7 /* AttachmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431D60DA1E93BB2D001266D7 /* AttachmentsView.swift */; };
 		431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431D60DC1E93D580001266D7 /* MessageAttachmentsCell.swift */; };
-		431E58FC1ED5926B00EFA77F /* AccountVerificationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E58FB1ED5926B00EFA77F /* AccountVerificationServiceTests.swift */; };
 		431E65631EEAE65200B8BBFC /* HandshakeUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E65621EEAE65200B8BBFC /* HandshakeUITest.swift */; };
 		431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */; };
 		431F987F1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431F987E1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift */; };
@@ -698,7 +697,6 @@
 		431C6E031FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2ConfigurationProtocol.swift; sourceTree = "<group>"; };
 		431D60DA1E93BB2D001266D7 /* AttachmentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsView.swift; sourceTree = "<group>"; };
 		431D60DC1E93D580001266D7 /* MessageAttachmentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAttachmentsCell.swift; sourceTree = "<group>"; };
-		431E58FB1ED5926B00EFA77F /* AccountVerificationServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerificationServiceTests.swift; sourceTree = "<group>"; };
 		431E65621EEAE65200B8BBFC /* HandshakeUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeUITest.swift; sourceTree = "<group>"; };
 		431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
 		431F987E1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakePartnerTableViewCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -1859,7 +1857,6 @@
 				438281821E891B7E00087343 /* DateTests.swift */,
 				43FAA0D31EC9CBC0005BFC4B /* DecryptionTestsInternal.swift */,
 				43C3B15F2003851100ED48A4 /* DecryptImportedMessagesTests.swift */,
-				431E58FB1ED5926B00EFA77F /* AccountVerificationServiceTests.swift */,
 				436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */,
 				15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */,
 				43F7F0791F6AD44600BDF151 /* HandshakeTests.swift */,
@@ -3051,7 +3048,6 @@
 				153B2188219472A400497D3D /* BodyCellViewModelTest.swift in Sources */,
 				438BA0F5214F89CD001A4A82 /* MailParsingTests.swift in Sources */,
 				15A8B8FC20908D2300D2B0B6 /* Keychain+TestUtils.swift in Sources */,
-				431E58FC1ED5926B00EFA77F /* AccountVerificationServiceTests.swift in Sources */,
 				0017CD1D2162614400F62F13 /* MoveToFolderCellViewModelTests.swift in Sources */,
 				0017CD1B21621E2200F62F13 /* MoveToFolderViewModelTest.swift in Sources */,
 				4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */,
