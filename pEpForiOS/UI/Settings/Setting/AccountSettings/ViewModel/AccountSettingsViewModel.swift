@@ -90,7 +90,14 @@ public class AccountSettingsViewModel {
     /// and also the implementation of the verification.
     private var verifiableAccount: VerifiableAccountProtocol?
 
+    /// If the credentials have either an IMAP or SMTP password,
+    /// it gets stored here.
     private var originalPassword: String?
+
+    /// If there was OAUTH2 for this account, here is a current token.
+    /// This trumps both the `originalPassword` and a password given by the user
+    /// via the UI.
+    private var accessToken: OAuth2AccessTokenProtocol?
 
     // Currently we assume imap and smtp servers exist already (update).
     // If we run into problems here modify to updateOrCreate.
@@ -181,16 +188,7 @@ public class AccountSettingsViewModel {
     }
 
     func updateToken(accessToken: OAuth2AccessTokenProtocol) {
-        // TODO: What to do here? When does this get called?
-        /*
-        guard let imapServer = account.imapServer,
-            let smtpServer = account.smtpServer else {
-                return
-        }
-        let password = accessToken.persistBase64Encoded()
-        imapServer.credentials.password = password
-        smtpServer.credentials.password = password
-         */
+        self.accessToken = accessToken
     }
 }
 
