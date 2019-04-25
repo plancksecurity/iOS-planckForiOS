@@ -96,17 +96,6 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                   trustedImapServer: false)
     }
 
-    // MARK: - Internal
-
-    private var imapVerifier: VerifiableAccountIMAP?
-    private var smtpVerifier: VerifiableAccountSMTP?
-
-    var imapResult: Result<Void, Error>? = nil
-    var smtpResult: Result<Void, Error>? = nil
-
-    /// Used for synchronizing the 2 asynchronous results (IMAP and SMTP verification).
-    private let syncQueue = DispatchQueue(label: "VerifiableAccountSynchronization")
-
     // MARK: - VerifiableAccountProtocol (behavior)
 
     private func isValid() -> Bool {
@@ -239,7 +228,38 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         return false
     }
 
-    // MARK: - Helpers for saving
+    // MARK: - Internal (data)
+
+    private var imapVerifier: VerifiableAccountIMAP?
+    private var smtpVerifier: VerifiableAccountSMTP?
+
+    var imapResult: Result<Void, Error>? = nil
+    var smtpResult: Result<Void, Error>? = nil
+
+    /// Used for synchronizing the 2 asynchronous results (IMAP and SMTP verification).
+    private let syncQueue = DispatchQueue(label: "VerifiableAccountSynchronization")
+
+    // MARK: - Internal (Behaviour)
+
+    private func checkSuccess() {
+        guard let theImapResult = imapResult, let theSmtpResult = smtpResult else {
+            return
+        }
+
+        switch theImapResult {
+        case .failure(let error):
+            verifiableAccountDelegate?.didEndVerification(result: .failure(error))
+        case .success(()):
+            switch theSmtpResult {
+            case .failure(let error):
+                verifiableAccountDelegate?.didEndVerification(result: .failure(error))
+            case .success(()):
+                verifiableAccountDelegate?.didEndVerification(result: .success(()))
+            }
+        }
+    }
+
+    // MARK: - Internal helpers for saving
 
     /// Deletes the given server from the account, including its credentials
     /// and entries in the key chain.
@@ -333,26 +353,6 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         server.serverType = serverType
 
         return server
-    }
-
-    // MARK: - Internal (Behaviour)
-
-    private func checkSuccess() {
-        guard let theImapResult = imapResult, let theSmtpResult = smtpResult else {
-            return
-        }
-
-        switch theImapResult {
-        case .failure(let error):
-            verifiableAccountDelegate?.didEndVerification(result: .failure(error))
-        case .success(()):
-            switch theSmtpResult {
-            case .failure(let error):
-                verifiableAccountDelegate?.didEndVerification(result: .failure(error))
-            case .success(()):
-                verifiableAccountDelegate?.didEndVerification(result: .success(()))
-            }
-        }
     }
 }
 
