@@ -44,6 +44,10 @@ public class AccountSettingsViewModel {
     public let svm = SecurityViewModel()
     public let isOAuth2: Bool
 
+    /// Holding both the data of the current account in verification,
+    /// and also the implementation of the verification.
+    public var verifiableAccount: VerifiableAccountProtocol?
+
     public init(account: Account) {
         // We are using a copy of the data here.
         // The outside world must not know changed settings until they have been verified.
@@ -85,10 +89,6 @@ public class AccountSettingsViewModel {
     private(set) var imapServer: ServerViewModel
 
     weak var delegate: AccountVerificationResultDelegate?
-
-    /// Holding both the data of the current account in verification,
-    /// and also the implementation of the verification.
-    private var verifiableAccount: VerifiableAccountProtocol?
 
     /// If the credentials have either an IMAP or SMTP password,
     /// it gets stored here.
