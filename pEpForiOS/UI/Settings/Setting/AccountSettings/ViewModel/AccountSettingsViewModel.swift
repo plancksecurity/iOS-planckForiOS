@@ -206,6 +206,7 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
         case .success(()):
             do {
                 try verifiableAccount?.save()
+                delegate?.didVerify(result: .ok, accountInput: verifiableAccount)
             } catch {
                 Logger.frontendLogger.log(error: error)
                 Logger.frontendLogger.errorAndCrash("Unexpected error on saving the account")
