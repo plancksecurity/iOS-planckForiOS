@@ -109,17 +109,23 @@ public class AccountSettingsViewModel {
         theVerifier.address = email
         theVerifier.userName = name
 
-        theVerifier.password = originalPassword
-        if password != nil {
-            theVerifier.password = password
-        }
-
         if loginName != email {
             theVerifier.loginName = loginName
         }
 
         if isOAuth2 {
-            // TODO: Set correct auth method, etc.
+            if self.accessToken == nil {
+                Logger.frontendLogger.errorAndCrash("Have to do OAUTH2, but lacking current token")
+            }
+            theVerifier.authMethod = .saslXoauth2
+            theVerifier.accessToken = accessToken
+            // OAUTH2 trumps any password
+            theVerifier.password = nil
+        } else {
+            theVerifier.password = originalPassword
+            if password != nil {
+                theVerifier.password = password
+            }
         }
 
         // IMAP
