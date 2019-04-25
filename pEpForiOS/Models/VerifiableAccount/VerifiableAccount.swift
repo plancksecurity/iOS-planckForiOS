@@ -176,45 +176,23 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
             let cdAccount = findOrCreateAccount(context: moc, identity: cdIdentity)
 
-            var imapServer: CdServer?
-            if let theServer = cdAccount.imapCdServer {
-                update(server: theServer,
-                       address: addressImap,
-                       port: portIMAP,
-                       serverType: .imap,
-                       authMethod: authMethod,
-                       trusted: trustedImapServer,
-                       transport: transportIMAP)
-                imapServer = theServer
-            }
+            let theImapServer = update(
+                server: cdAccount.imapCdServer ?? CdServer.create(context: moc),
+                address: addressImap,
+                port: portIMAP,
+                serverType: .imap,
+                authMethod: authMethod,
+                trusted: trustedImapServer,
+                transport: transportIMAP)
 
-            let theImapServer = imapServer ?? createServer(context: moc,
-                                                           address: addressImap,
-                                                           port: portIMAP,
-                                                           serverType: .imap,
-                                                           authMethod: authMethod,
-                                                           trusted: trustedImapServer,
-                                                           transport: transportIMAP)
-
-            var smtpServer: CdServer?
-            if let theServer = cdAccount.smtpCdServer {
-                update(server: theServer,
-                       address: addressSmtp,
-                       port: portSMTP,
-                       serverType: .smtp,
-                       authMethod: authMethod,
-                       trusted: false,
-                       transport: transportSMTP)
-                smtpServer = theServer
-            }
-
-            let theSmtpServer = smtpServer ?? createServer(context: moc,
-                                                           address: addressSmtp,
-                                                           port: portSMTP,
-                                                           serverType: .smtp,
-                                                           authMethod: authMethod,
-                                                           trusted: false,
-                                                           transport: transportSMTP)
+            let theSmtpServer = update(
+                server: cdAccount.smtpCdServer ?? CdServer.create(context: moc),
+                address: addressSmtp,
+                port: portSMTP,
+                serverType: .smtp,
+                authMethod: authMethod,
+                trusted: false,
+                transport: transportSMTP)
 
             let credentialsImap = theImapServer.credentials ?? createCredentials(
                 context: moc,
@@ -339,31 +317,13 @@ public class VerifiableAccount: VerifiableAccountProtocol {
             return credentials
     }
 
-    private func createServer(context: NSManagedObjectContext,
-                              address: String,
-                              port: UInt16,
-                              serverType: Server.ServerType,
-                              authMethod: AuthMethod?,
-                              trusted: Bool,
-                              transport: ConnectionTransport) -> CdServer {
-        let server = CdServer.create(context: context)
-        update(server: server,
-               address: address,
-               port: port,
-               serverType: serverType,
-               authMethod: authMethod,
-               trusted: trusted,
-               transport: transport)
-        return server
-    }
-
     private func update(server: CdServer,
                         address: String,
                         port: UInt16,
                         serverType: Server.ServerType,
                         authMethod: AuthMethod?,
                         trusted: Bool,
-                        transport: ConnectionTransport) {
+                        transport: ConnectionTransport) -> CdServer {
         server.address = address
         server.port = NSNumber.init(value: port)
         server.authMethod = authMethod?.rawValue
@@ -371,6 +331,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         server.trusted = trusted
         server.transport = transport.toServerTransport()
         server.serverType = serverType
+
+        return server
     }
 
     // MARK: - Legacy
