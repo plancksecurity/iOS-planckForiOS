@@ -15,7 +15,7 @@ class VerifiableAccountTest: XCTestCase {
     func testBasicSuccess() {
         let verifier = VerifiableAccount()
         var verifierType: VerifiableAccountProtocol = verifier
-        SecretTestData().populateWorkingAccount(
+        SecretTestData().populateVerifiableAccount(
             verifiableAccount: &verifierType)
         let expDidVerify = expectation(description: "expDidVerify")
         let delegate = VerifiableAccountTestDelegate(expDidVerify: expDidVerify)
@@ -88,7 +88,7 @@ class VerifiableAccountTest: XCTestCase {
         modifier: (VerifiableAccountProtocol) -> VerifiableAccountProtocol) -> (Bool, Bool) {
         let verifier = VerifiableAccount()
         var verifierType: VerifiableAccountProtocol = verifier
-        SecretTestData().populateWorkingAccount(
+        SecretTestData().populateVerifiableAccount(
             verifiableAccount: &verifierType)
 
         // Invalidate it
@@ -127,7 +127,7 @@ class VerifiableAccountTest: XCTestCase {
         -> Result<Void, Error> {
             let verifier = VerifiableAccount()
             var verifiable: VerifiableAccountProtocol = verifier
-            SecretTestData().populateWorkingAccount(
+            SecretTestData().populateVerifiableAccount(
                 verifiableAccount: &verifiable)
 
             verifiable = modifier(verifiable)

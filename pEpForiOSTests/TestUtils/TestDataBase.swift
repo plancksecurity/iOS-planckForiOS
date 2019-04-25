@@ -390,8 +390,8 @@ class TestDataBase {
         return createImapTimeOutAccountSettings().account()
     }
 
-    func populateWorkingAccount(number: Int = 0,
-                                verifiableAccount: inout VerifiableAccountProtocol) {
+    func populateVerifiableAccount(number: Int = 0,
+                                   verifiableAccount: inout VerifiableAccountProtocol) {
         createVerifiableAccountSettings(number: number).populate(
             verifiableAccount: &verifiableAccount)
     }
