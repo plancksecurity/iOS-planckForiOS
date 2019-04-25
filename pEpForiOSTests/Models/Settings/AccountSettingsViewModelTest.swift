@@ -133,9 +133,7 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         delegate.expectationDidVerifyCalled = verifyExpectation
         viewModel.delegate = delegate
 
-        viewModel.verified(account: account,
-                           service: AccountVerificationService(),
-                           result: .ok)
+        viewModel.didEndVerification(result: .success(()))
 
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }

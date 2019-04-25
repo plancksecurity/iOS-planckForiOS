@@ -198,27 +198,6 @@ public class AccountSettingsViewModel {
     }
 }
 
-// MARK: - AccountVerificationServiceDelegate
-
-extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
-    public func verified(account: Account,
-                  service: AccountVerificationServiceProtocol,
-                  result: AccountVerificationResult) {
-        if result == .ok {
-            MessageModelUtil.performAndWait {
-                account.save()
-            }
-        }
-        GCD.onMainWait { [weak self] in
-            guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
-                return
-            }
-            me.delegate?.didVerify(result: result, accountInput: nil)
-        }
-    }
-}
-
 // MARK: - VerifiableAccountDelegate
 
 extension AccountSettingsViewModel: VerifiableAccountDelegate {
