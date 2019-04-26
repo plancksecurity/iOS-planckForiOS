@@ -108,6 +108,9 @@ public class AccountSettingsViewModel {
     /// If there was OAUTH2 for this account, here is a current token.
     /// This trumps both the `originalPassword` and a password given by the user
     /// via the UI.
+    /// - Note: For logins that require it, there must be an up-to-date token
+    ///         for the verification be able to succeed.
+    ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
 
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
