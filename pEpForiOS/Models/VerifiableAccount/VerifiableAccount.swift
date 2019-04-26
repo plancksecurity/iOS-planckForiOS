@@ -207,27 +207,6 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         }
     }
 
-    // MARK: - Used by the UI, when using class directly
-
-    public var isValidName: Bool {
-        return (userName?.count ?? 0) >= 1
-    }
-
-    public var isValidUser: Bool {
-        return isValidName && isValidEmail && isValidPassword
-    }
-
-    private var isValidEmail: Bool {
-        return address?.isProbablyValidEmail() ?? false
-    }
-
-    private var isValidPassword: Bool {
-        if let pass = password {
-            return pass.count > 0
-        }
-        return false
-    }
-
     // MARK: - Internal (data)
 
     private var imapVerifier: VerifiableAccountIMAP?
