@@ -117,7 +117,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         guard let imapConnectInfo = BasicConnectInfo(
             verifiableAccount: self, emailProtocol: .imap) else {
                 // Assuming this is caused by invalid data.
-                throw VerifiableAccountError.invalidUserData
+                throw VerifiableAccountValidationError.invalidUserData
         }
         theVerifier.verify(basicConnectInfo: imapConnectInfo)
     }
@@ -129,14 +129,14 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         guard let smtpConnectInfo = BasicConnectInfo(
             verifiableAccount: self, emailProtocol: .smtp) else {
                 // Assuming this is caused by invalid data.
-                throw VerifiableAccountError.invalidUserData
+                throw VerifiableAccountValidationError.invalidUserData
         }
         theVerifier.verify(basicConnectInfo: smtpConnectInfo)
     }
 
     public func verify() throws {
         if !isValid() {
-            throw VerifiableAccountError.invalidUserData
+            throw VerifiableAccountValidationError.invalidUserData
         }
 
         try startImapVerification()
@@ -145,15 +145,15 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
     public func save() throws {
         if !isValid() {
-            throw VerifiableAccountError.invalidUserData
+            throw VerifiableAccountValidationError.invalidUserData
         }
 
         guard let addressImap = serverIMAP else {
-            throw VerifiableAccountError.invalidUserData
+            throw VerifiableAccountValidationError.invalidUserData
         }
 
         guard let addressSmtp = serverSMTP else {
-            throw VerifiableAccountError.invalidUserData
+            throw VerifiableAccountValidationError.invalidUserData
         }
 
         let moc = Record.Context.background
