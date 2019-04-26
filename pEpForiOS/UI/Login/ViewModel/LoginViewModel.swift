@@ -162,6 +162,7 @@ class LoginViewModel {
         }
 
         theVerificationService.trustedImapServer = trusted
+
         do {
             try theVerificationService.verify()
         } catch {
