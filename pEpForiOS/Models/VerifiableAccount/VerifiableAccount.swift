@@ -241,19 +241,6 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
     // MARK: - Internal helpers for saving
 
-    /// Deletes the given server from the account, including its credentials
-    /// and entries in the key chain.
-    private func delete(server: CdServer, fromAccount: CdAccount) {
-        if let creds = server.credentials {
-            if let key = creds.key {
-                KeyChain.updateCreateOrDelete(password: nil, forKey: key)
-            }
-            server.credentials = nil
-            creds.delete()
-        }
-        fromAccount.removeFromServers(server)
-    }
-
     private func findOrCreateAccount(context: NSManagedObjectContext,
                                      identity: CdIdentity) -> CdAccount {
         let p = NSPredicate(
