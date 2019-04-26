@@ -110,31 +110,6 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         return isValid
     }
 
-    private func checkIfValid() throws {
-        guard let address = self.address, address != "" else {
-            let msg = NSLocalizedString("E-mail must not be empty",
-                                        comment: "Alert message for empty e-mail address field")
-            throw AccountSettingsUserInputError.invalidInputEmailAddress(localizedMessage: msg)
-        }
-
-        guard let userName = self.userName, userName != "" else {
-            let msg = NSLocalizedString("Username must not be empty",
-                                        comment: "Alert message for empty username")
-            throw AccountSettingsUserInputError.invalidInputUserName(localizedMessage: msg)
-        }
-
-        guard let serverIMAP = self.serverIMAP, serverIMAP != "" else {
-            let msg = NSLocalizedString("IMAP server must not be empty",
-                                        comment: "Alert message for empty IMAP server")
-            throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
-        }
-        guard let serverSMTP = self.serverSMTP, serverSMTP != "" else {
-            let msg = NSLocalizedString("SMTP server must not be empty",
-                                        comment: "Alert message for empty SMTP server")
-            throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
-        }
-    }
-
     private func startImapVerification() throws {
         let theVerifier = VerifiableAccountIMAP()
         self.imapVerifier = theVerifier
