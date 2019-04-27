@@ -191,7 +191,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                                           port: portIMAP,
                                           serverType: .imap,
                                           authMethod: authMethod,
-                                          trusted: trustedImapServer,
+                                          automaticallyTrusted: trustedImapServer,
+                                          manuallyTrusted: false,
                                           transport: transportIMAP)
 
             let smtpServer = createServer(context: moc,
@@ -199,7 +200,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                                           port: portSMTP,
                                           serverType: .smtp,
                                           authMethod: authMethod,
-                                          trusted: false,
+                                          automaticallyTrusted: false,
+                                          manuallyTrusted: false,
                                           transport: transportSMTP)
 
             let credentialsImap = createCredentials(context: moc,
@@ -328,7 +330,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                               port: UInt16,
                               serverType: Server.ServerType,
                               authMethod: AuthMethod?,
-                              trusted: Bool,
+                              automaticallyTrusted: Bool,
+                              manuallyTrusted: Bool,
                               transport: ConnectionTransport) -> CdServer {
         let server = CdServer.create(context: context)
         update(server: server,
@@ -336,7 +339,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                port: port,
                serverType: serverType,
                authMethod: authMethod,
-               trusted: trusted,
+               automaticallyTrusted: automaticallyTrusted,
+               manuallyTrusted: manuallyTrusted,
                transport: transport)
         return server
     }
@@ -346,13 +350,15 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                         port: UInt16,
                         serverType: Server.ServerType,
                         authMethod: AuthMethod?,
-                        trusted: Bool,
+                        automaticallyTrusted: Bool,
+                        manuallyTrusted: Bool,
                         transport: ConnectionTransport) {
         server.address = address
         server.port = NSNumber.init(value: port)
         server.authMethod = authMethod?.rawValue
         server.serverType = serverType
-        server.trusted = trusted
+        server.automaticallyTrusted = automaticallyTrusted
+        server.manuallyTrusted = manuallyTrusted
         server.transport = transport.toServerTransport()
         server.serverType = serverType
     }

@@ -637,7 +637,7 @@ class TestUtil {
             return
         }
         for server in cdServers {
-            server.trusted = true
+            server.automaticallyTrusted = true
         }
         Record.saveAndWait()
     }
