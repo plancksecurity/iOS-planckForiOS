@@ -10,6 +10,7 @@ import UIKit
 
 import pEpIOSToolbox
 import PantomimeFramework
+import MessageModel
 
 extension UIAlertController {
     func setupActionFromConnectionTransport(_ transport: ConnectionTransport,
@@ -31,7 +32,7 @@ class IMAPSettingsTableViewController: BaseTableViewController, TextfieldRespond
 
     let viewWidthAligner = ViewWidthsAligner()
 
-    var model: AccountUserInput!
+    var model: VerifiableAccountProtocol!
     var fields = [UITextField]()
     var responder = 0
 
