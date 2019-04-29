@@ -36,6 +36,7 @@ public class FilterViewModel {
         var row = sections[indexPath.section][indexPath.row]
         let newState = !row.state
         row.state = newState
+        sections[indexPath.section][indexPath.row].state = newState
         // ... and create a new filter taking the state change into account
         var mustBeUnread = filter.mustBeUnread
         var mustBeFlagged = filter.mustBeFlagged
@@ -181,6 +182,9 @@ extension FilterViewModel {
         subscript(index: Int) -> Row {
             get {
                 return rows[index]
+            }
+            set {
+                rows[index] = newValue
             }
         }
     }
