@@ -19,8 +19,8 @@ class TrustedServerSettingsViewModelTest: CoreDataDrivenTestBase {
         setUpViewModel()
 
         viewModel.setStoreSecurely(forAccountWith: account.user.address, toValue: false)
-        guard let isTrusted =
-            Account.Fetch.getAccount(account.user.address)?.imapServer?.manuallyTrusted else {
+        guard let isTrusted = Account.Fetch.getAccountAllowedToManuallyTrust(account.user.address)?
+            .imapServer?.manuallyTrusted else {
                 XCTFail()
                 return
         }
@@ -28,7 +28,8 @@ class TrustedServerSettingsViewModelTest: CoreDataDrivenTestBase {
 
         viewModel.setStoreSecurely(forAccountWith: account.user.address, toValue: true)
         guard let isTrustedAfterChange =
-            Account.Fetch.getAccount(account.user.address)?.imapServer?.manuallyTrusted else {
+            Account.Fetch.getAccountAllowedToManuallyTrust(account.user.address)?.imapServer?
+                .manuallyTrusted else {
             XCTFail()
             return
         }

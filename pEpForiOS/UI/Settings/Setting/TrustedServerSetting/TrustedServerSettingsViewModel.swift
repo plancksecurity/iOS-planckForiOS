@@ -23,7 +23,7 @@ struct TrustedServerSettingsViewModel {
     }
 
     mutating func setStoreSecurely(forAccountWith address: String, toValue newValue: Bool) {
-        guard let account = Account.Fetch.getAccount(address) else {
+        guard let account = Account.Fetch.getAccountAllowedToManuallyTrust(address) else {
             Logger.frontendLogger.errorAndCrash("Address should be allowed")
             return
         }
