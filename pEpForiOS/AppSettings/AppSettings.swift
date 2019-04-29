@@ -72,28 +72,4 @@ struct AppSettings {
             settingsHandler.defaultAccount = newValue
         }
     }
-
-    // MARK: manuallyTrustedServers
-
-    /// Addresses of all accounts the user explicitly trusted
-    static var manuallyTrustedServers: [String] {
-        get {
-            return settingsHandler.manuallyTrustedServers
-        }
-        set {
-            settingsHandler.manuallyTrustedServers = newValue
-        }
-    }
-
-    static func isManuallyTrustedServer(address: String) -> Bool {
-        return manuallyTrustedServers.contains(address)
-    }
-
-    static func addToManuallyTrustedServers(address: String) {
-        settingsHandler.addToManuallyTrustedServers(address: address)
-    }
-
-    static func removeFromManuallyTrustedServers(address: String) {
-        settingsHandler.removeFromManuallyTrustedServers(address: address)
-    }
 }

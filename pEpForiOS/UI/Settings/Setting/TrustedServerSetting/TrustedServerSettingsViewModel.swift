@@ -23,7 +23,7 @@ struct TrustedServerSettingsViewModel {
     }
 
     mutating func setStoreSecurely(forAccountWith address: String, toValue newValue: Bool) {
-        guard serversAllowedToManuallyTrust().contains(address) else {
+        guard let account = Account.Fetch.getAccount(address) else {
             Logger.frontendLogger.errorAndCrash("Address should be allowed")
             return
         }
@@ -35,28 +35,20 @@ struct TrustedServerSettingsViewModel {
                 break
             }
         }
-
-        let isTruestedServer = !newValue
-        if isTruestedServer {
-            AppSettings.addToManuallyTrustedServers(address: address)
-        } else {
-            AppSettings.removeFromManuallyTrustedServers(address: address)
-        }
+        account.imapServer?.manuallyTrusted = !newValue
+        account.save()
     }
 
     mutating private func reset() {
-        let servers = serversAllowedToManuallyTrust()
+        let accounts = Account.Fetch.getAllAccountsAllowedToManuallyTrust()
         var createes = [Row]()
-        for address in servers {
-            let isTrusted = AppSettings.isManuallyTrustedServer(address: address)
-            createes.append(Row(address: address, storeMessagesSecurely: !isTrusted))
+        for account in accounts {
+            guard let isTrusted = account.imapServer?.manuallyTrusted else {
+                Logger.frontendLogger.errorAndCrash("Trusted server has no imapServer")
+                continue
+            }
+            createes.append(Row(address: account.user.address, storeMessagesSecurely: !isTrusted))
         }
         rows = createes
-    }
-
-    private func serversAllowedToManuallyTrust() -> [String] {
-        let accounts = Account.Fetch.getAllAccountsAllowedToManuallyTrust()
-        let addresses = accounts.map { $0.user.address }
-        return addresses
     }
 }
