@@ -72,7 +72,13 @@ class EmailListViewModel {
     private var _currentFilter: MessageQueryResultsFilter?
     public private(set) var currentFilter: MessageQueryResultsFilter {
         get {
-            return _currentFilter ?? folderToShow.defaultFilter
+            if let cf = _currentFilter {
+                return cf
+            } else {
+                return MessageQueryResultsFilter(
+                    mustBeUnread: false,
+                    accountEnabledStates: folderToShow.defaultFilter.accountsEnabledStates)
+            }
         }
         set {
             _currentFilter = newValue
