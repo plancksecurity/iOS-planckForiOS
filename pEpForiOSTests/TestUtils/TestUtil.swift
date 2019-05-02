@@ -229,34 +229,34 @@ class TestUtil {
     // MARK: - Sync Loop
 
     static public func syncAndWait(numAccountsToSync: Int = 1, testCase: XCTestCase) {
-        let networkService = NetworkService()
-        networkService.sleepTimeInSeconds = 0.1
+        let replicationService = ReplicationService()
+        replicationService.sleepTimeInSeconds = 0.1
 
         let expAccountsSynced = testCase.expectation(description: "allAccountsSynced")
-        // A temp variable is necassary, since the networkServiceUnitTestDelegate is weak
-        let del = NetworkServiceObserver(numAccountsToSync: numAccountsToSync,
+        // A temp variable is necassary, since the replicationServiceUnitTestDelegate is weak
+        let del = ReplicationServiceObserver(numAccountsToSync: numAccountsToSync,
                                          expAccountsSynced: expAccountsSynced,
                                          failOnError: true)
 
-        networkService.unitTestDelegate = del
-        networkService.delegate = del
-        networkService.start()
+        replicationService.unitTestDelegate = del
+        replicationService.delegate = del
+        replicationService.start()
 
         let canTakeSomeTimeFactor = 3.0
         testCase.waitForExpectations(timeout: TestUtil.waitTime * canTakeSomeTimeFactor) { error in
             XCTAssertNil(error)
         }
 
-        TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: testCase)
+        TestUtil.cancelReplicationServiceAndWait(replicationService: replicationService, testCase: testCase)
     }
 
-    // MARK: - NetworkService
-    static public func cancelNetworkServiceAndWait(networkService: NetworkService, testCase: XCTestCase) {
-        let del = NetworkServiceObserver(
+    // MARK: - ReplicationService
+    static public func cancelReplicationServiceAndWait(replicationService: ReplicationService, testCase: XCTestCase) {
+        let del = ReplicationServiceObserver(
             expCanceled: testCase.expectation(description: "expCanceled"))
-        networkService.unitTestDelegate = del
-        networkService.delegate = del
-        networkService.cancel()
+        replicationService.unitTestDelegate = del
+        replicationService.delegate = del
+        replicationService.cancel()
 
         // Wait for cancellation
         testCase.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
@@ -603,7 +603,7 @@ class TestUtil {
     static func determineInterestingFolders(in cdAccount: CdAccount)
         -> [NetworkServiceWorker.FolderInfo] {
         let accountInfo = AccountConnectInfo(accountID: cdAccount.objectID)
-        let dummyConfig = NetworkService.ServiceConfig(sleepTimeInSeconds: 1,
+        let dummyConfig = ReplicationService.ServiceConfig(sleepTimeInSeconds: 1,
                                                        parentName: #function,
                                                        mySelfer:
             DefaultMySelfer(parentName: #function,
@@ -660,17 +660,17 @@ class TestUtil {
 
     /**
      Does the following steps:
-     
-      * Loads an Email from the given path
-      * Creates a self-Identity according to the receiver of the mail
-      * Decrypts the mail, which should import the key
-     
+
+     * Loads an Email from the given path
+     * Creates a self-Identity according to the receiver of the mail
+     * Decrypts the mail, which should import the key
+
      After this function, you should have a self with generated key, and a partner ID
      you can do handshakes on.
      */
-    static func setUpPepFromMail(emailFilePath: String,
+    static func cdMessageAndSetUpPepFromMail(emailFilePath: String,
                                  decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
-        -> (mySelf: Identity, partner: Identity, message: Message)? {
+        -> (mySelf: CdIdentity, partner: CdIdentity, message: CdMessage)? {
             guard let pantomimeMail = cwImapMessage(fileName: emailFilePath) else {
                 XCTFail()
                 return nil
@@ -680,20 +680,20 @@ class TestUtil {
                 XCTFail("Expected array of recipients")
                 return nil
             }
-            var mySelfIdentityOpt: Identity?
+            var mySelfIdentityOpt: CdIdentity?
             for rec in recipients {
                 if rec.type() == .toRecipient {
-                    mySelfIdentityOpt = rec.identity(userID: "!MYSELF!")
+                    mySelfIdentityOpt = rec.cdIdentity(userID: "!MYSELF!")
                 }
             }
             guard let safeOptId = mySelfIdentityOpt else {
                 XCTFail("Could not derive own identity from message")
                 return nil
             }
-            let mySelfID = Identity(identity: safeOptId, isMySelf: true)
-            mySelfID.save()
 
-            let cdMySelfIdentity = CdIdentity.search(identity: mySelfID)
+            Record.saveAndWait()
+
+            let cdMySelfIdentity = safeOptId
             XCTAssertNotNil(cdMySelfIdentity)
 
             let cdMyAccount = CdAccount.create()
@@ -708,13 +708,12 @@ class TestUtil {
                 XCTFail("Expected the mail to have a sender")
                 return nil
             }
-            let partnerID = pantFrom.identity(userID: "THE PARTNER ID")
-            partnerID.save()
+            let partnerID = pantFrom.cdIdentity(userID: "THE PARTNER ID")
 
             Record.saveAndWait()
 
             let session = PEPSession()
-            let mySelfIdentity = mySelfID.pEpIdentity()
+            let mySelfIdentity = cdMySelfIdentity.pEpIdentity()
             try! session.mySelf(mySelfIdentity)
             XCTAssertNotNil(mySelfIdentity.fingerPrint)
             XCTAssertTrue(try! mySelfIdentity.isPEPUser(session).boolValue)
@@ -747,12 +746,23 @@ class TestUtil {
                 XCTAssertEqual(ownDecryptDelegate.numberOfMessageDecryptAttempts, 1)
             }
 
-        guard let msg = cdMessage.message() else {
-            XCTFail("Need to be able to convert the CdMessage into a Message")
-            return nil
-        }
+            return (mySelf: cdMySelfIdentity, partner: partnerID, message: cdMessage)
+    }
 
-        return (mySelf: mySelfID, partner: partnerID, message: msg)
+    /**
+     Uses 'cdMessageAndSetUpPepFromMail', but returns the message as 'Message'.
+     */
+    static func setUpPepFromMail(emailFilePath: String,
+                                 decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
+        -> (mySelf: Identity, partner: Identity, message: Message)? {
+            if let (mySelfID, partnerID, message) = cdMessageAndSetUpPepFromMail(
+                emailFilePath: emailFilePath, decryptDelegate: decryptDelegate),
+                let msg = message.message(),
+                let mySelf = mySelfID.identity(),
+                let partner = partnerID.identity() {
+                return (mySelf: mySelf, partner: partner, message: msg)
+            }
+            return nil
     }
 
     /**

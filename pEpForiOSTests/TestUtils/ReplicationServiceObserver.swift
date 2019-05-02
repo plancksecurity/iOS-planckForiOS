@@ -1,5 +1,5 @@
 //
-//  NetworkServiceObserver.swift
+//  ReplicationServiceObserver.swift
 //  pEpForiOS
 //
 //  Created by Andreas Buff on 29.08.17.
@@ -12,7 +12,7 @@ import CoreData
 @testable import MessageModel
 @testable import pEpForiOS
 
-class NetworkServiceObserver: NetworkServiceUnitTestDelegate, NetworkServiceDelegate, CustomDebugStringConvertible {
+class ReplicationServiceObserver: CustomDebugStringConvertible {
     let expAllSynced: XCTestExpectation?
     var expCanceled: XCTestExpectation?
     var accountInfo: AccountConnectInfo?
@@ -34,10 +34,12 @@ class NetworkServiceObserver: NetworkServiceUnitTestDelegate, NetworkServiceDele
         self.expCanceled = expCanceled
         self.failOnError = failOnError
     }
+}
 
-    // MARK: - NetworkServiceUnitTestDelegate
+// MARK: - ReplicationServiceUnitTestDelegate
 
-    func networkServiceDidSync(service: NetworkService, accountInfo: AccountConnectInfo,
+extension ReplicationServiceObserver: ReplicationServiceUnitTestDelegate {
+    func replicationServiceDidSync(service: ReplicationService, accountInfo: AccountConnectInfo,
                  errorProtocol: ServiceErrorProtocol) {
         if errorProtocol.hasErrors() && failOnError {
             XCTFail()
@@ -50,34 +52,15 @@ class NetworkServiceObserver: NetworkServiceUnitTestDelegate, NetworkServiceDele
             expAllSynced?.fulfill()
         }
     }
+}
 
-    // MARK: - NetworkServiceDelegate
-    
-    func networkServiceDidFinishLastSyncLoop(service: NetworkService) {
+// MARK: - ReplicationServiceDelegate
+extension ReplicationServiceObserver: ReplicationServiceDelegate {
+    func replicationServiceDidFinishLastSyncLoop(service: ReplicationService) {
         // ignore
     }
 
-    func networkServiceDidCancel(service: NetworkService) {
+    func replicationServiceDidCancel(service: ReplicationService) {
         expCanceled?.fulfill()
-    }
-}
-
-class SendLayerObserver: SendLayerDelegate {
-    var messageIDs = [String]()
-
-    func didFetch(cdMessage: CdMessage) {
-        if let msg = cdMessage.message() {
-            messageIDs.append(msg.messageID)
-        } else {
-            XCTFail()
-        }
-    }
-
-    func didRemove(cdFolder: CdFolder) {
-        XCTFail()
-    }
-
-    func didRemove(cdMessage: CdMessage) {
-        XCTFail()
     }
 }

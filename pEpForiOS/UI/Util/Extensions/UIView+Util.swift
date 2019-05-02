@@ -41,7 +41,7 @@ extension UIView {
         darkView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
 
         let activityView = UIActivityIndicatorView()
-        activityView.activityIndicatorViewStyle = .whiteLarge
+        activityView.style = .whiteLarge
         activityView.translatesAutoresizingMaskIntoConstraints = false
         darkView.addSubview(activityView)
         activityView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true

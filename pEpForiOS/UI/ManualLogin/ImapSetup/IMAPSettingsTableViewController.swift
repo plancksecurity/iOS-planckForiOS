@@ -10,6 +10,7 @@ import UIKit
 
 import pEpIOSToolbox
 import PantomimeFramework
+import MessageModel
 
 extension UIAlertController {
     func setupActionFromConnectionTransport(_ transport: ConnectionTransport,
@@ -31,7 +32,7 @@ class IMAPSettingsTableViewController: BaseTableViewController, TextfieldRespond
 
     let viewWidthAligner = ViewWidthsAligner()
 
-    var model: AccountUserInput!
+    var model: VerifiableAccountProtocol!
     var fields = [UITextField]()
     var responder = 0
 
@@ -64,7 +65,7 @@ class IMAPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     private func updateView() {
         serverValue.text = model.serverIMAP
         portValue.text = String(model.portIMAP)
-        transportSecurity.setTitle(model.transportIMAP.localizedString(), for: UIControlState())
+        transportSecurity.setTitle(model.transportIMAP.localizedString(), for: UIControl.State())
     }
 
     @IBAction func alertWithSecurityValues(_ sender: UIButton) {

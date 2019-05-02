@@ -8,6 +8,8 @@
 
 import XCTest
 
+import PantomimeFramework
+
 class MimeTests: XCTestCase {
     func testPGPMimePantomime() {
         guard

@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
+import PantomimeFramework
 import PEPObjCAdapterFramework
 
 /**
@@ -238,7 +239,9 @@ class DecryptionTestsInternal: XCTestCase {
             XCTAssertNotNil(optFields)
         }
         for header in [kXEncStatus, kXpEpVersion, kXKeylist] {
-            let p = NSPredicate(format: "message = %@ and name = %@", cdMsg, header)
+            let p = NSPredicate(format: "%K = %@ and %K = %@",
+                                 CdHeaderField.RelationshipName.message, cdMsg,
+                                 CdHeaderField.AttributeName.name, header)
             let headerField = CdHeaderField.first(predicate: p)
             if shouldEncrypt {
                 // check header in core data
@@ -272,7 +275,7 @@ class DecryptionTestsInternal: XCTestCase {
     }
 
     func testIncomingUnencryptedOutlookProbingMessage() {
-        guard let _ = TestUtil.setUpPepFromMail(
+        guard let _ = TestUtil.cdMessageAndSetUpPepFromMail(
             emailFilePath: "Microsoft_Outlook_Probing_Message_001.txt") else {
                 XCTFail()
                 return

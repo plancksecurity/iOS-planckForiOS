@@ -110,7 +110,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             }
             cell.textLabel?.text = vm.title
             cell.detailTextLabel?.text = vm.detail
-            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+            cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
             cell.delegate = self
             return cell
         }
@@ -147,7 +147,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         let destroyAction = UIAlertAction(title: "Delete", style: .destructive) { action in
             self.deleteRowAt(indexPath)
             self.tableView.beginUpdates()
-            self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+            self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
             self.tableView.endUpdates()
         }
         alertController.addAction(destroyAction)

@@ -57,7 +57,7 @@ extension XCTestCase {
         })
     }
 
-    public func appendMailsIMAP(folder: Folder,
+    public func appendMailsIMAP(folder: CdFolder,
                                 imapSyncData: ImapSyncData,
                                 errorContainer: ServiceErrorProtocol,
                                 queue: OperationQueue) {

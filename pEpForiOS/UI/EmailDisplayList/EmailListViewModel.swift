@@ -36,7 +36,8 @@ extension EmailListViewModel: FilterUpdateProtocol {
 
 class EmailListViewModel {
     let contactImageTool = IdentityImageTool()
-    let messageSyncService: MessageSyncServiceProtocol
+    let fetchOlderImapMessagesService: FetchOlderImapMessagesService
+
     internal var messages: SortedSet<MessageViewModel>
     private let queue: OperationQueue = {
         let createe = OperationQueue()
@@ -79,11 +80,11 @@ class EmailListViewModel {
     // MARK: - Life Cycle
     
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
-         messageSyncService: MessageSyncServiceProtocol,
+         fetchOlderImapMessagesService: FetchOlderImapMessagesService,
          folderToShow: Folder = UnifiedInbox()) {
         self.messages = SortedSet(array: [], sortBlock: sortByDateSentAscending)
         self.emailListViewModelDelegate = emailListViewModelDelegate
-        self.messageSyncService = messageSyncService
+        self.fetchOlderImapMessagesService = fetchOlderImapMessagesService
 
         self.folderToShow = folderToShow
         self.defaultFilter = folderToShow.filter?.clone()
@@ -634,7 +635,7 @@ class EmailListViewModel {
     private func requestFetchOlder(forFolders folders: [Folder]) {
         DispatchQueue.main.async { [weak self] in
             for folder in folders {
-                self?.messageSyncService.requestFetchOlderMessages(inFolder: folder)
+                self?.fetchOlderImapMessagesService.fetchOlderMessages(inFolder: folder)
             }
         }
     }

@@ -64,7 +64,7 @@ extension BodyCell: BodyCellViewModelDelegate {
         let selectedRange = textView.selectedRange
         let attrText = NSMutableAttributedString(attributedString: textView.attributedText)
         attrText.replaceCharacters(in: selectedRange, with: text)
-        attrText.addAttribute(NSAttributedStringKey.font,
+        attrText.addAttribute(NSAttributedString.Key.font,
                               value: UIFont.pEpInput,
                               range: NSRange(location: 0, length: attrText.length))
         textView.attributedText = attrText
