@@ -32,85 +32,85 @@ class ReplicationServiceTests: XCTestCase {
         testSyncOutgoing(useCorrectSmtpAccount: false)
     }
 
-    func testSyncOneTime() {
-        XCTAssertNil(CdAccount.all())
-        XCTAssertNil(CdFolder.all())
-        XCTAssertNil(CdMessage.all())
-
-        let modelDelegate = MessageModelObserver()
-        MessageModelConfig.messageFolderDelegate = modelDelegate
-
-        let replicationService = ReplicationService(parentName: #function)
-
-        let del = ReplicationServiceObserver(
-            expAccountsSynced: expectation(description: "expSingleAccountSynced"))
-        replicationService.unitTestDelegate = del
-        replicationService.delegate = del
-
-        _ = SecretTestData().createWorkingCdAccount()
-        Record.saveAndWait()
-
-        replicationService.start()
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-        })
-
-        XCTAssertNotNil(del.accountInfo)
-        XCTAssertNotNil(CdFolder.all())
-
-        guard let cdFolder = CdFolder.first(
-            attributes: ["folderTypeRawValue": FolderType.inbox.rawValue]) else {
-                XCTFail()
-                return
-        }
-        XCTAssertGreaterThanOrEqual(cdFolder.messages?.count ?? 0, 0)
-        let allCdMessages = cdFolder.messages?.sortedArray(
-            using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] ?? []
-        XCTAssertGreaterThanOrEqual(allCdMessages.count, 0)
-
-        for cdMsg in allCdMessages {
-            guard let parentF = cdMsg.parent else {
-                XCTFail()
-                continue
-            }
-            XCTAssertEqual(parentF.folderType, FolderType.inbox)
-        }
-
-        let unifiedInbox = UnifiedInbox()
-
-        let unifiedMessageCount = unifiedInbox.messageCount()
-        XCTAssertGreaterThanOrEqual(unifiedMessageCount, 0)
-        for i in 0..<unifiedMessageCount {
-            guard let msg = unifiedInbox.messageAt(index: i) else {
-                XCTFail()
-                continue
-            }
-
-            XCTAssertTrue(msg.isValidMessage())
-
-            let pEpRating = Int16(msg.pEpRatingInt ?? -1)
-            XCTAssertNotEqual(pEpRating, PEPUtil.pEpRatingNone)
-            if !modelDelegate.contains(messageID: msg.messageID) {
-                XCTFail()
-            }
-        }
-
-        let inbox = Folder.from(cdFolder: cdFolder)
-        XCTAssertEqual(modelDelegate.messages.count, unifiedMessageCount)
-
-        for msg in modelDelegate.messages {
-            let msgIsFlaggedDeleted = msg.imapFlags?.deleted ?? false
-            XCTAssertTrue(!msgIsFlaggedDeleted)
-            XCTAssertTrue(inbox.contains(message: msg))
-            if !unifiedInbox.contains(message: msg) {
-                XCTFail()
-            }
-        }
-        XCTAssertFalse(modelDelegate.hasChangedMessages)
-
-        TestUtil.cancelReplicationServiceAndWait(replicationService: replicationService, testCase: self)
-    }
+//    func testSyncOneTime() {
+//        XCTAssertNil(CdAccount.all())
+//        XCTAssertNil(CdFolder.all())
+//        XCTAssertNil(CdMessage.all())
+//
+//        let modelDelegate = MessageModelObserver()
+//        MessageModelConfig.messageFolderDelegate = modelDelegate
+//
+//        let replicationService = ReplicationService(parentName: #function)
+//
+//        let del = ReplicationServiceObserver(
+//            expAccountsSynced: expectation(description: "expSingleAccountSynced"))
+//        replicationService.unitTestDelegate = del
+//        replicationService.delegate = del
+//
+//        _ = SecretTestData().createWorkingCdAccount()
+//        Record.saveAndWait()
+//
+//        replicationService.start()
+//
+//        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+//            XCTAssertNil(error)
+//        })
+//
+//        XCTAssertNotNil(del.accountInfo)
+//        XCTAssertNotNil(CdFolder.all())
+//
+//        guard let cdFolder = CdFolder.first(
+//            attributes: ["folderTypeRawValue": FolderType.inbox.rawValue]) else {
+//                XCTFail()
+//                return
+//        }
+//        XCTAssertGreaterThanOrEqual(cdFolder.messages?.count ?? 0, 0)
+//        let allCdMessages = cdFolder.messages?.sortedArray(
+//            using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] ?? []
+//        XCTAssertGreaterThanOrEqual(allCdMessages.count, 0)
+//
+//        for cdMsg in allCdMessages {
+//            guard let parentF = cdMsg.parent else {
+//                XCTFail()
+//                continue
+//            }
+//            XCTAssertEqual(parentF.folderType, FolderType.inbox)
+//        }
+//
+//        let unifiedInbox = UnifiedInbox()
+//
+//        let unifiedMessageCount = unifiedInbox.messageCount()
+//        XCTAssertGreaterThanOrEqual(unifiedMessageCount, 0)
+//        for i in 0..<unifiedMessageCount {
+//            guard let msg = unifiedInbox.messageAt(index: i) else {
+//                XCTFail()
+//                continue
+//            }
+//
+//            XCTAssertTrue(msg.isValidMessage())
+//
+//            let pEpRating = Int16(msg.pEpRatingInt ?? -1)
+//            XCTAssertNotEqual(pEpRating, PEPUtil.pEpRatingNone)
+//            if !modelDelegate.contains(messageID: msg.messageID) {
+//                XCTFail()
+//            }
+//        }
+//
+//        let inbox = Folder.from(cdFolder: cdFolder)
+//        XCTAssertEqual(modelDelegate.messages.count, unifiedMessageCount)
+//
+//        for msg in modelDelegate.messages {
+//            let msgIsFlaggedDeleted = msg.imapFlags?.deleted ?? false
+//            XCTAssertTrue(!msgIsFlaggedDeleted)
+//            XCTAssertTrue(inbox.contains(message: msg))
+//            if !unifiedInbox.contains(message: msg) {
+//                XCTFail()
+//            }
+//        }
+//        XCTAssertFalse(modelDelegate.hasChangedMessages)
+//
+//        TestUtil.cancelReplicationServiceAndWait(replicationService: replicationService, testCase: self)
+//    }
 
     func testCancelSyncImmediately() {
         XCTAssertNil(CdAccount.all())

@@ -75,9 +75,10 @@ class EmailListViewModel {
             if let cf = _currentFilter {
                 return cf
             } else {
-                return MessageQueryResultsFilter(
+                return folderToShow.defaultFilter
+                    /*MessageQueryResultsFilter(
                     mustBeUnread: false,
-                    accountEnabledStates: folderToShow.defaultFilter.accountsEnabledStates)
+                    accountEnabledStates: folderToShow.defaultFilter.accountsEnabledStates)*/
             }
         }
         set {
@@ -120,6 +121,7 @@ class EmailListViewModel {
         messageQueryResults = MessageQueryResults(withFolder: folderToShow,
                                                        filter: folderToShow.defaultFilter,
                                                        search: nil)
+        //!!!: changed filter to nil take care
         messageQueryResults.delegate = self
         // Threading feature is currently non-existing. Keep this code, might help later.
 //        self.oldThreadSetting = AppSettings.threadedViewEnabled
@@ -423,14 +425,6 @@ class EmailListViewModel {
             return
         }
         folderToShow.fetchOlder()
-    }
-
-    private func requestFetchOlder(forFolders folders: [Folder]) {
-        DispatchQueue.main.async {
-            for folder in folders {
-                folder.fetchOlder()
-            }
-        }
     }
 }
 
