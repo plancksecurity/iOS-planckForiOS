@@ -119,7 +119,7 @@ class EmailListViewModel {
 
         // We intentionally do *not* start monitoring. Respiosibility is on currently on VC.
         messageQueryResults = MessageQueryResults(withFolder: folderToShow,
-                                                       filter: nil,
+                                                       filter: folderToShow.defaultFilter,
                                                        search: nil)
         //!!!: changed filter to nil take care
         messageQueryResults.delegate = self
