@@ -185,10 +185,6 @@ extension ComposeViewModel.ComposeViewModelState {
             return
         }
         let session = Session()
-        let safeFrom = from.safeForSession(session)
-        let safeTo = Identity.makeSafe(toRecipients, forSession: session)
-        let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
-        let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
 
         /*
         //!!!: In tests (ComposeViewModelStateTest) this block is triggered by setup and modt test, but never  executed:
@@ -214,6 +210,10 @@ extension ComposeViewModel.ComposeViewModelState {
             }
 
             session.performAndWait {
+                let safeFrom = from.safeForSession(session)
+                let safeTo = Identity.makeSafe(me.toRecipients, forSession: session)
+                let safeCc = Identity.makeSafe(me.ccRecipients, forSession: session)
+                let safeBcc = Identity.makeSafe(me.bccRecipients, forSession: session)
 
                 let pEpsession = PEPSession()
                 newRating = pEpsession.outgoingMessageRating(from: safeFrom,
