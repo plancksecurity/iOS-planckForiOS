@@ -424,14 +424,6 @@ class EmailListViewModel {
         }
         folderToShow.fetchOlder()
     }
-
-    private func requestFetchOlder(forFolders folders: [Folder]) {
-        DispatchQueue.main.async {
-            for folder in folders {
-                folder.fetchOlder()
-            }
-        }
-    }
 }
 
 // MARK: - Filter & Search
