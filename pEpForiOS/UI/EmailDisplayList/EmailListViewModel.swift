@@ -487,12 +487,10 @@ extension EmailListViewModel {
 extension EmailListViewModel {
 
     private func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
-        updatesEnabled = false
         let message = messageQueryResults[indexPath.row]
-        message.imapFlags?.flagged = flagged
-        DispatchQueue.main.async {
-            message.save()
-        }
+        // This does *not* trigger FetchedResultsController. Ingtentionally.
+        message.imapFlags.flagged = flagged
+        message.save()
     }
 
     private func deleteMessage(at indexPath: IndexPath) -> Message? {
