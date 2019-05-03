@@ -31,13 +31,17 @@ class PepProfilePictureComposer: ProfilePictureComposer {
 
     func securityBadge(for message: Message, completion: @escaping (UIImage?) ->()){
         DispatchQueue.global(qos: .userInitiated).async{
-            let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
-            var image: UIImage? = nil
-            if color != PEPColor.noColor {
-                image = color.statusIconInContactPicture()
-            }
-            DispatchQueue.main.async {
-                completion(image)
+            let session = Session()
+            session.performAndWait {
+                let safeMsg = message.safeForSession(session)
+                let color = PEPUtil.pEpColor(pEpRating: safeMsg.pEpRating())
+                var image: UIImage? = nil
+                if color != PEPColor.noColor {
+                    image = color.statusIconInContactPicture()
+                }
+                DispatchQueue.main.async {
+                    completion(image)
+                }
             }
         }
     }

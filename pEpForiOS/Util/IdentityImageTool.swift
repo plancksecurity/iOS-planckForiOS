@@ -12,11 +12,26 @@ import MessageModel
 import pEpIOSToolbox
 
 class IdentityImageTool {
+    /// Key for the identity image cache dictionary.
+    // Created to avoid accessing Identity's from a wrong queue.
+    struct IdentityKey: Hashable {
+        let userId: String?
+        let address: String
+
+        public static func ==(lhs: IdentityKey, rhs: IdentityKey) -> Bool {
+            return lhs.address == rhs.address && lhs.userId == rhs.userId
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(address)
+            hasher.combine(userId)
+        }
+    }
     static private let queue = DispatchQueue.global(qos: .userInitiated)
-    static private var _imageCache = [Identity:UIImage]()
-    static private var imageCache: [Identity:UIImage] {
+    static private var _imageCache = [IdentityKey:UIImage]()
+    static private var imageCache: [IdentityKey:UIImage] {
         get {
-            var result = [Identity:UIImage]()
+            var result = [IdentityKey:UIImage]()
             queue.sync {
                 result = _imageCache
             }
@@ -34,7 +49,16 @@ class IdentityImageTool {
     }
 
     func cachedIdentityImage(for identity: Identity) -> UIImage? {
-            return IdentityImageTool.imageCache[identity]
+        var searchKey: IdentityKey? = nil
+        let session = Session()
+        session.performAndWait {
+            let safeIdentity = identity.safeForSession(session)
+            searchKey = IdentityKey(userId: safeIdentity.userID, address: safeIdentity.address)
+        }
+        guard let key = searchKey else {
+            return nil
+        }
+        return IdentityImageTool.imageCache[key]
     }
 
     /// Creates (and caches) the contact image to display for an identity.
@@ -47,37 +71,54 @@ class IdentityImageTool {
     ///   - backgroundColor: backgroundcolor to use in case the resulting images contains
     ///     the users initials
     /// - Returns: contact image to display
-    func identityImage(for identity:Identity,
+    func identityImage(for identity: Identity,
                        imageSize: CGSize = CGSize.defaultAvatarSize,
                        textColor: UIColor = UIColor.white,
                        backgroundColor: UIColor = UIColor(hexString: "#c8c7cc")) -> UIImage? {
-        var image:UIImage?
-        if let cachedImage = IdentityImageTool.imageCache[identity] {
+        if let cachedImage = cachedIdentityImage(for: identity) {
+            // We have the image in cache. Return it.
             return cachedImage
         }
 
-        if let addressBookID = identity.addressBookID {
-            let ab = AddressBook()
-            if let contact = ab.contactBy(addressBookID: addressBookID),
-                let imgData = contact.thumbnailImageData {
-                image = UIImage(data: imgData)
+        var image:UIImage?
+
+        let session = Session()
+        session.performAndWait { [weak self] in
+            let safeIdentity = identity.safeForSession(session)
+
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
             }
-        }
-        if image == nil {
-            var initials = "?"
-            if let userName = identity.userName {
-                initials = userName.initials()
-            } else {
-                let namePart = identity.address.namePartOfEmail()
-                initials = namePart.initials()
+
+            if let addressBookID = safeIdentity.addressBookID {
+                // Get image from system AddressBook is any
+                let ab = AddressBook()
+                if let contact = ab.contactBy(addressBookID: addressBookID),
+                    let imgData = contact.thumbnailImageData {
+                    image = UIImage(data: imgData)
+                }
             }
-            image = identityImageFromName(initials: initials,
-                                          size: imageSize,
-                                          textColor: textColor,
-                                          imageBackgroundColor: backgroundColor)
-        }
-        if let safeImage = image {
-            IdentityImageTool.imageCache[identity] = safeImage
+
+            if image == nil {
+                // We cound not find an image anywhere. Let's create one with the initials
+                var initials = "?"
+                if let userName = safeIdentity.userName {
+                    initials = userName.initials()
+                } else {
+                    let namePart = safeIdentity.address.namePartOfEmail()
+                    initials = namePart.initials()
+                }
+                image =  me.identityImageFromName(initials: initials,
+                                              size: imageSize,
+                                              textColor: textColor,
+                                              imageBackgroundColor: backgroundColor)
+            }
+            if let safeImage = image {
+                // cache image
+                let saveKey = IdentityKey(userId: safeIdentity.userID, address: safeIdentity.address)
+                IdentityImageTool.imageCache[saveKey] = safeImage
+            }
         }
         return image
     }
