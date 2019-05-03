@@ -557,7 +557,6 @@ extension EmailListViewModel {
             let account = Account.defaultAccount()
             return ComposeViewModel(resultDelegate:self, composeMode: .normal,
                                     prefilledFrom: account?.user)
-
         }
     }
 }
