@@ -230,34 +230,34 @@ class TestUtil {
     // MARK: - Sync Loop
 
     static public func syncAndWait(numAccountsToSync: Int = 1, testCase: XCTestCase) {
-        let networkService = NetworkService()
-        networkService.sleepTimeInSeconds = 0.1
+        let replicationService = ReplicationService()
+        replicationService.sleepTimeInSeconds = 0.1
 
         let expAccountsSynced = testCase.expectation(description: "allAccountsSynced")
-        // A temp variable is necassary, since the networkServiceUnitTestDelegate is weak
-        let del = NetworkServiceObserver(numAccountsToSync: numAccountsToSync,
+        // A temp variable is necassary, since the replicationServiceUnitTestDelegate is weak
+        let del = ReplicationServiceObserver(numAccountsToSync: numAccountsToSync,
                                          expAccountsSynced: expAccountsSynced,
                                          failOnError: true)
 
-        networkService.unitTestDelegate = del
-        networkService.delegate = del
-        networkService.start()
+        replicationService.unitTestDelegate = del
+        replicationService.delegate = del
+        replicationService.start()
 
         let canTakeSomeTimeFactor = 3.0
         testCase.waitForExpectations(timeout: TestUtil.waitTime * canTakeSomeTimeFactor) { error in
             XCTAssertNil(error)
         }
 
-        TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: testCase)
+        TestUtil.cancelReplicationServiceAndWait(replicationService: replicationService, testCase: testCase)
     }
 
-    // MARK: - NetworkService
-    static public func cancelNetworkServiceAndWait(networkService: NetworkService, testCase: XCTestCase) {
-        let del = NetworkServiceObserver(
+    // MARK: - ReplicationService
+    static public func cancelReplicationServiceAndWait(replicationService: ReplicationService, testCase: XCTestCase) {
+        let del = ReplicationServiceObserver(
             expCanceled: testCase.expectation(description: "expCanceled"))
-        networkService.unitTestDelegate = del
-        networkService.delegate = del
-        networkService.cancel()
+        replicationService.unitTestDelegate = del
+        replicationService.delegate = del
+        replicationService.cancel()
 
         // Wait for cancellation
         testCase.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
@@ -651,7 +651,7 @@ class TestUtil {
     static func determineInterestingFolders(in cdAccount: CdAccount)
         -> [NetworkServiceWorker.FolderInfo] {
         let accountInfo = AccountConnectInfo(accountID: cdAccount.objectID)
-        let dummyConfig = NetworkService.ServiceConfig(sleepTimeInSeconds: 1,
+        let dummyConfig = ReplicationService.ServiceConfig(sleepTimeInSeconds: 1,
                                                        parentName: #function,
                                                        mySelfer:
             DefaultMySelfer(parentName: #function,
