@@ -7,6 +7,46 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		377FA08B227B005C00DC3B2A /* NSString+Markdown.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA062227B005C00DC3B2A /* NSString+Markdown.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		377FA08C227B005C00DC3B2A /* cmark_export.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA064227B005C00DC3B2A /* cmark_export.h */; };
+		377FA08D227B005C00DC3B2A /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA065227B005C00DC3B2A /* config.h */; };
+		377FA08E227B005C00DC3B2A /* chunk.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA066227B005C00DC3B2A /* chunk.h */; };
+		377FA08F227B005C00DC3B2A /* parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA067227B005C00DC3B2A /* parser.h */; };
+		377FA090227B005C00DC3B2A /* scanners.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA068227B005C00DC3B2A /* scanners.h */; };
+		377FA091227B005C00DC3B2A /* node.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA069227B005C00DC3B2A /* node.h */; };
+		377FA092227B005C00DC3B2A /* cmark_version.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA06A227B005C00DC3B2A /* cmark_version.h */; };
+		377FA093227B005C00DC3B2A /* cmark_ctype.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA06B227B005C00DC3B2A /* cmark_ctype.h */; };
+		377FA094227B005C00DC3B2A /* buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA06C227B005C00DC3B2A /* buffer.h */; };
+		377FA095227B005C00DC3B2A /* cmark.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA06D227B005C00DC3B2A /* cmark.h */; };
+		377FA096227B005C00DC3B2A /* inlines.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA06E227B005C00DC3B2A /* inlines.h */; };
+		377FA097227B005C00DC3B2A /* houdini.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA06F227B005C00DC3B2A /* houdini.h */; };
+		377FA098227B005C00DC3B2A /* iterator.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA070227B005C00DC3B2A /* iterator.h */; };
+		377FA099227B005C00DC3B2A /* utf8.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA071227B005C00DC3B2A /* utf8.h */; };
+		377FA09A227B005C00DC3B2A /* references.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA072227B005C00DC3B2A /* references.h */; };
+		377FA09B227B005C00DC3B2A /* render.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA073227B005C00DC3B2A /* render.h */; };
+		377FA09C227B005C00DC3B2A /* NSString+Markdown.m in Sources */ = {isa = PBXBuildFile; fileRef = 377FA074227B005C00DC3B2A /* NSString+Markdown.m */; };
+		377FA09D227B005C00DC3B2A /* xml.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA076227B005C00DC3B2A /* xml.c */; };
+		377FA09E227B005C00DC3B2A /* cmark.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA077227B005C00DC3B2A /* cmark.c */; };
+		377FA09F227B005C00DC3B2A /* man.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA078227B005C00DC3B2A /* man.c */; };
+		377FA0A0227B005C00DC3B2A /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA079227B005C00DC3B2A /* buffer.c */; };
+		377FA0A1227B005C00DC3B2A /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA07A227B005C00DC3B2A /* blocks.c */; };
+		377FA0A2227B005C00DC3B2A /* cmark_ctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA07B227B005C00DC3B2A /* cmark_ctype.c */; };
+		377FA0A3227B005C00DC3B2A /* inlines.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA07C227B005C00DC3B2A /* inlines.c */; };
+		377FA0A4227B005C00DC3B2A /* latex.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA07D227B005C00DC3B2A /* latex.c */; };
+		377FA0A5227B005C00DC3B2A /* houdini_href_e.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA07E227B005C00DC3B2A /* houdini_href_e.c */; };
+		377FA0A6227B005C00DC3B2A /* case_fold_switch.inc in Sources */ = {isa = PBXBuildFile; fileRef = 377FA07F227B005C00DC3B2A /* case_fold_switch.inc */; };
+		377FA0A7227B005C00DC3B2A /* entities.inc in Sources */ = {isa = PBXBuildFile; fileRef = 377FA080227B005C00DC3B2A /* entities.inc */; };
+		377FA0A8227B005C00DC3B2A /* houdini_html_e.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA081227B005C00DC3B2A /* houdini_html_e.c */; };
+		377FA0A9227B005C00DC3B2A /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA082227B005C00DC3B2A /* utf8.c */; };
+		377FA0AA227B005C00DC3B2A /* references.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA083227B005C00DC3B2A /* references.c */; };
+		377FA0AB227B005C00DC3B2A /* render.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA084227B005C00DC3B2A /* render.c */; };
+		377FA0AC227B005C00DC3B2A /* iterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA085227B005C00DC3B2A /* iterator.c */; };
+		377FA0AD227B005C00DC3B2A /* commonmark.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA086227B005C00DC3B2A /* commonmark.c */; };
+		377FA0AE227B005C00DC3B2A /* html.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA087227B005C00DC3B2A /* html.c */; };
+		377FA0AF227B005C00DC3B2A /* scanners.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA088227B005C00DC3B2A /* scanners.c */; };
+		377FA0B0227B005C00DC3B2A /* houdini_html_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA089227B005C00DC3B2A /* houdini_html_u.c */; };
+		377FA0B1227B005C00DC3B2A /* node.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA08A227B005C00DC3B2A /* node.c */; };
+		377FA0B3227C417100DC3B2A /* pEpIOSToolbox.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA0B2227C3C1900DC3B2A /* pEpIOSToolbox.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		378B76552240F93A00D6662C /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378B76542240F93A00D6662C /* TestUtils.swift */; };
 		37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */; };
 		37904563223FA486006DAB3B /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455F223FA486006DAB3B /* Reachability.swift */; };
@@ -55,6 +95,46 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		377FA062227B005C00DC3B2A /* NSString+Markdown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Markdown.h"; sourceTree = "<group>"; };
+		377FA064227B005C00DC3B2A /* cmark_export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmark_export.h; sourceTree = "<group>"; };
+		377FA065227B005C00DC3B2A /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		377FA066227B005C00DC3B2A /* chunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chunk.h; sourceTree = "<group>"; };
+		377FA067227B005C00DC3B2A /* parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parser.h; sourceTree = "<group>"; };
+		377FA068227B005C00DC3B2A /* scanners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scanners.h; sourceTree = "<group>"; };
+		377FA069227B005C00DC3B2A /* node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = node.h; sourceTree = "<group>"; };
+		377FA06A227B005C00DC3B2A /* cmark_version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmark_version.h; sourceTree = "<group>"; };
+		377FA06B227B005C00DC3B2A /* cmark_ctype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmark_ctype.h; sourceTree = "<group>"; };
+		377FA06C227B005C00DC3B2A /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
+		377FA06D227B005C00DC3B2A /* cmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmark.h; sourceTree = "<group>"; };
+		377FA06E227B005C00DC3B2A /* inlines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inlines.h; sourceTree = "<group>"; };
+		377FA06F227B005C00DC3B2A /* houdini.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = houdini.h; sourceTree = "<group>"; };
+		377FA070227B005C00DC3B2A /* iterator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iterator.h; sourceTree = "<group>"; };
+		377FA071227B005C00DC3B2A /* utf8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utf8.h; sourceTree = "<group>"; };
+		377FA072227B005C00DC3B2A /* references.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = references.h; sourceTree = "<group>"; };
+		377FA073227B005C00DC3B2A /* render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render.h; sourceTree = "<group>"; };
+		377FA074227B005C00DC3B2A /* NSString+Markdown.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Markdown.m"; sourceTree = "<group>"; };
+		377FA076227B005C00DC3B2A /* xml.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xml.c; sourceTree = "<group>"; };
+		377FA077227B005C00DC3B2A /* cmark.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cmark.c; sourceTree = "<group>"; };
+		377FA078227B005C00DC3B2A /* man.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = man.c; sourceTree = "<group>"; };
+		377FA079227B005C00DC3B2A /* buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = buffer.c; sourceTree = "<group>"; };
+		377FA07A227B005C00DC3B2A /* blocks.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = blocks.c; sourceTree = "<group>"; };
+		377FA07B227B005C00DC3B2A /* cmark_ctype.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cmark_ctype.c; sourceTree = "<group>"; };
+		377FA07C227B005C00DC3B2A /* inlines.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = inlines.c; sourceTree = "<group>"; };
+		377FA07D227B005C00DC3B2A /* latex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = latex.c; sourceTree = "<group>"; };
+		377FA07E227B005C00DC3B2A /* houdini_href_e.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = houdini_href_e.c; sourceTree = "<group>"; };
+		377FA07F227B005C00DC3B2A /* case_fold_switch.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = case_fold_switch.inc; sourceTree = "<group>"; };
+		377FA080227B005C00DC3B2A /* entities.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = entities.inc; sourceTree = "<group>"; };
+		377FA081227B005C00DC3B2A /* houdini_html_e.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = houdini_html_e.c; sourceTree = "<group>"; };
+		377FA082227B005C00DC3B2A /* utf8.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = utf8.c; sourceTree = "<group>"; };
+		377FA083227B005C00DC3B2A /* references.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = references.c; sourceTree = "<group>"; };
+		377FA084227B005C00DC3B2A /* render.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render.c; sourceTree = "<group>"; };
+		377FA085227B005C00DC3B2A /* iterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = iterator.c; sourceTree = "<group>"; };
+		377FA086227B005C00DC3B2A /* commonmark.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = commonmark.c; sourceTree = "<group>"; };
+		377FA087227B005C00DC3B2A /* html.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = html.c; sourceTree = "<group>"; };
+		377FA088227B005C00DC3B2A /* scanners.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scanners.c; sourceTree = "<group>"; };
+		377FA089227B005C00DC3B2A /* houdini_html_u.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = houdini_html_u.c; sourceTree = "<group>"; };
+		377FA08A227B005C00DC3B2A /* node.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = node.c; sourceTree = "<group>"; };
+		377FA0B2227C3C1900DC3B2A /* pEpIOSToolbox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = pEpIOSToolbox.h; path = ../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/pEpIOSToolbox.h; sourceTree = "<group>"; };
 		378B76542240F93A00D6662C /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TestUtils.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/TestUtils/TestUtils.swift; sourceTree = "<group>"; };
 		3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityProtocol.swift; sourceTree = "<group>"; };
 		3790455F223FA486006DAB3B /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
@@ -135,6 +215,68 @@
 				B7DB7F8322144E4E003968DA /* SortedSetTest.swift */,
 			);
 			path = Other;
+			sourceTree = "<group>";
+		};
+		377FA061227B005C00DC3B2A /* Markdown */ = {
+			isa = PBXGroup;
+			children = (
+				377FA062227B005C00DC3B2A /* NSString+Markdown.h */,
+				377FA063227B005C00DC3B2A /* include */,
+				377FA074227B005C00DC3B2A /* NSString+Markdown.m */,
+				377FA075227B005C00DC3B2A /* src */,
+			);
+			path = Markdown;
+			sourceTree = "<group>";
+		};
+		377FA063227B005C00DC3B2A /* include */ = {
+			isa = PBXGroup;
+			children = (
+				377FA064227B005C00DC3B2A /* cmark_export.h */,
+				377FA065227B005C00DC3B2A /* config.h */,
+				377FA066227B005C00DC3B2A /* chunk.h */,
+				377FA067227B005C00DC3B2A /* parser.h */,
+				377FA068227B005C00DC3B2A /* scanners.h */,
+				377FA069227B005C00DC3B2A /* node.h */,
+				377FA06A227B005C00DC3B2A /* cmark_version.h */,
+				377FA06B227B005C00DC3B2A /* cmark_ctype.h */,
+				377FA06C227B005C00DC3B2A /* buffer.h */,
+				377FA06D227B005C00DC3B2A /* cmark.h */,
+				377FA06E227B005C00DC3B2A /* inlines.h */,
+				377FA06F227B005C00DC3B2A /* houdini.h */,
+				377FA070227B005C00DC3B2A /* iterator.h */,
+				377FA071227B005C00DC3B2A /* utf8.h */,
+				377FA072227B005C00DC3B2A /* references.h */,
+				377FA073227B005C00DC3B2A /* render.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		377FA075227B005C00DC3B2A /* src */ = {
+			isa = PBXGroup;
+			children = (
+				377FA076227B005C00DC3B2A /* xml.c */,
+				377FA077227B005C00DC3B2A /* cmark.c */,
+				377FA078227B005C00DC3B2A /* man.c */,
+				377FA079227B005C00DC3B2A /* buffer.c */,
+				377FA07A227B005C00DC3B2A /* blocks.c */,
+				377FA07B227B005C00DC3B2A /* cmark_ctype.c */,
+				377FA07C227B005C00DC3B2A /* inlines.c */,
+				377FA07D227B005C00DC3B2A /* latex.c */,
+				377FA07E227B005C00DC3B2A /* houdini_href_e.c */,
+				377FA07F227B005C00DC3B2A /* case_fold_switch.inc */,
+				377FA080227B005C00DC3B2A /* entities.inc */,
+				377FA081227B005C00DC3B2A /* houdini_html_e.c */,
+				377FA082227B005C00DC3B2A /* utf8.c */,
+				377FA083227B005C00DC3B2A /* references.c */,
+				377FA084227B005C00DC3B2A /* render.c */,
+				377FA085227B005C00DC3B2A /* iterator.c */,
+				377FA086227B005C00DC3B2A /* commonmark.c */,
+				377FA087227B005C00DC3B2A /* html.c */,
+				377FA088227B005C00DC3B2A /* scanners.c */,
+				377FA089227B005C00DC3B2A /* houdini_html_u.c */,
+				377FA08A227B005C00DC3B2A /* node.c */,
+			);
+			path = src;
 			sourceTree = "<group>";
 		};
 		378B76532240F8B900D6662C /* TestUtils */ = {
@@ -222,6 +364,7 @@
 				B70A3A5322005B9600EDCE61 /* UIKit */,
 				B7DB7FEC221B086A003968DA /* Other */,
 				B7911EB821F7358500D7F66F /* Info.plist */,
+				377FA0B2227C3C1900DC3B2A /* pEpIOSToolbox.h */,
 			);
 			path = pEpIOSToolbox;
 			sourceTree = "<group>";
@@ -241,6 +384,7 @@
 		B7DB7FEC221B086A003968DA /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				377FA061227B005C00DC3B2A /* Markdown */,
 				3790455D223FA486006DAB3B /* Reachability */,
 				B7DB7F4F22130DE9003968DA /* Weak.swift */,
 				B70A3A75220091D400EDCE61 /* Logger.swift */,
@@ -261,6 +405,24 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				377FA092227B005C00DC3B2A /* cmark_version.h in Headers */,
+				377FA08B227B005C00DC3B2A /* NSString+Markdown.h in Headers */,
+				377FA098227B005C00DC3B2A /* iterator.h in Headers */,
+				377FA08C227B005C00DC3B2A /* cmark_export.h in Headers */,
+				377FA09A227B005C00DC3B2A /* references.h in Headers */,
+				377FA091227B005C00DC3B2A /* node.h in Headers */,
+				377FA08E227B005C00DC3B2A /* chunk.h in Headers */,
+				377FA096227B005C00DC3B2A /* inlines.h in Headers */,
+				377FA09B227B005C00DC3B2A /* render.h in Headers */,
+				377FA08F227B005C00DC3B2A /* parser.h in Headers */,
+				377FA093227B005C00DC3B2A /* cmark_ctype.h in Headers */,
+				377FA08D227B005C00DC3B2A /* config.h in Headers */,
+				377FA099227B005C00DC3B2A /* utf8.h in Headers */,
+				377FA097227B005C00DC3B2A /* houdini.h in Headers */,
+				377FA094227B005C00DC3B2A /* buffer.h in Headers */,
+				377FA095227B005C00DC3B2A /* cmark.h in Headers */,
+				377FA0B3227C417100DC3B2A /* pEpIOSToolbox.h in Headers */,
+				377FA090227B005C00DC3B2A /* scanners.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,18 +526,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7465DC622119EB1008A1708 /* Array+SortingAndSearching.swift in Sources */,
+				377FA0AD227B005C00DC3B2A /* commonmark.c in Sources */,
+				377FA0A5227B005C00DC3B2A /* houdini_href_e.c in Sources */,
 				37904563223FA486006DAB3B /* Reachability.swift in Sources */,
 				B7911ECC21F8B46600D7F66F /* GCD.swift in Sources */,
 				B7A46C54220C73BE0027CCB5 /* String+Extensions.swift in Sources */,
 				B7A46C58220DA6190027CCB5 /* String+Email.swift in Sources */,
+				377FA0A6227B005C00DC3B2A /* case_fold_switch.inc in Sources */,
 				37904565223FA486006DAB3B /* ReachabilityProtocol.swift in Sources */,
 				B7A46C62220DCEA80027CCB5 /* NSAttributedString+Parsing.swift in Sources */,
+				377FA0A7227B005C00DC3B2A /* entities.inc in Sources */,
+				377FA0A2227B005C00DC3B2A /* cmark_ctype.c in Sources */,
+				377FA09D227B005C00DC3B2A /* xml.c in Sources */,
+				377FA0B1227B005C00DC3B2A /* node.c in Sources */,
+				377FA0AA227B005C00DC3B2A /* references.c in Sources */,
+				377FA0AE227B005C00DC3B2A /* html.c in Sources */,
 				B7465DE72211E969008A1708 /* CGRect+Util.swift in Sources */,
 				B7465DCC2211BEEA008A1708 /* Tuple.swift in Sources */,
 				37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */,
 				435F5129221FF9D7006EB11F /* Constants.swift in Sources */,
 				B7A46C50220C1F0C0027CCB5 /* MiscUtil.swift in Sources */,
+				377FA0A8227B005C00DC3B2A /* houdini_html_e.c in Sources */,
 				B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */,
+				377FA09F227B005C00DC3B2A /* man.c in Sources */,
 				B7936E3D220DD8F5003B39E6 /* NSAttributedString+Extensions.swift in Sources */,
 				B75390862212E20500B1FCF9 /* Collection+Extensions.swift in Sources */,
 				B7911EC221F8694100D7F66F /* UIColor+Extension.swift in Sources */,
@@ -386,12 +559,23 @@
 				B7A46C56220DA5EB0027CCB5 /* Substring+Email.swift in Sources */,
 				B7A46C5E220DBAF00027CCB5 /* OperationQueue+Extension.swift in Sources */,
 				B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */,
+				377FA0AB227B005C00DC3B2A /* render.c in Sources */,
+				377FA09E227B005C00DC3B2A /* cmark.c in Sources */,
 				B7465DBE22119D3A008A1708 /* Thread+Extension.swift in Sources */,
+				377FA0A1227B005C00DC3B2A /* blocks.c in Sources */,
 				B7DB7F5022130DE9003968DA /* Weak.swift in Sources */,
+				377FA0A0227B005C00DC3B2A /* buffer.c in Sources */,
 				37904564223FA486006DAB3B /* NetworkReachability.swift in Sources */,
+				377FA0B0227B005C00DC3B2A /* houdini_html_u.c in Sources */,
+				377FA0A3227B005C00DC3B2A /* inlines.c in Sources */,
+				377FA0A4227B005C00DC3B2A /* latex.c in Sources */,
+				377FA0AF227B005C00DC3B2A /* scanners.c in Sources */,
 				B7A46C52220C732E0027CCB5 /* Data+Extensions.swift in Sources */,
+				377FA09C227B005C00DC3B2A /* NSString+Markdown.m in Sources */,
+				377FA0AC227B005C00DC3B2A /* iterator.c in Sources */,
 				B7465DE32211C890008A1708 /* CGImageSource+Extension.swift in Sources */,
 				B7465DE12211C6E9008A1708 /* UIImage+GIF.swift in Sources */,
+				377FA0A9227B005C00DC3B2A /* utf8.c in Sources */,
 				B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
