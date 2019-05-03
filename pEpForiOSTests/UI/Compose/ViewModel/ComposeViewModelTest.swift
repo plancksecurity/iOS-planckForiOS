@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 import PEPObjCAdapterFramework
 
 class ComposeViewModelTest: CoreDataDrivenTestBase {
@@ -17,13 +17,13 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     private var testResultDelegate: TestResultDelegate?
     var vm: ComposeViewModel?
     var outbox: Folder? {
-        return account.folder(ofType: .outbox)
+        return account.firstFolder(ofType: .outbox)
     }
     var drafts: Folder? {
-        return account.folder(ofType: .drafts)
+        return account.firstFolder(ofType: .drafts)
     }
     var sent: Folder? {
-        return account.folder(ofType: .sent)
+        return account.firstFolder(ofType: .sent)
     }
 
     override func setUp() {
@@ -190,7 +190,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     func testDidSelectMediaAttachment_image() {
         let msg = draftMessage()
         let imageAttachment = attachment(ofType: .inline)
-        msg.attachments = [imageAttachment]
+        msg.replaceAttachments(with: [imageAttachment])
         assert(originalMessage: msg,
                contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -223,7 +223,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     func testDidSelectMediaAttachment_video() {
         let msg = draftMessage()
         let imageAttachment = attachment(ofType: .inline)
-        msg.attachments = [imageAttachment]
+        msg.replaceAttachments(with: [imageAttachment])
 
         let attachmentSectionSection = 4
 
@@ -355,7 +355,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     func testBodyCellViewModelInlinedAttachmentsChanged_lessAttachments() {
         let msg = draftMessage()
         let imageAttachment = attachment(ofType: .inline)
-        msg.attachments = [imageAttachment]
+        msg.replaceAttachments(with: [imageAttachment])
         assert(originalMessage: msg,
                contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -700,7 +700,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                               folderName: originalMessage.parent.name,
                                               accountAddress: account.user.address,
                                               includingDeleted: true)
-        XCTAssertTrue(msgWithTestMessageId?.imapFlags?.deleted ?? false,
+        XCTAssertTrue(msgWithTestMessageId?.imapFlags.deleted ?? false,
                      "The user edited draft. Technically we save a new message, thus the original" +
             " must be deleted.")
         waitForExpectations(timeout: UnitTestUtils.waitTime)
@@ -923,10 +923,10 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     func testHandleRemovedRow_removeAttachment() {
         let msgWithAttachments = draftMessage(attachmentsSet: true)
-        msgWithAttachments.attachments.append(attachment(ofType: .attachment))
+        msgWithAttachments.appendToAttachments(attachment(ofType: .attachment))
         msgWithAttachments.save()
         assert(originalMessage: msgWithAttachments)
-        vm?.state.nonInlinedAttachments = msgWithAttachments.attachments
+        vm?.state.nonInlinedAttachments = msgWithAttachments.attachments.array
         guard
             let lastSectionBefore = vm?.sections.last,
             let numSectionsBefore = vm?.sections.count,
@@ -993,7 +993,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                        uuid: originalMessage.uuid,
                        folderName: originalMessage.parent.name,
                        accountAddress: account.user.address,
-                       includingDeleted: true)?.imapFlags?.deleted
+                       includingDeleted: true)?.imapFlags.deleted
             else {
                 XCTFail()
                 return
@@ -1209,7 +1209,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     func testInitialFocus_emptyTo() {
         let originalMessage = draftMessage()
-        originalMessage.to = []
+        originalMessage.replaceTo(with: [])
         originalMessage.save()
         assert(originalMessage: originalMessage,
                contentChangedMustBeCalled: false,
@@ -1238,7 +1238,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     func testInitialFocus_toSet() {
         let originalMessage = draftMessage()
-        originalMessage.to = [account.user]
+        originalMessage.replaceTo(with: [account.user])
         originalMessage.save()
         assert(originalMessage: originalMessage,
                contentChangedMustBeCalled: false,
@@ -1419,17 +1419,17 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                          bccSet: Bool = false,
                          attachmentsSet: Bool = false) -> Message {
         let folder = Folder(name: "\(parentType)",
-            parent: parentType == .inbox ? nil : account.folder(ofType: .inbox),
+            parent: parentType == .inbox ? nil : account.firstFolder(ofType: .inbox),
             account: account,
             folderType: parentType)
         folder.save()
         let createe = Message(uuid: UUID().uuidString, parentFolder: folder)
         if bccSet {
-            createe.bcc = [account.user]
+            createe.replaceBcc(with: [account.user])
         }
         if attachmentsSet {
             let att = attachment()
-            createe.attachments = [att]
+            createe.replaceAttachments(with: [att])
         }
         createe.save()
         return createe
@@ -1446,15 +1446,11 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         }
         let createe: Attachment
         if type == .inline {
-            createe = Attachment(data: imageData,
-                       mimeType: "image/jpg",
-                       size: imageData.count,
-                       image: image,
-                       contentDisposition: type)
+            createe = Attachment(data: image.jpegData(compressionQuality: 1.0), mimeType: "image/jpg", contentDisposition: type)
+            createe.image = image
         } else {
             createe = Attachment(data: imageData,
                                  mimeType: "video/quicktime",
-                                 size: imageData.count,
                                  contentDisposition: type)
         }
         createe.fileName = UUID().uuidString

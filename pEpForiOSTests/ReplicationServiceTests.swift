@@ -7,16 +7,19 @@
 //
 
 import XCTest
+import CoreData
 
-import MessageModel
+@testable import MessageModel
 @testable import pEpForiOS
 
 class ReplicationServiceTests: XCTestCase {
     var persistenceSetup: PersistentSetup!
+    var moc: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
         persistenceSetup = PersistentSetup()
+        moc = Record.Context.default
     }
 
     override func tearDown() {
@@ -119,7 +122,7 @@ class ReplicationServiceTests: XCTestCase {
 
         let replicationService = ReplicationService(parentName: #function)
 
-        _ = SecretTestData().createWorkingCdAccount()
+        _ = SecretTestData().createWorkingCdAccount(context: moc)
         Record.saveAndWait()
 
         for _ in 0...10 {
@@ -163,17 +166,19 @@ class ReplicationServiceTests: XCTestCase {
         let modelDelegate = MessageModelObserver()
         MessageModelConfig.messageFolderDelegate = modelDelegate
 
-        let cdAccount = useCorrectSmtpAccount ? SecretTestData().createWorkingCdAccount() :
-            SecretTestData().createSmtpTimeOutCdAccount()
+        let cdAccount =
+            useCorrectSmtpAccount ?
+            SecretTestData().createWorkingCdAccount(context: moc) :
+            SecretTestData().createSmtpTimeOutCdAccount(context: moc)
         Record.saveAndWait()
 
         TestUtil.syncAndWait(testCase: self)
 
-        let from = CdIdentity.create()
+        let from = CdIdentity(context: moc)
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
         from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
 
-        let to = CdIdentity.create()
+        let to = CdIdentity(context: moc)
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
@@ -184,9 +189,10 @@ class ReplicationServiceTests: XCTestCase {
         XCTAssertEqual((sentFolder.messages ?? NSSet()).count, 0)
 
         let numMails = 1
-        let outgoingMails = try! TestUtil.createOutgoingMails(
-            cdAccount: cdAccount,
-            testCase: self, numberOfMails: numMails)
+        let outgoingMails = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
+                                                              testCase: self,
+                                                              numberOfMails: numMails,
+                                                              context: moc)
         let outgoingMessageIDs: [String] = outgoingMails
             .map() { $0.messageID ?? "" }
             .filter() { $0 != "" }
@@ -200,7 +206,7 @@ class ReplicationServiceTests: XCTestCase {
         TestUtil.syncAndWait(testCase: self)
 
         // Check that the sent mails have been deleted
-        Record.refreshRegisteredObjects(mergeChanges: true)
+        Stack.refreshRegisteredObjects(mergeChanges: true, in: moc)
         if useCorrectSmtpAccount {
             for m in outgoingMails {
                 XCTAssertTrue(m.isDeleted)
@@ -225,9 +231,7 @@ class ReplicationServiceTests: XCTestCase {
                 }
             }
             return messages.sorted { m1, m2 in
-                if let d1 = m1.received, let d2 = m2.received {
-                    return areInIncreasingOrder(d1: d1, d2: d2)
-                } else if let d1 = m1.sent, let d2 = m2.sent {
+                if let d1 = m1.sent, let d2 = m2.sent {
                     return areInIncreasingOrder(d1: d1, d2: d2)
                 }
                 return false

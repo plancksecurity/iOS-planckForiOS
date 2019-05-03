@@ -353,9 +353,10 @@ class TestDataBase {
      */
     func createWorkingIdentity(number: Int = 0,
                                isMyself: Bool = false,
-                               context: NSManagedObjectContext) -> PEPIdentity {
+                               context: NSManagedObjectContext? = nil) -> PEPIdentity {
         populateAccounts()
-        return createWorkingCdIdentity(number: number, isMyself: isMyself, context: context)
+        let moc = context ?? Record.Context.main
+        return createWorkingCdIdentity(number: number, isMyself: isMyself, context: moc)
             .pEpIdentity()
     }
 

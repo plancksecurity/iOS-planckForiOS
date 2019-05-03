@@ -76,7 +76,7 @@ class PEPSessionTest: XCTestCase {
 
     func testMessageIDAndReferencesAfterEncrypt() {
         let testData = SecretTestData()
-        let myself = testData.createWorkingIdentity(number: 0)
+        let myself = testData.createWorkingIdentity(number: 0, context: moc)
         let mySubject = "Some Subject"
         let myMessageID = "myID"
         let references = ["ref1", "ref2", "ref3"]
