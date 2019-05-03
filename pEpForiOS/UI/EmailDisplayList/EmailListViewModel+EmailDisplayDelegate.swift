@@ -9,63 +9,61 @@
 import Foundation
 import pEpIOSToolbox
 import MessageModel
-
+//!!!: this delegates must be fixed
 extension EmailListViewModel: EmailDisplayDelegate {
     func emailDisplayDidFlag(message: Message) {
-        updateRow(for: message)
+        /*guard let index = indexPathShown?.row else {
+            //something has gone wrong
+            reloadData()
+            return
+        }
+        informUpdateRow(at: index)*/
     }
 
     func emailDisplayDidUnflag(message: Message) {
-        updateRow(for: message)
+        /*guard let index = indexPathShown?.row else {
+            //something has gone wrong
+            reloadData()
+            return
+        }
+        informUpdateRow(at: index)*/
     }
 
     func emailDisplayDidDelete(message: Message) {
 
-        MessageModelUtil.performAndWait { [weak self] in
-            guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
-                return
-            }
-            me.didDelete(message: message)
+        /*guard let index = indexPathShown?.row else {
+            //something has gone wrong
+            reloadData()
+            return
         }
+        informDeleteRow(at: index)*/
+
     }
 
     func emailDisplayDidChangeMarkSeen(message: Message) {
-        updateRow(for: message, isSeenStateChange: true)
+        //updateRow(for: message, isSeenStateChange: true)
     }
-    
+
     func emailDisplayDidChangeRating(message: Message) {
-        updateRow(for: message)
+        //updateRow(for: message)
     }
 
     private func deleteRow(for message: Message) {
-        stopListeningToChanges()
-        defer {
-            startListeningToChanges()
-        }
         DispatchQueue.main.async { [weak self] in
             guard let index = self?.index(of: message) else {
                 return
             }
-            self?.messages.removeObject(at: index)
             self?.informDeleteRow(at: index)
         }
 
     }
 
+
     private func updateRow(for message: Message, isSeenStateChange: Bool = false) {
-        stopListeningToChanges()
-        defer {
-            startListeningToChanges()
-        }
         DispatchQueue.main.async { [weak self] in
             guard let index = self?.index(of: message) else {
                 return
             }
-
-            let previewMessage = MessageViewModel(with: message)
-            self?.messages.removeObject(at: index)
-            self?.messages.insert(object: previewMessage)
             if isSeenStateChange {
                 self?.informSeenStateChangeForRow(at: index)
             } else {
@@ -74,10 +72,14 @@ extension EmailListViewModel: EmailDisplayDelegate {
         }
     }
 
+    ///!!!: change this to work with the proccees like messageQueryResults
     private func informUpdateRow(at index: Int) {
         let indexPath = self.indexPath(for: index)
+        //!!!: example of how messageQueryResults communicates with the EmailListVM
+        emailListViewModelDelegate?.willReceiveUpdates(viewModel: self)
         emailListViewModelDelegate?.emailListViewModel(viewModel: self,
                                                        didUpdateDataAt: [indexPath])
+        emailListViewModelDelegate?.allUpdatesReceived(viewModel: self)
     }
 
     private func informSeenStateChangeForRow(at index: Int) {

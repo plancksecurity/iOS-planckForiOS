@@ -41,7 +41,7 @@ class PEPSessionTest: XCTestCase {
         folder.save()
 
         let uuid = MessageID.generate()
-        let message = Message.fakeMessage(uuid: uuid)
+        let message = Message(uuid: uuid, parentFolder: folder)
         message.shortMessage = "short message"
         message.longMessage = "long message"
         message.longMessageFormatted = "long message"

@@ -11,13 +11,14 @@ import MessageModel
 
 extension EmailListViewModel: MoveToFolderDelegate {
     func didmove(messages: [Message]) {
-        messages.forEach { (msg) in
-            emailDisplayDidDelete(message: msg)
-        }
+        //!!!: to be fixed using email display delegate
+//        messages.forEach { (msg) in
+//            emailDisplayDidDelete(message: msg)
+//        }
     }
 
     func didMove() {
-        reloadData()
+        informDelegateToReloadData()
     }
 
 }

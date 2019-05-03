@@ -56,14 +56,6 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(noAccountsExist)
     }
     
-    func testCreateEmailListViewModel() {
-        let account = givenThereIsAnAccountWithAFolder()
-        givenThereIsAViewModel(withUniFiedInBox: false, and: [account])
-        let emailListViewModel = viewmodel.createEmailListViewModel(forAccountAt: 0, andFolderAt: 0, fetchOlderImapMessagesService: FetchOlderImapMessagesService())
-        let folderName = emailListViewModel.folderToShow.name
-        XCTAssertEqual(folderName, Input.folderName)
-    }
-    
     func testSubscript() {
         let accounts = givenThereIs(numberOfAccounts: 1)
         givenThereIsAViewModel(withUniFiedInBox: false, and: accounts)

@@ -11,67 +11,67 @@ import MessageModel
 
 class FilterTableViewController: BaseTableViewController {
 
-    open var inFolder: Bool = false
-    open var filterEnabled: CompositeFilter<FilterBase>?
-    open var filterDelegate: FilterUpdateProtocol?
+    public var filterEnabled: MessageQueryResultsFilter?
+    //!!!: this should be in the VM, not the VC
+    public var filterDelegate: FilterViewDelegate?
 
-    var sections = [FilterViewModel]()
+    public var viewModel : FilterViewModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.hidesBackButton = true
-        self.navigationItem.rightBarButtonItem =  UIBarButtonItem(title: NSLocalizedString("OK", comment: "Filter accept text"), style: .plain, target: self, action: #selector(ok(sender:)))
-
-    }
-
-    @objc func ok(sender: UIBarButtonItem) {
-        let filters = CompositeFilter<FilterBase>()
-        if let f = filterEnabled, f.isUnified() {
-            filters.add(filter: UnifiedFilter())
-        }
-        for section in sections {
-            filters.with(filters: section.getFilters())
-            filters.without(filters: section.getInvalidFilters())
-        }
-        filterEnabled = filters
-        filterDelegate?.addFilter(filters)
-
-       _ = self.navigationController?.popViewController(animated: true)
+        self.navigationItem.rightBarButtonItem =
+            UIBarButtonItem(title: NSLocalizedString("OK",  comment: "Filter accept text"),
+                            style: .plain,
+                            target: self,
+                            action: #selector(ok(sender:)))
     }
 
     override func viewWillAppear(_ animated: Bool) {
         initViewModel()
     }
 
-    func initViewModel() {
-
-        if inFolder {
-            sections.append(FilterViewModel(type: .accouts, filter: filterEnabled))
+    @objc func ok(sender: UIBarButtonItem) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return
         }
-        sections.append(FilterViewModel(type: .include, filter: filterEnabled))
-        sections.append(FilterViewModel(type: .other, filter: filterEnabled))
+        filterDelegate?.filterChanged(newFilter: vm.filter)
+       _ = self.navigationController?.popViewController(animated: true)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func initViewModel() {
+        guard let filter = filterEnabled else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No Filter in FilterView")
+            return
+        }
+        self.viewModel = FilterViewModel(filter: filter)
     }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return sections.count
+        if let model = viewModel {
+            return model.sectionCount
+        } else {
+            return 0
+        }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return sections[section].count
+        if let model = viewModel {
+            return model[section].count
+        } else {
+            return 0
+        }
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].title
-    }
+        if let model = viewModel {
+            return model[section].title
+        } else {
+            return ""
+        }    }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
 
@@ -83,30 +83,24 @@ class FilterTableViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "filterCell", for: indexPath)
-        let cellvm = sections[indexPath.section][indexPath.row]
-        cell.textLabel?.text = cellvm.title
-        cell.imageView?.image = cellvm.icon
-        cell.tintColor = UIColor.pEpGreen
-        cell.accessoryType = (cellvm.enabled) ? .checkmark : .none
-        cell.selectionStyle = .none
+        if let model = viewModel {
+            let cellvm = model[indexPath.section][indexPath.row]
+            cell.textLabel?.text = cellvm.title
+            cell.imageView?.image = cellvm.icon
+            cell.tintColor = UIColor.pEpGreen
+            cell.accessoryType = (cellvm.state) ? .checkmark : .none
+            cell.selectionStyle = .none
+        }
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cellvm = sections[indexPath.section][indexPath.row]
-        if(cellvm.filter is AccountFilter){
-            let willDisable = !cellvm.enabled
-            if(willDisable || canDisable(accountFilters: sections[indexPath.section])){
-                cellvm.enabled = !cellvm.enabled
-            }
-        } else {
-            cellvm.enabled = !cellvm.enabled
+        //!!!: we have to go to the filter property of the view mode an change directly the value on there. (Buff: why?)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return
         }
-        let cell = self.tableView.cellForRow(at: indexPath)
-        cell?.accessoryType = (cellvm.enabled) ? .checkmark : .none
-    }
-
-    func canDisable(accountFilters: FilterViewModel) -> Bool{
-        return accountFilters.accountsEnabled() > 1
+        vm.toggleEnabledState(forRowAt: indexPath)
+        tableView.reloadRows(at: [indexPath], with: .automatic) //!!!: not sure about which animation type fits best. Double check.
     }
 }

@@ -40,7 +40,7 @@ class FolderCellViewModelTests: CoreDataDrivenTestBase {
     
     func testIcon() {
         givenAViewModelWithFolderAndLevel()
-        let icon = viewModel.icon
+        let icon = viewModel.image
         let inputIcon = folder.folderType.getIcon()
         XCTAssertEqual(icon, inputIcon)
     }

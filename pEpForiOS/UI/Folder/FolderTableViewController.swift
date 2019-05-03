@@ -24,7 +24,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
         super.viewWillAppear(animated)
         setup()
         if showNext {
-            showFolder(indexPath: nil)
+            show(folder: UnifiedInbox())
         }
         self.navigationController?.setToolbarHidden(false, animated: false)
     }
@@ -32,10 +32,14 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
     // MARK: - Setup
 
     private func setup() {
-        DispatchQueue.main.async {
-            self.folderVM =  FolderViewModel()
-            self.folderVM?.delegate = self
-            self.tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.folderVM =  FolderViewModel()
+            me.folderVM?.delegate = self
+            me.tableView.reloadData()
         }
     }
     
@@ -180,10 +184,10 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
             tableView.deselectRow(at: indexPath, animated: true)
             return
         }
-        showFolder(indexPath: indexPath)
+        show(folder: cellViewModel.folder)
     }
 
-    private func showFolder(indexPath: IndexPath?) {
+    private func show(folder: DisplayableFolderProtocol) {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard
             let vc = sb.instantiateViewController(
@@ -193,12 +197,9 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
                     return
         }
         vc.appConfig = appConfig
-        let emailListViewModel =
-            folderVM?.createEmailListViewModel(
-                forAccountAt: indexPath?.section,
-                andFolderAt: indexPath?.row,
-                fetchOlderImapMessagesService: FetchOlderImapMessagesService())
-        vc.model = emailListViewModel
+        let emailListVM = EmailListViewModel(emailListViewModelDelegate: vc,
+                                             folderToShow: folder)
+        vc.model = emailListVM
         vc.hidesBottomBarWhenPushed = false
 
         let animated =  showNext ? false : true
