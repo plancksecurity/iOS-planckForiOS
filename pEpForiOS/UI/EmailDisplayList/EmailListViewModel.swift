@@ -75,9 +75,10 @@ class EmailListViewModel {
             if let cf = _currentFilter {
                 return cf
             } else {
-                return MessageQueryResultsFilter(
+                return folderToShow.defaultFilter
+                    /*MessageQueryResultsFilter(
                     mustBeUnread: false,
-                    accountEnabledStates: folderToShow.defaultFilter.accountsEnabledStates)
+                    accountEnabledStates: folderToShow.defaultFilter.accountsEnabledStates)*/
             }
         }
         set {
@@ -118,8 +119,9 @@ class EmailListViewModel {
 
         // We intentionally do *not* start monitoring. Respiosibility is on currently on VC.
         messageQueryResults = MessageQueryResults(withFolder: folderToShow,
-                                                       filter: folderToShow.defaultFilter,
+                                                       filter: nil,
                                                        search: nil)
+        //!!!: changed filter to nil take care
         messageQueryResults.delegate = self
         // Threading feature is currently non-existing. Keep this code, might help later.
 //        self.oldThreadSetting = AppSettings.threadedViewEnabled
