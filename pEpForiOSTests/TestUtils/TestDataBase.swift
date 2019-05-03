@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-import MessageModel
+@testable import MessageModel
 import PEPObjCAdapterFramework
 import PantomimeFramework
 
