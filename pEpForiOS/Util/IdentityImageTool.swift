@@ -11,7 +11,8 @@ import AddressBook
 import MessageModel
 import pEpIOSToolbox
 
-class IdentityImageTool {
+extension IdentityImageTool {
+
     /// Key for the identity image cache dictionary.
     // Created to avoid accessing Identity's from a wrong queue.
     struct IdentityKey: Hashable {
@@ -34,6 +35,9 @@ class IdentityImageTool {
             hasher.combine(userId)
         }
     }
+}
+
+class IdentityImageTool {
     static private let queue = DispatchQueue.global(qos: .userInitiated)
     static private var _imageCache = [IdentityKey:UIImage]()
     static private var imageCache: [IdentityKey:UIImage] {
