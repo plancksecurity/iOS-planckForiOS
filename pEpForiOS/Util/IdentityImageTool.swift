@@ -18,6 +18,13 @@ class IdentityImageTool {
         let userId: String?
         let address: String
 
+        init(identity: Identity) {
+            userId = identity.userID
+            address = identity.address
+        }
+
+        // MARK: Hashable
+
         public static func ==(lhs: IdentityKey, rhs: IdentityKey) -> Bool {
             return lhs.address == rhs.address && lhs.userId == rhs.userId
         }
@@ -53,7 +60,7 @@ class IdentityImageTool {
         let session = Session()
         session.performAndWait {
             let safeIdentity = identity.safeForSession(session)
-            searchKey = IdentityKey(userId: safeIdentity.userID, address: safeIdentity.address)
+            searchKey = IdentityKey(identity: safeIdentity)
         }
         guard let key = searchKey else {
             return nil
@@ -92,7 +99,7 @@ class IdentityImageTool {
             }
 
             if let addressBookID = safeIdentity.addressBookID {
-                // Get image from system AddressBook is any
+                // Get image from system AddressBook if any
                 let ab = AddressBook()
                 if let contact = ab.contactBy(addressBookID: addressBookID),
                     let imgData = contact.thumbnailImageData {
@@ -116,7 +123,7 @@ class IdentityImageTool {
             }
             if let safeImage = image {
                 // cache image
-                let saveKey = IdentityKey(userId: safeIdentity.userID, address: safeIdentity.address)
+                let saveKey = IdentityKey(identity: safeIdentity)
                 IdentityImageTool.imageCache[saveKey] = safeImage
             }
         }
