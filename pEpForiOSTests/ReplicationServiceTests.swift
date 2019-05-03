@@ -1,5 +1,5 @@
 //
-//  NetworkServiceTests.swift
+//  ReplicationServiceTests.swift
 //  pEpForiOS
 //
 //  Created by hernani on 23/11/16.
@@ -11,7 +11,7 @@ import XCTest
 import MessageModel
 @testable import pEpForiOS
 
-class NetworkServiceTests: XCTestCase {
+class ReplicationServiceTests: XCTestCase {
     var persistenceSetup: PersistentSetup!
 
     override func setUp() {
@@ -40,17 +40,17 @@ class NetworkServiceTests: XCTestCase {
         let modelDelegate = MessageModelObserver()
         MessageModelConfig.messageFolderDelegate = modelDelegate
 
-        let networkService = NetworkService(parentName: #function)
+        let replicationService = ReplicationService(parentName: #function)
 
-        let del = NetworkServiceObserver(
+        let del = ReplicationServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
-        networkService.unitTestDelegate = del
-        networkService.delegate = del
+        replicationService.unitTestDelegate = del
+        replicationService.delegate = del
 
         _ = SecretTestData().createWorkingCdAccount()
         Record.saveAndWait()
 
-        networkService.start()
+        replicationService.start()
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
@@ -109,7 +109,7 @@ class NetworkServiceTests: XCTestCase {
         }
         XCTAssertFalse(modelDelegate.hasChangedMessages)
 
-        TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: self)
+        TestUtil.cancelReplicationServiceAndWait(replicationService: replicationService, testCase: self)
     }
 
     func testCancelSyncImmediately() {
@@ -117,14 +117,14 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertNil(CdFolder.all())
         XCTAssertNil(CdMessage.all())
 
-        let networkService = NetworkService(parentName: #function)
+        let replicationService = ReplicationService(parentName: #function)
 
         _ = SecretTestData().createWorkingCdAccount()
         Record.saveAndWait()
 
         for _ in 0...10 {
-            networkService.start()
-            TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: self)
+            replicationService.start()
+            TestUtil.cancelReplicationServiceAndWait(replicationService: replicationService, testCase: self)
         }
 
         XCTAssertNil(CdFolder.all())

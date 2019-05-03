@@ -11,6 +11,7 @@ import CoreData
 
 import MessageModel
 import PEPObjCAdapterFramework
+import PantomimeFramework
 
 class TestDataBase {
     struct AccountSettings {
@@ -18,25 +19,16 @@ class TestDataBase {
         var idAddress: String
         var idUserName: String?
         var smtpLoginName: String?
-        var smtpServerAddress: String?
+        var smtpServerAddress: String
         var smtpServerType: Server.ServerType = .smtp
         var smtpServerTransport: Server.Transport = .tls
         var smtpServerPort: UInt16 = 587
         var imapLoginName: String?
-        var imapServerAddress: String?
+        var imapServerAddress: String
         var imapServerType: Server.ServerType = .imap
         var imapServerTransport: Server.Transport = .startTls
         var imapServerPort: UInt16 = 993
         var password: String?
-
-        init(accountName: String?, address: String) {
-            self.accountName = accountName
-            self.idAddress = address
-        }
-
-        init(address: String) {
-            self.init(accountName: nil, address: address)
-        }
 
         init(accountName: String,
              idAddress: String,
@@ -131,7 +123,7 @@ class TestDataBase {
             credSmtp.password = password
             let smtp = Server.create(serverType: .smtp,
                                      port: smtpServerPort,
-                                     address: smtpServerAddress ?? "",
+                                     address: smtpServerAddress,
                                      transport: smtpServerTransport,
                                      credentials:credSmtp)
 
@@ -139,7 +131,7 @@ class TestDataBase {
             credImap.password = password
             let imap = Server.create(serverType: .imap,
                                      port: imapServerPort,
-                                     address: imapServerAddress ?? "",
+                                     address: imapServerAddress,
                                      transport: imapServerTransport,
                                      credentials:credImap)
             
@@ -152,6 +144,46 @@ class TestDataBase {
             let ident = PEPIdentity(address: idAddress)
             ident.userName = accountName
             return ident
+        }
+
+        func basicConnectInfo(emailProtocol: EmailProtocol) -> BasicConnectInfo {
+            return BasicConnectInfo(
+                accountEmailAddress: idAddress,
+                loginName: imapLoginName ?? idAddress,
+                loginPassword: password,
+                accessToken: nil,
+                networkAddress: imapServerAddress,
+                networkPort: imapServerPort,
+                connectionTransport: ConnectionTransport(transport: imapServerTransport),
+                authMethod: nil,
+                emailProtocol: emailProtocol)
+        }
+
+        func basicConnectInfoIMAP() -> BasicConnectInfo {
+            return basicConnectInfo(emailProtocol: .imap)
+        }
+
+        func basicConnectInfoSMTP() -> BasicConnectInfo {
+            return basicConnectInfo(emailProtocol: .smtp)
+        }
+
+        /// Transfers the account data into a `VerifiableAccountProtocol`
+        /// that you then can verify the acconut data with.
+        func populate(verifiableAccount: inout VerifiableAccountProtocol) {
+            verifiableAccount.address = idAddress
+            verifiableAccount.loginName = imapLoginName
+            verifiableAccount.accessToken = nil
+            verifiableAccount.password = password
+
+            verifiableAccount.serverIMAP = imapServerAddress
+            verifiableAccount.portIMAP = imapServerPort
+            verifiableAccount.transportIMAP = ConnectionTransport(transport: imapServerTransport)
+
+            verifiableAccount.serverSMTP = smtpServerAddress
+            verifiableAccount.portSMTP = smtpServerPort
+            verifiableAccount.transportSMTP = ConnectionTransport(transport: smtpServerTransport)
+
+            verifiableAccount.authMethod = nil
         }
     }
 
@@ -250,6 +282,20 @@ class TestDataBase {
     }
 
     /**
+     - Returns: A valid `BasicConnectInfo` for IMAP.
+     */
+    func createVerifiableBasicConnectInfoIMAP(number: Int = 0) -> BasicConnectInfo {
+        return createVerifiableAccountSettings(number: number).basicConnectInfoIMAP()
+    }
+
+    /**
+     - Returns: A valid `BasicConnectInfo` for SMTP.
+     */
+    func createVerifiableBasicConnectInfoSMTP(number: Int = 0) -> BasicConnectInfo {
+        return createVerifiableAccountSettings(number: number).basicConnectInfoSMTP()
+    }
+
+    /**
      - Returns: A valid `CdIdentity` without parent account.
      */
     func createWorkingCdIdentity(number: Int = 0, isMyself: Bool = false) -> CdIdentity {
@@ -344,4 +390,9 @@ class TestDataBase {
         return createImapTimeOutAccountSettings().account()
     }
 
+    func populateWorkingAccount(number: Int = 0,
+                                verifiableAccount: inout VerifiableAccountProtocol) {
+        createVerifiableAccountSettings(number: number).populate(
+            verifiableAccount: &verifiableAccount)
+    }
 }

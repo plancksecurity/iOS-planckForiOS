@@ -21,8 +21,7 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     @IBOutlet weak var serverTitle: UILabel!
     @IBOutlet weak var portTitle: UILabel!
 
-    var model: AccountUserInput!
-    private var currentlyVerifiedAccount: Account?
+    var model: VerifiableAccountProtocol!
     var fields = [UITextField]()
     var responder = 0
 
@@ -77,9 +76,8 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     /// - Throws: AccountVerificationError
     private func verifyAccount() throws {
         isCurrentlyVerifying =  true
-        let account = try model.account()
-        currentlyVerifiedAccount = account
-        VerificationService().requestVerification(account: account, delegate: self)
+        model.verifiableAccountDelegate = self
+        try model.verify()
     }
 
     private func informUser(about error: Error, title: String) {
@@ -159,15 +157,7 @@ extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         if result == .ok {
-            MessageModelUtil.performAndWait { [weak self] in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
-                    return
-                }
-                guard let account = me.currentlyVerifiedAccount else {
-                    Log.shared.errorAndCrash("We verified an non-existing account? Now what?")
-                    return
-                }
+            MessageModelUtil.performAndWait {
                 account.save()
             }
         }
@@ -218,5 +208,27 @@ extension SMTPSettingsTableViewController: UITextFieldDelegate {
 
     public func textFieldDidEndEditing(_ textField: UITextField) {
         changedResponder(textField)
+    }
+}
+
+extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
+    func didEndVerification(result: Result<Void, Error>) {
+        switch result {
+        case .success(()):
+                MessageModelUtil.performAndWait { [weak self] in
+                    do {
+                        try self?.model.save()
+                    } catch {
+                        Log.shared.errorAndCrash("%@", error.localizedDescription)
+                    }
+                }
+                GCD.onMain() {
+                    self.performSegue(withIdentifier: .backToEmailListSegue, sender: self)
+            }
+        case .failure(let error):
+            GCD.onMain() {
+                UIUtils.show(error: error, inViewController: self)
+            }
+        }
     }
 }

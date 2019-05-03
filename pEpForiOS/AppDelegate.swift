@@ -80,7 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     /// Signals all PEPSession users to stop using a session as soon as possible.
-    /// NetworkService will assure all local changes triggered by the user are synced to the server
+    /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
     private func stopUsingPepSession() {
         syncUserActionsAndCleanupbackgroundTaskId =
@@ -88,8 +88,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Log.shared.errorAndCrash(
                     "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
                     self.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
-                // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
-                // that brutally shuts down everything.
+                // We migh want to call some (yet unexisting) emergency shutdown on
+                // ReplicationService here that brutally shuts down everything.
                 self.application.endBackgroundTask(UIBackgroundTaskIdentifier(
                     rawValue: self.syncUserActionsAndCleanupbackgroundTaskId.rawValue))
             })
@@ -105,8 +105,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func kickOffMySelf() {
         mySelfTaskId = application.beginBackgroundTask(expirationHandler: { [unowned self] in
             Log.shared.log("mySelfTaskId with ID expired.")
-            // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
-            // that brutally shuts down everything.
+            // We migh want to call some (yet unexisting) emergency shutdown on
+            // ReplicationService here here that brutally shuts down everything.
             self.application.endBackgroundTask(
                 UIBackgroundTaskIdentifier(rawValue:self.mySelfTaskId.rawValue))
         })
@@ -194,7 +194,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Safely restarts all services
     private func shutdownAndPrepareServicesForRestart() {
         // We cancel the Network Service to make sure it is idle and ready for a clean restart.
-        // The actual restart of the services happens in NetworkServiceDelegate callbacks.
+        // The actual restart of the services happens in ReplicationServiceDelegate callbacks.
         messageModelService?.cancel()
     }
 
@@ -351,7 +351,7 @@ extension AppDelegate: KickOffMySelfProtocol {
     }
 }
 
-// MARK: - NetworkServiceDelegate
+// MARK: - ReplicationServiceDelegate
 
 extension AppDelegate: MessageModelServiceDelegate {
 

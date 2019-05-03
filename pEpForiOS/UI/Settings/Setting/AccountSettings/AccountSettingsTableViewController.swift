@@ -54,7 +54,6 @@ UIPickerViewDataSource, UITextFieldDelegate {
         configureView()
         if let vm = viewModel {
             vm.delegate = self
-            vm.verificationService = VerificationService()
         }
         passwordTextfield.delegate = self
     }
@@ -306,7 +305,8 @@ extension AccountSettingsTableViewController {
 // MARK: - AccountVerificationResultDelegate
 
 extension AccountSettingsTableViewController: AccountVerificationResultDelegate {
-    func didVerify(result: AccountVerificationResult, accountInput: AccountUserInput?) {
+    func didVerify(result: AccountVerificationResult,
+                   accountInput: VerifiableAccountProtocol?) {
         GCD.onMain() {
             self.hideSpinner()
             switch result {
