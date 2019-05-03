@@ -161,27 +161,32 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     class func getSummary(fromMessage msg: Message) -> String {
         var body: String?
-        if var text = msg.longMessage {
-            text = text
-                .stringCleanedFromNSAttributedStingAttributes()
-                .replaceNewLinesWith(" ")
-                .trimmed()
-            body = text
-        } else if let html = msg.longMessageFormatted {
-            // Limit the size of HTML to parse
-            // That might result in a messy preview but valid messages use to offer a plaintext
-            // version while certain spam mails have thousands of lines of invalid HTML, causing
-            // the parser to take minutes to parse one message.
-            let factorHtmlTags = 3
-            let numChars = maxBodyPreviewCharacters * factorHtmlTags
-            let truncatedHtml = html.prefix(ofLength: numChars)
-            body = truncatedHtml.extractTextFromHTML()
 
-            //IOS-1347:
-            // We might want to cleans when displaying instead of when saving.
-            // Waiting for details. See IOS-1347.
+        let session = Session()
+        session.performAndWait {
+            let safeMsg = msg.safeForSession(session)
+            if var text = safeMsg.longMessage {
+                text = text
+                    .stringCleanedFromNSAttributedStingAttributes()
+                    .replaceNewLinesWith(" ")
+                    .trimmed()
+                body = text
+            } else if let html = safeMsg.longMessageFormatted {
+                // Limit the size of HTML to parse
+                // That might result in a messy preview but valid messages use to offer a plaintext
+                // version while certain spam mails have thousands of lines of invalid HTML, causing
+                // the parser to take minutes to parse one message.
+                let factorHtmlTags = 3
+                let numChars = maxBodyPreviewCharacters * factorHtmlTags
+                let truncatedHtml = html.prefix(ofLength: numChars)
+                body = truncatedHtml.extractTextFromHTML()
 
-            body = body?.replaceNewLinesWith(" ").trimmed()
+                //IOS-1347:
+                // We might want to cleans when displaying instead of when saving.
+                // Waiting for details. See IOS-1347.
+
+                body = body?.replaceNewLinesWith(" ").trimmed()
+            }
         }
         guard let safeBody = body else {
             return ""
