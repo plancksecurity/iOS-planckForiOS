@@ -183,16 +183,16 @@ class MessageViewModel: CustomDebugStringConvertible {
 
             body = body?.replaceNewLinesWith(" ").trimmed()
         }
-        guard let saveBody = body else {
+        guard let safeBody = body else {
             return ""
         }
 
         let result: String
-        if saveBody.count <= maxBodyPreviewCharacters {
-            result = saveBody
+        if safeBody.count <= maxBodyPreviewCharacters {
+            result = safeBody
         } else {
-            let endIndex = saveBody.index(saveBody.startIndex, offsetBy: maxBodyPreviewCharacters)
-            result = String(saveBody[..<endIndex])
+            let endIndex = safeBody.index(safeBody.startIndex, offsetBy: maxBodyPreviewCharacters)
+            result = String(safeBody[..<endIndex])
         }
         return result
     }
