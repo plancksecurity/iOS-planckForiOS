@@ -11,7 +11,6 @@ import UIKit
 
 public protocol NSAttributedStringParsingDelegate: class {
     func stringFor(attachment: NSTextAttachment) -> String?
-    func stringFor(string: String) -> String?
 }
 
 public extension NSAttributedString {
@@ -28,9 +27,7 @@ public extension NSAttributedString {
             } else {
                 let theAttributedString = string.attributedSubstring(from: r)
                 let theString = theAttributedString.string
-                if let theStringToAppend = delegate.stringFor(string: theString) {
-                    resultString = "\(resultString)\(theStringToAppend)"
-                }
+                resultString = "\(resultString)\(theString)"
             }
         }
         return resultString

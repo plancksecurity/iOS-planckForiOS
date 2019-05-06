@@ -13,7 +13,7 @@ import MessageModel
 class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
     var attachments = [Attachment]()
 
-    private let mimeUtil = MimeTypeUtil()
+    private lazy var mimeUtil = MimeTypeUtil()
 
     func stringFor(attachment: NSTextAttachment) -> String? {
         if let textAttachment = attachment as? TextAttachment,
@@ -37,10 +37,6 @@ class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
             return "![\(alt)](\(cidSrc))"
         }
         return nil
-    }
-
-    func stringFor(string: String) -> String? {
-        return string
     }
 }
 
