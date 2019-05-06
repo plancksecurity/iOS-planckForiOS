@@ -42,7 +42,7 @@ public class UnifiedInbox: VirtualFolderProtocol {
 
     public var defaultFilter: MessageQueryResultsFilter {
         get {
-            return MessageQueryResultsFilter(accounts: Account.all())
+            return MessageQueryResultsFilter(mustBeUnread: true, accounts: Account.all())
         }
     }
 
