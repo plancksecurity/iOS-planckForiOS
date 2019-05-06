@@ -493,7 +493,6 @@ extension EmailListViewModel {
     }
 
     private func cachedSenderImage(forCellAt indexPath:IndexPath) -> UIImage? {
-
         guard let count = try? messageQueryResults.count(), indexPath.row < count else {
             // The model has been updated or it's not ready to use.
             return nil
@@ -502,7 +501,8 @@ extension EmailListViewModel {
         guard let from = message.from else {
             return nil
         }
-        return contactImageTool.cachedIdentityImage(for: from)
+        return
+            contactImageTool.cachedIdentityImage(for: IdentityImageTool.IdentityKey(identity: from))
     }
 }
 

@@ -364,11 +364,14 @@ extension MessageViewModel {
                 !operation.isCancelled else {
                     return
             }
-            MessageModelUtil.performAndWait {
+            let session = Session()
+            session.performAndWait {
+                let safeMsg = message.safeForSession(session)
+
                 guard !operation.isCancelled else {
                     return
                 }
-                let summary = MessageViewModel.getSummary(fromMessage: message)
+                let summary = MessageViewModel.getSummary(fromMessage: safeMsg)
                 guard !operation.isCancelled else {
                     return
                 }
@@ -389,38 +392,41 @@ extension MessageViewModel {
             guard let me = self else {
                 return
             }
-            MessageModelUtil.performAndWait {
+            let session = Session()
+            session.performAndWait {
                 guard
+                    let safeMsg = me.message()?.safeForSession(session),
                     let operation = operation,
-                    !operation.isCancelled,
-                    let message = me.message() else {
+                    !operation.isCancelled
+                    else {
                         return
                 }
 
                 if (!operation.isCancelled) {
-                    me.profilePictureComposer.securityBadge(for: message, completion: completion)
+                    me.profilePictureComposer.securityBadge(for: safeMsg, completion: completion)
                 }
             }
         }
         return getSecurityBadgeOperation
     }
 
-    private func getProfilePictureOperation(
-        completion: @escaping (UIImage?) -> ()) -> SelfReferencingOperation {
-        let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
-            guard let me = self else {
-                return
-            }
-            MessageModelUtil.performAndWait {
+    private func getProfilePictureOperation(completion: @escaping (UIImage?) -> ())
+        -> SelfReferencingOperation {
+
+            let identitykey = IdentityImageTool.IdentityKey(identity: displayedImageIdentity)
+
+            let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
+                guard let me = self else {
+                    return
+                }
                 guard
                     let operation = operation,
                     !operation.isCancelled else {
                         return
                 }
-                me.profilePictureComposer.profilePicture(for: me.displayedImageIdentity, completion: completion)
+                me.profilePictureComposer.profilePicture(for: identitykey,
+                                                         completion: completion)
             }
-        }
-        return getSecurityBadgeOperation
+            return getSecurityBadgeOperation
     }
-
 }

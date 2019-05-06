@@ -56,17 +56,13 @@ public class FolderSectionViewModel {
             return
         }
         let userKey = IdentityImageTool.IdentityKey(identity: ac.user)
-         if let cachedContactImage = contactImageTool.cachedIdentityImage(for: userKey) {
+        if let cachedContactImage = contactImageTool.cachedIdentityImage(for: userKey) {
             callback(cachedContactImage)
         } else {
-            let session = Session()
-            let safeUser = ac.user.safeForSession(session)
             DispatchQueue.global().async {
-                session.performAndWait {
-                    let contactImage = self.contactImageTool.identityImage(for: safeUser)
-                    DispatchQueue.main.async {
-                        callback(contactImage)
-                    }
+                let contactImage = self.contactImageTool.identityImage(for: userKey)
+                DispatchQueue.main.async {
+                    callback(contactImage)
                 }
             }
         }

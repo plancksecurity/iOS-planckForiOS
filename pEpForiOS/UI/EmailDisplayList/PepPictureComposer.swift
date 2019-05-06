@@ -14,14 +14,19 @@ class PepProfilePictureComposer: ProfilePictureComposer {
 
     let contactImageTool = IdentityImageTool()
 
-    func profilePicture(for identity: Identity, completion: @escaping (UIImage?) -> ()) {
-        if let image = self.contactImageTool.cachedIdentityImage(for: identity){
+    func profilePicture(for identityKey: IdentityImageTool.IdentityKey,
+                        completion: @escaping (UIImage?) -> ()) {
+        if let image = contactImageTool.cachedIdentityImage(for: identityKey){
             DispatchQueue.main.async {
                 completion(image)
             }
         } else {
-            DispatchQueue.global(qos: .userInitiated).async{
-                let senderImage = self.contactImageTool.identityImage(for: identity)
+            DispatchQueue.global(qos: .userInitiated).async{ [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    return
+                }
+                let senderImage = me.contactImageTool.identityImage(for: identityKey)
                 DispatchQueue.main.async {
                     completion(senderImage)
                 }
