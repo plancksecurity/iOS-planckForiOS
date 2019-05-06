@@ -131,9 +131,13 @@ extension IMAPSettingsTableViewController: SegueHandlerType {
     public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .SMTPSettings:
-            let destination = segue.destination as! SMTPSettingsTableViewController
-            destination.appConfig = appConfig
-            destination.model = model
+            if let destination = segue.destination as? SMTPSettingsTableViewController {
+                destination.appConfig = appConfig
+                destination.model = model
+            } else {
+                Logger.utilLogger.errorAndCrash(
+                    "Seque is .SMTPSettings, but controller is not a SMTPSettingsTableViewController")
+            }
             break
         default:()
         }
