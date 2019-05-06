@@ -76,9 +76,6 @@ class EmailListViewModel {
                 return cf
             } else {
                 return folderToShow.defaultFilter
-                    /*MessageQueryResultsFilter(
-                    mustBeUnread: false,
-                    accountEnabledStates: folderToShow.defaultFilter.accountsEnabledStates)*/
             }
         }
         set {
@@ -119,7 +116,7 @@ class EmailListViewModel {
 
         // We intentionally do *not* start monitoring. Respiosibility is on currently on VC.
         messageQueryResults = MessageQueryResults(withFolder: folderToShow,
-                                                       filter: folderToShow.defaultFilter,
+                                                       filter: nil,
                                                        search: nil)
         //!!!: changed filter to nil take care
         messageQueryResults.delegate = self
@@ -534,14 +531,18 @@ extension EmailListViewModel {
     }
 
     func composeViewModelForNewMessage() -> ComposeViewModel {
+		// Determine the sender.
+        var someUser: Identity? = nil
         if let f = folderToShow as? RealFolder {
-            return ComposeViewModel(resultDelegate:self, composeMode: .normal,
-                                    prefilledFrom: f.account.user)
+             someUser = f.account.user
         } else {
             let account = Account.defaultAccount()
             return ComposeViewModel(resultDelegate:self, composeMode: .normal,
                                     prefilledFrom: account?.user)
         }
+        let composeVM = ComposeViewModel(resultDelegate: self,
+                                         prefilledFrom: someUser)
+        return composeVM
     }
 }
 

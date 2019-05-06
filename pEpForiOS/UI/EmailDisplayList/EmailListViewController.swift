@@ -475,17 +475,18 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     private func updateFilterText() {
         //!!!: the text of the enabled filter must be calculated with the new filter type.
-//        if let vm = model, var txt = vm.activeFilter.title {
-//            if(txt.count > EmailListViewController.FILTER_TITLE_MAX_XAR){
-//                let prefix = txt.prefix(ofLength: EmailListViewController.FILTER_TITLE_MAX_XAR)
-//                txt = String(prefix)
-//                txt += "..."
-//            }
-//            if txt.isEmpty {
-//                txt = "none"
-//            }
-//            textFilterButton.title = "Filter by: " + txt
-//        }
+        if let vm = model {
+            var txt = vm.currentFilter.getFilterText()
+            if(txt.count > EmailListViewController.FILTER_TITLE_MAX_XAR){
+                let prefix = txt.prefix(ofLength: EmailListViewController.FILTER_TITLE_MAX_XAR)
+                txt = String(prefix)
+                txt += "..."
+            }
+            if txt.isEmpty {
+                txt = "none"
+            }
+            textFilterButton.title = "Filter by: " + txt
+        }
     }
 
     // MARK: - UITableViewDataSource

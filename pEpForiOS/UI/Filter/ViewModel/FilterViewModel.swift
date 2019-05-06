@@ -38,9 +38,9 @@ public class FilterViewModel {
         row.state = newState
         sections[indexPath.section][indexPath.row].state = newState
         // ... and create a new filter taking the state change into account
-        var mustBeUnread = filter.mustBeUnread
-        var mustBeFlagged = filter.mustBeFlagged
-        var mustContainAttachments = filter.mustContainAttachments
+        var mustBeUnread : Bool? = filter.mustBeUnread
+        var mustBeFlagged : Bool? = filter.mustBeFlagged
+        var mustContainAttachments : Bool? = filter.mustContainAttachments
         var accountsEnabledStates = filter.accountsEnabledStates
         switch row.type {
         case .account:
@@ -53,11 +53,23 @@ public class FilterViewModel {
             }
             accountsEnabledStates[indexPath.row] = [account: newState]
         case .flagg:
-            mustBeFlagged = newState
+            if !newState {
+                mustBeFlagged = nil
+            } else {
+                mustBeFlagged = newState
+            }
         case .unread:
-            mustBeUnread = newState
+            if !newState {
+                mustBeUnread = nil
+            } else {
+                mustBeUnread = newState
+            }
         case .attachments:
-            mustContainAttachments = newState
+            if !newState {
+                mustContainAttachments = nil
+            } else {
+                mustContainAttachments = newState
+            }
         }
         filter = MessageQueryResultsFilter(mustBeFlagged: mustBeFlagged,
                                            mustBeUnread: mustBeUnread,
@@ -199,7 +211,7 @@ extension FilterViewModel {
             case .flagg:
                 return false
             case .unread:
-                return true
+                return false
             case .attachments:
                 return false
             }
