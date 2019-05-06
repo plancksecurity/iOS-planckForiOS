@@ -474,7 +474,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
     
     private func updateFilterText() {
-        //!!!: the text of the enabled filter must be calculated with the new filter type.
         if let vm = model {
             var txt = vm.currentFilter.getFilterText()
             if(txt.count > EmailListViewController.FILTER_TITLE_MAX_XAR){

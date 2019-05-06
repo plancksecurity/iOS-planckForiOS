@@ -15,3 +15,11 @@ public protocol VirtualFolderProtocol: DisplayableFolderProtocol {
     var agregatedFolderType : FolderType? { get }
 
 }
+
+public extension VirtualFolderProtocol {
+    var isSelectable: Bool {
+        get {
+            return false
+        }
+    }
+}
