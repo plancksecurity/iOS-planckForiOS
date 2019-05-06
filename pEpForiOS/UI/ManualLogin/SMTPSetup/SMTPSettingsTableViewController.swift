@@ -21,7 +21,7 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     @IBOutlet weak var serverTitle: UILabel!
     @IBOutlet weak var portTitle: UILabel!
 
-    var model: VerifiableAccountProtocol!
+    var model: VerifiableAccountProtocol?
     var fields = [UITextField]()
     var responder = 0
 
@@ -48,7 +48,7 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        firstResponder(model.serverSMTP == nil)
+        firstResponder(model?.serverSMTP == nil)
     }
 
     public override func viewDidLayoutSubviews() {
@@ -59,9 +59,11 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     // MARK: - Working Bees
 
     private func updateView() {
-        serverValue.text = model.serverSMTP
-        portValue.text = String(model.portSMTP)
-        transportSecurity.setTitle(model.transportSMTP.localizedString(), for: UIControl.State())
+        serverValue.text = model?.serverSMTP
+        if let thePort = model?.portSMTP {
+            portValue.text = String(thePort)
+        }
+        transportSecurity.setTitle(model?.transportSMTP.localizedString(), for: UIControl.State())
 
         if isCurrentlyVerifying {
             activityIndicatorView.startAnimating()
@@ -76,8 +78,8 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     /// - Throws: AccountVerificationError
     private func verifyAccount() throws {
         isCurrentlyVerifying =  true
-        model.verifiableAccountDelegate = self
-        try model.verify()
+        model?.verifiableAccountDelegate = self
+        try model?.verify()
     }
 
     private func informUser(about error: Error, title: String) {
@@ -107,7 +109,7 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
                                        comment: "UI alert message for transport protocol"),
             preferredStyle: .actionSheet)
         let block: (ConnectionTransport) -> () = { transport in
-            self.model.transportSMTP = transport
+            self.model?.transportSMTP = transport
             self.updateView()
         }
 
@@ -127,13 +129,13 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     }
 
     @IBAction func changeServer(_ sender: UITextField) {
-        model.serverSMTP = sender.text
+        model?.serverSMTP = sender.text
     }
 
     @IBAction func changePort(_ sender: UITextField) {
         if let text = portValue.text {
             if let port = UInt16(text) {
-                model.portSMTP = port
+                model?.portSMTP = port
             }
         }
     }
@@ -189,7 +191,7 @@ extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
         case .success(()):
                 MessageModelUtil.performAndWait { [weak self] in
                     do {
-                        try self?.model.save()
+                        try self?.model?.save()
                     } catch {
                         Logger.frontendLogger.log(error: error)
                         Logger.frontendLogger.errorAndCrash(
