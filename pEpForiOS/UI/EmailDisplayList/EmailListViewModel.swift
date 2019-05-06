@@ -76,9 +76,6 @@ class EmailListViewModel {
                 return cf
             } else {
                 return folderToShow.defaultFilter
-                    /*MessageQueryResultsFilter(
-                    mustBeUnread: false,
-                    accountEnabledStates: folderToShow.defaultFilter.accountsEnabledStates)*/
             }
         }
         set {
