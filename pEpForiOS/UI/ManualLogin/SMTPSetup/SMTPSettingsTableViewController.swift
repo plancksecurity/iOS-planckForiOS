@@ -198,12 +198,16 @@ extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
                             "Unexpected error on saving the account")
                     }
                 }
-                GCD.onMain() {
-                    self.performSegue(withIdentifier: .backToEmailListSegue, sender: self)
+                GCD.onMain() {  [weak self] in
+                    self?.isCurrentlyVerifying = false
+                    self?.performSegue(withIdentifier: .backToEmailListSegue, sender: self)
             }
         case .failure(let error):
-            GCD.onMain() {
-                UIUtils.show(error: error, inViewController: self)
+            GCD.onMain() { [weak self] in
+                if let theSelf = self {
+                    theSelf.isCurrentlyVerifying = false
+                    UIUtils.show(error: error, inViewController: theSelf)
+                }
             }
         }
     }
