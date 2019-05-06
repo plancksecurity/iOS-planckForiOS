@@ -486,7 +486,7 @@ extension EmailListViewModel {
     private func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
         let message = messageQueryResults[indexPath.row]
         // This does *not* trigger FetchedResultsController. Ingtentionally.
-        message.imapFlags.flagged = flagged
+        message.imapFlags?.flagged = flagged
         message.save()
     }
 
@@ -539,15 +539,18 @@ extension EmailListViewModel {
     }
 
     func composeViewModelForNewMessage() -> ComposeViewModel {
+		// Determine the sender.
+        var someUser: Identity? = nil
         if let f = folderToShow as? RealFolder {
-            return ComposeViewModel(resultDelegate:self, composeMode: .normal,
-                                    prefilledFrom: f.account.user)
+             someUser = f.account.user
         } else {
             let account = Account.defaultAccount()
-            return ComposeViewModel(resultDelegate:self, composeMode: .normal,
-                                    prefilledFrom: account?.user)
-
+            // A folder that is not 'unified' or 'virtual' use default account.
+            someUser = account?.user
         }
+        let composeVM = ComposeViewModel(resultDelegate: self,
+                                         prefilledFrom: someUser)
+        return composeVM
     }
 }
 

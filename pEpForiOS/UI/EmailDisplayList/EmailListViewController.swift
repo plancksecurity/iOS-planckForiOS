@@ -125,6 +125,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         textFilterButton.action = #selector(showFilterOptions(_:))
         textFilterButton.target = self
 
+        textFilterButton.tex model?.currentFilter.getFilterText()
+
         let fontSize:CGFloat = 10;
         let font:UIFont = UIFont.boldSystemFont(ofSize: fontSize);
         let attributes = [NSAttributedString.Key.font: font];

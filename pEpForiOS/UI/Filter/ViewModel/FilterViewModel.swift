@@ -211,7 +211,7 @@ extension FilterViewModel {
             case .flagg:
                 return false
             case .unread:
-                return true
+                return false
             case .attachments:
                 return false
             }
