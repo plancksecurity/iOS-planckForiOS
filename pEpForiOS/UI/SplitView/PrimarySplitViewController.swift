@@ -19,8 +19,8 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
                              collapseSecondary secondaryViewController:UIViewController,
                              onto primaryViewController:UIViewController) -> Bool {
         guard let navigationController = secondaryViewController as? UINavigationController,
-            navigationController.rootViewController is EmailViewController ||
-                navigationController.rootViewController is ThreadViewController
+            navigationController.rootViewController is EmailViewController /*||
+                navigationController.rootViewController is ThreadViewController*/// Message threadding is currently umsupported. The code might be helpful. 
             else {
                 return true
         }
@@ -36,8 +36,8 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
                     splitViewController.viewControllers.first as? UINavigationController,
                 let secondaryNavigationController =
                     navigationController.topViewController as? UINavigationController,
-                secondaryNavigationController.topViewController is EmailViewController ||
-                    secondaryNavigationController.topViewController is ThreadViewController
+                secondaryNavigationController.topViewController is EmailViewController /*||
+                    secondaryNavigationController.topViewController is ThreadViewController*/ // Message threadding is currently umsupported. The code might be helpful.
                 else {
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let vc = storyboard.instantiateViewController(withIdentifier: "noMessagesViewController")
