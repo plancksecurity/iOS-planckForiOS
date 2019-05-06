@@ -37,7 +37,7 @@ class AttachmentToLocalURLOperation: Operation {
         
         var theURL = tmpDir.appendingPathComponent(fileName)
 
-        if attachment.mimeType == "application/pdf" {
+        if attachment.mimeType == MimeTypeUtil.MimesType.pdf {
             theURL = theURL.appendingPathExtension("pdf")
         }
         do {

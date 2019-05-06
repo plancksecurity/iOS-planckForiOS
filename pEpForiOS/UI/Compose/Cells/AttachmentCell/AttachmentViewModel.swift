@@ -15,6 +15,7 @@ class AttachmentViewModel: CellViewModel {
     public var fileName: String {
         return attachment.fileName ?? AttachmentViewModel.defaultFileName
     }
+
     public var fileExtension: String {
         return mimeTypeUtil?.fileExtension(mimeType: attachment.mimeType) ?? ""
     }

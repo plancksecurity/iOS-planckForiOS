@@ -14,10 +14,12 @@ import PEPObjCAdapterFramework
 
 extension PEPMessage {
     public func isLikelyPEPEncrypted() -> Bool {
-        let theAttachments = attachments ?? []
-        return theAttachments.count == 2 &&
-            theAttachments[0].mimeType == "application/pgp-encrypted" &&
-            theAttachments[1].mimeType == "application/octet-stream" &&
-            theAttachments[1].filename == "file://msg.asc"
+        guard let attachments = attachments else {
+            return false
+        }
+        return attachments.count == 2 &&
+            attachments[0].mimeType == MimeTypeUtil.MimesType.pgpEncrypted &&
+            attachments[1].mimeType == MimeTypeUtil.MimesType.defaultMimeType &&
+            attachments[1].filename == "file://msg.asc"
     }
 }
