@@ -80,7 +80,7 @@ class LoginViewController: BaseViewController {
     /**
      The last account input as determined by LAS, and delivered via didVerify.
      */
-    var lastAccountInput: VerifiableAccountProtocol?
+    //var lastAccountInput: VerifiableAccountProtocol?
 
     override var prefersStatusBarHidden: Bool {
         return true
@@ -291,11 +291,7 @@ extension LoginViewController: SegueHandlerType {
                 let vc = navVC.topViewController as? UserInfoTableViewController {
                 vc.appConfig = appConfig
 
-                if let accountInput = lastAccountInput {
-                    vc.model = accountInput // give the user some prefilled data in manual mode
-                }
-
-                // Overwrite with more recent data that we might have (in case it was changed)
+                // Give the next model what we know.
                 vc.model.address = emailAddress.text
                 vc.model.password = password.text
                 vc.model.userName = user.text
@@ -316,19 +312,15 @@ extension LoginViewController: AccountVerificationResultDelegate {
                 Logger.frontendLogger.lostMySelf()
                 return
             }
-            me.lastAccountInput = nil
             switch result {
             case .ok:
                 me.delegate?.loginViewControllerDidCreateNewAccount(me)
                 me.navigationController?.dismiss(animated: true)
             case .imapError(let err):
-                me.lastAccountInput = accountInput
                 me.handleLoginError(error: err, offerManualSetup: true)
             case .smtpError(let err):
-                me.lastAccountInput = accountInput
                 me.handleLoginError(error: err, offerManualSetup: true)
             case .noImapConnectData, .noSmtpConnectData:
-                me.lastAccountInput = accountInput
                 me.handleLoginError(error: LoginViewController.LoginError.noConnectData,
                                     offerManualSetup: true)
             }
