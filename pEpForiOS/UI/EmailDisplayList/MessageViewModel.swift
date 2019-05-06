@@ -386,8 +386,10 @@ extension MessageViewModel {
         return getBodyPeekOperation
     }
 
-    private func getSecurityBadgeOperation(
-        completion: @escaping (UIImage?) -> ()) -> SelfReferencingOperation {
+    private func getSecurityBadgeOperation(completion: @escaping (UIImage?) -> ())
+        -> SelfReferencingOperation {
+        let msg = message()
+
         let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
             guard let me = self else {
                 return
@@ -395,7 +397,7 @@ extension MessageViewModel {
             let session = Session()
             session.performAndWait {
                 guard
-                    let safeMsg = me.message()?.safeForSession(session),
+                    let safeMsg = msg?.safeForSession(session),
                     let operation = operation,
                     !operation.isCancelled
                     else {
