@@ -71,7 +71,9 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
         hasAttachment = viewModel.showAttchmentIcon
         dateLabel.text = viewModel.dateText
 
-        configureThreadIndicator(for: viewModel)
+        // Message threading is not supported. Let's keep it for now. It might be helpful for
+        // reimplementing.
+//        configureThreadIndicator(for: viewModel)
 
         if viewModel.senderContactImage != nil {
             setContactImage(image: viewModel.senderContactImage)
@@ -159,17 +161,19 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
         }
     }
 
-    private func configureThreadIndicator(for viewModel: MessageViewModel) {
-        guard let _ = messageCountLabel,
-            let _ = threadIndicator else {
-                messageCount = 0
-                return
-        }
-        viewModel.messageCount { (messageCount) in
-            self.messageCount = messageCount
-        }
-
-    }
+    // Message threading is not supported. Let's keep it for now. It might be helpful for
+    // reimplementing.
+//    private func configureThreadIndicator(for viewModel: MessageViewModel) {
+//        guard let _ = messageCountLabel,
+//            let _ = threadIndicator else {
+//                messageCount = 0
+//                return
+//        }
+//        viewModel.messageCount { (messageCount) in
+//            self.messageCount = messageCount
+//        }
+//
+//    }
 
     private func setPepRatingImage(image: UIImage?) {
         self.ratingImage.image = image
