@@ -25,7 +25,7 @@ class LoginViewModel {
 
     /// Holding both the data of the current account in verification,
     /// and also the implementation of the verification.
-    var verificationService: VerifiableAccountProtocol?
+    var verifiableAccount: VerifiableAccountProtocol?
 
     /** If the last login attempt was via OAuth2, this will collect temporary parameters */
     private var lastOAuth2Parameters: OAuth2Parameters?
@@ -52,8 +52,8 @@ class LoginViewModel {
 
     let qualifyServerService = QualifyServerIsLocalService()
 
-    init(verificationService: VerifiableAccountProtocol? = nil) {
-        self.verificationService = verificationService
+    init(verifiableAccount: VerifiableAccountProtocol? = nil) {
+        self.verifiableAccount = verifiableAccount
     }
 
     func isThereAnAccount() -> Bool {
@@ -116,7 +116,7 @@ class LoginViewModel {
             let smtpTransport = ConnectionTransport(
                 accountSettingsTransport: outgoingServer.transport, smtpPort: outgoingServer.port)
 
-            var newAccount = verificationService ?? VerifiableAccount()
+            var newAccount = verifiableAccount ?? VerifiableAccount()
 
             newAccount.verifiableAccountDelegate = self
             newAccount.address = accountName
@@ -137,7 +137,7 @@ class LoginViewModel {
             newAccount.transportSMTP = smtpTransport
             newAccount.trustedImapServer = false
 
-            verificationService = newAccount
+            verifiableAccount = newAccount
             verifyAccount(model: newAccount)
         }
     }
@@ -147,7 +147,7 @@ class LoginViewModel {
     /// - Parameter model: account data
     /// - Throws: AccountVerificationError
     func verifyAccount(model: VerifiableAccountProtocol?) {
-        if let imapServer = verificationService?.serverIMAP {
+        if let imapServer = verifiableAccount?.serverIMAP {
             qualifyServerService.delegate = self
             qualifyServerService.qualify(serverName: imapServer)
         } else {
@@ -156,7 +156,7 @@ class LoginViewModel {
     }
 
     func accountHasBeenQualified(trusted: Bool) {
-        guard var theVerificationService = verificationService else {
+        guard var theVerificationService = verifiableAccount else {
             Logger.frontendLogger.errorAndCrash("no VerificationService")
             return
         }
@@ -223,7 +223,7 @@ extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
 
 extension LoginViewModel: VerifiableAccountDelegate {
     func informAccountVerificationResultDelegate(error: Error?) {
-        guard let theService = verificationService else {
+        guard let theService = verifiableAccount else {
             Logger.frontendLogger.error(
                 "Lost the verificationService, was about to inform the delegate")
             if let err = error {
@@ -252,7 +252,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
         switch result {
         case .success(()):
             do {
-                try verificationService?.save()
+                try verifiableAccount?.save()
                 informAccountVerificationResultDelegate(error: nil)
                 mySelfer?.startMySelf()
             } catch {
