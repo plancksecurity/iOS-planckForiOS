@@ -159,7 +159,7 @@ class NewAccountSetupUITest: XCTestCase {
 
         tf = tablesQuery.cells.secureTextFields["password"]
         tf.tap()
-        typeTextIfEmpty(textField: tf, text: account.password)
+        tf.typeText(account.password)
 
         theApp.navigationBars.buttons["Next"].tap()
 
