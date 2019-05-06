@@ -12,7 +12,7 @@ import XCTest
 import pEpIOSToolbox
 import MessageModel
 
-class URL_MIME: XCTestCase {
+class URL_MimeTest: XCTestCase {
     let pathBuilder = "file://ma/path/to/nice_pic"
     let mimeUtil = MimeTypeUtil()
 
