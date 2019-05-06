@@ -1040,8 +1040,8 @@ extension EmailListViewController: SegueHandlerType {
             vc.appConfig = appConfig
             vc.message = message
             //vc.folderShow = model?.getFolderToShow()
-            vc.messageId = indexPath.row //that looks wrong
-            vc.delegate = model as! EmailDisplayDelegate
+            vc.messageId = indexPath.row //!!!: that looks wrong
+            vc.delegate = model
             model?.currentDisplayedMessage = vc
             model?.indexPathShown = indexPath
       //  case .segueShowThreadedEmail:
