@@ -47,7 +47,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     public var portSMTP: UInt16 = 587
     public var transportSMTP = ConnectionTransport.startTLS
 
-    public var trustedImapServer: Bool
+    public var isAutomaticallyTrustedImapServer: Bool
+    public var isManuallyTrustedImapServer: Bool
 
     public init(verifiableAccountDelegate: VerifiableAccountDelegate?,
                 address: String?,
@@ -62,7 +63,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                 serverSMTP: String?,
                 portSMTP: UInt16,
                 transportSMTP: ConnectionTransport,
-                trustedImapServer: Bool) {
+                automaticallyTrustedImapServer: Bool,
+                manuallyTrustedImapServer: Bool) {
         self.verifiableAccountDelegate = verifiableAccountDelegate
         self.address = address
         self.userName = userName
@@ -76,7 +78,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         self.serverSMTP = serverSMTP
         self.portSMTP = portSMTP
         self.transportSMTP = transportSMTP
-        self.trustedImapServer = trustedImapServer
+        self.isAutomaticallyTrustedImapServer = automaticallyTrustedImapServer
+        self.isManuallyTrustedImapServer = manuallyTrustedImapServer
     }
 
     public convenience init() {
@@ -93,7 +96,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                   serverSMTP: nil,
                   portSMTP: 587,
                   transportSMTP: ConnectionTransport.startTLS,
-                  trustedImapServer: false)
+                  automaticallyTrustedImapServer: false,
+                  manuallyTrustedImapServer: false)
     }
 
     // MARK: - Internal
@@ -191,8 +195,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                                           port: portIMAP,
                                           serverType: .imap,
                                           authMethod: authMethod,
-                                          automaticallyTrusted: trustedImapServer,
-                                          manuallyTrusted: false,
+                                          automaticallyTrusted: isAutomaticallyTrustedImapServer,
+                                          manuallyTrusted: isManuallyTrustedImapServer,
                                           transport: transportIMAP)
 
             let smtpServer = createServer(context: moc,

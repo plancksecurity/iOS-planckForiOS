@@ -46,7 +46,8 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         var serverSMTP: String?
         var portSMTP: UInt16 = 587
         var transportSMTP: ConnectionTransport = .startTLS
-        var trustedImapServer: Bool = false
+        var isAutomaticallyTrustedImapServer = false
+        var isManuallyTrustedImapServer = false
         var verifiableAccountDelegate: VerifiableAccountDelegate?
 
         func verify() throws {
