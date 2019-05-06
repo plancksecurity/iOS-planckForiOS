@@ -292,29 +292,15 @@ class EmailListViewModel {
     }
     
     func markRead(forIndexPath indexPath: IndexPath) {
-        updatesEnabled = false
-        let message = messageQueryResults[indexPath.row]
-        DispatchQueue.main.async { [] in
-            message.imapFlags.seen = true
-            message.save()
-        }
+        setSeenValue(forIndexPath: indexPath, newValue: true)
     }
 
     func markUnread(forIndexPath indexPath: IndexPath) {
-        updatesEnabled = false
-        let message = messageQueryResults[indexPath.row]
-        DispatchQueue.main.async { [] in
-            message.imapFlags.seen = false
-            message.save()
-        }
+        setSeenValue(forIndexPath: indexPath, newValue: false)
     }
 
     func delete(forIndexPath indexPath: IndexPath) {
-        guard let deletedMessage = deleteMessage(at: indexPath) else {
-            Logger.frontendLogger.errorAndCrash(
-                "Not sure if this is a valid case. Remove this log if so.")
-            return
-        }
+        let _ = deleteMessage(at: indexPath)
     }
 
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
@@ -362,7 +348,7 @@ class EmailListViewModel {
         if folderIsDraftOrOutbox(parentFolder) {
             return nil
         } else {
-            let flagged = messageQueryResults[index].imapFlags.flagged ?? false
+            let flagged = messageQueryResults[index].imapFlags.flagged
             return flagged ? .unflag : .flag
         }
     }
@@ -493,7 +479,13 @@ extension EmailListViewModel {
         message.save()
     }
 
-    private func deleteMessage(at indexPath: IndexPath) -> Message? {
+    private func setSeenValue(forIndexPath indexPath: IndexPath, newValue seen: Bool) {
+        let message = messageQueryResults[indexPath.row]
+        message.imapFlags.seen = seen
+        message.save()
+    }
+
+    @discardableResult private func deleteMessage(at indexPath: IndexPath) -> Message? {
         let message = messageQueryResults[indexPath.row]
         delete(message: message)
         return message
