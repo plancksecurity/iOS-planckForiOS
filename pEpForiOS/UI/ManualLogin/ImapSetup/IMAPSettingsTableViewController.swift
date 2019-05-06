@@ -32,7 +32,7 @@ class IMAPSettingsTableViewController: BaseTableViewController, TextfieldRespond
 
     let viewWidthAligner = ViewWidthsAligner()
 
-    var model: VerifiableAccountProtocol!
+    var model: VerifiableAccountProtocol?
     var fields = [UITextField]()
     var responder = 0
 
@@ -59,13 +59,15 @@ class IMAPSettingsTableViewController: BaseTableViewController, TextfieldRespond
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        firstResponder(model.serverIMAP == nil)
+        firstResponder(model?.serverIMAP == nil)
     }
 
     private func updateView() {
-        serverValue.text = model.serverIMAP
-        portValue.text = String(model.portIMAP)
-        transportSecurity.setTitle(model.transportIMAP.localizedString(), for: UIControl.State())
+        serverValue.text = model?.serverIMAP
+        if let thePort = model?.portIMAP {
+            portValue.text = String(thePort)
+        }
+        transportSecurity.setTitle(model?.transportIMAP.localizedString(), for: UIControl.State())
     }
 
     @IBAction func alertWithSecurityValues(_ sender: UIButton) {
@@ -76,7 +78,7 @@ class IMAPSettingsTableViewController: BaseTableViewController, TextfieldRespond
                                        comment: "UI alert message for transport protocol"),
             preferredStyle: .actionSheet)
         let block: (ConnectionTransport) -> () = { transport in
-            self.model.transportIMAP = transport
+            self.model?.transportIMAP = transport
             self.updateView()
         }
 
@@ -98,13 +100,13 @@ class IMAPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     @IBAction func changePort(_ sender: UITextField) {
         if let text = portValue.text {
             if let port = UInt16(text) {
-                model.portIMAP = port
+                model?.portIMAP = port
             }
         }
     }
 
     @IBAction func changeServer(_ sender: UITextField) {
-        model.serverIMAP = serverValue.text!
+        model?.serverIMAP = serverValue.text
     }
 
     public func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
