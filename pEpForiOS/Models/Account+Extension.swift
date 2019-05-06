@@ -15,7 +15,7 @@ extension Account {
     ///
     /// - Returns: default account
     static public func defaultAccount() -> Account? {
-        guard let addressDefaultAccount = NetworkServiceConfig.defaultAccountGetter.defaultAccount
+        guard let addressDefaultAccount = AppSettings.defaultAccount
             else {
                 return all().first
         }

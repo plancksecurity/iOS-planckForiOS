@@ -664,9 +664,21 @@ extension EmailListViewModel {
     }
 
     func composeViewModelForNewMessage() -> ComposeViewModel {
-        let user = folderToShow.account.user
+        // Determine the sender.
+        var someUser: Identity? = nil
+        // TODO: This is bad code (especially the use of `is`), and should be rewritten
+        // as soon as the UI has the improved folder concept.
+        if folderToShow is UnifiedInbox {
+            // A `UnifiedInbox` has no account, and will fake the result,
+            // therefore make a better choice.
+            someUser = Account.defaultAccount()?.user
+        } else {
+            // A folder that is not 'unified' or 'virtual' should know its account.
+            someUser = folderToShow.account.user
+        }
+
         let composeVM = ComposeViewModel(resultDelegate: self,
-                                         prefilledFrom: user)
+                                         prefilledFrom: someUser)
         return composeVM
     }
 }
