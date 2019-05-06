@@ -86,10 +86,18 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        let account = SecretUITestData.manualAccount
+        var account = SecretUITestData.workingAccount1
+
+        // Wrong password should prevent the automatic login
+        let correctPassword = account.password
+        account.password += "ShouldNotWork"
+
         newAccountSetup(account: account)
 
         switchToManualConfig()
+
+        // Use correct password for the manual setup
+        account.password = correctPassword
 
         manualNewAccountSetup(account)
 
