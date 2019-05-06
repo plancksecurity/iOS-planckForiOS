@@ -163,7 +163,7 @@ public class AccountSettingsViewModel {
         do {
             try theVerifier.verify()
         } catch {
-            delegate?.didVerify(result: .noImapConnectData, accountInput: theVerifier)
+            delegate?.didVerify(result: .noImapConnectData)
         }
     }
 
@@ -218,7 +218,7 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
         case .success(()):
             do {
                 try verifiableAccount?.save()
-                delegate?.didVerify(result: .ok, accountInput: verifiableAccount)
+                delegate?.didVerify(result: .ok)
             } catch {
                 Logger.frontendLogger.log(error: error)
                 Logger.frontendLogger.errorAndCrash("Unexpected error on saving the account")
@@ -226,10 +226,10 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
         case .failure(let error):
             if let imapError = error as? ImapSyncError {
                 delegate?.didVerify(
-                    result: .imapError(imapError), accountInput: verifiableAccount)
+                    result: .imapError(imapError))
             } else if let smtpError = error as? SmtpSendError {
                 delegate?.didVerify(
-                    result: .smtpError(smtpError), accountInput: verifiableAccount)
+                    result: .smtpError(smtpError))
             } else {
                 Logger.frontendLogger.log(error: error)
                 Logger.frontendLogger.errorAndCrash("Unexpected error")

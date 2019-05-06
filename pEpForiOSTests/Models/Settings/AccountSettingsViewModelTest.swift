@@ -146,7 +146,7 @@ class AccountVerificationResultDelegateMock: AccountVerificationResultDelegate {
     var expectationDidVerifyCalled: XCTestExpectation?
     var error: Error? = nil
 
-    func didVerify(result: AccountVerificationResult, accountInput: VerifiableAccountProtocol?) {
+    func didVerify(result: AccountVerificationResult) {
         switch result {
         case .ok:
             self.error = nil

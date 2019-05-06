@@ -305,8 +305,7 @@ extension LoginViewController: SegueHandlerType {
 // MARK: - AccountVerificationResultDelegate
 
 extension LoginViewController: AccountVerificationResultDelegate {
-    func didVerify(result: AccountVerificationResult,
-                   accountInput: VerifiableAccountProtocol?) {
+    func didVerify(result: AccountVerificationResult) {
         GCD.onMain() { [weak self] in
             guard let me = self else {
                 Logger.frontendLogger.lostMySelf()
