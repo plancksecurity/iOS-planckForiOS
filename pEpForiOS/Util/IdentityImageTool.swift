@@ -72,6 +72,10 @@ class IdentityImageTool {
         return IdentityImageTool.imageCache[key]
     }
 
+    func cachedIdentityImage(for key: IdentityKey) -> UIImage? {
+        return IdentityImageTool.imageCache[key]
+    }
+
     /// Creates (and caches) the contact image to display for an identity.
     /// This is a possibly time consuming process and shold not be called from the main thread.
     ///
