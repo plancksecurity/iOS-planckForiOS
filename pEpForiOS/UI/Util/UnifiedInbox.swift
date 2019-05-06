@@ -21,10 +21,6 @@ public class UnifiedInbox: VirtualFolderProtocol {
         }
     }
 
-    public var selectable: Bool {
-        return true
-    }
-
     public var title: String {
         get {
             return Folder.localizedName(realName: name)

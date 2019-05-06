@@ -36,15 +36,7 @@ public class FolderCellViewModel {
     }
 
     public var isSelectable: Bool {
-        if let f = folder as? Folder {
-            if f.isLocalFolder {
-                return true
-            }
-            return f.selectable
-        } else if folder is VirtualFolderProtocol{
-            return true
-        }
-        return false
+        return folder.isSelectable
     }
 
     public init(folder: DisplayableFolderProtocol, level: Int) {
