@@ -104,6 +104,27 @@ class NewAccountSetupUITest: XCTestCase {
         waitForever()
     }
 
+    func testNewAccountSetupManualThatFails() {
+        let theApp = app()
+
+        theApp.launch()
+
+        dismissInitialSystemAlerts()
+
+        var account = SecretUITestData.workingAccount1
+
+        // Make sure this account will fails, both in auto and manual modes
+        account.password += "ShouldNotWork"
+
+        newAccountSetup(account: account)
+
+        switchToManualConfig()
+
+        manualNewAccountSetup(account)
+
+        waitForever()
+    }
+
     func testTriggerGmailOauth2() {
         app().launch()
 
