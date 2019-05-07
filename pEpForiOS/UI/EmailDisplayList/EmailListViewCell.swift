@@ -84,7 +84,9 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
         }
 
         viewModel.getSecurityBadge { [weak self] image in
-            self?.setPepRatingImage(image: image)
+            DispatchQueue.main.async {
+                self?.setPepRatingImage(image: image)
+            }
         }
     }
 
@@ -176,8 +178,10 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 //    }
 
     private func setPepRatingImage(image: UIImage?) {
-        self.ratingImage.image = image
-        self.ratingImage.isHidden = (image == nil)
+        if ratingImage.image != image {
+            self.ratingImage.image = image
+            self.ratingImage.isHidden = (image == nil)
+        }
     }
 
     private func setContactImage(image: UIImage?) {
