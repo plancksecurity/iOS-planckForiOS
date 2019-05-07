@@ -245,7 +245,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
                 password = nil
             }
 
-            showSpinner()
+            showSpinnerAndDisableUI()
             viewModel?.update(loginName: validated.loginName, name: validated.accountName,
                               password: password, imap: imap, smtp: smtp)
 
@@ -307,7 +307,7 @@ extension AccountSettingsTableViewController {
 extension AccountSettingsTableViewController: AccountVerificationResultDelegate {
     func didVerify(result: AccountVerificationResult) {
         GCD.onMain() {
-            self.hideSpinner()
+            self.hideSpinnerAndEnableUI()
             switch result {
             case .ok:
                 self.navigationController?.popViewController(animated: true)
@@ -345,7 +345,9 @@ extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
 // MARK: - SPINNER
 
 extension AccountSettingsTableViewController {
-    private func showSpinner() {
+    /// Shows the spinner and disables UI parts that could lead to
+    /// reentrant verifications.
+    private func showSpinnerAndDisableUI() {
         spinner.center =
             CGPoint(x: tableView.frame.width / 2,
                     y:
@@ -356,7 +358,8 @@ extension AccountSettingsTableViewController {
         spinner.startAnimating()
     }
 
-    private func hideSpinner() {
+    /// Hides the spinner and enables all UI elements again.
+    private func hideSpinnerAndEnableUI() {
         tableView.isUserInteractionEnabled = true
         spinner.stopAnimating()
     }
