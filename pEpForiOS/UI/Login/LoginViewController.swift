@@ -77,18 +77,12 @@ class LoginViewController: BaseViewController {
         }
     }
 
-    /**
-     The last account input as determined by LAS, and delivered via didVerify.
-     */
-    //var lastAccountInput: VerifiableAccountProtocol?
-
     override var prefersStatusBarHidden: Bool {
         return true
     }
 
     override func didSetAppConfig() {
         super.didSetAppConfig()
-        loginViewModel.verifiableAccount = VerifiableAccount()
     }
 
     override func viewDidLoad() {
