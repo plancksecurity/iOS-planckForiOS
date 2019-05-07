@@ -114,7 +114,7 @@ class StringHTMLExtensionTests: XCTestCase {
         let alt1 = "Attached Image 1 (jpg)"
 
         let theData = "Not an image".data(using: .utf8)
-        let theMimeType = MimeTypeUtil.jpegMimeType
+        let theMimeType = MimeTypeUtil.MimesType.jpeg
         let attachment = Attachment.create(
             data: theData, mimeType: theMimeType, fileName: "cid:\(cid1)",
             size: theData?.count)
