@@ -1,42 +1,167 @@
 //!!!: is WIP (IOS-1495), ignore failing tests for now.
 
-////
-////  EmailListViewModelTest.swift
-////  pEpForiOSTests
-////
-////  Created by Xavier Algarra on 22/08/2018.
-////  Copyright © 2018 p≡p Security S.A. All rights reserved.
-////
 //
+//  EmailListViewModelTest.swift
+//  pEpForiOSTests
 //
-//import XCTest
-//@testable import pEpForiOS
-//@testable import MessageModel
-//
-//class EmailListViewModelTest: CoreDataDrivenTestBase {
-//    var folder: Folder!
-//    var trashFolder: Folder!
-//    var emailListVM : EmailListViewModel!
-//    var masterViewController: TestMasterViewController!
-//
-//    /** this set up a view model with one account and one folder saved **/
-//    override func setUp() {
-//        super.setUp()
-//
-//        let acc = cdAccount.account()
-//
-//        folder = Folder(name: "inbox", parent: nil, account: acc, folderType: .inbox)
-//        folder.save()
-//        trashFolder = Folder(name: "trash",
-//                             parent: nil,
-//                             account: folder.account,
-//                             folderType: .trash)
-//        trashFolder.save()
-//    }
-//
-//    // MARK: - Test section
-//
-//    func testViewModelSetUp() {
+//  Created by Xavier Algarra on 22/08/2018.
+//  Copyright © 2018 p≡p Security S.A. All rights reserved.
+
+import XCTest
+@testable import pEpForiOS
+@testable import MessageModel
+
+class EmailListViewModelTest: CoreDataDrivenTestBase {
+    var folder: Folder!
+    var trashFolder: Folder!
+    var emailListVM : EmailListViewModel!
+    var masterViewController: TestMasterViewController!
+
+    /** this set up a view model with one account and one folder saved **/
+    override func setUp() {
+        super.setUp()
+
+        let acc = cdAccount.account()
+
+        folder = Folder(name: "inbox", parent: nil, account: acc, folderType: .inbox)
+        folder.save()
+        trashFolder = Folder(name: "trash",
+                             parent: nil,
+                             account: folder.account,
+                             folderType: .trash)
+        trashFolder.save()
+    }
+
+    // MARK: - Test section
+
+    func testViewModelSetUp() {
+        setupViewModel()
+        emailListVM.startMonitoring()
+    }
+
+    func testCleanInitialSetup() {
+        setupViewModel()
+        emailListVM.startMonitoring()
+        XCTAssertEqual(emailListVM.rowCount, 0)
+    }
+
+    func test10MessagesInInitialSetup() {
+         TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder, setUids: true)
+        setupViewModel()
+        emailListVM.startMonitoring()
+        XCTAssertEqual(emailListVM.rowCount, 10)
+    }
+
+    func testGetFolderName() {
+        setupViewModel()
+        XCTAssertEqual(Folder.localizedName(realName: self.folder.realName), emailListVM.folderName)
+    }
+
+    func testGetDestructiveAction() {
+        TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: folder)
+        setupViewModel()
+        emailListVM.startMonitoring()
+        let destructiveAction = emailListVM.getDestructiveActtion(forMessageAt: 0)
+
+        XCTAssertEqual(destructiveAction, .trash)
+    }
+
+    func testGetDestructiveActionInOutgoingFolderIsTrash() {
+        _ = givenThereIsAMessageIn(folderType: .outbox)
+        setupViewModel()
+        emailListVM.startMonitoring()
+        let destructiveAction = emailListVM.getDestructiveActtion(forMessageAt: 0)
+
+        XCTAssertEqual(destructiveAction, .trash)
+    }
+
+    func testShouldShowToolbarEditButtonsIfItsNotOutboxFolder() {
+        setupViewModel()
+        emailListVM.startMonitoring()
+        var showToolbarButtons = emailListVM.shouldShowToolbarEditButtons()
+        XCTAssertTrue(showToolbarButtons)
+
+        givenThereIsA(folderType: .outbox)
+        setupViewModel()
+        emailListVM.startMonitoring()
+        showToolbarButtons = emailListVM.shouldShowToolbarEditButtons()
+        XCTAssertFalse(showToolbarButtons)
+    }
+
+    /*func testUnreadFilterActive() {
+        setupViewModel()
+
+        var unreadActive = emailListVM.unreadFilterEnabled()
+
+        XCTAssertFalse(unreadActive)
+
+        setupViewModel()
+        emailListVM.startMonitoring()
+
+        let filter = CompositeFilter<FilterBase>()
+        filter.add(filter: UnreadFilter())
+        emailListVM.filterChanged(newFilter: filter)
+        setUpViewModelExpectations(expectedUpdateView: true)
+        emailListVM.isFilterEnabled = true
+
+        waitForExpectations(timeout: TestUtil.waitTime)
+        unreadActive = emailListVM.unreadFilterEnabled()
+
+        XCTAssertTrue(unreadActive)
+
+    }*/
+
+    func testGetFlagAndMoreAction() {
+        let messages = TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: folder)
+        setupViewModel()
+        emailListVM.startMonitoring()
+        var flagAction = emailListVM.getFlagAction(forMessageAt: 0)
+        let moreAction = emailListVM.getMoreAction(forMessageAt: 0)
+
+        XCTAssertEqual(flagAction, .flag)
+        XCTAssertEqual(moreAction, .more)
+
+        messages[0].imapFlags?.flagged = true
+        messages[0].save()
+
+        flagAction = emailListVM.getFlagAction(forMessageAt: 0)
+
+        XCTAssertEqual(flagAction, .unflag)
+    }
+
+    func testGetFlagAndMoreActionInOutgoingFolderIsNil() {
+        givenThereIsAMessageIn(folderType: .outbox)
+        setupViewModel()
+        emailListVM.startMonitoring()
+
+        let flagAction = emailListVM.getFlagAction(forMessageAt: 0)
+        let moreAction = emailListVM.getMoreAction(forMessageAt: 0)
+
+        XCTAssertEqual(flagAction, nil)
+        XCTAssertEqual(moreAction, nil)
+    }
+
+    func testGetFlagAndMoreActionInDraftFolderIsNil() {
+        givenThereIsAMessageIn(folderType: .drafts)
+        setupViewModel()
+        emailListVM.startMonitoring()
+        let flagAction = emailListVM.getFlagAction(forMessageAt: 0)
+        let moreAction = emailListVM.getMoreAction(forMessageAt: 0)
+
+        XCTAssertEqual(flagAction, nil)
+        XCTAssertEqual(moreAction, nil)
+    }
+
+    func testAccountExists() {
+        setupViewModel()
+        emailListVM.startMonitoring()
+        var noAccounts = emailListVM.showLoginView
+
+        XCTAssertFalse(noAccounts)
+
+        cdAccount.delete()
+        setupViewModel()
+        //emailListVM.startMonitoring()
 //        setupViewModel()
 //        emailListVM.startMonitoring()
 //    }
