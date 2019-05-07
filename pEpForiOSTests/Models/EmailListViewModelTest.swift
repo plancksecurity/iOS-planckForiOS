@@ -161,7 +161,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
         cdAccount.delete()
         setupViewModel()
-        emailListVM.startMonitoring()
+        //emailListVM.startMonitoring()
         noAccounts = emailListVM.showLoginView
 
         XCTAssertTrue(noAccounts)
