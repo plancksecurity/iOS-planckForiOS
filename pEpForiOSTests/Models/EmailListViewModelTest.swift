@@ -88,28 +88,18 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertFalse(showToolbarButtons)
     }
 
-    /*func testUnreadFilterActive() {
+    func testDefaultFilterActiveIsUnread() {
         setupViewModel()
 
         var unreadActive = emailListVM.unreadFilterEnabled()
-
         XCTAssertFalse(unreadActive)
 
-        setupViewModel()
-        emailListVM.startMonitoring()
-
-        let filter = CompositeFilter<FilterBase>()
-        filter.add(filter: UnreadFilter())
-        emailListVM.filterChanged(newFilter: filter)
-        setUpViewModelExpectations(expectedUpdateView: true)
         emailListVM.isFilterEnabled = true
 
-        waitForExpectations(timeout: TestUtil.waitTime)
         unreadActive = emailListVM.unreadFilterEnabled()
-
         XCTAssertTrue(unreadActive)
 
-    }*/
+    }
 
     func testGetFlagAndMoreAction() {
         let messages = TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: folder)
