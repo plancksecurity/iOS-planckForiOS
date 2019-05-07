@@ -19,7 +19,7 @@ public protocol VirtualFolderProtocol: DisplayableFolderProtocol {
 public extension VirtualFolderProtocol {
     var isSelectable: Bool {
         get {
-            return false
+            return true
         }
     }
 }
