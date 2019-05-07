@@ -27,6 +27,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
+
     private let spinner: UIActivityIndicatorView = {
         let createe = UIActivityIndicatorView()
         createe.hidesWhenStopped = true
@@ -48,6 +49,10 @@ UIPickerViewDataSource, UITextFieldDelegate {
      should trigger the reauthorization.
      */
     var oauth2ReauthIndexPath: IndexPath?
+
+    /// The last button item that triggered a verification.
+    /// One of the UI elements that should get disabled during verification.
+    var doneButton: UIBarButtonItem? = nil
     
      override func viewDidLoad() {
         super.viewDidLoad()
@@ -245,7 +250,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
                 password = nil
             }
 
-            showSpinnerAndDisableUI()
+            showSpinnerAndDisableUI(sender: sender)
             viewModel?.update(loginName: validated.loginName, name: validated.accountName,
                               password: password, imap: imap, smtp: smtp)
 
@@ -346,8 +351,11 @@ extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
 
 extension AccountSettingsTableViewController {
     /// Shows the spinner and disables UI parts that could lead to
-    /// reentrant verifications.
-    private func showSpinnerAndDisableUI() {
+    /// launching another verification while one is already in process.
+    private func showSpinnerAndDisableUI(sender: UIBarButtonItem) {
+        doneButton = sender
+        sender.isEnabled = false
+
         spinner.center =
             CGPoint(x: tableView.frame.width / 2,
                     y:
@@ -360,6 +368,7 @@ extension AccountSettingsTableViewController {
 
     /// Hides the spinner and enables all UI elements again.
     private func hideSpinnerAndEnableUI() {
+        doneButton?.isEnabled = true
         tableView.isUserInteractionEnabled = true
         spinner.stopAnimating()
     }
