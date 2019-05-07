@@ -1,86 +1,3 @@
-//!!!: 'NSInvalidArgumentException', reason: 'Illegal attempt to establish a relationship 'message' between objects in different contexts
-/*CoreData: warning:       'CdImapFlags' (0x60f000277120) from NSManagedObjectModel (0x6070007c65c0) claims 'CdImapFlags'.
-2019-04-04 20:39:02.797769+0200 pEp[68212:2049767] *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'Illegal attempt to establish a relationship 'message' between objects in different contexts (source = <CdImapFields: 0x6070007cd080> (entity: CdImapFields; id: 0x60300083ff80 <x-coredata:///CdImapFields/t0D5C349D-D99B-4995-8345-B6EC2B45C9051475> ; data: {
-contentType = nil;
-localFlags = "0x6030007c2b20 <x-coredata:///CdImapFlags/t0D5C349D-D99B-4995-8345-B6EC2B45C9051476>";
-message = nil;
-messageNumber = 0;
-mimeBoundary = nil;
-serverFlags = "0x6030007d1220 <x-coredata:///CdImapFlags/t0D5C349D-D99B-4995-8345-B6EC2B45C9051477>";
-}) , destination = <CdMessage: 0x60700062e090> (entity: CdMessage; id: 0x603000720610 <x-coredata://18D9E440-E589-4E84-82E9-C828D250E78F/CdMessage/p96> ; data: {
-attachments =     (
-"0x6030007bdf60 <x-coredata://18D9E440-E589-4E84-82E9-C828D250E78F/CdAttachment/p100>"
-);
-bcc =     (
-);
-cc =     (
-);
-comments = nil;
-from = "0x6030005cfb30 <x-coredata://18D9E440-E589-4E84-82E9-C828D250E78F/CdIdentity/p97>";
-imap = nil;
-keysFromDecryption = "<relationship fault: 0x606000cff2c0 'keysFromDecryption'>";
-keywords = "<relationship fault: 0x603000712e70 'keywords'>";
-longMessage = "Long message 2";
-longMessageFormatted = "<h1>Long HTML 2</h1>";
-optionalFields =     (
-);
-pEpProtected = 1;
-pEpRating = "-32768";
-parent = "0x6030007eb470 <x-coredata://18D9E440-E589-4E84-82E9-C828D250E78F/CdFolder/p12>";
-received = nil;
-receivedBy = nil;
-references =     (
-);
-replyTo =     (
-);
-sent = "2019-04-04 18:39:00 +0000";
-shortMessage = "Some subject 2";
-targetFolder = nil;
-to =     (
-"0x603000732c10 <x-coredata://18D9E440-E589-4E84-82E9-C828D250E78F/CdIdentity/p98>"
-);
-uid = 0;
-underAttack = 0;
-uuid = "1F5BC02D.B7CA.43F6.9ABD.1E2D98F0BE33@pretty.Easy.privacy";
-}))'
-*** First throw call stack:
-(
-0   CoreFoundation                      0x000000010f8126fb __exceptionPreprocess + 331
-1   libobjc.A.dylib                     0x000000010e222ac5 objc_exception_throw + 48
-2   CoreData                            0x000000010f1d63a1 _PFManagedObject_coerceValueForKeyWithDescription + 2481
-3   CoreData                            0x000000010f1b2e15 _sharedIMPL_setvfk_core + 229
-4   MessageModel                        0x000000010ba75cf3 $s12MessageModel02CdA0C10imapFields7contextAA0c4ImapE0CSo22NSManagedObjectContextCSg_tF + 2755
-5   MessageModel                        0x000000010ba7a509 $s12MessageModel02CdA0C22assureImapFieldsNotNil7contextySo22NSManagedObjectContextC_tF + 1641
-6   MessageModel                        0x000000010b96c3a3 $s12MessageModel0A0C8cdObject7contextAcA02CdA0C_So09NSManagedD7ContextCtcfc + 467
-7   MessageModel                        0x000000010b96c16f $s12MessageModel0A0C8cdObject7contextAcA02CdA0C_So09NSManagedD7ContextCtcfC + 79
-8   MessageModel                        0x000000010bad57e0 $s12MessageModel0aB11ObjectUtilsC03getA006fromCdA07contextAA0A0CAA0gA0C_So09NSManagedC7ContextCSgtF + 1248
-9   MessageModel                        0x000000010ba7b07b $s12MessageModel02CdA0C7messageAA0A0CSgyF + 411
-10  MessageModel                        0x000000010b94ee3b $s12MessageModel23EncryptAndSendOperationC23setOriginalRatingHeader33_DDE5BEED9A081413EDDB7FA0C8D7E8E9LL02toA9WithObjId9inContextySo17NSManagedObjectIDC_So0z6ObjectY0CtF + 1227
-11  MessageModel                        0x000000010b94db8e $s12MessageModel23EncryptAndSendOperationC010handleNextA8Internal7contextySo22NSManagedObjectContextC_tF + 3902
-12  MessageModel                        0x000000010b94bfdd $s12MessageModel23EncryptAndSendOperationC010handleNextA0yyFyycfU_ + 973
-13  MessageModel                        0x000000010b9560c1 $s12MessageModel23EncryptAndSendOperationC010handleNextA0yyFyycfU_TA + 17
-14  MessageModel                        0x000000010b8bb01e $sIeg_IeyB_TR + 142
-15  CoreData                            0x000000010f1cc84a developerSubmittedBlockToNSManagedObjectContextPerform + 170
-16  libclang_rt.asan_iossim_dynamic.dylib 0x000000010a7f37b4 asan_dispatch_call_block_and_release + 260
-17  libdispatch.dylib                   0x000000011273cd02 _dispatch_client_callout + 8
-18  libdispatch.dylib                   0x0000000112743720 _dispatch_lane_serial_drain + 705
-19  libdispatch.dylib                   0x0000000112744261 _dispatch_lane_invoke + 398
-20  libdispatch.dylib                   0x000000011274cfcb _dispatch_workloop_worker_thread + 645
-21  libsystem_pthread.dylib             0x0000000112b1e611 _pthread_wqthread + 421
-22  libsystem_pthread.dylib             0x0000000112b1e3fd start_wqthread + 13
-*/
-
-/////
-////  SimpleOperationsTest.swift
-////  pEpForiOS
-////
-////  Created by Dirk Zimmermann on 03/05/16.
-////  Copyright © 2016 p≡p Security S.A. All rights reserved.
-////
-//
-//import XCTest
-//
-
 import XCTest
 
 import CoreData
@@ -266,7 +183,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         let opLogin = LoginImapOperation(parentName: #function, imapSyncData: imapSyncData)
         guard let op = SyncFoldersFromServerOperation(parentName: #function,
-                                                                 imapSyncData: imapSyncData)
+                                                      imapSyncData: imapSyncData)
             else {
                 XCTFail()
                 return
@@ -352,7 +269,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
                 address: "somemail\(i)@test.com"))
             message.setSubject("Subject \(i)")
             message.setRecipients([CWInternetAddress(personal: "thisIsMe",
-                                                          address: "myaddress@test.com", type: .toRecipient)])
+                                                     address: "myaddress@test.com", type: .toRecipient)])
             message.setFolder(folder)
             message.setUID(UInt(i))
             message.setMessageID("\(i)@whatever.test")
@@ -491,55 +408,54 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
     // MARK: - EncryptAndSendOperation
 
-    //!!!: crash : (reason: 'Illegal attempt to establish a relationship 'message' between objects in different contexts (source = <CdImapFields: 0x607000ba49d0> (entity: CdImapFields; )
-//    func testEncryptAndSendOperation() {
-//        // Create mails to send ...
-//        let sentUUIDs = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
-//                                                          testCase: self,
-//                                                          numberOfMails: 3,
-//                                                          context: moc).map { $0.uuid! }
-//        // ... Login ...
-//        let smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
-//        let errorContainer = ErrorContainer()
-//        let smtpLogin = LoginSmtpOperation(parentName: #function,
-//                                           smtpSendData: smtpSendData,
-//                                           errorContainer: errorContainer)
-//        smtpLogin.completionBlock = {
-//            smtpLogin.completionBlock = nil
-//            XCTAssertNotNil(smtpSendData.smtp)
-//        }
-//        // ... and send them.
-//        let expMailsSent = expectation(description: "expMailsSent")
-//        let sendOp = EncryptAndSendOperation(
-//            parentName: #function,
-//            smtpSendData: smtpSendData, errorContainer: errorContainer)
-//        XCTAssertNotNil(EncryptAndSendOperation.retrieveNextMessage(context: moc,
-//                                                                    cdAccount: cdAccount))
-//        sendOp.addDependency(smtpLogin)
-//        sendOp.completionBlock = {
-//            sendOp.completionBlock = nil
-//            expMailsSent.fulfill()
-//        }
-//        let queue = OperationQueue()
-//        queue.addOperation(smtpLogin)
-//        queue.addOperation(sendOp)
-//        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-//            XCTAssertNil(error)
-//            XCTAssertFalse(sendOp.hasErrors())
-//        })
-//        // Check sent status of all sent mails
-//        for sentUuid in sentUUIDs {
-//            let msgs = CdMessage.search(byUUID: sentUuid, includeFakeMessages: false)
-//            XCTAssertEqual(msgs.count, 1)
-//            guard let msg = msgs.first else {
-//                XCTFail("Missing sent message")
-//                return
-//            }
-//            // Have been moved from outbox to sent
-//             XCTAssertEqual(msg.parent?.folderType, FolderType.sent)
-//        }
-//        smtpSendData.smtp?.close()
-//    }
+    func testEncryptAndSendOperation() {
+        // Create mails to send ...
+        let sentUUIDs = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
+                                                          testCase: self,
+                                                          numberOfMails: 3,
+                                                          context: moc).map { $0.uuid! }
+        // ... Login ...
+        let smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
+        let errorContainer = ErrorContainer()
+        let smtpLogin = LoginSmtpOperation(parentName: #function,
+                                           smtpSendData: smtpSendData,
+                                           errorContainer: errorContainer)
+        smtpLogin.completionBlock = {
+            smtpLogin.completionBlock = nil
+            XCTAssertNotNil(smtpSendData.smtp)
+        }
+        // ... and send them.
+        let expMailsSent = expectation(description: "expMailsSent")
+        let sendOp = EncryptAndSendOperation(
+            parentName: #function,
+            smtpSendData: smtpSendData, errorContainer: errorContainer)
+        XCTAssertNotNil(EncryptAndSendOperation.retrieveNextMessage(context: moc,
+                                                                    cdAccount: cdAccount))
+        sendOp.addDependency(smtpLogin)
+        sendOp.completionBlock = {
+            sendOp.completionBlock = nil
+            expMailsSent.fulfill()
+        }
+        let queue = OperationQueue()
+        queue.addOperation(smtpLogin)
+        queue.addOperation(sendOp)
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(sendOp.hasErrors())
+        })
+        // Check sent status of all sent mails
+        for sentUuid in sentUUIDs {
+            let msgs = CdMessage.search(byUUID: sentUuid, includeFakeMessages: false)
+            XCTAssertEqual(msgs.count, 1)
+            guard let msg = msgs.first else {
+                XCTFail("Missing sent message")
+                return
+            }
+            // Have been moved from outbox to sent
+            XCTAssertEqual(msg.parent?.folderType, FolderType.sent)
+        }
+        smtpSendData.smtp?.close()
+    }
 
     func testAppendSentMailsOperation() {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
@@ -789,20 +705,22 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
     //fails on first run when the an account was setup on
     func testFixAttachmentsOperation() {
-          let moc = Stack.shared.newPrivateConcurrentContext
+        let moc = Stack.shared.newPrivateConcurrentContext
         let cdFolder = CdFolder(context: moc)
         cdFolder.name = "AttachmentTestFolder"
         cdFolder.folderType = FolderType.inbox
-        cdFolder.account = cdAccount
+        cdFolder.account = (moc.object(with: cdAccount.objectID) as! CdAccount)
 
-        let cdMsg = CdMessage.create(messageID: "2", uid: 1, parent: cdFolder)
+        let cdMsg = CdMessage(context: moc)
+        cdMsg.uuid = "2"
+        cdMsg.parent = cdFolder
 
         let cdAttachWithoutSize = CdAttachment(context: moc)
         cdAttachWithoutSize.data = "Some bytes for an attachment".data(using: .utf8)
         cdAttachWithoutSize.message = cdMsg
-        
+
         moc.saveAndLogErrors()
-        
+
         let expAttachmentsFixed = expectation(description: "expAttachmentsFixed")
         let fixAttachmentsOp = FixAttachmentsOperation(parentName: #function)
         fixAttachmentsOp.completionBlock = {
@@ -816,7 +734,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertNil(error)
             XCTAssertFalse(fixAttachmentsOp.hasErrors())
         })
-        
+
         moc.refreshAllObjects()
         
         guard let allAttachments = CdAttachment.all() as? [CdAttachment] else {
