@@ -29,7 +29,7 @@ class AttachmentsViewHelper {
         }
     }
 
-    let mimeTypes = MimeTypeUtil()
+    let mimeTypes = MimeTypeUtils()
     var buildOp: AttachmentsViewOperation?
     let operationQueue = OperationQueue()
 
@@ -46,7 +46,7 @@ class AttachmentsViewHelper {
             attachment.fileName?.splitFileExtension() ?? (Constants.defaultFileName, nil)
         return AttachmentSummaryView.AttachmentInfo(
             filename: name.extractFileNameOrCid(),
-            theExtension: ext ?? mimeTypes?.fileExtension(mimeType: attachment.mimeType))
+            theExtension: ext ?? mimeTypes?.getFileExtension(attachment.mimeType))
     }
 
     func opFinished(theBuildOp: AttachmentsViewOperation) {

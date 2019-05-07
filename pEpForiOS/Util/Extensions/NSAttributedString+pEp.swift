@@ -13,7 +13,7 @@ import MessageModel
 class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
     var attachments = [Attachment]()
 
-    private lazy var mimeUtil = MimeTypeUtil()
+    private lazy var mimeUtils = MimeTypeUtils()
 
     func stringFor(attachment: NSTextAttachment) -> String? {
         if let textAttachment = attachment as? TextAttachment,
@@ -22,7 +22,7 @@ class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
             let count = attachments.count
 
             let theID = MessageID.generateUUID()
-            let theExt = mimeUtil?.fileExtension(mimeType: theAttachment.mimeType) ?? "jpg"
+            let theExt = mimeUtils?.getFileExtension(theAttachment.mimeType) ?? "jpg"
             let cidBase = "attached-inline-image-\(count)-\(theExt)-\(theID)"
             let cidSrc = "cid:\(cidBase)"
             let cidUrl = "cid://\(cidBase)"

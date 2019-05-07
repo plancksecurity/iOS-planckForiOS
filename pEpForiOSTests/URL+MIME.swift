@@ -14,13 +14,13 @@ import MessageModel
 
 class URL_MimeTest: XCTestCase {
     let pathBuilder = "file://ma/path/to/nice_pic"
-    let mimeUtil = MimeTypeUtil()
+    let mimeUtils = MimeTypeUtils()
 
     func testJpg() {
         let jpgExt = "jpg"
         let url = urlWithExtension(ext: jpgExt)
-        let testee = url.mimeType()
-        let expected = mimeUtil?.mimeType(fileExtension: jpgExt)
+        let testee = mimeUtils?.getMimeType(url)
+        let expected = mimeUtils?.getMimeType(jpgExt)
         XCTAssertEqual(testee, expected)
     }
 

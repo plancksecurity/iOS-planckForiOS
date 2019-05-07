@@ -10,7 +10,7 @@ import MessageModel
 
 class AttachmentViewModel: CellViewModel {
     public let attachment: Attachment
-    private let mimeTypeUtil = MimeTypeUtil()
+    private lazy var mimeTypeUtils = MimeTypeUtils()
 
     init(attachment: Attachment) {
         self.attachment = attachment
@@ -24,6 +24,6 @@ class AttachmentViewModel: CellViewModel {
     }
 
     public var fileExtension: String {
-        return mimeTypeUtil?.fileExtension(mimeType: attachment.mimeType) ?? ""
+        return mimeTypeUtils?.getFileExtension(attachment.mimeType) ?? ""
     }
 }

@@ -23,6 +23,7 @@ class MediaAttachmentPickerProviderViewModel {
         "security.pep.MediaAttachmentPickerProviderViewModel.attachmentFileIOQueue",
                                                            qos: .userInitiated)
     private var numVideosSelected = 0
+    private let mimeTypeUtils = MimeTypeUtils()
     weak public var resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?
 
     public init(resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?) {
@@ -82,7 +83,7 @@ class MediaAttachmentPickerProviderViewModel {
     private func createAttachment(forResource resourceUrl: URL,
                                   completion: @escaping (Attachment?) -> Void) {
         attachmentFileIOQueue.async { [weak self] in
-            guard let me = self else {
+            guard let `self` = self else {
                 Logger.frontendLogger.lostMySelf()
                 return
             }
@@ -91,8 +92,9 @@ class MediaAttachmentPickerProviderViewModel {
                 completion(nil)
                 return
             }
-            let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.MimesType.defaultMimeType
-            let filename = me.fileName(forVideoAt: resourceUrl)
+            let mimeType = self.mimeTypeUtils?.getMimeType(resourceUrl) ??
+                MimeTypeUtils.MimesType.defaultMimeType
+            let filename = self.fileName(forVideoAt: resourceUrl)
             let attachment =  Attachment.create(data: resourceData,
                                                 mimeType: mimeType,
                                                 fileName: filename,
@@ -111,9 +113,8 @@ class MediaAttachmentPickerProviderViewModel {
         return fileName + numDisplay + "." + fileExtension
     }
 
-    private func createAttachment(forAssetWithUrl assetUrl: URL,
-                                  image: UIImage) -> Attachment {
-        let mimeType = assetUrl.mimeType() ?? MimeTypeUtil.MimesType.defaultMimeType
+    private func createAttachment(forAssetWithUrl assetUrl: URL, image: UIImage) -> Attachment {
+        let mimeType = mimeTypeUtils?.getMimeType(assetUrl) ?? MimeTypeUtils.MimesType.defaultMimeType
         return Attachment.createFromAsset(mimeType: mimeType,
                                           assetUrl: assetUrl,
                                           image: image,

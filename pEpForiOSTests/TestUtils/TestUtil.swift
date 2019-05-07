@@ -507,7 +507,7 @@ class TestUtil {
         let contentDisposition = inlined ? Attachment.ContentDispositionType.inline : .attachment
 
         return Attachment.create(data: imageData,
-                          mimeType: MimeTypeUtil.MimesType.jpeg,
+                          mimeType: MimeTypeUtils.MimesType.jpeg,
                           fileName: imageFileName,
                           contentDisposition: contentDisposition)
     }

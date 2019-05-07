@@ -20,6 +20,7 @@ class DocumentAttachmentPickerViewModel {
     lazy private var attachmentFileIOQueue = DispatchQueue(label:
         "security.pep.DocumentAttachmentPickerViewModel.attachmentFileIOQueue",
                                                            qos: .userInitiated)
+    private let mimeUtils = MimeTypeUtils()
     weak public var resultDelegate: DocumentAttachmentPickerViewModelResultDelegate?
 
     public init(resultDelegate: DocumentAttachmentPickerViewModelResultDelegate? = nil) {
@@ -59,7 +60,7 @@ class DocumentAttachmentPickerViewModel {
     private func createAttachment(forSecurityScopedResource resourceUrl: URL,
                                   completion: @escaping (Attachment?) -> Void) {
         let cfUrl = resourceUrl as CFURL
-        attachmentFileIOQueue.async {
+        attachmentFileIOQueue.async { [weak self] in
             CFURLStartAccessingSecurityScopedResource(cfUrl)
             defer { CFURLStopAccessingSecurityScopedResource(cfUrl) }
             guard  let resourceData = try? Data(contentsOf: resourceUrl)  else {
@@ -67,7 +68,8 @@ class DocumentAttachmentPickerViewModel {
                 completion(nil)
                 return
             }
-            let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.MimesType.defaultMimeType
+            let mimeType = self?.mimeUtils?.getMimeType(resourceUrl) ??
+                MimeTypeUtils.MimesType.defaultMimeType
             let filename = resourceUrl.fileName(includingExtension: true)
             let attachment = Attachment.create(data: resourceData,
                                                mimeType: mimeType,
