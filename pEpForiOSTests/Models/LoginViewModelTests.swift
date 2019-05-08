@@ -49,6 +49,10 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         var trustedImapServer: Bool = false
         var verifiableAccountDelegate: VerifiableAccountDelegate?
 
+        let isValidName = false
+
+        let isValidUser = false
+
         func verify() throws {
             XCTAssertEqual(address, accountSettings.idAddress)
 
