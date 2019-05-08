@@ -61,7 +61,7 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
             context.saveAndLogErrors()
             message.pEpRatingInt = Int(newRating.rawValue)
         } catch let error as NSError {
-            Logger.backendLogger.log(error: error)
+            Log.shared.log(error: error)
         }
     }
 }

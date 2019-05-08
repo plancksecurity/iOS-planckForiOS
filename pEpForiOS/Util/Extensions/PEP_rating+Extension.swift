@@ -31,7 +31,7 @@ extension PEPRating {
              .underAttack:
             return false
         default:
-            Logger.utilLogger.errorAndCrash(
+            Log.shared.errorAndCrash(
                 "cannot decide isUnderAttack() for %{public}@", self.rawValue)
             return false
         }
@@ -57,7 +57,7 @@ extension PEPRating {
              .underAttack:
             return false
         default:
-            Logger.utilLogger.errorAndCrash(
+            Log.shared.errorAndCrash(
                 "cannot decide isUnderAttack() for %{public}@", self.rawValue)
             return false
         }

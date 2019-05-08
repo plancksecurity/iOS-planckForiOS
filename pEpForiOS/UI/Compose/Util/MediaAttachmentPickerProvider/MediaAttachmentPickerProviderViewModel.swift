@@ -49,7 +49,7 @@ class MediaAttachmentPickerProviderViewModel {
         guard
             let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
             let url = info[UIImagePickerController.InfoKey.referenceURL] as? URL else {
-                Logger.frontendLogger.errorAndCrash("No Data")
+                Log.shared.errorAndCrash("No Data")
                 return
         }
 
@@ -60,17 +60,17 @@ class MediaAttachmentPickerProviderViewModel {
 
     private func createMovieAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) {
         guard let url = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
-            Logger.frontendLogger.errorAndCrash("No URL")
+            Log.shared.errorAndCrash("No URL")
             return
         }
 
         createAttachment(forResource: url) {[weak self] (attachment)  in
             guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             guard let att = attachment else {
-                Logger.frontendLogger.errorAndCrash("No Attachment")
+                Log.shared.errorAndCrash("No Attachment")
                 return
             }
             let result = MediaAttachment(type: .movie, attachment: att)
@@ -83,18 +83,18 @@ class MediaAttachmentPickerProviderViewModel {
     private func createAttachment(forResource resourceUrl: URL,
                                   completion: @escaping (Attachment?) -> Void) {
         attachmentFileIOQueue.async { [weak self] in
-            guard let `self` = self else {
-                Logger.frontendLogger.lostMySelf()
+            guard let me = self else {
+                Log.shared.lostMySelf()
                 return
             }
             guard let resourceData = try? Data(contentsOf: resourceUrl) else {
-                Logger.frontendLogger.errorAndCrash("Cound not get data for URL")
+                Log.shared.errorAndCrash("Cound not get data for URL")
                 completion(nil)
                 return
             }
-            let mimeType = self.mimeTypeUtils?.mimeType(fromURL: resourceUrl) ??
+            let mimeType = me.mimeTypeUtils?.mimeType(fromURL: resourceUrl) ??
                 MimeTypeUtils.MimesType.defaultMimeType
-            let filename = self.fileName(forVideoAt: resourceUrl)
+            let filename = me.fileName(forVideoAt: resourceUrl)
             let attachment =  Attachment.create(data: resourceData,
                                                 mimeType: mimeType,
                                                 fileName: filename,

@@ -21,7 +21,7 @@ class AttachmentToLocalURLOperation: Operation {
 
     override func main() {
         guard let data = attachment.data else {
-            Logger.backendLogger.warn("Attachment without data")
+            Log.shared.warn("Attachment without data")
             return
         }
         var tmpDirURL: URL?
@@ -44,7 +44,7 @@ class AttachmentToLocalURLOperation: Operation {
             try data.write(to: theURL)
             fileURL = theURL
         } catch {
-            Logger.backendLogger.log(error: error)
+            Log.shared.log(error: error)
         }
     }
 }

@@ -34,7 +34,7 @@ public class FolderSectionViewModel {
 
     private func generateAccountCells() {
         guard let ac = account else {
-            Logger.frontendLogger.errorAndCrash("No account selected")
+            Log.shared.errorAndCrash("No account selected")
             return
         }
         for folder in ac.rootFolders {
@@ -52,7 +52,7 @@ public class FolderSectionViewModel {
 
     func getImage(callback: @escaping (UIImage?)-> Void) {
         guard let ac = account else {
-            Logger.frontendLogger.errorAndCrash("No account selected")
+            Log.shared.errorAndCrash("No account selected")
             return
         }
         if let cachedContactImage = contactImageTool.cachedIdentityImage(for: ac.user) {
