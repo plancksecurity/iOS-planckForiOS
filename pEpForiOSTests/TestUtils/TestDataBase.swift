@@ -13,6 +13,12 @@ import MessageModel
 import PEPObjCAdapterFramework
 import PantomimeFramework
 
+/// Base class for test data.
+/// Make sure that, in your SecretTestData, you override:
+///  * `populateAccounts` if you don't use the greenmail local server for testing,
+///    or you want to test against other servers for various reasons.
+///  * `populateVerifiableAccounts` in order to provide verifiable servers, to test
+///    the verification parts.
 class TestDataBase {
     struct AccountSettings {
         var accountName: String?
@@ -239,6 +245,7 @@ class TestDataBase {
     /**
      Accounts needed for testing LAS, that is they need to be registered
      in the LAS DB or provide (correct) DNS SRV for IMAP and SMTP.
+     - Note: Override this in your SecretTestData to something that's working.
      */
     func populateVerifiableAccounts() {
         append(verifiableAccountSettings: AccountSettings(
