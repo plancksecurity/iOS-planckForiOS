@@ -176,6 +176,7 @@ class TestDataBase {
         /// Transfers the account data into a `VerifiableAccountProtocol`
         /// that you then can verify the acconut data with.
         func populate(verifiableAccount: inout VerifiableAccountProtocol) {
+            verifiableAccount.userName = accountName
             verifiableAccount.address = idAddress
             verifiableAccount.loginName = imapLoginName
             verifiableAccount.accessToken = nil
