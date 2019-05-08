@@ -26,7 +26,7 @@ class AddToContactsViewController: BaseViewController {
 
     func setupContactVc() {
         guard let address = emailAddress else {
-            Logger.frontendLogger.errorAndCrash("No data to add?")
+            Log.shared.errorAndCrash("No data to add?")
             dismiss(animated: false)
             return
         }
@@ -35,7 +35,7 @@ class AddToContactsViewController: BaseViewController {
                                                         value: address as NSString))
         contactVC = CNContactViewController(forUnknownContact: newContact)
         guard let contactVC = contactVC else {
-            Logger.frontendLogger.errorAndCrash("Missing contactVC")
+            Log.shared.errorAndCrash("Missing contactVC")
             return
         }
         contactVC.contactStore = CNContactStore()

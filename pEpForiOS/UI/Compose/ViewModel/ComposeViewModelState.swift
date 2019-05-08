@@ -124,7 +124,7 @@ extension ComposeViewModel {
 
         private func setup() {
             guard let initData = initData else {
-                Logger.frontendLogger.errorAndCrash("No data")
+                Log.shared.errorAndCrash("No data")
                 return
             }
             toRecipients = initData.toRecipients

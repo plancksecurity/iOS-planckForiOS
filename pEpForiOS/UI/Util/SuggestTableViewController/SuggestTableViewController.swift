@@ -34,7 +34,7 @@ extension SuggestTableViewController: SuggestViewModelDelegate {
 extension SuggestTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let viewModel = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return
         }
         viewModel.handleRowSelected(at: indexPath.row)
@@ -48,7 +48,7 @@ extension SuggestTableViewController {
     public override func tableView(_ tableView: UITableView,
                                    numberOfRowsInSection section: Int) -> Int {
         guard let viewModel = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return 0
         }
         return viewModel.numRows
@@ -61,7 +61,7 @@ extension SuggestTableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: ContactCell.reuseId,
                                                        for: indexPath)
             as? ContactCell else {
-                Logger.frontendLogger.errorAndCrash("Illegal state")
+                Log.shared.errorAndCrash("Illegal state")
                 return UITableViewCell()
         }
         let row = viewModel.row(at: indexPath.row)

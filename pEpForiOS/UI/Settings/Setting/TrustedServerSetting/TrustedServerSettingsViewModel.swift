@@ -24,7 +24,7 @@ struct TrustedServerSettingsViewModel {
 
     mutating func setStoreSecurely(forAccountWith address: String, toValue newValue: Bool) {
         guard serversAllowedToManuallyTrust().contains(address) else {
-            Logger.frontendLogger.errorAndCrash("Address should be allowed")
+            Log.shared.errorAndCrash("Address should be allowed")
             return
         }
 
