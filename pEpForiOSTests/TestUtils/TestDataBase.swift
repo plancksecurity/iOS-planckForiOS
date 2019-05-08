@@ -220,28 +220,6 @@ class TestDataBase {
         addLocalTestAccount(userName: "test003")
     }
 
-    private func addLocalTestAccount(userName: String) {
-        let address = "\(userName)@localhost"
-        append(accountSettings: AccountSettings(
-            accountName: "Unit Test \(address)",
-            idAddress: address,
-            idUserName: "User \(address)",
-
-            imapLoginName: userName,
-            imapServerAddress: "localhost",
-            imapServerType: Server.ServerType.imap,
-            imapServerTransport: Server.Transport.plain,
-            imapServerPort: 3143,
-
-            smtpLoginName: userName,
-            smtpServerAddress: "localhost",
-            smtpServerType: Server.ServerType.smtp,
-            smtpServerTransport: Server.Transport.plain,
-            smtpServerPort: 3025,
-
-            password: "pwd"))
-    }
-
     /**
      Accounts needed for testing LAS, that is they need to be registered
      in the LAS DB or provide (correct) DNS SRV for IMAP and SMTP.
@@ -266,6 +244,28 @@ class TestDataBase {
             password: "whatever_you_want"))
 
         fatalError("Abstract method. Must be overridden")
+    }
+
+    private func addLocalTestAccount(userName: String) {
+        let address = "\(userName)@localhost"
+        append(accountSettings: AccountSettings(
+            accountName: "Unit Test \(address)",
+            idAddress: address,
+            idUserName: "User \(address)",
+
+            imapLoginName: userName,
+            imapServerAddress: "localhost",
+            imapServerType: Server.ServerType.imap,
+            imapServerTransport: Server.Transport.plain,
+            imapServerPort: 3143,
+
+            smtpLoginName: userName,
+            smtpServerAddress: "localhost",
+            smtpServerType: Server.ServerType.smtp,
+            smtpServerTransport: Server.Transport.plain,
+            smtpServerPort: 3025,
+
+            password: "pwd"))
     }
 
     /**
