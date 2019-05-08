@@ -23,7 +23,7 @@ struct TrustedServerSettingsViewModel {
     }
 
     mutating func setStoreSecurely(forAccountWith address: String, toValue newValue: Bool) {
-        guard let account = Account.Fetch.getAccountAllowedToManuallyTrust(address) else {
+        guard let account = Account.Fetch.accountAllowedToManuallyTrust(fromAddress: address) else {
             Logger.frontendLogger.errorAndCrash("Address should be allowed")
             return
         }
@@ -40,7 +40,7 @@ struct TrustedServerSettingsViewModel {
     }
 
     mutating private func reset() {
-        let accounts = Account.Fetch.getAllAccountsAllowedToManuallyTrust()
+        let accounts = Account.Fetch.allAccountsAllowedToManuallyTrust()
         var createes = [Row]()
         for account in accounts {
             guard let isTrusted = account.imapServer?.manuallyTrusted else {
