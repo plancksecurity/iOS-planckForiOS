@@ -160,7 +160,7 @@ public class AccountSettingsViewModel {
             let address = viewModel.address,
             let transport = Server.Transport(fromString: viewModel.transport)
             else {
-                Logger.frontendLogger.errorAndCrash("viewModel misses required data.")
+                Log.shared.errorAndCrash("viewModel misses required data.")
                 return nil
         }
 
@@ -202,7 +202,7 @@ extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
         }
         GCD.onMainWait { [weak self] in
             guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             me.delegate?.didVerify(result: result, accountInput: nil)
@@ -219,8 +219,7 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
             do {
                 try verifiableAccount?.save()
             } catch {
-                Logger.frontendLogger.log(error: error)
-                Logger.frontendLogger.errorAndCrash("Unexpected error on saving the account")
+                Log.shared.errorAndCrash("%@", error.localizedDescription)
             }
         case .failure(let error):
             if let imapError = error as? ImapSyncError {
@@ -230,8 +229,7 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
                 delegate?.didVerify(
                     result: .smtpError(smtpError), accountInput: verifiableAccount)
             } else {
-                Logger.frontendLogger.log(error: error)
-                Logger.frontendLogger.errorAndCrash("Unexpected error")
+                Log.shared.errorAndCrash("%@", error.localizedDescription)
             }
         }
     }

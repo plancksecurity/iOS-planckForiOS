@@ -41,7 +41,7 @@
 //        case .accouts:
 //            for account in Account.all() {
 //                guard let icon = UIImage(named: "folders-icon-inbox") else {
-//                    Logger.frontendLogger.errorAndCrash("Error Loading images")
+//                    Log.shared.errorAndCrash("Error Loading images")
 //                    return
 //                }
 //                items.append(
@@ -51,7 +51,7 @@
 //            break
 //        case .include:
 //            guard let unreadIcon = UIImage(named: "icon-unread") else {
-//                Logger.frontendLogger.errorAndCrash("Error Loading images")
+//                Log.shared.errorAndCrash("Error Loading images")
 //                return
 //            }
 //            items.append(
@@ -61,7 +61,7 @@
 //                                    enabled: filters?.mustBeUnread, type: .Unread))
 //
 //            guard let flaggedIcon = UIImage(named: "icon-flagged") else {
-//                Logger.frontendLogger.errorAndCrash("Error Loading images")
+//                Log.shared.errorAndCrash("Error Loading images")
 //                return
 //            }
 //            items.append(
@@ -72,7 +72,7 @@
 //            break
 //        case .other:
 //            guard let attachIcon = UIImage(named: "attachment-list-icon") else {
-//                Logger.frontendLogger.errorAndCrash("Error Loading images")
+//                Log.shared.errorAndCrash("Error Loading images")
 //                return
 //            }
 //            items.append(

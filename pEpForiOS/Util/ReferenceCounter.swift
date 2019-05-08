@@ -59,7 +59,7 @@ open class ReferenceCounter {
     public static func logOutstanding() {
         for (_, entry) in table {
             if entry.count != 0 {
-                Logger.utilLogger.warn("%{public}@", entry.description)
+                Log.shared.warn("%{public}@", entry.description)
             }
         }
     }

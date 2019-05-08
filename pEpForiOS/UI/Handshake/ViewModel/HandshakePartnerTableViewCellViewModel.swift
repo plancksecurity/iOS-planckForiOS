@@ -108,7 +108,7 @@ class HandshakePartnerTableViewCellViewModel {
         do {
             isPartnerpEpUser = try session.isPEPUser(pEpPartner).boolValue
         } catch let err as NSError {
-            Logger.frontendLogger.error("%{public}@", err.localizedDescription)
+            Log.shared.error("%{public}@", err.localizedDescription)
             isPartnerpEpUser = false
         }
         setPartnerImage(for: partner)
@@ -122,7 +122,7 @@ class HandshakePartnerTableViewCellViewModel {
         } else {
             DispatchQueue.global().async { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Log.shared.errorAndCrash("Lost myself")
                     return
                 }
                 let contactImage = me.contactImageTool.identityImage(for: IdentityImageTool.IdentityKey(identity: partnerIdentity))
@@ -153,7 +153,7 @@ class HandshakePartnerTableViewCellViewModel {
                 language: trustwordsLanguage,
                 full: trustwordsFull)
         } catch let err as NSError {
-            Logger.frontendLogger.error("%{public}@", err.localizedDescription)
+            Log.shared.error("%{public}@", err.localizedDescription)
             return nil
         }
     }

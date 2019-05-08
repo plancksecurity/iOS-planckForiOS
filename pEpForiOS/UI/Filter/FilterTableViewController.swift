@@ -33,7 +33,7 @@ class FilterTableViewController: BaseTableViewController {
 
     @objc func ok(sender: UIBarButtonItem) {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return
         }
         filterDelegate?.filterChanged(newFilter: vm.filter)
@@ -42,7 +42,7 @@ class FilterTableViewController: BaseTableViewController {
 
     func initViewModel() {
         guard let filter = filterEnabled else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No Filter in FilterView")
+            Log.shared.errorAndCrash("No Filter in FilterView")
             return
         }
         self.viewModel = FilterViewModel(filter: filter)
@@ -97,7 +97,7 @@ class FilterTableViewController: BaseTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //!!!: we have to go to the filter property of the view mode an change directly the value on there. (Buff: why?)
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return
         }
         vm.toggleEnabledState(forRowAt: indexPath)

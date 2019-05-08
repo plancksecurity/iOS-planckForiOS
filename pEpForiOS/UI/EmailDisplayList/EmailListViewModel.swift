@@ -128,7 +128,7 @@ class EmailListViewModel {
         do {
             try messageQueryResults.startMonitoring()
         } catch {
-            Logger.frontendLogger.errorAndCrash("MessageQueryResult crash")
+            Log.shared.errorAndCrash("MessageQueryResult crash")
         }
     }
 
@@ -460,7 +460,7 @@ extension EmailListViewModel {
         do {
             try messageQueryResults.startMonitoring()
         } catch {
-            Logger.modelLogger.errorAndCrash("Failed to fetch data")
+            Log.shared.errorAndCrash("Failed to fetch data")
             return
         }
     }
@@ -590,7 +590,7 @@ extension EmailListViewModel {
 
     private func folderIsDraft(_ parentFolder: Folder?) -> Bool {
         guard let folder = parentFolder else {
-            Logger.frontendLogger.errorAndCrash("No parent.")
+            Log.shared.errorAndCrash("No parent.")
             return false
         }
         return folderIsDraft(folder)
@@ -598,7 +598,7 @@ extension EmailListViewModel {
 
     private func folderIsOutbox(_ parentFolder: Folder?) -> Bool {
         guard let folder = parentFolder else {
-            Logger.frontendLogger.errorAndCrash("No parent.")
+            Log.shared.errorAndCrash("No parent.")
             return false
         }
         return folderIsOutbox(folder)

@@ -40,12 +40,12 @@ class ComposeDataSource: NSObject {
         } else {
             filterRows(filter: { $0.type != .mailingList} )
         }
-        Logger.frontendLogger.log("filtering rows")
+        Log.shared.log("filtering rows")
     }
 
     func numberOfRows() -> Int {
         let visibleRows = getVisibleRows()
-        Logger.frontendLogger.log("number of rows -> %d", visibleRows.count)
+        Log.shared.log("number of rows -> %d", visibleRows.count)
         return visibleRows.count
     }
 
@@ -74,7 +74,7 @@ class ComposeDataSource: NSObject {
 
         subscript(index: Int) -> Row? {
             if index < 0 || index > (attachments.count - 1) {
-                Logger.frontendLogger.errorAndCrash("Index out of bounds")
+                Log.shared.errorAndCrash("Index out of bounds")
                 return nil
             }
             let attachment = attachments[index]
@@ -116,7 +116,7 @@ class ComposeDataSource: NSObject {
 
         mutating func remove(at index: Int) {
             if index < 0 || index > (attachments.count - 1) {
-                Logger.frontendLogger.errorAndCrash("Index out of bounds")
+                Log.shared.errorAndCrash("Index out of bounds")
                 return
             }
             attachments.remove(at: index)

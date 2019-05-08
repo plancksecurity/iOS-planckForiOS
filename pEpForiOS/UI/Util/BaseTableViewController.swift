@@ -17,7 +17,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
     var appConfig: AppConfig {
         get {
             guard let safeConfig = _appConfig else {
-                Logger.frontendLogger.errorAndCrash("No appConfig?")
+                Log.shared.errorAndCrash("No appConfig?")
 
                 // We have no config. Return nonsense.
                 return AppConfig(
@@ -41,7 +41,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         super.viewWillAppear(animated)
         guard _appConfig != nil else {
             if !MiscUtil.isUnitTest() {
-                Logger.frontendLogger.errorAndCrash("AppConfig is nil in viewWillAppear!")
+                Log.shared.errorAndCrash("AppConfig is nil in viewWillAppear!")
             }
             return
         }
@@ -129,6 +129,6 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
 
 extension BaseTableViewController: KickOffMySelfProtocol {
     func startMySelf() {
-        Logger.frontendLogger.errorAndCrash("No appConfig?")
+        Log.shared.errorAndCrash("No appConfig?")
     }
 }

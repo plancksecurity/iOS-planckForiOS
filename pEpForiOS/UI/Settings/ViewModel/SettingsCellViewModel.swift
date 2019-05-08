@@ -63,7 +63,7 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
                     "Settings: Cell (button) title to view default account setting")
             case .account:
                 guard let acc = account else {
-                    Logger.frontendLogger.errorAndCrash("Should never be reached")
+                    Log.shared.errorAndCrash("Should never be reached")
                     return nil
                 }
                 return acc.user.address

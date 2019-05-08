@@ -23,7 +23,7 @@ class PepProfilePictureComposer: ProfilePictureComposer {
         } else {
             DispatchQueue.global(qos: .userInitiated).async{ [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Log.shared.errorAndCrash("Lost myself")
                     return
                 }
                 let senderImage = me.contactImageTool.identityImage(for: identityKey)
