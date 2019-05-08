@@ -119,7 +119,7 @@ class FullMessageCell: SwipeTableViewCell,
             storyboard.instantiateViewController(withIdentifier: SecureWebViewController.storyboardId)
                 as? SecureWebViewController
             else {
-                Logger.frontendLogger.errorAndCrash("Cast error")
+                Log.shared.errorAndCrash("Cast error")
                 return SecureWebViewController()
         }
         vc.zoomingEnabled = false

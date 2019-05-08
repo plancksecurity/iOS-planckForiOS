@@ -117,7 +117,7 @@ extension BodyCellViewModel {
 extension BodyCellViewModel {
     public func inline(attachment: Attachment) {
         guard let image = attachment.image else {
-            Logger.frontendLogger.errorAndCrash("No image")
+            Log.shared.errorAndCrash("No image")
             return
         }
         attachment.contentDisposition = .inline
@@ -125,7 +125,7 @@ extension BodyCellViewModel {
         // performance issues (delay typing).
         guard let scaledImage = image.resized(newWidth: maxTextattachmentWidth / 2, useAlpha: false)
             else {
-                Logger.frontendLogger.errorAndCrash("Error resizing")
+                Log.shared.errorAndCrash("Error resizing")
                 return
         }
         let textAttachment = TextAttachment()

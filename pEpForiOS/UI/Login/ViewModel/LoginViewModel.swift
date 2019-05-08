@@ -101,7 +101,7 @@ class LoginViewModel {
 
         func statusOk() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
-                Logger.frontendLogger.error("%{public}@", error.localizedDescription)
+                Log.shared.error("%{public}@", error.localizedDescription)
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
                 return
             }
@@ -157,7 +157,7 @@ class LoginViewModel {
 
     func accountHasBeenQualified(trusted: Bool) {
         guard var theVerificationService = verificationService else {
-            Logger.frontendLogger.errorAndCrash("no VerificationService")
+            Log.shared.errorAndCrash("no VerificationService")
             return
         }
 
@@ -165,7 +165,7 @@ class LoginViewModel {
         do {
             try theVerificationService.verify()
         } catch {
-            Logger.frontendLogger.error("%{public}@", error.localizedDescription)
+            Log.shared.error("%{public}@", error.localizedDescription)
             loginViewModelLoginErrorDelegate?.handle(loginError: error)
         }
     }
@@ -223,10 +223,10 @@ extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
 extension LoginViewModel: VerifiableAccountDelegate {
     func informAccountVerificationResultDelegate(error: Error?) {
         guard let theService = verificationService else {
-            Logger.frontendLogger.error(
+            Log.shared.error(
                 "Lost the verificationService, was about to inform the delegate")
             if let err = error {
-                Logger.frontendLogger.log(error: err)
+                Log.shared.log("%@", err.localizedDescription)
             }
             return
         }
@@ -238,9 +238,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
                 result: .smtpError(smtpError), accountInput: theService)
         } else {
             if let theError = error {
-                Logger.frontendLogger.log(error: theError)
-                Logger.frontendLogger.errorAndCrash("Unexpected error")
-
+                Log.shared.errorAndCrash("%@", theError.localizedDescription)
             } else {
                 accountVerificationResultDelegate?.didVerify(result: .ok, accountInput: theService)
             }
@@ -255,8 +253,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
                 informAccountVerificationResultDelegate(error: nil)
                 mySelfer?.startMySelf()
             } catch {
-                Logger.frontendLogger.log(error: error)
-                Logger.frontendLogger.errorAndCrash("Unexpected error on saving the account")
+                Log.shared.errorAndCrash("%@", error.localizedDescription)
             }
         case .failure(let error):
             informAccountVerificationResultDelegate(error: error)
