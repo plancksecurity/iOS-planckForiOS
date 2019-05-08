@@ -102,7 +102,7 @@ The UI tests will not compile without it.
 
 ### secret.xcconfig (needed for OAuth2 config secrects and others)
 
-Create secret.xcconfig @ pEpForiOS/secret.xcconfig, with those contents:
+Create secret.xcconfig @ pEpForiOS/../pEp_for_iOS_intern/secret.xcconfig, with those contents:
 
 ```
 OAUTH2_GMAIL_CLIENT_ID = some_content
