@@ -25,7 +25,7 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        let account = SecretUITestData.workingAccount1
+        let account = secretTestData().workingAccount1
         newAccountSetup(account: account)
         waitForever()
     }
@@ -35,7 +35,7 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        let account = SecretUITestData.workingAccount2
+        let account = secretTestData().workingAccount2
         newAccountSetup(account: account)
         waitForever()
     }
@@ -43,14 +43,14 @@ class NewAccountSetupUITest: XCTestCase {
     func testAdditionalAccount() {
         app().launch()
         addAccount()
-        let account = SecretUITestData.workingAccount3
+        let account = secretTestData().workingAccount3
         newAccountSetup(account: account)
         waitForever()
     }
 
     func testAdditionalManualAccount() {
         app().launch()
-        addAdditionalManual(account: SecretUITestData.manualAccount)
+        addAdditionalManual(account: secretTestData().manualAccount)
     }
 
     func testAutoAccountPlusManual() {
@@ -58,10 +58,10 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        let account1 = SecretUITestData.workingAccount1
+        let account1 = secretTestData().workingAccount1
         newAccountSetup(account: account1)
 
-        addAdditionalManual(account: SecretUITestData.manualAccount)
+        addAdditionalManual(account: secretTestData().manualAccount)
     }
 
     func testTwoInitialAccounts() {
@@ -69,12 +69,12 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        let account1 = SecretUITestData.workingAccount1
+        let account1 = secretTestData().workingAccount1
         newAccountSetup(account: account1)
 
         addAccount()
 
-        let account2 = SecretUITestData.workingAccount2
+        let account2 = secretTestData().workingAccount2
         newAccountSetup(account: account2)
         waitForever()
     }
@@ -86,7 +86,7 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        var account = SecretUITestData.workingAccount1
+        var account = secretTestData().workingAccount1
 
         // Wrong password should prevent the automatic login
         let correctPassword = account.password
@@ -111,7 +111,7 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        var account = SecretUITestData.workingAccount1
+        var account = secretTestData().workingAccount1
 
         // Make sure this account will fails, both in auto and manual modes
         account.password += "ShouldNotWork"
@@ -130,7 +130,7 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        let account = SecretUITestData.gmailOAuth2Account
+        let account = secretTestData().gmailOAuth2Account
         newAccountSetup(account: account, enterPassword: false)
         waitForever()
     }
@@ -140,7 +140,7 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        let account = SecretUITestData.yahooOAuth2Account
+        let account = secretTestData().yahooOAuth2Account
         newAccountSetup(account: account, enterPassword: false)
         waitForever()
     }
@@ -151,6 +151,10 @@ class NewAccountSetupUITest: XCTestCase {
         let app = XCUIApplication()
         app.launchEnvironment = ["ASAN_OPTIONS": "detect_odr_violation=0"]
         return app
+    }
+
+    func secretTestData() -> UITestDataProtocol {
+        return SecretUITestData()
     }
 
     /*
