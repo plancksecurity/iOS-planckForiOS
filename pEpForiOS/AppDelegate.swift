@@ -228,9 +228,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // The calls are nested to avoid simultaniously showing permissions alert for notifications
             // and contact access.
             DispatchQueue.global(qos: .userInitiated).async {
-                MessageModel.perform {
-                    AddressBook.checkAndTransfer()
-                }
+                AddressBook.checkAndTransfer()
             }
         }
     }
@@ -421,7 +419,6 @@ extension AppDelegate {
         }
     }
 }
-
 
 //DEBUG version
 
