@@ -19,9 +19,16 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel,
                             didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath)
+    /*
+     //!!!: Some issues here:
+     - bad naming.
+     - what is viewModel as the param
+     - let's discuss & change!
+     */
     func willReceiveUpdates(viewModel: EmailListViewModel)
     func allUpdatesReceived(viewModel: EmailListViewModel)
     func reloadData(viewModel: EmailListViewModel)
+
     func toolbarIs(enabled: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
