@@ -219,16 +219,30 @@ extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
     func didEndVerification(result: Result<Void, Error>) {
         switch result {
         case .success(()):
-                MessageModelUtil.performAndWait { [weak self] in
-                    do {
-                        try self?.model?.save()
-                    } catch {
-                        Log.shared.errorAndCrash("%@", error.localizedDescription)
-                    }
+            MessageModelUtil.performAndWait { [weak self] in
+                // Note: Currently, there is no way for the VC to disappear
+                // before the verification has happened.
+                guard let theSelf = self else {
+                    Log.shared.lostMySelf()
+                    return
                 }
-                GCD.onMain() {  [weak self] in
-                    self?.isCurrentlyVerifying = false
-                    self?.performSegue(withIdentifier: .backToEmailListSegue, sender: self)
+
+                do {
+                    try theSelf.model?.save()
+                } catch {
+                    Log.shared.errorAndCrash("%@", error.localizedDescription)
+                }
+            }
+            GCD.onMain() {  [weak self] in
+                // Note: Currently, there is no way for the VC to disappear
+                // before the verification has happened.
+                guard let theSelf = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+
+                theSelf.isCurrentlyVerifying = false
+                theSelf.performSegue(withIdentifier: .backToEmailListSegue, sender: theSelf)
             }
         case .failure(let error):
             GCD.onMain() { [weak self] in
