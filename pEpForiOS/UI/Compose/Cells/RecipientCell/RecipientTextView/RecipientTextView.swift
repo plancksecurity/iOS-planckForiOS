@@ -48,7 +48,7 @@ extension RecipientTextView: UITextViewDelegate {
                          shouldChangeTextIn range: NSRange,
                          replacementText text: String) -> Bool {
         guard let vm = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return true
         }
         if vm.isAddressDeliminator(str: text) {
@@ -64,7 +64,7 @@ extension RecipientTextView: UITextViewDelegate {
                     return true
             }
             guard let potentiallyReplacedText = textView.text(in: newRange) else {
-                Logger.frontendLogger.errorAndCrash("Invalid state")
+                Log.shared.errorAndCrash("Invalid state")
                 return true
             }
             // Check if text is Attachment and select it
@@ -89,7 +89,7 @@ extension RecipientTextView: UITextViewDelegate {
                   shouldInteractWith textAttachment: NSTextAttachment,
                   in characterRange: NSRange) -> Bool {
         guard let vm = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return true
         }
         return vm.shouldInteract(with: textAttachment)

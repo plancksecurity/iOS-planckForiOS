@@ -31,7 +31,7 @@ class AccountCell: TextViewContainingTableViewCell {
 
     private func setupPickerView() {
         guard let viewModel = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return
         }
         picker = AccountPickerView()

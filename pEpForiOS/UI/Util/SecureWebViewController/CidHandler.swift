@@ -36,7 +36,7 @@ extension CidHandler: WKURLSchemeHandler {
             urlSchemeTask.didFinish()
         }
         guard let url = urlSchemeTask.request.url else {
-            Logger.frontendLogger.errorAndCrash("No URL?")
+            Log.shared.errorAndCrash("No URL?")
             return
         }
 

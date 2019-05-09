@@ -189,7 +189,7 @@ public class AccountSettingsViewModel {
         guard let viewModelPort = viewModel.port,
             let port = UInt16(viewModelPort),
             let address = viewModel.address else {
-                Logger.frontendLogger.errorAndCrash("viewModel misses required data.")
+                Log.shared.errorAndCrash("viewModel misses required data.")
                 return nil
         }
         let transport = Server.Transport(fromString: viewModel.transport)
@@ -220,8 +220,7 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
                 try verifiableAccount?.save()
                 delegate?.didVerify(result: .ok)
             } catch {
-                Logger.frontendLogger.log(error: error)
-                Logger.frontendLogger.errorAndCrash("Unexpected error on saving the account")
+                Log.shared.errorAndCrash("%@", error.localizedDescription)
             }
         case .failure(let error):
             if let imapError = error as? ImapSyncError {
@@ -231,8 +230,7 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
                 delegate?.didVerify(
                     result: .smtpError(smtpError))
             } else {
-                Logger.frontendLogger.log(error: error)
-                Logger.frontendLogger.errorAndCrash("Unexpected error")
+                Log.shared.errorAndCrash("%@", error.localizedDescription)
             }
         }
     }

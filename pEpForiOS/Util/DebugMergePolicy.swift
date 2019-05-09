@@ -38,7 +38,7 @@ class DebugMergePolicy: NSMergePolicy {
                 for c in conflictingObjects {
                     logString += "\n* \(c.keyPath):\n\(String(describing: c.o1))\n->\n\(String(describing: c.o2))"
                 }
-                Logger.utilLogger.error("%{public}@", logString)
+                Log.shared.error("%{public}@", logString)
             }
         }
     }
