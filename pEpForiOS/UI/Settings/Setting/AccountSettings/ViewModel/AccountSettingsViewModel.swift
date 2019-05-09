@@ -83,7 +83,7 @@ public class AccountSettingsViewModel {
                     as? OAuth2AccessTokenProtocol {
                 self.accessToken = token
             } else {
-                Logger.frontendLogger.errorAndCrash("Supposed to do OAUTH2, but no existing token")
+                Log.shared.errorAndCrash("Supposed to do OAUTH2, but no existing token")
             }
         }
     }
@@ -127,7 +127,7 @@ public class AccountSettingsViewModel {
 
         if isOAuth2 {
             if self.accessToken == nil {
-                Logger.frontendLogger.errorAndCrash("Have to do OAUTH2, but lacking current token")
+                Log.shared.errorAndCrash("Have to do OAUTH2, but lacking current token")
             }
             theVerifier.authMethod = .saslXoauth2
             theVerifier.accessToken = accessToken

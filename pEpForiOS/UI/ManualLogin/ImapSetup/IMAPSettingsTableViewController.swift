@@ -135,7 +135,7 @@ extension IMAPSettingsTableViewController: SegueHandlerType {
                 destination.appConfig = appConfig
                 destination.model = model
             } else {
-                Logger.utilLogger.errorAndCrash(
+                Log.shared.errorAndCrash(
                     "Seque is .SMTPSettings, but controller is not a SMTPSettingsTableViewController")
             }
             break
