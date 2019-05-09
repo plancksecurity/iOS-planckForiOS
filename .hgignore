@@ -12,4 +12,3 @@ build/.*
 ^.*\.pyc$
 
 syntax: glob
-scripts/python/secret_accounts.ini
