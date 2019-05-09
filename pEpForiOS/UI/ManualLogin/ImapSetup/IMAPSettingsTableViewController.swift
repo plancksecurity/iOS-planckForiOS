@@ -32,7 +32,9 @@ class IMAPSettingsTableViewController: BaseTableViewController, TextfieldRespond
 
     let viewWidthAligner = ViewWidthsAligner()
 
+    /// - Note: This VC doesn't have a view model yet, so this is used for the model.
     var model: VerifiableAccountProtocol?
+
     var fields = [UITextField]()
     var responder = 0
 

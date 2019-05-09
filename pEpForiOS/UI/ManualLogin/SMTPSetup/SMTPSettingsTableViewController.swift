@@ -21,7 +21,9 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     @IBOutlet weak var serverTitle: UILabel!
     @IBOutlet weak var portTitle: UILabel!
 
+    /// - Note: This VC doesn't have a view model yet, so this is used for the model.
     var model: VerifiableAccountProtocol?
+
     var fields = [UITextField]()
     var responder = 0
 
