@@ -470,10 +470,15 @@ extension EmailListViewModel {
 extension EmailListViewModel {
 
     private func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
+        updatesEnabled = false
         let message = messageQueryResults[indexPath.row]
-        // This does *not* trigger FetchedResultsController. Ingtentionally.
-        message.imapFlags.flagged = flagged
+        let imap =  message.imapFlags
+        imap.flagged = flagged
+        message.imapFlags = imap
         message.save()
+//        // This does *not* trigger FetchedResultsController. Ingtentionally.
+//        message.imapFlags.flagged = flagged
+//        message.save()
     }
 
     private func setSeenValue(forIndexPath indexPath: IndexPath, newValue seen: Bool) {
