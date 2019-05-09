@@ -1,4 +1,4 @@
-regexp
+syntax: regexp
 \.DS_Store
 xcuserdata/.*
 Pods/.*
@@ -9,10 +9,7 @@ Pods/.*
 pEpTrustWords\.bundle/system\.db
 build/.*
 
-.*secret.*
-.*Secret.*
-.*SECRET.*
-
 ^.*\.pyc$
 
-glob
+syntax: glob
+scripts/python/secret_accounts.ini
