@@ -14,7 +14,7 @@ import PEPObjCAdapterFramework
 import PantomimeFramework
 
 /// Base class for test data.
-/// Make sure that, in your SecretTestData, you override:
+/// - Note: Make sure that, in your SecretTestData, you override:
 ///  * `populateAccounts` if you don't use the greenmail local server for testing,
 ///    or you want to test against other servers for various reasons.
 ///  * `populateVerifiableAccounts` in order to provide verifiable servers, to test
