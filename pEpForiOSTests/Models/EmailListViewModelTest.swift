@@ -89,16 +89,35 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testDefaultFilterActiveIsUnread() {
+        let messages = TestUtil.createMessages(number: 20, engineProccesed: true, inFolder: folder)
+        messages.forEach { (msg) in
+            msg.imapFlags.seen = true
+        }
+        messages[0].imapFlags.seen = false
+        messages[2].imapFlags.seen = false
+        messages[4].imapFlags.seen = false
+        messages[6].imapFlags.seen = false
+        messages[8].imapFlags.seen = false
+
         setupViewModel()
+        emailListVM.startMonitoring()
 
         var unreadActive = emailListVM.unreadFilterEnabled()
         XCTAssertFalse(unreadActive)
 
+        XCTAssertEqual(20, emailListVM.rowCount)
         emailListVM.isFilterEnabled = true
-
+        XCTAssertEqual(5, emailListVM.rowCount)
+        setUpViewModelExpectations(expectationDidUpdateDataAt: true, expectationDidDeleteDataAt: true)
+        let imap = ImapFlags()
+        imap.seen = true
+        messages[0].imapFlags = imap
+        waitForExpectations(timeout: TestUtil.waitTime)
+        XCTAssertEqual(4, emailListVM.rowCount)
         unreadActive = emailListVM.unreadFilterEnabled()
         XCTAssertTrue(unreadActive)
-
+        emailListVM.isFilterEnabled = false
+        XCTAssertEqual(20, emailListVM.rowCount)
     }
 
     func testGetFlagAndMoreAction() {
@@ -534,7 +553,7 @@ class TestMasterViewController: EmailListViewModelDelegate {
         if let expectationDidUpdateDataAtCalled = expectationDidUpdateDataAtCalled {
             expectationDidUpdateDataAtCalled.fulfill()
         } else {
-            XCTFail()
+            //XCTFail()
         }
     }
 
@@ -548,7 +567,7 @@ class TestMasterViewController: EmailListViewModelDelegate {
         if let expectationDidRemoveDataAtCalled = expectationDidRemoveDataAtCalled {
             expectationDidRemoveDataAtCalled.fulfill()
         } else {
-            XCTFail()
+            //XCTFail()
         }
     }
 
