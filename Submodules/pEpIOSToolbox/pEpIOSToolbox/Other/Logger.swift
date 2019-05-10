@@ -58,21 +58,6 @@ public class Logger {
         }
     }
 
-    //!!!: remove this loggers  from to the app if any
-
-    @available(*, deprecated, message: "Instead create a singleton per Xcode project (Module) yourself")
-    public static let frontendLogger = Logger(category: "frontend")
-    @available(*, deprecated, message: "Instead create a singleton per Xcode project (Module) yourself")
-    public static let backendLogger = Logger(category: "backend")
-    @available(*, deprecated, message: "Instead create a singleton per Xcode project (Module) yourself")
-    public static let utilLogger = Logger(category: "util")
-    @available(*, deprecated, message: "Instead create a singleton per Xcode project (Module) yourself")
-    public static let htmlParsingLogger = Logger(category: "htmlParsing")
-    @available(*, deprecated, message: "Instead create a singleton per Xcode project (Module) yourself")
-    public static let modelLogger = Logger(category: "model")
-    @available(*, deprecated, message: "Instead create a singleton per Xcode project (Module) yourself")
-    public static let appDelegateLogger = Logger(category: "appDelegate")
-
     public init(subsystem: String = "security.pEp.app.iOS", category: String) {
         self.subsystem = subsystem
         self.category = category

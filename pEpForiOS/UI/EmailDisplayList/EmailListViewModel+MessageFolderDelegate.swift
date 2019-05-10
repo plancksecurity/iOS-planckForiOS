@@ -17,7 +17,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     func didCreate(message: Message) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             me.didCreateInternal(message: message)
@@ -27,7 +27,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     func didUpdate(message: Message) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             me.didUpdateInternal(message: message)
@@ -37,7 +37,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     func didDelete(message: Message) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             me.didDeleteInternal(message: message)
@@ -140,7 +140,7 @@ extension EmailListViewModel: MessageFolderDelegate {
 
         // We do have this message in our (top message) model, so we do have to update it
         guard let existingMessage = messages.object(at: indexExisting) else {
-            Logger.frontendLogger.errorAndCrash(
+            Log.shared.errorAndCrash(
                 "We should have the message at this point")
             return
         }
@@ -193,7 +193,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         // The updated message has to be shown. Add it to the model ...
         let indexInserted = me.messages.insert(object: previewMessage)
         if indexExisting != indexInserted {
-            Logger.frontendLogger.warn(
+            Log.shared.warn(
                 "When updating a message, the the new index of the message must be the same as the old index. Something is fishy here."
             )
         }

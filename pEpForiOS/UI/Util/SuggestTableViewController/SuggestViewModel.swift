@@ -54,7 +54,7 @@ class SuggestViewModel {
 
     public func handleRowSelected(at index: Int) {
         guard index < identities.count else {
-            Logger.frontendLogger.errorAndCrash("Out of bounds")
+            Log.shared.errorAndCrash("Out of bounds")
             return
         }
         resultDelegate?.suggestViewModelDidSelectContact(identity: identities[index])
@@ -66,7 +66,7 @@ class SuggestViewModel {
 
     public func row(at index: Int) -> Row {
         guard index < identities.count else {
-            Logger.frontendLogger.errorAndCrash("Index out of bounds")
+            Log.shared.errorAndCrash("Index out of bounds")
             return Row(name: "Problem", email: "child")
         }
         let identity = identities[index]

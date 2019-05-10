@@ -24,7 +24,7 @@ struct TrustedServerSettingsViewModel {
 
     mutating func setStoreSecurely(forAccountWith address: String, toValue newValue: Bool) {
         guard let account = Account.Fetch.accountAllowedToManuallyTrust(fromAddress: address) else {
-            Logger.frontendLogger.errorAndCrash("Address should be allowed")
+            Log.shared.errorAndCrash("Address should be allowed")
             return
         }
 
@@ -44,7 +44,7 @@ struct TrustedServerSettingsViewModel {
         var createes = [Row]()
         for account in accounts {
             guard let isTrusted = account.imapServer?.manuallyTrusted else {
-                Logger.frontendLogger.errorAndCrash("Trusted server has no imapServer")
+                Log.shared.errorAndCrash("Trusted server has no imapServer")
                 continue
             }
             createes.append(Row(address: account.user.address, storeMessagesSecurely: !isTrusted))
