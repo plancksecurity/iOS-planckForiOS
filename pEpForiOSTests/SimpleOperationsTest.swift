@@ -125,12 +125,14 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         let expMailsSynced = expectation(description: "expMailsSynced")
 
-        guard let op = SyncMessagesOperation(
-            parentName: #function,
-            imapSyncData: imapSyncData, folder: folder) else {
-                XCTFail()
-                return
+        guard let folderName = folder.name else {
+            XCTFail()
+            return
         }
+        let op = SyncMessagesOperation(imapSyncData: imapSyncData,
+                                       folderName: folderName,
+                                       firstUID: folder.firstUID(context: folder.managedObjectContext),
+                                       lastUID: folder.lastUID(context: folder.managedObjectContext))
         op.completionBlock = {
             op.completionBlock = nil
             expMailsSynced.fulfill()
