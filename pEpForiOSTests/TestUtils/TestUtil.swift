@@ -503,7 +503,12 @@ class TestUtil {
                               dateSent: Date = Date(),
                               attachments: Int = 0,
                               uid: Int? = nil) -> Message {
-        let msg = Message(uuid: MessageID.generate(), parentFolder: folder)
+        let msg : Message
+        if let uid = uid {
+            msg = Message(uuid: MessageID.generate(), uid: uid, parentFolder: folder)
+        } else {
+            msg = Message(uuid: MessageID.generate(), parentFolder: folder)
+        }
         msg.from = from
         msg.replaceTo(with: tos)
         msg.replaceCc(with: ccs)
@@ -512,17 +517,12 @@ class TestUtil {
         msg.shortMessage = shortMessage
         msg.longMessage = longMessage
         msg.longMessageFormatted = longMessageFormatted
-        let minute:TimeInterval = 60.0
         msg.sent = dateSent
         if engineProccesed {
             msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
         }
         msg.replaceAttachments(with: createAttachments(number: attachments))
-        var result = msg
-        if let uid = uid {
-            result =  Message(uid: uid, message: msg)
-        }
-        return result
+        return msg
     }
 
     static func createMessage(uid: Int, inFolder folder: Folder) -> Message {
