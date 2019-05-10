@@ -45,26 +45,4 @@ extension Identity {
             button.tintColor = buttonDefault.tintColor
         }
     }
-
-    /**
-     Will use update_identity() for other identities, and myself() for own ones.
-     Returns: A `PEPIdentity` that has been updated and thus should contain the fingerprint.
-     */
-    public func updatedIdentity(session: PEPSession = PEPSession()) -> PEPIdentity {
-        let md = PEPUtil.pEp(identity: self)
-        do {
-            if md.isOwn {
-                try session.mySelf(md)
-            } else {
-                try session.update(md)
-            }
-        } catch let error as NSError {
-            assertionFailure("\(error)")
-        }
-        return md
-    }
-
-    public var displayString: String {
-        return userName ?? address.trimmed()
-    }
 }
