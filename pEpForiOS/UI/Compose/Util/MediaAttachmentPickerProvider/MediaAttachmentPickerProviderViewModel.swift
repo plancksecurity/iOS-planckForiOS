@@ -48,7 +48,7 @@ class MediaAttachmentPickerProviderViewModel {
         guard
             let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
             let url = info[UIImagePickerController.InfoKey.referenceURL] as? URL else {
-                Logger.frontendLogger.errorAndCrash("No Data")
+                Log.shared.errorAndCrash("No Data")
                 return
         }
 
@@ -59,17 +59,17 @@ class MediaAttachmentPickerProviderViewModel {
 
     private func createMovieAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) {
         guard let url = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
-            Logger.frontendLogger.errorAndCrash("No URL")
+            Log.shared.errorAndCrash("No URL")
             return
         }
 
         createAttachment(forResource: url) {[weak self] (attachment)  in
             guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             guard let att = attachment else {
-                Logger.frontendLogger.errorAndCrash("No Attachment")
+                Log.shared.errorAndCrash("No Attachment")
                 return
             }
             let result = MediaAttachment(type: .movie, attachment: att)
@@ -83,11 +83,11 @@ class MediaAttachmentPickerProviderViewModel {
                                   completion: @escaping (Attachment?) -> Void) {
         attachmentFileIOQueue.async { [weak self] in
             guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             guard let resourceData = try? Data(contentsOf: resourceUrl) else {
-                Logger.frontendLogger.errorAndCrash("Cound not get data for URL")
+                Log.shared.errorAndCrash("Cound not get data for URL")
                 completion(nil)
                 return
             }

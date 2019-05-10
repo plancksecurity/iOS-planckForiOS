@@ -18,7 +18,7 @@ extension Server {
             var accounts = [Account]()
             for cdServer in cdServers {
                 guard let account = cdServer.account?.account() else {
-                    Logger.modelLogger.errorAndCrash("No address")
+                    Log.shared.errorAndCrash("No address")
                     continue
                 }
                 accounts.append(account)
