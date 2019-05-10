@@ -306,7 +306,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                                    password: String?,
                                    accessToken: OAuth2AccessTokenProtocol?)
         -> CdServerCredentials {
-            let credentials = CdServerCredentials.create(context: context)
+            let credentials = CdServerCredentials(context: context)
             credentials.loginName = loginName ?? address
 
             let keyChainId = UUID().uuidString
