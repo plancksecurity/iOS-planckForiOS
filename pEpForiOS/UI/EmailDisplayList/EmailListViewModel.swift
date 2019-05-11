@@ -34,14 +34,6 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func showUnreadButton(enabled: Bool)
 }
 
-// MARK: - FilterViewDelegate
-
-extension EmailListViewModel: FilterViewDelegate {
-    public func filterChanged(newFilter: MessageQueryResultsFilter) {
-        setNewFilterAndReload(filter: newFilter)
-    }
-}
-
 // MARK: - EmailListViewModel
 
 class EmailListViewModel {
@@ -518,6 +510,47 @@ extension EmailListViewModel {
     }
 }
 
+// MARK: - FolderType Utils
+
+extension EmailListViewModel {
+
+    private func getParentFolder(forMessageAt index: Int) -> Folder {
+        return messageQueryResults[index].parent
+    }
+
+    private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType == .outbox
+    }
+
+    private func folderIsDraft(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType == .drafts
+    }
+
+    private func folderIsDraftOrOutbox(_ parentFoldder: Folder) -> Bool {
+        return folderIsDraft(parentFoldder) || folderIsOutbox(parentFoldder)
+    }
+
+    private func folderIsDraft(_ parentFolder: Folder?) -> Bool {
+        guard let folder = parentFolder else {
+            Log.shared.errorAndCrash("No parent.")
+            return false
+        }
+        return folderIsDraft(folder)
+    }
+
+    private func folderIsOutbox(_ parentFolder: Folder?) -> Bool {
+        guard let folder = parentFolder else {
+            Log.shared.errorAndCrash("No parent.")
+            return false
+        }
+        return folderIsOutbox(folder)
+    }
+
+    private func folderIsDraftsOrOutbox(_ parentFolder: Folder?) -> Bool {
+        return folderIsDraft(parentFolder) || folderIsOutbox(parentFolder)
+    }
+}
+
 // MARK: - ReplyAllPossibleCheckerProtocol
 
 extension EmailListViewModel: ReplyAllPossibleCheckerProtocol {
@@ -580,43 +613,10 @@ extension EmailListViewModel: ComposeViewModelResultDelegate {
     }
 }
 
-// MARK: - FolderType Utils
+// MARK: - FilterViewDelegate
 
-extension EmailListViewModel {
-
-    private func getParentFolder(forMessageAt index: Int) -> Folder {
-        return messageQueryResults[index].parent
-    }
-
-    private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
-        return parentFolder.folderType == .outbox
-    }
-
-    private func folderIsDraft(_ parentFolder: Folder) -> Bool {
-        return parentFolder.folderType == .drafts
-    }
-
-    private func folderIsDraftOrOutbox(_ parentFoldder: Folder) -> Bool {
-        return folderIsDraft(parentFoldder) || folderIsOutbox(parentFoldder)
-    }
-
-    private func folderIsDraft(_ parentFolder: Folder?) -> Bool {
-        guard let folder = parentFolder else {
-            Log.shared.errorAndCrash("No parent.")
-            return false
-        }
-        return folderIsDraft(folder)
-    }
-
-    private func folderIsOutbox(_ parentFolder: Folder?) -> Bool {
-        guard let folder = parentFolder else {
-            Log.shared.errorAndCrash("No parent.")
-            return false
-        }
-        return folderIsOutbox(folder)
-    }
-
-    private func folderIsDraftsOrOutbox(_ parentFolder: Folder?) -> Bool {
-        return folderIsDraft(parentFolder) || folderIsOutbox(parentFolder)
+extension EmailListViewModel: FilterViewDelegate {
+    public func filterChanged(newFilter: MessageQueryResultsFilter) {
+        setNewFilterAndReload(filter: newFilter)
     }
 }
