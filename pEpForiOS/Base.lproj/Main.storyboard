@@ -80,26 +80,10 @@
                                             </constraints>
                                         </imageView>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="8QD-qP-0hS">
-                                            <rect key="frame" x="303.5" y="5" width="63.5" height="19.5"/>
+                                            <rect key="frame" x="332.5" y="5" width="34.5" height="19.5"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="4" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DaU-dh-sn5">
-                                                    <rect key="frame" x="0.0" y="0.0" width="10" height="19.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                                    <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <attributedString key="userComments">
-                                                        <fragment content="Not user-visible"/>
-                                                    </attributedString>
-                                                </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thread-icon" translatesAutoresizingMaskIntoConstraints="NO" id="Aoj-3y-zwL">
-                                                    <rect key="frame" x="14" y="4.5" width="11" height="11"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="11" id="aif-rc-97u"/>
-                                                        <constraint firstAttribute="height" secondItem="Aoj-3y-zwL" secondAttribute="width" id="qXW-Y0-Ffm"/>
-                                                    </constraints>
-                                                </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wkg-wf-Dbd">
-                                                    <rect key="frame" x="29" y="0.0" width="34.5" height="19.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="34.5" height="19.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -107,7 +91,7 @@
                                             </subviews>
                                         </stackView>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" image="pEp-status-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="m0u-Jn-mQU">
-                                            <rect key="frame" x="60" y="56.5" width="16" height="16"/>
+                                            <rect key="frame" x="56" y="52.5" width="20" height="20"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="m0u-Jn-mQU" secondAttribute="height" multiplier="1:1" id="7pr-8F-BtP"/>
@@ -141,11 +125,9 @@
                                     <outlet property="contactImageView" destination="YqR-ga-Tf9" id="E2c-EP-D1U"/>
                                     <outlet property="dateLabel" destination="Wkg-wf-Dbd" id="TSP-tH-GR2"/>
                                     <outlet property="flaggedImageView" destination="BLq-0g-OgR" id="a6H-Fv-kDq"/>
-                                    <outlet property="messageCountLabel" destination="DaU-dh-sn5" id="iBa-MU-sGd"/>
                                     <outlet property="ratingImage" destination="m0u-Jn-mQU" id="Xod-5v-9K3"/>
                                     <outlet property="subjectLabel" destination="5Py-55-oem" id="UtV-Po-SPg"/>
                                     <outlet property="summaryLabel" destination="BvI-Zi-zU6" id="oGG-8D-EeC"/>
-                                    <outlet property="threadIndicator" destination="Aoj-3y-zwL" id="kKR-kc-Rg6"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -932,7 +914,6 @@
         <image name="pEp-status-yellow" width="20" height="20"/>
         <image name="reply" width="33" height="64"/>
         <image name="separator_pixel_grey" width="1" height="1"/>
-        <image name="thread-icon" width="13" height="13"/>
         <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>

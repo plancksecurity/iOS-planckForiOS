@@ -23,8 +23,6 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
     @IBOutlet weak var ratingImage: UIImageView!
     @IBOutlet weak var attachmentIcon: UIImageView!
     @IBOutlet weak var contactImageView: UIImageView!
-    @IBOutlet weak var messageCountLabel: UILabel?
-    @IBOutlet weak var threadIndicator: UIImageView?
 
     /**
      Fake constraint for IB to be happy.
@@ -46,20 +44,6 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
                 attachmentIcon.isHidden = false
             } else {
                 attachmentIcon.isHidden = true
-            }
-        }
-    }
-
-    private var messageCount:Int = 0 {
-        didSet {
-            if messageCount > 0 {
-                messageCountLabel?.text = String(messageCount)
-                messageCountLabel?.isHidden = false
-                threadIndicator?.isHidden = false
-            } else {
-                threadIndicator?.isHidden = true
-                messageCountLabel?.isHidden = true
-                messageCountLabel?.text = nil
             }
         }
     }
@@ -88,7 +72,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.contactImageView.applyContactImageCornerRadius()
+        contactImageView.applyContactImageCornerRadius()
         resetToDefault()
     }
 
@@ -197,8 +181,6 @@ extension EmailListViewCell {
         summaryLabel.text = nil
         ratingImage.isHidden = true
         contactImageView.image = EmailListViewCell.emptyContactImage
-        messageCountLabel?.isHidden = true
-        threadIndicator?.isHidden = true
         tintColor = UIColor.pEpGreen
     }
 
@@ -232,7 +214,6 @@ extension EmailListViewCell {
         subjectLabel.font = font
         summaryLabel.font = font
         dateLabel.font = font
-        messageCountLabel?.font = font
     }
 
     /**
