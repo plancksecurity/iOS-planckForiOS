@@ -94,7 +94,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
         viewModel?.unsubscribeForUpdates()
     }
 
-    // MARK: View overrides (life cycle etc.)
+    // MARK: - View overrides (life cycle etc.)
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -123,7 +123,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
             equalTo: contactImageView.bottomAnchor).isActive = true
     }
 
-    // MARK: Private
+    // MARK: - Private
 
     private static var flaggedImage: UIImage? = nil
     private static var emptyContactImage = UIImage(named: "empty-avatar")
