@@ -11,7 +11,7 @@ import MessageModel
 import SwipeCellKit
 
 class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
-    // MARK: Public API
+    public static let storyboardId = "EmailListViewCell"
 
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
@@ -38,7 +38,31 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
      */
     @IBOutlet weak var fakeRatingImageToContactImageHorizontal: NSLayoutConstraint?
 
-    public static let storyboardId = "EmailListViewCell"
+    private var viewModel: MessageViewModel?
+
+    private var hasAttachment:Bool = false {
+        didSet {
+            if hasAttachment {
+                attachmentIcon.isHidden = false
+            } else {
+                attachmentIcon.isHidden = true
+            }
+        }
+    }
+
+    private var messageCount:Int = 0 {
+        didSet {
+            if messageCount > 0 {
+                messageCountLabel?.text = String(messageCount)
+                messageCountLabel?.isHidden = false
+                threadIndicator?.isHidden = false
+            } else {
+                threadIndicator?.isHidden = true
+                messageCountLabel?.isHidden = true
+                messageCountLabel?.text = nil
+            }
+        }
+    }
 
     public var isFlagged:Bool = false {
         didSet {
@@ -50,48 +74,14 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
         }
     }
 
-    public func configure(for viewModel: MessageViewModel) {
-        self.viewModel = viewModel
-
-        // Occupy space in any case. Otherwise the summary might be filled
-        // _after_ this function has ended and the cell has already been
-        // layouted, leading to a smaller cell than usual.
-        summaryLabel.text = " "
-
-        addressLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.displayedUsername)
-        subjectLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.subject)
-
-        viewModel.bodyPeekCompletion = { [weak self] bodyPeek in
-            self?.summaryLabel.text = bodyPeek == "" ? " " : bodyPeek
-        }
-
-        isFlagged = viewModel.isFlagged
-        isSeen = viewModel.isSeen
-
-        hasAttachment = viewModel.showAttchmentIcon
-        dateLabel.text = viewModel.dateText
-
-        // Message threading is not supported. Let's keep it for now. It might be helpful for
-        // reimplementing.
-//        configureThreadIndicator(for: viewModel)
-
-        if viewModel.senderContactImage != nil {
-            setContactImage(image: viewModel.senderContactImage)
-        } else {
-            viewModel.getProfilePicture { [weak self] image in
-                self?.setContactImage(image: image)
+    public var isSeen:Bool = false {
+        didSet {
+            if isSeen {
+                setSeen()
+            } else {
+                unsetSeen()
             }
         }
-
-        viewModel.getSecurityBadge { [weak self] image in
-            DispatchQueue.main.async {
-                self?.setPepRatingImage(image: image)
-            }
-        }
-    }
-
-    public func clear() {
-        viewModel?.unsubscribeForUpdates()
     }
 
     // MARK: - View overrides (life cycle etc.)
@@ -123,60 +113,71 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
             equalTo: contactImageView.bottomAnchor).isActive = true
     }
 
-    // MARK: - Private
+    public func configure(for viewModel: MessageViewModel) {
+        self.viewModel = viewModel
+
+        // Occupy space in any case. Otherwise the summary might be filled
+        // _after_ this function has ended and the cell has already been
+        // layouted, leading to a smaller cell than usual.
+        summaryLabel.text = " "
+
+        addressLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.displayedUsername)
+        subjectLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.subject)
+
+        viewModel.bodyPeekCompletion = { [weak self] bodyPeek in
+            self?.summaryLabel.text = bodyPeek == "" ? " " : bodyPeek
+        }
+
+        isFlagged = viewModel.isFlagged
+        isSeen = viewModel.isSeen
+
+        hasAttachment = viewModel.showAttchmentIcon
+        dateLabel.text = viewModel.dateText
+
+        // Message threading is not supported. Let's keep it for now. It might be helpful for
+        // reimplementing.
+        //        configureThreadIndicator(for: viewModel)
+
+        if viewModel.senderContactImage != nil {
+            setContactImage(image: viewModel.senderContactImage)
+        } else {
+            viewModel.getProfilePicture { [weak self] image in
+                self?.setContactImage(image: image)
+            }
+        }
+
+        viewModel.getSecurityBadge { [weak self] image in
+            DispatchQueue.main.async {
+                self?.setPepRatingImage(image: image)
+            }
+        }
+    }
+
+    public func clear() {
+        viewModel?.unsubscribeForUpdates()
+    }
+}
+
+// MARK: - Private
+
+extension EmailListViewCell {
 
     private static var flaggedImage: UIImage? = nil
     private static var emptyContactImage = UIImage(named: "empty-avatar")
 
-    private var viewModel: MessageViewModel?
-
-    public var isSeen:Bool = false {
-        didSet {
-            if isSeen {
-                setSeen()
-            } else {
-                unsetSeen()
-            }
-        }
-    }
-
-    private var hasAttachment:Bool = false {
-        didSet {
-            if hasAttachment {
-                attachmentIcon.isHidden = false
-            } else {
-                attachmentIcon.isHidden = true
-            }
-        }
-    }
-
-    private var messageCount:Int = 0 {
-        didSet {
-            if messageCount > 0 {
-                messageCountLabel?.text = String(messageCount)
-                messageCountLabel?.isHidden = false
-                threadIndicator?.isHidden = false
-            } else {
-                threadIndicator?.isHidden = true
-                messageCountLabel?.isHidden = true
-                messageCountLabel?.text = nil
-            }
-        }
-    }
-
     // Message threading is not supported. Let's keep it for now. It might be helpful for
     // reimplementing.
-//    private func configureThreadIndicator(for viewModel: MessageViewModel) {
-//        guard let _ = messageCountLabel,
-//            let _ = threadIndicator else {
-//                messageCount = 0
-//                return
-//        }
-//        viewModel.messageCount { (messageCount) in
-//            self.messageCount = messageCount
-//        }
-//
-//    }
+    //    private func configureThreadIndicator(for viewModel: MessageViewModel) {
+    //        guard let _ = messageCountLabel,
+    //            let _ = threadIndicator else {
+    //                messageCount = 0
+    //                return
+    //        }
+    //        viewModel.messageCount { (messageCount) in
+    //            self.messageCount = messageCount
+    //        }
+    //
+    //    }
 
     private func setPepRatingImage(image: UIImage?) {
         if ratingImage.image != image {
@@ -202,8 +203,8 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
     }
 
     private func setFlagged() {
-            flaggedImageView.isHidden = false
-            flaggedImageView.image = UIImage(named: "icon-flagged")
+        flaggedImageView.isHidden = false
+        flaggedImageView.image = UIImage(named: "icon-flagged")
     }
 
     private func unsetFlagged() {
