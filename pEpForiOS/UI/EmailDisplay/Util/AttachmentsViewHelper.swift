@@ -6,7 +6,7 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import pEpIOSToolbox
 import MessageModel
 
