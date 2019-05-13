@@ -58,7 +58,6 @@
 		151F71F7202A06760057C74D /* TestDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F71EC202A06750057C74D /* TestDataBase.swift */; };
 		151F71F9202A06760057C74D /* ReplicationServiceObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F71EE202A06750057C74D /* ReplicationServiceObserver.swift */; };
 		151F71FA202A06760057C74D /* DecryptionAttemptCounterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F71EF202A06750057C74D /* DecryptionAttemptCounterDelegate.swift */; };
-		151F71FB202A06760057C74D /* MockBackgrounder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F71F0202A06750057C74D /* MockBackgrounder.swift */; };
 		151F71FC202A06760057C74D /* CoreDataDrivenTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F71F1202A06750057C74D /* CoreDataDrivenTestBase.swift */; };
 		151F71FE202A06760057C74D /* CdMessage+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F71F3202A06750057C74D /* CdMessage+TestUtils.swift */; };
 		151F71FF202A06760057C74D /* Message+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F71F4202A06750057C74D /* Message+TestUtils.swift */; };
@@ -540,7 +539,6 @@
 		151F71EC202A06750057C74D /* TestDataBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDataBase.swift; sourceTree = "<group>"; };
 		151F71EE202A06750057C74D /* ReplicationServiceObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplicationServiceObserver.swift; sourceTree = "<group>"; };
 		151F71EF202A06750057C74D /* DecryptionAttemptCounterDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptionAttemptCounterDelegate.swift; sourceTree = "<group>"; };
-		151F71F0202A06750057C74D /* MockBackgrounder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockBackgrounder.swift; sourceTree = "<group>"; };
 		151F71F1202A06750057C74D /* CoreDataDrivenTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataDrivenTestBase.swift; sourceTree = "<group>"; };
 		151F71F3202A06750057C74D /* CdMessage+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+TestUtils.swift"; sourceTree = "<group>"; };
 		151F71F4202A06750057C74D /* Message+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+TestUtils.swift"; sourceTree = "<group>"; };
@@ -1079,7 +1077,6 @@
 				151F71EF202A06750057C74D /* DecryptionAttemptCounterDelegate.swift */,
 				151F71F4202A06750057C74D /* Message+TestUtils.swift */,
 				003C0FA620B5581A0093A987 /* SecretTestData.swift */,
-				151F71F0202A06750057C74D /* MockBackgrounder.swift */,
 				151F71EE202A06750057C74D /* ReplicationServiceObserver.swift */,
 				151F71EC202A06750057C74D /* TestDataBase.swift */,
 				151F71F5202A06750057C74D /* TestUtil.swift */,
@@ -3087,7 +3084,6 @@
 				00172F432163AC110079B189 /* SettingsViewModelTest.swift in Sources */,
 				438281831E891B7E00087343 /* DateTests.swift in Sources */,
 				15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */,
-				151F71FB202A06760057C74D /* MockBackgrounder.swift in Sources */,
 				151F71FE202A06760057C74D /* CdMessage+TestUtils.swift in Sources */,
 				151F71F9202A06760057C74D /* ReplicationServiceObserver.swift in Sources */,
 				150E18C0219D8C6C009E9048 /* ComposeViewModelSectionTest.swift in Sources */,
