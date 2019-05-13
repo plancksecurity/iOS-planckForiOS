@@ -59,22 +59,32 @@ class AttachmentsViewHelper {
             return
         }
 
-        let viewContainers = theBuildOp.attachmentContainers.map {
-            (c: AttachmentsViewOperation.AttachmentContainer) -> (AttachmentViewContainer) in
+        let viewContainers =
+            theBuildOp.attachmentContainers.compactMap { [weak self] (c: AttachmentsViewOperation.AttachmentContainer) -> (AttachmentViewContainer) in
             switch c {
             case .imageAttachment(let attachment, let image):
                 return AttachmentViewContainer(view: UIImageView(image: image),
                                                attachment: attachment)
             case .docAttachment(let attachment):
-                let dic = UIDocumentInteractionController()
-                dic.name = attachment.fileName
+                var resultView: AttachmentSummaryView?
+                let session = Session()
+                session.performAndWait {
+                    let safeAttachments = attachment.safeForSession(session)
+                    let dic = UIDocumentInteractionController()
+                    dic.name = safeAttachments.fileName
 
-                let theAttachmentInfo = attachmentInfo(attachment: attachment)
+                    guard let theAttachmentInfo = self?.attachmentInfo(attachment: safeAttachments) else {
+                        Log.shared.errorAndCrash("No attachment info")
+                        return
+                    }
 
-                let theView = AttachmentSummaryView(
-                    attachmentInfo: theAttachmentInfo,
-                    iconImage: dic.icons.first)
-                return AttachmentViewContainer(view: theView, attachment: attachment)
+                    resultView = AttachmentSummaryView(attachmentInfo: theAttachmentInfo,
+                                                       iconImage: dic.icons.first)
+                }
+                guard let safeView = resultView else {
+                    fatalError()
+                }
+                return AttachmentViewContainer(view: safeView, attachment: attachment)
             }
         }
         imageView.attachmentViewContainers = viewContainers
