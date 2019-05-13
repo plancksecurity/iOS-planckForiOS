@@ -232,7 +232,6 @@
 		43306EBE1FE125B50045DD00 /* OAuth2Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43306EBD1FE125B50045DD00 /* OAuth2Authorization.swift */; };
 		43306EC21FE129840045DD00 /* OAuth2Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43306EC11FE129840045DD00 /* OAuth2Type.swift */; };
 		4334CF302020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334CF2F2020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift */; };
-		4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4336229D1DC76B8100133B3D /* MessageModelTests.swift */; };
 		433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433BCD941D5388C100DD98EF /* ReplyUtil.swift */; };
 		433E7438225B564400B84CD9 /* Account+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E7437225B564400B84CD9 /* Account+Extension.swift */; };
 		433F2E2A21E3581800E1CA49 /* ENGINE-505_Mail_NullInnerMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = 433F2E2921E3581800E1CA49 /* ENGINE-505_Mail_NullInnerMimeType.txt */; };
@@ -714,7 +713,6 @@
 		43306EBD1FE125B50045DD00 /* OAuth2Authorization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2Authorization.swift; sourceTree = "<group>"; };
 		43306EC11FE129840045DD00 /* OAuth2Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Type.swift; sourceTree = "<group>"; };
 		4334CF2F2020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2Type+LibAccountSettings.swift"; sourceTree = "<group>"; };
-		4336229D1DC76B8100133B3D /* MessageModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModelTests.swift; sourceTree = "<group>"; };
 		433724FC1DA2C2B1005E8DF5 /* pEp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = pEp.entitlements; path = ../pEp.entitlements; sourceTree = "<group>"; };
 		433BCD941D5388C100DD98EF /* ReplyUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyUtil.swift; sourceTree = "<group>"; };
 		433E7437225B564400B84CD9 /* Account+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Extension.swift"; sourceTree = "<group>"; };
@@ -1832,7 +1830,6 @@
 				15F82A072006552B0084F9EA /* Tests from MessageModel in Exile due to Apple Bug */,
 				43A601252264B5050099B45C /* Service */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
-				4336229D1DC76B8100133B3D /* MessageModelTests.swift */,
 				438D253B1D4B9E7500BFF7AA /* MimeTests.swift */,
 				43C7B9D01CEC4DDF007A612F /* MiscTests.swift */,
 				430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */,
@@ -3030,7 +3027,6 @@
 				431E58FC1ED5926B00EFA77F /* AccountVerificationServiceTests.swift in Sources */,
 				0017CD1D2162614400F62F13 /* MoveToFolderCellViewModelTests.swift in Sources */,
 				0017CD1B21621E2200F62F13 /* MoveToFolderViewModelTest.swift in Sources */,
-				4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */,
 				1526597D21637759006A78DF /* SuggestViewModelTest.swift in Sources */,
 				43FAA0D41EC9CBC0005BFC4B /* DecryptionTestsInternal.swift in Sources */,
 				F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */,
