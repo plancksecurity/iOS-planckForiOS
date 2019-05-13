@@ -13,38 +13,54 @@ import MessageModel
 class AttachmentToLocalURLOperation: Operation {
     var fileURL: URL?
 
-    let attachment: Attachment
+    private let session: Session
+    private var safeAttachment: Attachment?
 
     init(attachment: Attachment) {
-        self.attachment = attachment
+        let session = Session()
+        self.session = session
+        super.init()
+        session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.safeAttachment = attachment.safeForSession(session)
+        }
     }
 
     override func main() {
-        guard let data = attachment.data else {
-            Log.shared.warn("Attachment without data")
-            return
-        }
-        var tmpDirURL: URL?
-        if #available(iOS 10.0, *) {
-            tmpDirURL = FileManager.default.temporaryDirectory
-        } else {
-            tmpDirURL = URL(fileURLWithPath: NSTemporaryDirectory())
-        }
-        guard let tmpDir = tmpDirURL else {
-            return
-        }
-        let fileName = (attachment.fileName ?? Constants.defaultFileName).extractFileNameOrCid()
-        
-        var theURL = tmpDir.appendingPathComponent(fileName)
+        session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let data =  me.safeAttachment?.data else {
+                Log.shared.warn("Attachment without data")
+                return
+            }
+            var tmpDirURL: URL?
+            if #available(iOS 10.0, *) {
+                tmpDirURL = FileManager.default.temporaryDirectory
+            } else {
+                tmpDirURL = URL(fileURLWithPath: NSTemporaryDirectory())
+            }
+            guard let tmpDir = tmpDirURL else {
+                return
+            }
+            let fileName = ( me.safeAttachment?.fileName ?? Constants.defaultFileName).extractFileNameOrCid()
 
-        if attachment.mimeType == "application/pdf" {
-            theURL = theURL.appendingPathExtension("pdf")
-        }
-        do {
-            try data.write(to: theURL)
-            fileURL = theURL
-        } catch {
-            Log.shared.log(error: error)
+            var theURL = tmpDir.appendingPathComponent(fileName)
+
+            if  me.safeAttachment?.mimeType == "application/pdf" {
+                theURL = theURL.appendingPathExtension("pdf")
+            }
+            do {
+                try data.write(to: theURL)
+                me.fileURL = theURL
+            } catch {
+                Log.shared.log(error: error)
+            }
         }
     }
 }
