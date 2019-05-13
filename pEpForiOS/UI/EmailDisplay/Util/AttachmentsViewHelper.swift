@@ -55,28 +55,34 @@ class AttachmentsViewHelper {
     }
 
     func opFinished(theBuildOp: AttachmentsViewOperation) {
-        if let imageView = attachmentsImageView {
-            let viewContainers = theBuildOp.attachmentContainers.map {
-                (c: AttachmentsViewOperation.AttachmentContainer) -> (AttachmentViewContainer) in
-                switch c {
-                case .imageAttachment(let attachment, let image):
-                    return AttachmentViewContainer(view: UIImageView(image: image),
-                                                   attachment: attachment)
-                case .docAttachment(let attachment):
-                    let dic = UIDocumentInteractionController()
-                    dic.name = attachment.fileName
-
-                    let theAttachmentInfo = attachmentInfo(attachment: attachment)
-
-                    let theView = AttachmentSummaryView(
-                        attachmentInfo: theAttachmentInfo,
-                        iconImage: dic.icons.first)
-                    return AttachmentViewContainer(view: theView, attachment: attachment)
-                }
-            }
-            imageView.attachmentViewContainers = viewContainers
-            delegate?.didCreate(attachmentsView: imageView, message: theBuildOp.message)
+        guard let imageView = attachmentsImageView else {
+            return
         }
+
+        let viewContainers = theBuildOp.attachmentContainers.map {
+            (c: AttachmentsViewOperation.AttachmentContainer) -> (AttachmentViewContainer) in
+            switch c {
+            case .imageAttachment(let attachment, let image):
+                return AttachmentViewContainer(view: UIImageView(image: image),
+                                               attachment: attachment)
+            case .docAttachment(let attachment):
+                let dic = UIDocumentInteractionController()
+                dic.name = attachment.fileName
+
+                let theAttachmentInfo = attachmentInfo(attachment: attachment)
+
+                let theView = AttachmentSummaryView(
+                    attachmentInfo: theAttachmentInfo,
+                    iconImage: dic.icons.first)
+                return AttachmentViewContainer(view: theView, attachment: attachment)
+            }
+        }
+        imageView.attachmentViewContainers = viewContainers
+        guard let msg = theBuildOp.message else {
+            Log.shared.errorAndCrash("No message")
+            return
+        }
+        delegate?.didCreate(attachmentsView: imageView, message: msg)
     }
 
     func updateQuickMetaData(message: Message) {
@@ -85,13 +91,8 @@ class AttachmentsViewHelper {
         let theBuildOp = AttachmentsViewOperation(mimeTypes: mimeTypes, message: message)
         buildOp = theBuildOp
         theBuildOp.completionBlock = { [weak self] in
-            theBuildOp.completionBlock = nil
-            if theBuildOp.message == message {
-                if let mySelf = self {
-                    GCD.onMain {
-                        mySelf.opFinished(theBuildOp: theBuildOp)
-                    }
-                }
+            GCD.onMain {
+                self?.opFinished(theBuildOp: theBuildOp)
             }
         }
         operationQueue.addOperation(theBuildOp)
