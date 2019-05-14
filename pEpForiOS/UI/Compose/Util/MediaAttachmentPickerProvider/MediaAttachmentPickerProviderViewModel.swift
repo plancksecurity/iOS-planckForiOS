@@ -93,11 +93,13 @@ class MediaAttachmentPickerProviderViewModel {
             }
             let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
             let filename = me.fileName(forVideoAt: resourceUrl)
-            let attachment =  Attachment(data: resourceData,
-                                         mimeType: mimeType,
-                                         fileName: filename,
-                                         contentDisposition: .attachment)
-            completion(attachment)
+            DispatchQueue.main.async {
+                let attachment =  Attachment(data: resourceData,
+                                             mimeType: mimeType,
+                                             fileName: filename,
+                                             contentDisposition: .attachment)
+                completion(attachment)
+            }
         }
     }
 

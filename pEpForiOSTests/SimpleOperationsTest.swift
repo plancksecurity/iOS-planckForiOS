@@ -520,7 +520,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testOutgoingMailColorPerformanceWithMySelf() {
-        let moc = Stack.shared.newPrivateConcurrentContext
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
         let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
         try! session.mySelf(myself)
         XCTAssertNotNil(myself.fingerPrint)
@@ -610,7 +610,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
     //fails on first run when the an account was setup on
     func testFixAttachmentsOperation() {
-        let moc = Stack.shared.newPrivateConcurrentContext
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
         let cdFolder = CdFolder(context: moc)
         cdFolder.name = "AttachmentTestFolder"
         cdFolder.folderType = FolderType.inbox
