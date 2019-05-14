@@ -40,7 +40,6 @@ class MessageViewModel: CustomDebugStringConvertible {
             return getBodyMessage()
     }
     var displayedUsername: String
-    var internalMessageCount: Int? = nil
     var internalBoddyPeek: String? = nil
     private var bodyPeek: String? {
         didSet {
@@ -56,12 +55,7 @@ class MessageViewModel: CustomDebugStringConvertible {
         }
     }
 
-    //Only to use internally, external use should call public message()
-    private var internalMessage: Message
-
     required init(with message: Message, queue: OperationQueue) {
-        internalMessage = message
-
         self.queue = queue
 
         uid = message.uid
@@ -85,7 +79,7 @@ class MessageViewModel: CustomDebugStringConvertible {
         setBodyPeek(for: message)
     }
 
-    static private func getDisplayedUsername(for message: Message)-> String{
+    static private func getDisplayedUsername(for message: Message) -> String {
         if (message.parent.folderType == .sent
             || message.parent.folderType == .drafts){
             var identities: [String] = []
@@ -138,6 +132,7 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     // Message threading is not supported. Let's keep it for now. It might be helpful for
     // reimplementing.
+//    var internalMessageCount: Int? = nil
 //    func messageCount(completion: @escaping (Int)->()) {
 //        if let messageCount = internalMessageCount {
 //            completion(messageCount)
@@ -301,7 +296,7 @@ class MessageViewModel: CustomDebugStringConvertible {
     }
 
     public var debugDescription: String {
-        return "<MessageViewModel |\(messageIdentifier)| |\(internalMessage.longMessage?.prefix(3) ?? "nil")|>"
+        return "<MessageViewModel |\(uuid)| |\(longMessageFormatted?.prefix(3) ?? "nil")|>"
     }
 }
 
@@ -316,12 +311,6 @@ extension MessageViewModel: Equatable {
             (oneIsAFakeMessage || (lhs.uid == rhs.uid)) &&
             lhs.parentFolderName == rhs.parentFolderName &&
             lhs.accountAddress == rhs.accountAddress
-    }
-}
-
-extension MessageViewModel: MessageIdentitfying {
-    var messageIdentifier: MessageID {
-        return uuid
     }
 }
 
