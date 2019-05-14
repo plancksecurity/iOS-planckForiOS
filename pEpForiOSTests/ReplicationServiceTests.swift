@@ -35,6 +35,7 @@ class ReplicationServiceTests: XCTestCase {
         testSyncOutgoing(useCorrectSmtpAccount: false)
     }
 
+    //!!!: random fail
 //    func testSyncOneTime() {
 //        XCTAssertNil(CdAccount.all())
 //        XCTAssertNil(CdFolder.all())
