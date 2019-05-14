@@ -117,6 +117,7 @@
 		1541D7F31FC8292D00D52A5D /* URL+MIME.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7F21FC8292D00D52A5D /* URL+MIME.swift */; };
 		1541D7F51FC82A4900D52A5D /* URL+MIME.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7F41FC82A4900D52A5D /* URL+MIME.swift */; };
 		1544BD0221524C9F0075C5A0 /* AttachmentFilterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1544BD0121524C9F0075C5A0 /* AttachmentFilterTest.swift */; };
+		154F0A8220874B3E00C77D72 /* ContentDispositionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */; };
 		155050F01FE82356009CEAD2 /* UserNotificationTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */; };
 		155050F21FE95D8A009CEAD2 /* UserNotificationTool+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155050F11FE95D8A009CEAD2 /* UserNotificationTool+pEp.swift */; };
 		1554755F2137F6F8005A52D0 /* SwipeActionDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1554755E2137F6F8005A52D0 /* SwipeActionDescriptor.swift */; };
@@ -586,6 +587,7 @@
 		1541D7F21FC8292D00D52A5D /* URL+MIME.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MIME.swift"; sourceTree = "<group>"; };
 		1541D7F41FC82A4900D52A5D /* URL+MIME.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MIME.swift"; sourceTree = "<group>"; };
 		1544BD0121524C9F0075C5A0 /* AttachmentFilterTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AttachmentFilterTest.swift; path = pEpForiOSTests/Models/Filter/AttachmentFilterTest.swift; sourceTree = SOURCE_ROOT; };
+		154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentDispositionTest.swift; sourceTree = "<group>"; };
 		155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationTool.swift; sourceTree = "<group>"; };
 		155050F11FE95D8A009CEAD2 /* UserNotificationTool+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserNotificationTool+pEp.swift"; sourceTree = "<group>"; };
 		1554755E2137F6F8005A52D0 /* SwipeActionDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionDescriptor.swift; sourceTree = "<group>"; };
@@ -1784,6 +1786,7 @@
 				1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */,
 				1541D7F41FC82A4900D52A5D /* URL+MIME.swift */,
 				430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */,
+				154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */,
 				4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */,
 				434DDC2A20D10F9A00755F44 /* EncryptionTests.swift */,
 				438BA0F4214F89CC001A4A82 /* MailParsingTests.swift */,
@@ -2979,6 +2982,7 @@
 				436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */,
 				15D7D997219C374600A1A2B9 /* ComposeViewModelStateTest.swift in Sources */,
 				F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */,
+				154F0A8220874B3E00C77D72 /* ContentDispositionTest.swift in Sources */,
 				B7F4A793212DDFC500507B76 /* EmailListViewModelTest.swift in Sources */,
 				151F71FC202A06760057C74D /* CoreDataDrivenTestBase.swift in Sources */,
 				151F71FF202A06760057C74D /* Message+TestUtils.swift in Sources */,
