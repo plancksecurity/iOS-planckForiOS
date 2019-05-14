@@ -37,7 +37,7 @@ class MessageReevalutionTests: XCTestCase {
         XCTAssertTrue(PEPUtil.pEpClean())
 
         persistentSetup = PersistentSetup()
-        moc = Record.Context.default
+        moc = Stack.shared.mainContext
 
         let ownIdentity = PEPIdentity(address: "iostest002@peptest.ch",
                                       userID: "iostest002@peptest.ch_ID",

@@ -845,7 +845,7 @@ class TestUtil {
             return nil
         }
 
-        let moc = Record.Context.default
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
         guard let cdMessage = CdMessage.insertOrUpdate(pantomimeMessage: pantomimeMail,
                                                        account: cdOwnAccount,
                                                        messageUpdate: CWMessageUpdate(),

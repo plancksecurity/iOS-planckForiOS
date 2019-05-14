@@ -560,7 +560,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testOutgoingMailColorPerformanceWithoutMySelf() {
-        let moc = Stack.shared.newPrivateConcurrentContext
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
         let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
 
         guard let id = CdIdentity.from(pEpContact: myself, context: moc) else {

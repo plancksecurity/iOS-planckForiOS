@@ -25,7 +25,7 @@ class HandshakeTests: XCTestCase {
 
         XCTAssertTrue(PEPUtil.pEpClean())
         persistentSetup = PersistentSetup()
-        moc = Record.Context.default
+        moc = Stack.shared.mainContext
 
         let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
         cdMyAccount.identity?.userName = "iOS Test 002"

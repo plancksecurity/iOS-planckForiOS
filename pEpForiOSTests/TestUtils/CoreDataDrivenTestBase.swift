@@ -36,7 +36,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
         XCTAssertTrue(PEPUtil.pEpClean())
         
         persistentSetup = PersistentSetup()
-        moc = Stack.MessageModelObjectContext.default
+        moc = Stack.shared.mainContext
 
         let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
         moc.saveAndLogErrors()

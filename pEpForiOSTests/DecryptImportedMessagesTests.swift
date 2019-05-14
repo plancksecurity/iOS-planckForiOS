@@ -30,7 +30,7 @@ class DecryptImportedMessagesTests: XCTestCase {
         XCTAssertTrue(PEPUtil.pEpClean())
 
         persistentSetup = PersistentSetup()
-        moc = Record.Context.default
+        moc = Stack.shared.mainContext
 
         self.backgroundQueue = OperationQueue()
     }

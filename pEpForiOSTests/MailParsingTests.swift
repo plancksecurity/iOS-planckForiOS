@@ -7,9 +7,10 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
-@testable import MessageModel //FIXME:
+@testable import MessageModel
 import PEPObjCAdapterFramework
 
 class MailParsingTests: XCTestCase { //!!!: use BaseClass
@@ -23,7 +24,7 @@ class MailParsingTests: XCTestCase { //!!!: use BaseClass
         XCTAssertTrue(PEPUtil.pEpClean())
         persistentSetup = PersistentSetup()
 
-        let moc = Record.Context.default
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
 
         let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
         cdMyAccount.identity?.userName = "iOS Test 002"

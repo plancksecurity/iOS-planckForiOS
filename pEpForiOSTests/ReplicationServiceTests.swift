@@ -19,7 +19,7 @@ class ReplicationServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
         persistenceSetup = PersistentSetup()
-        moc = Record.Context.default
+        moc = Stack.shared.mainContext
     }
 
     override func tearDown() {
