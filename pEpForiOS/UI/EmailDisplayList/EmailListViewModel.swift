@@ -51,6 +51,7 @@ class EmailListViewModel {
 
     var lastSearchTerm = ""
     var updatesEnabled = true
+    var deleteDisabled = false
 
     public var emailListViewModelDelegate: EmailListViewModelDelegate?
 
@@ -296,6 +297,7 @@ class EmailListViewModel {
     }
 
     func delete(forIndexPath indexPath: IndexPath) {
+        deleteDisabled = true
         let _ = deleteMessage(at: indexPath)
     }
 
