@@ -1,5 +1,3 @@
-//!!!: crashes. Should be fixed with using Cd* (not MM)
-////
 ////  FetchNumberOfNewMailsServiceTest.swift
 ////  pEpForiOSTests
 ////

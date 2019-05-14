@@ -542,7 +542,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testOutgoingMessageColor() {
-        let moc = Stack.shared.newPrivateConcurrentContext
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
         let account = SecretTestData().createWorkingCdAccount(context: moc)
         moc.saveAndLogErrors()
 
