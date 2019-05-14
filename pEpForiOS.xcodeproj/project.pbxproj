@@ -373,7 +373,6 @@
 		43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536C1CC77F95006AB156 /* OneValueSettingCell.swift */; };
 		43ED53781CC77F95006AB156 /* SMTPSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536D1CC77F95006AB156 /* SMTPSettingsTableViewController.swift */; };
 		43ED53791CC77F95006AB156 /* UserInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536E1CC77F95006AB156 /* UserInfoTableViewController.swift */; };
-		43EDCB84219ED7F000771240 /* FetchNumberOfNewMailsServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EDCB83219ED7F000771240 /* FetchNumberOfNewMailsServiceTest.swift */; };
 		43EE99481E438E320060EACE /* FlagImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EE99471E438E320060EACE /* FlagImages.swift */; };
 		43EE994E1E4392530060EACE /* FlagImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EE994D1E4392530060EACE /* FlagImageTests.swift */; };
 		43F7F07A1F6AD44600BDF151 /* HandshakeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F7F0791F6AD44600BDF151 /* HandshakeTests.swift */; };
@@ -883,7 +882,6 @@
 		43ED536C1CC77F95006AB156 /* OneValueSettingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneValueSettingCell.swift; sourceTree = "<group>"; };
 		43ED536D1CC77F95006AB156 /* SMTPSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMTPSettingsTableViewController.swift; sourceTree = "<group>"; };
 		43ED536E1CC77F95006AB156 /* UserInfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoTableViewController.swift; sourceTree = "<group>"; };
-		43EDCB83219ED7F000771240 /* FetchNumberOfNewMailsServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchNumberOfNewMailsServiceTest.swift; sourceTree = "<group>"; };
 		43EE99471E438E320060EACE /* FlagImages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagImages.swift; sourceTree = "<group>"; };
 		43EE994D1E4392530060EACE /* FlagImageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagImageTests.swift; sourceTree = "<group>"; };
 		43F7F0791F6AD44600BDF151 /* HandshakeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeTests.swift; sourceTree = "<group>"; };
@@ -1444,14 +1442,6 @@
 			path = TrustedServerSetting;
 			sourceTree = "<group>";
 		};
-		15B483DF1F290B14000FB2CF /* Background */ = {
-			isa = PBXGroup;
-			children = (
-				43EDCB83219ED7F000771240 /* FetchNumberOfNewMailsServiceTest.swift */,
-			);
-			path = Background;
-			sourceTree = "<group>";
-		};
 		15BA537A20A1F5CA0090F126 /* MoveToFolder */ = {
 			isa = PBXGroup;
 			children = (
@@ -1795,7 +1785,6 @@
 				43B2C3151D2280ED00A08557 /* Resources */,
 				1569AEA320E14DC2002102A0 /* Features */,
 				15BBBC691FD0522E00B9DCC8 /* Error */,
-				15B483DF1F290B14000FB2CF /* Background */,
 				4918EBF91E783C70006207FC /* Models */,
 				150707DD21006D0200AA213F /* UI */,
 				151F7202202A06D30057C74D /* Util */,
@@ -3035,7 +3024,6 @@
 				15410D1D2199C2E500BBF65F /* SubjectCellViewModelTest.swift in Sources */,
 				430BA229203438A3003B041C /* CdMessagePEPMessageTests.swift in Sources */,
 				15410D1F2199CA1100BBF65F /* XCTTestCase+Utils.swift in Sources */,
-				43EDCB84219ED7F000771240 /* FetchNumberOfNewMailsServiceTest.swift in Sources */,
 				431F987F1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift in Sources */,
 				43D3379021A3F32500E40114 /* ImapUtil.swift in Sources */,
 				15D7D995219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift in Sources */,
