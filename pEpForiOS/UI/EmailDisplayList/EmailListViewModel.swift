@@ -42,10 +42,10 @@ class EmailListViewModel {
 
     var indexPathShown: IndexPath?
 
-    private let queue: OperationQueue = {
+    private let queueForHeavyStuff: OperationQueue = {
         let createe = OperationQueue()
         createe.qualityOfService = .userInitiated
-        createe.maxConcurrentOperationCount = 1
+        createe.name = "security.pep.EmailListViewModel.queueForHeavyStuff"
         return createe
     }()
 
@@ -101,9 +101,8 @@ class EmailListViewModel {
 
     private var selectedItems: Set<IndexPath>?
 
-    weak var updateThreadListDelegate: UpdateThreadListDelegate? //!!!: sounds like belonging to message thread. If so, comment out
-
     // Threading feature is currently non-existing. Keep this code, might help later.
+//    weak var updateThreadListDelegate: UpdateThreadListDelegate?
 //    var oldThreadSetting : Bool
 
     // MARK: - Life Cycle
@@ -161,7 +160,8 @@ class EmailListViewModel {
     }
 
     func viewModel(for index: Int) -> MessageViewModel? {
-        let messageViewModel = MessageViewModel(with: messageQueryResults[index])
+        let messageViewModel = MessageViewModel(with: messageQueryResults[index],
+                                                queue: queueForHeavyStuff)
         return messageViewModel
     }
 

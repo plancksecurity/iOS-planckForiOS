@@ -13,9 +13,10 @@ import pEpIOSToolbox
 import PEPObjCAdapterFramework
 
 class MessageViewModel: CustomDebugStringConvertible {
+    static fileprivate var maxBodyPreviewCharacters = 120
 
-    static var maxBodyPreviewCharacters = 120
-    var queue: OperationQueue
+    private var queue: OperationQueue
+    private var runningOperations = [Operation]()
 
     let uid: Int
     private let uuid: MessageID
@@ -58,12 +59,10 @@ class MessageViewModel: CustomDebugStringConvertible {
     //Only to use internally, external use should call public message()
     private var internalMessage: Message
 
-    init(with message: Message, operationQueue: OperationQueue = OperationQueue()) {
+    required init(with message: Message, queue: OperationQueue) {
         internalMessage = message
 
-        queue = operationQueue
-        queue.qualityOfService = .userInitiated
-        queue.maxConcurrentOperationCount = 3
+        self.queue = queue
 
         uid = message.uid
         uuid = message.uuid
@@ -109,11 +108,11 @@ class MessageViewModel: CustomDebugStringConvertible {
     }
 
     func unsubscribeForUpdates() {
-        cancelLoad()
+        cancelAllBackgroundOperations()
     }
 
-    private func cancelLoad() {
-        queue.cancelAllOperations()
+    private func cancelAllBackgroundOperations() {
+        runningOperations.forEach { $0.cancel() }
     }
 
     private func setBodyPeek(for message:Message) {
@@ -124,7 +123,7 @@ class MessageViewModel: CustomDebugStringConvertible {
                 self.bodyPeek = bodyPeek
             }
             if(!operation.isFinished){
-                queue.addOperation(operation)
+                addToRunningOperations(operation)
             }
         }
     }
@@ -147,7 +146,7 @@ class MessageViewModel: CustomDebugStringConvertible {
 //                completion(count)
 //            }
 //            if(!operation.isFinished){
-//                queue.addOperation(operation)
+//                addToRunningOperations(operation)
 //            }
 //        }
 //    }
@@ -246,12 +245,12 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     func getProfilePicture(completion: @escaping (UIImage?) -> ()) {
         let operation = getProfilePictureOperation(completion: completion)
-        queue.addOperation(operation)
+        addToRunningOperations(operation)
     }
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
         let operation = getSecurityBadgeOperation(completion: completion)
-        queue.addOperation(operation)
+        addToRunningOperations(operation)
     }
 
     func getBodyMessage() -> NSMutableAttributedString {
@@ -329,6 +328,11 @@ extension MessageViewModel: MessageIdentitfying {
 // MARK: Operations
 
 extension MessageViewModel {
+
+    private func addToRunningOperations(_ op: Operation) {
+        runningOperations.append(op)
+        queue.addOperation(op)
+    }
 
     private func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> SelfReferencingOperation {
 

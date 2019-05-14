@@ -178,6 +178,8 @@ extension EmailListViewCell {
     }
 
     private func resetToDefault() {
+        viewModel?.unsubscribeForUpdates()
+        viewModel = nil
         summaryLabel.text = nil
         ratingImage.isHidden = true
         contactImageView.image = EmailListViewCell.emptyContactImage
