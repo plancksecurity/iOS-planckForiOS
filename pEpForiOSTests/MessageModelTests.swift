@@ -7,7 +7,7 @@
 //
 
 import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 import XCTest
 

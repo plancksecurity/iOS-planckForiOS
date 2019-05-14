@@ -150,7 +150,6 @@ extension FilterViewModel {
         case .account:
             guard let accountAddress = account?.user.address else {
                 Log.shared.errorAndCrash("Error generating row")
-                //!!!: it is posible to get in there?
                 return ""
             }
             return accountAddress
