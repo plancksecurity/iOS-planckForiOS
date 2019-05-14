@@ -326,35 +326,9 @@ extension MessageViewModel: MessageIdentitfying {
     }
 }
 
-//PRAGMA MARK: Message View Model + Operations
+// MARK: Operations
 
 extension MessageViewModel {
-
-    // Message threading is not supported. Let's keep it for now. It might be helpful for
-    // reimplementing.
-//    private func getMessageCountOperation(completion: @escaping (Int)->()) -> SelfReferencingOperation {
-//
-//        let getMessageCountOperation = SelfReferencingOperation {  [weak self] operation in
-//            guard let me = self else {
-//                return
-//            }
-//            MessageModelUtil.performAndWait {
-//                guard
-//                    let operation = operation,
-//                    !operation.isCancelled else {
-//                        return
-//                }
-//                let messageCount = 0 // no threading
-//                me.internalMessageCount = messageCount
-//                if (!operation.isCancelled){
-//                    DispatchQueue.main.async {
-//                        completion(messageCount)
-//                    }
-//                }
-//            }
-//        }
-//        return getMessageCountOperation
-//    }
 
     private func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> SelfReferencingOperation {
 
