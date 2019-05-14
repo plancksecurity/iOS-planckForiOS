@@ -265,6 +265,7 @@
 		4365E85F2265DC3F00929D07 /* VerifiableAccountTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365E85E2265DC3F00929D07 /* VerifiableAccountTest.swift */; };
 		4365E86A226615F200929D07 /* VerifiableAccountIMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365E869226615F200929D07 /* VerifiableAccountIMAP.swift */; };
 		4365E87222661B9700929D07 /* VerifiableAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365E87122661B9700929D07 /* VerifiableAccount.swift */; };
+		436795F81EE98B9A00B03E23 /* MessageReevalutionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */; };
 		436795FB1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 436795F91EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc */; };
 		436795FC1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc in Resources */ = {isa = PBXBuildFile; fileRef = 436795FA1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc */; };
 		436795FF1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 436795FD1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc */; };
@@ -751,6 +752,7 @@
 		4365E85E2265DC3F00929D07 /* VerifiableAccountTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiableAccountTest.swift; sourceTree = "<group>"; };
 		4365E869226615F200929D07 /* VerifiableAccountIMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiableAccountIMAP.swift; sourceTree = "<group>"; };
 		4365E87122661B9700929D07 /* VerifiableAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifiableAccount.swift; sourceTree = "<group>"; };
+		436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageReevalutionTests.swift; sourceTree = "<group>"; };
 		436795F91EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CommunicationTypeTests_test002@peptest.ch_sec.asc"; sourceTree = "<group>"; };
 		436795FA1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CommunicationTypeTests_test002@peptest.ch.asc"; sourceTree = "<group>"; };
 		436795FD1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CommunicationTypeTests_test001@peptest.ch_sec.asc"; sourceTree = "<group>"; };
@@ -1770,6 +1772,7 @@
 				438281821E891B7E00087343 /* DateTests.swift */,
 				43FAA0D31EC9CBC0005BFC4B /* DecryptionTestsInternal.swift */,
 				431E58FB1ED5926B00EFA77F /* AccountVerificationServiceTests.swift */,
+				436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */,
 				43F7F0791F6AD44600BDF151 /* HandshakeTests.swift */,
 				431F987E1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift */,
 				1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */,
@@ -2954,6 +2957,7 @@
 				151F71FA202A06760057C74D /* DecryptionAttemptCounterDelegate.swift in Sources */,
 				431C2B171F387C4100D87FFD /* LoginViewModelTests.swift in Sources */,
 				151AD7AD219D74C700FC36FF /* ComposeViewModelTest.swift in Sources */,
+				436795F81EE98B9A00B03E23 /* MessageReevalutionTests.swift in Sources */,
 				43EE994E1E4392530060EACE /* FlagImageTests.swift in Sources */,
 				00227E6A21635DED000D9BDB /* FilterViewModelTest.swift in Sources */,
 				437795C82154D6FD00CC62C2 /* PEPMessage+TestExtension.swift in Sources */,
