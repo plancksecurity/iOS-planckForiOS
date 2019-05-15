@@ -196,28 +196,29 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(emailListVM.rowCount, 10)
     }
 
-    /*func testSetSearchFilterAddressWith3results() {
+    func testSetSearchFilterAddressWith3results() {
         let textToSearch = "searchTest@mail.com"
         TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         TestUtil.createMessage(inFolder: folder,
-                      from: Identity.create(address: textToSearch),
+                      from: Identity(address: textToSearch),
                       tos: [folder.account.user],
                       uid: 666).save()
         TestUtil.createMessage(inFolder: folder,
-                      from: Identity.create(address: textToSearch),
+                      from: Identity(address: textToSearch),
                       tos: [folder.account.user],
                       uid: 667).save()
         TestUtil.createMessage(inFolder: folder,
-                      from: Identity.create(address: textToSearch),
+                      from: Identity(address: textToSearch),
                       tos: [folder.account.user],
                       uid: 668).save()
         setupViewModel()
+        emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 13)
-        setSearchFilter(text: "searchTest")
+        emailListVM.setSearch(forSearchText: "searchTest")
         XCTAssertEqual(emailListVM.rowCount, 3)
     }
 
-    func testSetSearchFilterShortMessageWith1results() {
+    /*func testSetSearchFilterShortMessageWith1results() {
         let textToSearch = "searchTest"
         TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         TestUtil.createMessage(inFolder: folder,
