@@ -89,7 +89,7 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
         waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
 
-        // TODO: What to test here?
+        // Fixed in IOS-1542.
         /*
         let smtp = viewModel.account.smtpServer
         let imap = viewModel.account.imapServer
