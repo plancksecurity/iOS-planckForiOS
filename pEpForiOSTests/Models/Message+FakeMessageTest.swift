@@ -10,7 +10,7 @@
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel // Uses Message.saveFakeMessages().
+@testable import MessageModel // Uses Message.saveFakeMessages(), MessageModelObjectUtils.
 import PEPObjCAdapterFramework
 
 class Message_FakeMessageTest: CoreDataDrivenTestBase {
@@ -163,7 +163,8 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
                                  cdFolder)
             guard
                 let allCdMesgs = CdMessage.all(predicate: p) as? [CdMessage],
-                let msg = allCdMesgs.first?.message()
+                let theCdMsg = allCdMesgs.first,
+                let msg = MessageModelObjectUtils().getMessage(fromCdMessage: theCdMsg)
                 else {
                     if mustExist {
                         XCTFail()
