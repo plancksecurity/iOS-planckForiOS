@@ -9,8 +9,9 @@
 import XCTest
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel // @testable needed for MessageModelObjectUtils
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 class SetOwnKeyViewModelTests: XCTestCase {
     var persistentSetup: PersistentSetup!
@@ -121,7 +122,7 @@ class SetOwnKeyViewModelTests: XCTestCase {
         let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
         XCTAssertEqual(attachments.count, 0)
 
-        guard let msg = theCdMessage.message() else {
+        guard let msg = MessageModelObjectUtils().getMessage(fromCdMessage: theCdMessage) else {
             XCTFail()
             return
         }
