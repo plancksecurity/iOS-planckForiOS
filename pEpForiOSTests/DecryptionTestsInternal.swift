@@ -96,7 +96,7 @@ class DecryptionTestsInternal: XCTestCase {
         let references = ["ref1", "ref2", "ref3"]
         var pEpMsg = PEPMessageDict()
         pEpMsg[kPepFrom] = pEpSenderIdentity as AnyObject
-        pEpMsg[kPepTo] = [pEpOwnIdentity] as NSArray
+        pEpMsg[kPepTo] = [pEpOwnIdentity as Any] as NSArray
         pEpMsg[kPepLongMessage] = msgLongMessage as AnyObject
         if useSubject {
             pEpMsg[kPepShortMessage] = msgShortMessage as AnyObject
