@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel // Uses MM-internal operations, and Record.Context.default
+@testable import MessageModel // Uses MM-internal operations, Record.Context.default, MessageModelObjectUtils
 import PEPObjCAdapterFramework
 
 class MessageReevalutionTests: XCTestCase {
@@ -159,9 +159,10 @@ class MessageReevalutionTests: XCTestCase {
 
     func reevaluateMessage(expectedRating: PEPRating, inBackground: Bool = true,
                            infoMessage: String) {
-        guard let message = cdDecryptedMessage.message() else {
-            XCTFail()
-            return
+        guard let message = MessageModelObjectUtils().getMessage(
+            fromCdMessage: cdDecryptedMessage) else {
+                XCTFail()
+                return
         }
         if inBackground {
             let expReevaluated = expectation(description: "expReevaluated")
