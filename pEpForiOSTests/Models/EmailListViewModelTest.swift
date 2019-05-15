@@ -177,25 +177,26 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     // MARK: - Search section
 
-    /*func testSetSearchFilterWith0results() {
+    func testSetSearchFilterWith0results() {
         TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         setupViewModel()
         emailListVM.startMonitoring()
-        setSearchFilter(text: "blabla@blabla.com")
+        emailListVM.setSearch(forSearchText: "blabla@blabla.com")
         XCTAssertEqual(emailListVM.rowCount, 0)
     }
 
     func testRemoveSearchFilterAfter0Results() {
         TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         setupViewModel()
+        emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 10)
-        setSearchFilter(text: "blabla@blabla.com")
+        emailListVM.setSearch(forSearchText: "blabla@blabla.com")
         XCTAssertEqual(emailListVM.rowCount, 0)
-        removeSearchFilter()
+        emailListVM.removeSearch()
         XCTAssertEqual(emailListVM.rowCount, 10)
     }
 
-    func testSetSearchFilterAddressWith3results() {
+    /*func testSetSearchFilterAddressWith3results() {
         let textToSearch = "searchTest@mail.com"
         TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         TestUtil.createMessage(inFolder: folder,
