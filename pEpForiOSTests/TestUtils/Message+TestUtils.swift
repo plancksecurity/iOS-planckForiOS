@@ -6,7 +6,7 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import MessageModel
+@testable import MessageModel // MessageModelObjectUtils.
 @testable import pEpForiOS
 import PEPObjCAdapterFramework
 
@@ -58,6 +58,7 @@ extension Message {
         return dict
     }
 
+    @available(*, deprecated, message: "Uses MM-internal functionality")
     public static func by(uid: Int, folderName: String, accountAddress: String) -> Message? {
         let pAccount =
             CdMessage.PredicateFactory.belongingToAccountWithAddress(address: accountAddress)
@@ -66,6 +67,9 @@ extension Message {
             CdMessage.PredicateFactory.belongingToParentFolderNamed(parentFolderName: folderName)
         let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pAccount, pUid, pFolder])
         let cdMessage = CdMessage.all(predicate: p)?.first as? CdMessage
-        return cdMessage?.message()
+        guard let cdMsg = cdMessage else {
+            return nil
+        }
+        return MessageModelObjectUtils().getMessage(fromCdMessage: cdMsg)
     }
 }
