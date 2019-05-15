@@ -56,7 +56,6 @@ class FolderCellViewModelTests: CoreDataDrivenTestBase {
         let isSelectable = viewModel.isSelectable
         XCTAssertTrue(isSelectable)
     }
-
     func testIsSelectableFolderIfIsLocal() {
         givenAViewModelWithLocalFolder()
         let isSelectable = viewModel.isSelectable
@@ -71,6 +70,7 @@ class FolderCellViewModelTests: CoreDataDrivenTestBase {
 
     func givenAViewModelWithSelectableFolder() {
         folder = Folder(name: Input.folderName, parent: nil, account: account, folderType:.outbox, selectable: false)
+        folder.selectable = true
         viewModel = FolderCellViewModel(folder: folder, level: 0)
     }
     
@@ -80,6 +80,7 @@ class FolderCellViewModelTests: CoreDataDrivenTestBase {
 
     func givenAViewModelWithLocalFolder() {
         folder = Folder(name: Input.folderName, parent: nil, account: account, folderType: .outbox)
+        folder.selectable = true
         viewModel = FolderCellViewModel(folder: folder, level: 0)
 
     }
