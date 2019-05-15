@@ -39,6 +39,7 @@ class ReplicationServiceObserver: CustomDebugStringConvertible {
 
 // MARK: - ReplicationServiceUnitTestDelegate
 
+@available(*, deprecated, message: "Uses MM-internal functionality")
 extension ReplicationServiceObserver: ReplicationServiceUnitTestDelegate {
     func replicationServiceDidSync(service: ReplicationService, accountInfo: AccountConnectInfo,
                  errorProtocol: ServiceErrorProtocol) {
@@ -56,6 +57,7 @@ extension ReplicationServiceObserver: ReplicationServiceUnitTestDelegate {
 }
 
 // MARK: - ReplicationServiceDelegate
+@available(*, deprecated, message: "Uses MM-internal functionality")
 extension ReplicationServiceObserver: ReplicationServiceDelegate {
     func replicationServiceDidFinishLastSyncLoop(service: ReplicationService) {
         // ignore
