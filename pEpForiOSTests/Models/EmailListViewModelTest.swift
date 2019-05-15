@@ -214,21 +214,22 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         setupViewModel()
         emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 13)
-        emailListVM.setSearch(forSearchText: "searchTest")
+        emailListVM.setSearch(forSearchText: textToSearch)
         XCTAssertEqual(emailListVM.rowCount, 3)
     }
 
-    /*func testSetSearchFilterShortMessageWith1results() {
+    func testSetSearchFilterShortMessageWith1results() {
         let textToSearch = "searchTest"
         TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         TestUtil.createMessage(inFolder: folder,
-                      from: Identity.create(address: "mail@mail.com"),
+                      from: Identity(address: "mail@mail.com"),
                       tos: [folder.account.user],
                       shortMessage: textToSearch,
                       uid: 666).save()
         setupViewModel()
+        emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 11)
-        setSearchFilter(text: textToSearch)
+        emailListVM.setSearch(forSearchText: textToSearch)
         XCTAssertEqual(emailListVM.rowCount, 1)
     }
 
@@ -237,19 +238,20 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         let longText = "bla " + textToSearch + " bla"
         TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         TestUtil.createMessage(inFolder: folder,
-                      from: Identity.create(address: "mail@mail.com"),
+                      from: Identity(address: "mail@mail.com"),
                       shortMessage: textToSearch,
                       uid: 666).save()
         TestUtil.createMessage(inFolder: folder,
-                      from: Identity.create(address: "mail@mail.com"),
+                      from: Identity(address: "mail@mail.com"),
                       tos: [folder.account.user],
                       longMessage: longText,
                       uid: 667).save()
         setupViewModel()
+        emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 12)
-        setSearchFilter(text: textToSearch)
+        emailListVM.setSearch(forSearchText: textToSearch)
         XCTAssertEqual(emailListVM.rowCount, 2)
-    }*/
+    }
 
     // Threading feature is currently non-existing. Keep this code, might help later.
 //    //thread view nos is totaly disabled that means always false
