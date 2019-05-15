@@ -7,7 +7,8 @@
 //
 
 import XCTest
-import MessageModel
+
+@testable import MessageModel // Uses MM-internal operations
 @testable import pEpForiOS
 
 extension CdAccount {
