@@ -33,8 +33,6 @@ class DecryptionUtil {
         let expDecrypted = testCase.expectation(description: "expDecrypted")
         let errorContainer = ErrorContainer()
 
-        // TODO: Since DecryptMessagesOperation will be MM-private,
-        // an alternative is needed.
         let decryptOperation = DecryptMessagesOperation(
             parentName: #function, errorContainer: errorContainer)
         decryptOperation.completionBlock = {
