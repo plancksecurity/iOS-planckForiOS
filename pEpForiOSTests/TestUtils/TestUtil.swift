@@ -10,7 +10,7 @@ import Foundation
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel //FIXME:
+@testable import MessageModel // Use of MM-internal functionality marked as deprecated.
 import PEPObjCAdapterFramework
 import PantomimeFramework
 
@@ -288,6 +288,7 @@ class TestUtil {
     ///   - forceUnencrypted: mark mails force unencrypted
     /// - Returns: created mails
     /// - Throws: error importing key
+    @available(*, deprecated, message: "Uses MM-internal functionality")
     static func createOutgoingMails(cdAccount: CdAccount,
                                     fromIdentity: CdIdentity? = nil,
                                     toIdentity: CdIdentity? = nil,
