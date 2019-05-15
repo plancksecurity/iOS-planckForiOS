@@ -108,7 +108,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(20, emailListVM.rowCount)
         emailListVM.isFilterEnabled = true
         XCTAssertEqual(5, emailListVM.rowCount)
-        setUpViewModelExpectations(expectationDidUpdateDataAt: true, expectationDidDeleteDataAt: true)
+        setUpViewModelExpectations(expectationDidDeleteDataAt: true)
         let imap = ImapFlags()
         imap.seen = true
         messages[0].imapFlags = imap
