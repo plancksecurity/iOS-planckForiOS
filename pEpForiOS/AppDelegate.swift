@@ -227,7 +227,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // post notifications here (e.g. we ignore granted)
             // The calls are nested to avoid simultaniously showing permissions alert for notifications
             // and contact access.
-            DispatchQueue.global(qos: .background).async {
+            DispatchQueue.global(qos: .userInitiated).async {
                 MessageModel.perform {
                     AddressBook.checkAndTransfer()
                 }
