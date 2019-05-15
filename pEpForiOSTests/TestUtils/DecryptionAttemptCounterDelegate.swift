@@ -9,7 +9,7 @@
 import Foundation
 
 @testable import pEpForiOS
-@testable import MessageModel //FIXME:
+@testable import MessageModel // Use of MM-internal functionality marked as deprecated.
 import PEPObjCAdapterFramework
 
 @available(*, deprecated, message: "Uses MM-internal functionality")
