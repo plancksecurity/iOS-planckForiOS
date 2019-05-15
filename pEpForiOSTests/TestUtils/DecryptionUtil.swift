@@ -11,6 +11,7 @@ import XCTest
 
 @testable import MessageModel
 
+/// - Note: This is duplicated between app- and MM-tests. (TODO).
 class DecryptionUtil {
     @available(*, deprecated, message: "Uses MM-internal functionality")
     public static func decryptTheMessage(
