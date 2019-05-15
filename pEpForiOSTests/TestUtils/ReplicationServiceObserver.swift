@@ -12,6 +12,7 @@ import CoreData
 @testable import MessageModel
 @testable import pEpForiOS
 
+@available(*, deprecated, message: "777")
 class ReplicationServiceObserver: CustomDebugStringConvertible {
     let expAllSynced: XCTestExpectation?
     var expCanceled: XCTestExpectation?

@@ -12,6 +12,7 @@ import Foundation
 @testable import MessageModel //FIXME:
 import PEPObjCAdapterFramework
 
+@available(*, deprecated, message: "777")
 class DecryptionAttemptCounterDelegate: DecryptMessagesOperationDelegateProtocol {
     var numberOfMessageDecryptAttempts = 0
 

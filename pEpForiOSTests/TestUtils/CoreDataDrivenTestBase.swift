@@ -58,6 +58,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
 
     // MARK: - HELPER
 
+    @available(*, deprecated, message: "777")
     func fetchMessages(parentName: String) {
         let expMailsFetched = expectation(description: "expMailsFetched")
 

@@ -14,6 +14,7 @@ import XCTest
 @testable import MessageModel
 
 extension XCTestCase {
+    @available(*, deprecated, message: "777")
     public func loginIMAP(imapSyncData: ImapSyncData,
                           errorContainer: ServiceErrorProtocol,
                           queue: OperationQueue) {
@@ -35,6 +36,7 @@ extension XCTestCase {
         })
     }
 
+    @available(*, deprecated, message: "777")
     public func fetchFoldersIMAP(imapSyncData: ImapSyncData,
                                  queue: OperationQueue) {
         let expFoldersFetched = expectation(description: "expFoldersFetched")
@@ -57,6 +59,7 @@ extension XCTestCase {
         })
     }
 
+    @available(*, deprecated, message: "777")
     public func appendMailsIMAP(folder: CdFolder,
                                 imapSyncData: ImapSyncData,
                                 errorContainer: ServiceErrorProtocol,
@@ -79,6 +82,7 @@ extension XCTestCase {
         })
     }
 
+    @available(*, deprecated, message: "777")
     public func fetchNumberOfNewMails(errorContainer: ServiceErrorProtocol) -> Int? {
         let expNumMails = expectation(description: "expNumMails")
         var numMails: Int?
