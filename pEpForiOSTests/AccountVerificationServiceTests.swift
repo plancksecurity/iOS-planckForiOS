@@ -8,7 +8,7 @@
 
 import XCTest
 
-@testable import MessageModel
+@testable import MessageModel // Uses AccountVerificationService, but will be gone with IOS-1542.
 @testable import pEpForiOS
 
 class AccountVerificationTestDelegate: AccountVerificationServiceDelegate {

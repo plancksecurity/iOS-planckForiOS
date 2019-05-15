@@ -7,8 +7,8 @@
 //
 
 import XCTest
-import MessageModel
 
+import MessageModel
 @testable import pEpForiOS
 
 class ComposeUtilTest: CoreDataDrivenTestBase {

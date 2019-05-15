@@ -8,7 +8,7 @@
 
 import XCTest
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel // Uses AccountVerificationService.
 
 class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 

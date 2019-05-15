@@ -7,10 +7,10 @@
 //
 
 import XCTest
-
 import CoreData
+
 import PantomimeFramework
-@testable import MessageModel
+@testable import MessageModel // Uses CdMessage.search(message: cdMessage, inAccount: cdAccount).
 @testable import pEpForiOS
 
 class CdMessage_PantomimeTest: CoreDataDrivenTestBase {

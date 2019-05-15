@@ -8,7 +8,7 @@
 
 import XCTest
 @testable import pEpForiOS
-@testable import MessageModel
+import MessageModel
 
 class FolderCellViewModelTests: CoreDataDrivenTestBase {
     var viewModel: FolderCellViewModel!

@@ -6,7 +6,7 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-@testable import MessageModel
+import MessageModel
 @testable import pEpForiOS
 import PEPObjCAdapterFramework
 

@@ -10,7 +10,7 @@ import XCTest
 
 import CoreData
 @testable import pEpForiOS
-@testable import MessageModel //FIXME:
+@testable import MessageModel // Uses MM-internal operations
 import PEPObjCAdapterFramework
 
 open class CoreDataDrivenTestBase: XCTestCase {

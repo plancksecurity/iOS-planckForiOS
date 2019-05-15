@@ -9,7 +9,7 @@
 
 import XCTest
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel // Overrides Account.delete()
 
 class SettingsCellViewModelTest: CoreDataDrivenTestBase {
 

@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel //FIXME:
+import MessageModel //FIXME:
 import PEPObjCAdapterFramework
 
 class SetOwnKeyViewModelTests: XCTestCase {

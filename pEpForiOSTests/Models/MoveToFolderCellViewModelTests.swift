@@ -8,8 +8,7 @@
 
 import XCTest
 @testable import pEpForiOS
-@testable import MessageModel
-
+import MessageModel
 
 class MoveToFolderCellViewModelTests: CoreDataDrivenTestBase {
 

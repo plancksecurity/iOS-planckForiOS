@@ -9,7 +9,7 @@
 import XCTest
 import CoreData
 
-@testable import MessageModel
+@testable import MessageModel // Uses MM-internal AccountConnectInfo.
 @testable import pEpForiOS
 
 @available(*, deprecated, message: "777")

@@ -10,7 +10,7 @@
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel // Uses Message.saveFakeMessages().
 import PEPObjCAdapterFramework
 
 class Message_FakeMessageTest: CoreDataDrivenTestBase {

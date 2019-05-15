@@ -11,7 +11,7 @@ import Foundation
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel // Uses MM-internal operations.
 
 extension XCTestCase {
     @available(*, deprecated, message: "777")

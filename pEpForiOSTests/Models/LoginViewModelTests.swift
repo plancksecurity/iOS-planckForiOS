@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel
+import MessageModel
 import PantomimeFramework
 
 class NoOpMySelfer: KickOffMySelfProtocol {
