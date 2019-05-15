@@ -542,7 +542,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                             }
                             me.deleteAction(forCellAt: indexPath)
                             me.swipeDelete = action
-                            //action.fulfill(with: .delete)
         }
         configure(action: archiveAction, with: destructiveAction)
         swipeActions.append(archiveAction)
