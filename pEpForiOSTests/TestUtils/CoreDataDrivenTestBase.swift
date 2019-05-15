@@ -58,7 +58,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
 
     // MARK: - HELPER
 
-    @available(*, deprecated, message: "777")
+    @available(*, deprecated, message: "Uses MM-internal functionality")
     func fetchMessages(parentName: String) {
         let expMailsFetched = expectation(description: "expMailsFetched")
 

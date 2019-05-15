@@ -228,7 +228,7 @@ class TestUtil {
 
     // MARK: - Sync Loop
 
-    @available(*, deprecated, message: "777")
+    @available(*, deprecated, message: "Uses MM-internal functionality")
     static public func syncAndWait(numAccountsToSync: Int = 1, testCase: XCTestCase) {
         let replicationService = ReplicationService()
         replicationService.sleepTimeInSeconds = 0.1
@@ -253,7 +253,7 @@ class TestUtil {
 
     // MARK: - ReplicationService
 
-    @available(*, deprecated, message: "777")
+    @available(*, deprecated, message: "Uses MM-internal functionality")
     static public func cancelReplicationServiceAndWait(replicationService: ReplicationService, testCase: XCTestCase) {
         let del = ReplicationServiceObserver(
             expCanceled: testCase.expectation(description: "expCanceled"))
@@ -570,7 +570,7 @@ class TestUtil {
 
     // MARK: - FOLDER
 
-    @available(*, deprecated, message: "777")
+    @available(*, deprecated, message: "Uses MM-internal functionality")
     static func determineInterestingFolders(in cdAccount: CdAccount)
         -> [NetworkServiceWorker.FolderInfo] {
         let accountInfo = AccountConnectInfo(accountID: cdAccount.objectID)
@@ -639,7 +639,7 @@ class TestUtil {
      After this function, you should have a self with generated key, and a partner ID
      you can do handshakes on.
      */
-    @available(*, deprecated, message: "777")
+    @available(*, deprecated, message: "Uses MM-internal functionality")
     static func cdMessageAndSetUpPepFromMail(emailFilePath: String,
                                  decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
         -> (mySelf: CdIdentity, partner: CdIdentity, message: CdMessage)? {
@@ -724,7 +724,7 @@ class TestUtil {
     /**
      Uses 'cdMessageAndSetUpPepFromMail', but returns the message as 'Message'.
      */
-    @available(*, deprecated, message: "777")
+    @available(*, deprecated, message: "Uses MM-internal functionality")
     static func setUpPepFromMail(emailFilePath: String,
                                  decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
         -> (mySelf: Identity, partner: Identity, message: Message)? {

@@ -16,7 +16,7 @@ extension CdAccount {
      - Note: The test for the `sendFrom` identity is very strict and will fail
      in cases like "two identities that 'only' differ in their username".
      */
-    @available(*, deprecated, message: "777")
+    @available(*, deprecated, message: "Uses MM-internal functionality")
     public func allMessages(inFolderOfType type: FolderType,
                             sendFrom from: CdIdentity? = nil) -> [CdMessage] {
         guard let messages = CdMessage.all() as? [CdMessage] else {

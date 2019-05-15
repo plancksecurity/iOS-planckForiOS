@@ -12,7 +12,7 @@ import XCTest
 @testable import MessageModel
 
 class DecryptionUtil {
-    @available(*, deprecated, message: "777")
+    @available(*, deprecated, message: "Uses MM-internal functionality")
     public static func decryptTheMessage(
         testCase: XCTestCase,
         backgroundQueue: OperationQueue,

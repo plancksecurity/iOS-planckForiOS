@@ -12,7 +12,7 @@ import CoreData
 @testable import MessageModel // Uses MM-internal AccountConnectInfo.
 @testable import pEpForiOS
 
-@available(*, deprecated, message: "777")
+@available(*, deprecated, message: "Uses MM-internal functionality")
 class ReplicationServiceObserver: CustomDebugStringConvertible {
     let expAllSynced: XCTestExpectation?
     var expCanceled: XCTestExpectation?
