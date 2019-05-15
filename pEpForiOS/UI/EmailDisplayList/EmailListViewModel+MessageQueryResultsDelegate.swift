@@ -24,9 +24,7 @@ extension EmailListViewModel : MessageQueryResultsDelegate {
     }
 
     func didDelete(indexPath: IndexPath) {
-        if !deleteDisabled {
             emailListViewModelDelegate?.emailListViewModel(viewModel: self, didRemoveDataAt: [indexPath])
-        }
     }
 
     func didMove(from: IndexPath, to: IndexPath) {

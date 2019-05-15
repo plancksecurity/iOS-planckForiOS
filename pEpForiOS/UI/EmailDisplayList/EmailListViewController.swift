@@ -535,14 +535,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         let archiveAction =
             SwipeAction(style: .destructive,
                         title: destructiveAction.title(forDisplayMode: .titleAndImage)) {
-                [weak self] action, indexPath in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
-                    return
-                }
-
-                me.deleteAction(forCellAt: indexPath)
-                me.swipeDelete = action
+                            [weak self] action, indexPath in
+                            guard let me = self else {
+                                Log.shared.errorAndCrash("Lost MySelf")
+                                return
+                            }
+                            me.deleteAction(forCellAt: indexPath)
+                            me.swipeDelete = action
+                            //action.fulfill(with: .delete)
         }
         configure(action: archiveAction, with: destructiveAction)
         swipeActions.append(archiveAction)

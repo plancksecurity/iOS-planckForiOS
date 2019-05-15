@@ -51,7 +51,6 @@ class EmailListViewModel {
 
     var lastSearchTerm = ""
     var updatesEnabled = true
-    var deleteDisabled = false
 
     public var emailListViewModelDelegate: EmailListViewModelDelegate?
 
@@ -172,7 +171,6 @@ class EmailListViewModel {
             // EmailListView without having an account.
             return 0
         }
-
         do {
             return try messageQueryResults.count()
         } catch {
@@ -297,7 +295,6 @@ class EmailListViewModel {
     }
 
     func delete(forIndexPath indexPath: IndexPath) {
-        deleteDisabled = true
         let _ = deleteMessage(at: indexPath)
     }
 
