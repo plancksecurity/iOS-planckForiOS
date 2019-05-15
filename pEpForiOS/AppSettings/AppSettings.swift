@@ -18,7 +18,6 @@ struct AppSettings {
     static public let keyDefaultAccountAddress = "keyDefaultAccountAddress"
     static public let keyThreadedViewEnabled = "keyThreadedViewEnabled"
     static public let keyPassiveMode = "keyPassiveMode"
-    static public let keyManuallyTrustedServers = "keyManuallyTrustedServers"
 
     /**
      The actual implementation of `AppSettingsProtocol` to defer to.
