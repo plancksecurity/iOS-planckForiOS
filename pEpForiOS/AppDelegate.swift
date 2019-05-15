@@ -220,18 +220,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         networkService?.cancel()
     }
 
-    private func prepareUserNotifications() {
+    private func askUserForPermissions() {
         UserNotificationTool.resetApplicationIconBadgeNumber()
-        UserNotificationTool.askForPermissions() { granted in
+        UserNotificationTool.askForPermissions() { [weak self] _ in
             // We do not care about whether or not the user granted permissions to
             // post notifications here (e.g. we ignore granted)
             // The calls are nested to avoid simultaniously showing permissions alert for notifications
             // and contact access.
-            DispatchQueue.global(qos: .userInitiated).async {
-                MessageModel.perform {
-                    AddressBook.checkAndTransfer()
+            self?.askForContactAccessPermissionsAndImportContacts()
+        }
+    }
+
+    private func askForContactAccessPermissionsAndImportContacts() {
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            if AddressBook.shared.isAuthorized() {
+                DispatchQueue.main.async {
+                    self?.importContacts()
                 }
             }
+        }
+    }
+
+    private func importContacts() {
+        DispatchQueue.global(qos: .background).async { //!!!: Must become background task. Or stoped when going to background imo.
+            AddressBook.shared.transferContacts()
         }
     }
 
@@ -261,7 +273,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Logger.appDelegateLogger.log("Library url: %{public}@", String(describing: applicationDirectory()))
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
-        prepareUserNotifications()
+        askUserForPermissions()
 
         let result = setupInitialViewController()
 
@@ -282,11 +294,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            MessageModel.perform {
-                AddressBook.checkAndTransfer()
-            }
-        }
+        importContacts()
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 

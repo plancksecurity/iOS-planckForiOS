@@ -60,7 +60,9 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         didSet {
             updateView()
             viewModel?.partnerImage.observe() { [weak self] img in
-                self?.partnerImageView.image = img
+                DispatchQueue.main.async {
+                    self?.partnerImageView.image = img
+                }
             }
         }
     }

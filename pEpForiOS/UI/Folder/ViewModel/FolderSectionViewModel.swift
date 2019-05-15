@@ -58,7 +58,7 @@ public class FolderSectionViewModel {
         if let cachedContactImage = contactImageTool.cachedIdentityImage(for: ac.user) {
             callback(cachedContactImage)
         } else {
-            DispatchQueue.global().async {
+            DispatchQueue.global(qos: .userInitiated).async {
                 let contactImage = self.contactImageTool.identityImage(for: ac.user)
                 DispatchQueue.main.async {
                     callback(contactImage)
