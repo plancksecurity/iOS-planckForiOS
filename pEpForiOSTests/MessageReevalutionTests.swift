@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel //FIXME:
+@testable import MessageModel // Uses MM-internal operations, and Record.Context.default
 import PEPObjCAdapterFramework
 
 class MessageReevalutionTests: XCTestCase {

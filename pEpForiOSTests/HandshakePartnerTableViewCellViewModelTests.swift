@@ -8,7 +8,7 @@
 
 import XCTest
 
-@testable import MessageModel //FIXME:
+import MessageModel
 @testable import pEpForiOS
 import PEPObjCAdapterFramework
 

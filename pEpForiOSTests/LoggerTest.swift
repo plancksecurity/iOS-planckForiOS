@@ -8,9 +8,9 @@
 
 import XCTest
 
-@testable import pEpForiOS
-@testable import MessageModel
-@testable import pEpIOSToolbox
+import pEpForiOS
+import MessageModel
+import pEpIOSToolbox
 
 class LoggerTest: XCTestCase {
     func testSimple() {

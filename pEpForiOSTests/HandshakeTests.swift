@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel //FIXME:
+import MessageModel
 import PEPObjCAdapterFramework
 
 class HandshakeTests: XCTestCase {
