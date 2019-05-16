@@ -25,7 +25,7 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
 }
 
 class LoginViewModelTests: CoreDataDrivenTestBase {
-    class TestVerificationService: VerifiableAccountProtocol {
+    class TestVerifiableAccount: VerifiableAccountProtocol {
         let accountSettings: TestDataBase.AccountSettings
         let expLookedUp: XCTestExpectation
 
@@ -48,6 +48,10 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         var transportSMTP: ConnectionTransport = .startTLS
         var trustedImapServer: Bool = false
         var verifiableAccountDelegate: VerifiableAccountDelegate?
+
+        let isValidName = false
+
+        let isValidUser = false
 
         func verify() throws {
             XCTAssertEqual(address, accountSettings.idAddress)
@@ -105,9 +109,9 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
 //        }
 
         let expLookedUp = expectation(description: "expLookedUp")
-        let verificationService =
-            TestVerificationService(accountSettings: accountSettings, expLookedUp: expLookedUp)
-        let vm = LoginViewModel(verificationService: verificationService)
+        let verifiableAccount =
+            TestVerifiableAccount(accountSettings: accountSettings, expLookedUp: expLookedUp)
+        let vm = LoginViewModel(verifiableAccount: verifiableAccount)
         let errorHandler = ErrorHandler()
         vm.loginViewModelLoginErrorDelegate = errorHandler
         vm.login(accountName: accountSettings.idAddress,
