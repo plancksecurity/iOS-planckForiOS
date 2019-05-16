@@ -13,6 +13,15 @@ import MessageModel
 import PEPObjCAdapterFramework
 import PantomimeFramework
 
+/// Base class for test data.
+/// - Note:
+///   1. This class is used both in MessageModel and the app,
+///      so it's _duplicated code_ for the testing targets.
+///   2. Make sure that, in your SecretTestData, you override:
+///      * `populateAccounts` if you don't use the greenmail local server for testing,
+///        or you want to test against other servers for various reasons.
+///      * `populateVerifiableAccounts` in order to provide verifiable servers, to test
+///        the verification parts.
 class TestDataBase {
     struct AccountSettings {
         var accountName: String?
@@ -170,6 +179,7 @@ class TestDataBase {
         /// Transfers the account data into a `VerifiableAccountProtocol`
         /// that you then can verify the acconut data with.
         func populate(verifiableAccount: inout VerifiableAccountProtocol) {
+            verifiableAccount.userName = accountName
             verifiableAccount.address = idAddress
             verifiableAccount.loginName = imapLoginName
             verifiableAccount.accessToken = nil
@@ -214,31 +224,10 @@ class TestDataBase {
         addLocalTestAccount(userName: "test003")
     }
 
-    private func addLocalTestAccount(userName: String) {
-        let address = "\(userName)@localhost"
-        append(accountSettings: AccountSettings(
-            accountName: "Unit Test \(address)",
-            idAddress: address,
-            idUserName: "User \(address)",
-
-            imapLoginName: userName,
-            imapServerAddress: "localhost",
-            imapServerType: Server.ServerType.imap,
-            imapServerTransport: Server.Transport.plain,
-            imapServerPort: 3143,
-
-            smtpLoginName: userName,
-            smtpServerAddress: "localhost",
-            smtpServerType: Server.ServerType.smtp,
-            smtpServerTransport: Server.Transport.plain,
-            smtpServerPort: 3025,
-
-            password: "pwd"))
-    }
-
     /**
      Accounts needed for testing LAS, that is they need to be registered
      in the LAS DB or provide (correct) DNS SRV for IMAP and SMTP.
+     - Note: Override this in your SecretTestData to something that's working.
      */
     func populateVerifiableAccounts() {
         append(verifiableAccountSettings: AccountSettings(
@@ -259,6 +248,28 @@ class TestDataBase {
             password: "whatever_you_want"))
 
         fatalError("Abstract method. Must be overridden")
+    }
+
+    private func addLocalTestAccount(userName: String) {
+        let address = "\(userName)@localhost"
+        append(accountSettings: AccountSettings(
+            accountName: "Unit Test \(address)",
+            idAddress: address,
+            idUserName: "User \(address)",
+
+            imapLoginName: userName,
+            imapServerAddress: "localhost",
+            imapServerType: Server.ServerType.imap,
+            imapServerTransport: Server.Transport.plain,
+            imapServerPort: 3143,
+
+            smtpLoginName: userName,
+            smtpServerAddress: "localhost",
+            smtpServerType: Server.ServerType.smtp,
+            smtpServerTransport: Server.Transport.plain,
+            smtpServerPort: 3025,
+
+            password: "pwd"))
     }
 
     /**
@@ -390,8 +401,8 @@ class TestDataBase {
         return createImapTimeOutAccountSettings().account()
     }
 
-    func populateWorkingAccount(number: Int = 0,
-                                verifiableAccount: inout VerifiableAccountProtocol) {
+    func populateVerifiableAccount(number: Int = 0,
+                                   verifiableAccount: inout VerifiableAccountProtocol) {
         createVerifiableAccountSettings(number: number).populate(
             verifiableAccount: &verifiableAccount)
     }

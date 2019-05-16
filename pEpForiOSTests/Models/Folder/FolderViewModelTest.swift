@@ -99,11 +99,4 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         CdAccount.deleteAll()
         viewmodel = FolderViewModel(withFoldersIn: nil, includeUnifiedInbox: withUnifiedInbox)
     }
-    
-    class VerificationServiceMock: VerificationServiceProtocol {
-        func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
-            
-        }
-    }
-
 }

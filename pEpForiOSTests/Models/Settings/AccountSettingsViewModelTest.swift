@@ -63,15 +63,17 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testUpdate() {
-        let address = "fakeAddress"
+        let address = "localhost"
         let login = "fakelogin"
         let name = "fakeName"
         let password = "fakePassword"
+        let portString = "1"
+        let portInt = UInt16(portString)!
 
         setUpViewModel()
 
         let server = AccountSettingsViewModel.ServerViewModel(address: address,
-                                                              port: "123",
+                                                              port: portString,
                                                               transport: "StartTls")
 
         let verifyExpectation =
@@ -89,24 +91,18 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
         waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
 
-        // Fixed in IOS-1542.
-        /*
-        let smtp = viewModel.account.smtpServer
-        let imap = viewModel.account.imapServer
+        guard let verifier = viewModel.verifiableAccount else {
+            XCTFail()
+            return
+        }
 
-        XCTAssertEqual(smtp?.credentials.loginName, login)
-        XCTAssertEqual(smtp?.credentials.password, password)
-        XCTAssertEqual(imap?.credentials.loginName, login)
-        XCTAssertEqual(imap?.credentials.password, password)
-
-        XCTAssertEqual(imap?.address, address)
-        XCTAssertEqual(imap?.port, 123)
-        XCTAssertEqual(imap?.transport, .startTls)
-
-        XCTAssertEqual(smtp?.address, address)
-        XCTAssertEqual(smtp?.port, 123)
-        XCTAssertEqual(smtp?.transport, .startTls)
-         */
+        XCTAssertEqual(verifier.loginName, login)
+        XCTAssertEqual(verifier.password, password)
+        XCTAssertEqual(verifier.serverIMAP, address)
+        XCTAssertEqual(verifier.serverSMTP, address)
+        XCTAssertEqual(verifier.portIMAP, portInt)
+        XCTAssertEqual(verifier.portSMTP, portInt)
+        XCTAssertNil(verifier.accessToken)
     }
 
     public func testSectionIsValid() {
@@ -133,9 +129,7 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         delegate.expectationDidVerifyCalled = verifyExpectation
         viewModel.delegate = delegate
 
-        viewModel.verified(account: account,
-                           service: AccountVerificationService(),
-                           result: .ok)
+        viewModel.didEndVerification(result: .success(()))
 
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -152,7 +146,7 @@ class AccountVerificationResultDelegateMock: AccountVerificationResultDelegate {
     var expectationDidVerifyCalled: XCTestExpectation?
     var error: Error? = nil
 
-    func didVerify(result: AccountVerificationResult, accountInput: VerifiableAccountProtocol?) {
+    func didVerify(result: AccountVerificationResult) {
         switch result {
         case .ok:
             self.error = nil
