@@ -11,7 +11,7 @@ import pEpIOSToolbox
 import MessageModel
 import PEPObjCAdapterFramework
 
-protocol EmailListViewModelDelegate: TableViewUpdate {
+protocol EmailListViewModelDelegate: class, TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel,
@@ -52,7 +52,7 @@ class EmailListViewModel {
     var lastSearchTerm = ""
     var updatesEnabled = true
 
-    public var emailListViewModelDelegate: EmailListViewModelDelegate?
+    public weak var emailListViewModelDelegate: EmailListViewModelDelegate?
 
     let folderToShow: DisplayableFolderProtocol
 
