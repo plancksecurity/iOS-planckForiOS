@@ -325,11 +325,14 @@ extension MessageViewModel {
 
     private func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> SelfReferencingOperation {
 
-        let getBodyPeekOperation = SelfReferencingOperation {operation in
+        let getBodyPeekOperation = SelfReferencingOperation { [weak self] operation in
             guard
                 let operation = operation,
                 !operation.isCancelled else {
                     return
+            }
+            guard let me = self else {
+                return
             }
             let session = Session()
             session.performAndWait {
@@ -342,7 +345,7 @@ extension MessageViewModel {
                 guard !operation.isCancelled else {
                     return
                 }
-                self.internalBoddyPeek = summary
+                me.internalBoddyPeek = summary
                 if(!operation.isCancelled){
                     DispatchQueue.main.async {
                         completion(summary)
