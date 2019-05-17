@@ -11,6 +11,8 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel // Uses MM-internal operations, Record.Context.default, MessageModelObjectUtils
 import PEPObjCAdapterFramework
+import MessageModelTestUtil
+import MessageModelTestUtil
 
 class MessageReevalutionTests: XCTestCase {
     var cdOwnAccount: CdAccount!

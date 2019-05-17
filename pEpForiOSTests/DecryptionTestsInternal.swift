@@ -12,6 +12,7 @@ import XCTest
 @testable import MessageModel
 import PantomimeFramework
 import PEPObjCAdapterFramework
+import MessageModelTestUtil
 
 /**
  Tests internal encryption and decryption (that is, the test creates encrypted messages itself,

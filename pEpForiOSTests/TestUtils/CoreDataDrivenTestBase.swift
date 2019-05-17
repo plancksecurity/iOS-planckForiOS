@@ -7,11 +7,12 @@
 //
 
 import XCTest
-
 import CoreData
+
 @testable import pEpForiOS
 @testable import MessageModel // Uses MM-internal operations
 import PEPObjCAdapterFramework
+import MessageModelTestUtil
 
 open class CoreDataDrivenTestBase: XCTestCase {
     var account: Account {

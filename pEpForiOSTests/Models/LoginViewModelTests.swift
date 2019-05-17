@@ -11,6 +11,7 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 import PantomimeFramework
+import MessageModelTestUtil
 
 class NoOpMySelfer: KickOffMySelfProtocol {
     func startMySelf() {

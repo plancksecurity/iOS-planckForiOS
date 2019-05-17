@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 import MessageModel
+import MessageModelTestUtil
 
 class AccountCellViewModelTest: CoreDataDrivenTestBase {
     private var vm: AccountCellViewModel!

@@ -11,6 +11,7 @@ import CoreData
 
 @testable import MessageModel
 @testable import pEpForiOS
+import MessageModelTestUtil
 
 class ContentDispositionTest: CoreDataDrivenTestBase {
     // Commented as randomly failing and crashing. See IOS-1465.

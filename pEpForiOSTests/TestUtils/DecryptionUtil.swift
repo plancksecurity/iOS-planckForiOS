@@ -10,6 +10,7 @@ import Foundation
 import XCTest
 
 @testable import MessageModel
+import MessageModelTestUtil
 
 /// - Note: This is duplicated between app- and MM-tests. (TODO).
 class DecryptionUtil {

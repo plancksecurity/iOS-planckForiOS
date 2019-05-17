@@ -11,6 +11,7 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 import PEPObjCAdapterFramework
+import MessageModelTestUtil
 
 class ComposeViewModelTest: CoreDataDrivenTestBase {
     private var testDelegate: TestDelegate?

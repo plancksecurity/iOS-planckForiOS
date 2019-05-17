@@ -10,6 +10,7 @@ import XCTest
 
 import MessageModel
 @testable import pEpForiOS
+import MessageModelTestUtil
 
 class ComposeUtilTest: CoreDataDrivenTestBase {
     var someone_A: Identity {

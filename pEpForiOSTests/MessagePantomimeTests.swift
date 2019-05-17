@@ -12,6 +12,7 @@ import MessageModel
 import PantomimeFramework
 import pEpForiOS
 import PEPObjCAdapterFramework
+import MessageModelTestUtil
 
 class MessagePantomimeTests: XCTestCase {
     var persistentSetup: PersistentSetup!

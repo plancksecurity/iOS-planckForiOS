@@ -11,6 +11,7 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 import PEPObjCAdapterFramework
+import MessageModelTestUtil
 
 class PEPSessionTest: XCTestCase {
     var persistentSetup: PersistentSetup!

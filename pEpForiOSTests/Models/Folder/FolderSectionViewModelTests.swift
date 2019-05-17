@@ -7,8 +7,10 @@
 //
 
 import XCTest
+
 @testable import pEpForiOS
 import MessageModel
+import MessageModelTestUtil
 
 class FolderSectionViewModelTests: CoreDataDrivenTestBase {
     

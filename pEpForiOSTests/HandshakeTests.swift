@@ -11,6 +11,7 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 import PEPObjCAdapterFramework
+import MessageModelTestUtil
 
 class HandshakeTests: XCTestCase {
     var persistentSetup: PersistentSetup!
