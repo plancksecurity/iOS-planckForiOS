@@ -44,6 +44,10 @@ public class AccountSettingsViewModel {
     public let svm = SecurityViewModel()
     public let isOAuth2: Bool
 
+    /// Holding both the data of the current account in verification,
+    /// and also the implementation of the verification.
+    public var verifiableAccount: VerifiableAccountProtocol?
+
     public init(account: Account) {
         // We are using a copy of the data here.
         // The outside world must not know changed settings until they have been verified.
@@ -52,7 +56,18 @@ public class AccountSettingsViewModel {
         self.loginName = account.server(with: .imap)?.credentials.loginName ?? ""
         self.name = account.user.userName ?? ""
 
+        if let server = account.imapServer {
+            self.originalPassword = server.credentials.password
+            self.imapServer = ServerViewModel(
+                address: server.address,
+                port: "\(server.port)",
+                transport: server.transport?.asString())
+        } else {
+            self.imapServer = ServerViewModel()
+        }
+
         if let server = account.smtpServer {
+            self.originalPassword = self.originalPassword ?? server.credentials.password
             self.smtpServer = ServerViewModel(
                 address: server.address,
                 port: "\(server.port)",
@@ -61,13 +76,15 @@ public class AccountSettingsViewModel {
             self.smtpServer = ServerViewModel()
         }
 
-        if let server = account.imapServer {
-            self.imapServer = ServerViewModel(
-                address: server.address,
-                port: "\(server.port)",
-                transport: server.transport?.asString())
-        } else {
-            self.imapServer = ServerViewModel()
+        if isOAuth2 {
+            if let payload = account.imapServer?.credentials.password ??
+                account.smtpServer?.credentials.password,
+                let token = OAuth2AccessToken.from(base64Encoded: payload)
+                    as? OAuth2AccessTokenProtocol {
+                self.accessToken = token
+            } else {
+                Log.shared.errorAndCrash("Supposed to do OAUTH2, but no existing token")
+            }
         }
     }
 
@@ -84,12 +101,18 @@ public class AccountSettingsViewModel {
 
     weak var delegate: AccountVerificationResultDelegate?
 
-    /// Holding both the data of the current account in verification,
-    /// and also the implementation of the verification.
-    private var verifiableAccount: VerifiableAccountProtocol?
+    /// If the credentials have either an IMAP or SMTP password,
+    /// it gets stored here.
+    private var originalPassword: String?
 
-    // Currently we assume imap and smtp servers exist already (update).
-    // If we run into problems here modify to updateOrCreate.
+    /// If there was OAUTH2 for this account, here is a current token.
+    /// This trumps both the `originalPassword` and a password given by the user
+    /// via the UI.
+    /// - Note: For logins that require it, there must be an up-to-date token
+    ///         for the verification be able to succeed.
+    ///         It is extracted from the existing server credentials on `init`.
+    private var accessToken: OAuth2AccessTokenProtocol?
+
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
                 smtp: ServerViewModel) {
         var theVerifier = verifiableAccount ?? VerifiableAccount()
@@ -98,15 +121,23 @@ public class AccountSettingsViewModel {
         theVerifier.address = email
         theVerifier.userName = name
 
-        // TODO: How to handle if the password got changed or not?
-        theVerifier.password = password
-
         if loginName != email {
             theVerifier.loginName = loginName
         }
 
         if isOAuth2 {
-            // TODO: Set correct auth method, etc.
+            if self.accessToken == nil {
+                Log.shared.errorAndCrash("Have to do OAUTH2, but lacking current token")
+            }
+            theVerifier.authMethod = .saslXoauth2
+            theVerifier.accessToken = accessToken
+            // OAUTH2 trumps any password
+            theVerifier.password = nil
+        } else {
+            theVerifier.password = originalPassword
+            if password != nil {
+                theVerifier.password = password
+            }
         }
 
         // IMAP
@@ -132,7 +163,7 @@ public class AccountSettingsViewModel {
         do {
             try theVerifier.verify()
         } catch {
-            delegate?.didVerify(result: .noImapConnectData, accountInput: theVerifier)
+            delegate?.didVerify(result: .noImapConnectData)
         }
     }
 
@@ -175,37 +206,7 @@ public class AccountSettingsViewModel {
     }
 
     func updateToken(accessToken: OAuth2AccessTokenProtocol) {
-        // TODO: What to do here? When does this get called?
-        /*
-        guard let imapServer = account.imapServer,
-            let smtpServer = account.smtpServer else {
-                return
-        }
-        let password = accessToken.persistBase64Encoded()
-        imapServer.credentials.password = password
-        smtpServer.credentials.password = password
-         */
-    }
-}
-
-// MARK: - AccountVerificationServiceDelegate
-
-extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
-    public func verified(account: Account,
-                  service: AccountVerificationServiceProtocol,
-                  result: AccountVerificationResult) {
-        if result == .ok {
-            MessageModelUtil.performAndWait {
-                account.save()
-            }
-        }
-        GCD.onMainWait { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
-                return
-            }
-            me.delegate?.didVerify(result: result, accountInput: nil)
-        }
+        self.accessToken = accessToken
     }
 }
 
@@ -217,16 +218,17 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
         case .success(()):
             do {
                 try verifiableAccount?.save()
+                delegate?.didVerify(result: .ok)
             } catch {
                 Log.shared.errorAndCrash("%@", error.localizedDescription)
             }
         case .failure(let error):
             if let imapError = error as? ImapSyncError {
                 delegate?.didVerify(
-                    result: .imapError(imapError), accountInput: verifiableAccount)
+                    result: .imapError(imapError))
             } else if let smtpError = error as? SmtpSendError {
                 delegate?.didVerify(
-                    result: .smtpError(smtpError), accountInput: verifiableAccount)
+                    result: .smtpError(smtpError))
             } else {
                 Log.shared.errorAndCrash("%@", error.localizedDescription)
             }
