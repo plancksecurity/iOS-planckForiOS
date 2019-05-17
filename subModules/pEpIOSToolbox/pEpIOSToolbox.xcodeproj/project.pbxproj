@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		370DB3CF22804A3600BC929A /* NSSecureCoding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */; };
 		378B76552240F93A00D6662C /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378B76542240F93A00D6662C /* TestUtils.swift */; };
 		37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */; };
 		37904563223FA486006DAB3B /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455F223FA486006DAB3B /* Reachability.swift */; };
@@ -55,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSecureCoding+Extension.swift"; sourceTree = "<group>"; };
 		378B76542240F93A00D6662C /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TestUtils.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/TestUtils/TestUtils.swift; sourceTree = "<group>"; };
 		3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityProtocol.swift; sourceTree = "<group>"; };
 		3790455F223FA486006DAB3B /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 		B70A3A5222005A7600EDCE61 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */,
 				B7911ECB21F8B46600D7F66F /* GCD.swift */,
 				B7A46C51220C732E0027CCB5 /* Data+Extensions.swift */,
 				B7A46C53220C73BE0027CCB5 /* String+Extensions.swift */,
@@ -393,6 +396,7 @@
 				B70A3A77220091D400EDCE61 /* Logger.swift in Sources */,
 				B7A46C56220DA5EB0027CCB5 /* Substring+Email.swift in Sources */,
 				B7A46C5E220DBAF00027CCB5 /* OperationQueue+Extension.swift in Sources */,
+				370DB3CF22804A3600BC929A /* NSSecureCoding+Extension.swift in Sources */,
 				B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */,
 				B7465DBE22119D3A008A1708 /* Thread+Extension.swift in Sources */,
 				B7DB7F5022130DE9003968DA /* Weak.swift in Sources */,
