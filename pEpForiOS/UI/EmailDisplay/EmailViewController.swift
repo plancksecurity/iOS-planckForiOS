@@ -389,10 +389,16 @@ class EmailViewController: BaseTableViewController {
         }
 
         if (message.imapFlags.flagged == true) {
-            message.imapFlags.flagged = false
+            let imap = message.imapFlags
+            imap.flagged = false
+            message.imapFlags = imap
+            //!!!: not needed? let's see if message query is fast enought
             delegate?.emailDisplayDidUnflag(message: message)
         } else {
-            message.imapFlags.flagged = true
+            let imap = message.imapFlags
+            imap.flagged = true
+            message.imapFlags = imap
+            //!!!: not needed? let's see if message query is fast enought
             delegate?.emailDisplayDidFlag(message: message)
         }
         message.save()
