@@ -27,6 +27,9 @@ UIPickerViewDataSource, UITextFieldDelegate {
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var doneButton: UIBarButtonItem!
+
+
     private let spinner: UIActivityIndicatorView = {
         let createe = UIActivityIndicatorView()
         createe.hidesWhenStopped = true
@@ -48,7 +51,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
      should trigger the reauthorization.
      */
     var oauth2ReauthIndexPath: IndexPath?
-    
+
      override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
@@ -245,7 +248,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
                 password = nil
             }
 
-            showSpinner()
+            showSpinnerAndDisableUI()
             viewModel?.update(loginName: validated.loginName, name: validated.accountName,
                               password: password, imap: imap, smtp: smtp)
 
@@ -305,10 +308,9 @@ extension AccountSettingsTableViewController {
 // MARK: - AccountVerificationResultDelegate
 
 extension AccountSettingsTableViewController: AccountVerificationResultDelegate {
-    func didVerify(result: AccountVerificationResult,
-                   accountInput: VerifiableAccountProtocol?) {
+    func didVerify(result: AccountVerificationResult) {
         GCD.onMain() {
-            self.hideSpinner()
+            self.hideSpinnerAndEnableUI()
             switch result {
             case .ok:
                 self.navigationController?.popViewController(animated: true)
@@ -346,7 +348,11 @@ extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
 // MARK: - SPINNER
 
 extension AccountSettingsTableViewController {
-    private func showSpinner() {
+    /// Shows the spinner and disables UI parts that could lead to
+    /// launching another verification while one is already in process.
+    private func showSpinnerAndDisableUI() {
+        doneButton.isEnabled = false
+
         spinner.center =
             CGPoint(x: tableView.frame.width / 2,
                     y:
@@ -357,7 +363,9 @@ extension AccountSettingsTableViewController {
         spinner.startAnimating()
     }
 
-    private func hideSpinner() {
+    /// Hides the spinner and enables all UI elements again.
+    private func hideSpinnerAndEnableUI() {
+        doneButton.isEnabled = true
         tableView.isUserInteractionEnabled = true
         spinner.stopAnimating()
     }

@@ -9,10 +9,11 @@
 import Foundation
 
 protocol UITestDataProtocol {
-    static var workingAccount1: UIAccount { get }
-    static var workingAccount2: UIAccount  { get }
-    static var workingYahooAccount: UIAccount { get }
-    static var gmailOAuth2Account: UIAccount { get }
-    static var yahooOAuth2Account: UIAccount { get }
-    static var manualAccount: UIAccount { get }
+    var workingAccount1: UIAccount { get }
+    var workingAccount2: UIAccount  { get }
+    var workingAccount3: UIAccount  { get }
+    var workingYahooAccount: UIAccount { get }
+    var gmailOAuth2Account: UIAccount { get }
+    var yahooOAuth2Account: UIAccount { get }
+    var manualAccount: UIAccount { get }
 }
