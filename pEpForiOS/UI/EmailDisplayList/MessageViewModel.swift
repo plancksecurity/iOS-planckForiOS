@@ -35,7 +35,7 @@ class MessageViewModel: CustomDebugStringConvertible {
     var isFlagged: Bool = false
     var isSeen: Bool = false
     var dateText: String
-    var profilePictureComposer: ProfilePictureComposer
+    var profilePictureComposer: ProfilePictureComposerProtocol
     var body: NSAttributedString {
             return getBodyMessage()
     }
