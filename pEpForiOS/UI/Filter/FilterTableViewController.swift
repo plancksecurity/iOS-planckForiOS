@@ -95,12 +95,11 @@ class FilterTableViewController: BaseTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //!!!: we have to go to the filter property of the view mode an change directly the value on there. (Buff: why?)
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
         }
         vm.toggleEnabledState(forRowAt: indexPath)
-        tableView.reloadRows(at: [indexPath], with: .automatic) //!!!: not sure about which animation type fits best. Double check.
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }
