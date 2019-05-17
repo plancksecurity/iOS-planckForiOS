@@ -140,8 +140,8 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43176477228C1F660030F5B2"
-               BuildableName = "MessageModelTestUtil"
+               BlueprintIdentifier = "430CD959228EDE7C00AAC37F"
+               BuildableName = "MessageModelTestUtil.framework"
                BlueprintName = "MessageModelTestUtil"
                ReferencedContainer = "container:../MessageModel/MessageModel/MessageModel.xcodeproj">
             </BuildableReference>
