@@ -18,7 +18,6 @@ public protocol HtmlToAttributedTextSaxParserAttachmentDelegate: class {
 class HtmlToAttributedTextSaxParser: HtmlToTextSaxParser {
     var attributedOutput = NSMutableAttributedString()
     let defaultFont = UIFont.preferredFont(forTextStyle: .body)
-    let mimeUtil = MimeTypeUtil()
 
     weak var attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate?
 
