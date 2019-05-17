@@ -64,20 +64,6 @@
          </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43176477228C1F660030F5B2"
-               BuildableName = "MessageModelTestUtil"
-               BlueprintName = "MessageModelTestUtil"
-               ReferencedContainer = "container:../MessageModel/MessageModel/MessageModel.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
             buildForRunning = "YES"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
@@ -144,6 +130,20 @@
                BuildableName = "libAccountSettingsAdapter.a"
                BlueprintName = "AccountSettingsAdapter"
                ReferencedContainer = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43176477228C1F660030F5B2"
+               BuildableName = "MessageModelTestUtil"
+               BlueprintName = "MessageModelTestUtil"
+               ReferencedContainer = "container:../MessageModel/MessageModel/MessageModel.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
