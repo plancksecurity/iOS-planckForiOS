@@ -278,7 +278,6 @@
 		438281831E891B7E00087343 /* DateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438281821E891B7E00087343 /* DateTests.swift */; };
 		4388A0E22008F813008CB98D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		438BA0F5214F89CD001A4A82 /* MailParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BA0F4214F89CC001A4A82 /* MailParsingTests.swift */; };
-		438D253C1D4B9E7500BFF7AA /* MimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438D253B1D4B9E7500BFF7AA /* MimeTests.swift */; };
 		438D25401D4B9EDB00BFF7AA /* PGPMimeMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 438D253F1D4B9EDB00BFF7AA /* PGPMimeMail.txt */; };
 		438D5A711EA77CFC001A37E1 /* HandshakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438D5A701EA77CFC001A37E1 /* HandshakeViewController.swift */; };
 		438F4EDF215F9C7B00168B5E /* Rick Deckard (EB50C250) – Private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 438F4EDE215F9C7B00168B5E /* Rick Deckard (EB50C250) – Private.asc */; };
@@ -763,7 +762,6 @@
 		438281821E891B7E00087343 /* DateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTests.swift; sourceTree = "<group>"; };
 		4388A0E02008AF61008CB98D /* public.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = public.xcconfig; sourceTree = "<group>"; };
 		438BA0F4214F89CC001A4A82 /* MailParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailParsingTests.swift; sourceTree = "<group>"; };
-		438D253B1D4B9E7500BFF7AA /* MimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTests.swift; sourceTree = "<group>"; };
 		438D253F1D4B9EDB00BFF7AA /* PGPMimeMail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PGPMimeMail.txt; sourceTree = "<group>"; };
 		438D5A701EA77CFC001A37E1 /* HandshakeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeViewController.swift; sourceTree = "<group>"; };
 		438F4EDE215F9C7B00168B5E /* Rick Deckard (EB50C250) – Private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Rick Deckard (EB50C250) – Private.asc"; sourceTree = "<group>"; };
@@ -1731,7 +1729,6 @@
 				150707DD21006D0200AA213F /* UI */,
 				151F7202202A06D30057C74D /* Util */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
-				438D253B1D4B9E7500BFF7AA /* MimeTests.swift */,
 				43C7B9D01CEC4DDF007A612F /* MiscTests.swift */,
 				430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */,
 				432F7D601D2102F10094F097 /* PEPSessionTest.swift */,
@@ -2891,7 +2888,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				438D253C1D4B9E7500BFF7AA /* MimeTests.swift in Sources */,
 				004422CA2179ECD600BDF6DF /* PassiveModeViewModelTest.swift in Sources */,
 				1555361B207796CE00CDDAFA /* CWInternetAddress+TestUtils.swift in Sources */,
 				1544BD0221524C9F0075C5A0 /* AttachmentFilterTest.swift in Sources */,
