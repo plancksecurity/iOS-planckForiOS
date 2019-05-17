@@ -182,6 +182,7 @@ extension EmailListViewCell {
         viewModel = nil
         summaryLabel.text = nil
         ratingImage.isHidden = true
+        ratingImage.image = nil
         contactImageView.image = EmailListViewCell.emptyContactImage
         tintColor = UIColor.pEpGreen
     }
