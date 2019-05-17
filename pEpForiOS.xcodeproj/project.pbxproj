@@ -185,6 +185,7 @@
 		430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
 		430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
 		430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */; };
+		430CD97A228EDEF400AAC37F /* MessageModelTestUtil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 430CD979228EDEF400AAC37F /* MessageModelTestUtil.framework */; };
 		430D73651E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430D73641E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift */; };
 		430D73671E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430D73661E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift */; };
 		430E0BE71EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430E0BE61EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift */; };
@@ -646,6 +647,7 @@
 		430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdMessagePEPMessageTests.swift; sourceTree = "<group>"; };
 		430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = pEpTrustWords.bundle; path = ../pEpTrustWords.bundle; sourceTree = "<group>"; };
 		430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PepAdapterTests.swift; sourceTree = "<group>"; };
+		430CD979228EDEF400AAC37F /* MessageModelTestUtil.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MessageModelTestUtil.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		430D73641E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsViewOperation.swift; sourceTree = "<group>"; };
 		430D73661E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentToLocalURLOperation.swift; sourceTree = "<group>"; };
 		430E0BE61EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableDictionary+pEp.swift"; sourceTree = "<group>"; };
@@ -946,6 +948,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				430CD97A228EDEF400AAC37F /* MessageModelTestUtil.framework in Frameworks */,
 				43D47AC2225DD1CE00E97C5B /* PEPObjCAdapterFramework.framework in Frameworks */,
 				43D47AC0225DD1C500E97C5B /* PantomimeFramework.framework in Frameworks */,
 			);
@@ -2064,6 +2067,7 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				430CD979228EDEF400AAC37F /* MessageModelTestUtil.framework */,
 				43D47AC1225DD1CE00E97C5B /* PEPObjCAdapterFramework.framework */,
 				43D47ABF225DD1C500E97C5B /* PantomimeFramework.framework */,
 				43D213332237C8CA00C060A1 /* libAccountSettingsAdapter.a */,
