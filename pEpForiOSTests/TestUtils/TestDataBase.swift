@@ -286,16 +286,6 @@ class TestDataBase {
     }
 
     /**
-     - Returns: A valid `CdAccount`.
-     */
-    func createVerifiableCdAccount(number: Int = 0, context: NSManagedObjectContext) -> CdAccount {
-        let result = createVerifiableAccountSettings(number: number).cdAccount(context: context)
-        // The identity of an account is mySelf by definion.
-        result.identity?.userID = CdIdentity.pEpOwnUserID
-        return result
-    }
-
-    /**
      - Returns: A valid `BasicConnectInfo` for IMAP.
      */
     func createVerifiableBasicConnectInfoIMAP(number: Int = 0) -> BasicConnectInfo {
@@ -319,18 +309,6 @@ class TestDataBase {
             createWorkingAccountSettings(number: number).cdIdentityWithoutAccount(isMyself: isMyself,
                                                                                   context: context)
         return result
-    }
-
-    /**
-     - Returns: A `CdAccount` that should not be able to be verified.
-     */
-    func createDisfunctionalCdAccount(context: NSManagedObjectContext) -> CdAccount {
-        var accountSettings = createWorkingAccountSettings(number: 0)
-        accountSettings.smtpServerAddress = "localhost"
-        accountSettings.smtpServerPort = 2323
-        accountSettings.imapServerPort = 2323
-        accountSettings.imapServerAddress = "localhost"
-        return accountSettings.cdAccount(context: context)
     }
 
     func createWorkingAccountSettings(number: Int = 0) -> AccountSettings {
