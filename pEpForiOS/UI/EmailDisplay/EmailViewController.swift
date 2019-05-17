@@ -649,7 +649,8 @@ extension EmailViewController: MessageAttachmentDelegate {
 
     func didCreateLocally(attachment: Attachment, url: URL, cell: MessageCell, location: CGPoint,
                           inView: UIView?) {
-        if attachment.mimeType == "application/pdf" && QLPreviewController.canPreview(url as QLPreviewItem){
+        if attachment.mimeType == MimeTypeUtils.MimesType.pdf
+            && QLPreviewController.canPreview(url as QLPreviewItem){
                 selectedAttachmentURL = url
                 let previewController = QLPreviewController()
                 previewController.dataSource = self

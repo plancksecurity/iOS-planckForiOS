@@ -23,6 +23,7 @@ class MediaAttachmentPickerProviderViewModel {
         "security.pep.MediaAttachmentPickerProviderViewModel.attachmentFileIOQueue",
                                                            qos: .userInitiated)
     private var numVideosSelected = 0
+    private let mimeTypeUtils = MimeTypeUtils()
     weak public var resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?
 
     public init(resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?) {
@@ -83,7 +84,7 @@ class MediaAttachmentPickerProviderViewModel {
                                   completion: @escaping (Attachment?) -> Void) {
         attachmentFileIOQueue.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             guard let resourceData = try? Data(contentsOf: resourceUrl) else {
@@ -91,7 +92,8 @@ class MediaAttachmentPickerProviderViewModel {
                 completion(nil)
                 return
             }
-            let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
+            let mimeType = me.mimeTypeUtils?.mimeType(fromURL: resourceUrl) ??
+                MimeTypeUtils.MimesType.defaultMimeType
             let filename = me.fileName(forVideoAt: resourceUrl)
             let attachment =  Attachment.create(data: resourceData,
                                                 mimeType: mimeType,
@@ -111,9 +113,8 @@ class MediaAttachmentPickerProviderViewModel {
         return fileName + numDisplay + "." + fileExtension
     }
 
-    private func createAttachment(forAssetWithUrl assetUrl: URL,
-                                  image: UIImage) -> Attachment {
-        let mimeType = assetUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
+    private func createAttachment(forAssetWithUrl assetUrl: URL, image: UIImage) -> Attachment {
+        let mimeType = mimeTypeUtils?.mimeType(fromURL: assetUrl) ?? MimeTypeUtils.MimesType.defaultMimeType
         return Attachment.createFromAsset(mimeType: mimeType,
                                           assetUrl: assetUrl,
                                           image: image,
