@@ -200,10 +200,10 @@ extension ComposeViewModel.ComposeViewModelState {
         DEBUG: on background
  */
 
-        print("BUFF: before going to background")
+//        print("COMPOSE: before going to background")
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in //HERE:
             //!!!:
-            print("BUFF: on background")
+            print("COMPOSE: on background")
             guard let me = self else {
                 // That is a valid case. Compose view is gone before this block started to run.
                 return
@@ -222,11 +222,11 @@ extension ComposeViewModel.ComposeViewModelState {
                                                              bcc: safeBcc)
             }
             //!!!:
-            print("BUFF: did outgoingMessageRating")
+            print("COMPOSE: did outgoingMessageRating")
             DispatchQueue.main.async {
                 me.rating = newRating
                 //!!!:
-                print("BUFF: did newRating")
+                print("COMPOSE: did newRating")
             }
         }
 
