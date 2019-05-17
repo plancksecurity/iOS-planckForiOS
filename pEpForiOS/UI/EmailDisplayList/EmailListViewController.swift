@@ -540,8 +540,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                 Log.shared.errorAndCrash("Lost MySelf")
                                 return
                             }
-                            me.deleteAction(forCellAt: indexPath)
                             me.swipeDelete = action
+                            me.deleteAction(forCellAt: indexPath)
+
         }
         configure(action: archiveAction, with: destructiveAction)
         swipeActions.append(archiveAction)
