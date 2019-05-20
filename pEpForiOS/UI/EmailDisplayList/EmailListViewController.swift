@@ -496,6 +496,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if lastSelectedIndexPath == indexPath {
+            defer {
+                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+            }
+        }
+
         let cell = tableView.dequeueReusableCell(withIdentifier: EmailListViewCell.storyboardId,
                                                  for: indexPath)
         if let theCell = cell as? EmailListViewCell {
