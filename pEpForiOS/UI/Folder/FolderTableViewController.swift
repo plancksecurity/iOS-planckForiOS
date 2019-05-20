@@ -108,7 +108,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
             header = CollapsibleTableViewHeader(reuseIdentifier: "header")
         }
         guard let vm = folderVM, let safeHeader = header else {
-            Logger.frontendLogger.errorAndCrash("No header or no model.")
+            Log.shared.errorAndCrash("No header or no model.")
             return header
         }
 
@@ -127,7 +127,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
     }
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard let vm = folderVM else {
-            Logger.frontendLogger.errorAndCrash("No model.")
+            Log.shared.errorAndCrash("No model.")
             return 0.0
         }
         if vm[section].hidden {
@@ -141,7 +141,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Default", for: indexPath)
         guard let vm = folderVM else {
-            Logger.frontendLogger.errorAndCrash("No model")
+            Log.shared.errorAndCrash("No model")
             return cell
         }
         let fcvm = vm[indexPath.section][indexPath.item]
@@ -160,7 +160,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
     override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath)
         -> Int {
             guard let vm = folderVM else {
-                Logger.frontendLogger.errorAndCrash("No model")
+                Log.shared.errorAndCrash("No model")
                 return 0
             }
         return vm[indexPath.section][indexPath.item].level - 1
@@ -170,7 +170,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let folderViewModel = folderVM else {
-            Logger.frontendLogger.errorAndCrash("No model")
+            Log.shared.errorAndCrash("No model")
             return
         }
         let cellViewModel = folderViewModel[indexPath.section][indexPath.row]
@@ -189,7 +189,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
             let vc = sb.instantiateViewController(
                 withIdentifier: EmailListViewController.storyboardId)
                 as? EmailListViewController else {
-                    Logger.frontendLogger.errorAndCrash("Problem!")
+                    Log.shared.errorAndCrash("Problem!")
                     return
         }
         vc.appConfig = appConfig
@@ -214,7 +214,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
             guard
                 let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? LoginViewController else {
-                    Logger.frontendLogger.errorAndCrash("Missing VCs")
+                    Log.shared.errorAndCrash("Missing VCs")
                     return
             }
             vc.appConfig = self.appConfig
@@ -223,7 +223,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
 
         } else if segue.identifier == "SettingsSegue" {
             guard let dvc = segue.destination as? SettingsTableViewController else {
-                Logger.frontendLogger.errorAndCrash("Error casting DVC")
+                Log.shared.errorAndCrash("Error casting DVC")
                 return
             }
             dvc.appConfig = self.appConfig

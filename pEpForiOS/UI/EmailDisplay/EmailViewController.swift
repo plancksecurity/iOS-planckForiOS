@@ -186,7 +186,7 @@ class EmailViewController: BaseTableViewController {
     // Sets the destructive bottom bar item accordint to the message (trash/archive)
     private func setupDestructiveButtonIcon() {
         guard let msg = message else {
-            Logger.frontendLogger.errorAndCrash("No message")
+            Log.shared.errorAndCrash("No message")
             return
         }
 
@@ -236,7 +236,7 @@ class EmailViewController: BaseTableViewController {
             storyboard.instantiateViewController(withIdentifier: SecureWebViewController.storyboardId)
                 as? SecureWebViewController
             else {
-                Logger.frontendLogger.errorAndCrash("Cast error")
+                Log.shared.errorAndCrash("Cast error")
                 return SecureWebViewController()
         }
         vc.zoomingEnabled = true
@@ -267,7 +267,7 @@ class EmailViewController: BaseTableViewController {
 
     private func setup(contentCell: MessageContentCell, rowData: ComposeFieldModel) {
         guard let m = message else {
-            Logger.frontendLogger.errorAndCrash("No msg.")
+            Log.shared.errorAndCrash("No msg.")
             return
         }
         if let htmlBody = htmlBody(message: m) {
@@ -329,7 +329,7 @@ class EmailViewController: BaseTableViewController {
             message = m
         }
 
-        Logger.frontendLogger.log("next, will reload table view")
+        Log.shared.log("next, will reload table view")
         configureTableRows()
         tableView.reloadData()
         configureView()
@@ -341,7 +341,7 @@ class EmailViewController: BaseTableViewController {
             message = m
         }
 
-        Logger.frontendLogger.log("previous, will reload table view")
+        Log.shared.log("previous, will reload table view")
         configureTableRows()
         tableView.reloadData()
         configureView()
@@ -353,19 +353,19 @@ class EmailViewController: BaseTableViewController {
         let alert = ReplyAlertCreator(replyAllChecker: ReplyAllPossibleChecker())
             .withReplyOption { [weak self] action in
                 guard let me = self else {
-                    Logger.frontendLogger.lostMySelf()
+                    Log.shared.errorAndCrash("Lost MySelf")
                     return
                 }
                 me.performSegue(withIdentifier: .segueReplyFrom , sender: self)
             }.withReplyAllOption(forMessage: message) { [weak self] action in
                 guard let me = self else {
-                    Logger.frontendLogger.lostMySelf()
+                    Log.shared.errorAndCrash("Lost MySelf")
                     return
                 }
                 me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
             }.withFordwardOption { [weak self] action in
                 guard let me = self else {
-                    Logger.frontendLogger.lostMySelf()
+                    Log.shared.errorAndCrash("Lost MySelf")
                     return
                 }
                 me.performSegue(withIdentifier: .segueForward , sender: self)
@@ -463,7 +463,7 @@ extension EmailViewController {
 
     override func tableView(
         _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        Logger.frontendLogger.log("cell for %d:%d", indexPath.section, indexPath.row)
+        Log.shared.log("cell for %d:%d", indexPath.section, indexPath.row)
         guard
             let row = tableData?.getRow(at: indexPath.row),
             let cell = tableView.dequeueReusableCell(
@@ -485,7 +485,7 @@ extension EmailViewController {
         _ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard
             let row = tableData?.getRow(at: indexPath.row) else {
-                Logger.frontendLogger.errorAndCrash("Missing data")
+                Log.shared.errorAndCrash("Missing data")
                 return tableView.estimatedRowHeight
         }
 
@@ -525,7 +525,7 @@ extension EmailViewController: SegueHandlerType {
         case .segueReplyFrom, .segueReplyAllForm, .segueForward:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController else {
-                    Logger.frontendLogger.errorAndCrash("No DVC?")
+                    Log.shared.errorAndCrash("No DVC?")
                     break
             }
             destination.appConfig = appConfig
@@ -536,7 +536,7 @@ extension EmailViewController: SegueHandlerType {
         case .segueShowMoveToFolder:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? MoveToAccountViewController else {
-                    Logger.frontendLogger.errorAndCrash("No DVC?")
+                    Log.shared.errorAndCrash("No DVC?")
                     break
             }
             destination.appConfig = appConfig
@@ -549,7 +549,7 @@ extension EmailViewController: SegueHandlerType {
             guard let nv = segue.destination as? UINavigationController,
                 let vc = nv.topViewController as? HandshakeViewController,
                 let titleView = navigationItem.titleView else {
-                Logger.frontendLogger.errorAndCrash("No DVC?")
+                Log.shared.errorAndCrash("No DVC?")
                 break
             }
 
@@ -576,7 +576,7 @@ extension EmailViewController: SegueHandlerType {
         } else if segueId == .segueForward {
             return  .forward
         } else {
-            Logger.frontendLogger.errorAndCrash("Unsupported input")
+            Log.shared.errorAndCrash("Unsupported input")
             return .replyFrom
         }
     }
@@ -649,7 +649,8 @@ extension EmailViewController: MessageAttachmentDelegate {
 
     func didCreateLocally(attachment: Attachment, url: URL, cell: MessageCell, location: CGPoint,
                           inView: UIView?) {
-        if attachment.mimeType == "application/pdf" && QLPreviewController.canPreview(url as QLPreviewItem){
+        if attachment.mimeType == MimeTypeUtils.MimesType.pdf
+            && QLPreviewController.canPreview(url as QLPreviewItem){
                 selectedAttachmentURL = url
                 let previewController = QLPreviewController()
                 previewController.dataSource = self

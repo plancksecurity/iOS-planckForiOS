@@ -47,6 +47,7 @@
 		377FA0B0227B005C00DC3B2A /* houdini_html_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA089227B005C00DC3B2A /* houdini_html_u.c */; };
 		377FA0B1227B005C00DC3B2A /* node.c in Sources */ = {isa = PBXBuildFile; fileRef = 377FA08A227B005C00DC3B2A /* node.c */; };
 		377FA0B3227C417100DC3B2A /* pEpIOSToolbox.h in Headers */ = {isa = PBXBuildFile; fileRef = 377FA0B2227C3C1900DC3B2A /* pEpIOSToolbox.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		370DB3CF22804A3600BC929A /* NSSecureCoding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */; };
 		378B76552240F93A00D6662C /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378B76542240F93A00D6662C /* TestUtils.swift */; };
 		37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */; };
 		37904563223FA486006DAB3B /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455F223FA486006DAB3B /* Reachability.swift */; };
@@ -54,7 +55,7 @@
 		37904565223FA486006DAB3B /* ReachabilityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904561223FA486006DAB3B /* ReachabilityProtocol.swift */; };
 		37904569223FA52B006DAB3B /* NetworkReachibilityMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904567223FA52B006DAB3B /* NetworkReachibilityMock.swift */; };
 		3790456A223FA52B006DAB3B /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904568223FA52B006DAB3B /* ReachabilityTests.swift */; };
-		435F5129221FF9D7006EB11F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F5128221FF9D7006EB11F /* Constants.swift */; };
+		37954C6E227C90C10099B8D8 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37954C6D227C90C10099B8D8 /* Log.swift */; };
 		B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5422005BD400EDCE61 /* Date+Extension.swift */; };
 		B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */; };
 		B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */; };
@@ -135,6 +136,7 @@
 		377FA089227B005C00DC3B2A /* houdini_html_u.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = houdini_html_u.c; sourceTree = "<group>"; };
 		377FA08A227B005C00DC3B2A /* node.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = node.c; sourceTree = "<group>"; };
 		377FA0B2227C3C1900DC3B2A /* pEpIOSToolbox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = pEpIOSToolbox.h; path = ../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/pEpIOSToolbox.h; sourceTree = "<group>"; };
+		370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSecureCoding+Extension.swift"; sourceTree = "<group>"; };
 		378B76542240F93A00D6662C /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TestUtils.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/TestUtils/TestUtils.swift; sourceTree = "<group>"; };
 		3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityProtocol.swift; sourceTree = "<group>"; };
 		3790455F223FA486006DAB3B /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
@@ -142,7 +144,7 @@
 		37904561223FA486006DAB3B /* ReachabilityProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityProtocol.swift; sourceTree = "<group>"; };
 		37904567223FA52B006DAB3B /* NetworkReachibilityMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachibilityMock.swift; sourceTree = "<group>"; };
 		37904568223FA52B006DAB3B /* ReachabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityTests.swift; sourceTree = "<group>"; };
-		435F5128221FF9D7006EB11F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Other/Constants.swift; sourceTree = "<group>"; };
+		37954C6D227C90C10099B8D8 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		B70A3A5422005BD400EDCE61 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
@@ -307,9 +309,18 @@
 			path = ReachabilityUtilsTest;
 			sourceTree = "<group>";
 		};
+		37C3C0E72264BF96003E290C /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				37954C6D227C90C10099B8D8 /* Log.swift */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
 		B70A3A5222005A7600EDCE61 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */,
 				B7911ECB21F8B46600D7F66F /* GCD.swift */,
 				B7A46C51220C732E0027CCB5 /* Data+Extensions.swift */,
 				B7A46C53220C73BE0027CCB5 /* String+Extensions.swift */,
@@ -360,6 +371,7 @@
 		B7911EB621F7358500D7F66F /* pEpIOSToolbox */ = {
 			isa = PBXGroup;
 			children = (
+				37C3C0E72264BF96003E290C /* Modules */,
 				B70A3A5222005A7600EDCE61 /* Foundation */,
 				B70A3A5322005B9600EDCE61 /* UIKit */,
 				B7DB7FEC221B086A003968DA /* Other */,
@@ -393,7 +405,6 @@
 				B7A46C4F220C1F0C0027CCB5 /* MiscUtil.swift */,
 				B7DB7F512213120B003968DA /* SortedSet.swift */,
 				B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */,
-				435F5128221FF9D7006EB11F /* Constants.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -534,6 +545,7 @@
 				B7A46C58220DA6190027CCB5 /* String+Email.swift in Sources */,
 				377FA0A6227B005C00DC3B2A /* case_fold_switch.inc in Sources */,
 				37904565223FA486006DAB3B /* ReachabilityProtocol.swift in Sources */,
+				37954C6E227C90C10099B8D8 /* Log.swift in Sources */,
 				B7A46C62220DCEA80027CCB5 /* NSAttributedString+Parsing.swift in Sources */,
 				377FA0A7227B005C00DC3B2A /* entities.inc in Sources */,
 				377FA0A2227B005C00DC3B2A /* cmark_ctype.c in Sources */,
@@ -544,7 +556,6 @@
 				B7465DE72211E969008A1708 /* CGRect+Util.swift in Sources */,
 				B7465DCC2211BEEA008A1708 /* Tuple.swift in Sources */,
 				37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */,
-				435F5129221FF9D7006EB11F /* Constants.swift in Sources */,
 				B7A46C50220C1F0C0027CCB5 /* MiscUtil.swift in Sources */,
 				377FA0A8227B005C00DC3B2A /* houdini_html_e.c in Sources */,
 				B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */,
@@ -558,6 +569,7 @@
 				B70A3A77220091D400EDCE61 /* Logger.swift in Sources */,
 				B7A46C56220DA5EB0027CCB5 /* Substring+Email.swift in Sources */,
 				B7A46C5E220DBAF00027CCB5 /* OperationQueue+Extension.swift in Sources */,
+				370DB3CF22804A3600BC929A /* NSSecureCoding+Extension.swift in Sources */,
 				B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */,
 				377FA0AB227B005C00DC3B2A /* render.c in Sources */,
 				377FA09E227B005C00DC3B2A /* cmark.c in Sources */,

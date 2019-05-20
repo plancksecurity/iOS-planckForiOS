@@ -14,9 +14,4 @@ public protocol AppSettingsProtocol {
     var threadedViewEnabled: Bool { get set }
     var passiveMode: Bool { get set }
     var defaultAccount: String? { get set }
-    var manuallyTrustedServers: [String] { get set }
-
-    func isManuallyTrustedServer(address: String) -> Bool
-    func addToManuallyTrustedServers(address: String)
-    func removeFromManuallyTrustedServers(address: String)
 }

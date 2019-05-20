@@ -165,7 +165,7 @@ class EmailListViewModel {
 
     func viewModel(for index: Int) -> MessageViewModel? {
         guard let messageViewModel = messages.object(at: index) else {
-            Logger.frontendLogger.errorAndCrash("InconsistencyviewModel vs. model")
+            Log.shared.errorAndCrash("InconsistencyviewModel vs. model")
             return nil
         }
         return messageViewModel
@@ -283,7 +283,7 @@ class EmailListViewModel {
 
         for pvm in deletees {
             guard let message = pvm.message() else {
-                Logger.frontendLogger.errorAndCrash("No mesage")
+                Log.shared.errorAndCrash("No mesage")
                 return
             }
             delete(message: message)
@@ -334,7 +334,7 @@ class EmailListViewModel {
 
     func delete(forIndexPath indexPath: IndexPath) {
         guard let deletedMessage = deleteMessage(at: indexPath) else {
-            Logger.frontendLogger.errorAndCrash(
+            Log.shared.errorAndCrash(
                 "Not sure if this is a valid case. Remove this log if so.")
             return
         }
@@ -442,7 +442,7 @@ class EmailListViewModel {
         if folderToShow is UnifiedInbox {
             // folderToShow is unified inbox, fetch parent folder from DB.
             guard let folder = messages.object(at: index)?.message()?.parent else {
-                    Logger.frontendLogger.errorAndCrash("Dangling Message")
+                    Log.shared.errorAndCrash("Dangling Message")
                     return folderToShow
             }
             parentFolder = folder
@@ -555,7 +555,7 @@ class EmailListViewModel {
 
     public func removeSearchFilter() {
         guard let filter = folderToShow.filter else {
-            Logger.frontendLogger.errorAndCrash("No folder.")
+            Log.shared.errorAndCrash("No folder.")
             return
         }
         let filtersChanged = filter.removeSearchFilter()
@@ -570,7 +570,7 @@ class EmailListViewModel {
         }
 
         guard let folderFilter = folderToShow.filter else {
-            Logger.frontendLogger.errorAndCrash("We just set the filter but do not have one?")
+            Log.shared.errorAndCrash("We just set the filter but do not have one?")
             return CompositeFilter<FilterBase>.defaultFilter()
         }
         return folderFilter
@@ -580,7 +580,7 @@ class EmailListViewModel {
 
     func folderIsDraft(_ parentFolder: Folder?) -> Bool {
         guard let folder = parentFolder else {
-            Logger.frontendLogger.errorAndCrash("No parent.")
+            Log.shared.errorAndCrash("No parent.")
             return false
         }
         return folder.folderType == .drafts
@@ -588,7 +588,7 @@ class EmailListViewModel {
 
     func folderIsOutbox(_ parentFolder: Folder?) -> Bool {
         guard let folder = parentFolder else {
-            Logger.frontendLogger.errorAndCrash("No parent.")
+            Log.shared.errorAndCrash("No parent.")
             return false
         }
         return folder.folderType == .outbox
@@ -664,9 +664,21 @@ extension EmailListViewModel {
     }
 
     func composeViewModelForNewMessage() -> ComposeViewModel {
-        let user = folderToShow.account.user
+        // Determine the sender.
+        var someUser: Identity? = nil
+        // TODO: This is bad code (especially the use of `is`), and should be rewritten
+        // as soon as the UI has the improved folder concept.
+        if folderToShow is UnifiedInbox {
+            // A `UnifiedInbox` has no account, and will fake the result,
+            // therefore make a better choice.
+            someUser = Account.defaultAccount()?.user
+        } else {
+            // A folder that is not 'unified' or 'virtual' should know its account.
+            someUser = folderToShow.account.user
+        }
+
         let composeVM = ComposeViewModel(resultDelegate: self,
-                                         prefilledFrom: user)
+                                         prefilledFrom: someUser)
         return composeVM
     }
 }

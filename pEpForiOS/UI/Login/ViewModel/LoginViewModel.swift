@@ -25,7 +25,7 @@ class LoginViewModel {
 
     /// Holding both the data of the current account in verification,
     /// and also the implementation of the verification.
-    var verificationService: VerifiableAccountProtocol?
+    var verifiableAccount: VerifiableAccountProtocol?
 
     /** If the last login attempt was via OAuth2, this will collect temporary parameters */
     private var lastOAuth2Parameters: OAuth2Parameters?
@@ -52,8 +52,8 @@ class LoginViewModel {
 
     let qualifyServerService = QualifyServerIsLocalService()
 
-    init(verificationService: VerifiableAccountProtocol? = nil) {
-        self.verificationService = verificationService
+    init(verifiableAccount: VerifiableAccountProtocol? = nil) {
+        self.verifiableAccount = verifiableAccount
     }
 
     func isThereAnAccount() -> Bool {
@@ -101,7 +101,7 @@ class LoginViewModel {
 
         func statusOk() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
-                Logger.frontendLogger.error("%{public}@", error.localizedDescription)
+                Log.shared.error("%{public}@", error.localizedDescription)
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
                 return
             }
@@ -116,7 +116,7 @@ class LoginViewModel {
             let smtpTransport = ConnectionTransport(
                 accountSettingsTransport: outgoingServer.transport, smtpPort: outgoingServer.port)
 
-            var newAccount = verificationService ?? VerifiableAccount()
+            var newAccount = verifiableAccount ?? VerifiableAccount()
 
             newAccount.verifiableAccountDelegate = self
             newAccount.address = accountName
@@ -135,9 +135,9 @@ class LoginViewModel {
             newAccount.serverSMTP = outgoingServer.hostname
             newAccount.portSMTP = UInt16(outgoingServer.port)
             newAccount.transportSMTP = smtpTransport
-            newAccount.trustedImapServer = false
+            newAccount.isAutomaticallyTrustedImapServer = false
 
-            verificationService = newAccount
+            verifiableAccount = newAccount
             verifyAccount(model: newAccount)
         }
     }
@@ -147,7 +147,7 @@ class LoginViewModel {
     /// - Parameter model: account data
     /// - Throws: AccountVerificationError
     func verifyAccount(model: VerifiableAccountProtocol?) {
-        if let imapServer = verificationService?.serverIMAP {
+        if let imapServer = verifiableAccount?.serverIMAP {
             qualifyServerService.delegate = self
             qualifyServerService.qualify(serverName: imapServer)
         } else {
@@ -156,16 +156,16 @@ class LoginViewModel {
     }
 
     func accountHasBeenQualified(trusted: Bool) {
-        guard var theVerificationService = verificationService else {
-            Logger.frontendLogger.errorAndCrash("no VerificationService")
+        guard var theVerificationService = verifiableAccount else {
+            Log.shared.errorAndCrash("no VerificationService")
             return
         }
 
-        theVerificationService.trustedImapServer = trusted
+        theVerificationService.isAutomaticallyTrustedImapServer = trusted
         do {
             try theVerificationService.verify()
         } catch {
-            Logger.frontendLogger.error("%{public}@", error.localizedDescription)
+            Log.shared.error("%{public}@", error.localizedDescription)
             loginViewModelLoginErrorDelegate?.handle(loginError: error)
         }
     }
@@ -222,27 +222,17 @@ extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
 
 extension LoginViewModel: VerifiableAccountDelegate {
     func informAccountVerificationResultDelegate(error: Error?) {
-        guard let theService = verificationService else {
-            Logger.frontendLogger.error(
-                "Lost the verificationService, was about to inform the delegate")
-            if let err = error {
-                Logger.frontendLogger.log(error: err)
-            }
-            return
-        }
         if let imapError = error as? ImapSyncError {
             accountVerificationResultDelegate?.didVerify(
-                result: .imapError(imapError), accountInput: theService)
+                result: .imapError(imapError))
         } else if let smtpError = error as? SmtpSendError {
             accountVerificationResultDelegate?.didVerify(
-                result: .smtpError(smtpError), accountInput: theService)
+                result: .smtpError(smtpError))
         } else {
             if let theError = error {
-                Logger.frontendLogger.log(error: theError)
-                Logger.frontendLogger.errorAndCrash("Unexpected error")
-
+                Log.shared.errorAndCrash("%@", theError.localizedDescription)
             } else {
-                accountVerificationResultDelegate?.didVerify(result: .ok, accountInput: theService)
+                accountVerificationResultDelegate?.didVerify(result: .ok)
             }
         }
     }
@@ -251,12 +241,11 @@ extension LoginViewModel: VerifiableAccountDelegate {
         switch result {
         case .success(()):
             do {
-                try verificationService?.save()
+                try verifiableAccount?.save()
                 informAccountVerificationResultDelegate(error: nil)
                 mySelfer?.startMySelf()
             } catch {
-                Logger.frontendLogger.log(error: error)
-                Logger.frontendLogger.errorAndCrash("Unexpected error on saving the account")
+                Log.shared.errorAndCrash("%@", error.localizedDescription)
             }
         case .failure(let error):
             informAccountVerificationResultDelegate(error: error)

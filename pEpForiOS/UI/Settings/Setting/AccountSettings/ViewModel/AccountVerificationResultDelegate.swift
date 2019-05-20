@@ -11,5 +11,5 @@ import Foundation
 import MessageModel
 
 protocol AccountVerificationResultDelegate: class {
-    func didVerify(result: AccountVerificationResult, accountInput: VerifiableAccountProtocol?)
+    func didVerify(result: AccountVerificationResult)
 }

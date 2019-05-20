@@ -21,7 +21,9 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     @IBOutlet weak var serverTitle: UILabel!
     @IBOutlet weak var portTitle: UILabel!
 
-    var model: VerifiableAccountProtocol!
+    /// - Note: This VC doesn't have a view model yet, so this is used for the model.
+    var model: VerifiableAccountProtocol?
+
     var fields = [UITextField]()
     var responder = 0
 
@@ -48,7 +50,7 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        firstResponder(model.serverSMTP == nil)
+        firstResponder(model?.serverSMTP == nil)
     }
 
     public override func viewDidLayoutSubviews() {
@@ -59,9 +61,11 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     // MARK: - Working Bees
 
     private func updateView() {
-        serverValue.text = model.serverSMTP
-        portValue.text = String(model.portSMTP)
-        transportSecurity.setTitle(model.transportSMTP.localizedString(), for: UIControl.State())
+        serverValue.text = model?.serverSMTP
+        if let thePort = model?.portSMTP {
+            portValue.text = String(thePort)
+        }
+        transportSecurity.setTitle(model?.transportSMTP.localizedString(), for: UIControl.State())
 
         if isCurrentlyVerifying {
             activityIndicatorView.startAnimating()
@@ -76,8 +80,8 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     /// - Throws: AccountVerificationError
     private func verifyAccount() throws {
         isCurrentlyVerifying =  true
-        model.verifiableAccountDelegate = self
-        try model.verify()
+        model?.verifiableAccountDelegate = self
+        try model?.verify()
     }
 
     private func informUser(about error: Error, title: String) {
@@ -107,7 +111,7 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
                                        comment: "UI alert message for transport protocol"),
             preferredStyle: .actionSheet)
         let block: (ConnectionTransport) -> () = { transport in
-            self.model.transportSMTP = transport
+            self.model?.transportSMTP = transport
             self.updateView()
         }
 
@@ -127,13 +131,13 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     }
 
     @IBAction func changeServer(_ sender: UITextField) {
-        model.serverSMTP = sender.text
+        model?.serverSMTP = sender.text
     }
 
     @IBAction func changePort(_ sender: UITextField) {
         if let text = portValue.text {
             if let port = UInt16(text) {
-                model.portSMTP = port
+                model?.portSMTP = port
             }
         }
     }
@@ -147,6 +151,34 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
                                                comment: "Title of alert: a required field is empty")
             isCurrentlyVerifying =  false
             informUser(about: error, title: errorTopic)
+        }
+    }
+}
+
+// MARK: - AccountVerificationServiceDelegate
+
+extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
+    func verified(account: Account, service: AccountVerificationServiceProtocol,
+                  result: AccountVerificationResult) {
+        if result == .ok {
+            MessageModelUtil.performAndWait {
+                account.save()
+            }
+        }
+        GCD.onMain() {
+            self.isCurrentlyVerifying =  false
+            switch result {
+            case .ok:
+                // unwind back to INBOX or folder list on success
+                self.performSegue(withIdentifier: .backToEmailListSegue, sender: self)
+            case .imapError(let err):
+                UIUtils.show(error: err, inViewController: self)
+            case .smtpError(let err):
+                UIUtils.show(error: err, inViewController: self)
+            case .noImapConnectData, .noSmtpConnectData:
+                let error = LoginViewController.LoginError.noConnectData
+                UIUtils.show(error: error, inViewController: self)
+            }
         }
     }
 }
@@ -187,21 +219,37 @@ extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
     func didEndVerification(result: Result<Void, Error>) {
         switch result {
         case .success(()):
-                MessageModelUtil.performAndWait { [weak self] in
-                    do {
-                        try self?.model.save()
-                    } catch {
-                        Logger.frontendLogger.log(error: error)
-                        Logger.frontendLogger.errorAndCrash(
-                            "Unexpected error on saving the account")
-                    }
+            MessageModelUtil.performAndWait { [weak self] in
+                // Note: Currently, there is no way for the VC to disappear
+                // before the verification has happened.
+                guard let theSelf = self else {
+                    Log.shared.lostMySelf()
+                    return
                 }
-                GCD.onMain() {
-                    self.performSegue(withIdentifier: .backToEmailListSegue, sender: self)
+
+                do {
+                    try theSelf.model?.save()
+                } catch {
+                    Log.shared.errorAndCrash("%@", error.localizedDescription)
+                }
+            }
+            GCD.onMain() {  [weak self] in
+                // Note: Currently, there is no way for the VC to disappear
+                // before the verification has happened.
+                guard let theSelf = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+
+                theSelf.isCurrentlyVerifying = false
+                theSelf.performSegue(withIdentifier: .backToEmailListSegue, sender: theSelf)
             }
         case .failure(let error):
-            GCD.onMain() {
-                UIUtils.show(error: error, inViewController: self)
+            GCD.onMain() { [weak self] in
+                if let theSelf = self {
+                    theSelf.isCurrentlyVerifying = false
+                    UIUtils.show(error: error, inViewController: theSelf)
+                }
             }
         }
     }

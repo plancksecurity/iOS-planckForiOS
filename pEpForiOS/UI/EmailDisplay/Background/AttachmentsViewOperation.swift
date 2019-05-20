@@ -16,7 +16,7 @@ class AttachmentsViewOperation: Operation {
         case docAttachment(Attachment)
     }
 
-    let mimeTypes: MimeTypeUtil?
+    let mimeTypes: MimeTypeUtils?
     let message: Message
 
     /**
@@ -29,7 +29,7 @@ class AttachmentsViewOperation: Operation {
      */
     var attachmentsCount = 0
 
-    init(mimeTypes: MimeTypeUtil?, message: Message) {
+    init(mimeTypes: MimeTypeUtils?, message: Message) {
         self.mimeTypes = mimeTypes
         self.message = message
 
