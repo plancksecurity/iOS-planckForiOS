@@ -25,7 +25,7 @@ class HandshakeTests: XCTestCase {
 
         XCTAssertTrue(PEPUtil.pEpClean())
         persistentSetup = PersistentSetup()
-        moc = Record.Context.default
+        moc = Stack.shared.mainContext
 
         let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
         cdMyAccount.identity?.userName = "iOS Test 002"
@@ -63,7 +63,7 @@ class HandshakeTests: XCTestCase {
 
         let theAttachments = pEpMessage.attachments ?? []
         XCTAssertEqual(theAttachments.count, 1)
-        XCTAssertEqual(theAttachments[0].mimeType, MimeTypeUtil.contentTypeApplicationPGPKeys)
+        XCTAssertEqual(theAttachments[0].mimeType, ContentTypeUtils.ContentType.pgpKeys)
 
         guard let optFields = pEpMessage.optionalFields else {
             XCTFail("expected optional_fields to be defined")

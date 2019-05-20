@@ -1,4 +1,4 @@
-regexp
+syntax: regexp
 \.DS_Store
 xcuserdata/.*
 Pods/.*
@@ -15,4 +15,4 @@ build/.*
 
 ^.*\.pyc$
 
-glob
+syntax: glob

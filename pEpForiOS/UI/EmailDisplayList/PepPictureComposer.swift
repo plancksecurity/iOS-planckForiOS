@@ -10,7 +10,7 @@ import Foundation
 import MessageModel
 import PEPObjCAdapterFramework
 
-class PepProfilePictureComposer: ProfilePictureComposer {
+class PepProfilePictureComposer: ProfilePictureComposerProtocol {
 
     let contactImageTool = IdentityImageTool()
 

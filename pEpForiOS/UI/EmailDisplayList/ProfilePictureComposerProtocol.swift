@@ -9,7 +9,7 @@
 import Foundation
 import MessageModel
 
-protocol ProfilePictureComposer { //!!!: BUFF: remnamen (xyzProtocol)
+protocol ProfilePictureComposerProtocol {
     /**
      Retrieves a profile picture (if any) for the given identity.
      */

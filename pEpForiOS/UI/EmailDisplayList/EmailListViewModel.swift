@@ -11,7 +11,7 @@ import pEpIOSToolbox
 import MessageModel
 import PEPObjCAdapterFramework
 
-protocol EmailListViewModelDelegate: TableViewUpdate {
+protocol EmailListViewModelDelegate: class, TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel,
@@ -19,20 +19,19 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel,
                             didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath)
+    /*
+     //!!!: Some issues here:
+     - bad naming.
+     - what is viewModel as the param
+     - let's discuss & change!
+     */
     func willReceiveUpdates(viewModel: EmailListViewModel)
     func allUpdatesReceived(viewModel: EmailListViewModel)
     func reloadData(viewModel: EmailListViewModel)
+
     func toolbarIs(enabled: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
-}
-
-// MARK: - FilterViewDelegate
-
-extension EmailListViewModel: FilterViewDelegate {
-    public func filterChanged(newFilter: MessageQueryResultsFilter) {
-        setNewFilterAndReload(filter: newFilter)
-    }
 }
 
 // MARK: - EmailListViewModel
@@ -43,17 +42,17 @@ class EmailListViewModel {
 
     var indexPathShown: IndexPath?
 
-    private let queue: OperationQueue = {
+    private let queueForHeavyStuff: OperationQueue = {
         let createe = OperationQueue()
         createe.qualityOfService = .userInitiated
-        createe.maxConcurrentOperationCount = 1
+        createe.name = "security.pep.EmailListViewModel.queueForHeavyStuff"
         return createe
     }()
 
     var lastSearchTerm = ""
     var updatesEnabled = true
 
-    public var emailListViewModelDelegate: EmailListViewModelDelegate?
+    public weak var emailListViewModelDelegate: EmailListViewModelDelegate?
 
     let folderToShow: DisplayableFolderProtocol
 
@@ -102,9 +101,8 @@ class EmailListViewModel {
 
     private var selectedItems: Set<IndexPath>?
 
-    weak var updateThreadListDelegate: UpdateThreadListDelegate? //!!!: sounds like belonging to message thread. If so, comment out
-
     // Threading feature is currently non-existing. Keep this code, might help later.
+//    weak var updateThreadListDelegate: UpdateThreadListDelegate?
 //    var oldThreadSetting : Bool
 
     // MARK: - Life Cycle
@@ -162,7 +160,8 @@ class EmailListViewModel {
     }
 
     func viewModel(for index: Int) -> MessageViewModel? {
-        let messageViewModel = MessageViewModel(with: messageQueryResults[index])
+        let messageViewModel = MessageViewModel(with: messageQueryResults[index],
+                                                queue: queueForHeavyStuff)
         return messageViewModel
     }
 
@@ -172,7 +171,6 @@ class EmailListViewModel {
             // EmailListView without having an account.
             return 0
         }
-
         do {
             return try messageQueryResults.count()
         } catch {
@@ -303,15 +301,6 @@ class EmailListViewModel {
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
         return messageQueryResults[indexPath.row]
     }
-
-    //
-//    internal func requestEmailViewIfNeeded(for message:Message) {
-//        MessageModelUtil.performAndWait {
-//            DispatchQueue.main.async {
-//                self.screenComposer?.emailListViewModel(self, requestsShowEmailViewFor: message)
-//            }
-//        }
-//    }
 
     func freeMemory() {
         contactImageTool.clearCache()
@@ -470,10 +459,15 @@ extension EmailListViewModel {
 extension EmailListViewModel {
 
     private func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
+        updatesEnabled = false
         let message = messageQueryResults[indexPath.row]
-        // This does *not* trigger FetchedResultsController. Ingtentionally.
-        message.imapFlags.flagged = flagged
+        let imap =  message.imapFlags
+        imap.flagged = flagged
+        message.imapFlags = imap
         message.save()
+//        // This does *not* trigger FetchedResultsController. Ingtentionally.
+//        message.imapFlags.flagged = flagged
+//        message.save()
     }
 
     private func setSeenValue(forIndexPath indexPath: IndexPath, newValue seen: Bool) {
@@ -503,6 +497,47 @@ extension EmailListViewModel {
         }
         return
             contactImageTool.cachedIdentityImage(for: IdentityImageTool.IdentityKey(identity: from))
+    }
+}
+
+// MARK: - FolderType Utils
+
+extension EmailListViewModel {
+
+    private func getParentFolder(forMessageAt index: Int) -> Folder {
+        return messageQueryResults[index].parent
+    }
+
+    private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType == .outbox
+    }
+
+    private func folderIsDraft(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType == .drafts
+    }
+
+    private func folderIsDraftOrOutbox(_ parentFoldder: Folder) -> Bool {
+        return folderIsDraft(parentFoldder) || folderIsOutbox(parentFoldder)
+    }
+
+    private func folderIsDraft(_ parentFolder: Folder?) -> Bool {
+        guard let folder = parentFolder else {
+            Log.shared.errorAndCrash("No parent.")
+            return false
+        }
+        return folderIsDraft(folder)
+    }
+
+    private func folderIsOutbox(_ parentFolder: Folder?) -> Bool {
+        guard let folder = parentFolder else {
+            Log.shared.errorAndCrash("No parent.")
+            return false
+        }
+        return folderIsOutbox(folder)
+    }
+
+    private func folderIsDraftsOrOutbox(_ parentFolder: Folder?) -> Bool {
+        return folderIsDraft(parentFolder) || folderIsOutbox(parentFolder)
     }
 }
 
@@ -568,43 +603,10 @@ extension EmailListViewModel: ComposeViewModelResultDelegate {
     }
 }
 
-// MARK: - FolderType Utils
+// MARK: - FilterViewDelegate
 
-extension EmailListViewModel {
-
-    private func getParentFolder(forMessageAt index: Int) -> Folder {
-        return messageQueryResults[index].parent
-    }
-
-    private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
-        return parentFolder.folderType == .outbox
-    }
-
-    private func folderIsDraft(_ parentFolder: Folder) -> Bool {
-        return parentFolder.folderType == .drafts
-    }
-
-    private func folderIsDraftOrOutbox(_ parentFoldder: Folder) -> Bool {
-        return folderIsDraft(parentFoldder) || folderIsOutbox(parentFoldder)
-    }
-
-    private func folderIsDraft(_ parentFolder: Folder?) -> Bool {
-        guard let folder = parentFolder else {
-            Log.shared.errorAndCrash("No parent.")
-            return false
-        }
-        return folderIsDraft(folder)
-    }
-
-    private func folderIsOutbox(_ parentFolder: Folder?) -> Bool {
-        guard let folder = parentFolder else {
-            Log.shared.errorAndCrash("No parent.")
-            return false
-        }
-        return folderIsOutbox(folder)
-    }
-
-    private func folderIsDraftsOrOutbox(_ parentFolder: Folder?) -> Bool {
-        return folderIsDraft(parentFolder) || folderIsOutbox(parentFolder)
+extension EmailListViewModel: FilterViewDelegate {
+    public func filterChanged(newFilter: MessageQueryResultsFilter) {
+        setNewFilterAndReload(filter: newFilter)
     }
 }

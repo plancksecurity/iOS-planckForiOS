@@ -157,8 +157,7 @@ class IdentityImageTool {
 
         if let addressBookID = identityKey.addressBookId {
             // Get image from system AddressBook if any
-            let ab = AddressBook()
-            if let contact = ab.contactBy(addressBookID: addressBookID),
+            if let contact = AddressBook.shared.contactBy(addressBookID: addressBookID),
                 let imgData = contact.thumbnailImageData {
                 image = UIImage(data: imgData)
             }

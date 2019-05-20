@@ -18,7 +18,6 @@ struct AppSettings {
     static public let keyDefaultAccountAddress = "keyDefaultAccountAddress"
     static public let keyThreadedViewEnabled = "keyThreadedViewEnabled"
     static public let keyPassiveMode = "keyPassiveMode"
-    static public let keyManuallyTrustedServers = "keyManuallyTrustedServers"
 
     /**
      The actual implementation of `AppSettingsProtocol` to defer to.
@@ -71,29 +70,5 @@ struct AppSettings {
         set {
             settingsHandler.defaultAccount = newValue
         }
-    }
-
-    // MARK: manuallyTrustedServers
-
-    /// Addresses of all accounts the user explicitly trusted
-    static var manuallyTrustedServers: [String] {
-        get {
-            return settingsHandler.manuallyTrustedServers
-        }
-        set {
-            settingsHandler.manuallyTrustedServers = newValue
-        }
-    }
-
-    static func isManuallyTrustedServer(address: String) -> Bool {
-        return manuallyTrustedServers.contains(address)
-    }
-
-    static func addToManuallyTrustedServers(address: String) {
-        settingsHandler.addToManuallyTrustedServers(address: address)
-    }
-
-    static func removeFromManuallyTrustedServers(address: String) {
-        settingsHandler.removeFromManuallyTrustedServers(address: address)
     }
 }

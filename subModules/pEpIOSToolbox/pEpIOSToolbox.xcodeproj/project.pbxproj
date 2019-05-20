@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		370DB3CF22804A3600BC929A /* NSSecureCoding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */; };
 		378B76552240F93A00D6662C /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378B76542240F93A00D6662C /* TestUtils.swift */; };
 		37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */; };
 		37904563223FA486006DAB3B /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455F223FA486006DAB3B /* Reachability.swift */; };
@@ -15,7 +16,6 @@
 		37904569223FA52B006DAB3B /* NetworkReachibilityMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904567223FA52B006DAB3B /* NetworkReachibilityMock.swift */; };
 		3790456A223FA52B006DAB3B /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904568223FA52B006DAB3B /* ReachabilityTests.swift */; };
 		37954C6E227C90C10099B8D8 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37954C6D227C90C10099B8D8 /* Log.swift */; };
-		435F5129221FF9D7006EB11F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F5128221FF9D7006EB11F /* Constants.swift */; };
 		B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5422005BD400EDCE61 /* Date+Extension.swift */; };
 		B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */; };
 		B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */; };
@@ -56,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSecureCoding+Extension.swift"; sourceTree = "<group>"; };
 		378B76542240F93A00D6662C /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TestUtils.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/TestUtils/TestUtils.swift; sourceTree = "<group>"; };
 		3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityProtocol.swift; sourceTree = "<group>"; };
 		3790455F223FA486006DAB3B /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
@@ -64,7 +65,6 @@
 		37904567223FA52B006DAB3B /* NetworkReachibilityMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachibilityMock.swift; sourceTree = "<group>"; };
 		37904568223FA52B006DAB3B /* ReachabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityTests.swift; sourceTree = "<group>"; };
 		37954C6D227C90C10099B8D8 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
-		435F5128221FF9D7006EB11F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Other/Constants.swift; sourceTree = "<group>"; };
 		B70A3A5422005BD400EDCE61 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
@@ -178,6 +178,7 @@
 		B70A3A5222005A7600EDCE61 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */,
 				B7911ECB21F8B46600D7F66F /* GCD.swift */,
 				B7A46C51220C732E0027CCB5 /* Data+Extensions.swift */,
 				B7A46C53220C73BE0027CCB5 /* String+Extensions.swift */,
@@ -260,7 +261,6 @@
 				B7A46C4F220C1F0C0027CCB5 /* MiscUtil.swift */,
 				B7DB7F512213120B003968DA /* SortedSet.swift */,
 				B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */,
-				435F5128221FF9D7006EB11F /* Constants.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -385,7 +385,6 @@
 				B7465DE72211E969008A1708 /* CGRect+Util.swift in Sources */,
 				B7465DCC2211BEEA008A1708 /* Tuple.swift in Sources */,
 				37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */,
-				435F5129221FF9D7006EB11F /* Constants.swift in Sources */,
 				B7A46C50220C1F0C0027CCB5 /* MiscUtil.swift in Sources */,
 				B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */,
 				B7936E3D220DD8F5003B39E6 /* NSAttributedString+Extensions.swift in Sources */,
@@ -397,6 +396,7 @@
 				B70A3A77220091D400EDCE61 /* Logger.swift in Sources */,
 				B7A46C56220DA5EB0027CCB5 /* Substring+Email.swift in Sources */,
 				B7A46C5E220DBAF00027CCB5 /* OperationQueue+Extension.swift in Sources */,
+				370DB3CF22804A3600BC929A /* NSSecureCoding+Extension.swift in Sources */,
 				B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */,
 				B7465DBE22119D3A008A1708 /* Thread+Extension.swift in Sources */,
 				B7DB7F5022130DE9003968DA /* Weak.swift in Sources */,

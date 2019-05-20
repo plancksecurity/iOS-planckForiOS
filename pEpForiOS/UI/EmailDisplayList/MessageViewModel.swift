@@ -13,9 +13,10 @@ import pEpIOSToolbox
 import PEPObjCAdapterFramework
 
 class MessageViewModel: CustomDebugStringConvertible {
+    static fileprivate var maxBodyPreviewCharacters = 120
 
-    static var maxBodyPreviewCharacters = 120
-    var queue: OperationQueue
+    private var queue: OperationQueue
+    private var runningOperations = [Operation]()
 
     let uid: Int
     private let uuid: MessageID
@@ -34,12 +35,11 @@ class MessageViewModel: CustomDebugStringConvertible {
     var isFlagged: Bool = false
     var isSeen: Bool = false
     var dateText: String
-    var profilePictureComposer: ProfilePictureComposer
+    var profilePictureComposer: ProfilePictureComposerProtocol
     var body: NSAttributedString {
             return getBodyMessage()
     }
     var displayedUsername: String
-    var internalMessageCount: Int? = nil
     var internalBoddyPeek: String? = nil
     private var bodyPeek: String? {
         didSet {
@@ -55,15 +55,8 @@ class MessageViewModel: CustomDebugStringConvertible {
         }
     }
 
-    //Only to use internally, external use should call public message()
-    private var internalMessage: Message
-
-    init(with message: Message, operationQueue: OperationQueue = OperationQueue()) {
-        internalMessage = message
-
-        queue = operationQueue
-        queue.qualityOfService = .userInitiated
-        queue.maxConcurrentOperationCount = 3
+    required init(with message: Message, queue: OperationQueue) {
+        self.queue = queue
 
         uid = message.uid
         uuid = message.uuid
@@ -86,7 +79,7 @@ class MessageViewModel: CustomDebugStringConvertible {
         setBodyPeek(for: message)
     }
 
-    static private func getDisplayedUsername(for message: Message)-> String{
+    static private func getDisplayedUsername(for message: Message) -> String {
         if (message.parent.folderType == .sent
             || message.parent.folderType == .drafts){
             var identities: [String] = []
@@ -109,11 +102,11 @@ class MessageViewModel: CustomDebugStringConvertible {
     }
 
     func unsubscribeForUpdates() {
-        cancelLoad()
+        cancelAllBackgroundOperations()
     }
 
-    private func cancelLoad() {
-        queue.cancelAllOperations()
+    private func cancelAllBackgroundOperations() {
+        runningOperations.forEach { $0.cancel() }
     }
 
     private func setBodyPeek(for message:Message) {
@@ -124,7 +117,7 @@ class MessageViewModel: CustomDebugStringConvertible {
                 self.bodyPeek = bodyPeek
             }
             if(!operation.isFinished){
-                queue.addOperation(operation)
+                addToRunningOperations(operation)
             }
         }
     }
@@ -139,6 +132,7 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     // Message threading is not supported. Let's keep it for now. It might be helpful for
     // reimplementing.
+//    var internalMessageCount: Int? = nil
 //    func messageCount(completion: @escaping (Int)->()) {
 //        if let messageCount = internalMessageCount {
 //            completion(messageCount)
@@ -147,7 +141,7 @@ class MessageViewModel: CustomDebugStringConvertible {
 //                completion(count)
 //            }
 //            if(!operation.isFinished){
-//                queue.addOperation(operation)
+//                addToRunningOperations(operation)
 //            }
 //        }
 //    }
@@ -246,12 +240,12 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     func getProfilePicture(completion: @escaping (UIImage?) -> ()) {
         let operation = getProfilePictureOperation(completion: completion)
-        queue.addOperation(operation)
+        addToRunningOperations(operation)
     }
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
         let operation = getSecurityBadgeOperation(completion: completion)
-        queue.addOperation(operation)
+        addToRunningOperations(operation)
     }
 
     func getBodyMessage() -> NSMutableAttributedString {
@@ -302,7 +296,7 @@ class MessageViewModel: CustomDebugStringConvertible {
     }
 
     public var debugDescription: String {
-        return "<MessageViewModel |\(messageIdentifier)| |\(internalMessage.longMessage?.prefix(3) ?? "nil")|>"
+        return "<MessageViewModel |\(uuid)| |\(longMessageFormatted?.prefix(3) ?? "nil")|>"
     }
 }
 
@@ -320,49 +314,25 @@ extension MessageViewModel: Equatable {
     }
 }
 
-extension MessageViewModel: MessageIdentitfying {
-    var messageIdentifier: MessageID {
-        return uuid
-    }
-}
-
-//PRAGMA MARK: Message View Model + Operations
+// MARK: Operations
 
 extension MessageViewModel {
 
-    // Message threading is not supported. Let's keep it for now. It might be helpful for
-    // reimplementing.
-//    private func getMessageCountOperation(completion: @escaping (Int)->()) -> SelfReferencingOperation {
-//
-//        let getMessageCountOperation = SelfReferencingOperation {  [weak self] operation in
-//            guard let me = self else {
-//                return
-//            }
-//            MessageModelUtil.performAndWait {
-//                guard
-//                    let operation = operation,
-//                    !operation.isCancelled else {
-//                        return
-//                }
-//                let messageCount = 0 // no threading
-//                me.internalMessageCount = messageCount
-//                if (!operation.isCancelled){
-//                    DispatchQueue.main.async {
-//                        completion(messageCount)
-//                    }
-//                }
-//            }
-//        }
-//        return getMessageCountOperation
-//    }
+    private func addToRunningOperations(_ op: Operation) {
+        runningOperations.append(op)
+        queue.addOperation(op)
+    }
 
     private func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> SelfReferencingOperation {
 
-        let getBodyPeekOperation = SelfReferencingOperation {operation in
+        let getBodyPeekOperation = SelfReferencingOperation { [weak self] operation in
             guard
                 let operation = operation,
                 !operation.isCancelled else {
                     return
+            }
+            guard let me = self else {
+                return
             }
             let session = Session()
             session.performAndWait {
@@ -375,7 +345,7 @@ extension MessageViewModel {
                 guard !operation.isCancelled else {
                     return
                 }
-                self.internalBoddyPeek = summary
+                me.internalBoddyPeek = summary
                 if(!operation.isCancelled){
                     DispatchQueue.main.async {
                         completion(summary)

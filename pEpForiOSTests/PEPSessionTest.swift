@@ -23,7 +23,7 @@ class PEPSessionTest: XCTestCase {
         super.setUp()
         XCTAssertTrue(PEPUtil.pEpClean())
         persistentSetup = PersistentSetup()
-        moc = Record.Context.default
+        moc = Stack.shared.mainContext
     }
     override func tearDown() {
         persistentSetup = nil

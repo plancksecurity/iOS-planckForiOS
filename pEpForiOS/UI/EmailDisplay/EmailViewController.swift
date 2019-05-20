@@ -389,10 +389,16 @@ class EmailViewController: BaseTableViewController {
         }
 
         if (message.imapFlags.flagged == true) {
-            message.imapFlags.flagged = false
+            let imap = message.imapFlags
+            imap.flagged = false
+            message.imapFlags = imap
+            //!!!: not needed? let's see if message query is fast enought? seems yes
             delegate?.emailDisplayDidUnflag(message: message)
         } else {
-            message.imapFlags.flagged = true
+            let imap = message.imapFlags
+            imap.flagged = true
+            message.imapFlags = imap
+            //!!!: not needed? let's see if message query is fast enought? seems yes
             delegate?.emailDisplayDidFlag(message: message)
         }
         message.save()
@@ -649,7 +655,8 @@ extension EmailViewController: MessageAttachmentDelegate {
 
     func didCreateLocally(attachment: Attachment, url: URL, cell: MessageCell, location: CGPoint,
                           inView: UIView?) {
-        if attachment.mimeType == "application/pdf" && QLPreviewController.canPreview(url as QLPreviewItem){
+        if attachment.mimeType == MimeTypeUtils.MimesType.pdf
+            && QLPreviewController.canPreview(url as QLPreviewItem){
                 selectedAttachmentURL = url
                 let previewController = QLPreviewController()
                 previewController.dataSource = self
@@ -670,6 +677,7 @@ extension EmailViewController: MessageAttachmentDelegate {
         attachmentOp.completionBlock = { [weak self] in
             attachmentOp.completionBlock = nil
             GCD.onMain {
+                let safeAttachment = attachment.safeForSession(Session.main)
                 defer {
                     if let bState = busyState {
                         inView?.stopDisplayingAsBusy(viewBusyState: bState)
@@ -678,7 +686,7 @@ extension EmailViewController: MessageAttachmentDelegate {
                 guard let url = attachmentOp.fileURL else {
                     return
                 }
-                self?.didCreateLocally(attachment: attachment, url: url, cell: cell,
+                self?.didCreateLocally(attachment: safeAttachment, url: url, cell: cell,
                                        location: location, inView: inView)
             }
         }

@@ -496,6 +496,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if lastSelectedIndexPath == indexPath {
+            defer {
+                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+            }
+        }
+
         let cell = tableView.dequeueReusableCell(withIdentifier: EmailListViewCell.storyboardId,
                                                  for: indexPath)
         if let theCell = cell as? EmailListViewCell {
@@ -535,14 +541,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         let archiveAction =
             SwipeAction(style: .destructive,
                         title: destructiveAction.title(forDisplayMode: .titleAndImage)) {
-                [weak self] action, indexPath in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
-                    return
-                }
+                            [weak self] action, indexPath in
+                            guard let me = self else {
+                                Log.shared.errorAndCrash("Lost MySelf")
+                                return
+                            }
+                            me.swipeDelete = action
+                            me.deleteAction(forCellAt: indexPath)
 
-                me.deleteAction(forCellAt: indexPath)
-                me.swipeDelete = action
         }
         configure(action: archiveAction, with: destructiveAction)
         swipeActions.append(archiveAction)
@@ -796,13 +802,14 @@ extension EmailListViewController: EmailListViewModelDelegate {
             showNoMessageSelectedIfNeeded()
         }
     }
-
+    //!!!: comented code probably not needed anymore. if something strange appears, check this.
+    //!!!: the reselection of the cell is performed in the cell for row. 
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.reloadRows(at: indexPaths, with: .none)
-        for indexPath in indexPaths {
-            resetSelectionIfNeeded(for: indexPath)
-        }
+//        for indexPath in indexPaths {
+//            resetSelectionIfNeeded(for: indexPath)
+//        }
     }
 
     func emailListViewModel(viewModel: EmailListViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath) {

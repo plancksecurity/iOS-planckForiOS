@@ -124,7 +124,7 @@ class HandshakePartnerTableViewCellViewModel {
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
                     return
-                }
+                } //!!!: needs session (partnerIdentity?)
                 let contactImage = me.contactImageTool.identityImage(for: IdentityImageTool.IdentityKey(identity: partnerIdentity))
                 me.partnerImage.value = contactImage
             }

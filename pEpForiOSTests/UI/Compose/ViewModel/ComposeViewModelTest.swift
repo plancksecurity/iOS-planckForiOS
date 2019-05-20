@@ -412,32 +412,33 @@
 //        return viewmodel(ofType: SubjectCellViewModel.self) as? SubjectCellViewModel
 //    }
 //
-//    func testSubjectCellViewModelDidChangeSubject() {
-//        assert(contentChangedMustBeCalled: true,
-//               focusSwitchedMustBeCalled: false,
-//               validatedStateChangedMustBeCalled: false,
-//               modelChangedMustBeCalled: false,
-//               sectionChangedMustBeCalled: false,
-//               colorBatchNeedsUpdateMustBeCalled: false,
-//               hideSuggestionsMustBeCalled: false,
-//               showSuggestionsMustBeCalled: false,
-//               showMediaAttachmentPickerMustBeCalled: false,
-//               hideMediaAttachmentPickerMustBeCalled: false,
-//               showDocumentAttachmentPickerMustBeCalled: false,
-//               documentAttachmentPickerDonePickerCalled: false,
-//               didComposeNewMailMustBeCalled: false,
-//               didModifyMessageMustBeCalled: false,
-//               didDeleteMessageMustBeCalled: false)
-//        guard let subjectVm = subjectCellViewModel  else {
-//            XCTFail()
-//            return
-//        }
-//        let newSubject = "testSubjectCellViewModelDidChangeSubject content"
-//        subjectVm.content = newSubject
-//        vm?.subjectCellViewModelDidChangeSubject(subjectVm)
-//        XCTAssertEqual(vm?.state.subject, newSubject)
-//        waitForExpectations(timeout: UnitTestUtils.waitTime)
-//    }
+//    //!!!: crash
+////    func testSubjectCellViewModelDidChangeSubject() {
+////        assert(contentChangedMustBeCalled: true,
+////               focusSwitchedMustBeCalled: false,
+////               validatedStateChangedMustBeCalled: false,
+////               modelChangedMustBeCalled: false,
+////               sectionChangedMustBeCalled: false,
+////               colorBatchNeedsUpdateMustBeCalled: false,
+////               hideSuggestionsMustBeCalled: false,
+////               showSuggestionsMustBeCalled: false,
+////               showMediaAttachmentPickerMustBeCalled: false,
+////               hideMediaAttachmentPickerMustBeCalled: false,
+////               showDocumentAttachmentPickerMustBeCalled: false,
+////               documentAttachmentPickerDonePickerCalled: false,
+////               didComposeNewMailMustBeCalled: false,
+////               didModifyMessageMustBeCalled: false,
+////               didDeleteMessageMustBeCalled: false)
+////        guard let subjectVm = subjectCellViewModel  else {
+////            XCTFail()
+////            return
+////        }
+////        let newSubject = "testSubjectCellViewModelDidChangeSubject content"
+////        subjectVm.content = newSubject
+////        vm?.subjectCellViewModelDidChangeSubject(subjectVm)
+////        XCTAssertEqual(vm?.state.subject, newSubject)
+////        waitForExpectations(timeout: UnitTestUtils.waitTime)
+////    }
 //
 //    // MARK: - AccountCellViewModelResultDelegate handling
 //
@@ -642,37 +643,38 @@
 //        waitForExpectations(timeout: UnitTestUtils.waitTime)
 //    }
 //
-//    func testHandleSaveActionTriggered_origOutbox() {
-//        let testMessageId = UUID().uuidString + "testHandleSaveActionTriggered"
-//        let originalMessage = message(inFolderOfType: .outbox)
-//        originalMessage.messageID = testMessageId
-//        originalMessage.from = account.user
-//
-//        assert(originalMessage: originalMessage,
-//               contentChangedMustBeCalled: false,
-//               focusSwitchedMustBeCalled: false,
-//               validatedStateChangedMustBeCalled: false,
-//               modelChangedMustBeCalled: false,
-//               sectionChangedMustBeCalled: false,
-//               colorBatchNeedsUpdateMustBeCalled: false,
-//               hideSuggestionsMustBeCalled: false,
-//               showSuggestionsMustBeCalled: false,
-//               showMediaAttachmentPickerMustBeCalled: false,
-//               hideMediaAttachmentPickerMustBeCalled: false,
-//               showDocumentAttachmentPickerMustBeCalled: false,
-//               documentAttachmentPickerDonePickerCalled: false,
-//               didComposeNewMailMustBeCalled: false,
-//               didModifyMessageMustBeCalled: false,
-//               didDeleteMessageMustBeCalled: true)
-//        vm?.handleSaveActionTriggered()
-//        let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
-//                                              uuid: originalMessage.uuid,
-//                                              folderName: originalMessage.parent.name,
-//                                              accountAddress: account.user.address)
-//        XCTAssertNil(msgWithTestMessageId,
-//                     "original message must be deleted, a copy is safed to drafts")
-//        waitForExpectations(timeout: UnitTestUtils.waitTime)
-//    }
+//    //!!!: crash
+////    func testHandleSaveActionTriggered_origOutbox() {
+////        let testMessageId = UUID().uuidString + "testHandleSaveActionTriggered"
+////        let originalMessage = message(inFolderOfType: .outbox)
+////        originalMessage.messageID = testMessageId
+////        originalMessage.from = account.user
+////
+////        assert(originalMessage: originalMessage,
+////               contentChangedMustBeCalled: false,
+////               focusSwitchedMustBeCalled: false,
+////               validatedStateChangedMustBeCalled: false,
+////               modelChangedMustBeCalled: false,
+////               sectionChangedMustBeCalled: false,
+////               colorBatchNeedsUpdateMustBeCalled: false,
+////               hideSuggestionsMustBeCalled: false,
+////               showSuggestionsMustBeCalled: false,
+////               showMediaAttachmentPickerMustBeCalled: false,
+////               hideMediaAttachmentPickerMustBeCalled: false,
+////               showDocumentAttachmentPickerMustBeCalled: false,
+////               documentAttachmentPickerDonePickerCalled: false,
+////               didComposeNewMailMustBeCalled: false,
+////               didModifyMessageMustBeCalled: false,
+////               didDeleteMessageMustBeCalled: true)
+////        vm?.handleSaveActionTriggered()
+////        let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
+////                                              uuid: originalMessage.uuid,
+////                                              folderName: originalMessage.parent.name,
+////                                              accountAddress: account.user.address)
+////        XCTAssertNil(msgWithTestMessageId,
+////                     "original message must be deleted, a copy is safed to drafts")
+////        waitForExpectations(timeout: UnitTestUtils.waitTime)
+////    }
 //
 //    func testHandleSaveActionTriggered_origDrafts() {
 //        let testMessageId = UUID().uuidString + "testHandleSaveActionTriggered"
@@ -708,34 +710,8 @@
 //        waitForExpectations(timeout: UnitTestUtils.waitTime)
 //    }
 //
-////    func testHandleDeleteActionTriggered_normal() {
-////        assert(originalMessage: nil,
-////               contentChangedMustBeCalled: false,
-////               focusSwitchedMustBeCalled: false,
-////               validatedStateChangedMustBeCalled: false,
-////               modelChangedMustBeCalled: false,
-////               sectionChangedMustBeCalled: false,
-////               colorBatchNeedsUpdateMustBeCalled: false,
-////               hideSuggestionsMustBeCalled: false,
-////               showSuggestionsMustBeCalled: false,
-////               showMediaAttachmentPickerMustBeCalled: false,
-////               hideMediaAttachmentPickerMustBeCalled: false,
-////               showDocumentAttachmentPickerMustBeCalled: false,
-////               documentAttachmentPickerDonePickerCalled: false,
-////               didComposeNewMailMustBeCalled: false,
-////               didModifyMessageMustBeCalled: false,
-////               didDeleteMessageMustBeCalled: false)
-////        vm?.handleSaveActionTriggered() //!!!: BUFF: crash, 1570 means that mandatory fields are not filled
-////        waitForExpectations(timeout: UnitTestUtils.waitTime)
-////    }
-//
-//    func testHandleDeleteActionTriggered_origOutbox() {
-//        let testMessageId = UUID().uuidString + "testHandleDeleteActionTriggered_origOutbox"
-//        let originalMessage = message(inFolderOfType: .outbox)
-//        originalMessage.messageID = testMessageId
-//        originalMessage.from = account.user
-//
-//        assert(originalMessage: originalMessage,
+//    func testHandleDeleteActionTriggered_normal() {
+//        assert(originalMessage: nil,
 //               contentChangedMustBeCalled: false,
 //               focusSwitchedMustBeCalled: false,
 //               validatedStateChangedMustBeCalled: false,
@@ -750,16 +726,43 @@
 //               documentAttachmentPickerDonePickerCalled: false,
 //               didComposeNewMailMustBeCalled: false,
 //               didModifyMessageMustBeCalled: false,
-//               didDeleteMessageMustBeCalled: true)
+//               didDeleteMessageMustBeCalled: false)
 //        vm?.handleSaveActionTriggered()
-//        let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
-//                                              uuid: originalMessage.uuid,
-//                                              folderName: originalMessage.parent.name,
-//                                              accountAddress: account.user.address)
-//        XCTAssertNil(msgWithTestMessageId,
-//                     "original message must be deleted, a copy is safed to drafts")
 //        waitForExpectations(timeout: UnitTestUtils.waitTime)
 //    }
+//
+//    //!!!: crash
+////    func testHandleDeleteActionTriggered_origOutbox() {
+////        let testMessageId = UUID().uuidString + "testHandleDeleteActionTriggered_origOutbox"
+////        let originalMessage = message(inFolderOfType: .outbox)
+////        originalMessage.messageID = testMessageId
+////        originalMessage.from = account.user
+////
+////        assert(originalMessage: originalMessage,
+////               contentChangedMustBeCalled: false,
+////               focusSwitchedMustBeCalled: false,
+////               validatedStateChangedMustBeCalled: false,
+////               modelChangedMustBeCalled: false,
+////               sectionChangedMustBeCalled: false,
+////               colorBatchNeedsUpdateMustBeCalled: false,
+////               hideSuggestionsMustBeCalled: false,
+////               showSuggestionsMustBeCalled: false,
+////               showMediaAttachmentPickerMustBeCalled: false,
+////               hideMediaAttachmentPickerMustBeCalled: false,
+////               showDocumentAttachmentPickerMustBeCalled: false,
+////               documentAttachmentPickerDonePickerCalled: false,
+////               didComposeNewMailMustBeCalled: false,
+////               didModifyMessageMustBeCalled: false,
+////               didDeleteMessageMustBeCalled: true)
+////        vm?.handleSaveActionTriggered()
+////        let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
+////                                              uuid: originalMessage.uuid,
+////                                              folderName: originalMessage.parent.name,
+////                                              accountAddress: account.user.address)
+////        XCTAssertNil(msgWithTestMessageId,
+////                     "original message must be deleted, a copy is safed to drafts")
+////        waitForExpectations(timeout: UnitTestUtils.waitTime)
+////    }
 //
 //    // MARK: - Suggestions
 //
@@ -771,30 +774,31 @@
 //
 //    // showSuggestions and hideSuggestions are tested altering recipients
 //
-//    func testShowSuggestionsScrollFocus_nonEmpty() {
-//        let expectedSuggestionsVisibility = true
-//        assert(contentChangedMustBeCalled: false,
-//               focusSwitchedMustBeCalled: false,
-//               validatedStateChangedMustBeCalled: false,
-//               expectedIsValidated: nil,
-//               modelChangedMustBeCalled: false,
-//               sectionChangedMustBeCalled: false,
-//               colorBatchNeedsUpdateMustBeCalled: false,
-//               hideSuggestionsMustBeCalled: false,
-//               showSuggestionsMustBeCalled: false,
-//               suggestionsScrollFocusChangedMustBeCalled: true,
-//               expectedNewSuggestionsScrollFocusIsVisible: expectedSuggestionsVisibility,
-//               showMediaAttachmentPickerMustBeCalled: false,
-//               hideMediaAttachmentPickerMustBeCalled: false,
-//               showDocumentAttachmentPickerMustBeCalled: false,
-//               documentAttachmentPickerDonePickerCalled: false,
-//               didComposeNewMailMustBeCalled: false,
-//               didModifyMessageMustBeCalled: false,
-//               didDeleteMessageMustBeCalled: false)
-//        let _ = vm?.suggestViewModel(SuggestViewModel(),
-//                                     didToggleVisibilityTo: expectedSuggestionsVisibility)
-//        waitForExpectations(timeout: UnitTestUtils.waitTime)
-//    }
+//    //!!!: crash
+////    func testShowSuggestionsScrollFocus_nonEmpty() {
+////        let expectedSuggestionsVisibility = true
+////        assert(contentChangedMustBeCalled: false,
+////               focusSwitchedMustBeCalled: false,
+////               validatedStateChangedMustBeCalled: false,
+////               expectedIsValidated: nil,
+////               modelChangedMustBeCalled: false,
+////               sectionChangedMustBeCalled: false,
+////               colorBatchNeedsUpdateMustBeCalled: false,
+////               hideSuggestionsMustBeCalled: false,
+////               showSuggestionsMustBeCalled: false,
+////               suggestionsScrollFocusChangedMustBeCalled: true,
+////               expectedNewSuggestionsScrollFocusIsVisible: expectedSuggestionsVisibility,
+////               showMediaAttachmentPickerMustBeCalled: false,
+////               hideMediaAttachmentPickerMustBeCalled: false,
+////               showDocumentAttachmentPickerMustBeCalled: false,
+////               documentAttachmentPickerDonePickerCalled: false,
+////               didComposeNewMailMustBeCalled: false,
+////               didModifyMessageMustBeCalled: false,
+////               didDeleteMessageMustBeCalled: false)
+////        let _ = vm?.suggestViewModel(SuggestViewModel(),
+////                                     didToggleVisibilityTo: expectedSuggestionsVisibility)
+////        waitForExpectations(timeout: UnitTestUtils.waitTime)
+////    }
 //
 //    func testShowSuggestionsScrollFocus_empty() {
 //        let expectedSuggestionsVisibility = false
@@ -1004,29 +1008,30 @@
 //                      "original drafted message must be flagged deleted")
 //    }
 //
-//    func testHandleUserClickedSendButton_origOutbox() {
-//        let testMessageId = UUID().uuidString + #function
-//        let originalMessage = message(inFolderOfType: .outbox)
-//        originalMessage.messageID = testMessageId
-//        originalMessage.from = account.user
-//        originalMessage.save()
-//        XCTAssertNotNil(Message.by(uid: originalMessage.uid,
-//                                   uuid: originalMessage.uuid,
-//                                   folderName: originalMessage.parent.name,
-//                                   accountAddress: account.user.address))
-//        assert(originalMessage: originalMessage)
-//        let toRecipient = Identity(address: "testHandleUserClickedSend@Butt.on")
-//        vm?.state.toRecipients = [toRecipient]
-//        vm?.state.from = account.user
-//        vm?.handleUserClickedSendButton()
-//        if let _ = Message.by(uid: originalMessage.uid,
-//                              uuid: originalMessage.uuid,
-//                              folderName: originalMessage.parent.name,
-//                              accountAddress: account.user.address) {
-//            XCTFail("original message must not exist (must be deleted)")
-//            return
-//        }
-//    }
+//    //!!!: crash
+////    func testHandleUserClickedSendButton_origOutbox() {
+////        let testMessageId = UUID().uuidString + #function
+////        let originalMessage = message(inFolderOfType: .outbox)
+////        originalMessage.messageID = testMessageId
+////        originalMessage.from = account.user
+////        originalMessage.save()
+////        XCTAssertNotNil(Message.by(uid: originalMessage.uid,
+////                                   uuid: originalMessage.uuid,
+////                                   folderName: originalMessage.parent.name,
+////                                   accountAddress: account.user.address))
+////        assert(originalMessage: originalMessage)
+////        let toRecipient = Identity(address: "testHandleUserClickedSend@Butt.on")
+////        vm?.state.toRecipients = [toRecipient]
+////        vm?.state.from = account.user
+////        vm?.handleUserClickedSendButton()
+////        if let _ = Message.by(uid: originalMessage.uid,
+////                              uuid: originalMessage.uuid,
+////                              folderName: originalMessage.parent.name,
+////                              accountAddress: account.user.address) {
+////            XCTFail("original message must not exist (must be deleted)")
+////            return
+////        }
+////    }
 //
 //    // MARK: - handleUserChangedProtectionStatus
 //
@@ -1148,35 +1153,36 @@
 //
 //    // MARK: - viewModel(for:)
 //
-//    func testViewModelForIndexPath() {
-//        assert(contentChangedMustBeCalled: false,
-//               focusSwitchedMustBeCalled: false,
-//               validatedStateChangedMustBeCalled: false,
-//               modelChangedMustBeCalled: false,
-//               sectionChangedMustBeCalled: false,
-//               colorBatchNeedsUpdateMustBeCalled: false,
-//               hideSuggestionsMustBeCalled: false,
-//               showSuggestionsMustBeCalled: false,
-//               showMediaAttachmentPickerMustBeCalled: false,
-//               hideMediaAttachmentPickerMustBeCalled: false,
-//               showDocumentAttachmentPickerMustBeCalled: false,
-//               documentAttachmentPickerDonePickerCalled: false,
-//               didComposeNewMailMustBeCalled: false,
-//               didModifyMessageMustBeCalled: false,
-//               didDeleteMessageMustBeCalled: false)
-//        guard
-//            let wrapperVM = viewmodel(ofType: WrappedBccViewModel.self),
-//            let idxPath = indexPath(for: wrapperVM) else {
-//                XCTFail("No VM")
-//                return
-//        }
-//        guard let testee = vm?.viewModel(for: idxPath) else {
-//            XCTFail()
-//            return
-//        }
-//        XCTAssertTrue(testee === wrapperVM)
-//        waitForExpectations(timeout: UnitTestUtils.waitTime)
-//    }
+//    //!!!: crash
+////    func testViewModelForIndexPath() {
+////        assert(contentChangedMustBeCalled: false,
+////               focusSwitchedMustBeCalled: false,
+////               validatedStateChangedMustBeCalled: false,
+////               modelChangedMustBeCalled: false,
+////               sectionChangedMustBeCalled: false,
+////               colorBatchNeedsUpdateMustBeCalled: false,
+////               hideSuggestionsMustBeCalled: false,
+////               showSuggestionsMustBeCalled: false,
+////               showMediaAttachmentPickerMustBeCalled: false,
+////               hideMediaAttachmentPickerMustBeCalled: false,
+////               showDocumentAttachmentPickerMustBeCalled: false,
+////               documentAttachmentPickerDonePickerCalled: false,
+////               didComposeNewMailMustBeCalled: false,
+////               didModifyMessageMustBeCalled: false,
+////               didDeleteMessageMustBeCalled: false)
+////        guard
+////            let wrapperVM = viewmodel(ofType: WrappedBccViewModel.self),
+////            let idxPath = indexPath(for: wrapperVM) else {
+////                XCTFail("No VM")
+////                return
+////        }
+////        guard let testee = vm?.viewModel(for: idxPath) else {
+////            XCTFail()
+////            return
+////        }
+////        XCTAssertTrue(testee === wrapperVM)
+////        waitForExpectations(timeout: UnitTestUtils.waitTime)
+////    }
 //
 //    func testViewModelForIndexPath_notAlwaysWrapper() {
 //        assert()

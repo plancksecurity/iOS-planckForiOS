@@ -13,6 +13,15 @@ import CoreData
 import PEPObjCAdapterFramework
 import PantomimeFramework
 
+/// Base class for test data.
+/// - Note:
+///   1. This class is used both in MessageModel and the app,
+///      so it's _duplicated code_ for the testing targets.
+///   2. Make sure that, in your SecretTestData, you override:
+///      * `populateAccounts` if you don't use the greenmail local server for testing,
+///        or you want to test against other servers for various reasons.
+///      * `populateVerifiableAccounts` in order to provide verifiable servers, to test
+///        the verification parts.
 class TestDataBase {
     struct AccountSettings {
         var accountName: String?
@@ -173,6 +182,7 @@ class TestDataBase {
         /// Transfers the account data into a `VerifiableAccountProtocol`
         /// that you then can verify the acconut data with.
         func populate(verifiableAccount: inout VerifiableAccountProtocol) {
+            verifiableAccount.userName = accountName
             verifiableAccount.address = idAddress
             verifiableAccount.loginName = imapLoginName
             verifiableAccount.accessToken = nil
@@ -217,6 +227,32 @@ class TestDataBase {
         addLocalTestAccount(userName: "test003")
     }
 
+    /**
+     Accounts needed for testing LAS, that is they need to be registered
+     in the LAS DB or provide (correct) DNS SRV for IMAP and SMTP.
+     - Note: Override this in your SecretTestData to something that's working.
+     */
+    func populateVerifiableAccounts() {
+        append(verifiableAccountSettings: AccountSettings(
+            accountName: "Whatever_you_want",
+            idAddress: "whatever_you_want@yahoo.com",
+            idUserName: "whatever_you_want@yahoo.com",
+
+            imapServerAddress: "imap.mail.yahoo.com",
+            imapServerType: Server.ServerType.imap,
+            imapServerTransport: Server.Transport.tls,
+            imapServerPort: 993,
+
+            smtpServerAddress: "smtp.mail.yahoo.com",
+            smtpServerType: Server.ServerType.smtp,
+            smtpServerTransport: Server.Transport.tls,
+            smtpServerPort: 465,
+
+            password: "whatever_you_want"))
+
+        fatalError("Abstract method. Must be overridden")
+    }
+
     private func addLocalTestAccount(userName: String) {
         let address = "\(userName)@localhost"
         append(accountSettings: AccountSettings(
@@ -240,45 +276,10 @@ class TestDataBase {
     }
 
     /**
-     Accounts needed for testing LAS, that is they need to be registered
-     in the LAS DB or provide (correct) DNS SRV for IMAP and SMTP.
-     */
-    func populateVerifiableAccounts() {
-        append(verifiableAccountSettings: AccountSettings(
-            accountName: "Whatever_you_want",
-            idAddress: "whatever_you_want@yahoo.com",
-            idUserName: "whatever_you_want@yahoo.com",
-
-            imapServerAddress: "imap.mail.yahoo.com",
-            imapServerType: Server.ServerType.imap,
-            imapServerTransport: Server.Transport.tls,
-            imapServerPort: 993,
-
-            smtpServerAddress: "smtp.mail.yahoo.com",
-            smtpServerType: Server.ServerType.smtp,
-            smtpServerTransport: Server.Transport.tls,
-            smtpServerPort: 465,
-
-            password: "whatever_you_want"))
-
-        fatalError("Abstract method. Must be overridden")
-    }
-
-    /**
      - Returns: A valid `CdAccount`.
      */
     func createWorkingCdAccount(number: Int = 0, context: NSManagedObjectContext) -> CdAccount {
         let result = createWorkingAccountSettings(number: number).cdAccount(context: context)
-        // The identity of an account is mySelf by definion.
-        result.identity?.userID = CdIdentity.pEpOwnUserID
-        return result
-    }
-
-    /**
-     - Returns: A valid `CdAccount`.
-     */
-    func createVerifiableCdAccount(number: Int = 0, context: NSManagedObjectContext) -> CdAccount {
-        let result = createVerifiableAccountSettings(number: number).cdAccount(context: context)
         // The identity of an account is mySelf by definion.
         result.identity?.userID = CdIdentity.pEpOwnUserID
         return result
@@ -308,18 +309,6 @@ class TestDataBase {
             createWorkingAccountSettings(number: number).cdIdentityWithoutAccount(isMyself: isMyself,
                                                                                   context: context)
         return result
-    }
-
-    /**
-     - Returns: A `CdAccount` that should not be able to be verified.
-     */
-    func createDisfunctionalCdAccount(context: NSManagedObjectContext) -> CdAccount {
-        var accountSettings = createWorkingAccountSettings(number: 0)
-        accountSettings.smtpServerAddress = "localhost"
-        accountSettings.smtpServerPort = 2323
-        accountSettings.imapServerPort = 2323
-        accountSettings.imapServerAddress = "localhost"
-        return accountSettings.cdAccount(context: context)
     }
 
     func createWorkingAccountSettings(number: Int = 0) -> AccountSettings {
@@ -405,8 +394,8 @@ class TestDataBase {
         return createImapTimeOutAccountSettings().account(context: moc)
     }
 
-    func populateWorkingAccount(number: Int = 0,
-                                verifiableAccount: inout VerifiableAccountProtocol) {
+    func populateVerifiableAccount(number: Int = 0,
+                                   verifiableAccount: inout VerifiableAccountProtocol) {
         createVerifiableAccountSettings(number: number).populate(
             verifiableAccount: &verifiableAccount)
     }

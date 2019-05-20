@@ -77,18 +77,12 @@ class LoginViewController: BaseViewController {
         }
     }
 
-    /**
-     The last account input as determined by LAS, and delivered via didVerify.
-     */
-    var lastAccountInput: VerifiableAccountProtocol?
-
     override var prefersStatusBarHidden: Bool {
         return true
     }
 
     override func didSetAppConfig() {
         super.didSetAppConfig()
-        loginViewModel.verificationService = VerifiableAccount()
     }
 
     override func viewDidLoad() {
@@ -291,11 +285,7 @@ extension LoginViewController: SegueHandlerType {
                 let vc = navVC.topViewController as? UserInfoTableViewController {
                 vc.appConfig = appConfig
 
-                if let accountInput = lastAccountInput {
-                    vc.model = accountInput // give the user some prefilled data in manual mode
-                }
-
-                // Overwrite with more recent data that we might have (in case it was changed)
+                // Give the next model what we know.
                 vc.model.address = emailAddress.text
                 vc.model.password = password.text
                 vc.model.userName = user.text
@@ -309,26 +299,21 @@ extension LoginViewController: SegueHandlerType {
 // MARK: - AccountVerificationResultDelegate
 
 extension LoginViewController: AccountVerificationResultDelegate {
-    func didVerify(result: AccountVerificationResult,
-                   accountInput: VerifiableAccountProtocol?) {
+    func didVerify(result: AccountVerificationResult) {
         GCD.onMain() { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
-            me.lastAccountInput = nil
             switch result {
             case .ok:
                 me.delegate?.loginViewControllerDidCreateNewAccount(me)
                 me.navigationController?.dismiss(animated: true)
             case .imapError(let err):
-                me.lastAccountInput = accountInput
                 me.handleLoginError(error: err, offerManualSetup: true)
             case .smtpError(let err):
-                me.lastAccountInput = accountInput
                 me.handleLoginError(error: err, offerManualSetup: true)
             case .noImapConnectData, .noSmtpConnectData:
-                me.lastAccountInput = accountInput
                 me.handleLoginError(error: LoginViewController.LoginError.noConnectData,
                                     offerManualSetup: true)
             }

@@ -39,7 +39,7 @@ class DecryptionTestsInternal: XCTestCase {
 
         persistentSetup = PersistentSetup()
 
-        moc = Record.Context.default
+        moc = Stack.shared.mainContext
 
         let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
         guard let myPepIdentity = pEpIdentity(cdAccount: cdMyAccount) else {

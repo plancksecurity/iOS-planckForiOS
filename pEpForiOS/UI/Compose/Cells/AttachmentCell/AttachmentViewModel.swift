@@ -9,23 +9,25 @@
 import MessageModel
 
 class AttachmentViewModel: CellViewModel {
+    public let attachment: Attachment
+    private lazy var mimeTypeUtils = MimeTypeUtils()
+
+    init(attachment: Attachment) {
+        self.attachment = attachment
+    }
+
     static let defaultFileName = NSLocalizedString("unknown",
-                                            comment:
+                                                   comment:
         "Displayed attachment filename if unknown")
     public var fileName: String {
         return attachment.fileName ?? AttachmentViewModel.defaultFileName
     }
+
     public var fileExtension: String {
-        if let mimeType = attachment.mimeType {
-            return mimeTypeUtil?.fileExtension(mimeType: mimeType) ?? ""
+        guard let mimeType = attachment.mimeType else {
+            Log.shared.errorAndCrash("No MimeType")
+            return ""
         }
-        return ""
-    }
-
-    public let attachment: Attachment
-    private let mimeTypeUtil = MimeTypeUtil()
-
-    init(attachment: Attachment) {
-        self.attachment = attachment
+        return mimeTypeUtils?.fileExtension(fromMimeType: mimeType) ?? ""
     }
 }

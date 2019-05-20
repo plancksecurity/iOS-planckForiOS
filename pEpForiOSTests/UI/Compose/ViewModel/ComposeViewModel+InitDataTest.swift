@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
     var inbox: Folder?

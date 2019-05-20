@@ -8,6 +8,7 @@
 
 import MessageModel
 
+//!!!: must be moved to MM
 extension Folder {
 
     /// Whether or not messages with PEP-Rating_none should be displayed to the user.
@@ -21,32 +22,11 @@ extension Folder {
         return  allMessagesNonThreaded().count //allCdMessagesCount(ignoringPepRating: showsMessagesNeverSeenByEngine) //!!!: let CD count please
     }
 
-    public func indexOf(message: Message) -> Int? {
-        let i2 = indexOfBinary(message: message)
-        return i2
-    }
-
+    //!!!: should become obsolete
     public func messageAt(index: Int) -> Message? {
         if let message = allMessagesNonThreaded()[safe: index] {
             return message
         }
         return nil
-    }
-
-    private func indexOfBinary(message: Message) -> Int? {
-        func comparator(m1: CdMessage, m2: CdMessage) -> ComparisonResult {
-            for desc in defaultSortDescriptors() {
-                let c1 = desc.compare(m1, to: m2)
-                if c1 != .orderedSame {
-                    return c1
-                }
-            }
-            return .orderedSame
-        }
-        guard let cdMsg = CdMessage.search(message: message) else {
-            return nil
-        }
-        let msgs = allCdMessages(ignoringPepRating: showsMessagesNeverSeenByEngine)
-        return msgs.binarySearch(element: cdMsg, comparator: comparator)
     }
 }

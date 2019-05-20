@@ -66,7 +66,7 @@ class ComposeDataSource: NSObject {
             let fileExtesion: String?
         }
         public private(set) var attachments = [Attachment]()
-        let mimeTypeUtil = MimeTypeUtil()
+        let mimeTypeUtils = MimeTypeUtils()
 
         func count() -> Int {
             return attachments.count
@@ -80,7 +80,7 @@ class ComposeDataSource: NSObject {
             let attachment = attachments[index]
             let mimeType = attachment.mimeType ?? ""
             return Row(fileName: attachment.fileName,
-                       fileExtesion: mimeTypeUtil?.fileExtension(mimeType: mimeType) ?? "")
+                       fileExtesion: mimeTypeUtils?.fileExtension(fromMimeType: mimeType) ?? "")
         }
 
         /// Adds an attachment to the data source and returns the index it has been inserted in.

@@ -125,12 +125,14 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         let expMailsSynced = expectation(description: "expMailsSynced")
 
-        guard let op = SyncMessagesOperation(
-            parentName: #function,
-            imapSyncData: imapSyncData, folder: folder) else {
-                XCTFail()
-                return
+        guard let folderName = folder.name else {
+            XCTFail()
+            return
         }
+        let op = SyncMessagesOperation(imapSyncData: imapSyncData,
+                                       folderName: folderName,
+                                       firstUID: folder.firstUID(context: folder.managedObjectContext),
+                                       lastUID: folder.lastUID(context: folder.managedObjectContext))
         op.completionBlock = {
             op.completionBlock = nil
             expMailsSynced.fulfill()
@@ -298,103 +300,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         })
 
         XCTAssertEqual(CdMessage.all()?.count, numMails)
-    }
-
-    /// The test makes no sense for servers supporting Special-Use Mailboxes, as it is not allowed
-    /// to delete folder marked as reserved for special-use
-    func testCreateRequiredFoldersOperation() {
-        let imapLogin = LoginImapOperation(
-            parentName: #function, imapSyncData: imapSyncData)
-
-        let expFoldersFetched = expectation(description: "expFoldersFetched")
-        guard let syncFoldersOp = SyncFoldersFromServerOperation(parentName: #function,
-                                                                 imapSyncData: imapSyncData)
-            else {
-                XCTFail()
-                return
-        }
-        syncFoldersOp.addDependency(imapLogin)
-        syncFoldersOp.completionBlock = {
-            syncFoldersOp.completionBlock = nil
-            expFoldersFetched.fulfill()
-        }
-
-        let backgroundQueue = OperationQueue()
-        backgroundQueue.addOperation(imapLogin)
-        backgroundQueue.addOperation(syncFoldersOp)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(imapLogin.hasErrors())
-            XCTAssertFalse(syncFoldersOp.hasErrors())
-        })
-
-        let expCreated1 = expectation(description: "expCreated")
-        let opCreate1 = CreateRequiredFoldersOperation(
-            parentName: #function, imapSyncData: imapSyncData)
-        opCreate1.completionBlock = {
-            opCreate1.completionBlock = nil
-            expCreated1.fulfill()
-        }
-        backgroundQueue.addOperation(opCreate1)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(opCreate1.hasErrors())
-        })
-
-        //dirty workaround for Yahoo account (server with specil-use mailboxes)
-        if cdAccount.identity!.address!.contains("yahoo") {
-            return
-        }
-        // Let's delete a special folder, if it exists
-        if let spamFolder = CdFolder.by(folderType: .trash, account: cdAccount),
-            let fn = spamFolder.name {
-            let expDeleted = expectation(description: "expFolderDeleted")
-            let opDelete = DeleteFolderOperation(
-                parentName: #function,
-                imapSyncData: imapSyncData, account: cdAccount, folderName: fn)
-            opDelete.completionBlock = {
-                opDelete.completionBlock = nil
-                expDeleted.fulfill()
-            }
-            backgroundQueue.addOperation(opDelete)
-            waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-                XCTAssertNil(error)
-                XCTAssertFalse(opDelete.hasErrors())
-            })
-            spamFolder.delete()
-            Record.saveAndWait()
-        } else {
-            XCTFail()
-        }
-
-        let expCreated2 = expectation(description: "expCreated")
-        let opCreate2 = CreateRequiredFoldersOperation(
-            parentName: #function, imapSyncData: imapSyncData)
-        opCreate2.completionBlock = {
-            opCreate2.completionBlock = nil
-            expCreated2.fulfill()
-        }
-        backgroundQueue.addOperation(opCreate2)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(opCreate2.hasErrors())
-        })
-        XCTAssertGreaterThanOrEqual(opCreate2.numberOfFoldersCreated, 1)
-
-        for ft in FolderType.requiredTypes {
-            if
-                let cdF = CdFolder.by(folderType: ft, account: cdAccount),
-                let folderName = cdF.name {
-                if let sep = cdF.folderSeparatorAsString(), cdF.parent != nil {
-                    XCTAssertTrue(folderName.contains(sep))
-                }
-            } else {
-                XCTFail("expecting folder of type \(ft) with defined name")
-            }
-        }
     }
 
     func dumpAllAccounts() {
@@ -615,7 +520,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testOutgoingMailColorPerformanceWithMySelf() {
-        let moc = Stack.shared.newPrivateConcurrentContext
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
         let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
         try! session.mySelf(myself)
         XCTAssertNotNil(myself.fingerPrint)
@@ -637,7 +542,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testOutgoingMessageColor() {
-        let moc = Stack.shared.newPrivateConcurrentContext
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
         let account = SecretTestData().createWorkingCdAccount(context: moc)
         moc.saveAndLogErrors()
 
@@ -655,7 +560,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testOutgoingMailColorPerformanceWithoutMySelf() {
-        let moc = Stack.shared.newPrivateConcurrentContext
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
         let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
 
         guard let id = CdIdentity.from(pEpContact: myself, context: moc) else {
@@ -705,7 +610,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
     //fails on first run when the an account was setup on
     func testFixAttachmentsOperation() {
-        let moc = Stack.shared.newPrivateConcurrentContext
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
         let cdFolder = CdFolder(context: moc)
         cdFolder.name = "AttachmentTestFolder"
         cdFolder.folderType = FolderType.inbox
