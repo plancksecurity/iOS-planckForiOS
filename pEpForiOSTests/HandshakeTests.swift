@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
 @testable import MessageModel //FIXME:
@@ -14,6 +15,8 @@ import PEPObjCAdapterFramework
 
 class HandshakeTests: XCTestCase {
     var persistentSetup: PersistentSetup!
+    var moc: NSManagedObjectContext!
+
     var cdOwnAccount: CdAccount!
     var fromIdent: PEPIdentity!
 
@@ -22,17 +25,17 @@ class HandshakeTests: XCTestCase {
 
         XCTAssertTrue(PEPUtil.pEpClean())
         persistentSetup = PersistentSetup()
+        moc = Stack.shared.mainContext
 
-        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0)
+        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
         cdMyAccount.identity?.userName = "iOS Test 002"
         cdMyAccount.identity?.userID = "iostest002@peptest.ch_ID"
         cdMyAccount.identity?.address = "iostest002@peptest.ch"
 
-        let cdInbox = CdFolder.create()
+        let cdInbox = CdFolder(context: moc)
         cdInbox.name = ImapSync.defaultImapInboxName
-        cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdMyAccount
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         cdOwnAccount = cdMyAccount
 
@@ -125,19 +128,23 @@ class HandshakeTests: XCTestCase {
         XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
     }
 
+    //!!!:
     func testRestTruestOnYellowIdentity() {
         let session = PEPSession()
         try! session.update(fromIdent)
         XCTAssertNotNil(fromIdent.fingerPrint)
-        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+        XCTAssertTrue((try? session.isPEPUser(fromIdent).boolValue) ?? false)
 
-        var numRating = try! session.rating(for: fromIdent)
-        XCTAssertEqual(numRating.pEpRating, .reliable)
-
-        try! session.keyResetTrust(fromIdent)
-        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
-
-        numRating = try! session.rating(for: fromIdent)
-        XCTAssertEqual(numRating.pEpRating, .reliable)
+        do {
+            var numRating =  try! session.rating(for: fromIdent)
+            XCTAssertEqual(numRating.pEpRating, .reliable)
+            XCTAssertNoThrow(try session.keyResetTrust(fromIdent))
+            let isPepUser = try session.isPEPUser(fromIdent).boolValue
+            XCTAssertTrue(isPepUser)
+            numRating = try session.rating(for: fromIdent)
+            XCTAssertEqual(numRating.pEpRating, .reliable)
+        } catch {
+            XCTFail()
+        }
     }
 }

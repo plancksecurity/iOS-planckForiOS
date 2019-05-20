@@ -18,26 +18,11 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
 
     var replyAllChecker = ReplyAllPossibleChecker()
 
-    var externalFrom1 = Identity.create(
-        address: "1@example.com",
-        userID: "1",
-        addressBookID: "1",
-        userName: "user1",
-        isMySelf: false)
+    var externalFrom1: Identity!
 
-    var otherRecipient1 = Identity.create(
-        address: "2@example.com",
-        userID: "2",
-        addressBookID: "2",
-        userName: "user2",
-        isMySelf: false)
+    var otherRecipient1: Identity!
 
-    var otherRecipient2 = Identity.create(
-        address: "3@example.com",
-        userID: "3",
-        addressBookID: "3",
-        userName: "user3",
-        isMySelf: false)
+    var otherRecipient2: Identity!
 
     /**
      Maps test name to message counter in that test.
@@ -46,6 +31,25 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
 
     override func setUp() {
         super.setUp()
+
+        externalFrom1 = Identity(address: "1@example.com",
+                                 userID: "1",
+                                 addressBookID: "1",
+                                 userName: "user1",
+                                 isMySelf: false)
+
+        otherRecipient1 = Identity(address: "2@example.com",
+                                   userID: "2",
+                                   addressBookID: "2",
+                                   userName: "user2",
+                                   isMySelf: false)
+
+        otherRecipient2 = Identity(address: "3@example.com",
+                                   userID: "3",
+                                   addressBookID: "3",
+                                   userName: "user3",
+                                   isMySelf: false)
+
         replyAllChecker = ReplyAllPossibleChecker()
 
         inbox = Folder(name: "INBOX", parent: nil, account: account, folderType: .inbox)
@@ -359,15 +363,15 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
         msg.from = from
 
         if !to.isEmpty {
-            msg.to = to
+            msg.replaceTo(with: to)
         }
 
         if !cc.isEmpty {
-            msg.cc = cc
+            msg.replaceCc(with: cc)
         }
 
         if !bcc.isEmpty {
-            msg.bcc = bcc
+            msg.replaceBcc(with: bcc)
         }
 
         return replyAllChecker.isReplyAllPossible(forMessage: msg)

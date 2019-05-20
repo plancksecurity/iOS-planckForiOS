@@ -9,7 +9,7 @@
 
 import XCTest
 
-@testable import pEpForiOS
+//@testable import pEpForiOS
 @testable import MessageModel
 import PEPObjCAdapterFramework
 
@@ -95,7 +95,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
         }
         let msg = Message(uuid: testUuid, parentFolder: folder)
         msg.from = account.user
-        Message.createCdFakeMessage(for: msg)
+//        Message.createCdFakeMessage(for: msg)
         assureFakeMessageExistence(in: folder)
     }
 

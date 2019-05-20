@@ -51,9 +51,9 @@ public class AccountSettingsViewModel {
     public init(account: Account) {
         // We are using a copy of the data here.
         // The outside world must not know changed settings until they have been verified.
-        isOAuth2 = account.server(with: .imap)?.authMethod == AuthMethod.saslXoauth2.rawValue
+        isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.email = account.user.address
-        self.loginName = account.server(with: .imap)?.credentials.loginName ?? ""
+        self.loginName = account.imapServer?.credentials.loginName ?? ""
         self.name = account.user.userName ?? ""
 
         if let server = account.imapServer {
@@ -61,7 +61,7 @@ public class AccountSettingsViewModel {
             self.imapServer = ServerViewModel(
                 address: server.address,
                 port: "\(server.port)",
-                transport: server.transport?.asString())
+                transport: server.transport.asString())
         } else {
             self.imapServer = ServerViewModel()
         }
@@ -71,7 +71,7 @@ public class AccountSettingsViewModel {
             self.smtpServer = ServerViewModel(
                 address: server.address,
                 port: "\(server.port)",
-                transport: server.transport?.asString())
+                transport: server.transport.asString())
         } else {
             self.smtpServer = ServerViewModel()
         }
@@ -188,11 +188,11 @@ public class AccountSettingsViewModel {
                         loginName: String, password: String?, key: String? = nil) -> Server? {
         guard let viewModelPort = viewModel.port,
             let port = UInt16(viewModelPort),
-            let address = viewModel.address else {
+            let address = viewModel.address,
+            let transport = Server.Transport(fromString: viewModel.transport) else {
                 Log.shared.errorAndCrash("viewModel misses required data.")
                 return nil
         }
-        let transport = Server.Transport(fromString: viewModel.transport)
 
         let credentials = ServerCredentials.create(loginName: loginName, key: key)
         if password != nil && password != "" {

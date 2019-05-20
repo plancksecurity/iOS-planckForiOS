@@ -9,11 +9,12 @@
 import Foundation
 import MessageModel
 
-protocol ProfilePictureComposer {
+protocol ProfilePictureComposerProtocol {
     /**
      Retrieves a profile picture (if any) for the given identity.
      */
-    func profilePicture(for identity: Identity, completion: @escaping (UIImage?) -> ())
+    func profilePicture(for identityKey: IdentityImageTool.IdentityKey,
+                        completion: @escaping (UIImage?) -> ())
 
     /**
      Retrieves a status icon matching the status of the given message.

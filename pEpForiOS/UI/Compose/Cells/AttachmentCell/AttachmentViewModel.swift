@@ -24,6 +24,10 @@ class AttachmentViewModel: CellViewModel {
     }
 
     public var fileExtension: String {
-        return mimeTypeUtils?.fileExtension(fromMimeType: attachment.mimeType) ?? ""
+        guard let mimeType = attachment.mimeType else {
+            Log.shared.errorAndCrash("No MimeType")
+            return ""
+        }
+        return mimeTypeUtils?.fileExtension(fromMimeType: mimeType) ?? ""
     }
 }

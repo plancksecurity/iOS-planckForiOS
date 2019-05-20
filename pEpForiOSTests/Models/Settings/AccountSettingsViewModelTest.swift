@@ -27,7 +27,7 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
         let loginName = viewModel.loginName
 
-        XCTAssertEqual(loginName, account.server(with: .imap)?.credentials.loginName)
+        XCTAssertEqual(loginName, account.imapServer?.credentials.loginName)
     }
 
     public func testName() {
@@ -47,7 +47,7 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         let port =  account.smtpServer?.port
         XCTAssertNotNil(port)
         XCTAssertEqual(smptServer.port, "\(String(describing: port!))")
-        XCTAssertEqual(smptServer.transport, account.smtpServer?.transport?.asString())
+        XCTAssertEqual(smptServer.transport, account.smtpServer?.transport.asString())
     }
 
     public func testImapServer() {
@@ -59,7 +59,7 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         let port =  account.imapServer?.port
         XCTAssertNotNil(port)
         XCTAssertEqual(imapServer.port, "\(String(describing: port!))")
-        XCTAssertEqual(imapServer.transport, account.imapServer?.transport?.asString())
+        XCTAssertEqual(imapServer.transport, account.imapServer?.transport.asString())
     }
 
     func testUpdate() {

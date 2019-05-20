@@ -55,11 +55,12 @@ public class FolderSectionViewModel {
             Log.shared.errorAndCrash("No account selected")
             return
         }
-        if let cachedContactImage = contactImageTool.cachedIdentityImage(for: ac.user) {
+        let userKey = IdentityImageTool.IdentityKey(identity: ac.user)
+        if let cachedContactImage = contactImageTool.cachedIdentityImage(for: userKey) {
             callback(cachedContactImage)
         } else {
-            DispatchQueue.global().async {
-                let contactImage = self.contactImageTool.identityImage(for: ac.user)
+            DispatchQueue.global(qos: .userInitiated) .async {
+                let contactImage = self.contactImageTool.identityImage(for: userKey)
                 DispatchQueue.main.async {
                     callback(contactImage)
                 }

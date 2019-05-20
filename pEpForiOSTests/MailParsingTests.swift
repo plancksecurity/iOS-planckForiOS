@@ -7,12 +7,13 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
-@testable import MessageModel //FIXME:
+@testable import MessageModel
 import PEPObjCAdapterFramework
 
-class MailParsingTests: XCTestCase {
+class MailParsingTests: XCTestCase { //!!!: use BaseClass
     var persistentSetup: PersistentSetup!
     var cdOwnAccount: CdAccount!
     var fromIdent: PEPIdentity!
@@ -23,16 +24,17 @@ class MailParsingTests: XCTestCase {
         XCTAssertTrue(PEPUtil.pEpClean())
         persistentSetup = PersistentSetup()
 
-        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0)
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
+
+        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
         cdMyAccount.identity?.userName = "iOS Test 002"
         cdMyAccount.identity?.userID = "iostest002@peptest.ch_ID"
         cdMyAccount.identity?.address = "iostest002@peptest.ch"
 
-        let cdInbox = CdFolder.create()
+        let cdInbox = CdFolder(context: moc)
         cdInbox.name = ImapSync.defaultImapInboxName
-        cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdMyAccount
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         cdOwnAccount = cdMyAccount
     }

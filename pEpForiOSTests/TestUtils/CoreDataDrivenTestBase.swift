@@ -14,8 +14,10 @@ import CoreData
 import PEPObjCAdapterFramework
 
 open class CoreDataDrivenTestBase: XCTestCase {
+    var moc : NSManagedObjectContext!
+
     var account: Account {
-        return cdAccount.account()
+        return Account(cdObject: cdAccount, context: moc)
     }
     var cdAccount: CdAccount!
     var persistentSetup: PersistentSetup!
@@ -34,9 +36,10 @@ open class CoreDataDrivenTestBase: XCTestCase {
         XCTAssertTrue(PEPUtil.pEpClean())
         
         persistentSetup = PersistentSetup()
-        
-        let cdAccount = SecretTestData().createWorkingCdAccount()
-        Record.saveAndWait()
+        moc = Stack.shared.mainContext
+
+        let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
+        moc.saveAndLogErrors()
         self.cdAccount = cdAccount
 
         imapConnectInfo = cdAccount.imapConnectInfo

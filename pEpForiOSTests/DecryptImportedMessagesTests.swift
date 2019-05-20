@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
 @testable import MessageModel
@@ -14,6 +15,8 @@ import PEPObjCAdapterFramework
 
 class DecryptImportedMessagesTests: XCTestCase {
     var persistentSetup: PersistentSetup!
+    var moc : NSManagedObjectContext!
+
     var session: PEPSession {
         return PEPSession()
     }
@@ -27,6 +30,7 @@ class DecryptImportedMessagesTests: XCTestCase {
         XCTAssertTrue(PEPUtil.pEpClean())
 
         persistentSetup = PersistentSetup()
+        moc = Stack.shared.mainContext
 
         self.backgroundQueue = OperationQueue()
     }
@@ -47,7 +51,8 @@ class DecryptImportedMessagesTests: XCTestCase {
     func testDecrypt002() {
         let cdOwnAccount = DecryptionUtil.createLocalAccount(ownUserName: "Someonei",
                                                              ownUserID: "User_Someonei",
-                                                             ownEmailAddress: "someone@gmx.de")
+                                                             ownEmailAddress: "someone@gmx.de",
+                                                             context: moc)
         self.backgroundQueue = OperationQueue()
         let cdMessage = DecryptionUtil.decryptTheMessage(
             testCase: self,
@@ -78,7 +83,8 @@ class DecryptImportedMessagesTests: XCTestCase {
         let cdOwnAccount = DecryptionUtil.createLocalAccount(
             ownUserName: "ThisIsMe",
             ownUserID: "User_Me",
-            ownEmailAddress: "iostest001@peptest.ch")
+            ownEmailAddress: "iostest001@peptest.ch",
+            context: moc)
 
         self.backgroundQueue = OperationQueue()
         let cdMessage = DecryptionUtil.decryptTheMessage(
@@ -113,7 +119,8 @@ class DecryptImportedMessagesTests: XCTestCase {
         let cdOwnAccount = DecryptionUtil.createLocalAccount(
             ownUserName: "Rick Deckard",
             ownUserID: "rick_deckard_uid",
-            ownEmailAddress: "iostest001@peptest.ch")
+            ownEmailAddress: "iostest001@peptest.ch",
+            context: moc)
 
         try! TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Private.asc")
 

@@ -117,12 +117,16 @@ class HandshakePartnerTableViewCellViewModel {
 
     private func setPartnerImage(`for` partnerIdentity: Identity) {
         if let cachedContactImage =
-            contactImageTool.cachedIdentityImage(for: partnerIdentity) {
+            contactImageTool.cachedIdentityImage(for: IdentityImageTool.IdentityKey(identity: partnerIdentity)) {
             partnerImage.value = cachedContactImage
         } else {
-            DispatchQueue.global().async {
-                let contactImage = self.contactImageTool.identityImage(for: partnerIdentity)
-                self.partnerImage.value = contactImage
+            DispatchQueue.global().async { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                } //!!!: needs session (partnerIdentity?)
+                let contactImage = me.contactImageTool.identityImage(for: IdentityImageTool.IdentityKey(identity: partnerIdentity))
+                me.partnerImage.value = contactImage
             }
         }
     }

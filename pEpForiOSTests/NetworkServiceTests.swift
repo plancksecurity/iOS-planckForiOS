@@ -1,5 +1,5 @@
 //
-//  ReplicationServiceTests.swift
+//  NetworkServiceTests.swift
 //  pEpForiOS
 //
 //  Created by hernani on 23/11/16.
@@ -7,19 +7,16 @@
 //
 
 import XCTest
-import CoreData
 
-@testable import MessageModel
+import MessageModel
 @testable import pEpForiOS
 
-class ReplicationServiceTests: XCTestCase {
+class NetworkServiceTests: XCTestCase {
     var persistenceSetup: PersistentSetup!
-    var moc: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
         persistenceSetup = PersistentSetup()
-        moc = Stack.shared.mainContext
     }
 
     override func tearDown() {
@@ -35,100 +32,51 @@ class ReplicationServiceTests: XCTestCase {
         testSyncOutgoing(useCorrectSmtpAccount: false)
     }
 
-    //!!!: random fail
-//    func testSyncOneTime() {
-//        XCTAssertNil(CdAccount.all())
-//        XCTAssertNil(CdFolder.all())
-//        XCTAssertNil(CdMessage.all())
-//
-//        let modelDelegate = MessageModelObserver()
-//        MessageModelConfig.messageFolderDelegate = modelDelegate
-//
-//        let replicationService = ReplicationService(parentName: #function)
-//
-//        let del = ReplicationServiceObserver(
-//            expAccountsSynced: expectation(description: "expSingleAccountSynced"))
-//        replicationService.unitTestDelegate = del
-//        replicationService.delegate = del
-//
-//        _ = SecretTestData().createWorkingCdAccount()
-//        Record.saveAndWait()
-//
-//        replicationService.start()
-//
-//        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-//            XCTAssertNil(error)
-//        })
-//
-//        XCTAssertNotNil(del.accountInfo)
-//        XCTAssertNotNil(CdFolder.all())
-//
-//        guard let cdFolder = CdFolder.first(
-//            attributes: ["folderTypeRawValue": FolderType.inbox.rawValue]) else {
-//                XCTFail()
-//                return
-//        }
-//        XCTAssertGreaterThanOrEqual(cdFolder.messages?.count ?? 0, 0)
-//        let allCdMessages = cdFolder.messages?.sortedArray(
-//            using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] ?? []
-//        XCTAssertGreaterThanOrEqual(allCdMessages.count, 0)
-//
-//        for cdMsg in allCdMessages {
-//            guard let parentF = cdMsg.parent else {
-//                XCTFail()
-//                continue
-//            }
-//            XCTAssertEqual(parentF.folderType, FolderType.inbox)
-//        }
-//
-//        let unifiedInbox = UnifiedInbox()
-//
-//        let unifiedMessageCount = unifiedInbox.messageCount()
-//        XCTAssertGreaterThanOrEqual(unifiedMessageCount, 0)
-//        for i in 0..<unifiedMessageCount {
-//            guard let msg = unifiedInbox.messageAt(index: i) else {
-//                XCTFail()
-//                continue
-//            }
-//
-//            XCTAssertTrue(msg.isValidMessage())
-//
-//            let pEpRating = Int16(msg.pEpRatingInt ?? -1)
-//            XCTAssertNotEqual(pEpRating, PEPUtil.pEpRatingNone)
-//            if !modelDelegate.contains(messageID: msg.messageID) {
-//                XCTFail()
-//            }
-//        }
-//
-//        let inbox = Folder.from(cdFolder: cdFolder)
-//        XCTAssertEqual(modelDelegate.messages.count, unifiedMessageCount)
-//
-//        for msg in modelDelegate.messages {
-//            let msgIsFlaggedDeleted = msg.imapFlags?.deleted ?? false
-//            XCTAssertTrue(!msgIsFlaggedDeleted)
-//            XCTAssertTrue(inbox.contains(message: msg))
-//            if !unifiedInbox.contains(message: msg) {
-//                XCTFail()
-//            }
-//        }
-//        XCTAssertFalse(modelDelegate.hasChangedMessages)
-//
-//        TestUtil.cancelReplicationServiceAndWait(replicationService: replicationService, testCase: self)
-//    }
+    func testSyncOneTime() {
+        XCTAssertNil(CdAccount.all())
+        XCTAssertNil(CdFolder.all())
+        XCTAssertNil(CdMessage.all())
+
+        let modelDelegate = MessageModelObserver()
+        MessageModelConfig.messageFolderDelegate = modelDelegate
+
+        let networkService = NetworkService(parentName: #function)
+
+        let del = NetworkServiceObserver(
+            expAccountsSynced: expectation(description: "expSingleAccountSynced"))
+        networkService.unitTestDelegate = del
+        networkService.delegate = del
+
+        _ = SecretTestData().createWorkingCdAccount()
+        Record.saveAndWait()
+
+        networkService.start()
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: self)
+
+        XCTAssertNotNil(del.accountInfo)
+        XCTAssertNotNil(CdFolder.all())
+
+
+    }
 
     func testCancelSyncImmediately() {
         XCTAssertNil(CdAccount.all())
         XCTAssertNil(CdFolder.all())
         XCTAssertNil(CdMessage.all())
 
-        let replicationService = ReplicationService(parentName: #function)
+        let networkService = NetworkService(parentName: #function)
 
-        _ = SecretTestData().createWorkingCdAccount(context: moc)
+        _ = SecretTestData().createWorkingCdAccount()
         Record.saveAndWait()
 
         for _ in 0...10 {
-            replicationService.start()
-            TestUtil.cancelReplicationServiceAndWait(replicationService: replicationService, testCase: self)
+            networkService.start()
+            TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: self)
         }
 
         XCTAssertNil(CdFolder.all())
@@ -167,19 +115,17 @@ class ReplicationServiceTests: XCTestCase {
         let modelDelegate = MessageModelObserver()
         MessageModelConfig.messageFolderDelegate = modelDelegate
 
-        let cdAccount =
-            useCorrectSmtpAccount ?
-            SecretTestData().createWorkingCdAccount(context: moc) :
-            SecretTestData().createSmtpTimeOutCdAccount(context: moc)
+        let cdAccount = useCorrectSmtpAccount ? SecretTestData().createWorkingCdAccount() :
+            SecretTestData().createSmtpTimeOutCdAccount()
         Record.saveAndWait()
 
         TestUtil.syncAndWait(testCase: self)
 
-        let from = CdIdentity(context: moc)
+        let from = CdIdentity.create()
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
         from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
 
-        let to = CdIdentity(context: moc)
+        let to = CdIdentity.create()
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
@@ -190,10 +136,9 @@ class ReplicationServiceTests: XCTestCase {
         XCTAssertEqual((sentFolder.messages ?? NSSet()).count, 0)
 
         let numMails = 1
-        let outgoingMails = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
-                                                              testCase: self,
-                                                              numberOfMails: numMails,
-                                                              context: moc)
+        let outgoingMails = try! TestUtil.createOutgoingMails(
+            cdAccount: cdAccount,
+            testCase: self, numberOfMails: numMails)
         let outgoingMessageIDs: [String] = outgoingMails
             .map() { $0.messageID ?? "" }
             .filter() { $0 != "" }
@@ -207,7 +152,7 @@ class ReplicationServiceTests: XCTestCase {
         TestUtil.syncAndWait(testCase: self)
 
         // Check that the sent mails have been deleted
-        Stack.refreshRegisteredObjects(mergeChanges: true, in: moc)
+        Record.refreshRegisteredObjects(mergeChanges: true)
         if useCorrectSmtpAccount {
             for m in outgoingMails {
                 XCTAssertTrue(m.isDeleted)
@@ -232,7 +177,9 @@ class ReplicationServiceTests: XCTestCase {
                 }
             }
             return messages.sorted { m1, m2 in
-                if let d1 = m1.sent, let d2 = m2.sent {
+                if let d1 = m1.received, let d2 = m2.received {
+                    return areInIncreasingOrder(d1: d1, d2: d2)
+                } else if let d1 = m1.sent, let d2 = m2.sent {
                     return areInIncreasingOrder(d1: d1, d2: d2)
                 }
                 return false

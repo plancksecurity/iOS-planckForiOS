@@ -1,9 +1,13 @@
+////  FetchNumberOfNewMailsServiceTest.swift
+////  pEpForiOSTests
+////
+////  Created by Dirk Zimmermann on 16.11.18.
+////  Copyright © 2018 p≡p Security S.A. All rights reserved.
+////
 //
-//  FetchNumberOfNewMailsServiceTest.swift
-//  pEpForiOSTests
+//import XCTest
 //
-//  Created by Dirk Zimmermann on 16.11.18.
-//  Copyright © 2018 p≡p Security S.A. All rights reserved.
+//import CoreData
 //
 
 import XCTest
@@ -37,13 +41,13 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
             return
         }
 
-        let partnerId = CdIdentity.create()
+        let partnerId = CdIdentity(context: moc)
         partnerId.address = "somepartner@example.com"
         partnerId.userID = "ID_somepartner@example.com"
         partnerId.addressBookID = nil
         partnerId.userName = "USER_somepartner@example.com"
 
-        let mail1 = CdMessage.create()
+        let mail1 = CdMessage(context: moc)
         mail1.uuid = MessageID.generateUUID(localPart: "testUnreadMail")
         mail1.uid = 0
         mail1.parent = cdInbox

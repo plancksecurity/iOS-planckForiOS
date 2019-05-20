@@ -18,13 +18,13 @@ extension Message {
             || self.shortMessage != nil
     }
 
-    static public func fakeMessage(uuid: MessageID) -> Message {
+    /*static public func fakeMessage(uuid: MessageID) -> Message {
         // miss use unifiedInbox() to create fake folder
         let fakeFolder = UnifiedInbox()
         fakeFolder.filter = nil
 
         return Message(uuid: uuid, parentFolder: fakeFolder)
-    }
+    }*/
 
     public func pEpMessageDict(outgoing: Bool = true) -> PEPMessageDict {
         var dict = PEPMessageDict()
@@ -52,8 +52,6 @@ extension Message {
         dict[kPepAttachments] = NSArray(array: attachments.map() {
             return PEPUtil.pEpAttachment(attachment: $0)
         })
-
-        dict[kPepReferences] = references as AnyObject
 
         return dict
     }

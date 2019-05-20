@@ -7,12 +7,16 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
 @testable import MessageModel //FIXME:
 import PEPObjCAdapterFramework
 
+//!!!: uses a mix of Cd*Objects and MMObjects. Fix!
 class MessageReevalutionTests: XCTestCase {
+    var moc: NSManagedObjectContext!
+
     var cdOwnAccount: CdAccount!
     var pEpOwnIdentity: PEPIdentity!
     var cdSenderIdentity: CdIdentity!
@@ -33,6 +37,7 @@ class MessageReevalutionTests: XCTestCase {
         XCTAssertTrue(PEPUtil.pEpClean())
 
         persistentSetup = PersistentSetup()
+        moc = Stack.shared.mainContext
 
         let ownIdentity = PEPIdentity(address: "iostest002@peptest.ch",
                                       userID: "iostest002@peptest.ch_ID",
@@ -40,15 +45,14 @@ class MessageReevalutionTests: XCTestCase {
                                       isOwn: true)
 
         // Account
-        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0)
+        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
         cdMyAccount.identity?.userName = ownIdentity.userName
         cdMyAccount.identity?.userID = ownIdentity.userID
         cdMyAccount.identity?.address = ownIdentity.address
 
         // Inbox
-        cdInbox = CdFolder.create()
+        cdInbox = CdFolder()
         cdInbox.name = ImapSync.defaultImapInboxName
-        cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdMyAccount
         self.cdOwnAccount = cdMyAccount
 
@@ -56,16 +60,17 @@ class MessageReevalutionTests: XCTestCase {
         let senderUserName = "iOS Test 001"
         let senderUserID = "iostest001@peptest.ch_ID"
         let senderAddress = "iostest001@peptest.ch"
-        let senderIdentityBuilder = Identity.create(address: senderAddress,
-                                                    userID: senderUserID,
-                                                    userName: senderUserName,
-                                                    isMySelf: false)
+        let senderIdentityBuilder = Identity(address: senderAddress,
+                                             userID: senderUserID,
+                                             userName: senderUserName,
+                                             isMySelf: false)
         senderIdentityBuilder.save()
-        guard let sender = CdIdentity.search(address: senderAddress) else {
+        let moc = senderIdentityBuilder.moc
+        guard let sender = CdIdentity.search(address: senderAddress, context: moc) else {
             XCTFail("Can't find")
             return
         }
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
         self.cdSenderIdentity =  sender
 
         // sender pubkey
@@ -87,7 +92,7 @@ class MessageReevalutionTests: XCTestCase {
 
     override func tearDown() {
         persistentSetup = nil
-        backgroundQueue.cancelAllOperations()
+        backgroundQueue?.cancelAllOperations() //!!!: serious issue. BackgroundQueue is randomly nil here. WTF?
         backgroundQueue = nil
         PEPSession.cleanup()
         super.tearDown()
@@ -118,7 +123,7 @@ class MessageReevalutionTests: XCTestCase {
         }
 
         XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
-        Record.Context.main.refreshAllObjects()
+        moc.refreshAllObjects()
         cdDecryptedMessage = cdMessage
         XCTAssertEqual(cdMessage.pEpRating, Int16(PEPRating.reliable.rawValue))
         XCTAssertEqual(cdMessage.shortMessage, "oh yeah, subject")
@@ -159,10 +164,8 @@ class MessageReevalutionTests: XCTestCase {
 
     func reevaluateMessage(expectedRating: PEPRating, inBackground: Bool = true,
                            infoMessage: String) {
-        guard let message = cdDecryptedMessage.message() else {
-            XCTFail()
-            return
-        }
+        let message = MessageModelObjectUtils.getMessage(fromCdMessage: cdDecryptedMessage)
+
         if inBackground {
             let expReevaluated = expectation(description: "expReevaluated")
             let reevalOp = ReevaluateMessageRatingOperation(parentName: #function, message: message)
@@ -175,13 +178,13 @@ class MessageReevalutionTests: XCTestCase {
                 XCTAssertNil(error)
             })
 
-            Record.Context.default.refreshAllObjects()
+            moc.refreshAllObjects()
             XCTAssertEqual(cdDecryptedMessage.pEpRating, Int16(expectedRating.rawValue),
                            infoMessage)
         } else {
             let reevalOp = ReevaluateMessageRatingOperation(
                 parentName: #function, message: message)
-            reevalOp.reEvaluate(context: Record.Context.default)
+            reevalOp.reEvaluate(context: moc)
         }
     }
 

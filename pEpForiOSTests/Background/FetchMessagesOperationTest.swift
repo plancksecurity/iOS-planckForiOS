@@ -21,7 +21,7 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
 //        // Setup 2 accounts
 //        cdAccount.createRequiredFoldersAndWait(testCase: self)
 //        Record.saveAndWait()
-//        
+//
 //        let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
 //        Record.saveAndWait()
 //        cdAccount2.createRequiredFoldersAndWait(testCase: self)

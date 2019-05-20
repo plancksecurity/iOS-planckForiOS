@@ -17,6 +17,7 @@ extension CdMessage {
             || self.shortMessage != nil
     }
 
+    //???: looks like there are redundant search(..) and by(..) methods in MM, App and AppTest target. Double check, merge.
     public static func search(byUUID uuid: MessageID, includeFakeMessages: Bool) -> [CdMessage] {
         return by(uuid: uuid, includeFakeMessages: includeFakeMessages)
     }

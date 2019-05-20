@@ -48,23 +48,10 @@ public class FolderViewModel {
         return Account.all().isEmpty
     }
 
-    func createEmailListViewModel(forAccountAt accountIndex: Int?,
-                                  andFolderAt folderIndex: Int?,
-                                  fetchOlderImapMessagesService: FetchOlderImapMessagesService)
-        -> EmailListViewModel {
-            guard let safeAccountIndex = accountIndex,
-                let safeFolderIndex = folderIndex else {
-                    return EmailListViewModel(fetchOlderImapMessagesService: fetchOlderImapMessagesService)
-            }
-            return EmailListViewModel(
-                fetchOlderImapMessagesService: fetchOlderImapMessagesService,
-                folderToShow: self[safeAccountIndex][safeFolderIndex].folder)
-    }
-    
     func refreshFolderList() {
         DispatchQueue.global(qos: .userInitiated).async {
             MessageModelUtil.perform {
-                self.folderSyncService.requestFolders(inAccounts: Account.all())
+                self.folderSyncService.requestFolders(inAccounts: Account.all()) //!!!: must not be in UI. According to fetchOlder()
             }
         }
     }

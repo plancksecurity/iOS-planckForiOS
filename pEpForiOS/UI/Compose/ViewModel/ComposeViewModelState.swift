@@ -178,25 +178,76 @@ extension ComposeViewModel.ComposeViewModelState {
             rating = .unencrypted
             return
         }
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+
+        var newRating = PEPRating.undefined
+        guard let from = from else {
+            rating = newRating
+            return
+        }
+        let session = Session()
+
+        /*
+        //!!!: In tests (ComposeViewModelStateTest) this block is triggered by setup and modt test, but never  executed:
+        DEBUG: will setup
+        DEBUG: before going to background
+        DEBUG: on background
+        DEBUG: did setup
+        DEBUG: will tearDown
+        DEBUG: did tearDown
+        DEBUG: will setup
+        DEBUG: before going to background
+        DEBUG: did setup
+        DEBUG: on background
+ */
+
+//        print("COMPOSE: before going to background")
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in //HERE:
+            //!!!:
+            print("COMPOSE: on background")
             guard let me = self else {
                 // That is a valid case. Compose view is gone before this block started to run.
                 return
             }
-            let newRating: PEPRating
-            let session = PEPSession()
-            if let from = me.from {
-                newRating = session.outgoingMessageRating(from: from,
-                                                       to: me.toRecipients,
-                                                       cc: me.ccRecipients,
-                                                       bcc: me.bccRecipients)
-            } else {
-                newRating = PEPRating.undefined
+
+            session.performAndWait {
+                let safeFrom = from.safeForSession(session)
+                let safeTo = Identity.makeSafe(me.toRecipients, forSession: session)
+                let safeCc = Identity.makeSafe(me.ccRecipients, forSession: session)
+                let safeBcc = Identity.makeSafe(me.bccRecipients, forSession: session)
+
+                let pEpsession = PEPSession()
+                newRating = pEpsession.outgoingMessageRating(from: safeFrom,
+                                                             to: safeTo,
+                                                             cc: safeCc,
+                                                             bcc: safeBcc)
             }
+            //!!!:
+            print("COMPOSE: did outgoingMessageRating")
             DispatchQueue.main.async {
                 me.rating = newRating
+                //!!!:
+                print("COMPOSE: did newRating")
             }
         }
+
+        //            guard let me = self else {
+        //                // That is a valid case. Compose view is gone before this block started to run.
+        //                return
+        //            }
+        //            let newRating: PEPRating
+        //            let session = PEPSession()
+        //            if let from = me.from {
+        //                newRating = session.outgoingMessageRating(from: from,
+        //                                                       to: me.toRecipients,
+        //                                                       cc: me.ccRecipients,
+        //                                                       bcc: me.bccRecipients)
+        //            } else {
+        //                newRating = PEPRating.undefined
+        //            }
+        //            DispatchQueue.main.async {
+        //                me.rating = newRating
+        //            }
+
     }
 }
 

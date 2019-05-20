@@ -8,6 +8,7 @@
 
 import MessageModel
 
+//!!!: move to MM. Or better re-move.
 extension Folder {
 
     /**
@@ -15,9 +16,8 @@ extension Folder {
      that is no threading involved.
      */
     public func allMessagesNonThreaded() -> [Message] {
-        return allCdMessagesNonThreaded(ignoringPepRating: showsMessagesNeverSeenByEngine)
-            .compactMap {
-                return $0.message()
-        }
+        return
+            allCdMessages(ignoringPepRating: showsMessagesNeverSeenByEngine)
+                .compactMap { $0.message() }
     }
 }

@@ -78,8 +78,9 @@ class ComposeDataSource: NSObject {
                 return nil
             }
             let attachment = attachments[index]
+            let mimeType = attachment.mimeType ?? ""
             return Row(fileName: attachment.fileName,
-                       fileExtesion: mimeTypeUtils?.fileExtension(fromMimeType: attachment.mimeType) ?? "")
+                       fileExtesion: mimeTypeUtils?.fileExtension(fromMimeType: mimeType) ?? "")
         }
 
         /// Adds an attachment to the data source and returns the index it has been inserted in.
