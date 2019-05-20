@@ -802,13 +802,14 @@ extension EmailListViewController: EmailListViewModelDelegate {
             showNoMessageSelectedIfNeeded()
         }
     }
-
+    //!!!: comented code probably not needed anymore. if something strange appears, check this.
+    //!!!: the reselection of the cell is performed in the cell for row. 
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.reloadRows(at: indexPaths, with: .none)
-        for indexPath in indexPaths {
-            resetSelectionIfNeeded(for: indexPath)
-        }
+//        for indexPath in indexPaths {
+//            resetSelectionIfNeeded(for: indexPath)
+//        }
     }
 
     func emailListViewModel(viewModel: EmailListViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath) {
