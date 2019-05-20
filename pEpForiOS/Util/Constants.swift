@@ -8,12 +8,8 @@
 
 import pEpIOSToolbox
 
-extension Constants {
-    /** Settings key for storing the email of the last used account */
-    static let kSettingLastAccountEmail = "kSettingLastAccountEmail"
-
-    static let defaultFileName = NSLocalizedString("unnamed",
-                                                   comment:
+struct Constants {
+    static let defaultFileName = NSLocalizedString("unnamed", comment:
         "file name used for unnamed attachments")
 
     /// Storyboard ID to instantiate ComposeViewController

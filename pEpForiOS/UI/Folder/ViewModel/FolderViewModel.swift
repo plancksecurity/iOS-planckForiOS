@@ -51,7 +51,7 @@ public class FolderViewModel {
     func refreshFolderList() {
         DispatchQueue.global(qos: .userInitiated).async {
             MessageModelUtil.perform {
-                self.folderSyncService.requestFolders(inAccounts: Account.all())
+                self.folderSyncService.requestFolders(inAccounts: Account.all()) //!!!: must not be in UI. According to fetchOlder()
             }
         }
     }

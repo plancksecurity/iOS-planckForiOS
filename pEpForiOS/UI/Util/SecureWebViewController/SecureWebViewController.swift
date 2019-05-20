@@ -168,13 +168,13 @@ class SecureWebViewController: UIViewController {
                 forIdentifier: "pep.security.SecureWebViewController.block_all_external_content",
                 encodedContentRuleList: blockRules) { (contentRuleList, error) in
                     if let error = error {
-                        Logger.frontendLogger.errorAndCrash(
+                        Log.shared.errorAndCrash(
                             "Compile error: %@", error.localizedDescription)
                         return
                     }
                     compiledBlockList = contentRuleList
                     guard let _ = compiledBlockList else {
-                        Logger.frontendLogger.errorAndCrash(
+                        Log.shared.errorAndCrash(
                             "Emergency exit. External content not blocked.")
                         completion()
                         return
@@ -228,7 +228,7 @@ class SecureWebViewController: UIViewController {
         let handler = {
             [weak self] (scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) in
             guard let me = self else {
-                Logger.backendLogger.lostMySelf()
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
 
@@ -376,7 +376,7 @@ extension SecureWebViewController: WKNavigationDelegate {
             return
         case .linkActivated:
             guard let url = navigationAction.request.url else {
-                Logger.frontendLogger.errorAndCrash("Link to nonexisting URL has been clicked?")
+                Log.shared.errorAndCrash("Link to nonexisting URL has been clicked?")
                 break
             }
             if url.scheme == "mailto" {

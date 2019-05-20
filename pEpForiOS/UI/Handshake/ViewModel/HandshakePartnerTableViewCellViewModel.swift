@@ -108,7 +108,7 @@ class HandshakePartnerTableViewCellViewModel {
         do {
             isPartnerpEpUser = try session.isPEPUser(pEpPartner).boolValue
         } catch let err as NSError {
-            Logger.frontendLogger.error("%{public}@", err.localizedDescription)
+            Log.shared.error("%{public}@", err.localizedDescription)
             isPartnerpEpUser = false
         }
         setPartnerImage(for: partner)
@@ -117,12 +117,16 @@ class HandshakePartnerTableViewCellViewModel {
 
     private func setPartnerImage(`for` partnerIdentity: Identity) {
         if let cachedContactImage =
-            contactImageTool.cachedIdentityImage(for: partnerIdentity) {
+            contactImageTool.cachedIdentityImage(for: IdentityImageTool.IdentityKey(identity: partnerIdentity)) {
             partnerImage.value = cachedContactImage
         } else {
-            DispatchQueue.global().async {
-                let contactImage = self.contactImageTool.identityImage(for: partnerIdentity)
-                self.partnerImage.value = contactImage
+            DispatchQueue.global().async { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                } //!!!: needs session (partnerIdentity?)
+                let contactImage = me.contactImageTool.identityImage(for: IdentityImageTool.IdentityKey(identity: partnerIdentity))
+                me.partnerImage.value = contactImage
             }
         }
     }
@@ -149,7 +153,7 @@ class HandshakePartnerTableViewCellViewModel {
                 language: trustwordsLanguage,
                 full: trustwordsFull)
         } catch let err as NSError {
-            Logger.frontendLogger.error("%{public}@", err.localizedDescription)
+            Log.shared.error("%{public}@", err.localizedDescription)
             return nil
         }
     }

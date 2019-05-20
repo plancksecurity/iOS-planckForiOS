@@ -16,5 +16,5 @@ struct UnitTestUtils {
 
     /// The maximum wait time for unit tests that are asynchronous.
     //!!!: dirty!
-    static let asyncWaitTime: TimeInterval = 10
+    static let asyncWaitTime: TimeInterval = 1.0
 }

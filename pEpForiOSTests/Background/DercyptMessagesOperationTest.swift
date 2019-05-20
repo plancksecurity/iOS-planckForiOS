@@ -19,10 +19,9 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
     
     //IOS-815 pEpRating undefined
     func testPepratingUndefined() {
-        let folder = CdFolder.create()
+        let folder = CdFolder(context: moc)
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
-        folder.uuid = MessageID.generate()
         Record.saveAndWait()
 
         guard
@@ -33,10 +32,10 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
         }
         message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         message.setUID(1)
-
-        guard let _ = CdMessage.insertOrUpdate(pantomimeMessage: message,
-                                                 account: cdAccount,
-                                                 messageUpdate: CWMessageUpdate.newComplete())
+        guard let _ = CdMessage.insertOrUpdate(  pantomimeMessage: message,
+                                                   account: cdAccount,
+                                                   messageUpdate: CWMessageUpdate.newComplete(),
+                                                   context: moc)
             else {
                 XCTFail("error parsing message")
                 return

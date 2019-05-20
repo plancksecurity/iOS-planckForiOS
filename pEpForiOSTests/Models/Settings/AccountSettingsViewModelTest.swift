@@ -27,7 +27,7 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
         let loginName = viewModel.loginName
 
-        XCTAssertEqual(loginName, account.server(with: .imap)?.credentials.loginName)
+        XCTAssertEqual(loginName, account.imapServer?.credentials.loginName)
     }
 
     public func testName() {
@@ -47,7 +47,7 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         let port =  account.smtpServer?.port
         XCTAssertNotNil(port)
         XCTAssertEqual(smptServer.port, "\(String(describing: port!))")
-        XCTAssertEqual(smptServer.transport, account.smtpServer?.transport?.asString())
+        XCTAssertEqual(smptServer.transport, account.smtpServer?.transport.asString())
     }
 
     public func testImapServer() {
@@ -59,19 +59,21 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         let port =  account.imapServer?.port
         XCTAssertNotNil(port)
         XCTAssertEqual(imapServer.port, "\(String(describing: port!))")
-        XCTAssertEqual(imapServer.transport, account.imapServer?.transport?.asString())
+        XCTAssertEqual(imapServer.transport, account.imapServer?.transport.asString())
     }
 
     func testUpdate() {
-        let address = "fakeAddress"
+        let address = "localhost"
         let login = "fakelogin"
         let name = "fakeName"
         let password = "fakePassword"
+        let portString = "1"
+        let portInt = UInt16(portString)!
 
         setUpViewModel()
 
         let server = AccountSettingsViewModel.ServerViewModel(address: address,
-                                                              port: "123",
+                                                              port: portString,
                                                               transport: "StartTls")
 
         let verifyExpectation =
@@ -89,24 +91,18 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
         waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
 
-        // TODO: What to test here?
-        /*
-        let smtp = viewModel.account.smtpServer
-        let imap = viewModel.account.imapServer
+        guard let verifier = viewModel.verifiableAccount else {
+            XCTFail()
+            return
+        }
 
-        XCTAssertEqual(smtp?.credentials.loginName, login)
-        XCTAssertEqual(smtp?.credentials.password, password)
-        XCTAssertEqual(imap?.credentials.loginName, login)
-        XCTAssertEqual(imap?.credentials.password, password)
-
-        XCTAssertEqual(imap?.address, address)
-        XCTAssertEqual(imap?.port, 123)
-        XCTAssertEqual(imap?.transport, .startTls)
-
-        XCTAssertEqual(smtp?.address, address)
-        XCTAssertEqual(smtp?.port, 123)
-        XCTAssertEqual(smtp?.transport, .startTls)
-         */
+        XCTAssertEqual(verifier.loginName, login)
+        XCTAssertEqual(verifier.password, password)
+        XCTAssertEqual(verifier.serverIMAP, address)
+        XCTAssertEqual(verifier.serverSMTP, address)
+        XCTAssertEqual(verifier.portIMAP, portInt)
+        XCTAssertEqual(verifier.portSMTP, portInt)
+        XCTAssertNil(verifier.accessToken)
     }
 
     public func testSectionIsValid() {
@@ -133,9 +129,7 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         delegate.expectationDidVerifyCalled = verifyExpectation
         viewModel.delegate = delegate
 
-        viewModel.verified(account: account,
-                           service: AccountVerificationService(),
-                           result: .ok)
+        viewModel.didEndVerification(result: .success(()))
 
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -152,7 +146,7 @@ class AccountVerificationResultDelegateMock: AccountVerificationResultDelegate {
     var expectationDidVerifyCalled: XCTestExpectation?
     var error: Error? = nil
 
-    func didVerify(result: AccountVerificationResult, accountInput: VerifiableAccountProtocol?) {
+    func didVerify(result: AccountVerificationResult) {
         switch result {
         case .ok:
             self.error = nil

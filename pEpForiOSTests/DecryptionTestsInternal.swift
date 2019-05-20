@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
 @testable import MessageModel
@@ -18,6 +19,7 @@ import PEPObjCAdapterFramework
  and does not rely on outside data/services).
  */
 class DecryptionTestsInternal: XCTestCase {
+    var moc: NSManagedObjectContext!
     var cdOwnAccount: CdAccount!
     var pEpOwnIdentity: PEPIdentity!
     var cdSenderAccount: CdAccount!
@@ -37,13 +39,15 @@ class DecryptionTestsInternal: XCTestCase {
 
         persistentSetup = PersistentSetup()
 
-        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0)
+        moc = Stack.shared.mainContext
+
+        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
         guard let myPepIdentity = pEpIdentity(cdAccount: cdMyAccount) else {
             fatalError("Error PEPIdentity") //XCTFail() does can not be used here, sorry.
         }
         pEpOwnIdentity = myPepIdentity
 
-        let cdSenderAccount = SecretTestData().createWorkingCdAccount(number: 1)
+        let cdSenderAccount = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
         guard let senderPepIdentity = cdSenderAccount.identity?.pEpIdentity() else {
             fatalError("Error PEPIdentity") //XCTFail() does can not be used here, sorry.
         }
@@ -53,11 +57,10 @@ class DecryptionTestsInternal: XCTestCase {
         pEpSenderIdentity = senderPepIdentity
         try! session.mySelf(senderPepIdentity)
 
-        cdInbox = CdFolder.create()
+        cdInbox = CdFolder(context: moc)
         cdInbox.name = ImapSync.defaultImapInboxName
-        cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdMyAccount
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         self.backgroundQueue = OperationQueue()
     }
@@ -168,9 +171,11 @@ class DecryptionTestsInternal: XCTestCase {
         }
 
         guard
-            let cdMsg = CdMessage.insertOrUpdate(
-                pantomimeMessage: pantMail, account: cdOwnAccount,
-                messageUpdate: CWMessageUpdate.newComplete()) else {
+            let cdMsg = CdMessage.insertOrUpdate(pantomimeMessage: pantMail,
+                                                 account: cdOwnAccount,
+                                                 messageUpdate: CWMessageUpdate.newComplete(),
+                                                 context: moc)
+            else {
                     XCTFail()
                     return
         }
@@ -183,7 +188,7 @@ class DecryptionTestsInternal: XCTestCase {
             XCTAssertTrue(cdMsg.isProbablyPGPMime())
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEPUtil.pEpRatingNone))
 
@@ -207,7 +212,7 @@ class DecryptionTestsInternal: XCTestCase {
 
         XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
 
-        Record.Context.main.refreshAllObjects()
+        moc.refreshAllObjects()
         if shouldEncrypt {
             XCTAssertGreaterThanOrEqual(cdMsg.pEpRating, Int16(PEPRating.reliable.rawValue))
             if useSubject {

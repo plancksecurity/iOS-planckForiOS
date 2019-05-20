@@ -9,13 +9,13 @@
 import XCTest
 
 import pEpForiOS
-import MessageModel
+@testable import MessageModel
 import PantomimeFramework
 
 class ImapFlagsTests: XCTestCase {
     func loopAllFlags(
         cdFlags: CdImapFlags, cwFlags: CWFlags, value: Bool) {
-        let imapFlags = Message.ImapFlags()
+        let imapFlags = ImapFlags()
 
         imapFlags.answered = cdFlags.flagAnswered
         imapFlags.draft = cdFlags.flagDraft

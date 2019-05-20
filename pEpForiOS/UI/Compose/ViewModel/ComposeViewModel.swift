@@ -77,7 +77,7 @@ class ComposeViewModel {
         guard
             let vm = bodySection?.rows.first,
             let body = indexPath(for: vm) else {
-                Logger.frontendLogger.errorAndCrash("No body")
+                Log.shared.errorAndCrash("No body")
                 return IndexPath(row: 0, section: 0)
         }
         return body
@@ -129,12 +129,12 @@ class ComposeViewModel {
 
     public func handleUserClickedSendButton() {
         guard let msg = ComposeUtil.messageToSend(withDataFrom: state) else {
-            Logger.frontendLogger.warn("No message for sending")
+            Log.shared.warn("No message for sending")
             return
         }
         msg.save()
         guard let data = state.initData else {
-            Logger.frontendLogger.errorAndCrash("No data")
+            Log.shared.errorAndCrash("No data")
             return
         }
         if data.isDraftsOrOutbox {
@@ -152,7 +152,7 @@ class ComposeViewModel {
 
     public func handleRemovedRow(at indexPath: IndexPath) {
         guard let removeeVM = viewModel(for: indexPath) as? AttachmentViewModel else {
-                Logger.frontendLogger.errorAndCrash("Only attachmnets can be removed by the user")
+                Log.shared.errorAndCrash("Only attachmnets can be removed by the user")
                 return
         }
         removeNonInlinedAttachment(removeeVM.attachment)
@@ -160,7 +160,7 @@ class ComposeViewModel {
 
     private func deleteOriginalMessage() {
         guard let data = state.initData else {
-            Logger.frontendLogger.errorAndCrash("No data")
+            Log.shared.errorAndCrash("No data")
             return
         }
         guard let om = data.originalMessage else {
@@ -170,7 +170,7 @@ class ComposeViewModel {
         }
         // Make sure the "draft" flag is not set to avoid the original msg will keep in virtual
         // mailboxes, that show all flagged messages.
-        om.imapFlags?.draft = false
+        om.imapFlags.draft = false
         om.imapMarkDeleted()
         resultDelegate?.composeViewModelDidDeleteMessage(message: om)
     }
@@ -183,7 +183,7 @@ class ComposeViewModel {
         for section in sections where section.type == .recipients {
             for row  in section.rows where row is RecipientCellViewModel {
                 guard let recipientVM = row as? RecipientCellViewModel else {
-                    Logger.frontendLogger.errorAndCrash("Cast error")
+                    Log.shared.errorAndCrash("Cast error")
                     return false
                 }
                 if recipientVM.isDirty {
@@ -362,14 +362,14 @@ extension ComposeViewModel {
 extension ComposeViewModel {
     private func removeNonInlinedAttachment(_ removee: Attachment) {
         guard let section = section(for: .attachments) else {
-            Logger.frontendLogger.errorAndCrash("Only attachmnets can be removed by the user")
+            Log.shared.errorAndCrash("Only attachmnets can be removed by the user")
             return
         }
         // Remove from section
         var newAttachmentVMs = [AttachmentViewModel]()
         for vm in section.rows {
             guard let aVM = vm as? AttachmentViewModel else {
-                Logger.frontendLogger.errorAndCrash("Error casting")
+                Log.shared.errorAndCrash("Error casting")
                 return
             }
             if aVM.attachment != removee {
@@ -395,7 +395,7 @@ extension ComposeViewModel {
             existing.rows.append(AttachmentViewModel(attachment: att))
         } else {
             guard let new = Section(type: .attachments, for: state, cellVmDelegate: self) else {
-                Logger.frontendLogger.errorAndCrash("Invalid state")
+                Log.shared.errorAndCrash("Invalid state")
                 return
             }
             sections.append(new)
@@ -422,7 +422,7 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
             let idxPath = lastRowWithSuggestions,
             let recipientVM = sections[idxPath.section].rows[idxPath.row] as? RecipientCellViewModel
             else {
-                Logger.frontendLogger.errorAndCrash("No row VM")
+                Log.shared.errorAndCrash("No row VM")
             return
         }
         recipientVM.add(recipient: identity)
@@ -473,7 +473,7 @@ extension ComposeViewModel: MediaAttachmentPickerProviderViewModelResultDelegate
         didSelect mediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment) {
         if mediaAttachment.type == .image {
             guard let bodyViewModel = bodyVM else {
-                Logger.frontendLogger.errorAndCrash("No bodyVM. Maybe valid as picking is async.")
+                Log.shared.errorAndCrash("No bodyVM. Maybe valid as picking is async.")
                 return
             }
             bodyViewModel.inline(attachment: mediaAttachment.attachment)
@@ -498,7 +498,7 @@ extension ComposeViewModel {
 
     public var deleteActionTitle: String {
         guard let data = state.initData else {
-            Logger.frontendLogger.errorAndCrash("No data")
+            Log.shared.errorAndCrash("No data")
             return ""
         }
         let title: String
@@ -517,7 +517,7 @@ extension ComposeViewModel {
 
     public var saveActionTitle: String {
         guard let data = state.initData else {
-            Logger.frontendLogger.errorAndCrash("No data")
+            Log.shared.errorAndCrash("No data")
             return ""
         }
         let title: String
@@ -541,7 +541,7 @@ extension ComposeViewModel {
 
     public func handleDeleteActionTriggered() {
         guard let data = state.initData else {
-            Logger.frontendLogger.errorAndCrash("No data")
+            Log.shared.errorAndCrash("No data")
             return
         }
         if data.isOutbox {
@@ -554,7 +554,7 @@ extension ComposeViewModel {
 
     public func handleSaveActionTriggered() {
         guard let data = state.initData else {
-            Logger.frontendLogger.errorAndCrash("No data")
+            Log.shared.errorAndCrash("No data")
             return
         }
         if data.isDraftsOrOutbox {
@@ -572,16 +572,16 @@ extension ComposeViewModel {
         }
 
         guard let msg = ComposeUtil.messageToSend(withDataFrom: state) else {
-            Logger.frontendLogger.errorAndCrash("No message")
+            Log.shared.errorAndCrash("No message")
             return
         }
         let acc = msg.parent.account
         guard let f = Folder.by(account:acc, folderType: .drafts) else {
-            Logger.frontendLogger.errorAndCrash("No drafts")
+            Log.shared.errorAndCrash("No drafts")
             return
         }
         msg.parent = f
-        msg.imapFlags?.draft = true
+        msg.imapFlags.draft = true
         msg.sent = Date()
         Message.saveForAppend(msg: msg)
         if data.isDrafts {
@@ -623,7 +623,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, didBeginEditing text: String) {
         guard let idxPath = indexPath(for: vm) else {
-            Logger.frontendLogger.errorAndCrash("We got called by a non-existing VM?")
+            Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
         lastRowWithSuggestions = idxPath
@@ -639,7 +639,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, textChanged newText: String) {
         guard let idxPath = indexPath(for: vm) else {
-            Logger.frontendLogger.errorAndCrash("We got called by a non-existing VM?")
+            Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
         lastRowWithSuggestions = idxPath
@@ -656,7 +656,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 extension ComposeViewModel: AccountCellViewModelResultDelegate {
     func accountCellViewModel(_ vm: AccountCellViewModel, accountChangedTo account: Account) {
         guard let idxPath = indexPath(for: vm) else {
-            Logger.frontendLogger.errorAndCrash("We got called by a non-existing VM?")
+            Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
         state.from = account.user
@@ -670,7 +670,7 @@ extension ComposeViewModel: SubjectCellViewModelResultDelegate {
 
     func subjectCellViewModelDidChangeSubject(_ vm: SubjectCellViewModel) {
         guard let idxPath = indexPath(for: vm) else {
-            Logger.frontendLogger.errorAndCrash("We got called by a non-existing VM?")
+            Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
         state.subject = vm.content ?? ""
@@ -709,7 +709,7 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
         state.bodyHtml = html
         state.bodyPlaintext = plain
         guard let idxPath = indexPath(for: vm) else {
-            Logger.frontendLogger.errorAndCrash("We got called by a non-existing VM?")
+            Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
         delegate?.contentChanged(inRowAt: idxPath)

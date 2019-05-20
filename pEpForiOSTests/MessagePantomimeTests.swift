@@ -7,18 +7,22 @@
 //
 
 import XCTest
+import CoreData
 
-import MessageModel
+@testable import MessageModel
 import PantomimeFramework
 import pEpForiOS
 import PEPObjCAdapterFramework
 
-class MessagePantomimeTests: XCTestCase {
+//!!!: must be moved to MM
+class MessagePantomimeTests: XCTestCase { //!!!: se base class
     var persistentSetup: PersistentSetup!
+    var moc: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
         persistentSetup = PersistentSetup()
+        moc = Stack.shared.mainContext
     }
 
     override func tearDown() {
@@ -27,10 +31,10 @@ class MessagePantomimeTests: XCTestCase {
     }
 
     func testPantomimeFlagsFromMessage() {
-        let m = CdMessage.create()
-        m.imap = CdImapFields.create()
+        let m = CdMessage(context: moc)
+        m.imap = CdImapFields(context: moc)
 
-        let cdFlags = CdImapFlags.create()
+        let cdFlags = CdImapFlags(context: moc)
         m.imap?.localFlags = cdFlags
 
         cdFlags.flagFlagged = true
@@ -78,13 +82,12 @@ class MessagePantomimeTests: XCTestCase {
         var allRefs = refs
         allRefs.append(inReplyTo)
 
-        let cdAccount = testData.createWorkingCdAccount()
+        let cdAccount = testData.createWorkingCdAccount(context: moc)
 
-        let cdFolder = CdFolder.create()
+        let cdFolder = CdFolder(context: moc)
         let folderName = "inbox"
         cdFolder.folderType = FolderType.inbox
         cdFolder.name = folderName
-        cdFolder.uuid = MessageID.generate()
         cdFolder.account = cdAccount
 
         let cwFolder = CWFolder(name: folderName)
@@ -97,7 +100,7 @@ class MessagePantomimeTests: XCTestCase {
         let update = CWMessageUpdate()
         update.rfc822 = true
         guard let cdMsg = CdMessage.insertOrUpdate(
-            pantomimeMessage: cwMsg, account: cdAccount, messageUpdate: update) else {
+            pantomimeMessage: cwMsg, account: cdAccount, messageUpdate: update, context: moc) else {
                 XCTFail()
                 return
         }

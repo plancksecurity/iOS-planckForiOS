@@ -48,7 +48,7 @@ public class FilterViewModel {
                 return
             }
             guard let account = filter.account(at: indexPath.row) else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No Account for row")
+                Log.shared.errorAndCrash("No Account for row")
                 return
             }
             accountsEnabledStates[indexPath.row] = [account: newState]
@@ -101,7 +101,7 @@ extension FilterViewModel {
             let rows: [Row] = filter.accountsEnabledStates.compactMap {
                 let rowType = RowType.account
                 guard let accountEnabledState = $0.first else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No Account state")
+                    Log.shared.errorAndCrash("No Account state")
                     return nil
                 }
                 return createRow(type: rowType , account: accountEnabledState.key,
@@ -149,8 +149,7 @@ extension FilterViewModel {
         switch type {
         case .account:
             guard let accountAddress = account?.user.address else {
-                Logger.frontendLogger.errorAndCrash("Error generating row")
-                //!!!: it is posible to get in there?
+                Log.shared.errorAndCrash("Error generating row")
                 return ""
             }
             return accountAddress

@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setupInitialViewController() -> Bool {
         guard let appConfig = appConfig else {
-            Logger.appDelegateLogger.errorAndCrash("No AppConfig")
+            Log.shared.errorAndCrash("No AppConfig")
             return false
         }
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let navController = initialNVC.viewControllers.first as? UINavigationController,
             let rootVC = navController.rootViewController as? FolderTableViewController
             else {
-                Logger.appDelegateLogger.errorAndCrash("Problem initializing UI")
+                Log.shared.errorAndCrash("Problem initializing UI")
                 return false
         }
         rootVC.appConfig = appConfig
@@ -85,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func stopUsingPepSession() {
         syncUserActionsAndCleanupbackgroundTaskId =
             application.beginBackgroundTask(expirationHandler: { [unowned self] in
-                Logger.appDelegateLogger.errorAndCrash(
+                Log.shared.errorAndCrash(
                     "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
                     self.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
                 // We migh want to call some (yet unexisting) emergency shutdown on
@@ -104,7 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func kickOffMySelf() {
         mySelfTaskId = application.beginBackgroundTask(expirationHandler: { [unowned self] in
-            Logger.appDelegateLogger.log("mySelfTaskId with ID expired.")
+            Log.shared.log("mySelfTaskId with ID expired.")
             // We migh want to call some (yet unexisting) emergency shutdown on
             // ReplicationService here here that brutally shuts down everything.
             self.application.endBackgroundTask(
@@ -133,7 +133,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                          storeURL: nil,
                                          options: options)
         } catch {
-            Logger.appDelegateLogger.errorAndCrash("Error while Loading DataStack")
+            Log.shared.errorAndCrash("Error while Loading DataStack")
         }
     }
 
@@ -198,25 +198,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         messageModelService?.cancel()
     }
 
-    private func prepareUserNotifications() {
+    private func askUserForPermissions() {
         UserNotificationTool.resetApplicationIconBadgeNumber()
-        UserNotificationTool.askForPermissions() { granted in
+        UserNotificationTool.askForPermissions() { [weak self] _ in
             // We do not care about whether or not the user granted permissions to
             // post notifications here (e.g. we ignore granted)
             // The calls are nested to avoid simultaniously showing permissions alert for notifications
             // and contact access.
-            DispatchQueue.global(qos: .userInitiated).async {
-                MessageModelUtil.perform {
-                    AddressBook.checkAndTransfer()
+            self?.askForContactAccessPermissionsAndImportContacts()
+        }
+    }
+
+    private func askForContactAccessPermissionsAndImportContacts() {
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            if AddressBook.shared.isAuthorized() {
+                DispatchQueue.main.async {
+                    self?.importContacts()
                 }
             }
+        }
+    }
+
+    private func importContacts() {
+        DispatchQueue.global(qos: .background).async { //!!!: Must become background task. Or stoped when going to background imo.
+            AddressBook.shared.transferContacts()
         }
     }
 
     // MARK: - UIApplicationDelegate
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Logger.appDelegateLogger.log("applicationDidReceiveMemoryWarning")
+        Log.shared.log("applicationDidReceiveMemoryWarning")
     }
 
     func application(
@@ -236,10 +248,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         setupServices()
-        Logger.appDelegateLogger.log("Library url: %{public}@", String(describing: applicationDirectory()))
+        Log.shared.log("Library url: %{public}@", String(describing: applicationDirectory()))
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
-        prepareUserNotifications()
+        askUserForPermissions()
 
         let result = setupInitialViewController()
 
@@ -260,11 +272,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            MessageModelUtil.perform {
-                AddressBook.checkAndTransfer()
-            }
-        }
+        importContacts()
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
@@ -298,7 +306,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
         guard let messageModelService = messageModelService else {
-            Logger.appDelegateLogger.error("no replicationService")
+            Log.shared.error("no networkService")
             return
         }
         

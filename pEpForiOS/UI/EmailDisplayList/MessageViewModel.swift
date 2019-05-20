@@ -13,9 +13,10 @@ import pEpIOSToolbox
 import PEPObjCAdapterFramework
 
 class MessageViewModel: CustomDebugStringConvertible {
+    static fileprivate var maxBodyPreviewCharacters = 120
 
-    static var maxBodyPreviewCharacters = 120
-    var queue: OperationQueue
+    private var queue: OperationQueue
+    private var runningOperations = [Operation]()
 
     let uid: Int
     private let uuid: MessageID
@@ -34,12 +35,11 @@ class MessageViewModel: CustomDebugStringConvertible {
     var isFlagged: Bool = false
     var isSeen: Bool = false
     var dateText: String
-    var profilePictureComposer: ProfilePictureComposer
+    var profilePictureComposer: ProfilePictureComposerProtocol
     var body: NSAttributedString {
             return getBodyMessage()
     }
     var displayedUsername: String
-    var internalMessageCount: Int? = nil
     var internalBoddyPeek: String? = nil
     private var bodyPeek: String? {
         didSet {
@@ -55,15 +55,8 @@ class MessageViewModel: CustomDebugStringConvertible {
         }
     }
 
-    //Only to use internally, external use should call public message()
-    private var internalMessage: Message
-
-    init(with message: Message, operationQueue: OperationQueue = OperationQueue()) {
-        internalMessage = message
-
-        queue = operationQueue
-        queue.qualityOfService = .userInitiated
-        queue.maxConcurrentOperationCount = 3
+    required init(with message: Message, queue: OperationQueue) {
+        self.queue = queue
 
         uid = message.uid
         uuid = message.uuid
@@ -78,15 +71,15 @@ class MessageViewModel: CustomDebugStringConvertible {
         from = (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
         displayedImageIdentity =  MessageViewModel.identityForImage(from: message)
         subject = message.shortMessage ?? ""
-        isFlagged = message.imapFlags?.flagged ?? false
-        isSeen = message.imapFlags?.seen ?? false
+        isFlagged = message.imapFlags.flagged
+        isSeen = message.imapFlags.seen
         dateText =  (message.sent ?? Date()).smartString()
         profilePictureComposer = PepProfilePictureComposer()
         displayedUsername = MessageViewModel.getDisplayedUsername(for: message)
         setBodyPeek(for: message)
     }
 
-    static private func getDisplayedUsername(for message: Message)-> String{
+    static private func getDisplayedUsername(for message: Message) -> String {
         if (message.parent.folderType == .sent
             || message.parent.folderType == .drafts){
             var identities: [String] = []
@@ -109,11 +102,11 @@ class MessageViewModel: CustomDebugStringConvertible {
     }
 
     func unsubscribeForUpdates() {
-        cancelLoad()
+        cancelAllBackgroundOperations()
     }
 
-    private func cancelLoad() {
-        queue.cancelAllOperations()
+    private func cancelAllBackgroundOperations() {
+        runningOperations.forEach { $0.cancel() }
     }
 
     private func setBodyPeek(for message:Message) {
@@ -124,7 +117,7 @@ class MessageViewModel: CustomDebugStringConvertible {
                 self.bodyPeek = bodyPeek
             }
             if(!operation.isFinished){
-                queue.addOperation(operation)
+                addToRunningOperations(operation)
             }
         }
     }
@@ -137,18 +130,21 @@ class MessageViewModel: CustomDebugStringConvertible {
         bodyPeekCompletion = nil
     }
 
-    func messageCount(completion: @escaping (Int)->()) {
-        if let messageCount = internalMessageCount {
-            completion(messageCount)
-        } else {
-            let operation =  getMessageCountOperation { count in
-                completion(count)
-            }
-            if(!operation.isFinished){
-                queue.addOperation(operation)
-            }
-        }
-    }
+    // Message threading is not supported. Let's keep it for now. It might be helpful for
+    // reimplementing.
+//    var internalMessageCount: Int? = nil
+//    func messageCount(completion: @escaping (Int)->()) {
+//        if let messageCount = internalMessageCount {
+//            completion(messageCount)
+//        } else {
+//            let operation =  getMessageCountOperation { count in
+//                completion(count)
+//            }
+//            if(!operation.isFinished){
+//                addToRunningOperations(operation)
+//            }
+//        }
+//    }
 
     private class func identityForImage(from message: Message) -> Identity {
         switch message.parent.folderType {
@@ -161,38 +157,43 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     class func getSummary(fromMessage msg: Message) -> String {
         var body: String?
-        if var text = msg.longMessage {
-            text = text
-                .stringCleanedFromNSAttributedStingAttributes()
-                .replaceNewLinesWith(" ")
-                .trimmed()
-            body = text
-        } else if let html = msg.longMessageFormatted {
-            // Limit the size of HTML to parse
-            // That might result in a messy preview but valid messages use to offer a plaintext
-            // version while certain spam mails have thousands of lines of invalid HTML, causing
-            // the parser to take minutes to parse one message.
-            let factorHtmlTags = 3
-            let numChars = maxBodyPreviewCharacters * factorHtmlTags
-            let truncatedHtml = html.prefix(ofLength: numChars)
-            body = truncatedHtml.extractTextFromHTML()
 
-            //IOS-1347:
-            // We might want to cleans when displaying instead of when saving.
-            // Waiting for details. See IOS-1347.
+        let session = Session()
+        session.performAndWait {
+            let safeMsg = msg.safeForSession(session)
+            if var text = safeMsg.longMessage {
+                text = text
+                    .stringCleanedFromNSAttributedStingAttributes()
+                    .replaceNewLinesWith(" ")
+                    .trimmed()
+                body = text
+            } else if let html = safeMsg.longMessageFormatted {
+                // Limit the size of HTML to parse
+                // That might result in a messy preview but valid messages use to offer a plaintext
+                // version while certain spam mails have thousands of lines of invalid HTML, causing
+                // the parser to take minutes to parse one message.
+                let factorHtmlTags = 3
+                let numChars = maxBodyPreviewCharacters * factorHtmlTags
+                let truncatedHtml = html.prefix(ofLength: numChars)
+                body = truncatedHtml.extractTextFromHTML()
 
-            body = body?.replaceNewLinesWith(" ").trimmed()
+                //IOS-1347:
+                // We might want to cleans when displaying instead of when saving.
+                // Waiting for details. See IOS-1347.
+
+                body = body?.replaceNewLinesWith(" ").trimmed()
+            }
         }
-        guard let saveBody = body else {
+        guard let safeBody = body else {
             return ""
         }
 
         let result: String
-        if saveBody.count <= maxBodyPreviewCharacters {
-            result = saveBody
+        if safeBody.count <= maxBodyPreviewCharacters {
+            result = safeBody
         } else {
-            let endIndex = saveBody.index(saveBody.startIndex, offsetBy: maxBodyPreviewCharacters)
-            result = String(saveBody[..<endIndex])
+            let endIndex = safeBody.index(safeBody.startIndex, offsetBy: maxBodyPreviewCharacters)
+            result = String(safeBody[..<endIndex])
         }
         return result
     }
@@ -239,12 +240,12 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     func getProfilePicture(completion: @escaping (UIImage?) -> ()) {
         let operation = getProfilePictureOperation(completion: completion)
-        queue.addOperation(operation)
+        addToRunningOperations(operation)
     }
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
         let operation = getSecurityBadgeOperation(completion: completion)
-        queue.addOperation(operation)
+        addToRunningOperations(operation)
     }
 
     func getBodyMessage() -> NSMutableAttributedString {
@@ -295,7 +296,7 @@ class MessageViewModel: CustomDebugStringConvertible {
     }
 
     public var debugDescription: String {
-        return "<MessageViewModel |\(messageIdentifier)| |\(internalMessage.longMessage?.prefix(3) ?? "nil")|>"
+        return "<MessageViewModel |\(uuid)| |\(longMessageFormatted?.prefix(3) ?? "nil")|>"
     }
 }
 
@@ -313,57 +314,38 @@ extension MessageViewModel: Equatable {
     }
 }
 
-extension MessageViewModel: MessageIdentitfying {
-    var messageIdentifier: MessageID {
-        return uuid
-    }
-}
-
-//PRAGMA MARK: Message View Model + Operations
+// MARK: Operations
 
 extension MessageViewModel {
 
-    private func getMessageCountOperation(completion: @escaping (Int)->()) -> SelfReferencingOperation {
-
-        let getMessageCountOperation = SelfReferencingOperation {  [weak self] operation in
-            guard let me = self else {
-                return
-            }
-            MessageModelUtil.performAndWait {
-                guard
-                    let operation = operation,
-                    !operation.isCancelled else {
-                        return
-                }
-                let messageCount = 0 // no threading
-                me.internalMessageCount = messageCount
-                if (!operation.isCancelled){
-                    DispatchQueue.main.async {
-                        completion(messageCount)
-                    }
-                }
-            }
-        }
-        return getMessageCountOperation
+    private func addToRunningOperations(_ op: Operation) {
+        runningOperations.append(op)
+        queue.addOperation(op)
     }
 
     private func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> SelfReferencingOperation {
 
-        let getBodyPeekOperation = SelfReferencingOperation {operation in
+        let getBodyPeekOperation = SelfReferencingOperation { [weak self] operation in
             guard
                 let operation = operation,
                 !operation.isCancelled else {
                     return
             }
-            MessageModelUtil.performAndWait {
+            guard let me = self else {
+                return
+            }
+            let session = Session()
+            session.performAndWait {
+                let safeMsg = message.safeForSession(session)
+
                 guard !operation.isCancelled else {
                     return
                 }
-                let summary = MessageViewModel.getSummary(fromMessage: message)
+                let summary = MessageViewModel.getSummary(fromMessage: safeMsg)
                 guard !operation.isCancelled else {
                     return
                 }
-                self.internalBoddyPeek = summary
+                me.internalBoddyPeek = summary
                 if(!operation.isCancelled){
                     DispatchQueue.main.async {
                         completion(summary)
@@ -374,44 +356,49 @@ extension MessageViewModel {
         return getBodyPeekOperation
     }
 
-    private func getSecurityBadgeOperation(
-        completion: @escaping (UIImage?) -> ()) -> SelfReferencingOperation {
+    private func getSecurityBadgeOperation(completion: @escaping (UIImage?) -> ())
+        -> SelfReferencingOperation {
+        let msg = message()
+
         let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
             guard let me = self else {
                 return
             }
-            MessageModelUtil.performAndWait {
+            let session = Session()
+            session.performAndWait {
                 guard
+                    let safeMsg = msg?.safeForSession(session),
                     let operation = operation,
-                    !operation.isCancelled,
-                    let message = me.message() else {
+                    !operation.isCancelled
+                    else {
                         return
                 }
 
                 if (!operation.isCancelled) {
-                    me.profilePictureComposer.securityBadge(for: message, completion: completion)
+                    me.profilePictureComposer.securityBadge(for: safeMsg, completion: completion)
                 }
             }
         }
         return getSecurityBadgeOperation
     }
 
-    private func getProfilePictureOperation(
-        completion: @escaping (UIImage?) -> ()) -> SelfReferencingOperation {
-        let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
-            guard let me = self else {
-                return
-            }
-            MessageModelUtil.performAndWait {
+    private func getProfilePictureOperation(completion: @escaping (UIImage?) -> ())
+        -> SelfReferencingOperation {
+
+            let identitykey = IdentityImageTool.IdentityKey(identity: displayedImageIdentity)
+
+            let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
+                guard let me = self else {
+                    return
+                }
                 guard
                     let operation = operation,
                     !operation.isCancelled else {
                         return
                 }
-                me.profilePictureComposer.profilePicture(for: me.displayedImageIdentity, completion: completion)
+                me.profilePictureComposer.profilePicture(for: identitykey,
+                                                         completion: completion)
             }
-        }
-        return getSecurityBadgeOperation
+            return getSecurityBadgeOperation
     }
-
 }

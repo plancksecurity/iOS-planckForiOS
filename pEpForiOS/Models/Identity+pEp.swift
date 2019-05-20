@@ -12,17 +12,18 @@ import PEPObjCAdapterFramework
 extension Identity {
     public static func from(pEpIdentityDict: PEPIdentityDict) -> Identity? {
         if let address = pEpIdentityDict[kPepAddress] as? String {
-            let id = Identity.create(address: address,
-                                     userID: pEpIdentityDict[kPepUserID] as? String,
-                                     userName: pEpIdentityDict[kPepUsername] as? String)
+            let id = Identity(address: address,
+                              userID: pEpIdentityDict[kPepUserID] as? String,
+                              userName: pEpIdentityDict[kPepUsername] as? String)
             return id
         }
         return nil
     }
 
     public static func from(pEpIdentity: PEPIdentity) -> Identity {
-        let id = Identity.create(address: pEpIdentity.address, userID: pEpIdentity.userID,
-                                 userName: pEpIdentity.userName)
+        let id = Identity(address: pEpIdentity.address,
+                          userID: pEpIdentity.userID,
+                          userName: pEpIdentity.userName)
         return id
     }
 

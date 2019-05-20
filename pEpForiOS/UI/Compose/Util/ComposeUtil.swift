@@ -27,16 +27,16 @@ struct ComposeUtil {
         switch composeMode {
         case .replyFrom:
             if om.parent.folderType == .sent || om.parent.folderType == .drafts {
-                result = om.to
+                result = om.to.allObjects
             } else if om.parent.folderType != .sent, let omFrom = om.from {
                 result = [omFrom]
             }
         case .replyAll:
             if om.parent.folderType == .sent || om.parent.folderType == .drafts  {
-                result = om.to
+                result = om.to.allObjects
             } else if om.parent.folderType != .sent, let omFrom = om.from {
                 guard let me = initialFrom(composeMode: composeMode, originalMessage: om) else {
-                    Logger.utilLogger.errorAndCrash("No from")
+                    Log.shared.errorAndCrash("No from")
                     return result
                 }
                 let origTos = om.to
@@ -47,7 +47,7 @@ struct ComposeUtil {
             if om.parent.folderType == .sent ||
                 om.parent.folderType == .drafts ||
                 om.parent.folderType == .outbox  {
-                result = om.to
+                result = om.to.allObjects
             }
         case .forward:
             break
@@ -60,10 +60,10 @@ struct ComposeUtil {
         switch composeMode {
         case .replyAll:
             if om.parent.folderType == .sent || om.parent.folderType == .drafts {
-                result = om.cc
+                result = om.cc.allObjects
             } else {
                 guard let me = initialFrom(composeMode: composeMode, originalMessage: om) else {
-                    Logger.utilLogger.errorAndCrash("No from")
+                    Log.shared.errorAndCrash("No from")
                     return result
                 }
                 let origCcs = om.cc
@@ -75,7 +75,7 @@ struct ComposeUtil {
             if om.parent.folderType == .sent ||
                 om.parent.folderType == .drafts ||
                 om.parent.folderType == .outbox  {
-                result = om.cc
+                result = om.cc.allObjects
             }
         }
         return result
@@ -88,7 +88,7 @@ struct ComposeUtil {
             if om.parent.folderType == .sent ||
                 om.parent.folderType == .drafts ||
                 om.parent.folderType == .outbox {
-                result = om.bcc
+                result = om.bcc.allObjects
             }
         case .replyFrom, .forward, .replyAll:
             break
@@ -147,24 +147,24 @@ struct ComposeUtil {
         withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
         guard let from = state.from,
             let account = Account.by(address: from.address) else {
-                Logger.frontendLogger.errorAndCrash(
+                Log.shared.errorAndCrash(
                     "We have a problem here getting the senders account.")
                 return nil
         }
         guard let f = Folder.by(account: account, folderType: .outbox) else {
-            Logger.utilLogger.errorAndCrash("No outbox")
+            Log.shared.errorAndCrash("No outbox")
             return nil
         }
 
         let message = Message(uuid: MessageID.generate(), parentFolder: f)
         message.from = from
-        message.to = state.toRecipients
-        message.cc = state.ccRecipients
-        message.bcc = state.bccRecipients
+        message.replaceTo(with: state.toRecipients)
+        message.replaceCc(with: state.ccRecipients)
+        message.replaceBcc(with: state.bccRecipients)
         message.shortMessage = state.subject
         message.longMessage = state.bodyPlaintext
         message.longMessageFormatted = !state.bodyHtml.isEmpty ? state.bodyHtml : nil
-        message.attachments = state.inlinedAttachments + state.nonInlinedAttachments
+        message.replaceAttachments(with: state.inlinedAttachments + state.nonInlinedAttachments)
         message.pEpProtected = state.pEpProtection
         if !state.pEpProtection {
             message.setOriginalRatingHeader(rating: PEPRating.unencrypted)
@@ -172,9 +172,7 @@ struct ComposeUtil {
             message.setOriginalRatingHeader(rating: state.rating)
         }
 
-        message.imapFlags?.seen = imapSeenState(forMessageToSend: message)
-
-        updateReferences(of: message, accordingTo: state)
+        message.imapFlags.seen = imapSeenState(forMessageToSend: message)
 
         return message
     }
@@ -184,25 +182,6 @@ struct ComposeUtil {
             return true
         } else {
             return false
-        }
-    }
-
-    static private func updateReferences(of message: Message,
-                                         accordingTo composeState:
-        ComposeViewModel.ComposeViewModelState) {
-        guard let composeMode = composeState.initData?.composeMode else {
-            Logger.utilLogger.errorAndCrash("No init data")
-            return
-        }
-        if composeMode == .replyFrom || composeMode == .replyAll,
-            let om = composeState.initData?.originalMessage {
-            // According to https://cr.yp.to/immhf/thread.html
-            var refs = om.references
-            refs.append(om.messageID)
-            if refs.count > 11 {
-                refs.remove(at: 1)
-            }
-            message.references = refs
         }
     }
 }

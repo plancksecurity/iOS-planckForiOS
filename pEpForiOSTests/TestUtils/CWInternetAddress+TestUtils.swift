@@ -7,18 +7,20 @@
 //
 
 import Foundation
+import CoreData
 
 import PantomimeFramework
 import MessageModel
 
 extension CWInternetAddress {
-    func identity(userID: String?) -> Identity {
-        return Identity.create(address: address(), userID: userID,
-                               userName: personal()?.fullyUnquoted())
-    }
+    //rm. dead code
+//    func identity(userID: String?) -> Identity {
+//        return Identity.create(address: address(), userID: userID,
+//                               userName: personal()?.fullyUnquoted())
+//    }
 
-    func cdIdentity(userID: String?) -> CdIdentity {
-        let cdIdent = CdIdentity.create()
+    func cdIdentity(userID: String?, context: NSManagedObjectContext) -> CdIdentity {
+        let cdIdent = CdIdentity(context: context)
         cdIdent.address = address()
         cdIdent.userID = userID
         cdIdent.userName = personal()?.fullyUnquoted()

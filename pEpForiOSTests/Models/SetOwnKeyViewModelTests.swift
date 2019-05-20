@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
 @testable import MessageModel //FIXME:
@@ -14,6 +15,8 @@ import PEPObjCAdapterFramework
 
 class SetOwnKeyViewModelTests: XCTestCase {
     var persistentSetup: PersistentSetup!
+    var moc: NSManagedObjectContext!
+
     var session: PEPSession {
         return PEPSession()
     }
@@ -32,6 +35,7 @@ class SetOwnKeyViewModelTests: XCTestCase {
         XCTAssertTrue(PEPUtil.pEpClean())
 
         persistentSetup = PersistentSetup()
+        moc = Stack.shared.mainContext
 
         self.backgroundQueue = OperationQueue()
     }
@@ -81,7 +85,8 @@ class SetOwnKeyViewModelTests: XCTestCase {
         let cdOwnAccount1 = DecryptionUtil.createLocalAccount(
             ownUserName: "Rick Deckard",
             ownUserID: "rick_deckard_uid",
-            ownEmailAddress: "iostest001@peptest.ch")
+            ownEmailAddress: "iostest001@peptest.ch",
+            context: moc)
 
         try! TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Private.asc")
 
@@ -91,7 +96,8 @@ class SetOwnKeyViewModelTests: XCTestCase {
         let cdOwnAccount2 = DecryptionUtil.createLocalAccount(
             ownUserName: "Leon Kowalski",
             ownUserID: "leon_kowalski_uid",
-            ownEmailAddress: "iostest003@peptest.ch")
+            ownEmailAddress: "iostest003@peptest.ch",
+            context: moc)
         let leonIdent = cdOwnAccount2.account().user
         let leonPepIdent = leonIdent.pEpIdentity()
         try! session.mySelf(leonPepIdent)

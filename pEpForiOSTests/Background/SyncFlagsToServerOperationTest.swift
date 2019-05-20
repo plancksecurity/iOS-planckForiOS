@@ -1,4 +1,4 @@
-//
+
 //  SyncFlagsToServerOperationTest.swift
 //  pEpForiOS
 //
@@ -1219,7 +1219,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
-        
+
         let numSyncOpsToTrigger = 5
         var ops = [SyncFlagsToServerOperation]()
         for i in 1...numSyncOpsToTrigger {
@@ -1232,27 +1232,27 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             }
             ops.append(op)
         }
-        
+
         let backgroundQueue = OperationQueue()
-        
+
         // Serialize all ops
         backgroundQueue.maxConcurrentOperationCount = 1
-        
+
         for op in ops {
             backgroundQueue.addOperation(op)
         }
-        
+
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             for op in ops {
                 XCTAssertFalse(op.hasErrors())
             }
         })
-        
+
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0)
-        
+
         var first = true
         for op in ops {
             if first {
@@ -1263,5 +1263,5 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             }
         }
     }
-    
+
 }

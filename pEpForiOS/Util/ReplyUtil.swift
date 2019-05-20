@@ -137,7 +137,7 @@ public struct ReplyUtil {
         dateFormatter.dateStyle = DateFormatter.Style.long
         dateFormatter.timeStyle = DateFormatter.Style.long
 
-        let theDate = message.received
+        let theDate = message.sent
 
         var theNames = [String]()
         if replyAll {

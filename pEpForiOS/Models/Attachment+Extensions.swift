@@ -27,7 +27,7 @@ extension Attachment {
                               image:jpg,
                               contentDisposition: .inline)
         } else {
-            return Attachment.create(data: nil,
+            return Attachment(data: nil,
                                      mimeType: mimeType,
                                      fileName: assetUrl.absoluteString,
                                      image: image,

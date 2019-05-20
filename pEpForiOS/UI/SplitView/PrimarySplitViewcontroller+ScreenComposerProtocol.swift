@@ -28,7 +28,7 @@
 //            storyboard.instantiateViewController(withIdentifier: "threadViewController")
 //                as? ThreadViewController
 //            else {
-//                Logger.frontendLogger.errorAndCrash("Segue issue")
+//                Log.shared.errorAndCrash("Segue issue")
 //                return
 //        }
 //        vc.appConfig = singleViewController.appConfig
@@ -57,7 +57,7 @@
 //        //!!!:, let index = emailListViewModel.index(of: message)
 //
 //            else {
-//                Logger.frontendLogger.errorAndCrash("Segue issues")
+//                Log.shared.errorAndCrash("Segue issues")
 //                return
 //        }
 //
