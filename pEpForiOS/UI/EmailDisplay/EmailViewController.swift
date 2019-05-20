@@ -66,6 +66,14 @@ class EmailViewController: BaseTableViewController {
         configureView()
     }
 
+    //MARK: - Temp fix to Beta
+
+    private func hideNextAndPrevious() {
+        //!!!:opacity in storyboard is now at 0% must be changed to enable this buttons again
+        nextMessage.isEnabled = false
+        previousMessage.isEnabled = false
+    }
+
     // MARK: - UTIL
 
     private func updateFlaggedStatus() {
