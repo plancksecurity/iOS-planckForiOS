@@ -135,7 +135,7 @@ class LoginViewModel {
             newAccount.serverSMTP = outgoingServer.hostname
             newAccount.portSMTP = UInt16(outgoingServer.port)
             newAccount.transportSMTP = smtpTransport
-            newAccount.trustedImapServer = false
+            newAccount.isAutomaticallyTrustedImapServer = false
 
             verifiableAccount = newAccount
             verifyAccount(model: newAccount)
@@ -161,8 +161,7 @@ class LoginViewModel {
             return
         }
 
-        theVerificationService.trustedImapServer = trusted
-
+        theVerificationService.isAutomaticallyTrustedImapServer = trusted
         do {
             try theVerificationService.verify()
         } catch {

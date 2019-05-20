@@ -478,7 +478,7 @@ class TestUtil {
         let contentDisposition = inlined ? Attachment.ContentDispositionType.inline : .attachment
 
         return Attachment.create(data: imageData,
-                          mimeType: MimeTypeUtil.jpegMimeType,
+                          mimeType: MimeTypeUtils.MimesType.jpeg,
                           fileName: imageFileName,
                           contentDisposition: contentDisposition)
     }
@@ -609,7 +609,7 @@ class TestUtil {
             return
         }
         for server in cdServers {
-            server.trusted = true
+            server.automaticallyTrusted = true
         }
         Record.saveAndWait()
     }
