@@ -63,7 +63,7 @@ class HandshakeTests: XCTestCase {
 
         let theAttachments = pEpMessage.attachments ?? []
         XCTAssertEqual(theAttachments.count, 1)
-        XCTAssertEqual(theAttachments[0].mimeType, MimeTypeUtil.contentTypeApplicationPGPKeys)
+        XCTAssertEqual(theAttachments[0].mimeType, ContentTypeUtils.ContentType.pgpKeys)
 
         guard let optFields = pEpMessage.optionalFields else {
             XCTFail("expected optional_fields to be defined")

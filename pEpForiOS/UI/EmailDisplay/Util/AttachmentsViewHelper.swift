@@ -29,7 +29,7 @@ class AttachmentsViewHelper {
         }
     }
 
-    let mimeTypes = MimeTypeUtil()
+    let mimeTypes = MimeTypeUtils()
     var buildOp: AttachmentsViewOperation?
     let operationQueue = OperationQueue()
 
@@ -46,7 +46,7 @@ class AttachmentsViewHelper {
             attachment.fileName?.splitFileExtension() ?? (Constants.defaultFileName, nil)
         var finalExt: String? = nil
         if let mimeType = attachment.mimeType{
-            finalExt = ext ?? mimeTypes?.fileExtension(mimeType: mimeType)
+            finalExt = ext ?? mimeTypes?.fileExtension(fromMimeType: mimeType)
         }
 
         return AttachmentSummaryView.AttachmentInfo(
@@ -61,31 +61,31 @@ class AttachmentsViewHelper {
 
         let viewContainers =
             theBuildOp.attachmentContainers.compactMap { [weak self] (c: AttachmentsViewOperation.AttachmentContainer) -> (AttachmentViewContainer) in
-            switch c {
-            case .imageAttachment(let attachment, let image):
-                return AttachmentViewContainer(view: UIImageView(image: image),
-                                               attachment: attachment)
-            case .docAttachment(let attachment):
-                var resultView: AttachmentSummaryView?
-                let session = Session()
-                session.performAndWait {
-                    let safeAttachments = attachment.safeForSession(session)
-                    let dic = UIDocumentInteractionController()
-                    dic.name = safeAttachments.fileName
+                switch c {
+                case .imageAttachment(let attachment, let image):
+                    return AttachmentViewContainer(view: UIImageView(image: image),
+                                                   attachment: attachment)
+                case .docAttachment(let attachment):
+                    var resultView: AttachmentSummaryView?
+                    let session = Session()
+                    session.performAndWait {
+                        let safeAttachments = attachment.safeForSession(session)
+                        let dic = UIDocumentInteractionController()
+                        dic.name = safeAttachments.fileName
 
-                    guard let theAttachmentInfo = self?.attachmentInfo(attachment: safeAttachments) else {
-                        Log.shared.errorAndCrash("No attachment info")
-                        return
+                        guard let theAttachmentInfo = self?.attachmentInfo(attachment: safeAttachments) else {
+                            Log.shared.errorAndCrash("No attachment info")
+                            return
+                        }
+
+                        resultView = AttachmentSummaryView(attachmentInfo: theAttachmentInfo,
+                                                           iconImage: dic.icons.first)
                     }
-
-                    resultView = AttachmentSummaryView(attachmentInfo: theAttachmentInfo,
-                                                       iconImage: dic.icons.first)
+                    guard let safeView = resultView else {
+                        fatalError()
+                    }
+                    return AttachmentViewContainer(view: safeView, attachment: attachment)
                 }
-                guard let safeView = resultView else {
-                    fatalError()
-                }
-                return AttachmentViewContainer(view: safeView, attachment: attachment)
-            }
         }
         imageView.attachmentViewContainers = viewContainers
         guard let msg = theBuildOp.message else {

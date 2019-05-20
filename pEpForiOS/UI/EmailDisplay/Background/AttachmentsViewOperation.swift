@@ -15,9 +15,10 @@ class AttachmentsViewOperation: Operation {
         case imageAttachment(Attachment, UIImage)
         case docAttachment(Attachment)
     }
+
     private let session: Session
-    private let mimeTypes: MimeTypeUtil?
-    var message: Message?
+    private let mimeTypes: MimeTypeUtils?
+    public var message: Message?
 
     /**
      The resulting attachments view will appear here.
@@ -29,7 +30,7 @@ class AttachmentsViewOperation: Operation {
      */
     private var attachmentsCount = 0
 
-    init(mimeTypes: MimeTypeUtil?, message: Message) {
+    init(mimeTypes: MimeTypeUtils?, message: Message) {
         let session = Session()
         self.session = session
         self.mimeTypes = mimeTypes

@@ -11,8 +11,6 @@ import pEpIOSToolbox
 import MessageModel
 
 class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, UITextFieldDelegate {
-    let comp = "UserInfoTableView"
-
     @IBOutlet weak var emailValue: UITextField!
     @IBOutlet weak var usernameValue: UITextField!
     @IBOutlet weak var passwordValue: UITextField!

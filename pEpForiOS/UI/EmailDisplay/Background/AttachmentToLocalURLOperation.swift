@@ -39,20 +39,12 @@ class AttachmentToLocalURLOperation: Operation {
                 Log.shared.warn("Attachment without data")
                 return
             }
-            var tmpDirURL: URL?
-            if #available(iOS 10.0, *) {
-                tmpDirURL = FileManager.default.temporaryDirectory
-            } else {
-                tmpDirURL = URL(fileURLWithPath: NSTemporaryDirectory())
-            }
-            guard let tmpDir = tmpDirURL else {
-                return
-            }
+            let tmpDirURL =  FileManager.default.temporaryDirectory
+            
             let fileName = ( me.safeAttachment?.fileName ?? Constants.defaultFileName).extractFileNameOrCid()
+            var theURL = tmpDirURL.appendingPathComponent(fileName)
 
-            var theURL = tmpDir.appendingPathComponent(fileName)
-
-            if  me.safeAttachment?.mimeType == "application/pdf" {
+            if let mimeType = me.safeAttachment?.mimeType, mimeType == MimeTypeUtils.MimesType.pdf {
                 theURL = theURL.appendingPathExtension("pdf")
             }
             do {
