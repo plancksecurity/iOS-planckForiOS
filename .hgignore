@@ -9,6 +9,10 @@ Pods/.*
 pEpTrustWords\.bundle/system\.db
 build/.*
 
+.*secret.*
+.*Secret.*
+.*SECRET.*
+
 ^.*\.pyc$
 
 syntax: glob
