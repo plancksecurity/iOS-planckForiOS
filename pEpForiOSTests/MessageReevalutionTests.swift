@@ -51,7 +51,7 @@ class MessageReevalutionTests: XCTestCase {
         cdMyAccount.identity?.address = ownIdentity.address
 
         // Inbox
-        cdInbox = CdFolder()
+        cdInbox = CdFolder(context: moc)
         cdInbox.name = ImapSync.defaultImapInboxName
         cdInbox.account = cdMyAccount
         self.cdOwnAccount = cdMyAccount
