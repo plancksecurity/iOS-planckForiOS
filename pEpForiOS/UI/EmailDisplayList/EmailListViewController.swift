@@ -249,13 +249,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         showEditToolbar()
         tableView.setEditing(true, animated: true)
-
-        //!!!: English is the ONLY used language in our code base
-        //modificar toolbar
-        //hacer aparecer check de marcado
-        //hacer la accion solicitada
-        //recuperar toolbar
-
     }
 
     private func showEditToolbar() {
@@ -699,6 +692,15 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListViewModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
+    func checkIfSplitNeedsUpdate(indexpath: [IndexPath]) {
+        guard let isIphone = splitViewController?.isCollapsed, let last = lastSelectedIndexPath else {
+            return
+        }
+        if !isIphone && indexpath.contains(last) {
+            showEmail(forCellAt: last)
+        }
+    }
+
     func reloadData(viewModel: EmailListViewModel) {
         tableView.reloadData()
     }

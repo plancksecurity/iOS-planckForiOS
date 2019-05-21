@@ -19,6 +19,7 @@ protocol EmailListViewModelDelegate: class, TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel,
                             didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath)
+    func checkIfSplitNeedsUpdate(indexpath: [IndexPath])
     /*
      //!!!: Some issues here:
      - bad naming.
