@@ -184,7 +184,7 @@ class MessageReevalutionTests: XCTestCase {
         } else {
             let reevalOp = ReevaluateMessageRatingOperation(
                 parentName: #function, message: message)
-            reevalOp.reEvaluate(context: moc)
+            reevalOp.reEvaluate()
         }
     }
 
