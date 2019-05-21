@@ -9,19 +9,23 @@
 import Foundation
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
 @testable import MessageModel
 
+//!!!: must be moved to MM
 extension XCTestCase {
     public func loginIMAP(imapSyncData: ImapSyncData,
                           errorContainer: ServiceErrorProtocol,
-                          queue: OperationQueue) {
+                          queue: OperationQueue,
+                          context: NSManagedObjectContext? = nil) {
         let expImapLoggedIn = expectation(description: "expImapLoggedIn")
 
-        let imapLogin = LoginImapOperation(
-            parentName: #function,
-            errorContainer: errorContainer, imapSyncData: imapSyncData)
+        let imapLogin = LoginImapOperation(parentName: #function,
+                                           context: context,
+                                           errorContainer: errorContainer,
+                                           imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
             imapLogin.completionBlock = nil
             XCTAssertNotNil(imapSyncData.sync)
@@ -79,11 +83,13 @@ extension XCTestCase {
         })
     }
 
-    public func fetchNumberOfNewMails(errorContainer: ServiceErrorProtocol) -> Int? {
+    public func fetchNumberOfNewMails(errorContainer: ServiceErrorProtocol,
+                                      context: NSManagedObjectContext) -> Int? {
         let expNumMails = expectation(description: "expNumMails")
         var numMails: Int?
-        let fetchNumMailsOp = FetchNumberOfNewMailsService(
-            imapConnectionDataCache: nil, errorContainer: errorContainer)
+        let fetchNumMailsOp = FetchNumberOfNewMailsService(imapConnectionDataCache: nil,
+                                                           context: context,
+                                                           errorContainer: errorContainer)
         fetchNumMailsOp.start() { theNumMails in
             numMails = theNumMails
             expNumMails.fulfill()

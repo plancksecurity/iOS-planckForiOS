@@ -53,7 +53,7 @@ class SetOwnKeyViewModelTests: XCTestCase {
     func testSetOwnKeyDirectly() {
         doTestSetOwnKey() {
             let leon = PEPIdentity(address: "iostest003@peptest.ch",
-                                   userID: CdIdentity.pEpOwnUserID,
+                                   userID: UUID().uuidString,
                                    userName: "Leon Kowalski",
                                    isOwn: true)
             try! session.update(leon)

@@ -109,7 +109,7 @@ class TestUtil {
         receiver2: PEPIdentity, receiver3: PEPIdentity,
         receiver4: PEPIdentity) {
             let identity = PEPIdentity(address: "somewhere@overtherainbow.com",
-                                       userID: CdIdentity.pEpOwnUserID,
+                                       userID: UUID().uuidString,
                                        userName: "Unit Test",
                                        isOwn: true)
 

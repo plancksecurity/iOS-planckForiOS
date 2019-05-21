@@ -151,7 +151,7 @@ class DecryptImportedMessagesTests: XCTestCase {
         XCTAssertEqual(attachments.count, 0)
 
         let leon = PEPIdentity(address: "iostest002@peptest.ch",
-                               userID: CdIdentity.pEpOwnUserID,
+                               userID: UUID().uuidString,
                                userName: "Leon Kowalski",
                                isOwn: true)
         try! session.update(leon)
