@@ -17,6 +17,7 @@ import CoreData
 @testable import pEpForiOS
 @testable import MessageModel
 
+//!!!: must be moved to MM
 class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
     var errorContainer: ServiceErrorProtocol!
     var queue: OperationQueue!
@@ -31,12 +32,14 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
         loginIMAP(imapSyncData: imapSyncData, errorContainer: errorContainer, queue: queue)
         fetchFoldersIMAP(imapSyncData: imapSyncData, queue: queue)
 
-        guard let numNewMailsOrig = fetchNumberOfNewMails(errorContainer: errorContainer) else {
-            XCTFail()
-            return
+        guard let numNewMailsOrig = fetchNumberOfNewMails(errorContainer: errorContainer,
+                                                          context: moc)
+            else {
+                XCTFail()
+                return
         }
 
-        guard let cdInbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+        guard let cdInbox = CdFolder.by(folderType: .inbox, account: cdAccount, context: moc) else {
             XCTFail()
             return
         }
@@ -61,9 +64,10 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
                         errorContainer: errorContainer,
                         queue: queue)
 
-        guard let numNewMails = fetchNumberOfNewMails(errorContainer: errorContainer) else {
-            XCTFail()
-            return
+        guard let numNewMails = fetchNumberOfNewMails(errorContainer: errorContainer, context: moc)
+            else {
+                XCTFail()
+                return
         }
         XCTAssertEqual(numNewMails, numNewMailsOrig + 1)
     }
