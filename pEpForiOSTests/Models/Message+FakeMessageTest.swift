@@ -12,7 +12,9 @@ import XCTest
 //@testable import pEpForiOS
 @testable import MessageModel
 import PEPObjCAdapterFramework
+import CoreData
 
+//!!!: must bemoved to MM
 class Message_FakeMessageTest: CoreDataDrivenTestBase {
     let testUuid = UUID().uuidString + #file
 
@@ -113,25 +115,6 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
         assureFakeMessageExistence(in: folder)
     }
 
-    // MARK: - findAndDeleteFakeMessage
-
-    func testFindAndDeleteFakeMessage() {
-        let folderType = FolderType.inbox
-        guard let folder = Folder.by(account: account, folderType: folderType) else {
-            XCTFail()
-            return
-        }
-        let msg = Message(uuid: testUuid, parentFolder: folder)
-        msg.from = account.user
-        msg.saveFakeMessage(in: folder)
-        guard let fakeMsg = assureFakeMessageExistence(mustExist: true, in: folder) else {
-            XCTFail()
-            return
-        }
-        Message.findAndDeleteFakeMessage(withUuid: fakeMsg.uuid, in: folder)
-        assureFakeMessageExistence(mustExist: false, in: folder)
-    }
-
     // MARK: - Helper
 
     @discardableResult private func assureFakeMessageExistence(mustExist: Bool = true, in folder: Folder) -> Message? {
@@ -150,7 +133,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
                                                             withUid uid: Int,
                                                             in folder: Folder) -> Message? {
         var result: Message? = nil
-        let moc = Record.Context.main
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
         moc.performAndWait {
             guard let cdFolder =  folder.cdFolder() else {
                 XCTFail()
@@ -163,7 +146,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
                                  cdFolder)
             guard
                 let allCdMesgs = CdMessage.all(predicate: p) as? [CdMessage],
-                let msg = allCdMesgs.first?.message()
+                let cdMsg = allCdMesgs.first
                 else {
                     if mustExist {
                         XCTFail()
@@ -171,7 +154,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
                     return
             }
             XCTAssertEqual(allCdMesgs.count, 1)
-            result = msg
+            result = MessageModelObjectUtils.getMessage(fromCdMessage: cdMsg)
         }
         return result
     }
@@ -199,7 +182,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
     }
 
     private func deleteAllMessages() {
-        let moc = Record.Context.main
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
         moc.performAndWait {
             guard let allCdMesgs = CdMessage.all() as? [CdMessage] else {
                 return
@@ -216,7 +199,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
     }
 
     private func deleteAllMessages(in folder: Folder) {
-        let moc = Record.Context.main
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
         moc.performAndWait {
             guard let cdFolder = folder.cdFolder() else {
                 XCTFail()
@@ -235,7 +218,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
     }
 
     private func simulateSeenByEngine(forAllMessagesIn folder: Folder) {
-        let moc = Record.Context.main
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
         moc.performAndWait {
             guard let cdFolder = folder.cdFolder() else {
                 XCTFail()
