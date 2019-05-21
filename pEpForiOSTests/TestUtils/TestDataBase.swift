@@ -73,7 +73,7 @@ class TestDataBase {
             let id = CdIdentity(context: context)
             id.address = idAddress
             id.userName = idUserName
-            id.userID = CdIdentity.pEpOwnUserID
+            id.userID = UUID().uuidString
 
             let acc = CdAccount(context: context)
             acc.identity = id
@@ -118,7 +118,7 @@ class TestDataBase {
             id.address = idAddress
             id.userName = idUserName
             if isMyself {
-                id.userID = CdIdentity.pEpOwnUserID
+                id.userID = UUID().uuidString
             } else {
                 id.userID = UUID().uuidString
             }
@@ -128,7 +128,6 @@ class TestDataBase {
         func account(context: NSManagedObjectContext) -> Account {
             let id = Identity(address: idAddress,
                               userName: idUserName,
-                              isMySelf: true,
                               context: context)
 
             let credSmtp = ServerCredentials.create(loginName: id.address)
@@ -281,7 +280,7 @@ class TestDataBase {
     func createWorkingCdAccount(number: Int = 0, context: NSManagedObjectContext) -> CdAccount {
         let result = createWorkingAccountSettings(number: number).cdAccount(context: context)
         // The identity of an account is mySelf by definion.
-        result.identity?.userID = CdIdentity.pEpOwnUserID
+        result.identity?.userID = UUID().uuidString
         return result
     }
 

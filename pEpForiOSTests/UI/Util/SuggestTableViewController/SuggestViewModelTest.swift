@@ -143,8 +143,7 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
             let id = Identity(address: "email\(i)@pep.security",
                 userID: nil,
                 addressBookID: nil,
-                userName: "id\(i)",
-                isMySelf: false)
+                userName: "id\(i)")
             id.save()
             existingIdentities.append(id)
         }
