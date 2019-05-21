@@ -62,8 +62,7 @@ class MessageReevalutionTests: XCTestCase {
         let senderAddress = "iostest001@peptest.ch"
         let senderIdentityBuilder = Identity(address: senderAddress,
                                              userID: senderUserID,
-                                             userName: senderUserName,
-                                             isMySelf: false)
+                                             userName: senderUserName)
         senderIdentityBuilder.save()
         let moc = senderIdentityBuilder.moc
         guard let sender = CdIdentity.search(address: senderAddress, context: moc) else {

@@ -14,7 +14,7 @@ import PEPObjCAdapterFramework
 
 class PepAdapterTests: XCTestCase {
     let identityMe = PEPIdentity(address: "some@mail.com",
-                                 userID: CdIdentity.pEpOwnUserID,
+                                 userID: UUID().uuidString,
                                  userName: "This is me",
                                  isOwn: true)
 
