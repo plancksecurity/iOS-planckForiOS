@@ -51,7 +51,7 @@ class MessageReevalutionTests: XCTestCase {
         cdMyAccount.identity?.address = ownIdentity.address
 
         // Inbox
-        cdInbox = CdFolder()
+        cdInbox = CdFolder(context: moc)
         cdInbox.name = ImapSync.defaultImapInboxName
         cdInbox.account = cdMyAccount
         self.cdOwnAccount = cdMyAccount
@@ -62,8 +62,7 @@ class MessageReevalutionTests: XCTestCase {
         let senderAddress = "iostest001@peptest.ch"
         let senderIdentityBuilder = Identity(address: senderAddress,
                                              userID: senderUserID,
-                                             userName: senderUserName,
-                                             isMySelf: false)
+                                             userName: senderUserName)
         senderIdentityBuilder.save()
         let moc = senderIdentityBuilder.moc
         guard let sender = CdIdentity.search(address: senderAddress, context: moc) else {
@@ -184,7 +183,7 @@ class MessageReevalutionTests: XCTestCase {
         } else {
             let reevalOp = ReevaluateMessageRatingOperation(
                 parentName: #function, message: message)
-            reevalOp.reEvaluate(context: moc)
+            reevalOp.reEvaluate()
         }
     }
 
