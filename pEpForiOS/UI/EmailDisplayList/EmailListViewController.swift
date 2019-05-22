@@ -61,7 +61,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
 
         setUpTextFilter()
-        // Mark this folder as having been looked at by the user
 
         guard let vm = model else {
             Log.shared.errorAndCrash("No VM")
@@ -99,6 +98,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         if vm.showLoginView {
             showLoginScreen()
+            return
         }
 
         ///if we are in setup and the folder is unifiedInbox
