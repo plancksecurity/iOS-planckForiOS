@@ -418,10 +418,9 @@ class EmailViewController: BaseTableViewController {
     }
 
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
-        message?.imapDelete()
-        if let message = message {
-            delegate?.emailDisplayDidDelete(message: message)
-        }
+        guard let message = message else { return }
+        Message.imapDelete(messages: [message])
+        delegate?.emailDisplayDidDelete(message: message)
     }
 
     /**

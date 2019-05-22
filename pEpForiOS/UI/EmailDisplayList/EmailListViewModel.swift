@@ -461,19 +461,12 @@ extension EmailListViewModel {
     private func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
         updatesEnabled = false
         let message = messageQueryResults[indexPath.row]
-        let imap =  message.imapFlags
-        imap.flagged = flagged
-        message.imapFlags = imap
-        message.save()
-//        // This does *not* trigger FetchedResultsController. Ingtentionally.
-//        message.imapFlags.flagged = flagged
-//        message.save()
+        Message.setFlaggedValue(to: [message], newValue: flagged)
     }
 
     private func setSeenValue(forIndexPath indexPath: IndexPath, newValue seen: Bool) {
         let message = messageQueryResults[indexPath.row]
-        message.imapFlags.seen = seen
-        message.save()
+        Message.setSeenValue(to: [message], newValue: seen)
     }
 
     @discardableResult private func deleteMessage(at indexPath: IndexPath) -> Message? {
@@ -483,7 +476,7 @@ extension EmailListViewModel {
     }
 
     private func delete(message: Message) {
-        message.imapDelete()
+        Message.imapDelete(messages: [message])
     }
 
     private func cachedSenderImage(forCellAt indexPath:IndexPath) -> UIImage? {
