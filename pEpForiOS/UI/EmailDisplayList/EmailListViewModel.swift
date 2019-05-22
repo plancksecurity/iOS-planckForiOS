@@ -238,35 +238,25 @@ class EmailListViewModel {
     }
 
     public func markSelectedAsFlagged(indexPaths: [IndexPath]) {
-        indexPaths.forEach { (ip) in
-            setFlagged(forIndexPath: ip)
-        }
+        setFlagged(forIndexPath: indexPaths)
     }
 
     public func markSelectedAsUnFlagged(indexPaths: [IndexPath]) {
-        indexPaths.forEach { (ip) in
-            unsetFlagged(forIndexPath: ip)
-        }
+        unsetFlagged(forIndexPath: indexPaths)
     }
 
     public func markSelectedAsRead(indexPaths: [IndexPath]) {
-        indexPaths.forEach { (ip) in
-            markRead(forIndexPath: ip)
-        }
+        markRead(forIndexPath: indexPaths)
     }
 
     public func markSelectedAsUnread(indexPaths: [IndexPath]) {
-        indexPaths.forEach { (ip) in
-            markUnread(forIndexPath: ip)
-        }
+        markUnread(forIndexPath: indexPaths)
     }
 
     public func deleteSelected(indexPaths: [IndexPath]) {
         updatesEnabled = false
-        indexPaths.forEach { (ip) in
-            let message = messageQueryResults[ip.row]
-            delete(message: message)
-        }
+        let messages = indexPaths.map { messageQueryResults[$0.row] }
+        delete(messages: messages)
     }
 
     public func messagesToMove(indexPaths: [IndexPath]) -> [Message?] {
@@ -278,24 +268,24 @@ class EmailListViewModel {
         return messages
     }
     
-    func setFlagged(forIndexPath indexPath: IndexPath) {
+    func setFlagged(forIndexPath indexPath: [IndexPath]) {
         setFlaggedValue(forIndexPath: indexPath, newValue: true)
     }
 
-    func unsetFlagged(forIndexPath indexPath: IndexPath) {
+    func unsetFlagged(forIndexPath indexPath: [IndexPath]) {
         setFlaggedValue(forIndexPath: indexPath, newValue: false)
     }
     
-    func markRead(forIndexPath indexPath: IndexPath) {
+    func markRead(forIndexPath indexPath: [IndexPath]) {
         setSeenValue(forIndexPath: indexPath, newValue: true)
     }
 
-    func markUnread(forIndexPath indexPath: IndexPath) {
+    func markUnread(forIndexPath indexPath: [IndexPath]) {
         setSeenValue(forIndexPath: indexPath, newValue: false)
     }
 
     func delete(forIndexPath indexPath: IndexPath) {
-        let _ = deleteMessage(at: indexPath)
+        let _ = deleteMessages(at: [indexPath])
     }
 
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
@@ -458,25 +448,25 @@ extension EmailListViewModel {
 
 extension EmailListViewModel {
 
-    private func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
+    private func setFlaggedValue(forIndexPath indexPath: [IndexPath], newValue flagged: Bool) {
         updatesEnabled = false
-        let message = messageQueryResults[indexPath.row]
-        Message.setFlaggedValue(to: [message], newValue: flagged)
+        let messages = indexPath.map { messageQueryResults[$0.row] }
+        Message.setFlaggedValue(to: messages, newValue: flagged)
     }
 
-    private func setSeenValue(forIndexPath indexPath: IndexPath, newValue seen: Bool) {
-        let message = messageQueryResults[indexPath.row]
-        Message.setSeenValue(to: [message], newValue: seen)
+    private func setSeenValue(forIndexPath indexPath: [IndexPath], newValue seen: Bool) {
+        let messages = indexPath.map { messageQueryResults[$0.row] }
+        Message.setSeenValue(to: messages, newValue: seen)
     }
 
-    @discardableResult private func deleteMessage(at indexPath: IndexPath) -> Message? {
-        let message = messageQueryResults[indexPath.row]
-        delete(message: message)
-        return message
+    @discardableResult private func deleteMessages(at indexPath: [IndexPath]) -> [Message]? {
+        let messages = indexPath.map { messageQueryResults[$0.row] }
+        delete(messages: messages)
+        return messages
     }
 
-    private func delete(message: Message) {
-        Message.imapDelete(messages: [message])
+    private func delete(messages: [Message]) {
+        Message.imapDelete(messages: messages)
     }
 
     private func cachedSenderImage(forCellAt indexPath:IndexPath) -> UIImage? {
