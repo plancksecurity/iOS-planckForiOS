@@ -226,10 +226,11 @@ extension ComposeViewModel.ComposeViewModelState {
             DispatchQueue.main.async {
                 me.rating = newRating
                 //!!!:
-                print("COMPOSE: did newRating")
+//                print("COMPOSE: did newRating")
             }
         }
 
+        //!!!: cleanup
         //            guard let me = self else {
         //                // That is a valid case. Compose view is gone before this block started to run.
         //                return
