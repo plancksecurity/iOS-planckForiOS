@@ -94,13 +94,6 @@ class MessageViewModel: CustomDebugStringConvertible {
         }
     }
 
-    public func flagsDiffer(from messageViewModel: MessageViewModel) -> Bool {
-        if self != messageViewModel {
-            return true
-        }
-        return self.isFlagged != messageViewModel.isFlagged || self.isSeen != messageViewModel.isSeen
-    }
-
     func unsubscribeForUpdates() {
         cancelAllBackgroundOperations()
     }
@@ -297,20 +290,6 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     public var debugDescription: String {
         return "<MessageViewModel |\(uuid)| |\(longMessageFormatted?.prefix(3) ?? "nil")|>"
-    }
-}
-
-extension MessageViewModel: Equatable {
-    static func ==(lhs: MessageViewModel, rhs: MessageViewModel) -> Bool {
-        let oneIsAFakeMessage =
-            lhs.uid == Message.uidFakeResponsivenes ||
-            rhs.uid == Message.uidFakeResponsivenes
-        return lhs.uuid == rhs.uuid &&
-            // We consider two messages with different UIDs as equal if one is the fake message
-            // of the other.
-            (oneIsAFakeMessage || (lhs.uid == rhs.uid)) &&
-            lhs.parentFolderName == rhs.parentFolderName &&
-            lhs.accountAddress == rhs.accountAddress
     }
 }
 
