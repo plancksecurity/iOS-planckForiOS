@@ -137,6 +137,7 @@ public class RecipientTextViewModel {
                 identity = existing
             } else {
                 identity = Identity(address: address)
+                identity.save()
             }
             var (newText, attachment) = text.imageInserted(withAddressOf: identity,
                                                            in: range,
