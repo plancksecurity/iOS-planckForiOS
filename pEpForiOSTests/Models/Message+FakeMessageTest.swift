@@ -14,7 +14,7 @@ import XCTest
 import PEPObjCAdapterFramework
 import CoreData
 
-//!!!: must bemoved to MM
+//!!!: must bemoved to MM. The group is called "Models". Assume more to move in there. Double check!
 class Message_FakeMessageTest: CoreDataDrivenTestBase {
     let testUuid = UUID().uuidString + #file
 
@@ -97,7 +97,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
         }
         let msg = Message(uuid: testUuid, parentFolder: folder)
         msg.from = account.user
-//        Message.createCdFakeMessage(for: msg)
+        msg.cdObject.createFakeMessage(context: moc)
         assureFakeMessageExistence(in: folder)
     }
 
