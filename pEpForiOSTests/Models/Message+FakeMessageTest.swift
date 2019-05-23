@@ -111,7 +111,8 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
         }
         let msg = Message(uuid: testUuid, parentFolder: folder)
         msg.from = account.user
-        msg.saveFakeMessage(in: folder)
+        msg.createFakeMessage(in: folder)
+        Session.main.commit()
         assureFakeMessageExistence(in: folder)
     }
 
@@ -178,7 +179,8 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
     }
 
     private func createFakeMessage(in folder: Folder) {
-        Message(uuid: UUID().uuidString + #function, parentFolder: folder).saveFakeMessage(in: folder)
+        Message(uuid: UUID().uuidString + #function, parentFolder: folder).createFakeMessage(in: folder)
+        Session.main.commit()
     }
 
     private func deleteAllMessages() {

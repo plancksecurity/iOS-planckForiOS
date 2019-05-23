@@ -255,13 +255,11 @@ class EmailListViewModel {
     }
 
     public func deleteSelected(indexPaths: [IndexPath]) {
-        updatesEnabled = false
         let messages = indexPaths.map { messageQueryResults[$0.row] }
         delete(messages: messages)
     }
 
     public func messagesToMove(indexPaths: [IndexPath]) -> [Message?] {
-        updatesEnabled = false
         var messages : [Message?] = []
         indexPaths.forEach { (ip) in
             messages.append(self.message(representedByRowAt: ip))
