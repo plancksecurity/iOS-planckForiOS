@@ -33,7 +33,6 @@ public class UnifiedInbox: VirtualFolderProtocol {
             predicates.append(CdMessage.PredicateFactory.isInInbox())
             predicates.append(CdMessage.PredicateFactory.existingMessages())
             predicates.append(CdMessage.PredicateFactory.processed())
-            predicates.append(CdMessage.PredicateFactory.hasNoAutoConsumeHeader())
             return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         }
     }
