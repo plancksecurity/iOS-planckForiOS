@@ -43,7 +43,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
                 XCTFail()
                 return
             }
-            XCTAssertEqual(testee.uid, Message.uidFakeResponsivenes, "fake message is contained")
+            XCTAssertEqual(testee.uid, CdMessage.uidFakeResponsivenes, "fake message is contained")
         }
     }
 
@@ -119,7 +119,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
 
     @discardableResult private func assureFakeMessageExistence(mustExist: Bool = true, in folder: Folder) -> Message? {
         return assureMessagesExistence(mustExist: mustExist,
-                                       withUid: Message.uidFakeResponsivenes,
+                                       withUid: CdMessage.uidFakeResponsivenes,
                                        in: folder)
     }
 

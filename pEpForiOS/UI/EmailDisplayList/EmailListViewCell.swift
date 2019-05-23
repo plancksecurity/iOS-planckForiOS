@@ -78,6 +78,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        clear()
         resetToDefault()
     }
 
