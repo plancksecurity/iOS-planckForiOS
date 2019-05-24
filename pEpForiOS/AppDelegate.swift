@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     var shouldDestroySession = false
 
-    let notifyHandshakeDelegate: PEPNotifyHandshakeDelegate = FakeNotifyHandshakeDelegate()
+    let notifyHandshakeDelegate: PEPNotifyHandshakeDelegate = NotifyHandshakeDelegate()
 
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
@@ -192,7 +192,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         messageModelService = MessageModelService(
             mySelfer: self,
             errorPropagator: errorPropagator,
-        notifyHandShakeDelegate: FakeNotifyHandshakeDelegate())
+            notifyHandShakeDelegate: notifyHandshakeDelegate)
         messageModelService?.delegate = self
     }
 

@@ -1,5 +1,5 @@
 //
-//  FakeNotifyHandshakeDelegate.swift
+//  NotifyHandshakeDelegate.swift
 //  MessageModel
 //
 //  Created by Dirk Zimmermann on 21.05.19.
@@ -10,12 +10,11 @@ import Foundation
 
 import PEPObjCAdapterFramework
 
-/// Implementation of `PEPNotifyHandshakeDelegate` that always returns `.OK`.
-/// - Note: Will be replaced by a real UI-implementation in the app. (TODO).
-class FakeNotifyHandshakeDelegate: NSObject {
+/// Implementation of `PEPNotifyHandshakeDelegate` that currently always returns `.OK`.
+class NotifyHandshakeDelegate: NSObject {
 }
 
-extension FakeNotifyHandshakeDelegate: PEPNotifyHandshakeDelegate {
+extension NotifyHandshakeDelegate: PEPNotifyHandshakeDelegate {
     func notifyHandshake(_ object: UnsafeMutableRawPointer?,
                          me: PEPIdentity,
                          partner: PEPIdentity,

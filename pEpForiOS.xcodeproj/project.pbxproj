@@ -313,7 +313,7 @@
 		43AA825D1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AA825C1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift */; };
 		43AAC22A1F7A5AEE00F435F4 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AAC2281F7A5AED00F435F4 /* BaseTableViewController.swift */; };
 		43AAC22B1F7A5AEE00F435F4 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AAC2291F7A5AEE00F435F4 /* BaseViewController.swift */; };
-		43AE3C582298007A00E1AA7B /* FakeNotifyHandshakeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AE3C572298007A00E1AA7B /* FakeNotifyHandshakeDelegate.swift */; };
+		43AE3C582298007A00E1AA7B /* NotifyHandshakeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AE3C572298007A00E1AA7B /* NotifyHandshakeDelegate.swift */; };
 		43B0443920067CC7007BCE3F /* UIAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0443820067CC7007BCE3F /* UIAccount.swift */; };
 		43B0443B20067D25007BCE3F /* UITestDataProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0443A20067D25007BCE3F /* UITestDataProtocol.swift */; };
 		43B0444C20077323007BCE3F /* OAuth2Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0444B20077323007BCE3F /* OAuth2Configuration.swift */; };
@@ -822,7 +822,7 @@
 		43AA825C1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsViewDelegate.swift; sourceTree = "<group>"; };
 		43AAC2281F7A5AED00F435F4 /* BaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		43AAC2291F7A5AEE00F435F4 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
-		43AE3C572298007A00E1AA7B /* FakeNotifyHandshakeDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeNotifyHandshakeDelegate.swift; sourceTree = "<group>"; };
+		43AE3C572298007A00E1AA7B /* NotifyHandshakeDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotifyHandshakeDelegate.swift; sourceTree = "<group>"; };
 		43B0443820067CC7007BCE3F /* UIAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAccount.swift; sourceTree = "<group>"; };
 		43B0443A20067D25007BCE3F /* UITestDataProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestDataProtocol.swift; sourceTree = "<group>"; };
 		43B0444B20077323007BCE3F /* OAuth2Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Configuration.swift; sourceTree = "<group>"; };
@@ -1927,7 +1927,7 @@
 		43AE3C562298001E00E1AA7B /* KeySync */ = {
 			isa = PBXGroup;
 			children = (
-				43AE3C572298007A00E1AA7B /* FakeNotifyHandshakeDelegate.swift */,
+				43AE3C572298007A00E1AA7B /* NotifyHandshakeDelegate.swift */,
 			);
 			path = KeySync;
 			sourceTree = "<group>";
@@ -2729,7 +2729,7 @@
 				1526597A21623652006A78DF /* SuggestViewModel.swift in Sources */,
 				4351C2D31F4441190053381F /* inlines.c in Sources */,
 				220DCE361E0AB5CC002FE716 /* MessageSenderCell.swift in Sources */,
-				43AE3C582298007A00E1AA7B /* FakeNotifyHandshakeDelegate.swift in Sources */,
+				43AE3C582298007A00E1AA7B /* NotifyHandshakeDelegate.swift in Sources */,
 				15874BCD2127493E00A3A4A6 /* AccountSettingsError.swift in Sources */,
 				15D4399A216E697700EB3933 /* AccountPickerView.swift in Sources */,
 				15265962216230B1006A78DF /* ContactCell.swift in Sources */,
