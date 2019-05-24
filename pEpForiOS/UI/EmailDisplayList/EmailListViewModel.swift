@@ -284,7 +284,7 @@ class EmailListViewModel {
     }
 
     func delete(forIndexPath indexPath: IndexPath) {
-        let _ = deleteMessages(at: [indexPath])
+        deleteMessages(at: [indexPath])
     }
 
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
