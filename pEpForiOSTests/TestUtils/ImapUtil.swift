@@ -61,10 +61,11 @@ extension XCTestCase {
         })
     }
 
-    public func appendMailsIMAP(folder: CdFolder,
-                                imapSyncData: ImapSyncData,
-                                errorContainer: ServiceErrorProtocol,
-                                queue: OperationQueue) {
+    //!!!: used in tests only! move to test target
+    func appendMailsIMAP(folder: CdFolder,
+                         imapSyncData: ImapSyncData,
+                         errorContainer: ServiceErrorProtocol,
+                         queue: OperationQueue) {
         let expSentAppended = expectation(description: "expSentAppended")
         let appendOp = AppendMailsOperation(parentName: #function,
                                             folder: folder,
