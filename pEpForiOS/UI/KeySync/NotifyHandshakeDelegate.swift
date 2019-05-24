@@ -10,7 +10,6 @@ import Foundation
 
 import PEPObjCAdapterFramework
 
-/// Implementation of `PEPNotifyHandshakeDelegate` that currently always returns `.OK`.
 class NotifyHandshakeDelegate: NSObject {
 }
 
