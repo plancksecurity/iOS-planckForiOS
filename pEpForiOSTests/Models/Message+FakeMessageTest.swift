@@ -14,7 +14,7 @@ import XCTest
 import PEPObjCAdapterFramework
 import CoreData
 
-//!!!: must bemoved to MM
+//!!!: must bemoved to MM. The group is called "Models". Assume more to move in there. Double check!
 class Message_FakeMessageTest: CoreDataDrivenTestBase {
     let testUuid = UUID().uuidString + #file
 
@@ -43,7 +43,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
                 XCTFail()
                 return
             }
-            XCTAssertEqual(testee.uid, Message.uidFakeResponsivenes, "fake message is contained")
+            XCTAssertEqual(testee.uid, CdMessage.uidFakeResponsivenes, "fake message is contained")
         }
     }
 
@@ -97,7 +97,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
         }
         let msg = Message(uuid: testUuid, parentFolder: folder)
         msg.from = account.user
-//        Message.createCdFakeMessage(for: msg)
+        msg.cdObject.createFakeMessage(context: moc)
         assureFakeMessageExistence(in: folder)
     }
 
@@ -119,7 +119,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
 
     @discardableResult private func assureFakeMessageExistence(mustExist: Bool = true, in folder: Folder) -> Message? {
         return assureMessagesExistence(mustExist: mustExist,
-                                       withUid: Message.uidFakeResponsivenes,
+                                       withUid: CdMessage.uidFakeResponsivenes,
                                        in: folder)
     }
 
