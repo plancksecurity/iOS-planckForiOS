@@ -399,7 +399,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     @IBAction func deleteToolbar(_ sender:UIBarButtonItem!) {
         if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
             vm.deleteSelected(indexPaths: selectedIndexPaths)
-            tableView.deleteRows(at: selectedIndexPaths, with: .automatic)
         }
         cancelToolbar(sender)
     }
@@ -977,10 +976,10 @@ extension EmailListViewController {
             return
         }
         if row.isFlagged {
-            model?.unsetFlagged(forIndexPath: indexPath)
+            model?.unsetFlagged(forIndexPath: [indexPath])
             cell.isFlagged = false
         } else {
-            model?.setFlagged(forIndexPath: indexPath)
+            model?.setFlagged(forIndexPath: [indexPath])
             cell.isFlagged = true
         }
     }
