@@ -55,6 +55,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
             guard
                 let folder = assureCleanFolderContainingExactlyOneFakeMessage(folderType: folderTpe)
                 else {
+                    XCTFail()
                     return
             }
             let all = folder.allMessagesNonThreaded()
@@ -179,8 +180,8 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
     }
 
     private func createFakeMessage(in folder: Folder) {
-        Message(uuid: UUID().uuidString + #function, parentFolder: folder).createFakeMessage(in: folder)
-        Session.main.commit()
+        let fakeMsg = Message(uuid: UUID().uuidString + #function, parentFolder: folder).createFakeMessage(in: folder)
+        fakeMsg.save()
     }
 
     private func deleteAllMessages() {
