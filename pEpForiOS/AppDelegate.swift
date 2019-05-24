@@ -152,6 +152,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return false
     }
 
+    //!!!: uses CD. Must go away (rm? else to MM)
     /**
      If pEp has been reinitialized, delete all folders and messsages.
      */

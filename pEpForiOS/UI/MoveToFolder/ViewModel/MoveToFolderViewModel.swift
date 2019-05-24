@@ -92,11 +92,10 @@ class MoveToFolderViewModel {
         }
         let targetFolder = items[index].folder
         var result = false
-        for msg in messages {
-            if msg.parent != targetFolder {
-                msg.move(to: items[index].folder)
-                result = true
-            }
+        let msgs = messages.filter { $0.parent != targetFolder }
+        if !msgs.isEmpty {
+            result = true
+            Message.move(messages: msgs, to: targetFolder)
         }
         if result {
             delegate?.didmove(messages: messages)
