@@ -45,6 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     var shouldDestroySession = false
 
+    let notifyHandshakeDelegate: PEPNotifyHandshakeDelegate = NotifyHandshakeDelegate()
+
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
         let dirs = fm.urls(for: .libraryDirectory, in: .userDomainMask)
@@ -188,7 +190,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // TODO: IOS-1276 set MessageModelConfig.logger
 
         loadCoreDataStack()
-        messageModelService = MessageModelService(mySelfer: self, errorPropagator: errorPropagator)
+        messageModelService = MessageModelService(
+            mySelfer: self,
+            errorPropagator: errorPropagator,
+            notifyHandShakeDelegate: notifyHandshakeDelegate)
         messageModelService?.delegate = self
     }
 
