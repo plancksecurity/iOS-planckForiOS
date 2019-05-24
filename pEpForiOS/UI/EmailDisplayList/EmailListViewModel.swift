@@ -53,7 +53,7 @@ class EmailListViewModel {
     var lastSearchTerm = ""
     var updatesEnabled = true
 
-    public weak var emailListViewModelDelegate: EmailListViewModelDelegate?
+    weak var emailListViewModelDelegate: EmailListViewModelDelegate?
 
     let folderToShow: DisplayableFolderProtocol
 
@@ -312,12 +312,14 @@ class EmailListViewModel {
     }
 
     public func shouldShowToolbarEditButtons() -> Bool {
-        if folderToShow is VirtualFolderProtocol {
+        switch folderToShow {
+        case is VirtualFolderProtocol:
             return true
-        } else if let f = folderToShow as? Folder {
-            return !(f.folderType == .outbox)
+        case let folder as Folder:
+            return folder.folderType != .outbox && folder.folderType != .drafts
+        default:
+            return true
         }
-        return true
     }
 
     public func getDestructiveActtion(forMessageAt index: Int) -> SwipeActionDescriptor {
