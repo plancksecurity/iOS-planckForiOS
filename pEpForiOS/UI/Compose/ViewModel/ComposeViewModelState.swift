@@ -229,26 +229,6 @@ extension ComposeViewModel.ComposeViewModelState {
 //                print("COMPOSE: did newRating")
             }
         }
-
-        //!!!: cleanup
-        //            guard let me = self else {
-        //                // That is a valid case. Compose view is gone before this block started to run.
-        //                return
-        //            }
-        //            let newRating: PEPRating
-        //            let session = PEPSession()
-        //            if let from = me.from {
-        //                newRating = session.outgoingMessageRating(from: from,
-        //                                                       to: me.toRecipients,
-        //                                                       cc: me.ccRecipients,
-        //                                                       bcc: me.bccRecipients)
-        //            } else {
-        //                newRating = PEPRating.undefined
-        //            }
-        //            DispatchQueue.main.async {
-        //                me.rating = newRating
-        //            }
-
     }
 }
 
