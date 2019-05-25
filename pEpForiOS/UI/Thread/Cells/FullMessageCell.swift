@@ -1,162 +1,166 @@
+//Message threading related code. Commented out as this feature does not exist and needs rewrite.
+// Keep this code, it might be reusable when reimplementing
+
+
+////
+////  FullMessageCell.swift
+////  pEp
+////
+////  Created by Miguel Berrocal Gómez on 14/06/2018.
+////  Copyright © 2018 p≡p Security S.A. All rights reserved.
+////
 //
-//  FullMessageCell.swift
-//  pEp
+//import UIKit
+//import MessageModel
+//import SwipeCellKit
+//import pEpIOSToolbox
 //
-//  Created by Miguel Berrocal Gómez on 14/06/2018.
-//  Copyright © 2018 p≡p Security S.A. All rights reserved.
+//class FullMessageCell: SwipeTableViewCell,
+//    MessageViewModelConfigurable,
+//    NeedsRefreshDelegate {
 //
-
-import UIKit
-import MessageModel
-import SwipeCellKit
-import pEpIOSToolbox
-
-class FullMessageCell: SwipeTableViewCell,
-    MessageViewModelConfigurable,
-    NeedsRefreshDelegate {
-
-    static var flaggedImage: UIImage? = nil
-
-    //!!!: IOS-1159: this must be removed after refactoring SecureWebViewController
-    weak var clickHandler: UrlClickHandlerProtocol?
-
-    var requestsReload: (() -> Void)?
-
-    @IBOutlet weak var contentHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var roundedView: UIView!
-    @IBOutlet weak var addressLabel: UILabel!
-    @IBOutlet weak var summaryLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var subjectLabel: UILabel!
-    @IBOutlet weak var bodyText: UITextView!
-    @IBOutlet weak var body: UIView!
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var profilePicture: UIImageView!
-    @IBOutlet weak var badgePicture: UIImageView!
-    @IBOutlet weak var attachmentIcon: UIImageView!
-    @IBOutlet weak var flaggedIcon: UIImageView!
-    @IBOutlet weak var toLabel: UILabel!
-    var tableView: UITableView!
-
-    var isFlagged:Bool = false {
-        didSet {
-            if isFlagged {
-                setFlagged()
-            } else {
-                unsetFlagged()
-            }
-        }
-    }
-
-    @IBOutlet weak var view: UIView!
-    func configure(for viewModel:MessageViewModel) {
-        isFlagged = viewModel.isFlagged
-        addressLabel.text = viewModel.from
-        subjectLabel.text = viewModel.subject
-        backgroundColor = UIColor.clear
-        dateLabel.text = viewModel.dateText
-        toLabel.attributedText = viewModel.getTo()
-
-        viewModel.getProfilePicture { image in
-            self.profilePicture.image = image
-        }
-        viewModel.getSecurityBadge { image in
-            self.badgePicture.image = image
-        }
-        if let htmlBody = htmlBody(viewModel: viewModel) {
-            // Its fine to use a webview (iOS>=11) and we do have HTML content.
-            bodyText.isHidden = true
-            if !htmlViewerViewControllerExists {
-            view.addSubview(htmlViewerViewController.view)
-            }
-            view.isHidden = false
-
-            htmlViewerViewController.view.fullSizeInSuperView()
-
-            let displayHtml = viewModel.appendInlinedAttachmentsPlainText(to: htmlBody)
-            htmlViewerViewController.display(htmlString: displayHtml)
-        } else {
-            view.isHidden = true
-            bodyText.attributedText = viewModel.body
-            bodyText.isHidden = false
-            bodyText.tintColor = UIColor.pEpGreen
-
-            bodyText.dataDetectorTypes = UIDataDetectorTypes.link
-            bodyText.delegate = clickHandler
-
-            // We are not allowed to use a webview (iOS<11) or do not have HTML content.
-            // Remove the HTML view if we just stepped from an HTML mail to one without
-            if htmlViewerViewControllerExists &&
-                htmlViewerViewController.view.superview == self.contentView {
-                htmlViewerViewController.view.removeFromSuperview()
-            }
-        }
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.profilePicture.applyContactImageCornerRadius()
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
-    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        super.setHighlighted(highlighted, animated: animated)
-        
-    }
-
-    /// Indicate that the htmlViewerViewController already exists, to avoid
-    /// instantiation just to check if it has been instantiated.
-    var htmlViewerViewControllerExists = false
-
-    lazy private var htmlViewerViewController: SecureWebViewController = {
-        let storyboard = UIStoryboard(name: "Reusable", bundle: nil)
-        guard let vc =
-            storyboard.instantiateViewController(withIdentifier: SecureWebViewController.storyboardId)
-                as? SecureWebViewController
-            else {
-                Log.shared.errorAndCrash("Cast error")
-                return SecureWebViewController()
-        }
-        vc.zoomingEnabled = false
-        vc.scrollingEnabled = false
-        vc.delegate = self
-        vc.urlClickHandler = clickHandler
-
-        htmlViewerViewControllerExists = true
-
-        return vc
-    }()
-
-    /**
-     Yields the HTML message body if:
-     * we can show it in a secure way
-     * we have non-empty HTML content at all
-     - Returns: The HTML message body or nil
-     */
-    private func htmlBody(viewModel: MessageViewModel) ->  String? {
-        guard
-            SecureWebViewController.isSaveToUseWebView,
-            let htmlBody = viewModel.longMessageFormatted,
-            !htmlBody.isEmpty else {
-                return nil
-        }
-
-        return htmlBody
-    }
-
-    private func setFlagged() {
-        flaggedIcon.isHidden = false
-        flaggedIcon.image = UIImage(named: "icon-flagged")
-
-    }
-
-    private func unsetFlagged() {
-        flaggedIcon.isHidden = true
-        flaggedIcon.image = UIImage(named: "icon-unflagged")
-    }
-}
+//    static var flaggedImage: UIImage? = nil
+//
+//    //!!!: IOS-1159: this must be removed after refactoring SecureWebViewController
+//    weak var clickHandler: UrlClickHandlerProtocol?
+//
+//    var requestsReload: (() -> Void)?
+//
+//    @IBOutlet weak var contentHeightConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var roundedView: UIView!
+//    @IBOutlet weak var addressLabel: UILabel!
+//    @IBOutlet weak var summaryLabel: UILabel!
+//    @IBOutlet weak var dateLabel: UILabel!
+//    @IBOutlet weak var subjectLabel: UILabel!
+//    @IBOutlet weak var bodyText: UITextView!
+//    @IBOutlet weak var body: UIView!
+//    @IBOutlet weak var stackView: UIStackView!
+//    @IBOutlet weak var profilePicture: UIImageView!
+//    @IBOutlet weak var badgePicture: UIImageView!
+//    @IBOutlet weak var attachmentIcon: UIImageView!
+//    @IBOutlet weak var flaggedIcon: UIImageView!
+//    @IBOutlet weak var toLabel: UILabel!
+//    var tableView: UITableView!
+//
+//    var isFlagged:Bool = false {
+//        didSet {
+//            if isFlagged {
+//                setFlagged()
+//            } else {
+//                unsetFlagged()
+//            }
+//        }
+//    }
+//
+//    @IBOutlet weak var view: UIView!
+//    func configure(for viewModel:MessageViewModel) {
+//        isFlagged = viewModel.isFlagged
+//        addressLabel.text = viewModel.from
+//        subjectLabel.text = viewModel.subject
+//        backgroundColor = UIColor.clear
+//        dateLabel.text = viewModel.dateText
+//        toLabel.attributedText = viewModel.getTo()
+//
+//        viewModel.getProfilePicture { image in
+//            self.profilePicture.image = image
+//        }
+//        viewModel.getSecurityBadge { image in
+//            self.badgePicture.image = image
+//        }
+//        if let htmlBody = htmlBody(viewModel: viewModel) {
+//            // Its fine to use a webview (iOS>=11) and we do have HTML content.
+//            bodyText.isHidden = true
+//            if !htmlViewerViewControllerExists {
+//            view.addSubview(htmlViewerViewController.view)
+//            }
+//            view.isHidden = false
+//
+//            htmlViewerViewController.view.fullSizeInSuperView()
+//
+//            let displayHtml = viewModel.appendInlinedAttachmentsPlainText(to: htmlBody)
+//            htmlViewerViewController.display(htmlString: displayHtml)
+//        } else {
+//            view.isHidden = true
+//            bodyText.attributedText = viewModel.body
+//            bodyText.isHidden = false
+//            bodyText.tintColor = UIColor.pEpGreen
+//
+//            bodyText.dataDetectorTypes = UIDataDetectorTypes.link
+//            bodyText.delegate = clickHandler
+//
+//            // We are not allowed to use a webview (iOS<11) or do not have HTML content.
+//            // Remove the HTML view if we just stepped from an HTML mail to one without
+//            if htmlViewerViewControllerExists &&
+//                htmlViewerViewController.view.superview == self.contentView {
+//                htmlViewerViewController.view.removeFromSuperview()
+//            }
+//        }
+//    }
+//
+//    override func awakeFromNib() {
+//        super.awakeFromNib()
+//        self.profilePicture.applyContactImageCornerRadius()
+//    }
+//
+//    override func setSelected(_ selected: Bool, animated: Bool) {
+//        super.setSelected(selected, animated: animated)
+//
+//        // Configure the view for the selected state
+//    }
+//
+//    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+//        super.setHighlighted(highlighted, animated: animated)
+//
+//    }
+//
+//    /// Indicate that the htmlViewerViewController already exists, to avoid
+//    /// instantiation just to check if it has been instantiated.
+//    var htmlViewerViewControllerExists = false
+//
+//    lazy private var htmlViewerViewController: SecureWebViewController = {
+//        let storyboard = UIStoryboard(name: "Reusable", bundle: nil)
+//        guard let vc =
+//            storyboard.instantiateViewController(withIdentifier: SecureWebViewController.storyboardId)
+//                as? SecureWebViewController
+//            else {
+//                Log.shared.errorAndCrash("Cast error")
+//                return SecureWebViewController()
+//        }
+//        vc.zoomingEnabled = false
+//        vc.scrollingEnabled = false
+//        vc.delegate = self
+//        vc.urlClickHandler = clickHandler
+//
+//        htmlViewerViewControllerExists = true
+//
+//        return vc
+//    }()
+//
+//    /**
+//     Yields the HTML message body if:
+//     * we can show it in a secure way
+//     * we have non-empty HTML content at all
+//     - Returns: The HTML message body or nil
+//     */
+//    private func htmlBody(viewModel: MessageViewModel) ->  String? {
+//        guard
+//            SecureWebViewController.isSaveToUseWebView,
+//            let htmlBody = viewModel.longMessageFormatted,
+//            !htmlBody.isEmpty else {
+//                return nil
+//        }
+//
+//        return htmlBody
+//    }
+//
+//    private func setFlagged() {
+//        flaggedIcon.isHidden = false
+//        flaggedIcon.image = UIImage(named: "icon-flagged")
+//
+//    }
+//
+//    private func unsetFlagged() {
+//        flaggedIcon.isHidden = true
+//        flaggedIcon.image = UIImage(named: "icon-unflagged")
+//    }
+//}
