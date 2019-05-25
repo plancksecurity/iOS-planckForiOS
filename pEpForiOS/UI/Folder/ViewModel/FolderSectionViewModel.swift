@@ -86,17 +86,6 @@ public class FolderSectionViewModel {
         return un
     }
 
-    public func collapse() {
-        self.collapsed = !self.collapsed
-        if !collapsed {
-            items = help
-            help = [FolderCellViewModel]()
-        } else {
-            help = items
-            items = [FolderCellViewModel]()
-        }
-    }
-
     subscript(index: Int) -> FolderCellViewModel {
         get {
             return self.items[index]
