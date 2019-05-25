@@ -549,7 +549,7 @@ extension EmailListViewModel {
     func composeViewModelForNewMessage() -> ComposeViewModel {
 		// Determine the sender.
         var someUser: Identity? = nil
-        if let f = folderToShow as? RealFolder {
+        if let f = folderToShow as? RealFolderProtocol {
              someUser = f.account.user
         } else {
             let account = Account.defaultAccount()
