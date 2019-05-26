@@ -184,7 +184,6 @@ extension ComposeViewModel.ComposeViewModelState {
             rating = newRating
             return
         }
-        let session = Session()
 
         /*
         //!!!: In tests (ComposeViewModelStateTest) this block is triggered by setup and modt test, but never  executed:
@@ -208,7 +207,7 @@ extension ComposeViewModel.ComposeViewModelState {
                 // That is a valid case. Compose view is gone before this block started to run.
                 return
             }
-
+            let session = Session()
             session.performAndWait {
                 let safeFrom = from.safeForSession(session)
                 let safeTo = Identity.makeSafe(me.toRecipients, forSession: session)
