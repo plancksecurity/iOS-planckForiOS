@@ -194,7 +194,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             mySelfer: self,
             errorPropagator: errorPropagator,
             notifyHandShakeDelegate: notifyHandshakeDelegate,
-            startSync: AppSettings.settingsHandler.shouldStartpEpSync)
+            startpEpSync: AppSettings.settingsHandler.shouldStartpEpSync)
         messageModelService?.delegate = self
     }
 
