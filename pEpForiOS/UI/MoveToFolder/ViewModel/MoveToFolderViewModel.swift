@@ -10,7 +10,7 @@ import Foundation
 import pEpIOSToolbox
 import MessageModel
 
-let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .sent]
+let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .sent, .outbox]
 
 class MoveToAccountViewModel {
 
