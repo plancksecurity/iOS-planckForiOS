@@ -58,10 +58,10 @@ public class DefaultAppSettings: AppSettingsProtocol {
 
     public var keySyncGlobal: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: AppSettings.keySyncGlobal)
+            return UserDefaults.standard.bool(forKey: AppSettings.keykeySyncGlobal)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: AppSettings.keySyncGlobal)
+            UserDefaults.standard.set(newValue, forKey: AppSettings.keykeySyncGlobal)
             ///!!!: not sure if something has to been handled here
         }
     }

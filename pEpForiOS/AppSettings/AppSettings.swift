@@ -18,7 +18,7 @@ struct AppSettings {
     static public let keyDefaultAccountAddress = "keyDefaultAccountAddress"
     static public let keyThreadedViewEnabled = "keyThreadedViewEnabled"
     static public let keyPassiveMode = "keyPassiveMode"
-    static public let keySyncGlobal = "KeySyncGloabl"
+    static public let keykeySyncGlobal = "KeySyncGloabl"
 
     /**
      The actual implementation of `AppSettingsProtocol` to defer to.
@@ -63,7 +63,7 @@ struct AppSettings {
         }
     }
 
-    static var SyncGlobal: Bool {
+    static var keySyncGlobal: Bool {
         get {
             return settingsHandler.keySyncGlobal
         }
