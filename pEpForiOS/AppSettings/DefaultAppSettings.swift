@@ -62,7 +62,7 @@ public class DefaultAppSettings: AppSettingsProtocol {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: AppSettings.keykeySyncGlobal)
-            ///!!!: not sure if something has to been handled here
+            ///!!!: handle the change of the setting here
         }
     }
 
