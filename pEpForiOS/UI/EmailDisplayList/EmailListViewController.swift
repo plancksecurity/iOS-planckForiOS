@@ -78,6 +78,18 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        guard let isIphone = splitViewController?.isCollapsed, let last = lastSelectedIndexPath else {
+            return
+        }
+        if !isIphone {
+            performSegue(withIdentifier: "showNoMessage", sender: nil)
+        }
+
+
+            //splitViewController?.showDetailViewController(<#T##vc: UIViewController##UIViewController#>, sender: <#T##Any?#>)
+    }
+
     deinit {
          NotificationCenter.default.removeObserver(self)
     }
