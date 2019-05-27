@@ -26,6 +26,16 @@ public class DefaultAppSettings: AppSettingsProtocol {
         }
     }
 
+    public var shouldStartpEpSync: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: AppSettings.keyStartpEpSync)
+        }
+        set {
+            UserDefaults.standard.set(newValue,
+                                      forKey: AppSettings.keyStartpEpSync)
+        }
+    }
+    
     public var unencryptedSubjectEnabled: Bool {
         get {
             return UserDefaults.standard.bool(forKey: AppSettings.keyUnencryptedSubjectEnabled)
@@ -81,6 +91,7 @@ public class DefaultAppSettings: AppSettingsProtocol {
     private func registerDefaults() {
         var defaults = [String: Any]()
         defaults[AppSettings.keyReinitializePepOnNextStartup] = false
+        defaults[AppSettings.keyStartpEpSync] = true
         defaults[AppSettings.keyUnencryptedSubjectEnabled] = true
         defaults[AppSettings.keyThreadedViewEnabled] = true
         defaults[AppSettings.keyPassiveMode] = false

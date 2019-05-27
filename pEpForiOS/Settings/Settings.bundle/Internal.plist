@@ -10,7 +10,7 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Reinitialize pEp on next startup</string>
+			<string>Reinitialize p≡p on next startup</string>
 			<key>Key</key>
 			<string>reinitializePepOnNextStartup</string>
 			<key>DefaultValue</key>

@@ -6,14 +6,24 @@
 	<string>Root</string>
 	<key>PreferenceSpecifiers</key>
 	<array>
-        <dict>
-            <key>Type</key>
-            <string>PSChildPaneSpecifier</string>
-            <key>Title</key>
-            <string>Internal</string>
-            <key>File</key>
-            <string>Internal</string>
-        </dict>
+		<dict>
+			<key>DefaultValue</key>
+			<true/>
+			<key>Key</key>
+			<string>enableSync</string>
+			<key>Title</key>
+			<string>Enable p≡p Sync</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>Internal</string>
+			<key>File</key>
+			<string>Internal</string>
+		</dict>
 	</array>
 </dict>
 </plist>
