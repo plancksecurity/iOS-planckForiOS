@@ -15,13 +15,11 @@ struct KeySyncGloablOptionViewModel: SwitchSettingCellViewModelProtocol {
     private(set) var title = NSLocalizedString("Keysync", comment: "Enabling disabing keysync")
 
     func setSwitch(value: Bool) {
-        //!!!: change it for keysync global
-        AppSettings.passiveMode = value
+        AppSettings.keySyncGlobal = value
     }
 
     func switchValue() -> Bool {
-        //!!!: change it for keysync global
-        return AppSettings.passiveMode
+        return AppSettings.keySyncGlobal
     }
 
 }
