@@ -13,5 +13,6 @@ public protocol AppSettingsProtocol {
     var unencryptedSubjectEnabled: Bool { get set }
     var threadedViewEnabled: Bool { get set }
     var passiveMode: Bool { get set }
+    var keySyncGlobal: Bool { get set }
     var defaultAccount: String? { get set }
 }

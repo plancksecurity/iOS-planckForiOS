@@ -12,6 +12,7 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 public class DefaultAppSettings: AppSettingsProtocol {
+
     init() {
         setup()
     }
@@ -52,6 +53,16 @@ public class DefaultAppSettings: AppSettingsProtocol {
         set {
             UserDefaults.standard.set(newValue, forKey: AppSettings.keyPassiveMode)
             PEPObjCAdapter.setPassiveModeEnabled(newValue)
+        }
+    }
+
+    public var keySyncGlobal: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: AppSettings.keySyncGlobal)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: AppSettings.keySyncGlobal)
+            ///!!!: not sure if something has to been handled here
         }
     }
 
