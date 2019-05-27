@@ -85,9 +85,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if !isIphone {
             performSegue(withIdentifier: "showNoMessage", sender: nil)
         }
-
-
-            //splitViewController?.showDetailViewController(<#T##vc: UIViewController##UIViewController#>, sender: <#T##Any?#>)
     }
 
     deinit {
