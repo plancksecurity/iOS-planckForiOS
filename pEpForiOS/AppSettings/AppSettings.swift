@@ -63,12 +63,12 @@ struct AppSettings {
         }
     }
 
-    static var keySyncGlobal: Bool {
+    static var SyncGlobal: Bool {
         get {
-            return settingsHandler.passiveMode
+            return settingsHandler.keySyncGlobal
         }
         set {
-            settingsHandler.passiveMode = newValue
+            settingsHandler.keySyncGlobal = newValue
         }
     }
 
