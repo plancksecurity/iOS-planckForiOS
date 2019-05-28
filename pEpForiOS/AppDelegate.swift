@@ -78,7 +78,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals al services to start/resume.
     /// Also signals it is save to use PEPSessions (again)
     private func startServices() {
-        messageModelService?.start()
+        do {
+            try messageModelService?.start()
+        } catch {
+            Log.shared.log(error: error)
+        }
     }
 
     /// Signals all PEPSession users to stop using a session as soon as possible.
