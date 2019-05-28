@@ -20,10 +20,16 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                 Log.shared.errorAndCrash("No appConfig?")
 
                 // We have no config. Return nonsense.
+                let theMessageModelService = MessageModelService(
+                    mySelfer: self,
+                    errorPropagator: ErrorPropagator(),
+                    notifyHandShakeDelegate: NotifyHandshakeDelegate())
+
                 return AppConfig(
                     mySelfer: self,
                     errorPropagator: ErrorPropagator(),
-                    oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider())
+                    oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider(),
+                    messageModelService: theMessageModelService)
             }
             return safeConfig
         }

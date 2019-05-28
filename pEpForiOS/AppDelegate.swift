@@ -181,10 +181,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
+        let theMessageModelService = MessageModelService(
+            mySelfer: self,
+            errorPropagator: errorPropagator,
+            notifyHandShakeDelegate: notifyHandshakeDelegate)
+        theMessageModelService.delegate = self
+        self.messageModelService = theMessageModelService
+
         let theAppConfig = AppConfig(
             mySelfer: self,
             errorPropagator: errorPropagator,
-            oauth2AuthorizationFactory: oauth2Provider)
+            oauth2AuthorizationFactory: oauth2Provider,
+            messageModelService: theMessageModelService)
         appConfig = theAppConfig
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = theAppConfig
@@ -194,11 +202,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // TODO: IOS-1276 set MessageModelConfig.logger
 
         loadCoreDataStack()
-        messageModelService = MessageModelService(
-            mySelfer: self,
-            errorPropagator: errorPropagator,
-            notifyHandShakeDelegate: notifyHandshakeDelegate)
-        messageModelService?.delegate = self
     }
 
     // Safely restarts all services
