@@ -98,6 +98,10 @@ class ComposeViewModel {
         setup()
     }
 
+    public func handleDidReAppear() {
+        state.validate()
+    }
+
     public func viewModel(for indexPath: IndexPath) -> CellViewModel {
         return sections[indexPath.section].rows[indexPath.row]
     }

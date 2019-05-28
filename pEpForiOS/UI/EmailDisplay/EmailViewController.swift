@@ -401,7 +401,7 @@ class EmailViewController: BaseTableViewController {
             imap.flagged = false
             message.imapFlags = imap
             //!!!: not needed? let's see if message query is fast enought? seems yes
-            delegate?.emailDisplayDidUnflag(message: message)
+            delegate?.emailDisplayDidUnflag(message: message) //!!!: Why is this in again? I think FRC is fast enough? 
         } else {
             let imap = message.imapFlags
             imap.flagged = true

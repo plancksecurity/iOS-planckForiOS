@@ -117,7 +117,6 @@ class EmailListViewModel {
         messageQueryResults = MessageQueryResults(withFolder: folderToShow,
                                                        filter: nil,
                                                        search: nil)
-        //!!!: changed filter to nil take care
         messageQueryResults.delegate = self
         // Threading feature is currently non-existing. Keep this code, might help later.
 //        self.oldThreadSetting = AppSettings.threadedViewEnabled
@@ -550,7 +549,7 @@ extension EmailListViewModel {
     func composeViewModelForNewMessage() -> ComposeViewModel {
 		// Determine the sender.
         var someUser: Identity? = nil
-        if let f = folderToShow as? RealFolder {
+        if let f = folderToShow as? RealFolderProtocol {
              someUser = f.account.user
         } else {
             let account = Account.defaultAccount()

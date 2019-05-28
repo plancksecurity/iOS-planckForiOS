@@ -18,14 +18,6 @@ extension Message {
             || self.shortMessage != nil
     }
 
-    /*static public func fakeMessage(uuid: MessageID) -> Message {
-        // miss use unifiedInbox() to create fake folder
-        let fakeFolder = UnifiedInbox()
-        fakeFolder.filter = nil
-
-        return Message(uuid: uuid, parentFolder: fakeFolder)
-    }*/
-
     public func pEpMessageDict(outgoing: Bool = true) -> PEPMessageDict {
         var dict = PEPMessageDict()
 
