@@ -399,7 +399,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     @IBAction func deleteToolbar(_ sender:UIBarButtonItem!) {
         if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
             vm.deleteSelected(indexPaths: selectedIndexPaths)
-            tableView.deleteRows(at: selectedIndexPaths, with: .automatic)
         }
         cancelToolbar(sender)
     }
@@ -977,10 +976,10 @@ extension EmailListViewController {
             return
         }
         if row.isFlagged {
-            model?.unsetFlagged(forIndexPath: indexPath)
+            model?.unsetFlagged(forIndexPath: [indexPath])
             cell.isFlagged = false
         } else {
-            model?.setFlagged(forIndexPath: indexPath)
+            model?.setFlagged(forIndexPath: [indexPath])
             cell.isFlagged = true
         }
     }
@@ -1153,7 +1152,7 @@ extension EmailListViewController: SegueHandlerType {
             // This is not a simple compose (but reply, forward or such),
             // thus we have to pass the original message.
             guard let indexPath = lastSelectedIndexPath else {
-                    Log.shared.errorAndCrash("Invalid state")
+                    Log.shared.info("Can happen if the message the user wanted to reply to has been deleted in between performeSeque and here")
                     return
             }
 

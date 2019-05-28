@@ -52,6 +52,7 @@ class ComposeTableViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupRecipientSuggestionsTableViewController()
+        viewModel?.handleDidReAppear()
     }
 
     // MARK: - Setup & Configuration

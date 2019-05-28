@@ -34,8 +34,6 @@ class HandshakeViewController: BaseTableViewController {
     override func awakeFromNib() {
         tableView.estimatedRowHeight = 400.0
         tableView.rowHeight = UITableView.automaticDimension
-
-
     }
 
     override func didReceiveMemoryWarning() {

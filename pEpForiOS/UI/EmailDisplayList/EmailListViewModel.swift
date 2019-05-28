@@ -117,7 +117,6 @@ class EmailListViewModel {
         messageQueryResults = MessageQueryResults(withFolder: folderToShow,
                                                        filter: nil,
                                                        search: nil)
-        //!!!: changed filter to nil take care
         messageQueryResults.delegate = self
         // Threading feature is currently non-existing. Keep this code, might help later.
 //        self.oldThreadSetting = AppSettings.threadedViewEnabled
@@ -239,39 +238,27 @@ class EmailListViewModel {
     }
 
     public func markSelectedAsFlagged(indexPaths: [IndexPath]) {
-        indexPaths.forEach { (ip) in
-            setFlagged(forIndexPath: ip)
-        }
+        setFlagged(forIndexPath: indexPaths)
     }
 
     public func markSelectedAsUnFlagged(indexPaths: [IndexPath]) {
-        indexPaths.forEach { (ip) in
-            unsetFlagged(forIndexPath: ip)
-        }
+        unsetFlagged(forIndexPath: indexPaths)
     }
 
     public func markSelectedAsRead(indexPaths: [IndexPath]) {
-        indexPaths.forEach { (ip) in
-            markRead(forIndexPath: ip)
-        }
+        markRead(forIndexPath: indexPaths)
     }
 
     public func markSelectedAsUnread(indexPaths: [IndexPath]) {
-        indexPaths.forEach { (ip) in
-            markUnread(forIndexPath: ip)
-        }
+        markUnread(forIndexPath: indexPaths)
     }
 
     public func deleteSelected(indexPaths: [IndexPath]) {
-        updatesEnabled = false
-        indexPaths.forEach { (ip) in
-            let message = messageQueryResults[ip.row]
-            delete(message: message)
-        }
+        let messages = indexPaths.map { messageQueryResults[$0.row] }
+        delete(messages: messages)
     }
 
     public func messagesToMove(indexPaths: [IndexPath]) -> [Message?] {
-        updatesEnabled = false
         var messages : [Message?] = []
         indexPaths.forEach { (ip) in
             messages.append(self.message(representedByRowAt: ip))
@@ -279,24 +266,24 @@ class EmailListViewModel {
         return messages
     }
     
-    func setFlagged(forIndexPath indexPath: IndexPath) {
+    func setFlagged(forIndexPath indexPath: [IndexPath]) {
         setFlaggedValue(forIndexPath: indexPath, newValue: true)
     }
 
-    func unsetFlagged(forIndexPath indexPath: IndexPath) {
+    func unsetFlagged(forIndexPath indexPath: [IndexPath]) {
         setFlaggedValue(forIndexPath: indexPath, newValue: false)
     }
     
-    func markRead(forIndexPath indexPath: IndexPath) {
+    func markRead(forIndexPath indexPath: [IndexPath]) {
         setSeenValue(forIndexPath: indexPath, newValue: true)
     }
 
-    func markUnread(forIndexPath indexPath: IndexPath) {
+    func markUnread(forIndexPath indexPath: [IndexPath]) {
         setSeenValue(forIndexPath: indexPath, newValue: false)
     }
 
     func delete(forIndexPath indexPath: IndexPath) {
-       deleteMessage(at: indexPath)
+        deleteMessages(at: [indexPath])
     }
 
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
@@ -461,32 +448,25 @@ extension EmailListViewModel {
 
 extension EmailListViewModel {
 
-    private func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
+    private func setFlaggedValue(forIndexPath indexPath: [IndexPath], newValue flagged: Bool) {
         updatesEnabled = false
-        let message = messageQueryResults[indexPath.row]
-        let imap =  message.imapFlags
-        imap.flagged = flagged
-        message.imapFlags = imap
-        message.save()
-//        // This does *not* trigger FetchedResultsController. Ingtentionally.
-//        message.imapFlags.flagged = flagged
-//        message.save()
+        let messages = indexPath.map { messageQueryResults[$0.row] }
+        Message.setFlaggedValue(to: messages, newValue: flagged)
     }
 
-    private func setSeenValue(forIndexPath indexPath: IndexPath, newValue seen: Bool) {
-        let message = messageQueryResults[indexPath.row]
-        message.imapFlags.seen = seen
-        message.save()
+    private func setSeenValue(forIndexPath indexPath: [IndexPath], newValue seen: Bool) {
+        let messages = indexPath.map { messageQueryResults[$0.row] }
+        Message.setSeenValue(to: messages, newValue: seen)
     }
 
-    @discardableResult private func deleteMessage(at indexPath: IndexPath) -> Message? {
-        let message = messageQueryResults[indexPath.row]
-        delete(message: message)
-        return message
+    @discardableResult private func deleteMessages(at indexPath: [IndexPath]) -> [Message]? {
+        let messages = indexPath.map { messageQueryResults[$0.row] }
+        delete(messages: messages)
+        return messages
     }
 
-    private func delete(message: Message) {
-        message.imapDelete()
+    private func delete(messages: [Message]) {
+        Message.imapDelete(messages: messages)
     }
 
     private func cachedSenderImage(forCellAt indexPath:IndexPath) -> UIImage? {
@@ -571,7 +551,7 @@ extension EmailListViewModel {
     func composeViewModelForNewMessage() -> ComposeViewModel {
 		// Determine the sender.
         var someUser: Identity? = nil
-        if let f = folderToShow as? RealFolder {
+        if let f = folderToShow as? RealFolderProtocol {
              someUser = f.account.user
         } else {
             let account = Account.defaultAccount()

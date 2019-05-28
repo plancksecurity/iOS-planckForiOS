@@ -8,7 +8,7 @@
 
 import MessageModel
 
-//!!!: move to MM. Or better re-move.
+//!!!: uses CD. move to MM. Or better re-move.
 extension Folder {
 
     /**

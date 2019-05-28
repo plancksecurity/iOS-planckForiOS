@@ -401,7 +401,7 @@ class EmailViewController: BaseTableViewController {
             imap.flagged = false
             message.imapFlags = imap
             //!!!: not needed? let's see if message query is fast enought? seems yes
-            delegate?.emailDisplayDidUnflag(message: message)
+            delegate?.emailDisplayDidUnflag(message: message) //!!!: Why is this in again? I think FRC is fast enough? 
         } else {
             let imap = message.imapFlags
             imap.flagged = true
@@ -418,10 +418,12 @@ class EmailViewController: BaseTableViewController {
     }
 
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
-        message?.imapDelete()
-        if let message = message {
-            delegate?.emailDisplayDidDelete(message: message)
+        guard let message = message else {
+            Log.shared.errorAndCrash("No message")
+            return
         }
+        Message.imapDelete(messages: [message])
+        delegate?.emailDisplayDidDelete(message: message)
     }
 
     /**
