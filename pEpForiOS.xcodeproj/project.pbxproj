@@ -2636,7 +2636,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"BUILD_TIME START pEp_for_iOS: \"`date \"+%Y_%m_%d--%H:%M:%S\"`";
+			shellScript = "echo \"BUILD_TIME START pEp_for_iOS: \"`date \"+%Y_%m_%d--%H:%M:%S\"`\necho \"##########\"\necho ${ARCHS}\n";
 		};
 		151573B41F2091910049BB0B /* Log Time Finished Script */ = {
 			isa = PBXShellScriptBuildPhase;

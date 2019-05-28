@@ -59,6 +59,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if MiscUtil.isUnitTest() {
             return
         }
+        lastSelectedIndexPath = nil
 
         setUpTextFilter()
 
@@ -1161,7 +1162,7 @@ extension EmailListViewController: SegueHandlerType {
             // This is not a simple compose (but reply, forward or such),
             // thus we have to pass the original message.
             guard let indexPath = lastSelectedIndexPath else {
-                    Log.shared.errorAndCrash("Invalid state")
+                    Log.shared.info("Can happen if the message the user wanted to reply to has been deleted in between performeSeque and here")
                     return
             }
 
