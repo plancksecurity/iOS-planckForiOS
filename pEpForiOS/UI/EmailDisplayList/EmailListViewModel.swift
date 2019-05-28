@@ -53,7 +53,7 @@ class EmailListViewModel {
     var lastSearchTerm = ""
     var updatesEnabled = true
 
-    public weak var emailListViewModelDelegate: EmailListViewModelDelegate?
+    weak var emailListViewModelDelegate: EmailListViewModelDelegate?
 
     let folderToShow: DisplayableFolderProtocol
 
@@ -117,7 +117,6 @@ class EmailListViewModel {
         messageQueryResults = MessageQueryResults(withFolder: folderToShow,
                                                        filter: nil,
                                                        search: nil)
-        //!!!: changed filter to nil take care
         messageQueryResults.delegate = self
         // Threading feature is currently non-existing. Keep this code, might help later.
 //        self.oldThreadSetting = AppSettings.threadedViewEnabled
@@ -300,12 +299,14 @@ class EmailListViewModel {
     }
 
     public func shouldShowToolbarEditButtons() -> Bool {
-        if folderToShow is VirtualFolderProtocol {
+        switch folderToShow {
+        case is VirtualFolderProtocol:
             return true
-        } else if let f = folderToShow as? Folder {
-            return !(f.folderType == .outbox)
+        case let folder as Folder:
+            return folder.folderType != .outbox && folder.folderType != .drafts
+        default:
+            return true
         }
-        return true
     }
 
     public func getDestructiveActtion(forMessageAt index: Int) -> SwipeActionDescriptor {
@@ -550,7 +551,7 @@ extension EmailListViewModel {
     func composeViewModelForNewMessage() -> ComposeViewModel {
 		// Determine the sender.
         var someUser: Identity? = nil
-        if let f = folderToShow as? RealFolder {
+        if let f = folderToShow as? RealFolderProtocol {
              someUser = f.account.user
         } else {
             let account = Account.defaultAccount()
