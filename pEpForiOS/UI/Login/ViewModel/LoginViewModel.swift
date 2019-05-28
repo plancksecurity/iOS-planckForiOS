@@ -118,7 +118,8 @@ class LoginViewModel {
             let smtpTransport = ConnectionTransport(
                 accountSettingsTransport: outgoingServer.transport, smtpPort: outgoingServer.port)
 
-            var newAccount = verifiableAccount ?? VerifiableAccount()
+            var newAccount = verifiableAccount ??
+                VerifiableAccount(messageModelService: messageModelService)
 
             newAccount.verifiableAccountDelegate = self
             newAccount.address = accountName

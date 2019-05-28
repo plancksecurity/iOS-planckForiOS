@@ -26,7 +26,7 @@ class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, 
     var responder = 0
     var accounts = [Account]()
     
-    public var model: VerifiableAccountProtocol = VerifiableAccount()
+    public var model = VerifiableAccount()
 
     let viewWidthAligner = ViewWidthsAligner()
 
@@ -133,6 +133,7 @@ extension UserInfoTableViewController: SegueHandlerType {
         switch segueIdentifier(for: segue) {
         case .IMAPSettings:
             if let destination = segue.destination as? IMAPSettingsTableViewController {
+                model.messageModelService = appConfig.messageModelService
                 destination.appConfig = appConfig
                 destination.model = model
             }

@@ -119,7 +119,8 @@ public class AccountSettingsViewModel {
 
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
                 smtp: ServerViewModel) {
-        var theVerifier = verifiableAccount ?? VerifiableAccount()
+        var theVerifier = verifiableAccount ??
+            VerifiableAccount(messageModelService: messageModelService)
         verifiableAccount = theVerifier
 
         theVerifier.address = email
