@@ -87,6 +87,7 @@ class LoginViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        loginViewModel.messageModelService = appConfig.messageModelService
         loginViewModel.loginViewModelLoginErrorDelegate = self
         loginViewModel.loginViewModelOAuth2ErrorDelegate = self
         configureView()

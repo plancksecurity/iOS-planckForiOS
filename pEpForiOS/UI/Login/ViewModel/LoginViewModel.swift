@@ -52,6 +52,8 @@ class LoginViewModel {
 
     let qualifyServerService = QualifyServerIsLocalService()
 
+    var messageModelService: MessageModelService? = nil
+
     init(verifiableAccount: VerifiableAccountProtocol? = nil) {
         self.verifiableAccount = verifiableAccount
     }
