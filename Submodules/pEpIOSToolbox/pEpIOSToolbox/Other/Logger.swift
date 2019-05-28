@@ -165,7 +165,7 @@ public class Logger {
                               filePath: String = #file,
                               fileLine: Int = #line,
                               _ message: StaticString,
-                              _ args: CVarArg...) -> Never {
+                              _ args: CVarArg...) {
         saveLog(message: message,
                 severity: .fault,
                 function: function,
