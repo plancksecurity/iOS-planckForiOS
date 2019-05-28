@@ -569,21 +569,6 @@ class TestUtil {
 
     // MARK: - FOLDER
 
-    static func determineInterestingFolders(in cdAccount: CdAccount)
-        -> [NetworkServiceWorker.FolderInfo] {
-        let accountInfo = AccountConnectInfo(accountID: cdAccount.objectID)
-        let dummyConfig = ReplicationService.ServiceConfig(sleepTimeInSeconds: 1,
-                                                       parentName: #function,
-                                                       mySelfer:
-            DefaultMySelfer(parentName: #function,
-                            backgrounder: nil),
-                                                       backgrounder: nil,
-                                                       errorPropagator: nil)
-        let networkServiceWorker = NetworkServiceWorker(serviceConfig: dummyConfig,
-                                                        imapConnectionDataCache: nil)
-        return networkServiceWorker.determineInterestingFolders(accountInfo: accountInfo)
-    }
-
     static func makeFolderInteresting(folderType: FolderType, cdAccount: CdAccount) {
         let folder = cdFolder(ofType: folderType, in: cdAccount)
         folder.lastLookedAt = Date(timeInterval: -1, since: Date())
