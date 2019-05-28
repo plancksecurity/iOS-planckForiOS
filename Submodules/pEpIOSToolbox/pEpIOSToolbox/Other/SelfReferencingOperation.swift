@@ -5,7 +5,6 @@
 
 import Foundation
 
-//BUFF: move to toolbox
 public class SelfReferencingOperation: Operation {
 
     private let executionBlock: (_ operation: SelfReferencingOperation?)-> Void
