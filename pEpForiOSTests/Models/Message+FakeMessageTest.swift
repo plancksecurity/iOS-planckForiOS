@@ -208,7 +208,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
                 XCTFail()
                 return
             }
-            let allCdMessages = cdFolder.allMessages()
+            let allCdMessages = cdFolder.allMessages(context: moc)
             for cdMsg in allCdMessages {
                 moc.delete(cdMsg)
             }
@@ -227,7 +227,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
                 XCTFail()
                 return
             }
-            let allCdMessages = cdFolder.allMessages()
+            let allCdMessages = cdFolder.allMessages(context: moc)
             for cdMsg in allCdMessages {
                 cdMsg.pEpRating = Int16(PEPRating.trusted.rawValue)
             }
