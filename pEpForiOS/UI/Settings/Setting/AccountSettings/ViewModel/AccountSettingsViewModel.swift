@@ -48,7 +48,11 @@ public class AccountSettingsViewModel {
     /// and also the implementation of the verification.
     public var verifiableAccount: VerifiableAccountProtocol?
 
-    public init(account: Account) {
+    var messageModelService: MessageModelService
+
+    public init(account: Account, messageModelService: MessageModelService) {
+        self.messageModelService = messageModelService
+
         // We are using a copy of the data here.
         // The outside world must not know changed settings until they have been verified.
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
