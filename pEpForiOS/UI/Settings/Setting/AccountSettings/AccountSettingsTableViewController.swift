@@ -226,9 +226,12 @@ UIPickerViewDataSource, UITextFieldDelegate {
     // MARK: - Actions
     
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
-        let _ =  navigationController?.popViewController(animated: true)
-        //here if it has not gone well recover the original, if everything went well do nothing
-
+        guard let isIphone = splitViewController?.isCollapsed else {
+            return
+        }
+        if !isIphone {
+            view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+        }
     }
 
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
