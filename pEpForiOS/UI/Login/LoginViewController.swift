@@ -255,7 +255,9 @@ class LoginViewController: BaseViewController {
     }
 
     func setupViewModel() {
-        loginViewModel = createViewModel()
+        if loginViewModel == nil {
+            loginViewModel = createViewModel()
+        }
     }
 
     func viewModelOrCrash() -> LoginViewModel {
