@@ -286,7 +286,7 @@ extension LoginViewController: UITextFieldDelegate {
             self.password.becomeFirstResponder()
         } else if textField == self.password {
             textField.resignFirstResponder()
-            self.logIn(self.password)
+            self.logIn(self.password as Any)
         }
         return true
     }
