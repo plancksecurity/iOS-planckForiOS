@@ -57,7 +57,7 @@ protocol LoginViewControllerDelegate: class  {
 
 class LoginViewController: BaseViewController {
     static let minCharUserName = 1
-    var loginViewModel = LoginViewModel()
+    var loginViewModel: LoginViewModel?
     var offerManualSetup = false
     weak var delegate: LoginViewControllerDelegate?
 
@@ -85,11 +85,13 @@ class LoginViewController: BaseViewController {
         super.didSetAppConfig()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        setupViewModel()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        loginViewModel.messageModelService = appConfig.messageModelService
-        loginViewModel.loginViewModelLoginErrorDelegate = self
-        loginViewModel.loginViewModelOAuth2ErrorDelegate = self
+        setupViewModel()
         configureView()
         configureKeyboardAwareness()
     }
@@ -114,7 +116,7 @@ class LoginViewController: BaseViewController {
         self.user.convertToLoginField(
             placeholder: NSLocalizedString("Name", comment: "username"), delegate: self)
 
-        self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
+        self.navigationController?.navigationBar.isHidden = !viewModelOrCrash().isThereAnAccount()
 
         // hide extended login fields
         manualConfigButton.isHidden = true
@@ -199,7 +201,7 @@ class LoginViewController: BaseViewController {
                              offerManualSetup: false)
             return
         }
-        guard !loginViewModel.exist(address: email) else {
+        guard !viewModelOrCrash().exist(address: email) else {
             isCurrentlyVerifying = false
             handleLoginError(error: LoginViewController.LoginError.accountExistence,
                              offerManualSetup: false)
@@ -217,11 +219,11 @@ class LoginViewController: BaseViewController {
             return
         }
 
-        loginViewModel.accountVerificationResultDelegate = self
+        viewModelOrCrash().accountVerificationResultDelegate = self
 
-        if loginViewModel.isOAuth2Possible(email: email) {
+        if viewModelOrCrash().isOAuth2Possible(email: email) {
             let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
-            loginViewModel.loginWithOAuth2(
+            viewModelOrCrash().loginWithOAuth2(
                 viewController: self, emailAddress: email, userName: username,
                 mySelfer: appConfig.mySelfer, oauth2Authorizer: oauth)
         } else {
@@ -231,7 +233,7 @@ class LoginViewController: BaseViewController {
                 return
             }
 
-            loginViewModel.login(
+            viewModelOrCrash().login(
                 accountName: email, userName: username, password: pass,
                 mySelfer: appConfig.mySelfer)
         }
@@ -243,8 +245,28 @@ class LoginViewController: BaseViewController {
 
     // MARK: - Util
 
+    func createViewModel() -> LoginViewModel {
+        let theLoginViewModel = LoginViewModel(messageModelService: appConfig.messageModelService)
+        theLoginViewModel.loginViewModelLoginErrorDelegate = self
+        theLoginViewModel.loginViewModelOAuth2ErrorDelegate = self
+        return theLoginViewModel
+    }
+
+    func setupViewModel() {
+        loginViewModel = createViewModel()
+    }
+
+    func viewModelOrCrash() -> LoginViewModel {
+        if let theVM = loginViewModel {
+            return theVM
+        } else {
+            Log.shared.errorAndCrash("No view model")
+            return createViewModel()
+        }
+    }
+
     func updatePasswordField(email: String?) {
-        let oauth2Possible = loginViewModel.isOAuth2Possible(email: email)
+        let oauth2Possible = viewModelOrCrash().isOAuth2Possible(email: email)
         password.isEnabled = !oauth2Possible
         if password.isEnabled {
             password.enableLoginField()
