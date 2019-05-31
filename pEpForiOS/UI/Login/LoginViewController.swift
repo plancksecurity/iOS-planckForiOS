@@ -306,9 +306,7 @@ extension LoginViewController: SegueHandlerType {
                 vc.appConfig = appConfig
 
                 // Give the next model what we know.
-                vc.model.address = emailAddress.text
-                vc.model.password = password.text
-                vc.model.userName = user.text
+                vc.model = viewModelOrCrash().verifiableAccount
             }
         default:
             break
