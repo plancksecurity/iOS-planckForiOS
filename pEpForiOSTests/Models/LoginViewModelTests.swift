@@ -11,6 +11,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 import PantomimeFramework
+import PEPObjCAdapterFramework
 
 class NoOpMySelfer: KickOffMySelfProtocol {
     func startMySelf() {
@@ -25,6 +26,9 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
 }
 
 class LoginViewModelTests: CoreDataDrivenTestBase {
+    /// We need a MMS for the login view model, and don't want to slip this out of scope.
+    var fakeMessageModelService: MessageModelService? = nil
+
     class TestVerifiableAccount: VerifiableAccountProtocol {
         let accountSettings: TestDataBase.AccountSettings
         let expLookedUp: XCTestExpectation
@@ -112,7 +116,13 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         let expLookedUp = expectation(description: "expLookedUp")
         let verifiableAccount =
             TestVerifiableAccount(accountSettings: accountSettings, expLookedUp: expLookedUp)
-        let vm = LoginViewModel(verifiableAccount: verifiableAccount)
+
+        let fakeMessageModelService = MessageModelService(
+            notifyHandShakeDelegate: ErrorNotifyHandshakeDelegate())
+        self.fakeMessageModelService = fakeMessageModelService
+
+        let vm = LoginViewModel(messageModelService: fakeMessageModelService,
+                                verifiableAccount: verifiableAccount)
         let errorHandler = ErrorHandler()
         vm.loginViewModelLoginErrorDelegate = errorHandler
         vm.login(accountName: accountSettings.idAddress,
@@ -124,5 +134,16 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
+    }
+}
+
+// MARK: - Helpers
+
+class ErrorNotifyHandshakeDelegate: NSObject, PEPNotifyHandshakeDelegate {
+    func notifyHandshake(_ object: UnsafeMutableRawPointer?,
+                         me: PEPIdentity,
+                         partner: PEPIdentity,
+                         signal: PEPSyncHandshakeSignal) -> PEPStatus {
+        return .unknownError
     }
 }
