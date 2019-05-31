@@ -85,10 +85,6 @@ class LoginViewController: BaseViewController {
         super.didSetAppConfig()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        setupViewModel()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewModel()
