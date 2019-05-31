@@ -94,6 +94,7 @@ class LoginViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         updateView()
+        setupViewModel()
     }
 
     func configureView() {
