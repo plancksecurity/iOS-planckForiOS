@@ -247,7 +247,6 @@ class LoginViewController: BaseViewController {
 
     func createViewModel() -> LoginViewModel {
         let theLoginViewModel = LoginViewModel(
-            messageModelService: appConfig.messageModelService,
             verifiableAccount: VerifiableAccount(
                 messageModelService: appConfig.messageModelService))
         theLoginViewModel.loginViewModelLoginErrorDelegate = self

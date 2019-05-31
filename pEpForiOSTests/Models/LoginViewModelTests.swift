@@ -26,9 +26,6 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
 }
 
 class LoginViewModelTests: CoreDataDrivenTestBase {
-    /// We need a MMS for the login view model, and don't want to slip this out of scope.
-    var fakeMessageModelService: MessageModelService? = nil
-
     class TestVerifiableAccount: VerifiableAccountProtocol {
         let accountSettings: TestDataBase.AccountSettings
         let expLookedUp: XCTestExpectation
@@ -117,12 +114,7 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         let verifiableAccount =
             TestVerifiableAccount(accountSettings: accountSettings, expLookedUp: expLookedUp)
 
-        let fakeMessageModelService = MessageModelService(
-            notifyHandShakeDelegate: ErrorNotifyHandshakeDelegate())
-        self.fakeMessageModelService = fakeMessageModelService
-
-        let vm = LoginViewModel(messageModelService: fakeMessageModelService,
-                                verifiableAccount: verifiableAccount)
+        let vm = LoginViewModel(verifiableAccount: verifiableAccount)
         let errorHandler = ErrorHandler()
         vm.loginViewModelLoginErrorDelegate = errorHandler
         vm.login(accountName: accountSettings.idAddress,
