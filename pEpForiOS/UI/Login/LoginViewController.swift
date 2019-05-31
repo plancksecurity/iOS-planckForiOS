@@ -96,8 +96,7 @@ class LoginViewController: BaseViewController {
         updateView()
     }
 
-    func configureView(){
-
+    func configureView() {
         password.isEnabled = true
         activityIndicatorView.hidesWhenStopped = true
 
