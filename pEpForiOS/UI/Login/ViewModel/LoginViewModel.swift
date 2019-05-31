@@ -54,7 +54,9 @@ class LoginViewModel {
 
     var messageModelService: MessageModelService? = nil
 
-    init(verifiableAccount: VerifiableAccountProtocol? = nil) {
+    init(messageModelService: MessageModelService? = nil,
+         verifiableAccount: VerifiableAccountProtocol? = nil) {
+        self.messageModelService = messageModelService
         self.verifiableAccount = verifiableAccount
     }
 
