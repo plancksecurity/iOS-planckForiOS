@@ -121,6 +121,7 @@ public class AccountSettingsViewModel {
                 smtp: ServerViewModel) {
         var theVerifier = verifiableAccount ??
             VerifiableAccount(messageModelService: messageModelService)
+        theVerifier.verifiableAccountDelegate = self
         verifiableAccount = theVerifier
 
         theVerifier.address = email
@@ -162,8 +163,6 @@ public class AccountSettingsViewModel {
         if let transport = Server.Transport(fromString: smtp.transport) {
             theVerifier.transportSMTP = ConnectionTransport.init(transport: transport)
         }
-
-        theVerifier.verifiableAccountDelegate = self
 
         do {
             try theVerifier.verify()
