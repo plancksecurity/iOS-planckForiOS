@@ -239,7 +239,7 @@ class LoginViewController: BaseViewController {
     }
 }
 
-// MARK: - Util
+// MARK: - View model
 
 extension LoginViewController {
     func createViewModel() -> LoginViewModel {
@@ -263,7 +263,11 @@ extension LoginViewController {
             return createViewModel()
         }
     }
+}
 
+// MARK: - Util
+
+extension LoginViewController {
     func updatePasswordField(email: String?) {
         let oauth2Possible = viewModelOrCrash().isOAuth2Possible(email: email)
         password.isEnabled = !oauth2Possible
