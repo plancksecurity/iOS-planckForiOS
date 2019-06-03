@@ -20,6 +20,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                 Log.shared.errorAndCrash("No appConfig?")
 
                 // We have no config. Return something.
+
                 let theMessageModelService = MessageModelService(
                     mySelfer: self,
                     errorPropagator: ErrorPropagator(),
