@@ -50,8 +50,8 @@ class NewAccountSetupUITest: XCTestCase {
 
     func testAdditionalManualAccount() {
         app().launch()
-        let account = secretTestData().workingAccount1
-        let (manualAccount, correctPassword) = accountToManual(account: account)
+        let (manualAccount, correctPassword) = accountToManual(
+            account: secretTestData().workingAccount1)
         addAdditionalManual(account: manualAccount, correctPassword: correctPassword)
     }
 
@@ -90,9 +90,8 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        let account = secretTestData().workingAccount1
-
-        var (manualAccount, correctPassword) = accountToManual(account: account)
+        var (manualAccount, correctPassword) = accountToManual(
+            account: secretTestData().workingAccount1)
 
         newAccountSetup(account: manualAccount)
 
