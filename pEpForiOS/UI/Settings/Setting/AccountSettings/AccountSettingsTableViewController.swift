@@ -230,11 +230,13 @@ UIPickerViewDataSource, UITextFieldDelegate {
         guard let isIphone = splitViewController?.isCollapsed else {
             return
         }
-        if !isIphone {
+        if isIphone {
             (self.navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
-            //view.window?.rootViewController?.dismiss(animated: true, completion: nil)
         } else {
-            self.parent?.parent?.dismiss(animated: true, completion: nil)
+            //self.parent?.parent?.dismiss(animated: true, completion: nil)
+            //(self.navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
+            //view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+            
         }
     }
 
