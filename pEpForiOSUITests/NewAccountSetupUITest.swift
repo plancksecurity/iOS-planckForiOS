@@ -257,7 +257,10 @@ class NewAccountSetupUITest: XCTestCase {
 
         signIn(account: account, enterPassword: true)
         switchToManualConfig()
-        manualNewAccountSetup(account, expectServerDetailsToBeAlreadyFilledIn: true)
+
+        var correctAccount = account
+        correctAccount.password = correctPassword
+        manualNewAccountSetup(correctAccount, expectServerDetailsToBeAlreadyFilledIn: true)
 
         waitForever()
     }
