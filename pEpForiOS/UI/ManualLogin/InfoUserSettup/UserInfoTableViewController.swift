@@ -110,7 +110,7 @@ class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, 
 
     @IBAction func changePassword(_ sender: UITextField) {
         var vm = viewModelOrCrash()
-        vm .password = sender.text
+        vm.password = sender.text
         updateView()
     }
 
