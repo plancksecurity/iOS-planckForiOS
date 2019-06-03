@@ -311,7 +311,7 @@ extension LoginViewController: SegueHandlerType {
                 let vc = navVC.topViewController as? UserInfoTableViewController {
                 vc.appConfig = appConfig
 
-                // Give the next model what we know.
+                // Give the next model all that we know.
                 vc.model = viewModelOrCrash().verifiableAccount
             }
         default:
