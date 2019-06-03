@@ -51,7 +51,7 @@ class NewAccountSetupUITest: XCTestCase {
     func testAdditionalManualAccount() {
         app().launch()
         let (manualAccount, correctPassword) = accountToManual(
-            account: secretTestData().workingAccount1)
+            account: secretTestData().workingAccount2)
         addAdditionalManual(account: manualAccount, correctPassword: correctPassword)
     }
 
