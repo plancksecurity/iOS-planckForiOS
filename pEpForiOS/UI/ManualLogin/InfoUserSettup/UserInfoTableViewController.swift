@@ -99,24 +99,28 @@ class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, 
     @IBAction func changeEmail(_ sender: UITextField) {
         var vm = viewModelOrCrash()
         vm.address = sender.text
+        model = vm
         updateView()
     }
 
     @IBAction func changeUsername(_ sender: UITextField) {
         var vm = viewModelOrCrash()
         vm.loginName = sender.text
+        model = vm
         updateView()
     }
 
     @IBAction func changePassword(_ sender: UITextField) {
         var vm = viewModelOrCrash()
         vm.password = sender.text
+        model = vm
         updateView()
     }
 
     @IBAction func changedName(_ sender: UITextField) {
         var vm = viewModelOrCrash()
         vm.userName = sender.text
+        model = vm
         updateView()
     }
 
