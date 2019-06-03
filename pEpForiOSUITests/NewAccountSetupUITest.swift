@@ -50,7 +50,9 @@ class NewAccountSetupUITest: XCTestCase {
 
     func testAdditionalManualAccount() {
         app().launch()
-        addAdditionalManual(account: secretTestData().manualAccount)
+        let account = secretTestData().workingAccount1
+        let (manualAccount, correctPassword) = accountToManual(account: account)
+        addAdditionalManual(account: manualAccount, correctPassword: correctPassword)
     }
 
     func testAutoAccountPlusManual() {
@@ -61,7 +63,9 @@ class NewAccountSetupUITest: XCTestCase {
         let account1 = secretTestData().workingAccount1
         newAccountSetup(account: account1)
 
-        addAdditionalManual(account: secretTestData().manualAccount)
+        let account2 = secretTestData().workingAccount2
+        let (manualAccount, correctPassword) = accountToManual(account: account2)
+        addAdditionalManual(account: manualAccount, correctPassword: correctPassword)
     }
 
     func testTwoInitialAccounts() {
@@ -86,20 +90,18 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        var account = secretTestData().workingAccount1
+        let account = secretTestData().workingAccount1
 
-        // Wrong password should prevent the automatic login
-        let correctPassword = account.password
-        account.password += "ShouldNotWork"
+        var (manualAccount, correctPassword) = accountToManual(account: account)
 
-        newAccountSetup(account: account)
+        newAccountSetup(account: manualAccount)
 
         switchToManualConfig()
 
         // Use correct password for the manual setup
-        account.password = correctPassword
+        manualAccount.password = correctPassword
 
-        manualNewAccountSetup(account, expectServerDetailsToBeAlreadyFilledIn: true)
+        manualNewAccountSetup(manualAccount, expectServerDetailsToBeAlreadyFilledIn: true)
 
         waitForever()
     }
@@ -251,7 +253,7 @@ class NewAccountSetupUITest: XCTestCase {
         }
     }
 
-    func addAdditionalManual(account: UIAccount) {
+    func addAdditionalManual(account: UIAccount, correctPassword: String) {
         addAccount()
 
         signIn(account: account, enterPassword: true)
@@ -298,5 +300,17 @@ class NewAccountSetupUITest: XCTestCase {
         let theApp = app()
         theApp.navigationBars["All"].buttons["Folders"].tap()
         theApp.tables.buttons["Add Account"].tap()
+    }
+
+    /// For the given account, sets the password to something that should not work,
+    /// transforming it into an account that requires manual setup.
+    /// - Returns: The account (that will require manual setup) plus the original password
+    ///            as a tuple.
+    func accountToManual(account: UIAccount) -> (UIAccount, String) {
+        var theAccount = account
+        // Wrong password should prevent the automatic login
+        let correctPassword = account.password
+        theAccount.password += "ShouldNotWork"
+        return (theAccount, correctPassword)
     }
 }
