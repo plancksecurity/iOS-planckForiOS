@@ -128,14 +128,3 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         })
     }
 }
-
-// MARK: - Helpers
-
-class ErrorNotifyHandshakeDelegate: NSObject, PEPNotifyHandshakeDelegate {
-    func notifyHandshake(_ object: UnsafeMutableRawPointer?,
-                         me: PEPIdentity,
-                         partner: PEPIdentity,
-                         signal: PEPSyncHandshakeSignal) -> PEPStatus {
-        return .unknownError
-    }
-}

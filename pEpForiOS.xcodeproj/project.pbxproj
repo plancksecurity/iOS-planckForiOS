@@ -266,6 +266,7 @@
 		4356FFE52135448600804089 /* ReplyAllPossibleChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFE42135448600804089 /* ReplyAllPossibleChecker.swift */; };
 		4356FFE721354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFE621354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift */; };
 		4356FFEC21356CB600804089 /* ReplyAllPossibleCheckerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFEB21356CB600804089 /* ReplyAllPossibleCheckerTest.swift */; };
+		4358A07A22A5301100C49E43 /* ErrorNotifyHandshakeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4358A07922A5301100C49E43 /* ErrorNotifyHandshakeDelegate.swift */; };
 		435F7C75215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt in Resources */ = {isa = PBXBuildFile; fileRef = 435F7C74215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt */; };
 		43628766213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43628765213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt */; };
 		436795F81EE98B9A00B03E23 /* MessageReevalutionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */; };
@@ -759,6 +760,7 @@
 		4356FFE42135448600804089 /* ReplyAllPossibleChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyAllPossibleChecker.swift; sourceTree = "<group>"; };
 		4356FFE621354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyAllPossibleCheckerProtocol.swift; sourceTree = "<group>"; };
 		4356FFEB21356CB600804089 /* ReplyAllPossibleCheckerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyAllPossibleCheckerTest.swift; sourceTree = "<group>"; };
+		4358A07922A5301100C49E43 /* ErrorNotifyHandshakeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorNotifyHandshakeDelegate.swift; sourceTree = "<group>"; };
 		435F7C74215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 1364_Mail_missing_attached_image.txt; sourceTree = "<group>"; };
 		43628765213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1300_odt_attachment.txt"; sourceTree = "<group>"; };
 		436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageReevalutionTests.swift; sourceTree = "<group>"; };
@@ -1082,6 +1084,7 @@
 				150707DB21006CD000AA213F /* ComposeUtilTest.swift */,
 				43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */,
 				15A5368F2155136800CF6204 /* PEPUtilTest.swift */,
+				4358A07922A5301100C49E43 /* ErrorNotifyHandshakeDelegate.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -3029,6 +3032,7 @@
 				437027A122315B5700A77AEC /* PEPAppUtilWrappers.swift in Sources */,
 				00262058217DE97100DDAFB5 /* AccountSettingsViewModelTest.swift in Sources */,
 				004422C82179E3C500BDF6DF /* SettingsCellViewModelTest.swift in Sources */,
+				4358A07A22A5301100C49E43 /* ErrorNotifyHandshakeDelegate.swift in Sources */,
 				150707DC21006CD000AA213F /* ComposeUtilTest.swift in Sources */,
 				15D439A5216F7E0E00EB3933 /* AccountPickerViewModelTest.swift in Sources */,
 				1574D07D2114696B00FEDC93 /* URL+MailToTest.swift in Sources */,
