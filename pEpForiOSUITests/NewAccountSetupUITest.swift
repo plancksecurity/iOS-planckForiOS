@@ -179,6 +179,8 @@ class NewAccountSetupUITest: XCTestCase {
     ///       server details are already filled in.
     ///       The use case is a successful lookup of account details,
     ///       with the wrong password, to force the manual setup.
+    /// - Note: The functionality for full manual accounts, lacking server information,
+    ///         has been taken over by means of existing code (refactor), but not tested.
     func manualNewAccountSetup(_ account: UIAccount,
                                expectServerDetailsToBeAlreadyFilledIn: Bool) {
         let theApp = app()
