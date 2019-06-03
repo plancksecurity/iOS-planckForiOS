@@ -237,9 +237,11 @@ class LoginViewController: BaseViewController {
     @IBAction func emailChanged(_ sender: UITextField) {
         updatePasswordField(email: sender.text)
     }
+}
 
-    // MARK: - Util
+// MARK: - Util
 
+extension LoginViewController {
     func createViewModel() -> LoginViewModel {
         let theLoginViewModel = LoginViewModel(
             verifiableAccount: VerifiableAccount(
