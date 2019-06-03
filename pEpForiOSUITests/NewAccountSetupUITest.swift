@@ -99,7 +99,7 @@ class NewAccountSetupUITest: XCTestCase {
         // Use correct password for the manual setup
         account.password = correctPassword
 
-        manualNewAccountSetup(account)
+        manualNewAccountSetup(account, expectServerDetailsToBeAlreadyFilledIn: true)
 
         waitForever()
     }
@@ -120,7 +120,7 @@ class NewAccountSetupUITest: XCTestCase {
 
         switchToManualConfig()
 
-        manualNewAccountSetup(account)
+        manualNewAccountSetup(account, expectServerDetailsToBeAlreadyFilledIn: true)
 
         waitForever()
     }
@@ -171,7 +171,15 @@ class NewAccountSetupUITest: XCTestCase {
         }
     }
 
-    func manualNewAccountSetup(_ account: UIAccount) {
+    /// - Parameters:
+    ///     - account: The account info from which to get the data to fill in.
+    ///     - expectServerDetailsToBeAlreadyFilledIn:
+    ///       If this is set to true, then the expectation is that
+    ///       server details are already filled in.
+    ///       The use case is a successful lookup of account details,
+    ///       with the wrong password, to force the manual setup.
+    func manualNewAccountSetup(_ account: UIAccount,
+                               expectServerDetailsToBeAlreadyFilledIn: Bool) {
         let theApp = app()
         let tablesQuery = theApp.tables
 
@@ -188,26 +196,31 @@ class NewAccountSetupUITest: XCTestCase {
 
         theApp.navigationBars.buttons["Next"].tap()
 
-        tf = tablesQuery.textFields["imapServer"]
-        tf.typeText(account.imapServerName)
-        tf = tablesQuery.textFields["imapPort"]
-        tf.tap()
-        tf.clearAndEnter(text: String(account.imapPort))
-
-        tablesQuery.buttons["imapTransportSecurity"].tap()
         let sheet = theApp.sheets["Transport protocol"]
-        sheet.buttons[account.imapTransportSecurityString].tap()
+
+        if !expectServerDetailsToBeAlreadyFilledIn {
+            tf = tablesQuery.textFields["imapServer"]
+            tf.typeText(account.imapServerName)
+            tf = tablesQuery.textFields["imapPort"]
+            tf.tap()
+            tf.clearAndEnter(text: String(account.imapPort))
+
+            tablesQuery.buttons["imapTransportSecurity"].tap()
+            sheet.buttons[account.imapTransportSecurityString].tap()
+        }
 
         theApp.navigationBars.buttons["Next"].tap()
 
-        tf = tablesQuery.textFields["smtpServer"]
-        tf.typeText(account.smtpServerName)
-        tf = tablesQuery.textFields["smtpPort"]
-        tf.tap()
-        tf.clearAndEnter(text: String(account.smtpPort))
+        if !expectServerDetailsToBeAlreadyFilledIn {
+            tf = tablesQuery.textFields["smtpServer"]
+            tf.typeText(account.smtpServerName)
+            tf = tablesQuery.textFields["smtpPort"]
+            tf.tap()
+            tf.clearAndEnter(text: String(account.smtpPort))
 
-        tablesQuery.buttons["smtpTransportSecurity"].tap()
-        sheet.buttons[account.smtpTransportSecurityString].tap()
+            tablesQuery.buttons["smtpTransportSecurity"].tap()
+            sheet.buttons[account.smtpTransportSecurityString].tap()
+        }
 
         let nextButton = theApp.navigationBars.buttons["Next"]
         nextButton.tap()
@@ -243,7 +256,7 @@ class NewAccountSetupUITest: XCTestCase {
 
         signIn(account: account, enterPassword: true)
         switchToManualConfig()
-        manualNewAccountSetup(account)
+        manualNewAccountSetup(account, expectServerDetailsToBeAlreadyFilledIn: true)
 
         waitForever()
     }
