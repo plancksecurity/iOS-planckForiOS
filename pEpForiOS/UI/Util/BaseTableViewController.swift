@@ -19,7 +19,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             guard let safeConfig = _appConfig else {
                 Log.shared.errorAndCrash("No appConfig?")
 
-                // We have no config. Return nonsense.
+                // We have no config. Return something.
                 let theMessageModelService = MessageModelService(
                     mySelfer: self,
                     errorPropagator: ErrorPropagator(),
