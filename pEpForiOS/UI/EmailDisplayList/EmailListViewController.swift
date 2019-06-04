@@ -410,6 +410,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
             vm.deleteSelected(indexPaths: selectedIndexPaths)
         }
+        lastSelectedIndexPath = nil
         cancelToolbar(sender)
     }
 
