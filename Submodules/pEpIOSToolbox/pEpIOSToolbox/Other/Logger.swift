@@ -170,15 +170,6 @@ public class Logger {
         SystemUtils.crash(msgString)
     }
 
-    public func errorAndCrash(function: String = #function,
-                              filePath: String = #file,
-                              fileLine: Int = #line,
-                              _ error: Error) {
-        let msgString = "\(error)"
-        os_log("%{public}@ %{public}@ (%{public}@):%d", msgString, function, filePath, fileLine)
-        SystemUtils.crash(msgString)
-    }
-
     /**
      Logs an error.
      */
