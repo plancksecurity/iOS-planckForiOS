@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import os.log
 
 import pEpIOSToolbox
 import MessageModel
@@ -87,9 +88,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func stopUsingPepSession() {
         syncUserActionsAndCleanupbackgroundTaskId =
             application.beginBackgroundTask(expirationHandler: { [unowned self] in
-                Log.shared.errorAndCrash(
+                os_log(
                     "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
+                    type: .error,
                     self.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
+                Log.shared.errorAndCrash()
                 // We migh want to call some (yet unexisting) emergency shutdown on
                 // ReplicationService here that brutally shuts down everything.
                 self.application.endBackgroundTask(UIBackgroundTaskIdentifier(
