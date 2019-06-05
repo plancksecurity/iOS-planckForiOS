@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+
 import pEpIOSToolbox
 import PEPObjCAdapterFramework
 
@@ -133,7 +134,7 @@ class ComposeViewModel {
 
     public func handleUserClickedSendButton() {
         guard let msg = ComposeUtil.messageToSend(withDataFrom: state) else {
-            Log.shared.warn("No message for sending")
+            os_log(type: .default, "No message for sending")
             return
         }
         msg.save()
