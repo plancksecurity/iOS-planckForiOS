@@ -166,7 +166,8 @@ public class Logger {
                               fileLine: Int = #line,
                               _ message: StaticString) {
         let msgString = "\(message)"
-        os_log("%{public}@ %{public}@ (%{public}@):%d", msgString, function, filePath, fileLine)
+        os_log("%{public}@ %{public}@ (%{public}@):%d",
+               type: .error, msgString, function, filePath, fileLine)
         SystemUtils.crash(msgString)
     }
 
@@ -175,7 +176,8 @@ public class Logger {
                               fileLine: Int = #line,
                               _ error: Error) {
         let msgString = "\(error)"
-        os_log("%{public}@ %{public}@ (%{public}@):%d", msgString, function, filePath, fileLine)
+        os_log("%{public}@ %{public}@ (%{public}@):%d",
+               type: .error, msgString, function, filePath, fileLine)
         SystemUtils.crash(msgString)
     }
 
