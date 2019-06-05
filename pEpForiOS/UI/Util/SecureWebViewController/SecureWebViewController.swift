@@ -7,6 +7,8 @@
 //
 
 import WebKit
+import os.log
+
 import pEpIOSToolbox
 
 protocol SecureWebViewControllerDelegate: class {
@@ -168,8 +170,8 @@ class SecureWebViewController: UIViewController {
                 forIdentifier: "pep.security.SecureWebViewController.block_all_external_content",
                 encodedContentRuleList: blockRules) { (contentRuleList, error) in
                     if let error = error {
-                        Log.shared.errorAndCrash(
-                            "Compile error: %@", error.localizedDescription)
+                        os_log("compile error: %{public}@", type: .error, "\(error)")
+                        Log.shared.errorAndCrash(error: error)
                         return
                     }
                     compiledBlockList = contentRuleList
