@@ -152,7 +152,7 @@ public extension String {
                                                     range: range,
                                                     withTemplate: replacee)
         } catch {
-            Log.shared.errorAndCrash(message: "Caught!")
+            Log.shared.errorAndCrash("Caught!")
             return result
         }
         return result
