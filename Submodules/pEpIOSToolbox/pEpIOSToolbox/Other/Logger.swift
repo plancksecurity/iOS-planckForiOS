@@ -171,7 +171,7 @@ public class Logger {
     public func errorAndCrash(function: String = #function,
                               filePath: String = #file,
                               fileLine: Int = #line,
-                              _ error: Error) {
+                              error: Error) {
         SystemUtils.crash("\(filePath):\(function):\(fileLine) - \(error)")
     }
 
