@@ -60,5 +60,5 @@ public class Logger {
     private let subsystem: String
     private let category: String
 
-    private let osLogger: OSLog
+    public let osLogger: OSLog
 }
