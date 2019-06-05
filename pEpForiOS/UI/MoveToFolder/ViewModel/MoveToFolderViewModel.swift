@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import os.log
+
 import pEpIOSToolbox
 import MessageModel
 
@@ -87,7 +89,7 @@ class MoveToFolderViewModel {
 
     func moveMessagesTo(index: Int) -> Bool {
         if !(index >= 0 && index < items.count) {
-            os_log(type: .error, "Index out of bounds")
+            os_log("Index out of bounds", type: .error)
             return false
         }
         let targetFolder = items[index].folder

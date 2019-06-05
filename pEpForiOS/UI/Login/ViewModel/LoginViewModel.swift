@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import os.log
 
 import MessageModel
 import pEpIOSToolbox
@@ -101,7 +102,7 @@ class LoginViewModel {
 
         func statusOk() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
-                os_log(type: .error, "%{public}@", error.localizedDescription)
+                os_log("%{public}@", type: .error, "\(error)")
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
                 return
             }
@@ -165,7 +166,7 @@ class LoginViewModel {
         do {
             try theVerificationService.verify()
         } catch {
-            os_log(type: .error, "%{public}@", error.localizedDescription)
+            os_log("%{public}@", type: .error, "\(error)")
             loginViewModelLoginErrorDelegate?.handle(loginError: error)
         }
     }
