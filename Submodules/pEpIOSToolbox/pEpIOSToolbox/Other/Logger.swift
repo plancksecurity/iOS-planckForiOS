@@ -164,10 +164,16 @@ public class Logger {
     public func errorAndCrash(function: String = #function,
                               filePath: String = #file,
                               fileLine: Int = #line,
-                              _ message: StaticString) {
-        let msgString = "\(message)"
-        os_log("%{public}@ %{public}@ (%{public}@):%d", msgString, function, filePath, fileLine)
-        SystemUtils.crash(msgString)
+                              _ message: StaticString,
+                              _ args: CVarArg...) {
+        saveLog(message: message,
+                severity: .fault,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                args: args)
+
+        SystemUtils.crash("\(filePath):\(function):\(fileLine) - \(message)")
     }
 
     /**
