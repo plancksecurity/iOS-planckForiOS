@@ -230,7 +230,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
                 result: .smtpError(smtpError))
         } else {
             if let theError = error {
-                Log.shared.errorAndCrash("%@", theError.localizedDescription)
+                Log.shared.errorAndCrash(error: theError)
             } else {
                 accountVerificationResultDelegate?.didVerify(result: .ok)
             }
@@ -245,7 +245,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
                 informAccountVerificationResultDelegate(error: nil)
                 mySelfer?.startMySelf()
             } catch {
-                Log.shared.errorAndCrash("%@", error.localizedDescription)
+                Log.shared.errorAndCrash(error: error)
             }
         case .failure(let error):
             informAccountVerificationResultDelegate(error: error)
