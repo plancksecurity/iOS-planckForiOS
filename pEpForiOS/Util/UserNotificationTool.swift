@@ -7,6 +7,8 @@
 //
 
 import UserNotifications
+import os.log
+
 import pEpIOSToolbox
 
 /// A simple wrapper around Local Notification stuff
@@ -64,9 +66,9 @@ struct UserNotificationTool {
                                                 content: content, trigger: trigger)
             center.add(request) { (error) in
                 if let error = error {
-                    os_log(type: .default, 
-                        "Error posting user notification: %{public}@",
-                        error.localizedDescription)
+                    os_log("Error posting user notification: %{public}@",
+                           type: .default,
+                           "\(error)")
                 }
             }
         } else {
