@@ -51,7 +51,7 @@ public class SortedSet<T: Equatable>: Sequence {
         defer { objc_sync_exit(self) }
 
         guard isValidIndex(index) else {
-            Log.shared.errorAndCrash("Index out of range")
+            Log.shared.errorAndCrash(message: "Index out of range")
             return
         }
         set.removeObject(at: index)
@@ -62,7 +62,7 @@ public class SortedSet<T: Equatable>: Sequence {
         defer { objc_sync_exit(self) }
 
         guard isValidIndex(index) else {
-            Log.shared.errorAndCrash("Index out of range")
+            Log.shared.errorAndCrash(message: "Index out of range")
             return
         }
         set.replaceObject(at: index, with: object)
@@ -73,7 +73,7 @@ public class SortedSet<T: Equatable>: Sequence {
         defer { objc_sync_exit(self) }
 
         guard isValidIndex(index) else {
-            Log.shared.errorAndCrash("Index out of range")
+            Log.shared.errorAndCrash(message: "Index out of range")
             return nil
         }
 
@@ -101,7 +101,7 @@ public class SortedSet<T: Equatable>: Sequence {
 
         for i in 0..<set.count {
             guard let testee = set.object(at: i) as? T else {
-                Log.shared.errorAndCrash("error casting")
+                Log.shared.errorAndCrash(message: "error casting")
                 return NSNotFound
             }
             if testee == object {
@@ -187,7 +187,7 @@ public class SortedSet<T: Equatable>: Sequence {
         set.sort { (first: Any, second: Any) -> ComparisonResult in
             guard let firstT = first as? T,
                 let secondT = second as? T else {
-                    Log.shared.errorAndCrash("Error casting.")
+                    Log.shared.errorAndCrash(message: "Error casting.")
                     return .orderedSame
             }
             return sortBlock(firstT, secondT)
@@ -197,7 +197,7 @@ public class SortedSet<T: Equatable>: Sequence {
     private func indexOfObjectIfInserted(obj: T) -> Int {
         for i in 0..<set.count {
             guard let testee = set.object(at: i) as? T else {
-                Log.shared.errorAndCrash("Error casing")
+                Log.shared.errorAndCrash(message: "Error casing")
                 return 0
             }
             if set.count == 0 {
