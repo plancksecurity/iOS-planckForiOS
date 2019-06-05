@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import os.log
+
 import pEpIOSToolbox
 import MessageModel
 
@@ -40,12 +42,12 @@ class ComposeDataSource: NSObject {
         } else {
             filterRows(filter: { $0.type != .mailingList} )
         }
-        Log.shared.log("filtering rows")
+        os_log("filtering rows", type: .default)
     }
 
     func numberOfRows() -> Int {
         let visibleRows = getVisibleRows()
-        Log.shared.log("number of rows -> %d", visibleRows.count)
+        os_log("number of rows -> %d", type: .default, visibleRows.count)
         return visibleRows.count
     }
 
