@@ -164,8 +164,8 @@ public class Logger {
     public func errorAndCrash(function: String = #function,
                               filePath: String = #file,
                               fileLine: Int = #line,
-                              _ message: StaticString) {
-        SystemUtils.crash("\(filePath):\(function):\(fileLine) - \(message)")
+                              _ message: StaticString? = nil) {
+        SystemUtils.crash("\(filePath):\(function):\(fileLine) - \(message ?? "no message")")
     }
 
     public func errorAndCrash(function: String = #function,
