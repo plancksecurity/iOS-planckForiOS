@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import os.log
+
 import pEpIOSToolbox
 import MessageModel
 import PEPObjCAdapterFramework
@@ -108,7 +110,7 @@ class HandshakePartnerTableViewCellViewModel {
         do {
             isPartnerpEpUser = try session.isPEPUser(pEpPartner).boolValue
         } catch let err as NSError {
-            os_log(type: .error, "%{public}@", err.localizedDescription)
+            os_log("%{public}@", type: .error, "\(err)")
             isPartnerpEpUser = false
         }
         setPartnerImage(for: partner)
@@ -159,7 +161,7 @@ class HandshakePartnerTableViewCellViewModel {
                 language: trustwordsLanguage,
                 full: trustwordsFull)
         } catch let err as NSError {
-            os_log(type: .error, "%{public}@", err.localizedDescription)
+            os_log("%{public}@", type: .error, "\(err)")
             return nil
         }
     }
