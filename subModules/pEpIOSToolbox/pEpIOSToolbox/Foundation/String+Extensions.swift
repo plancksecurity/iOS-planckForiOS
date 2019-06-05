@@ -152,7 +152,7 @@ public extension String {
                                                     range: range,
                                                     withTemplate: replacee)
         } catch {
-            Log.shared.errorAndCrash("Catched!")
+            Log.shared.errorAndCrash(message: "Caught!")
             return result
         }
         return result
@@ -178,7 +178,7 @@ public extension String {
             let matches = regex.matches(in: self, options: [], range: wholeRange())
             return matches.count > 0
         } catch {
-            Log.shared.errorAndCrash(error)
+            Log.shared.errorAndCrash(error: error)
         }
         return false
     }
@@ -209,7 +209,7 @@ public extension String {
                 }
             }
         } catch {
-            Log.shared.errorAndCrash(error)
+            Log.shared.errorAndCrash(error: error)
         }
         return self
     }
@@ -232,7 +232,7 @@ public extension String {
                 }
             }
         } catch {
-            Log.shared.errorAndCrash(error)
+            Log.shared.errorAndCrash(error: error)
         }
         return self
     }
