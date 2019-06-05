@@ -1167,6 +1167,7 @@ extension EmailListViewController: SegueHandlerType {
             guard let indexPath = lastSelectedIndexPath else {
                     os_log(
                         "Can happen if the message the user wanted to reply to has been deleted in between performeSeque and here",
+                        log: Log.shared.osLogger,
                         type: .info)
                     return
             }

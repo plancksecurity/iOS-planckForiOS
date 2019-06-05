@@ -338,7 +338,7 @@ class EmailViewController: BaseTableViewController {
             message = m
         }
 
-        os_log("next, will reload table view", type: .default)
+        os_log("next, will reload table view", log: Log.shared.osLogger, type: .default)
         configureTableRows()
         tableView.reloadData()
         configureView()
@@ -350,7 +350,7 @@ class EmailViewController: BaseTableViewController {
             message = m
         }
 
-        os_log("previous, will reload table view", type: .default)
+        os_log("previous, will reload table view", log: Log.shared.osLogger, type: .default)
         configureTableRows()
         tableView.reloadData()
         configureView()
@@ -480,7 +480,11 @@ extension EmailViewController {
 
     override func tableView(
         _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        os_log("cell for %d:%d", type: .default, indexPath.section, indexPath.row)
+        os_log("cell for %d:%d",
+               log: Log.shared.osLogger,
+               type: .default,
+               indexPath.section,
+               indexPath.row)
         guard
             let row = tableData?.getRow(at: indexPath.row),
             let cell = tableView.dequeueReusableCell(

@@ -269,7 +269,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         do {
             languages = try theSession.languageList()
         } catch let err as NSError {
-            os_log("%{public}@", type: .error, "\(err)")
+            os_log("%{public}@", log: Log.shared.osLogger, type: .error, "\(err)")
             languages = []
         }
 
@@ -322,7 +322,7 @@ extension HandshakeViewController: SegueHandlerType {
         do {
             destination.languages = try theSession.languageList()
         } catch let err as NSError {
-            os_log("%{public}@", type: .error, "\(err)")
+            os_log("%{public}@", log: Log.shared.osLogger, type: .error, "\(err)")
             destination.languages = []
         }
     }

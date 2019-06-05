@@ -110,7 +110,7 @@ class HandshakePartnerTableViewCellViewModel {
         do {
             isPartnerpEpUser = try session.isPEPUser(pEpPartner).boolValue
         } catch let err as NSError {
-            os_log("%{public}@", type: .error, "\(err)")
+            os_log("%{public}@", log: Log.shared.osLogger, type: .error, "\(err)")
             isPartnerpEpUser = false
         }
         setPartnerImage(for: partner)
@@ -161,7 +161,7 @@ class HandshakePartnerTableViewCellViewModel {
                 language: trustwordsLanguage,
                 full: trustwordsFull)
         } catch let err as NSError {
-            os_log("%{public}@", type: .error, "\(err)")
+            os_log("%{public}@", log: Log.shared.osLogger, type: .error, "\(err)")
             return nil
         }
     }

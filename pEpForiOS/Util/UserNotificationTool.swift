@@ -67,6 +67,7 @@ struct UserNotificationTool {
             center.add(request) { (error) in
                 if let error = error {
                     os_log("Error posting user notification: %{public}@",
+                           log: Log.shared.osLogger,
                            type: .default,
                            "\(error)")
                 }

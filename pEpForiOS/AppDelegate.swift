@@ -90,6 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             application.beginBackgroundTask(expirationHandler: { [unowned self] in
                 os_log(
                     "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
+                    log: Log.shared.osLogger,
                     type: .error,
                     self.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
                 Log.shared.errorAndCrash()
@@ -109,7 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func kickOffMySelf() {
         mySelfTaskId = application.beginBackgroundTask(expirationHandler: { [unowned self] in
-            os_log("mySelfTaskId with ID expired.", type: .default)
+            os_log("mySelfTaskId with ID expired.", log: Log.shared.osLogger, type: .default)
             // We migh want to call some (yet unexisting) emergency shutdown on
             // ReplicationService here here that brutally shuts down everything.
             self.application.endBackgroundTask(
@@ -237,7 +238,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - UIApplicationDelegate
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        os_log("applicationDidReceiveMemoryWarning", type: .default)
+        os_log("applicationDidReceiveMemoryWarning", log: Log.shared.osLogger, type: .default)
     }
 
     func application(
@@ -258,6 +259,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         setupServices()
         os_log("Library url: %{public}@",
+               log: Log.shared.osLogger,
                type: .default,
                String(describing: applicationDirectory()))
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
@@ -317,7 +319,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
         guard let messageModelService = messageModelService else {
-            os_log("no networkService", type: .error)
+            os_log("no networkService", log: Log.shared.osLogger, type: .error)
             return
         }
         

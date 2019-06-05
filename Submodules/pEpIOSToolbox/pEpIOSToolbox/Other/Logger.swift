@@ -42,6 +42,7 @@ public class Logger {
         // So we wrap it into an NSError which does suppord CVArg.
         let nsErr = NSError(domain: subsystem, code: 0, userInfo: [NSUnderlyingErrorKey: error])
         os_log("Error (%{public}@ %{public}@:%d) %{public}@",
+               log: Log.shared.osLogger,
                type: .error,
                function,
                filePath,

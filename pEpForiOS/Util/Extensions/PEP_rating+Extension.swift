@@ -34,6 +34,7 @@ extension PEPRating {
             return false
         default:
             os_log("cannot decide isUnderAttack() for %d",
+                   log: Log.shared.osLogger,
                    type: .error,
                    self.rawValue)
             return false
@@ -61,6 +62,7 @@ extension PEPRating {
             return false
         default:
             os_log("cannot decide isUnderAttack() for %d",
+                   log: Log.shared.osLogger,
                    type: .error,
                    self.rawValue)
             return false
