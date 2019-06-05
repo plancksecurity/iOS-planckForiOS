@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import os.log
+
 import pEpIOSToolbox
 import MessageModel
 
@@ -36,7 +38,7 @@ class AttachmentToLocalURLOperation: Operation {
                 return
             }
             guard let data =  me.safeAttachment?.data else {
-                os_log(type: .default, "Attachment without data")
+                os_log("Attachment without data", type: .default)
                 return
             }
             let tmpDirURL =  FileManager.default.temporaryDirectory
