@@ -61,6 +61,16 @@ UIPickerViewDataSource, UITextFieldDelegate {
         passwordTextfield.delegate = self
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let isIphone = splitViewController?.isCollapsed else {
+            return
+        }
+        if !isIphone {
+            self.navigationItem.leftBarButtonItem = nil// hidesBackButton = true
+        }
+    }
+
     private func configureView() {
         tableView.addSubview(spinner)
 
@@ -232,11 +242,6 @@ UIPickerViewDataSource, UITextFieldDelegate {
         }
         if isIphone {
             (self.navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
-        } else {
-            //self.parent?.parent?.dismiss(animated: true, completion: nil)
-            //(self.navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
-            //view.window?.rootViewController?.dismiss(animated: true, completion: nil)
-            
         }
     }
 
