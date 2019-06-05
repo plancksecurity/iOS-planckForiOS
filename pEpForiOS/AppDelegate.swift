@@ -315,7 +315,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
         guard let messageModelService = messageModelService else {
-            Log.shared.error("no networkService")
+            os_log(type: .error, "no networkService")
             return
         }
         

@@ -30,7 +30,7 @@ extension Data {
         do {
             try write(to: url)
         } catch {
-            Log.shared.error("Could not save to %{public}@", url.absoluteString)
+            os_log(type: .error, "Could not save to %{public}@", url.absoluteString)
         }
     }
 
@@ -40,7 +40,7 @@ extension Data {
                 withJSONObject: self, options: .prettyPrinted)
             jsonData.debugSave(basePath: basePath, fileName: fileName, ext: ext)
         } catch let err {
-            Log.shared.error("%{public}@", err.localizedDescription)
+            os_log(type: .error, "%{public}@", err.localizedDescription)
         }
     }
 }

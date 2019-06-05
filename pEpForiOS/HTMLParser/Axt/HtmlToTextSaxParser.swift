@@ -60,6 +60,6 @@ extension HtmlToTextSaxParser: AXHTMLParserDelegate {
     }
 
     func parser(_ parser: AXHTMLParser, parseErrorOccurred parseError: Error) {
-        Log.shared.error("%@", parseError.localizedDescription)
+        os_log(type: .error, "%@", parseError.localizedDescription)
     }
 }
