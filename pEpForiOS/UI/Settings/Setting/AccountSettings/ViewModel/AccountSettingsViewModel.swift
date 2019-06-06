@@ -120,10 +120,7 @@ public class AccountSettingsViewModel {
 
         theVerifier.address = email
         theVerifier.userName = name
-
-        if loginName != email {
-            theVerifier.loginName = loginName
-        }
+        theVerifier.loginName = loginName
 
         if isOAuth2 {
             if self.accessToken == nil {
