@@ -111,6 +111,7 @@ class LoginViewModel {
                     // AccountSettingsError() already handled the error
                     return
             }
+
             let imapTransport = ConnectionTransport(
                 accountSettingsTransport: incomingServer.transport, imapPort: incomingServer.port)
             let smtpTransport = ConnectionTransport(
@@ -130,6 +131,12 @@ class LoginViewModel {
             newAccount.password = password
             newAccount.accessToken = accessToken
             newAccount.serverIMAP = incomingServer.hostname
+
+            // TODO: IOS-1381 This must be fixed in LAS.
+            if newAccount.serverIMAP == "exchange.pep.security" {
+                newAccount.serverIMAP = "mail.pep.security"
+            }
+
             newAccount.portIMAP = UInt16(incomingServer.port)
             newAccount.transportIMAP = imapTransport
             newAccount.serverSMTP = outgoingServer.hostname
