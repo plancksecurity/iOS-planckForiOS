@@ -241,7 +241,8 @@ UIPickerViewDataSource, UITextFieldDelegate {
             return
         }
         if isIphone {
-            (self.navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
+            //!!!: this is a patch as we have 2 navigationControllers and need to pop all to the previous view.
+            (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
         }
     }
 
