@@ -237,10 +237,10 @@ UIPickerViewDataSource, UITextFieldDelegate {
     
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
 
-        guard let isIphone = splitViewController?.isCollapsed else {
+        guard let isSplitViewShown = splitViewController?.isCollapsed else {
             return
         }
-        if isIphone {
+        if isSplitViewShown {
             //!!!: this is a patch as we have 2 navigationControllers and need to pop all to the previous view.
             (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
         }
