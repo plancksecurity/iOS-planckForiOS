@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 protocol AccountVerificationResultDelegate: class {
-    func didVerify(result: AccountVerificationResult, accountInput: AccountUserInput?)
+    func didVerify(result: AccountVerificationResult)
 }

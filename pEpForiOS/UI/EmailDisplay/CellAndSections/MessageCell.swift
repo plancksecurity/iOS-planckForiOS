@@ -28,7 +28,7 @@ open class MessageCell: UITableViewCell {
     public var fieldModel: ComposeFieldModel?
     public var message: Message?
     public var isExpanded = false
-    public var height: CGFloat = UITableViewAutomaticDimension
+    public var height: CGFloat = UITableView.automaticDimension
 
     /**
      The current `IndexPath`, as last indicated via a call to `updateCell`.

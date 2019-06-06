@@ -27,10 +27,13 @@ UIPickerViewDataSource, UITextFieldDelegate {
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var doneButton: UIBarButtonItem!
+
+
     private let spinner: UIActivityIndicatorView = {
         let createe = UIActivityIndicatorView()
         createe.hidesWhenStopped = true
-        createe.activityIndicatorViewStyle = .gray
+        createe.style = .gray
         return createe
     }()
 
@@ -48,13 +51,12 @@ UIPickerViewDataSource, UITextFieldDelegate {
      should trigger the reauthorization.
      */
     var oauth2ReauthIndexPath: IndexPath?
-    
+
      override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
         if let vm = viewModel {
             vm.delegate = self
-            vm.messageSyncService = appConfig.messageSyncService
         }
         passwordTextfield.delegate = self
     }
@@ -224,9 +226,12 @@ UIPickerViewDataSource, UITextFieldDelegate {
     // MARK: - Actions
     
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
-        let _ =  navigationController?.popViewController(animated: true)
-        //here if it has not gone well recover the original, if everything went well do nothing
-
+        guard let isIphone = splitViewController?.isCollapsed else {
+            return
+        }
+        if !isIphone {
+            view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+        }
     }
 
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
@@ -246,7 +251,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
                 password = nil
             }
 
-            showSpinner()
+            showSpinnerAndDisableUI()
             viewModel?.update(loginName: validated.loginName, name: validated.accountName,
                               password: password, imap: imap, smtp: smtp)
 
@@ -298,7 +303,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
 
 extension AccountSettingsTableViewController {
     public func handleLoginError(error: Error) {
-        Logger.frontendLogger.error("%{public}@", error.localizedDescription)
+        Log.shared.error("%{public}@", error.localizedDescription)
         UIUtils.show(error: error, inViewController: self)
     }
 }
@@ -306,9 +311,9 @@ extension AccountSettingsTableViewController {
 // MARK: - AccountVerificationResultDelegate
 
 extension AccountSettingsTableViewController: AccountVerificationResultDelegate {
-    func didVerify(result: AccountVerificationResult, accountInput: AccountUserInput?) {
+    func didVerify(result: AccountVerificationResult) {
         GCD.onMain() {
-            self.hideSpinner()
+            self.hideSpinnerAndEnableUI()
             switch result {
             case .ok:
                 self.navigationController?.popViewController(animated: true)
@@ -346,18 +351,24 @@ extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
 // MARK: - SPINNER
 
 extension AccountSettingsTableViewController {
-    private func showSpinner() {
+    /// Shows the spinner and disables UI parts that could lead to
+    /// launching another verification while one is already in process.
+    private func showSpinnerAndDisableUI() {
+        doneButton.isEnabled = false
+
         spinner.center =
             CGPoint(x: tableView.frame.width / 2,
                     y:
                 (tableView.frame.height / 2) - (navigationController?.navigationBar.frame.height
                     ?? 0.0))
-        spinner.superview?.bringSubview(toFront: spinner)
+        spinner.superview?.bringSubviewToFront(spinner)
         tableView.isUserInteractionEnabled = false
         spinner.startAnimating()
     }
 
-    private func hideSpinner() {
+    /// Hides the spinner and enables all UI elements again.
+    private func hideSpinnerAndEnableUI() {
+        doneButton.isEnabled = true
         tableView.isUserInteractionEnabled = true
         spinner.stopAnimating()
     }

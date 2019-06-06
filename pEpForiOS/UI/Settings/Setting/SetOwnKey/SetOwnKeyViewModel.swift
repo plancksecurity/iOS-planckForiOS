@@ -9,6 +9,7 @@
 import Foundation
 
 import MessageModel
+import PEPObjCAdapterFramework
 
 class SetOwnKeyViewModel {
     public var userName: String?

@@ -20,6 +20,7 @@ class DocumentAttachmentPickerViewModel {
     lazy private var attachmentFileIOQueue = DispatchQueue(label:
         "security.pep.DocumentAttachmentPickerViewModel.attachmentFileIOQueue",
                                                            qos: .userInitiated)
+    private let mimeUtils = MimeTypeUtils()
     weak public var resultDelegate: DocumentAttachmentPickerViewModelResultDelegate?
 
     public init(resultDelegate: DocumentAttachmentPickerViewModelResultDelegate? = nil) {
@@ -31,11 +32,11 @@ class DocumentAttachmentPickerViewModel {
             createAttachment(forSecurityScopedResource: url) {
                 [weak self] (attachment: Attachment?) in
                 guard let me = self else {
-                    Logger.frontendLogger.lostMySelf()
+                    Log.shared.errorAndCrash("Lost MySelf")
                     return
                 }
                 guard let safeAttachment = attachment else {
-                    Logger.frontendLogger.errorAndCrash("No attachment")
+                    Log.shared.errorAndCrash("No attachment")
                     return
                 }
                 GCD.onMain {
@@ -59,21 +60,25 @@ class DocumentAttachmentPickerViewModel {
     private func createAttachment(forSecurityScopedResource resourceUrl: URL,
                                   completion: @escaping (Attachment?) -> Void) {
         let cfUrl = resourceUrl as CFURL
-        attachmentFileIOQueue.async {
+        attachmentFileIOQueue.async { [weak self] in
             CFURLStartAccessingSecurityScopedResource(cfUrl)
             defer { CFURLStopAccessingSecurityScopedResource(cfUrl) }
             guard  let resourceData = try? Data(contentsOf: resourceUrl)  else {
-                Logger.frontendLogger.errorAndCrash("No data for URL.")
+                Log.shared.errorAndCrash("No data for URL.")
                 completion(nil)
                 return
             }
-            let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
+            let mimeType = self?.mimeUtils?.mimeType(fromURL: resourceUrl) ??
+                MimeTypeUtils.MimesType.defaultMimeType
             let filename = resourceUrl.fileName(includingExtension: true)
-            let attachment = Attachment.create(data: resourceData,
-                                               mimeType: mimeType,
-                                               fileName: filename,
-                                               contentDisposition: .attachment)
-            completion(attachment)
+            let mainSession = Session.main
+            mainSession.performAndWait {
+                let attachment = Attachment(data: resourceData,
+                                            mimeType: mimeType,
+                                            fileName: filename,
+                                            contentDisposition: .attachment)
+                completion(attachment)
+            }
         }
     }
 }

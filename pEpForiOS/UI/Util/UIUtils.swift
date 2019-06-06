@@ -19,7 +19,7 @@ struct UIUtils {
     ///   - error: error to preset to user
     ///   - vc: ViewController to present the error on
     static func show(error: Error, inViewController vc: UIViewController) {
-//        Logger.utilLogger.errorAndCrash("Will display error to user: %@",
+//        Log.shared.errorAndCrash("Will display error to user: %@",
 //                                                    error.localizedDescription)
         guard let displayError = DisplayUserError(withError: error) else {
             // Do nothing. The error type is not suitable to bother the user with.
@@ -92,12 +92,13 @@ struct UIUtils {
             let composeVc = composeNavigationController.rootViewController
                 as? ComposeTableViewController
             else {
-                Logger.utilLogger.errorAndCrash("Missing required data")
+                Log.shared.errorAndCrash("Missing required data")
                 return
         }
         var prefilledTo: Identity? = nil
         if let address = address {
             let to = Identity(address: address)
+            to.save()
             prefilledTo = to
         }
         let composeVM = ComposeViewModel(resultDelegate: nil,
@@ -124,7 +125,7 @@ struct UIUtils {
         let storyboard = UIStoryboard(name: Constants.addToContactsStoryboard, bundle: nil)
         guard let contactVc = storyboard.instantiateViewController(withIdentifier:
             AddToContactsViewController.storyboardId) as? AddToContactsViewController else {
-                Logger.utilLogger.errorAndCrash("Missing required data")
+                Log.shared.errorAndCrash("Missing required data")
                 return
         }
         contactVc.appConfig = appConfig
@@ -148,11 +149,11 @@ struct UIUtils {
                                                      at view: UIView,
                                                      appConfig: AppConfig) {
         guard let _ = UrlClickHandler.Scheme(for: url) else {
-            Logger.utilLogger.errorAndCrash("Unsupported scheme")
+            Log.shared.errorAndCrash("Unsupported scheme")
             return
         }
         guard let address = url.firstRecipientAddress() else {
-            Logger.utilLogger.errorAndCrash("No address")
+            Log.shared.errorAndCrash("No address")
             return
         }
         presentActionSheetWithContactOptions(forContactWithEmailAddress: address,
@@ -239,7 +240,7 @@ struct UIUtils {
 
     static func presentSettings(on viewController: UIViewController, appConfig: AppConfig) {
         guard let vc = UIStoryboard.init(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: SettingsTableViewController.storyboardId) as? SettingsTableViewController else {
-            Logger.utilLogger.errorAndCrash("No controller")
+            Log.shared.errorAndCrash("No controller")
             return
         }
         vc.appConfig = appConfig

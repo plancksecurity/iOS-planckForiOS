@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import WebKit
 import MessageModel
+import PEPObjCAdapterFramework
 
 open class MessageContentCell: MessageCell {
     @IBOutlet weak var contentText: UITextView!
@@ -22,7 +23,7 @@ open class MessageContentCell: MessageCell {
 
         let finalText = NSMutableAttributedString()
         if message.underAttack {
-            let status = String.pEpRatingTranslation(pEpRating: PEP_rating_under_attack)
+            let status = String.pEpRatingTranslation(pEpRating: .underAttack)
             let messageString = String.localizedStringWithFormat(
                 NSLocalizedString(
                     "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n",

@@ -7,15 +7,19 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
+import PantomimeFramework
+import PEPObjCAdapterFramework
 
 /**
  Tests internal encryption and decryption (that is, the test creates encrypted messages itself,
  and does not rely on outside data/services).
  */
 class DecryptionTestsInternal: XCTestCase {
+    var moc: NSManagedObjectContext!
     var cdOwnAccount: CdAccount!
     var pEpOwnIdentity: PEPIdentity!
     var cdSenderAccount: CdAccount!
@@ -35,13 +39,15 @@ class DecryptionTestsInternal: XCTestCase {
 
         persistentSetup = PersistentSetup()
 
-        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0)
+        moc = Stack.shared.mainContext
+
+        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
         guard let myPepIdentity = pEpIdentity(cdAccount: cdMyAccount) else {
             fatalError("Error PEPIdentity") //XCTFail() does can not be used here, sorry.
         }
         pEpOwnIdentity = myPepIdentity
 
-        let cdSenderAccount = SecretTestData().createWorkingCdAccount(number: 1)
+        let cdSenderAccount = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
         guard let senderPepIdentity = cdSenderAccount.identity?.pEpIdentity() else {
             fatalError("Error PEPIdentity") //XCTFail() does can not be used here, sorry.
         }
@@ -51,11 +57,10 @@ class DecryptionTestsInternal: XCTestCase {
         pEpSenderIdentity = senderPepIdentity
         try! session.mySelf(senderPepIdentity)
 
-        cdInbox = CdFolder.create()
+        cdInbox = CdFolder(context: moc)
         cdInbox.name = ImapSync.defaultImapInboxName
-        cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdMyAccount
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         self.backgroundQueue = OperationQueue()
     }
@@ -166,24 +171,24 @@ class DecryptionTestsInternal: XCTestCase {
         }
 
         guard
-            let cdMsg = CdMessage.insertOrUpdate(
-                pantomimeMessage: pantMail, account: cdOwnAccount,
-                messageUpdate: CWMessageUpdate.newComplete()) else {
+            let cdMsg = CdMessage.insertOrUpdate(pantomimeMessage: pantMail,
+                                                 account: cdOwnAccount,
+                                                 messageUpdate: CWMessageUpdate.newComplete(),
+                                                 context: moc)
+            else {
                     XCTFail()
                     return
         }
 
         cdMsg.parent = cdInbox
-        cdMsg.bodyFetched = true
 
-        XCTAssertTrue(cdMsg.bodyFetched)
         XCTAssertFalse(cdMsg.imap?.localFlags?.flagDeleted ?? true)
         XCTAssertEqual(cdMsg.pEpRating, PEPUtil.pEpRatingNone)
         if shouldEncrypt {
             XCTAssertTrue(cdMsg.isProbablyPGPMime())
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEPUtil.pEpRatingNone))
 
@@ -207,9 +212,9 @@ class DecryptionTestsInternal: XCTestCase {
 
         XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
 
-        Record.Context.main.refreshAllObjects()
+        moc.refreshAllObjects()
         if shouldEncrypt {
-            XCTAssertGreaterThanOrEqual(Int32(cdMsg.pEpRating), PEP_rating_reliable.rawValue)
+            XCTAssertGreaterThanOrEqual(cdMsg.pEpRating, Int16(PEPRating.reliable.rawValue))
             if useSubject {
                 XCTAssertEqual(cdMsg.shortMessage, msgShortMessage)
             } else {
@@ -227,7 +232,7 @@ class DecryptionTestsInternal: XCTestCase {
                 XCTFail()
             }
         } else {
-            XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEP_rating_unencrypted.rawValue))
+            XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEPRating.unencrypted.rawValue))
         }
 
         XCTAssertEqual(cdMsg.uuid, messageID)
@@ -239,7 +244,9 @@ class DecryptionTestsInternal: XCTestCase {
             XCTAssertNotNil(optFields)
         }
         for header in [kXEncStatus, kXpEpVersion, kXKeylist] {
-            let p = NSPredicate(format: "message = %@ and name = %@", cdMsg, header)
+            let p = NSPredicate(format: "%K = %@ and %K = %@",
+                                 CdHeaderField.RelationshipName.message, cdMsg,
+                                 CdHeaderField.AttributeName.name, header)
             let headerField = CdHeaderField.first(predicate: p)
             if shouldEncrypt {
                 // check header in core data
@@ -273,7 +280,7 @@ class DecryptionTestsInternal: XCTestCase {
     }
 
     func testIncomingUnencryptedOutlookProbingMessage() {
-        guard let _ = TestUtil.setUpPepFromMail(
+        guard let _ = TestUtil.cdMessageAndSetUpPepFromMail(
             emailFilePath: "Microsoft_Outlook_Probing_Message_001.txt") else {
                 XCTFail()
                 return

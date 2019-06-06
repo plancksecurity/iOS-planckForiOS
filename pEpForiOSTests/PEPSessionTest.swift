@@ -7,12 +7,15 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
+import PEPObjCAdapterFramework
 
 class PEPSessionTest: XCTestCase {
     var persistentSetup: PersistentSetup!
+    var moc: NSManagedObjectContext!
 
     // MARK: - Setup
 
@@ -20,7 +23,7 @@ class PEPSessionTest: XCTestCase {
         super.setUp()
         XCTAssertTrue(PEPUtil.pEpClean())
         persistentSetup = PersistentSetup()
-
+        moc = Stack.shared.mainContext
     }
     override func tearDown() {
         persistentSetup = nil
@@ -38,19 +41,15 @@ class PEPSessionTest: XCTestCase {
         folder.save()
 
         let uuid = MessageID.generate()
-        let message = Message.fakeMessage(uuid: uuid)
-        message.comments = "comment"
+        let message = Message(uuid: uuid, parentFolder: folder)
         message.shortMessage = "short message"
         message.longMessage = "long message"
         message.longMessageFormatted = "long message"
         message.from = account.user
-        message.to = [account.user]
-        message.cc = [account.user]
+        message.replaceTo(with: [account.user])
+        message.replaceCc(with: [account.user])
         message.parent = folder
         message.sent = Date()
-        message.received = Date()
-        message.replyTo = [account.user]
-        message.references = ["ref1"]
         message.save()
         let session = PEPSession()
         guard let first = CdMessage.first() else {
@@ -63,20 +62,21 @@ class PEPSessionTest: XCTestCase {
 
         try! session.encryptMessageDict(pepmessage,
                                         extraKeys: nil,
-                                        encFormat: PEP_enc_PEP,
+                                        encFormat: .PEP,
                                         status: nil)
         try! session.decryptMessageDict(pepmessage.mutableDictionary(),
                                         flags: nil,
                                         rating: nil,
                                         extraKeys: nil,
                                         status: nil)
-        cdmessage2.update(pEpMessageDict: pepmessage)
+        let moc = cdmessage2.managedObjectContext! //!!!: not nice
+        cdmessage2.update(pEpMessageDict: pepmessage, context: moc)
         XCTAssertEqual(cdmessage2, cdmessage1)
     }
 
     func testMessageIDAndReferencesAfterEncrypt() {
         let testData = SecretTestData()
-        let myself = testData.createWorkingIdentity(number: 0)
+        let myself = testData.createWorkingIdentity(number: 0, context: moc)
         let mySubject = "Some Subject"
         let myMessageID = "myID"
         let references = ["ref1", "ref2", "ref3"]
@@ -88,7 +88,7 @@ class PEPSessionTest: XCTestCase {
         pEpMessage.references = references
         pEpMessage.shortMessage = mySubject
         pEpMessage.longMessage = "The text body"
-        pEpMessage.direction = PEP_dir_outgoing
+        pEpMessage.direction = .outgoing
 
         let session = PEPSession()
 
@@ -122,14 +122,11 @@ class PEPSessionTest: XCTestCase {
     }
 
     func testParseMessageHeapBufferOverflow() {
-        CWLogger.setLogger(Log.shared)
+        let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
 
-        let cdAccount = SecretTestData().createWorkingCdAccount()
-
-        let folder = CdFolder.create()
+        let folder = CdFolder(context: moc)
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
-        folder.uuid = MessageID.generate()
 
         guard let cdMessage = TestUtil.cdMessage(
             fileName: "MessageHeapBufferOverflow.txt", cdOwnAccount: cdAccount) else {
@@ -146,13 +143,12 @@ class PEPSessionTest: XCTestCase {
     }
 
     func testDecryptMessageHeapBufferOverflow() {
-        let cdAccount = SecretTestData().createWorkingCdAccount()
+        let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
 
-        let folder = CdFolder.create()
+        let folder = CdFolder(context: moc)
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
-        folder.uuid = MessageID.generate()
-        Record.saveAndWait()
+       moc.saveAndLogErrors()
 
         guard let cdMessage = TestUtil.cdMessage(
             fileName: "MessageHeapBufferOverflow.txt", cdOwnAccount: cdAccount) else {
@@ -170,14 +166,11 @@ class PEPSessionTest: XCTestCase {
 
     // IOS-211
     func testAttachmentsDoNotGetDuplilcated() {
-        CWLogger.setLogger(Log.shared)
+        let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
 
-        let cdAccount = SecretTestData().createWorkingCdAccount()
-
-        let folder = CdFolder.create()
+        let folder = CdFolder(context: moc)
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
-        folder.uuid = MessageID.generate()
 
         guard let cdMessage = TestUtil.cdMessage(
             fileName: "IOS-211-duplicated-attachments.txt", cdOwnAccount: cdAccount) else {

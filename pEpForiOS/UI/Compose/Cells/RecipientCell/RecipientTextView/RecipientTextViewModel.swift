@@ -136,7 +136,8 @@ public class RecipientTextViewModel {
             if let existing = Identity.by(address: address) {
                 identity = existing
             } else {
-                identity = Identity.create(address: address)
+                identity = Identity(address: address)
+                identity.save()
             }
             var (newText, attachment) = text.imageInserted(withAddressOf: identity,
                                                            in: range,

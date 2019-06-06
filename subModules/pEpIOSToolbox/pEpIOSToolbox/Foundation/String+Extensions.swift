@@ -152,7 +152,7 @@ public extension String {
                                                     range: range,
                                                     withTemplate: replacee)
         } catch {
-            Logger.utilLogger.errorAndCrash("Catched!")
+            Log.shared.errorAndCrash("Catched!")
             return result
         }
         return result
@@ -178,7 +178,7 @@ public extension String {
             let matches = regex.matches(in: self, options: [], range: wholeRange())
             return matches.count > 0
         } catch {
-            Logger.utilLogger.errorAndCrash("%{public}@", error.localizedDescription)
+            Log.shared.errorAndCrash("%{public}@", error.localizedDescription)
         }
         return false
     }
@@ -209,7 +209,7 @@ public extension String {
                 }
             }
         } catch {
-            Logger.utilLogger.errorAndCrash("%{public}@",
+            Log.shared.errorAndCrash("%{public}@",
                                                         error.localizedDescription)
         }
         return self
@@ -233,7 +233,7 @@ public extension String {
                 }
             }
         } catch {
-            Logger.utilLogger.errorAndCrash("%{public}@",
+            Log.shared.errorAndCrash("%{public}@",
                                                         error.localizedDescription)
         }
         return self

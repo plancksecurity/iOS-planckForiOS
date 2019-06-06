@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 import pEpIOSToolbox
+import PantomimeFramework
 
 extension ConnectionTransport {
     init(accountSettingsTransport: AccountSettingsServerTransport) {
@@ -16,7 +18,7 @@ extension ConnectionTransport {
         case .startTLS: self = .startTLS
         case .TLS: self = .TLS
         case .unknown:
-            Logger.utilLogger.errorAndCrash(
+            Log.shared.errorAndCrash(
                 "Unsupported LAS transport: %d", accountSettingsTransport.rawValue)
             self = .plain
         }

@@ -16,8 +16,9 @@ class AttachmentsViewOperation: Operation {
         case docAttachment(Attachment)
     }
 
-    let mimeTypes: MimeTypeUtil?
-    let message: Message
+    private let session: Session
+    private let mimeTypes: MimeTypeUtils?
+    public var message: Message?
 
     /**
      The resulting attachments view will appear here.
@@ -27,42 +28,63 @@ class AttachmentsViewOperation: Operation {
     /**
      The number of attachments.
      */
-    var attachmentsCount = 0
+    private var attachmentsCount = 0
 
-    init(mimeTypes: MimeTypeUtil?, message: Message) {
+    init(mimeTypes: MimeTypeUtils?, message: Message) {
+        let session = Session()
+        self.session = session
         self.mimeTypes = mimeTypes
-        self.message = message
 
         super.init()
-
-        attachmentsCount = message.viewableAttachments().count
+        session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.message = message.safeForSession(session)
+            me.attachmentsCount = me.message?.viewableAttachments().count ?? 0
+        }
     }
 
     override func main() {
-        let attachments = message.viewableAttachments()
-        for att in attachments {
-            if att.isInlined {
-                // Ignore attachments that are already shown inline in the message body.
-                // Try to verify this by checking if their CID (if any) is mentioned there.
-                // So attachments labeled as inline _are_ shown if
-                //  * they don't have a CID
-                //  * their CID doesn't occur in the HTML body
-                var cidContained = false
-                if let theCid = att.fileName?.extractCid() {
-                    cidContained = message.longMessageFormatted?.contains(
-                        find: theCid) ?? false
-                }
-                if cidContained {
-                    // seems like this inline attachment is really inline, don't show it
-                    continue
-                }
+        session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
             }
-            if (mimeTypes?.isImage(mimeType: att.mimeType) ?? false),
-                let imgData = att.data,
-                let img = UIImage.image(gifData: imgData) ?? UIImage(data: imgData) {
-                attachmentContainers.append(.imageAttachment(att, img))
-            } else {
-                attachmentContainers.append(.docAttachment(att))
+
+            let attachments = me.message?.viewableAttachments() ?? []
+            for att in attachments {
+                if att.isInlined {
+                    // Ignore attachments that are already shown inline in the message body.
+                    // Try to verify this by checking if their CID (if any) is mentioned there.
+                    // So attachments labeled as inline _are_ shown if
+                    //  * they don't have a CID
+                    //  * their CID doesn't occur in the HTML body
+                    var cidContained = false
+                    if let theCid = att.fileName?.extractCid() {
+                        cidContained = me.message?.longMessageFormatted?.contains(
+                            find: theCid) ?? false
+                    }
+                    if cidContained {
+                        // seems like this inline attachment is really inline, don't show it
+                        continue
+                    }
+                }
+
+                let isImage: Bool
+                if let mimeType = att.mimeType {
+                    isImage = me.mimeTypes?.isImage(mimeType: mimeType) ?? false
+                } else {
+                    isImage = false
+                }
+                if (isImage),
+                    let imgData = att.data,
+                    let img = UIImage.image(gifData: imgData) ?? UIImage(data: imgData) {
+                    me.attachmentContainers.append(.imageAttachment(att, img))
+                } else {
+                    me.attachmentContainers.append(.docAttachment(att))
+                }
             }
         }
     }

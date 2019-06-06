@@ -17,17 +17,20 @@ extension CdMessage {
             || self.shortMessage != nil
     }
 
+    //???: looks like there are redundant search(..) and by(..) methods in MM, App and AppTest target. Double check, merge.
     public static func search(byUUID uuid: MessageID, includeFakeMessages: Bool) -> [CdMessage] {
         return by(uuid: uuid, includeFakeMessages: includeFakeMessages)
     }
 
     static func by(uuid: MessageID, includeFakeMessages: Bool) -> [CdMessage] {
         if includeFakeMessages {
-            return CdMessage.all(predicate: NSPredicate(format: "uuid = %@", uuid))
+            return CdMessage.all(predicate: NSPredicate(format: "%K = %@", CdMessage.AttributeName.uuid, uuid))
                 as? [CdMessage] ?? []
         } else {
-            return CdMessage.all(predicate: NSPredicate(format: "uuid = %@ AND uid != %d",
+            return CdMessage.all(predicate: NSPredicate(format: "%K = %@ AND %K != %d",
+                                                        CdMessage.AttributeName.uuid,
                                                         uuid,
+                                                        CdMessage.AttributeName.uid,
                                                         Int32(Message.uidFakeResponsivenes)))
                 as? [CdMessage] ?? []
         }

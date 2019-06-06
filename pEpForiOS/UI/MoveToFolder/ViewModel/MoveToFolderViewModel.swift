@@ -10,7 +10,7 @@ import Foundation
 import pEpIOSToolbox
 import MessageModel
 
-let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .sent]
+let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .sent, .outbox]
 
 class MoveToAccountViewModel {
 
@@ -87,16 +87,15 @@ class MoveToFolderViewModel {
 
     func moveMessagesTo(index: Int) -> Bool {
         if !(index >= 0 && index < items.count) {
-            Logger.frontendLogger.error("Index out of bounds")
+            Log.shared.error("Index out of bounds")
             return false
         }
         let targetFolder = items[index].folder
         var result = false
-        for msg in messages {
-            if msg.parent != targetFolder {
-                msg.move(to: items[index].folder)
-                result = true
-            }
+        let msgs = messages.filter { $0.parent != targetFolder }
+        if !msgs.isEmpty {
+            result = true
+            Message.move(messages: msgs, to: targetFolder)
         }
         if result {
             delegate?.didmove(messages: messages)

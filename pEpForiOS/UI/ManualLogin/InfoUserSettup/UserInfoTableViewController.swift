@@ -11,8 +11,6 @@ import pEpIOSToolbox
 import MessageModel
 
 class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, UITextFieldDelegate {
-    let comp = "UserInfoTableView"
-
     @IBOutlet weak var emailValue: UITextField!
     @IBOutlet weak var usernameValue: UITextField!
     @IBOutlet weak var passwordValue: UITextField!
@@ -28,7 +26,7 @@ class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, 
     var responder = 0
     var accounts = [Account]()
     
-    public var model = AccountUserInput()
+    public var model: VerifiableAccountProtocol = VerifiableAccount()
 
     let viewWidthAligner = ViewWidthsAligner()
 

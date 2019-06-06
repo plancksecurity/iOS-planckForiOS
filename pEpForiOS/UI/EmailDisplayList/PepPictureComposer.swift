@@ -8,19 +8,25 @@
 
 import Foundation
 import MessageModel
+import PEPObjCAdapterFramework
 
-class PepProfilePictureComposer: ProfilePictureComposer {
+class PepProfilePictureComposer: ProfilePictureComposerProtocol {
 
     let contactImageTool = IdentityImageTool()
 
-    func profilePicture(for identity: Identity, completion: @escaping (UIImage?) -> ()) {
-        if let image = self.contactImageTool.cachedIdentityImage(for: identity){
+    func profilePicture(for identityKey: IdentityImageTool.IdentityKey,
+                        completion: @escaping (UIImage?) -> ()) {
+        if let image = contactImageTool.cachedIdentityImage(for: identityKey){
             DispatchQueue.main.async {
                 completion(image)
             }
         } else {
-            DispatchQueue.global(qos: .userInitiated).async{
-                let senderImage = self.contactImageTool.identityImage(for: identity)
+            DispatchQueue.global(qos: .userInitiated).async{ [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                let senderImage = me.contactImageTool.identityImage(for: identityKey)
                 DispatchQueue.main.async {
                     completion(senderImage)
                 }
@@ -30,13 +36,17 @@ class PepProfilePictureComposer: ProfilePictureComposer {
 
     func securityBadge(for message: Message, completion: @escaping (UIImage?) ->()){
         DispatchQueue.global(qos: .userInitiated).async{
-            let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
-            var image: UIImage? = nil
-            if color != PEP_color_no_color {
-                image = color.statusIconInContactPicture()
-            }
-            DispatchQueue.main.async {
-                completion(image)
+            let session = Session()
+            session.performAndWait {
+                let safeMsg = message.safeForSession(session)
+                let color = PEPUtil.pEpColor(pEpRating: safeMsg.pEpRating())
+                var image: UIImage? = nil
+                if color != PEPColor.noColor {
+                    image = color.statusIconInContactPicture()
+                }
+                DispatchQueue.main.async {
+                    completion(image)
+                }
             }
         }
     }

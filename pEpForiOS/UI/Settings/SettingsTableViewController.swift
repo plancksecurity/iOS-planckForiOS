@@ -51,6 +51,14 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.setToolbarHidden(oldToolbarStatus, animated: false)
+        guard let isIphone = splitViewController?.isCollapsed else {
+            return
+        }
+        if !isIphone {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let detailViewController = storyBoard.instantiateViewController(withIdentifier: "noMessagesViewController") as! NoMessagesViewController
+            self.splitViewController?.show(detailViewController, sender: nil)
+        }
     }
 
     // MARK: - Internal
@@ -105,12 +113,12 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             guard
                 let vm = viewModel[indexPath.section][indexPath.row] as? SettingsCellViewModel,
                 let cell = dequeuedCell as? SwipeTableViewCell else {
-                    Logger.frontendLogger.errorAndCrash("Invalid state.")
+                    Log.shared.errorAndCrash("Invalid state.")
                     return dequeuedCell
             }
             cell.textLabel?.text = vm.title
             cell.detailTextLabel?.text = vm.detail
-            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+            cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
             cell.delegate = self
             return cell
         }
@@ -147,7 +155,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         let destroyAction = UIAlertAction(title: "Delete", style: .destructive) { action in
             self.deleteRowAt(indexPath)
             self.tableView.beginUpdates()
-            self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+            self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
             self.tableView.endUpdates()
         }
         alertController.addAction(destroyAction)
@@ -235,7 +243,8 @@ extension SettingsTableViewController: SegueHandlerType {
         switch segueIdentifier(for: segue) {
         case .segueEditAccount:
             guard
-                let destination = segue.destination as? AccountSettingsTableViewController
+                let nav = segue.destination as? UINavigationController,
+                let destination = nav.topViewController as? AccountSettingsTableViewController
                 else {
                     return
             }

@@ -20,7 +20,6 @@ sudo port install asn1c
 sudo port install py27-lxml
 
 sudo port install python_select
-0
 
 sudo port install autoconf
 sudo port install libtool
@@ -87,10 +86,10 @@ shasum -a 256 greenmail-standalone-1.5.9.jar
 java -Dgreenmail.setup.test.all -Dgreenmail.users=test001:pwd@localhost,test002:pwd@localhost,test003:pwd@localhost -jar ~/Downloads/greenmail-standalone-1.5.9.jar
 ```
 
-The non-existing file referenced in the unit test project, ./pEpForiOSTests/TestUtil/SecretTestData.swift, must be
+The non-existing file referenced in the unit test project, pEpForiOSTests/../pEp_for_iOS_intern/SecretTestData.swift, must be
 created, with a class named SecretTestData, derived from TestDataBase.
 
-In `SecretTestData.swift`, you must override `populateVerifiableAccounts`, adding servers that are either registered in the LAS database or provide DNS SRV for IMAP and SMTP in order to test the "automatic account login".
+In `SecretTestData.swift`, you must at least override `populateVerifiableAccounts`, adding servers that are either registered in the LAS database or provide DNS SRV for IMAP and SMTP in order to test the "automatic account login".
 
 If you want to run the tests against your own servers, override `populateAccounts` accordingly.
 
@@ -103,13 +102,13 @@ The UI tests will not compile without it.
 
 ### secret.xcconfig (needed for OAuth2 config secrects and others)
 
-Create secret.xcconfig @ pEpForiOS/secret.xcconfig, with those contents:
+Create secret.xcconfig @ pEpForiOS/../pEp_for_iOS_intern/secret.xcconfig, with those contents:
 
 ```
-OAUTH2_GMAIL_CLIENT_ID = some_content
-OAUTH2_GMAIL_REDIRECT_URL_SCHEME = some_content
+OAUTH2_GMAIL_CLIENT_ID = your_secret_content
+OAUTH2_GMAIL_REDIRECT_URL_SCHEME = your_secret_content
 
-OAUTH2_YAHOO_CLIENT_ID = some_content
+OAUTH2_YAHOO_CLIENT_ID = your_secret_content
 OAUTH2_YAHOO_CLIENT_SECRET = some_content
 
 ```

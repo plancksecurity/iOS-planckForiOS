@@ -13,21 +13,22 @@ import MessageModel
 class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
     var attachments = [Attachment]()
 
-    private let mimeUtil = MimeTypeUtil()
-
+    private lazy var mimeUtils = MimeTypeUtils()
+    
     func stringFor(attachment: NSTextAttachment) -> String? {
         if let textAttachment = attachment as? TextAttachment,
-            let theAttachment = textAttachment.attachment {
+            let theAttachment = textAttachment.attachment,
+            let mimeType = theAttachment.mimeType {
             attachments.append(theAttachment)
             let count = attachments.count
-
+            
             let theID = MessageID.generateUUID()
-            let theExt = mimeUtil?.fileExtension(mimeType: theAttachment.mimeType) ?? "jpg"
+            let theExt = mimeUtils?.fileExtension(fromMimeType: mimeType) ?? "jpg"
             let cidBase = "attached-inline-image-\(count)-\(theExt)-\(theID)"
             let cidSrc = "cid:\(cidBase)"
             let cidUrl = "cid://\(cidBase)"
             theAttachment.fileName = cidUrl
-
+            
             let alt = String.localizedStringWithFormat(
                 NSLocalizedString(
                     "Attached Image %1$d (%2$@)",
@@ -37,10 +38,6 @@ class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
             return "![\(alt)](\(cidSrc))"
         }
         return nil
-    }
-
-    func stringFor(string: String) -> String? {
-        return string
     }
 }
 
@@ -57,7 +54,7 @@ extension NSAttributedString {
         var allAttachments = [TextAttachment]()
         if theRange.location != NSNotFound {
             enumerateAttribute(
-                NSAttributedStringKey.attachment, in: theRange,
+                NSAttributedString.Key.attachment, in: theRange,
                 options: NSAttributedString.EnumerationOptions(rawValue: 0)) {
                     value, range, stop in
                     if let attachment = value as? TextAttachment {
@@ -79,7 +76,7 @@ extension NSAttributedString {
         var allAttachments = [RecipientTextViewModel.TextAttachment]()
         if theRange.location != NSNotFound {
             enumerateAttribute(
-                NSAttributedStringKey.attachment, in: theRange,
+                NSAttributedString.Key.attachment, in: theRange,
                 options: NSAttributedString.EnumerationOptions(rawValue: 0)) {
                     value, range, stop in
                     if let attachment = value as? RecipientTextViewModel.TextAttachment {
@@ -101,11 +98,11 @@ extension NSAttributedString {
                 new.append(attachString)
             }
 
-            new.addAttribute(NSAttributedStringKey.font,
+            new.addAttribute(NSAttributedString.Key.font,
                              value: UIFont.pEpInput,
                              range: NSRange(location: 0, length: new.length)
             )
-            new.addAttribute(NSAttributedStringKey.baselineOffset,
+            new.addAttribute(NSAttributedString.Key.baselineOffset,
                              value: 3.0,
                              range: NSRange(location: 0, length: new.length))
             result = new
@@ -119,7 +116,7 @@ extension NSAttributedString {
 
     public func baselineOffsetRemoved() -> NSAttributedString {
         let createe = NSMutableAttributedString(attributedString: self)
-        createe.addAttribute(NSAttributedStringKey.baselineOffset,
+        createe.addAttribute(NSAttributedString.Key.baselineOffset,
                                                    value: 0.0,
                                                    range: NSRange(location: 0,
                                                                   length: createe.length)
@@ -130,8 +127,8 @@ extension NSAttributedString {
 
 extension NSMutableAttributedString {
     @discardableResult public func bold(_ text:String) -> NSMutableAttributedString {
-        let attrs:[NSAttributedStringKey: Any] =
-            [NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .callout)]
+        let attrs:[NSAttributedString.Key: Any] =
+            [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .callout)]
 
         let boldString = NSMutableAttributedString(string: text, attributes: attrs)
         self.append(boldString)
@@ -139,8 +136,8 @@ extension NSMutableAttributedString {
     }
 
     @discardableResult public func normal(_ text: String) -> NSMutableAttributedString {
-        let attrs:[NSAttributedStringKey: Any] =
-            [NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .body)]
+        let attrs:[NSAttributedString.Key: Any] =
+            [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
 
         let normal =  NSMutableAttributedString(string: text, attributes: attrs)
         self.append(normal)

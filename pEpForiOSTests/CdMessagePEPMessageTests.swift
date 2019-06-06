@@ -13,17 +13,17 @@ import XCTest
 
 class CdMessagePEPMessageTests: CoreDataDrivenTestBase {
     func testCdMessageToPEPMessage() {
-        let  cdMsg = CdMessage.create()
+        let  cdMsg = CdMessage(context: moc)
         cdMsg.from = cdAccount.identity
 
-        let cdReceiver = CdIdentity.create()
+        let cdReceiver = CdIdentity(context: moc)
         cdReceiver.address = "receiver@example.com"
         cdReceiver.userID = "receiver_user_id"
         cdMsg.to = NSOrderedSet(array: [cdReceiver])
 
         let pEpReceiver = cdReceiver.pEpIdentity()
 
-        let pEpMsg = cdMsg.pEpMessage(outgoing: true)
+        let pEpMsg = PEPUtil.pEp(cdMessage: cdMsg, outgoing: true)
 
         XCTAssertEqual(pEpMsg.to?[0], pEpReceiver)
     }

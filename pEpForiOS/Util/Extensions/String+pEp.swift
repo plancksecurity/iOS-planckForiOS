@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import PEPObjCAdapterFramework
 
 public struct PEPStatusText {
-    let rating: PEP_rating
+    let rating: PEPRating
     let title: String
     let explanation: String
     let suggestion: String
@@ -19,10 +20,10 @@ extension String {
     /**
      All privacy status strings, i18n ready.
      */
-    static let pEpRatingTranslations: [PEP_rating: PEPStatusText] =
-        [PEP_rating_under_attack:
+    static let pEpRatingTranslations: [PEPRating: PEPStatusText] =
+        [.underAttack:
             PEPStatusText(
-                rating: PEP_rating_under_attack,
+                rating: .underAttack,
                 title: NSLocalizedString("Under Attack",
                                          comment: "Privacy status title"),
                 explanation:
@@ -31,10 +32,10 @@ extension String {
                 suggestion:
                 NSLocalizedString("Separately verify the content of this message with your communication partner.",
                                   comment: "Privacy status suggestion")),
-         PEP_rating_b0rken:
+         .b0rken:
             PEPStatusText(
                 rating:
-                PEP_rating_b0rken,
+                .b0rken,
                 title:
                 NSLocalizedString("Broken",
                                   comment: "Privacy status title"),
@@ -42,9 +43,9 @@ extension String {
                 NSLocalizedString("-",
                                   comment: "No privacy status explanation"),
                 suggestion: NSLocalizedString("-", comment: "No privacy status suggestion")),
-         PEP_rating_mistrust:
+         .mistrust:
             PEPStatusText(
-                rating: PEP_rating_mistrust,
+                rating: .mistrust,
                 title: NSLocalizedString("Mistrusted",
                                          comment: "Privacy status title"),
                 explanation:
@@ -53,9 +54,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("Re-establish the connection with your communication partner and try to complete another handshake.",
                                   comment: "Privacy status suggestion")),
-         PEP_rating_fully_anonymous:
+         .fullyAnonymous:
             PEPStatusText(
-                rating: PEP_rating_fully_anonymous,
+                rating: .fullyAnonymous,
                 title:
                 NSLocalizedString("Secure & Trusted",
                                   comment: "Privacy status title"),
@@ -65,27 +66,27 @@ extension String {
                 suggestion:
                 NSLocalizedString("No action needed!",
                                   comment: "Privacy status suggestion")),
-         PEP_rating_trusted_and_anonymized:
+         .trustedAndAnonymized:
             PEPStatusText(
-                rating: PEP_rating_trusted_and_anonymized,
+                rating: .trustedAndAnonymized,
                 title: NSLocalizedString("Secure & Trusted",
                                          comment: "Privacy status title"),
                 explanation: NSLocalizedString("This message is secure and trusted.",
                                                comment: "Privacy status explanation"),
                 suggestion: NSLocalizedString("No action needed!",
                                               comment: "Privacy status suggestion")),
-         PEP_rating_trusted:
+         .trusted:
             PEPStatusText(
-                rating: PEP_rating_trusted,
+                rating: .trusted,
                 title: NSLocalizedString("Secure & Trusted",
                                          comment: "Privacy status title"),
                 explanation: NSLocalizedString("This message is secure and trusted.",
                                                comment: "Privacy status explanation"),
                 suggestion: NSLocalizedString("No action needed!",
                                               comment: "Privacy status suggestion")),
-         PEP_rating_reliable:
+         .reliable:
             PEPStatusText(
-                rating: PEP_rating_reliable,
+                rating: .reliable,
                 title: NSLocalizedString("Secure",
                                          comment: "Privacy status title"),
                 explanation:
@@ -94,9 +95,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication.",
                                   comment: "Privacy status suggestion")),
-         PEP_rating_unreliable:
+         .unreliable:
             PEPStatusText(
-                rating: PEP_rating_unreliable,
+                rating: .unreliable,
                 title: NSLocalizedString("Unreliable Security",
                                          comment: "Privacy status title"),
                 explanation: NSLocalizedString("This message has unreliable protection",
@@ -104,9 +105,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p.",
                                   comment: "Privacy status suggestion")),
-         PEP_rating_unencrypted_for_some:
+         .unencryptedForSome:
             PEPStatusText(
-                rating: PEP_rating_unencrypted_for_some,
+                rating: .unencryptedForSome,
                 title: NSLocalizedString("Unsecure for Some",
                                          comment: "Privacy status title"),
                 explanation:
@@ -115,9 +116,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("Make sure the privacy status for each communication partner listed is at least secure",
                                   comment: "Privacy status suggestion")),
-         PEP_rating_unencrypted:
+         .unencrypted:
             PEPStatusText(
-                rating: PEP_rating_unencrypted,
+                rating: .unencrypted,
                 title: NSLocalizedString("Unsecure",
                                          comment: "Privacy status title"),
                 explanation: NSLocalizedString("This message is unsecure.",
@@ -125,9 +126,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("Please ask your communication partner to use an encryption solution or install p≡p.",
                                   comment: "Privacy status suggestion")),
-         PEP_rating_have_no_key:
+         .haveNoKey:
             PEPStatusText(
-                rating: PEP_rating_have_no_key,
+                rating: .haveNoKey,
                 title: NSLocalizedString("Cannot Decrypt",
                                          comment: "Privacy status title"),
                 explanation:
@@ -136,9 +137,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("If this message was addressed to you, please inform the sender that you don't have the key.",
                                   comment: "Privacy status suggestion")),
-         PEP_rating_cannot_decrypt:
+         .cannotDecrypt:
             PEPStatusText(
-                rating: PEP_rating_cannot_decrypt,
+                rating: .cannotDecrypt,
                 title: NSLocalizedString("Cannot Decrypt",
                                          comment: "Privacy status title"),
                 explanation: NSLocalizedString("This message cannot be decrypted.",
@@ -146,11 +147,11 @@ extension String {
                 suggestion:
                 NSLocalizedString("If this message was addressed to you, please inform the sender that you don't have the key.",
                                   comment: "Privacy status suggestion")),
-         PEP_rating_undefined: undefinedPEPMessageRating()]
+         .undefined: undefinedPEPMessageRating()]
 
     public static func undefinedPEPMessageRating() -> PEPStatusText {
         return PEPStatusText(
-            rating: PEP_rating_undefined,
+            rating: .undefined,
             title: NSLocalizedString("Unknown",
                                      comment: "Privacy status title"),
             explanation:
@@ -160,25 +161,25 @@ extension String {
                                           comment: "Privacy status suggestion"))
     }
 
-    public static func pEpRatingTranslation(pEpRating: PEP_rating?) -> PEPStatusText {
+    public static func pEpRatingTranslation(pEpRating: PEPRating?) -> PEPStatusText {
         let defResult = undefinedPEPMessageRating()
         if let rating = pEpRating {
             return pEpRatingTranslations[rating] ??
-                pEpRatingTranslations[PEP_rating_undefined] ?? defResult
+                pEpRatingTranslations[.undefined] ?? defResult
         } else {
             return defResult
         }
     }
 
-    public static func pEpTitle(pEpRating: PEP_rating?) -> String {
+    public static func pEpTitle(pEpRating: PEPRating?) -> String {
         return pEpRatingTranslation(pEpRating: pEpRating).title
     }
 
-    public static func pEpExplanation(pEpRating: PEP_rating?) -> String {
+    public static func pEpExplanation(pEpRating: PEPRating?) -> String {
         return pEpRatingTranslation(pEpRating: pEpRating).explanation
     }
 
-    public static func pEpSuggestion(pEpRating: PEP_rating?) -> String {
+    public static func pEpSuggestion(pEpRating: PEPRating?) -> String {
         return pEpRatingTranslation(pEpRating: pEpRating).suggestion
     }
 

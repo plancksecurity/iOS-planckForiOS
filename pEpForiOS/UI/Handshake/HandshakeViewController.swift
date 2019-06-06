@@ -7,8 +7,10 @@
 //
 
 import UIKit
+
 import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
 
 class HandshakeViewController: BaseTableViewController {
     var ratingReEvaluator: RatingReEvaluator?
@@ -31,9 +33,7 @@ class HandshakeViewController: BaseTableViewController {
 
     override func awakeFromNib() {
         tableView.estimatedRowHeight = 400.0
-        tableView.rowHeight = UITableViewAutomaticDimension
-
-
+        tableView.rowHeight = UITableView.automaticDimension
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,8 +63,8 @@ class HandshakeViewController: BaseTableViewController {
     func languageButton() -> UIButton {
         //language button
         let img = UIImage(named: "pEpForiOS-icon-languagechange")
-        let button = UIButton(type: UIButtonType.custom)
-        button.imageEdgeInsets = UIEdgeInsetsMake(10.0, 0.0, 10.0, 0.0)
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.imageEdgeInsets = UIEdgeInsets.init(top: 10.0, left: 0.0, bottom: 10.0, right: 0.0)
         button.setImage(img, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(self.languageSelectedAction(_:)), for: .touchUpInside)
@@ -74,7 +74,7 @@ class HandshakeViewController: BaseTableViewController {
     func backButton() -> UIButton {
         let img2 = UIImage(named: "arrow-rgt-active")
         let tintedimage = img2?.withRenderingMode(.alwaysTemplate)
-        let buttonLeft = UIButton(type: UIButtonType.custom)
+        let buttonLeft = UIButton(type: UIButton.ButtonType.custom)
         buttonLeft.setImage(tintedimage, for: .normal)
         buttonLeft.imageView?.contentMode = .scaleToFill
         buttonLeft.imageView?.tintColor = UIColor.pEpGreen
@@ -162,7 +162,7 @@ class HandshakeViewController: BaseTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView,
@@ -268,7 +268,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         do {
             languages = try theSession.languageList()
         } catch let err as NSError {
-            Logger.frontendLogger.error("%{public}@", err.localizedDescription)
+            Log.shared.error("%{public}@", err.localizedDescription)
             languages = []
         }
 
@@ -321,7 +321,7 @@ extension HandshakeViewController: SegueHandlerType {
         do {
             destination.languages = try theSession.languageList()
         } catch let err as NSError {
-            Logger.frontendLogger.error("%{public}@", err.localizedDescription)
+            Log.shared.error("%{public}@", err.localizedDescription)
             destination.languages = []
         }
     }

@@ -7,8 +7,10 @@
 //
 
 import Foundation
+
 import MessageModel
 import pEpIOSToolbox
+import PantomimeFramework
 
 enum LoginCellType {
     case Text, Button
@@ -21,8 +23,9 @@ class LoginViewModel {
         let mySelfer: KickOffMySelfProtocol
     }
 
-    var loginAccount: Account?
-    var messageSyncService: MessageSyncServiceProtocol?
+    /// Holding both the data of the current account in verification,
+    /// and also the implementation of the verification.
+    var verifiableAccount: VerifiableAccountProtocol?
 
     /** If the last login attempt was via OAuth2, this will collect temporary parameters */
     private var lastOAuth2Parameters: OAuth2Parameters?
@@ -43,19 +46,14 @@ class LoginViewModel {
     var currentOauth2Authorizer: OAuth2AuthorizationProtocol?
 
     /**
-     The most current account in verification.
-     */
-    var accountInVerification: AccountUserInput?
-
-    /**
      Helper model to handle most of the OAuth2 authorization.
      */
     var oauth2Model = OAuth2AuthViewModel()
 
     let qualifyServerService = QualifyServerIsLocalService()
 
-    init(messageSyncService: MessageSyncServiceProtocol? = nil) {
-        self.messageSyncService = messageSyncService
+    init(verifiableAccount: VerifiableAccountProtocol? = nil) {
+        self.verifiableAccount = verifiableAccount
     }
 
     func isThereAnAccount() -> Bool {
@@ -103,7 +101,7 @@ class LoginViewModel {
 
         func statusOk() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
-                Logger.frontendLogger.error("%{public}@", error.localizedDescription)
+                Log.shared.error("%{public}@", error.localizedDescription)
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
                 return
             }
@@ -118,28 +116,29 @@ class LoginViewModel {
             let smtpTransport = ConnectionTransport(
                 accountSettingsTransport: outgoingServer.transport, smtpPort: outgoingServer.port)
 
+            var newAccount = verifiableAccount ?? VerifiableAccount()
+
+            newAccount.verifiableAccountDelegate = self
+            newAccount.address = accountName
+            newAccount.userName = userName
+            newAccount.loginName = loginName
+
             // Note: auth method is never taken from LAS. We either have OAuth2,
             // as determined previously, or we will defer to pantomime to find out the best method.
-            let newAccount = AccountUserInput(
-                address: accountName, userName: userName,
-                loginName: loginName,
-                authMethod: accessToken != nil ? .saslXoauth2 : nil,
-                password: accessToken == nil ? password : nil,
-                accessToken: accessToken,
-                serverIMAP: incomingServer.hostname,
-                portIMAP: UInt16(incomingServer.port),
-                transportIMAP: imapTransport,
-                serverSMTP: outgoingServer.hostname,
-                portSMTP: UInt16(outgoingServer.port),
-                transportSMTP: smtpTransport)
-            accountInVerification = newAccount
+            newAccount.authMethod = accessToken != nil ? .saslXoauth2 : nil
 
-            do {
-                try verifyAccount(model: newAccount)
-            } catch {
-                Logger.frontendLogger.error("%{public}@", error.localizedDescription)
-                loginViewModelLoginErrorDelegate?.handle(loginError: error)
-            }
+            newAccount.password = password
+            newAccount.accessToken = accessToken
+            newAccount.serverIMAP = incomingServer.hostname
+            newAccount.portIMAP = UInt16(incomingServer.port)
+            newAccount.transportIMAP = imapTransport
+            newAccount.serverSMTP = outgoingServer.hostname
+            newAccount.portSMTP = UInt16(outgoingServer.port)
+            newAccount.transportSMTP = smtpTransport
+            newAccount.isAutomaticallyTrustedImapServer = false
+
+            verifiableAccount = newAccount
+            verifyAccount(model: newAccount)
         }
     }
 
@@ -147,33 +146,28 @@ class LoginViewModel {
     ///
     /// - Parameter model: account data
     /// - Throws: AccountVerificationError
-    func verifyAccount(model: AccountUserInput) throws {
-        do {
-            let account = try model.account()
-            loginAccount = account // have to store that for callback use
-
-            if let imapServer = account.imapServer?.address {
-                qualifyServerService.delegate = self
-                qualifyServerService.qualify(serverName: imapServer)
-            } else {
-                accountHasBeenQualified(trusted: false)
-            }
-        } catch {
-            throw error
+    func verifyAccount(model: VerifiableAccountProtocol?) {
+        if let imapServer = verifiableAccount?.serverIMAP {
+            qualifyServerService.delegate = self
+            qualifyServerService.qualify(serverName: imapServer)
+        } else {
+            accountHasBeenQualified(trusted: false)
         }
     }
 
     func accountHasBeenQualified(trusted: Bool) {
-        guard let ms = messageSyncService else {
-            Logger.frontendLogger.errorAndCrash("no MessageSyncService")
+        guard var theVerificationService = verifiableAccount else {
+            Log.shared.errorAndCrash("no VerificationService")
             return
         }
-        guard let account = loginAccount else {
-            Logger.frontendLogger.errorAndCrash("have lost loginAccount")
-            return
+
+        theVerificationService.isAutomaticallyTrustedImapServer = trusted
+        do {
+            try theVerificationService.verify()
+        } catch {
+            Log.shared.error("%{public}@", error.localizedDescription)
+            loginViewModelLoginErrorDelegate?.handle(loginError: error)
         }
-        account.imapServer?.trusted = trusted
-        ms.requestVerification(account: account, delegate: self)
     }
 
     /**
@@ -183,24 +177,6 @@ class LoginViewModel {
      */
     func isOAuth2Possible(email: String?) -> Bool {
         return AccountSettings.quickLookUp(emailAddress: email)?.supportsOAuth2 ?? false
-    }
-}
-
-// MARK: - AccountVerificationServiceDelegate
-
-extension LoginViewModel: AccountVerificationServiceDelegate {
-    func verified(account: Account,
-                  service: AccountVerificationServiceProtocol,
-                  result: AccountVerificationResult) {
-        if result == .ok {
-            //remove obsolete code on EmailListViewController
-            MessageModel.performAndWait {
-                account.save()
-            }
-            mySelfer?.startMySelf()
-        }
-        accountVerificationResultDelegate?.didVerify(result: result,
-                                                     accountInput: accountInVerification)
     }
 }
 
@@ -218,7 +194,7 @@ extension LoginViewModel: OAuth2AuthViewModelDelegate {
                     return
                 }
                 login(accountName: oauth2Params.emailAddress, userName: oauth2Params.userName,
-                      accessToken: accessToken, mySelfer: oauth2Params.mySelfer)
+                      accessToken: token, mySelfer: oauth2Params.mySelfer)
             } else {
                 loginViewModelOAuth2ErrorDelegate?.handle(
                     oauth2Error: OAuth2AuthViewModelError.noToken)
@@ -238,6 +214,41 @@ extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
                 self?.loginViewModelLoginErrorDelegate?.handle(loginError: err)
             }
             self?.accountHasBeenQualified(trusted: isLocal ?? false)
+        }
+    }
+}
+
+// MARK: - VerifiableAccountDelegate
+
+extension LoginViewModel: VerifiableAccountDelegate {
+    func informAccountVerificationResultDelegate(error: Error?) {
+        if let imapError = error as? ImapSyncError {
+            accountVerificationResultDelegate?.didVerify(
+                result: .imapError(imapError))
+        } else if let smtpError = error as? SmtpSendError {
+            accountVerificationResultDelegate?.didVerify(
+                result: .smtpError(smtpError))
+        } else {
+            if let theError = error {
+                Log.shared.errorAndCrash("%@", theError.localizedDescription)
+            } else {
+                accountVerificationResultDelegate?.didVerify(result: .ok)
+            }
+        }
+    }
+
+    func didEndVerification(result: Result<Void, Error>) {
+        switch result {
+        case .success(()):
+            do {
+                try verifiableAccount?.save()
+                informAccountVerificationResultDelegate(error: nil)
+                mySelfer?.startMySelf()
+            } catch {
+                Log.shared.errorAndCrash("%@", error.localizedDescription)
+            }
+        case .failure(let error):
+            informAccountVerificationResultDelegate(error: error)
         }
     }
 }

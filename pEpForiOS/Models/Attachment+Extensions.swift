@@ -18,7 +18,7 @@ extension Attachment {
         // We do not support HEIC for inlined images. Convert to JPG.
         if urlExtension == "HEIC" && contentDisposition == .inline,
             let img = image,
-            let jpgData = UIImageJPEGRepresentation(img, 0.7), // We might want to ask the user for a size
+            let jpgData = img.jpegData(compressionQuality: 0.7), // We might want to ask the user for a size
             let jpg = UIImage(data: jpgData) {
             urlExtension = "JPG"
             let mime = "image/jpeg"
@@ -27,7 +27,7 @@ extension Attachment {
                               image:jpg,
                               contentDisposition: .inline)
         } else {
-            return Attachment.create(data: nil,
+            return Attachment(data: nil,
                                      mimeType: mimeType,
                                      fileName: assetUrl.absoluteString,
                                      image: image,

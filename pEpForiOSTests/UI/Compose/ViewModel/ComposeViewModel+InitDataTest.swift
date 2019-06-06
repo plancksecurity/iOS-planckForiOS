@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
     var inbox: Folder?
@@ -17,10 +17,13 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
     var outbox: Folder?
     var messageAllButBccSet: Message?
     var testee: ComposeViewModel.InitData?
-    let someone = Identity(address: "someone@someone.someone")
+    var someone: Identity!
 
     override func setUp() {
         super.setUp()
+
+        someone = Identity(address: "someone@someone.someone")
+
         // Folders
         let inbox = Folder(name: "Inbox", parent: nil, account: account, folderType: .inbox)
         inbox.save()
@@ -33,17 +36,17 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         self.outbox = outbox
         let msg = Message(uuid: UUID().uuidString, parentFolder: inbox)
         msg.from = account.user
-        msg.to = [account.user, someone]
-        msg.cc = [someone]
+        msg.replaceTo(with: [account.user, someone])
+        msg.replaceCc(with: [someone])
         msg.shortMessage = "shortMessage"
         msg.longMessage = "longMessage"
         msg.longMessageFormatted = "longMessageFormatted"
-        msg.attachments = [Attachment(data: Data(),
-                                      mimeType: "image/jpg",
-                                      contentDisposition: .attachment)]
-        msg.attachments.append(Attachment(data: Data(),
-                                          mimeType: "image/jpg",
-                                          contentDisposition: .inline))
+        msg.replaceAttachments(with: [Attachment(data: Data(),
+                                                 mimeType: "image/jpg",
+                                                 contentDisposition: .attachment)])
+        msg.appendToAttachments(Attachment(data: Data(),
+                                           mimeType: "image/jpg",
+                                           contentDisposition: .inline))
         msg.save()
         messageAllButBccSet = msg
 
@@ -66,7 +69,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         testee = ComposeViewModel.InitData(withPrefilledToRecipient: someone,
                                            orForOriginalMessage: nil,
                                            composeMode: mode)
-        let expectedTo = [someone]
+        let expectedTo: [Identity] = [someone]
         assertTesteeForExpectedValues(composeMode: mode,
                                       isDraftsOrOutbox: false,
                                       isDrafts: false,

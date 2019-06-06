@@ -8,13 +8,11 @@
 
 import Foundation
 import os.log
-import asl
 
 /**
- Thin layer over `os_log` or `asl_logger` where not available.
- The fallback to asl is only in effect for iOS 9, and currently
- doesn't appear anywhere visible on that platform.
+ Thin layer over `os_log` where not available.
  */
+@available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *)
 public class Logger {
     /**
      Map `os_log` levels.
@@ -44,7 +42,6 @@ public class Logger {
          */
         case fault
 
-        @available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *)
         public func osLogType() -> OSLogType {
             switch self {
             case .info:
@@ -59,53 +56,12 @@ public class Logger {
                 return .fault
             }
         }
-
-        /**
-         Maps the internal criticality of a log  message into a subsystem of ASL levels.
-
-         ASL has the following:
-         * ASL_LEVEL_EMERG
-         * ASL_LEVEL_ALERT
-         * ASL_LEVEL_CRIT
-         * ASL_LEVEL_ERR
-         * ASL_LEVEL_WARNING
-         * ASL_LEVEL_NOTICE
-         * ASL_LEVEL_INFO
-         * ASL_LEVEL_DEBUG
-         */
-        public func aslLevelString() -> String {
-            switch self {
-            case .default:
-                return "ASL_LEVEL_NOTICE"
-            case .info:
-                return "ASL_LEVEL_INFO"
-            case .debug:
-                return "ASL_LEVEL_DEBUG"
-            case .error:
-                return "ASL_LEVEL_ERR"
-            case .fault:
-                return "ASL_LEVEL_CRIT"
-            }
-        }
     }
-
-    // move this loggers to the app
-
-    public static let frontendLogger = Logger(category: "frontend")
-    public static let backendLogger = Logger(category: "backend")
-    public static let utilLogger = Logger(category: "util")
-    public static let htmlParsingLogger = Logger(category: "htmlParsing")
-    public static let modelLogger = Logger(category: "model")
-    public static let appDelegateLogger = Logger(category: "appDelegate")
 
     public init(subsystem: String = "security.pEp.app.iOS", category: String) {
         self.subsystem = subsystem
         self.category = category
-        if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
-            osLogger = OSLog(subsystem: subsystem, category: category)
-        } else {
-            osLogger = nil
-        }
+        osLogger = OSLog(subsystem: subsystem, category: category)
     }
 
     /**
@@ -217,8 +173,7 @@ public class Logger {
                 fileLine: fileLine,
                 args: args)
 
-        // This will omit the arguments, but it's still matchable
-        SystemUtils.crash("\(message)")
+        SystemUtils.crash("\(filePath):\(function):\(fileLine) - \(message)")
     }
 
     /**
@@ -245,20 +200,6 @@ public class Logger {
     }
 
     /**
-     Testing only. If you want to test the fallback to ASL logging you may have to call
-     this, as all the logging is deferred to a serial queue.
-     */
-    public func testFlush() {
-        if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
-            // no sense on these versions
-        } else {
-            aslLogQueue.sync {
-                // nothing
-            }
-        }
-    }
-
-    /**
      Since this kind of logging is used so often in the codebase, it has its
      own method.
      */
@@ -277,28 +218,18 @@ public class Logger {
                          filePath: String = #file,
                          fileLine: Int = #line,
                          args: [CVarArg]) {
-        if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
-            osLog(message: message,
-                  severity: severity,
-                  function: function,
-                  filePath: filePath,
-                  fileLine: fileLine,
-                  args: args)
-        } else {
-            aslLog(message: message,
-                   severity: severity,
-                   function: function,
-                   filePath: filePath,
-                   fileLine: fileLine,
-                   args: args)
-        }
+        osLog(message: message,
+              severity: severity,
+              function: function,
+              filePath: filePath,
+              fileLine: fileLine,
+              args: args)
     }
 
     /**
      - Note: If the number of arguments to the format string exceeds 10,
      the logging doesn't work correctly. Can be easily fixed though, if really needed.
      */
-    @available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *)
     private func osLog(message: StaticString,
                        severity: Severity,
                        function: String = #function,
@@ -386,69 +317,6 @@ public class Logger {
                    log: theLog,
                    type: theType,
                    args)
-        }
-    }
-
-    private func aslLog(message: StaticString,
-                        severity: Severity,
-                        function: String = #function,
-                        filePath: String = #file,
-                        fileLine: Int = #line,
-                        args: [CVarArg]) {
-        aslLogQueue.async { [weak self] in
-            if let theSelf = self {
-                let logMessage = asl_new(UInt32(ASL_TYPE_MSG))
-
-                theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_SENDER, theSelf.subsystem))
-
-                theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_FACILITY, theSelf.category))
-
-                theSelf.checkASLSuccess(asl_set(
-                    logMessage,
-                    ASL_KEY_MSG,
-                    "\(filePath):\(fileLine) \(function): \(message) \(args)"))
-
-                theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_LEVEL, "ASL_LEVEL_ERROR"))
-
-                let nowDate = Date()
-                let dateString = "\(Int(nowDate.timeIntervalSince1970))"
-                theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_TIME, dateString))
-
-                theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_READ_UID, "-1"))
-
-                theSelf.checkASLSuccess(asl_send(theSelf.consoleLogger(), logMessage))
-
-                asl_free(logMessage)
-            }
-        }
-    }
-
-    private var consoleClient: aslclient?
-
-    private lazy var aslLogQueue = DispatchQueue(label: "security.pEp.asl.log")
-
-    private let sender = "security.pEp.app.iOS"
-
-    private func createConsoleLogger() -> asl_object_t {
-        return asl_open(self.sender, subsystem, 0)
-    }
-
-    private func consoleLogger() -> aslclient? {
-        if consoleClient == nil {
-            consoleClient = createConsoleLogger()
-        }
-        return consoleClient
-    }
-
-    deinit {
-        if consoleClient != nil {
-            asl_free(consoleClient)
-        }
-    }
-
-    private func checkASLSuccess(_ result: Int32, comment: String = "no comment") {
-        if result != 0 {
-            print("*** error: \(comment)")
         }
     }
 }
