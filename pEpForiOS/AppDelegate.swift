@@ -190,11 +190,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // TODO: IOS-1276 set MessageModelConfig.logger
 
         loadCoreDataStack()
-        messageModelService = MessageModelService(
-            mySelfer: self,
-            errorPropagator: errorPropagator,
-            notifyHandShakeDelegate: notifyHandshakeDelegate,
-            keySyncEnabled: AppSettings.settingsHandler.keySyncEnabled)
+        messageModelService =
+            MessageModelService(mySelfer: self,
+                                errorPropagator: errorPropagator,
+                                notifyHandShakeDelegate: notifyHandshakeDelegate,
+                                keySyncEnabled: AppSettings.settingsHandler.keySyncEnabled)
         messageModelService?.delegate = self
     }
 
