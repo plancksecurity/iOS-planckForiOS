@@ -177,17 +177,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
-        let theAppConfig = AppConfig(
-            mySelfer: self,
-            errorPropagator: errorPropagator,
-            oauth2AuthorizationFactory: oauth2Provider)
+        let theAppConfig = AppConfig(errorPropagator: errorPropagator,
+                                     oauth2AuthorizationFactory: oauth2Provider)
         appConfig = theAppConfig
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = theAppConfig
-
-        // set up logging for libraries
-
-        // TODO: IOS-1276 set MessageModelConfig.logger
 
         loadCoreDataStack()
         messageModelService =
