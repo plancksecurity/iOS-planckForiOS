@@ -23,7 +23,20 @@ extension ComposeViewModel {
         public let prefilledFrom: Identity?
 
         /// Original message to compute content and recipients from (e.g. a message we reply to).
-        public let originalMessage: Message?
+        private var _originalMessage: Message? = nil
+        public var originalMessage: Message? {
+            get {
+                guard !(_originalMessage?.isDeleted ?? true) else {
+                    // Makes sure we do not access properties af a messages that has been deleted
+                    // in the DB.
+                    return nil
+                }
+                return _originalMessage
+            }
+            set {
+                _originalMessage = newValue
+            }
+        }
 
         public let composeMode: ComposeUtil.ComposeMode
 
@@ -102,9 +115,9 @@ extension ComposeViewModel {
              orForOriginalMessage om: Message? = nil,
              composeMode: ComposeUtil.ComposeMode? = nil) {
             self.composeMode = composeMode ?? ComposeUtil.ComposeMode.normal
-            self.originalMessage = om
             self.prefilledTo = om == nil ? prefilledTo : nil
             self.prefilledFrom = prefilledFrom
+            self.originalMessage = om
             setupInitialSubject()
             setupInitialBody()
         }

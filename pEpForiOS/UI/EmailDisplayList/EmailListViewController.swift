@@ -59,6 +59,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if MiscUtil.isUnitTest() {
             return
         }
+        lastSelectedIndexPath = nil
 
         setUpTextFilter()
 
@@ -75,6 +76,15 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             //            if vm.checkIfSettingsChanged() {
             //                settingsChanged()
             //            }
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        guard let isIphone = splitViewController?.isCollapsed, let last = lastSelectedIndexPath else {
+            return
+        }
+        if !isIphone {
+            performSegue(withIdentifier: "showNoMessage", sender: nil)
         }
     }
 
@@ -400,6 +410,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
             vm.deleteSelected(indexPaths: selectedIndexPaths)
         }
+        lastSelectedIndexPath = nil
         cancelToolbar(sender)
     }
 
