@@ -389,7 +389,9 @@ extension AppDelegate: MessageModelServiceDelegate {
         case .background:
             // We have been cancelled because we are entering background.
             // Quickly sync local changes and clean up.
-            stopUsingPepSession()
+            // No need to invoke stopUsingPepSession, since this got already called
+            // when the app receives `applicationDidEnterBackground`.
+            break
         case .inactive:
             // We re inactive. Keep services paused -> Do nothing
             break
