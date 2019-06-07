@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import os.log
 
 import pEpIOSToolbox
 import MessageModel
@@ -46,6 +47,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var shouldDestroySession = false
 
     let notifyHandshakeDelegate: PEPNotifyHandshakeDelegate = NotifyHandshakeDelegate()
+
+    private let osLog = OSLog(subsystem: "AppDelegate", category: "pEp.security.app")
 
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
@@ -87,6 +90,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func stopUsingPepSession() {
         syncUserActionsAndCleanupbackgroundTaskId =
             application.beginBackgroundTask(expirationHandler: { [unowned self] in
+                os_log("expirationHandler syncUserActionsAndCleanupbackgroundTaskId %d",
+                       log: self.osLog,
+                       type: .error,
+                       self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
                 Log.shared.errorAndCrash(
                     "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
                     self.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
@@ -95,6 +102,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self.application.endBackgroundTask(UIBackgroundTaskIdentifier(
                     rawValue: self.syncUserActionsAndCleanupbackgroundTaskId.rawValue))
             })
+        os_log("started syncUserActionsAndCleanupbackgroundTaskId %d",
+               log: osLog,
+               type: .default,
+               self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
+
         messageModelService?.processAllUserActionsAndStop()
     }
 
@@ -380,6 +392,12 @@ extension AppDelegate: MessageModelServiceDelegate {
             // No problem, start regular sync loop.
             startServices()
         }
+
+        os_log("ending syncUserActionsAndCleanupbackgroundTaskId %d",
+               log: osLog,
+               type: .default,
+               self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
+
         application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: syncUserActionsAndCleanupbackgroundTaskId.rawValue))
         syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
