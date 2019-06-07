@@ -14,7 +14,7 @@
  */
 struct AppSettings {
     static public let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
-    static public let keyStartpEpSync = "keyStartpEpSync"
+    static public let keyKeySyncEnabled = "keyStartpEpSync"
     static public let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
     static public let keyDefaultAccountAddress = "keyDefaultAccountAddress"
     static public let keyThreadedViewEnabled = "keyThreadedViewEnabled"
@@ -36,12 +36,12 @@ struct AppSettings {
         }
     }
 
-    static var shouldStartpEpSync: Bool {
+    static var keySyncEnabled: Bool {
         get {
-            return settingsHandler.shouldStartpEpSync
+            return settingsHandler.keySyncEnabled
         }
         set {
-            settingsHandler.shouldStartpEpSync = newValue
+            settingsHandler.keySyncEnabled = newValue
         }
     }
     
