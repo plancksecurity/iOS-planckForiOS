@@ -10,8 +10,7 @@ import Foundation
 
 import PEPObjCAdapterFramework
 
-class NotifyHandshakeDelegate: NSObject {
-}
+class NotifyHandshakeDelegate: NSObject {}
 
 extension NotifyHandshakeDelegate: PEPNotifyHandshakeDelegate {
     func notifyHandshake(_ object: UnsafeMutableRawPointer?,
