@@ -14,6 +14,7 @@ import PantomimeFramework
 extension ConnectionTransport {
     init(accountSettingsTransport: AccountSettingsServerTransport) {
         switch accountSettingsTransport {
+        case .plain: self = .plain
         case .startTLS: self = .startTLS
         case .TLS: self = .TLS
         case .unknown:
@@ -30,10 +31,10 @@ extension ConnectionTransport {
         switch accountSettingsTransport {
         case .unknown:
             switch imapPort {
-            case 993:
-                self = .TLS // we do not support plaintext passwords over insecure connections
+            case 143:
+                self = .plain
             default:
-                self = .startTLS
+                self = .TLS
             }
         default:
             self = ConnectionTransport(accountSettingsTransport: accountSettingsTransport)
