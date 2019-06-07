@@ -127,10 +127,7 @@ class SetOwnKeyViewModelTests: XCTestCase {
         let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
         XCTAssertEqual(attachments.count, 0)
 
-        guard let msg = MessageModelObjectUtils.getMessage(fromCdMessage: theCdMessage) else {
-            XCTFail()
-            return
-        }
+        let msg = MessageModelObjectUtils.getMessage(fromCdMessage: theCdMessage)
 
         XCTAssertEqual(msg.attachments.count, 0)
 
