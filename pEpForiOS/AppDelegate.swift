@@ -45,8 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     var shouldDestroySession = false
 
-    let notifyHandshakeDelegate: PEPNotifyHandshakeDelegate = NotifyHandshakeDelegate()
-
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
         let dirs = fm.urls(for: .libraryDirectory, in: .userDomainMask)
@@ -177,8 +175,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
+        let keySyncHandshakeService = KeySyncHandshakeService()
         let theAppConfig = AppConfig(errorPropagator: errorPropagator,
-                                     oauth2AuthorizationFactory: oauth2Provider)
+                                     oauth2AuthorizationFactory: oauth2Provider,
+                                     keySyncHandshakeService: keySyncHandshakeService)
         appConfig = theAppConfig
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = theAppConfig
@@ -187,7 +187,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         messageModelService =
             MessageModelService(mySelfer: self,
                                 errorPropagator: errorPropagator,
-                                notifyHandShakeDelegate: notifyHandshakeDelegate,
+                                keySyncServiceDelegate: keySyncHandshakeService,
                                 keySyncEnabled: AppSettings.settingsHandler.keySyncEnabled)
         messageModelService?.delegate = self
     }

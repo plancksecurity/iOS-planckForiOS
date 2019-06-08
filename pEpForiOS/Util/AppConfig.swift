@@ -21,10 +21,14 @@ class AppConfig {
      */
     let oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol
 
+    let keySyncHandshakeService: KeySyncHandshakeService
+
     init(errorPropagator: ErrorPropagator,
-         oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol) {
+         oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol,
+         keySyncHandshakeService: KeySyncHandshakeService) {
         self.errorPropagator = errorPropagator
         self.oauth2AuthorizationFactory = oauth2AuthorizationFactory
+        self.keySyncHandshakeService = keySyncHandshakeService
         self.showedAccountsError = [:]
     }
 }
