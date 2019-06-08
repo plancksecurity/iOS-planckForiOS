@@ -81,10 +81,6 @@ class LoginViewController: BaseViewController {
         return true
     }
 
-    override func didSetAppConfig() {
-        super.didSetAppConfig()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         loginViewModel.loginViewModelLoginErrorDelegate = self
@@ -220,9 +216,10 @@ class LoginViewController: BaseViewController {
 
         if loginViewModel.isOAuth2Possible(email: email) {
             let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
-            loginViewModel.loginWithOAuth2(
-                viewController: self, emailAddress: email, userName: username,
-                mySelfer: appConfig.mySelfer, oauth2Authorizer: oauth)
+            loginViewModel.loginWithOAuth2(viewController: self,
+                                           emailAddress: email,
+                                           userName: username,
+                                           oauth2Authorizer: oauth)
         } else {
             guard let pass = password.text, pass != "" else {
                 handleLoginError(error: LoginViewController.LoginError.missingPassword,
@@ -230,9 +227,9 @@ class LoginViewController: BaseViewController {
                 return
             }
 
-            loginViewModel.login(
-                accountName: email, userName: username, password: pass,
-                mySelfer: appConfig.mySelfer)
+            loginViewModel.login(accountName: email,
+                                 userName: username,
+                                 password: pass)
         }
     }
 

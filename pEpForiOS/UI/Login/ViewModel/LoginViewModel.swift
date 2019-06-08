@@ -20,7 +20,6 @@ class LoginViewModel {
     struct OAuth2Parameters {
         let emailAddress: String
         let userName: String
-        let mySelfer: KickOffMySelfProtocol
     }
 
     /// Holding both the data of the current account in verification,
@@ -33,12 +32,6 @@ class LoginViewModel {
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
     weak var loginViewModelLoginErrorDelegate: LoginViewModelLoginErrorDelegate?
     weak var loginViewModelOAuth2ErrorDelegate: LoginViewModelOAuth2ErrorDelegate?
-
-    /**
-     The last mySelfer, as indicated by login(), so after account verification,
-     a key can be generated.
-     */
-    var mySelfer: KickOffMySelfProtocol?
 
     /**
      An OAuth2 process lives longer than the method call, so this object needs to survive.
@@ -68,13 +61,13 @@ class LoginViewModel {
         viewController: UIViewController,
         emailAddress: String,
         userName: String,
-        mySelfer: KickOffMySelfProtocol,
         oauth2Authorizer: OAuth2AuthorizationProtocol) {
-        lastOAuth2Parameters = OAuth2Parameters(
-            emailAddress: emailAddress, userName: userName, mySelfer: mySelfer)
+        lastOAuth2Parameters = OAuth2Parameters(emailAddress: emailAddress,
+                                                userName: userName)
 
         oauth2Model.delegate = self
-        oauth2Model.authorize(authorizer: oauth2Authorizer, emailAddress: emailAddress,
+        oauth2Model.authorize(authorizer: oauth2Authorizer,
+                              emailAddress: emailAddress,
                               viewController: viewController)
     }
 
@@ -84,13 +77,9 @@ class LoginViewModel {
      - parameter password: The password for the account
      - parameter loginName: The optional login name for this account, if different from the email
      - parameter userName: The chosen name of the user, or nick
-     - parameter mySelfer: An object to request a mySelf operation from, must be used immediately
-     after account setup
      */
     func login(accountName: String, userName: String, loginName: String? = nil,
-               password: String? = nil, accessToken: OAuth2AccessTokenProtocol? = nil,
-               mySelfer: KickOffMySelfProtocol) {
-        self.mySelfer = mySelfer
+               password: String? = nil, accessToken: OAuth2AccessTokenProtocol? = nil) {
         let acSettings = AccountSettings(accountName: accountName, provider: nil,
                                          flags: AS_FLAG_USE_ANY, credentials: nil)
         acSettings.lookupCompletion() { [weak self] settings in
@@ -193,8 +182,9 @@ extension LoginViewModel: OAuth2AuthViewModelDelegate {
                         oauth2Error: OAuth2AuthViewModelError.noParametersForVerification)
                     return
                 }
-                login(accountName: oauth2Params.emailAddress, userName: oauth2Params.userName,
-                      accessToken: token, mySelfer: oauth2Params.mySelfer)
+                login(accountName: oauth2Params.emailAddress,
+                      userName: oauth2Params.userName,
+                      accessToken: token)
             } else {
                 loginViewModelOAuth2ErrorDelegate?.handle(
                     oauth2Error: OAuth2AuthViewModelError.noToken)
@@ -241,9 +231,8 @@ extension LoginViewModel: VerifiableAccountDelegate {
         switch result {
         case .success(()):
             do {
-                try verifiableAccount?.save()
+                try verifiableAccount?.save() //!!!: BUFF: make sure key is generated for OAuth
                 informAccountVerificationResultDelegate(error: nil)
-                mySelfer?.startMySelf()
             } catch {
                 Log.shared.errorAndCrash("%@", error.localizedDescription)
             }

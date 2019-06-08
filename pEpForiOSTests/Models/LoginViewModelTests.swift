@@ -118,8 +118,7 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         vm.login(accountName: accountSettings.idAddress,
                  userName: "User Name",
                  loginName: nil,
-                 password: passw,
-                 mySelfer: NoOpMySelfer())
+                 password: passw)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)

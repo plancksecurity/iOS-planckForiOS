@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en_US</string>
+	<key>CFBundleDisplayName</key>
+	<string>p≡p</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.0.47</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>gmail</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>${OAUTH2_GMAIL_REDIRECT_URL_SCHEME}</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>yahoo</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>${OAUTH2_YAHOO_REDIRECT_URL_SCHEME}</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Use Camera</string>
+	<key>NSContactsUsageDescription</key>
+	<string>- p≡p is an app for encrypted emails. To make it possible to send
+     emails to already stored contacts it is necessary to allow p≡p to
+     use them.
+
+- Contact data never will leave the mobile device and will not be
+     sent to p≡p or to any third party.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Enables you to save photos to the Photo Gallery</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Enables you to pick photos from the Photo Gallery</string>
+	<key>OAUTH2_GMAIL_CLIENT_ID</key>
+	<string>${OAUTH2_GMAIL_CLIENT_ID}</string>
+	<key>OAUTH2_GMAIL_REDIRECT_URL_SCHEME</key>
+	<string>${OAUTH2_GMAIL_REDIRECT_URL_SCHEME}</string>
+	<key>OAUTH2_YAHOO_CLIENT_ID</key>
+	<string>${OAUTH2_YAHOO_CLIENT_ID}</string>
+	<key>OAUTH2_YAHOO_CLIENT_SECRET</key>
+	<string>${OAUTH2_YAHOO_CLIENT_SECRET}</string>
+	<key>OAUTH2_YAHOO_REDIRECT_URL</key>
+	<string>https://pep.security/oauth2/yahoo</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>UniversLTStd.otf</string>
+		<string>UniversLTStd-Bold.otf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>security.pEp.apps.pEpForiOS.oauth2</key>
+	<string>Verify OAuth2 authorization requests</string>
+</dict>
+</plist>
