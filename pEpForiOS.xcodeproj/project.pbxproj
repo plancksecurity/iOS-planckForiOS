@@ -121,6 +121,7 @@
 		1543B6A222AACA4E002B59AB /* KeySyncHandshakeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6A122AACA4E002B59AB /* KeySyncHandshakeService.swift */; };
 		1543B6A422AACD69002B59AB /* secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1543B6A322AACD69002B59AB /* secret.xcconfig */; };
 		1543B6A822ABDAAE002B59AB /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6A722ABDAAE002B59AB /* Identity+pEp.swift */; };
+		1543B6B022ABF53C002B59AB /* KeySyncDeviceGroupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6AF22ABF53C002B59AB /* KeySyncDeviceGroupService.swift */; };
 		154D92CF20AC1745009A5868 /* MoveToFolderOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154D92CE20AC1744009A5868 /* MoveToFolderOperationTest.swift */; };
 		154F0A8220874B3E00C77D72 /* ContentDispositionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */; };
 		155050F01FE82356009CEAD2 /* UserNotificationTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */; };
@@ -594,6 +595,7 @@
 		1543B6A122AACA4E002B59AB /* KeySyncHandshakeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncHandshakeService.swift; sourceTree = "<group>"; };
 		1543B6A322AACD69002B59AB /* secret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = secret.xcconfig; path = ../../../pEp_for_iOS_intern/secret.xcconfig; sourceTree = "<group>"; };
 		1543B6A722ABDAAE002B59AB /* Identity+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+pEp.swift"; sourceTree = "<group>"; };
+		1543B6AF22ABF53C002B59AB /* KeySyncDeviceGroupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncDeviceGroupService.swift; sourceTree = "<group>"; };
 		154D92CE20AC1744009A5868 /* MoveToFolderOperationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderOperationTest.swift; sourceTree = "<group>"; };
 		154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentDispositionTest.swift; sourceTree = "<group>"; };
 		155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationTool.swift; sourceTree = "<group>"; };
@@ -1348,6 +1350,7 @@
 			isa = PBXGroup;
 			children = (
 				1543B6A122AACA4E002B59AB /* KeySyncHandshakeService.swift */,
+				1543B6AF22ABF53C002B59AB /* KeySyncDeviceGroupService.swift */,
 			);
 			path = KeySync;
 			sourceTree = "<group>";
@@ -2797,6 +2800,7 @@
 				8B69E3991E30F80E0022959E /* Appearance.swift in Sources */,
 				B7DB7FD6221AD3BB003968DA /* UITextField+Extension.swift in Sources */,
 				B716056020D3ECC900A733D6 /* MoveToFolderTableViewController.swift in Sources */,
+				1543B6B022ABF53C002B59AB /* KeySyncDeviceGroupService.swift in Sources */,
 				15874BCB2127493E00A3A4A6 /* AccountVerificationResultDelegate.swift in Sources */,
 				43E657E71F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift in Sources */,
 				43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */,
