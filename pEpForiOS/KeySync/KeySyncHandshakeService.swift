@@ -9,12 +9,12 @@
 import MessageModel
 import PEPObjCAdapterFramework
 
-class KeySyncHandshakeService: KeySyncServiceDelegate {
+class KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
     weak var presenter: UIViewController?
     
     func handleHandshakeRequest(_ object: UnsafeMutableRawPointer?,
-                                me: Identity,
-                                partner: Identity,
+                                meFpr: String?,
+                                partnerFpr: String?,
                                 signal: PEPSyncHandshakeSignal) {
         fatalError()
         //TODO:
