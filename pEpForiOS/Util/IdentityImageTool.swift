@@ -64,85 +64,10 @@ class IdentityImageTool {
         IdentityImageTool.imageCache.removeAll()
     }
 
-    //    func cachedIdentityImage(for identity: Identity) -> UIImage? { //!!!: cleanup
-//        var searchKey: IdentityKey? = nil
-//        let session = Session()
-//        session.performAndWait {
-//            let safeIdentity = identity.safeForSession(session)
-//            searchKey = IdentityKey(identity: safeIdentity)
-//        }
-//        guard let key = searchKey else {
-//            return nil
-//        }
-//        return IdentityImageTool.imageCache[key]
-//    }
-
     func cachedIdentityImage(for key: IdentityKey) -> UIImage? {
         return IdentityImageTool.imageCache[key]
     }
 
-    /// Creates (and caches) the contact image to display for an identity.
-    /// This is a possibly time consuming process and shold not be called from the main thread.
-    ///
-    /// - Parameters:
-    ///   - identity: identity to create contact image to doisplay for
-    ///   - imageSize: size of the image to create
-    ///   - textColor: text color to use in case the resulting images contains the users initials
-    ///   - backgroundColor: backgroundcolor to use in case the resulting images contains
-    ///     the users initials
-    /// - Returns: contact image to display
-//    func identityImage(for identity: Identity, //!!!: cleanup
-//                       imageSize: CGSize = CGSize.defaultAvatarSize,
-//                       textColor: UIColor = UIColor.white,
-//                       backgroundColor: UIColor = UIColor(hexString: "#c8c7cc")) -> UIImage? {
-//        if let cachedImage = cachedIdentityImage(for: identity) {
-//            // We have the image in cache. Return it.
-//            return cachedImage
-//        }
-//
-//        var image:UIImage?
-//
-//        let session = Session()
-//        let safeIdentity = identity.safeForSession(session)
-//        session.performAndWait { [weak self] in
-//
-//
-//            guard let me = self else {
-//                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-//                return
-//            }
-//
-//            if let addressBookID = safeIdentity.addressBookID {
-//                // Get image from system AddressBook if any
-//                let ab = AddressBook()
-//                if let contact = ab.contactBy(addressBookID: addressBookID),
-//                    let imgData = contact.thumbnailImageData {
-//                    image = UIImage(data: imgData)
-//                }
-//            }
-//
-//            if image == nil {
-//                // We cound not find an image anywhere. Let's create one with the initials
-//                var initials = "?"
-//                if let userName = safeIdentity.userName {
-//                    initials = userName.initials()
-//                } else {
-//                    let namePart = safeIdentity.address.namePartOfEmail()
-//                    initials = namePart.initials()
-//                }
-//                image =  me.identityImageFromName(initials: initials,
-//                                              size: imageSize,
-//                                              textColor: textColor,
-//                                              imageBackgroundColor: backgroundColor)
-//            }
-//            if let safeImage = image {
-//                // cache image
-//                let saveKey = IdentityKey(identity: safeIdentity)
-//                IdentityImageTool.imageCache[saveKey] = safeImage
-//            }
-//        }
-//        return image
-//    }
 
     func identityImage(for identityKey: IdentityKey,
                        imageSize: CGSize = CGSize.defaultAvatarSize,
