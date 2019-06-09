@@ -6,7 +6,7 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
+import MessageModel
 
 public protocol AppSettingsProtocol {
     var shouldReinitializePepOnNextStartup: Bool { get set }
@@ -15,4 +15,5 @@ public protocol AppSettingsProtocol {
     var threadedViewEnabled: Bool { get set }
     var passiveMode: Bool { get set }
     var defaultAccount: String? { get set }
+    var lastKnownDeviceGroupState: DeviceGroupState { get set }
 }

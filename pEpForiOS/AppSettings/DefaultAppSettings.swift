@@ -76,6 +76,16 @@ public class DefaultAppSettings: AppSettingsProtocol {
         }
     }
 
+    public var lastKnownDeviceGroupState: DeviceGroupState {
+        get {
+            let rawValue = UserDefaults.standard.integer(forKey: AppSettings.keyLastKnowDeviceGroupStateRawValue) 
+            return DeviceGroupState(rawValue: rawValue) ?? DeviceGroupState.sole
+        }
+        set {
+            UserDefaults.standard.set(newValue.rawValue, forKey: AppSettings.keyLastKnowDeviceGroupStateRawValue)
+        }
+    }
+
     // MARK: - Setup
 
     private func setup() {
@@ -95,6 +105,7 @@ public class DefaultAppSettings: AppSettingsProtocol {
         defaults[AppSettings.keyUnencryptedSubjectEnabled] = true
         defaults[AppSettings.keyThreadedViewEnabled] = true
         defaults[AppSettings.keyPassiveMode] = false
+        defaults[AppSettings.keyLastKnowDeviceGroupStateRawValue] = DeviceGroupState.sole.rawValue
 
         UserDefaults.standard.register(defaults: defaults)
     }
