@@ -267,18 +267,30 @@ public class Logger {
                        filePath: String = #file,
                        fileLine: Int = #line,
                        args: [CVarArg]) {
-        let theLog = osLogger as! OSLog
-        let theType = severity.osLogType()
+        var shouldLog = false
 
-        let formatString = "\(message)".replacingOccurrences(of: "%{public}", with: "%")
-        let ourString = String(format: formatString, arguments: args)
+        #if DEBUG
+        shouldLog = true
+        #else
+        if severity == .error || severity == .fault || severity == .default {
+            shouldLog = true
+        }
+        #endif
 
-        os_log("%{public}@:%d %{public}@: %{public}@",
-               log: theLog,
-               type: theType,
-               filePath,
-               fileLine,
-               function,
-               ourString)
+        if shouldLog {
+            let theLog = osLogger as! OSLog
+            let theType = severity.osLogType()
+
+            let formatString = "\(message)".replacingOccurrences(of: "%{public}", with: "%")
+            let ourString = String(format: formatString, arguments: args)
+
+            os_log("%{public}@:%d %{public}@: %{public}@",
+                   log: theLog,
+                   type: theType,
+                   filePath,
+                   fileLine,
+                   function,
+                   ourString)
+        }
     }
 }
