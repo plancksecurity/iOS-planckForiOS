@@ -165,30 +165,30 @@ public class Logger {
                               filePath: String = #file,
                               fileLine: Int = #line,
                               error: Error) {
-        os_log("%@:%d %@: %@",
+        os_log("*** errorAndCrash: %@ (%@:%d %@)",
                log: osLogger as! OSLog,
                type: .fault,
+               "\(error)",
                filePath,
                fileLine,
-               function,
-               "\(error)")
+               function)
 
-        SystemUtils.crash("\(filePath):\(fileLine) \(function): - \(error)")
+        SystemUtils.crash("*** errorAndCrash: \(error) (\(filePath):\(fileLine) \(function))")
     }
 
     public func errorAndCrash(function: String = #function,
                               filePath: String = #file,
                               fileLine: Int = #line,
                               message: String) {
-        os_log("%@:%d %@: %@",
+        os_log("*** errorAndCrash: %@ (%@:%d %@)",
                log: osLogger as! OSLog,
                type: .fault,
+               message,
                filePath,
                fileLine,
-               function,
-               "\(message)")
+               function)
 
-        SystemUtils.crash("\(filePath):\(fileLine) \(function): - \(message)")
+        SystemUtils.crash("*** errorAndCrash: \(message) (\(filePath):\(fileLine) \(function))")
     }
 
     public func errorAndCrash(function: String = #function,
@@ -203,7 +203,7 @@ public class Logger {
                 fileLine: fileLine,
                 args: args)
 
-        SystemUtils.crash("\(filePath):\(function):\(fileLine) - \(message)")
+        SystemUtils.crash("*** errorAndCrash: \(message) (\(filePath):\(fileLine) \(function))")
     }
 
     /**
