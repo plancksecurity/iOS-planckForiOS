@@ -257,10 +257,9 @@ public class Logger {
     }
 
     /**
-     - Note: Logs in a format that is not pretty, but gets all the data across.
-       The restrictions are given to `os_log`'s implementation,
-       requiring a `StaticString`, which according to the documentation
-       must be known at compile time.
+     - Note: Wrapping `os_log` causes all kinds of problems, so until
+        there is an official version of it that accepts `[CVarArg]` (os_logv?),
+        interpolation is handled by us.
      */
     private func osLog(message: StaticString,
                        severity: Severity,
