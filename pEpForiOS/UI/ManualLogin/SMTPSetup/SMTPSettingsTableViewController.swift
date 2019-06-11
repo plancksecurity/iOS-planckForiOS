@@ -230,7 +230,7 @@ extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
                 do {
                     try theSelf.model?.save()
                 } catch {
-                    Log.shared.errorAndCrash(error: error)
+                    Log.shared.errorAndCrash("%@", error.localizedDescription)
                 }
             }
             GCD.onMain() {  [weak self] in
