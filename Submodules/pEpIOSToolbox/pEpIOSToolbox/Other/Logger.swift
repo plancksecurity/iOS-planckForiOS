@@ -271,84 +271,15 @@ public class Logger {
         let theLog = osLogger as! OSLog
         let theType = severity.osLogType()
 
-        os_log("%{public}@:%d %{public}@: %{public}@ (%{public}@)",
+        let formatString = "\(message)".replacingOccurrences(of: "%{public}", with: "%")
+        let ourString = String(format: formatString, arguments: args)
+
+        os_log("%{public}@:%d %{public}@: %{public}@",
                log: theLog,
                type: theType,
                filePath,
                fileLine,
                function,
-               "\(message)",
-               args)
-
-        // We have to expand the array of arguments into positional ones.
-        // There is no attempt of trying to format the string on our side
-        // in order to make use of `os_log`'s fast 'offline' formatting
-        // (that is, the work is delayed until actual log display).
-        switch args.count {
-        case 0:
-            os_log(message,
-                   log: theLog,
-                   type: theType)
-        case 1:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0])
-        case 2:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1])
-        case 3:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2])
-        case 4:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2], args[3])
-        case 5:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2], args[3], args[4])
-        case 6:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2], args[3], args[4], args[5])
-        case 7:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2], args[3], args[4], args[5], args[6])
-        case 8:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
-        case 9:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7],
-                   args[8])
-        case 10:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7],
-                   args[8], args[9])
-        default:
-            os_log("Using more than 10 parameters",
-                   log: theLog,
-                   type: .error)
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args)
-        }
+               ourString)
     }
 }
