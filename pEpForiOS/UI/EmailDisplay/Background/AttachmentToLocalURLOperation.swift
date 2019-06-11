@@ -36,7 +36,7 @@ class AttachmentToLocalURLOperation: Operation {
                 return
             }
             guard let data =  me.safeAttachment?.data else {
-                os_log(type: .default, "Attachment without data")
+                Log.shared.warn("Attachment without data")
                 return
             }
             let tmpDirURL =  FileManager.default.temporaryDirectory
