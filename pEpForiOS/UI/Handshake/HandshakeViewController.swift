@@ -268,7 +268,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         do {
             languages = try theSession.languageList()
         } catch let err as NSError {
-            Log.shared.error("%@", err.localizedDescription)
+            Log.shared.error("%@", err as CVarArg)
             languages = []
         }
 
@@ -321,7 +321,7 @@ extension HandshakeViewController: SegueHandlerType {
         do {
             destination.languages = try theSession.languageList()
         } catch let err as NSError {
-            Log.shared.error("%@", err.localizedDescription)
+            Log.shared.error("%@", err as CVarArg)
             destination.languages = []
         }
     }

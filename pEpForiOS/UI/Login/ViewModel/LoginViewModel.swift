@@ -101,7 +101,7 @@ class LoginViewModel {
 
         func statusOk() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
-                Log.shared.error("%@", error.localizedDescription)
+                Log.shared.error("%@", error as CVarArg)
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
                 return
             }
@@ -165,7 +165,7 @@ class LoginViewModel {
         do {
             try theVerificationService.verify()
         } catch {
-            Log.shared.error("%@", error.localizedDescription)
+            Log.shared.error("%@", error as CVarArg)
             loginViewModelLoginErrorDelegate?.handle(loginError: error)
         }
     }
@@ -230,7 +230,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
                 result: .smtpError(smtpError))
         } else {
             if let theError = error {
-                Log.shared.errorAndCrash("%@", theError.localizedDescription)
+                Log.shared.errorAndCrash(error: theError)
             } else {
                 accountVerificationResultDelegate?.didVerify(result: .ok)
             }
@@ -245,7 +245,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
                 informAccountVerificationResultDelegate(error: nil)
                 mySelfer?.startMySelf()
             } catch {
-                Log.shared.errorAndCrash("%@", error.localizedDescription)
+                Log.shared.errorAndCrash(error: error)
             }
         case .failure(let error):
             informAccountVerificationResultDelegate(error: error)

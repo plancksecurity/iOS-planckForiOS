@@ -217,7 +217,7 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
                 try verifiableAccount?.save()
                 delegate?.didVerify(result: .ok)
             } catch {
-                Log.shared.errorAndCrash("%@", error.localizedDescription)
+                Log.shared.errorAndCrash(error: error)
             }
         case .failure(let error):
             if let imapError = error as? ImapSyncError {
@@ -227,7 +227,7 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
                 delegate?.didVerify(
                     result: .smtpError(smtpError))
             } else {
-                Log.shared.errorAndCrash("%@", error.localizedDescription)
+                Log.shared.errorAndCrash(error: error)
             }
         }
     }
