@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import os.log
 
 import pEpIOSToolbox
 import MessageModel
@@ -269,7 +268,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         do {
             languages = try theSession.languageList()
         } catch let err as NSError {
-            os_log("%{public}@", type: .error, "\(err)")
+            os_log(type: .error, "%{public}@", err.localizedDescription)
             languages = []
         }
 
@@ -322,7 +321,7 @@ extension HandshakeViewController: SegueHandlerType {
         do {
             destination.languages = try theSession.languageList()
         } catch let err as NSError {
-            os_log("%{public}@", type: .error, "\(err)")
+            os_log(type: .error, "%{public}@", err.localizedDescription)
             destination.languages = []
         }
     }
