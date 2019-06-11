@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import os.log
-
 import pEpIOSToolbox
 import PEPObjCAdapterFramework
 
@@ -33,9 +31,8 @@ extension PEPRating {
              .underAttack:
             return false
         default:
-            os_log("cannot decide isUnderAttack() for %d",
-                   type: .error,
-                   self.rawValue)
+            Log.shared.errorAndCrash(
+                "cannot decide isUnderAttack() for %{public}@", self.rawValue)
             return false
         }
     }
@@ -60,9 +57,8 @@ extension PEPRating {
              .underAttack:
             return false
         default:
-            os_log("cannot decide isUnderAttack() for %d",
-                   type: .error,
-                   self.rawValue)
+            Log.shared.errorAndCrash(
+                "cannot decide isUnderAttack() for %{public}@", self.rawValue)
             return false
         }
     }
