@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import os.log
-
 import pEpIOSToolbox
 import MessageModel
 
@@ -64,6 +62,6 @@ extension HtmlToMarkdownSaxParser: AXHTMLParserDelegate {
     }
 
     func parser(_ parser: AXHTMLParser, parseErrorOccurred parseError: Error) {
-        Log.shared.errorAndCrash(error: parseError)
+        Log.shared.errorAndCrash("%@", parseError.localizedDescription)
     }
 }
