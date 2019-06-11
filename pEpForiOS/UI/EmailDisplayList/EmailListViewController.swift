@@ -350,6 +350,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     @IBAction func cancelToolbar(_ sender:UIBarButtonItem!) {
         showStandardToolbar()
+        lastSelectedIndexPath = nil
         tableView.setEditing(false, animated: true)
     }
 
@@ -410,7 +411,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
             vm.deleteSelected(indexPaths: selectedIndexPaths)
         }
-        lastSelectedIndexPath = nil
         cancelToolbar(sender)
     }
 
