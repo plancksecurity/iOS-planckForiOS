@@ -161,6 +161,14 @@ public class Logger {
                 args: args)
     }
 
+    public func errorAndCrash(error: Error) {
+        // TODO
+    }
+
+    public func errorAndCrash(message: String) {
+        // TODO
+    }
+
     public func errorAndCrash(function: String = #function,
                               filePath: String = #file,
                               fileLine: Int = #line,
