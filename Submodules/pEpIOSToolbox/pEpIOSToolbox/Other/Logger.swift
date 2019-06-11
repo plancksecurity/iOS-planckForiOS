@@ -285,13 +285,13 @@ public class Logger {
 
             let ourString = String(format: "\(message)", arguments: args)
 
-            os_log("%@:%d %@: %@",
+            os_log("%@ (%@:%d %@)",
                    log: theLog,
                    type: theType,
+                   ourString,
                    filePath,
                    fileLine,
-                   function,
-                   ourString)
+                   function)
         }
     }
 }
