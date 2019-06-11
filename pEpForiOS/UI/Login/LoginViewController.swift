@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import os.log
 
 import pEpIOSToolbox
 import MessageModel
@@ -157,7 +156,7 @@ class LoginViewController: BaseViewController {
     }
 
     private func handleLoginError(error: Error, offerManualSetup: Bool) {
-        os_log("%{public}@", type: .error, "\(error)")
+        os_log(type: .error, "%{public}@", error.localizedDescription)
         self.isCurrentlyVerifying = false
         guard let error = DisplayUserError(withError: error) else {
             // Do nothing. The error type is not suitable to bother the user with.

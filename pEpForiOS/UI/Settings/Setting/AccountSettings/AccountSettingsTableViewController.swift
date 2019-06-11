@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import os.log
-
 import MessageModel
 import pEpIOSToolbox
 
@@ -305,7 +303,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
 
 extension AccountSettingsTableViewController {
     public func handleLoginError(error: Error) {
-        os_log("%{public}@", type: .error, "\(error)")
+        os_log(type: .error, "%{public}@", error.localizedDescription)
         UIUtils.show(error: error, inViewController: self)
     }
 }
