@@ -101,7 +101,7 @@ class LoginViewModel {
 
         func statusOk() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
-                os_log(type: .error, "%{public}@", error.localizedDescription)
+                Log.shared.error("%{public}@", error.localizedDescription)
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
                 return
             }
@@ -165,7 +165,7 @@ class LoginViewModel {
         do {
             try theVerificationService.verify()
         } catch {
-            os_log(type: .error, "%{public}@", error.localizedDescription)
+            Log.shared.error("%{public}@", error.localizedDescription)
             loginViewModelLoginErrorDelegate?.handle(loginError: error)
         }
     }
