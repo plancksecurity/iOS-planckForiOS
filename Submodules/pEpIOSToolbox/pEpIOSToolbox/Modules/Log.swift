@@ -10,7 +10,7 @@ import Foundation
 
 /// Shared instance of logger.
 class Log {
-    static let shared = Logger(subsystem: "security.pEp.pEpForiOS", category: "pEpIOSToolbox")
+    static let shared = Logger(subsystem: "security.pEp.app.pEpForiOS", category: "pEpIOSToolbox")
 
     /// Init is forbidden. Singleton...
     private init() {}
