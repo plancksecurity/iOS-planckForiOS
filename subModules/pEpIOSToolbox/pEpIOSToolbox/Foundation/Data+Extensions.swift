@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import os.log
 
 extension Data {
     public func stringEncodingFromIANACharset(_ charset: String) -> String.Encoding {
@@ -31,9 +30,7 @@ extension Data {
         do {
             try write(to: url)
         } catch {
-            os_log("Could not save to %{public}@",
-                   type: .error,
-                   url.absoluteString)
+            os_log(type: .error, "Could not save to %{public}@", url.absoluteString)
         }
     }
 
@@ -43,9 +40,7 @@ extension Data {
                 withJSONObject: self, options: .prettyPrinted)
             jsonData.debugSave(basePath: basePath, fileName: fileName, ext: ext)
         } catch let err {
-            os_log("%{public}@",
-                   type: .error,
-                   "\(err)")
+            os_log(type: .error, "%{public}@", err.localizedDescription)
         }
     }
 }
