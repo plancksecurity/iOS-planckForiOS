@@ -98,6 +98,7 @@ struct UIUtils {
         var prefilledTo: Identity? = nil
         if let address = address {
             let to = Identity(address: address)
+            to.save()
             prefilledTo = to
         }
         let composeVM = ComposeViewModel(resultDelegate: nil,
