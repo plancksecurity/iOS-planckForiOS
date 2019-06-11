@@ -164,7 +164,7 @@ public class Logger {
     public func errorAndCrash(function: String = #function,
                               filePath: String = #file,
                               fileLine: Int = #line,
-                              message: StaticString? = nil) {
+                              _ message: StaticString? = nil) {
         SystemUtils.crash("\(filePath):\(function):\(fileLine) - \(message ?? "no message")")
     }
 
@@ -203,7 +203,7 @@ public class Logger {
      own method.
      */
     public func lostMySelf() {
-        errorAndCrash(message: "Lost MySelf")
+        errorAndCrash("Lost MySelf")
     }
 
     private let subsystem: String
