@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import QuickLook
-import os.log
 
 import pEpIOSToolbox
 import MessageModel
@@ -338,7 +337,7 @@ class EmailViewController: BaseTableViewController {
             message = m
         }
 
-        os_log("next, will reload table view", type: .default)
+        Log.shared.log("next, will reload table view")
         configureTableRows()
         tableView.reloadData()
         configureView()
@@ -350,7 +349,7 @@ class EmailViewController: BaseTableViewController {
             message = m
         }
 
-        os_log("previous, will reload table view", type: .default)
+        Log.shared.log("previous, will reload table view")
         configureTableRows()
         tableView.reloadData()
         configureView()
@@ -481,7 +480,7 @@ extension EmailViewController {
 
     override func tableView(
         _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        os_log("cell for %d:%d", type: .default, indexPath.section, indexPath.row)
+        Log.shared.log("cell for %d:%d", indexPath.section, indexPath.row)
         guard
             let row = tableData?.getRow(at: indexPath.row),
             let cell = tableView.dequeueReusableCell(

@@ -109,7 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func kickOffMySelf() {
         mySelfTaskId = application.beginBackgroundTask(expirationHandler: { [unowned self] in
-            os_log("mySelfTaskId with ID expired.", type: .default)
+            Log.shared.log("mySelfTaskId with ID expired.")
             // We migh want to call some (yet unexisting) emergency shutdown on
             // ReplicationService here here that brutally shuts down everything.
             self.application.endBackgroundTask(
@@ -237,7 +237,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - UIApplicationDelegate
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        os_log("applicationDidReceiveMemoryWarning", type: .default)
+        Log.shared.log("applicationDidReceiveMemoryWarning")
     }
 
     func application(
@@ -257,9 +257,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         setupServices()
-        os_log("Library url: %{public}@",
-               type: .default,
-               String(describing: applicationDirectory()))
+        Log.shared.log("Library url: %{public}@", String(describing: applicationDirectory()))
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
         askUserForPermissions()
