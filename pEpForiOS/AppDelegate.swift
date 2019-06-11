@@ -257,6 +257,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.shared.log("Library url: %@", String(describing: applicationDirectory()))
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
+        // Test logging
+        let error = ImapSyncError.connectionLost("someFunction")
+        Log.shared.log("*** Log a float: %f, int %d, string %@, error %@",
+                       1.0, 2,
+                       "Hi",
+                       error as CVarArg)
+        Log.shared.errorAndCrash("*** Oh. %@", error as CVarArg)
+        Log.shared.errorAndCrash(error: error)
+        let index = 5
+        Log.shared.errorAndCrash(message: "*** My last message: \(index)")
+
         askUserForPermissions()
 
         let result = setupInitialViewController()
