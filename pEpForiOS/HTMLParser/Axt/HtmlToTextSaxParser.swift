@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import os.log
-
 import pEpIOSToolbox
 
 class HtmlToTextSaxParser: BasicSaxParser {
@@ -62,6 +60,6 @@ extension HtmlToTextSaxParser: AXHTMLParserDelegate {
     }
 
     func parser(_ parser: AXHTMLParser, parseErrorOccurred parseError: Error) {
-        os_log("%@", type: .error, "\(parseError)")
+        os_log(type: .error, "%@", parseError.localizedDescription)
     }
 }
