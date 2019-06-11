@@ -32,7 +32,6 @@ extension Data {
             try write(to: url)
         } catch {
             os_log("Could not save to %{public}@",
-                   log: Log.shared.osLogger,
                    type: .error,
                    url.absoluteString)
         }
@@ -45,7 +44,6 @@ extension Data {
             jsonData.debugSave(basePath: basePath, fileName: fileName, ext: ext)
         } catch let err {
             os_log("%{public}@",
-                   log: Log.shared.osLogger,
                    type: .error,
                    "\(err)")
         }

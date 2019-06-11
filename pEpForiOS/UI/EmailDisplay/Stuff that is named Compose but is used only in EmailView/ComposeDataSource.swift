@@ -42,12 +42,12 @@ class ComposeDataSource: NSObject {
         } else {
             filterRows(filter: { $0.type != .mailingList} )
         }
-        os_log("filtering rows", log: Log.shared.osLogger, type: .default)
+        os_log("filtering rows", type: .default)
     }
 
     func numberOfRows() -> Int {
         let visibleRows = getVisibleRows()
-        os_log("number of rows -> %d", log: Log.shared.osLogger, type: .default, visibleRows.count)
+        os_log("number of rows -> %d", type: .default, visibleRows.count)
         return visibleRows.count
     }
 

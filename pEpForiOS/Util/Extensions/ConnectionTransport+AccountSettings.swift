@@ -20,7 +20,6 @@ extension ConnectionTransport {
         case .TLS: self = .TLS
         case .unknown:
             os_log("Unsupported LAS transport: %d",
-                   log: Log.shared.osLogger,
                    type: .error,
                    accountSettingsTransport.rawValue)
             Log.shared.errorAndCrash()
