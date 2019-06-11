@@ -161,12 +161,34 @@ public class Logger {
                 args: args)
     }
 
-    public func errorAndCrash(error: Error) {
-        // TODO
+    public func errorAndCrash(function: String = #function,
+                              filePath: String = #file,
+                              fileLine: Int = #line,
+                              error: Error) {
+        os_log("%{public}@:%d %{public}@: %{public}@",
+               log: osLogger as! OSLog,
+               type: .fault,
+               filePath,
+               fileLine,
+               function,
+               "\(error)")
+
+        SystemUtils.crash("\(filePath):\(fileLine) \(function): - \(error)")
     }
 
-    public func errorAndCrash(message: String) {
-        // TODO
+    public func errorAndCrash(function: String = #function,
+                              filePath: String = #file,
+                              fileLine: Int = #line,
+                              message: String) {
+        os_log("%{public}@:%d %{public}@: %{public}@",
+               log: osLogger as! OSLog,
+               type: .fault,
+               filePath,
+               fileLine,
+               function,
+               "\(message)")
+
+        SystemUtils.crash("\(filePath):\(fileLine) \(function): - \(message)")
     }
 
     public func errorAndCrash(function: String = #function,
