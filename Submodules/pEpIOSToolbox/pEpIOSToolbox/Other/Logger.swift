@@ -274,6 +274,8 @@ public class Logger {
         #else
         if severity == .error || severity == .fault || severity == .default {
             shouldLog = true
+        } else {
+            shouldLog = false
         }
         #endif
 
