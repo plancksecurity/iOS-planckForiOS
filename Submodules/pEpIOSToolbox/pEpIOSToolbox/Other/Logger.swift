@@ -227,8 +227,10 @@ public class Logger {
     }
 
     /**
-     - Note: If the number of arguments to the format string exceeds 10,
-     the logging doesn't work correctly. Can be easily fixed though, if really needed.
+     - Note: Logs in a format that is not pretty, but gets all the data across.
+       The restrictions are given to `os_log`'s implementation,
+       requiring a `StaticString`, which according to the documentation
+       must be known at compile time.
      */
     private func osLog(message: StaticString,
                        severity: Severity,
@@ -239,14 +241,14 @@ public class Logger {
         let theLog = osLogger as! OSLog
         let theType = severity.osLogType()
 
-        // I haven't found a way of injecting `function` etc. into the original message for
-        // just one call to `os_log`, so the 'position' is logged on a separate line.
-        os_log("%@:%d %@:",
+        os_log("%{public}@:%d %{public}@: %{public}@ (%{public}@)",
                log: theLog,
                type: theType,
                filePath,
                fileLine,
-               function)
+               function,
+               message,
+               args)
 
         // We have to expand the array of arguments into positional ones.
         // There is no attempt of trying to format the string on our side
