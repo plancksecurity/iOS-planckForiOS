@@ -334,9 +334,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        // Unclear if this is needed, presumabley doesn't get invoked for OAuth2 because
-        // SFSafariViewController is involved there.
-        return oauth2Provider.processAuthorizationRedirect(url: url)
+
+//        guard !Account.all().isEmpty else { //No account, no logged in, ignore and log in then
+//            Log.shared.log("User try to share something, but was not logged in")
+//            return false
+//        }
+//        guard let appConfig = appConfig else {
+//            Log.shared.log(<#T##message: StaticString##StaticString#>, <#T##args: CVarArg...##CVarArg#>)
+//            return false
+//        }
+//
+//        let composeViewController =
+//                    ViewControllerUtils.AppViewController.instance(.composeTableViewController)
+//        composeViewController.app
+        return true
+
     }
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity,

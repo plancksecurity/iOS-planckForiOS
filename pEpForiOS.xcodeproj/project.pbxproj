@@ -188,6 +188,9 @@
 		220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE331E0AB5CC002FE716 /* MessageSubjectCell.swift */; };
 		222B35581DF96389007A1F82 /* Capability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35571DF96389007A1F82 /* Capability.swift */; };
 		228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
+		37414C1B22AA910800E3857C /* StoryBoardUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37414C1A22AA910800E3857C /* StoryBoardUtils.swift */; };
+		37414C2122AAB0FA00E3857C /* ViewController+Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37414C2022AAB0FA00E3857C /* ViewController+Storyboard.swift */; };
+		37414C2322AAB70C00E3857C /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37414C2222AAB70C00E3857C /* AppError.swift */; };
 		3785565C22A15FD900AACFD2 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3785565B22A15FD900AACFD2 /* Media.xcassets */; };
 		3785565E22A15FD900AACFD2 /* ActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3785565D22A15FD900AACFD2 /* ActionViewController.swift */; };
 		3785566122A15FD900AACFD2 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3785565F22A15FD900AACFD2 /* MainInterface.storyboard */; };
@@ -684,6 +687,9 @@
 		220DCE331E0AB5CC002FE716 /* MessageSubjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSubjectCell.swift; sourceTree = "<group>"; };
 		222B35571DF96389007A1F82 /* Capability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Capability.swift; sourceTree = "<group>"; };
 		228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextfieldResponder.swift; sourceTree = "<group>"; };
+		37414C1A22AA910800E3857C /* StoryBoardUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryBoardUtils.swift; sourceTree = "<group>"; };
+		37414C2022AAB0FA00E3857C /* ViewController+Storyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Storyboard.swift"; sourceTree = "<group>"; };
+		37414C2222AAB70C00E3857C /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		3785565922A15FD900AACFD2 /* pEpActionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = pEpActionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3785565B22A15FD900AACFD2 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		3785565D22A15FD900AACFD2 /* ActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionViewController.swift; sourceTree = "<group>"; };
@@ -1108,6 +1114,7 @@
 			children = (
 				150B8E971FCDACBB00374438 /* AccountSettingsUserInputError.swift */,
 				152130531FD00B7A00688DF2 /* DisplayUserError.swift */,
+				37414C2222AAB70C00E3857C /* AppError.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -1793,6 +1800,7 @@
 				1574D079211464CC00FEDC93 /* URL+MailTo.swift */,
 				B7DFEA55225397AB0080A2BA /* Folder+LocalizedName.swift */,
 				B7F676BC227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift */,
+				37414C2022AAB0FA00E3857C /* ViewController+Storyboard.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1958,6 +1966,7 @@
 				434F40931EB0B173002FBF0D /* ObservableValue.swift */,
 				15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */,
 				155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */,
+				37414C1A22AA910800E3857C /* StoryBoardUtils.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2825,6 +2834,7 @@
 				4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */,
 				4351C2D11F4441190053381F /* houdini_html_u.c in Sources */,
 				B70A3C401E817CFA0036876F /* FolderViewModel.swift in Sources */,
+				37414C2122AAB0FA00E3857C /* ViewController+Storyboard.swift in Sources */,
 				0038494A20D25576008000EA /* ProfilePictureComposerProtocol.swift in Sources */,
 				15874BCA2127493E00A3A4A6 /* UnecryptedSubjectViewModel.swift in Sources */,
 				220DCE341E0AB5CC002FE716 /* MailinglistCell.swift in Sources */,
@@ -2880,6 +2890,7 @@
 				43ED53791CC77F95006AB156 /* UserInfoTableViewController.swift in Sources */,
 				43EC75AC2164C26100048CFE /* SetOwnKeyViewController.swift in Sources */,
 				43CE63C51DE87FB200FAC505 /* Identity+pEp.swift in Sources */,
+				37414C1B22AA910800E3857C /* StoryBoardUtils.swift in Sources */,
 				B7F676BD227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift in Sources */,
 				B7A50746224CD27A007B988F /* FilterViewModel.swift in Sources */,
 				220DCE2E1E0AB544002FE716 /* MessageCell.swift in Sources */,
@@ -3029,6 +3040,7 @@
 				152A39942190587200D9F8E4 /* TextViewInTableViewScrollUtil.swift in Sources */,
 				43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */,
 				F7C16A5D21A59187004B44F2 /* FolderViewModelDelegate.swift in Sources */,
+				37414C2322AAB70C00E3857C /* AppError.swift in Sources */,
 				43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */,
 				15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */,
 				15874BD421274BD400A3A4A6 /* TrustedServerSettingCell.swift in Sources */,

@@ -38,6 +38,16 @@
 				<string>${OAUTH2_YAHOO_REDIRECT_URL_SCHEME}</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>security.pEp</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.security.pEp</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
