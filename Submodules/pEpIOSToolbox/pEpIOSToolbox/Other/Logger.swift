@@ -196,12 +196,12 @@ public class Logger {
                               fileLine: Int = #line,
                               _ message: StaticString,
                               _ args: CVarArg...) {
-        saveLog(message: message,
-                severity: .fault,
-                function: function,
-                filePath: filePath,
-                fileLine: fileLine,
-                args: args)
+        osLog(message: "*** errorAndCrash: \(message)",
+            severity: .fault,
+            function: function,
+            filePath: filePath,
+            fileLine: fileLine,
+            args: args)
 
         SystemUtils.crash("*** errorAndCrash: \(message) (\(filePath):\(fileLine) \(function))")
     }
