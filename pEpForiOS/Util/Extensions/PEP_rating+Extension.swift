@@ -32,7 +32,7 @@ extension PEPRating {
             return false
         default:
             Log.shared.errorAndCrash(
-                "cannot decide isUnderAttack() for %{public}@", self.rawValue)
+                "cannot decide isUnderAttack() for %@", self.rawValue)
             return false
         }
     }
@@ -58,7 +58,7 @@ extension PEPRating {
             return false
         default:
             Log.shared.errorAndCrash(
-                "cannot decide isUnderAttack() for %{public}@", self.rawValue)
+                "cannot decide isUnderAttack() for %@", self.rawValue)
             return false
         }
     }

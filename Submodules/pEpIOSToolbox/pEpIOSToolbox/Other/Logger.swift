@@ -165,7 +165,7 @@ public class Logger {
                               filePath: String = #file,
                               fileLine: Int = #line,
                               error: Error) {
-        os_log("%{public}@:%d %{public}@: %{public}@",
+        os_log("%@:%d %@: %@",
                log: osLogger as! OSLog,
                type: .fault,
                filePath,
@@ -180,7 +180,7 @@ public class Logger {
                               filePath: String = #file,
                               fileLine: Int = #line,
                               message: String) {
-        os_log("%{public}@:%d %{public}@: %{public}@",
+        os_log("%@:%d %@: %@",
                log: osLogger as! OSLog,
                type: .fault,
                filePath,
@@ -221,7 +221,7 @@ public class Logger {
         // So we wrap it into an NSError which does suppord CVArg.
         let nsErr = NSError(domain: subsystem, code: 0, userInfo: [NSUnderlyingErrorKey: error])
 
-        saveLog(message: "%{public}@",
+        saveLog(message: "%@",
                 severity: .default,
                 function: function,
                 filePath: filePath,
@@ -283,10 +283,9 @@ public class Logger {
             let theLog = osLogger as! OSLog
             let theType = severity.osLogType()
 
-            let formatString = "\(message)".replacingOccurrences(of: "%{public}", with: "%")
-            let ourString = String(format: formatString, arguments: args)
+            let ourString = String(format: "\(message)", arguments: args)
 
-            os_log("%{public}@:%d %{public}@: %{public}@",
+            os_log("%@:%d %@: %@",
                    log: theLog,
                    type: theType,
                    filePath,

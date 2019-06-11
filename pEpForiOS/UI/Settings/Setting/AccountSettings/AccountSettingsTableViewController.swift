@@ -303,7 +303,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
 
 extension AccountSettingsTableViewController {
     public func handleLoginError(error: Error) {
-        Log.shared.error("%{public}@", error.localizedDescription)
+        Log.shared.error("%@", error.localizedDescription)
         UIUtils.show(error: error, inViewController: self)
     }
 }

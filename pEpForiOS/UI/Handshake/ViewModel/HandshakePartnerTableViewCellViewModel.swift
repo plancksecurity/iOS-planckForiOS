@@ -108,7 +108,7 @@ class HandshakePartnerTableViewCellViewModel {
         do {
             isPartnerpEpUser = try session.isPEPUser(pEpPartner).boolValue
         } catch let err as NSError {
-            Log.shared.error("%{public}@", err.localizedDescription)
+            Log.shared.error("%@", err.localizedDescription)
             isPartnerpEpUser = false
         }
         setPartnerImage(for: partner)
@@ -159,7 +159,7 @@ class HandshakePartnerTableViewCellViewModel {
                 language: trustwordsLanguage,
                 full: trustwordsFull)
         } catch let err as NSError {
-            Log.shared.error("%{public}@", err.localizedDescription)
+            Log.shared.error("%@", err.localizedDescription)
             return nil
         }
     }
