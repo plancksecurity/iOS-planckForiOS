@@ -247,7 +247,7 @@ public class Logger {
                filePath,
                fileLine,
                function,
-               message,
+               "\(message)",
                args)
 
         // We have to expand the array of arguments into positional ones.
