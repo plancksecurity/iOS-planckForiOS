@@ -168,7 +168,7 @@ public class Logger {
         os_log("*** errorAndCrash: %@ (%@:%d %@)",
                log: osLogger as! OSLog,
                type: .fault,
-               "\(error)",
+               error as CVarArg,
                filePath,
                fileLine,
                function)
