@@ -248,7 +248,7 @@ public class Logger {
                          filePath: String = #file,
                          fileLine: Int = #line,
                          args: [CVarArg]) {
-        osLog(message: message,
+        osLog(message: "\(message)",
               severity: severity,
               function: function,
               filePath: filePath,
@@ -261,7 +261,7 @@ public class Logger {
         there is an official version of it that accepts `[CVarArg]` (os_logv?),
         interpolation is handled by us.
      */
-    private func osLog(message: StaticString,
+    private func osLog(message: String,
                        severity: Severity,
                        function: String = #function,
                        filePath: String = #file,
