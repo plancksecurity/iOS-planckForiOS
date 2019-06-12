@@ -16,7 +16,6 @@ class AppConfig {
 
     let errorPropagator : ErrorPropagator
 
-    /**
      For the views to kick off oauth2 requests.
      */
     let oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol

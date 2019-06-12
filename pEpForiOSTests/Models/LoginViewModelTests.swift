@@ -12,12 +12,6 @@ import XCTest
 @testable import MessageModel
 import PantomimeFramework
 
-class NoOpMySelfer: KickOffMySelfProtocol {
-    func startMySelf() {
-        // do nothing
-    }
-}
-
 class ErrorHandler: LoginViewModelLoginErrorDelegate {
     func handle(loginError: Error) {
         XCTFail("Error: \(loginError)")

@@ -496,35 +496,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
     }
 
-    func testMyselfOperation() {
-        XCTAssertNotNil(cdAccount.identity)
-        let identity = cdAccount.identity?.identity()
-        let expCompleted = expectation(description: "expCompleted")
-
-        let op = MySelfOperation(parentName: #function)
-        op.completionBlock = {
-            op.completionBlock = nil
-            expCompleted.fulfill()
-        }
-
-        OperationQueue().addOperation(op)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors())
-        })
-
-        guard let theIdent = identity else {
-            XCTFail()
-            return
-        }
-        XCTAssertNotNil(try! theIdent.fingerPrint(session: session))
-
-        let identDict = theIdent.updatedIdentity(session: session)
-        XCTAssertNotNil(identDict.fingerPrint)
-        XCTAssertNotNil(identDict.userID)
-    }
-
     //fails on first run when the an account was setup on
     func testFixAttachmentsOperation() {
         let moc: NSManagedObjectContext = Stack.shared.mainContext

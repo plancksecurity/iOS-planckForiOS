@@ -124,11 +124,4 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             }
         }
     }
-
-}
-
-extension BaseTableViewController: KickOffMySelfProtocol {
-    func startMySelf() {
-        Log.shared.errorAndCrash("No appConfig?")
-    }
 }
