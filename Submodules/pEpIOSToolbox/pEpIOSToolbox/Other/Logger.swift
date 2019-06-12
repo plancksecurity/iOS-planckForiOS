@@ -36,12 +36,6 @@ public class Logger {
 
         case error
 
-        /**
-         - Note: As this is referring to inter-process problems, I don't see a use-case
-         for iOS.
-         */
-        case fault
-
         public func osLogType() -> OSLogType {
             switch self {
             case .info:
@@ -52,8 +46,6 @@ public class Logger {
                 return .default
             case .error:
                 return .error
-            case .fault:
-                return .fault
             }
         }
     }
@@ -145,29 +137,13 @@ public class Logger {
                 args: args)
     }
 
-    /**
-     Logs to fault.
-     */
-    public func fault(function: String = #function,
-                      filePath: String = #file,
-                      fileLine: Int = #line,
-                      _ message: StaticString,
-                      _ args: CVarArg...) {
-        saveLog(message: message,
-                severity: .fault,
-                function: function,
-                filePath: filePath,
-                fileLine: fileLine,
-                args: args)
-    }
-
     public func errorAndCrash(function: String = #function,
                               filePath: String = #file,
                               fileLine: Int = #line,
                               error: Error) {
         os_log("*** errorAndCrash: %@ (%@:%d %@)",
                log: osLogger as! OSLog,
-               type: .fault,
+               type: .error,
                "\(error)",
                filePath,
                fileLine,
@@ -182,7 +158,7 @@ public class Logger {
                               message: String) {
         os_log("*** errorAndCrash: %@ (%@:%d %@)",
                log: osLogger as! OSLog,
-               type: .fault,
+               type: .error,
                message,
                filePath,
                fileLine,
@@ -197,7 +173,7 @@ public class Logger {
                               _ message: StaticString,
                               _ args: CVarArg...) {
         osLog(message: "*** errorAndCrash: \(message)",
-            severity: .fault,
+            severity: .error,
             function: function,
             filePath: filePath,
             fileLine: fileLine,
