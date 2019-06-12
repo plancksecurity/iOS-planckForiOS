@@ -17,6 +17,7 @@ public class Logger {
     }
 
     /// Use for warnings, anything that might cause trouble.
+    /// - Note: Gets persisted, so a later sysinfo on the device will recover it.
     public func warn(function: String = #function,
                      filePath: String = #file,
                      fileLine: Int = #line,
@@ -30,8 +31,10 @@ public class Logger {
                 args: args)
     }
 
-    /// Will not be logged in a release build, and even in a debug build will
-    /// only get persisted if an error later occurrs.
+    /// Will not be logged in a release build at all.
+    /// - Note: Even in a debug build,
+    ///     does not get persisted by default (unless an error follows closely),
+    ///     so don't expect to find this in a sysinfo log.
     public func info(function: String = #function,
                      filePath: String = #file,
                      fileLine: Int = #line,
@@ -45,10 +48,7 @@ public class Logger {
                 args: args)
     }
 
-    /// Will not be logged in a release build, and even in a debug build will
-    /// only get persisted if an error later occurrs. Use for messages
-    /// that are needed during debugging of a feature, if it's not possible
-    /// to do that in the debugger itself.
+    /// Use for debug messages only, will not be persisted.
     public func debug(function: String = #function,
                       filePath: String = #file,
                       fileLine: Int = #line,
@@ -63,6 +63,7 @@ public class Logger {
     }
 
     /// Use this for indicating error conditions.
+    /// - Note: Gets persisted, so a later sysinfo on the device will recover it.
     public func error(function: String = #function,
                       filePath: String = #file,
                       fileLine: Int = #line,
