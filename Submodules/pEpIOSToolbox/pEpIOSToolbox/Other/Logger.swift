@@ -144,8 +144,12 @@ public class Logger {
     public func log(function: String = #function,
                     filePath: String = #file,
                     fileLine: Int = #line,
-                    error: Error) {
-        error("%@", "\(error)")
+                    error theError: Error) {
+        error(function: function,
+              filePath: filePath,
+              fileLine: fileLine,
+              "%@",
+              "\(theError)")
     }
 
     /// Since this kind of logging is used so often in the codebase, it has its
