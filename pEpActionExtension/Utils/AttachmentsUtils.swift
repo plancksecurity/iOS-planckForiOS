@@ -14,6 +14,49 @@ struct AttachmentsUtils {
         case image, file, text, other
     }
 
+    static private let queue = OperationQueue()
+
+    static func attachmentsURL(inputItems: [NSExtensionItem],
+                               completion: @escaping (Result<[URL], Error>)-> Void) {
+        var urls = [URL]()
+        var operations = [Operation]()
+
+        for item in inputItems {
+            guard let attachments = item.attachments else {
+                continue
+            }
+
+            for attachment in attachments {
+                operations.append(BlockOperation() {
+                    let group = DispatchGroup()
+                    group.enter()
+                    attachmentURL(attachment: attachment) { result in
+                        switch result {
+                        case .failure(let error):
+                            queue.cancelAllOperations()
+                            completion(.failure(error))
+                            group.leave()
+                            return
+                        case .success(let url):
+                            urls.append(url)
+                            group.leave()
+                        }
+                    }
+                    group.wait()
+                })
+            }
+        }
+        let completionOperation = BlockOperation {
+            completion(.success(urls))
+        }
+        for operation in operations {
+            completionOperation.addDependency(operation)
+        }
+        operations.append(completionOperation)
+        queue.addOperations(operations, waitUntilFinished: false)
+
+    }
+
     static func attachmentURL(attachment: NSItemProvider,
                               completion: @escaping (Result<URL, Error>)-> Void) {
         let attachmentType = type(attachment: attachment)
@@ -21,11 +64,10 @@ struct AttachmentsUtils {
             completion(.failure(ActionExtentionErrors.fileTypeNotSupported))
             return
         }
-        var attachmentIdentifier = identifier(type: attachmentType)
-        attachment.loadItem(forTypeIdentifier: attachmentIdentifier, options: nil,
-                                                completionHandler: { (url, error) in
+        let attachmentIdentifier = identifier(type: attachmentType)
+        attachment.loadItem(forTypeIdentifier: attachmentIdentifier, options: nil) { (url, error) in
             completion(handleResult(url: url, error: error))
-        })
+        }
     }
 }
 
