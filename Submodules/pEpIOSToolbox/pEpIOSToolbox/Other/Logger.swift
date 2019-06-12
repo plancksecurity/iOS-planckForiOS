@@ -16,9 +16,8 @@ public class Logger {
         osLogger = OSLog(subsystem: subsystem, category: category)
     }
 
-    /**
-     Logs to default.
-     */
+    /// Use for messages that are at least important enough to get persisted
+    /// even in a release build.
     public func log(function: String = #function,
                     filePath: String = #file,
                     fileLine: Int = #line,
@@ -32,10 +31,7 @@ public class Logger {
                 args: args)
     }
 
-    /**
-     os_log doesn't have a warn per se, but default is coming close.
-     This is the same as log.
-     */
+    /// Use for warnings, anything that might cause trouble.
     public func warn(function: String = #function,
                      filePath: String = #file,
                      fileLine: Int = #line,
@@ -49,9 +45,8 @@ public class Logger {
                 args: args)
     }
 
-    /**
-     Logs to info.
-     */
+    /// Will not be logged in a release build, and even in a debug build will
+    /// only get persisted if an error later occurrs.
     public func info(function: String = #function,
                      filePath: String = #file,
                      fileLine: Int = #line,
@@ -65,9 +60,10 @@ public class Logger {
                 args: args)
     }
 
-    /**
-     Logs to debug.
-     */
+    /// Will not be logged in a release build, and even in a debug build will
+    /// only get persisted if an error later occurrs. Use for messages
+    /// that are needed during debugging of a feature, if it's not possible
+    /// to do that in the debugger itself.
     public func debug(function: String = #function,
                       filePath: String = #file,
                       fileLine: Int = #line,
@@ -81,9 +77,7 @@ public class Logger {
                 args: args)
     }
 
-    /**
-     Logs to error.
-     */
+    /// Use this for indicating error conditions.
     public func error(function: String = #function,
                       filePath: String = #file,
                       fileLine: Int = #line,
@@ -97,6 +91,7 @@ public class Logger {
                 args: args)
     }
 
+    /// Logs an error and crashes in a debug build, continues to run in a release build.
     public func errorAndCrash(function: String = #function,
                               filePath: String = #file,
                               fileLine: Int = #line,
@@ -112,6 +107,7 @@ public class Logger {
         SystemUtils.crash("*** errorAndCrash: \(error) (\(filePath):\(fileLine) \(function))")
     }
 
+    /// Logs an error message and crashes in a debug build, continues to run in a release build.
     public func errorAndCrash(function: String = #function,
                               filePath: String = #file,
                               fileLine: Int = #line,
@@ -127,6 +123,8 @@ public class Logger {
         SystemUtils.crash("*** errorAndCrash: \(message) (\(filePath):\(fileLine) \(function))")
     }
 
+    /// Logs an error message (with parameters) and crashes in a debug build,
+    /// continues to run in a release build.
     public func errorAndCrash(function: String = #function,
                               filePath: String = #file,
                               fileLine: Int = #line,
@@ -142,33 +140,16 @@ public class Logger {
         SystemUtils.crash("*** errorAndCrash: \(message) (\(filePath):\(fileLine) \(function))")
     }
 
-    /**
-     Logs an error.
-     */
+    /// Logs an error.
     public func log(function: String = #function,
                     filePath: String = #file,
                     fileLine: Int = #line,
                     error: Error) {
-        // Error is not supported by "%@", because it doesn't conform to CVArg
-        // and CVArg is only meant for internal types.
-        // An alternative would be to use localizedDescription(),
-        // but if they are indeed localized you end up with international
-        // log messages.
-        // So we wrap it into an NSError which does suppord CVArg.
-        let nsErr = NSError(domain: subsystem, code: 0, userInfo: [NSUnderlyingErrorKey: error])
-
-        saveLog(message: "%@",
-                severity: .default,
-                function: function,
-                filePath: filePath,
-                fileLine: fileLine,
-                args: [nsErr])
+        error("%@", "\(error)")
     }
 
-    /**
-     Since this kind of logging is used so often in the codebase, it has its
-     own method.
-     */
+    /// Since this kind of logging is used so often in the codebase, it has its
+    /// own method.
     public func lostMySelf() {
         errorAndCrash("Lost MySelf")
     }
@@ -192,11 +173,9 @@ public class Logger {
               args: args)
     }
 
-    /**
-     - Note: Wrapping `os_log` causes all kinds of problems, so until
-        there is an official version of it that accepts `[CVarArg]` (os_logv?),
-        interpolation is handled by us.
-     */
+    /// - Note: Wrapping `os_log` causes all kinds of problems, so until
+    ///   there is an official version of it that accepts `[CVarArg]` (os_logv?),
+    ///   interpolation is handled by us, under certain conditions.
     private func osLog(message: String,
                        severity: Severity,
                        function: String = #function,
@@ -206,8 +185,10 @@ public class Logger {
         var shouldLog = false
 
         #if DEBUG
+        // in a debug build, log everything
         shouldLog = true
         #else
+        // in a release, only log errors and warnings
         if severity == .error || severity == .default {
             shouldLog = true
         } else {
