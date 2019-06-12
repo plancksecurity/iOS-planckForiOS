@@ -55,7 +55,9 @@ extension Message {
         let pFolder =
             CdMessage.PredicateFactory.belongingToParentFolderNamed(parentFolderName: folderName)
         let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pAccount, pUid, pFolder])
-        let cdMessage = CdMessage.all(predicate: p)?.first as? CdMessage
-        return cdMessage?.message()
+        guard let cdMessage = CdMessage.all(predicate: p)?.first as? CdMessage else {
+            return nil
+        }
+        return MessageModelObjectUtils.getMessage(fromCdMessage: cdMessage)
     }
 }

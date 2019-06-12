@@ -19,10 +19,10 @@ struct UIUtils {
     ///   - error: error to preset to user
     ///   - vc: ViewController to present the error on
     static func show(error: Error, inViewController vc: UIViewController) {
-//        Log.shared.errorAndCrash("Will display error to user: %@",
-//                                                    error.localizedDescription)
         guard let displayError = DisplayUserError(withError: error) else {
             // Do nothing. The error type is not suitable to bother the user with.
+            // Log it, though.
+            Log.shared.error("*** Internal error: %@", error as CVarArg)
             return
         }
         showAlertWithOnlyPositiveButton(title: displayError.title,
@@ -98,6 +98,7 @@ struct UIUtils {
         var prefilledTo: Identity? = nil
         if let address = address {
             let to = Identity(address: address)
+            to.save()
             prefilledTo = to
         }
         let composeVM = ComposeViewModel(resultDelegate: nil,
