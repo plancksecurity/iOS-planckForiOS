@@ -91,7 +91,7 @@ class LoginViewModel {
 
         func statusOk() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
-                Log.shared.error("%@", error as CVarArg)
+                Log.shared.error("%@", "\(error)")
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
                 return
             }
@@ -155,7 +155,7 @@ class LoginViewModel {
         do {
             try theVerificationService.verify()
         } catch {
-            Log.shared.error("%@", error as CVarArg)
+            Log.shared.error("%@", "\(error)")
             loginViewModelLoginErrorDelegate?.handle(loginError: error)
         }
     }

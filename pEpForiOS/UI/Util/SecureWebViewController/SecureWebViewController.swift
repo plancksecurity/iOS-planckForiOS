@@ -169,7 +169,7 @@ class SecureWebViewController: UIViewController {
                 encodedContentRuleList: blockRules) { (contentRuleList, error) in
                     if let error = error {
                         Log.shared.errorAndCrash(
-                            "Compile error: %@", error as CVarArg)
+                            "Compile error: %@", "\(error)")
                         return
                     }
                     compiledBlockList = contentRuleList

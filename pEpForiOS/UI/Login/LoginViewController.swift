@@ -156,7 +156,7 @@ class LoginViewController: BaseViewController {
     }
 
     private func handleLoginError(error: Error, offerManualSetup: Bool) {
-        Log.shared.error("%@", error as CVarArg)
+        Log.shared.error("%@", "\(error)")
         self.isCurrentlyVerifying = false
         guard let error = DisplayUserError(withError: error) else {
             // Do nothing. The error type is not suitable to bother the user with.

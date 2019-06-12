@@ -66,7 +66,7 @@ struct UserNotificationTool {
                 if let error = error {
                     Log.shared.warn(
                         "Error posting user notification: %@",
-                        error as CVarArg)
+                        "\(error)")
                 }
             }
         } else {

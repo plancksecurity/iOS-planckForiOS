@@ -40,7 +40,7 @@ extension Data {
                 withJSONObject: self, options: .prettyPrinted)
             jsonData.debugSave(basePath: basePath, fileName: fileName, ext: ext)
         } catch let err {
-            Log.shared.error("%@", err as CVarArg)
+            Log.shared.error("%@", "\(err)")
         }
     }
 }

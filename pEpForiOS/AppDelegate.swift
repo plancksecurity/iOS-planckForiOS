@@ -88,8 +88,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         syncUserActionsAndCleanupbackgroundTaskId =
             application.beginBackgroundTask(expirationHandler: { [unowned self] in
                 Log.shared.errorAndCrash(
-                    "syncUserActionsAndCleanupbackgroundTask with ID %@ expired",
-                    self.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
+                    "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
+                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
                 // We migh want to call some (yet unexisting) emergency shutdown on
                 // ReplicationService here that brutally shuts down everything.
                 self.application.endBackgroundTask(UIBackgroundTaskIdentifier(
@@ -236,8 +236,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.shared.log("*** Log a float: %f, int %d, string %@, error %@",
                        1.0, 2,
                        "Hi",
-                       error as CVarArg)
-        Log.shared.errorAndCrash("*** Oh. %@", error as CVarArg)
+                       "\(error)")
+        Log.shared.errorAndCrash("*** Oh. %@", "\(error)")
         Log.shared.errorAndCrash(error: error)
         let index = 5
         Log.shared.errorAndCrash(message: "*** My last message: \(index)")
