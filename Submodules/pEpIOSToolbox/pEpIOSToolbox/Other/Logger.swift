@@ -82,13 +82,12 @@ public class Logger {
                               filePath: String = #file,
                               fileLine: Int = #line,
                               error: Error) {
-        os_log("*** errorAndCrash: %@ (%@:%d %@)",
-               log: osLogger as! OSLog,
-               type: .error,
-               "\(error)",
-               filePath,
-               fileLine,
-               function)
+        osLog(message: "*** errorAndCrash: \(error)",
+            severity: .error,
+            function: function,
+            filePath: filePath,
+            fileLine: fileLine,
+            args: [])
 
         SystemUtils.crash("*** errorAndCrash: \(error) (\(filePath):\(fileLine) \(function))")
     }
@@ -98,13 +97,12 @@ public class Logger {
                               filePath: String = #file,
                               fileLine: Int = #line,
                               message: String) {
-        os_log("*** errorAndCrash: %@ (%@:%d %@)",
-               log: osLogger as! OSLog,
-               type: .error,
-               message,
-               filePath,
-               fileLine,
-               function)
+        osLog(message: "*** errorAndCrash: \(message)",
+            severity: .error,
+            function: function,
+            filePath: filePath,
+            fileLine: fileLine,
+            args: [])
 
         SystemUtils.crash("*** errorAndCrash: \(message) (\(filePath):\(fileLine) \(function))")
     }
