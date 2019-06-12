@@ -9,5 +9,5 @@
 import Foundation
 
 enum ActionExtentionErrors: Error {
-    case failToShareNoNSExtensionItem, failToGetAttachmentURL
+    case failToGetAttachmentURL, fileTypeNotSupported
 }

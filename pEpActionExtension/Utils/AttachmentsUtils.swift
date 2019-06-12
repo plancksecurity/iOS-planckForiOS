@@ -18,6 +18,7 @@ struct AttachmentsUtils {
                               completion: @escaping (Result<URL, Error>)-> Void) {
         let attachmentType = type(attachment: attachment)
         guard attachmentType != .other else {
+            completion(.failure(ActionExtentionErrors.fileTypeNotSupported))
             return
         }
         var attachmentIdentifier = identifier(type: attachmentType)
@@ -61,7 +62,7 @@ extension AttachmentsUtils {
             return .failure(error)
         }
         guard let url = url as? URL else {
-            return .failure(ActionExtentionErrors.failToShareNoNSExtensionItem)
+            return .failure(ActionExtentionErrors.failToGetAttachmentURL)
         }
         return .success(url)
     }
