@@ -16,21 +16,6 @@ public class Logger {
         osLogger = OSLog(subsystem: subsystem, category: category)
     }
 
-    /// Use for messages that are at least important enough to get persisted
-    /// even in a release build.
-    public func log(function: String = #function,
-                    filePath: String = #file,
-                    fileLine: Int = #line,
-                    _ message: StaticString,
-                    _ args: CVarArg...) {
-        saveLog(message: message,
-                severity: .default,
-                function: function,
-                filePath: filePath,
-                fileLine: fileLine,
-                args: args)
-    }
-
     /// Use for warnings, anything that might cause trouble.
     public func warn(function: String = #function,
                      filePath: String = #file,
@@ -38,7 +23,7 @@ public class Logger {
                      _ message: StaticString,
                      _ args: CVarArg...) {
         saveLog(message: message,
-                severity: .default,
+                severity: .warn,
                 function: function,
                 filePath: filePath,
                 fileLine: fileLine,
@@ -193,7 +178,7 @@ public class Logger {
         shouldLog = true
         #else
         // in a release, only log errors and warnings
-        if severity == .error || severity == .default {
+        if severity == .error || severity == .warn {
             shouldLog = true
         } else {
             shouldLog = false
@@ -224,9 +209,8 @@ public class Logger {
         /// - Note: Not persisted by default, but will be written in case of errors.
         case debug
 
-        /// Both normal log calls and warn are mapped internally to this.
         /// - Note: Gets persisted by default.
-        case `default`
+        case warn
 
         /// Indicates an error.
         /// - Note: Gets persisted.
@@ -239,7 +223,7 @@ public class Logger {
                 return .info
             case .debug:
                 return .debug
-            case .default:
+            case .warn:
                 return .default
             case .error:
                 return .error
