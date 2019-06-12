@@ -143,6 +143,15 @@ class EmailListViewModel {
         }
     }
 
+    func shouldSelectMessage(indexPath: IndexPath) -> Bool {
+        let message = messageQueryResults[indexPath.row]
+        if message.parent.folderType == .outbox {
+            return false
+        } else {
+            return true
+        }
+    }
+
     // Threading feature is currently non-existing. Keep this code, might help later.
 //    //check if there are some important settings that have changed to force a reload
 //    func checkIfSettingsChanged() -> Bool {
