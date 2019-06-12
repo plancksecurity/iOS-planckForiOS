@@ -136,7 +136,7 @@ class EmailListViewModel {
 
     func shouldEditMessage(indexPath: IndexPath) -> Bool {
         let message = messageQueryResults[indexPath.row]
-        if message.parent.folderType == .drafts || message.parent.folderType == .outbox {
+        if message.parent.folderType == .drafts {
             return true
         } else {
             return false
