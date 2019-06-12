@@ -9,47 +9,7 @@
 import Foundation
 import os.log
 
-/**
- Thin layer over `os_log` where not available.
- */
-@available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *)
 public class Logger {
-    /**
-     Map `os_log` levels.
-     */
-    private enum Severity {
-        /**
-         - Note: Not persisted by default, but will be written in case of errors.
-         */
-        case info
-
-        /**
-         - Note: Not persisted by default, but will be written in case of errors.
-         */
-        case debug
-
-        /**
-         This is the lowest priority that gets written to disk by default.
-         Used like WARN in this logger.
-         */
-        case `default`
-
-        case error
-
-        public func osLogType() -> OSLogType {
-            switch self {
-            case .info:
-                return .info
-            case .debug:
-                return .debug
-            case .default:
-                return .default
-            case .error:
-                return .error
-            }
-        }
-    }
-
     public init(subsystem: String = "security.pEp.app.iOS", category: String) {
         self.subsystem = subsystem
         self.category = category
@@ -268,6 +228,37 @@ public class Logger {
                    filePath,
                    fileLine,
                    function)
+        }
+    }
+
+    /// The supported log levels, used internally.
+    private enum Severity {
+        /// - Note: Not persisted by default, but will be written in case of errors.
+        case info
+
+        /// - Note: Not persisted by default, but will be written in case of errors.
+        case debug
+
+        /// Both normal log calls and warn are mapped internally to this.
+        /// - Note: Gets persisted by default.
+        case `default`
+
+        /// Indicates an error.
+        /// - Note: Gets persisted.
+        case error
+
+        /// Mapping to `OSLogType`.
+        public func osLogType() -> OSLogType {
+            switch self {
+            case .info:
+                return .info
+            case .debug:
+                return .debug
+            case .default:
+                return .default
+            case .error:
+                return .error
+            }
         }
     }
 }
