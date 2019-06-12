@@ -196,6 +196,8 @@
 		3785566122A15FD900AACFD2 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3785565F22A15FD900AACFD2 /* MainInterface.storyboard */; };
 		3785566522A15FD900AACFD2 /* pEpActionExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3785565922A15FD900AACFD2 /* pEpActionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		37C3C0E62260C64D003E290C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C3C0E52260C64D003E290C /* Log.swift */; };
+		37F7E22022AFDB2900FE8CDB /* ActionExtentionErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F7E21F22AFDB2900FE8CDB /* ActionExtentionErrors.swift */; };
+		37F7E22522AFEB6300FE8CDB /* AttachmentsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F7E22422AFEB6300FE8CDB /* AttachmentsUtils.swift */; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
 		4304FD001EBB8EBB0086DADA /* LanguageListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */; };
 		430BA229203438A3003B041C /* CdMessagePEPMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */; };
@@ -696,6 +698,8 @@
 		3785566022A15FD900AACFD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		3785566222A15FD900AACFD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37C3C0E52260C64D003E290C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		37F7E21F22AFDB2900FE8CDB /* ActionExtentionErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionExtentionErrors.swift; sourceTree = "<group>"; };
+		37F7E22422AFEB6300FE8CDB /* AttachmentsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentsUtils.swift; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
 		4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageListViewController.swift; sourceTree = "<group>"; };
 		430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdMessagePEPMessageTests.swift; sourceTree = "<group>"; };
@@ -1636,12 +1640,30 @@
 		3785565A22A15FD900AACFD2 /* pEpActionExtension */ = {
 			isa = PBXGroup;
 			children = (
+				37F7E22322AFEB3A00FE8CDB /* Utils */,
+				37F7E21E22AFDB0C00FE8CDB /* Errors */,
 				3785565B22A15FD900AACFD2 /* Media.xcassets */,
 				3785565D22A15FD900AACFD2 /* ActionViewController.swift */,
 				3785565F22A15FD900AACFD2 /* MainInterface.storyboard */,
 				3785566222A15FD900AACFD2 /* Info.plist */,
 			);
 			path = pEpActionExtension;
+			sourceTree = "<group>";
+		};
+		37F7E21E22AFDB0C00FE8CDB /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				37F7E21F22AFDB2900FE8CDB /* ActionExtentionErrors.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
+		37F7E22322AFEB3A00FE8CDB /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				37F7E22422AFEB6300FE8CDB /* AttachmentsUtils.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		4304FCFD1EBB8C2C0086DADA /* LanguageList */ = {
@@ -2821,6 +2843,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37F7E22022AFDB2900FE8CDB /* ActionExtentionErrors.swift in Sources */,
+				37F7E22522AFEB6300FE8CDB /* AttachmentsUtils.swift in Sources */,
 				3785565E22A15FD900AACFD2 /* ActionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

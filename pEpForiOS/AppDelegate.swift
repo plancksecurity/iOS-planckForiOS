@@ -335,20 +335,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
 
-//        guard !Account.all().isEmpty else { //No account, no logged in, ignore and log in then
-//            Log.shared.log("User try to share something, but was not logged in")
-//            return false
-//        }
-//        guard let appConfig = appConfig else {
-//            Log.shared.log(<#T##message: StaticString##StaticString#>, <#T##args: CVarArg...##CVarArg#>)
-//            return false
-//        }
-//
-//        let composeViewController =
-//                    ViewControllerUtils.AppViewController.instance(.composeTableViewController)
-//        composeViewController.app
-        return true
+        guard !Account.all().isEmpty else { //No account, no logged in, ignore and log in then
+            Log.shared.log("User try to share something, but was not logged in")
+            return false
+        }
+        guard let appConfig = appConfig else {
+            Log.shared.errorAndCrash("%@", AppError.General.noAppConfig.localizedDescription)
+            return false
+        }
 
+        guard let navigtion = window?.rootViewController as? UINavigationController,
+              let composeViewController =
+                       ComposeTableViewController.instantiate(fromAppStoryboard: .main) else {
+            Log.shared.errorAndCrash("%@",
+                            AppError.Storyboard.failToInitViewController.localizedDescription)
+            return false
+        }
+        composeViewController.appConfig = appConfig
+        composeViewController.viewModel = ComposeViewModel(resultDelegate: nil,
+                composeMode: .normal, prefilledTo: nil, prefilledFrom: nil, originalMessage: nil)
+        navigtion.pushViewController(composeViewController, animated: true)
+        return true
     }
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity,
