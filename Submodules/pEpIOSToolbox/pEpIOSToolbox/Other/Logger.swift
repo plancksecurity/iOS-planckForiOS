@@ -17,7 +17,7 @@ public class Logger {
     /**
      Map `os_log` levels.
      */
-    public enum Severity {
+    private enum Severity {
         /**
          - Note: Not persisted by default, but will be written in case of errors.
          */
