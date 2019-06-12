@@ -424,6 +424,7 @@ class EmailViewController: BaseTableViewController {
         }
         Message.imapDelete(messages: [message])
         delegate?.emailDisplayDidDelete(message: message)
+        navigationController?.popViewController(animated: true)
     }
 
     /**

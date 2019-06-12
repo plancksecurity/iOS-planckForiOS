@@ -16,20 +16,14 @@ class AppConfig {
 
     let errorPropagator : ErrorPropagator
 
-    /**
-     The UI can request key generation.
-     */
-    let mySelfer: KickOffMySelfProtocol
 
     /**
      For the views to kick off oauth2 requests.
      */
     let oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol
 
-    init(mySelfer: KickOffMySelfProtocol,
-         errorPropagator: ErrorPropagator,
+    init(errorPropagator: ErrorPropagator,
          oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol) {
-        self.mySelfer = mySelfer
         self.errorPropagator = errorPropagator
         self.oauth2AuthorizationFactory = oauth2AuthorizationFactory
         self.showedAccountsError = [:]
