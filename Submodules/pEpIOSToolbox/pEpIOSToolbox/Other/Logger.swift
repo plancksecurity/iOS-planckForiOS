@@ -248,7 +248,7 @@ public class Logger {
         #if DEBUG
         shouldLog = true
         #else
-        if severity == .error || severity == .fault || severity == .default {
+        if severity == .error || severity == .default {
             shouldLog = true
         } else {
             shouldLog = false
