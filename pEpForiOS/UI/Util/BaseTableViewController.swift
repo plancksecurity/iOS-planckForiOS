@@ -21,7 +21,6 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
 
                 // We have no config. Return nonsense.
                 return AppConfig(
-                    mySelfer: self,
                     errorPropagator: ErrorPropagator(),
                     oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider())
             }
@@ -123,12 +122,5 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                 appConfig.showedAccountsError[extraInfo] = true
             }
         }
-    }
-
-}
-
-extension BaseTableViewController: KickOffMySelfProtocol {
-    func startMySelf() {
-        Log.shared.errorAndCrash("No appConfig?")
     }
 }
