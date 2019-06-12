@@ -208,7 +208,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - UIApplicationDelegate
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.log("applicationDidReceiveMemoryWarning")
+        Log.shared.warn("applicationDidReceiveMemoryWarning")
     }
 
     func application(
@@ -228,15 +228,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         setupServices()
-        Log.shared.log("Library url: %@", String(describing: applicationDirectory()))
+        Log.shared.warn("Library url: %@", String(describing: applicationDirectory()))
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
         // Test logging
         let error = ImapSyncError.connectionLost("someFunction")
-        Log.shared.log("*** Log a float: %f, int %d, string %@, error %@",
-                       1.0, 2,
-                       "Hi",
-                       "\(error)")
+        Log.shared.warn("*** Log a float: %f, int %d, string %@, error %@",
+                        1.0, 2,
+                        "Hi",
+                        "\(error)")
         Log.shared.errorAndCrash("*** Oh. %@", "\(error)")
         Log.shared.errorAndCrash(error: error)
         let index = 5
