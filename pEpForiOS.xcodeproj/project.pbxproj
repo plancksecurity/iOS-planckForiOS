@@ -2472,10 +2472,10 @@
 			};
 			buildConfigurationList = 43980E1E1CBD0BC900A7FC3C /* Build configuration list for PBXProject "pEpForiOS" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
+				en,
 				de,
 			);
 			mainGroup = 43980E1A1CBD0BC900A7FC3C;
