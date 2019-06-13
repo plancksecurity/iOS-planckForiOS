@@ -370,12 +370,12 @@ extension AppDelegate: MessageModelServiceDelegate {
             startServices()
         }
 
-        os_log("ending syncUserActionsAndCleanupbackgroundTaskId %d",
+        os_log("BackgroundSync: ending task %d",
                log: osLog,
                type: .default,
                self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
 
-        application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: syncUserActionsAndCleanupbackgroundTaskId.rawValue))
+        application.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
         syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
 
