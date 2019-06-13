@@ -84,28 +84,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         messageModelService?.start()
     }
 
+    private var backgroundTaskCounter = 1
+    private var backgroundTaskIds = [Int:UIBackgroundTaskIdentifier]()
+
     /// Signals all PEPSession users to stop using a session as soon as possible.
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
     private func stopUsingPepSession() {
-        syncUserActionsAndCleanupbackgroundTaskId =
-            application.beginBackgroundTask(expirationHandler: { [unowned self] in
-                os_log("expirationHandler syncUserActionsAndCleanupbackgroundTaskId %d",
-                       log: self.osLog,
-                       type: .error,
-                       self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
-                Log.shared.errorAndCrash(
-                    "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
-                    self.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
+        let myTaskIdInt = backgroundTaskCounter
+        backgroundTaskCounter += 1
+
+        let taskId = application.beginBackgroundTask(withName: "\(myTaskIdInt)",
+            expirationHandler: { [unowned self] in
+                guard let taskId = self.backgroundTaskIds[myTaskIdInt] else {
+                    Log.shared.errorAndCrash(
+                        "BackgroundSync: Task %d expired, but have no matching OS task ID",
+                        myTaskIdInt)
+                    return
+                }
                 // We migh want to call some (yet unexisting) emergency shutdown on
                 // ReplicationService here that brutally shuts down everything.
-                self.application.endBackgroundTask(UIBackgroundTaskIdentifier(
-                    rawValue: self.syncUserActionsAndCleanupbackgroundTaskId.rawValue))
-            })
-        os_log("started syncUserActionsAndCleanupbackgroundTaskId %d",
+                self.application.endBackgroundTask(taskId)
+
+                Log.shared.errorAndCrash(
+                    "BackgroundSync: Task %d:%d expired",
+                    myTaskIdInt,
+                    taskId.rawValue)
+        })
+
+        backgroundTaskIds[myTaskIdInt] = taskId
+        syncUserActionsAndCleanupbackgroundTaskId = taskId
+
+        os_log("BackgroundSync: Started task %d:%d",
                log: osLog,
                type: .default,
-               self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
+               myTaskIdInt,
+               taskId.rawValue)
 
         messageModelService?.processAllUserActionsAndStop()
     }
