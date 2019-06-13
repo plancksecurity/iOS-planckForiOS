@@ -121,7 +121,8 @@ public class Logger {
             fileLine: fileLine,
             args: args)
 
-        SystemUtils.crash("*** errorAndCrash: \(message) (\(filePath):\(fileLine) \(function))")
+        let ourString = String(format: "\(message)", arguments: args)
+        SystemUtils.crash("*** errorAndCrash: \(ourString) (\(filePath):\(fileLine) \(function))")
     }
 
     /// Logs an error.
