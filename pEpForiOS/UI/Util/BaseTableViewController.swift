@@ -22,7 +22,6 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                 // We have no config. Return something.
 
                 let theMessageModelService = MessageModelService(
-                    mySelfer: self,
                     errorPropagator: ErrorPropagator(),
                     notifyHandShakeDelegate: NotifyHandshakeDelegate())
 
