@@ -61,6 +61,16 @@ UIPickerViewDataSource, UITextFieldDelegate {
         passwordTextfield.delegate = self
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let isIphone = splitViewController?.isCollapsed else {
+            return
+        }
+        if !isIphone {
+            self.navigationItem.leftBarButtonItem = nil// hidesBackButton = true
+        }
+    }
+
     private func configureView() {
         tableView.addSubview(spinner)
 
@@ -226,11 +236,13 @@ UIPickerViewDataSource, UITextFieldDelegate {
     // MARK: - Actions
     
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
-        guard let isIphone = splitViewController?.isCollapsed else {
+
+        guard let isSplitViewShown = splitViewController?.isCollapsed else {
             return
         }
-        if !isIphone {
-            view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+        if isSplitViewShown {
+            //!!!: this is a patch as we have 2 navigationControllers and need to pop to the previous view.
+            (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
         }
     }
 

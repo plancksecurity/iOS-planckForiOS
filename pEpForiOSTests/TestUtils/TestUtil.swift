@@ -710,14 +710,16 @@ class TestUtil {
     static func setUpPepFromMail(emailFilePath: String,
                                  decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
         -> (mySelf: Identity, partner: Identity, message: Message)? {
-            if let (mySelfID, partnerID, message) = cdMessageAndSetUpPepFromMail(
-                emailFilePath: emailFilePath, decryptDelegate: decryptDelegate),
-                let msg = message.message(),
+            guard
+                let (mySelfID, partnerID, cdMessage) = cdMessageAndSetUpPepFromMail(
+                    emailFilePath: emailFilePath, decryptDelegate: decryptDelegate),
                 let mySelf = mySelfID.identity(),
-                let partner = partnerID.identity() {
-                return (mySelf: mySelf, partner: partner, message: msg)
+                let partner = partnerID.identity()
+                else {
+                    return nil
             }
-            return nil
+            let msg = MessageModelObjectUtils.getMessage(fromCdMessage: cdMessage)
+            return (mySelf: mySelf, partner: partner, message: msg)
     }
 
     /**
