@@ -160,13 +160,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setupServices() {
         let theMessageModelService = MessageModelService(
-        let theAppConfig = AppConfig( errorPropagator: errorPropagator,
-            mySelfer: self,
             errorPropagator: errorPropagator,
             notifyHandShakeDelegate: notifyHandshakeDelegate)
         theMessageModelService.delegate = self
         self.messageModelService = theMessageModelService
 
+        let theAppConfig = AppConfig(
+            errorPropagator: errorPropagator,
             oauth2AuthorizationFactory: oauth2Provider,
             messageModelService: theMessageModelService)
         appConfig = theAppConfig
