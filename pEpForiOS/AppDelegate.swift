@@ -116,28 +116,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    func kickOffMySelf() {
-        mySelfTaskId = application.beginBackgroundTask(expirationHandler: { [unowned self] in
-            Log.shared.log("mySelfTaskId with ID expired.")
-            // We migh want to call some (yet unexisting) emergency shutdown on
-            // ReplicationService here here that brutally shuts down everything.
-            self.application.endBackgroundTask(
-                UIBackgroundTaskIdentifier(rawValue:self.mySelfTaskId.rawValue))
-        })
-        let op = MySelfOperation()
-        op.completionBlock = { [unowned self] in
-            // We might be the last service that finishes, so we have to cleanup.
-            self.cleanupPEPSessionIfNeeded()
-            if self.mySelfTaskId == UIBackgroundTaskIdentifier.invalid {
-                return
-            }
-            self.application.endBackgroundTask(
-                UIBackgroundTaskIdentifier(rawValue: self.mySelfTaskId.rawValue))
-            self.mySelfTaskId = UIBackgroundTaskIdentifier.invalid
-        }
-        mySelfQueue.addOperation(op)
-    }
-
     func loadCoreDataStack() {
         let objectModel = MessageModelData.MessageModelData()
         let options = [NSMigratePersistentStoresAutomaticallyOption: true,
@@ -189,10 +167,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
-        let theAppConfig = AppConfig(
-            mySelfer: self,
-            errorPropagator: errorPropagator,
-            oauth2AuthorizationFactory: oauth2Provider)
+        let theAppConfig = AppConfig( errorPropagator: errorPropagator,
+                                      oauth2AuthorizationFactory: oauth2Provider)
         appConfig = theAppConfig
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = theAppConfig
@@ -202,10 +178,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // TODO: IOS-1276 set MessageModelConfig.logger
 
         loadCoreDataStack()
-        messageModelService = MessageModelService(
-            mySelfer: self,
-            errorPropagator: errorPropagator,
-            notifyHandShakeDelegate: notifyHandshakeDelegate)
+        messageModelService = MessageModelService(errorPropagator: errorPropagator,
+                                                  notifyHandShakeDelegate: notifyHandshakeDelegate)
         messageModelService?.delegate = self
     }
 
@@ -284,8 +258,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         shouldDestroySession = true
-        // generate keys in the background
-        kickOffMySelf()
         stopUsingPepSession()
     }
 
@@ -306,7 +278,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         shouldDestroySession = false
 
         shutdownAndPrepareServicesForRestart()
-        kickOffMySelf()
         UserNotificationTool.resetApplicationIconBadgeNumber()
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
@@ -366,14 +337,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 result:UIBackgroundFetchResult) {
         PEPSession.cleanup()
         completionHandler(result)
-    }
-}
-
-// MARK: - KickOffMySelfProtocol
-
-extension AppDelegate: KickOffMySelfProtocol {
-    func startMySelf() {
-        kickOffMySelf()
     }
 }
 
