@@ -170,12 +170,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             oauth2AuthorizationFactory: oauth2Provider,
             messageModelService: theMessageModelService)
         appConfig = theAppConfig
+
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = theAppConfig
-
-        // set up logging for libraries
-
-        // TODO: IOS-1276 set MessageModelConfig.logger
 
         loadCoreDataStack()
     }
