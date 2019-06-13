@@ -13,12 +13,6 @@ import XCTest
 import PantomimeFramework
 import PEPObjCAdapterFramework
 
-class NoOpMySelfer: KickOffMySelfProtocol {
-    func startMySelf() {
-        // do nothing
-    }
-}
-
 class ErrorHandler: LoginViewModelLoginErrorDelegate {
     func handle(loginError: Error) {
         XCTFail("Error: \(loginError)")
@@ -120,8 +114,7 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         vm.login(accountName: accountSettings.idAddress,
                  userName: "User Name",
                  loginName: nil,
-                 password: passw,
-                 mySelfer: NoOpMySelfer())
+                 password: passw)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)

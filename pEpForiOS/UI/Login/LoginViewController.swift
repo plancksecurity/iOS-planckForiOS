@@ -220,7 +220,7 @@ class LoginViewController: BaseViewController {
             let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
             viewModelOrCrash().loginWithOAuth2(
                 viewController: self, emailAddress: email, userName: username,
-                mySelfer: appConfig.mySelfer, oauth2Authorizer: oauth)
+                oauth2Authorizer: oauth)
         } else {
             guard let pass = password.text, pass != "" else {
                 handleLoginError(error: LoginViewController.LoginError.missingPassword,
@@ -229,8 +229,7 @@ class LoginViewController: BaseViewController {
             }
 
             viewModelOrCrash().login(
-                accountName: email, userName: username, password: pass,
-                mySelfer: appConfig.mySelfer)
+                accountName: email, userName: username, password: pass)
         }
     }
 

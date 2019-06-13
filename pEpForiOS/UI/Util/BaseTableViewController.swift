@@ -27,7 +27,6 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                     notifyHandShakeDelegate: NotifyHandshakeDelegate())
 
                 return AppConfig(
-                    mySelfer: self,
                     errorPropagator: ErrorPropagator(),
                     oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider(),
                     messageModelService: theMessageModelService)
@@ -130,12 +129,5 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                 appConfig.showedAccountsError[extraInfo] = true
             }
         }
-    }
-
-}
-
-extension BaseTableViewController: KickOffMySelfProtocol {
-    func startMySelf() {
-        Log.shared.errorAndCrash("No appConfig?")
     }
 }
