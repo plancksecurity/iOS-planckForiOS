@@ -139,7 +139,6 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         account.save()
 
         let theMessageModelService = MessageModelService(
-            mySelfer: DefaultMySelfer(backgrounder: nil),
             errorPropagator: ErrorPropagator(),
             notifyHandShakeDelegate: ErrorNotifyHandshakeDelegate())
 
