@@ -104,6 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // ReplicationService here that brutally shuts down everything.
                 self.application.endBackgroundTask(
                     self.syncUserActionsAndCleanupbackgroundTaskId)
+                self.syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
             })
         messageModelService?.processAllUserActionsAndStop()
     }
