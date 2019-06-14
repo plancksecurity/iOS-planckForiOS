@@ -38,7 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
     var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
-    var mySelfTaskId = UIBackgroundTaskIdentifier.invalid
 
     /**
      Set to true whever the app goes into background, so the main session gets cleaned up.
