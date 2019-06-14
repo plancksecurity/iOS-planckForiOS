@@ -7,7 +7,6 @@
 //
 
 import CoreData
-import os.log
 
 import pEpIOSToolbox
 import MessageModel
@@ -48,8 +47,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let notifyHandshakeDelegate: PEPNotifyHandshakeDelegate = NotifyHandshakeDelegate()
 
-    private let osLog = OSLog(subsystem: "AppDelegate", category: "pEp.security.app")
-
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
         let dirs = fm.urls(for: .libraryDirectory, in: .userDomainMask)
@@ -88,49 +85,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    private var backgroundTaskCounter = 1
-    private var backgroundTaskIds = [Int:UIBackgroundTaskIdentifier]()
-
     /// Signals all PEPSession users to stop using a session as soon as possible.
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
     private func stopUsingPepSession() {
-        if syncUserActionsAndCleanupbackgroundTaskId != UIBackgroundTaskIdentifier.invalid {
-            os_log("BackgroundSync: Already have unfinshed background task",
-                   log: osLog,
-                   type: .error)
-        }
-
-        let myTaskIdInt = backgroundTaskCounter
-        backgroundTaskCounter += 1
-
-        let taskId = application.beginBackgroundTask(withName: "\(myTaskIdInt)",
-            expirationHandler: { [unowned self] in
-                guard let taskId = self.backgroundTaskIds[myTaskIdInt] else {
-                    Log.shared.errorAndCrash(
-                        "BackgroundSync: Task %d expired, but have no matching OS task ID",
-                        myTaskIdInt)
-                    return
-                }
+        syncUserActionsAndCleanupbackgroundTaskId =
+            application.beginBackgroundTask(expirationHandler: { [unowned self] in
+                Log.shared.errorAndCrash(
+                    "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
+                    self.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
                 // We migh want to call some (yet unexisting) emergency shutdown on
                 // ReplicationService here that brutally shuts down everything.
-                self.application.endBackgroundTask(taskId)
-
-                Log.shared.errorAndCrash(
-                    "BackgroundSync: Task %d (%d) expired",
-                    taskId.rawValue,
-                    myTaskIdInt)
-        })
-
-        backgroundTaskIds[myTaskIdInt] = taskId
-        syncUserActionsAndCleanupbackgroundTaskId = taskId
-
-        os_log("BackgroundSync: Started task %d (%d)",
-               log: osLog,
-               type: .default,
-               taskId.rawValue,
-               myTaskIdInt)
-
+                self.application.endBackgroundTask(UIBackgroundTaskIdentifier(
+                    rawValue: self.syncUserActionsAndCleanupbackgroundTaskId.rawValue))
+            })
         messageModelService?.processAllUserActionsAndStop()
     }
 
@@ -381,13 +349,7 @@ extension AppDelegate: MessageModelServiceDelegate {
             // No problem, start regular sync loop.
             startServices()
         }
-
-        os_log("BackgroundSync: ending task %d",
-               log: osLog,
-               type: .default,
-               self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
-
-        application.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
+        application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: syncUserActionsAndCleanupbackgroundTaskId.rawValue))
         syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
 
@@ -396,9 +358,7 @@ extension AppDelegate: MessageModelServiceDelegate {
         case .background:
             // We have been cancelled because we are entering background.
             // Quickly sync local changes and clean up.
-            // No need to invoke stopUsingPepSession, since this got already called
-            // when the app receives `applicationDidEnterBackground`.
-            break
+            stopUsingPepSession()
         case .inactive:
             // We re inactive. Keep services paused -> Do nothing
             break
