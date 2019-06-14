@@ -91,6 +91,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
     private func stopUsingPepSession() {
+        if syncUserActionsAndCleanupbackgroundTaskId != UIBackgroundTaskIdentifier.invalid {
+            os_log("BackgroundSync: Already have unfinshed background task",
+                   log: osLog,
+                   type: .error)
+        }
+
         let myTaskIdInt = backgroundTaskCounter
         backgroundTaskCounter += 1
 
@@ -107,19 +113,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self.application.endBackgroundTask(taskId)
 
                 Log.shared.errorAndCrash(
-                    "BackgroundSync: Task %d:%d expired",
-                    myTaskIdInt,
-                    taskId.rawValue)
+                    "BackgroundSync: Task %d (%d) expired",
+                    taskId.rawValue,
+                    myTaskIdInt)
         })
 
         backgroundTaskIds[myTaskIdInt] = taskId
         syncUserActionsAndCleanupbackgroundTaskId = taskId
 
-        os_log("BackgroundSync: Started task %d:%d",
+        os_log("BackgroundSync: Started task %d (%d)",
                log: osLog,
                type: .default,
-               myTaskIdInt,
-               taskId.rawValue)
+               taskId.rawValue,
+               myTaskIdInt)
 
         messageModelService?.processAllUserActionsAndStop()
     }
