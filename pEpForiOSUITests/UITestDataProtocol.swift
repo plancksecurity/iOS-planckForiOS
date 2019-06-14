@@ -15,5 +15,4 @@ protocol UITestDataProtocol {
     var workingYahooAccount: UIAccount { get }
     var gmailOAuth2Account: UIAccount { get }
     var yahooOAuth2Account: UIAccount { get }
-    var manualAccount: UIAccount { get }
 }

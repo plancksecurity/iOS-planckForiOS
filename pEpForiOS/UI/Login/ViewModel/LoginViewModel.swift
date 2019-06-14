@@ -24,7 +24,7 @@ class LoginViewModel {
 
     /// Holding both the data of the current account in verification,
     /// and also the implementation of the verification.
-    var verifiableAccount: VerifiableAccountProtocol?
+    var verifiableAccount: VerifiableAccountProtocol
 
     /** If the last login attempt was via OAuth2, this will collect temporary parameters */
     private var lastOAuth2Parameters: OAuth2Parameters?
@@ -45,7 +45,7 @@ class LoginViewModel {
 
     let qualifyServerService = QualifyServerIsLocalService()
 
-    init(verifiableAccount: VerifiableAccountProtocol? = nil) {
+    init(verifiableAccount: VerifiableAccountProtocol) {
         self.verifiableAccount = verifiableAccount
     }
 
@@ -106,29 +106,26 @@ class LoginViewModel {
             let smtpTransport = ConnectionTransport(
                 accountSettingsTransport: outgoingServer.transport, smtpPort: outgoingServer.port)
 
-            var newAccount = verifiableAccount ?? VerifiableAccount()
-
-            newAccount.verifiableAccountDelegate = self
-            newAccount.address = accountName
-            newAccount.userName = userName
-            newAccount.loginName = loginName
+            verifiableAccount.verifiableAccountDelegate = self
+            verifiableAccount.address = accountName
+            verifiableAccount.userName = userName
+            verifiableAccount.loginName = loginName
 
             // Note: auth method is never taken from LAS. We either have OAuth2,
             // as determined previously, or we will defer to pantomime to find out the best method.
-            newAccount.authMethod = accessToken != nil ? .saslXoauth2 : nil
+            verifiableAccount.authMethod = accessToken != nil ? .saslXoauth2 : nil
 
-            newAccount.password = password
-            newAccount.accessToken = accessToken
-            newAccount.serverIMAP = incomingServer.hostname
-            newAccount.portIMAP = UInt16(incomingServer.port)
-            newAccount.transportIMAP = imapTransport
-            newAccount.serverSMTP = outgoingServer.hostname
-            newAccount.portSMTP = UInt16(outgoingServer.port)
-            newAccount.transportSMTP = smtpTransport
-            newAccount.isAutomaticallyTrustedImapServer = false
+            verifiableAccount.password = password
+            verifiableAccount.accessToken = accessToken
+            verifiableAccount.serverIMAP = incomingServer.hostname
+            verifiableAccount.portIMAP = UInt16(incomingServer.port)
+            verifiableAccount.transportIMAP = imapTransport
+            verifiableAccount.serverSMTP = outgoingServer.hostname
+            verifiableAccount.portSMTP = UInt16(outgoingServer.port)
+            verifiableAccount.transportSMTP = smtpTransport
+            verifiableAccount.isAutomaticallyTrustedImapServer = false
 
-            verifiableAccount = newAccount
-            verifyAccount(model: newAccount)
+            verifyAccount(model: verifiableAccount)
         }
     }
 
@@ -137,7 +134,7 @@ class LoginViewModel {
     /// - Parameter model: account data
     /// - Throws: AccountVerificationError
     func verifyAccount(model: VerifiableAccountProtocol?) {
-        if let imapServer = verifiableAccount?.serverIMAP {
+        if let imapServer = verifiableAccount.serverIMAP {
             qualifyServerService.delegate = self
             qualifyServerService.qualify(serverName: imapServer)
         } else {
@@ -146,14 +143,9 @@ class LoginViewModel {
     }
 
     func accountHasBeenQualified(trusted: Bool) {
-        guard var theVerificationService = verifiableAccount else {
-            Log.shared.errorAndCrash("no VerificationService")
-            return
-        }
-
-        theVerificationService.isAutomaticallyTrustedImapServer = trusted
+        verifiableAccount.isAutomaticallyTrustedImapServer = trusted
         do {
-            try theVerificationService.verify()
+            try verifiableAccount.verify()
         } catch {
             Log.shared.error("%{public}@", error.localizedDescription)
             loginViewModelLoginErrorDelegate?.handle(loginError: error)
@@ -231,7 +223,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
         switch result {
         case .success(()):
             do {
-                try verifiableAccount?.save()
+                try verifiableAccount.save()
                 informAccountVerificationResultDelegate(error: nil)
             } catch {
                 Log.shared.errorAndCrash("%@", error.localizedDescription)

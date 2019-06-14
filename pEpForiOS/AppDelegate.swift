@@ -81,7 +81,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals al services to start/resume.
     /// Also signals it is save to use PEPSessions (again)
     private func startServices() {
-        messageModelService?.start()
+        do {
+            try messageModelService?.start()
+        } catch {
+            Log.shared.log(error: error)
+        }
     }
 
     private var backgroundTaskCounter = 1
@@ -187,20 +191,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
-        let theAppConfig = AppConfig( errorPropagator: errorPropagator,
-                                      oauth2AuthorizationFactory: oauth2Provider)
+        let theMessageModelService = MessageModelService(
+            errorPropagator: errorPropagator,
+            notifyHandShakeDelegate: notifyHandshakeDelegate)
+        theMessageModelService.delegate = self
+        self.messageModelService = theMessageModelService
+
+        let theAppConfig = AppConfig(
+            errorPropagator: errorPropagator,
+            oauth2AuthorizationFactory: oauth2Provider,
+            messageModelService: theMessageModelService)
         appConfig = theAppConfig
+
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = theAppConfig
 
-        // set up logging for libraries
-
-        // TODO: IOS-1276 set MessageModelConfig.logger
-
         loadCoreDataStack()
-        messageModelService = MessageModelService(errorPropagator: errorPropagator,
-                                                  notifyHandShakeDelegate: notifyHandshakeDelegate)
-        messageModelService?.delegate = self
     }
 
     // Safely restarts all services
