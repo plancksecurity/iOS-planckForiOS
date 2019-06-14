@@ -102,8 +102,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     self.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
                 // We migh want to call some (yet unexisting) emergency shutdown on
                 // ReplicationService here that brutally shuts down everything.
-                self.application.endBackgroundTask(UIBackgroundTaskIdentifier(
-                    rawValue: self.syncUserActionsAndCleanupbackgroundTaskId.rawValue))
+                self.application.endBackgroundTask(
+                    self.syncUserActionsAndCleanupbackgroundTaskId)
             })
         messageModelService?.processAllUserActionsAndStop()
     }
@@ -355,7 +355,7 @@ extension AppDelegate: MessageModelServiceDelegate {
             // No problem, start regular sync loop.
             startServices()
         }
-        application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: syncUserActionsAndCleanupbackgroundTaskId.rawValue))
+        application.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
         syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
 
