@@ -629,6 +629,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 } else {
                     showEmail(forCellAt: indexPath)
                 }
+            } else {
+                tableView.deselectRow(at: indexPath, animated: true)
             }
         }
     }
