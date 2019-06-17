@@ -236,7 +236,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
     // MARK: - Actions
     
     fileprivate func popViewController() {
-         //!!!: this is a patch as we have 2 navigationControllers and need to pop to the previous view.
+         //!!!: see IOS-1608 this is a patch as we have 2 navigationControllers and need to pop to the previous view.
             (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
     }
 
