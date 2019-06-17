@@ -15,6 +15,7 @@ public class SettingsSectionViewModel {
         case accounts
         case globalSettings
         case pgpCompatibilitySettings
+        case keySync
     }
 
     var cells = [SettingCellViewModelProtocol]()
@@ -38,6 +39,9 @@ public class SettingsSectionViewModel {
             title = NSLocalizedString("PGP Compatibility", comment: "Tableview section header")
             footer = NSLocalizedString("If enabled, message subjects are also protected.",
                                        comment: "Tableview section footer")
+        case .keySync:
+            generateKeySyncCells()
+            title = NSLocalizedString("Key sync", comment: "Tableview section header")
         }
     }
 
@@ -45,6 +49,10 @@ public class SettingsSectionViewModel {
         Account.all().forEach { (acc) in
             self.cells.append(SettingsCellViewModel(account: acc))
         }
+    }
+
+    private func generateKeySyncCells() {
+        cells.append(SettingsCellViewModel(type: .leaveKeySyncGroup))
     }
 
     func generateGlobalSettingsCells() {

@@ -9,13 +9,17 @@
 import MessageModel
 import PEPObjCAdapterFramework
 
-class KeySyncDeviceGroupService {
+protocol KeySyncDeviceGroupServiceProtocol: class {
+    var deviceGroupState: DeviceGroupState { get }
+    func leaveDeviceGroup() throws
+}
 
-    static var deviceGroupState: DeviceGroupState {
+final class KeySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol {
+    var deviceGroupState: DeviceGroupState {
         return AppSettings.lastKnownDeviceGroupState
     }
 
-    static func leaveDeviceGroup() throws {
+    func leaveDeviceGroup() throws {
         try PEPSession().leaveDeviceGroupError()  //!!!: @dirk: rename in leaveDeviceGroupError
     }
 }

@@ -18,6 +18,7 @@ extension SettingsCellViewModel {
         case defaultAccount
         case trustedServer
         case setOwnKey
+        case leaveKeySyncGroup
     }
 }
 
@@ -75,6 +76,9 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
                 return NSLocalizedString("Set Own Key",
                                          comment:
                     "Settings: Cell (button) title for entering fingerprints that are made own keys")
+            case .leaveKeySyncGroup:
+                return NSLocalizedString("Leave Device Group",
+                                comment: "Settings: Cell (button) title for leaving device group")
             }
         }
     }
@@ -82,11 +86,22 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     public var value : String? {
         get {
             switch self.type {
-            case .showLog, .account, .credits, .trustedServer, .setOwnKey:
+            case .showLog, .account, .credits, .trustedServer, .setOwnKey, .leaveKeySyncGroup:
                 // Have no value.
                 return nil
             case .defaultAccount:
                 return AppSettings.defaultAccount
+            }
+        }
+    }
+
+    public var disclousureIndicator: Bool {
+        get {
+            switch type {
+            case .account, .credits, .defaultAccount, .setOwnKey,. showLog, .trustedServer:
+                return true
+            case .leaveKeySyncGroup:
+                return false
             }
         }
     }

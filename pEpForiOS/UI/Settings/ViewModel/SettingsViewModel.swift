@@ -11,8 +11,10 @@ import MessageModel
 
 class SettingsViewModel {
     var sections = [SettingsSectionViewModel]()
+    private let keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol?
 
-    init() {
+    init(_ keySyncDeviceGroupService:KeySyncDeviceGroupServiceProtocol = KeySyncDeviceGroupService()) {
+        self.keySyncDeviceGroupService = keySyncDeviceGroupService
         generateSections()
     }
 
@@ -20,6 +22,9 @@ class SettingsViewModel {
         sections.append(SettingsSectionViewModel(type: .accounts))
         sections.append(SettingsSectionViewModel(type: .globalSettings))
         sections.append(SettingsSectionViewModel(type: .pgpCompatibilitySettings))
+        if keySyncDeviceGroupService?.deviceGroupState == .grouped {
+            sections.append(SettingsSectionViewModel(type: .keySync))
+        }
     }
 
     private func sectionIsValid(section: Int) -> Bool {
@@ -62,4 +67,6 @@ class SettingsViewModel {
             return sections[section]
         }
     }
+
+    
 }
