@@ -18,12 +18,11 @@ extension SettingsCellViewModel {
         case defaultAccount
         case trustedServer
         case setOwnKey
-        case leaveKeySyncGroup
     }
 }
 
 /// Cell for settings that are not only one on/off switch.
-public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
+final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     var cellIdentifier = "SettingsCell"
     
     var type: SettingType
@@ -39,9 +38,9 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
         self.type = type
     }
 
-    public var detail : String? {
+    var detail : String? {
         get {
-            switch self.type {
+            switch type {
             case .defaultAccount:
                 return AppSettings.defaultAccount
             default:
@@ -50,9 +49,9 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
         }
     }
 
-    public var title : String? {
+    var title : String? {
         get {
-            switch self.type {
+            switch type {
             case .showLog:
                 return NSLocalizedString("Logging", comment: "")
             case .credits:
@@ -76,17 +75,14 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
                 return NSLocalizedString("Set Own Key",
                                          comment:
                     "Settings: Cell (button) title for entering fingerprints that are made own keys")
-            case .leaveKeySyncGroup:
-                return NSLocalizedString("Leave Device Group",
-                                comment: "Settings: Cell (button) title for leaving device group")
             }
         }
     }
 
-    public var value : String? {
+    var value : String? {
         get {
-            switch self.type {
-            case .showLog, .account, .credits, .trustedServer, .setOwnKey, .leaveKeySyncGroup:
+            switch type {
+            case .showLog, .account, .credits, .trustedServer, .setOwnKey:
                 // Have no value.
                 return nil
             case .defaultAccount:
@@ -95,18 +91,7 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
         }
     }
 
-    public var disclousureIndicator: Bool {
-        get {
-            switch type {
-            case .account, .credits, .defaultAccount, .setOwnKey,. showLog, .trustedServer:
-                return true
-            case .leaveKeySyncGroup:
-                return false
-            }
-        }
-    }
-
-    public func delete() {
-        self.account?.delete()
+    func delete() {
+        account?.delete()
     }
 }

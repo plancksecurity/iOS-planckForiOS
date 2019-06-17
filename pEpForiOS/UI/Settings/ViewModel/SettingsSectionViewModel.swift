@@ -52,7 +52,7 @@ public class SettingsSectionViewModel {
     }
 
     private func generateKeySyncCells() {
-        cells.append(SettingsCellViewModel(type: .leaveKeySyncGroup))
+        cells.append(SettingsActionCellViewModel(type: .leaveKeySyncGroup))
     }
 
     func generateGlobalSettingsCells() {

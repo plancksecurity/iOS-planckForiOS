@@ -9,7 +9,7 @@
 import Foundation
 import MessageModel
 
-class SettingsViewModel {
+final class SettingsViewModel {
     var sections = [SettingsSectionViewModel]()
     private let keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol?
 
@@ -22,13 +22,9 @@ class SettingsViewModel {
         sections.append(SettingsSectionViewModel(type: .accounts))
         sections.append(SettingsSectionViewModel(type: .globalSettings))
         sections.append(SettingsSectionViewModel(type: .pgpCompatibilitySettings))
-        if keySyncDeviceGroupService?.deviceGroupState == .grouped {
+        if isInDeviceGroup() {
             sections.append(SettingsSectionViewModel(type: .keySync))
         }
-    }
-
-    private func sectionIsValid(section: Int) -> Bool {
-        return section >= 0 && section < sections.count
     }
 
     func delete(section: Int, cell: Int) {
@@ -38,17 +34,19 @@ class SettingsViewModel {
         }
     }
 
-    //temporal stub
-    func canBeShown(Message: Message? ) -> Bool{
-        return false
+    func leaveDeviceGroupPressed() -> Error? {
+        do {
+            try KeySyncDeviceGroupService().leaveDeviceGroup()
+        } catch {
+            Log.shared.errorAndCrash("%@", error.localizedDescription)
+            return error
+        }
+        return nil
     }
 
-    func rowType(for indexPath: IndexPath) -> SettingsCellViewModel.SettingType? {
-        guard let model = self[indexPath.section][indexPath.row] as?
-            ComplexSettingCellViewModelProtocol else {
-            return nil
-        }
-        return model.type
+    //temporal stub
+    func canBeShown(Message: Message? ) -> Bool {
+        return false
     }
 
     func noAccounts() -> Bool {
@@ -67,6 +65,15 @@ class SettingsViewModel {
             return sections[section]
         }
     }
+}
 
-    
+// MARK: - Private
+extension SettingsViewModel {
+    private func isInDeviceGroup() -> Bool {
+        return keySyncDeviceGroupService?.deviceGroupState == .grouped
+    }
+
+    private func sectionIsValid(section: Int) -> Bool {
+        return section >= 0 && section < sections.count
+    }
 }
