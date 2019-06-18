@@ -28,6 +28,7 @@ sudo port install automake
 sudo port install gmake
 
 curl https://sh.rustup.rs -sSf | sh
+rustup update
 rustup target add aarch64-apple-ios x86_64-apple-ios
 
 # To run the `greenmail` mailserver for tests
