@@ -65,8 +65,8 @@ struct UserNotificationTool {
             center.add(request) { (error) in
                 if let error = error {
                     Log.shared.warn(
-                        "Error posting user notification: %{public}@",
-                        error.localizedDescription)
+                        "Error posting user notification: %@",
+                        "\(error)")
                 }
             }
         } else {

@@ -40,12 +40,12 @@ class ComposeDataSource: NSObject {
         } else {
             filterRows(filter: { $0.type != .mailingList} )
         }
-        Log.shared.log("filtering rows")
+        Log.shared.info("filtering rows")
     }
 
     func numberOfRows() -> Int {
         let visibleRows = getVisibleRows()
-        Log.shared.log("number of rows -> %d", visibleRows.count)
+        Log.shared.info("number of rows -> %d", visibleRows.count)
         return visibleRows.count
     }
 

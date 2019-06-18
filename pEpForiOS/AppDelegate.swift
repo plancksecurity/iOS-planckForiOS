@@ -92,8 +92,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         syncUserActionsAndCleanupbackgroundTaskId =
             application.beginBackgroundTask(expirationHandler: { [unowned self] in
                 Log.shared.errorAndCrash(
-                    "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
-                    self.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
+                    "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
+                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
                 // We migh want to call some (yet unexisting) emergency shutdown on
                 // ReplicationService here that brutally shuts down everything.
                 self.application.endBackgroundTask(UIBackgroundTaskIdentifier(
@@ -214,7 +214,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - UIApplicationDelegate
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.log("applicationDidReceiveMemoryWarning")
+        Log.shared.warn("applicationDidReceiveMemoryWarning")
     }
 
     func application(
@@ -234,7 +234,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         setupServices()
-        Log.shared.log("Library url: %{public}@", String(describing: applicationDirectory()))
+        Log.shared.warn("Library url: %@", String(describing: applicationDirectory()))
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
         askUserForPermissions()
