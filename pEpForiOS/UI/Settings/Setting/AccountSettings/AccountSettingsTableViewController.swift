@@ -235,14 +235,18 @@ UIPickerViewDataSource, UITextFieldDelegate {
 
     // MARK: - Actions
     
+    fileprivate func popViewController() {
+         //!!!: see IOS-1608 this is a patch as we have 2 navigationControllers and need to pop to the previous view.
+            (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
+    }
+
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
 
         guard let isSplitViewShown = splitViewController?.isCollapsed else {
             return
         }
         if isSplitViewShown {
-            //!!!: this is a patch as we have 2 navigationControllers and need to pop to the previous view.
-            (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
+            popViewController()
         }
     }
 
@@ -328,7 +332,8 @@ extension AccountSettingsTableViewController: AccountVerificationResultDelegate 
             self.hideSpinnerAndEnableUI()
             switch result {
             case .ok:
-                self.navigationController?.popViewController(animated: true)
+                //self.navigationController?.popViewController(animated: true)
+                self.popViewController()
             case .imapError(let err):
                 self.handleLoginError(error: err)
             case .smtpError(let err):
