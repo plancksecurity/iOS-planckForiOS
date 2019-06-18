@@ -13,6 +13,7 @@ import XCTest
 class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     var settingsVM : SettingsViewModel!
+    var keySyncDeviceGroupServiceMoc: KeySyncDeviceGroupServiceMoc!
 
     //Number of sections corresponding to SettingsSectionViewModel.SectionType count
     let sections = 3
@@ -36,7 +37,6 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
         let thereIsNoAccount = settingsVM.noAccounts()
 
         XCTAssertTrue(thereIsNoAccount)
-
     }
 
     func testDeleteAccountWithMoreThanOneAccount() {
@@ -53,38 +53,24 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(thereIsOneLessAccount)
     }
 
-    func testRowTypeIsCorrect() {
-        setupViewModel()
-
-        var rowType: SettingsCellViewModel.SettingType?
-            = settingsVM.rowType(for: IndexPath(row: 0, section: 0))
-        XCTAssertEqual(rowType, .account)
-
-        rowType = settingsVM.rowType(for: IndexPath(row: 0, section: 1))
-        XCTAssertEqual(rowType, .defaultAccount)
-
-        rowType = settingsVM.rowType(for: IndexPath(row: 1, section: 1))
-        XCTAssertEqual(rowType, .credits)
-
-        rowType = settingsVM.rowType(for: IndexPath(row: 2, section: 1))
-        XCTAssertEqual(rowType, .showLog)
-
-        rowType = settingsVM.rowType(for: IndexPath(row: 3, section: 1))
-        XCTAssertEqual(rowType, .trustedServer)
-
-        rowType = settingsVM.rowType(for: IndexPath(row: 4, section: 1))
-        XCTAssertEqual(rowType, .setOwnKey)
-
-        rowType = settingsVM.rowType(for: IndexPath(row: 5, section: 1))
-        XCTAssertEqual(rowType, nil)
-    }
-
     fileprivate func setupViewModel() {
-        settingsVM = SettingsViewModel()
+        keySyncDeviceGroupServiceMoc = KeySyncDeviceGroupServiceMoc()
+        settingsVM = SettingsViewModel(keySyncDeviceGroupServiceMoc)
     }
 
     func givenThereAreTwoAccounts() {
         _ = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
         moc.saveAndLogErrors()
+    }
+
+    func testLeaveDeviceGroupPressed() {
+        // GIVEN
+        setupViewModel()
+        
+        // WHEN
+        settingsVM.leaveDeviceGroupPressed()
+
+        // THEN
+        XCTAssertTrue(keySyncDeviceGroupServiceMoc.didCallLeaveDeviceGroup)
     }
 }
