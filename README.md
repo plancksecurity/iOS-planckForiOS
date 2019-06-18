@@ -27,14 +27,24 @@ sudo port install automake
 
 sudo port install gmake
 
+curl https://sh.rustup.rs -sSf | sh
+rustup target add aarch64-apple-ios x86_64-apple-ios
+
 # To run the `greenmail` mailserver for tests
 sudo port install openjdk11
+```
+
+add this to ~/.profile (create if non existing):
+
+```
+source $HOME/.cargo/env
+export PATH="$HOME/.cargo/bin:$PATH"
 ```
 
 ### Set up Xcode
 You need to have an Apple ID configured in Xcode, for code signing. You can add one in the `Accounts` tab of the settings (menu `Xcode > Preferences...`).
 
-For some things (TODO: what exactly?), your Apple ID needs to be part of the pEp team account. Ask `#service`, if you want to be added to the team account. When you are a member of the team, the information on your Apple ID in the Xcode Preferences should have a record `Team: pEp Security SA`, `Role: Member`.
+For some things, your Apple ID needs to be part of the pEp team account. Ask `#service`, if you want to be added to the team account. When you are a member of the team, the information on your Apple ID in the Xcode Preferences should have a record `Team: pEp Security SA`, `Role: Member`.
 
 ### Other dependencies
 
@@ -68,6 +78,10 @@ hg clone https://pep.foundation/dev/repos/MessageModel/
 hg clone https://pep.foundation/dev/repos/libAccountSettings/
 
 hg clone https://pep-security.ch/dev/repos/pEp_for_iOS/
+
+git clone http://pep-security.lu/gitlab/iOS/sequoia4ios.gitc
+cd sequoia4ios
+sh build.sh
 ```
 
 ### Build Project
