@@ -134,7 +134,7 @@ class EmailListViewModel {
         return Folder.localizedName(realName: folderToShow.title)
     }
 
-    func shouldEditMessage(indexPath: IndexPath) -> Bool {
+    func isEditable(messageAt indexPath: IndexPath) -> Bool {
         let message = messageQueryResults[indexPath.row]
         if message.parent.folderType == .drafts {
             return true
@@ -143,7 +143,7 @@ class EmailListViewModel {
         }
     }
 
-    func shouldSelectMessage(indexPath: IndexPath) -> Bool {
+    func isSelectable(messageAt indexPath: IndexPath) -> Bool {
         let message = messageQueryResults[indexPath.row]
         if message.parent.folderType == .outbox {
             return false

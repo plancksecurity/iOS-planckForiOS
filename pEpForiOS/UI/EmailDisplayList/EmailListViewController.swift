@@ -621,10 +621,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 Log.shared.errorAndCrash("No folder")
                 return
             }
-            if model.shouldSelectMessage(indexPath: indexPath) {
+            if model.isSelectable(messageAt: indexPath) {
                 lastSelectedIndexPath = indexPath
                 tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                if model.shouldEditMessage(indexPath: indexPath) {
+                if model.isEditable(messageAt: indexPath) {
                     showComposeView()
                 } else {
                     showEmail(forCellAt: indexPath)
