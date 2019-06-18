@@ -26,7 +26,7 @@ class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, 
     var responder = 0
     var accounts = [Account]()
     
-    public var model: VerifiableAccountProtocol = VerifiableAccount()
+    public var model: VerifiableAccountProtocol?
 
     let viewWidthAligner = ViewWidthsAligner()
 
@@ -67,26 +67,26 @@ class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, 
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        firstResponder(!model.isValidName)
+        firstResponder(!viewModelOrCrash().isValidName)
     }
 
     /**
      Puts the model into the view, in case it was set by the invoking view controller.
      */
     func updateViewFromInitialModel() {
-        emailValue.text = model.address
-        nameValue.text = model.userName
-        passwordValue.text = model.password
+        emailValue.text = viewModelOrCrash().address
+        nameValue.text = viewModelOrCrash().userName
+        passwordValue.text = viewModelOrCrash().password
     }
 
     func updateView() {
-        navigationItem.rightBarButtonItem?.isEnabled = model.isValidUser
+        navigationItem.rightBarButtonItem?.isEnabled = viewModelOrCrash().isValidUser
     }
 
     public func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
         nextResponder(textfield)
         
-        if model.isValidUser {
+        if viewModelOrCrash().isValidUser {
             performSegue(withIdentifier: .IMAPSettings , sender: self)
         }
         return true
@@ -97,27 +97,50 @@ class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, 
     }
 
     @IBAction func changeEmail(_ sender: UITextField) {
-        model.address = sender.text
+        var vm = viewModelOrCrash()
+        vm.address = sender.text
+        model = vm
         updateView()
     }
 
     @IBAction func changeUsername(_ sender: UITextField) {
-        model.loginName = sender.text
+        var vm = viewModelOrCrash()
+        vm.loginName = sender.text
+        model = vm
         updateView()
     }
 
     @IBAction func changePassword(_ sender: UITextField) {
-        model.password = sender.text
+        var vm = viewModelOrCrash()
+        vm.password = sender.text
+        model = vm
         updateView()
     }
 
     @IBAction func changedName(_ sender: UITextField) {
-        model.userName = sender.text
+        var vm = viewModelOrCrash()
+        vm.userName = sender.text
+        model = vm
         updateView()
     }
 
     @IBAction func cancelButtonTapped(_ sender: UIButton) {
         navigationController?.dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - Helpers
+
+extension UserInfoTableViewController {
+    func viewModelOrCrash() -> VerifiableAccountProtocol {
+        if let vm = model {
+            return vm
+        } else {
+            Log.shared.errorAndCrash("No view model")
+            let vm = BaseVerifiableAccount()
+            model = vm
+            return vm
+        }
     }
 }
 

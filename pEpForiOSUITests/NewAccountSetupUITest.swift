@@ -50,7 +50,9 @@ class NewAccountSetupUITest: XCTestCase {
 
     func testAdditionalManualAccount() {
         app().launch()
-        addAdditionalManual(account: secretTestData().manualAccount)
+        let (manualAccount, correctPassword) = accountToManual(
+            account: secretTestData().workingAccount2)
+        addAdditionalManual(account: manualAccount, correctPassword: correctPassword)
     }
 
     func testAutoAccountPlusManual() {
@@ -61,7 +63,9 @@ class NewAccountSetupUITest: XCTestCase {
         let account1 = secretTestData().workingAccount1
         newAccountSetup(account: account1)
 
-        addAdditionalManual(account: secretTestData().manualAccount)
+        let account2 = secretTestData().workingAccount2
+        let (manualAccount, correctPassword) = accountToManual(account: account2)
+        addAdditionalManual(account: manualAccount, correctPassword: correctPassword)
     }
 
     func testTwoInitialAccounts() {
@@ -86,20 +90,17 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        var account = secretTestData().workingAccount1
+        var (manualAccount, correctPassword) = accountToManual(
+            account: secretTestData().workingAccount1)
 
-        // Wrong password should prevent the automatic login
-        let correctPassword = account.password
-        account.password += "ShouldNotWork"
-
-        newAccountSetup(account: account)
+        newAccountSetup(account: manualAccount)
 
         switchToManualConfig()
 
         // Use correct password for the manual setup
-        account.password = correctPassword
+        manualAccount.password = correctPassword
 
-        manualNewAccountSetup(account)
+        manualNewAccountSetup(manualAccount, expectServerDetailsToBeAlreadyFilledIn: true)
 
         waitForever()
     }
@@ -120,7 +121,7 @@ class NewAccountSetupUITest: XCTestCase {
 
         switchToManualConfig()
 
-        manualNewAccountSetup(account)
+        manualNewAccountSetup(account, expectServerDetailsToBeAlreadyFilledIn: true)
 
         waitForever()
     }
@@ -171,7 +172,17 @@ class NewAccountSetupUITest: XCTestCase {
         }
     }
 
-    func manualNewAccountSetup(_ account: UIAccount) {
+    /// - Parameters:
+    ///     - account: The account info from which to get the data to fill in.
+    ///     - expectServerDetailsToBeAlreadyFilledIn:
+    ///       If this is set to true, then the expectation is that
+    ///       server details are already filled in.
+    ///       The use case is a successful lookup of account details,
+    ///       with the wrong password, to force the manual setup.
+    /// - Note: The functionality for full manual accounts, lacking server information,
+    ///         has been taken over by means of existing code (refactor), but not tested.
+    func manualNewAccountSetup(_ account: UIAccount,
+                               expectServerDetailsToBeAlreadyFilledIn: Bool) {
         let theApp = app()
         let tablesQuery = theApp.tables
 
@@ -188,26 +199,31 @@ class NewAccountSetupUITest: XCTestCase {
 
         theApp.navigationBars.buttons["Next"].tap()
 
-        tf = tablesQuery.textFields["imapServer"]
-        tf.typeText(account.imapServerName)
-        tf = tablesQuery.textFields["imapPort"]
-        tf.tap()
-        tf.clearAndEnter(text: String(account.imapPort))
-
-        tablesQuery.buttons["imapTransportSecurity"].tap()
         let sheet = theApp.sheets["Transport protocol"]
-        sheet.buttons[account.imapTransportSecurityString].tap()
+
+        if !expectServerDetailsToBeAlreadyFilledIn {
+            tf = tablesQuery.textFields["imapServer"]
+            tf.typeText(account.imapServerName)
+            tf = tablesQuery.textFields["imapPort"]
+            tf.tap()
+            tf.clearAndEnter(text: String(account.imapPort))
+
+            tablesQuery.buttons["imapTransportSecurity"].tap()
+            sheet.buttons[account.imapTransportSecurityString].tap()
+        }
 
         theApp.navigationBars.buttons["Next"].tap()
 
-        tf = tablesQuery.textFields["smtpServer"]
-        tf.typeText(account.smtpServerName)
-        tf = tablesQuery.textFields["smtpPort"]
-        tf.tap()
-        tf.clearAndEnter(text: String(account.smtpPort))
+        if !expectServerDetailsToBeAlreadyFilledIn {
+            tf = tablesQuery.textFields["smtpServer"]
+            tf.typeText(account.smtpServerName)
+            tf = tablesQuery.textFields["smtpPort"]
+            tf.tap()
+            tf.clearAndEnter(text: String(account.smtpPort))
 
-        tablesQuery.buttons["smtpTransportSecurity"].tap()
-        sheet.buttons[account.smtpTransportSecurityString].tap()
+            tablesQuery.buttons["smtpTransportSecurity"].tap()
+            sheet.buttons[account.smtpTransportSecurityString].tap()
+        }
 
         let nextButton = theApp.navigationBars.buttons["Next"]
         nextButton.tap()
@@ -238,12 +254,15 @@ class NewAccountSetupUITest: XCTestCase {
         }
     }
 
-    func addAdditionalManual(account: UIAccount) {
+    func addAdditionalManual(account: UIAccount, correctPassword: String) {
         addAccount()
 
         signIn(account: account, enterPassword: true)
         switchToManualConfig()
-        manualNewAccountSetup(account)
+
+        var correctAccount = account
+        correctAccount.password = correctPassword
+        manualNewAccountSetup(correctAccount, expectServerDetailsToBeAlreadyFilledIn: true)
 
         waitForever()
     }
@@ -285,5 +304,17 @@ class NewAccountSetupUITest: XCTestCase {
         let theApp = app()
         theApp.navigationBars["All"].buttons["Folders"].tap()
         theApp.tables.buttons["Add Account"].tap()
+    }
+
+    /// For the given account, sets the password to something that should not work,
+    /// transforming it into an account that requires manual setup.
+    /// - Returns: The account (that will require manual setup) plus the original password
+    ///            as a tuple.
+    func accountToManual(account: UIAccount) -> (UIAccount, String) {
+        var theAccount = account
+        // Wrong password should prevent the automatic login
+        let correctPassword = account.password
+        theAccount.password += "ShouldNotWork"
+        return (theAccount, correctPassword)
     }
 }

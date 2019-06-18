@@ -22,10 +22,14 @@ class AppConfig {
      */
     let oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol
 
+    let messageModelService: MessageModelService
+
     init(errorPropagator: ErrorPropagator,
-         oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol) {
+         oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol,
+         messageModelService: MessageModelService) {
         self.errorPropagator = errorPropagator
         self.oauth2AuthorizationFactory = oauth2AuthorizationFactory
         self.showedAccountsError = [:]
+        self.messageModelService = messageModelService
     }
 }

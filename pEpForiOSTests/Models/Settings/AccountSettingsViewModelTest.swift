@@ -137,7 +137,14 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
     private func setUpViewModel() {
         account.save()
-        viewModel = AccountSettingsViewModel(account: account)
+
+        let theMessageModelService = MessageModelService(
+            errorPropagator: ErrorPropagator(),
+            notifyHandShakeDelegate: ErrorNotifyHandshakeDelegate())
+
+        viewModel = AccountSettingsViewModel(
+            account: account,
+            messageModelService: theMessageModelService)
     }
 }
 
