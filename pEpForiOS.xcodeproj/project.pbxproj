@@ -118,6 +118,20 @@
 		1541D7ED1FC81D4200D52A5D /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7EC1FC81D4200D52A5D /* URL+Extensions.swift */; };
 		1541D7F01FC81ED900D52A5D /* URL+ExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */; };
 		1541D7F51FC82A4900D52A5D /* URL+MIME.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7F41FC82A4900D52A5D /* URL+MIME.swift */; };
+		1549183422B933460091B6D6 /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1549183322B933330091B6D6 /* MessageModel.framework */; };
+		1549183522B933460091B6D6 /* MessageModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1549183322B933330091B6D6 /* MessageModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1549183722B933560091B6D6 /* ldns_xcode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1549183622B9334B0091B6D6 /* ldns_xcode.framework */; };
+		1549183822B933560091B6D6 /* ldns_xcode.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1549183622B9334B0091B6D6 /* ldns_xcode.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1549183A22B933630091B6D6 /* SwipeCellKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1549183922B933590091B6D6 /* SwipeCellKit.framework */; };
+		1549183B22B933630091B6D6 /* SwipeCellKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1549183922B933590091B6D6 /* SwipeCellKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1549183D22B933760091B6D6 /* pEpIOSToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1549183C22B9336B0091B6D6 /* pEpIOSToolbox.framework */; };
+		1549183E22B933760091B6D6 /* pEpIOSToolbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1549183C22B9336B0091B6D6 /* pEpIOSToolbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1549184022B933890091B6D6 /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1549183F22B9337F0091B6D6 /* AppAuth.framework */; };
+		1549184122B933890091B6D6 /* AppAuth.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1549183F22B9337F0091B6D6 /* AppAuth.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1549184B22B935060091B6D6 /* PantomimeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1549184A22B934F10091B6D6 /* PantomimeFramework.framework */; };
+		1549184C22B935060091B6D6 /* PantomimeFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1549184A22B934F10091B6D6 /* PantomimeFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1549185122B9352D0091B6D6 /* PEPObjCAdapterFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1549185022B935220091B6D6 /* PEPObjCAdapterFramework.framework */; };
+		1549185222B9352D0091B6D6 /* PEPObjCAdapterFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1549185022B935220091B6D6 /* PEPObjCAdapterFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		154D92CF20AC1745009A5868 /* MoveToFolderOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154D92CE20AC1744009A5868 /* MoveToFolderOperationTest.swift */; };
 		154F0A8220874B3E00C77D72 /* ContentDispositionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */; };
 		155050F01FE82356009CEAD2 /* UserNotificationTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */; };
@@ -334,26 +348,10 @@
 		43D0702F2133DB3F0013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D0702E2133DB3F0013B120 /* AppSettings.swift */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* DefaultAppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* DefaultAppSettings.swift */; };
-		43D213272237BE4B00C060A1 /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D213262237BE4B00C060A1 /* AppAuth.framework */; };
-		43D213282237BE4B00C060A1 /* AppAuth.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D213262237BE4B00C060A1 /* AppAuth.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		43D2132B2237BE6D00C060A1 /* pEpIOSToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D2132A2237BE6D00C060A1 /* pEpIOSToolbox.framework */; };
-		43D2132C2237BE6D00C060A1 /* pEpIOSToolbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D2132A2237BE6D00C060A1 /* pEpIOSToolbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		43D2132E2237BE8000C060A1 /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D2132D2237BE8000C060A1 /* MessageModel.framework */; };
-		43D2132F2237BE8000C060A1 /* MessageModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D2132D2237BE8000C060A1 /* MessageModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		43D213312237C86900C060A1 /* SwipeCellKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D213302237C86900C060A1 /* SwipeCellKit.framework */; };
-		43D213322237C86900C060A1 /* SwipeCellKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D213302237C86900C060A1 /* SwipeCellKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43D213342237C8CA00C060A1 /* libAccountSettingsAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D213332237C8CA00C060A1 /* libAccountSettingsAdapter.a */; };
-		43D213362237C90400C060A1 /* ldns_xcode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D213352237C90400C060A1 /* ldns_xcode.framework */; };
-		43D213372237C90400C060A1 /* ldns_xcode.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D213352237C90400C060A1 /* ldns_xcode.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43D2133B2237CABD00C060A1 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
-		43D2133D2237CB1600C060A1 /* PEPObjCAdapterFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D2133C2237CB1600C060A1 /* PEPObjCAdapterFramework.framework */; };
-		43D2133E2237CB1600C060A1 /* PEPObjCAdapterFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D2133C2237CB1600C060A1 /* PEPObjCAdapterFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		43D213402237CB3900C060A1 /* PantomimeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D2133F2237CB3900C060A1 /* PantomimeFramework.framework */; };
-		43D213412237CB3900C060A1 /* PantomimeFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D2133F2237CB3900C060A1 /* PantomimeFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43D3379021A3F32500E40114 /* ImapUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D3378F21A3F32500E40114 /* ImapUtil.swift */; };
 		43D3F8A121EDDF19002D5AFC /* ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43D3F8A021EDDF19002D5AFC /* ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt */; };
-		43D47AC0225DD1C500E97C5B /* PantomimeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D47ABF225DD1C500E97C5B /* PantomimeFramework.framework */; };
-		43D47AC2225DD1CE00E97C5B /* PEPObjCAdapterFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D47AC1225DD1CE00E97C5B /* PEPObjCAdapterFramework.framework */; };
 		43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */; };
 		43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */; };
 		43DFB0331E36083D00175C9C /* MessageHeapBufferOverflow.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */; };
@@ -467,13 +465,13 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				43D2132C2237BE6D00C060A1 /* pEpIOSToolbox.framework in Embed Frameworks */,
-				43D2133E2237CB1600C060A1 /* PEPObjCAdapterFramework.framework in Embed Frameworks */,
-				43D213412237CB3900C060A1 /* PantomimeFramework.framework in Embed Frameworks */,
-				43D2132F2237BE8000C060A1 /* MessageModel.framework in Embed Frameworks */,
-				43D213322237C86900C060A1 /* SwipeCellKit.framework in Embed Frameworks */,
-				43D213372237C90400C060A1 /* ldns_xcode.framework in Embed Frameworks */,
-				43D213282237BE4B00C060A1 /* AppAuth.framework in Embed Frameworks */,
+				1549184122B933890091B6D6 /* AppAuth.framework in Embed Frameworks */,
+				1549183822B933560091B6D6 /* ldns_xcode.framework in Embed Frameworks */,
+				1549184C22B935060091B6D6 /* PantomimeFramework.framework in Embed Frameworks */,
+				1549185222B9352D0091B6D6 /* PEPObjCAdapterFramework.framework in Embed Frameworks */,
+				1549183E22B933760091B6D6 /* pEpIOSToolbox.framework in Embed Frameworks */,
+				1549183522B933460091B6D6 /* MessageModel.framework in Embed Frameworks */,
+				1549183B22B933630091B6D6 /* SwipeCellKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -592,6 +590,15 @@
 		1541D7EC1FC81D4200D52A5D /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+ExtensionsTest.swift"; sourceTree = "<group>"; };
 		1541D7F41FC82A4900D52A5D /* URL+MIME.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MIME.swift"; sourceTree = "<group>"; };
+		1549183322B933330091B6D6 /* MessageModel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageModel.framework; path = "../../../../Library/Developer/Xcode/DerivedData/pEpForiOS-ezaqfciacjbhblfnjnfcfgneqdyd/Build/Products/Debug-iphoneos/MessageModel.framework"; sourceTree = "<group>"; };
+		1549183622B9334B0091B6D6 /* ldns_xcode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ldns_xcode.framework; path = "../../../../Library/Developer/Xcode/DerivedData/pEpForiOS-ezaqfciacjbhblfnjnfcfgneqdyd/Build/Products/Debug-iphoneos/ldns_xcode.framework"; sourceTree = "<group>"; };
+		1549183922B933590091B6D6 /* SwipeCellKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwipeCellKit.framework; path = "../../../../Library/Developer/Xcode/DerivedData/pEpForiOS-ezaqfciacjbhblfnjnfcfgneqdyd/Build/Products/Debug-iphoneos/SwipeCellKit.framework"; sourceTree = "<group>"; };
+		1549183C22B9336B0091B6D6 /* pEpIOSToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = pEpIOSToolbox.framework; path = "../../../../Library/Developer/Xcode/DerivedData/pEpForiOS-ezaqfciacjbhblfnjnfcfgneqdyd/Build/Products/Debug-iphoneos/pEpIOSToolbox.framework"; sourceTree = "<group>"; };
+		1549183F22B9337F0091B6D6 /* AppAuth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppAuth.framework; path = "../../../../Library/Developer/Xcode/DerivedData/pEpForiOS-ezaqfciacjbhblfnjnfcfgneqdyd/Build/Products/Debug-iphoneos/AppAuth.framework"; sourceTree = "<group>"; };
+		1549184522B933B90091B6D6 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		1549184622B933B90091B6D6 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		1549184A22B934F10091B6D6 /* PantomimeFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PantomimeFramework.framework; path = "../../../../Library/Developer/Xcode/DerivedData/pEpForiOS-ezaqfciacjbhblfnjnfcfgneqdyd/Build/Products/Debug-iphoneos/PantomimeFramework.framework"; sourceTree = "<group>"; };
+		1549185022B935220091B6D6 /* PEPObjCAdapterFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PEPObjCAdapterFramework.framework; path = "../../../../Library/Developer/Xcode/DerivedData/pEpForiOS-ezaqfciacjbhblfnjnfcfgneqdyd/Build/Products/Debug-iphoneos/PEPObjCAdapterFramework.framework"; sourceTree = "<group>"; };
 		154D92CE20AC1744009A5868 /* MoveToFolderOperationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderOperationTest.swift; sourceTree = "<group>"; };
 		154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentDispositionTest.swift; sourceTree = "<group>"; };
 		155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationTool.swift; sourceTree = "<group>"; };
@@ -795,7 +802,6 @@
 		438F4EE8215FB99400168B5E /* Leon Kowalski (19B9EE3B) – Private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Leon Kowalski (19B9EE3B) – Private.asc"; sourceTree = "<group>"; };
 		4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensionsTests.swift; sourceTree = "<group>"; };
 		4395CDEF20AAD0D6003FC5F1 /* icon_001.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_001.gif; sourceTree = "<group>"; };
-		439680971D1855D400DA31D2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		43980E231CBD0BC900A7FC3C /* pEp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pEp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E261CBD0BC900A7FC3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43980E2B1CBD0BC900A7FC3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -828,7 +834,6 @@
 		43B10C7F1EC2EE7F003E849F /* CppDummy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CppDummy.cpp; sourceTree = "<group>"; };
 		43B2C3161D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc; sourceTree = "<group>"; };
 		43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewWidthsAligner.swift; sourceTree = "<group>"; };
-		43C046BE1CF48EA500BD0D9D /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		43C273DC21C9024A002EB4C8 /* LoggerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTest.swift; sourceTree = "<group>"; };
 		43C322041EA89EED005073FB /* HandshakePartnerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakePartnerTableViewCell.swift; sourceTree = "<group>"; };
 		43C322081EA90192005073FB /* PEP+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEP+UI.swift"; sourceTree = "<group>"; };
@@ -846,18 +851,9 @@
 		43D0702E2133DB3F0013B120 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		43D070302133DB920013B120 /* AppSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsProtocol.swift; sourceTree = "<group>"; };
 		43D070322133DC500013B120 /* DefaultAppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAppSettings.swift; sourceTree = "<group>"; };
-		43D213262237BE4B00C060A1 /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D2132A2237BE6D00C060A1 /* pEpIOSToolbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEpIOSToolbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D2132D2237BE8000C060A1 /* MessageModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MessageModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D213302237C86900C060A1 /* SwipeCellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwipeCellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D213332237C8CA00C060A1 /* libAccountSettingsAdapter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAccountSettingsAdapter.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D213352237C90400C060A1 /* ldns_xcode.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ldns_xcode.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D2133C2237CB1600C060A1 /* PEPObjCAdapterFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PEPObjCAdapterFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D2133F2237CB3900C060A1 /* PantomimeFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D3378F21A3F32500E40114 /* ImapUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImapUtil.swift; sourceTree = "<group>"; };
 		43D3F8A021EDDF19002D5AFC /* ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt"; sourceTree = "<group>"; };
-		43D47ABF225DD1C500E97C5B /* PantomimeFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D47AC1225DD1CE00E97C5B /* PEPObjCAdapterFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PEPObjCAdapterFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
 		43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAccountSetupUITest.swift; sourceTree = "<group>"; };
 		43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageHeapBufferOverflow.txt; sourceTree = "<group>"; };
@@ -953,15 +949,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1549183A22B933630091B6D6 /* SwipeCellKit.framework in Frameworks */,
 				43D2133B2237CABD00C060A1 /* libxml2.tbd in Frameworks */,
 				43D213342237C8CA00C060A1 /* libAccountSettingsAdapter.a in Frameworks */,
-				43D2132B2237BE6D00C060A1 /* pEpIOSToolbox.framework in Frameworks */,
-				43D2132E2237BE8000C060A1 /* MessageModel.framework in Frameworks */,
-				43D213312237C86900C060A1 /* SwipeCellKit.framework in Frameworks */,
-				43D2133D2237CB1600C060A1 /* PEPObjCAdapterFramework.framework in Frameworks */,
-				43D213272237BE4B00C060A1 /* AppAuth.framework in Frameworks */,
-				43D213362237C90400C060A1 /* ldns_xcode.framework in Frameworks */,
-				43D213402237CB3900C060A1 /* PantomimeFramework.framework in Frameworks */,
+				1549183D22B933760091B6D6 /* pEpIOSToolbox.framework in Frameworks */,
+				1549185122B9352D0091B6D6 /* PEPObjCAdapterFramework.framework in Frameworks */,
+				1549183722B933560091B6D6 /* ldns_xcode.framework in Frameworks */,
+				1549183422B933460091B6D6 /* MessageModel.framework in Frameworks */,
+				1549184022B933890091B6D6 /* AppAuth.framework in Frameworks */,
+				1549184B22B935060091B6D6 /* PantomimeFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -969,8 +965,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43D47AC2225DD1CE00E97C5B /* PEPObjCAdapterFramework.framework in Frameworks */,
-				43D47AC0225DD1C500E97C5B /* PantomimeFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1296,6 +1290,15 @@
 				00227E6921635DED000D9BDB /* FilterViewModelTest.swift */,
 			);
 			path = Filter;
+			sourceTree = "<group>";
+		};
+		1549184422B933AA0091B6D6 /* AppleiOSSDK */ = {
+			isa = PBXGroup;
+			children = (
+				1549184522B933B90091B6D6 /* AddressBook.framework */,
+				1549184622B933B90091B6D6 /* WebKit.framework */,
+			);
+			name = AppleiOSSDK;
 			sourceTree = "<group>";
 		};
 		1569AEA320E14DC2002102A0 /* Features */ = {
@@ -1734,14 +1737,6 @@
 		43980E1A1CBD0BC900A7FC3C = {
 			isa = PBXGroup;
 			children = (
-				43D2133F2237CB3900C060A1 /* PantomimeFramework.framework */,
-				43D2133C2237CB1600C060A1 /* PEPObjCAdapterFramework.framework */,
-				43D213352237C90400C060A1 /* ldns_xcode.framework */,
-				43D213302237C86900C060A1 /* SwipeCellKit.framework */,
-				43D2132D2237BE8000C060A1 /* MessageModel.framework */,
-				43D2132A2237BE6D00C060A1 /* pEpIOSToolbox.framework */,
-				43D213262237BE4B00C060A1 /* AppAuth.framework */,
-				43980ECE1CBD1CAD00A7FC3C /* Libraries */,
 				43980E251CBD0BC900A7FC3C /* pEpForiOS */,
 				43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */,
 				43980E481CBD0BCA00A7FC3C /* pEpForiOSUITests */,
@@ -1843,16 +1838,6 @@
 				434C051A20F8BAB6009B271D /* XCUIElement+Extension.swift */,
 			);
 			path = pEpForiOSUITests;
-			sourceTree = "<group>";
-		};
-		43980ECE1CBD1CAD00A7FC3C /* Libraries */ = {
-			isa = PBXGroup;
-			children = (
-				439680971D1855D400DA31D2 /* WebKit.framework */,
-				43C046BE1CF48EA500BD0D9D /* AddressBook.framework */,
-				439D40781CC78A2D009A4E7C /* Raw */,
-			);
-			name = Libraries;
 			sourceTree = "<group>";
 		};
 		43980EDE1CBD24B000A7FC3C /* Util */ = {
@@ -2130,8 +2115,15 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				43D47AC1225DD1CE00E97C5B /* PEPObjCAdapterFramework.framework */,
-				43D47ABF225DD1C500E97C5B /* PantomimeFramework.framework */,
+				1549184422B933AA0091B6D6 /* AppleiOSSDK */,
+				439D40781CC78A2D009A4E7C /* Raw */,
+				1549183F22B9337F0091B6D6 /* AppAuth.framework */,
+				1549183C22B9336B0091B6D6 /* pEpIOSToolbox.framework */,
+				1549183922B933590091B6D6 /* SwipeCellKit.framework */,
+				1549183622B9334B0091B6D6 /* ldns_xcode.framework */,
+				1549185022B935220091B6D6 /* PEPObjCAdapterFramework.framework */,
+				1549184A22B934F10091B6D6 /* PantomimeFramework.framework */,
+				1549183322B933330091B6D6 /* MessageModel.framework */,
 				43D213332237C8CA00C060A1 /* libAccountSettingsAdapter.a */,
 			);
 			name = Frameworks;
