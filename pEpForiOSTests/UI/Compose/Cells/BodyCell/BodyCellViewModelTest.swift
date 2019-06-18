@@ -565,11 +565,10 @@ class BodyCellViewModelTest: XCTestCase {
                 attachments.append(Attachment(data: data,
                                               mimeType: mimeType,
                                               fileName: fileName == nil ? "\(i)" : fileName,
-                    size: size,
-                    url: url,
-                    image: addImage ? image : nil,
-                    assetUrl: assetUrl,
-                    contentDisposition: contentDisposition))
+                                              url: url,
+                                              image: addImage ? image : nil,
+                                              assetUrl: assetUrl,
+                                              contentDisposition: contentDisposition))
             }
             return attachments
     }

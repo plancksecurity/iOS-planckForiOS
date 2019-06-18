@@ -43,13 +43,13 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         rightStackView.distribution = .fill
         rightStackView.translatesAutoresizingMaskIntoConstraints = false
         accountType.translatesAutoresizingMaskIntoConstraints = false
-        accountType.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
+        accountType.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
         labelStackView.addArrangedSubview(accountType)
         accountName.translatesAutoresizingMaskIntoConstraints = false
-        accountName.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
+        accountName.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
         labelStackView.addArrangedSubview(accountName)
         userAddress.translatesAutoresizingMaskIntoConstraints = false
-        userAddress.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
+        userAddress.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
         labelStackView.addArrangedSubview(userAddress)
         labelStackView.layoutMargins = UIEdgeInsets(top: 0.0, left: 5.0, bottom: 0.0, right: 5.0)
         labelStackView.isLayoutMarginsRelativeArrangement = true
@@ -85,7 +85,7 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
 
         contentView.addConstraints(NSLayoutConstraint.constraints(
             withVisualFormat: "H:|-10-[profileImage]-5-[labelstackview]-[rightstackview]-15-|",
-            options: NSLayoutFormatOptions(rawValue: 0),
+            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
             metrics: nil,
             views: ["profileImage" : profileImage,
                     "labelstackview" : labelStackView,
@@ -96,14 +96,14 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
 
         contentView.addConstraints(NSLayoutConstraint.constraints(
             withVisualFormat: "V:|-10-[stackView]-10-|",
-            options: NSLayoutFormatOptions(rawValue: 0),
+            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
             metrics: nil,
             views: ["stackView" : labelStackView ]
         ))
 
         contentView.addConstraints(NSLayoutConstraint.constraints(
             withVisualFormat: "V:|-10-[stackView]-10-|",
-            options: NSLayoutFormatOptions(rawValue: 0),
+            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
             metrics: nil,
             views: ["stackView" : rightStackView ]
         ))

@@ -9,7 +9,6 @@
 import XCTest
 
 import MessageModel
-import pEpForiOS
 @testable import pEpForiOS
 
 class NetworkServiceTests: XCTestCase {
@@ -22,7 +21,6 @@ class NetworkServiceTests: XCTestCase {
 
     override func tearDown() {
         persistenceSetup = nil
-        CdAccount.sendLayer = nil
         super.tearDown()
     }
 
@@ -42,16 +40,12 @@ class NetworkServiceTests: XCTestCase {
         let modelDelegate = MessageModelObserver()
         MessageModelConfig.messageFolderDelegate = modelDelegate
 
-        let sendLayerDelegate = SendLayerObserver()
-
         let networkService = NetworkService(parentName: #function)
 
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
         networkService.unitTestDelegate = del
         networkService.delegate = del
-
-        networkService.sendLayerDelegate = sendLayerDelegate
 
         _ = SecretTestData().createWorkingCdAccount()
         Record.saveAndWait()
@@ -62,61 +56,12 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertNil(error)
         })
 
+        TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: self)
+
         XCTAssertNotNil(del.accountInfo)
         XCTAssertNotNil(CdFolder.all())
 
-        guard let cdFolder = CdFolder.first(
-            attributes: ["folderTypeRawValue": FolderType.inbox.rawValue]) else {
-                XCTFail()
-                return
-        }
-        XCTAssertGreaterThanOrEqual(cdFolder.messages?.count ?? 0, 0)
-        let allCdMessages = cdFolder.messages?.sortedArray(
-            using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] ?? []
-        XCTAssertGreaterThanOrEqual(allCdMessages.count, 0)
 
-        for cdMsg in allCdMessages {
-            guard let parentF = cdMsg.parent else {
-                XCTFail()
-                continue
-            }
-            XCTAssertEqual(parentF.folderType, FolderType.inbox)
-        }
-
-        let unifiedInbox = UnifiedInbox()
-
-        let unifiedMessageCount = unifiedInbox.messageCount()
-        XCTAssertGreaterThanOrEqual(unifiedMessageCount, 0)
-        for i in 0..<unifiedMessageCount {
-            guard let msg = unifiedInbox.messageAt(index: i) else {
-                XCTFail()
-                continue
-            }
-
-            XCTAssertTrue(msg.isValidMessage())
-
-            let pEpRating = Int16(msg.pEpRatingInt ?? -1)
-            XCTAssertNotEqual(pEpRating, PEPUtil.pEpRatingNone)
-            if !modelDelegate.contains(messageID: msg.messageID) {
-                XCTFail()
-            }
-        }
-
-        let inbox = Folder.from(cdFolder: cdFolder)
-        XCTAssertGreaterThanOrEqual(sendLayerDelegate.messageIDs.count, unifiedMessageCount)
-        XCTAssertEqual(modelDelegate.messages.count, unifiedMessageCount)
-
-        for msg in modelDelegate.messages {
-            let msgIsFlaggedDeleted = msg.imapFlags?.deleted ?? false
-            XCTAssertTrue(!msgIsFlaggedDeleted)
-            XCTAssertTrue(inbox.contains(message: msg))
-            if !unifiedInbox.contains(message: msg) {
-                XCTFail()
-            }
-        }
-        XCTAssertFalse(modelDelegate.hasChangedMessages)
-
-        TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: self)
     }
 
     func testCancelSyncImmediately() {
@@ -268,23 +213,19 @@ class NetworkServiceTests: XCTestCase {
             }
         }
 
-        func didUpdate(messageFolder: MessageFolder) {
-            if let msg = messageFolder as? Message {
-                // messages has been changed during the test
-                XCTAssertNotNil(messagesByID[msg.messageID])
-                add(message: msg)
-                changedMessagesByID[msg.messageID] = msg
-            }
+        func didUpdate(message: Message) {
+            // messages has been changed during the test
+            XCTAssertNotNil(messagesByID[message.messageID])
+            add(message: message)
+            changedMessagesByID[message.messageID] = message
         }
 
-        func didDelete(messageFolder: MessageFolder) {
+        func didDelete(message: Message) {
             // this message has been deleted from the start, ignore
         }
 
-        func didCreate(messageFolder: MessageFolder) {
-            if let msg = messageFolder as? Message {
-                add(message: msg)
-            }
+        func didCreate(message: Message) {
+            add(message: message)
         }
     }
 }

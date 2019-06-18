@@ -113,7 +113,7 @@ class SettingsCellViewModelTest: CoreDataDrivenTestBase {
 
         var didCallDeleteExpectation: XCTestExpectation?
 
-        override func delete() {
+        func delete() {
             didCallDeleteExpectation?.fulfill()
         }
     }

@@ -7,7 +7,7 @@
 //
 
 import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 import XCTest
 
@@ -18,10 +18,11 @@ class MessageModelTests: CoreDataDrivenTestBase {
         account.save()
         let outbox = Folder(name: "Outbox", parent: nil, account: account, folderType: .outbox)
         outbox.save()
-        let msg = outbox.createMessage()
+
+        let msg = Message(uuid: MessageID.generate(), parentFolder: outbox)
         msg.shortMessage = "Some subject"
         msg.from = account.user
-        msg.to.append(account.user)
+        msg.appendToTo(account.user)
         msg.save()
 
         guard let cdMsg = CdMessage.first() else {
@@ -30,8 +31,8 @@ class MessageModelTests: CoreDataDrivenTestBase {
         }
         XCTAssertEqual(msg.uuid, cdMsg.uuid)
 
-        if let (_, _, _) = EncryptAndSendOperation.retrieveNextMessage(context: Record.Context.main,
-                                                                       cdAccount: cdAccount) {
+        if let _ = EncryptAndSendOperation.retrieveNextMessage(context: Record.Context.main,
+                                                               cdAccount: cdAccount) {
         } else {
             XCTFail()
         }

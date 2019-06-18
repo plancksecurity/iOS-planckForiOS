@@ -15,7 +15,7 @@ class Appearance {
         UINavigationBar.appearance().barTintColor = .pEpNavigation
         UINavigationBar.appearance().tintColor = color
         UINavigationBar.appearance().titleTextAttributes =
-            [NSAttributedStringKey.foregroundColor: color]
+            [NSAttributedString.Key.foregroundColor: color]
 
         UIToolbar.appearance().backgroundColor = color
         UIToolbar.appearance().barTintColor = color

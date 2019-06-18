@@ -11,6 +11,7 @@ import MessageModel
 import SwipeCellKit
 import Photos
 import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 class ComposeTableViewController: BaseTableViewController {
     @IBOutlet var sendButton: UIBarButtonItem!
@@ -18,7 +19,7 @@ class ComposeTableViewController: BaseTableViewController {
     private var suggestionsChildViewController: SuggestTableViewController?
     lazy private var mediaAttachmentPickerProvider: MediaAttachmentPickerProvider? = {
         guard let pickerVm = viewModel?.mediaAttachmentPickerProviderViewModel() else {
-            Logger.frontendLogger.errorAndCrash("Invalid state")
+            Log.shared.errorAndCrash("Invalid state")
             return nil
         }
         return MediaAttachmentPickerProvider(with: pickerVm)
@@ -51,13 +52,14 @@ class ComposeTableViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupRecipientSuggestionsTableViewController()
+        viewModel?.handleDidReAppear()
     }
 
     // MARK: - Setup & Configuration
 
     private func setupView() {
         registerXibs()
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
          //An arbitrary value auto resize seems to require for some reason.
         tableView.estimatedRowHeight = 1000
     }
@@ -74,13 +76,13 @@ class ComposeTableViewController: BaseTableViewController {
                 withIdentifier: SuggestTableViewController.storyboardId)
                 as? SuggestTableViewController,
             let suggestView = suggestVc.view else {
-                Logger.frontendLogger.errorAndCrash("No VC.")
+                Log.shared.errorAndCrash("No VC.")
                 return
         }
         suggestionsChildViewController = suggestVc
         suggestionsChildViewController?.appConfig = appConfig
         suggestionsChildViewController?.viewModel = vm.suggestViewModel()
-        addChildViewController(suggestVc)
+        addChild(suggestVc)
         suggestView.isHidden = true
         tableView.addSubview(suggestView)
     }
@@ -108,9 +110,9 @@ class ComposeTableViewController: BaseTableViewController {
 // MARK: - PEP Color View
 
 extension ComposeTableViewController {
-    private func setupPepColorView(for pEpRating: PEP_rating, pEpProtected: Bool) {
+    private func setupPepColorView(for pEpRating: PEPRating, pEpProtected: Bool) {
         guard let vm = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return
         }
 
@@ -128,7 +130,7 @@ extension ComposeTableViewController {
     /// Shows a menu where user can choose to make a handshake, or toggle force unprotected.
     @objc func actionHandshakeOrForceUnprotected(gestureRecognizer: UITapGestureRecognizer) {
         guard let vm = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return
         }
         let theCanHandshake = vm.state.canHandshake()
@@ -242,7 +244,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         tableView.endUpdates()
     }
 
-    func colorBatchNeedsUpdate(for rating: PEP_rating, protectionEnabled: Bool) {
+    func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool) {
         setupPepColorView(for: rating, pEpProtected: protectionEnabled)
     }
 
@@ -283,7 +285,7 @@ extension ComposeTableViewController: SegueHandlerType {
             guard
                 let nc = segue.destination as? UINavigationController,
                 let destination = nc.rootViewController as? HandshakeViewController else {
-                    Logger.frontendLogger.errorAndCrash("Segue issue")
+                    Log.shared.errorAndCrash("Segue issue")
                     return
             }
             destination.appConfig = appConfig
@@ -317,7 +319,7 @@ extension ComposeTableViewController {
             }
             guard let me = self,
             let picker = me.mediaAttachmentPickerProvider?.imagePicker else {
-                Logger.frontendLogger.errorAndCrash("Lost somthing")
+                Log.shared.errorAndCrash("Lost somthing")
                 return
             }
             me.present(picker, animated: true)
@@ -339,7 +341,7 @@ extension ComposeTableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         guard let vm = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return 0
         }
         return vm.sections.count
@@ -348,7 +350,7 @@ extension ComposeTableViewController {
     override func tableView(_ tableView: UITableView,
                             numberOfRowsInSection section: Int) -> Int {
         guard let vm = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return 0
         }
         return vm.sections[section].rows.count
@@ -357,7 +359,7 @@ extension ComposeTableViewController {
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = setupCellForIndexPath(indexPath, in: tableView) else {
-            Logger.frontendLogger.errorAndCrash("No cell")
+            Log.shared.errorAndCrash("No cell")
             return UITableViewCell()
         }
         return cell
@@ -366,7 +368,7 @@ extension ComposeTableViewController {
     private func setupCellForIndexPath(_ indexPath: IndexPath,
                                   in tableView: UITableView) -> UITableViewCell? {
         guard let vm = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return UITableViewCell()
         }
 
@@ -379,7 +381,7 @@ extension ComposeTableViewController {
                     as? RecipientCell,
                 let rowVm = section.rows[indexPath.row] as? RecipientCellViewModel
                 else {
-                    Logger.frontendLogger.errorAndCrash("Invalid state")
+                    Log.shared.errorAndCrash("Invalid state")
                     return nil
             }
             cell.setup(with: rowVm)
@@ -392,7 +394,7 @@ extension ComposeTableViewController {
                     as? AccountCell,
                 let rowVm = section.rows[indexPath.row] as? AccountCellViewModel
                 else {
-                    Logger.frontendLogger.errorAndCrash("Invalid state")
+                    Log.shared.errorAndCrash("Invalid state")
                     return nil
             }
             cell.setup(with: rowVm)
@@ -403,7 +405,7 @@ extension ComposeTableViewController {
                         as? SubjectCell,
                     let rowVm = section.rows[indexPath.row] as? SubjectCellViewModel
                     else {
-                        Logger.frontendLogger.errorAndCrash("Invalid state")
+                        Log.shared.errorAndCrash("Invalid state")
                     return nil
             }
             cell.setup(with: rowVm)
@@ -414,7 +416,7 @@ extension ComposeTableViewController {
                     as? BodyCell,
                 let rowVm = section.rows[indexPath.row] as? BodyCellViewModel
                 else {
-                    Logger.frontendLogger.errorAndCrash("Invalid state")
+                    Log.shared.errorAndCrash("Invalid state")
                     return nil
             }
             cell.setup(with: rowVm)
@@ -425,7 +427,7 @@ extension ComposeTableViewController {
                     as? AttachmentCell,
                 let rowVm = section.rows[indexPath.row] as? AttachmentViewModel
                 else {
-                    Logger.frontendLogger.errorAndCrash("Invalid state")
+                    Log.shared.errorAndCrash("Invalid state")
                     return nil
             }
             cell.setup(with: rowVm)
@@ -481,7 +483,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") {
             [weak self] action, indexPath in
             guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             me.deleteAction(forCellAt: indexPath)
@@ -500,7 +502,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
             // The last cell is not yet displayed (as we are in "willDisplay ..."), thus async.
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
-                    Logger.frontendLogger.lostMySelf()
+                    Log.shared.errorAndCrash("Lost MySelf")
                     return
                 }
                 me.setInitialFocus()
@@ -520,7 +522,7 @@ extension ComposeTableViewController {
         }
         isInitialFocusSet = true
         guard let vm = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return
         }
         let idxPath = vm.initialFocus()
@@ -534,13 +536,13 @@ extension ComposeTableViewController {
 
     private func setPreviousFocusAfterPicker() {
         guard let vm = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return
         }
         let idxPath = vm.beforePickerFocus()
         guard let cellToFocus = tableView.cellForRow(at: idxPath)
             as? TextViewContainingTableViewCell else {
-                Logger.frontendLogger.errorAndCrash("Error casting")
+                Log.shared.errorAndCrash("Error casting")
                 return
         }
         cellToFocus.setFocus()
@@ -548,7 +550,7 @@ extension ComposeTableViewController {
 
     private func isLastRow(indexPath: IndexPath) -> Bool {
         guard let vm = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return false
         }
         let idxLastSection = vm.sections.count - 1
@@ -578,14 +580,14 @@ extension ComposeTableViewController {
 
     private func deleteAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         guard let vm = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
         let action: UIAlertAction
         let text = vm.deleteActionTitle
         action = ac.action(text, .destructive) {[weak self] in
             guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             vm.handleDeleteActionTriggered()
@@ -596,14 +598,14 @@ extension ComposeTableViewController {
 
     private func saveAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         guard let vm = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
         let action: UIAlertAction
         let text = vm.saveActionTitle
         action = ac.action(text, .default) { [weak self] in
             guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             vm.handleSaveActionTriggered()
@@ -614,14 +616,14 @@ extension ComposeTableViewController {
 
     private func keepInOutboxAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         guard let vm = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
         let action: UIAlertAction
         let text = vm.keepInOutboxActionTitle
         action = ac.action(text, .default) {[weak self] in
             guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             me.dismiss()
@@ -631,7 +633,7 @@ extension ComposeTableViewController {
 
     private func cancelAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         guard let vm = viewModel else {
-            Logger.frontendLogger.errorAndCrash("No VM")
+            Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
         return ac.action(vm.cancelActionTitle, .cancel)

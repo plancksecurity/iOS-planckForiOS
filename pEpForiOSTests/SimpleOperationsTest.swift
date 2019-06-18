@@ -1,21 +1,16 @@
-///
-//  SimpleOperationsTest.swift
-//  pEpForiOS
-//
-//  Created by Dirk Zimmermann on 03/05/16.
-//  Copyright © 2016 p≡p Security S.A. All rights reserved.
-//
-
 import XCTest
 
 import CoreData
+
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
+import PEPObjCAdapterFramework
+import PantomimeFramework
 
 class SimpleOperationsTest: CoreDataDrivenTestBase {
     func testComp() {
         guard let f = SyncFoldersFromServerOperation(parentName: #function,
-                                                                 imapSyncData: imapSyncData)
+                                                     imapSyncData: imapSyncData)
             else {
                 XCTFail()
                 return
@@ -62,15 +57,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertNotNil(m.imap)
             XCTAssertNotNil(m.sent)
             XCTAssertNotNil(m.received)
-
-            // Transform the message from CdMessage to Message to check conversion
-            guard let normalMessage = Message.from(cdMessage: m) else {
-                XCTFail()
-                return
-            }
-
-            XCTAssertEqual(m.from?.address, normalMessage.from?.address)
-            XCTAssertNotNil(normalMessage.uuid)
 
             guard let uuid = m.uuid else {
                 XCTFail()
@@ -121,7 +107,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
                 XCTFail()
                 continue
             }
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
             if let serverFlags = imap.serverFlags {
                 localFlags.update(cdImapFlags: serverFlags)
@@ -133,18 +119,20 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         Record.saveAndWait()
 
-        let changedMessages = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: folder, context: Record.Context.main)
+        let changedMessages = SyncFlagsToServerOperation.messagesToBeSynced(folder: folder,
+                                                                            context: moc)
         XCTAssertEqual(changedMessages.count, allMessages.count)
 
         let expMailsSynced = expectation(description: "expMailsSynced")
 
-        guard let op = SyncMessagesOperation(
-            parentName: #function,
-            imapSyncData: imapSyncData, folder: folder) else {
-                XCTFail()
-                return
+        guard let folderName = folder.name else {
+            XCTFail()
+            return
         }
+        let op = SyncMessagesOperation(imapSyncData: imapSyncData,
+                                       folderName: folderName,
+                                       firstUID: folder.firstUID(context: folder.managedObjectContext),
+                                       lastUID: folder.lastUID(context: folder.managedObjectContext))
         op.completionBlock = {
             op.completionBlock = nil
             expMailsSynced.fulfill()
@@ -160,7 +148,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         // that should not get overwritten by the server.
         // Hence, all messages are still the same.
         for (i, m) in allMessages.enumerated() {
-            m.refresh(mergeChanges: true, in: Record.Context.main)
+            m.refresh(mergeChanges: true, in: moc)
             XCTAssertFalse(m.imap?.localFlags?.flagSeen == flagsSeenBefore[i])
         }
     }
@@ -197,7 +185,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         let opLogin = LoginImapOperation(parentName: #function, imapSyncData: imapSyncData)
         guard let op = SyncFoldersFromServerOperation(parentName: #function,
-                                                                 imapSyncData: imapSyncData)
+                                                      imapSyncData: imapSyncData)
             else {
                 XCTFail()
                 return
@@ -220,7 +208,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             CdFolder.countBy(predicate: NSPredicate(value: true)), 1)
 
         var options: [String: Any] = ["folderTypeRawValue": FolderType.inbox.rawValue,
-                                      "account": cdAccount]
+                                      "account": cdAccount as Any]
         let inboxFolder = CdFolder.first(attributes: options)
         options["folderTypeRawValue"] = FolderType.sent.rawValue
         XCTAssertNotNil(inboxFolder)
@@ -229,186 +217,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         let sentFolder = CdFolder.first(attributes: options)
         XCTAssertNotNil(sentFolder)
-    }
-
-    func testStorePrefetchedMailOperation() {
-        let folder = CWIMAPFolder(name: ImapSync.defaultImapInboxName)
-
-        let _ = CdFolder.insertOrUpdate(
-            folderName: folder.name(), folderSeparator: nil, folderType: nil, account: cdAccount)
-        Record.saveAndWait()
-
-        let message = CWIMAPMessage()
-        message.setFrom(CWInternetAddress(personal: "personal", address: "somemail@test.com"))
-        message.setFolder(folder)
-        message.setMessageID("001@whatever.test")
-
-        let expStored = expectation(description: "expStored")
-        guard let accountId = imapConnectInfo.accountObjectID else {
-            XCTFail()
-            return
-        }
-        let storeOp = StorePrefetchedMailOperation(parentName: #function, accountID: accountId,
-                                                   message: message,
-                                                   messageUpdate: CWMessageUpdate())
-        storeOp.completionBlock = {
-            storeOp.completionBlock = nil
-            expStored.fulfill()
-        }
-        let backgroundQueue = OperationQueue()
-        backgroundQueue.addOperation(storeOp)
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(storeOp.hasErrors())
-        })
-
-        XCTAssertEqual(CdMessage.all()?.count, 1)
-    }
-
-    func testStoreMultipleMails() {
-        let folder = CWIMAPFolder(name: ImapSync.defaultImapInboxName)
-        let numMails = 10
-        var numberOfCallbacksCalled = 0
-
-        let _ = CdFolder.insertOrUpdate(
-            folderName: folder.name(), folderSeparator: nil, folderType: nil,account: cdAccount)
-        Record.saveAndWait()
-        XCTAssertEqual(CdFolder.countBy(predicate: NSPredicate(value: true)), 1)
-
-        let expMailsStored = expectation(description: "expMailsStored")
-        let backgroundQueue = OperationQueue()
-        for i in 1...numMails {
-            let message = CWIMAPMessage()
-            message.setFrom(CWInternetAddress(personal: "personal\(i)",
-                address: "somemail\(i)@test.com"))
-            message.setSubject("Subject \(i)")
-            message.setRecipients([CWInternetAddress(personal: "thisIsMe",
-                                                          address: "myaddress@test.com", type: .toRecipient)])
-            message.setFolder(folder)
-            message.setUID(UInt(i))
-            message.setMessageID("\(i)@whatever.test")
-            guard let accountId = imapConnectInfo.accountObjectID else {
-                XCTFail()
-                return
-            }
-            let op = StorePrefetchedMailOperation(parentName: #function,
-                                                  accountID: accountId,
-                                                  message: message,
-                                                  messageUpdate: CWMessageUpdate())
-            op.completionBlock = {
-                op.completionBlock = nil
-                numberOfCallbacksCalled += 1
-                XCTAssertFalse(op.hasErrors())
-                if numberOfCallbacksCalled == numMails {
-                    expMailsStored.fulfill()
-                }
-            }
-            backgroundQueue.addOperation(op)
-        }
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertEqual(numberOfCallbacksCalled, numMails)
-        })
-
-        XCTAssertEqual(CdMessage.all()?.count, numMails)
-    }
-
-    /// The test makes no sense for servers supporting Special-Use Mailboxes, as it is not allowed
-    /// to delete folder marked as reserved for special-use
-    func testCreateRequiredFoldersOperation() {
-        let imapLogin = LoginImapOperation(
-            parentName: #function, imapSyncData: imapSyncData)
-
-        let expFoldersFetched = expectation(description: "expFoldersFetched")
-        guard let syncFoldersOp = SyncFoldersFromServerOperation(parentName: #function,
-                                                                 imapSyncData: imapSyncData)
-            else {
-                XCTFail()
-                return
-        }
-        syncFoldersOp.addDependency(imapLogin)
-        syncFoldersOp.completionBlock = {
-            syncFoldersOp.completionBlock = nil
-            expFoldersFetched.fulfill()
-        }
-
-        let backgroundQueue = OperationQueue()
-        backgroundQueue.addOperation(imapLogin)
-        backgroundQueue.addOperation(syncFoldersOp)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(imapLogin.hasErrors())
-            XCTAssertFalse(syncFoldersOp.hasErrors())
-        })
-
-        let expCreated1 = expectation(description: "expCreated")
-        let opCreate1 = CreateRequiredFoldersOperation(
-            parentName: #function, imapSyncData: imapSyncData)
-        opCreate1.completionBlock = {
-            opCreate1.completionBlock = nil
-            expCreated1.fulfill()
-        }
-        backgroundQueue.addOperation(opCreate1)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(opCreate1.hasErrors())
-        })
-
-        //dirty workaround for Yahoo account (server with specil-use mailboxes)
-        if cdAccount.identity!.address!.contains("yahoo") {
-            return
-        }
-        // Let's delete a special folder, if it exists
-        if let spamFolder = CdFolder.by(folderType: .trash, account: cdAccount),
-            let fn = spamFolder.name {
-            let expDeleted = expectation(description: "expFolderDeleted")
-            let opDelete = DeleteFolderOperation(
-                parentName: #function,
-                imapSyncData: imapSyncData, account: cdAccount, folderName: fn)
-            opDelete.completionBlock = {
-                opDelete.completionBlock = nil
-                expDeleted.fulfill()
-            }
-            backgroundQueue.addOperation(opDelete)
-            waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-                XCTAssertNil(error)
-                XCTAssertFalse(opDelete.hasErrors())
-            })
-            spamFolder.delete()
-            Record.saveAndWait()
-        } else {
-            XCTFail()
-        }
-
-        let expCreated2 = expectation(description: "expCreated")
-        let opCreate2 = CreateRequiredFoldersOperation(
-            parentName: #function, imapSyncData: imapSyncData)
-        opCreate2.completionBlock = {
-            opCreate2.completionBlock = nil
-            expCreated2.fulfill()
-        }
-        backgroundQueue.addOperation(opCreate2)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(opCreate2.hasErrors())
-        })
-        XCTAssertGreaterThanOrEqual(opCreate2.numberOfFoldersCreated, 1)
-
-        for ft in FolderType.requiredTypes {
-            if
-                let cdF = CdFolder.by(folderType: ft, account: cdAccount),
-                let folderName = cdF.name {
-                if let sep = cdF.folderSeparatorAsString(), cdF.parent != nil {
-                    XCTAssertTrue(folderName.contains(sep))
-                }
-            } else {
-                XCTFail("expecting folder of type \(ft) with defined name")
-            }
-        }
     }
 
     func dumpAllAccounts() {
@@ -425,14 +233,15 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     func testEncryptAndSendOperation() {
         // Create mails to send ...
         let sentUUIDs = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
-                                                  testCase: self,
-                                                  numberOfMails: 3).map { $0.uuid! }
+                                                          testCase: self,
+                                                          numberOfMails: 3,
+                                                          context: moc).map { $0.uuid! }
         // ... Login ...
         let smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
         let errorContainer = ErrorContainer()
-        let smtpLogin = LoginSmtpOperation(
-            parentName: #function,
-            smtpSendData: smtpSendData, errorContainer: errorContainer)
+        let smtpLogin = LoginSmtpOperation(parentName: #function,
+                                           smtpSendData: smtpSendData,
+                                           errorContainer: errorContainer)
         smtpLogin.completionBlock = {
             smtpLogin.completionBlock = nil
             XCTAssertNotNil(smtpSendData.smtp)
@@ -442,8 +251,8 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         let sendOp = EncryptAndSendOperation(
             parentName: #function,
             smtpSendData: smtpSendData, errorContainer: errorContainer)
-        XCTAssertNotNil(EncryptAndSendOperation.retrieveNextMessage(
-            context: Record.Context.main, cdAccount: cdAccount))
+        XCTAssertNotNil(EncryptAndSendOperation.retrieveNextMessage(context: moc,
+                                                                    cdAccount: cdAccount))
         sendOp.addDependency(smtpLogin)
         sendOp.completionBlock = {
             sendOp.completionBlock = nil
@@ -465,7 +274,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
                 return
             }
             // Have been moved from outbox to sent
-             XCTAssertEqual(msg.parent?.folderType, FolderType.sent)
+            XCTAssertEqual(msg.parent?.folderType, FolderType.sent)
         }
         smtpSendData.smtp?.close()
     }
@@ -484,7 +293,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             return
         }
 
-        let to = CdIdentity.create()
+        let to = CdIdentity(context: moc)
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
@@ -496,16 +305,16 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         // Build emails
         let numMails = 5
         for i in 1...numMails {
-            let message = CdMessage.create()
+            let message = CdMessage(context: moc)
             message.from = from
             message.parent = folder
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
             message.sent = Date()
-            message.addTo(cdIdentity: to)
+            message.addToTo(to)
         }
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         if let msgs = CdMessage.all() as? [CdMessage] {
             for m in msgs {
@@ -516,7 +325,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTFail()
         }
 
-        appendMailsIMAP(folder: folder.folder(),
+        appendMailsIMAP(folder: folder,
                         imapSyncData: imapSyncData,
                         errorContainer: errorContainer,
                         queue: queue)
@@ -559,11 +368,11 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertFalse(syncFoldersOp.hasErrors())
         })
 
-        let from = CdIdentity.create()
+        let from = CdIdentity(context: moc)
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
         from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
 
-        let to = CdIdentity.create()
+        let to = CdIdentity(context: moc)
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
@@ -575,13 +384,13 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         // Build emails
         let numMails = 5
         for i in 1...numMails {
-            let message = CdMessage.create()
+            let message = CdMessage(context: moc)
             message.from = from
             message.parent = folder
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.addTo(cdIdentity: to)
+            message.addToTo(to)
         }
         Record.saveAndWait()
 
@@ -597,7 +406,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         let expDraftsStored = expectation(description: "expDraftsStored")
 
         let appendOp = AppendMailsOperation(parentName: #function,
-                                            folder: folder.folder(),
+                                            folder: folder,
                                             imapSyncData: imapSyncData,
                                             errorContainer: errorContainer)
         appendOp.completionBlock = {
@@ -624,18 +433,23 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         XCTAssertNotNil(myself.fingerPrint)
 
         let numRating = try! session.rating(for: myself)
-        XCTAssertGreaterThanOrEqual(numRating.pEpRating.rawValue, PEP_rating_reliable.rawValue)
+        XCTAssertGreaterThanOrEqual(numRating.pEpRating.rawValue, PEPRating.reliable.rawValue)
     }
 
     func testOutgoingMailColorPerformanceWithMySelf() {
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
         let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
         try! session.mySelf(myself)
         XCTAssertNotNil(myself.fingerPrint)
 
-        let id = Identity.from(pEpIdentity: myself)
-        let account = SecretTestData().createWorkingAccount()
-        account.user = id
-        account.save()
+        guard let id = CdIdentity.from(pEpContact: myself, context: moc) else {
+            XCTFail()
+            return
+        }
+
+        let account = SecretTestData().createWorkingCdAccount(context: moc)
+        account.identity = id
+        moc.saveAndLogErrors()
 
         self.measure {
             for _ in [1...1000] {
@@ -645,10 +459,15 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testOutgoingMessageColor() {
-        let identity = SecretTestData().createWorkingAccount().user
-        let account = SecretTestData().createWorkingAccount()
-        account.user = identity
-        account.save()
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
+        let account = SecretTestData().createWorkingCdAccount(context: moc)
+        moc.saveAndLogErrors()
+
+        guard let identity = account.identity else {
+            XCTFail()
+            return
+        }
+
         self.measure {
             for _ in [1...1000] {
                 let _ = self.session.outgoingMessageRating(from: identity, to: [identity],
@@ -658,12 +477,18 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testOutgoingMailColorPerformanceWithoutMySelf() {
-        let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
+        let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
 
-        let id = Identity.from(pEpIdentity: identity)
-        let account = SecretTestData().createWorkingAccount()
-        account.user = id
-        account.save()
+        guard let id = CdIdentity.from(pEpContact: myself, context: moc) else {
+            XCTFail()
+            return
+        }
+
+        let account = SecretTestData().createWorkingCdAccount(context: moc)
+        account.identity = id
+        Record.saveAndWait()
+
         self.measure {
             for _ in [1...1000] {
                 let _ = self.session.outgoingMessageRating(from: id, to: [id], cc: [id], bcc: [id])
@@ -671,52 +496,24 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
     }
 
-    func testMyselfOperation() {
-        XCTAssertNotNil(cdAccount.identity)
-        let identity = cdAccount.identity?.identity()
-        let expCompleted = expectation(description: "expCompleted")
-
-        let op = MySelfOperation(parentName: #function)
-        op.completionBlock = {
-            op.completionBlock = nil
-            expCompleted.fulfill()
-        }
-
-        OperationQueue().addOperation(op)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors())
-        })
-
-        guard let theIdent = identity else {
-            XCTFail()
-            return
-        }
-        XCTAssertNotNil(try! theIdent.fingerPrint(session: session))
-
-        let identDict = theIdent.updatedIdentity(session: session)
-        XCTAssertNotNil(identDict.fingerPrint)
-        XCTAssertNotNil(identDict.userID)
-    }
-
     //fails on first run when the an account was setup on
     func testFixAttachmentsOperation() {
-        let cdFolder = CdFolder.create()
+        let moc: NSManagedObjectContext = Stack.shared.mainContext
+        let cdFolder = CdFolder(context: moc)
         cdFolder.name = "AttachmentTestFolder"
-        cdFolder.uuid = "1"
         cdFolder.folderType = FolderType.inbox
-        cdFolder.account = cdAccount
+        cdFolder.account = (moc.object(with: cdAccount.objectID) as! CdAccount)
 
-        let cdMsg = CdMessage.create(messageID: "2", uid: 1, parent: cdFolder)
+        let cdMsg = CdMessage(context: moc)
+        cdMsg.uuid = "2"
+        cdMsg.parent = cdFolder
 
-        let cdAttachWithoutSize = CdAttachment.create()
+        let cdAttachWithoutSize = CdAttachment(context: moc)
         cdAttachWithoutSize.data = "Some bytes for an attachment".data(using: .utf8)
         cdAttachWithoutSize.message = cdMsg
-        cdAttachWithoutSize.length = 0
-        
-        Record.saveAndWait()
-        
+
+        moc.saveAndLogErrors()
+
         let expAttachmentsFixed = expectation(description: "expAttachmentsFixed")
         let fixAttachmentsOp = FixAttachmentsOperation(parentName: #function)
         fixAttachmentsOp.completionBlock = {
@@ -730,8 +527,8 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertNil(error)
             XCTAssertFalse(fixAttachmentsOp.hasErrors())
         })
-        
-        Record.Context.main.refreshAllObjects()
+
+        moc.refreshAllObjects()
         
         guard let allAttachments = CdAttachment.all() as? [CdAttachment] else {
             XCTFail()
@@ -739,8 +536,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
         for cdAttach in allAttachments {
             XCTAssertNotNil(cdAttach.data)
-            XCTAssertNotNil(cdAttach.length)
-            XCTAssertGreaterThan(cdAttach.length, 0)
         }
     }
 

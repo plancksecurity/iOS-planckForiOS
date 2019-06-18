@@ -11,7 +11,7 @@ import MessageModel
 import SwipeCellKit
 
 class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
-    // MARK: Public API
+    public static let storyboardId = "EmailListViewCell"
 
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
@@ -23,8 +23,6 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
     @IBOutlet weak var ratingImage: UIImageView!
     @IBOutlet weak var attachmentIcon: UIImageView!
     @IBOutlet weak var contactImageView: UIImageView!
-    @IBOutlet weak var messageCountLabel: UILabel?
-    @IBOutlet weak var threadIndicator: UIImageView?
 
     /**
      Fake constraint for IB to be happy.
@@ -38,7 +36,17 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
      */
     @IBOutlet weak var fakeRatingImageToContactImageHorizontal: NSLayoutConstraint?
 
-    public static let storyboardId = "EmailListViewCell"
+    private var viewModel: MessageViewModel?
+
+    private var hasAttachment:Bool = false {
+        didSet {
+            if hasAttachment {
+                attachmentIcon.isHidden = false
+            } else {
+                attachmentIcon.isHidden = true
+            }
+        }
+    }
 
     public var isFlagged:Bool = false {
         didSet {
@@ -48,6 +56,46 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
                 unsetFlagged()
             }
         }
+    }
+
+    public var isSeen:Bool = false {
+        didSet {
+            if isSeen {
+                setSeen()
+            } else {
+                unsetSeen()
+            }
+        }
+    }
+
+    // MARK: - View overrides (life cycle etc.)
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        contactImageView.applyContactImageCornerRadius()
+        resetToDefault()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        clear()
+        resetToDefault()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if let constr = fakeRatingImageToContactImageVertical {
+            constr.isActive = false
+        }
+        if let constr = fakeRatingImageToContactImageHorizontal {
+            constr.isActive = false
+        }
+
+        ratingImage.centerXAnchor.constraint(
+            equalTo: contactImageView.rightAnchor).isActive = true
+        ratingImage.centerYAnchor.constraint(
+            equalTo: contactImageView.bottomAnchor).isActive = true
     }
 
     public func configure(for viewModel: MessageViewModel) {
@@ -71,7 +119,9 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
         hasAttachment = viewModel.showAttchmentIcon
         dateLabel.text = viewModel.dateText
 
-        configureThreadIndicator(for: viewModel)
+        // Message threading is not supported. Let's keep it for now. It might be helpful for
+        // reimplementing.
+        //        configureThreadIndicator(for: viewModel)
 
         if viewModel.senderContactImage != nil {
             setContactImage(image: viewModel.senderContactImage)
@@ -82,98 +132,43 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
         }
 
         viewModel.getSecurityBadge { [weak self] image in
-            self?.setPepRatingImage(image: image)
+            DispatchQueue.main.async {
+                self?.setPepRatingImage(image: image)
+            }
         }
     }
 
     public func clear() {
         viewModel?.unsubscribeForUpdates()
     }
+}
 
-    // MARK: View overrides (life cycle etc.)
+// MARK: - Private
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.contactImageView.applyContactImageCornerRadius()
-        resetToDefault()
-    }
-
-    override func prepareForReuse() {
-        resetToDefault()
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        if let constr = fakeRatingImageToContactImageVertical {
-            constr.isActive = false
-        }
-        if let constr = fakeRatingImageToContactImageHorizontal {
-            constr.isActive = false
-        }
-
-        ratingImage.centerXAnchor.constraint(
-            equalTo: contactImageView.rightAnchor).isActive = true
-        ratingImage.centerYAnchor.constraint(
-            equalTo: contactImageView.bottomAnchor).isActive = true
-    }
-
-    // MARK: Private
+extension EmailListViewCell {
 
     private static var flaggedImage: UIImage? = nil
     private static var emptyContactImage = UIImage(named: "empty-avatar")
 
-    private var viewModel: MessageViewModel?
-
-    public var isSeen:Bool = false {
-        didSet {
-            if isSeen {
-                setSeen()
-            } else {
-                unsetSeen()
-            }
-        }
-    }
-
-    private var hasAttachment:Bool = false {
-        didSet {
-            if hasAttachment {
-                attachmentIcon.isHidden = false
-            } else {
-                attachmentIcon.isHidden = true
-            }
-        }
-    }
-
-    private var messageCount:Int = 0 {
-        didSet {
-            if messageCount > 0 {
-                messageCountLabel?.text = String(messageCount)
-                messageCountLabel?.isHidden = false
-                threadIndicator?.isHidden = false
-            } else {
-                threadIndicator?.isHidden = true
-                messageCountLabel?.isHidden = true
-                messageCountLabel?.text = nil
-            }
-        }
-    }
-
-    private func configureThreadIndicator(for viewModel: MessageViewModel) {
-        guard let _ = messageCountLabel,
-            let _ = threadIndicator else {
-                messageCount = 0
-                return
-        }
-        viewModel.messageCount { (messageCount) in
-            self.messageCount = messageCount
-        }
-
-    }
+    // Message threading is not supported. Let's keep it for now. It might be helpful for
+    // reimplementing.
+    //    private func configureThreadIndicator(for viewModel: MessageViewModel) {
+    //        guard let _ = messageCountLabel,
+    //            let _ = threadIndicator else {
+    //                messageCount = 0
+    //                return
+    //        }
+    //        viewModel.messageCount { (messageCount) in
+    //            self.messageCount = messageCount
+    //        }
+    //
+    //    }
 
     private func setPepRatingImage(image: UIImage?) {
-        self.ratingImage.image = image
-        self.ratingImage.isHidden = (image == nil)
+        if ratingImage.image != image {
+            self.ratingImage.image = image
+            self.ratingImage.isHidden = (image == nil)
+        }
     }
 
     private func setContactImage(image: UIImage?) {
@@ -184,17 +179,18 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
     }
 
     private func resetToDefault() {
+        viewModel?.unsubscribeForUpdates()
+        viewModel = nil
         summaryLabel.text = nil
         ratingImage.isHidden = true
+        ratingImage.image = nil
         contactImageView.image = EmailListViewCell.emptyContactImage
-        messageCountLabel?.isHidden = true
-        threadIndicator?.isHidden = true
         tintColor = UIColor.pEpGreen
     }
 
     private func setFlagged() {
-            flaggedImageView.isHidden = false
-            flaggedImageView.image = UIImage(named: "icon-flagged")
+        flaggedImageView.isHidden = false
+        flaggedImageView.image = UIImage(named: "icon-flagged")
     }
 
     private func unsetFlagged() {
@@ -222,7 +218,6 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
         subjectLabel.font = font
         summaryLabel.font = font
         dateLabel.font = font
-        messageCountLabel?.font = font
     }
 
     /**

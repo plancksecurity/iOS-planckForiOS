@@ -67,7 +67,6 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
         return true
     }
 
-    @available(iOS 10.0, *)
     func textView(_ textView: UITextView, shouldInteractWith URL: URL,
                   in characterRange: NSRange,
                   interaction: UITextItemInteraction) -> Bool {

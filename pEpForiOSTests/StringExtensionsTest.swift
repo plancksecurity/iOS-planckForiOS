@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 
+//!!!: afaics the whole file should be in the iOSToolbox
 class StringExtensionsTest: XCTestCase {
     func testValidEmail() {
         let testData = [("", false),

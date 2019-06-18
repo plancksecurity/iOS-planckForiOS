@@ -10,6 +10,8 @@ import XCTest
 
 import CoreData
 
+import PantomimeFramework
+
 @testable import MessageModel
 @testable import pEpForiOS
 
@@ -17,10 +19,9 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
     
     //IOS-815 pEpRating undefined
     func testPepratingUndefined() {
-        let folder = CdFolder.create()
+        let folder = CdFolder(context: moc)
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
-        folder.uuid = MessageID.generate()
         Record.saveAndWait()
 
         guard
@@ -31,12 +32,13 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
         }
         message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         message.setUID(1)
-        guard let msg = CdMessage.insertOrUpdate(  pantomimeMessage: message,
+        guard let _ = CdMessage.insertOrUpdate(  pantomimeMessage: message,
                                                    account: cdAccount,
                                                    messageUpdate: CWMessageUpdate.newComplete(),
-                                                   forceParseAttachments: true) else {
-                                                    XCTFail("error parsing message")
-                                                    return
+                                                   context: moc)
+            else {
+                XCTFail("error parsing message")
+                return
         }
 
         guard let cur = CdMessage.search(message: message, inAccount: cdAccount) else {
@@ -62,11 +64,11 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
             XCTAssertNil(error)
         })
 
-        guard let temp = msg.message(),  let testee = CdMessage.search(message: temp) else {
+        guard let again = CdMessage.search(message: message, inAccount: cdAccount) else {
             XCTFail("No message")
             return
         }
 
-        XCTAssertTrue(testee.pEpRating != notSeenByPepYet)
+        XCTAssertTrue(again.pEpRating != notSeenByPepYet)
     }
 }

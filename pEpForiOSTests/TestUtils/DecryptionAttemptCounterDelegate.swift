@@ -9,13 +9,14 @@
 import Foundation
 
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel //FIXME:
+import PEPObjCAdapterFramework
 
 class DecryptionAttemptCounterDelegate: DecryptMessagesOperationDelegateProtocol {
     var numberOfMessageDecryptAttempts = 0
 
     func decrypted(originalCdMessage: CdMessage, decryptedMessageDict: NSDictionary?,
-                   rating: PEP_rating, keys: [String]) {
+                   rating: PEPRating, keys: [String]) {
         numberOfMessageDecryptAttempts += 1
     }
 }

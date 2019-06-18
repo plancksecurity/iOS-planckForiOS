@@ -10,12 +10,8 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
-
-class NoOpMySelfer: KickOffMySelfProtocol {
-    func startMySelf() {
-        // do nothing
-    }
-}
+import PantomimeFramework
+import PEPObjCAdapterFramework
 
 class ErrorHandler: LoginViewModelLoginErrorDelegate {
     func handle(loginError: Error) {
@@ -24,7 +20,7 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
 }
 
 class LoginViewModelTests: CoreDataDrivenTestBase {
-    class TestMessageSyncService: MessageSyncServiceProtocol {
+    class TestVerifiableAccount: VerifiableAccountProtocol {
         let accountSettings: TestDataBase.AccountSettings
         let expLookedUp: XCTestExpectation
 
@@ -33,29 +29,43 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
             self.expLookedUp = expLookedUp
         }
 
-        func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
-            XCTAssertEqual(account.user.address, accountSettings.idAddress)
-            guard let imapServer = account.imapServer else {
-                XCTFail("expecting IMAP server")
-                return
-            }
-            XCTAssertEqual(imapServer.transport, accountSettings.imapServerTransport)
-            XCTAssertEqual(imapServer.port, accountSettings.imapServerPort)
-            XCTAssertEqual(imapServer.address, accountSettings.imapServerAddress)
+        var address: String?
+        var userName: String?
+        var loginName: String?
+        var authMethod: AuthMethod?
+        var password: String?
+        var accessToken: OAuth2AccessTokenProtocol?
+        var serverIMAP: String?
+        var portIMAP: UInt16 = 993
+        var transportIMAP: ConnectionTransport = .TLS
+        var serverSMTP: String?
+        var portSMTP: UInt16 = 587
+        var transportSMTP: ConnectionTransport = .startTLS
+        var isAutomaticallyTrustedImapServer = false
+        var isManuallyTrustedImapServer = false
+        var verifiableAccountDelegate: VerifiableAccountDelegate?
 
-            guard let smtpServer = account.smtpServer else {
-                XCTFail("expecting SMTP server")
-                return
-            }
-            XCTAssertEqual(smtpServer.transport, accountSettings.smtpServerTransport)
-            XCTAssertEqual(smtpServer.port, accountSettings.smtpServerPort)
-            XCTAssertEqual(smtpServer.address, accountSettings.smtpServerAddress)
+        let isValidName = false
+
+        let isValidUser = false
+
+        func verify() throws {
+            XCTAssertEqual(address, accountSettings.idAddress)
+
+            XCTAssertEqual(transportIMAP,
+                           ConnectionTransport(transport: accountSettings.imapServerTransport))
+            XCTAssertEqual(portIMAP, accountSettings.imapServerPort)
+            XCTAssertEqual(serverIMAP, accountSettings.imapServerAddress)
+
+            XCTAssertEqual(transportSMTP,
+                           ConnectionTransport(transport: accountSettings.smtpServerTransport))
+            XCTAssertEqual(portSMTP, accountSettings.smtpServerPort)
+            XCTAssertEqual(serverSMTP, accountSettings.smtpServerAddress)
 
             expLookedUp.fulfill()
         }
 
-        func requestFetchOlderMessages(inFolder folder: Folder) {
-            XCTFail("unexpected call to \(#function)")
+        func save() throws {
         }
     }
 
@@ -95,15 +105,16 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
 //        }
 
         let expLookedUp = expectation(description: "expLookedUp")
-        let ms = TestMessageSyncService(accountSettings: accountSettings, expLookedUp: expLookedUp)
-        let vm = LoginViewModel(messageSyncService: ms)
+        let verifiableAccount =
+            TestVerifiableAccount(accountSettings: accountSettings, expLookedUp: expLookedUp)
+
+        let vm = LoginViewModel(verifiableAccount: verifiableAccount)
         let errorHandler = ErrorHandler()
         vm.loginViewModelLoginErrorDelegate = errorHandler
         vm.login(accountName: accountSettings.idAddress,
                  userName: "User Name",
                  loginName: nil,
-                 password: passw,
-                 mySelfer: NoOpMySelfer())
+                 password: passw)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)

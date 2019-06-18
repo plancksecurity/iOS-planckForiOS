@@ -6,8 +6,9 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import MessageModel
-import pEpForiOS
+@testable import MessageModel
+@testable import pEpForiOS
+import PEPObjCAdapterFramework
 
 extension Message {
     func isValidMessage() -> Bool {
@@ -15,14 +16,6 @@ extension Message {
             || self.longMessageFormatted != nil
             || self.attachments.count > 0
             || self.shortMessage != nil
-    }
-
-    static public func fakeMessage(uuid: MessageID) -> Message {
-        // miss use unifiedInbox() to create fake folder
-        let fakeFolder = UnifiedInbox()
-        fakeFolder.filter = nil
-
-        return Message(uuid: uuid, parentFolder: fakeFolder)
     }
 
     public func pEpMessageDict(outgoing: Bool = true) -> PEPMessageDict {
@@ -52,19 +45,19 @@ extension Message {
             return PEPUtil.pEpAttachment(attachment: $0)
         })
 
-        dict[kPepReferences] = references as AnyObject
-
         return dict
     }
 
     public static func by(uid: Int, folderName: String, accountAddress: String) -> Message? {
         let pAccount =
             CdMessage.PredicateFactory.belongingToAccountWithAddress(address: accountAddress)
-        let pUid = NSPredicate(format: "uid = %d", uid)
+        let pUid = NSPredicate(format: "%K = %d", CdMessage.AttributeName.uid, uid)
         let pFolder =
             CdMessage.PredicateFactory.belongingToParentFolderNamed(parentFolderName: folderName)
         let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pAccount, pUid, pFolder])
-        let cdMessage = CdMessage.all(predicate: p)?.first as? CdMessage
-        return cdMessage?.message()
+        guard let cdMessage = CdMessage.all(predicate: p)?.first as? CdMessage else {
+            return nil
+        }
+        return MessageModelObjectUtils.getMessage(fromCdMessage: cdMessage)
     }
 }

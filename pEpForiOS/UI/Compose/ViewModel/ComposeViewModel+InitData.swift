@@ -23,7 +23,20 @@ extension ComposeViewModel {
         public let prefilledFrom: Identity?
 
         /// Original message to compute content and recipients from (e.g. a message we reply to).
-        public let originalMessage: Message?
+        private var _originalMessage: Message? = nil
+        public var originalMessage: Message? {
+            get {
+                guard !(_originalMessage?.isDeleted ?? true) else {
+                    // Makes sure we do not access properties af a messages that has been deleted
+                    // in the DB.
+                    return nil
+                }
+                return _originalMessage
+            }
+            set {
+                _originalMessage = newValue
+            }
+        }
 
         public let composeMode: ComposeUtil.ComposeMode
 
@@ -102,9 +115,9 @@ extension ComposeViewModel {
              orForOriginalMessage om: Message? = nil,
              composeMode: ComposeUtil.ComposeMode? = nil) {
             self.composeMode = composeMode ?? ComposeUtil.ComposeMode.normal
-            self.originalMessage = om
             self.prefilledTo = om == nil ? prefilledTo : nil
             self.prefilledFrom = prefilledFrom
+            self.originalMessage = om
             setupInitialSubject()
             setupInitialBody()
         }
@@ -163,12 +176,12 @@ extension ComposeViewModel {
         /// Is sutable for isDraftsOrOutbox || composeMode == .forward only.
         mutating private func setBodyPotetionallyTakingOverAttachments() {
             guard let msg = originalMessage else {
-                Logger.frontendLogger.errorAndCrash("Inconsitant state")
+                Log.shared.errorAndCrash("Inconsitant state")
                 return
             }
 
             guard isDraftsOrOutbox || composeMode == .forward else {
-                Logger.frontendLogger.errorAndCrash("Unsupported mode or message")
+                Log.shared.errorAndCrash("Unsupported mode or message")
                 return
             }
             if let html = msg.longMessageFormatted {
@@ -220,7 +233,7 @@ class InitDataHtmlToAttributedTextSaxParserAttachmentDelegate: HtmlToAttributedT
         // Assure the image is set.
         if attachment.image == nil {
             guard let safeData = attachment.data else {
-                Logger.frontendLogger.errorAndCrash("No data")
+                Log.shared.errorAndCrash("No data")
                 return
             }
             attachment.image = UIImage(data: safeData)

@@ -23,14 +23,15 @@ class MediaAttachmentPickerProviderViewModel {
         "security.pep.MediaAttachmentPickerProviderViewModel.attachmentFileIOQueue",
                                                            qos: .userInitiated)
     private var numVideosSelected = 0
+    private let mimeTypeUtils = MimeTypeUtils()
     weak public var resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?
 
     public init(resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?) {
         self.resultDelegate = resultDelegate
     }
 
-    public func handleDidFinishPickingMedia(info: [String: Any]) {
-        let isImage = (info[UIImagePickerControllerOriginalImage] as? UIImage) != nil
+    public func handleDidFinishPickingMedia(info: [UIImagePickerController.InfoKey: Any]) {
+        let isImage = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage) != nil
         if isImage {
             // We got an image.
             createImageAttchmentAndInformResultDelegate(info: info)
@@ -44,11 +45,11 @@ class MediaAttachmentPickerProviderViewModel {
         resultDelegate?.mediaAttachmentPickerProviderViewModelDidCancel(self)
     }
 
-    private func createImageAttchmentAndInformResultDelegate(info: [String: Any]) {
+    private func createImageAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) {
         guard
-            let image = info[UIImagePickerControllerOriginalImage] as? UIImage,
-            let url = info[UIImagePickerControllerReferenceURL] as? URL else {
-                Logger.frontendLogger.errorAndCrash("No Data")
+            let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
+            let url = info[UIImagePickerController.InfoKey.referenceURL] as? URL else {
+                Log.shared.errorAndCrash("No Data")
                 return
         }
 
@@ -57,19 +58,19 @@ class MediaAttachmentPickerProviderViewModel {
         resultDelegate?.mediaAttachmentPickerProviderViewModel(self, didSelect: result)
     }
 
-    private func createMovieAttchmentAndInformResultDelegate(info: [String: Any]) {
-        guard let url = info[UIImagePickerControllerMediaURL] as? URL else {
-            Logger.frontendLogger.errorAndCrash("No URL")
+    private func createMovieAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) {
+        guard let url = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
+            Log.shared.errorAndCrash("No URL")
             return
         }
 
         createAttachment(forResource: url) {[weak self] (attachment)  in
             guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             guard let att = attachment else {
-                Logger.frontendLogger.errorAndCrash("No Attachment")
+                Log.shared.errorAndCrash("No Attachment")
                 return
             }
             let result = MediaAttachment(type: .movie, attachment: att)
@@ -83,21 +84,24 @@ class MediaAttachmentPickerProviderViewModel {
                                   completion: @escaping (Attachment?) -> Void) {
         attachmentFileIOQueue.async { [weak self] in
             guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
+                Log.shared.lostMySelf()
                 return
             }
             guard let resourceData = try? Data(contentsOf: resourceUrl) else {
-                Logger.frontendLogger.errorAndCrash("Cound not get data for URL")
+                Log.shared.errorAndCrash("Cound not get data for URL")
                 completion(nil)
                 return
             }
-            let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
+            let mimeType = me.mimeTypeUtils?.mimeType(fromURL: resourceUrl) ??
+                MimeTypeUtils.MimesType.defaultMimeType
             let filename = me.fileName(forVideoAt: resourceUrl)
-            let attachment =  Attachment.create(data: resourceData,
-                                                mimeType: mimeType,
-                                                fileName: filename,
-                                                contentDisposition: .attachment)
-            completion(attachment)
+            DispatchQueue.main.async {
+                let attachment =  Attachment(data: resourceData,
+                                             mimeType: mimeType,
+                                             fileName: filename,
+                                             contentDisposition: .attachment)
+                completion(attachment)
+            }
         }
     }
 
@@ -111,9 +115,8 @@ class MediaAttachmentPickerProviderViewModel {
         return fileName + numDisplay + "." + fileExtension
     }
 
-    private func createAttachment(forAssetWithUrl assetUrl: URL,
-                                  image: UIImage) -> Attachment {
-        let mimeType = assetUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
+    private func createAttachment(forAssetWithUrl assetUrl: URL, image: UIImage) -> Attachment {
+        let mimeType = mimeTypeUtils?.mimeType(fromURL: assetUrl) ?? MimeTypeUtils.MimesType.defaultMimeType
         return Attachment.createFromAsset(mimeType: mimeType,
                                           assetUrl: assetUrl,
                                           image: image,

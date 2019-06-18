@@ -57,14 +57,14 @@ struct UserNotificationTool {
             if let batch = batch as NSNumber? {
                 content.badge = batch
             }
-            content.sound = UNNotificationSound.default()
+            content.sound = UNNotificationSound.default
             let identifier = "PEPLocalNotification"
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: now, repeats: false)
             let request = UNNotificationRequest(identifier: identifier,
                                                 content: content, trigger: trigger)
             center.add(request) { (error) in
                 if let error = error {
-                    Logger.utilLogger.warn(
+                    Log.shared.warn(
                         "Error posting user notification: %{public}@",
                         error.localizedDescription)
                 }

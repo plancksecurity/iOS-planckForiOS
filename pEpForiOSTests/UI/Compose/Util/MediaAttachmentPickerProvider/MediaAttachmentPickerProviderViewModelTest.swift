@@ -125,8 +125,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     }
 
     private func infoDict(mediaType: MediaAttachmentPickerProviderViewModel.MediaAttachment.MediaAttachmentType)
-        -> (infoDict: [String: Any], forAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment)? {
-            var createe = [String:Any]()
+        -> (infoDict: [UIImagePickerController.InfoKey: Any], forAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment)? {
+            var createe = [UIImagePickerController.InfoKey:Any]()
             let testBundle = Bundle(for: type(of:self))
             let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
             guard let keyPath = testBundle.path(forResource: imageFileName, ofType: nil) else {
@@ -143,16 +143,16 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
             }
 
             if mediaType == .movie {
-                createe[UIImagePickerControllerMediaURL] = url
+                createe[UIImagePickerController.InfoKey.mediaURL] = url
             } else {
-                createe[UIImagePickerControllerReferenceURL] = url
-                createe[UIImagePickerControllerOriginalImage] = img
+                createe[UIImagePickerController.InfoKey.referenceURL] = url
+                createe[UIImagePickerController.InfoKey.originalImage] = img
             }
             let attachment = Attachment(data: data,
                                         mimeType: "image/jpeg",
                                         fileName:
                 "I have no idea what file name is actually expecdted, thus I ignore it in tests.",
-                                        size: data.count, url: nil,
+                                        url: nil,
                                         image: img,
                                         assetUrl: url,
                                         contentDisposition: .inline)

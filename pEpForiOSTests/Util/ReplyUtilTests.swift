@@ -17,7 +17,7 @@ class ReplyUtilTests: XCTestCase {
         let identity = Identity(address: "what@example.com",
                                 userID: "userID",
                                 addressBookID: nil,
-                                userName: "User Name", isMySelf: true)
+                                userName: "User Name")
         let account = Account(user: identity, servers: [])
         let folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
         let msg = Message(uuid: "001", uid: 1, parentFolder: folder)

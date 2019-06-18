@@ -16,37 +16,37 @@ class LogViewController: BaseViewController {
     @IBOutlet weak var switchLabel: UILabel!
     @IBOutlet weak var enableLogSwitch: UISwitch!
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        Log.checkEnabled() { enabled in
-            GCD.onMain {
-                self.enableLogSwitch.isOn = enabled
-                if self.enableLogSwitch.isOn {
-                    let version = (InfoPlist.versionDisplayString() ?? "") + "\n"
-                    Log.checklog() { logString in
-                        GCD.onMain {
-                            self.logTextView.text = version + (logString ?? "")
-                        }
-                    }
-                }
-            }
-        }
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        Log.checkEnabled() { enabled in
+//            GCD.onMain {
+//                self.enableLogSwitch.isOn = enabled
+//                if self.enableLogSwitch.isOn {
+//                    let version = (InfoPlist.versionDisplayString() ?? "") + "\n"
+//                    Log.checklog() { logString in
+//                        GCD.onMain {
+//                            self.logTextView.text = version + (logString ?? "")
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     @IBAction func copyAction(_ sender: Any) {
-        Log.checklog() { logString in
-            GCD.onMain {
-                UIPasteboard.general.string = logString
-            }
-        }
+//        Log.checklog() { logString in
+//            GCD.onMain {
+//                UIPasteboard.general.string = logString
+//            }
+//        }
     }
 
     @IBAction func enableAction(_ sender: Any) {
-        if enableLogSwitch.isOn {
-            Log.enableLog()
-        } else {
-            Log.disableLog()
-        }
+//        if enableLogSwitch.isOn {
+//            Log.enableLog()
+//        } else {
+//            Log.disableLog()
+//        }
     }
 }
 

@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 /// Error to display to the user.
 /// The multiple errors reported from different layers can and should be clustered here to not
 /// overwhelm the user with internals.

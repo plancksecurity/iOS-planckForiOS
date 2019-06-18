@@ -18,6 +18,5 @@ class LoggerTest: XCTestCase {
         log1.log("1 hi (standalone)")
         log1.log("2 hi (one number): %d", 2)
         log1.log("3 hi (one number plus string): %d %@", 2, "parameters")
-        log1.testFlush() // wait for completion on iOS < 10
     }
 }

@@ -7,8 +7,10 @@
 //
 
 import UIKit
+
 import pEpIOSToolbox
 import MessageModel
+import PantomimeFramework
 
 class SMTPSettingsTableViewController: BaseTableViewController, TextfieldResponder {
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
@@ -19,8 +21,9 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     @IBOutlet weak var serverTitle: UILabel!
     @IBOutlet weak var portTitle: UILabel!
 
-    var model: AccountUserInput!
-    private var currentlyVerifiedAccount: Account?
+    /// - Note: This VC doesn't have a view model yet, so this is used for the model.
+    var model: VerifiableAccountProtocol?
+
     var fields = [UITextField]()
     var responder = 0
 
@@ -47,7 +50,7 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        firstResponder(model.serverSMTP == nil)
+        firstResponder(model?.serverSMTP == nil)
     }
 
     public override func viewDidLayoutSubviews() {
@@ -58,9 +61,11 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     // MARK: - Working Bees
 
     private func updateView() {
-        serverValue.text = model.serverSMTP
-        portValue.text = String(model.portSMTP)
-        transportSecurity.setTitle(model.transportSMTP.localizedString(), for: UIControlState())
+        serverValue.text = model?.serverSMTP
+        if let thePort = model?.portSMTP {
+            portValue.text = String(thePort)
+        }
+        transportSecurity.setTitle(model?.transportSMTP.localizedString(), for: UIControl.State())
 
         if isCurrentlyVerifying {
             activityIndicatorView.startAnimating()
@@ -75,16 +80,15 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     /// - Throws: AccountVerificationError
     private func verifyAccount() throws {
         isCurrentlyVerifying =  true
-        let account = try model.account()
-        currentlyVerifiedAccount = account
-        appConfig.messageSyncService.requestVerification(account: account, delegate: self)
+        model?.verifiableAccountDelegate = self
+        try model?.verify()
     }
 
     private func informUser(about error: Error, title: String) {
         let alert = UIAlertController.pEpAlertController(
             title: title,
             message: error.localizedDescription,
-            preferredStyle: UIAlertControllerStyle.alert)
+            preferredStyle: UIAlertController.Style.alert)
         let cancelAction = UIAlertAction(title:
             NSLocalizedString("OK", comment: "OK button for invalid accout settings user input alert"),
                                          style: .cancel, handler: nil)
@@ -107,7 +111,7 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
                                        comment: "UI alert message for transport protocol"),
             preferredStyle: .actionSheet)
         let block: (ConnectionTransport) -> () = { transport in
-            self.model.transportSMTP = transport
+            self.model?.transportSMTP = transport
             self.updateView()
         }
 
@@ -127,13 +131,13 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     }
 
     @IBAction func changeServer(_ sender: UITextField) {
-        model.serverSMTP = sender.text
+        model?.serverSMTP = sender.text
     }
 
     @IBAction func changePort(_ sender: UITextField) {
         if let text = portValue.text {
             if let port = UInt16(text) {
-                model.portSMTP = port
+                model?.portSMTP = port
             }
         }
     }
@@ -157,16 +161,7 @@ extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         if result == .ok {
-            MessageModel.performAndWait { [weak self] in
-                guard let me = self else {
-                    Logger.frontendLogger.lostMySelf()
-                    return
-                }
-                guard let account = me.currentlyVerifiedAccount else {
-                    Logger.backendLogger.errorAndCrash(
-                        "We verified an non-existing account? Now what?")
-                    return
-                }
+            MessageModelUtil.performAndWait {
                 account.save()
             }
         }
@@ -217,5 +212,45 @@ extension SMTPSettingsTableViewController: UITextFieldDelegate {
 
     public func textFieldDidEndEditing(_ textField: UITextField) {
         changedResponder(textField)
+    }
+}
+
+extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
+    func didEndVerification(result: Result<Void, Error>) {
+        switch result {
+        case .success(()):
+            MessageModelUtil.performAndWait { [weak self] in
+                // Note: Currently, there is no way for the VC to disappear
+                // before the verification has happened.
+                guard let theSelf = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+
+                do {
+                    try theSelf.model?.save()
+                } catch {
+                    Log.shared.errorAndCrash("%@", error.localizedDescription)
+                }
+            }
+            GCD.onMain() {  [weak self] in
+                // Note: Currently, there is no way for the VC to disappear
+                // before the verification has happened.
+                guard let theSelf = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+
+                theSelf.isCurrentlyVerifying = false
+                theSelf.performSegue(withIdentifier: .backToEmailListSegue, sender: theSelf)
+            }
+        case .failure(let error):
+            GCD.onMain() { [weak self] in
+                if let theSelf = self {
+                    theSelf.isCurrentlyVerifying = false
+                    UIUtils.show(error: error, inViewController: theSelf)
+                }
+            }
+        }
     }
 }

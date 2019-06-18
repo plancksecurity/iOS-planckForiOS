@@ -8,13 +8,14 @@
 
 import MessageModel
 import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 protocol ComposeViewModelStateDelegate: class {
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeValidationStateTo isValid: Bool)
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
-                               didChangePEPRatingTo newRating: PEP_rating)
+                               didChangePEPRatingTo newRating: PEPRating)
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeProtection newValue: Bool)
@@ -32,7 +33,7 @@ extension ComposeViewModel {
             }
         }
         public private(set) var edited = false
-        public private(set) var rating = PEP_rating_undefined {
+        public private(set) var rating = PEPRating.undefined {
             didSet {
                 if rating != oldValue {
                     delegate?.composeViewModelState(self, didChangePEPRatingTo: rating)
@@ -123,7 +124,7 @@ extension ComposeViewModel {
 
         private func setup() {
             guard let initData = initData else {
-                Logger.frontendLogger.errorAndCrash("No data")
+                Log.shared.errorAndCrash("No data")
                 return
             }
             toRecipients = initData.toRecipients
@@ -160,7 +161,7 @@ extension ComposeViewModel.ComposeViewModelState {
             return false
         }
         let outgoingRatingColor = rating.pEpColor()
-        return outgoingRatingColor == PEP_color_yellow || outgoingRatingColor == PEP_color_green
+        return outgoingRatingColor == .yellow || outgoingRatingColor == .green
     }
 }
 
@@ -174,26 +175,57 @@ extension ComposeViewModel.ComposeViewModelState {
 
     private func calculatePepRating() {
         guard !isForceUnprotectedDueToBccSet && pEpProtection else {
-            rating = PEP_rating_unencrypted
+            rating = .unencrypted
             return
         }
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+
+        var newRating = PEPRating.undefined
+        guard let from = from else {
+            rating = newRating
+            return
+        }
+
+        /*
+        //!!!: In tests (ComposeViewModelStateTest) this block is triggered by setup and modt test, but never  executed:
+        DEBUG: will setup
+        DEBUG: before going to background
+        DEBUG: on background
+        DEBUG: did setup
+        DEBUG: will tearDown
+        DEBUG: did tearDown
+        DEBUG: will setup
+        DEBUG: before going to background
+        DEBUG: did setup
+        DEBUG: on background
+ */
+
+//        print("COMPOSE: before going to background")
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in //HERE:
+            //!!!:
+//            print("COMPOSE: on background")
             guard let me = self else {
                 // That is a valid case. Compose view is gone before this block started to run.
                 return
             }
-            let newRating: PEP_rating
-            let session = PEPSession()
-            if let from = me.from {
-                newRating = session.outgoingMessageRating(from: from,
-                                                       to: me.toRecipients,
-                                                       cc: me.ccRecipients,
-                                                       bcc: me.bccRecipients)
-            } else {
-                newRating = PEP_rating_undefined
+            let session = Session()
+            session.performAndWait {
+                let safeFrom = from.safeForSession(session)
+                let safeTo = Identity.makeSafe(me.toRecipients, forSession: session)
+                let safeCc = Identity.makeSafe(me.ccRecipients, forSession: session)
+                let safeBcc = Identity.makeSafe(me.bccRecipients, forSession: session)
+
+                let pEpsession = PEPSession()
+                newRating = pEpsession.outgoingMessageRating(from: safeFrom,
+                                                             to: safeTo,
+                                                             cc: safeCc,
+                                                             bcc: safeBcc)
             }
+            //!!!:
+//            print("COMPOSE: did outgoingMessageRating")
             DispatchQueue.main.async {
                 me.rating = newRating
+                //!!!:
+//                print("COMPOSE: did newRating")
             }
         }
     }

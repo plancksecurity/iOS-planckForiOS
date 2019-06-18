@@ -48,8 +48,8 @@ extension RecipientTextViewModel {
                                          maxWidth: CGFloat = 0.0) {
             let text = recipient.address
             let attributes = [
-                NSAttributedStringKey.foregroundColor: textColor,
-                NSAttributedStringKey.font: font
+                NSAttributedString.Key.foregroundColor: textColor,
+                NSAttributedString.Key.font: font
             ]
 
             let textMargin: CGFloat = 3.0
@@ -79,7 +79,7 @@ extension RecipientTextViewModel {
                       attributes: attributes, context: nil)
 
             guard let createe = UIGraphicsGetImageFromCurrentImageContext() else {
-                Logger.frontendLogger.errorAndCrash("No img")
+                Log.shared.errorAndCrash("No img")
                 return
             }
             UIGraphicsEndImageContext()

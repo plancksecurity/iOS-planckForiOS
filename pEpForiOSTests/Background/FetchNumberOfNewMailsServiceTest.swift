@@ -1,9 +1,13 @@
+////  FetchNumberOfNewMailsServiceTest.swift
+////  pEpForiOSTests
+////
+////  Created by Dirk Zimmermann on 16.11.18.
+////  Copyright © 2018 p≡p Security S.A. All rights reserved.
+////
 //
-//  FetchNumberOfNewMailsServiceTest.swift
-//  pEpForiOSTests
+//import XCTest
 //
-//  Created by Dirk Zimmermann on 16.11.18.
-//  Copyright © 2018 p≡p Security S.A. All rights reserved.
+//import CoreData
 //
 
 import XCTest
@@ -13,6 +17,7 @@ import CoreData
 @testable import pEpForiOS
 @testable import MessageModel
 
+//!!!: must be moved to MM
 class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
     var errorContainer: ServiceErrorProtocol!
     var queue: OperationQueue!
@@ -27,37 +32,42 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
         loginIMAP(imapSyncData: imapSyncData, errorContainer: errorContainer, queue: queue)
         fetchFoldersIMAP(imapSyncData: imapSyncData, queue: queue)
 
-        guard let numNewMailsOrig = fetchNumberOfNewMails(errorContainer: errorContainer) else {
+        guard let numNewMailsOrig = fetchNumberOfNewMails(errorContainer: errorContainer,
+                                                          context: moc)
+            else {
+                XCTFail()
+                return
+        }
+
+        guard let cdInbox = CdFolder.by(folderType: .inbox, account: cdAccount, context: moc) else {
             XCTFail()
             return
         }
 
-        guard let inbox = Folder.by(account: account, folderType: .inbox) else {
-            XCTFail()
-            return
-        }
+        let partnerId = CdIdentity(context: moc)
+        partnerId.address = "somepartner@example.com"
+        partnerId.userID = "ID_somepartner@example.com"
+        partnerId.addressBookID = nil
+        partnerId.userName = "USER_somepartner@example.com"
 
-        let partnerId = Identity(address: "somepartner@example.com",
-                                 userID: "ID_somepartner@example.com",
-                                 addressBookID: nil,
-                                 userName: "USER_somepartner@example.com",
-                                 isMySelf: false)
-
-        let mail1 = Message(uuid: "message_1", uid: 0, parentFolder: inbox)
-        mail1.from = account.user
-        mail1.to = [partnerId]
+        let mail1 = CdMessage(context: moc)
+        mail1.uuid = MessageID.generateUUID(localPart: "testUnreadMail")
+        mail1.uid = 0
+        mail1.parent = cdInbox
+        mail1.addToTo(partnerId)
         mail1.shortMessage = "Are you ok?"
         mail1.longMessage = "Hi there!"
-        mail1.save()
+        Record.saveAndWait()
 
-        appendMailsIMAP(folder: inbox,
+        appendMailsIMAP(folder: cdInbox,
                         imapSyncData: imapSyncData,
                         errorContainer: errorContainer,
                         queue: queue)
 
-        guard let numNewMails = fetchNumberOfNewMails(errorContainer: errorContainer) else {
-            XCTFail()
-            return
+        guard let numNewMails = fetchNumberOfNewMails(errorContainer: errorContainer, context: moc)
+            else {
+                XCTFail()
+                return
         }
         XCTAssertEqual(numNewMails, numNewMailsOrig + 1)
     }

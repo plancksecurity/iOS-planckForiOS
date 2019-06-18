@@ -7,11 +7,16 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel //FIXME:
+import PEPObjCAdapterFramework
 
+//!!!: uses a mix of Cd*Objects and MMObjects. Fix!
 class MessageReevalutionTests: XCTestCase {
+    var moc: NSManagedObjectContext!
+
     var cdOwnAccount: CdAccount!
     var pEpOwnIdentity: PEPIdentity!
     var cdSenderIdentity: CdIdentity!
@@ -32,6 +37,7 @@ class MessageReevalutionTests: XCTestCase {
         XCTAssertTrue(PEPUtil.pEpClean())
 
         persistentSetup = PersistentSetup()
+        moc = Stack.shared.mainContext
 
         let ownIdentity = PEPIdentity(address: "iostest002@peptest.ch",
                                       userID: "iostest002@peptest.ch_ID",
@@ -39,15 +45,14 @@ class MessageReevalutionTests: XCTestCase {
                                       isOwn: true)
 
         // Account
-        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0)
+        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
         cdMyAccount.identity?.userName = ownIdentity.userName
         cdMyAccount.identity?.userID = ownIdentity.userID
         cdMyAccount.identity?.address = ownIdentity.address
 
         // Inbox
-        cdInbox = CdFolder.create()
+        cdInbox = CdFolder(context: moc)
         cdInbox.name = ImapSync.defaultImapInboxName
-        cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdMyAccount
         self.cdOwnAccount = cdMyAccount
 
@@ -55,16 +60,16 @@ class MessageReevalutionTests: XCTestCase {
         let senderUserName = "iOS Test 001"
         let senderUserID = "iostest001@peptest.ch_ID"
         let senderAddress = "iostest001@peptest.ch"
-        let senderIdentityBuilder = Identity.create(address: senderAddress,
-                                                    userID: senderUserID,
-                                                    userName: senderUserName,
-                                                    isMySelf: false)
+        let senderIdentityBuilder = Identity(address: senderAddress,
+                                             userID: senderUserID,
+                                             userName: senderUserName)
         senderIdentityBuilder.save()
-        guard let sender = CdIdentity.search(address: senderAddress) else {
+        let moc = senderIdentityBuilder.moc
+        guard let sender = CdIdentity.search(address: senderAddress, context: moc) else {
             XCTFail("Can't find")
             return
         }
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
         self.cdSenderIdentity =  sender
 
         // sender pubkey
@@ -86,7 +91,7 @@ class MessageReevalutionTests: XCTestCase {
 
     override func tearDown() {
         persistentSetup = nil
-        backgroundQueue.cancelAllOperations()
+        backgroundQueue?.cancelAllOperations() //!!!: serious issue. BackgroundQueue is randomly nil here. WTF?
         backgroundQueue = nil
         PEPSession.cleanup()
         super.tearDown()
@@ -117,9 +122,9 @@ class MessageReevalutionTests: XCTestCase {
         }
 
         XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
-        Record.Context.main.refreshAllObjects()
+        moc.refreshAllObjects()
         cdDecryptedMessage = cdMessage
-        XCTAssertEqual(cdMessage.pEpRating, Int16(PEP_rating_reliable.rawValue))
+        XCTAssertEqual(cdMessage.pEpRating, Int16(PEPRating.reliable.rawValue))
         XCTAssertEqual(cdMessage.shortMessage, "oh yeah, subject")
         XCTAssertTrue(cdMessage.longMessage?.startsWith("Some text body!") ?? false)
 
@@ -146,22 +151,20 @@ class MessageReevalutionTests: XCTestCase {
     func testCommunicationTypes() {
         let senderIdent = senderIdentity.updatedIdentity(session: session)
         XCTAssertFalse(try! senderIdent.isPEPUser(session).boolValue)
-        XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
+        XCTAssertEqual(senderIdentity.pEpRating(session: session), .reliable)
 
         try! session.keyMistrusted(senderIdent)
 
         let senderDict2 = senderIdentity.updatedIdentity(session: session)
         XCTAssertFalse(try! senderDict2.isPEPUser(session).boolValue)
-        // ENGINE-343: At one point the rating was PEP_rating_undefined.
-        XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_have_no_key)
+        // ENGINE-343: At one point the rating was .Undefined.
+        XCTAssertEqual(senderIdentity.pEpRating(), .haveNoKey)
     }
 
-    func reevaluateMessage(expectedRating: PEP_rating, inBackground: Bool = true,
+    func reevaluateMessage(expectedRating: PEPRating, inBackground: Bool = true,
                            infoMessage: String) {
-        guard let message = cdDecryptedMessage.message() else {
-            XCTFail()
-            return
-        }
+        let message = MessageModelObjectUtils.getMessage(fromCdMessage: cdDecryptedMessage)
+
         if inBackground {
             let expReevaluated = expectation(description: "expReevaluated")
             let reevalOp = ReevaluateMessageRatingOperation(parentName: #function, message: message)
@@ -174,13 +177,13 @@ class MessageReevalutionTests: XCTestCase {
                 XCTAssertNil(error)
             })
 
-            Record.Context.default.refreshAllObjects()
+            moc.refreshAllObjects()
             XCTAssertEqual(cdDecryptedMessage.pEpRating, Int16(expectedRating.rawValue),
                            infoMessage)
         } else {
             let reevalOp = ReevaluateMessageRatingOperation(
                 parentName: #function, message: message)
-            reevalOp.reEvaluate(context: Record.Context.default)
+            reevalOp.reEvaluate()
         }
     }
 
@@ -191,23 +194,23 @@ class MessageReevalutionTests: XCTestCase {
         try! session.keyResetTrust(senderIdent)
         XCTAssertFalse(senderIdent.isConfirmed)
         reevaluateMessage(
-            expectedRating: PEP_rating_reliable,
+            expectedRating: .reliable,
             inBackground: runReevaluationInBackground,
             infoMessage: "in the beginning")
 
         for _ in 0..<1 {
             try! session.trustPersonalKey(senderIdent)
             XCTAssertTrue(senderIdent.isConfirmed)
-            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_trusted)
+            XCTAssertEqual(senderIdentity.pEpRating(session: session), .trusted)
             reevaluateMessage(
-                expectedRating: PEP_rating_trusted,
+                expectedRating: .trusted,
                 inBackground: runReevaluationInBackground,
                 infoMessage: "after trust")
 
             try! session.keyMistrusted(senderIdent)
-            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_have_no_key)
+            XCTAssertEqual(senderIdentity.pEpRating(session: session), .haveNoKey)
             reevaluateMessage(
-                expectedRating: PEP_rating_mistrust,
+                expectedRating: .mistrust,
                 inBackground: runReevaluationInBackground,
                 infoMessage: "after mistrust")
             try! session.update(senderIdent)

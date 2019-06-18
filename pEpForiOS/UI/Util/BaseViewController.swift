@@ -7,14 +7,16 @@
 //
 
 import UIKit
+
 import pEpIOSToolbox
+import MessageModel
 
 class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
     private var _appConfig: AppConfig?
     var appConfig: AppConfig! {
         get {
             guard _appConfig != nil else {
-                Logger.frontendLogger.errorAndCrash("No appConfig?")
+                Log.shared.errorAndCrash("No appConfig?")
                 return nil
             }
             return _appConfig

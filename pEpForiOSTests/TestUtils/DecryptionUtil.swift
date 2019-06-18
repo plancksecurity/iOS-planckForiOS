@@ -8,6 +8,7 @@
 
 import Foundation
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
 @testable import MessageModel
@@ -68,16 +69,17 @@ class DecryptionUtil {
         return cdMessage
     }
 
-    public static func createLocalAccount(ownUserName: String, ownUserID: String,
-                                          ownEmailAddress: String) -> CdAccount {
-        let cdOwnAccount = SecretTestData().createWorkingCdAccount(number: 0)
+    public static func createLocalAccount(ownUserName: String,
+                                          ownUserID: String,
+                                          ownEmailAddress: String,
+                                          context: NSManagedObjectContext) -> CdAccount {
+        let cdOwnAccount = SecretTestData().createWorkingCdAccount(number: 0, context: context)
         cdOwnAccount.identity?.userName = ownUserName
         cdOwnAccount.identity?.userID = ownUserID
         cdOwnAccount.identity?.address = ownEmailAddress
 
-        let cdInbox = CdFolder.create()
+        let cdInbox = CdFolder(context: context)
         cdInbox.name = ImapSync.defaultImapInboxName
-        cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdOwnAccount
         Record.saveAndWait()
 

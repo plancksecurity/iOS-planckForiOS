@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
 
 /**
  Reevaluate the rating for messages whose trust status has changed (that is,
@@ -20,11 +21,23 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
         case noMessageFound
     }
 
-    let message: Message
+    var cdMessage: CdMessage?
 
-    init(parentName: String = #function, message: Message) {
-        self.message = message
-        super.init(parentName: parentName)
+    init(parentName: String = #function,
+         message: Message,
+         context: NSManagedObjectContext? = nil) {
+        super.init(parentName: parentName, context: context)
+        guard let msgObjId = message.cdMessage()?.objectID else {
+            Log.shared.errorAndCrash("No Object ID")
+            return
+        }
+        privateMOC.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.cdMessage = (privateMOC.object(with: msgObjId) as! CdMessage)
+        }
     }
 
     open override func main() {
@@ -32,35 +45,34 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
             markAsFinished()
             return
         }
-        let theContext = Record.Context.background
-        theContext.perform {
-            self.reEvaluate(context: theContext)
-            self.markAsFinished()
-        }
+        reEvaluate()
+        markAsFinished()
     }
 
-    func reEvaluate(context: NSManagedObjectContext) {
-        guard let cdMsg = CdMessage.search(message: message) else {
-            addError(ReevaluationError.noMessageFound)
-            return
-        }
-        let theSession = PEPSession()
-        let pepMessage = cdMsg.pEpMessageDict()
-        do {
-            let keys = cdMsg.keysFromDecryption?.array as? [String] // Needs to be extented when implementing "Extra Keys" feature to take X-KeyList header into account
-            var newRating = PEP_rating_undefined
-            try theSession.reEvaluateMessageDict(pepMessage,
-                                                 xKeyList: keys,
-                                                 rating: &newRating,
-                                                 status: nil)
-            context.updateAndSave(object: cdMsg) {
-                cdMsg.pEpRating = Int16(newRating.rawValue)
+    func reEvaluate() {
+        privateMOC.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
             }
-
-            context.saveAndLogErrors()
-            message.pEpRatingInt = Int(newRating.rawValue)
-        } catch let error as NSError {
-            Logger.backendLogger.log(error: error)
+            guard let cdMsg = me.cdMessage else {
+                addError(ReevaluationError.noMessageFound)
+                return
+            }
+            let pEpSession = PEPSession()
+            let pepMessage = cdMsg.pEpMessageDict()
+            do {
+                let keys = cdMsg.keysFromDecryption?.array as? [String] // Needs to be extented when implementing "Extra Keys" feature to take X-KeyList header into account
+                var newRating = PEPRating.undefined
+                try pEpSession.reEvaluateMessageDict(pepMessage,
+                                                     xKeyList: keys,
+                                                     rating: &newRating,
+                                                     status: nil)
+                cdMsg.pEpRating = Int16(newRating.rawValue)
+                privateMOC.saveAndLogErrors()
+            } catch let error as NSError {
+                Log.shared.log(error: error)
+            }
         }
     }
 }

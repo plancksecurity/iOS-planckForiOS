@@ -56,14 +56,6 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(noAccountsExist)
     }
     
-    func testCreateEmailListViewModel() {
-        let account = givenThereIsAnAccountWithAFolder()
-        givenThereIsAViewModel(withUniFiedInBox: false, and: [account])
-        let emailListViewModel = viewmodel.createEmailListViewModel(forAccountAt: 0, andFolderAt: 0, messageSyncService: MessageSyncServiceMock())
-        let folderName = emailListViewModel.folderToShow.name
-        XCTAssertEqual(folderName, Input.folderName)
-    }
-    
     func testSubscript() {
         let accounts = givenThereIs(numberOfAccounts: 1)
         givenThereIsAViewModel(withUniFiedInBox: false, and: accounts)
@@ -99,17 +91,4 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         CdAccount.deleteAll()
         viewmodel = FolderViewModel(withFoldersIn: nil, includeUnifiedInbox: withUnifiedInbox)
     }
-    
-    class MessageSyncServiceMock: MessageSyncServiceProtocol {
-        func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
-            
-        }
-        
-        func requestFetchOlderMessages(inFolder folder: Folder) {
-            
-        }
-        
-        
-    }
-
 }

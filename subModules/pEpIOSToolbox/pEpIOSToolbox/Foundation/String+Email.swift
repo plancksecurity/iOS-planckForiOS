@@ -35,7 +35,7 @@ extension String {
      - Returns: `true` if the number of matches are exactly 1, `false` otherwise.
      */
     public func isProbablyValidEmail() -> Bool {
-        guard let indexOfAt = index(of: "@") else {
+        guard let indexOfAt = firstIndex(of: "@") else {
             return false
         }
         let localPart = self[..<indexOfAt]

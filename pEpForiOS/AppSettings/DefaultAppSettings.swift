@@ -9,6 +9,7 @@
 import Foundation
 
 import MessageModel
+import PEPObjCAdapterFramework
 
 public class DefaultAppSettings: AppSettingsProtocol {
     init() {
@@ -63,35 +64,6 @@ public class DefaultAppSettings: AppSettingsProtocol {
         set {
             UserDefaults.standard.set(newValue, forKey: AppSettings.keyDefaultAccountAddress)
         }
-    }
-
-    // MARK: manuallyTrustedServers
-
-    /// Addresses of all accounts the user explicitly trusted
-    public var manuallyTrustedServers: [String] {
-        get {
-            return UserDefaults.standard.stringArray(
-                forKey: AppSettings.keyManuallyTrustedServers) ?? []
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: AppSettings.keyManuallyTrustedServers)
-        }
-    }
-
-    public func isManuallyTrustedServer(address: String) -> Bool {
-        return manuallyTrustedServers.contains(address)
-    }
-
-    public func addToManuallyTrustedServers(address: String) {
-        var addresses = Set(manuallyTrustedServers)
-        addresses.insert(address)
-        manuallyTrustedServers = Array(addresses)
-    }
-
-    public func removeFromManuallyTrustedServers(address: String) {
-        var addresses = Set(manuallyTrustedServers)
-        addresses.remove(address)
-        manuallyTrustedServers = Array(addresses)
     }
 
     // MARK: - Setup

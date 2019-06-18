@@ -8,6 +8,7 @@
 
 import UIKit
 import pEpIOSToolbox
+import MessageModel
 
 class FolderTableViewController: BaseTableViewController, FolderViewModelDelegate {
     var folderVM: FolderViewModel?
@@ -23,7 +24,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
         super.viewWillAppear(animated)
         setup()
         if showNext {
-            showFolder(indexPath: nil)
+            show(folder: UnifiedInbox())
         }
         self.navigationController?.setToolbarHidden(false, animated: false)
     }
@@ -31,19 +32,23 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
     // MARK: - Setup
 
     private func setup() {
-        DispatchQueue.main.async {
-            self.folderVM =  FolderViewModel()
-            self.folderVM?.delegate = self
-            self.tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.folderVM =  FolderViewModel()
+            me.folderVM?.delegate = self
+            me.tableView.reloadData()
         }
     }
     
     private func initialConfig() {
         self.title = NSLocalizedString("Folders", comment: "FoldersView")
         tableView.estimatedRowHeight = 44.0
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
-        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
         refreshControl = UIRefreshControl()
         refreshControl?.tintColor = UIColor.pEpGreen
         if #available(iOS 10.0, *) {
@@ -54,7 +59,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
             action:#selector(showSettingsViewController),
             target: self)
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
             target: nil,
             action: nil)
         self.toolbarItems = [flexibleSpace,item]
@@ -107,7 +112,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
             header = CollapsibleTableViewHeader(reuseIdentifier: "header")
         }
         guard let vm = folderVM, let safeHeader = header else {
-            Logger.frontendLogger.errorAndCrash("No header or no model.")
+            Log.shared.errorAndCrash("No header or no model.")
             return header
         }
 
@@ -126,7 +131,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
     }
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard let vm = folderVM else {
-            Logger.frontendLogger.errorAndCrash("No model.")
+            Log.shared.errorAndCrash("No model.")
             return 0.0
         }
         if vm[section].hidden {
@@ -140,7 +145,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Default", for: indexPath)
         guard let vm = folderVM else {
-            Logger.frontendLogger.errorAndCrash("No model")
+            Log.shared.errorAndCrash("No model")
             return cell
         }
         let fcvm = vm[indexPath.section][indexPath.item]
@@ -159,7 +164,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
     override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath)
         -> Int {
             guard let vm = folderVM else {
-                Logger.frontendLogger.errorAndCrash("No model")
+                Log.shared.errorAndCrash("No model")
                 return 0
             }
         return vm[indexPath.section][indexPath.item].level - 1
@@ -169,7 +174,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let folderViewModel = folderVM else {
-            Logger.frontendLogger.errorAndCrash("No model")
+            Log.shared.errorAndCrash("No model")
             return
         }
         let cellViewModel = folderViewModel[indexPath.section][indexPath.row]
@@ -179,24 +184,22 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
             tableView.deselectRow(at: indexPath, animated: true)
             return
         }
-        showFolder(indexPath: indexPath)
+        show(folder: cellViewModel.folder)
     }
 
-    private func showFolder(indexPath: IndexPath?) {
+    private func show(folder: DisplayableFolderProtocol) {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard
             let vc = sb.instantiateViewController(
                 withIdentifier: EmailListViewController.storyboardId)
                 as? EmailListViewController else {
-                    Logger.frontendLogger.errorAndCrash("Problem!")
+                    Log.shared.errorAndCrash("Problem!")
                     return
         }
         vc.appConfig = appConfig
-        let emailListViewModel =
-            folderVM?.createEmailListViewModel(forAccountAt: indexPath?.section,
-                                               andFolderAt: indexPath?.row,
-                                               messageSyncService: appConfig.messageSyncService)
-        vc.model = emailListViewModel
+        let emailListVM = EmailListViewModel(emailListViewModelDelegate: vc,
+                                             folderToShow: folder)
+        vc.model = emailListVM
         vc.hidesBottomBarWhenPushed = false
 
         let animated =  showNext ? false : true
@@ -212,7 +215,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
             guard
                 let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? LoginViewController else {
-                    Logger.frontendLogger.errorAndCrash("Missing VCs")
+                    Log.shared.errorAndCrash("Missing VCs")
                     return
             }
             vc.appConfig = self.appConfig
@@ -221,7 +224,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
 
         } else if segue.identifier == "SettingsSegue" {
             guard let dvc = segue.destination as? SettingsTableViewController else {
-                Logger.frontendLogger.errorAndCrash("Error casting DVC")
+                Log.shared.errorAndCrash("Error casting DVC")
                 return
             }
             dvc.appConfig = self.appConfig

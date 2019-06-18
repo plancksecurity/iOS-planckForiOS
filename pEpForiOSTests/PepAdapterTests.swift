@@ -10,11 +10,11 @@ import XCTest
 
 import MessageModel
 @testable import pEpForiOS
+import PEPObjCAdapterFramework
 
 class PepAdapterTests: XCTestCase {
-    let comp = "PepAdapterTests"
     let identityMe = PEPIdentity(address: "some@mail.com",
-                                 userID: CdIdentity.pEpOwnUserID,
+                                 userID: UUID().uuidString,
                                  userName: "This is me",
                                  isOwn: true)
 
@@ -55,13 +55,13 @@ class PepAdapterTests: XCTestCase {
         pEpMessage.longMessage = "Long Message"
 
         var keys: NSArray?
-        var rating = PEP_rating_undefined
+        var rating = PEPRating.undefined
         try! pEpSession.decryptMessage(pEpMessage,
                                        flags: nil,
                                        rating: &rating,
                                        extraKeys: &keys,
                                        status: nil)
-        XCTAssertEqual(rating, PEP_rating_unencrypted)
+        XCTAssertEqual(rating, .unencrypted)
     }
 
     func testIsPEPUser() {
