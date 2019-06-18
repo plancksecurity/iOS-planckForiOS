@@ -97,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         syncUserActionsAndCleanupbackgroundTaskId =
             application.beginBackgroundTask(expirationHandler: { [unowned self] in
-                let badTaskId = self.syncUserActionsAndCleanupbackgroundTaskId
+                Log.shared.warn(
                     "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
                     self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
                 // We migh want to call some (yet unexisting) emergency shutdown on
@@ -108,7 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
                 Log.shared.errorAndCrash(
                     "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
-                    badTaskId.rawValue)
+                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
             })
         messageModelService?.processAllUserActionsAndStop()
     }
