@@ -24,6 +24,9 @@ extension UIColor {
     public static var pEpYellow = UIColor(hexString: pEpYellowHex)
     public static var pEpNavigation = UIColor(hexString: pEpNavigationBarColor)
 
+    public static let AppleBlue =
+                UIColor(red: 0/255.0, green: 122/255, blue: 255/255.0, alpha: 1.0)
+
     /**
      Example use: In trustwords table view cells.
      */

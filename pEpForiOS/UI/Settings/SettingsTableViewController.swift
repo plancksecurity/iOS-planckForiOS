@@ -100,7 +100,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 return dequeuedCell
             }
             cell.textLabel?.text = vm.title
-            cell.detailTextLabel?.text = vm.detail
+            cell.textLabel?.textColor = vm.titleColor
             cell.delegate = self
             return cell
         case let vm as SwitchSettingCellViewModelProtocol:

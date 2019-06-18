@@ -35,11 +35,11 @@ final class SettingsActionCellViewModel: SettingsActionCellViewModelProtocol {
         }
     }
 
-    var detail : String? {
+    var titleColor: UIColor {
         get {
             switch type {
             case .leaveKeySyncGroup:
-                return nil
+                return .AppleBlue
             }
         }
     }
