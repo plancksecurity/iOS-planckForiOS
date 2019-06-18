@@ -212,8 +212,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             performSegue(withIdentifier: .segueEditAccount, sender: self)
         case .defaultAccount:
             performSegue(withIdentifier: .segueShowSettingDefaultAccount, sender: self)
-        case .showLog:
-            performSegue(withIdentifier: .segueShowLog, sender: self)
         case .credits:
             performSegue(withIdentifier: .sequeShowCredits, sender: self)
         case .trustedServer:
