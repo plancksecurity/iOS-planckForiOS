@@ -16,12 +16,12 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
     var keySyncDeviceGroupServiceMoc: KeySyncDeviceGroupServiceMoc!
 
     //Number of sections corresponding to SettingsSectionViewModel.SectionType count
-    let sections = 3
+    let sections = 4
 
     func testNumberOfSections() {
 
         setupViewModel()
-
+        keySyncDeviceGroupServiceMoc.deviceGroupValueForTest  = .sole
         XCTAssertEqual(settingsVM.count, sections)
     }
     
@@ -68,7 +68,7 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
         setupViewModel()
         
         // WHEN
-        settingsVM.leaveDeviceGroupPressed()
+        _ = settingsVM.leaveDeviceGroupPressed()
 
         // THEN
         XCTAssertTrue(keySyncDeviceGroupServiceMoc.didCallLeaveDeviceGroup)

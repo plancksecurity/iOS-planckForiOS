@@ -13,7 +13,7 @@ final class SettingsViewModel {
     var sections = [SettingsSectionViewModel]()
     private let keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol?
 
-    init(_ keySyncDeviceGroupService:KeySyncDeviceGroupServiceProtocol = KeySyncDeviceGroupService()) {
+    init(_ keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol = KeySyncDeviceGroupService()) {
         self.keySyncDeviceGroupService = keySyncDeviceGroupService
         generateSections()
     }
@@ -35,8 +35,13 @@ final class SettingsViewModel {
     }
 
     func leaveDeviceGroupPressed() -> Error? {
+        guard let keySyncDeviceGroupService = keySyncDeviceGroupService else {
+            let error = SettingsInternalError.nilKeySyncDeviceGroupService
+            Log.shared.errorAndCrash("%@", error.localizedDescription)
+            return error
+        }
         do {
-            try KeySyncDeviceGroupService().leaveDeviceGroup()
+            try keySyncDeviceGroupService.leaveDeviceGroup()
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)
             return error
