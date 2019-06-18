@@ -39,7 +39,7 @@ final class SettingsActionCellViewModel: SettingsActionCellViewModelProtocol {
         get {
             switch type {
             case .leaveKeySyncGroup:
-                return .AppleBlue
+                return .AppleRed
             }
         }
     }
