@@ -86,6 +86,8 @@ shasum -a 256 greenmail-standalone-1.5.9.jar
 java -Dgreenmail.setup.test.all -Dgreenmail.users=test001:pwd@localhost,test002:pwd@localhost,test003:pwd@localhost -jar ~/Downloads/greenmail-standalone-1.5.9.jar
 ```
 
+Note: The following section concerning test data is solved for pEp-internal dev members by checking out a private repo, please ask your colleagues. If you don't have access to that repo, you have to create the needed files yourself.
+
 The non-existing file referenced in the unit test project, pEpForiOSTests/../pEp_for_iOS_intern/SecretTestData.swift, must be
 created, with a class named SecretTestData, derived from TestDataBase.
 
@@ -94,6 +96,8 @@ In `SecretTestData.swift`, you must at least override `populateVerifiableAccount
 If you want to run the tests against your own servers, override `populateAccounts` accordingly.
 
 ### UI Tests
+
+Note: The following section concerning test data is solved for pEp-internal dev members by checking out a private repo, please ask your colleagues. If you don't have access to that repo, you have to create the needed files yourself.
 
 There is a file referenced in the UI test project, UITestData. You need to create it
 (./pEpForiOSUITests/SecretUITestData.swift), and implement it according to the protocol UITestDataProtocol.
