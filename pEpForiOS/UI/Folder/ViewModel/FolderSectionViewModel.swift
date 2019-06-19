@@ -109,8 +109,3 @@ public class FolderSectionViewModel {
     }
 }
 
-//!!!: move to onwn file
-
-extension FolderType {
-    static let displayOrder = [FolderType.inbox, .drafts, .sent, .spam, .trash, .all, .flagged, .archive, .normal, .outbox]
-}
