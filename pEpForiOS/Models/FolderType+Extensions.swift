@@ -13,7 +13,7 @@ import MessageModel
 
 extension FolderType {
 
-    static let displayOrder = [FolderType.inbox, .drafts, .sent, .spam, .trash, .all, .flagged, .archive, .normal, .outbox]
+    public static let displayOrder = [FolderType.inbox, .drafts, .sent, .spam, .trash, .all, .flagged, .archive, .normal, .outbox]
 
     func getIcon() -> UIImage {
         var imageName: String?
