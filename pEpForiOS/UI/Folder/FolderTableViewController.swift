@@ -167,7 +167,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
                 Log.shared.errorAndCrash("No model")
                 return 0
             }
-        return vm[indexPath.section][indexPath.item].level - 1
+        return vm[indexPath.section][indexPath.item].level
     }
 
     // MARK: - TableViewDelegate
