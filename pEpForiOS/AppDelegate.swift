@@ -169,6 +169,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                               keySyncHandshakeService: keySyncHandshakeService,
                               messageModelService: theMessageModelService)
 
+        loadCoreDataStack()
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = appConfig
     }
