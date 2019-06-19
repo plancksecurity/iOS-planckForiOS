@@ -38,7 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
     var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
-    var mySelfTaskId = UIBackgroundTaskIdentifier.invalid
 
     /**
      Set to true whever the app goes into background, so the main session gets cleaned up.
@@ -89,15 +88,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
     private func stopUsingPepSession() {
+        guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
+            else {
+                Log.shared.warn(
+                    "Will not start background sync, pending %d",
+                    syncUserActionsAndCleanupbackgroundTaskId.rawValue)
+                return
+        }
         syncUserActionsAndCleanupbackgroundTaskId =
             application.beginBackgroundTask(expirationHandler: { [unowned self] in
-                Log.shared.errorAndCrash(
-                    "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
-                    self.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
+                Log.shared.warn(
+                    "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
+                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
                 // We migh want to call some (yet unexisting) emergency shutdown on
                 // ReplicationService here that brutally shuts down everything.
-                self.application.endBackgroundTask(UIBackgroundTaskIdentifier(
-                    rawValue: self.syncUserActionsAndCleanupbackgroundTaskId.rawValue))
+                self.application.endBackgroundTask(
+                    self.syncUserActionsAndCleanupbackgroundTaskId)
+                self.syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
+
+                Log.shared.errorAndCrash(
+                    "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
+                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
             })
         messageModelService?.processAllUserActionsAndStop()
     }
@@ -214,7 +225,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - UIApplicationDelegate
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.log("applicationDidReceiveMemoryWarning")
+        Log.shared.warn("applicationDidReceiveMemoryWarning")
     }
 
     func application(
@@ -234,7 +245,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         setupServices()
-        Log.shared.log("Library url: %{public}@", String(describing: applicationDirectory()))
+        Log.shared.warn("Library url: %@", String(describing: applicationDirectory()))
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
         askUserForPermissions()
@@ -349,7 +360,7 @@ extension AppDelegate: MessageModelServiceDelegate {
             // No problem, start regular sync loop.
             startServices()
         }
-        application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: syncUserActionsAndCleanupbackgroundTaskId.rawValue))
+        application.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
         syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
 
