@@ -26,10 +26,26 @@ public class FolderSectionViewModel {
         }
         if let ac = acc {
             self.account = ac
-            generateAccountCells()
+            calculateOrderedFolders()
+            //generateAccountCells()
         }
 
 
+    }
+
+    private func calculateOrderedFolders() {
+        var orderedFolderType: [FolderType:[Folder]] =
+            [.inbox:[], .drafts:[], .sent:[], .spam:[],
+            .trash:[], .all:[], .flagged:[], .archive:[],
+            .normal:[], .outbox:[]]
+        guard let ac = account else {
+            Log.shared.errorAndCrash("No account selected")
+            return
+        }
+        for folder in ac.rootFolders {
+            orderedFolderType[folder.folderType]?.append(folder)
+        }
+        generateAccountCells()
     }
 
     private func generateAccountCells() {
