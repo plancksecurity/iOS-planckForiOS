@@ -37,6 +37,11 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         }
     }
 
+    func testFoldersAppearInTheCorrectOrder() {
+
+        XCTFail()
+    }
+
     func testAccountSectionsWithoutUnifiedFolderShouldBeAccountNumber() {
         for accountNumber in 0...Input.maxNumberOfTestAccounts {
 
