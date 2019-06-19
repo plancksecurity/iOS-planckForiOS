@@ -19,10 +19,16 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             guard let safeConfig = _appConfig else {
                 Log.shared.errorAndCrash("No appConfig?")
 
-                // We have no config. Return nonsense.
-                return AppConfig(errorPropagator: ErrorPropagator(),
+                // We have no config. Return something.
+                let errorPropagator = ErrorPropagator()
+                let keySyncHandshakeService = KeySyncHandshakeService()
+                let theMessageModelService = MessageModelService(errorPropagator: errorPropagator,
+                                                                 keySyncServiceDelegate: keySyncHandshakeService,
+                                                                 keySyncEnabled: AppSettings.keySyncEnabled)
+                return AppConfig(errorPropagator: errorPropagator,
                                  oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider(),
-                                 keySyncHandshakeService: KeySyncHandshakeService())
+                                 keySyncHandshakeService: KeySyncHandshakeService(),
+                                 messageModelService: theMessageModelService)
             }
             return safeConfig
         }

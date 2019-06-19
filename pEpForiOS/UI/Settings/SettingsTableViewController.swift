@@ -210,7 +210,9 @@ extension SettingsTableViewController: SegueHandlerType {
             if let path = ipath ,
                 let vm = viewModel[path.section][path.row] as? SettingsCellViewModel,
                 let acc = vm.account  {
-                    let vm = AccountSettingsViewModel(account: acc)
+                    let vm = AccountSettingsViewModel(
+                        account: acc,
+                        messageModelService: appConfig.messageModelService)
                     destination.viewModel = vm
             }
         case .noAccounts,

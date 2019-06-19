@@ -48,7 +48,11 @@ public class AccountSettingsViewModel {
     /// and also the implementation of the verification.
     public var verifiableAccount: VerifiableAccountProtocol?
 
-    public init(account: Account) {
+    var messageModelService: MessageModelService
+
+    public init(account: Account, messageModelService: MessageModelService) {
+        self.messageModelService = messageModelService
+
         // We are using a copy of the data here.
         // The outside world must not know changed settings until they have been verified.
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
@@ -115,7 +119,9 @@ public class AccountSettingsViewModel {
 
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
                 smtp: ServerViewModel) {
-        var theVerifier = verifiableAccount ?? VerifiableAccount()
+        var theVerifier = verifiableAccount ??
+            VerifiableAccount(messageModelService: messageModelService)
+        theVerifier.verifiableAccountDelegate = self
         verifiableAccount = theVerifier
 
         theVerifier.address = email
@@ -154,8 +160,6 @@ public class AccountSettingsViewModel {
         if let transport = Server.Transport(fromString: smtp.transport) {
             theVerifier.transportSMTP = ConnectionTransport.init(transport: transport)
         }
-
-        theVerifier.verifiableAccountDelegate = self
 
         do {
             try theVerifier.verify()
@@ -217,7 +221,7 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
                 try verifiableAccount?.save()
                 delegate?.didVerify(result: .ok)
             } catch {
-                Log.shared.errorAndCrash("%@", error.localizedDescription)
+                Log.shared.errorAndCrash(error: error)
             }
         case .failure(let error):
             if let imapError = error as? ImapSyncError {
@@ -227,7 +231,7 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
                 delegate?.didVerify(
                     result: .smtpError(smtpError))
             } else {
-                Log.shared.errorAndCrash("%@", error.localizedDescription)
+                Log.shared.errorAndCrash(error: error)
             }
         }
     }

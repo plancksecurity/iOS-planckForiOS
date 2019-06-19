@@ -76,7 +76,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals al services to start/resume.
     /// Also signals it is save to use PEPSessions (again)
     private func startServices() {
-        messageModelService?.start()
+        do {
+            try messageModelService?.start()
+        } catch {
+            Log.shared.log(error: error)
+        }
     }
 
     /// Signals all PEPSession users to stop using a session as soon as possible.
@@ -86,8 +90,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         syncUserActionsAndCleanupbackgroundTaskId =
             application.beginBackgroundTask(expirationHandler: { [unowned self] in
                 Log.shared.errorAndCrash(
-                    "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
-                    self.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
+                    "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
+                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
                 // We migh want to call some (yet unexisting) emergency shutdown on
                 // ReplicationService here that brutally shuts down everything.
                 self.application.endBackgroundTask(UIBackgroundTaskIdentifier(
@@ -154,19 +158,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setupServices() {
         let keySyncHandshakeService = KeySyncHandshakeService()
-        let theAppConfig = AppConfig(errorPropagator: errorPropagator,
-                                     oauth2AuthorizationFactory: oauth2Provider,
-                                     keySyncHandshakeService: keySyncHandshakeService)
-        appConfig = theAppConfig
-        // This is a very dirty hack!! See SecureWebViewController docs for details.
-        SecureWebViewController.appConfigDirtyHack = theAppConfig
+        let theMessageModelService = MessageModelService(errorPropagator: errorPropagator,
+                                                         keySyncServiceDelegate: keySyncHandshakeService,
+                                                         keySyncEnabled: AppSettings.keySyncEnabled)
+        theMessageModelService.delegate = self
+        messageModelService = theMessageModelService
 
-        loadCoreDataStack()
-        messageModelService =
-            MessageModelService(errorPropagator: errorPropagator,
-                                keySyncServiceDelegate: keySyncHandshakeService,
-                                keySyncEnabled: AppSettings.settingsHandler.keySyncEnabled)
-        messageModelService?.delegate = self
+        appConfig = AppConfig(errorPropagator: errorPropagator,
+                              oauth2AuthorizationFactory: oauth2Provider,
+                              keySyncHandshakeService: keySyncHandshakeService,
+                              messageModelService: theMessageModelService)
+
+        // This is a very dirty hack!! See SecureWebViewController docs for details.
+        SecureWebViewController.appConfigDirtyHack = appConfig
     }
 
     // Safely restarts all services
@@ -206,7 +210,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - UIApplicationDelegate
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.log("applicationDidReceiveMemoryWarning")
+        Log.shared.warn("applicationDidReceiveMemoryWarning")
     }
 
     func application(
@@ -226,7 +230,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         setupServices()
-        Log.shared.log("Library url: %{public}@", String(describing: applicationDirectory()))
+        Log.shared.warn("Library url: %@", String(describing: applicationDirectory()))
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
         askUserForPermissions()
