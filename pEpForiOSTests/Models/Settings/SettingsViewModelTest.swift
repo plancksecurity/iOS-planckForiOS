@@ -10,16 +10,17 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class SettingsViewModelTest: CoreDataDrivenTestBase {
+final class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     var settingsVM : SettingsViewModel!
     var keySyncDeviceGroupServiceMoc: KeySyncDeviceGroupServiceMoc!
+    var messageModelServiceMoc: MessageModelServiceMoc!
+
 
     //Number of sections corresponding to SettingsSectionViewModel.SectionType count
     let sections = 4
 
     func testNumberOfSections() {
-
         setupViewModel()
         keySyncDeviceGroupServiceMoc.deviceGroupValueForTest  = .sole
         XCTAssertEqual(settingsVM.count, sections)
@@ -53,11 +54,6 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(thereIsOneLessAccount)
     }
 
-    fileprivate func setupViewModel() {
-        keySyncDeviceGroupServiceMoc = KeySyncDeviceGroupServiceMoc()
-        settingsVM = SettingsViewModel(keySyncDeviceGroupServiceMoc)
-    }
-
     func givenThereAreTwoAccounts() {
         _ = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
         moc.saveAndLogErrors()
@@ -72,5 +68,48 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
 
         // THEN
         XCTAssertTrue(keySyncDeviceGroupServiceMoc.didCallLeaveDeviceGroup)
+    }
+
+    func testKeySyncEnabledSetTrue() {
+        // GIVEN
+        setupViewModel()
+
+        // WHEN
+        for section in settingsVM.sections {
+            guard section.type == SettingsSectionViewModel.SectionType.keySync else { continue }
+            for cell in section.cells {
+                guard let cell = cell as? EnableKeySyncViewModel else { continue }
+                cell.setSwitch(value: true)
+            }
+        }
+
+        // THEN
+        XCTAssertTrue(messageModelServiceMoc.enableKeySyncWasCalled)
+    }
+
+    func testKeySyncEnabledSetFalse() {
+        // GIVEN
+        setupViewModel()
+
+        // WHEN
+        for section in settingsVM.sections {
+            guard section.type == SettingsSectionViewModel.SectionType.keySync else { continue }
+            for cell in section.cells {
+                guard let cell = cell as? EnableKeySyncViewModel else { continue }
+                cell.setSwitch(value: false)
+            }
+        }
+
+        // THEN
+        XCTAssertTrue(messageModelServiceMoc.disableKeySyncWasCalled)
+    }
+}
+
+// MARK: - Private
+extension SettingsViewModelTest {
+    private func setupViewModel() {
+        messageModelServiceMoc = MessageModelServiceMoc()
+        keySyncDeviceGroupServiceMoc = KeySyncDeviceGroupServiceMoc()
+        settingsVM = SettingsViewModel(messageModelServiceMoc, keySyncDeviceGroupServiceMoc)
     }
 }

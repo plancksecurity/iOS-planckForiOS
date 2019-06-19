@@ -24,7 +24,7 @@ final class SettingsSectionViewModel {
     let type: SectionType
     private let keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol?
     
-    init(type: SectionType, messageModelService: MessageModelService? = nil,
+    init(type: SectionType, messageModelService: MessageModelServiceProtocol? = nil,
                             keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol? = nil) {
         self.type = type
         self.keySyncDeviceGroupService = keySyncDeviceGroupService
@@ -59,7 +59,7 @@ final class SettingsSectionViewModel {
         }
     }
 
-    private func generateKeySyncCells(_ messageModelService: MessageModelService) {
+    private func generateKeySyncCells(_ messageModelService: MessageModelServiceProtocol) {
         cells.append(EnableKeySyncViewModel(messageModelService))
         if isInDeviceGroup() {
             cells.append(SettingsActionCellViewModel(type: .leaveKeySyncGroup))

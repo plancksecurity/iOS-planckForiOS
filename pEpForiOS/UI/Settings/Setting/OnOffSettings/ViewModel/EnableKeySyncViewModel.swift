@@ -14,12 +14,12 @@ struct EnableKeySyncViewModel: SwitchSettingCellViewModelProtocol  {
     // MARK: - SwitchSettingCellViewModelProtocol
 
     var cellIdentifier = "switchOptionCell"
-    private let messageModelService: MessageModelService
+    private let messageModelService: MessageModelServiceProtocol
 
     private(set) var title = NSLocalizedString("Key Sync Enable",
                                                comment: "enable key sync with other devices in the group")
     
-    init(_ messageModelService: MessageModelService) {
+    init(_ messageModelService: MessageModelServiceProtocol) {
         self.messageModelService = messageModelService
     }
 

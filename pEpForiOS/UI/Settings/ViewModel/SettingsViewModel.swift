@@ -12,9 +12,9 @@ import MessageModel
 final class SettingsViewModel {
     var sections = [SettingsSectionViewModel]()
     private let keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol?
-    private let messageModelService: MessageModelService
+    private let messageModelService: MessageModelServiceProtocol
 
-    init(_ messageModelService: MessageModelService,
+    init(_ messageModelService: MessageModelServiceProtocol,
          _ keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol = KeySyncDeviceGroupService()) {
         self.keySyncDeviceGroupService = keySyncDeviceGroupService
         self.messageModelService = messageModelService
