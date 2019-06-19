@@ -11,7 +11,7 @@ import pEpIOSToolbox
 
 class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     static let storyboardId = "SettingsTableViewController"
-    let viewModel = SettingsViewModel()
+    lazy var viewModel = SettingsViewModel(appConfig.messageModelService)
     var settingSwitchViewModel: SwitchSettingCellViewModelProtocol?
 
     var ipath : IndexPath?
@@ -24,12 +24,10 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     var oldToolbarStatus : Bool = true
 
-    // MARK: - Life Cycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Settings", comment: "Settings view title")
-        UIHelper.variableCellHeightsTableView(self.tableView)
+        UIHelper.variableCellHeightsTableView(tableView)
     }
 
     override func viewWillAppear(_ animated: Bool) {

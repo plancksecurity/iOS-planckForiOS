@@ -9,7 +9,7 @@
 import Foundation
 import MessageModel
 
-public class SettingsSectionViewModel {
+final class SettingsSectionViewModel {
 
     public enum SectionType {
         case accounts
@@ -22,9 +22,13 @@ public class SettingsSectionViewModel {
     var title: String?
     var footer: String?
     let type: SectionType
+    private let keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol?
     
-    init(type: SectionType) {
+    init(type: SectionType, messageModelService: MessageModelService? = nil,
+                            keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol? = nil) {
         self.type = type
+        self.keySyncDeviceGroupService = keySyncDeviceGroupService
+
         switch type {
         case .accounts:
             generateAccountCells()
@@ -40,7 +44,11 @@ public class SettingsSectionViewModel {
             footer = NSLocalizedString("If enabled, message subjects are also protected.",
                                        comment: "Tableview section footer")
         case .keySync:
-            generateKeySyncCells()
+            guard let messageModelService = messageModelService else {
+                Log.shared.errorAndCrash("%@", SettingsInternalError.nilMessageModelService.localizedDescription)
+                return
+            }
+            generateKeySyncCells(messageModelService)
             title = NSLocalizedString("Key sync", comment: "Tableview section header")
         }
     }
@@ -51,8 +59,11 @@ public class SettingsSectionViewModel {
         }
     }
 
-    private func generateKeySyncCells() {
-        cells.append(SettingsActionCellViewModel(type: .leaveKeySyncGroup))
+    private func generateKeySyncCells(_ messageModelService: MessageModelService) {
+        cells.append(EnableKeySyncViewModel(messageModelService))
+        if isInDeviceGroup() {
+            cells.append(SettingsActionCellViewModel(type: .leaveKeySyncGroup))
+        }
     }
 
     func generateGlobalSettingsCells() {
@@ -90,5 +101,16 @@ public class SettingsSectionViewModel {
             assert(cellIsValid(cell: cell), "Cell out of range")
             return cells[cell]
         }
+    }
+}
+
+// MARK: - Private
+extension SettingsSectionViewModel {
+    private func isInDeviceGroup() -> Bool {
+        guard let keySyncDeviceGroupService = keySyncDeviceGroupService else {
+            Log.shared.errorAndCrash("%@", SettingsInternalError.nilKeySyncDeviceGroupService.localizedDescription)
+            return false
+        }
+        return keySyncDeviceGroupService.deviceGroupState == .grouped
     }
 }

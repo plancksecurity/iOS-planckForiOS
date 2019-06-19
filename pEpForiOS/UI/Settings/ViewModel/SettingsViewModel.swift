@@ -12,9 +12,12 @@ import MessageModel
 final class SettingsViewModel {
     var sections = [SettingsSectionViewModel]()
     private let keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol?
+    private let messageModelService: MessageModelService
 
-    init(_ keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol = KeySyncDeviceGroupService()) {
+    init(_ messageModelService: MessageModelService,
+         _ keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol = KeySyncDeviceGroupService()) {
         self.keySyncDeviceGroupService = keySyncDeviceGroupService
+        self.messageModelService = messageModelService
         generateSections()
     }
 
@@ -22,9 +25,7 @@ final class SettingsViewModel {
         sections.append(SettingsSectionViewModel(type: .accounts))
         sections.append(SettingsSectionViewModel(type: .globalSettings))
         sections.append(SettingsSectionViewModel(type: .pgpCompatibilitySettings))
-        if isInDeviceGroup() {
-            sections.append(SettingsSectionViewModel(type: .keySync))
-        }
+        sections.append(SettingsSectionViewModel(type: .keySync, messageModelService: messageModelService, keySyncDeviceGroupService: keySyncDeviceGroupService))
     }
 
     func delete(section: Int, cell: Int) {
@@ -74,10 +75,6 @@ final class SettingsViewModel {
 
 // MARK: - Private
 extension SettingsViewModel {
-    private func isInDeviceGroup() -> Bool {
-        return keySyncDeviceGroupService?.deviceGroupState == .grouped
-    }
-
     private func sectionIsValid(section: Int) -> Bool {
         return section >= 0 && section < sections.count
     }
