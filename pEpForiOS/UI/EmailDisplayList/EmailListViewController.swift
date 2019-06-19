@@ -871,6 +871,7 @@ extension EmailListViewController {
         let replyAction = createReplyAction()
 
         let replyAllAction = createReplyAllAction(forRowAt: indexPath)
+        let readAction = createReadOrUnReadAction(forRowAt: indexPath)
 
         let forwardAction = createForwardAction()
         let moveToFolderAction = createMoveToFolderAction()
@@ -884,6 +885,7 @@ extension EmailListViewController {
 
         alertControler.addAction(forwardAction)
         alertControler.addAction(moveToFolderAction)
+        alertControler.addAction(readAction)
 
         if let popoverPresentationController = alertControler.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
@@ -905,6 +907,36 @@ extension EmailListViewController {
                 return
             }
             me.performSegue(withIdentifier: .segueShowMoveToFolder, sender: me)
+        }
+    }
+
+    private func createReadOrUnReadAction(forRowAt indexPath: IndexPath) -> UIAlertAction {
+        let seenStatus = model?.viewModel(for: indexPath.row)?.isSeen ?? false
+
+        var title = ""
+        if seenStatus {
+            title = NSLocalizedString("Unread Message", comment: "EmailList action title")
+        } else {
+            title = NSLocalizedString("Read Message", comment: "EmailList action title")
+        }
+
+        return UIAlertAction(title: title, style: .default) { [weak self] action in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost MySelf")
+                return
+            }
+
+            if seenStatus {
+                me.model?.markSelectedAsUnread(indexPaths: [indexPath])
+                if let cell = me.tableView.cellForRow(at: indexPath) as? EmailListViewCell {
+                    cell.isSeen = false
+                }
+            } else {
+                me.model?.markSelectedAsRead(indexPaths: [indexPath])
+                if let cell = me.tableView.cellForRow(at: indexPath) as? EmailListViewCell {
+                    cell.isSeen = true
+                }
+            }
         }
     }
 
