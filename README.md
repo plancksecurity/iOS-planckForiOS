@@ -78,7 +78,7 @@ hg clone https://pep.foundation/dev/repos/libAccountSettings/
 
 hg clone https://pep-security.ch/dev/repos/pEp_for_iOS/
 
-git clone http://pep-security.lu/gitlab/iOS/sequoia4ios.gitc
+git clone http://pep-security.lu/gitlab/iOS/sequoia4ios.git
 cd sequoia4ios
 sh build.sh
 ```
