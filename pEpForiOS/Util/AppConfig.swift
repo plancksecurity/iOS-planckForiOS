@@ -21,12 +21,12 @@ class AppConfig {
 
     let keySyncHandshakeService: KeySyncHandshakeService
 
-    let messageModelService: MessageModelService
+    let messageModelService: MessageModelServiceProtocol
 
     init(errorPropagator: ErrorPropagator,
          oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol,
          keySyncHandshakeService: KeySyncHandshakeService,
-         messageModelService: MessageModelService) {
+         messageModelService: MessageModelServiceProtocol) {
         self.errorPropagator = errorPropagator
         self.oauth2AuthorizationFactory = oauth2AuthorizationFactory
         self.keySyncHandshakeService = keySyncHandshakeService

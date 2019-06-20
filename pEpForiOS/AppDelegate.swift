@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var appConfig: AppConfig?
 
     /** The SMTP/IMAP backend */
-    var messageModelService: MessageModelService?
+    var messageModelService: MessageModelServiceProtocol?
 
     /**
      Error Handler to connect backend with UI
