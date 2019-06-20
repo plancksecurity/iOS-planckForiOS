@@ -26,9 +26,9 @@ sudo port install automake
 
 sudo port install gmake
 
+sudo port install wget
+
 curl https://sh.rustup.rs -sSf | sh
-rustup update
-rustup target add aarch64-apple-ios x86_64-apple-ios armv7-apple-ios i386-apple-ios
 
 # To run the `greenmail` mailserver for tests
 sudo port install openjdk11
@@ -39,6 +39,14 @@ add this to ~/.profile (create if it doesn't exist):
 ```
 source $HOME/.cargo/env
 export PATH="$HOME/.cargo/bin:$PATH"
+```
+
+Restart your Console!
+
+```
+sudo port pkgconfig
+rustup update
+rustup target add aarch64-apple-ios x86_64-apple-ios armv7-apple-ios i386-apple-ios
 ```
 
 ### Set up Xcode
