@@ -76,6 +76,14 @@ class NewAccountSetupUITest: XCTestCase {
         let account1 = secretTestData().workingAccount1
         newAccountSetup(account: account1)
 
+        let theApp = app()
+        let folderButton = theApp.navigationBars["All"].buttons["Folders"]
+
+        guard waitForElementToAppear(folderButton, timeout: 10) == .completed else {
+            XCTFail("'Folders' button missing after setting up account")
+            return
+        }
+
         addAccount()
 
         let account2 = secretTestData().workingAccount2
@@ -162,8 +170,8 @@ class NewAccountSetupUITest: XCTestCase {
      Use if you want to wait forever. May be useful for debugging.
      */
     func waitForever() {
-        let _ = expectation(description: "Never happens")
-        waitForExpectations(timeout: 3000, handler: nil)
+        let exp = expectation(description: "Never happens")
+        wait(for: [exp], timeout: 3000)
     }
 
     func typeTextIfEmpty(textField: XCUIElement, text: String) {
@@ -316,5 +324,20 @@ class NewAccountSetupUITest: XCTestCase {
         let correctPassword = account.password
         theAccount.password += "ShouldNotWork"
         return (theAccount, correctPassword)
+    }
+
+    func waitForElementToAppear(_ element: XCUIElement,
+                                timeout: TimeInterval = 5) -> XCTWaiter.Result {
+        let predicate = NSPredicate(format: "exists == true")
+        let exp = expectation(for: predicate, evaluatedWith: element,
+                              handler: nil)
+
+        let result = XCTWaiter().wait(for: [exp], timeout: timeout)
+
+        if result == .completed {
+            exp.fulfill()
+        }
+
+        return result
     }
 }
