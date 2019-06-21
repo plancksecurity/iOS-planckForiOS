@@ -219,89 +219,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         XCTAssertNotNil(sentFolder)
     }
 
-    func testStorePrefetchedMailOperation() {
-        let folder = CWIMAPFolder(name: ImapSync.defaultImapInboxName)
-
-        let _ = CdFolder.insertOrUpdate(
-            folderName: folder.name(), folderSeparator: nil, folderType: nil, account: cdAccount)
-        Record.saveAndWait()
-
-        let message = CWIMAPMessage()
-        message.setFrom(CWInternetAddress(personal: "personal", address: "somemail@test.com"))
-        message.setFolder(folder)
-        message.setMessageID("001@whatever.test")
-
-        let expStored = expectation(description: "expStored")
-        guard let accountId = imapConnectInfo.accountObjectID else {
-            XCTFail()
-            return
-        }
-        let storeOp = StorePrefetchedMailOperation(parentName: #function, accountID: accountId,
-                                                   message: message,
-                                                   messageUpdate: CWMessageUpdate())
-        storeOp.completionBlock = {
-            storeOp.completionBlock = nil
-            expStored.fulfill()
-        }
-        let backgroundQueue = OperationQueue()
-        backgroundQueue.addOperation(storeOp)
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(storeOp.hasErrors())
-        })
-
-        XCTAssertEqual(CdMessage.all()?.count, 1)
-    }
-
-    func testStoreMultipleMails() {
-        let folder = CWIMAPFolder(name: ImapSync.defaultImapInboxName)
-        let numMails = 10
-        var numberOfCallbacksCalled = 0
-
-        let _ = CdFolder.insertOrUpdate(
-            folderName: folder.name(), folderSeparator: nil, folderType: nil,account: cdAccount)
-        Record.saveAndWait()
-        XCTAssertEqual(CdFolder.countBy(predicate: NSPredicate(value: true)), 1)
-
-        let expMailsStored = expectation(description: "expMailsStored")
-        let backgroundQueue = OperationQueue()
-        for i in 1...numMails {
-            let message = CWIMAPMessage()
-            message.setFrom(CWInternetAddress(personal: "personal\(i)",
-                address: "somemail\(i)@test.com"))
-            message.setSubject("Subject \(i)")
-            message.setRecipients([CWInternetAddress(personal: "thisIsMe",
-                                                     address: "myaddress@test.com", type: .toRecipient)])
-            message.setFolder(folder)
-            message.setUID(UInt(i))
-            message.setMessageID("\(i)@whatever.test")
-            guard let accountId = imapConnectInfo.accountObjectID else {
-                XCTFail()
-                return
-            }
-            let op = StorePrefetchedMailOperation(parentName: #function,
-                                                  accountID: accountId,
-                                                  message: message,
-                                                  messageUpdate: CWMessageUpdate())
-            op.completionBlock = {
-                op.completionBlock = nil
-                numberOfCallbacksCalled += 1
-                XCTAssertFalse(op.hasErrors())
-                if numberOfCallbacksCalled == numMails {
-                    expMailsStored.fulfill()
-                }
-            }
-            backgroundQueue.addOperation(op)
-        }
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertEqual(numberOfCallbacksCalled, numMails)
-        })
-
-        XCTAssertEqual(CdMessage.all()?.count, numMails)
-    }
-
     func dumpAllAccounts() {
         let cdAccounts = CdAccount.all() as? [CdAccount]
         if let accs = cdAccounts {
@@ -577,35 +494,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
                 let _ = self.session.outgoingMessageRating(from: id, to: [id], cc: [id], bcc: [id])
             }
         }
-    }
-
-    func testMyselfOperation() {
-        XCTAssertNotNil(cdAccount.identity)
-        let identity = cdAccount.identity?.identity()
-        let expCompleted = expectation(description: "expCompleted")
-
-        let op = MySelfOperation(parentName: #function)
-        op.completionBlock = {
-            op.completionBlock = nil
-            expCompleted.fulfill()
-        }
-
-        OperationQueue().addOperation(op)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors())
-        })
-
-        guard let theIdent = identity else {
-            XCTFail()
-            return
-        }
-        XCTAssertNotNil(try! theIdent.fingerPrint(session: session))
-
-        let identDict = theIdent.updatedIdentity(session: session)
-        XCTAssertNotNil(identDict.fingerPrint)
-        XCTAssertNotNil(identDict.userID)
     }
 
     //fails on first run when the an account was setup on

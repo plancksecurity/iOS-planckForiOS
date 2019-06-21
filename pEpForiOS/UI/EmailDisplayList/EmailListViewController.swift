@@ -59,6 +59,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if MiscUtil.isUnitTest() {
             return
         }
+        lastSelectedIndexPath = nil
 
         setUpTextFilter()
 
@@ -75,6 +76,15 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             //            if vm.checkIfSettingsChanged() {
             //                settingsChanged()
             //            }
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        guard let isIphone = splitViewController?.isCollapsed, let last = lastSelectedIndexPath else {
+            return
+        }
+        if !isIphone {
+            performSegue(withIdentifier: "showNoMessage", sender: nil)
         }
     }
 
@@ -340,6 +350,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     @IBAction func cancelToolbar(_ sender:UIBarButtonItem!) {
         showStandardToolbar()
+        lastSelectedIndexPath = nil
         tableView.setEditing(false, animated: true)
     }
 
@@ -1152,7 +1163,7 @@ extension EmailListViewController: SegueHandlerType {
             // This is not a simple compose (but reply, forward or such),
             // thus we have to pass the original message.
             guard let indexPath = lastSelectedIndexPath else {
-                    Log.shared.errorAndCrash("Invalid state")
+                    Log.shared.info("Can happen if the message the user wanted to reply to has been deleted in between performeSeque and here")
                     return
             }
 

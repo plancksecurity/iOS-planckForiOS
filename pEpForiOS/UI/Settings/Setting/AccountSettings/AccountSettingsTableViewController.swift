@@ -61,6 +61,16 @@ UIPickerViewDataSource, UITextFieldDelegate {
         passwordTextfield.delegate = self
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let isIphone = splitViewController?.isCollapsed else {
+            return
+        }
+        if !isIphone {
+            self.navigationItem.leftBarButtonItem = nil// hidesBackButton = true
+        }
+    }
+
     private func configureView() {
         tableView.addSubview(spinner)
 
@@ -225,10 +235,19 @@ UIPickerViewDataSource, UITextFieldDelegate {
 
     // MARK: - Actions
     
-    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
-        let _ =  navigationController?.popViewController(animated: true)
-        //here if it has not gone well recover the original, if everything went well do nothing
+    fileprivate func popViewController() {
+         //!!!: see IOS-1608 this is a patch as we have 2 navigationControllers and need to pop to the previous view.
+            (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
+    }
 
+    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
+
+        guard let isSplitViewShown = splitViewController?.isCollapsed else {
+            return
+        }
+        if isSplitViewShown {
+            popViewController()
+        }
     }
 
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
@@ -300,7 +319,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
 
 extension AccountSettingsTableViewController {
     public func handleLoginError(error: Error) {
-        Log.shared.error("%{public}@", error.localizedDescription)
+        Log.shared.error("%@", "\(error)")
         UIUtils.show(error: error, inViewController: self)
     }
 }
@@ -313,7 +332,8 @@ extension AccountSettingsTableViewController: AccountVerificationResultDelegate 
             self.hideSpinnerAndEnableUI()
             switch result {
             case .ok:
-                self.navigationController?.popViewController(animated: true)
+                //self.navigationController?.popViewController(animated: true)
+                self.popViewController()
             case .imapError(let err):
                 self.handleLoginError(error: err)
             case .smtpError(let err):

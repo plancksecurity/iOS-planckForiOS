@@ -34,8 +34,6 @@ class HandshakeViewController: BaseTableViewController {
     override func awakeFromNib() {
         tableView.estimatedRowHeight = 400.0
         tableView.rowHeight = UITableView.automaticDimension
-
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -270,7 +268,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         do {
             languages = try theSession.languageList()
         } catch let err as NSError {
-            Log.shared.error("%{public}@", err.localizedDescription)
+            Log.shared.error("%@", "\(err)")
             languages = []
         }
 
@@ -323,7 +321,7 @@ extension HandshakeViewController: SegueHandlerType {
         do {
             destination.languages = try theSession.languageList()
         } catch let err as NSError {
-            Log.shared.error("%{public}@", err.localizedDescription)
+            Log.shared.error("%@", "\(err)")
             destination.languages = []
         }
     }

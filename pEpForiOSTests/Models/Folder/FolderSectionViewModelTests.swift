@@ -82,14 +82,6 @@ class FolderSectionViewModelTests: CoreDataDrivenTestBase {
         //XCTAssertEqual(firstFolderName, myFolderName)
     }
     
-    func testCollapse() {
-        givenThereIsAViewModelWithoutAccount(withUnifiedInbox: true)
-        let priorCollapse = viewModel.collapsed
-        viewModel.collapse()
-        let currentCollapse = viewModel.collapsed
-        XCTAssertNotEqual(priorCollapse, currentCollapse)
-    }
-    
     func givenThereIsAViewModelWithAccount(withUnifiedInbox: Bool) {
         givenThereIsAViewModel(withUnifiedInbox: withUnifiedInbox, and: account)
     }

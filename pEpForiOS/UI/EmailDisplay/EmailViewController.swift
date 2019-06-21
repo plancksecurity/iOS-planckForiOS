@@ -337,7 +337,7 @@ class EmailViewController: BaseTableViewController {
             message = m
         }
 
-        Log.shared.log("next, will reload table view")
+        Log.shared.info("next, will reload table view")
         configureTableRows()
         tableView.reloadData()
         configureView()
@@ -349,7 +349,7 @@ class EmailViewController: BaseTableViewController {
             message = m
         }
 
-        Log.shared.log("previous, will reload table view")
+        Log.shared.info("previous, will reload table view")
         configureTableRows()
         tableView.reloadData()
         configureView()
@@ -424,6 +424,7 @@ class EmailViewController: BaseTableViewController {
         }
         Message.imapDelete(messages: [message])
         delegate?.emailDisplayDidDelete(message: message)
+        navigationController?.popViewController(animated: true)
     }
 
     /**
@@ -479,7 +480,7 @@ extension EmailViewController {
 
     override func tableView(
         _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        Log.shared.log("cell for %d:%d", indexPath.section, indexPath.row)
+        Log.shared.info("cell for %d:%d", indexPath.section, indexPath.row)
         guard
             let row = tableData?.getRow(at: indexPath.row),
             let cell = tableView.dequeueReusableCell(

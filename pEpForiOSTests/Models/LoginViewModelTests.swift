@@ -11,12 +11,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 import PantomimeFramework
-
-class NoOpMySelfer: KickOffMySelfProtocol {
-    func startMySelf() {
-        // do nothing
-    }
-}
+import PEPObjCAdapterFramework
 
 class ErrorHandler: LoginViewModelLoginErrorDelegate {
     func handle(loginError: Error) {
@@ -112,14 +107,14 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         let expLookedUp = expectation(description: "expLookedUp")
         let verifiableAccount =
             TestVerifiableAccount(accountSettings: accountSettings, expLookedUp: expLookedUp)
+
         let vm = LoginViewModel(verifiableAccount: verifiableAccount)
         let errorHandler = ErrorHandler()
         vm.loginViewModelLoginErrorDelegate = errorHandler
         vm.login(accountName: accountSettings.idAddress,
                  userName: "User Name",
                  loginName: nil,
-                 password: passw,
-                 mySelfer: NoOpMySelfer())
+                 password: passw)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)

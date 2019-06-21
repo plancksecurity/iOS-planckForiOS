@@ -8,11 +8,11 @@
 
 import UIKit
 
-public extension String {
+extension String {
 
     static let bug1442 = "bug1442"
-    static let returnKey = "\n"
-    static let space = " "
+    static public let returnKey = "\n"
+    static public let space = " "
 
     static let unquoteRegex = try! NSRegularExpression(pattern: "^\"(.*)\"$", options: [])
 
@@ -132,11 +132,11 @@ public extension String {
     /// Removes all matches of the given regex pattern.
     ///
     /// - Parameter pattern: regex patterns whichs matches should be removed
-    mutating func removeRegexMatches(of pattern: String) {
+    mutating public func removeRegexMatches(of pattern: String) {
         replaceRegexMatches(of: pattern, with: "")
     }
 
-    func stringByRemovingRegexMatches(of pattern: String) -> String {
+    public func stringByRemovingRegexMatches(of pattern: String) -> String {
         return self.stringByReplacingRegexMatches(of: pattern, with: "")
     }
 
@@ -178,7 +178,7 @@ public extension String {
             let matches = regex.matches(in: self, options: [], range: wholeRange())
             return matches.count > 0
         } catch {
-            Log.shared.errorAndCrash("%{public}@", error.localizedDescription)
+            Log.shared.errorAndCrash(error: error)
         }
         return false
     }
@@ -209,8 +209,7 @@ public extension String {
                 }
             }
         } catch {
-            Log.shared.errorAndCrash("%{public}@",
-                                                        error.localizedDescription)
+            Log.shared.errorAndCrash(error: error)
         }
         return self
     }
@@ -233,8 +232,7 @@ public extension String {
                 }
             }
         } catch {
-            Log.shared.errorAndCrash("%{public}@",
-                                                        error.localizedDescription)
+            Log.shared.errorAndCrash(error: error)
         }
         return self
     }
@@ -319,14 +317,14 @@ public extension String {
     }
 }
 
-public extension NSAttributedString {
+extension NSAttributedString {
     
     public func wholeRange() -> NSRange {
         return NSRange(location: 0, length: length)
     }
 }
 
-public extension Character {
+extension Character {
     public func isWhitespace() -> Bool {
         switch self {
         case " ", "\t", "\n", "\r", "\r\n":

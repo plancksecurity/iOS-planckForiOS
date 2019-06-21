@@ -57,7 +57,7 @@ protocol LoginViewControllerDelegate: class  {
 
 class LoginViewController: BaseViewController {
     static let minCharUserName = 1
-    var loginViewModel = LoginViewModel()
+    var loginViewModel: LoginViewModel?
     var offerManualSetup = false
     weak var delegate: LoginViewControllerDelegate?
 
@@ -87,8 +87,7 @@ class LoginViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loginViewModel.loginViewModelLoginErrorDelegate = self
-        loginViewModel.loginViewModelOAuth2ErrorDelegate = self
+        setupViewModel()
         configureView()
         configureKeyboardAwareness()
     }
@@ -97,8 +96,7 @@ class LoginViewController: BaseViewController {
         updateView()
     }
 
-    func configureView(){
-
+    func configureView() {
         password.isEnabled = true
         activityIndicatorView.hidesWhenStopped = true
 
@@ -113,7 +111,7 @@ class LoginViewController: BaseViewController {
         self.user.convertToLoginField(
             placeholder: NSLocalizedString("Name", comment: "username"), delegate: self)
 
-        self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
+        self.navigationController?.navigationBar.isHidden = !viewModelOrCrash().isThereAnAccount()
 
         // hide extended login fields
         manualConfigButton.isHidden = true
@@ -156,7 +154,7 @@ class LoginViewController: BaseViewController {
     }
 
     private func handleLoginError(error: Error, offerManualSetup: Bool) {
-        Log.shared.error("%{public}@", error.localizedDescription)
+        Log.shared.error("%@", "\(error)")
         self.isCurrentlyVerifying = false
         guard let error = DisplayUserError(withError: error) else {
             // Do nothing. The error type is not suitable to bother the user with.
@@ -198,7 +196,7 @@ class LoginViewController: BaseViewController {
                              offerManualSetup: false)
             return
         }
-        guard !loginViewModel.exist(address: email) else {
+        guard !viewModelOrCrash().exist(address: email) else {
             isCurrentlyVerifying = false
             handleLoginError(error: LoginViewController.LoginError.accountExistence,
                              offerManualSetup: false)
@@ -216,13 +214,13 @@ class LoginViewController: BaseViewController {
             return
         }
 
-        loginViewModel.accountVerificationResultDelegate = self
+        viewModelOrCrash().accountVerificationResultDelegate = self
 
-        if loginViewModel.isOAuth2Possible(email: email) {
+        if viewModelOrCrash().isOAuth2Possible(email: email) {
             let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
-            loginViewModel.loginWithOAuth2(
+            viewModelOrCrash().loginWithOAuth2(
                 viewController: self, emailAddress: email, userName: username,
-                mySelfer: appConfig.mySelfer, oauth2Authorizer: oauth)
+                oauth2Authorizer: oauth)
         } else {
             guard let pass = password.text, pass != "" else {
                 handleLoginError(error: LoginViewController.LoginError.missingPassword,
@@ -230,20 +228,47 @@ class LoginViewController: BaseViewController {
                 return
             }
 
-            loginViewModel.login(
-                accountName: email, userName: username, password: pass,
-                mySelfer: appConfig.mySelfer)
+            viewModelOrCrash().login(
+                accountName: email, userName: username, password: pass)
         }
     }
 
     @IBAction func emailChanged(_ sender: UITextField) {
         updatePasswordField(email: sender.text)
     }
+}
 
-    // MARK: - Util
+// MARK: - View model
 
+extension LoginViewController {
+    func createViewModel() -> LoginViewModel {
+        let theLoginViewModel = LoginViewModel(
+            verifiableAccount: VerifiableAccount(
+                messageModelService: appConfig.messageModelService))
+        theLoginViewModel.loginViewModelLoginErrorDelegate = self
+        theLoginViewModel.loginViewModelOAuth2ErrorDelegate = self
+        return theLoginViewModel
+    }
+
+    func setupViewModel() {
+        loginViewModel = createViewModel()
+    }
+
+    func viewModelOrCrash() -> LoginViewModel {
+        if let theVM = loginViewModel {
+            return theVM
+        } else {
+            Log.shared.errorAndCrash("No view model")
+            return createViewModel()
+        }
+    }
+}
+
+// MARK: - Util
+
+extension LoginViewController {
     func updatePasswordField(email: String?) {
-        let oauth2Possible = loginViewModel.isOAuth2Possible(email: email)
+        let oauth2Possible = viewModelOrCrash().isOAuth2Possible(email: email)
         password.isEnabled = !oauth2Possible
         if password.isEnabled {
             password.enableLoginField()
@@ -263,7 +288,7 @@ extension LoginViewController: UITextFieldDelegate {
             self.password.becomeFirstResponder()
         } else if textField == self.password {
             textField.resignFirstResponder()
-            self.logIn(self.password)
+            self.logIn(self.password as Any)
         }
         return true
     }
@@ -285,10 +310,8 @@ extension LoginViewController: SegueHandlerType {
                 let vc = navVC.topViewController as? UserInfoTableViewController {
                 vc.appConfig = appConfig
 
-                // Give the next model what we know.
-                vc.model.address = emailAddress.text
-                vc.model.password = password.text
-                vc.model.userName = user.text
+                // Give the next model all that we know.
+                vc.model = viewModelOrCrash().verifiableAccount
             }
         default:
             break

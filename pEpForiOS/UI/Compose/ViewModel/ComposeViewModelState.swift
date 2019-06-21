@@ -184,7 +184,6 @@ extension ComposeViewModel.ComposeViewModelState {
             rating = newRating
             return
         }
-        let session = Session()
 
         /*
         //!!!: In tests (ComposeViewModelStateTest) this block is triggered by setup and modt test, but never  executed:
@@ -203,12 +202,12 @@ extension ComposeViewModel.ComposeViewModelState {
 //        print("COMPOSE: before going to background")
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in //HERE:
             //!!!:
-            print("COMPOSE: on background")
+//            print("COMPOSE: on background")
             guard let me = self else {
                 // That is a valid case. Compose view is gone before this block started to run.
                 return
             }
-
+            let session = Session()
             session.performAndWait {
                 let safeFrom = from.safeForSession(session)
                 let safeTo = Identity.makeSafe(me.toRecipients, forSession: session)
@@ -222,33 +221,13 @@ extension ComposeViewModel.ComposeViewModelState {
                                                              bcc: safeBcc)
             }
             //!!!:
-            print("COMPOSE: did outgoingMessageRating")
+//            print("COMPOSE: did outgoingMessageRating")
             DispatchQueue.main.async {
                 me.rating = newRating
                 //!!!:
 //                print("COMPOSE: did newRating")
             }
         }
-
-        //!!!: cleanup
-        //            guard let me = self else {
-        //                // That is a valid case. Compose view is gone before this block started to run.
-        //                return
-        //            }
-        //            let newRating: PEPRating
-        //            let session = PEPSession()
-        //            if let from = me.from {
-        //                newRating = session.outgoingMessageRating(from: from,
-        //                                                       to: me.toRecipients,
-        //                                                       cc: me.ccRecipients,
-        //                                                       bcc: me.bccRecipients)
-        //            } else {
-        //                newRating = PEPRating.undefined
-        //            }
-        //            DispatchQueue.main.async {
-        //                me.rating = newRating
-        //            }
-
     }
 }
 

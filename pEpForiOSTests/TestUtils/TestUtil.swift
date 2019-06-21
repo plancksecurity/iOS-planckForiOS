@@ -569,21 +569,6 @@ class TestUtil {
 
     // MARK: - FOLDER
 
-    static func determineInterestingFolders(in cdAccount: CdAccount)
-        -> [NetworkServiceWorker.FolderInfo] {
-        let accountInfo = AccountConnectInfo(accountID: cdAccount.objectID)
-        let dummyConfig = ReplicationService.ServiceConfig(sleepTimeInSeconds: 1,
-                                                       parentName: #function,
-                                                       mySelfer:
-            DefaultMySelfer(parentName: #function,
-                            backgrounder: nil),
-                                                       backgrounder: nil,
-                                                       errorPropagator: nil)
-        let networkServiceWorker = NetworkServiceWorker(serviceConfig: dummyConfig,
-                                                        imapConnectionDataCache: nil)
-        return networkServiceWorker.determineInterestingFolders(accountInfo: accountInfo)
-    }
-
     static func makeFolderInteresting(folderType: FolderType, cdAccount: CdAccount) {
         let folder = cdFolder(ofType: folderType, in: cdAccount)
         folder.lastLookedAt = Date(timeInterval: -1, since: Date())
@@ -725,14 +710,16 @@ class TestUtil {
     static func setUpPepFromMail(emailFilePath: String,
                                  decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
         -> (mySelf: Identity, partner: Identity, message: Message)? {
-            if let (mySelfID, partnerID, message) = cdMessageAndSetUpPepFromMail(
-                emailFilePath: emailFilePath, decryptDelegate: decryptDelegate),
-                let msg = message.message(),
+            guard
+                let (mySelfID, partnerID, cdMessage) = cdMessageAndSetUpPepFromMail(
+                    emailFilePath: emailFilePath, decryptDelegate: decryptDelegate),
                 let mySelf = mySelfID.identity(),
-                let partner = partnerID.identity() {
-                return (mySelf: mySelf, partner: partner, message: msg)
+                let partner = partnerID.identity()
+                else {
+                    return nil
             }
-            return nil
+            let msg = MessageModelObjectUtils.getMessage(fromCdMessage: cdMessage)
+            return (mySelf: mySelf, partner: partner, message: msg)
     }
 
     /**

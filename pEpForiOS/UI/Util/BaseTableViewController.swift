@@ -19,11 +19,16 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             guard let safeConfig = _appConfig else {
                 Log.shared.errorAndCrash("No appConfig?")
 
-                // We have no config. Return nonsense.
-                return AppConfig(
-                    mySelfer: self,
+                // We have no config. Return something.
+
+                let theMessageModelService = MessageModelService(
                     errorPropagator: ErrorPropagator(),
-                    oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider())
+                    notifyHandShakeDelegate: NotifyHandshakeDelegate())
+
+                return AppConfig(
+                    errorPropagator: ErrorPropagator(),
+                    oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider(),
+                    messageModelService: theMessageModelService)
             }
             return safeConfig
         }
@@ -123,12 +128,5 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                 appConfig.showedAccountsError[extraInfo] = true
             }
         }
-    }
-
-}
-
-extension BaseTableViewController: KickOffMySelfProtocol {
-    func startMySelf() {
-        Log.shared.errorAndCrash("No appConfig?")
     }
 }

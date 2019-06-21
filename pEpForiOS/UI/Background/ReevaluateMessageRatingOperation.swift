@@ -70,7 +70,6 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
                                                      status: nil)
                 cdMsg.pEpRating = Int16(newRating.rawValue)
                 privateMOC.saveAndLogErrors()
-                cdMsg.pEpRating = Int16(newRating.rawValue)
             } catch let error as NSError {
                 Log.shared.log(error: error)
             }

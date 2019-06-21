@@ -38,7 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
     var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
-    var mySelfTaskId = UIBackgroundTaskIdentifier.invalid
 
     /**
      Set to true whever the app goes into background, so the main session gets cleaned up.
@@ -78,22 +77,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals al services to start/resume.
     /// Also signals it is save to use PEPSessions (again)
     private func startServices() {
-        messageModelService?.start()
+        do {
+            try messageModelService?.start()
+        } catch {
+            Log.shared.log(error: error)
+        }
     }
 
     /// Signals all PEPSession users to stop using a session as soon as possible.
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
     private func stopUsingPepSession() {
+        guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
+            else {
+                Log.shared.warn(
+                    "Will not start background sync, pending %d",
+                    syncUserActionsAndCleanupbackgroundTaskId.rawValue)
+                return
+        }
         syncUserActionsAndCleanupbackgroundTaskId =
             application.beginBackgroundTask(expirationHandler: { [unowned self] in
-                Log.shared.errorAndCrash(
-                    "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
-                    self.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
+                Log.shared.warn(
+                    "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
+                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
                 // We migh want to call some (yet unexisting) emergency shutdown on
                 // ReplicationService here that brutally shuts down everything.
-                self.application.endBackgroundTask(UIBackgroundTaskIdentifier(
-                    rawValue: self.syncUserActionsAndCleanupbackgroundTaskId.rawValue))
+                self.application.endBackgroundTask(
+                    self.syncUserActionsAndCleanupbackgroundTaskId)
+                self.syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
+
+                Log.shared.errorAndCrash(
+                    "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
+                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
             })
         messageModelService?.processAllUserActionsAndStop()
     }
@@ -102,28 +117,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if shouldDestroySession {
             PEPSession.cleanup()
         }
-    }
-
-    func kickOffMySelf() {
-        mySelfTaskId = application.beginBackgroundTask(expirationHandler: { [unowned self] in
-            Log.shared.log("mySelfTaskId with ID expired.")
-            // We migh want to call some (yet unexisting) emergency shutdown on
-            // ReplicationService here here that brutally shuts down everything.
-            self.application.endBackgroundTask(
-                UIBackgroundTaskIdentifier(rawValue:self.mySelfTaskId.rawValue))
-        })
-        let op = MySelfOperation()
-        op.completionBlock = { [unowned self] in
-            // We might be the last service that finishes, so we have to cleanup.
-            self.cleanupPEPSessionIfNeeded()
-            if self.mySelfTaskId == UIBackgroundTaskIdentifier.invalid {
-                return
-            }
-            self.application.endBackgroundTask(
-                UIBackgroundTaskIdentifier(rawValue: self.mySelfTaskId.rawValue))
-            self.mySelfTaskId = UIBackgroundTaskIdentifier.invalid
-        }
-        mySelfQueue.addOperation(op)
     }
 
     func loadCoreDataStack() {
@@ -177,24 +170,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
-        let theAppConfig = AppConfig(
-            mySelfer: self,
+        let theMessageModelService = MessageModelService(
             errorPropagator: errorPropagator,
-            oauth2AuthorizationFactory: oauth2Provider)
+            notifyHandShakeDelegate: notifyHandshakeDelegate)
+        theMessageModelService.delegate = self
+        self.messageModelService = theMessageModelService
+
+        let theAppConfig = AppConfig(
+            errorPropagator: errorPropagator,
+            oauth2AuthorizationFactory: oauth2Provider,
+            messageModelService: theMessageModelService)
         appConfig = theAppConfig
+
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = theAppConfig
 
-        // set up logging for libraries
-
-        // TODO: IOS-1276 set MessageModelConfig.logger
-
         loadCoreDataStack()
-        messageModelService = MessageModelService(
-            mySelfer: self,
-            errorPropagator: errorPropagator,
-            notifyHandShakeDelegate: notifyHandshakeDelegate)
-        messageModelService?.delegate = self
     }
 
     // Safely restarts all services
@@ -234,7 +225,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - UIApplicationDelegate
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.log("applicationDidReceiveMemoryWarning")
+        Log.shared.warn("applicationDidReceiveMemoryWarning")
     }
 
     func application(
@@ -254,7 +245,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         setupServices()
-        Log.shared.log("Library url: %{public}@", String(describing: applicationDirectory()))
+        Log.shared.warn("Library url: %@", String(describing: applicationDirectory()))
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
         askUserForPermissions()
@@ -272,8 +263,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         shouldDestroySession = true
-        // generate keys in the background
-        kickOffMySelf()
         stopUsingPepSession()
     }
 
@@ -294,7 +283,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         shouldDestroySession = false
 
         shutdownAndPrepareServicesForRestart()
-        kickOffMySelf()
         UserNotificationTool.resetApplicationIconBadgeNumber()
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
@@ -357,14 +345,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
-// MARK: - KickOffMySelfProtocol
-
-extension AppDelegate: KickOffMySelfProtocol {
-    func startMySelf() {
-        kickOffMySelf()
-    }
-}
-
 // MARK: - ReplicationServiceDelegate
 
 extension AppDelegate: MessageModelServiceDelegate {
@@ -380,7 +360,7 @@ extension AppDelegate: MessageModelServiceDelegate {
             // No problem, start regular sync loop.
             startServices()
         }
-        application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: syncUserActionsAndCleanupbackgroundTaskId.rawValue))
+        application.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
         syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
 
