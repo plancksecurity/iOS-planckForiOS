@@ -255,14 +255,6 @@
             </objects>
             <point key="canvasLocation" x="5420" y="-1649.3253373313344"/>
         </scene>
-        <!--FolderViews-->
-        <scene sceneID="9j8-vu-u1w">
-            <objects>
-                <viewControllerPlaceholder storyboardName="FolderViews" id="zK6-Pe-MeR" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fCg-fB-8wj" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4703" y="-1525"/>
-        </scene>
         <!--Filter Table View Controller-->
         <scene sceneID="9dD-N3-Mae">
             <objects>
@@ -296,7 +288,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="emailDetail" title="Show email" id="3bx-34-vLD" customClass="EmailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="mYV-vz-wEb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -315,20 +307,26 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="This email has been sent as part of a mailing list." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BjL-CL-0Cu">
-                                            <rect key="frame" x="15" y="5" width="331" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This email has been sent as part of a mailing list." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BjL-CL-0Cu">
+                                            <rect key="frame" x="15" y="5" width="306" height="16"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWA-cC-IZF">
-                                            <rect key="frame" x="0.0" y="21" width="95" height="28"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWA-cC-IZF">
+                                            <rect key="frame" x="0.0" y="22" width="72" height="27"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <state key="normal" title="Unsubscribe"/>
                                         </button>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="BjL-CL-0Cu" firstAttribute="leading" secondItem="0v8-u0-Fch" secondAttribute="leading" constant="15" id="4Il-z2-wbU"/>
+                                        <constraint firstItem="oWA-cC-IZF" firstAttribute="leading" secondItem="0v8-u0-Fch" secondAttribute="leading" id="A2p-Qr-UdG"/>
+                                        <constraint firstAttribute="trailing" secondItem="BjL-CL-0Cu" secondAttribute="trailing" priority="10" constant="10" id="MXz-cR-pkK"/>
+                                        <constraint firstItem="BjL-CL-0Cu" firstAttribute="top" secondItem="0v8-u0-Fch" secondAttribute="top" constant="5" id="OUM-cX-Qvi"/>
+                                        <constraint firstAttribute="bottom" secondItem="oWA-cC-IZF" secondAttribute="bottom" constant="1" id="Qkm-m7-duu"/>
+                                        <constraint firstAttribute="trailing" secondItem="oWA-cC-IZF" secondAttribute="trailing" priority="10" constant="10" id="nLh-FJ-GZf"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <connections>
@@ -921,7 +919,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="RTR-We-Kc1"/>
         <segue reference="0zl-tV-6Kr"/>
-        <segue reference="ber-OQ-S16"/>
+        <segue reference="anx-J8-OKE"/>
         <segue reference="Usl-iS-7fo"/>
     </inferredMetricsTieBreakers>
 </document>
