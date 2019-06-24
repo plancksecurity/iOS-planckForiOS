@@ -87,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals all PEPSession users to stop using a session as soon as possible.
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
-    private func stopUsingPepSession() {
+    private func gracefullyShutdownServices() {
         guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
             else {
                 Log.shared.warn(
@@ -263,7 +263,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         shouldDestroySession = true
-        stopUsingPepSession()
+        gracefullyShutdownServices()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -369,7 +369,7 @@ extension AppDelegate: MessageModelServiceDelegate {
         case .background:
             // We have been cancelled because we are entering background.
             // Quickly sync local changes and clean up.
-            stopUsingPepSession()
+            gracefullyShutdownServices()
         case .inactive:
             // We re inactive. Keep services paused -> Do nothing
             break
