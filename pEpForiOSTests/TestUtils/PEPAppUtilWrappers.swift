@@ -13,14 +13,14 @@ import pEpForiOS
 import PEPObjCAdapterFramework
 
 // TODO: Duplicate.
-public extension CdIdentity {
+extension CdIdentity {
     public func pEpIdentity() -> PEPIdentity {
         return PEPUtil.pEpDict(cdIdentity: self)
     }
 }
 
 // TODO: Duplicate.
-public extension PEPSession {
+extension PEPSession {
     public func encrypt(pEpMessageDict: PEPMessageDict,
                         encryptionFormat: PEPEncFormat = .PEP,
                         forSelf: PEPIdentity? = nil) throws -> (PEPStatus, NSDictionary?) {
