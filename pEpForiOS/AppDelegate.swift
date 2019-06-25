@@ -84,6 +84,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    private func cancelBackgroundTask() {
+        guard syncUserActionsAndCleanupbackgroundTaskId != UIBackgroundTaskIdentifier.invalid else {
+            return
+        }
+        application.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
+        syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
+    }
+
     /// Signals all PEPSession users to stop using a session as soon as possible.
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
@@ -97,18 +105,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         syncUserActionsAndCleanupbackgroundTaskId =
             application.beginBackgroundTask(expirationHandler: { [unowned self] in
-                Log.shared.warn(
-                    "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
-                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
+                let taskId = self.syncUserActionsAndCleanupbackgroundTaskId
+
                 // We migh want to call some (yet unexisting) emergency shutdown on
                 // ReplicationService here that brutally shuts down everything.
-                self.application.endBackgroundTask(
-                    self.syncUserActionsAndCleanupbackgroundTaskId)
-                self.syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
+                self.cancelBackgroundTask()
 
                 Log.shared.errorAndCrash(
                     "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
-                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
+                    taskId.rawValue)
             })
         messageModelService?.processAllUserActionsAndStop()
     }
