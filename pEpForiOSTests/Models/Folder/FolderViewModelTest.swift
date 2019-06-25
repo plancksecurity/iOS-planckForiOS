@@ -57,7 +57,8 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         let foldersSection = viewmodel[sectionPositionForAccountFolders]
         XCTAssertEqual(foldersSection.count, acc.totalFolders())
         XCTAssertEqual(foldersSection.count, expectedOrder.count)
-        for i in 0...foldersSection.count-1 {
+        let numberOfFolders = foldersSection.count - 1
+        for i in 0...numberOfFolders {
             guard let folder = foldersSection[i].folder as? Folder else {
                 XCTFail()
                 return
