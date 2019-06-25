@@ -9,11 +9,10 @@
 struct Tuple<T:Hashable, U:Hashable>: Hashable {
     let values : (T, U)
 
-    var hashValue : Int {
-        get {
-            let (a,b) = values
-            return a.hashValue &* 31 &+ b.hashValue
-        }
+    func hash(into hasher: inout Hasher) {
+        let (a,b) = values
+        hasher.combine(a)
+        hasher.combine(b)
     }
 }
 

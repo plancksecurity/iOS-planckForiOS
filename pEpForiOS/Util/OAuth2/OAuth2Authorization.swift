@@ -71,7 +71,9 @@ extension OAuth2Authorization: Equatable {
 }
 
 extension OAuth2Authorization: Hashable {
-    var hashValue: Int {
-        return uuid.hashValue
+
+    func hash(into hasher: inout Hasher) {
+        // `predicate.hashValue` is returning an unexpected value, that's why we use description.
+        hasher.combine(uuid)
     }
 }
