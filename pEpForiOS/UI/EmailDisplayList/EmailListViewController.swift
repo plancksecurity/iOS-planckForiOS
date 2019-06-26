@@ -911,13 +911,13 @@ extension EmailListViewController {
     }
 
     private func createReadOrUnReadAction(forRowAt indexPath: IndexPath) -> UIAlertAction {
-        let seenStatus = model?.viewModel(for: indexPath.row)?.isSeen ?? false
+        let seenState = model?.viewModel(for: indexPath.row)?.isSeen ?? false
 
         var title = ""
-        if seenStatus {
-            title = NSLocalizedString("Unread Message", comment: "EmailList action title")
+        if seenState {
+            title = NSLocalizedString("Mark as unread", comment: "EmailList action title")
         } else {
-            title = NSLocalizedString("Read Message", comment: "EmailList action title")
+            title = NSLocalizedString("Mark as Read", comment: "EmailList action title")
         }
 
         return UIAlertAction(title: title, style: .default) { [weak self] action in
@@ -925,8 +925,7 @@ extension EmailListViewController {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
-
-            if seenStatus {
+            if seenState {
                 me.model?.markSelectedAsUnread(indexPaths: [indexPath])
                 if let cell = me.tableView.cellForRow(at: indexPath) as? EmailListViewCell {
                     cell.isSeen = false
