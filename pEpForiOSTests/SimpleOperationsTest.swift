@@ -144,11 +144,14 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors())
         })
 
+        guard let allMessagesToTest = CdMessage.all() as? [CdMessage] else {
+            XCTFail()
+            return
+        }
         // Since the server flags have not changed, we still know that we have local changes
         // that should not get overwritten by the server.
         // Hence, all messages are still the same.
-        for (i, m) in allMessages.enumerated() {
-            m.refresh(mergeChanges: true, in: moc)
+        for (i, m) in allMessagesToTest.enumerated() {
             XCTAssertFalse(m.imap?.localFlags?.flagSeen == flagsSeenBefore[i])
         }
     }
