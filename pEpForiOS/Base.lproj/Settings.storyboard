@@ -79,9 +79,10 @@
                                         </switch>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Ag8-Qj-N8l" firstAttribute="leading" secondItem="He2-qq-HU6" secondAttribute="leadingMargin" id="1WI-rW-6B0"/>
+                                        <constraint firstItem="Ag8-Qj-N8l" firstAttribute="leading" secondItem="He2-qq-HU6" secondAttribute="leadingMargin" priority="10" id="1WI-rW-6B0"/>
                                         <constraint firstItem="qPx-oD-7wO" firstAttribute="centerY" secondItem="He2-qq-HU6" secondAttribute="centerY" id="2kh-si-Y28"/>
                                         <constraint firstAttribute="trailing" secondItem="qPx-oD-7wO" secondAttribute="trailing" constant="16" id="ang-u0-qP6"/>
+                                        <constraint firstItem="qPx-oD-7wO" firstAttribute="leading" secondItem="Ag8-Qj-N8l" secondAttribute="trailing" constant="252" id="nKU-le-qo5"/>
                                         <constraint firstItem="Ag8-Qj-N8l" firstAttribute="centerY" secondItem="He2-qq-HU6" secondAttribute="centerY" id="wlL-Ru-GNt"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -348,6 +349,7 @@
                                             <constraints>
                                                 <constraint firstItem="wxK-W7-y8D" firstAttribute="leading" secondItem="UJO-pq-3Op" secondAttribute="leadingMargin" constant="4" id="F5G-wx-YGI"/>
                                                 <constraint firstItem="wxK-W7-y8D" firstAttribute="centerY" secondItem="UJO-pq-3Op" secondAttribute="centerY" id="Ond-PS-O1g"/>
+                                                <constraint firstItem="tUA-ey-cn7" firstAttribute="leading" secondItem="wxK-W7-y8D" secondAttribute="trailing" priority="10" constant="133" id="bSc-Tg-PyM"/>
                                                 <constraint firstItem="tUA-ey-cn7" firstAttribute="centerY" secondItem="wxK-W7-y8D" secondAttribute="centerY" id="ddu-74-bgz"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="tUA-ey-cn7" secondAttribute="trailing" constant="4" id="k0D-DT-ChU"/>
                                             </constraints>
@@ -618,6 +620,7 @@
                                         <constraint firstAttribute="trailingMargin" secondItem="b26-mD-vaw" secondAttribute="trailing" id="HWe-q7-n5e"/>
                                         <constraint firstItem="X0Z-Ju-XOO" firstAttribute="centerY" secondItem="dSZ-uk-uWx" secondAttribute="centerY" id="bfu-Z7-7gB"/>
                                         <constraint firstItem="X0Z-Ju-XOO" firstAttribute="leading" secondItem="dSZ-uk-uWx" secondAttribute="leadingMargin" id="c6z-La-XFh"/>
+                                        <constraint firstItem="b26-mD-vaw" firstAttribute="leading" secondItem="X0Z-Ju-XOO" secondAttribute="trailing" priority="10" constant="252" id="eWq-61-ef5"/>
                                         <constraint firstItem="b26-mD-vaw" firstAttribute="centerY" secondItem="dSZ-uk-uWx" secondAttribute="centerY" id="ii7-7r-v2b"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -636,14 +639,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d7G-qu-RO5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2276" y="-390.85457271364322"/>
-        </scene>
-        <!--AccountCreation-->
-        <scene sceneID="0vj-GL-XbM">
-            <objects>
-                <viewControllerPlaceholder storyboardName="AccountCreation" id="Rly-af-89k" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="QLV-3R-1jF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3152" y="-391.304347826087"/>
         </scene>
         <!--Setting Default Account Table View Controller-->
         <scene sceneID="26G-EO-g0Z">
