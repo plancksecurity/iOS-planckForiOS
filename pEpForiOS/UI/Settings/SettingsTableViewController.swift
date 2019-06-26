@@ -158,8 +158,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 performSegue(withIdentifier: .segueEditAccount, sender: self)
             case .defaultAccount:
                 performSegue(withIdentifier: .segueShowSettingDefaultAccount, sender: self)
-            case .showLog:
-                performSegue(withIdentifier: .segueShowLog, sender: self)
             case .credits:
                 performSegue(withIdentifier: .sequeShowCredits, sender: self)
             case .trustedServer:
@@ -187,7 +185,6 @@ extension SettingsTableViewController: SegueHandlerType {
         case segueAddNewAccount
         case segueEditAccount
         case segueShowSettingDefaultAccount
-        case segueShowLog
         case sequeShowCredits
         case segueShowSettingTrustedServers
         case segueSetOwnKey
@@ -226,11 +223,6 @@ extension SettingsTableViewController: SegueHandlerType {
                 return
             }
             destination.appConfig = self.appConfig
-        case .segueShowLog:
-            guard let viewController = segue.destination as? LogViewController else {
-                    return
-            }
-            viewController.appConfig = self.appConfig
         case .segueSetOwnKey:
             break
         case .noSegue:

@@ -170,7 +170,6 @@
 		15874BCC2127493E00A3A4A6 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BB92127493E00A3A4A6 /* AccountSettingsViewModel.swift */; };
 		15874BCD2127493E00A3A4A6 /* AccountSettingsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BBA2127493E00A3A4A6 /* AccountSettingsError.swift */; };
 		15874BCF2127493E00A3A4A6 /* AccountSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BBC2127493E00A3A4A6 /* AccountSettingsTableViewController.swift */; };
-		15874BD02127493E00A3A4A6 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BBD2127493E00A3A4A6 /* LogViewController.swift */; };
 		15874BD12127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BBF2127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift */; };
 		15874BD22127493E00A3A4A6 /* TrustedServerSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BC02127493E00A3A4A6 /* TrustedServerSettingsViewController.swift */; };
 		15874BD421274BD400A3A4A6 /* TrustedServerSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BD321274BD400A3A4A6 /* TrustedServerSettingCell.swift */; };
@@ -646,7 +645,6 @@
 		15874BB92127493E00A3A4A6 /* AccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		15874BBA2127493E00A3A4A6 /* AccountSettingsError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsError.swift; sourceTree = "<group>"; };
 		15874BBC2127493E00A3A4A6 /* AccountSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsTableViewController.swift; sourceTree = "<group>"; };
-		15874BBD2127493E00A3A4A6 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		15874BBF2127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingsViewModel.swift; sourceTree = "<group>"; };
 		15874BC02127493E00A3A4A6 /* TrustedServerSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingsViewController.swift; sourceTree = "<group>"; };
 		15874BD321274BD400A3A4A6 /* TrustedServerSettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingCell.swift; sourceTree = "<group>"; };
@@ -1440,7 +1438,6 @@
 				15874BB02127493E00A3A4A6 /* SettingDefaultAccountTableViewController.swift */,
 				15874BB12127493E00A3A4A6 /* OnOffSettings */,
 				15874BB62127493E00A3A4A6 /* AccountSettings */,
-				15874BBD2127493E00A3A4A6 /* LogViewController.swift */,
 				15874BBE2127493E00A3A4A6 /* TrustedServerSetting */,
 			);
 			path = Setting;
@@ -2888,7 +2885,6 @@
 				15547568213931BC005A52D0 /* Folder+Threading.swift in Sources */,
 				4330278E1F7BABFF00D685F8 /* GradientView.swift in Sources */,
 				434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */,
-				15874BD02127493E00A3A4A6 /* LogViewController.swift in Sources */,
 				152A39E121905C3E00D9F8E4 /* RecipientCellViewModel+FieldType.swift in Sources */,
 				4351C2CC1F4441190053381F /* cmark_ctype.c in Sources */,
 				152A39DB21905C3E00D9F8E4 /* CellViewModel.swift in Sources */,
