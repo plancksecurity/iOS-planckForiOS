@@ -67,15 +67,12 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(rowType, .credits)
 
         rowType = settingsVM.rowType(for: IndexPath(row: 2, section: 1))
-        XCTAssertEqual(rowType, .showLog)
-
-        rowType = settingsVM.rowType(for: IndexPath(row: 3, section: 1))
         XCTAssertEqual(rowType, .trustedServer)
 
-        rowType = settingsVM.rowType(for: IndexPath(row: 4, section: 1))
+        rowType = settingsVM.rowType(for: IndexPath(row: 3, section: 1))
         XCTAssertEqual(rowType, .setOwnKey)
 
-        rowType = settingsVM.rowType(for: IndexPath(row: 5, section: 1))
+        rowType = settingsVM.rowType(for: IndexPath(row: 4, section: 1))
         XCTAssertEqual(rowType, nil)
     }
 
