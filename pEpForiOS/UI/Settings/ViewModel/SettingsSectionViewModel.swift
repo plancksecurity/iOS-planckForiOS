@@ -50,7 +50,6 @@ public class SettingsSectionViewModel {
     func generateGlobalSettingsCells() {
         self.cells.append(SettingsCellViewModel(type: .defaultAccount))
         self.cells.append(SettingsCellViewModel(type: .credits))
-        self.cells.append(SettingsCellViewModel(type: .showLog))
         self.cells.append(SettingsCellViewModel(type: .trustedServer))
         self.cells.append(SettingsCellViewModel(type: .setOwnKey))
         self.cells.append(PassiveModeViewModel())

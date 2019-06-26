@@ -13,7 +13,6 @@ import pEpIOSToolbox
 extension SettingsCellViewModel {
     public enum SettingType {
         case account
-        case showLog
         case credits
         case defaultAccount
         case trustedServer
@@ -52,8 +51,6 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     public var title : String? {
         get {
             switch self.type {
-            case .showLog:
-                return NSLocalizedString("Logging", comment: "")
             case .credits:
                 return NSLocalizedString(
                     "Credits",
@@ -82,7 +79,7 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     public var value : String? {
         get {
             switch self.type {
-            case .showLog, .account, .credits, .trustedServer, .setOwnKey:
+            case .account, .credits, .trustedServer, .setOwnKey:
                 // Have no value.
                 return nil
             case .defaultAccount:
