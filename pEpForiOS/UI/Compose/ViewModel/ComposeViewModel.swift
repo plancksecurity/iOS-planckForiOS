@@ -70,6 +70,7 @@ class ComposeViewModel {
     public private(set) var sections = [ComposeViewModel.Section]()
     public private(set) var state: ComposeViewModelState
 
+    private var session: Session
     private var suggestionsVM: SuggestViewModel?
     private var lastRowWithSuggestions: IndexPath?
     private var indexPathBodyVm: IndexPath {
@@ -87,7 +88,9 @@ class ComposeViewModel {
          composeMode: ComposeUtil.ComposeMode? = nil,
          prefilledTo: Identity? = nil,
          prefilledFrom: Identity? = nil,
-         originalMessage: Message? = nil) {
+         originalMessage: Message? = nil,
+         session: Session = Session.main) {
+        self.session = session
         self.resultDelegate = resultDelegate
         let initData = InitData(withPrefilledToRecipient: prefilledTo,
                                 prefilledFromSender: prefilledFrom,
@@ -548,6 +551,7 @@ extension ComposeViewModel {
             Log.shared.errorAndCrash("No data")
             return
         }
+        session.rollback()
         if data.isOutbox {
             data.originalMessage?.delete()
             if let message = data.originalMessage {
@@ -566,6 +570,7 @@ extension ComposeViewModel {
             // Technically we have to create a new one and delete the original message, as the
             // mail is already synced with the IMAP server and thus we must not modify it.
             deleteOriginalMessage()
+            session.commit()
             if data.isOutbox {
                 // Message will be saved (moved from user perspective) to drafts, but we are in
                 // outbox folder.
@@ -604,7 +609,8 @@ extension ComposeViewModel {
     // There is no view model for HandshakeViewController yet, thus we are setting up the VC itself
     // as a workaround to avoid letting the VC know MessageModel
     func setup(handshakeViewController: HandshakeViewController) {
-        handshakeViewController.message = ComposeUtil.messageToSend(withDataFrom: state)
+        handshakeViewController.message = ComposeUtil.messageToSend(withDataFrom: state,
+                                                                    sesion: session)
     }
 }
 

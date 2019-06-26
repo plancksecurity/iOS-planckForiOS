@@ -16,10 +16,13 @@ class HandshakeViewController: BaseTableViewController {
     var ratingReEvaluator: RatingReEvaluator?
     var backTitle: String?
     var currentLanguageCode = "en"
+    var session = Session()
 
     var message: Message? {
         didSet {
-            handshakeCombinations = message?.handshakeActionCombinations() ?? []
+            session.performAndWait { [weak self] in
+                self?.handshakeCombinations = self?.message?.handshakeActionCombinations() ?? []
+            }
         }
     }
 
@@ -41,7 +44,9 @@ class HandshakeViewController: BaseTableViewController {
     }
 
     fileprivate func updateStatusBadge() {
-        self.showPepRating(pEpRating: message?.pEpRating())
+        session.performAndWait { [weak self] in
+            self?.showPepRating(pEpRating: self?.message?.pEpRating())
+        }
     }
 
     override func viewDidLoad() {

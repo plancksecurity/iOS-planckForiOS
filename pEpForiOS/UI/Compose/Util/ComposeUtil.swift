@@ -144,7 +144,7 @@ struct ComposeUtil {
     // MARK: - Message to send
 
     static public func messageToSend(
-        withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
+        withDataFrom state: ComposeViewModel.ComposeViewModelState, sesion: Session = Session.main) -> Message? {
         guard let from = state.from,
             let account = Account.by(address: from.address) else {
                 Log.shared.errorAndCrash(
@@ -156,7 +156,9 @@ struct ComposeUtil {
             return nil
         }
 
-        let message = Message(uuid: MessageID.generate(), parentFolder: f)
+        let message = Message.newObject(onSession: sesion)
+        message.uuid = MessageID.generate()
+        message.parent = f
         message.from = from
         message.replaceTo(with: state.toRecipients)
         message.replaceCc(with: state.ccRecipients)
