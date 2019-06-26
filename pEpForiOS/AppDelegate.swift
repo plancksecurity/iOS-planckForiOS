@@ -115,6 +115,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
                     taskId.rawValue)
             })
+
+        Log.shared.info(
+            "Started background sync %d", syncUserActionsAndCleanupbackgroundTaskId.rawValue)
+
         messageModelService?.processAllUserActionsAndStop()
     }
 
