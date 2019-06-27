@@ -30,7 +30,7 @@ class TestDataBase {
         var smtpLoginName: String?
         var smtpServerAddress: String
         var smtpServerType: Server.ServerType = .smtp
-        var smtpServerTransport: Server.Transport = .tls
+        var smtpServerTransport: Server.Transport = .sslTls
         var smtpServerPort: UInt16 = 587
         var imapLoginName: String?
         var imapServerAddress: String
@@ -239,12 +239,12 @@ class TestDataBase {
 
             imapServerAddress: "imap.mail.yahoo.com",
             imapServerType: Server.ServerType.imap,
-            imapServerTransport: Server.Transport.tls,
+            imapServerTransport: Server.Transport.sslTls,
             imapServerPort: 993,
 
             smtpServerAddress: "smtp.mail.yahoo.com",
             smtpServerType: Server.ServerType.smtp,
-            smtpServerTransport: Server.Transport.tls,
+            smtpServerTransport: Server.Transport.sslTls,
             smtpServerPort: 465,
 
             password: "whatever_you_want"))
