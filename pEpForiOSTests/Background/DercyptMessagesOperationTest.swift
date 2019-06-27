@@ -22,7 +22,7 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
         let folder = CdFolder(context: moc)
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         guard
             let affectedMessage = TestUtil.loadData(fileName: "IOS-815_pep_rating_zero.txt"),

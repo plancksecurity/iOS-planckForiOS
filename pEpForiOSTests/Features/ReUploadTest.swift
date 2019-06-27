@@ -171,7 +171,7 @@ import CoreData
 //        XCTAssertTrue(PEPUtil.pEpClean())
 //        persistentSetup = PersistentSetup()
 //        let cdAccount = SecretTestData().createWorkingCdAccount()
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //        self.cdAccount = cdAccount
 //    }
 //
@@ -352,7 +352,7 @@ import CoreData
 //            "unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc")
 //        try! session.setOwnKey(cdAccount.identity!.pEpIdentity(),
 //                               fingerprint: "550A9E626822040E57CB151A651C4A5DB15B77A3")
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //        cdAccount.createRequiredFoldersAndWait(testCase: self)
 //    }
 //
@@ -418,7 +418,7 @@ import CoreData
 //        // Delete tmp account
 //        tmpCdAccount.identity?.delete()
 //        tmpCdAccount.delete()
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //        // Save new acount
 //        createe.save()
 //        guard let cdAccount = createe.cdAccount() else {
@@ -462,7 +462,7 @@ import CoreData
 //        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
 //        // Delete receiver account. Has to be freshly crated in tests.
 //        cdAccountReceiver.delete()
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //    }
 //
 //    // MARK: Other

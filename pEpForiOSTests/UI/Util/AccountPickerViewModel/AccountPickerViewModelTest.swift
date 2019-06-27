@@ -130,9 +130,7 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
     }
 
     private func deleteAllAccounts() {
-        for account in Account.all() {
-            account.delete()
-        }
+        Account.all().forEach { $0.delete() }
     }
 
     private func account(at: Int) -> Account {
