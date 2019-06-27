@@ -117,7 +117,7 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
     }
 
     func givenThereIsNotAccounts(withUnifiedInbox: Bool) {
-        CdAccount.deleteAll()
+        Account.all().forEach { $0.delete() }
         viewmodel = FolderViewModel(withFoldersIn: nil, includeUnifiedInbox: withUnifiedInbox)
     }
 }
