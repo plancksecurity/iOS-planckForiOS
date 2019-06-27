@@ -57,7 +57,7 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
         mail1.addToTo(partnerId)
         mail1.shortMessage = "Are you ok?"
         mail1.longMessage = "Hi there!"
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         appendMailsIMAP(folder: cdInbox,
                         imapSyncData: imapSyncData,

@@ -119,19 +119,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    func loadCoreDataStack() {
-        let objectModel = MessageModelData.MessageModelData()
-        let options = [NSMigratePersistentStoresAutomaticallyOption: true,
-                       NSInferMappingModelAutomaticallyOption: true]
-        do {
-            try Record.loadCoreDataStack(managedObjectModel: objectModel,
-                                         storeURL: nil,
-                                         options: options)
-        } catch {
-            Log.shared.errorAndCrash("Error while Loading DataStack")
-        }
-    }
-
     /**
      Removes all keys, and the management DB, when the user chooses so.
      - Returns: True if the pEp management DB was deleted, so further actions can be taken.
@@ -184,8 +171,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = theAppConfig
-
-        loadCoreDataStack()
     }
 
     // Safely restarts all services
