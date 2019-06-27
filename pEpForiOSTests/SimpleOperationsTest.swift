@@ -117,7 +117,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             }
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         let changedMessages = SyncFlagsToServerOperation.messagesToBeSynced(folder: folder,
                                                                             context: moc)
@@ -395,7 +395,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
             message.addToTo(to)
         }
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         if let msgs = CdMessage.all() as? [CdMessage] {
             for m in msgs {
@@ -490,7 +490,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         let account = SecretTestData().createWorkingCdAccount(context: moc)
         account.identity = id
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         self.measure {
             for _ in [1...1000] {

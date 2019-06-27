@@ -57,7 +57,7 @@ class ReplicationServiceTests: XCTestCase {
 ////        replicationService.delegate = del
 ////
 ////        _ = SecretTestData().createWorkingCdAccount()
-////        Record.saveAndWait()
+////        moc.saveAndLogErrors()
 ////
 ////        replicationService.start()
 ////
@@ -129,7 +129,7 @@ class ReplicationServiceTests: XCTestCase {
 //        let replicationService = ReplicationService(parentName: #function)
 //
 //        _ = SecretTestData().createWorkingCdAccount(context: moc)
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //
 //        for _ in 0...10 {
 //            replicationService.start()
@@ -176,7 +176,7 @@ class ReplicationServiceTests: XCTestCase {
 //            useCorrectSmtpAccount ?
 //            SecretTestData().createWorkingCdAccount(context: moc) :
 //            SecretTestData().createSmtpTimeOutCdAccount(context: moc)
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //
 //        TestUtil.syncAndWait(testCase: self)
 //
