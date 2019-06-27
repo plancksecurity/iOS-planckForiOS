@@ -42,6 +42,6 @@ class FilterViewModelTest: CoreDataDrivenTestBase {
     //MARK: Initialization
     func givenThereAreTwoAccounts() {
         _ = SecretTestData().createWorkingCdAccount(number: 1)
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
     }*/
 }
