@@ -12,7 +12,7 @@ import MessageModel
 final class KeySyncServiceHandshakeDelegateMoc: KeySyncServiceHandshakeDelegate{
     var presenter: UIViewController?
 
-    func showHandshake(meFpr: String, partnerFpr: String) {}
+    func showHandshake(me: PEPIdentity, partner: PEPIdentity) {}
 
     func cancelHandshake() {}
 
