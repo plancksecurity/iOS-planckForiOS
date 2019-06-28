@@ -16,7 +16,7 @@ class HandshakeViewController: BaseTableViewController {
     var ratingReEvaluator: RatingReEvaluator?
     var backTitle: String?
     var currentLanguageCode = "en"
-    var session = Session()
+    var session =  Session.main
 
     var message: Message? {
         didSet {

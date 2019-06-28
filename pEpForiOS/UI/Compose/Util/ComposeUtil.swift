@@ -145,36 +145,44 @@ struct ComposeUtil {
 
     static public func messageToSend(
         withDataFrom state: ComposeViewModel.ComposeViewModelState, sesion: Session = Session.main) -> Message? {
-        guard let from = state.from,
-            let account = Account.by(address: from.address) else {
-                Log.shared.errorAndCrash(
-                    "We have a problem here getting the senders account.")
-                return nil
-        }
-        guard let f = Folder.by(account: account, folderType: .outbox) else {
-            Log.shared.errorAndCrash("No outbox")
-            return nil
-        }
+        var message: Message?
+        sesion.performAndWait {
+            guard let from = state.from,
+                let account = Account.by(address: from.address) else {
+                    Log.shared.errorAndCrash(
+                        "We have a problem here getting the senders account.")
+                    return
+            }
+            guard let f = Folder.by(account: account, folderType: .outbox) else {
+                Log.shared.errorAndCrash("No outbox")
+                return
+            }
 
-        let message = Message.newObject(onSession: sesion)
-        message.uuid = MessageID.generate()
-        message.parent = f
-        message.from = from
-        message.replaceTo(with: state.toRecipients)
-        message.replaceCc(with: state.ccRecipients)
-        message.replaceBcc(with: state.bccRecipients)
-        message.shortMessage = state.subject
-        message.longMessage = state.bodyPlaintext
-        message.longMessageFormatted = !state.bodyHtml.isEmpty ? state.bodyHtml : nil
-        message.replaceAttachments(with: state.inlinedAttachments + state.nonInlinedAttachments)
-        message.pEpProtected = state.pEpProtection
-        if !state.pEpProtection {
-            message.setOriginalRatingHeader(rating: PEPRating.unencrypted)
-        } else {
-            message.setOriginalRatingHeader(rating: state.rating)
-        }
+            message = Message.newObject(onSession: sesion)
 
-        message.imapFlags.seen = imapSeenState(forMessageToSend: message)
+            guard let message = message else {
+                Log.shared.errorAndCrash("Message in this session is nil")
+                return
+            }
+            message.uuid = MessageID.generate()
+            message.parent = f
+            message.from = from
+            message.replaceTo(with: state.toRecipients)
+            message.replaceCc(with: state.ccRecipients)
+            message.replaceBcc(with: state.bccRecipients)
+            message.shortMessage = state.subject
+            message.longMessage = state.bodyPlaintext
+            message.longMessageFormatted = !state.bodyHtml.isEmpty ? state.bodyHtml : nil
+            message.replaceAttachments(with: state.inlinedAttachments + state.nonInlinedAttachments)
+            message.pEpProtected = state.pEpProtection
+            if !state.pEpProtection {
+                message.setOriginalRatingHeader(rating: PEPRating.unencrypted)
+            } else {
+                message.setOriginalRatingHeader(rating: state.rating)
+            }
+
+            message.imapFlags.seen = imapSeenState(forMessageToSend: message)
+        }
 
         return message
     }

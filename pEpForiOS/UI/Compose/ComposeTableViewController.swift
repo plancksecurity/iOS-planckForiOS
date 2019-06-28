@@ -65,7 +65,7 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func setupModel() {
-        viewModel = ComposeViewModel(session: Session())
+        viewModel = ComposeViewModel()
     }
 
     private final func setupRecipientSuggestionsTableViewController() {
