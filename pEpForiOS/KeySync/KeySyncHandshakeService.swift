@@ -78,11 +78,15 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
         let partner = PEPIdentity(address: testOwnID.address!,
                                   userID: testOwnID.userID,
                                   userName: testOwnID.userName,
-                                  isOwn: false)
+                                  isOwn: true)
         partner.fingerPrint = partnerFpr
 
-        try! PEPSession().deliver(PEPSyncHandshakeResult.accepted,
+        do {
+            try PEPSession().deliver(PEPSyncHandshakeResult.accepted,
                                   identitiesSharing: [me, partner])
+        } catch {
+            print(error)
+        }
 //        fatalError("unimplemented stub")
 
         // Show handshake.
