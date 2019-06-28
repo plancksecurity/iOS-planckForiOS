@@ -59,7 +59,31 @@ class KeySyncHandshakeService {
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
     func showHandshake(meFpr: String, partnerFpr: String) { //BUFF: HERE: add completionhandler
-        fatalError("unimplemented stub")
+
+        guard let cdAccount = CdAccount.all()?.first as? CdAccount else {
+            fatalError()
+        }
+        guard let testOwnID = cdAccount.identity else {
+            fatalError()
+        }
+        
+        let trustwords = try! PEPSession().getTrustwordsFpr1(meFpr, fpr2: partnerFpr, language: nil, full: true)
+        print(trustwords)
+
+        let me = PEPIdentity(address: testOwnID.address!,
+                             userID: testOwnID.userID,
+                             userName: testOwnID.userName,
+                             isOwn: true)
+        me.fingerPrint = meFpr
+        let partner = PEPIdentity(address: testOwnID.address!,
+                                  userID: testOwnID.userID,
+                                  userName: testOwnID.userName,
+                                  isOwn: false)
+        partner.fingerPrint = partnerFpr
+
+        try! PEPSession().deliver(PEPSyncHandshakeResult.accepted,
+                                  identitiesSharing: [me, partner])
+//        fatalError("unimplemented stub")
 
         // Show handshake.
         // report result
