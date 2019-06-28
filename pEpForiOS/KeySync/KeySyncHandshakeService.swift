@@ -59,8 +59,9 @@ class KeySyncHandshakeService {
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
     func showHandshake(meFpr: String, partnerFpr: String) { //BUFF: HERE: add completionhandler
+        DispatchQueue.main.async {
 
-        guard let cdAccount = CdAccount.all()?.first as? CdAccount else {
+        guard let account = CdAccount.all()?.first as? CdAccount else {
             fatalError()
         }
         guard let testOwnID = cdAccount.identity else {
@@ -91,11 +92,15 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
 
         // Show handshake.
         // report result
+        }
     }
 
     func cancelHandshake() {
+        DispatchQueue.main.async {
+
         fatalError("unimplemented stub")
 
         // dismiss possibly shown, KeySync related views
+        }
     }
 }
