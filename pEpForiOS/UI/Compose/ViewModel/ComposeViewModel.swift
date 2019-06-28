@@ -606,11 +606,7 @@ extension ComposeViewModel {
     // There is no view model for HandshakeViewController yet, thus we are setting up the VC itself
     // as a workaround to avoid letting the VC know MessageModel
     func setup(handshakeViewController: HandshakeViewController) {
-        //!!!: need to be done in a more fancy way. Maybe each message could hold the session.
-        let privateSession = Session()
-        handshakeViewController.session = privateSession
-        handshakeViewController.message = ComposeUtil.messageToSend(withDataFrom: state,
-                                                                    sesion: privateSession)
+        handshakeViewController.message = ComposeUtil.messageToSend(withDataFrom: state)
         //pass session to handshake
     }
 }
