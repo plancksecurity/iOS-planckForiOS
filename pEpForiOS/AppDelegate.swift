@@ -18,30 +18,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var appConfig: AppConfig?
 
-    /** The SMTP/IMAP backend */
+    /** The model */
     var messageModelService: MessageModelServiceProtocol?
 
-    /**
-     Error Handler to connect backend with UI
-     */
-    var errorPropagator = ErrorPropagator()
+    var deviceGroupService: KeySyncDeviceGroupService?
 
-    var application: UIApplication {
-        return UIApplication.shared
-    }
+    /// Error Handler bubble errors up to the UI
+    var errorPropagator = ErrorPropagator()
 
     let mySelfQueue = LimitedOperationQueue()
 
-    /**
-     This is used to handle OAuth2 requests.
-     */
+    /// This is used to handle OAuth2 requests.
     let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
     var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
 
-    /**
-     Set to true whever the app goes into background, so the main session gets cleaned up.
-     */
+    /// Set to true whever the app goes into background, so the main PEPSession gets cleaned up.
     var shouldDestroySession = false
 
     func applicationDirectory() -> URL? {
@@ -94,14 +86,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return
         }
         syncUserActionsAndCleanupbackgroundTaskId =
-            application.beginBackgroundTask(expirationHandler: { [unowned self] in
+            UIApplication.shared.beginBackgroundTask(expirationHandler: { [unowned self] in
                 Log.shared.warn(
                     "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
                     self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
                 // We migh want to call some (yet unexisting) emergency shutdown on
                 // ReplicationService here that brutally shuts down everything.
-                self.application.endBackgroundTask(
-                    self.syncUserActionsAndCleanupbackgroundTaskId)
+                UIApplication.shared.endBackgroundTask(self.syncUserActionsAndCleanupbackgroundTaskId)
                 self.syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
 
                 Log.shared.errorAndCrash(
@@ -156,8 +147,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setupServices() {
         let keySyncHandshakeService = KeySyncHandshakeService()
+        let deviceGroupService = KeySyncDeviceGroupService()
+        self.deviceGroupService = deviceGroupService
         let theMessageModelService = MessageModelService(errorPropagator: errorPropagator,
                                                          keySyncServiceDelegate: keySyncHandshakeService,
+                                                         deviceGroupDelegate: deviceGroupService,
                                                          keySyncEnabled: AppSettings.keySyncEnabled)
         theMessageModelService.delegate = self
         messageModelService = theMessageModelService
@@ -228,7 +222,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         setupServices()
-        Log.shared.warn("Library url: %@", String(describing: applicationDirectory()))
+        Log.shared.info("Library url: %@", String(describing: applicationDirectory()))
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
         askUserForPermissions()
@@ -343,7 +337,7 @@ extension AppDelegate: MessageModelServiceDelegate {
             // No problem, start regular sync loop.
             startServices()
         }
-        application.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
+         UIApplication.shared.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
         syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
 

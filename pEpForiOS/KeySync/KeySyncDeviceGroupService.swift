@@ -14,7 +14,7 @@ protocol KeySyncDeviceGroupServiceProtocol: class {
     func leaveDeviceGroup() throws
 }
 
-final class KeySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol {
+class KeySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol {
     var deviceGroupState: DeviceGroupState {
         return AppSettings.lastKnownDeviceGroupState
     }
