@@ -20,9 +20,12 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
     func showHandshake(me: PEPIdentity, partner: PEPIdentity) {
 
         //BUFF: debug without UI
-        try! PEPSession().deliver(PEPSyncHandshakeResult.accepted, identitiesSharing: [me, partner])
-
-        return
+        DispatchQueue.main.async { [weak self] in
+            try! PEPSession().deliver(PEPSyncHandshakeResult.accepted, identitiesSharing: [me, partner])
+            
+            
+            return
+        }
             //FFUB
 
 //            //BUFF: HERE: add completionhandler
