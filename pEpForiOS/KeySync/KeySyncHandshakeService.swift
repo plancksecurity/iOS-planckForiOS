@@ -18,6 +18,10 @@ class KeySyncHandshakeService {
 extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
 
     func showHandshake(me: PEPIdentity, partner: PEPIdentity) {
+        //deliver(PEPSyncHandshakeResult returns illegal value as me & partner isOwn == false
+        //BUFF: set myself for debugging
+        me.isOwn = true
+        partner.isOwn = true
 
         //BUFF: debug without UI
 //        DispatchQueue.main.async { [weak self] in
