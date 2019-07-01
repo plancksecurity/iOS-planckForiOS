@@ -17,63 +17,43 @@ class KeySyncHandshakeService {
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
 
-    func showHandshake(me: PEPIdentity, partner: PEPIdentity) {
+    func showHandshake(me: PEPIdentity,
+                       partner: PEPIdentity,
+                       completion: ((PEPSyncHandshakeResult)->())? = nil) {
 
-        //BUFF: debug without UI
-//        DispatchQueue.main.async { [weak self] in
-//            try! PEPSession().deliver(PEPSyncHandshakeResult.accepted, identitiesSharing: [me, partner])
-//
-//
-//            return
-//        }
-            //FFUB
-
-        //BUFF: HERE: add completionhandler
         DispatchQueue.main.async { [weak self] in
             guard let safeSelf = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            
+
             guard let meFPR = me.fingerPrint, let partnerFPR = partner.fingerPrint else {
                 Log.shared.errorAndCrash("Missing FPRs")
-                try? PEPSession().deliver(PEPSyncHandshakeResult.cancel,
-                                          identitiesSharing: [me, partner])
                 return
             }
-            
+
             let trustwords = try! PEPSession().getTrustwordsFpr1(meFPR,
                                                                  fpr2: partnerFPR,
                                                                  language: nil,
                                                                  full: true)
-            
+
             // Show Handshake
             let newAlertView = UIAlertController.pEpAlertController(title: "Handshake",
                                                                     message: trustwords,
                                                                     preferredStyle: .alert)
+            // Accept Action
             newAlertView.addAction(UIAlertAction(title: "Confirm Trustwords", style: .default) { action in
-                do {
-                    try PEPSession().deliver(PEPSyncHandshakeResult.accepted,
-                                             identitiesSharing: [me, partner])
-                } catch {
-                    return
-                }
+                completion?(PEPSyncHandshakeResult.accepted)
             })
+
+            // Reject Action
             newAlertView.addAction(UIAlertAction(title: "Wrong Trustwords", style: .destructive) { action in
-                do {
-                    try PEPSession().deliver(PEPSyncHandshakeResult.rejected,
-                                             identitiesSharing: [me, partner])
-                } catch {
-                    return
-                }
+                completion?(PEPSyncHandshakeResult.rejected)
             })
+
+            // Cancel Action
             newAlertView.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
-                do {
-                    try PEPSession().deliver(PEPSyncHandshakeResult.cancel,
-                                             identitiesSharing: [me, partner])
-                } catch {
-                    return
-                }
+                completion?(PEPSyncHandshakeResult.cancel)
             })
             safeSelf.alertView = newAlertView
             
@@ -82,7 +62,6 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                 return
             }
             vc.present(newAlertView, animated: true, completion: nil)
-            
         }
     }
 
@@ -94,5 +73,18 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
             }
             me.alertView?.dismiss(animated: true)
         }
+    }
+
+    func showSuccessfullyGrouped() {
+        guard let vc = presenter else {
+            Log.shared.errorAndCrash("No presenter")
+            return
+        }
+        let title = NSLocalizedString("In Device Group",
+                                      comment: "Title of alert in keysync protocol informing the user about successfull device grouping.")
+        let message = NSLocalizedString("Your device has been added to the device group.", comment: "Message of alert in keysync protocol informing the user about successfull device grouping.")
+        UIUtils.showAlertWithOnlyPositiveButton(title: title,
+                                                message: message,
+                                                inViewController: vc)
     }
 }
