@@ -32,9 +32,10 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                 return
             }
 
+            let lang = Locale.current.identifier
             let trustwords = try! PEPSession().getTrustwordsFpr1(meFPR,
                                                                  fpr2: partnerFPR,
-                                                                 language: nil,
+                                                                 language: lang,
                                                                  full: true)
 
             // Show Handshake
