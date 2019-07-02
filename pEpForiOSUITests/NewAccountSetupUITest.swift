@@ -76,13 +76,7 @@ class NewAccountSetupUITest: XCTestCase {
         let account1 = secretTestData().workingAccount1
         newAccountSetup(account: account1)
 
-        let theApp = app()
-        let folderButton = theApp.navigationBars["All"].buttons["Folders"]
-
-        guard waitForElementToAppear(folderButton, timeout: 10) == .completed else {
-            XCTFail("'Folders' button missing after setting up account")
-            return
-        }
+        switchFromInboxToFoldersView()
 
         addAccount()
 
@@ -339,5 +333,16 @@ class NewAccountSetupUITest: XCTestCase {
         }
 
         return result
+    }
+
+    /// Switches from the universal inbox to the folders view.
+    func switchFromInboxToFoldersView() {
+        let theApp = app()
+        let folderButton = theApp.navigationBars["All"].buttons["Folders"]
+
+        guard waitForElementToAppear(folderButton, timeout: 10) == .completed else {
+            XCTFail("'Folders' button missing after setting up account")
+            return
+        }
     }
 }
