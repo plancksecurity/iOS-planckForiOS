@@ -8,12 +8,17 @@
 
 import Foundation
 import MessageModel
+import PEPObjCAdapterFramework
 
-final class KeySyncServiceHandshakeDelegateMoc: KeySyncServiceHandshakeDelegate{
+class KeySyncServiceHandshakeDelegateMoc: KeySyncServiceHandshakeDelegate {
+
     var presenter: UIViewController?
 
-    func showHandshake(me: PEPIdentity, partner: PEPIdentity) {}
+    func showHandshake(me: PEPIdentity,
+                       partner: PEPIdentity,
+                       completion: ((PEPSyncHandshakeResult) -> ())?) { }
 
     func cancelHandshake() {}
 
+    func showSuccessfullyGrouped() {}
 }
