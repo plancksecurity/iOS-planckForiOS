@@ -34,6 +34,7 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         appConfig?.errorPropagator.subscriber = self
+        appConfig?.keySyncHandshakeService.presenter = self
     }
 
     // MARK: - ErrorPropagatorSubscriber

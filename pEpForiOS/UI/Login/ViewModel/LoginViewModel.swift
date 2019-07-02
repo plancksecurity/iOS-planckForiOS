@@ -62,11 +62,12 @@ class LoginViewModel {
         emailAddress: String,
         userName: String,
         oauth2Authorizer: OAuth2AuthorizationProtocol) {
-        lastOAuth2Parameters = OAuth2Parameters(
-            emailAddress: emailAddress, userName: userName)
+        lastOAuth2Parameters = OAuth2Parameters(emailAddress: emailAddress,
+                                                userName: userName)
 
         oauth2Model.delegate = self
-        oauth2Model.authorize(authorizer: oauth2Authorizer, emailAddress: emailAddress,
+        oauth2Model.authorize(authorizer: oauth2Authorizer,
+                              emailAddress: emailAddress,
                               viewController: viewController)
     }
 
@@ -76,8 +77,6 @@ class LoginViewModel {
      - parameter password: The password for the account
      - parameter loginName: The optional login name for this account, if different from the email
      - parameter userName: The chosen name of the user, or nick
-     - parameter mySelfer: An object to request a mySelf operation from, must be used immediately
-     after account setup
      */
     func login(accountName: String, userName: String, loginName: String? = nil,
                password: String? = nil, accessToken: OAuth2AccessTokenProtocol? = nil) {
@@ -175,7 +174,8 @@ extension LoginViewModel: OAuth2AuthViewModelDelegate {
                         oauth2Error: OAuth2AuthViewModelError.noParametersForVerification)
                     return
                 }
-                login(accountName: oauth2Params.emailAddress, userName: oauth2Params.userName,
+                login(accountName: oauth2Params.emailAddress,
+                      userName: oauth2Params.userName,
                       accessToken: token)
             } else {
                 loginViewModelOAuth2ErrorDelegate?.handle(
@@ -223,7 +223,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
         switch result {
         case .success(()):
             do {
-                try verifiableAccount.save()
+                try verifiableAccount.save() //!!!: BUFF: make sure key is generated for OAuth
                 informAccountVerificationResultDelegate(error: nil)
             } catch {
                 Log.shared.errorAndCrash(error: error)

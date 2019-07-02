@@ -10,17 +10,19 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class SettingsViewModelTest: CoreDataDrivenTestBase {
+final class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     var settingsVM : SettingsViewModel!
+    var keySyncDeviceGroupServiceMoc: KeySyncDeviceGroupServiceMoc!
+    var messageModelServiceMoc: MessageModelServiceMoc!
+
 
     //Number of sections corresponding to SettingsSectionViewModel.SectionType count
-    let sections = 3
+    let sections = 4
 
     func testNumberOfSections() {
-
         setupViewModel()
-
+        keySyncDeviceGroupServiceMoc.deviceGroupValueForTest  = .sole
         XCTAssertEqual(settingsVM.count, sections)
     }
     
@@ -36,7 +38,6 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
         let thereIsNoAccount = settingsVM.noAccounts()
 
         XCTAssertTrue(thereIsNoAccount)
-
     }
 
     func testDeleteAccountWithMoreThanOneAccount() {
@@ -53,35 +54,62 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(thereIsOneLessAccount)
     }
 
-    func testRowTypeIsCorrect() {
-        setupViewModel()
-
-        var rowType: SettingsCellViewModel.SettingType?
-            = settingsVM.rowType(for: IndexPath(row: 0, section: 0))
-        XCTAssertEqual(rowType, .account)
-
-        rowType = settingsVM.rowType(for: IndexPath(row: 0, section: 1))
-        XCTAssertEqual(rowType, .defaultAccount)
-
-        rowType = settingsVM.rowType(for: IndexPath(row: 1, section: 1))
-        XCTAssertEqual(rowType, .credits)
-
-        rowType = settingsVM.rowType(for: IndexPath(row: 2, section: 1))
-        XCTAssertEqual(rowType, .trustedServer)
-
-        rowType = settingsVM.rowType(for: IndexPath(row: 3, section: 1))
-        XCTAssertEqual(rowType, .setOwnKey)
-
-        rowType = settingsVM.rowType(for: IndexPath(row: 4, section: 1))
-        XCTAssertEqual(rowType, nil)
-    }
-
-    fileprivate func setupViewModel() {
-        settingsVM = SettingsViewModel()
-    }
-
     func givenThereAreTwoAccounts() {
         _ = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
         moc.saveAndLogErrors()
+    }
+
+    func testLeaveDeviceGroupPressed() {
+        // GIVEN
+        setupViewModel()
+        
+        // WHEN
+        _ = settingsVM.leaveDeviceGroupPressed()
+
+        // THEN
+        XCTAssertTrue(keySyncDeviceGroupServiceMoc.didCallLeaveDeviceGroup)
+    }
+
+    func testKeySyncEnabledSetTrue() {
+        // GIVEN
+        setupViewModel()
+
+        // WHEN
+        for section in settingsVM.sections {
+            guard section.type == SettingsSectionViewModel.SectionType.keySync else { continue }
+            for cell in section.cells {
+                guard let cell = cell as? EnableKeySyncViewModel else { continue }
+                cell.setSwitch(value: true)
+            }
+        }
+
+        // THEN
+        XCTAssertTrue(messageModelServiceMoc.enableKeySyncWasCalled)
+    }
+
+    func testKeySyncEnabledSetFalse() {
+        // GIVEN
+        setupViewModel()
+
+        // WHEN
+        for section in settingsVM.sections {
+            guard section.type == SettingsSectionViewModel.SectionType.keySync else { continue }
+            for cell in section.cells {
+                guard let cell = cell as? EnableKeySyncViewModel else { continue }
+                cell.setSwitch(value: false)
+            }
+        }
+
+        // THEN
+        XCTAssertTrue(messageModelServiceMoc.disableKeySyncWasCalled)
+    }
+}
+
+// MARK: - Private
+extension SettingsViewModelTest {
+    private func setupViewModel() {
+        messageModelServiceMoc = MessageModelServiceMoc()
+        keySyncDeviceGroupServiceMoc = KeySyncDeviceGroupServiceMoc()
+        settingsVM = SettingsViewModel(messageModelServiceMoc, keySyncDeviceGroupServiceMoc)
     }
 }
