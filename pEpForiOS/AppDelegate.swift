@@ -209,6 +209,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+        Log.shared.info("Library url: %@", String(describing: applicationDirectory()))
+
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them
             // and pretty much don't do anything.
@@ -222,7 +224,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         setupServices()
-        Log.shared.info("Library url: %@", String(describing: applicationDirectory()))
+
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
         askUserForPermissions()
@@ -337,7 +339,7 @@ extension AppDelegate: MessageModelServiceDelegate {
             // No problem, start regular sync loop.
             startServices()
         }
-         UIApplication.shared.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
+        UIApplication.shared.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
         syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
 
