@@ -20,7 +20,7 @@ class KeySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol {
     }
 
     func leaveDeviceGroup() throws {
-        try PEPSession().leaveDeviceGroupError()  //!!!: @dirk: rename in leaveDeviceGroupError
+        try PEPSession().leaveDeviceGroupError()
         AppSettings.lastKnownDeviceGroupState = .sole
     }
 }
