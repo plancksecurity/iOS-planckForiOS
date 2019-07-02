@@ -21,6 +21,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                        partner: PEPIdentity,
                        completion: ((PEPSyncHandshakeResult)->())? = nil) {
 
+        //BUFF: working simple alert version
         DispatchQueue.main.async { [weak self] in
             guard let safeSelf = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -57,13 +58,24 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                 completion?(PEPSyncHandshakeResult.cancel)
             })
             safeSelf.alertView = newAlertView
-            
+
             guard let vc = safeSelf.presenter else {
                 Log.shared.errorAndCrash("No Presenter")
                 return
             }
             vc.present(newAlertView, animated: true, completion: nil)
         }
+
+        //        DispatchQueue.main.async { [weak self] in
+        //            let session = Session()
+        //            session.performAndWait {
+        //                let meIdentity = Identity.newObject(onSession: session)
+        //                meIdentity.fingerprint = me.fingerPrint
+        //
+        //                let partnerIdentity = Identity.newObject(onSession: session)
+        //                partnerIdentity.fingerprint = partner.fingerPrint
+        //            }
+        //        }
     }
 
     func cancelHandshake() {
