@@ -68,7 +68,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagFlagged = !localFlags.flagFlagged
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // redundant check that flagFlagged really has changed
         guard let messages2 = inbox.messages?.sortedArray(
@@ -159,7 +159,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertNotEqual(m.imap?.localFlags?.flagAnswered, m.imap?.serverFlags?.flagAnswered)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
                                                                                context: moc)
@@ -229,7 +229,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: ImapFlagsBits.imapAllFlagsSet())
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
                                                                                context: moc)
@@ -306,7 +306,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: flagsFromServer)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // ...so all messages should need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
@@ -384,7 +384,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be added on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
@@ -461,7 +461,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be added on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
@@ -538,7 +538,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be added on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
@@ -614,7 +614,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be added on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
@@ -685,7 +685,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: ImapFlagsBits.imapNoFlagsSet())
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
             folder: inbox, context: moc)
@@ -757,7 +757,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // nothing changed, so no sync should take place
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
@@ -832,7 +832,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
@@ -907,7 +907,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
@@ -982,7 +982,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
@@ -1057,7 +1057,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
@@ -1132,7 +1132,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
@@ -1212,7 +1212,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(

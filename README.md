@@ -20,6 +20,8 @@ sudo port install py27-lxml
 
 sudo port install python_select
 
+sudo port install mercurial
+
 sudo port install autoconf
 sudo port install libtool
 sudo port install automake
@@ -44,7 +46,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 Restart your Console!
 
 ```
-sudo port pkgconfig
+sudo port install pkgconfig
 rustup update
 rustup target add aarch64-apple-ios x86_64-apple-ios armv7-apple-ios i386-apple-ios
 ```
@@ -64,6 +66,9 @@ Clone into your home directory:
 pushd ~
 hg clone https://pep.foundation/dev/repos/yml2/
 popd
+
+sudo port install pip
+sudo STATIC_DEPS=true pip install lxml
 ```
 
 ## Setup instructions

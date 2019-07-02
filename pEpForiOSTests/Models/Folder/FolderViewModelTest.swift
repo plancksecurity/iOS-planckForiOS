@@ -37,6 +37,35 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         }
     }
 
+    func testFoldersAppearInTheCorrectOrder() {
+        //preparing the folder structure
+        let acc = givenThereIsAnAccountWithAFolder()
+        let _ = Folder(name: "Outbox", parent: nil, account: acc, folderType: .outbox)
+        let _ = Folder(name: "Sent", parent: nil, account: acc, folderType: .sent)
+        let _ = Folder(name: "Spam", parent: nil, account: acc, folderType: .spam)
+        let _ = Folder(name: "Trash", parent: nil, account: acc, folderType: .trash)
+        let drafts = Folder(name: "Drafts", parent: nil, account: acc, folderType: .drafts)
+        let inbox = acc.rootFolders.first
+        let _ = Folder(name: "InsideInbox", parent: inbox, account: acc, folderType: .normal)
+        let _ = Folder(name: "InsiDrafts", parent: drafts, account: acc, folderType: .normal)
+        moc.saveAndLogErrors()
+        let expectedOrder : [FolderType] = [.inbox, .normal, .drafts, .normal, .sent, .spam, .trash, .outbox]
+
+        //the test
+        givenThereIsAViewModel(withUniFiedInBox: false, and: [acc])
+        let sectionPositionForAccountFolders = 0
+        let foldersSection = viewmodel[sectionPositionForAccountFolders]
+        XCTAssertEqual(foldersSection.count, acc.totalFolders())
+        XCTAssertEqual(foldersSection.count, expectedOrder.count)
+        for i in 0..<foldersSection.count {
+            guard let folder = foldersSection[i].folder as? Folder else {
+                XCTFail()
+                return
+            }
+            XCTAssertEqual(folder.folderType, expectedOrder[i])
+        }
+    }
+
     func testAccountSectionsWithoutUnifiedFolderShouldBeAccountNumber() {
         for accountNumber in 0...Input.maxNumberOfTestAccounts {
 
@@ -78,7 +107,7 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
 
         return accounts
     }
-    
+
     func givenThereIsAnAccountWithAFolder() -> Account {
         return account
     }
@@ -88,7 +117,7 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
     }
 
     func givenThereIsNotAccounts(withUnifiedInbox: Bool) {
-        CdAccount.deleteAll()
+        Account.all().forEach { $0.delete() }
         viewmodel = FolderViewModel(withFoldersIn: nil, includeUnifiedInbox: withUnifiedInbox)
     }
 }

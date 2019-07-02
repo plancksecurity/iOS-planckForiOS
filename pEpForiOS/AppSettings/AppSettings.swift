@@ -6,6 +6,8 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
+import MessageModel
+
 /**
  Static facade over a `AppSettingsProtocol`, by default using
  `DefaultAppSettings`.
@@ -14,10 +16,12 @@
  */
 struct AppSettings {
     static public let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
+    static public let keyKeySyncEnabled = "keyStartpEpSync"
     static public let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
     static public let keyDefaultAccountAddress = "keyDefaultAccountAddress"
     static public let keyThreadedViewEnabled = "keyThreadedViewEnabled"
     static public let keyPassiveMode = "keyPassiveMode"
+    static public let keyLastKnowDeviceGroupStateRawValue = "keyLastKnowDeviceGroupStateRawValue"
 
     /**
      The actual implementation of `AppSettingsProtocol` to defer to.
@@ -35,6 +39,15 @@ struct AppSettings {
         }
     }
 
+    static var keySyncEnabled: Bool {
+        get {
+            return settingsHandler.keySyncEnabled
+        }
+        set {
+            settingsHandler.keySyncEnabled = newValue
+        }
+    }
+    
     static var unencryptedSubjectEnabled: Bool {
         get {
             return settingsHandler.unencryptedSubjectEnabled
@@ -59,6 +72,15 @@ struct AppSettings {
         }
         set {
             settingsHandler.passiveMode = newValue
+        }
+    }
+
+    static var lastKnownDeviceGroupState: DeviceGroupState {
+        get {
+            return settingsHandler.lastKnownDeviceGroupState
+        }
+        set {
+            settingsHandler.lastKnownDeviceGroupState = newValue
         }
     }
 

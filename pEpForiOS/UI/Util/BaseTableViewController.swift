@@ -12,23 +12,23 @@ import pEpIOSToolbox
 import MessageModel
 
 class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber {
-    private var _appConfig: AppConfig?
 
+    private var _appConfig: AppConfig?
     var appConfig: AppConfig {
         get {
             guard let safeConfig = _appConfig else {
                 Log.shared.errorAndCrash("No appConfig?")
 
                 // We have no config. Return something.
-
-                let theMessageModelService = MessageModelService(
-                    errorPropagator: ErrorPropagator(),
-                    notifyHandShakeDelegate: NotifyHandshakeDelegate())
-
-                return AppConfig(
-                    errorPropagator: ErrorPropagator(),
-                    oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider(),
-                    messageModelService: theMessageModelService)
+                let errorPropagator = ErrorPropagator()
+                let keySyncHandshakeService = KeySyncHandshakeService()
+                let theMessageModelService = MessageModelService(errorPropagator: errorPropagator,
+                                                                 keySyncServiceDelegate: keySyncHandshakeService,
+                                                                 keySyncEnabled: AppSettings.keySyncEnabled)
+                return AppConfig(errorPropagator: errorPropagator,
+                                 oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider(),
+                                 keySyncHandshakeService: KeySyncHandshakeService(),
+                                 messageModelService: theMessageModelService)
             }
             return safeConfig
         }
@@ -51,6 +51,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             return
         }
         appConfig.errorPropagator.subscriber = self
+        appConfig.keySyncHandshakeService.presenter = self
         self.navigationController?.title = title
         BaseTableViewController.setupCommonSettings(tableView: tableView)
     }

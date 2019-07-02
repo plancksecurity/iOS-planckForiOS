@@ -18,33 +18,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var appConfig: AppConfig?
 
-    /** The SMTP/IMAP backend */
-    var messageModelService: MessageModelService?
+    /** The model */
+    var messageModelService: MessageModelServiceProtocol?
 
-    /**
-     Error Handler to connect backend with UI
-     */
+    var deviceGroupService: KeySyncDeviceGroupService?
+
+    /// Error Handler bubble errors up to the UI
     var errorPropagator = ErrorPropagator()
-
-    var application: UIApplication {
-        return UIApplication.shared
-    }
 
     let mySelfQueue = LimitedOperationQueue()
 
-    /**
-     This is used to handle OAuth2 requests.
-     */
+    /// This is used to handle OAuth2 requests.
     let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
     var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
 
-    /**
-     Set to true whever the app goes into background, so the main session gets cleaned up.
-     */
+    /// Set to true whever the app goes into background, so the main PEPSession gets cleaned up.
     var shouldDestroySession = false
-
-    let notifyHandshakeDelegate: PEPNotifyHandshakeDelegate = NotifyHandshakeDelegate()
 
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
@@ -96,14 +86,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return
         }
         syncUserActionsAndCleanupbackgroundTaskId =
-            application.beginBackgroundTask(expirationHandler: { [unowned self] in
+            UIApplication.shared.beginBackgroundTask(expirationHandler: { [unowned self] in
                 Log.shared.warn(
                     "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
                     self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
                 // We migh want to call some (yet unexisting) emergency shutdown on
                 // ReplicationService here that brutally shuts down everything.
-                self.application.endBackgroundTask(
-                    self.syncUserActionsAndCleanupbackgroundTaskId)
+                UIApplication.shared.endBackgroundTask(self.syncUserActionsAndCleanupbackgroundTaskId)
                 self.syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
 
                 Log.shared.errorAndCrash(
@@ -116,19 +105,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func cleanupPEPSessionIfNeeded() {
         if shouldDestroySession {
             PEPSession.cleanup()
-        }
-    }
-
-    func loadCoreDataStack() {
-        let objectModel = MessageModelData.MessageModelData()
-        let options = [NSMigratePersistentStoresAutomaticallyOption: true,
-                       NSInferMappingModelAutomaticallyOption: true]
-        do {
-            try Record.loadCoreDataStack(managedObjectModel: objectModel,
-                                         storeURL: nil,
-                                         options: options)
-        } catch {
-            Log.shared.errorAndCrash("Error while Loading DataStack")
         }
     }
 
@@ -170,22 +146,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
-        let theMessageModelService = MessageModelService(
-            errorPropagator: errorPropagator,
-            notifyHandShakeDelegate: notifyHandshakeDelegate)
+        let keySyncHandshakeService = KeySyncHandshakeService()
+        let deviceGroupService = KeySyncDeviceGroupService()
+        self.deviceGroupService = deviceGroupService
+        let theMessageModelService = MessageModelService(errorPropagator: errorPropagator,
+                                                         keySyncServiceDelegate: keySyncHandshakeService,
+                                                         deviceGroupDelegate: deviceGroupService,
+                                                         keySyncEnabled: AppSettings.keySyncEnabled)
         theMessageModelService.delegate = self
-        self.messageModelService = theMessageModelService
+        messageModelService = theMessageModelService
 
-        let theAppConfig = AppConfig(
-            errorPropagator: errorPropagator,
-            oauth2AuthorizationFactory: oauth2Provider,
-            messageModelService: theMessageModelService)
-        appConfig = theAppConfig
+        appConfig = AppConfig(errorPropagator: errorPropagator,
+                              oauth2AuthorizationFactory: oauth2Provider,
+                              keySyncHandshakeService: keySyncHandshakeService,
+                              messageModelService: theMessageModelService)
 
         // This is a very dirty hack!! See SecureWebViewController docs for details.
-        SecureWebViewController.appConfigDirtyHack = theAppConfig
-
-        loadCoreDataStack()
+        SecureWebViewController.appConfigDirtyHack = appConfig
     }
 
     // Safely restarts all services
@@ -232,6 +209,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+        Log.shared.info("Library url: %@", String(describing: applicationDirectory()))
+
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them
             // and pretty much don't do anything.
@@ -245,7 +224,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         setupServices()
-        Log.shared.warn("Library url: %@", String(describing: applicationDirectory()))
+
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
         askUserForPermissions()
@@ -360,7 +339,7 @@ extension AppDelegate: MessageModelServiceDelegate {
             // No problem, start regular sync loop.
             startServices()
         }
-        application.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
+        UIApplication.shared.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
         syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
 
