@@ -15,10 +15,9 @@ extension Identity {
         return userName ?? address.trimmed()
     }
 
-
-    public func decorateButton(button: UIButton, session: PEPSession = PEPSession()) {
+    public func decorateButton(button: UIButton) {
         button.setTitleColor(.black, for: .normal)
-        if let color = PEPUtil.pEpColor(identity: self, session: session).uiColor() {
+        if let color = PEPUtil.pEpColor(identity: self).uiColor() {
             button.backgroundColor = color
         } else {
             let buttonDefault = UIButton()
