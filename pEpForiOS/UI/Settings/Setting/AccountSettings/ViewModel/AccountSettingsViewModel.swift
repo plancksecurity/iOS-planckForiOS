@@ -48,9 +48,9 @@ public class AccountSettingsViewModel {
     /// and also the implementation of the verification.
     public var verifiableAccount: VerifiableAccountProtocol?
 
-    var messageModelService: MessageModelService
+    var messageModelService: MessageModelServiceProtocol
 
-    public init(account: Account, messageModelService: MessageModelService) {
+    public init(account: Account, messageModelService: MessageModelServiceProtocol) {
         self.messageModelService = messageModelService
 
         // We are using a copy of the data here.
