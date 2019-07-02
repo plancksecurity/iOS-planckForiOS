@@ -176,15 +176,21 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
                 XCTAssertTrue(false)
                 return
         }
+        let nonZeroValue = UInt(1)
+        message.setUID(nonZeroValue)
         message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
-        guard let _ = CdMessage.insertOrUpdate(
-            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
-            context: moc) else {
+        guard let _ = CdMessage.insertOrUpdate(pantomimeMessage: message,
+                                               account: cdAccount,
+                                               messageUpdate: CWMessageUpdate(),
+                                               context: moc)
+            else {
                 XCTFail("error parsing message")
                 return
         }
         XCTAssertEqual(CdMessage.all()?.count, 1)
-        guard let testee = CdMessage.search(message: message, inAccount: cdAccount) else {
+        guard let testee = CdMessage.search(message: message,
+                                            inAccount: cdAccount,
+                                            context: moc) else {
             XCTFail("No message")
             return
         }
@@ -206,6 +212,8 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
                 XCTAssertTrue(false)
                 return
         }
+        let nonZeroValue = UInt(1)
+        message.setUID(nonZeroValue)
         message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         guard let _ = CdMessage.insertOrUpdate(
             pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
