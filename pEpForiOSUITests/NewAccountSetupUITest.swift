@@ -77,11 +77,33 @@ class NewAccountSetupUITest: XCTestCase {
         newAccountSetup(account: account1)
 
         switchFromInboxToFoldersView()
-
         addAccount()
 
         let account2 = secretTestData().workingAccount2
         newAccountSetup(account: account2)
+        waitForever()
+    }
+
+    func testThreeInitialAccounts() {
+        app().launch()
+
+        dismissInitialSystemAlerts()
+
+        let account1 = secretTestData().workingAccount1
+        newAccountSetup(account: account1)
+
+        switchFromInboxToFoldersView()
+        addAccount()
+
+        let account2 = secretTestData().workingAccount2
+        newAccountSetup(account: account2)
+        waitForever()
+
+        switchFromInboxToFoldersView()
+        addAccount()
+
+        let account3 = secretTestData().workingAccount3
+        newAccountSetup(account: account3)
         waitForever()
     }
 
