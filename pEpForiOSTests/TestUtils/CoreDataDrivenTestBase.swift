@@ -14,18 +14,6 @@ import CoreData
 import PEPObjCAdapterFramework
 
 open class CoreDataDrivenTestBase: XCTestCase {
-
-    /// Exists soley for settting up the stack in memory only
-    private lazy var stack: Stack = {
-        do {
-            try Stack.shared.loadCoreDataStack(storeType: NSInMemoryStoreType)
-            Stack.shared.resetContexts()
-        } catch {
-            XCTFail("error setting up in memory store")
-        }
-        return Stack.shared
-
-    }()
     var moc : NSManagedObjectContext!
 
     var account: Account {
@@ -92,9 +80,10 @@ open class CoreDataDrivenTestBase: XCTestCase {
 }
 
 // MARK: - Stack Test Setup
+
 extension CoreDataDrivenTestBase {
 
     private func setupStackForTests() {
-        let _ = stack
+        let _ = Stack.shared
     }
 }
