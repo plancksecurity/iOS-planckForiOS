@@ -74,14 +74,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    private func cancelBackgroundTask() {
-        guard syncUserActionsAndCleanupbackgroundTaskId != UIBackgroundTaskIdentifier.invalid else {
-            return
-        }
-        UIApplication.shared.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
-        syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
-    }
-
     /// Signals all PEPSession users to stop using a session as soon as possible.
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
@@ -95,21 +87,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         syncUserActionsAndCleanupbackgroundTaskId =
             UIApplication.shared.beginBackgroundTask(expirationHandler: { [unowned self] in
-                let taskId = self.syncUserActionsAndCleanupbackgroundTaskId
-
+                Log.shared.warn(
+                    "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
+                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
                 // We migh want to call some (yet unexisting) emergency shutdown on
                 // ReplicationService here that brutally shuts down everything.
-                UIApplication.shared.endBackgroundTask(
-                    self.syncUserActionsAndCleanupbackgroundTaskId)
+                UIApplication.shared.endBackgroundTask(self.syncUserActionsAndCleanupbackgroundTaskId)
+                self.syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
 
                 Log.shared.errorAndCrash(
                     "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
-                    taskId.rawValue)
+                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
             })
-
-        Log.shared.info(
-            "Started background sync %d", syncUserActionsAndCleanupbackgroundTaskId.rawValue)
-
         messageModelService?.processAllUserActionsAndStop()
     }
 
