@@ -20,7 +20,11 @@ class HandshakeViewController: BaseTableViewController {
     var message: Message? {
         didSet {
             message?.session.performAndWait { [weak self] in
-                self?.handshakeCombinations = self?.message?.handshakeActionCombinations() ?? []
+                guard let me = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+                me.handshakeCombinations = me.message?.handshakeActionCombinations() ?? []
             }
         }
     }

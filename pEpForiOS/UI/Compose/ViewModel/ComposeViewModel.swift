@@ -606,7 +606,8 @@ extension ComposeViewModel {
     // There is no view model for HandshakeViewController yet, thus we are setting up the VC itself
     // as a workaround to avoid letting the VC know MessageModel
     func setup(handshakeViewController: HandshakeViewController) {
-        handshakeViewController.message = ComposeUtil.messageToSend(withDataFrom: state, sesion: Session())
+
+        handshakeViewController.message = ComposeUtil.messageToSend(withDataFrom: state, session: Session())
     }
 }
 

@@ -144,11 +144,11 @@ struct ComposeUtil {
     // MARK: - Message to send
 
     static public func messageToSend(
-        withDataFrom state: ComposeViewModel.ComposeViewModelState, sesion: Session = Session.main) -> Message? {
+        withDataFrom state: ComposeViewModel.ComposeViewModelState, session: Session = Session.main) -> Message? {
         var message: Message?
-        sesion.performAndWait {
-            guard let from = state.from,
-                let account = Account.by(address: from.address) else {
+        session.performAndWait {
+            guard let from = state.from?.safeForSession(session),
+                let account = Account.by(address: from.address)?.safeForSession(session) else {
                     Log.shared.errorAndCrash(
                         "We have a problem here getting the senders account.")
                     return
@@ -158,18 +158,22 @@ struct ComposeUtil {
                 return
             }
 
-            message = Message.newObject(onSession: sesion)
+            message = Message.newObject(onSession: session)
 
             guard let message = message else {
                 Log.shared.errorAndCrash("Message in this session is nil")
                 return
             }
+
+            let toRecipients = Identity.makeSafe(state.toRecipients, forSession: session)
+            let ccRecipients = Identity.makeSafe(state.ccRecipients, forSession: session)
+            let bccRecipients = Identity.makeSafe(state.bccRecipients, forSession: session)
             message.uuid = MessageID.generate()
             message.parent = f
             message.from = from
-            message.replaceTo(with: state.toRecipients)
-            message.replaceCc(with: state.ccRecipients)
-            message.replaceBcc(with: state.bccRecipients)
+            message.replaceTo(with: toRecipients)
+            message.replaceCc(with: ccRecipients)
+            message.replaceBcc(with: bccRecipients)
             message.shortMessage = state.subject
             message.longMessage = state.bodyPlaintext
             message.longMessageFormatted = !state.bodyHtml.isEmpty ? state.bodyHtml : nil

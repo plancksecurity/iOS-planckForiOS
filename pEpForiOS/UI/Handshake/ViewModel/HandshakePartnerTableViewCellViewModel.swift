@@ -45,16 +45,36 @@ class HandshakePartnerTableViewCellViewModel {
     /**
      The rating of the partner.
      */
-    var partnerRating: PEPRating
+    lazy var partnerRating: PEPRating = {
+        var pepRating = PEPRating.undefined
+        partnerIdentity.session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            pepRating = PEPUtil.pEpRating(identity: me.partnerIdentity, session: me.pEpSession)
+        }
+        return pepRating
+    }()
 
     /**
      The color of the partner.
      */
-    var partnerColor: PEPColor
+    lazy var partnerColor: PEPColor = {
+        var pEpColor = PEPColor.noColor
+        partnerIdentity.session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            pEpColor = me.partnerRating.pEpColor()
+        }
+        return pEpColor
+    }()
 
     var trustwordsLanguage: String{
         didSet{
-            updateTrustwords(session: session)
+            updateTrustwords(session: pEpSession)
         }
     }
     var trustwordsFull = false
@@ -73,7 +93,7 @@ class HandshakePartnerTableViewCellViewModel {
     /**
      pEp session usable on the main thread.
      */
-    let session: PEPSession
+    let pEpSession: PEPSession
 
     var isPartnerpEpUser = false
 
@@ -82,28 +102,46 @@ class HandshakePartnerTableViewCellViewModel {
      */
     let ownIdentity: Identity
 
+    private let partnerIdentity: Identity
+
     /**
      Cache the updated own identity.
      */
-    let pEpSelf: PEPIdentity
+    lazy var pEpSelf: PEPIdentity = {
+        var pEpSelf = PEPIdentity() // TODO: why we do it
+        ownIdentity.session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            pEpSelf = me.ownIdentity.updatedIdentity(session: me.pEpSession)
+        }
+        return pEpSelf
+    }()
 
     /**
      Cache the updated partner identity.
      */
-    var pEpPartner: PEPIdentity
+    lazy var pEpPartner: PEPIdentity = {
+        var pEpPartner = PEPIdentity()
+         partnerIdentity.session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            pEpPartner = me.partnerIdentity.updatedIdentity(session: me.pEpSession)
+        }
+        return pEpPartner
+    }()
 
     lazy var contactImageTool = IdentityImageTool()
 
     init(ownIdentity: Identity, partner: Identity, session: PEPSession) {
         self.expandedState = .notExpanded
         self.trustwordsLanguage = "en"
-        self.session = session
-        self.partnerRating = PEPUtil.pEpRating(identity: partner, session: session)
-        self.partnerColor = partnerRating.pEpColor()
+        self.pEpSession = session
         self.ownIdentity = ownIdentity
-
-        pEpSelf = ownIdentity.updatedIdentity(session: session)
-        pEpPartner = partner.updatedIdentity(session: session)
+        self.partnerIdentity = partner
 
         do {
             isPartnerpEpUser = try session.isPEPUser(pEpPartner).boolValue
@@ -111,7 +149,10 @@ class HandshakePartnerTableViewCellViewModel {
             Log.shared.error("%@", "\(err)")
             isPartnerpEpUser = false
         }
-        setPartnerImage(for: partner)
+
+        partnerIdentity.session.performAndWait { [weak self] in
+            self?.setPartnerImage(for: partner)
+        }
         updateTrustwords(session: session)
     }
 
@@ -153,7 +194,7 @@ class HandshakePartnerTableViewCellViewModel {
 
     func determineTrustwords(identitySelf: PEPIdentity, identityPartner: PEPIdentity) -> String? {
         do {
-            return try session.getTrustwordsIdentity1(
+            return try pEpSession.getTrustwordsIdentity1(
                 identitySelf,
                 identity2: identityPartner,
                 language: trustwordsLanguage,
@@ -166,7 +207,7 @@ class HandshakePartnerTableViewCellViewModel {
 
     func toggleTrustwordsLength() {
         trustwordsFull = !trustwordsFull
-        updateTrustwords(session: session)
+        updateTrustwords(session: pEpSession)
     }
 
     func invokeTrustAction(action: (PEPIdentity) -> ()) {
@@ -175,19 +216,19 @@ class HandshakePartnerTableViewCellViewModel {
         pEpPartner = theBackup
 
         do {
-            partnerRating = try session.rating(for: pEpPartner).pEpRating
+            partnerRating = try pEpSession.rating(for: pEpPartner).pEpRating
             partnerColor = PEPUtil.pEpColor(pEpRating: partnerRating)
         } catch let error as NSError {
             assertionFailure("\(error)")
         }
 
-        updateTrustwords(session: session)
+        updateTrustwords(session: pEpSession)
     }
 
     public func confirmTrust() {
         invokeTrustAction() { thePartner in
             do {
-                try session.trustPersonalKey(thePartner)
+                try pEpSession.trustPersonalKey(thePartner)
             } catch let error as NSError {
                 assertionFailure("\(error)")
             }
@@ -197,7 +238,7 @@ class HandshakePartnerTableViewCellViewModel {
     public func denyTrust() {
         invokeTrustAction() { thePartner in
             do {
-                try session.keyMistrusted(thePartner)
+                try pEpSession.keyMistrusted(thePartner)
             } catch let error as NSError {
                 assertionFailure("\(error)")
             }
@@ -212,7 +253,7 @@ class HandshakePartnerTableViewCellViewModel {
     public func resetOrUndoTrustOrMistrust() {
         invokeTrustAction() { thePartner in
             do {
-                try session.keyResetTrust(thePartner)
+                try pEpSession.keyResetTrust(thePartner)
             } catch let error as NSError {
                 assertionFailure("\(error)")
             }
