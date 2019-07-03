@@ -78,7 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard syncUserActionsAndCleanupbackgroundTaskId != UIBackgroundTaskIdentifier.invalid else {
             return
         }
-        application.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
+        UIApplication.shared.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
         syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
 
@@ -99,7 +99,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
                 // We migh want to call some (yet unexisting) emergency shutdown on
                 // ReplicationService here that brutally shuts down everything.
-                UIApplication.shared.endBackgroundTask(self.syncUserActionsAndCleanupbackgroundTaskId)
+                UIApplication.shared.endBackgroundTask(
+                    self.syncUserActionsAndCleanupbackgroundTaskId)
 
                 Log.shared.errorAndCrash(
                     "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
