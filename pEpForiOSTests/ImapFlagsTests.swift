@@ -12,7 +12,23 @@ import pEpForiOS
 @testable import MessageModel
 import PantomimeFramework
 
-class ImapFlagsTests: XCTestCase {
+class ImapFlagsTests: CoreDataDrivenTestBase {
+
+    func testCdImapFields() {
+        let cdFlags = CdImapFlags(context: moc)
+        let cwFlags = CWFlags()
+
+        XCTAssertEqual(cwFlags.rawFlagsAsShort(), cdFlags.rawFlagsAsShort())
+
+        loopAllFlags(cdFlags: cdFlags, cwFlags: cwFlags, value: true)
+        loopAllFlags(cdFlags: cdFlags, cwFlags: cwFlags, value: false)
+    }
+}
+
+// MARK: - HELPER
+
+extension ImapFlagsTests {
+
     func loopAllFlags(
         cdFlags: CdImapFlags, cwFlags: CWFlags, value: Bool) {
         let imapFlags = ImapFlags()
@@ -55,17 +71,5 @@ class ImapFlagsTests: XCTestCase {
                 XCTAssertEqual(cwFlags.rawFlagsAsShort(), cdFlags.rawFlagsAsShort())
                 XCTAssertEqual(cwFlags.rawFlagsAsShort(), imapFlags.rawFlagsAsShort())
         }
-    }
-    
-    func testCdImapFields() {
-        let _ = PersistentSetup()
-
-        let cdFlags = CdImapFlags.create()
-        let cwFlags = CWFlags()
-
-        XCTAssertEqual(cwFlags.rawFlagsAsShort(), cdFlags.rawFlagsAsShort())
-
-        loopAllFlags(cdFlags: cdFlags, cwFlags: cwFlags, value: true)
-        loopAllFlags(cdFlags: cdFlags, cwFlags: cwFlags, value: false)
     }
 }

@@ -18,28 +18,17 @@ import PEPObjCAdapterFramework
  Tests internal encryption and decryption (that is, the test creates encrypted messages itself,
  and does not rely on outside data/services).
  */
-class DecryptionTestsInternal: XCTestCase {
-    var moc: NSManagedObjectContext!
+class DecryptionTestsInternal: CoreDataDrivenTestBase {
     var cdOwnAccount: CdAccount!
     var pEpOwnIdentity: PEPIdentity!
     var cdSenderAccount: CdAccount!
     var pEpSenderIdentity: PEPIdentity!
     var cdInbox: CdFolder!
 
-    var persistentSetup: PersistentSetup!
-    var session: PEPSession {
-        return PEPSession()
-    }
     var backgroundQueue: OperationQueue!
 
     override func setUp() {
         super.setUp()
-        
-        XCTAssertTrue(PEPUtil.pEpClean())
-
-        persistentSetup = PersistentSetup()
-
-        moc = Stack.shared.mainContext
 
         let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
         guard let myPepIdentity = pEpIdentity(cdAccount: cdMyAccount) else {
@@ -66,10 +55,8 @@ class DecryptionTestsInternal: XCTestCase {
     }
 
     override func tearDown() {
-        persistentSetup = nil
         backgroundQueue.cancelAllOperations()
         backgroundQueue = nil
-        PEPSession.cleanup()
         super.tearDown()
     }
 

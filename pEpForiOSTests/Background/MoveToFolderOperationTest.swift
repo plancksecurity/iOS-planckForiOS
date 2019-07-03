@@ -21,12 +21,12 @@ import CoreData
 //        // Setup 2 accounts
 //        // the testee
 //        cdAccount.createRequiredFoldersAndWait(testCase: self)
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //        // the sender
 //        let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //        cdAccount2.createRequiredFoldersAndWait(testCase: self)
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //
 //        // Send (and receive) messages from 2nd account to 1st account
 //        let receivedMsgs = sendAndReceive(numMails: 1, fromAccount: cdAccount2)
@@ -79,12 +79,12 @@ import CoreData
 //        // Setup 2 accounts
 //        // the testee
 //        cdAccount.createRequiredFoldersAndWait(testCase: self)
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //        // the sender
 //        let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //        cdAccount2.createRequiredFoldersAndWait(testCase: self)
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //
 //        // Send (and receive) messages from 2nd account to 1st account
 //        let receivedMsgs = sendAndReceive(numMails: 1, fromAccount: cdAccount2)
@@ -188,7 +188,7 @@ import CoreData
 //            mail.removeTos(cdIdentities: currentReceipinets)
 //            mail.addTo(cdIdentity: id1)
 //        }
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //
 //        // ... and send them.
 //        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)

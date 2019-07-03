@@ -13,23 +13,7 @@ import CoreData
 @testable import MessageModel
 import PEPObjCAdapterFramework
 
-class PEPSessionTest: XCTestCase {
-    var persistentSetup: PersistentSetup!
-    var moc: NSManagedObjectContext!
-
-    // MARK: - Setup
-
-    override func setUp() {
-        super.setUp()
-        XCTAssertTrue(PEPUtil.pEpClean())
-        persistentSetup = PersistentSetup()
-        moc = Stack.shared.mainContext
-    }
-    override func tearDown() {
-        persistentSetup = nil
-        PEPSession.cleanup()
-        super.tearDown()
-    }
+class PEPSessionTest: CoreDataDrivenTestBase {
 
     //MARK: - Test
 

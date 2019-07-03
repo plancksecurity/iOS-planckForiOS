@@ -13,7 +13,6 @@ import pEpIOSToolbox
 extension SettingsCellViewModel {
     public enum SettingType {
         case account
-        case showLog
         case credits
         case defaultAccount
         case trustedServer
@@ -22,7 +21,7 @@ extension SettingsCellViewModel {
 }
 
 /// Cell for settings that are not only one on/off switch.
-public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
+final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     var cellIdentifier = "SettingsCell"
     
     var type: SettingType
@@ -38,9 +37,9 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
         self.type = type
     }
 
-    public var detail : String? {
+    var detail : String? {
         get {
-            switch self.type {
+            switch type {
             case .defaultAccount:
                 return AppSettings.defaultAccount
             default:
@@ -49,11 +48,9 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
         }
     }
 
-    public var title : String? {
+    var title : String? {
         get {
-            switch self.type {
-            case .showLog:
-                return NSLocalizedString("Logging", comment: "")
+            switch type {
             case .credits:
                 return NSLocalizedString(
                     "Credits",
@@ -79,10 +76,10 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
         }
     }
 
-    public var value : String? {
+    var value : String? {
         get {
-            switch self.type {
-            case .showLog, .account, .credits, .trustedServer, .setOwnKey:
+            switch type {
+            case .account, .credits, .trustedServer, .setOwnKey:
                 // Have no value.
                 return nil
             case .defaultAccount:
@@ -91,7 +88,7 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
         }
     }
 
-    public func delete() {
-        self.account?.delete()
+    func delete() {
+        account?.delete()
     }
 }

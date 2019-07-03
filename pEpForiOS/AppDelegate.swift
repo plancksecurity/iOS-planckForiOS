@@ -18,34 +18,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var appConfig: AppConfig?
 
-    /** The SMTP/IMAP backend */
-    var messageModelService: MessageModelService?
+    /** The model */
+    var messageModelService: MessageModelServiceProtocol?
 
-    /**
-     Error Handler to connect backend with UI
-     */
+    var deviceGroupService: KeySyncDeviceGroupService?
+
+    /// Error Handler bubble errors up to the UI
     var errorPropagator = ErrorPropagator()
-
-    var application: UIApplication {
-        return UIApplication.shared
-    }
 
     let mySelfQueue = LimitedOperationQueue()
 
-    /**
-     This is used to handle OAuth2 requests.
-     */
+    /// This is used to handle OAuth2 requests.
     let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
     var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
-    var mySelfTaskId = UIBackgroundTaskIdentifier.invalid
 
-    /**
-     Set to true whever the app goes into background, so the main session gets cleaned up.
-     */
+    /// Set to true whever the app goes into background, so the main PEPSession gets cleaned up.
     var shouldDestroySession = false
-
-    let notifyHandshakeDelegate: PEPNotifyHandshakeDelegate = NotifyHandshakeDelegate()
 
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
@@ -78,22 +67,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals al services to start/resume.
     /// Also signals it is save to use PEPSessions (again)
     private func startServices() {
-        messageModelService?.start()
+        do {
+            try messageModelService?.start()
+        } catch {
+            Log.shared.log(error: error)
+        }
     }
 
     /// Signals all PEPSession users to stop using a session as soon as possible.
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
-    private func stopUsingPepSession() {
+    private func gracefullyShutdownServices() {
+        guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
+            else {
+                Log.shared.warn(
+                    "Will not start background sync, pending %d",
+                    syncUserActionsAndCleanupbackgroundTaskId.rawValue)
+                return
+        }
         syncUserActionsAndCleanupbackgroundTaskId =
-            application.beginBackgroundTask(expirationHandler: { [unowned self] in
-                Log.shared.errorAndCrash(
-                    "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
-                    self.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
+            UIApplication.shared.beginBackgroundTask(expirationHandler: { [unowned self] in
+                Log.shared.warn(
+                    "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
+                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
                 // We migh want to call some (yet unexisting) emergency shutdown on
                 // ReplicationService here that brutally shuts down everything.
-                self.application.endBackgroundTask(UIBackgroundTaskIdentifier(
-                    rawValue: self.syncUserActionsAndCleanupbackgroundTaskId.rawValue))
+                UIApplication.shared.endBackgroundTask(self.syncUserActionsAndCleanupbackgroundTaskId)
+                self.syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
+
+                Log.shared.errorAndCrash(
+                    "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
+                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
             })
         messageModelService?.processAllUserActionsAndStop()
     }
@@ -101,19 +105,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func cleanupPEPSessionIfNeeded() {
         if shouldDestroySession {
             PEPSession.cleanup()
-        }
-    }
-
-    func loadCoreDataStack() {
-        let objectModel = MessageModelData.MessageModelData()
-        let options = [NSMigratePersistentStoresAutomaticallyOption: true,
-                       NSInferMappingModelAutomaticallyOption: true]
-        do {
-            try Record.loadCoreDataStack(managedObjectModel: objectModel,
-                                         storeURL: nil,
-                                         options: options)
-        } catch {
-            Log.shared.errorAndCrash("Error while Loading DataStack")
         }
     }
 
@@ -155,20 +146,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
-        let theAppConfig = AppConfig( errorPropagator: errorPropagator,
-                                      oauth2AuthorizationFactory: oauth2Provider)
-        appConfig = theAppConfig
+        let keySyncHandshakeService = KeySyncHandshakeService()
+        let deviceGroupService = KeySyncDeviceGroupService()
+        self.deviceGroupService = deviceGroupService
+        let theMessageModelService = MessageModelService(errorPropagator: errorPropagator,
+                                                         keySyncServiceDelegate: keySyncHandshakeService,
+                                                         deviceGroupDelegate: deviceGroupService,
+                                                         keySyncEnabled: AppSettings.keySyncEnabled)
+        theMessageModelService.delegate = self
+        messageModelService = theMessageModelService
+
+        appConfig = AppConfig(errorPropagator: errorPropagator,
+                              oauth2AuthorizationFactory: oauth2Provider,
+                              keySyncHandshakeService: keySyncHandshakeService,
+                              messageModelService: theMessageModelService)
+
         // This is a very dirty hack!! See SecureWebViewController docs for details.
-        SecureWebViewController.appConfigDirtyHack = theAppConfig
-
-        // set up logging for libraries
-
-        // TODO: IOS-1276 set MessageModelConfig.logger
-
-        loadCoreDataStack()
-        messageModelService = MessageModelService(errorPropagator: errorPropagator,
-                                                  notifyHandShakeDelegate: notifyHandshakeDelegate)
-        messageModelService?.delegate = self
+        SecureWebViewController.appConfigDirtyHack = appConfig
     }
 
     // Safely restarts all services
@@ -208,12 +202,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - UIApplicationDelegate
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.log("applicationDidReceiveMemoryWarning")
+        Log.shared.warn("applicationDidReceiveMemoryWarning")
     }
 
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        Log.shared.info("Library url: %@", String(describing: applicationDirectory()))
 
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them
@@ -228,7 +224,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         setupServices()
-        Log.shared.log("Library url: %{public}@", String(describing: applicationDirectory()))
+
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
         askUserForPermissions()
@@ -246,7 +242,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         shouldDestroySession = true
-        stopUsingPepSession()
+        gracefullyShutdownServices()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -343,7 +339,7 @@ extension AppDelegate: MessageModelServiceDelegate {
             // No problem, start regular sync loop.
             startServices()
         }
-        application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: syncUserActionsAndCleanupbackgroundTaskId.rawValue))
+        UIApplication.shared.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
         syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
 
@@ -352,7 +348,7 @@ extension AppDelegate: MessageModelServiceDelegate {
         case .background:
             // We have been cancelled because we are entering background.
             // Quickly sync local changes and clean up.
-            stopUsingPepSession()
+            gracefullyShutdownServices()
         case .inactive:
             // We re inactive. Keep services paused -> Do nothing
             break

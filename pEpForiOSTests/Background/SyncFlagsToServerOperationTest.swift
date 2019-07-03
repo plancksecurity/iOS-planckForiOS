@@ -63,12 +63,12 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                 XCTFail()
                 break
             }
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
             localFlags.flagFlagged = !localFlags.flagFlagged
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // redundant check that flagFlagged really has changed
         guard let messages2 = inbox.messages?.sortedArray(
@@ -93,8 +93,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertNotEqual(serverFlags.flagFlagged, localFlags.flagFlagged)
         }
 
-        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                               context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
 
         let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
@@ -111,8 +111,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                           context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0)
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count)
     }
@@ -141,7 +141,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                 break
             }
 
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
 
             // all flags set locally, except delete
@@ -152,17 +152,17 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagSeen = true
 
             // ...but no flags are set on server, so all flags have to be added
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            let serverFlags = imap.serverFlags ?? CdImapFlags(context: moc)
             imap.serverFlags = serverFlags
             serverFlags.update(rawValue16: ImapFlagsBits.imapNoFlagsSet())
 
             XCTAssertNotEqual(m.imap?.localFlags?.flagAnswered, m.imap?.serverFlags?.flagAnswered)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
-        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                               context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
 
         let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
@@ -179,8 +179,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                           context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0)
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count)
     }
@@ -210,7 +210,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                 break
             }
 
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
 
             // all flags set locally ...
@@ -224,15 +224,15 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagDeleted = true
 
             // ...and all flags are set on server, so nothing should be updated
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            let serverFlags = imap.serverFlags ?? CdImapFlags(context: moc)
             imap.serverFlags = serverFlags
             serverFlags.update(rawValue16: ImapFlagsBits.imapAllFlagsSet())
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
-        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                               context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
         let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
@@ -249,8 +249,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                           context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0, "all done")
         XCTAssertEqual(op.numberOfMessagesSynced, 0,
                        "no messages have been synced as all flag were already set before")
@@ -281,7 +281,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                 break
             }
 
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
 
             // all flags set locally ...
@@ -294,7 +294,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagSeen = true
             localFlags.flagDeleted = true
 
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            let serverFlags = imap.serverFlags ?? CdImapFlags(context: moc)
             imap.serverFlags = serverFlags
 
             var flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
@@ -306,12 +306,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: flagsFromServer)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // ...so all messages should need to be synced
-        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox,
-            context: Record.Context.main)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                               context: moc)
 
         XCTAssertEqual(messagesToBeSynced.count, messages.count,
                        "all messages should need to be synced")
@@ -330,8 +329,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                           context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0, "all done")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
                        "flagDeleted changes, so all messages should be updated")
@@ -362,7 +361,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                 break
             }
 
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
 
             // one flag that is not set on server has been set by the client,
@@ -377,7 +376,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagDeleted = true
 
             // set the flag on server side
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            let serverFlags = imap.serverFlags ?? CdImapFlags(context: moc)
             imap.serverFlags = serverFlags
 
             var theBits = ImapFlagsBits.imapNoFlagsSet()
@@ -385,11 +384,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be added on all messages, all messages need to be synced
-        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                               context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
@@ -406,8 +405,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                           context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -439,7 +438,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                 break
             }
 
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
 
             // one flag that is not set on server has been set by the client,
@@ -454,7 +453,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagDeleted = true
 
             // set the flag on server side
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            let serverFlags = imap.serverFlags ?? CdImapFlags(context: moc)
             imap.serverFlags = serverFlags
 
             var theBits = ImapFlagsBits.imapNoFlagsSet()
@@ -462,11 +461,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be added on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
@@ -484,7 +483,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -516,7 +515,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                 break
             }
 
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
 
             // one flag that is not set on server has been set by the client,
@@ -531,7 +530,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagDeleted = true
 
             // set the flag on server side
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            let serverFlags = imap.serverFlags ?? CdImapFlags(context: moc)
             imap.serverFlags = serverFlags
 
             var theBits = ImapFlagsBits.imapNoFlagsSet()
@@ -539,11 +538,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be added on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
@@ -561,7 +560,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -594,7 +593,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             }
             // one flag that is not set on server has been set by the client,
             // so it has to be added.
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
 
             localFlags.flagAnswered = false
@@ -607,7 +606,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagDeleted = true
 
             // set the flag on server side
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            let serverFlags = imap.serverFlags ?? CdImapFlags(context: moc)
             imap.serverFlags = serverFlags
 
             var theBits = ImapFlagsBits.imapNoFlagsSet()
@@ -615,11 +614,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be added on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
@@ -637,7 +636,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -669,7 +668,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                 break
             }
             // no flag set locally ...
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
 
             localFlags.flagAnswered = false
@@ -681,15 +680,15 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagDeleted = false
 
             // ... but all flags set on server, so all flags have to be removed
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            let serverFlags = imap.serverFlags ?? CdImapFlags(context: moc)
             imap.serverFlags = serverFlags
             serverFlags.update(rawValue16: ImapFlagsBits.imapNoFlagsSet())
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
         let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
@@ -707,7 +706,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0)
         XCTAssertEqual(op.numberOfMessagesSynced, 0, "no message has been synced")
     }
@@ -737,7 +736,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                 break
             }
             // flagsCurrent == flagsFromServer, so no syncing should take place
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
 
             localFlags.flagAnswered = false
@@ -750,7 +749,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagDeleted = false
 
             // server flags
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            let serverFlags = imap.serverFlags ?? CdImapFlags(context: moc)
             imap.serverFlags = serverFlags
             var theBits = ImapFlagsBits.imapNoFlagsSet()
             theBits.imapSetFlagBit(.draft)
@@ -758,11 +757,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // nothing changed, so no sync should take place
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
         let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
@@ -780,7 +779,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, 0,
@@ -813,7 +812,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             }
             // one flag that is set on server has been unset by the client,
             // so it has to be removed.
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
 
             localFlags.flagAnswered = false
@@ -826,18 +825,18 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagDeleted = false
 
             // set the flag on server side
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            let serverFlags = imap.serverFlags ?? CdImapFlags(context: moc)
             imap.serverFlags = serverFlags
             var theBits = ImapFlagsBits.imapNoFlagsSet()
             theBits.imapSetFlagBit(.deleted)
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
@@ -855,7 +854,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -888,7 +887,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             }
             // one flag that is set on server has been unset by the client,
             // so it has to be removed.
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
 
             localFlags.flagAnswered = true
@@ -901,18 +900,18 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagDeleted = false
 
             // set the flag on server side
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            let serverFlags = imap.serverFlags ?? CdImapFlags(context: moc)
             imap.serverFlags = serverFlags
             var theBits = ImapFlagsBits.imapNoFlagsSet()
             theBits.imapSetFlagBit(.deleted)
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
@@ -930,7 +929,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -963,7 +962,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             }
             // one flag that is set on server has been unset by the client,
             // so it has to be removed.
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
 
             localFlags.flagAnswered = true
@@ -976,18 +975,18 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagDeleted = false
 
             // set the flag on server side
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            let serverFlags = imap.serverFlags ?? CdImapFlags(context: moc)
             imap.serverFlags = serverFlags
             var theBits = ImapFlagsBits.imapNoFlagsSet()
             theBits.imapSetFlagBit(.deleted)
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
@@ -1005,7 +1004,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -1038,7 +1037,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             }
             // one flag that is set on server has been unset by the client,
             // so it has to be removed.
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
 
             localFlags.flagAnswered = true
@@ -1051,18 +1050,18 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagDeleted = false
 
             // set the flag on server side
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            let serverFlags = imap.serverFlags ?? CdImapFlags(context: moc)
             imap.serverFlags = serverFlags
             var theBits = ImapFlagsBits.imapNoFlagsSet()
             theBits.imapSetFlagBit(.deleted)
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
@@ -1080,7 +1079,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -1113,7 +1112,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             }
             // one flag that is set on server has been unset by the client,
             // so it has to be removed.
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
 
             localFlags.flagAnswered = false
@@ -1126,18 +1125,18 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagDeleted = false
 
             // set the flag on server side
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            let serverFlags = imap.serverFlags ?? CdImapFlags(context: moc)
             imap.serverFlags = serverFlags
             var theBits = ImapFlagsBits.imapNoFlagsSet()
             theBits.imapSetFlagBit(.answered)
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
@@ -1155,7 +1154,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -1193,7 +1192,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             }
             // one flag that is set on server has been unset by the client,
             // so it has to be removed.
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
             imap.localFlags = localFlags
 
             localFlags.flagAnswered = true
@@ -1206,18 +1205,18 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagDeleted = false
 
             // set the flag on server side
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            let serverFlags = imap.serverFlags ?? CdImapFlags(context: moc)
             imap.serverFlags = serverFlags
             var theBits = ImapFlagsBits.imapNoFlagsSet()
             theBits.imapSetFlagBit(.deleted)
             serverFlags.update(rawValue16: theBits)
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
 
         let numSyncOpsToTrigger = 5
@@ -1250,7 +1249,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.main)
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
         var first = true

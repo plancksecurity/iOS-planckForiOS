@@ -13,6 +13,7 @@ import XCTest
 class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
     var viewModel: AccountSettingsViewModel!
+    var keySyncServiceHandshakeDelegateMoc: KeySyncServiceHandshakeDelegateMoc!
 
     public func testEmail() {
         setUpViewModel()
@@ -137,7 +138,14 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
     private func setUpViewModel() {
         account.save()
-        viewModel = AccountSettingsViewModel(account: account)
+        keySyncServiceHandshakeDelegateMoc = KeySyncServiceHandshakeDelegateMoc()
+        let theMessageModelService = MessageModelService(
+            errorPropagator: ErrorPropagator(),
+            keySyncServiceDelegate: keySyncServiceHandshakeDelegateMoc, keySyncEnabled: false)
+
+        viewModel = AccountSettingsViewModel(
+            account: account,
+            messageModelService: theMessageModelService)
     }
 }
 

@@ -20,12 +20,12 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
 //    func testMailSentToBothPepAccounts() {
 //        // Setup 2 accounts
 //        cdAccount.createRequiredFoldersAndWait(testCase: self)
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //
 //        let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //        cdAccount2.createRequiredFoldersAndWait(testCase: self)
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //
 //        guard let id1 = cdAccount.identity,
 //            let id2 = cdAccount2.identity else {
@@ -54,7 +54,7 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
 //            mail.addToTo(id2)
 //            mail.pEpProtected = false // force unencrypted
 //        }
-//        Record.saveAndWait()
+//        moc.saveAndLogErrors()
 //
 //        // ... and send them.
 //        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)

@@ -169,7 +169,7 @@ class SecureWebViewController: UIViewController {
                 encodedContentRuleList: blockRules) { (contentRuleList, error) in
                     if let error = error {
                         Log.shared.errorAndCrash(
-                            "Compile error: %@", error.localizedDescription)
+                            "Compile error: %@", "\(error)")
                         return
                     }
                     compiledBlockList = contentRuleList
@@ -383,12 +383,12 @@ extension SecureWebViewController: WKNavigationDelegate {
                 // The user clicked on an email URL.
                 urlClickHandler?.secureWebViewController(self, didClickMailToUrlLink: url)
             } else {
-                // The user clicked a links we do not allow custom handling for.
+                // The user clicked a link type we do not allow custom handling for.
                 // Try to open it in an appropriate app, do nothing if that fails.
                 guard UIApplication.shared.canOpenURL(url) else {
                     break
                 }
-                UIApplication.shared.openURL(url)
+                UIApplication.shared.open(url, options: [:])
             }
         case .backForward, .formResubmitted, .formSubmitted, .reload:
             // ignore

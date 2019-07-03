@@ -13,9 +13,11 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 class HandshakeViewController: BaseTableViewController {
-    var ratingReEvaluator: RatingReEvaluator?
-    var backTitle: String?
-    var currentLanguageCode = "en"
+    private var backTitle: String?
+    private var currentLanguageCode = Locale.current.languageCode ?? "en"
+    private let identityViewModelCache = NSCache<Identity, HandshakePartnerTableViewCellViewModel>()
+
+    private var indexPathRequestingLanguage: IndexPath?
 
     var message: Message? {
         didSet {
@@ -24,43 +26,92 @@ class HandshakeViewController: BaseTableViewController {
     }
 
     var handshakeCombinations = [HandshakeCombination]()
-    let identityViewModelCache = NSCache<Identity, HandshakePartnerTableViewCellViewModel>()
+    //    { //BUFF: can we reuse the view by setting the combinations for KeySync? I am afraid it is not a good idea?
+//        didSet {
+//            tableView.reloadData()
+//        }
+//    }
 
-    var indexPathRequestingLanguage: IndexPath?
-    var onlyonce = true
+    var ratingReEvaluator: RatingReEvaluator?
 
-    // MARK: - Live cycle
-
-    override func awakeFromNib() {
-        tableView.estimatedRowHeight = 400.0
-        tableView.rowHeight = UITableView.automaticDimension
-    }
-
-    override func didReceiveMemoryWarning() {
-        identityViewModelCache.removeAllObjects()
-    }
-
-    fileprivate func updateStatusBadge() {
-        self.showPepRating(pEpRating: message?.pEpRating())
-    }
+    // MARK: - Life Cycle
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
+        tableView.estimatedRowHeight = 400.0
+        tableView.rowHeight = UITableView.automaticDimension
 
         let item = UIBarButtonItem(customView: languageButton())
-
         self.navigationItem.rightBarButtonItems = [item]
 
         let leftItem = UIBarButtonItem(customView: backButton())
-        
         self.navigationItem.leftBarButtonItem = leftItem
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         updateStatusBadge()
     }
+}
 
-    func languageButton() -> UIButton {
+// MARK: - Target & Action
+
+extension HandshakeViewController {
+
+    @IBAction
+    private func languageSelectedAction(_ sender: Any) {
+        let theSession = PEPSession()
+        var languages: [PEPLanguage] = []
+        do {
+            languages = try theSession.languageList()
+        } catch let err as NSError {
+            Log.shared.error("%@", "\(err)")
+            languages = []
+        }
+
+        let alertController = UIAlertController.pEpAlertController(title: nil,
+                                                                   message: nil,
+                                                                   preferredStyle: .actionSheet)
+
+        for language in languages {
+            let action =   UIAlertAction(title: language.name, style: .default) {_ in
+                self.currentLanguageCode = language.code
+                self.tableView.reloadData()
+            }
+            alertController.addAction(action)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            alertController.dismiss(animated: true, completion: nil)
+        }
+
+        alertController.addAction(cancelAction)
+        alertController.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+        present(alertController, animated: true, completion: nil)
+    }
+}
+
+// MARK: - Private
+
+extension HandshakeViewController {
+
+    private func updateStatusBadge() {
+        self.showPepRating(pEpRating: message?.pEpRating())
+    }
+
+    // MARK: - UI & Layout
+
+    @objc
+    private func back(sender: UIBarButtonItem) {
+        // Perform your custom action
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    private func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+
+    private func languageButton() -> UIButton {
         //language button
         let img = UIImage(named: "pEpForiOS-icon-languagechange")
         let button = UIButton(type: UIButton.ButtonType.custom)
@@ -71,7 +122,7 @@ class HandshakeViewController: BaseTableViewController {
         return button
     }
 
-    func backButton() -> UIButton {
+    private func backButton() -> UIButton {
         let img2 = UIImage(named: "arrow-rgt-active")
         let tintedimage = img2?.withRenderingMode(.alwaysTemplate)
         let buttonLeft = UIButton(type: UIButton.ButtonType.custom)
@@ -85,12 +136,24 @@ class HandshakeViewController: BaseTableViewController {
         return buttonLeft
     }
 
-    @objc func back(sender: UIBarButtonItem) {
-        // Perform your custom action
-        self.dismiss(animated: true, completion: nil)
+    /// Adjusts the background color of the given view model depending on its position in the list,
+    /// and the color of the previous one.
+    private func adjustBackgroundColor(viewModel: HandshakePartnerTableViewCellViewModel,
+                                       indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            viewModel.backgroundColorDark = false
+        } else {
+            let prevRow = indexPath.row - 1
+            let handshakeCombo = handshakeCombinations[prevRow]
+            let prevViewModel = createViewModel(partnerIdentity: handshakeCombo.partnerIdentity,
+                                                selfIdentity: handshakeCombo.ownIdentity)
+            if prevViewModel.showTrustwords {
+                viewModel.backgroundColorDark = true
+            } else {
+                viewModel.backgroundColorDark = !prevViewModel.backgroundColorDark
+            }
+        }
     }
-
-    // MARK: - Layout
 
     override func viewDidLayoutSubviews() {
         popoverPresentationController?.sourceView = navigationItem.titleView
@@ -111,58 +174,14 @@ class HandshakeViewController: BaseTableViewController {
             tableView.updateSize()
         }
     }
+}
 
-    // MARK: - Table view data source
+// MARK: - UITableViewDataSource
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
+extension HandshakeViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return handshakeCombinations.count
-    }
-
-    /**
-     Returns: A cached view model for the given `partnerIdentity` or a newly created one.
-     */
-    func createViewModel(partnerIdentity: Identity,
-                         selfIdentity: Identity) -> HandshakePartnerTableViewCellViewModel {
-        if let vm = identityViewModelCache.object(forKey: partnerIdentity) {
-            return vm
-        } else {
-            let session = PEPSession()
-            let vm = HandshakePartnerTableViewCellViewModel(
-                ownIdentity: selfIdentity,
-                partner: partnerIdentity,
-                session: session)
-            identityViewModelCache.setObject(vm, forKey: partnerIdentity)
-            return vm
-        }
-    }
-    
-    /**
-     Adjusts the background color of the given view model depending on its position in the list,
-     and the color of the previous one.
-     */
-    func adjustBackgroundColor(viewModel: HandshakePartnerTableViewCellViewModel,
-                               indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            viewModel.backgroundColorDark = false
-        } else {
-            let prevRow = indexPath.row - 1
-            let handshakeCombo = handshakeCombinations[prevRow]
-            let prevViewModel = createViewModel(partnerIdentity: handshakeCombo.partnerIdentity,
-                                                selfIdentity: handshakeCombo.ownIdentity)
-            if prevViewModel.showTrustwords {
-                viewModel.backgroundColorDark = true
-            } else {
-                viewModel.backgroundColorDark = !prevViewModel.backgroundColorDark
-            }
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView,
@@ -190,12 +209,37 @@ class HandshakeViewController: BaseTableViewController {
         return UITableViewCell()
     }
 
-    // MARK: - Table view delegate
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension HandshakeViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? HandshakePartnerTableViewCell {
             cell.didChangeSelection()
             tableView.updateSize()
+        }
+    }
+}
+
+// MARK: - Data
+
+extension HandshakeViewController {
+
+    ///Returns: A cached view model for the given `partnerIdentity` or a newly created one.
+    private func createViewModel(partnerIdentity: Identity,
+                                 selfIdentity: Identity) -> HandshakePartnerTableViewCellViewModel {
+        if let vm = identityViewModelCache.object(forKey: partnerIdentity) {
+            return vm
+        } else {
+            let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: selfIdentity,
+                                                            partner: partnerIdentity)
+            identityViewModelCache.setObject(vm, forKey: partnerIdentity)
+            return vm
         }
     }
 }
@@ -261,42 +305,20 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         cell.updateTrustwords()
         tableView.updateSize()
     }
+}
 
-    @IBAction func languageSelectedAction(_ sender: Any) {
-        let theSession = PEPSession()
-        var languages: [PEPLanguage] = []
-        do {
-            languages = try theSession.languageList()
-        } catch let err as NSError {
-            Log.shared.error("%{public}@", err.localizedDescription)
-            languages = []
+// MARK: - RatingReEvaluatorDelegate
+
+extension HandshakeViewController : RatingReEvaluatorDelegate {
+    func ratingChanged(message: Message) {
+        DispatchQueue.main.async {
+            self.updateStatusBadge()
         }
 
-        let alertController = UIAlertController.pEpAlertController(title: nil,
-                                                                   message: nil,
-                                                                   preferredStyle: .actionSheet)
-
-        for language in languages {
-            let action =   UIAlertAction(title: language.name, style: .default) {_ in
-                self.currentLanguageCode = language.code
-                self.tableView.reloadData()
-            }
-            alertController.addAction(action)
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
-            alertController.dismiss(animated: true, completion: nil)
-        }
-        
-        alertController.addAction(cancelAction)
-        alertController.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
-        present(alertController, animated: true, completion: nil)
-
-    }
-
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return UIModalPresentationStyle.none
     }
 }
+
+// MARK: - Segue
 
 extension HandshakeViewController: SegueHandlerType {
     enum SegueIdentifier: String {
@@ -321,19 +343,8 @@ extension HandshakeViewController: SegueHandlerType {
         do {
             destination.languages = try theSession.languageList()
         } catch let err as NSError {
-            Log.shared.error("%{public}@", err.localizedDescription)
+            Log.shared.error("%@", "\(err)")
             destination.languages = []
         }
     }
-}
-
-extension HandshakeViewController : RatingReEvaluatorDelegate {
-    func ratingChanged(message: Message) {
-        DispatchQueue.main.async {
-            self.updateStatusBadge()
-        }
-
-    }
-
-
 }

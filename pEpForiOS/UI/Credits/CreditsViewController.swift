@@ -712,11 +712,8 @@ extension CreditsViewController: WKNavigationDelegate {
                 else {
                     break
             }
-            UIApplication.shared.openURL(newURL)
-        case .backForward: fallthrough
-        case .formResubmitted: fallthrough
-        case .formSubmitted: fallthrough
-        case .reload:
+            UIApplication.shared.open(newURL, options: [:])
+        case .backForward, .formResubmitted, .formSubmitted, .reload:
             break
         }
         decisionHandler(.cancel)

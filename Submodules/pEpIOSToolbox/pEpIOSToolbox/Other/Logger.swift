@@ -9,97 +9,32 @@
 import Foundation
 import os.log
 
-/**
- Thin layer over `os_log` where not available.
- */
-@available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *)
 public class Logger {
-    /**
-     Map `os_log` levels.
-     */
-    public enum Severity {
-        /**
-         - Note: Not persisted by default, but will be written in case of errors.
-         */
-        case info
-
-        /**
-         - Note: Not persisted by default, but will be written in case of errors.
-         */
-        case debug
-
-        /**
-         This is the lowest priority that gets written to disk by default.
-         Used like WARN in this logger.
-         */
-        case `default`
-
-        case error
-
-        /**
-         - Note: As this is referring to inter-process problems, I don't see a use-case
-         for iOS.
-         */
-        case fault
-
-        public func osLogType() -> OSLogType {
-            switch self {
-            case .info:
-                return .info
-            case .debug:
-                return .debug
-            case .default:
-                return .default
-            case .error:
-                return .error
-            case .fault:
-                return .fault
-            }
-        }
-    }
-
     public init(subsystem: String = "security.pEp.app.iOS", category: String) {
         self.subsystem = subsystem
         self.category = category
         osLogger = OSLog(subsystem: subsystem, category: category)
     }
 
-    /**
-     Logs to default.
-     */
-    public func log(function: String = #function,
-                    filePath: String = #file,
-                    fileLine: Int = #line,
-                    _ message: StaticString,
-                    _ args: CVarArg...) {
-        saveLog(message: message,
-                severity: .default,
-                function: function,
-                filePath: filePath,
-                fileLine: fileLine,
-                args: args)
-    }
-
-    /**
-     os_log doesn't have a warn per se, but default is coming close.
-     This is the same as log.
-     */
+    /// Use for warnings, anything that might cause trouble.
+    /// - Note: Gets persisted, so a later sysinfo on the device will recover it.
     public func warn(function: String = #function,
                      filePath: String = #file,
                      fileLine: Int = #line,
                      _ message: StaticString,
                      _ args: CVarArg...) {
         saveLog(message: message,
-                severity: .default,
+                severity: .warn,
                 function: function,
                 filePath: filePath,
                 fileLine: fileLine,
                 args: args)
     }
 
-    /**
-     Logs to info.
-     */
+    /// Will not be logged in a release build at all.
+    /// - Note: Even in a debug build,
+    ///     does not get persisted by default (unless an error follows closely),
+    ///     so don't expect to find this in a sysinfo log.
     public func info(function: String = #function,
                      filePath: String = #file,
                      fileLine: Int = #line,
@@ -113,9 +48,7 @@ public class Logger {
                 args: args)
     }
 
-    /**
-     Logs to debug.
-     */
+    /// Use for debug messages only, will not be persisted.
     public func debug(function: String = #function,
                       filePath: String = #file,
                       fileLine: Int = #line,
@@ -129,9 +62,8 @@ public class Logger {
                 args: args)
     }
 
-    /**
-     Logs to error.
-     */
+    /// Use this for indicating error conditions.
+    /// - Note: Gets persisted, so a later sysinfo on the device will recover it.
     public func error(function: String = #function,
                       filePath: String = #file,
                       fileLine: Int = #line,
@@ -145,64 +77,68 @@ public class Logger {
                 args: args)
     }
 
-    /**
-     Logs to fault.
-     */
-    public func fault(function: String = #function,
-                      filePath: String = #file,
-                      fileLine: Int = #line,
-                      _ message: StaticString,
-                      _ args: CVarArg...) {
-        saveLog(message: message,
-                severity: .fault,
-                function: function,
-                filePath: filePath,
-                fileLine: fileLine,
-                args: args)
+    /// Logs an error and crashes in a debug build, continues to run in a release build.
+    public func errorAndCrash(function: String = #function,
+                              filePath: String = #file,
+                              fileLine: Int = #line,
+                              error: Error) {
+        osLog(message: "*** errorAndCrash: \(error)",
+            severity: .error,
+            function: function,
+            filePath: filePath,
+            fileLine: fileLine,
+            args: [])
+
+        SystemUtils.crash("*** errorAndCrash: \(error) (\(filePath):\(fileLine) \(function))")
     }
 
+    /// Logs an error message and crashes in a debug build, continues to run in a release build.
+    public func errorAndCrash(function: String = #function,
+                              filePath: String = #file,
+                              fileLine: Int = #line,
+                              message: String) {
+        osLog(message: "*** errorAndCrash: \(message)",
+            severity: .error,
+            function: function,
+            filePath: filePath,
+            fileLine: fileLine,
+            args: [])
+
+        SystemUtils.crash("*** errorAndCrash: \(message) (\(filePath):\(fileLine) \(function))")
+    }
+
+    /// Logs an error message (with parameters) and crashes in a debug build,
+    /// continues to run in a release build.
     public func errorAndCrash(function: String = #function,
                               filePath: String = #file,
                               fileLine: Int = #line,
                               _ message: StaticString,
                               _ args: CVarArg...) {
-        saveLog(message: message,
-                severity: .fault,
-                function: function,
-                filePath: filePath,
-                fileLine: fileLine,
-                args: args)
+        osLog(message: "*** errorAndCrash: \(message)",
+            severity: .error,
+            function: function,
+            filePath: filePath,
+            fileLine: fileLine,
+            args: args)
 
-        SystemUtils.crash("\(filePath):\(function):\(fileLine) - \(message)")
+        let ourString = String(format: "\(message)", arguments: args)
+        SystemUtils.crash("*** errorAndCrash: \(ourString) (\(filePath):\(fileLine) \(function))")
     }
 
-    /**
-     Logs an error.
-     */
+    /// Logs an error.
     public func log(function: String = #function,
                     filePath: String = #file,
                     fileLine: Int = #line,
-                    error: Error) {
-        // Error is not supported by "%@", because it doesn't conform to CVArg
-        // and CVArg is only meant for internal types.
-        // An alternative would be to use localizedDescription(),
-        // but if they are indeed localized you end up with international
-        // log messages.
-        // So we wrap it into an NSError which does suppord CVArg.
-        let nsErr = NSError(domain: subsystem, code: 0, userInfo: [NSUnderlyingErrorKey: error])
-
-        saveLog(message: "%{public}@",
-                severity: .default,
-                function: function,
-                filePath: filePath,
-                fileLine: fileLine,
-                args: [nsErr])
+                    error theError: Error) {
+        error(function: function,
+              filePath: filePath,
+              fileLine: fileLine,
+              "%@",
+              "\(theError)")
     }
 
-    /**
-     Since this kind of logging is used so often in the codebase, it has its
-     own method.
-     */
+    /// Since this kind of logging is used so often in the codebase, it has its
+    /// own method.
     public func lostMySelf() {
         errorAndCrash("Lost MySelf")
     }
@@ -218,7 +154,7 @@ public class Logger {
                          filePath: String = #file,
                          fileLine: Int = #line,
                          args: [CVarArg]) {
-        osLog(message: message,
+        osLog(message: "\(message)",
               severity: severity,
               function: function,
               filePath: filePath,
@@ -226,97 +162,72 @@ public class Logger {
               args: args)
     }
 
-    /**
-     - Note: If the number of arguments to the format string exceeds 10,
-     the logging doesn't work correctly. Can be easily fixed though, if really needed.
-     */
-    private func osLog(message: StaticString,
+    /// - Note: Wrapping `os_log` causes all kinds of problems, so until
+    ///   there is an official version of it that accepts `[CVarArg]` (os_logv?),
+    ///   interpolation is handled by us, under certain conditions.
+    private func osLog(message: String,
                        severity: Severity,
                        function: String = #function,
                        filePath: String = #file,
                        fileLine: Int = #line,
                        args: [CVarArg]) {
-        let theLog = osLogger as! OSLog
-        let theType = severity.osLogType()
+        var shouldLog = false
 
-        // I haven't found a way of injecting `function` etc. into the original message for
-        // just one call to `os_log`, so the 'position' is logged on a separate line.
-        os_log("%@:%d %@:",
-               log: theLog,
-               type: theType,
-               filePath,
-               fileLine,
-               function)
+        #if DEBUG
+        // in a debug build, log everything
+        shouldLog = true
+        #else
+        // in a release, only log errors and warnings
+        if severity == .error || severity == .warn {
+            shouldLog = true
+        } else {
+            shouldLog = false
+        }
+        #endif
 
-        // We have to expand the array of arguments into positional ones.
-        // There is no attempt of trying to format the string on our side
-        // in order to make use of `os_log`'s fast 'offline' formatting
-        // (that is, the work is delayed until actual log display).
-        switch args.count {
-        case 0:
-            os_log(message,
-                   log: theLog,
-                   type: theType)
-        case 1:
-            os_log(message,
+        if shouldLog {
+            let theLog = osLogger as! OSLog
+            let theType = severity.osLogType()
+
+            let ourString = String(format: "\(message)", arguments: args)
+
+            os_log("%@ (%@:%d %@)",
                    log: theLog,
                    type: theType,
-                   args[0])
-        case 2:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1])
-        case 3:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2])
-        case 4:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2], args[3])
-        case 5:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2], args[3], args[4])
-        case 6:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2], args[3], args[4], args[5])
-        case 7:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2], args[3], args[4], args[5], args[6])
-        case 8:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
-        case 9:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7],
-                   args[8])
-        case 10:
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7],
-                   args[8], args[9])
-        default:
-            os_log("Using more than 10 parameters",
-                   log: theLog,
-                   type: .error)
-            os_log(message,
-                   log: theLog,
-                   type: theType,
-                   args)
+                   ourString,
+                   filePath,
+                   fileLine,
+                   function)
+        }
+    }
+
+    /// The supported log levels, used internally.
+    private enum Severity {
+        /// - Note: Not persisted by default, but will be written in case of errors.
+        case info
+
+        /// - Note: Not persisted by default, but will be written in case of errors.
+        case debug
+
+        /// - Note: Gets persisted by default.
+        case warn
+
+        /// Indicates an error.
+        /// - Note: Gets persisted.
+        case error
+
+        /// Mapping to `OSLogType`.
+        public func osLogType() -> OSLogType {
+            switch self {
+            case .info:
+                return .info
+            case .debug:
+                return .debug
+            case .warn:
+                return .default
+            case .error:
+                return .error
+            }
         }
     }
 }

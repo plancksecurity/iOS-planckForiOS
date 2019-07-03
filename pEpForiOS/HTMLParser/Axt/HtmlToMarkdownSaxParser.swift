@@ -62,6 +62,6 @@ extension HtmlToMarkdownSaxParser: AXHTMLParserDelegate {
     }
 
     func parser(_ parser: AXHTMLParser, parseErrorOccurred parseError: Error) {
-        Log.shared.errorAndCrash("%@", parseError.localizedDescription)
+        Log.shared.errorAndCrash(error: parseError)
     }
 }
