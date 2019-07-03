@@ -147,9 +147,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                     return
         }
 
-        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID,
-                                                        partner: partnerID,
-                                                        session: session)
+        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID, partner: partnerID)
 
         XCTAssertEqual(vm.partnerRating, .reliable)
 
@@ -185,9 +183,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                     return
         }
 
-        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID,
-                                                        partner: partnerID,
-                                                        session: session)
+        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID, partner: partnerID)
 
         XCTAssertEqual(vm.partnerRating, .reliable)
 

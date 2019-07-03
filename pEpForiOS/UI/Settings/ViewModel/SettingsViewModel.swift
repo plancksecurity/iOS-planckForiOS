@@ -9,10 +9,15 @@
 import Foundation
 import MessageModel
 
-class SettingsViewModel {
+final class SettingsViewModel {
     var sections = [SettingsSectionViewModel]()
+    private let keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol?
+    private let messageModelService: MessageModelServiceProtocol
 
-    init() {
+    init(_ messageModelService: MessageModelServiceProtocol,
+         _ keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol = KeySyncDeviceGroupService()) {
+        self.keySyncDeviceGroupService = keySyncDeviceGroupService
+        self.messageModelService = messageModelService
         generateSections()
     }
 
@@ -20,10 +25,7 @@ class SettingsViewModel {
         sections.append(SettingsSectionViewModel(type: .accounts))
         sections.append(SettingsSectionViewModel(type: .globalSettings))
         sections.append(SettingsSectionViewModel(type: .pgpCompatibilitySettings))
-    }
-
-    private func sectionIsValid(section: Int) -> Bool {
-        return section >= 0 && section < sections.count
+        sections.append(SettingsSectionViewModel(type: .keySync, messageModelService: messageModelService, keySyncDeviceGroupService: keySyncDeviceGroupService))
     }
 
     func delete(section: Int, cell: Int) {
@@ -33,17 +35,24 @@ class SettingsViewModel {
         }
     }
 
-    //temporal stub
-    func canBeShown(Message: Message? ) -> Bool{
-        return false
+    func leaveDeviceGroupPressed() -> Error? {
+        guard let keySyncDeviceGroupService = keySyncDeviceGroupService else {
+            let error = SettingsInternalError.nilKeySyncDeviceGroupService
+            Log.shared.errorAndCrash("%@", error.localizedDescription)
+            return error
+        }
+        do {
+            try keySyncDeviceGroupService.leaveDeviceGroup()
+        } catch {
+            Log.shared.errorAndCrash("%@", error.localizedDescription)
+            return error
+        }
+        return nil
     }
 
-    func rowType(for indexPath: IndexPath) -> SettingsCellViewModel.SettingType? {
-        guard let model = self[indexPath.section][indexPath.row] as?
-            ComplexSettingCellViewModelProtocol else {
-            return nil
-        }
-        return model.type
+    //temporal stub
+    func canBeShown(Message: Message? ) -> Bool {
+        return false
     }
 
     func noAccounts() -> Bool {
@@ -61,5 +70,12 @@ class SettingsViewModel {
             assert(sectionIsValid(section: section), "Section out of range")
             return sections[section]
         }
+    }
+}
+
+// MARK: - Private
+extension SettingsViewModel {
+    private func sectionIsValid(section: Int) -> Bool {
+        return section >= 0 && section < sections.count
     }
 }
