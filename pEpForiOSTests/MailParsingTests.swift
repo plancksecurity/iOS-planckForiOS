@@ -13,18 +13,11 @@ import CoreData
 @testable import MessageModel
 import PEPObjCAdapterFramework
 
-class MailParsingTests: XCTestCase { //!!!: use BaseClass
-    var persistentSetup: PersistentSetup!
-    var cdOwnAccount: CdAccount!
+class MailParsingTests: CoreDataDrivenTestBase {
     var fromIdent: PEPIdentity!
 
     override func setUp() {
         super.setUp()
-
-        XCTAssertTrue(PEPUtil.pEpClean())
-        persistentSetup = PersistentSetup()
-
-        let moc: NSManagedObjectContext = Stack.shared.mainContext
 
         let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
         cdMyAccount.identity?.userName = "iOS Test 002"
@@ -36,24 +29,19 @@ class MailParsingTests: XCTestCase { //!!!: use BaseClass
         cdInbox.account = cdMyAccount
         moc.saveAndLogErrors()
 
-        cdOwnAccount = cdMyAccount
-    }
-
-    override func tearDown() {
-        PEPSession.cleanup()
-        super.tearDown()
+        cdAccount = cdMyAccount
     }
 
     func testParseUnencryptedMailWithPublicKey() {
-        let pEpMySelfIdentity = cdOwnAccount.pEpIdentity()
+        let pEpMySelfIdentity = cdAccount.pEpIdentity()
 
         let session = PEPSession()
         try! session.mySelf(pEpMySelfIdentity)
         XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
 
-        guard let cdMessage = TestUtil.cdMessage(
-            fileName: "HandshakeTests_mail_001.txt",
-            cdOwnAccount: cdOwnAccount) else {
+        guard let cdMessage = TestUtil.cdMessage(fileName: "HandshakeTests_mail_001.txt",
+                                                 cdOwnAccount: cdAccount)
+            else {
                 XCTFail()
                 return
         }
@@ -82,15 +70,15 @@ class MailParsingTests: XCTestCase { //!!!: use BaseClass
     }
 
     func testParseUndisplayableHTMLMessage() {
-        let pEpMySelfIdentity = cdOwnAccount.pEpIdentity()
+        let pEpMySelfIdentity = cdAccount.pEpIdentity()
 
         let session = PEPSession()
         try! session.mySelf(pEpMySelfIdentity)
         XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
 
-        guard let cdMessage = TestUtil.cdMessage(
-            fileName: "Undisplayable_HTML_Message.txt",
-            cdOwnAccount: cdOwnAccount) else {
+        guard let cdMessage = TestUtil.cdMessage(fileName: "Undisplayable_HTML_Message.txt",
+                                                 cdOwnAccount: cdAccount)
+            else {
                 XCTFail()
                 return
         }
@@ -119,15 +107,15 @@ class MailParsingTests: XCTestCase { //!!!: use BaseClass
      IOS-1364
      */
     func testParseUndisplayedAttachedJpegMessage() {
-        let pEpMySelfIdentity = cdOwnAccount.pEpIdentity()
+        let pEpMySelfIdentity = cdAccount.pEpIdentity()
 
         let session = PEPSession()
         try! session.mySelf(pEpMySelfIdentity)
         XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
 
-        guard let cdMessage = TestUtil.cdMessage(
-            fileName: "1364_Mail_missing_attached_image.txt",
-            cdOwnAccount: cdOwnAccount) else {
+        guard let cdMessage = TestUtil.cdMessage(fileName: "1364_Mail_missing_attached_image.txt",
+                                                 cdOwnAccount: cdAccount)
+            else {
                 XCTFail()
                 return
         }

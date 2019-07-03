@@ -13,13 +13,7 @@ import CoreData
 @testable import MessageModel //FIXME:
 import PEPObjCAdapterFramework
 
-class SetOwnKeyViewModelTests: XCTestCase {
-    var persistentSetup: PersistentSetup!
-    var moc: NSManagedObjectContext!
-
-    var session: PEPSession {
-        return PEPSession()
-    }
+class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
     var backgroundQueue: OperationQueue!
 
     /**
@@ -34,17 +28,12 @@ class SetOwnKeyViewModelTests: XCTestCase {
 
         XCTAssertTrue(PEPUtil.pEpClean())
 
-        persistentSetup = PersistentSetup()
-        moc = Stack.shared.mainContext
-
         self.backgroundQueue = OperationQueue()
     }
 
     override func tearDown() {
-        persistentSetup = nil
         backgroundQueue.cancelAllOperations()
         backgroundQueue = nil
-        PEPSession.cleanup()
         super.tearDown()
     }
 

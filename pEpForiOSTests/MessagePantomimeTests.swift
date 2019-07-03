@@ -15,20 +15,7 @@ import pEpForiOS
 import PEPObjCAdapterFramework
 
 //!!!: must be moved to MM
-class MessagePantomimeTests: XCTestCase { //!!!: se base class
-    var persistentSetup: PersistentSetup!
-    var moc: NSManagedObjectContext!
-
-    override func setUp() {
-        super.setUp()
-        persistentSetup = PersistentSetup()
-        moc = Stack.shared.mainContext
-    }
-
-    override func tearDown() {
-        persistentSetup = nil
-        super.tearDown()
-    }
+class MessagePantomimeTests: CoreDataDrivenTestBase {
 
     func testPantomimeFlagsFromMessage() {
         let m = CdMessage(context: moc)
