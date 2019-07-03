@@ -24,22 +24,7 @@ class DecryptionDelegate: DecryptionAttemptCounterDelegate {
     }
 }
 
-class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
-    var persistentSetup: PersistentSetup!
-
-    override func setUp() {
-        super.setUp()
-
-        XCTAssertTrue(PEPUtil.pEpClean())
-
-        persistentSetup = PersistentSetup()
-    }
-
-    override func tearDown() {
-        PEPSession.cleanup()
-        persistentSetup = nil
-        super.tearDown()
-    }
+class HandshakePartnerTableViewCellViewModelTests: CoreDataDrivenTestBase {
 
     func importMail(session: PEPSession = PEPSession()) ->
         (message: Message, mySelfID: Identity, partnerID: Identity)? {
@@ -147,9 +132,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                     return
         }
 
-        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID,
-                                                        partner: partnerID,
-                                                        session: session)
+        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID, partner: partnerID)
 
         XCTAssertEqual(vm.partnerRating, .reliable)
 
@@ -185,9 +168,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                     return
         }
 
-        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID,
-                                                        partner: partnerID,
-                                                        session: session)
+        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID, partner: partnerID)
 
         XCTAssertEqual(vm.partnerRating, .reliable)
 

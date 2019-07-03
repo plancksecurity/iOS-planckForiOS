@@ -14,10 +14,7 @@ import CoreData
 import PEPObjCAdapterFramework
 
 //!!!: uses a mix of Cd*Objects and MMObjects. Fix!
-class MessageReevalutionTests: XCTestCase {
-    var moc: NSManagedObjectContext!
-
-    var cdOwnAccount: CdAccount!
+class MessageReevalutionTests: CoreDataDrivenTestBase {
     var pEpOwnIdentity: PEPIdentity!
     var cdSenderIdentity: CdIdentity!
     var pEpSenderIdentity: PEPIdentity!
@@ -25,19 +22,10 @@ class MessageReevalutionTests: XCTestCase {
     var senderIdentity: Identity!
     var cdDecryptedMessage: CdMessage!
 
-    var persistentSetup: PersistentSetup!
-    var session: PEPSession {
-        return PEPSession()
-    }
     var backgroundQueue: OperationQueue!
 
     override func setUp() {
         super.setUp()
-
-        XCTAssertTrue(PEPUtil.pEpClean())
-
-        persistentSetup = PersistentSetup()
-        moc = Stack.shared.mainContext
 
         let ownIdentity = PEPIdentity(address: "iostest002@peptest.ch",
                                       userID: "iostest002@peptest.ch_ID",
@@ -54,7 +42,7 @@ class MessageReevalutionTests: XCTestCase {
         cdInbox = CdFolder(context: moc)
         cdInbox.name = ImapSync.defaultImapInboxName
         cdInbox.account = cdMyAccount
-        self.cdOwnAccount = cdMyAccount
+        self.cdAccount = cdMyAccount
 
         // Sender
         let senderUserName = "iOS Test 001"
@@ -90,17 +78,15 @@ class MessageReevalutionTests: XCTestCase {
     }
 
     override func tearDown() {
-        persistentSetup = nil
         backgroundQueue?.cancelAllOperations() //!!!: serious issue. BackgroundQueue is randomly nil here. WTF?
         backgroundQueue = nil
-        PEPSession.cleanup()
         super.tearDown()
     }
 
     func decryptTheMessage() {
-        guard let cdMessage = TestUtil.cdMessage(
-            fileName: "CommunicationTypeTests_Message_test001_to_test002.txt",
-            cdOwnAccount: cdOwnAccount) else {
+        guard let cdMessage = TestUtil.cdMessage(fileName: "CommunicationTypeTests_Message_test001_to_test002.txt",
+                                                 cdOwnAccount: cdAccount)
+            else {
                 XCTFail()
                 return
         }

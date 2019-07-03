@@ -13,38 +13,22 @@ import CoreData
 @testable import MessageModel //FIXME:
 import PEPObjCAdapterFramework
 
-class HandshakeTests: XCTestCase {
-    var persistentSetup: PersistentSetup!
-    var moc: NSManagedObjectContext!
-
-    var cdOwnAccount: CdAccount!
+class HandshakeTests: CoreDataDrivenTestBase {
     var fromIdent: PEPIdentity!
 
     override func setUp() {
         super.setUp()
 
-        XCTAssertTrue(PEPUtil.pEpClean())
-        persistentSetup = PersistentSetup()
-        moc = Stack.shared.mainContext
-
-        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
-        cdMyAccount.identity?.userName = "iOS Test 002"
-        cdMyAccount.identity?.userID = "iostest002@peptest.ch_ID"
-        cdMyAccount.identity?.address = "iostest002@peptest.ch"
+        cdAccount.identity?.userName = "iOS Test 002"
+        cdAccount.identity?.userID = "iostest002@peptest.ch_ID"
+        cdAccount.identity?.address = "iostest002@peptest.ch"
 
         let cdInbox = CdFolder(context: moc)
         cdInbox.name = ImapSync.defaultImapInboxName
-        cdInbox.account = cdMyAccount
+        cdInbox.account = cdAccount
         moc.saveAndLogErrors()
 
-        cdOwnAccount = cdMyAccount
-
-        decryptedMessageSetup(pEpMySelfIdentity: cdMyAccount.pEpIdentity())
-    }
-
-    override func tearDown() {
-        PEPSession.cleanup()
-        super.tearDown()
+        decryptedMessageSetup(pEpMySelfIdentity: cdAccount.pEpIdentity())
     }
 
     func decryptedMessageSetup(pEpMySelfIdentity: PEPIdentity) {
@@ -54,7 +38,7 @@ class HandshakeTests: XCTestCase {
 
         guard let cdMessage = TestUtil.cdMessage(
             fileName: "HandshakeTests_mail_001.txt",
-            cdOwnAccount: cdOwnAccount) else {
+            cdOwnAccount: cdAccount) else {
                 XCTFail()
                 return
         }
