@@ -31,6 +31,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
 
     override open func setUp() {
         super.setUp()
+        Stack.shared.reset() //!!!: this should not be required. Rm after all tests use a propper base class!
         moc = Stack.shared.mainContext
 
         let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
