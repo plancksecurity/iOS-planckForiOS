@@ -428,6 +428,18 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         wait(for: [messageDidSaveExpectation], timeout: UnitTestUtils.waitTime)
     }
 
+    func testMessageInOutboxAreNonEditableAndNonSelectable() {
+        TestUtil.createMessage(uid: 1, inFolder: outboxFolder)
+        moc.saveAndLogErrors()
+        setupViewModel(forfolder: outboxFolder)
+        emailListVM.startMonitoring()
+        XCTAssertEqual(1, emailListVM.rowCount)
+        let notEditable = emailListVM.isEditable(messageAt: IndexPath(row: 0, section: 0))
+        XCTAssertFalse(notEditable)
+        let notSelectable = emailListVM.isSelectable(messageAt: IndexPath(row: 0, section: 0))
+        XCTAssertFalse(notSelectable)
+    }
+
     // Mark: - setting up
 
     fileprivate func setUpViewModel(forFolder folder: Folder, masterViewController: TestMasterViewController) {
