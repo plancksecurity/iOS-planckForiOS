@@ -14,6 +14,8 @@ import XCTest
 class EmailListViewModelTest: CoreDataDrivenTestBase {
     var folder: Folder!
     var trashFolder: Folder!
+    var outboxFolder: Folder!
+    var draftsFolder: Folder!
     var emailListVM : EmailListViewModel!
     var masterViewController: TestMasterViewController!
 
@@ -24,12 +26,13 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         let acc = cdAccount.account()
 
         folder = Folder(name: "inbox", parent: nil, account: acc, folderType: .inbox)
-        folder.save()
         trashFolder = Folder(name: "trash",
                              parent: nil,
                              account: folder.account,
                              folderType: .trash)
-        trashFolder.save()
+        outboxFolder = Folder(name: "outbox", parent: nil, account: acc, folderType: .outbox)
+        draftsFolder = Folder(name: "drafts", parent: nil, account: acc, folderType: .drafts)
+        moc.saveAndLogErrors()
     }
 
     // MARK: - Test section
@@ -427,12 +430,18 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     // Mark: - setting up
 
-    fileprivate func setUpViewModel(masterViewController: TestMasterViewController) {
-        self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController, folderToShow: self.folder)
+    fileprivate func setUpViewModel(forFolder folder: Folder, masterViewController: TestMasterViewController) {
+        self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController, folderToShow: folder)
     }
 
-    fileprivate func setupViewModel() {
-        createViewModelWithExpectations(expectedUpdateView: true)
+    fileprivate func setupViewModel(forfolder internalFolder: Folder? = nil) {
+        let folderToUse: Folder
+        if internalFolder == nil {
+            folderToUse = folder
+        } else {
+            folderToUse = internalFolder!
+        }
+        createViewModelWithExpectations(forFolder: folderToUse, expectedUpdateView: true)
     }
 
     /*fileprivate func setSearchFilter(text: String) {
@@ -452,9 +461,9 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         masterViewController.expectationUpdateViewCalled = updateViewExpectation
     }
 
-    fileprivate func createViewModelWithExpectations(expectedUpdateView: Bool) {
+    fileprivate func createViewModelWithExpectations(forFolder folder: Folder, expectedUpdateView: Bool) {
         let viewModelTestDelegate = TestMasterViewController()
-        setUpViewModel(masterViewController: viewModelTestDelegate)
+        setUpViewModel(forFolder: folder, masterViewController: viewModelTestDelegate)
     }
 
     fileprivate func setUpViewModelExpectations(expectedUpdateView: Bool = false,
