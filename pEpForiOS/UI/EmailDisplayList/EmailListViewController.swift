@@ -921,20 +921,16 @@ extension EmailListViewController {
         }
 
         return UIAlertAction(title: title, style: .default) { [weak self] action in
-            guard let me = self else {
+            guard let me = self, let cell = me.tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             if seenState {
                 me.model?.markSelectedAsUnread(indexPaths: [indexPath])
-                if let cell = me.tableView.cellForRow(at: indexPath) as? EmailListViewCell {
-                    cell.isSeen = false
-                }
+                cell.isSeen = false
             } else {
                 me.model?.markSelectedAsRead(indexPaths: [indexPath])
-                if let cell = me.tableView.cellForRow(at: indexPath) as? EmailListViewCell {
-                    cell.isSeen = true
-                }
+                cell.isSeen = true
             }
         }
     }
