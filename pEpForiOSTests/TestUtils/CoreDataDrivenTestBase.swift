@@ -31,7 +31,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
 
     override open func setUp() {
         super.setUp()
-        setupStackForTests()
+        Stack.shared.reset() //!!!: this should not be required. Rm after all tests use a propper base class!
         moc = Stack.shared.mainContext
 
         let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
@@ -48,7 +48,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
 
     override open func tearDown() {
         imapSyncData?.sync?.close()
-        Stack.shared.resetContexts()
+        Stack.shared.reset()
         PEPSession.cleanup()
         XCTAssertTrue(PEPUtil.pEpClean())
         super.tearDown()
@@ -76,14 +76,5 @@ open class CoreDataDrivenTestBase: XCTestCase {
             XCTAssertNil(error)
             XCTAssertFalse(op.hasErrors())
         })
-    }
-}
-
-// MARK: - Stack Test Setup
-
-extension CoreDataDrivenTestBase {
-
-    private func setupStackForTests() {
-        let _ = Stack.shared
     }
 }
