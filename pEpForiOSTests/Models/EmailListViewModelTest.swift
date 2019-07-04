@@ -452,6 +452,18 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(isSelectable)
     }
 
+    func testMessageInDraftsAreEditableAndSelectable() {
+        TestUtil.createMessage(uid: 1, inFolder: draftsFolder)
+        moc.saveAndLogErrors()
+        setupViewModel(forfolder: draftsFolder)
+        emailListVM.startMonitoring()
+        XCTAssertEqual(1, emailListVM.rowCount)
+        let isEditable = emailListVM.isEditable(messageAt: IndexPath(row: 0, section: 0))
+        XCTAssertTrue(isEditable)
+        let isSelectable = emailListVM.isSelectable(messageAt: IndexPath(row: 0, section: 0))
+        XCTAssertTrue(isSelectable)
+    }
+
     // Mark: - setting up
 
     fileprivate func setUpViewModel(forFolder folder: Folder, masterViewController: TestMasterViewController) {
