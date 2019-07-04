@@ -925,12 +925,11 @@ extension EmailListViewController {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
+            cell.isSeen = !seenState
             if seenState {
                 me.model?.markSelectedAsUnread(indexPaths: [indexPath])
-                cell.isSeen = false
             } else {
                 me.model?.markSelectedAsRead(indexPaths: [indexPath])
-                cell.isSeen = true
             }
         }
     }
