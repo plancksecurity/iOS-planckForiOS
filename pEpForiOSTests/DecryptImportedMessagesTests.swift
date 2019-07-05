@@ -207,6 +207,35 @@ class DecryptImportedMessagesTests: CoreDataDrivenTestBase {
     }
      */
 
+    /// ENGINE-588
+    func testDecrypt_ENGINE_588() {
+        let cdOwnAccount = DecryptionUtil.createLocalAccount(ownUserName: "Harry Bryant",
+                                                             ownUserID: "user_Harry_Bryant",
+                                                             ownEmailAddress: "iostest002@peptest.ch",
+                                                             context: moc)
+        self.backgroundQueue = OperationQueue()
+        let cdMessage = DecryptionUtil.decryptTheMessage(
+            testCase: self,
+            backgroundQueue: backgroundQueue,
+            cdOwnAccount: cdOwnAccount,
+            fileName: "ENGINE-588_Mail_with_key_attached_sequoia.txt")
+
+        guard let theCdMessage = cdMessage else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRating.unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.shortMessage, "needed")
+
+        let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
+        XCTAssertEqual(attachments.count, 1)
+
+        let attachment1 = attachments[0]
+        XCTAssertEqual(attachment1.mimeType, "application/vnd.oasis.opendocument.text")
+        XCTAssertEqual(attachment1.fileName, "cid://253d226f-4e3a-b37f-4809-16cdc02f39e1@yahoo.com")
+    }
+
     // MARK: - Helpers
 
     func check(attachments: [CdAttachment]) {

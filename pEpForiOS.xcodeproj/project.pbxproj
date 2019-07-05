@@ -379,6 +379,7 @@
 		43ED53781CC77F95006AB156 /* SMTPSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536D1CC77F95006AB156 /* SMTPSettingsTableViewController.swift */; };
 		43ED53791CC77F95006AB156 /* UserInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536E1CC77F95006AB156 /* UserInfoTableViewController.swift */; };
 		43EDCB84219ED7F000771240 /* FetchNumberOfNewMailsServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EDCB83219ED7F000771240 /* FetchNumberOfNewMailsServiceTest.swift */; };
+		43EDF55A22CF3135008E4ACA /* ENGINE-588_Mail_with_key_attached_sequoia.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43EDF55922CF3135008E4ACA /* ENGINE-588_Mail_with_key_attached_sequoia.txt */; };
 		43F7F07A1F6AD44600BDF151 /* HandshakeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F7F0791F6AD44600BDF151 /* HandshakeTests.swift */; };
 		43F7F07C1F6AD4FD00BDF151 /* HandshakeTests_mail_001.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43F7F07B1F6AD4FD00BDF151 /* HandshakeTests_mail_001.txt */; };
 		43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F9D9991E92725700F78A1C /* AttachmentsViewHelper.swift */; };
@@ -891,6 +892,7 @@
 		43ED536D1CC77F95006AB156 /* SMTPSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMTPSettingsTableViewController.swift; sourceTree = "<group>"; };
 		43ED536E1CC77F95006AB156 /* UserInfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoTableViewController.swift; sourceTree = "<group>"; };
 		43EDCB83219ED7F000771240 /* FetchNumberOfNewMailsServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchNumberOfNewMailsServiceTest.swift; sourceTree = "<group>"; };
+		43EDF55922CF3135008E4ACA /* ENGINE-588_Mail_with_key_attached_sequoia.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ENGINE-588_Mail_with_key_attached_sequoia.txt"; sourceTree = "<group>"; };
 		43F7F0791F6AD44600BDF151 /* HandshakeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeTests.swift; sourceTree = "<group>"; };
 		43F7F07B1F6AD4FD00BDF151 /* HandshakeTests_mail_001.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HandshakeTests_mail_001.txt; sourceTree = "<group>"; };
 		43F9D9991E92725700F78A1C /* AttachmentsViewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsViewHelper.swift; sourceTree = "<group>"; };
@@ -1777,19 +1779,12 @@
 			isa = PBXGroup;
 			children = (
 				433724FC1DA2C2B1005E8DF5 /* pEp.entitlements */,
-				43D2133F2237CB3900C060A1 /* PantomimeFramework.framework */,
-				43D2133C2237CB1600C060A1 /* PEPObjCAdapterFramework.framework */,
-				43D213352237C90400C060A1 /* ldns_xcode.framework */,
-				43D213302237C86900C060A1 /* SwipeCellKit.framework */,
-				43D2132D2237BE8000C060A1 /* MessageModel.framework */,
-				43D2132A2237BE6D00C060A1 /* pEpIOSToolbox.framework */,
-				43D213262237BE4B00C060A1 /* AppAuth.framework */,
-				43980ECE1CBD1CAD00A7FC3C /* Libraries */,
 				43980E251CBD0BC900A7FC3C /* pEpForiOS */,
 				43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */,
 				43980E481CBD0BCA00A7FC3C /* pEpForiOSUITests */,
 				43980E241CBD0BC900A7FC3C /* Products */,
 				495560841E7150ED0016579E /* Frameworks */,
+				43EDF55822CE88DA008E4ACA /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1994,6 +1989,7 @@
 				438F4EE0215F9CB300168B5E /* SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt */,
 				433F2E2921E3581800E1CA49 /* ENGINE-505_Mail_NullInnerMimeType.txt */,
 				43D3F8A021EDDF19002D5AFC /* ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt */,
+				43EDF55922CF3135008E4ACA /* ENGINE-588_Mail_with_key_attached_sequoia.txt */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -2087,6 +2083,20 @@
 				43ED53661CC77F95006AB156 /* IMAPSettingsTableViewController.swift */,
 			);
 			path = ImapSetup;
+			sourceTree = "<group>";
+		};
+		43EDF55822CE88DA008E4ACA /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				154918E222BA74D70091B6D6 /* PantomimeFramework.framework */,
+				154918DF22BA74BA0091B6D6 /* AppAuth.framework */,
+				154918CF22BA74230091B6D6 /* ldns_xcode.framework */,
+				154918DC22BA74A90091B6D6 /* PEPObjCAdapterFramework.framework */,
+				154918D922BA74800091B6D6 /* MessageModel.framework */,
+				154918D322BA74670091B6D6 /* pEpIOSToolbox.framework */,
+				154918D622BA74700091B6D6 /* SwipeCellKit.framework */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		49174CAD21EE408F006DBD63 /* PDF Security Tests */ = {
@@ -2577,6 +2587,7 @@
 			files = (
 				4348EF151E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */,
 				431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */,
+				43EDF55A22CF3135008E4ACA /* ENGINE-588_Mail_with_key_attached_sequoia.txt in Resources */,
 				15EBE44220E5353E00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc in Resources */,
 				15EBE44320E5353E00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc in Resources */,
 				15EBE43B20E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc in Resources */,
