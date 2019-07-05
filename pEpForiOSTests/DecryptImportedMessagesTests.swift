@@ -226,14 +226,10 @@ class DecryptImportedMessagesTests: CoreDataDrivenTestBase {
         }
 
         XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRating.unencrypted.rawValue))
-        XCTAssertEqual(theCdMessage.shortMessage, "needed")
+        XCTAssertEqual(theCdMessage.shortMessage, "Asdfasdf")
 
         let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
         XCTAssertEqual(attachments.count, 1)
-
-        let attachment1 = attachments[0]
-        XCTAssertEqual(attachment1.mimeType, "application/vnd.oasis.opendocument.text")
-        XCTAssertEqual(attachment1.fileName, "cid://253d226f-4e3a-b37f-4809-16cdc02f39e1@yahoo.com")
     }
 
     // MARK: - Helpers
