@@ -9,165 +9,103 @@
 import XCTest
 @testable import pEpForiOS
 
-class KeySyncHandshakeViewModelTest: XCTestCase {
+final class KeySyncHandshakeViewModelTest: XCTestCase {
 
     var keySyncHandshakeVM: KeySyncHandshakeViewModel?
-
-    var didCallShowPicker = false
-    var didCallClosePicker = false
-    var didCallDidPressAction = false
-    var didCallToChangeLanaguage = false
-
-    var languagesToShow: [String] = []
-    var handShakeWords: String = ""
-    var pressedAction: KeySyncHandshakeViewModel.Action?
-
+    var actual: State?
+    var expected: State?
 
     override func setUp() {
         keySyncHandshakeVM = KeySyncHandshakeViewModel()
         keySyncHandshakeVM?.delegate = self
 
-        didCallShowPicker = false
-        didCallClosePicker = false
-        didCallDidPressAction = false
-        didCallToChangeLanaguage = false
-
-        languagesToShow = []
-        handShakeWords = ""
-        pressedAction = nil
+        setDefaultActualState()
+        expected = nil
     }
 
     override func tearDown() {
+        unwrap(value: keySyncHandshakeVM)
+        unwrap(value: actual)
+        unwrap(value: expected)
+
         keySyncHandshakeVM = nil
         keySyncHandshakeVM?.delegate = nil
+        actual = nil
+        expected = nil
     }
 
     func didPressLanguageButtonTest() {
         // GIVEN
-        let keySyncHandshakeVM = unwrap(keysyncHandShakeVM: self.keySyncHandshakeVM)
-        let expectedHandShakeWords = handShakeWords
-        let expectedPressedAction = pressedAction
-        let expectedLanguagesToShow = languagesToShow
+        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
+        expected = State(didCallShowPicker: true)
 
         // WHEN
         keySyncHandshakeVM.didPressLanguageButton()
 
         // THEN
-        XCTAssertTrue(didCallShowPicker)
-
-        XCTAssertFalse(didCallClosePicker)
-        XCTAssertFalse(didCallToChangeLanaguage)
-        XCTAssertFalse(didCallDidPressAction)
-        XCTAssertEqual(expectedHandShakeWords, handShakeWords)
-        XCTAssertEqual(expectedPressedAction, pressedAction)
-        XCTAssertEqual(expectedLanguagesToShow, languagesToShow)
-
+        assertExpectations()
     }
 
     func didSelectLanguageToOtherOrSameTest() {
         // GIVEN
-        let keySyncHandshakeVM = unwrap(keysyncHandShakeVM: self.keySyncHandshakeVM)
+        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
         //TODO: change when moc getter for handshake words
 //        let expectedHandShakeWords = handShakeWords
-        let expectedPressedAction = pressedAction
-        let expectedLanguagesToShow = languagesToShow
+        expected = State(didCallShowPicker: true, didCallToChangeLanaguage: true)
 
         // WHEN
         keySyncHandshakeVM.didSelect(language: "")
 
         // THEN
-        XCTAssertTrue(didCallClosePicker)
-        XCTAssertTrue(didCallToChangeLanaguage)
-//        XCTAssertEqual(expectedHandShakeWords, handShakeWords)
-
-        XCTAssertFalse(didCallShowPicker)
-        XCTAssertFalse(didCallDidPressAction)
-        XCTAssertEqual(expectedPressedAction, pressedAction)
-        XCTAssertEqual(expectedLanguagesToShow, languagesToShow)
+        assertExpectations()
     }
 
     func didSelectNoLanguageTest() {
         // GIVEN
-        let keySyncHandshakeVM = unwrap(keysyncHandShakeVM: self.keySyncHandshakeVM)
-        let expectedHandShakeWords = handShakeWords
-        let expectedPressedAction = pressedAction
-        let expectedLanguagesToShow = languagesToShow
+        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
+        expected = State(didCallClosePicker: true)
 
         // WHEN
         keySyncHandshakeVM.didSelect(language: nil)
 
         // THEN
-        XCTAssertTrue(didCallClosePicker)
-
-        XCTAssertFalse(didCallToChangeLanaguage)
-        XCTAssertFalse(didCallShowPicker)
-        XCTAssertFalse(didCallDidPressAction)
-        XCTAssertEqual(expectedHandShakeWords, handShakeWords)
-        XCTAssertEqual(expectedPressedAction, pressedAction)
-        XCTAssertEqual(expectedLanguagesToShow, languagesToShow)
+        assertExpectations()
     }
 
     func didPressActionAcceptTest() {
         // GIVEN
-        let keySyncHandshakeVM = unwrap(keysyncHandShakeVM: self.keySyncHandshakeVM)
-        let expectedPressedAction = KeySyncHandshakeViewModel.Action.accept
-        let expectedHandShakeWords = handShakeWords
-        let expectedLanguagesToShow = languagesToShow
+        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
+        expected = State(didCallDidPressAction: true, pressedAction: .accept)
 
         // WHEN
         keySyncHandshakeVM.didPress(action: .accept)
 
         // THEN
-        XCTAssertTrue(didCallDidPressAction)
-        XCTAssertEqual(expectedPressedAction, pressedAction)
-
-        XCTAssertFalse(didCallShowPicker)
-        XCTAssertFalse(didCallClosePicker)
-        XCTAssertFalse(didCallToChangeLanaguage)
-        XCTAssertEqual(expectedHandShakeWords, handShakeWords)
-        XCTAssertEqual(expectedLanguagesToShow, languagesToShow)
+        assertExpectations()
     }
 
     func didPressActionDeclineTest() {
         // GIVEN
-        let keySyncHandshakeVM = unwrap(keysyncHandShakeVM: self.keySyncHandshakeVM)
-        let expectedPressedAction = KeySyncHandshakeViewModel.Action.decline
-        let expectedHandShakeWords = handShakeWords
-        let expectedLanguagesToShow = languagesToShow
+        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
+        expected = State(didCallDidPressAction: true, pressedAction: .decline)
 
         // WHEN
         keySyncHandshakeVM.didPress(action: .decline)
 
         // THEN
-        XCTAssertTrue(didCallDidPressAction)
-        XCTAssertEqual(expectedPressedAction, pressedAction)
-
-        XCTAssertFalse(didCallShowPicker)
-        XCTAssertFalse(didCallClosePicker)
-        XCTAssertFalse(didCallToChangeLanaguage)
-        XCTAssertEqual(expectedHandShakeWords, handShakeWords)
-        XCTAssertEqual(expectedLanguagesToShow, languagesToShow)
+        assertExpectations()
     }
 
     func didPressActionCancelTest() {
         // GIVEN
-        let keySyncHandshakeVM = unwrap(keysyncHandShakeVM: self.keySyncHandshakeVM)
-        let expectedPressedAction = KeySyncHandshakeViewModel.Action.cancel
-        let expectedHandShakeWords = handShakeWords
-        let expectedLanguagesToShow = languagesToShow
+        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
+        expected = State(didCallDidPressAction: true, pressedAction: .cancel)
 
         // WHEN
         keySyncHandshakeVM.didPress(action: .cancel)
 
         // THEN
-        XCTAssertTrue(didCallDidPressAction)
-        XCTAssertEqual(expectedPressedAction, pressedAction)
-
-        XCTAssertFalse(didCallShowPicker)
-        XCTAssertFalse(didCallClosePicker)
-        XCTAssertFalse(didCallToChangeLanaguage)
-        XCTAssertEqual(expectedHandShakeWords, handShakeWords)
-        XCTAssertEqual(expectedLanguagesToShow, languagesToShow)
+        assertExpectations()
     }
 }
 
@@ -175,33 +113,76 @@ class KeySyncHandshakeViewModelTest: XCTestCase {
 
 extension KeySyncHandshakeViewModelTest: KeySyncHandshakeViewModelDelegate {
     func closePicker() {
-        didCallClosePicker = true
+        actual?.didCallClosePicker = true
     }
 
     func didPress(action: KeySyncHandshakeViewModel.Action) {
-        didCallDidPressAction = true
-        pressedAction = action
+        actual?.didCallDidPressAction = true
+        actual?.pressedAction = action
     }
 
     func showPicker(withLanguages languages: [String]) {
-        didCallShowPicker = true
-        languagesToShow = languages
+        actual?.didCallShowPicker = true
+        actual?.languagesToShow = languages
     }
 
     func change(handshakeWordsTo: String) {
-        didCallToChangeLanaguage = true
-        didCallClosePicker = true
+        actual?.didCallToChangeLanaguage = true
+        actual?.didCallClosePicker = true
     }
 }
 
 // MARK: - Private
 
 extension KeySyncHandshakeViewModelTest {
-    func unwrap(keysyncHandShakeVM: KeySyncHandshakeViewModel?) -> KeySyncHandshakeViewModel {
-        guard let keysyncHandShakeVM = keysyncHandShakeVM else {
+    @discardableResult
+    private func unwrap<T>(value: T?) -> T {
+        guard let value = value else {
             XCTFail()
-            fatalError("keysyncHandShakeVM is nil")
+            fatalError("value is nil")
         }
-        return keysyncHandShakeVM
+        return value
+    }
+
+    private func setDefaultActualState() {
+        actual = State()
+    }
+
+    private func assertExpectations() {
+        let expected = unwrap(value: self.expected)
+        let actual = unwrap(value: self.actual)
+
+        XCTAssertEqual(expected, actual)
+    }
+}
+
+
+// MARK: - Helper Structs
+extension KeySyncHandshakeViewModelTest {
+    struct State: Equatable {
+        var didCallShowPicker: Bool
+        var didCallClosePicker: Bool
+        var didCallDidPressAction: Bool
+        var didCallToChangeLanaguage: Bool
+
+        var languagesToShow: [String]?
+        var handShakeWords: String?
+        var pressedAction: KeySyncHandshakeViewModel.Action?
+
+        // Default value are default initial state
+        init(didCallShowPicker: Bool = false, didCallClosePicker: Bool = false,
+             didCallDidPressAction: Bool = false, didCallToChangeLanaguage: Bool = false,
+             languagesToShow: [String] = [], handShakeWords: String = "",
+             pressedAction: KeySyncHandshakeViewModel.Action? = nil) {
+
+            self.didCallShowPicker = didCallShowPicker
+            self.didCallClosePicker = didCallClosePicker
+            self.didCallDidPressAction = didCallDidPressAction
+            self.didCallToChangeLanaguage = didCallToChangeLanaguage
+
+            self.languagesToShow = languagesToShow
+            self.handShakeWords = handShakeWords
+            self.pressedAction = pressedAction
+        }
     }
 }
