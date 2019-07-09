@@ -50,35 +50,34 @@ class HandshakePartnerTableViewCellViewModelTests: CoreDataDrivenTestBase {
             XCTAssertNotNil(partnerIdent.fingerPrint)
             XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
 
-            XCTAssertEqual(partnerIdent.fingerPrint, "97F0E744CCDC15BA127A3EE76BAAAC039FB13487")
+            XCTAssertEqual(partnerIdent.fingerPrint, "A90307CAA0B224105367BF677705867380346FCF")
 
             return (message: message, mySelfID: mySelfID, partnerID: partnerID)
     }
 
-    //!!!: crashes!. IOS-1693 (netpgp key)
     /// Tests trust/reset cycle without view model.
-//    func testBasicTrustReset() {
-//        let session = PEPSession()
-//
-//        guard
-//            let (message: _, mySelfID: _, partnerID: partnerID) = importMail(session: session) else
-//        {
-//            XCTFail()
-//            return
-//        }
-//
-//        let partnerIdent = partnerID.pEpIdentity()
-//        try! session.update(partnerIdent)
-//
-//        try! session.trustPersonalKey(partnerIdent)
-//        try! session.update(partnerIdent)
-//        XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
-//
-//        try! session.keyResetTrust(partnerIdent)
-//        try! session.trustPersonalKey(partnerIdent)
-//        try! session.update(partnerIdent)
-//        XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
-//    }
+    func testBasicTrustReset() {
+        let session = PEPSession()
+
+        guard
+            let (message: _, mySelfID: _, partnerID: partnerID) = importMail(session: session) else
+        {
+            XCTFail()
+            return
+        }
+
+        let partnerIdent = partnerID.pEpIdentity()
+        try! session.update(partnerIdent)
+
+        try! session.trustPersonalKey(partnerIdent)
+        try! session.update(partnerIdent)
+        XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
+
+        try! session.keyResetTrust(partnerIdent)
+        try! session.trustPersonalKey(partnerIdent)
+        try! session.update(partnerIdent)
+        XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
+    }
 
     //!!!: crashes! IOS-1693 (netpgp key)
     /**
