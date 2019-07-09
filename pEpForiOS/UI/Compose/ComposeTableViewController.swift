@@ -288,8 +288,12 @@ extension ComposeTableViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("No vm")
+                return
+            }
             destination.appConfig = appConfig
-            viewModel?.setup(handshakeViewController: destination)
+            vm.setup(handshakeViewController: destination)
         }
     }
 }
