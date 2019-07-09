@@ -81,25 +81,24 @@ class HandshakeTests: CoreDataDrivenTestBase {
         self.fromIdent = pEpFrom
     }
 
-    // !!!: crashes!. IOS-1693 (netgpg key)
-//    func testPositiveTrustResetCycle() {
-//        let session = PEPSession()
-//        try! session.update(fromIdent)
-//        XCTAssertNotNil(fromIdent.fingerPrint)
-//        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
-//
-//        try! session.trustPersonalKey(fromIdent)
-//        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
-//
-//        try! session.keyResetTrust(fromIdent)
-//        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
-//
-//        try! session.trustPersonalKey(fromIdent)
-//        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
-//
-//        try! session.keyResetTrust(fromIdent)
-//        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
-//    }
+    func testPositiveTrustResetCycle() {
+        let session = PEPSession()
+        try! session.update(fromIdent)
+        XCTAssertNotNil(fromIdent.fingerPrint)
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+
+        try! session.trustPersonalKey(fromIdent)
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+
+        try! session.keyResetTrust(fromIdent)
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+
+        try! session.trustPersonalKey(fromIdent)
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+
+        try! session.keyResetTrust(fromIdent)
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+    }
 
     // !!!: crashes!. IOS-1693 (netgpg key)
 //    func testNegativeTrustResetCycle() {
