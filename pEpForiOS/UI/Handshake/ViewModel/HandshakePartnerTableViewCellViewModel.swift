@@ -46,32 +46,12 @@ class HandshakePartnerTableViewCellViewModel {
     /**
      The rating of the partner.
      */
-    lazy var partnerRating: PEPRating = {
-        var pepRating = PEPRating.undefined
-        partnerIdentity.session.performAndWait { [weak self] in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            pepRating = PEPUtil.pEpRating(identity: me.partnerIdentity)
-        }
-        return pepRating
-    }()
+    var partnerRating: PEPRating
 
     /**
      The color of the partner.
      */
-    lazy var partnerColor: PEPColor = {
-        var pEpColor = PEPColor.noColor
-        partnerIdentity.session.performAndWait { [weak self] in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            pEpColor = me.partnerRating.pEpColor()
-        }
-        return pEpColor
-    }()
+    var partnerColor: PEPColor
 
     var trustwordsLanguage: String {
         didSet{
@@ -103,32 +83,12 @@ class HandshakePartnerTableViewCellViewModel {
     /**
      Cache the updated own identity.
      */
-    lazy var pEpSelf: PEPIdentity = {
-        var pEpSelf = PEPIdentity() // TODO: why we do it
-        ownIdentity.session.performAndWait { [weak self] in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            pEpSelf = me.ownIdentity.updatedIdentity()
-        }
-        return pEpSelf
-    }()
+    var pEpSelf: PEPIdentity
 
     /**
      Cache the updated partner identity.
      */
-    lazy var pEpPartner: PEPIdentity = {
-        var pEpPartner = PEPIdentity()
-         partnerIdentity.session.performAndWait { [weak self] in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            pEpPartner = me.partnerIdentity.updatedIdentity()
-        }
-        return pEpPartner
-    }()
+    var pEpPartner: PEPIdentity
 
     lazy var contactImageTool = IdentityImageTool()
 
@@ -137,6 +97,10 @@ class HandshakePartnerTableViewCellViewModel {
         self.trustwordsLanguage = "en"
         self.ownIdentity = ownIdentity
         self.partnerIdentity = partner
+        self.partnerRating = PEPUtil.pEpRating(identity: partner)
+        self.pEpPartner = partner.updatedIdentity()
+        self.pEpSelf = ownIdentity.updatedIdentity()
+        self.partnerColor = partnerRating.pEpColor()
 
         do {
             isPartnerpEpUser = try PEPSession().isPEPUser(pEpPartner).boolValue
