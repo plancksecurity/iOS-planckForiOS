@@ -143,8 +143,61 @@ struct ComposeUtil {
 
     // MARK: - Message to send
 
+    static private func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState,
+                                      inAccount account: Account,
+                                      from: Identity,
+                                      toRecipients: [Identity],
+                                      ccRecipients: [Identity],
+                                      bccRecipients: [Identity],
+                                      session: Session? = nil) -> Message? {
+        guard let outbox = Folder.by(account: account, folderType: .outbox) else {
+            Log.shared.errorAndCrash("No outbox")
+            return nil
+        }
+        let message: Message
+        if let safeSession = session {
+            message = Message.newObject(onSession: safeSession)
+        } else {
+            message = Message(uuid: MessageID.generate(), parentFolder: outbox)
+        }
+        message.parent = outbox
+        message.from = from
+        message.replaceTo(with: toRecipients)
+        message.replaceCc(with: ccRecipients)
+        message.replaceBcc(with: bccRecipients)
+        message.shortMessage = state.subject
+        message.longMessage = state.bodyPlaintext
+        message.longMessageFormatted = !state.bodyHtml.isEmpty ? state.bodyHtml : nil
+        message.replaceAttachments(with: state.inlinedAttachments + state.nonInlinedAttachments)
+        message.pEpProtected = state.pEpProtection
+        if !state.pEpProtection {
+            message.setOriginalRatingHeader(rating: PEPRating.unencrypted)
+        } else {
+            message.setOriginalRatingHeader(rating: state.rating)
+        }
+
+        message.imapFlags.seen = imapSeenState(forMessageToSend: message)
+
+
+        return message
+    }
+
+    static public func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
+        guard let from = state.from, let account = Account.by(address: from.address) else {
+                Log.shared.errorAndCrash(
+                    "We have a problem here getting the senders account.")
+                return nil
+        }
+        return messageToSend(withDataFrom: state,
+                             inAccount: account,
+                             from: from,
+                             toRecipients: state.toRecipients,
+                             ccRecipients: state.ccRecipients,
+                             bccRecipients: state.bccRecipients)
+    }
+
     static public func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState,
-                                     session: Session = Session.main) -> Message? {
+                                     session: Session) -> Message? {
         var message: Message?
         session.performAndWait {
             guard let from = state.from?.safeForSession(session),
@@ -153,39 +206,16 @@ struct ComposeUtil {
                         "We have a problem here getting the senders account.")
                     return
             }
-            guard let f = Folder.by(account: account, folderType: .outbox) else {
-                Log.shared.errorAndCrash("No outbox")
-                return
-            }
-
-            message = Message.newObject(onSession: session)
-
-            guard let message = message else {
-                Log.shared.errorAndCrash("Message in this session is nil")
-                return
-            }
-
             let toRecipients = Identity.makeSafe(state.toRecipients, forSession: session)
             let ccRecipients = Identity.makeSafe(state.ccRecipients, forSession: session)
             let bccRecipients = Identity.makeSafe(state.bccRecipients, forSession: session)
-            message.uuid = MessageID.generate()
-            message.parent = f
-            message.from = from
-            message.replaceTo(with: toRecipients)
-            message.replaceCc(with: ccRecipients)
-            message.replaceBcc(with: bccRecipients)
-            message.shortMessage = state.subject
-            message.longMessage = state.bodyPlaintext
-            message.longMessageFormatted = !state.bodyHtml.isEmpty ? state.bodyHtml : nil
-            message.replaceAttachments(with: state.inlinedAttachments + state.nonInlinedAttachments)
-            message.pEpProtected = state.pEpProtection
-            if !state.pEpProtection {
-                message.setOriginalRatingHeader(rating: PEPRating.unencrypted)
-            } else {
-                message.setOriginalRatingHeader(rating: state.rating)
-            }
-
-            message.imapFlags.seen = imapSeenState(forMessageToSend: message)
+            message = messageToSend(withDataFrom: state,
+                                    inAccount: account,
+                                    from: from,
+                                    toRecipients: toRecipients,
+                                    ccRecipients: ccRecipients,
+                                    bccRecipients: bccRecipients,
+                                    session: session)
         }
 
         return message

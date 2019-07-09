@@ -728,6 +728,27 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                didComposeNewMailMustBeCalled: false,
                didModifyMessageMustBeCalled: false,
                didDeleteMessageMustBeCalled: false)
+        vm?.handleDeleteActionTriggered()
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleSaveActionTriggered_normal() {
+        assert(originalMessage: nil,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
         vm?.handleSaveActionTriggered()
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
