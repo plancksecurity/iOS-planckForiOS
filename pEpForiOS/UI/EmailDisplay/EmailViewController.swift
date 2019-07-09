@@ -25,7 +25,7 @@ class EmailViewController: BaseTableViewController {
     var barItems: [UIBarButtonItem]?
 
     var message: Message?
-    var folderShow : Folder?
+    var folderShow: Folder?
     var messageId = 0
 
     var shouldShowOKButton: Bool = false
