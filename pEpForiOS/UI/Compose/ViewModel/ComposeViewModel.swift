@@ -607,7 +607,8 @@ extension ComposeViewModel {
     // as a workaround to avoid letting the VC know MessageModel
     func setup(handshakeViewController: HandshakeViewController) {
 
-        handshakeViewController.message = ComposeUtil.messageToSend(withDataFrom: state, session: Session())
+        handshakeViewController.message = ComposeUtil.messageToSend(withDataFrom: state,
+                                                                    session: Session())
     }
 }
 
