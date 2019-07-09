@@ -143,8 +143,8 @@ struct ComposeUtil {
 
     // MARK: - Message to send
 
-    static public func messageToSend(
-        withDataFrom state: ComposeViewModel.ComposeViewModelState, session: Session = Session.main) -> Message? {
+    static public func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState,
+                                     session: Session = Session.main) -> Message? {
         var message: Message?
         session.performAndWait {
             guard let from = state.from?.safeForSession(session),
