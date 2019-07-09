@@ -12,75 +12,76 @@ import CoreData
 @testable import pEpForiOS
 @testable import MessageModel //FIXME:
 import PEPObjCAdapterFramework
-//!!!: crashes!. IOS-1693
-//class HandshakeTests: CoreDataDrivenTestBase {
-//    var fromIdent: PEPIdentity!
-//
-//    override func setUp() {
-//        super.setUp()
-//
-//        cdAccount.identity?.userName = "iOS Test 002"
-//        cdAccount.identity?.userID = "iostest002@peptest.ch_ID"
-//        cdAccount.identity?.address = "iostest002@peptest.ch"
-//
-//        let cdInbox = CdFolder(context: moc)
-//        cdInbox.name = ImapSync.defaultImapInboxName
-//        cdInbox.account = cdAccount
-//        moc.saveAndLogErrors()
-//
-//        decryptedMessageSetup(pEpMySelfIdentity: cdAccount.pEpIdentity())
-//    }
-//
-//    func decryptedMessageSetup(pEpMySelfIdentity: PEPIdentity) {
-//        let session = PEPSession()
-//        try! session.mySelf(pEpMySelfIdentity)
-//        XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
-//
-//        guard let cdMessage = TestUtil.cdMessage(
-//            fileName: "HandshakeTests_mail_001.txt",
-//            cdOwnAccount: cdAccount) else {
-//                XCTFail()
-//                return
-//        }
-//
-//        let pEpMessage = PEPUtil.pEp(cdMessage: cdMessage, outgoing: true)
-//
-//        let theAttachments = pEpMessage.attachments ?? []
-//        XCTAssertEqual(theAttachments.count, 1)
-//        XCTAssertEqual(theAttachments[0].mimeType, ContentTypeUtils.ContentType.pgpKeys)
-//
-//        guard let optFields = pEpMessage.optionalFields else {
-//            XCTFail("expected optional_fields to be defined")
-//            return
-//        }
-//        var foundXpEpVersion = false
-//        for innerArray in optFields {
-//            if innerArray.count == 2 {
-//                if innerArray[0] == "X-pEp-Version" {
-//                    foundXpEpVersion = true
-//                }
-//            } else {
-//                XCTFail("corrupt optional fields element")
-//            }
-//        }
-//        XCTAssertTrue(foundXpEpVersion)
-//
-//        var keys: NSArray?
-//        var rating = PEPRating.undefined
-//        let theMessage = try! session.decryptMessage(pEpMessage,
-//                                                     flags: nil,
-//                                                     rating: &rating,
-//                                                     extraKeys: &keys,
-//                                                     status: nil)
-//        XCTAssertEqual(rating, .unencrypted)
-//
-//        guard let pEpFrom = theMessage.from else {
-//            XCTFail("expected from in message")
-//            return
-//        }
-//        self.fromIdent = pEpFrom
-//    }
-//
+
+class HandshakeTests: CoreDataDrivenTestBase {
+    var fromIdent: PEPIdentity!
+
+    override func setUp() {
+        super.setUp()
+
+        cdAccount.identity?.userName = "iOS Test 002"
+        cdAccount.identity?.userID = "iostest002@peptest.ch_ID"
+        cdAccount.identity?.address = "iostest002@peptest.ch"
+
+        let cdInbox = CdFolder(context: moc)
+        cdInbox.name = ImapSync.defaultImapInboxName
+        cdInbox.account = cdAccount
+        moc.saveAndLogErrors()
+
+        decryptedMessageSetup(pEpMySelfIdentity: cdAccount.pEpIdentity())
+    }
+
+    func decryptedMessageSetup(pEpMySelfIdentity: PEPIdentity) {
+        let session = PEPSession()
+        try! session.mySelf(pEpMySelfIdentity)
+        XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
+
+        guard let cdMessage = TestUtil.cdMessage(
+            fileName: "HandshakeTests_mail_001.txt",
+            cdOwnAccount: cdAccount) else {
+                XCTFail()
+                return
+        }
+
+        let pEpMessage = PEPUtil.pEp(cdMessage: cdMessage, outgoing: true)
+
+        let theAttachments = pEpMessage.attachments ?? []
+        XCTAssertEqual(theAttachments.count, 1)
+        XCTAssertEqual(theAttachments[0].mimeType, ContentTypeUtils.ContentType.pgpKeys)
+
+        guard let optFields = pEpMessage.optionalFields else {
+            XCTFail("expected optional_fields to be defined")
+            return
+        }
+        var foundXpEpVersion = false
+        for innerArray in optFields {
+            if innerArray.count == 2 {
+                if innerArray[0] == "X-pEp-Version" {
+                    foundXpEpVersion = true
+                }
+            } else {
+                XCTFail("corrupt optional fields element")
+            }
+        }
+        XCTAssertTrue(foundXpEpVersion)
+
+        var keys: NSArray?
+        var rating = PEPRating.undefined
+        let theMessage = try! session.decryptMessage(pEpMessage,
+                                                     flags: nil,
+                                                     rating: &rating,
+                                                     extraKeys: &keys,
+                                                     status: nil)
+        XCTAssertEqual(rating, .unencrypted)
+
+        guard let pEpFrom = theMessage.from else {
+            XCTFail("expected from in message")
+            return
+        }
+        self.fromIdent = pEpFrom
+    }
+
+    // !!!: crashes!. IOS-1693
 //    func testPositiveTrustResetCycle() {
 //        let session = PEPSession()
 //        try! session.update(fromIdent)
@@ -99,8 +100,8 @@ import PEPObjCAdapterFramework
 //        try! session.keyResetTrust(fromIdent)
 //        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
 //    }
-//
-//
+
+    // !!!: crashes!. IOS-1693
 //    func testNegativeTrustResetCycle() {
 //        let session = PEPSession()
 //
@@ -113,8 +114,8 @@ import PEPObjCAdapterFramework
 //        XCTAssertNil(fromIdent.fingerPrint)
 //        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
 //    }
-//
-//    //!!!:
+
+    // !!!: crashes!. IOS-1693
 //    func testRestTruestOnYellowIdentity() {
 //        let session = PEPSession()
 //        try! session.update(fromIdent)
@@ -133,4 +134,4 @@ import PEPObjCAdapterFramework
 //            XCTFail()
 //        }
 //    }
-//}
+}
