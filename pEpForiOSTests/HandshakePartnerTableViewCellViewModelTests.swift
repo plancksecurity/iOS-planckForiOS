@@ -23,105 +23,106 @@ class DecryptionDelegate: DecryptionAttemptCounterDelegate {
         self.decryptedMessageDict = decryptedMessageDict
     }
 }
-//!!!: crashes!. IOS-1693
-//class HandshakePartnerTableViewCellViewModelTests: CoreDataDrivenTestBase {
+
+class HandshakePartnerTableViewCellViewModelTests: CoreDataDrivenTestBase {
+
+    func importMail(session: PEPSession = PEPSession()) ->
+        (message: Message, mySelfID: Identity, partnerID: Identity)? {
+            let decryptDelegate = DecryptionDelegate()
+
+            guard
+                let (mySelf: mySelfID, partner: partnerID, message: message) =
+                TestUtil.setUpPepFromMail(
+                    emailFilePath: "HandshakeTests_mail_001.txt",
+                    decryptDelegate: decryptDelegate) else {
+                        XCTFail()
+                        return nil
+            }
+            XCTAssertNotEqual(mySelfID.address, partnerID.address)
+
+            let meIdent = mySelfID.pEpIdentity()
+            let partnerIdent = partnerID.pEpIdentity()
+
+            try! session.mySelf(meIdent)
+            try! session.update(partnerIdent)
+
+            XCTAssertNotNil(meIdent.fingerPrint)
+            XCTAssertNotNil(partnerIdent.fingerPrint)
+            XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
+
+            XCTAssertEqual(partnerIdent.fingerPrint, "97F0E744CCDC15BA127A3EE76BAAAC039FB13487")
+
+            return (message: message, mySelfID: mySelfID, partnerID: partnerID)
+    }
+
+    //!!!: crashes!. IOS-1693
+    /// Tests trust/reset cycle without view model.
+//    func testBasicTrustReset() {
+//        let session = PEPSession()
 //
-//    func importMail(session: PEPSession = PEPSession()) ->
-//        (message: Message, mySelfID: Identity, partnerID: Identity)? {
-//            let decryptDelegate = DecryptionDelegate()
+//        guard
+//            let (message: _, mySelfID: _, partnerID: partnerID) = importMail(session: session) else
+//        {
+//            XCTFail()
+//            return
+//        }
 //
-//            guard
-//                let (mySelf: mySelfID, partner: partnerID, message: message) =
-//                TestUtil.setUpPepFromMail(
-//                    emailFilePath: "HandshakeTests_mail_001.txt",
-//                    decryptDelegate: decryptDelegate) else {
-//                        XCTFail()
-//                        return nil
-//            }
-//            XCTAssertNotEqual(mySelfID.address, partnerID.address)
+//        let partnerIdent = partnerID.pEpIdentity()
+//        try! session.update(partnerIdent)
 //
-//            let meIdent = mySelfID.pEpIdentity()
-//            let partnerIdent = partnerID.pEpIdentity()
+//        try! session.trustPersonalKey(partnerIdent)
+//        try! session.update(partnerIdent)
+//        XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
 //
-//            try! session.mySelf(meIdent)
-//            try! session.update(partnerIdent)
-//
-//            XCTAssertNotNil(meIdent.fingerPrint)
-//            XCTAssertNotNil(partnerIdent.fingerPrint)
-//            XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
-//
-//            XCTAssertEqual(partnerIdent.fingerPrint, "97F0E744CCDC15BA127A3EE76BAAAC039FB13487")
-//
-//            return (message: message, mySelfID: mySelfID, partnerID: partnerID)
+//        try! session.keyResetTrust(partnerIdent)
+//        try! session.trustPersonalKey(partnerIdent)
+//        try! session.update(partnerIdent)
+//        XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
 //    }
+
+    //!!!: crashes! IOS-1693
+    /**
+     Tests trust/reset/mistrust/resut cycle without view model, using a backup
+     to keep the comm type.
+     */
+//    func testBasicTrustMistrustCycleUsingBackup() {
+//        let session = PEPSession()
 //
-//    //!!!: crashes!. IOS-1693
-//    // Tests trust/reset cycle without view model.
-////    func testBasicTrustReset() {
-////        let session = PEPSession()
-////
-////        guard
-////            let (message: _, mySelfID: _, partnerID: partnerID) = importMail(session: session) else
-////        {
-////            XCTFail()
-////            return
-////        }
-////
-////        let partnerIdent = partnerID.pEpIdentity()
-////        try! session.update(partnerIdent)
-////
-////        try! session.trustPersonalKey(partnerIdent)
-////        try! session.update(partnerIdent)
-////        XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
-////
-////        try! session.keyResetTrust(partnerIdent)
-////        try! session.trustPersonalKey(partnerIdent)
-////        try! session.update(partnerIdent)
-////        XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
-////    }
+//        guard
+//            let (message: _, mySelfID: mySelfID,
+//                 partnerID: partnerID) = importMail(session: session) else {
+//                    XCTFail()
+//                    return
+//        }
 //
-//    //!!!: crashes! IOS-1693
-////    /**
-////     Tests trust/reset/mistrust/resut cycle without view model, using a backup
-////     to keep the comm type.
-////     */
-////    func testBasicTrustMistrustCycleUsingBackup() {
-////        let session = PEPSession()
-////
-////        guard
-////            let (message: _, mySelfID: mySelfID,
-////                 partnerID: partnerID) = importMail(session: session) else {
-////                    XCTFail()
-////                    return
-////        }
-////
-////        let meIdent = mySelfID.pEpIdentity()
-////        var partnerIdent = partnerID.pEpIdentity()
-////        try! session.mySelf(meIdent)
-////        try! session.update(partnerIdent)
-////
-////        // back up the original
-////        let partnerIdentOrig = PEPIdentity(identity: partnerIdent)
-////        XCTAssertTrue(try! session.isPEPUser(partnerIdentOrig).boolValue)
-////
-////        try! session.trustPersonalKey(partnerIdent)
-////        try! session.update(partnerIdent)
-////        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
-////
-////        partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
-////        try! session.keyResetTrust(partnerIdent)
-////        try! session.update(partnerIdent)
-////        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
-////
-////        partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
-////        try! session.keyMistrusted(partnerIdent)
-////        try! session.update(partnerIdent)
-////        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
-////    }
+//        let meIdent = mySelfID.pEpIdentity()
+//        var partnerIdent = partnerID.pEpIdentity()
+//        try! session.mySelf(meIdent)
+//        try! session.update(partnerIdent)
 //
-//    /**
-//     Test trust/reset/mistrust cycle using view model.
-//     */
+//        // back up the original
+//        let partnerIdentOrig = PEPIdentity(identity: partnerIdent)
+//        XCTAssertTrue(try! session.isPEPUser(partnerIdentOrig).boolValue)
+//
+//        try! session.trustPersonalKey(partnerIdent)
+//        try! session.update(partnerIdent)
+//        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
+//
+//        partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
+//        try! session.keyResetTrust(partnerIdent)
+//        try! session.update(partnerIdent)
+//        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
+//
+//        partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
+//        try! session.keyMistrusted(partnerIdent)
+//        try! session.update(partnerIdent)
+//        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
+//    }
+
+    //!!!: crashes! IOS-1693
+    /**
+     Test trust/reset/mistrust cycle using view model.
+     */
 //    func testViewModelTrustMistrustCycles() {
 //        let session = PEPSession()
 //
@@ -154,10 +155,11 @@ class DecryptionDelegate: DecryptionAttemptCounterDelegate {
 //        vm.resetOrUndoTrustOrMistrust()
 //        XCTAssertEqual(vm.partnerRating, .reliable)
 //    }
-//
-//    /**
-//     Test mistrust/reset cycle using view model.
-//     */
+
+    //!!!: crashes! IOS-1693
+    /**
+     Test mistrust/reset cycle using view model.
+     */
 //    func testViewModelMistrustResetTrustCycle() {
 //        let session = PEPSession()
 //
@@ -184,4 +186,4 @@ class DecryptionDelegate: DecryptionAttemptCounterDelegate {
 //        vm.resetOrUndoTrustOrMistrust()
 //        XCTAssertEqual(vm.partnerRating, .reliable)
 //    }
-//}
+}
