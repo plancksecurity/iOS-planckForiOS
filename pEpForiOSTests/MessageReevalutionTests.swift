@@ -133,19 +133,18 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
 
         senderIdentity = theSenderIdentity
     }
-    //!!!: test crashes!   IOS-1693
-//    func testCommunicationTypes() {
-//        let senderIdent = senderIdentity.updatedIdentity(session: session)
-//        XCTAssertFalse(try! senderIdent.isPEPUser(session).boolValue)
-//        XCTAssertEqual(senderIdentity.pEpRating(session: session), .reliable)
-//
-//        try! session.keyMistrusted(senderIdent)
-//
-//        let senderDict2 = senderIdentity.updatedIdentity(session: session)
-//        XCTAssertFalse(try! senderDict2.isPEPUser(session).boolValue)
-//        // ENGINE-343: At one point the rating was .Undefined.
-//        XCTAssertEqual(senderIdentity.pEpRating(), .haveNoKey)
-//    }
+    func testCommunicationTypes() {
+        let senderIdent = senderIdentity.updatedIdentity(session: session)
+        XCTAssertFalse(try! senderIdent.isPEPUser(session).boolValue)
+        XCTAssertEqual(senderIdentity.pEpRating(session: session), .reliable)
+
+        try! session.keyMistrusted(senderIdent)
+
+        let senderDict2 = senderIdentity.updatedIdentity(session: session)
+        XCTAssertFalse(try! senderDict2.isPEPUser(session).boolValue)
+        // ENGINE-343: At one point the rating was .Undefined.
+        XCTAssertEqual(senderIdentity.pEpRating(), .haveNoKey)
+    }
 
     func reevaluateMessage(expectedRating: PEPRating, inBackground: Bool = true,
                            infoMessage: String) {
