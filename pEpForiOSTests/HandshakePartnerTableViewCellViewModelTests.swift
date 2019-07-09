@@ -117,42 +117,41 @@ class HandshakePartnerTableViewCellViewModelTests: CoreDataDrivenTestBase {
         XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
     }
 
-    //!!!: crashes! IOS-1693 (netpgp key)
     /**
      Test trust/reset/mistrust cycle using view model.
      */
-//    func testViewModelTrustMistrustCycles() {
-//        let session = PEPSession()
-//
-//        guard
-//            let (message: _, mySelfID: mySelfID,
-//                 partnerID: partnerID) = importMail(session: session) else {
-//                    XCTFail()
-//                    return
-//        }
-//
-//        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID, partner: partnerID)
-//
-//        XCTAssertEqual(vm.partnerRating, .reliable)
-//
-//        vm.confirmTrust()
-//        XCTAssertEqual(vm.partnerRating, .trustedAndAnonymized)
-//
-//        vm.resetOrUndoTrustOrMistrust()
-//        XCTAssertEqual(vm.partnerRating, .reliable)
-//
-//        vm.denyTrust()
-//        XCTAssertEqual(vm.partnerRating, .haveNoKey)
-//
-//        vm.resetOrUndoTrustOrMistrust()
-//        XCTAssertEqual(vm.partnerRating, .reliable)
-//
-//        vm.confirmTrust()
-//        XCTAssertEqual(vm.partnerRating, .trustedAndAnonymized)
-//
-//        vm.resetOrUndoTrustOrMistrust()
-//        XCTAssertEqual(vm.partnerRating, .reliable)
-//    }
+    func testViewModelTrustMistrustCycles() {
+        let session = PEPSession()
+
+        guard
+            let (message: _, mySelfID: mySelfID,
+                 partnerID: partnerID) = importMail(session: session) else {
+                    XCTFail()
+                    return
+        }
+
+        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID, partner: partnerID)
+
+        XCTAssertEqual(vm.partnerRating, .reliable)
+
+        vm.confirmTrust()
+        XCTAssertEqual(vm.partnerRating, .trustedAndAnonymized)
+
+        vm.resetOrUndoTrustOrMistrust()
+        XCTAssertEqual(vm.partnerRating, .reliable)
+
+        vm.denyTrust()
+        XCTAssertEqual(vm.partnerRating, .haveNoKey)
+
+        vm.resetOrUndoTrustOrMistrust()
+        XCTAssertEqual(vm.partnerRating, .reliable)
+
+        vm.confirmTrust()
+        XCTAssertEqual(vm.partnerRating, .trustedAndAnonymized)
+
+        vm.resetOrUndoTrustOrMistrust()
+        XCTAssertEqual(vm.partnerRating, .reliable)
+    }
 
     //!!!: crashes! IOS-1693 (netpgp key)
     /**
