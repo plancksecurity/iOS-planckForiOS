@@ -143,6 +143,59 @@ struct ComposeUtil {
 
     // MARK: - Message to send
 
+    /// Creates a message from the given ComposeView State
+    ///
+    /// - note: Runs on the main Session
+    ///
+    /// - Parameter state: state to get data from
+    /// - Returns: new message with data from given state
+    static public func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
+        guard let from = state.from, let account = Account.by(address: from.address) else {
+                Log.shared.errorAndCrash(
+                    "We have a problem here getting the senders account.")
+                return nil
+        }
+        return messageToSend(withDataFrom: state,
+                             inAccount: account,
+                             from: from,
+                             toRecipients: state.toRecipients,
+                             ccRecipients: state.ccRecipients,
+                             bccRecipients: state.bccRecipients)
+    }
+
+    /// Creates a message from the given ComposeView State
+    ///
+    /// - note: MUST NOT be used on the main Session. For the maion Session, use
+    ///         messageToSend(withDataFrom:) instead.
+    ///
+    /// - Parameter state: state to get data from
+    /// - Parameter session: session to work on. MUST NOT be the main Session.
+    /// - Returns: new message with data from given state
+    static public func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState,
+                                     session: Session) -> Message? {
+        var message: Message?
+        session.performAndWait {
+            guard let from = state.from?.safeForSession(session),
+                let account = Account.by(address: from.address)?.safeForSession(session) else {
+                    Log.shared.errorAndCrash(
+                        "We have a problem here getting the senders account.")
+                    return
+            }
+            let toRecipients = Identity.makeSafe(state.toRecipients, forSession: session)
+            let ccRecipients = Identity.makeSafe(state.ccRecipients, forSession: session)
+            let bccRecipients = Identity.makeSafe(state.bccRecipients, forSession: session)
+            message = messageToSend(withDataFrom: state,
+                                    inAccount: account,
+                                    from: from,
+                                    toRecipients: toRecipients,
+                                    ccRecipients: ccRecipients,
+                                    bccRecipients: bccRecipients,
+                                    session: session)
+        }
+
+        return message
+    }
+
     static private func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState,
                                       inAccount account: Account,
                                       from: Identity,
@@ -178,45 +231,6 @@ struct ComposeUtil {
 
         message.imapFlags.seen = imapSeenState(forMessageToSend: message)
 
-
-        return message
-    }
-
-    static public func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
-        guard let from = state.from, let account = Account.by(address: from.address) else {
-                Log.shared.errorAndCrash(
-                    "We have a problem here getting the senders account.")
-                return nil
-        }
-        return messageToSend(withDataFrom: state,
-                             inAccount: account,
-                             from: from,
-                             toRecipients: state.toRecipients,
-                             ccRecipients: state.ccRecipients,
-                             bccRecipients: state.bccRecipients)
-    }
-
-    static public func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState,
-                                     session: Session) -> Message? {
-        var message: Message?
-        session.performAndWait {
-            guard let from = state.from?.safeForSession(session),
-                let account = Account.by(address: from.address)?.safeForSession(session) else {
-                    Log.shared.errorAndCrash(
-                        "We have a problem here getting the senders account.")
-                    return
-            }
-            let toRecipients = Identity.makeSafe(state.toRecipients, forSession: session)
-            let ccRecipients = Identity.makeSafe(state.ccRecipients, forSession: session)
-            let bccRecipients = Identity.makeSafe(state.bccRecipients, forSession: session)
-            message = messageToSend(withDataFrom: state,
-                                    inAccount: account,
-                                    from: from,
-                                    toRecipients: toRecipients,
-                                    ccRecipients: ccRecipients,
-                                    bccRecipients: bccRecipients,
-                                    session: session)
-        }
 
         return message
     }
