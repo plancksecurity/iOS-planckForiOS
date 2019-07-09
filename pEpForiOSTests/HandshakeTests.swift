@@ -100,19 +100,18 @@ class HandshakeTests: CoreDataDrivenTestBase {
         XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
     }
 
-    // !!!: crashes!. IOS-1693 (netgpg key)
-//    func testNegativeTrustResetCycle() {
-//        let session = PEPSession()
-//
-//        try! session.update(fromIdent)
-//        XCTAssertNotNil(fromIdent.fingerPrint)
-//        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
-//
-//        try! session.keyMistrusted(fromIdent)
-//        try! session.update(fromIdent)
-//        XCTAssertNil(fromIdent.fingerPrint)
-//        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
-//    }
+    func testNegativeTrustResetCycle() {
+        let session = PEPSession()
+
+        try! session.update(fromIdent)
+        XCTAssertNotNil(fromIdent.fingerPrint)
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+
+        try! session.keyMistrusted(fromIdent)
+        try! session.update(fromIdent)
+        XCTAssertNil(fromIdent.fingerPrint)
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+    }
 
     // !!!: crashes!. IOS-1693 (netgpg key)
 //    func testRestTruestOnYellowIdentity() {
