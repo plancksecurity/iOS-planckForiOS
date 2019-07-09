@@ -55,7 +55,7 @@ class HandshakePartnerTableViewCellViewModelTests: CoreDataDrivenTestBase {
             return (message: message, mySelfID: mySelfID, partnerID: partnerID)
     }
 
-    //!!!: crashes!. IOS-1693
+    //!!!: crashes!. IOS-1693 (netpgp key)
     /// Tests trust/reset cycle without view model.
 //    func testBasicTrustReset() {
 //        let session = PEPSession()
@@ -80,7 +80,7 @@ class HandshakePartnerTableViewCellViewModelTests: CoreDataDrivenTestBase {
 //        XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
 //    }
 
-    //!!!: crashes! IOS-1693
+    //!!!: crashes! IOS-1693 (netpgp key)
     /**
      Tests trust/reset/mistrust/resut cycle without view model, using a backup
      to keep the comm type.
@@ -119,7 +119,7 @@ class HandshakePartnerTableViewCellViewModelTests: CoreDataDrivenTestBase {
 //        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
 //    }
 
-    //!!!: crashes! IOS-1693
+    //!!!: crashes! IOS-1693 (netpgp key)
     /**
      Test trust/reset/mistrust cycle using view model.
      */
@@ -156,7 +156,7 @@ class HandshakePartnerTableViewCellViewModelTests: CoreDataDrivenTestBase {
 //        XCTAssertEqual(vm.partnerRating, .reliable)
 //    }
 
-    //!!!: crashes! IOS-1693
+    //!!!: crashes! IOS-1693 (netpgp key)
     /**
      Test mistrust/reset cycle using view model.
      */
