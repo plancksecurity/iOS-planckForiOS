@@ -50,16 +50,15 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
         }
     }
 
-    //!!!: test crashes!  IOS-1693
-//    func testSetOwnKeyViewModel() {
-//        doTestSetOwnKey() {
-//            let vm = SetOwnKeyViewModel()
-//            vm.email = "iostest003@peptest.ch"
-//            vm.fingerprint = leonsFingerprint
-//            vm.setOwnKey()
-//            XCTAssertEqual(vm.rawErrorString, nil)
-//        }
-//    }
+    func testSetOwnKeyViewModel() {
+        doTestSetOwnKey() {
+            let vm = SetOwnKeyViewModel()
+            vm.email = "iostest003@peptest.ch"
+            vm.fingerprint = leonsFingerprint
+            vm.setOwnKey()
+            XCTAssertEqual(vm.rawErrorString, nil)
+        }
+    }
 
     // MARK: - Helpers
 
