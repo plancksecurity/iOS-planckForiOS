@@ -21,22 +21,11 @@ class HandshakeViewController: BaseTableViewController {
 
     var message: Message? {
         didSet {
-            message?.session.performAndWait { [weak self] in
-                guard let me = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-                me.handshakeCombinations = me.message?.handshakeActionCombinations() ?? []
-            }
+             handshakeCombinations = message?.handshakeActionCombinations() ?? []
         }
     }
 
     var handshakeCombinations = [HandshakeCombination]()
-    //    { //BUFF: can we reuse the view by setting the combinations for KeySync? I am afraid it is not a good idea?
-//        didSet {
-//            tableView.reloadData()
-//        }
-//    }
 
     var ratingReEvaluator: RatingReEvaluator?
 
@@ -102,9 +91,7 @@ extension HandshakeViewController {
 extension HandshakeViewController {
 
     private func updateStatusBadge() {
-        message?.session.performAndWait { [weak self] in
-            self?.showPepRating(pEpRating: self?.message?.pEpRating())
-        }
+        showPepRating(pEpRating: message?.pEpRating())
     }
 
     // MARK: - UI & Layout
@@ -319,10 +306,13 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
 
 extension HandshakeViewController : RatingReEvaluatorDelegate {
     func ratingChanged(message: Message) {
-        DispatchQueue.main.async {
-            self.updateStatusBadge()
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.updateStatusBadge()
         }
-
     }
 }
 
