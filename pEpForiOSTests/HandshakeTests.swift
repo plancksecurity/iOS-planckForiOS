@@ -113,23 +113,22 @@ class HandshakeTests: CoreDataDrivenTestBase {
         XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
     }
 
-    // !!!: crashes!. IOS-1693 (netgpg key)
-//    func testRestTruestOnYellowIdentity() {
-//        let session = PEPSession()
-//        try! session.update(fromIdent)
-//        XCTAssertNotNil(fromIdent.fingerPrint)
-//        XCTAssertTrue((try? session.isPEPUser(fromIdent).boolValue) ?? false)
-//
-//        do {
-//            var numRating =  try! session.rating(for: fromIdent)
-//            XCTAssertEqual(numRating.pEpRating, .reliable)
-//            XCTAssertNoThrow(try session.keyResetTrust(fromIdent))
-//            let isPepUser = try session.isPEPUser(fromIdent).boolValue
-//            XCTAssertTrue(isPepUser)
-//            numRating = try session.rating(for: fromIdent)
-//            XCTAssertEqual(numRating.pEpRating, .reliable)
-//        } catch {
-//            XCTFail()
-//        }
-//    }
+    func testRestTruestOnYellowIdentity() {
+        let session = PEPSession()
+        try! session.update(fromIdent)
+        XCTAssertNotNil(fromIdent.fingerPrint)
+        XCTAssertTrue((try? session.isPEPUser(fromIdent).boolValue) ?? false)
+
+        do {
+            var numRating =  try! session.rating(for: fromIdent)
+            XCTAssertEqual(numRating.pEpRating, .reliable)
+            XCTAssertNoThrow(try session.keyResetTrust(fromIdent))
+            let isPepUser = try session.isPEPUser(fromIdent).boolValue
+            XCTAssertTrue(isPepUser)
+            numRating = try session.rating(for: fromIdent)
+            XCTAssertEqual(numRating.pEpRating, .reliable)
+        } catch {
+            XCTFail()
+        }
+    }
 }
