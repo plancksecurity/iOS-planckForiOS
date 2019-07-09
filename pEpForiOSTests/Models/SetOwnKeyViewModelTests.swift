@@ -38,18 +38,17 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
     }
 
     // MARK: - Tests
-    //!!!: test crashes!  IOS-1693
-//    func testSetOwnKeyDirectly() {
-//        doTestSetOwnKey() {
-//            let leon = PEPIdentity(address: "iostest003@peptest.ch",
-//                                   userID: UUID().uuidString,
-//                                   userName: "Leon Kowalski",
-//                                   isOwn: true)
-//            try! session.update(leon)
-//
-//            try! session.setOwnKey(leon, fingerprint: leonsFingerprint)
-//        }
-//    }
+    func testSetOwnKeyDirectly() {
+        doTestSetOwnKey() {
+            let leon = PEPIdentity(address: "iostest003@peptest.ch",
+                                   userID: UUID().uuidString,
+                                   userName: "Leon Kowalski",
+                                   isOwn: true)
+            try! session.update(leon)
+
+            try! session.setOwnKey(leon, fingerprint: leonsFingerprint)
+        }
+    }
 
     //!!!: test crashes!  IOS-1693
 //    func testSetOwnKeyViewModel() {
