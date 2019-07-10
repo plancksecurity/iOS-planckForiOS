@@ -11,6 +11,11 @@ import UIKit
 final class KeySyncHandshakeViewController: UIViewController {
     static let storyboardId = "KeySyncHandshakeViewController"
     
+    @IBOutlet weak var contentView: UIView! {
+        didSet {
+            contentView.backgroundColor = UIColor.pEpLightBackground
+        }
+    }
     @IBOutlet weak var alertTitle: UILabel! {
         didSet {
             alertTitle.text = NSLocalizedString("p≡p Sync", comment: "handshake sync alert title")
