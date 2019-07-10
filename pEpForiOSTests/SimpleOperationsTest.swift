@@ -117,7 +117,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             }
         }
 
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         let changedMessages = SyncFlagsToServerOperation.messagesToBeSynced(folder: folder,
                                                                             context: moc)
@@ -144,11 +144,14 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors())
         })
 
+        guard let allMessagesToTest = CdMessage.all() as? [CdMessage] else {
+            XCTFail()
+            return
+        }
         // Since the server flags have not changed, we still know that we have local changes
         // that should not get overwritten by the server.
         // Hence, all messages are still the same.
-        for (i, m) in allMessages.enumerated() {
-            m.refresh(mergeChanges: true, in: moc)
+        for (i, m) in allMessagesToTest.enumerated() {
             XCTAssertFalse(m.imap?.localFlags?.flagSeen == flagsSeenBefore[i])
         }
     }
@@ -392,7 +395,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
             message.addToTo(to)
         }
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         if let msgs = CdMessage.all() as? [CdMessage] {
             for m in msgs {
@@ -487,7 +490,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         let account = SecretTestData().createWorkingCdAccount(context: moc)
         account.identity = id
-        Record.saveAndWait()
+        moc.saveAndLogErrors()
 
         self.measure {
             for _ in [1...1000] {

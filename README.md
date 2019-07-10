@@ -4,15 +4,14 @@
 
 ### Package managers
 
-MacPorts for installing all dependencies:
+MacPorts for installing dependencies:
 
 Install [MacPorts](https://www.macports.org/) for your
 [version of OS X/macOS](https://www.macports.org/install.php).
 
 ### Dependencies of prerequisites
 
-For building the engine, you need a working python2 environment
-and all dependencies:
+For building the engine, you need a working python2 environment and all dependencies:
 
 ```
 sudo port install python27
@@ -21,20 +20,41 @@ sudo port install py27-lxml
 
 sudo port install python_select
 
+sudo port install mercurial
+
 sudo port install autoconf
 sudo port install libtool
 sudo port install automake
 
 sudo port install gmake
 
+sudo port install wget
+
+curl https://sh.rustup.rs -sSf | sh
+
 # To run the `greenmail` mailserver for tests
 sudo port install openjdk11
+```
+
+add this to ~/.profile (create if it doesn't exist):
+
+```
+source $HOME/.cargo/env
+export PATH="$HOME/.cargo/bin:$PATH"
+```
+
+Restart your Console!
+
+```
+sudo port install pkgconfig
+rustup update
+rustup target add aarch64-apple-ios x86_64-apple-ios armv7-apple-ios i386-apple-ios
 ```
 
 ### Set up Xcode
 You need to have an Apple ID configured in Xcode, for code signing. You can add one in the `Accounts` tab of the settings (menu `Xcode > Preferences...`).
 
-For some things (TODO: what exactly?), your Apple ID needs to be part of the pEp team account. Ask `#service`, if you want to be added to the team account. When you are a member of the team, the information on your Apple ID in the Xcode Preferences should have a record `Team: pEp Security SA`, `Role: Member`.
+For some things, your Apple ID needs to be part of the pEp team account. Ask `#service`, if you want to be added to the team account. When you are a member of the team, the information on your Apple ID in the Xcode Preferences should have a record `Team: pEp Security SA`, `Role: Member`.
 
 ### Other dependencies
 
@@ -46,6 +66,9 @@ Clone into your home directory:
 pushd ~
 hg clone https://pep.foundation/dev/repos/yml2/
 popd
+
+sudo port install pip
+sudo STATIC_DEPS=true pip install lxml
 ```
 
 ## Setup instructions
@@ -54,20 +77,23 @@ popd
 mkdir ~/src
 cd ~/src
 
-git clone https://github.com/fdik/libetpan.git
+git clone https://pep-security.lu/gitlab/misc/libetpan.git
 git clone https://pep-security.lu/gitlab/iOS/OpenSSL-for-iPhone.git
 git clone https://pep-security.lu/gitlab/iOS/SwipeCellKit.git/
 git clone https://pep-security.lu/gitlab/iOS/AppAuth-iOS.git
 git clone https://pep-security.lu/gitlab/misc/ldns.git
 
 hg clone https://pep.foundation/dev/repos/pantomime-iOS/
-hg clone https://pep.foundation/dev/repos/netpgp-et
 hg clone https://pep.foundation/dev/repos/pEpEngine
 hg clone https://pep.foundation/dev/repos/pEpObjCAdapter
 hg clone https://pep.foundation/dev/repos/MessageModel/
 hg clone https://pep.foundation/dev/repos/libAccountSettings/
 
 hg clone https://pep-security.ch/dev/repos/pEp_for_iOS/
+
+git clone http://pep-security.lu/gitlab/iOS/sequoia4ios.git
+cd sequoia4ios
+sh build.sh
 ```
 
 ### Build Project
@@ -130,47 +156,3 @@ ASN1C_INC=/opt/local/share/asn1c/
 ~~~
 
 Note that some of these variables may be overridden in the build system elsewhere, for example the variable `YML2_PATH`. Check the build steps in `pEpEngine.xcodeproj` for details.
-
-# Misc
-For a quick update of all the code repositories cloned in the instructions above, use this shell script snipped:
-
-~~~
-cd ~/yml2/
-hg pull -u
-
-cd ~/src/libetpan/
-git pull
-
-cd ~/src/OpenSSL-for-iPhone/
-git pull
-
-cd ~/src/SwipeCellKit/
-git pull
-
-cd ~/src/AppAuth-iOS/
-git pull
-
-cd ~/src/ldns/
-git pull
-
-cd ~/src/pantomime-iOS/
-hg pull -u
-
-cd ~/src/netpgp-et/
-hg pull -u
-
-cd ~/src/pEpEngine/
-hg pull -u
-
-cd ~/src/pEpObjCAdapter/
-hg pull -u
-
-cd ~/src/MessageModel/
-hg pull -u
-
-cd ~/src/libAccountSettings/
-hg pull -u
-
-cd ~/src/pEp_for_iOS/
-hg pull -u
-~~~

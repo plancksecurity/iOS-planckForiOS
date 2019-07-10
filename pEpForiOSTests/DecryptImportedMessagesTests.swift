@@ -13,35 +13,8 @@ import CoreData
 @testable import MessageModel
 import PEPObjCAdapterFramework
 
-class DecryptImportedMessagesTests: XCTestCase {
-    var persistentSetup: PersistentSetup!
-    var moc : NSManagedObjectContext!
-
-    var session: PEPSession {
-        return PEPSession()
-    }
+class DecryptImportedMessagesTests: CoreDataDrivenTestBase {
     var backgroundQueue: OperationQueue!
-
-    // MARK: - setUp, tearDown
-
-    override func setUp() {
-        super.setUp()
-
-        XCTAssertTrue(PEPUtil.pEpClean())
-
-        persistentSetup = PersistentSetup()
-        moc = Stack.shared.mainContext
-
-        self.backgroundQueue = OperationQueue()
-    }
-
-    override func tearDown() {
-        persistentSetup = nil
-        backgroundQueue.cancelAllOperations()
-        backgroundQueue = nil
-        PEPSession.cleanup()
-        super.tearDown()
-    }
 
     // MARK: - Tests
 

@@ -11,11 +11,8 @@ import pEpIOSToolbox
 
 class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     static let storyboardId = "SettingsTableViewController"
-    let viewModel = SettingsViewModel()
+    lazy var viewModel = SettingsViewModel(appConfig.messageModelService)
     var settingSwitchViewModel: SwitchSettingCellViewModelProtocol?
-
-    /** Our vanilla table view cell */
-    let accountsCellIdentifier = "SettingsCell"
 
     var ipath : IndexPath?
 
@@ -27,12 +24,10 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     var oldToolbarStatus : Bool = true
 
-    // MARK: - Life Cycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Settings", comment: "Settings view title")
-        UIHelper.variableCellHeightsTableView(self.tableView)
+        UIHelper.variableCellHeightsTableView(tableView)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -61,17 +56,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         }
     }
 
-    // MARK: - Internal
-
-    private func updateModel() {
-        //reload data in view model
-        tableView.reloadData()
-    }
-
-    private func updateUI() {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = state.isSynching
-    }
-
     // MARK: - UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -97,78 +81,36 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             viewModel[indexPath.section][indexPath.row].cellIdentifier, for: indexPath)
 
         let vm = viewModel[indexPath.section][indexPath.row]
-        if isRepresentingOnOffSwichSetting(viewModel: vm) {
-            guard
-                let vm = viewModel[indexPath.section][indexPath.row]
-                    as? SwitchSettingCellViewModelProtocol,
-                let cell = dequeuedCell as? SettingSwitchTableViewCell
-                else {
-                    return dequeuedCell
-            }
-            cell.viewModel = vm
-            cell.setUpView()
-            cell.selectionStyle = .none
-            return cell
-        } else {
-            guard
-                let vm = viewModel[indexPath.section][indexPath.row] as? SettingsCellViewModel,
-                let cell = dequeuedCell as? SwipeTableViewCell else {
-                    Log.shared.errorAndCrash("Invalid state.")
-                    return dequeuedCell
+
+        switch vm {
+        case let vm as SettingsCellViewModel:
+            guard let cell = dequeuedCell as? SwipeTableViewCell else {
+                Log.shared.errorAndCrash("Invalid state.")
+                return dequeuedCell
             }
             cell.textLabel?.text = vm.title
             cell.detailTextLabel?.text = vm.detail
-            cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
             cell.delegate = self
             return cell
-        }
-    }
-
-    private func isRepresentingOnOffSwichSetting(viewModel: SettingCellViewModelProtocol) -> Bool {
-        return (viewModel as? SwitchSettingCellViewModelProtocol != nil) ? true : false
-    }
-
-    private func deleteRowAt(_ indexPath: IndexPath) {
-        self.viewModel.delete(section: indexPath.section, cell: indexPath.row)
-
-        if let position =  navigationController?.viewControllers.count, let previousVc = navigationController?.viewControllers[position - 1] as? EmailViewController {
-            if viewModel.canBeShown(Message: previousVc.message) {
-                navigationController?.viewControllers.remove(at: position-1)
+        case let vm as SettingsActionCellViewModel:
+            guard let cell = dequeuedCell as? SwipeTableViewCell else {
+                Log.shared.errorAndCrash("Invalid state.")
+                return dequeuedCell
             }
-        }
-        if self.viewModel.noAccounts() {
-            self.performSegue(withIdentifier: "noAccounts", sender: nil)
-        }
-    }
-
-    private func showAlertBeforeDelete(_ indexPath: IndexPath) {
-        let alertController = UIAlertController.pEpAlertController(
-            title: nil,
-            message: NSLocalizedString("Are you sure you want to delete the account?",
-                                       comment:
-                "delete account message"), preferredStyle: .actionSheet)
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in
-        }
-        alertController.addAction(cancelAction)
-
-        let destroyAction = UIAlertAction(title: "Delete", style: .destructive) { action in
-            self.deleteRowAt(indexPath)
-            self.tableView.beginUpdates()
-            self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
-            self.tableView.endUpdates()
-        }
-        alertController.addAction(destroyAction)
-
-        if let popoverPresentationController = alertController.popoverPresentationController {
-
-            let cellFrame = tableView.rectForRow(at: indexPath)
-            let sourceRect = self.view.convert(cellFrame, from: tableView)
-            popoverPresentationController.sourceRect = sourceRect
-            popoverPresentationController.sourceView = self.view
-        }
-
-        self.present(alertController, animated: true) {
+            cell.textLabel?.text = vm.title
+            cell.textLabel?.textColor = vm.titleColor
+            cell.delegate = self
+            return cell
+        case let vm as SwitchSettingCellViewModelProtocol:
+            guard let cell = dequeuedCell as? SettingSwitchTableViewCell else {
+                Log.shared.errorAndCrash("Invalid state.")
+                return dequeuedCell
+            }
+            cell.viewModel = vm
+            cell.setUpView()
+            return cell
+        default:
+            return dequeuedCell
         }
     }
 
@@ -176,11 +118,15 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                    editActionsForRowAt indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         if indexPath.section == 0 {
-            let deleteAction = SwipeAction(style: .destructive,
-                                           title: "Delete") { action, indexPath in
-                                            self.showAlertBeforeDelete(indexPath)
+            let deleteAction = SwipeAction(style: .destructive, title: NSLocalizedString("Delete", comment: "Account delete")) {
+                [weak self] action, indexPath in
+                    guard let me = self else {
+                        Log.shared.lostMySelf()
+                        return
+                    }
+                    me.showAlertBeforeDelete(indexPath)
             }
-            return (orientation == .right ?   [deleteAction] : nil)
+            return (orientation == .right ? [deleteAction] : nil)
         }
 
         return nil
@@ -202,24 +148,32 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     // MARK: - Table view delegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let rowType = viewModel.rowType(for: indexPath) else {
-            // Nothing to do here. Its a simple On/Off switch cell. No need to segue anywhere.
-            return
-        }
-        switch rowType {
-        case .account:
-            self.ipath = indexPath
-            performSegue(withIdentifier: .segueEditAccount, sender: self)
-        case .defaultAccount:
-            performSegue(withIdentifier: .segueShowSettingDefaultAccount, sender: self)
-        case .showLog:
-            performSegue(withIdentifier: .segueShowLog, sender: self)
-        case .credits:
-            performSegue(withIdentifier: .sequeShowCredits, sender: self)
-        case .trustedServer:
-            performSegue(withIdentifier: .segueShowSettingTrustedServers, sender: self)
-        case .setOwnKey:
-            performSegue(withIdentifier: .segueSetOwnKey, sender: self)
+        let vm = viewModel[indexPath.section][indexPath.row]
+
+        switch vm {
+        case let vm as ComplexSettingCellViewModelProtocol:
+            switch vm.type {
+            case .account:
+                self.ipath = indexPath
+                performSegue(withIdentifier: .segueEditAccount, sender: self)
+            case .defaultAccount:
+                performSegue(withIdentifier: .segueShowSettingDefaultAccount, sender: self)
+            case .credits:
+                performSegue(withIdentifier: .sequeShowCredits, sender: self)
+            case .trustedServer:
+                performSegue(withIdentifier: .segueShowSettingTrustedServers, sender: self)
+            case .setOwnKey:
+                performSegue(withIdentifier: .segueSetOwnKey, sender: self)
+            }
+        case let vm as SettingsActionCellViewModelProtocol:
+            switch vm.type {
+            case .leaveKeySyncGroup:
+                
+                showAlertBeforeLeavingDeviceGroup(indexPath)
+            }
+        default:
+            // SwitchSettingCellViewModelProtocol will drop here, but nothing to do when selected
+            break
         }
     }
 }
@@ -231,7 +185,6 @@ extension SettingsTableViewController: SegueHandlerType {
         case segueAddNewAccount
         case segueEditAccount
         case segueShowSettingDefaultAccount
-        case segueShowLog
         case sequeShowCredits
         case segueShowSettingTrustedServers
         case segueSetOwnKey
@@ -270,16 +223,97 @@ extension SettingsTableViewController: SegueHandlerType {
                 return
             }
             destination.appConfig = self.appConfig
-        case .segueShowLog:
-            guard let viewController = segue.destination as? LogViewController else {
-                    return
-            }
-            viewController.appConfig = self.appConfig
         case .segueSetOwnKey:
             break
         case .noSegue:
             // does not need preperation
             break
+        }
+    }
+}
+
+// MARK: - Private
+extension SettingsTableViewController {
+    private func updateModel() {
+        //reload data in view model
+        tableView.reloadData()
+    }
+
+    private func updateUI() {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = state.isSynching
+    }
+
+    private func deleteRowAt(_ indexPath: IndexPath) {
+        self.viewModel.delete(section: indexPath.section, cell: indexPath.row)
+
+        if let position =  navigationController?.viewControllers.count, let previousVc = navigationController?.viewControllers[position - 1] as? EmailViewController {
+            if viewModel.canBeShown(Message: previousVc.message) {
+                navigationController?.viewControllers.remove(at: position-1)
+            }
+        }
+        if self.viewModel.noAccounts() {
+            self.performSegue(withIdentifier: "noAccounts", sender: nil)
+        }
+    }
+
+    private func showAlertBeforeLeavingDeviceGroup(_ indexPath: IndexPath) {
+        let title = NSLocalizedString("Are you sure you want to leave your device group?", comment: "Leave device group confirmation")
+        let comment = NSLocalizedString("leaving device group", comment: "Leave device group confirmation comment")
+        let buttonTitle = NSLocalizedString("Leave", comment: "Leave device group button title")
+        let leavingAction: (UIAlertAction)-> () = { [weak self] _ in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            if let error = me.viewModel.leaveDeviceGroupPressed() {
+                Log.shared.errorAndCrash("%@", error.localizedDescription)
+            }
+            me.updateModel()
+        }
+        showAlert(title, comment, buttonTitle, leavingAction, indexPath)
+    }
+
+    private func showAlertBeforeDelete(_ indexPath: IndexPath) {
+        let title = NSLocalizedString("Are you sure you want to delete the account?", comment: "Account delete confirmation")
+        let comment = NSLocalizedString("delete account message", comment: "Account delete confirmation comment")
+        let buttonTitle = NSLocalizedString("Delete", comment: "Delete account button title")
+        let deleteAction: (UIAlertAction) -> () = { [weak self] _ in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.deleteRowAt(indexPath)
+            me.tableView.beginUpdates()
+            me.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+            me.tableView.endUpdates()}
+        showAlert(title, comment, buttonTitle, deleteAction, indexPath)
+    }
+
+    private func showAlert(_ message: String,_ comment: String,
+                           _ confirmButtonTitle: String,
+                           _ confirmButtonAction: @escaping ((UIAlertAction)->()),
+                           _ indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)?.isSelected = false
+        let alertController = UIAlertController.pEpAlertController(
+            title: nil,
+            message: NSLocalizedString(message, comment: comment), preferredStyle: .actionSheet)
+
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel title button")
+        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { _ in }
+        alertController.addAction(cancelAction)
+
+        let destroyAction = UIAlertAction(title: confirmButtonTitle,
+                                          style: .destructive, handler: confirmButtonAction)
+        alertController.addAction(destroyAction)
+
+        if let popoverPresentationController = alertController.popoverPresentationController {
+            let cellFrame = tableView.rectForRow(at: indexPath)
+            let sourceRect = view.convert(cellFrame, from: tableView)
+            popoverPresentationController.sourceRect = sourceRect
+            popoverPresentationController.sourceView = view
+        }
+
+        self.present(alertController, animated: true) {
         }
     }
 }

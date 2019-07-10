@@ -25,7 +25,7 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NEj-lZ-p6O">
                                     <rect key="frame" x="10" y="10" width="250" height="60"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="250" id="hN3-sc-EZD"/>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="hN3-sc-EZD"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                     <inset key="contentEdgeInsets" minX="25" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -42,6 +42,7 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="NEj-lZ-p6O" firstAttribute="centerY" secondItem="y1Q-G4-Yvh" secondAttribute="centerY" id="UiB-SQ-x7F"/>
+                                <constraint firstAttribute="trailingMargin" secondItem="NEj-lZ-p6O" secondAttribute="trailing" priority="10" id="izc-QP-Ia0"/>
                                 <constraint firstItem="NEj-lZ-p6O" firstAttribute="top" secondItem="y1Q-G4-Yvh" secondAttribute="top" constant="10" id="mKu-BF-aVp"/>
                                 <constraint firstItem="NEj-lZ-p6O" firstAttribute="leading" secondItem="y1Q-G4-Yvh" secondAttribute="leading" constant="10" id="sYX-Dy-WeQ"/>
                             </constraints>
@@ -71,14 +72,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2c-UY-yR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="9884" y="-1164.4677661169417"/>
-        </scene>
-        <!--Settings-->
-        <scene sceneID="pIX-qm-rCm">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Settings" id="tEI-hD-lXp" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="eR0-nA-UVS" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="10572" y="-1187.4062968515743"/>
         </scene>
         <!--AccountCreation-->
         <scene sceneID="rdR-gU-SsC">
@@ -132,6 +125,6 @@
         <image name="button-add" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="W2T-ax-nDz"/>
+        <segue reference="aKb-z0-Qyn"/>
     </inferredMetricsTieBreakers>
 </document>

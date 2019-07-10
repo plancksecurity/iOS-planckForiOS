@@ -24,22 +24,7 @@ class DecryptionDelegate: DecryptionAttemptCounterDelegate {
     }
 }
 
-class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
-    var persistentSetup: PersistentSetup!
-
-    override func setUp() {
-        super.setUp()
-
-        XCTAssertTrue(PEPUtil.pEpClean())
-
-        persistentSetup = PersistentSetup()
-    }
-
-    override func tearDown() {
-        PEPSession.cleanup()
-        persistentSetup = nil
-        super.tearDown()
-    }
+class HandshakePartnerTableViewCellViewModelTests: CoreDataDrivenTestBase {
 
     func importMail(session: PEPSession = PEPSession()) ->
         (message: Message, mySelfID: Identity, partnerID: Identity)? {
@@ -65,14 +50,12 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
             XCTAssertNotNil(partnerIdent.fingerPrint)
             XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
 
-            XCTAssertEqual(partnerIdent.fingerPrint, "97F0E744CCDC15BA127A3EE76BAAAC039FB13487")
+            XCTAssertEqual(partnerIdent.fingerPrint, "A90307CAA0B224105367BF677705867380346FCF")
 
             return (message: message, mySelfID: mySelfID, partnerID: partnerID)
     }
 
-    /**
-     Tests trust/reset cycle without view model.
-     */
+    /// Tests trust/reset cycle without view model.
     func testBasicTrustReset() {
         let session = PEPSession()
 
@@ -147,9 +130,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                     return
         }
 
-        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID,
-                                                        partner: partnerID,
-                                                        session: session)
+        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID, partner: partnerID)
 
         XCTAssertEqual(vm.partnerRating, .reliable)
 
@@ -185,9 +166,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                     return
         }
 
-        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID,
-                                                        partner: partnerID,
-                                                        session: session)
+        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID, partner: partnerID)
 
         XCTAssertEqual(vm.partnerRating, .reliable)
 

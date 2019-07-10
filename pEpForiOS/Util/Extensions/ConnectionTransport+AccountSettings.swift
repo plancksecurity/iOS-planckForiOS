@@ -21,6 +21,8 @@ extension ConnectionTransport {
             Log.shared.errorAndCrash(
                 "Unsupported LAS transport: %d", accountSettingsTransport.rawValue)
             self = .plain
+        @unknown default:
+            fatalError()
         }
     }
 
