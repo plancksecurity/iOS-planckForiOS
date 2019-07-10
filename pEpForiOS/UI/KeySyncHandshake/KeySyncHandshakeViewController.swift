@@ -22,6 +22,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
 
     private let viewModel = KeySyncHandshakeViewModel()
+    private var pickerLanguages = [String]()
 
     func finderPrints(meFPR: String, partnerFPR: String) {
         viewModel.fingerPrints(meFPR: meFPR, partnerFPR: partnerFPR)
@@ -42,11 +43,16 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
     }
 
     func showPicker(withLanguages languages: [String]) {
-
+        pickerLanguages = languages
+        DispatchQueue.main.async { [weak self] in
+            self?.keySyncWorlds.becomeFirstResponder()
+        }
     }
 
     func closePicker() {
-
+        DispatchQueue.main.async { [weak self] in
+            self?.keySyncWorlds.resignFirstResponder()
+        }
     }
 
     func change(handshakeWordsTo: String) {
@@ -54,9 +60,29 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
             self?.keySyncWorlds.text = handshakeWordsTo
         }
     }
-
 }
 
+// MARK: - UIPickerViewDelegate
+extension KeySyncHandshakeViewController: UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerLanguages[row]
+    }
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        viewModel.didSelect(language: pickerLanguages[row])
+    }
+}
+
+// MARK: - UIPickerViewDataSource
+extension KeySyncHandshakeViewController: UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerLanguages.count
+    }
+}
 
 // MARK: - Private
 extension KeySyncHandshakeViewController {
