@@ -38,7 +38,6 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
     }
 
     // MARK: - Tests
-
     func testSetOwnKeyDirectly() {
         doTestSetOwnKey() {
             let leon = PEPIdentity(address: "iostest003@peptest.ch",

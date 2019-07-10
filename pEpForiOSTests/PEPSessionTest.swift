@@ -18,7 +18,7 @@ class PEPSessionTest: CoreDataDrivenTestBase {
     //MARK: - Test
 
     func testPEPConversion() {
-        let account = SecretTestData().createWorkingAccount()
+        let account = SecretTestData().createWorkingAccount(context: moc)
         account.save()
 
         let folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
@@ -40,6 +40,7 @@ class PEPSessionTest: CoreDataDrivenTestBase {
             XCTFail("No messages ...")
             return
         }
+//        let first = message.cdObject
         let cdmessage1 = first
         let cdmessage2 = cdmessage1
         let pepmessage = cdmessage1.pEpMessageDict()

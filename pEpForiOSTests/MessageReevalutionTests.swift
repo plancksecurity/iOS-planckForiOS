@@ -133,7 +133,6 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
 
         senderIdentity = theSenderIdentity
     }
-
     func testCommunicationTypes() {
         let senderIdent = senderIdentity.updatedIdentity(session: session)
         XCTAssertFalse(try! senderIdent.isPEPUser(session).boolValue)

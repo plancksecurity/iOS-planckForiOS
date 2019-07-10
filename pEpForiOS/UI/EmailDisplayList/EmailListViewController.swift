@@ -875,6 +875,7 @@ extension EmailListViewController {
         let replyAction = createReplyAction()
 
         let replyAllAction = createReplyAllAction(forRowAt: indexPath)
+        let readAction = createReadOrUnReadAction(forRowAt: indexPath)
 
         let forwardAction = createForwardAction()
         let moveToFolderAction = createMoveToFolderAction()
@@ -888,6 +889,7 @@ extension EmailListViewController {
 
         alertControler.addAction(forwardAction)
         alertControler.addAction(moveToFolderAction)
+        alertControler.addAction(readAction)
 
         if let popoverPresentationController = alertControler.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
@@ -909,6 +911,34 @@ extension EmailListViewController {
                 return
             }
             me.performSegue(withIdentifier: .segueShowMoveToFolder, sender: me)
+        }
+    }
+
+    private func createReadOrUnReadAction(forRowAt indexPath: IndexPath) -> UIAlertAction {
+        let seenState = model?.viewModel(for: indexPath.row)?.isSeen ?? false
+
+        var title = ""
+        if seenState {
+            title = NSLocalizedString("Mark as unread", comment: "EmailList action title")
+        } else {
+            title = NSLocalizedString("Mark as Read", comment: "EmailList action title")
+        }
+
+        return UIAlertAction(title: title, style: .default) { [weak self] action in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost MySelf")
+                return
+            }
+            guard let cell = me.tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
+                Log.shared.errorAndCrash(message: "Cell type is wrong")
+                return
+            }
+            cell.isSeen = !seenState
+            if seenState {
+                me.model?.markSelectedAsUnread(indexPaths: [indexPath])
+            } else {
+                me.model?.markSelectedAsRead(indexPaths: [indexPath])
+            }
         }
     }
 

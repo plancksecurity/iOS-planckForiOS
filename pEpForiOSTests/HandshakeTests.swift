@@ -102,6 +102,7 @@ class HandshakeTests: CoreDataDrivenTestBase {
 
     func testNegativeTrustResetCycle() {
         let session = PEPSession()
+
         try! session.update(fromIdent)
         XCTAssertNotNil(fromIdent.fingerPrint)
         XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
@@ -112,7 +113,6 @@ class HandshakeTests: CoreDataDrivenTestBase {
         XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
     }
 
-    //!!!:
     func testRestTruestOnYellowIdentity() {
         let session = PEPSession()
         try! session.update(fromIdent)
