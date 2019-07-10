@@ -33,37 +33,49 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                 return
             }
 
-            let lang = Locale.current.languageCode
-            let trustwords = try! PEPSession().getTrustwordsFpr1(meFPR,
-                                                                 fpr2: partnerFPR,
-                                                                 language: lang,
-                                                                 full: true)
+//            let lang = Locale.current.languageCode
+//            let trustwords = try! PEPSession().getTrustwordsFpr1(meFPR,
+//                                                                 fpr2: partnerFPR,
+//                                                                 language: lang,
+//                                                                 full: true)
+//
+//            // Show Handshake
+//            let newAlertView = UIAlertController.pEpAlertController(title: "Handshake",
+//                                                                    message: trustwords,
+//                                                                    preferredStyle: .alert)
+//            // Accept Action
+//            newAlertView.addAction(UIAlertAction(title: "Confirm Trustwords", style: .default) { action in
+//                completion?(PEPSyncHandshakeResult.accepted)
+//            })
+//
+//            // Reject Action
+//            newAlertView.addAction(UIAlertAction(title: "Wrong Trustwords", style: .destructive) { action in
+//                completion?(PEPSyncHandshakeResult.rejected)
+//            })
+//
+//            // Cancel Action
+//            newAlertView.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+//                completion?(PEPSyncHandshakeResult.cancel)
+//            })
+//            safeSelf.alertView = newAlertView
 
-            // Show Handshake
-            let newAlertView = UIAlertController.pEpAlertController(title: "Handshake",
-                                                                    message: trustwords,
-                                                                    preferredStyle: .alert)
-            // Accept Action
-            newAlertView.addAction(UIAlertAction(title: "Confirm Trustwords", style: .default) { action in
-                completion?(PEPSyncHandshakeResult.accepted)
-            })
-
-            // Reject Action
-            newAlertView.addAction(UIAlertAction(title: "Wrong Trustwords", style: .destructive) { action in
-                completion?(PEPSyncHandshakeResult.rejected)
-            })
-
-            // Cancel Action
-            newAlertView.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
-                completion?(PEPSyncHandshakeResult.cancel)
-            })
-            safeSelf.alertView = newAlertView
-
-            guard let vc = safeSelf.presenter else {
+            guard let viewController = safeSelf.presenter else {
                 Log.shared.errorAndCrash("No Presenter")
                 return
             }
-            vc.present(newAlertView, animated: true, completion: nil)
+
+            viewController.presentKeySyncHandShakeAlert(meFPR: meFPR, partnerFPR: partnerFPR)
+            { action in
+                switch action {
+                case .accept:
+                    completion?(PEPSyncHandshakeResult.accepted)
+                case .cancel:
+                    completion?(PEPSyncHandshakeResult.cancel)
+                case .decline:
+                    completion?(PEPSyncHandshakeResult.rejected)
+                }
+            }
+//            vc.present(newAlertView, animated: true, completion: nil)
         }
 
         //        DispatchQueue.main.async { [weak self] in

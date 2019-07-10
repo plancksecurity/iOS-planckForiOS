@@ -9,6 +9,7 @@
 import UIKit
 
 final class KeySyncHandshakeViewController: UIViewController {
+    static let storyboardId = "KeySyncHandshakeViewController"
     
     @IBOutlet weak var titile: UILabel!
     @IBOutlet weak var message: UILabel!
@@ -20,6 +21,12 @@ final class KeySyncHandshakeViewController: UIViewController {
             keySyncWorlds.inputView = languangePicker
         }
     }
+
+    enum Action {
+        case cancel, decline, accept
+    }
+
+    var completion: ((Action) -> Void)?
 
     private let viewModel = KeySyncHandshakeViewModel()
     private var pickerLanguages = [String]()
@@ -39,7 +46,10 @@ final class KeySyncHandshakeViewController: UIViewController {
 // MARK: - KeySyncHandshakeViewModelDelegate
 extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
     func didPress(action: KeySyncHandshakeViewModel.Action) {
-
+        guard let action = viewControllerAction(viewModelAction: action) else {
+            return
+        }
+        completion?(action)
     }
 
     func showPicker(withLanguages languages: [String]) {
@@ -97,6 +107,19 @@ extension KeySyncHandshakeViewController {
         case 4:
             return .accept
         default:
+            return nil
+        }
+    }
+
+    private func viewControllerAction(viewModelAction: KeySyncHandshakeViewModel.Action) -> Action? {
+        switch viewModelAction {
+        case .accept:
+            return .accept
+        case .cancel:
+            return .cancel
+        case .decline:
+            return .decline
+        case .changeLanguage:
             return nil
         }
     }
