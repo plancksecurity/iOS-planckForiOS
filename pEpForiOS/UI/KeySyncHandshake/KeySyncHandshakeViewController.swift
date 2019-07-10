@@ -11,7 +11,7 @@ import UIKit
 final class KeySyncHandshakeViewController: UIViewController {
     static let storyboardId = "KeySyncHandshakeViewController"
     
-    @IBOutlet weak var titile: UILabel!
+    @IBOutlet weak var alertTitle: UILabel!
     @IBOutlet weak var message: UILabel!
     @IBOutlet weak var keySyncWorlds: UITextView! {
         didSet {
@@ -30,9 +30,18 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     private let viewModel = KeySyncHandshakeViewModel()
     private var pickerLanguages = [String]()
+    private var meFPR: String?
+    private var partnerFPR: String?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewModel.delegate = self
+        viewModel.fingerPrints(meFPR: meFPR, partnerFPR: partnerFPR)
+    }
 
     func finderPrints(meFPR: String, partnerFPR: String) {
-        viewModel.fingerPrints(meFPR: meFPR, partnerFPR: partnerFPR)
+        self.meFPR = meFPR
+        self.partnerFPR = partnerFPR
     }
 
     @IBAction func didPress(_ sender: UIButton) {
@@ -50,6 +59,9 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
             return
         }
         completion?(action)
+        DispatchQueue.main.async { [weak self] in
+            self?.dismiss(animated: true, completion: nil)
+        }
     }
 
     func showPicker(withLanguages languages: [String]) {

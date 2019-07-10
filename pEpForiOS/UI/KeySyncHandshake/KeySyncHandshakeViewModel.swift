@@ -47,7 +47,7 @@ final class KeySyncHandshakeViewModel {
         }
     }
 
-    func fingerPrints(meFPR: String, partnerFPR: String) {
+    func fingerPrints(meFPR: String?, partnerFPR: String?) {
         self.meFPR = meFPR
         self.partnerFPR = partnerFPR
         delegate?.change(handshakeWordsTo: trustWorkds())

@@ -157,7 +157,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qdF-uZ-5ra">
                                                 <rect key="frame" x="12" y="70.5" width="236" height="55"/>
                                                 <subviews>
-                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xM8-bm-Ks8">
+                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" showsHorizontalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xM8-bm-Ks8">
                                                         <rect key="frame" x="0.0" y="0.0" width="236" height="55"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
@@ -240,9 +240,9 @@
                         <viewLayoutGuide key="safeArea" id="O4B-B0-4XF"/>
                     </view>
                     <connections>
+                        <outlet property="alertTitle" destination="ckp-rp-1Pd" id="WIa-4m-pJy"/>
                         <outlet property="keySyncWorlds" destination="xM8-bm-Ks8" id="DFP-aT-BOZ"/>
                         <outlet property="message" destination="rPi-Px-Pyp" id="Pyb-o1-Nmp"/>
-                        <outlet property="titile" destination="ckp-rp-1Pd" id="XGD-Q1-9Pn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rVu-Ti-LbX" userLabel="First Responder" sceneMemberID="firstResponder"/>
