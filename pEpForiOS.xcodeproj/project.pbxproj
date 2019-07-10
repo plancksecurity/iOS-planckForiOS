@@ -211,6 +211,7 @@
 		3705096022CF663800CB73D6 /* UIViewController+KeySyncHandshakeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705095F22CF663800CB73D6 /* UIViewController+KeySyncHandshakeTest.swift */; };
 		3705096622CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705096522CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift */; };
 		3705096822CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705096722CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift */; };
+		3705096A22D4D83B00CB73D6 /* PEPSessionMoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705096922D4D83B00CB73D6 /* PEPSessionMoc.swift */; };
 		3705703B22B7C793002E3AAD /* ActionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705703A22B7C793002E3AAD /* ActionCellViewModel.swift */; };
 		3705703F22B8E3B9002E3AAD /* ActionCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705703E22B8E3B9002E3AAD /* ActionCellViewModelTest.swift */; };
 		3705704122B8EB27002E3AAD /* KeySyncDeviceGroupServiceMoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705704022B8EB27002E3AAD /* KeySyncDeviceGroupServiceMoc.swift */; };
@@ -691,6 +692,7 @@
 		3705095F22CF663800CB73D6 /* UIViewController+KeySyncHandshakeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+KeySyncHandshakeTest.swift"; sourceTree = "<group>"; };
 		3705096522CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncHandshakeViewModel.swift; sourceTree = "<group>"; };
 		3705096722CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncHandshakeViewController.swift; sourceTree = "<group>"; };
+		3705096922D4D83B00CB73D6 /* PEPSessionMoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPSessionMoc.swift; sourceTree = "<group>"; };
 		3705703A22B7C793002E3AAD /* ActionCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCellViewModel.swift; sourceTree = "<group>"; };
 		3705703E22B8E3B9002E3AAD /* ActionCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCellViewModelTest.swift; sourceTree = "<group>"; };
 		3705704022B8EB27002E3AAD /* KeySyncDeviceGroupServiceMoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncDeviceGroupServiceMoc.swift; sourceTree = "<group>"; };
@@ -1629,6 +1631,7 @@
 			isa = PBXGroup;
 			children = (
 				3705095C22CF4AC900CB73D6 /* KeySyncHandshakeViewModelTest.swift */,
+				3705096922D4D83B00CB73D6 /* PEPSessionMoc.swift */,
 			);
 			path = KeySyncHandshake;
 			sourceTree = "<group>";
@@ -3095,6 +3098,7 @@
 				15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */,
 				151F71FB202A06760057C74D /* MockBackgrounder.swift in Sources */,
 				43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */,
+				3705096A22D4D83B00CB73D6 /* PEPSessionMoc.swift in Sources */,
 				3705096022CF663800CB73D6 /* UIViewController+KeySyncHandshakeTest.swift in Sources */,
 				151F71FE202A06760057C74D /* CdMessage+TestUtils.swift in Sources */,
 				3791A45F22BA6A0300A9E534 /* MessageModelServiceMoc.swift in Sources */,

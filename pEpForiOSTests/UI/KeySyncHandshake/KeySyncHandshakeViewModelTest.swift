@@ -16,7 +16,7 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
     var expected: State?
 
     override func setUp() {
-        keySyncHandshakeVM = KeySyncHandshakeViewModel()
+        keySyncHandshakeVM = KeySyncHandshakeViewModel(pEpSession: PEPSessionMoc())
         keySyncHandshakeVM?.delegate = self
 
         setDefaultActualState()
@@ -28,22 +28,10 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
         unwrap(value: actual)
         unwrap(value: expected)
 
-        keySyncHandshakeVM = nil
         keySyncHandshakeVM?.delegate = nil
+        keySyncHandshakeVM = nil
         actual = nil
         expected = nil
-    }
-
-    func didPressLanguageButtonTest() {
-        // GIVEN
-        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
-        expected = State(didCallShowPicker: true)
-
-        // WHEN
-        keySyncHandshakeVM.didPressLanguageButton()
-
-        // THEN
-        assertExpectations()
     }
 
     func didSelectLanguageToOtherOrSameTest() {
@@ -84,6 +72,18 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
         assertExpectations()
     }
 
+    func didPressActionChangeLanguageTest() {
+        // GIVEN
+        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
+        expected = State(didCallShowPicker: true)
+
+        // WHEN
+        keySyncHandshakeVM.didPress(action: .changeLanguage)
+
+        // THEN
+        assertExpectations()
+    }
+
     func didPressActionDeclineTest() {
         // GIVEN
         let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
@@ -103,6 +103,18 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
 
         // WHEN
         keySyncHandshakeVM.didPress(action: .cancel)
+
+        // THEN
+        assertExpectations()
+    }
+
+    func fingerPrintsTest() {
+        // GIVEN
+        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
+        expected = State(didCallToChangeLanaguage: true)
+
+        // WHEN
+        keySyncHandshakeVM.didPress(action: .changeLanguage)
 
         // THEN
         assertExpectations()
@@ -128,7 +140,6 @@ extension KeySyncHandshakeViewModelTest: KeySyncHandshakeViewModelDelegate {
 
     func change(handshakeWordsTo: String) {
         actual?.didCallToChangeLanaguage = true
-        actual?.didCallClosePicker = true
     }
 }
 
