@@ -11,14 +11,40 @@ import UIKit
 final class KeySyncHandshakeViewController: UIViewController {
     static let storyboardId = "KeySyncHandshakeViewController"
     
-    @IBOutlet weak var alertTitle: UILabel!
-    @IBOutlet weak var message: UILabel!
+    @IBOutlet weak var alertTitle: UILabel! {
+        didSet {
+            alertTitle.text = NSLocalizedString("p≡p Sync", comment: "handshake sync alert title")
+        }
+    }
+    @IBOutlet weak var message: UILabel! {
+        didSet {
+            message.text = NSLocalizedString("A second device is detected. Please confirm the Trustwords on both devices to sync all your privacy. Shall we synchronize?", comment: "handshake sync alert message")
+        }
+    }
     @IBOutlet weak var keySyncWorlds: UITextView! {
         didSet {
             let languangePicker = UIPickerView()
             languangePicker.dataSource = self
             languangePicker.delegate = self
             keySyncWorlds.inputView = languangePicker
+        }
+    }
+    @IBOutlet weak var accept: UIButton! {
+        didSet {
+            accept.setTitleColor(.pEpGreen, for: .normal)
+            accept.setTitle(NSLocalizedString("Accept", comment: "accept button"), for: .normal)
+        }
+    }
+    @IBOutlet weak var decline: UIButton! {
+        didSet {
+            decline.setTitleColor(.pEpRed, for: .normal)
+            decline.setTitle(NSLocalizedString("Decline", comment: "decline button"), for: .normal)
+        }
+    }
+    @IBOutlet weak var cancel: UIButton! {
+        didSet {
+            cancel.setTitleColor(.pEpGray, for: .normal)
+            cancel.setTitle(NSLocalizedString("Cancel", comment: "cancel button"), for: .normal)
         }
     }
 

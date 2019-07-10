@@ -112,10 +112,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fiE-pm-mWd">
-                                <rect key="frame" x="57.5" y="248.5" width="260" height="190.5"/>
+                                <rect key="frame" x="57.5" y="243.5" width="260" height="200.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="YMa-Kc-JoR">
-                                        <rect key="frame" x="0.0" y="0.0" width="260" height="190.5"/>
+                                        <rect key="frame" x="0.0" y="10" width="260" height="190.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="htI-ge-ZQj">
                                                 <rect key="frame" x="12" y="0.0" width="236" height="30"/>
@@ -178,6 +178,7 @@
                                                 <subviews>
                                                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emU-WV-Kap">
                                                         <rect key="frame" x="0.0" y="12.5" width="86.5" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                                         <state key="normal" title="Button"/>
                                                         <connections>
                                                             <action selector="didPress:" destination="GZS-2u-rXb" eventType="touchUpInside" id="Qh9-Xn-6Jk"/>
@@ -185,6 +186,7 @@
                                                     </button>
                                                     <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rgh-E1-f1w">
                                                         <rect key="frame" x="86.5" y="12.5" width="87" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                                         <state key="normal" title="Button"/>
                                                         <connections>
                                                             <action selector="didPress:" destination="GZS-2u-rXb" eventType="touchUpInside" id="7oe-KK-94F"/>
@@ -192,6 +194,7 @@
                                                     </button>
                                                     <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w5A-sP-MB2">
                                                         <rect key="frame" x="173.5" y="12.5" width="86.5" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                                         <state key="normal" title="Button"/>
                                                         <connections>
                                                             <action selector="didPress:" destination="GZS-2u-rXb" eventType="touchUpInside" id="cCN-kJ-4MM"/>
@@ -219,13 +222,13 @@
                                 <constraints>
                                     <constraint firstItem="YMa-Kc-JoR" firstAttribute="leading" secondItem="fiE-pm-mWd" secondAttribute="leading" id="EAC-nr-iun"/>
                                     <constraint firstAttribute="width" constant="260" id="gIO-vA-Pn9"/>
-                                    <constraint firstItem="YMa-Kc-JoR" firstAttribute="top" secondItem="fiE-pm-mWd" secondAttribute="top" id="neq-VA-ZUu"/>
+                                    <constraint firstItem="YMa-Kc-JoR" firstAttribute="top" secondItem="fiE-pm-mWd" secondAttribute="top" constant="10" id="neq-VA-ZUu"/>
                                     <constraint firstAttribute="trailing" secondItem="YMa-Kc-JoR" secondAttribute="trailing" id="xBm-Xd-JL5"/>
                                     <constraint firstAttribute="bottom" secondItem="YMa-Kc-JoR" secondAttribute="bottom" id="xu3-OF-yp5"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="5"/>
+                                        <integer key="value" value="15"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
@@ -240,7 +243,10 @@
                         <viewLayoutGuide key="safeArea" id="O4B-B0-4XF"/>
                     </view>
                     <connections>
+                        <outlet property="accept" destination="w5A-sP-MB2" id="Lcb-sF-aRM"/>
                         <outlet property="alertTitle" destination="ckp-rp-1Pd" id="WIa-4m-pJy"/>
+                        <outlet property="cancel" destination="emU-WV-Kap" id="DjI-VP-c4R"/>
+                        <outlet property="decline" destination="Rgh-E1-f1w" id="h3F-j9-O5m"/>
                         <outlet property="keySyncWorlds" destination="xM8-bm-Ks8" id="DFP-aT-BOZ"/>
                         <outlet property="message" destination="rPi-Px-Pyp" id="Pyb-o1-Nmp"/>
                     </connections>
