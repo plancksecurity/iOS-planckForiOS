@@ -25,7 +25,9 @@ final class SettingsViewModel {
         sections.append(SettingsSectionViewModel(type: .accounts))
         sections.append(SettingsSectionViewModel(type: .globalSettings))
         sections.append(SettingsSectionViewModel(type: .pgpCompatibilitySettings))
-        sections.append(SettingsSectionViewModel(type: .keySync, messageModelService: messageModelService, keySyncDeviceGroupService: keySyncDeviceGroupService))
+        sections.append(SettingsSectionViewModel(type: .keySync,
+                                                 messageModelService: messageModelService,
+                                                 keySyncDeviceGroupService: keySyncDeviceGroupService))
     }
 
     func delete(section: Int, cell: Int) {
