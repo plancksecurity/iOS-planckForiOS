@@ -104,6 +104,7 @@ final class SettingsSectionViewModel {
 }
 
 // MARK: - Private
+
 extension SettingsSectionViewModel {
     private func isInDeviceGroup() -> Bool {
         guard let keySyncDeviceGroupService = keySyncDeviceGroupService else {
