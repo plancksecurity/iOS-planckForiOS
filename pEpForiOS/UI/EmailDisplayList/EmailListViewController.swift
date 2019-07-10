@@ -921,8 +921,12 @@ extension EmailListViewController {
         }
 
         return UIAlertAction(title: title, style: .default) { [weak self] action in
-            guard let me = self, let cell = me.tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
+            guard let me = self else {
                 Log.shared.errorAndCrash("Lost MySelf")
+                return
+            }
+            guard let cell = me.tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
+                Log.shared.errorAndCrash(message: "Cell type is wrong")
                 return
             }
             cell.isSeen = !seenState
