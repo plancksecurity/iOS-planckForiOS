@@ -12,7 +12,14 @@ final class KeySyncHandshakeViewController: UIViewController {
     
     @IBOutlet weak var titile: UILabel!
     @IBOutlet weak var message: UILabel!
-    @IBOutlet weak var keySyncWorlds: UITextView!
+    @IBOutlet weak var keySyncWorlds: UITextView! {
+        didSet {
+            let languangePicker = UIPickerView()
+            languangePicker.dataSource = self
+            languangePicker.delegate = self
+            keySyncWorlds.inputView = languangePicker
+        }
+    }
 
     private let viewModel = KeySyncHandshakeViewModel()
 
@@ -49,6 +56,7 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
     }
 
 }
+
 
 // MARK: - Private
 extension KeySyncHandshakeViewController {
