@@ -10,9 +10,11 @@ public class SelfReferencingOperation: Operation {
     public let backgroundQueue = OperationQueue()
 
     public init(maxConcurrentOperationCount: Int? = nil,
-                qos: QualityOfService = .background,
+                qos: QualityOfService? = nil,
                 executionBlock: @escaping (_ operation: SelfReferencingOperation?) -> Void) {
-        backgroundQueue.qualityOfService = qos
+        if let prio = qos {
+            backgroundQueue.qualityOfService = prio
+        }
         if let maxConcurrentTasks = maxConcurrentOperationCount {
             backgroundQueue.maxConcurrentOperationCount = maxConcurrentTasks
         }
