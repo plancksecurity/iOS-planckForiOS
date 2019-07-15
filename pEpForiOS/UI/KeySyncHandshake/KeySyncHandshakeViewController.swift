@@ -11,9 +11,21 @@ import UIKit
 final class KeySyncHandshakeViewController: UIViewController {
     static let storyboardId = "KeySyncHandshakeViewController"
     
-    @IBOutlet weak var contentView: UIView! {
+    @IBOutlet weak var keySyncWords: UILabel! {
         didSet {
-            contentView.backgroundColor = UIColor.pEpLightBackground
+            keySyncWords.backgroundColor = .pEpLightBackground
+            keySyncWords.layer.borderColor = UIColor.pEpGreyLines.cgColor
+            keySyncWords.layer.cornerRadius = 3
+            keySyncWords.layer.borderWidth = 1
+        }
+    }
+    @IBOutlet weak var contentView: KeyInputView! {
+        didSet {
+            contentView.backgroundColor = .pEpGreyBackground
+            let languangePicker = UIPickerView()
+            languangePicker.dataSource = self
+            languangePicker.delegate = self
+            contentView.inputView = languangePicker
         }
     }
     @IBOutlet weak var alertTitle: UILabel! {
@@ -26,14 +38,7 @@ final class KeySyncHandshakeViewController: UIViewController {
             message.text = NSLocalizedString("A second device is detected. Please confirm the Trustwords on both devices to sync all your privacy. Shall we synchronize?", comment: "handshake sync alert message")
         }
     }
-    @IBOutlet weak var keySyncWorlds: UITextView! {
-        didSet {
-            let languangePicker = UIPickerView()
-            languangePicker.dataSource = self
-            languangePicker.delegate = self
-            keySyncWorlds.inputView = languangePicker
-        }
-    }
+
     @IBOutlet weak var accept: UIButton! {
         didSet {
             accept.setTitleColor(.pEpGreen, for: .normal)
@@ -48,7 +53,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
     @IBOutlet weak var cancel: UIButton! {
         didSet {
-            cancel.setTitleColor(.pEpGray, for: .normal)
+            cancel.setTitleColor(.pEpGreyText, for: .normal)
             cancel.setTitle(NSLocalizedString("Cancel", comment: "cancel button"), for: .normal)
         }
     }
@@ -98,19 +103,19 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
     func showPicker(withLanguages languages: [String]) {
         pickerLanguages = languages
         DispatchQueue.main.async { [weak self] in
-            self?.keySyncWorlds.becomeFirstResponder()
+            self?.contentView.becomeFirstResponder()
         }
     }
 
     func closePicker() {
         DispatchQueue.main.async { [weak self] in
-            self?.keySyncWorlds.resignFirstResponder()
+            self?.contentView.resignFirstResponder()
         }
     }
 
     func change(handshakeWordsTo: String) {
         DispatchQueue.main.async { [weak self] in
-            self?.keySyncWorlds.text = handshakeWordsTo
+            self?.keySyncWords.text = handshakeWordsTo
         }
     }
 }
