@@ -43,18 +43,26 @@ final class KeySyncHandshakeViewController: UIViewController {
         didSet {
             accept.setTitleColor(.pEpGreen, for: .normal)
             accept.setTitle(NSLocalizedString("Accept", comment: "accept button"), for: .normal)
+            accept.backgroundColor = .pEpGreyBackground
         }
     }
     @IBOutlet weak var decline: UIButton! {
         didSet {
             decline.setTitleColor(.pEpRed, for: .normal)
             decline.setTitle(NSLocalizedString("Decline", comment: "decline button"), for: .normal)
+            decline.backgroundColor = .pEpGreyBackground
         }
     }
     @IBOutlet weak var cancel: UIButton! {
         didSet {
             cancel.setTitleColor(.pEpGreyText, for: .normal)
             cancel.setTitle(NSLocalizedString("Cancel", comment: "cancel button"), for: .normal)
+            cancel.backgroundColor = .pEpGreyBackground
+        }
+    }
+    @IBOutlet weak var buttonsView: UIView! {
+        didSet {
+            buttonsView.backgroundColor = .pEpGreyButtonLines
         }
     }
 
