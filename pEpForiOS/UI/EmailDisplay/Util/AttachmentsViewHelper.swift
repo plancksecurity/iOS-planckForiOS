@@ -68,12 +68,12 @@ class AttachmentsViewHelper {
                 case .docAttachment(let attachment):
                     var resultView: AttachmentSummaryView?
                     let session = Session()
+                    let safeAttachment = attachment.safeForSession(session) //???: why do we need a new session here
                     session.performAndWait {
-                        let safeAttachments = attachment.safeForSession(session)
                         let dic = UIDocumentInteractionController()
-                        dic.name = safeAttachments.fileName
+                        dic.name = safeAttachment.fileName
 
-                        guard let theAttachmentInfo = self?.attachmentInfo(attachment: safeAttachments) else {
+                        guard let theAttachmentInfo = self?.attachmentInfo(attachment: safeAttachment) else {
                             Log.shared.errorAndCrash("No attachment info")
                             return
                         }
@@ -88,11 +88,7 @@ class AttachmentsViewHelper {
                 }
         }
         imageView.attachmentViewContainers = viewContainers
-        guard let msg = theBuildOp.message else {
-            Log.shared.errorAndCrash("No message")
-            return
-        }
-        delegate?.didCreate(attachmentsView: imageView, message: msg)
+        delegate?.didCreate(attachmentsView: imageView, message: theBuildOp.message)
     }
 
     func updateQuickMetaData(message: Message) {
