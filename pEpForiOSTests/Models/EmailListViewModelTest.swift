@@ -464,7 +464,12 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(isSelectable)
     }
 
-
+    func testComposePrefilledFromAccountIsCorrectlySetted() {
+        let expectedFrom = folder.account.user//.address
+        setupViewModel()
+        let composeVM = emailListVM.composeViewModelForNewMessage()
+        XCTAssertEqual(composeVM.state.from, expectedFrom)
+    }
 
 
 
