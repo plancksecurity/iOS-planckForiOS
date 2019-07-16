@@ -1,12 +1,12 @@
-v0.0.49
-pEpEngine f599ed411c78 (sync)
+v0.0.50
+pEpEngine 117be5371dd4 (sync)
 sequoia4ios 0d10db4ceb1073ef58d7b8e6f36450d89d0384bc
-pEpObjCAdapter c70e556c9f38
-MessageModel 2b6387e4dc5f
-pantomime-iOS 66aee36bcd21
+pEpObjCAdapter 2affc5750b82
+MessageModel c2414ec0eba5
+pantomime-iOS 68dc0099fa0c
 libAccountSettings 3d94e78b587e
 ldns 70cfa2739c2a71db098e738d2fd16ae1025b2362
 OpenSSL-for-iPhone 10019638e80e8a8a5fc19642a840d8a69fac7349
-libetpan af2aad552dd0ecc6a943f78e5c77dc03ebbc0028
+libetpan abb29cd702605ba518628f818a0b7892ae051a5c
 AppAuth-iOS b9d3ce7f02d817beea002241c3de45dbe9504d16
 SwipeCellKit 338db33b96fe79a4149844be0685d3614dac36a0
