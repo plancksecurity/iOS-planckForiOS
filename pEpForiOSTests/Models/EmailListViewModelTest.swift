@@ -464,6 +464,10 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(isSelectable)
     }
 
+
+
+
+
     // Mark: - setting up
 
     fileprivate func setUpViewModel(forFolder folder: Folder, masterViewController: TestMasterViewController) {
