@@ -18,21 +18,36 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     var draftsFolder: Folder!
     var emailListVM : EmailListViewModel!
     var masterViewController: TestMasterViewController!
+    var acc : Account!
 
     /** this set up a view model with one account and one folder saved **/
     override func setUp() {
         super.setUp()
 
-        let acc = cdAccount.account()
+        acc = cdAccount.account()
+
 
         folder = Folder(name: "inbox", parent: nil, account: acc, folderType: .inbox)
         trashFolder = Folder(name: "trash",
                              parent: nil,
-                             account: folder.account,
+                             account: acc,
                              folderType: .trash)
         outboxFolder = Folder(name: "outbox", parent: nil, account: acc, folderType: .outbox)
         draftsFolder = Folder(name: "drafts", parent: nil, account: acc, folderType: .drafts)
         moc.saveAndLogErrors()
+    }
+
+    func secondAccountSetUp() {
+        let acc2 = SecretTestData().createWorkingAccount(number: 1)
+        _ = Folder(name: "inbox", parent: nil, account: acc2, folderType: .inbox)
+        _ = Folder(name: "trash",
+                             parent: nil,
+                             account: acc2,
+                             folderType: .trash)
+        _ = Folder(name: "outbox", parent: nil, account: acc2, folderType: .outbox)
+        _ = Folder(name: "drafts", parent: nil, account: acc2, folderType: .drafts)
+        moc.saveAndLogErrors()
+
     }
 
     // MARK: - Test section
@@ -464,9 +479,26 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(isSelectable)
     }
 
-    func testComposePrefilledFromAccountIsCorrectlySetted() {
+    func testComposePrefilledFromAccountIsCorrectlySettedWithOnlyOneAccount() {
         let expectedFrom = folder.account.user//.address
         setupViewModel()
+        let composeVM = emailListVM.composeViewModelForNewMessage()
+        XCTAssertEqual(composeVM.state.from, expectedFrom)
+    }
+
+    func testComposePrefilledFromAccountIsDefaultAccountFromUnifiedIboxWithMultipleAccounts() {
+        let expectedFrom = folder.account.user//.address
+        secondAccountSetUp()
+        AppSettings.defaultAccount = acc.user.address
+        setupViewModel(forfolder: UnifiedInbox())
+        let composeVM = emailListVM.composeViewModelForNewMessage()
+        XCTAssertEqual(composeVM.state.from, expectedFrom)
+    }
+
+    func testComposePrefilledFromAccountIsFolderAccountFromSpecificFolderWithMultipleAccounts() {
+        let expectedFrom = folder.account.user//.address
+        secondAccountSetUp()
+        setupViewModel(forfolder: folder)
         let composeVM = emailListVM.composeViewModelForNewMessage()
         XCTAssertEqual(composeVM.state.from, expectedFrom)
     }
@@ -475,12 +507,12 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     // Mark: - setting up
 
-    fileprivate func setUpViewModel(forFolder folder: Folder, masterViewController: TestMasterViewController) {
+    fileprivate func setUpViewModel(forFolder folder: DisplayableFolderProtocol, masterViewController: TestMasterViewController) {
         self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController, folderToShow: folder)
     }
 
-    fileprivate func setupViewModel(forfolder internalFolder: Folder? = nil) {
-        let folderToUse: Folder
+    fileprivate func setupViewModel(forfolder internalFolder: DisplayableFolderProtocol? = nil) {
+        let folderToUse: DisplayableFolderProtocol
         if internalFolder == nil {
             folderToUse = folder
         } else {
@@ -506,7 +538,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         masterViewController.expectationUpdateViewCalled = updateViewExpectation
     }
 
-    fileprivate func createViewModelWithExpectations(forFolder folder: Folder, expectedUpdateView: Bool) {
+    fileprivate func createViewModelWithExpectations(forFolder folder: DisplayableFolderProtocol, expectedUpdateView: Bool) {
         let viewModelTestDelegate = TestMasterViewController()
         setUpViewModel(forFolder: folder, masterViewController: viewModelTestDelegate)
     }
