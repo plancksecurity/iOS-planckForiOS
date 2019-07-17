@@ -241,6 +241,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
+        Log.shared.info("applicationDidEnterBackground")
         shouldDestroySession = true
         gracefullyShutdownServices()
     }
