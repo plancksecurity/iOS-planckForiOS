@@ -368,10 +368,7 @@ extension MessageViewModel {
                 guard let operation = operation, !operation.isCancelled else {
                     return
                 }
-
-                if (!operation.isCancelled) {
-                    me.profilePictureComposer.securityBadge(for: safeMsg, completion: completion)
-                }
+                me.profilePictureComposer.securityBadge(for: safeMsg, completion: completion)
             }
         }
         return getSecurityBadgeOperation

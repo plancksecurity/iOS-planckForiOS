@@ -228,7 +228,9 @@ extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
                 }
 
                 do {
-                    try theSelf.model?.save()
+                    try theSelf.model?.save() { success in
+
+                    }
                 } catch {
                     Log.shared.errorAndCrash(error: error)
                 }
