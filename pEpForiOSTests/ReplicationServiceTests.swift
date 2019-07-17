@@ -99,7 +99,7 @@ class ReplicationServiceTests: XCTestCase {
 ////            XCTAssertTrue(msg.isValidMessage())
 ////
 ////            let pEpRating = Int16(msg.pEpRatingInt ?? -1)
-////            XCTAssertNotEqual(pEpRating, PEPUtil.pEpRatingNone)
+////            XCTAssertNotEqual(pEpRating, PEPUtils.pEpRatingNone)
 ////            if !modelDelegate.contains(messageID: msg.messageID) {
 ////                XCTFail()
 ////            }

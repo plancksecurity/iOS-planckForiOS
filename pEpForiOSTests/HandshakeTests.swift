@@ -43,7 +43,7 @@ class HandshakeTests: CoreDataDrivenTestBase {
                 return
         }
 
-        let pEpMessage = PEPUtil.pEp(cdMessage: cdMessage, outgoing: true)
+        let pEpMessage = PEPUtils.pEp(cdMessage: cdMessage, outgoing: true)
 
         let theAttachments = pEpMessage.attachments ?? []
         XCTAssertEqual(theAttachments.count, 1)

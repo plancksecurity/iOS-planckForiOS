@@ -33,16 +33,16 @@ extension Message {
             dict[kPepLongMessageFormatted] = text as NSString
         }
 
-        dict[kPepTo] = NSArray(array: to.map() { return PEPUtil.pEp(identity: $0) })
-        dict[kPepCC] = NSArray(array: cc.map() { return PEPUtil.pEp(identity: $0) })
-        dict[kPepBCC] = NSArray(array: bcc.map() { return PEPUtil.pEp(identity: $0) })
+        dict[kPepTo] = NSArray(array: to.map() { return PEPUtils.pEp(identity: $0) })
+        dict[kPepCC] = NSArray(array: cc.map() { return PEPUtils.pEp(identity: $0) })
+        dict[kPepBCC] = NSArray(array: bcc.map() { return PEPUtils.pEp(identity: $0) })
 
-        dict[kPepFrom]  = PEPUtil.pEpOptional(identity: from) as AnyObject
+        dict[kPepFrom]  = PEPUtils.pEpOptional(identity: from) as AnyObject
         dict[kPepID] = messageID as AnyObject
         dict[kPepOutgoing] = outgoing as AnyObject?
 
         dict[kPepAttachments] = NSArray(array: attachments.map() {
-            return PEPUtil.pEpAttachment(attachment: $0)
+            return PEPUtils.pEpAttachment(attachment: $0)
         })
 
         return dict

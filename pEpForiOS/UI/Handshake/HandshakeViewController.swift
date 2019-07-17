@@ -91,9 +91,7 @@ extension HandshakeViewController {
 extension HandshakeViewController {
 
     private func updateStatusBadge() {
-        message?.session.performAndWait { [weak self] in
-            self?.showPepRating(pEpRating: self?.message?.pEpRating())
-        }
+        showPepRating(pEpRating: message?.pEpRating())
     }
 
     // MARK: - UI & Layout

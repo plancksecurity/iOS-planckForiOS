@@ -15,7 +15,7 @@ import PEPObjCAdapterFramework
 // TODO: Duplicate.
 extension CdIdentity {
     public func pEpIdentity() -> PEPIdentity {
-        return PEPUtil.pEpDict(cdIdentity: self)
+        return PEPUtils.pEpDict(cdIdentity: self)
     }
 }
 
@@ -24,7 +24,7 @@ extension PEPSession {
     public func encrypt(pEpMessageDict: PEPMessageDict,
                         encryptionFormat: PEPEncFormat = .PEP,
                         forSelf: PEPIdentity? = nil) throws -> (PEPStatus, NSDictionary?) {
-        return try PEPUtil.encrypt(pEpMessageDict: pEpMessageDict,
+        return try PEPUtils.encrypt(pEpMessageDict: pEpMessageDict,
                                    encryptionFormat: encryptionFormat,
                                    forSelf: forSelf)
     }
