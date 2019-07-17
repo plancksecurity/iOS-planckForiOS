@@ -432,9 +432,8 @@ class EmailViewController: BaseTableViewController {
      */
     @IBAction func segueUnwindTrusted(segue: UIStoryboardSegue) {
         if let p = partnerIdentity {
-            let session = PEPSession()
             do {
-                try PEPUtil.trust(identity: p, session: session)
+                try PEPUtil.trust(identity: p)
             } catch let error as NSError {
                 assertionFailure("\(error)")
             }
@@ -447,9 +446,8 @@ class EmailViewController: BaseTableViewController {
      */
     @IBAction func segueUnwindUnTrusted(segue: UIStoryboardSegue) {
         if let p = partnerIdentity {
-            let session = PEPSession()
             do {
-                try PEPUtil.mistrust(identity: p, session: session)
+                try PEPUtil.mistrust(identity: p)
             } catch let error as NSError {
                 assertionFailure("\(error)")
             }

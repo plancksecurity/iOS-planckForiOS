@@ -24,8 +24,8 @@ extension PEPSession {
     public func encrypt(pEpMessageDict: PEPMessageDict,
                         encryptionFormat: PEPEncFormat = .PEP,
                         forSelf: PEPIdentity? = nil) throws -> (PEPStatus, NSDictionary?) {
-        return try PEPUtil.encrypt(
-            pEpMessageDict: pEpMessageDict, encryptionFormat: encryptionFormat,
-            forSelf: forSelf, session: self)
+        return try PEPUtil.encrypt(pEpMessageDict: pEpMessageDict,
+                                   encryptionFormat: encryptionFormat,
+                                   forSelf: forSelf)
     }
 }
