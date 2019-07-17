@@ -134,12 +134,21 @@ class EmailListViewModel {
         return Folder.localizedName(realName: folderToShow.title)
     }
 
-    func shouldEditMessage(indexPath: IndexPath) -> Bool {
+    func isEditable(messageAt indexPath: IndexPath) -> Bool {
         let message = messageQueryResults[indexPath.row]
-        if message.parent.folderType == .drafts || message.parent.folderType == .outbox {
+        if message.parent.folderType == .drafts {
             return true
         } else {
             return false
+        }
+    }
+
+    func isSelectable(messageAt indexPath: IndexPath) -> Bool {
+        let message = messageQueryResults[indexPath.row]
+        if message.parent.folderType == .outbox {
+            return false
+        } else {
+            return true
         }
     }
 
@@ -184,7 +193,7 @@ class EmailListViewModel {
             return nil
         }
         let message = messageQueryResults[indexPath.row]
-        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
+        let color = PEPUtils.pEpColor(pEpRating: message.pEpRating())
         if color != PEPColor.noColor {
             return color.statusIcon()
         } else {

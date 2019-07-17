@@ -613,9 +613,11 @@ extension ComposeViewModel {
                 Log.shared.errorAndCrash("No message")
                 return
         }
-        handshakeViewController.message = msg
-        let evaluator = RatingReEvaluator(message: msg)
-        handshakeViewController.ratingReEvaluator = evaluator
+        session.performAndWait {
+            handshakeViewController.message = msg
+            let evaluator = RatingReEvaluator(message: msg)
+            handshakeViewController.ratingReEvaluator = evaluator
+        }
     }
 }
 

@@ -97,7 +97,7 @@ class HandshakePartnerTableViewCellViewModel {
         self.trustwordsLanguage = "en"
         self.ownIdentity = ownIdentity
         self.partnerIdentity = partner
-        self.partnerRating = PEPUtil.pEpRating(identity: partner)
+        self.partnerRating = PEPUtils.pEpRating(identity: partner)
         self.pEpPartner = partner.updatedIdentity()
         self.pEpSelf = ownIdentity.updatedIdentity()
         self.partnerColor = partnerRating.pEpColor()
@@ -120,17 +120,16 @@ class HandshakePartnerTableViewCellViewModel {
             contactImageTool.cachedIdentityImage(for: IdentityImageTool.IdentityKey(identity: partnerIdentity)) {
             partnerImage.value = cachedContactImage
         } else {
+            let session = Session()
+            let safePartnerIdentity = partnerIdentity.safeForSession(session)
             DispatchQueue.global().async { [weak self] in
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
                     return
                 }
-                let session = Session()
                 session.performAndWait {
-                    let safePartnerIdentity = partnerIdentity.safeForSession(session)
-
-                    let contactImage =
-                        me.contactImageTool.identityImage(for: IdentityImageTool.IdentityKey(identity: safePartnerIdentity))
+                    let contactImage = me.contactImageTool.identityImage(for:
+                        IdentityImageTool.IdentityKey(identity: safePartnerIdentity))
                     me.partnerImage.value = contactImage
                 }
             }
@@ -176,7 +175,7 @@ class HandshakePartnerTableViewCellViewModel {
 
         do {
             partnerRating = try PEPSession().rating(for: pEpPartner).pEpRating
-            partnerColor = PEPUtil.pEpColor(pEpRating: partnerRating)
+            partnerColor = PEPUtils.pEpColor(pEpRating: partnerRating)
         } catch let error as NSError {
             assertionFailure("\(error)")
         }

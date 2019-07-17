@@ -115,7 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func deleteManagementDBIfRequired() -> Bool {
         if AppSettings.shouldReinitializePepOnNextStartup {
             AppSettings.shouldReinitializePepOnNextStartup = false
-            let _ = PEPUtil.pEpClean()
+            let _ = PEPUtils.pEpClean()
             return true
         }
         return false
