@@ -686,9 +686,11 @@ extension EmailViewController: MessageAttachmentDelegate {
         let busyState = inView?.displayAsBusy()
         let attachmentOp = AttachmentToLocalURLOperation(attachment: attachment)
         attachmentOp.completionBlock = { [weak self] in
-            attachmentOp.completionBlock = nil
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
             GCD.onMain {
-                let safeAttachment = attachment.safeForSession(Session.main)
                 defer {
                     if let bState = busyState {
                         inView?.stopDisplayingAsBusy(viewBusyState: bState)
@@ -697,8 +699,11 @@ extension EmailViewController: MessageAttachmentDelegate {
                 guard let url = attachmentOp.fileURL else {
                     return
                 }
-                self?.didCreateLocally(attachment: safeAttachment, url: url, cell: cell,
-                                       location: location, inView: inView)
+                me.didCreateLocally(attachment: attachment,
+                                       url: url,
+                                       cell: cell,
+                                       location: location,
+                                       inView: inView)
             }
         }
         backgroundQueue.addOperation(attachmentOp)
