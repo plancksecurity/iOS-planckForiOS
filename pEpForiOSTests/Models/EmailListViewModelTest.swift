@@ -480,14 +480,14 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testComposePrefilledFromAccountIsCorrectlySettedWithOnlyOneAccount() {
-        let expectedFrom = folder.account.user//.address
+        let expectedFrom = folder.account.user
         setupViewModel()
         let composeVM = emailListVM.composeViewModelForNewMessage()
         XCTAssertEqual(composeVM.state.from, expectedFrom)
     }
 
     func testComposePrefilledFromAccountIsDefaultAccountFromUnifiedIboxWithMultipleAccounts() {
-        let expectedFrom = folder.account.user//.address
+        let expectedFrom = folder.account.user
         secondAccountSetUp()
         AppSettings.defaultAccount = acc.user.address
         setupViewModel(forfolder: UnifiedInbox())
@@ -496,7 +496,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testComposePrefilledFromAccountIsFolderAccountFromSpecificFolderWithMultipleAccounts() {
-        let expectedFrom = folder.account.user//.address
+        let expectedFrom = folder.account.user
         secondAccountSetUp()
         setupViewModel(forfolder: folder)
         let composeVM = emailListVM.composeViewModelForNewMessage()
