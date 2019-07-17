@@ -218,8 +218,6 @@
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
 		4304FD001EBB8EBB0086DADA /* LanguageListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */; };
 		430BA229203438A3003B041C /* CdMessagePEPMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */; };
-		430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
-		430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
 		430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */; };
 		430D73651E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430D73641E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift */; };
 		430D73671E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430D73661E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift */; };
@@ -694,7 +692,6 @@
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
 		4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageListViewController.swift; sourceTree = "<group>"; };
 		430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdMessagePEPMessageTests.swift; sourceTree = "<group>"; };
-		430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = pEpTrustWords.bundle; sourceTree = "<group>"; };
 		430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PepAdapterTests.swift; sourceTree = "<group>"; };
 		430D73641E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsViewOperation.swift; sourceTree = "<group>"; };
 		430D73661E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentToLocalURLOperation.swift; sourceTree = "<group>"; };
@@ -1315,7 +1312,6 @@
 				43C98AC5219C3691006418B0 /* InfoPlist.strings */,
 				43C98AC1219C275E006418B0 /* Localizable.strings */,
 				4388A0E02008AF61008CB98D /* public.xcconfig */,
-				430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1662,6 +1658,20 @@
 			path = OAuth2;
 			sourceTree = "<group>";
 		};
+		4339F8C022DE129E00644A8E /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				154918E222BA74D70091B6D6 /* PantomimeFramework.framework */,
+				154918DF22BA74BA0091B6D6 /* AppAuth.framework */,
+				154918CF22BA74230091B6D6 /* ldns_xcode.framework */,
+				154918DC22BA74A90091B6D6 /* PEPObjCAdapterFramework.framework */,
+				154918D922BA74800091B6D6 /* MessageModel.framework */,
+				154918D322BA74670091B6D6 /* pEpIOSToolbox.framework */,
+				154918D622BA74700091B6D6 /* SwipeCellKit.framework */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		4351C2A01F4441190053381F /* Markdown */ = {
 			isa = PBXGroup;
 			children = (
@@ -1777,19 +1787,12 @@
 			isa = PBXGroup;
 			children = (
 				433724FC1DA2C2B1005E8DF5 /* pEp.entitlements */,
-				43D2133F2237CB3900C060A1 /* PantomimeFramework.framework */,
-				43D2133C2237CB1600C060A1 /* PEPObjCAdapterFramework.framework */,
-				43D213352237C90400C060A1 /* ldns_xcode.framework */,
-				43D213302237C86900C060A1 /* SwipeCellKit.framework */,
-				43D2132D2237BE8000C060A1 /* MessageModel.framework */,
-				43D2132A2237BE6D00C060A1 /* pEpIOSToolbox.framework */,
-				43D213262237BE4B00C060A1 /* AppAuth.framework */,
-				43980ECE1CBD1CAD00A7FC3C /* Libraries */,
 				43980E251CBD0BC900A7FC3C /* pEpForiOS */,
 				43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */,
 				43980E481CBD0BCA00A7FC3C /* pEpForiOSUITests */,
 				43980E241CBD0BC900A7FC3C /* Products */,
 				495560841E7150ED0016579E /* Frameworks */,
+				4339F8C022DE129E00644A8E /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2428,7 +2431,6 @@
 			buildConfigurationList = 43980E4E1CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "pEp" */;
 			buildPhases = (
 				151573B31F20913C0049BB0B /* Log Start Time script */,
-				4304FCF11EBB60340086DADA /* Copy Trustwords Script */,
 				43980E1F1CBD0BC900A7FC3C /* Sources */,
 				43980E201CBD0BC900A7FC3C /* Frameworks */,
 				43980E211CBD0BC900A7FC3C /* Resources */,
@@ -2559,7 +2561,6 @@
 				151DE7E41FC5D41600CDC273 /* FolderViews.storyboard in Resources */,
 				152A39D221905C3E00D9F8E4 /* AttachmentCell.xib in Resources */,
 				43C98AC7219C3691006418B0 /* InfoPlist.strings in Resources */,
-				430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
 				B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */,
 				1543B6A422AACD69002B59AB /* secret.xcconfig in Resources */,
 				431394A91E4B03AA00D92F33 /* Settings.bundle in Resources */,
@@ -2587,7 +2588,6 @@
 				43628766213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt in Resources */,
 				436D0066215B5F3800966CC2 /* Undisplayable_HTML_Message.txt in Resources */,
 				438F4EE9215FB99400168B5E /* Leon Kowalski (19B9EE3B) – Private.asc in Resources */,
-				430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
 				49DCCD2621E8ABD300ABE487 /* nojavascript.pdf in Resources */,
 				436796001EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc in Resources */,
 				436796021EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt in Resources */,
@@ -2667,20 +2667,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "echo \"BUILD_TIME STOP pEp_for_iOS: \"`date \"+%Y_%m_%d--%H:%M:%S\"`";
-		};
-		4304FCF11EBB60340086DADA /* Copy Trustwords Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Trustwords Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "THE_DB=${SRCROOT}/../pEpEngine/db/system.db\nif [ ! -f ${THE_DB} ]; then\ncd \"${SRCROOT}/../pEpEngine/\" && make db\nfi\ncp ${THE_DB} \"${SRCROOT}/pEpTrustWords.bundle\"\n";
 		};
 		4961BA0D1E7BEA4200920DF8 /* Warnings for TODO++ Script */ = {
 			isa = PBXShellScriptBuildPhase;

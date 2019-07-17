@@ -194,4 +194,12 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
 
             try! session.keyMistrusted(senderIdent)
             XCTAssertEqual(senderIdentity.pEpRating(), .haveNoKey)
+            reevaluateMessage(
+                expectedRating: .mistrust,
+                inBackground: runReevaluationInBackground,
+                infoMessage: "after mistrust")
+            try! session.update(senderIdent)
+            XCTAssertFalse(senderIdent.isConfirmed)
+        }
+    }
 }

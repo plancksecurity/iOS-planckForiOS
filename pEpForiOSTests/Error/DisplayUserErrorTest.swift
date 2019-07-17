@@ -49,7 +49,6 @@ class DisplayUserErrorTest: XCTestCase {
 
     let backgroundCoreDataErrors: [BackgroundError.CoreDataError] =
         [.couldNotInsertOrUpdate(info: "couldNotInsertOrUpdate"),
-         .couldNotStoreFolder(info: "couldNotStoreFolder"),
          .couldNotStoreMessage(info: "couldNotStoreMessage"),
          .couldNotFindAccount(info: "couldNotFindAccount"),
          .couldNotFindFolder(info: "couldNotFindFolder"),

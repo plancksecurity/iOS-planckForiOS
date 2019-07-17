@@ -223,8 +223,13 @@ extension LoginViewModel: VerifiableAccountDelegate {
         switch result {
         case .success(()):
             do {
-                try verifiableAccount.save() //!!!: BUFF: make sure key is generated for OAuth
-                informAccountVerificationResultDelegate(error: nil)
+                try verifiableAccount.save() { [weak self] success in
+                    guard let me = self else {
+                        Log.shared.errorAndCrash("Lost MySelf")
+                        return
+                    }
+                    me.informAccountVerificationResultDelegate(error: nil)
+                }
             } catch {
                 Log.shared.errorAndCrash(error: error)
             }

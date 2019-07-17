@@ -255,8 +255,6 @@ struct DisplayUserError: LocalizedError {
         switch error {
         case .couldNotInsertOrUpdate:
             return .internalError
-        case .couldNotStoreFolder:
-            return .internalError
         case .couldNotStoreMessage:
             return .internalError
         case .couldNotFindAccount:
