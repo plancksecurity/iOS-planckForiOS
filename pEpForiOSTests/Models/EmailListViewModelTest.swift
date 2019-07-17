@@ -507,11 +507,11 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     // Mark: - setting up
 
-    fileprivate func setUpViewModel(forFolder folder: DisplayableFolderProtocol, masterViewController: TestMasterViewController) {
+    private func setUpViewModel(forFolder folder: DisplayableFolderProtocol, masterViewController: TestMasterViewController) {
         self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController, folderToShow: folder)
     }
 
-    fileprivate func setupViewModel(forfolder internalFolder: DisplayableFolderProtocol? = nil) {
+    private func setupViewModel(forfolder internalFolder: DisplayableFolderProtocol? = nil) {
         let folderToUse: DisplayableFolderProtocol
         if internalFolder == nil {
             folderToUse = folder
@@ -521,29 +521,29 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         createViewModelWithExpectations(forFolder: folderToUse, expectedUpdateView: true)
     }
 
-    /*fileprivate func setSearchFilter(text: String) {
+    /*private func setSearchFilter(text: String) {
         setNewUpdateViewExpectation()
         emailListVM.setSearchFilter(forSearchText: text)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
 
-    fileprivate func removeSearchFilter() {
+    private func removeSearchFilter() {
         setNewUpdateViewExpectation()
         emailListVM.removeSearchFilter()
         waitForExpectations(timeout: TestUtil.waitTime)
     }*/
 
-    fileprivate func setNewUpdateViewExpectation() {
+    private func setNewUpdateViewExpectation() {
         let updateViewExpectation = expectation(description: "UpdateViewCalled")
         masterViewController.expectationUpdateViewCalled = updateViewExpectation
     }
 
-    fileprivate func createViewModelWithExpectations(forFolder folder: DisplayableFolderProtocol, expectedUpdateView: Bool) {
+    private func createViewModelWithExpectations(forFolder folder: DisplayableFolderProtocol, expectedUpdateView: Bool) {
         let viewModelTestDelegate = TestMasterViewController()
         setUpViewModel(forFolder: folder, masterViewController: viewModelTestDelegate)
     }
 
-    fileprivate func setUpViewModelExpectations(expectedUpdateView: Bool = false,
+    private func setUpViewModelExpectations(expectedUpdateView: Bool = false,
                                                 expectationDidInsertDataAt: Bool = false,
                                                 expectationDidUpdateDataAt: Bool = false,
                                                 expectationDidDeleteDataAt: Bool = false ) {
@@ -577,7 +577,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
             expectationDidRemoveDataAt: excpectationDidDeleteDataAtCalled)
     }
 
-    fileprivate func getSafeLastLookAt() -> Date {
+    private func getSafeLastLookAt() -> Date {
         guard let safeLastLookedAt = folder?.lastLookedAt as Date? else {
             XCTFail()
             return Date()
