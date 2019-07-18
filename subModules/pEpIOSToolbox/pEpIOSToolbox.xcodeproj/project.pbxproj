@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		154944CF229A97AA00CC6431 /* SelfReferencingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154944CE229A97AA00CC6431 /* SelfReferencingOperation.swift */; };
 		370DB3CF22804A3600BC929A /* NSSecureCoding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */; };
 		378B76552240F93A00D6662C /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378B76542240F93A00D6662C /* TestUtils.swift */; };
 		37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */; };
@@ -56,7 +55,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		154944CE229A97AA00CC6431 /* SelfReferencingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelfReferencingOperation.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Other/SelfReferencingOperation.swift; sourceTree = "<group>"; };
 		370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSecureCoding+Extension.swift"; sourceTree = "<group>"; };
 		378B76542240F93A00D6662C /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TestUtils.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/TestUtils/TestUtils.swift; sourceTree = "<group>"; };
 		3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityProtocol.swift; sourceTree = "<group>"; };
@@ -258,7 +256,6 @@
 				B75390852212E20500B1FCF9 /* Collection+Extensions.swift */,
 				B7465DCB2211BEE9008A1708 /* Tuple.swift */,
 				B7A46C4F220C1F0C0027CCB5 /* MiscUtil.swift */,
-				154944CE229A97AA00CC6431 /* SelfReferencingOperation.swift */,
 				B7DB7F512213120B003968DA /* SortedSet.swift */,
 				B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */,
 			);
@@ -424,7 +421,6 @@
 				B7465DBE22119D3A008A1708 /* Thread+Extension.swift in Sources */,
 				37904564223FA486006DAB3B /* NetworkReachability.swift in Sources */,
 				B7A46C52220C732E0027CCB5 /* Data+Extensions.swift in Sources */,
-				154944CF229A97AA00CC6431 /* SelfReferencingOperation.swift in Sources */,
 				B7465DE32211C890008A1708 /* CGImageSource+Extension.swift in Sources */,
 				B7465DE12211C6E9008A1708 /* UIImage+GIF.swift in Sources */,
 				B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */,
