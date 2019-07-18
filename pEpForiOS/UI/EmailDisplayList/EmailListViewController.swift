@@ -80,7 +80,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        guard let isIphone = splitViewController?.isCollapsed, let last = lastSelectedIndexPath else {
+        guard let isIphone = splitViewController?.isCollapsed else {
             return
         }
         if !isIphone {
@@ -423,12 +423,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     private func moveSelectionIfNeeded(fromIndexPath: IndexPath, toIndexPath: IndexPath) {
         if lastSelectedIndexPath == fromIndexPath {
             lastSelectedIndexPath = toIndexPath
-            resetSelection()
-        }
-    }
-
-    private func resetSelectionIfNeeded(for indexPath: IndexPath) {
-        if lastSelectedIndexPath == indexPath {
             resetSelection()
         }
     }
@@ -800,7 +794,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
 
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath]) {
-        lastSelectedIndexPath = tableView.indexPathForSelectedRow
+        lastSelectedIndexPath = nil
         tableView.insertRows(at: indexPaths, with: .automatic)
     }
 
@@ -818,14 +812,9 @@ extension EmailListViewController: EmailListViewModelDelegate {
             showNoMessageSelectedIfNeeded()
         }
     }
-    //!!!: comented code probably not needed anymore. if something strange appears, check this.
-    //!!!: the reselection of the cell is performed in the cell for row. 
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.reloadRows(at: indexPaths, with: .none)
-//        for indexPath in indexPaths {
-//            resetSelectionIfNeeded(for: indexPath)
-//        }
     }
 
     func emailListViewModel(viewModel: EmailListViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath) {
@@ -1144,8 +1133,6 @@ extension EmailListViewController: SegueHandlerType {
                 return
             }
             vC.appConfig = appConfig
-            //!!!: was commented. Is this dead code? if so, rm!
-            //vC.hidesBottomBarWhenPushed = true
             break
         case .segueShowMoveToFolder:
             var selectedRows: [IndexPath] = []
