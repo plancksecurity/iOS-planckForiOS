@@ -160,8 +160,6 @@ class EmailViewController: BaseTableViewController {
         showPepRating()
 
         DispatchQueue.main.async {
-            self.reevaaluatePepRating()
-
             if let message = self.message, !message.imapFlags.seen{
                 message.markAsSeen()
                 self.delegate?.emailDisplayDidChangeMarkSeen(message: message)
