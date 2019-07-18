@@ -311,6 +311,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
                     inComponent component: Int) {
         if let c = current, let vm = viewModel {
             c.text = vm.svm[row]
+            self.view.endEditing(true)
         }
     }
 }
