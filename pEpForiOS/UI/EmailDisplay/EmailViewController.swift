@@ -487,7 +487,7 @@ extension EmailViewController {
                 withIdentifier: row.identifier,
                 for: indexPath) as? MessageCell,
             let m = message else {
-                    return UITableViewCell()
+                return UITableViewCell()
         }
         if let contentCell = cell as? MessageContentCell {
             setup(contentCell: contentCell, rowData: row)
@@ -566,8 +566,8 @@ extension EmailViewController: SegueHandlerType {
             guard let nv = segue.destination as? UINavigationController,
                 let vc = nv.topViewController as? HandshakeViewController,
                 let titleView = navigationItem.titleView else {
-                Log.shared.errorAndCrash("No DVC?")
-                break
+                    Log.shared.errorAndCrash("No DVC?")
+                    break
             }
 
             nv.popoverPresentationController?.delegate = self
@@ -657,10 +657,10 @@ extension EmailViewController: MessageAttachmentDelegate {
                           inView: UIView?) {
         if attachment.mimeType == MimeTypeUtils.MimesType.pdf
             && QLPreviewController.canPreview(url as QLPreviewItem){
-                selectedAttachmentURL = url
-                let previewController = QLPreviewController()
-                previewController.dataSource = self
-                present(previewController, animated: true, completion: nil)
+            selectedAttachmentURL = url
+            let previewController = QLPreviewController()
+            previewController.dataSource = self
+            present(previewController, animated: true, completion: nil)
         }
         else {
             documentInteractionController.url = url
@@ -689,10 +689,10 @@ extension EmailViewController: MessageAttachmentDelegate {
                     return
                 }
                 me.didCreateLocally(attachment: attachment,
-                                       url: url,
-                                       cell: cell,
-                                       location: location,
-                                       inView: inView)
+                                    url: url,
+                                    cell: cell,
+                                    location: location,
+                                    inView: inView)
             }
         }
         backgroundQueue.addOperation(attachmentOp)
