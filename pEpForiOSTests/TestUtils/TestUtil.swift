@@ -109,7 +109,7 @@ class TestUtil {
         receiver2: PEPIdentity, receiver3: PEPIdentity,
         receiver4: PEPIdentity) {
             let identity = PEPIdentity(address: "somewhere@overtherainbow.com",
-                                       userID: UUID().uuidString,
+                                       userID: CdIdentity.pEpOwnUserID,
                                        userName: "Unit Test",
                                        isOwn: true)
 
@@ -638,7 +638,7 @@ class TestUtil {
             var mySelfIdentityOpt: CdIdentity?
             for rec in recipients {
                 if rec.type() == .toRecipient {
-                    mySelfIdentityOpt = rec.cdIdentity(userID: "!MYSELF!", context: context)
+                    mySelfIdentityOpt = rec.cdIdentity(userID: CdIdentity.pEpOwnUserID, context: context)
                 }
             }
             guard let safeOptId = mySelfIdentityOpt else {
