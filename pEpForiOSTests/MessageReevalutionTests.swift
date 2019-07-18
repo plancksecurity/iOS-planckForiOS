@@ -102,26 +102,23 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
 
         try! session.keyResetTrust(senderIdent)
         XCTAssertFalse(senderIdent.isConfirmed)
-        reevaluateMessage(
-            expectedRating: .reliable,
-            inBackground: runReevaluationInBackground,
-            infoMessage: "in the beginning")
+        reevaluateMessage(expectedRating: .reliable,
+                          inBackground: runReevaluationInBackground,
+                          infoMessage: "in the beginning")
 
         for _ in 0..<1 {
             try! session.trustPersonalKey(senderIdent)
             XCTAssertTrue(senderIdent.isConfirmed)
             XCTAssertEqual(senderIdentity.pEpRating(session: session), .trusted)
-            reevaluateMessage(
-                expectedRating: .trusted,
-                inBackground: runReevaluationInBackground,
-                infoMessage: "after trust")
+            reevaluateMessage(expectedRating: .trusted,
+                              inBackground: runReevaluationInBackground,
+                              infoMessage: "after trust")
 
             try! session.keyMistrusted(senderIdent)
             XCTAssertEqual(senderIdentity.pEpRating(session: session), .haveNoKey)
-            reevaluateMessage(
-                expectedRating: .mistrust,
-                inBackground: runReevaluationInBackground,
-                infoMessage: "after mistrust")
+            reevaluateMessage(expectedRating: .mistrust,
+                              inBackground: runReevaluationInBackground,
+                              infoMessage: "after mistrust")
             try! session.update(senderIdent)
             XCTAssertFalse(senderIdent.isConfirmed)
         }
