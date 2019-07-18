@@ -33,9 +33,9 @@ extension Message {
             dict[kPepLongMessageFormatted] = text as NSString
         }
 
-        dict[kPepTo] = NSArray(array: to.map() { return PEPUtils.pEp(identity: $0) })
-        dict[kPepCC] = NSArray(array: cc.map() { return PEPUtils.pEp(identity: $0) })
-        dict[kPepBCC] = NSArray(array: bcc.map() { return PEPUtils.pEp(identity: $0) })
+        dict[kPepTo] = NSArray(array: to.map() { return $0.pEpIdentity() })
+        dict[kPepCC] = NSArray(array: cc.map() { return $0.pEpIdentity() })
+        dict[kPepBCC] = NSArray(array: bcc.map() { return $0.pEpIdentity() })
 
         dict[kPepFrom]  = PEPUtils.pEpOptional(identity: from) as AnyObject
         dict[kPepID] = messageID as AnyObject
