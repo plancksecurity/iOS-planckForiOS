@@ -10,7 +10,7 @@ import XCTest
 import CoreData
 
 @testable import pEpForiOS
-@testable import MessageModel //FIXME:
+@testable import MessageModel //FIXME: ?
 import PEPObjCAdapterFramework
 
 //!!!: uses a mix of Cd*Objects and MMObjects. Fix!
@@ -28,7 +28,7 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
         super.setUp()
 
         let ownIdentity = PEPIdentity(address: "iostest002@peptest.ch",
-                                      userID: "iostest002@peptest.ch_ID",
+                                      userID: CdIdentity.pEpOwnUserID,
                                       userName: "iOS Test 002",
                                       isOwn: true)
 
@@ -83,6 +83,55 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
         super.tearDown()
     }
 
+    func testCommunicationTypes() {
+        let senderIdent = senderIdentity.updatedIdentity(session: session)
+        XCTAssertFalse(try! senderIdent.isPEPUser(session).boolValue)
+        XCTAssertEqual(senderIdentity.pEpRating(session: session), .reliable)
+
+        try! session.keyMistrusted(senderIdent)
+
+        let senderDict2 = senderIdentity.updatedIdentity(session: session)
+        XCTAssertFalse(try! senderDict2.isPEPUser(session).boolValue)
+        // ENGINE-343: At one point the rating was .Undefined.
+        XCTAssertEqual(senderIdentity.pEpRating(), .haveNoKey)
+    }
+
+    func testTrustMistrust() {
+        let runReevaluationInBackground = false
+        let senderIdent = senderIdentity.updatedIdentity(session: session)
+
+        try! session.keyResetTrust(senderIdent)
+        XCTAssertFalse(senderIdent.isConfirmed)
+        reevaluateMessage(
+            expectedRating: .reliable,
+            inBackground: runReevaluationInBackground,
+            infoMessage: "in the beginning")
+
+        for _ in 0..<1 {
+            try! session.trustPersonalKey(senderIdent)
+            XCTAssertTrue(senderIdent.isConfirmed)
+            XCTAssertEqual(senderIdentity.pEpRating(session: session), .trusted)
+            reevaluateMessage(
+                expectedRating: .trusted,
+                inBackground: runReevaluationInBackground,
+                infoMessage: "after trust")
+
+            try! session.keyMistrusted(senderIdent)
+            XCTAssertEqual(senderIdentity.pEpRating(session: session), .haveNoKey)
+            reevaluateMessage(
+                expectedRating: .mistrust,
+                inBackground: runReevaluationInBackground,
+                infoMessage: "after mistrust")
+            try! session.update(senderIdent)
+            XCTAssertFalse(senderIdent.isConfirmed)
+        }
+    }
+}
+
+// MARK: - HELPER
+
+extension MessageReevalutionTests {
+
     func decryptTheMessage() {
         guard let cdMessage = TestUtil.cdMessage(fileName: "CommunicationTypeTests_Message_test001_to_test002.txt",
                                                  cdOwnAccount: cdAccount)
@@ -133,73 +182,28 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
 
         senderIdentity = theSenderIdentity
     }
-    func testCommunicationTypes() {
-        let senderIdent = senderIdentity.updatedIdentity(session: session)
-        XCTAssertFalse(try! senderIdent.isPEPUser(session).boolValue)
-        XCTAssertEqual(senderIdentity.pEpRating(session: session), .reliable)
 
-        try! session.keyMistrusted(senderIdent)
-
-        let senderDict2 = senderIdentity.updatedIdentity(session: session)
-        XCTAssertFalse(try! senderDict2.isPEPUser(session).boolValue)
-        // ENGINE-343: At one point the rating was .Undefined.
-        XCTAssertEqual(senderIdentity.pEpRating(), .haveNoKey)
-    }
-
-    func reevaluateMessage(expectedRating: PEPRating, inBackground: Bool = true,
+    func reevaluateMessage(expectedRating: PEPRating,
+                           inBackground: Bool = true,
                            infoMessage: String) {
         let message = MessageModelObjectUtils.getMessage(fromCdMessage: cdDecryptedMessage)
 
         if inBackground {
             let expReevaluated = expectation(description: "expReevaluated")
-            let reevalOp = ReevaluateMessageRatingOperation(parentName: #function, message: message)
-            reevalOp.completionBlock = {
-                reevalOp.completionBlock = nil
+            message.reevaluatePepRating {
                 expReevaluated.fulfill()
             }
-            backgroundQueue.addOperation(reevalOp)
-            waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-                XCTAssertNil(error)
-            })
+            waitForExpectations(timeout: TestUtil.waitTime)
 
             moc.refreshAllObjects()
             XCTAssertEqual(cdDecryptedMessage.pEpRating, Int16(expectedRating.rawValue),
                            infoMessage)
         } else {
-            let reevalOp = ReevaluateMessageRatingOperation(
-                parentName: #function, message: message)
-            reevalOp.reEvaluate()
-        }
-    }
-
-    func testTrustMistrust() {
-        let runReevaluationInBackground = false
-        let senderIdent = senderIdentity.updatedIdentity(session: session)
-
-        try! session.keyResetTrust(senderIdent)
-        XCTAssertFalse(senderIdent.isConfirmed)
-        reevaluateMessage(
-            expectedRating: .reliable,
-            inBackground: runReevaluationInBackground,
-            infoMessage: "in the beginning")
-
-        for _ in 0..<1 {
-            try! session.trustPersonalKey(senderIdent)
-            XCTAssertTrue(senderIdent.isConfirmed)
-            XCTAssertEqual(senderIdentity.pEpRating(session: session), .trusted)
-            reevaluateMessage(
-                expectedRating: .trusted,
-                inBackground: runReevaluationInBackground,
-                infoMessage: "after trust")
-
-            try! session.keyMistrusted(senderIdent)
-            XCTAssertEqual(senderIdentity.pEpRating(session: session), .haveNoKey)
-            reevaluateMessage(
-                expectedRating: .mistrust,
-                inBackground: runReevaluationInBackground,
-                infoMessage: "after mistrust")
-            try! session.update(senderIdent)
-            XCTAssertFalse(senderIdent.isConfirmed)
+            let expReevaluated = expectation(description: "expReevaluated")
+            message.reevaluatePepRating {
+                expReevaluated.fulfill()
+            }
+            waitForExpectations(timeout: TestUtil.waitTime)
         }
     }
 }

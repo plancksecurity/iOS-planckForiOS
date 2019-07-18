@@ -32,7 +32,6 @@ class EmailViewController: BaseTableViewController {
 
     private var partnerIdentity: Identity?
     private var tableData: ComposeDataSource?
-    private var ratingReEvaluator: RatingReEvaluator?
     lazy private var backgroundQueue = OperationQueue()
     lazy private var documentInteractionController = UIDocumentInteractionController()
 
@@ -89,10 +88,17 @@ class EmailViewController: BaseTableViewController {
         }
     }
 
-    private func checkMessageReEvaluation() {
-        if let m = message, ratingReEvaluator?.message != m {
-            ratingReEvaluator = RatingReEvaluator(parentName: #function, message: m)
-            ratingReEvaluator?.delegate = self
+    private func handlePepRatingChange() {
+        GCD.onMain { [weak self] in
+            self?.showPepRating()
+        }
+    }
+
+    private func reevaaluatePepRating() {
+        message?.reevaluatePepRating { [weak self] in
+            // It is a valid case not to strongify, the user might have been navigated away
+            // from this view.
+            self?.handlePepRatingChange()
         }
     }
 
@@ -154,7 +160,7 @@ class EmailViewController: BaseTableViewController {
         showPepRating()
 
         DispatchQueue.main.async {
-            self.checkMessageReEvaluation()
+            self.reevaaluatePepRating()
 
             if let message = self.message, !message.imapFlags.seen{
                 message.markAsSeen()
@@ -438,7 +444,7 @@ class EmailViewController: BaseTableViewController {
             } catch let error as NSError {
                 assertionFailure("\(error)")
             }
-            decryptAgain()
+            reevaaluatePepRating()
         }
     }
 
@@ -453,12 +459,8 @@ class EmailViewController: BaseTableViewController {
             } catch let error as NSError {
                 assertionFailure("\(error)")
             }
-            decryptAgain()
+            reevaaluatePepRating()
         }
-    }
-
-    private func decryptAgain() {
-        ratingReEvaluator?.reevaluateRating()
     }
 
     @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer) {
@@ -578,7 +580,6 @@ extension EmailViewController: SegueHandlerType {
                                                                   height: 0)
             vc.appConfig = appConfig
             vc.message = message
-            vc.ratingReEvaluator = ratingReEvaluator
             break
         case .noSegue, .unwindToThread:
             break
@@ -636,16 +637,6 @@ extension EmailViewController: SegueHandlerType {
             } else {
                 navigationItem.rightBarButtonItems = barButtonItems
             }
-        }
-    }
-}
-
-// MARK: - RatingReEvaluatorDelegate
-
-extension EmailViewController: RatingReEvaluatorDelegate {
-    func ratingChanged(message: Message) {
-        GCD.onMain { [weak self] in
-            self?.showPepRating()
         }
     }
 }

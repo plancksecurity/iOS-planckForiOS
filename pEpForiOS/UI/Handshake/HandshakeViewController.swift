@@ -26,13 +26,6 @@ class HandshakeViewController: BaseTableViewController {
     }
 
     var handshakeCombinations = [HandshakeCombination]()
-    //    { //BUFF: can we reuse the view by setting the combinations for KeySync? I am afraid it is not a good idea?
-//        didSet {
-//            tableView.reloadData()
-//        }
-//    }
-
-    var ratingReEvaluator: RatingReEvaluator?
 
     // MARK: - Life Cycle
 
@@ -244,6 +237,31 @@ extension HandshakeViewController {
     }
 }
 
+// MARK: - pEp Rating Evaluation
+
+extension HandshakeViewController {
+
+    private func reevaluatePepRating() {
+        message?.reevaluatePepRating {[weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.handlePepRatingChange()
+        }
+    }
+
+    private func handlePepRatingChange() {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.updateStatusBadge()
+        }
+    }
+}
+
 // MARK: - HandshakePartnerTableViewCellDelegate
 
 extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
@@ -257,8 +275,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         cell.updateView()
         tableView.updateSize()
 
-        ratingReEvaluator?.delegate = self
-        ratingReEvaluator?.reevaluateRating()
+        reevaluatePepRating()
 
         // reload cells after that one, to ensure the alternating colors are upheld
         var paths = [IndexPath]()
@@ -304,17 +321,6 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         viewModel?.toggleTrustwordsLength()
         cell.updateTrustwords()
         tableView.updateSize()
-    }
-}
-
-// MARK: - RatingReEvaluatorDelegate
-
-extension HandshakeViewController : RatingReEvaluatorDelegate {
-    func ratingChanged(message: Message) {
-        DispatchQueue.main.async {
-            self.updateStatusBadge()
-        }
-
     }
 }
 
