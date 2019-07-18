@@ -36,7 +36,7 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.cdMessage = (privateMOC.object(with: msgObjId) as! CdMessage)
+            me.cdMessage = (privateMOC.existingObject(with: msgObjId) as! CdMessage)
         }
     }
 

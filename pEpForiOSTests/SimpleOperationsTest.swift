@@ -505,7 +505,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         let cdFolder = CdFolder(context: moc)
         cdFolder.name = "AttachmentTestFolder"
         cdFolder.folderType = FolderType.inbox
-        cdFolder.account = (moc.object(with: cdAccount.objectID) as! CdAccount)
+        cdFolder.account = (moc.existingObject(with: cdAccount.objectID) as! CdAccount)
 
         let cdMsg = CdMessage(context: moc)
         cdMsg.uuid = "2"
