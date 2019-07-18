@@ -600,7 +600,9 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     func testShowCancelActions_edited() {
         let msg = message()
         assert(originalMessage: msg)
-        vm?.state.toRecipients = [Identity(address: "testShow@Cancel.Actions")]
+        let idet = Identity(address: "testShow@Cancel.Actions")
+        idet.save()
+        vm?.state.toRecipients = [idet]
         guard let testee = vm?.showCancelActions else {
             XCTFail()
             return
