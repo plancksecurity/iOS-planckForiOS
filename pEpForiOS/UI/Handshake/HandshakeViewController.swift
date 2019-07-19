@@ -12,6 +12,9 @@ import pEpIOSToolbox
 import MessageModel
 import PEPObjCAdapterFramework
 
+/// READ!!!
+/// Only set session, if the message was create on a private session. Else leave it nil.
+/// Or i will just crash or maybe deadlock you :)
 class HandshakeViewController: BaseTableViewController {
     private var backTitle: String?
     private var currentLanguageCode = Locale.current.languageCode ?? "en"
@@ -21,12 +24,12 @@ class HandshakeViewController: BaseTableViewController {
 
     var message: Message? {
         didSet {
-             handshakeCombinations = message?.handshakeActionCombinations() ?? []
+            handshakePartnerTableViewCellViewModel = handshakePartnerTableViewCellViewModels()
         }
     }
 
     var session: Session?
-    var handshakeCombinations = [HandshakeCombination]()
+    var handshakePartnerTableViewCellViewModel = [HandshakePartnerTableViewCellViewModel]()
     var ratingReEvaluator: RatingReEvaluator?
 
     // MARK: - Life Cycle
@@ -131,6 +134,24 @@ extension HandshakeViewController {
         return buttonLeft
     }
 
+    private func  handshakePartnerTableViewCellViewModels() -> [HandshakePartnerTableViewCellViewModel] {
+        var result = [HandshakePartnerTableViewCellViewModel]()
+        guard let message = message else {
+            Log.shared.errorAndCrash("Fail to init handshakePartnerTableViewCellViewModel, since message is nil")
+            return []
+        }
+        let handShakeCombinations = message.handshakeActionCombinations()
+        for handshakeCombi in handShakeCombinations {
+            guard let cellViewModel = createViewModel(partnerIdentity: handshakeCombi.partnerIdentity,
+                                                      selfIdentity: handshakeCombi.ownIdentity) else {
+                                                        Log.shared.errorAndCrash("Fail to init handshakePartnerTableViewCellViewModel")
+                                                        continue
+            }
+            result.append(cellViewModel)
+        }
+        return result
+    }
+
     /// Adjusts the background color of the given view model depending on its position in the list,
     /// and the color of the previous one.
     private func adjustBackgroundColor(viewModel: HandshakePartnerTableViewCellViewModel,
@@ -139,9 +160,7 @@ extension HandshakeViewController {
             viewModel.backgroundColorDark = false
         } else {
             let prevRow = indexPath.row - 1
-            let handshakeCombo = handshakeCombinations[prevRow]
-            let prevViewModel = createViewModel(partnerIdentity: handshakeCombo.partnerIdentity,
-                                                selfIdentity: handshakeCombo.ownIdentity)
+            let prevViewModel = handshakePartnerTableViewCellViewModel[prevRow]
             if prevViewModel.showTrustwords {
                 viewModel.backgroundColorDark = true
             } else {
@@ -176,7 +195,7 @@ extension HandshakeViewController {
 extension HandshakeViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return handshakeCombinations.count
+        return  handshakePartnerTableViewCellViewModel.count
     }
 
     override func tableView(_ tableView: UITableView,
@@ -186,9 +205,7 @@ extension HandshakeViewController {
             for: indexPath) as? HandshakePartnerTableViewCell {
             cell.delegate = self
 
-            let handshakeCombo = handshakeCombinations[indexPath.row]
-            let viewModel = createViewModel(partnerIdentity: handshakeCombo.partnerIdentity,
-                                            selfIdentity: handshakeCombo.ownIdentity)
+            let viewModel = handshakePartnerTableViewCellViewModel[indexPath.row]
             adjustBackgroundColor(viewModel: viewModel, indexPath: indexPath)
             viewModel.trustwordsLanguage = currentLanguageCode
             cell.viewModel = viewModel
@@ -227,16 +244,26 @@ extension HandshakeViewController {
 
     ///Returns: A cached view model for the given `partnerIdentity` or a newly created one.
     private func createViewModel(partnerIdentity: Identity,
-                                 selfIdentity: Identity) -> HandshakePartnerTableViewCellViewModel {
+                                 selfIdentity: Identity) -> HandshakePartnerTableViewCellViewModel? {
         if let vm = identityViewModelCache.object(forKey: partnerIdentity) {
             return vm
         } else {
-            session?.performAndWait {
-                let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: selfIdentity,
+            var vm: HandshakePartnerTableViewCellViewModel?
+            if let session = session {
+                session.performAndWait {
+                    vm = HandshakePartnerTableViewCellViewModel(ownIdentity: selfIdentity,
                                                                 partner: partnerIdentity)
-                identityViewModelCache.setObject(vm, forKey: partnerIdentity)
-                return vm
+                }
+            } else {
+                vm = HandshakePartnerTableViewCellViewModel(ownIdentity: selfIdentity,
+                                                            partner: partnerIdentity)
             }
+            guard let safeVM = vm else {
+                Log.shared.errorAndCrash("Fail to init HandshakePartnerTableViewCellViewModel")
+                return nil
+            }
+            identityViewModelCache.setObject(safeVM, forKey: partnerIdentity)
+            return safeVM
         }
     }
 }
@@ -260,7 +287,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         // reload cells after that one, to ensure the alternating colors are upheld
         var paths = [IndexPath]()
         let i1 = indexPath.row + 1
-        let i2 = handshakeCombinations.count
+        let i2 = handshakePartnerTableViewCellViewModel.count
         if i1 < i2 {
             for i in i1..<i2 {
                 paths.append(IndexPath(row: i, section: indexPath.section))
