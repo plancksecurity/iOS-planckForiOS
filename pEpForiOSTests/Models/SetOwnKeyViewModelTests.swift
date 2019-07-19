@@ -60,6 +60,27 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
         }
     }
 
+    // Try to trigger IOS-1674, but this doesn't trigger it.
+    func testSetOwnKeyCrash() {
+        do {
+            try TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Private.asc")
+
+            let ricksFingerprint = "456B937ED6D5806935F63CE5548738CCEB50C250"
+            let rick = PEPIdentity(address: "iostest001@peptest.ch",
+                                   userID: UUID().uuidString,
+                                   userName: "Rick Deckard",
+                                   isOwn: true,
+                                   fingerPrint: ricksFingerprint)
+            try session.update(rick)
+            try session.keyMistrusted(rick)
+            rick.fingerPrint = nil
+
+            try session.setOwnKey(rick, fingerprint: ricksFingerprint)
+        } catch {
+            XCTFail("error: \(error)")
+        }
+    }
+
     // MARK: - Helpers
 
     /**
