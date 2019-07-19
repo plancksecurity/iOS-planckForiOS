@@ -16,6 +16,9 @@ import PEPObjCAdapterFramework
 class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
     var backgroundQueue: OperationQueue!
 
+    /// Original own key.
+    let ricksFingerprint = "456B937ED6D5806935F63CE5548738CCEB50C250"
+
     /**
      The fingerprint that will be part of the call to set_own_key.
      */
@@ -65,7 +68,6 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
         do {
             try TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Private.asc")
 
-            let ricksFingerprint = "456B937ED6D5806935F63CE5548738CCEB50C250"
             let rick = PEPIdentity(address: "iostest001@peptest.ch",
                                    userID: UUID().uuidString,
                                    userName: "Rick Deckard",
@@ -100,7 +102,7 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
         try! TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Private.asc")
 
         try! session.setOwnKey(cdOwnAccount1.pEpIdentity(),
-                               fingerprint: "456B937ED6D5806935F63CE5548738CCEB50C250")
+                               fingerprint: ricksFingerprint)
 
         let cdOwnAccount2 = DecryptionUtil.createLocalAccount(
             ownUserName: "Leon Kowalski",
