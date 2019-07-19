@@ -25,8 +25,8 @@ class HandshakeViewController: BaseTableViewController {
         }
     }
 
+    var session: Session?
     var handshakeCombinations = [HandshakeCombination]()
-
     var ratingReEvaluator: RatingReEvaluator?
 
     // MARK: - Life Cycle
@@ -231,10 +231,12 @@ extension HandshakeViewController {
         if let vm = identityViewModelCache.object(forKey: partnerIdentity) {
             return vm
         } else {
-            let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: selfIdentity,
-                                                            partner: partnerIdentity)
-            identityViewModelCache.setObject(vm, forKey: partnerIdentity)
-            return vm
+            session?.performAndWait {
+                let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: selfIdentity,
+                                                                partner: partnerIdentity)
+                identityViewModelCache.setObject(vm, forKey: partnerIdentity)
+                return vm
+            }
         }
     }
 }
