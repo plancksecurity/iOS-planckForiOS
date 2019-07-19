@@ -63,7 +63,7 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
     }
 
     /// Tries to trigger IOS-1674, but this doesn't trigger it.
-    func testSetOwnKeyCrash() {
+    func testTryToMakeSetOwnKeyCrash() {
         do {
             try TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Private.asc")
 
