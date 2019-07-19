@@ -6,6 +6,7 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
+//!!!: rm this file. Make this an extension of Attachment. Accoring to Message+PEPRatingReevaluation.
 import Foundation
 
 import MessageModel
