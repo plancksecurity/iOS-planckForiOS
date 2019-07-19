@@ -72,7 +72,7 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
     private func doTestSetOwnKey(afterDecryption: () -> ()) {
         let cdOwnAccount1 = DecryptionUtil.createLocalAccount(
             ownUserName: "Rick Deckard",
-            ownUserID: "rick_deckard_uid",
+            ownUserID: CdIdentity.pEpOwnUserID,
             ownEmailAddress: "iostest001@peptest.ch",
             context: moc)
 
@@ -83,7 +83,7 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
 
         let cdOwnAccount2 = DecryptionUtil.createLocalAccount(
             ownUserName: "Leon Kowalski",
-            ownUserID: "leon_kowalski_uid",
+            ownUserID: CdIdentity.pEpOwnUserID,
             ownEmailAddress: "iostest003@peptest.ch",
             context: moc)
         let leonIdent = cdOwnAccount2.account().user
