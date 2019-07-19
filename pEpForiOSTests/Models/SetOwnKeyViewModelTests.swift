@@ -62,23 +62,25 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
         }
     }
 
-    /// Tries to trigger IOS-1674, but this doesn't trigger it.
+    /// Tries to trigger IOS-1674.
     func testTryToMakeSetOwnKeyCrash() {
-        do {
-            try TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Private.asc")
-
-            let rick = PEPIdentity(address: "iostest001@peptest.ch",
+        doTestSetOwnKey() {
+            let leon = PEPIdentity(address: "iostest003@peptest.ch",
                                    userID: UUID().uuidString,
-                                   userName: "Rick Deckard",
-                                   isOwn: true,
-                                   fingerPrint: ricksFingerprint)
-            try session.update(rick)
-            try session.keyMistrusted(rick)
-            rick.fingerPrint = nil
+                                   userName: "Leon Kowalski",
+                                   isOwn: true)
 
-            try session.setOwnKey(rick, fingerprint: ricksFingerprint)
-        } catch {
-            XCTFail("error: \(error)")
+            do {
+                try session.update(leon)
+                XCTAssertNotNil(leon.fingerPrint)
+
+                try session.keyMistrusted(leon)
+                leon.fingerPrint = nil
+
+                try session.setOwnKey(leon, fingerprint: leonsFingerprint)
+            } catch {
+                XCTFail("error: \(error)")
+            }
         }
     }
 
