@@ -19,9 +19,7 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
     /// Original own key.
     let ricksFingerprint = "456B937ED6D5806935F63CE5548738CCEB50C250"
 
-    /**
-     The fingerprint that will be part of the call to set_own_key.
-     */
+    /// The fingerprint that will be part of the call to set_own_key.
     let leonsFingerprint = "63FC29205A57EB3AEB780E846F239B0F19B9EE3B"
 
     // MARK: - setUp, tearDown
@@ -41,6 +39,7 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
     }
 
     // MARK: - Tests
+
     func testSetOwnKeyDirectly() {
         doTestSetOwnKey() {
             let leon = PEPIdentity(address: "iostest003@peptest.ch",
@@ -63,7 +62,7 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
         }
     }
 
-    // Try to trigger IOS-1674, but this doesn't trigger it.
+    /// Tries to trigger IOS-1674, but this doesn't trigger it.
     func testSetOwnKeyCrash() {
         do {
             try TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Private.asc")
@@ -85,13 +84,11 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
 
     // MARK: - Helpers
 
-    /**
-     - Note: If you need to manually verify something:
-     * The public/secret key pair of Leon Kowalski (subject)
-     is in `Leon Kowalski (19B9EE3B) – Private.asc`.
-     * The public/secret key pair of Harry Bryant (sender) is in
-     `Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc`.
-     */
+    /// - Note: If you need to manually verify something:
+    ///   * The public/secret key pair of Leon Kowalski (subject)
+    ///     is in `Leon Kowalski (19B9EE3B) – Private.asc`.
+    ///   * The public/secret key pair of Harry Bryant (sender) is in
+    ///     `Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc`.
     private func doTestSetOwnKey(afterDecryption: () -> ()) {
         let cdOwnAccount1 = DecryptionUtil.createLocalAccount(
             ownUserName: "Rick Deckard",
