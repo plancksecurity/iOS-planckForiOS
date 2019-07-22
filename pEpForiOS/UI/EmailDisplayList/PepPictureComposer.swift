@@ -35,10 +35,10 @@ class PepProfilePictureComposer: ProfilePictureComposerProtocol {
     }
 
     func securityBadge(for message: Message, completion: @escaping (UIImage?) ->()){
-        DispatchQueue.global(qos: .userInitiated).async{
-            let session = Session()
+        let session = Session()
+        let safeMsg = message.safeForSession(session)
+        DispatchQueue.global(qos: .userInitiated).async {
             session.performAndWait {
-                let safeMsg = message.safeForSession(session)
                 let color = PEPUtil.pEpColor(pEpRating: safeMsg.pEpRating())
                 var image: UIImage? = nil
                 if color != PEPColor.noColor {

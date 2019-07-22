@@ -65,7 +65,7 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
             expLookedUp.fulfill()
         }
 
-        func save() throws {
+        func save(completion: ((Bool)->())? ) throws {
         }
     }
 

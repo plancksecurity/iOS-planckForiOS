@@ -38,29 +38,27 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
     }
 
     // MARK: - Tests
-    //!!!: test crashes!  IOS-1693
-//    func testSetOwnKeyDirectly() {
-//        doTestSetOwnKey() {
-//            let leon = PEPIdentity(address: "iostest003@peptest.ch",
-//                                   userID: UUID().uuidString,
-//                                   userName: "Leon Kowalski",
-//                                   isOwn: true)
-//            try! session.update(leon)
-//
-//            try! session.setOwnKey(leon, fingerprint: leonsFingerprint)
-//        }
-//    }
+    func testSetOwnKeyDirectly() {
+        doTestSetOwnKey() {
+            let leon = PEPIdentity(address: "iostest003@peptest.ch",
+                                   userID: UUID().uuidString,
+                                   userName: "Leon Kowalski",
+                                   isOwn: true)
+            try! session.update(leon)
 
-    //!!!: test crashes!  IOS-1693
-//    func testSetOwnKeyViewModel() {
-//        doTestSetOwnKey() {
-//            let vm = SetOwnKeyViewModel()
-//            vm.email = "iostest003@peptest.ch"
-//            vm.fingerprint = leonsFingerprint
-//            vm.setOwnKey()
-//            XCTAssertEqual(vm.rawErrorString, nil)
-//        }
-//    }
+            try! session.setOwnKey(leon, fingerprint: leonsFingerprint)
+        }
+    }
+
+    func testSetOwnKeyViewModel() {
+        doTestSetOwnKey() {
+            let vm = SetOwnKeyViewModel()
+            vm.email = "iostest003@peptest.ch"
+            vm.fingerprint = leonsFingerprint
+            vm.setOwnKey()
+            XCTAssertEqual(vm.rawErrorString, nil)
+        }
+    }
 
     // MARK: - Helpers
 

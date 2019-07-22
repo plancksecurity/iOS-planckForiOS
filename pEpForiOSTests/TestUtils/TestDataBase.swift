@@ -280,7 +280,7 @@ class TestDataBase {
     func createWorkingCdAccount(number: Int = 0, context: NSManagedObjectContext) -> CdAccount {
         let result = createWorkingAccountSettings(number: number).cdAccount(context: context)
         // The identity of an account is mySelf by definion.
-        result.identity?.userID = UUID().uuidString
+        result.identity?.userID = CdIdentity.pEpOwnUserID
         return result
     }
 
