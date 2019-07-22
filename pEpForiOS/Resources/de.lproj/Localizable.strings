@@ -123,7 +123,7 @@ Anhänge sind desaktiviert.
 "Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Führen Sie einen Handshake mit dem Kommunikationspartner durch. Ein Handshake wird nur einmal pro Kommunikationspartner benötigt und stellt die Vertrauenswürdigkeit sicher.";
 
 /* Confirm correct fingerprint (PGP, long version) */
-"Confirm Fingerprint" = "Fingerabdruck verlgeichen";
+"Confirm Fingerprint" = "Fingerabdruck bestätigen";
 
 /* Confirm correct trustwords (pEp, long version) */
 "Confirm Trustwords" = "Trustwords bestätigen";

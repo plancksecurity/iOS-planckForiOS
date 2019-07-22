@@ -19,14 +19,8 @@ class AttachmentToLocalURLOperation: Operation {
     init(attachment: Attachment) {
         let session = Session()
         self.session = session
+        self.safeAttachment = attachment.safeForSession(session)
         super.init()
-        session.performAndWait { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.safeAttachment = attachment.safeForSession(session)
-        }
     }
 
     override func main() {

@@ -200,6 +200,13 @@ extension ComposeViewModel.ComposeViewModelState {
  */
 
 //        print("COMPOSE: before going to background")
+
+        let session = Session()
+        let safeFrom = from.safeForSession(session)
+        let safeTo = Identity.makeSafe(toRecipients, forSession: session)
+        let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
+        let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
+
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in //HERE:
             //!!!:
 //            print("COMPOSE: on background")
@@ -207,13 +214,8 @@ extension ComposeViewModel.ComposeViewModelState {
                 // That is a valid case. Compose view is gone before this block started to run.
                 return
             }
-            let session = Session()
-            session.performAndWait {
-                let safeFrom = from.safeForSession(session)
-                let safeTo = Identity.makeSafe(me.toRecipients, forSession: session)
-                let safeCc = Identity.makeSafe(me.ccRecipients, forSession: session)
-                let safeBcc = Identity.makeSafe(me.bccRecipients, forSession: session)
 
+            session.performAndWait {
                 let pEpsession = PEPSession()
                 newRating = pEpsession.outgoingMessageRating(from: safeFrom,
                                                              to: safeTo,

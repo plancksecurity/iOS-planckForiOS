@@ -6,6 +6,7 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
+//!!!: rm this file. Make this an extension of Attachment. Accoring to Message+PEPRatingReevaluation.
 import Foundation
 
 import MessageModel
@@ -18,7 +19,7 @@ class AttachmentsViewOperation: Operation {
 
     private let session: Session
     private let mimeTypes: MimeTypeUtils?
-    public var message: Message?
+    public var message: Message
 
     /**
      The resulting attachments view will appear here.
@@ -33,16 +34,18 @@ class AttachmentsViewOperation: Operation {
     init(mimeTypes: MimeTypeUtils?, message: Message) {
         let session = Session()
         self.session = session
-        self.mimeTypes = mimeTypes
+        self.message = message.safeForSession(session)
 
+        self.mimeTypes = mimeTypes
         super.init()
+
         session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.message = message.safeForSession(session)
-            me.attachmentsCount = me.message?.viewableAttachments().count ?? 0
+
+            me.attachmentsCount = me.message.viewableAttachments().count
         }
     }
 
@@ -53,7 +56,7 @@ class AttachmentsViewOperation: Operation {
                 return
             }
 
-            let attachments = me.message?.viewableAttachments() ?? []
+            let attachments = me.message.viewableAttachments()
             for att in attachments {
                 if att.isInlined {
                     // Ignore attachments that are already shown inline in the message body.
@@ -63,7 +66,7 @@ class AttachmentsViewOperation: Operation {
                     //  * their CID doesn't occur in the HTML body
                     var cidContained = false
                     if let theCid = att.fileName?.extractCid() {
-                        cidContained = me.message?.longMessageFormatted?.contains(
+                        cidContained = me.message.longMessageFormatted?.contains(
                             find: theCid) ?? false
                     }
                     if cidContained {

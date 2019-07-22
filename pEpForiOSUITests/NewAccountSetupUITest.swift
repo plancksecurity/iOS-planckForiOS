@@ -42,7 +42,7 @@ class NewAccountSetupUITest: XCTestCase {
 
     func testAdditionalAccount() {
         app().launch()
-        addAccount()
+        tapAddAccount()
         let account = secretTestData().workingAccount3
         newAccountSetup(account: account)
         waitForever()
@@ -76,10 +76,34 @@ class NewAccountSetupUITest: XCTestCase {
         let account1 = secretTestData().workingAccount1
         newAccountSetup(account: account1)
 
-        addAccount()
+        switchFromInboxToFoldersView()
+        tapAddAccount()
 
         let account2 = secretTestData().workingAccount2
         newAccountSetup(account: account2)
+        waitForever()
+    }
+
+    func testThreeInitialAccounts() {
+        app().launch()
+
+        dismissInitialSystemAlerts()
+
+        let account1 = secretTestData().workingAccount1
+        newAccountSetup(account: account1)
+
+        switchFromInboxToFoldersView()
+        tapAddAccount()
+
+        let account2 = secretTestData().workingAccount2
+        newAccountSetup(account: account2)
+        waitForever()
+
+        switchFromInboxToFoldersView()
+        tapAddAccount()
+
+        let account3 = secretTestData().workingAccount3
+        newAccountSetup(account: account3)
         waitForever()
     }
 
@@ -162,8 +186,8 @@ class NewAccountSetupUITest: XCTestCase {
      Use if you want to wait forever. May be useful for debugging.
      */
     func waitForever() {
-        let _ = expectation(description: "Never happens")
-        waitForExpectations(timeout: 3000, handler: nil)
+        let exp = expectation(description: "Never happens")
+        wait(for: [exp], timeout: 3000)
     }
 
     func typeTextIfEmpty(textField: XCUIElement, text: String) {
@@ -255,7 +279,7 @@ class NewAccountSetupUITest: XCTestCase {
     }
 
     func addAdditionalManual(account: UIAccount, correctPassword: String) {
-        addAccount()
+        tapAddAccount()
 
         signIn(account: account, enterPassword: true)
         switchToManualConfig()
@@ -300,7 +324,7 @@ class NewAccountSetupUITest: XCTestCase {
         theApp.buttons["Manual configuration"].tap()
     }
 
-    func addAccount() {
+    func tapAddAccount() {
         let theApp = app()
         theApp.navigationBars["All"].buttons["Folders"].tap()
         theApp.tables.buttons["Add Account"].tap()
@@ -316,5 +340,31 @@ class NewAccountSetupUITest: XCTestCase {
         let correctPassword = account.password
         theAccount.password += "ShouldNotWork"
         return (theAccount, correctPassword)
+    }
+
+    func waitForElementToAppear(_ element: XCUIElement,
+                                timeout: TimeInterval = 5) -> XCTWaiter.Result {
+        let predicate = NSPredicate(format: "exists == true")
+        let exp = expectation(for: predicate, evaluatedWith: element,
+                              handler: nil)
+
+        let result = XCTWaiter().wait(for: [exp], timeout: timeout)
+
+        if result == .completed {
+            exp.fulfill()
+        }
+
+        return result
+    }
+
+    /// Switches from the universal inbox to the folders view.
+    func switchFromInboxToFoldersView() {
+        let theApp = app()
+        let folderButton = theApp.navigationBars["All"].buttons["Folders"]
+
+        guard waitForElementToAppear(folderButton, timeout: 10) == .completed else {
+            XCTFail("'Folders' button missing after setting up account")
+            return
+        }
     }
 }

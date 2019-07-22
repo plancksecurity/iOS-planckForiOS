@@ -14,28 +14,28 @@ public class SelfReferencingOperation: Operation {
 
     /// Creates an operation
     ///
+    /// - note: You are responsible that all tasks on backgroundQueue are finished
+    ///         before returning from your execution block
+    ///
     /// - Parameters:
     ///   - maxConcurrentOperationCount:    maxConcurrentOperationCount for the internal background
     ///                                     queue. If nil, the default of Operation is taken.
     ///   - qos:    qualityOfService of the internal background queue. If nil, the default of
     ///             Operation is taken.
     ///   - executionBlock: block of code to execute in the operation
-    public init(maxConcurrentOperationCount: Int? = nil,
+    public init(maxConcurrentOperationCount: Int = 1,
                 qos: QualityOfService? = nil,
                 executionBlock: @escaping (_ operation: SelfReferencingOperation?) -> Void) {
         if let prio = qos {
             backgroundQueue.qualityOfService = prio
         }
-        if let maxConcurrentTasks = maxConcurrentOperationCount {
-            backgroundQueue.maxConcurrentOperationCount = maxConcurrentTasks
-        }
+        backgroundQueue.maxConcurrentOperationCount = maxConcurrentOperationCount
         self.executionBlock = executionBlock
         super.init()
     }
 
     public override func cancel() {
         backgroundQueue.cancelAllOperations()
-        backgroundQueue.waitUntilAllOperationsAreFinished()
         super.cancel()
     }
 
@@ -46,5 +46,8 @@ public class SelfReferencingOperation: Operation {
         weak var weakSelf = self
 
         executionBlock(weakSelf)
+        // Actually the client is reponsible to not return before all operations finished.
+        // We make sure anyway.
+        backgroundQueue.waitUntilAllOperationsAreFinished()
     }
 }
