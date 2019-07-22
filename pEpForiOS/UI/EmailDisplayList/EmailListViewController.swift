@@ -1047,10 +1047,6 @@ extension EmailListViewController {
     @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
         setup()
     }
-
-    @IBAction func segueUnwindLastAccountDeleted(segue:UIStoryboardSegue) {
-        setup()
-    }
 }
 
 // MARK: - SegueHandlerType
