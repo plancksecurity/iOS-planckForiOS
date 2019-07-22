@@ -246,6 +246,10 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
     @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
         showNext = true
     }
+
+    @IBAction func segueUnwindLastAccountDeleted(segue:UIStoryboardSegue) {
+        showNext = true
+    }
 }
 
 // MARK: - LoginTableViewControllerDelegate
