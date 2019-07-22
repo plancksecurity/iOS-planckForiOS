@@ -42,11 +42,10 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
 
     open override func main() {
         if isCancelled {
-            markAsFinished()
+            waitForBackgroundTasksAndFinish()
             return
         }
         reEvaluate()
-        markAsFinished()
     }
 
     func reEvaluate() {
@@ -74,5 +73,6 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
                 Log.shared.log(error: error)
             }
         }
+        waitForBackgroundTasksAndFinish()
     }
 }

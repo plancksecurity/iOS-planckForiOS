@@ -78,13 +78,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
     private func gracefullyShutdownServices() {
-        guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
-            else {
-                Log.shared.warn(
-                    "Will not start background sync, pending %d",
-                    syncUserActionsAndCleanupbackgroundTaskId.rawValue)
-                return
+        if syncUserActionsAndCleanupbackgroundTaskId != UIBackgroundTaskIdentifier.invalid {
+            syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
         }
+
+//        guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
+//            else {
+//                Log.shared.warn(
+//                    "Will not start background sync, pending %d",
+//                    syncUserActionsAndCleanupbackgroundTaskId.rawValue)
+//                return
+//        }
         syncUserActionsAndCleanupbackgroundTaskId =
             UIApplication.shared.beginBackgroundTask(expirationHandler: { [unowned self] in
                 Log.shared.warn(
