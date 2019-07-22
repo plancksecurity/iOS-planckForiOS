@@ -645,6 +645,53 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 //        XCTAssertEqual(testeeDrafted.shortMessage, testSubject)
 //        waitForExpectations(timeout: UnitTestUtils.waitTime)
 //    }
+    func testHandleCancelActionTrigered() {
+        // GIVEN
+        assert(originalMessage: nil,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        //do handshake
+        let storyboard = UIStoryboard(name: "Handshake", bundle: nil)
+        guard let handshakeViewController = storyboard.instantiateViewController(withIdentifier:
+            "HandshakeViewControllerID") as? HandshakeViewController else {
+                XCTFail()
+                return
+        }
+        vm?.setup(handshakeViewController: handshakeViewController)
+        let handShakeMessage = handshakeViewController.message
+        var handShakeMessageUID: Int?
+        var handshakeMessageFolderName: String?
+        handShakeMessage?.session.performAndWait {
+            handShakeMessageUID = handShakeMessage?.uid
+            handshakeMessageFolderName = handShakeMessage?.parent.name
+        }
+        guard let safeHandShakeMessageUID = handShakeMessageUID,
+            let safeHandshakeMessageFolderName = handshakeMessageFolderName else {
+                XCTFail()
+                return
+        }
+
+        // WHEN
+        vm?.handleDeleteActionTriggered()
+
+        // THEN
+        let notSavedMessage = Message.by(uid: safeHandShakeMessageUID, folderName: safeHandshakeMessageFolderName, accountAddress: account.user.address)
+        XCTAssertNil(notSavedMessage)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
     //!!!: crash
 //    func testHandleSaveActionTriggered_origOutbox() {
