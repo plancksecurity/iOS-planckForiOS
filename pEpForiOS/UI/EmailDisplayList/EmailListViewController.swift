@@ -495,9 +495,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if lastSelectedIndexPath == indexPath {
-            defer {
-                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        if !tableView.isEditing {
+            if lastSelectedIndexPath == indexPath {
+                defer {
+                    tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+                }
             }
         }
 
