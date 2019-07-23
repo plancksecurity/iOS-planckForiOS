@@ -589,7 +589,7 @@ extension ComposeTableViewController {
         }
         let action: UIAlertAction
         let text = vm.deleteActionTitle
-        action = ac.action(text, .destructive) {[weak self] in
+        action = ac.action(text, .destructive) { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
@@ -625,7 +625,7 @@ extension ComposeTableViewController {
         }
         let action: UIAlertAction
         let text = vm.keepInOutboxActionTitle
-        action = ac.action(text, .default) {[weak self] in
+        action = ac.action(text, .default) { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
