@@ -94,6 +94,10 @@ final class KeySyncHandshakeViewController: UIViewController {
         }
         viewModel.didPress(action: action)
     }
+
+    @IBAction func didLongPressWords(_ sender: Any) {
+        viewModel.didLongPressWords()
+    }
 }
 
 // MARK: - KeySyncHandshakeViewModelDelegate

@@ -22,7 +22,7 @@ final class KeySyncHandshakeViewModel {
     }
 
     weak var delegate: KeySyncHandshakeViewModelDelegate?
-    private var fullTrustWords = true
+    private var fullTrustWords = false
     private var languageCode = Locale.current.languageCode
     private var meFPR: String?
     private var partnerFPR: String?
@@ -63,6 +63,11 @@ final class KeySyncHandshakeViewModel {
     func fingerPrints(meFPR: String?, partnerFPR: String?) {
         self.meFPR = meFPR
         self.partnerFPR = partnerFPR
+        delegate?.change(handshakeWordsTo: trustWorkds())
+    }
+
+    func didLongPressWords() {
+        fullTrustWords = !fullTrustWords
         delegate?.change(handshakeWordsTo: trustWorkds())
     }
 }
