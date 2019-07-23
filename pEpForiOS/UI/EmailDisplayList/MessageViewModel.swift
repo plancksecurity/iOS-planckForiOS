@@ -113,8 +113,12 @@ class MessageViewModel: CustomDebugStringConvertible {
         if let bodyPeek = internalBoddyPeek {
            self.bodyPeek = bodyPeek
         } else {
-            let operation = getBodyPeekOperation(for: message) { bodyPeek in
-                self.bodyPeek = bodyPeek
+            let operation = getBodyPeekOperation(for: message) { [weak self] bodyPeek in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.bodyPeek = bodyPeek
             }
             if(!operation.isFinished){
                 addToRunningOperations(operation)
