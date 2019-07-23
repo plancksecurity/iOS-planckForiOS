@@ -42,7 +42,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     @IBOutlet weak var accept: UIButton! {
         didSet {
             accept.setTitleColor(.pEpGreen, for: .normal)
-            accept.setTitle(NSLocalizedString("Accept", comment: "accept button"), for: .normal)
+            accept.setTitle(NSLocalizedString("Sync", comment: "accept hand shake sync button"), for: .normal)
             accept.backgroundColor = .pEpGreyBackground
         }
     }
@@ -56,7 +56,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     @IBOutlet weak var cancel: UIButton! {
         didSet {
             cancel.setTitleColor(.pEpGreyText, for: .normal)
-            cancel.setTitle(NSLocalizedString("Cancel", comment: "cancel button"), for: .normal)
+            cancel.setTitle(NSLocalizedString("Not Now", comment: "not now button"), for: .normal)
             cancel.backgroundColor = .pEpGreyBackground
         }
     }
@@ -135,7 +135,7 @@ extension KeySyncHandshakeViewController: UIPickerViewDelegate {
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        viewModel.didSelect(language: pickerLanguages[row])
+        viewModel.didSelect(languageRow: row)
     }
 }
 

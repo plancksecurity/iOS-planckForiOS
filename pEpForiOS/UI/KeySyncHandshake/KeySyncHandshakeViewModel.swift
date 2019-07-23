@@ -23,17 +23,30 @@ final class KeySyncHandshakeViewModel {
 
     weak var delegate: KeySyncHandshakeViewModelDelegate?
     private var fullTrustWords = true
-    private var language = Locale.current.languageCode
+    private var languageCode = Locale.current.languageCode
     private var meFPR: String?
     private var partnerFPR: String?
     private let pEpSession: PEPSessionProtocol
+    private var _languages = [PEPLanguage]()
+    private var languages: [PEPLanguage] {
+        guard _languages.isEmpty else {
+            return _languages
+        }
+        do {
+            _languages = try pEpSession.languageList()
+            return _languages
+        } catch {
+            Log.shared.errorAndCrash("%@", error.localizedDescription)
+            return []
+        }
+    }
 
     init(pEpSession: PEPSessionProtocol = PEPSession()) {
         self.pEpSession = pEpSession
     }
 
-    func didSelect(language: String?) {
-        self.language = language
+    func didSelect(languageRow: Int) {
+        languageCode = languages[languageRow].code
         delegate?.closePicker()
         delegate?.change(handshakeWordsTo: trustWorkds())
     }
@@ -63,7 +76,7 @@ extension KeySyncHandshakeViewModel {
             return String()
         }
         do {
-            return try pEpSession.getTrustwordsFpr1(meFPR, fpr2: partnerFPR, language: language,
+            return try pEpSession.getTrustwordsFpr1(meFPR, fpr2: partnerFPR, language: languageCode,
                                                       full: fullTrustWords)
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)
@@ -71,18 +84,9 @@ extension KeySyncHandshakeViewModel {
         }
     }
 
-    private func languages() -> [PEPLanguage]? {
-        do {
-            return try pEpSession.languageList()
-        } catch {
-            Log.shared.errorAndCrash("%@", error.localizedDescription)
-            return nil
-        }
-    }
-
     private func handleChangeLanguageButton() {
-        guard let languages = languages() else {
-            Log.shared.errorAndCrash("KeySyncViewModel could not get supported languages ")
+        guard !languages.isEmpty else {
+            Log.shared.errorAndCrash("Wont show picker, no languages to show")
             return
         }
         let languagesNames = languages.map { $0.name }
