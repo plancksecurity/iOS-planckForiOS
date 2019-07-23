@@ -151,6 +151,19 @@ extension KeySyncHandshakeViewModelTest {
         let expected = unwrap(value: self.expected)
         let actual = unwrap(value: self.actual)
 
+        //bools
+        XCTAssertEqual(expected.didCallShowPicker, actual.didCallShowPicker)
+        XCTAssertEqual(expected.didCallClosePicker, actual.didCallClosePicker)
+        XCTAssertEqual(expected.didCallDidPressAction, actual.didCallDidPressAction)
+        XCTAssertEqual(expected.didCallToUpdateTrustedWords, actual.didCallToUpdateTrustedWords)
+
+        //values
+        XCTAssertEqual(expected.fullWordsVersion, actual.fullWordsVersion)
+        XCTAssertEqual(expected.languagesToShow, actual.languagesToShow)
+        XCTAssertEqual(expected.handShakeWords, actual.handShakeWords)
+        XCTAssertEqual(expected.pressedAction, actual.pressedAction)
+
+        //In case some if missing or added but not checked
         XCTAssertEqual(expected, actual)
     }
 }
