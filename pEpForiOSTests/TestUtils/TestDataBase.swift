@@ -151,12 +151,6 @@ class TestDataBase {
             return acc
         }
 
-        func pEpIdentity() -> PEPIdentity {
-            let ident = PEPIdentity(address: idAddress)
-            ident.userName = accountName
-            return ident
-        }
-
         func basicConnectInfo(emailProtocol: EmailProtocol) -> BasicConnectInfo {
             return BasicConnectInfo(
                 accountEmailAddress: idAddress,
