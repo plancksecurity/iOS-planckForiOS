@@ -30,9 +30,7 @@ class ComposeDataSource: NSObject {
         filteredRows = originalRows.filter { filter($0) }
     }
 
-    /**
-     Decide on the rows that should be visible, based on the message.
-     */
+    /// Decide on the rows that should be visible, based on the message.
     public func filterRows(message: Message?) {
         if let viewableAttachments = message?.viewableAttachments(),
             viewableAttachments.count == 0 {
