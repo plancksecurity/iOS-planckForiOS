@@ -95,7 +95,10 @@ final class KeySyncHandshakeViewController: UIViewController {
         viewModel.didPress(action: action)
     }
 
-    @IBAction func didLongPressWords(_ sender: Any) {
+    @IBAction func didLongPressWords(_ sender: UILongPressGestureRecognizer) {
+        guard sender.state == .began else {
+            return
+        }
         viewModel.didLongPressWords()
     }
 }
