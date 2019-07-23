@@ -22,7 +22,7 @@ final class KeySyncHandshakeViewModel {
     }
 
     weak var delegate: KeySyncHandshakeViewModelDelegate?
-    private var fullTrustWords = false
+    var fullTrustWords = false //Internal since testing
     private var languageCode = Locale.current.languageCode
     private var meFPR: String?
     private var partnerFPR: String?

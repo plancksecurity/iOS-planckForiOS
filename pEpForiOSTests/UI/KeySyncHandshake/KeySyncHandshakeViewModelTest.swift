@@ -17,6 +17,7 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
 
     override func setUp() {
         keySyncHandshakeVM = KeySyncHandshakeViewModel(pEpSession: PEPSessionMoc())
+        keySyncHandshakeVM?.fingerPrints(meFPR: "", partnerFPR: "")
         keySyncHandshakeVM?.delegate = self
 
         setDefaultActualState()
@@ -34,33 +35,19 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
         expected = nil
     }
 
-    func didSelectLanguageToOtherOrSameTest() {
+    func testDidSelectLanguageToOtherOrSame() {
         // GIVEN
         let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
-        //TODO: change when moc getter for handshake words
-//        let expectedHandShakeWords = handShakeWords
-        expected = State(didCallShowPicker: true, didCallToChangeLanaguage: true)
+        expected = State(didCallClosePicker: true, didCallToUpdateTrustedWords: true)
 
         // WHEN
-        keySyncHandshakeVM.didSelect(language: "")
+        keySyncHandshakeVM.didSelect(languageRow: 0)
 
         // THEN
         assertExpectations()
     }
 
-    func didSelectNoLanguageTest() {
-        // GIVEN
-        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
-        expected = State(didCallClosePicker: true)
-
-        // WHEN
-        keySyncHandshakeVM.didSelect(language: nil)
-
-        // THEN
-        assertExpectations()
-    }
-
-    func didPressActionAcceptTest() {
+    func testDidPressActionAccept() {
         // GIVEN
         let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
         expected = State(didCallDidPressAction: true, pressedAction: .accept)
@@ -72,10 +59,10 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
         assertExpectations()
     }
 
-    func didPressActionChangeLanguageTest() {
+    func testDidPressActionChangeLanguage() {
         // GIVEN
         let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
-        expected = State(didCallShowPicker: true)
+        expected = State(didCallShowPicker: true, languagesToShow: ["", ""])
 
         // WHEN
         keySyncHandshakeVM.didPress(action: .changeLanguage)
@@ -84,7 +71,7 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
         assertExpectations()
     }
 
-    func didPressActionDeclineTest() {
+    func testDidPressActionDecline() {
         // GIVEN
         let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
         expected = State(didCallDidPressAction: true, pressedAction: .decline)
@@ -96,7 +83,7 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
         assertExpectations()
     }
 
-    func didPressActionCancelTest() {
+    func testDidPressActionCancel() {
         // GIVEN
         let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
         expected = State(didCallDidPressAction: true, pressedAction: .cancel)
@@ -108,13 +95,13 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
         assertExpectations()
     }
 
-    func fingerPrintsTest() {
+    func testDidLongPressWords() {
         // GIVEN
         let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
-        expected = State(didCallToChangeLanaguage: true)
+        expected = State(didCallToUpdateTrustedWords: true, fullWordsVersion: true)
 
         // WHEN
-        keySyncHandshakeVM.didPress(action: .changeLanguage)
+        keySyncHandshakeVM.didLongPressWords()
 
         // THEN
         assertExpectations()
@@ -139,7 +126,8 @@ extension KeySyncHandshakeViewModelTest: KeySyncHandshakeViewModelDelegate {
     }
 
     func change(handshakeWordsTo: String) {
-        actual?.didCallToChangeLanaguage = true
+        actual?.didCallToUpdateTrustedWords = true
+        actual?.fullWordsVersion = keySyncHandshakeVM?.fullTrustWords
     }
 }
 
@@ -174,23 +162,29 @@ extension KeySyncHandshakeViewModelTest {
         var didCallShowPicker: Bool
         var didCallClosePicker: Bool
         var didCallDidPressAction: Bool
-        var didCallToChangeLanaguage: Bool
+        var didCallToUpdateTrustedWords: Bool
 
+        var fullWordsVersion: Bool?
         var languagesToShow: [String]?
         var handShakeWords: String?
         var pressedAction: KeySyncHandshakeViewModel.Action?
 
         // Default value are default initial state
-        init(didCallShowPicker: Bool = false, didCallClosePicker: Bool = false,
-             didCallDidPressAction: Bool = false, didCallToChangeLanaguage: Bool = false,
-             languagesToShow: [String] = [], handShakeWords: String = "",
+        init(didCallShowPicker: Bool = false,
+             didCallClosePicker: Bool = false,
+             didCallDidPressAction: Bool = false,
+             didCallToUpdateTrustedWords: Bool = false,
+             fullWordsVersion: Bool = false,
+             languagesToShow: [String] = [],
+             handShakeWords: String = "",
              pressedAction: KeySyncHandshakeViewModel.Action? = nil) {
 
             self.didCallShowPicker = didCallShowPicker
             self.didCallClosePicker = didCallClosePicker
             self.didCallDidPressAction = didCallDidPressAction
-            self.didCallToChangeLanaguage = didCallToChangeLanaguage
+            self.didCallToUpdateTrustedWords = didCallToUpdateTrustedWords
 
+            self.fullWordsVersion = fullWordsVersion
             self.languagesToShow = languagesToShow
             self.handShakeWords = handShakeWords
             self.pressedAction = pressedAction
