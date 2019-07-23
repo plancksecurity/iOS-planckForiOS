@@ -52,12 +52,12 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
     }
 
     func cancelHandshake() {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+        guard let keySyncHandShakeAlert  =
+            presenter?.presentedViewController as? KeySyncHandshakeViewController else {
                 return
-            }
-            me.alertView?.dismiss(animated: true)
+        }
+        DispatchQueue.main.async {
+            keySyncHandShakeAlert.dismiss(animated: true)
         }
     }
 
