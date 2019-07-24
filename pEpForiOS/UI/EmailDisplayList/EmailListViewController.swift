@@ -495,13 +495,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if !tableView.isEditing {
-            if lastSelectedIndexPath == indexPath {
-                defer {
-                    tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                }
-            }
-        }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: EmailListViewCell.storyboardId,
                                                  for: indexPath)
@@ -514,6 +507,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             theCell.configure(for:viewModel)
         } else {
             Log.shared.errorAndCrash("dequeued wrong cell")
+        }
+
+        if lastSelectedIndexPath == indexPath {
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         }
 
         return cell
