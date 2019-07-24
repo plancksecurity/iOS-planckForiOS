@@ -38,6 +38,8 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 
     private var viewModel: MessageViewModel?
 
+    private var originalBackgroundSelectionColor: UIColor?
+
     private var hasAttachment:Bool = false {
         didSet {
             if hasAttachment {
@@ -72,6 +74,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        originalBackgroundSelectionColor = selectedBackgroundView?.backgroundColor
         contactImageView.applyContactImageCornerRadius()
         resetToDefault()
     }
@@ -218,6 +221,21 @@ extension EmailListViewCell {
         subjectLabel.font = font
         summaryLabel.font = font
         dateLabel.font = font
+    }
+
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: false)
+        let viewForHighlight = UIView()
+        self.selectedBackgroundView = viewForHighlight
+        if self.isEditing {
+            viewForHighlight.backgroundColor = UIColor.clear
+        } else {
+            viewForHighlight.backgroundColor = originalBackgroundSelectionColor
+        }
     }
 
     /**
