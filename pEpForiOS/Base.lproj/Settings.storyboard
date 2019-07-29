@@ -562,6 +562,43 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Section-4" id="NDe-dz-nXc">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="PhK-zR-wH7">
+                                        <rect key="frame" x="0.0" y="534" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PhK-zR-wH7" id="Ghb-kV-wtZ">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="KeySync" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E8I-np-XGR">
+                                                    <rect key="frame" x="20" y="11.5" width="67" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="38v-V4-M3F">
+                                                    <rect key="frame" x="347" y="5" width="8" height="33.5"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MZb-TK-ECd">
+                                                    <rect key="frame" x="308" y="6.5" width="51" height="31"/>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="MZb-TK-ECd" secondAttribute="trailing" constant="18" id="Ca4-wU-hCI"/>
+                                                <constraint firstItem="MZb-TK-ECd" firstAttribute="centerY" secondItem="Ghb-kV-wtZ" secondAttribute="centerY" id="Hv6-dt-4ez"/>
+                                                <constraint firstAttribute="bottom" secondItem="38v-V4-M3F" secondAttribute="bottom" constant="5" id="UkO-zc-yQd"/>
+                                                <constraint firstAttribute="trailing" secondItem="38v-V4-M3F" secondAttribute="trailing" constant="20" symbolic="YES" id="bov-GP-Ea2"/>
+                                                <constraint firstItem="38v-V4-M3F" firstAttribute="top" secondItem="Ghb-kV-wtZ" secondAttribute="top" constant="5" id="pJn-Vi-N1h"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="Eri-pJ-T3J" id="uRz-vz-USK"/>
@@ -584,6 +621,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="KeySyncEnableSwith" destination="MZb-TK-ECd" id="kCr-dX-jty"/>
                         <outlet property="doneButton" destination="Xy6-Rf-YDv" id="twm-qo-BhD"/>
                         <outlet property="emailTextfield" destination="FIa-wa-uSF" id="RVW-cY-4Ny"/>
                         <outlet property="imapPortTextfield" destination="ukB-K0-MMG" id="rGA-tC-CYA"/>

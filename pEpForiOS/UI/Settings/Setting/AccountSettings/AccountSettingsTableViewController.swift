@@ -28,7 +28,8 @@ UIPickerViewDataSource, UITextFieldDelegate {
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var doneButton: UIBarButtonItem!
-
+    @IBOutlet weak var KeySyncEnableSwith: UISwitch!
+    
 
     private let spinner: UIActivityIndicatorView = {
         let createe = UIActivityIndicatorView()
@@ -269,8 +270,8 @@ UIPickerViewDataSource, UITextFieldDelegate {
 
             showSpinnerAndDisableUI()
             viewModel?.update(loginName: validated.loginName, name: validated.accountName,
-                              password: password, imap: imap, smtp: smtp)
-
+                              password: password, imap: imap, smtp: smtp,
+                              isKeySyncEnable: KeySyncEnableSwith.isEnabled)
         } catch {
             informUser(about: error)
         }

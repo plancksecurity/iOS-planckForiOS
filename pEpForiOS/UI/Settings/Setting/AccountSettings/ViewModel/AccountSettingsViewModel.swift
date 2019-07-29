@@ -121,10 +121,15 @@ public class AccountSettingsViewModel {
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
 
-    func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
-                smtp: ServerViewModel) {
+    func update(loginName: String,
+                name: String,
+                password: String? = nil,
+                imap: ServerViewModel,
+                smtp: ServerViewModel,
+                isKeySyncEnable: Bool) {
         var theVerifier = verifiableAccount ??
-            VerifiableAccount(messageModelService: messageModelService)
+            VerifiableAccount(messageModelService: messageModelService,
+                              isKeySyncEnable: isKeySyncEnable)
         theVerifier.verifiableAccountDelegate = self
         verifiableAccount = theVerifier
 
