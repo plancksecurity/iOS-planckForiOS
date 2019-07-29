@@ -63,6 +63,37 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(imapServer.transport, account.imapServer?.transport.asString())
     }
 
+    func testKeySyncSectionIsShown() {
+        // GIVEN
+        setUpViewModel(keySyncEnabled: true)
+        let expectedHeadersCount = 4
+        let expectedHeader = NSLocalizedString("Key Sync", comment: "Account settings title Key Sync")
+
+        // WHEN
+        let actualHeader = viewModel[3]
+        let actualCount = viewModel.count
+
+        //THEN
+        XCTAssertEqual(expectedHeader, actualHeader)
+        XCTAssertEqual(expectedHeadersCount, actualCount)
+    }
+
+    func testKeySyncSectionIsNOTShown() {
+        // GIVEN
+        setUpViewModel(keySyncEnabled: false)
+        let expectedHeadersCount = 3
+        let expectedHeaderNOTShown = NSLocalizedString("Key Sync", comment: "Account settings title Key Sync")
+
+        // WHEN
+        let actualCount = viewModel.count
+
+        //THEN
+        for i in 0..<viewModel.count {
+            XCTAssertNotEqual(expectedHeaderNOTShown, viewModel[i])
+        }
+        XCTAssertEqual(expectedHeadersCount, actualCount)
+    }
+
     func testUpdate() {
         let address = "localhost"
         let login = "fakelogin"
@@ -136,12 +167,12 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
     }
 
 
-    private func setUpViewModel() {
+    private func setUpViewModel(keySyncEnabled: Bool = false) {
         account.save()
         keySyncServiceHandshakeDelegateMoc = KeySyncServiceHandshakeDelegateMoc()
         let theMessageModelService = MessageModelService(
             errorPropagator: ErrorPropagator(),
-            keySyncServiceDelegate: keySyncServiceHandshakeDelegateMoc, keySyncEnabled: false)
+            keySyncServiceDelegate: keySyncServiceHandshakeDelegateMoc, keySyncEnabled: keySyncEnabled)
 
         viewModel = AccountSettingsViewModel(
             account: account,
