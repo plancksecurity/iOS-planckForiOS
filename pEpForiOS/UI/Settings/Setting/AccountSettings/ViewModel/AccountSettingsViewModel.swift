@@ -34,11 +34,15 @@ public class AccountSettingsViewModel {
         }
     }
 
-    private let headers = [
-        NSLocalizedString("Account", comment: "Account settings"),
-        NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
-        NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP")
-    ]
+    private var headers: [String] {
+        var tempHeader = [NSLocalizedString("Account", comment: "Account settings"),
+                          NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
+                          NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP")]
+        if AppSettings.keySyncEnabled {
+            tempHeader.append(NSLocalizedString("Key Sync", comment: "Account settings title Key Sync"))
+        }
+        return tempHeader
+    }
     private var controlWord = "noRealPassword"
 
     public let svm = SecurityViewModel()
