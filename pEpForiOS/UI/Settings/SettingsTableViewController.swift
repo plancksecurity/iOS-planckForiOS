@@ -45,7 +45,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.setToolbarHidden(oldToolbarStatus, animated: false)
         guard let isIphone = splitViewController?.isCollapsed else {
             return
         }

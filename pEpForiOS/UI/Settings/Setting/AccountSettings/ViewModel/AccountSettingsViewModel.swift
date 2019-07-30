@@ -63,6 +63,7 @@ public class AccountSettingsViewModel {
         self.email = account.user.address
         self.loginName = account.imapServer?.credentials.loginName ?? ""
         self.name = account.user.userName ?? ""
+        self.keySyncEnable = account.keySyncEnabled
 
         if let server = account.imapServer {
             self.originalPassword = server.credentials.password
@@ -99,12 +100,10 @@ public class AccountSettingsViewModel {
     private(set) var email: String
 
     /// - Note: The email model is based on the assumption that imap.loginName == smtp.loginName
-    private(set) var loginName: String
-
     private(set) var name: String
-
+    private(set) var loginName: String
+    private(set) var keySyncEnable: Bool
     private(set) var smtpServer: ServerViewModel
-
     private(set) var imapServer: ServerViewModel
 
     weak var delegate: AccountVerificationResultDelegate?
@@ -126,16 +125,16 @@ public class AccountSettingsViewModel {
                 password: String? = nil,
                 imap: ServerViewModel,
                 smtp: ServerViewModel,
-                isKeySyncEnable: Bool) {
+                keySyncEnable: Bool) {
         var theVerifier = verifiableAccount ??
-            VerifiableAccount(messageModelService: messageModelService,
-                              isKeySyncEnable: isKeySyncEnable)
+            VerifiableAccount(messageModelService: messageModelService)
         theVerifier.verifiableAccountDelegate = self
         verifiableAccount = theVerifier
 
         theVerifier.address = email
         theVerifier.userName = name
         theVerifier.loginName = loginName
+        theVerifier.keySyncEnable = keySyncEnable
 
         if isOAuth2 {
             if self.accessToken == nil {
@@ -226,7 +225,17 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
     public func didEndVerification(result: Result<Void, Error>) {
         switch result {
         case .success(()):
-                delegate?.didVerify(result: .ok)
+            do {
+                try verifiableAccount?.save() { [weak self] success in
+                    guard let me = self else {
+                        Log.shared.errorAndCrash("Lost MySelf")
+                        return
+                    }
+                    me.delegate?.didVerify(result: .ok)
+                }
+            } catch {
+                Log.shared.errorAndCrash(error: error)
+            }
         case .failure(let error):
             if let imapError = error as? ImapSyncError {
                 delegate?.didVerify(
@@ -240,3 +249,9 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
         }
     }
 }
+
+
+/*
+ case .success(()):
+
+ */

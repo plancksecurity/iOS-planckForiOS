@@ -621,12 +621,12 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="KeySyncEnableSwith" destination="MZb-TK-ECd" id="kCr-dX-jty"/>
                         <outlet property="doneButton" destination="Xy6-Rf-YDv" id="twm-qo-BhD"/>
                         <outlet property="emailTextfield" destination="FIa-wa-uSF" id="RVW-cY-4Ny"/>
                         <outlet property="imapPortTextfield" destination="ukB-K0-MMG" id="rGA-tC-CYA"/>
                         <outlet property="imapSecurityTextfield" destination="rCJ-UW-Jmn" id="Vz4-6T-rdl"/>
                         <outlet property="imapServerTextfield" destination="LOO-6m-Q5O" id="2JT-EB-GaR"/>
+                        <outlet property="keySyncEnableSwith" destination="MZb-TK-ECd" id="kCr-dX-jty"/>
                         <outlet property="nameTextfield" destination="RpU-jD-tx7" id="eBg-fx-AAF"/>
                         <outlet property="oauth2ActivityIndicator" destination="tUA-ey-cn7" id="r97-xz-SfT"/>
                         <outlet property="oauth2TableViewCell" destination="Bp7-9N-v9r" id="2w0-dL-3iG"/>

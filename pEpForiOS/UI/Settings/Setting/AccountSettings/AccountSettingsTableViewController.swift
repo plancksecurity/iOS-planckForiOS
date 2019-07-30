@@ -28,8 +28,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var doneButton: UIBarButtonItem!
-    @IBOutlet weak var KeySyncEnableSwith: UISwitch!
-    
+    @IBOutlet weak var keySyncEnableSwith: UISwitch!
 
     private let spinner: UIActivityIndicatorView = {
         let createe = UIActivityIndicatorView()
@@ -79,6 +78,11 @@ UIPickerViewDataSource, UITextFieldDelegate {
         self.emailTextfield.text = viewModel?.email
         self.usernameTextfield.text = viewModel?.loginName
         self.passwordTextfield.text = "JustAPassword"
+
+        if let keySyncEnableSwith = keySyncEnableSwith,
+           let viewModel = viewModel {
+            keySyncEnableSwith.isOn = viewModel.keySyncEnable
+        }
 
         securityPicker = UIPickerView(frame: CGRect(x: 0, y: 50, width: 100, height: 150))
         securityPicker?.delegate = self
@@ -268,10 +272,12 @@ UIPickerViewDataSource, UITextFieldDelegate {
                 password = nil
             }
 
+            let keySyncEnable = keySyncEnableSwith.isOn
+
             showSpinnerAndDisableUI()
             viewModel?.update(loginName: validated.loginName, name: validated.accountName,
                               password: password, imap: imap, smtp: smtp,
-                              isKeySyncEnable: KeySyncEnableSwith.isEnabled)
+                              keySyncEnable: keySyncEnable)
         } catch {
             informUser(about: error)
         }
