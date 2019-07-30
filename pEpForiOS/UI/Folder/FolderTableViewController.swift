@@ -167,7 +167,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
                 Log.shared.errorAndCrash("No model")
                 return 0
             }
-        return vm[indexPath.section][indexPath.item].level - 1
+        return vm[indexPath.section][indexPath.item].level
     }
 
     // MARK: - TableViewDelegate
@@ -244,6 +244,10 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
      Unwind segue for the case of adding an account that requires manual setup
      */
     @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
+        showNext = true
+    }
+
+    @IBAction func segueUnwindLastAccountDeleted(segue:UIStoryboardSegue) {
         showNext = true
     }
 }

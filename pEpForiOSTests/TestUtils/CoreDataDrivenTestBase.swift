@@ -20,7 +20,6 @@ open class CoreDataDrivenTestBase: XCTestCase {
         return Account(cdObject: cdAccount, context: moc)
     }
     var cdAccount: CdAccount!
-    var persistentSetup: PersistentSetup!
 
     public var imapConnectInfo: EmailConnectInfo!
     public var smtpConnectInfo: EmailConnectInfo!
@@ -32,10 +31,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
 
     override open func setUp() {
         super.setUp()
-
-        XCTAssertTrue(PEPUtil.pEpClean())
-        
-        persistentSetup = PersistentSetup()
+        Stack.shared.reset() //!!!: this should not be required. Rm after all tests use a propper base class!
         moc = Stack.shared.mainContext
 
         let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
@@ -52,8 +48,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
 
     override open func tearDown() {
         imapSyncData?.sync?.close()
-        persistentSetup.tearDownCoreDataStack()
-        persistentSetup = nil
+        Stack.shared.reset()
         PEPSession.cleanup()
         XCTAssertTrue(PEPUtil.pEpClean())
         super.tearDown()

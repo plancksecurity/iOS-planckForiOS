@@ -621,12 +621,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 Log.shared.errorAndCrash("No folder")
                 return
             }
-            lastSelectedIndexPath = indexPath
-            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-            if model.shouldEditMessage(indexPath: indexPath) {
-                showComposeView()
+            if model.isSelectable(messageAt: indexPath) {
+                lastSelectedIndexPath = indexPath
+                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+                if model.isEditable(messageAt: indexPath) {
+                    showComposeView()
+                } else {
+                    showEmail(forCellAt: indexPath)
+                }
             } else {
-                showEmail(forCellAt: indexPath)
+                tableView.deselectRow(at: indexPath, animated: true)
             }
         }
     }
@@ -871,6 +875,7 @@ extension EmailListViewController {
         let replyAction = createReplyAction()
 
         let replyAllAction = createReplyAllAction(forRowAt: indexPath)
+        let readAction = createReadOrUnReadAction(forRowAt: indexPath)
 
         let forwardAction = createForwardAction()
         let moveToFolderAction = createMoveToFolderAction()
@@ -884,6 +889,7 @@ extension EmailListViewController {
 
         alertControler.addAction(forwardAction)
         alertControler.addAction(moveToFolderAction)
+        alertControler.addAction(readAction)
 
         if let popoverPresentationController = alertControler.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
@@ -905,6 +911,34 @@ extension EmailListViewController {
                 return
             }
             me.performSegue(withIdentifier: .segueShowMoveToFolder, sender: me)
+        }
+    }
+
+    private func createReadOrUnReadAction(forRowAt indexPath: IndexPath) -> UIAlertAction {
+        let seenState = model?.viewModel(for: indexPath.row)?.isSeen ?? false
+
+        var title = ""
+        if seenState {
+            title = NSLocalizedString("Mark as unread", comment: "EmailList action title")
+        } else {
+            title = NSLocalizedString("Mark as Read", comment: "EmailList action title")
+        }
+
+        return UIAlertAction(title: title, style: .default) { [weak self] action in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost MySelf")
+                return
+            }
+            guard let cell = me.tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
+                Log.shared.errorAndCrash(message: "Cell type is wrong")
+                return
+            }
+            cell.isSeen = !seenState
+            if seenState {
+                me.model?.markSelectedAsUnread(indexPaths: [indexPath])
+            } else {
+                me.model?.markSelectedAsRead(indexPaths: [indexPath])
+            }
         }
     }
 
@@ -1011,10 +1045,6 @@ extension EmailListViewController {
      Enables manual account setup to unwind to the unified inbox.
      */
     @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
-        setup()
-    }
-
-    @IBAction func segueUnwindLastAccountDeleted(segue:UIStoryboardSegue) {
         setup()
     }
 }

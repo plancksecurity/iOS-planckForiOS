@@ -81,7 +81,7 @@ class DecryptionUtil {
         let cdInbox = CdFolder(context: context)
         cdInbox.name = ImapSync.defaultImapInboxName
         cdInbox.account = cdOwnAccount
-        Record.saveAndWait()
+        context.saveAndLogErrors()
 
         return cdOwnAccount
     }

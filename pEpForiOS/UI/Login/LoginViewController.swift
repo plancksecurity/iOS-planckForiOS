@@ -81,10 +81,6 @@ class LoginViewController: BaseViewController {
         return true
     }
 
-    override func didSetAppConfig() {
-        super.didSetAppConfig()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewModel()

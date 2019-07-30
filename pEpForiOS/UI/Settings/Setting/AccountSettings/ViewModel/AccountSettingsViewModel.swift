@@ -48,9 +48,9 @@ public class AccountSettingsViewModel {
     /// and also the implementation of the verification.
     public var verifiableAccount: VerifiableAccountProtocol?
 
-    var messageModelService: MessageModelService
+    var messageModelService: MessageModelServiceProtocol
 
-    public init(account: Account, messageModelService: MessageModelService) {
+    public init(account: Account, messageModelService: MessageModelServiceProtocol) {
         self.messageModelService = messageModelService
 
         // We are using a copy of the data here.
@@ -217,12 +217,7 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
     public func didEndVerification(result: Result<Void, Error>) {
         switch result {
         case .success(()):
-            do {
-                try verifiableAccount?.save()
                 delegate?.didVerify(result: .ok)
-            } catch {
-                Log.shared.errorAndCrash(error: error)
-            }
         case .failure(let error):
             if let imapError = error as? ImapSyncError {
                 delegate?.didVerify(

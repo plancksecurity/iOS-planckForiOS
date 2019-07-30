@@ -111,14 +111,13 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     private func setBodyPeek(for message:Message) {
         if let bodyPeek = internalBoddyPeek {
-           self.bodyPeek = bodyPeek
+            self.bodyPeek = bodyPeek
         } else {
-            let operation = getBodyPeekOperation(for: message) { bodyPeek in
-                self.bodyPeek = bodyPeek
+            let operation = getBodyPeekOperation(for: message) { [weak self] bodyPeek in
+                // It's valid to loose self here. The view can dissappear @ any time.
+                self?.bodyPeek = bodyPeek
             }
-            if(!operation.isFinished){
-                addToRunningOperations(operation)
-            }
+            addToRunningOperations(operation)
         }
     }
 
@@ -157,32 +156,28 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     class func getSummary(fromMessage msg: Message) -> String {
         var body: String?
+        if var text = msg.longMessage {
+            text = text.stringCleanedFromNSAttributedStingAttributes()
+                .replaceNewLinesWith(" ")
+                .trimmed()
+            body = text
+            //        } else if let html = safeMsg.longMessageFormatted {
+        } else if let html = msg.longMessageFormatted {
+            // Limit the size of HTML to parse
+            // That might result in a messy preview but valid messages use to offer a plaintext
+            // version while certain spam mails have thousands of lines of invalid HTML, causing
+            // the parser to take minutes to parse one message.
+            let factorHtmlTags = 3
+            let numChars = maxBodyPreviewCharacters * factorHtmlTags
+            let truncatedHtml = html.prefix(ofLength: numChars)
+            body = truncatedHtml.extractTextFromHTML()
 
-        let session = Session()
-        session.performAndWait {
-            let safeMsg = msg.safeForSession(session)
-            if var text = safeMsg.longMessage {
-                text = text
-                    .stringCleanedFromNSAttributedStingAttributes()
-                    .replaceNewLinesWith(" ")
-                    .trimmed()
-                body = text
-            } else if let html = safeMsg.longMessageFormatted {
-                // Limit the size of HTML to parse
-                // That might result in a messy preview but valid messages use to offer a plaintext
-                // version while certain spam mails have thousands of lines of invalid HTML, causing
-                // the parser to take minutes to parse one message.
-                let factorHtmlTags = 3
-                let numChars = maxBodyPreviewCharacters * factorHtmlTags
-                let truncatedHtml = html.prefix(ofLength: numChars)
-                body = truncatedHtml.extractTextFromHTML()
+            //IOS-1347:
+            // We might want to cleans when displaying instead of when saving.
+            // Waiting for details. See IOS-1347.
 
-                //IOS-1347:
-                // We might want to cleans when displaying instead of when saving.
-                // Waiting for details. See IOS-1347.
-
-                body = body?.replaceNewLinesWith(" ").trimmed()
-            }
+            body = body?.replaceNewLinesWith(" ").trimmed()
+            //            }
         }
         guard let safeBody = body else {
             return ""
@@ -323,7 +318,9 @@ extension MessageViewModel {
         queue.addOperation(op)
     }
 
-    private func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> SelfReferencingOperation {
+    private func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> Operation {
+        let session = Session()
+        let safeMsg = message.safeForSession(session)
 
         let getBodyPeekOperation = SelfReferencingOperation { [weak self] operation in
             guard
@@ -334,10 +331,7 @@ extension MessageViewModel {
             guard let me = self else {
                 return
             }
-            let session = Session()
             session.performAndWait {
-                let safeMsg = message.safeForSession(session)
-
                 guard !operation.isCancelled else {
                     return
                 }
@@ -356,27 +350,24 @@ extension MessageViewModel {
         return getBodyPeekOperation
     }
 
-    private func getSecurityBadgeOperation(completion: @escaping (UIImage?) -> ())
-        -> SelfReferencingOperation {
+    private func getSecurityBadgeOperation(completion: @escaping (UIImage?) -> ()) -> Operation {
         let msg = message()
-
+        let session = Session()
+        guard let safeMsg = msg?.safeForSession(session) else {
+            // return empty OP
+            return Operation()
+        }
+        
         let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
             guard let me = self else {
                 return
             }
-            let session = Session()
-            session.performAndWait {
-                guard
-                    let safeMsg = msg?.safeForSession(session),
-                    let operation = operation,
-                    !operation.isCancelled
-                    else {
-                        return
-                }
 
-                if (!operation.isCancelled) {
-                    me.profilePictureComposer.securityBadge(for: safeMsg, completion: completion)
+            session.performAndWait {
+                guard let operation = operation, !operation.isCancelled else {
+                    return
                 }
+                me.profilePictureComposer.securityBadge(for: safeMsg, completion: completion)
             }
         }
         return getSecurityBadgeOperation

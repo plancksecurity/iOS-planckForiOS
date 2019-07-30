@@ -13,28 +13,12 @@ import CoreData
 @testable import MessageModel
 import PEPObjCAdapterFramework
 
-class PEPSessionTest: XCTestCase {
-    var persistentSetup: PersistentSetup!
-    var moc: NSManagedObjectContext!
-
-    // MARK: - Setup
-
-    override func setUp() {
-        super.setUp()
-        XCTAssertTrue(PEPUtil.pEpClean())
-        persistentSetup = PersistentSetup()
-        moc = Stack.shared.mainContext
-    }
-    override func tearDown() {
-        persistentSetup = nil
-        PEPSession.cleanup()
-        super.tearDown()
-    }
+class PEPSessionTest: CoreDataDrivenTestBase {
 
     //MARK: - Test
 
     func testPEPConversion() {
-        let account = SecretTestData().createWorkingAccount()
+        let account = SecretTestData().createWorkingAccount(context: moc)
         account.save()
 
         let folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
@@ -56,6 +40,7 @@ class PEPSessionTest: XCTestCase {
             XCTFail("No messages ...")
             return
         }
+//        let first = message.cdObject
         let cdmessage1 = first
         let cdmessage2 = cdmessage1
         let pepmessage = cdmessage1.pEpMessageDict()

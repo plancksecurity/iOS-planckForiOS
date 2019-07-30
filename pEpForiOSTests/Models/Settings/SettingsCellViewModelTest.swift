@@ -16,7 +16,7 @@ class SettingsCellViewModelTest: CoreDataDrivenTestBase {
     var viewModel: SettingsCellViewModel!
 
     public func testDetail() {
-        givenThereIsAViewModel(with: .showLog)
+        givenThereIsAViewModel(with: .credits)
 
         XCTAssertNil(viewModel.detail)
 
@@ -33,14 +33,6 @@ class SettingsCellViewModelTest: CoreDataDrivenTestBase {
         viewModel.delete()
 
         waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
-    public func testTitleIsCorrectInShowLog() {
-        givenThereIsAViewModel(with: .showLog)
-
-        let title = viewModel.title
-
-        XCTAssertEqual(title, NSLocalizedString("Logging", comment: ""))
     }
 
     public func testTitleIsCorrectInCredits() {
@@ -76,7 +68,7 @@ class SettingsCellViewModelTest: CoreDataDrivenTestBase {
     }
 
     public func testGetValue() {
-        givenThereIsAViewModel(with: .showLog)
+        givenThereIsAViewModel(with: .credits)
 
         XCTAssertEqual(viewModel.value, nil)
 

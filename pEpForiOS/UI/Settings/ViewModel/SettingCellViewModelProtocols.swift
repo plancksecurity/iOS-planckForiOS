@@ -26,6 +26,10 @@ protocol ComplexSettingCellViewModelProtocol: SettingCellViewModelProtocol {
     var type : SettingsCellViewModel.SettingType { get }
 }
 
+protocol SettingsActionCellViewModelProtocol: SettingCellViewModelProtocol {
+    var type: SettingsActionCellViewModel.ActionCellType { get }
+}
+
 /// Common identifier
 protocol SettingCellViewModelProtocol {
     var cellIdentifier: String { get }

@@ -26,6 +26,16 @@ public class DefaultAppSettings: AppSettingsProtocol {
         }
     }
 
+    public var keySyncEnabled: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: AppSettings.keyKeySyncEnabled)
+        }
+        set {
+            UserDefaults.standard.set(newValue,
+                                      forKey: AppSettings.keyKeySyncEnabled)
+        }
+    }
+    
     public var unencryptedSubjectEnabled: Bool {
         get {
             return UserDefaults.standard.bool(forKey: AppSettings.keyUnencryptedSubjectEnabled)
@@ -66,6 +76,16 @@ public class DefaultAppSettings: AppSettingsProtocol {
         }
     }
 
+    public var lastKnownDeviceGroupState: DeviceGroupState {
+        get {
+            let rawValue = UserDefaults.standard.integer(forKey: AppSettings.keyLastKnowDeviceGroupStateRawValue) 
+            return DeviceGroupState(rawValue: rawValue) ?? DeviceGroupState.sole
+        }
+        set {
+            UserDefaults.standard.set(newValue.rawValue, forKey: AppSettings.keyLastKnowDeviceGroupStateRawValue)
+        }
+    }
+
     // MARK: - Setup
 
     private func setup() {
@@ -81,9 +101,11 @@ public class DefaultAppSettings: AppSettingsProtocol {
     private func registerDefaults() {
         var defaults = [String: Any]()
         defaults[AppSettings.keyReinitializePepOnNextStartup] = false
+        defaults[AppSettings.keyKeySyncEnabled] = false
         defaults[AppSettings.keyUnencryptedSubjectEnabled] = true
         defaults[AppSettings.keyThreadedViewEnabled] = true
         defaults[AppSettings.keyPassiveMode] = false
+        defaults[AppSettings.keyLastKnowDeviceGroupStateRawValue] = DeviceGroupState.sole.rawValue
 
         UserDefaults.standard.register(defaults: defaults)
     }
