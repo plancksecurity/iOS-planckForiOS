@@ -52,6 +52,15 @@ final class SettingsViewModel {
         return nil
     }
 
+    func removeLeaveDeviceGroupCell() {
+        for section in sections {
+            guard section.type == .keySync else {
+                continue
+            }
+            section.removeLeaveDeviceGroupCell()
+        }
+    }
+
     //temporal stub
     func canBeShown(Message: Message? ) -> Bool {
         return false

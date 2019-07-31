@@ -268,6 +268,7 @@ extension SettingsTableViewController {
             if let error = me.viewModel.leaveDeviceGroupPressed() {
                 Log.shared.errorAndCrash("%@", error.localizedDescription)
             }
+            me.viewModel.removeLeaveDeviceGroupCell()
             me.updateModel()
         }
         showAlert(title, comment, buttonTitle, leavingAction, indexPath)

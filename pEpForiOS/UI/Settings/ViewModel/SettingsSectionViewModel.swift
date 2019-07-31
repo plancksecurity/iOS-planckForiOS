@@ -59,10 +59,12 @@ final class SettingsSectionViewModel {
         }
     }
 
-    private func generateKeySyncCells(_ messageModelService: MessageModelServiceProtocol) {
-        cells.append(EnableKeySyncViewModel(messageModelService))
-        if isInDeviceGroup() {
-            cells.append(SettingsActionCellViewModel(type: .leaveKeySyncGroup))
+    func removeLeaveDeviceGroupCell() {
+        cells.removeAll { cell in
+            guard let actionCell = cell as? SettingsActionCellViewModel else {
+                return false
+            }
+            return actionCell.type == .leaveKeySyncGroup
         }
     }
 
@@ -112,5 +114,12 @@ extension SettingsSectionViewModel {
             return false
         }
         return keySyncDeviceGroupService.deviceGroupState == .grouped
+    }
+
+    private func generateKeySyncCells(_ messageModelService: MessageModelServiceProtocol) {
+        cells.append(EnableKeySyncViewModel(messageModelService))
+        if isInDeviceGroup() {
+            cells.append(SettingsActionCellViewModel(type: .leaveKeySyncGroup))
+        }
     }
 }
