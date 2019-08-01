@@ -68,6 +68,11 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
 
         // THEN
         XCTAssertTrue(keySyncDeviceGroupServiceMoc.didCallLeaveDeviceGroup)
+        guard let section = keySyncSection() else { return }
+        for cell in section.cells {
+            guard let cell = cell as? SettingsActionCellViewModel else { continue }
+            XCTAssertFalse(cell.type == .leaveKeySyncGroup)
+        }
     }
 
     func testKeySyncEnabledSetTrue() {
@@ -75,12 +80,13 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
         setupViewModel()
 
         // WHEN
-        for section in settingsVM.sections {
-            guard section.type == SettingsSectionViewModel.SectionType.keySync else { continue }
-            for cell in section.cells {
-                guard let cell = cell as? EnableKeySyncViewModel else { continue }
-                cell.setSwitch(value: true)
-            }
+        guard let section = keySyncSection() else {
+            XCTFail()
+            return
+        }
+        for cell in section.cells {
+            guard let cell = cell as? EnableKeySyncViewModel else { continue }
+            cell.setSwitch(value: true)
         }
 
         // THEN
@@ -111,5 +117,13 @@ extension SettingsViewModelTest {
         messageModelServiceMoc = MessageModelServiceMoc()
         keySyncDeviceGroupServiceMoc = KeySyncDeviceGroupServiceMoc()
         settingsVM = SettingsViewModel(messageModelServiceMoc, keySyncDeviceGroupServiceMoc)
+    }
+
+    private func keySyncSection() -> SettingsSectionViewModel? {
+        for section in settingsVM.sections {
+            guard section.type == SettingsSectionViewModel.SectionType.keySync else { continue }
+            return section
+        }
+        return nil
     }
 }
