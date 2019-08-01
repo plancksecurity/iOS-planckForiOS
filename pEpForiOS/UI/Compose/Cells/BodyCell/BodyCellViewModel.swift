@@ -141,8 +141,9 @@ extension BodyCellViewModel {
     }
 
     private func removeInlinedAttachments(_ removees: [Attachment]) {
-        if removees.count > 0 {
-            inlinedAttachments = inlinedAttachments.filter { !removees.contains($0) }
+        for attachmentToRemove in removees {
+            inlinedAttachments.removeAll { $0 == attachmentToRemove } //Delete from message
+            attachmentToRemove.delete() //Delete from session
         }
     }
 }
