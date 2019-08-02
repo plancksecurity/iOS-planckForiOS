@@ -60,11 +60,51 @@ class DeleteOldSyncMessagesTest: CoreDataDrivenTestBase {
         XCTAssertFalse(syncMessageFresh.isImapDeleted())
     }
 
+    func testSyncMessagesWithoutSentDate() {
+        let allMessages1 = CdMessage.all() as? [CdMessage] ?? []
+        XCTAssertEqual(allMessages1.count, 0)
+
+        let inbox = CdFolder(context: moc)
+        inbox.folderType = .inbox
+        inbox.account = cdAccount
+        inbox.name = ImapSync.defaultImapInboxName
+
+        guard let myId = cdAccount.identity else {
+            XCTFail()
+            return
+        }
+
+        let syncMessageWithoutSent = createSyncMessage(folder: inbox,
+                                                       ownIdentity: myId,
+                                                       sentDate: nil)
+
+        moc.saveAndLogErrors()
+
+        XCTAssertFalse(syncMessageWithoutSent.isImapDeleted())
+
+        let expSyncMailsDeleted = expectation(description: "expSyncMailsDeleted")
+        let opDelete = DeleteOldSyncMailsOperation(parentName: #function)
+        opDelete.completionBlock = {
+            expSyncMailsDeleted.fulfill()
+        }
+        let bgQueue = OperationQueue()
+        bgQueue.addOperation(opDelete)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(opDelete.hasErrors())
+        })
+
+        moc.refreshAllObjects()
+
+        XCTAssertFalse(syncMessageWithoutSent.isImapDeleted())
+    }
+
     // MARK: - Helpers
 
     func createSyncMessage(folder: CdFolder,
                            ownIdentity: CdIdentity,
-                           sentDate: Date) -> CdMessage {
+                           sentDate: Date?) -> CdMessage {
         let syncMessage = CdMessage(context: moc)
         syncMessage.parent = folder
         syncMessage.from = ownIdentity
