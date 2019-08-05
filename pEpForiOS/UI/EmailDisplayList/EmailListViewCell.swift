@@ -38,6 +38,13 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 
     private var viewModel: MessageViewModel?
 
+    /**
+     Original selection background color
+     - Note: When a cell is selected in edit mode the background color must be the same as
+     unselected.
+     For that reason we need to store the original selected background color to avoid loosing it
+     if we need it in the future.
+     */
     private var originalBackgroundSelectionColor: UIColor?
 
     private var hasAttachment:Bool = false {
@@ -223,8 +230,14 @@ extension EmailListViewCell {
         dateLabel.font = font
     }
 
+    /**
+     This method highlights the cell that is being pressed.
+     - Note: We only accept this if the cell is not in edit mode.
+     */
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-
+        if !isEditing {
+            super.setHighlighted(highlighted, animated: animated)
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
