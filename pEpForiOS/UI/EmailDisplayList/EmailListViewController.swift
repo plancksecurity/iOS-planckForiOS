@@ -218,7 +218,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     private func showEmail(forCellAt indexPath: IndexPath) {
-        performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
+        guard let splitViewController = self.splitViewController else {
+            return
+        }
+        if splitViewController.isCollapsed {
+            performSegue(withIdentifier: SegueIdentifier.segueShowEmailIphone, sender: self)
+        } else {
+            performSegue(withIdentifier: SegueIdentifier.segueShowEmailIpad, sender: self)
+        }
     }
 
     private func showNoMessageSelectedIfNeeded() {
@@ -1055,7 +1062,8 @@ extension EmailListViewController: SegueHandlerType {
     
     enum SegueIdentifier: String {
         case segueAddNewAccount
-        case segueShowEmail
+        case segueShowEmailIpad
+        case segueShowEmailIphone
         case segueCompose
         case segueReply
         case segueReplyAll
@@ -1078,7 +1086,7 @@ extension EmailListViewController: SegueHandlerType {
              .segueCompose,
              .segueEditDraft:
             setupComposeViewController(for: segue)
-        case .segueShowEmail:
+        case .segueShowEmailIpad:
             guard let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? EmailViewController,
                 let indexPath = lastSelectedIndexPath,
@@ -1093,6 +1101,21 @@ extension EmailListViewController: SegueHandlerType {
             vc.delegate = model
             model?.currentDisplayedMessage = vc
             model?.indexPathShown = indexPath
+        case .segueShowEmailIphone:
+            guard let vc = segue.destination as? EmailViewController,
+                let indexPath = lastSelectedIndexPath,
+                let message = model?.message(representedByRowAt: indexPath) else {
+                    Log.shared.errorAndCrash("Segue issue")
+                    return
+            }
+            vc.appConfig = appConfig
+            vc.message = message
+            //vc.folderShow = model?.getFolderToShow()
+            vc.messageId = indexPath.row //!!!: that looks wrong
+            vc.delegate = model
+            model?.currentDisplayedMessage = vc
+            model?.indexPathShown = indexPath
+
       //  case .segueShowThreadedEmail:
         /*    guard let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? ThreadViewController,
