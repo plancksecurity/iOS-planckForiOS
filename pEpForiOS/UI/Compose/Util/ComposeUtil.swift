@@ -145,7 +145,7 @@ struct ComposeUtil {
 
     /// Creates a message from the given ComposeView State
     ///
-    /// - note: Runs on the main Session
+    /// - note: Must only be used on the main Session
     ///
     /// - Parameter state: state to get data from
     /// - Returns: new message with data from given state
