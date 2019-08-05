@@ -285,6 +285,12 @@ UIPickerViewDataSource, UITextFieldDelegate {
         if textField == passwordTextfield {
             passWordChanged = true
         }
+        if textField == smtpPortTextfield || textField == imapPortTextfield {
+
+            return string.isDigits
+
+        }
+
         return true
     }
 
