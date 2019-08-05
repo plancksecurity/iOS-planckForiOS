@@ -80,9 +80,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func gracefullyShutdownServices() {
         guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
             else {
-                Log.shared.warn(
-                    "Will not start background sync, pending %d",
-                    syncUserActionsAndCleanupbackgroundTaskId.rawValue)
+                Log.shared.errorAndCrash("Will not start background sync, pending %d",
+                                         syncUserActionsAndCleanupbackgroundTaskId.rawValue)
                 return
         }
         syncUserActionsAndCleanupbackgroundTaskId =
