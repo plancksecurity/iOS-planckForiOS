@@ -509,6 +509,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             Log.shared.errorAndCrash("dequeued wrong cell")
         }
 
+        //restores selection state for updated or replaced cells.
         if lastSelectedIndexPath == indexPath {
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         }
