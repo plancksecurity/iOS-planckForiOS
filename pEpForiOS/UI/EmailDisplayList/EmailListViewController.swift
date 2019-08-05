@@ -217,6 +217,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         performSegue(withIdentifier: SegueIdentifier.segueEditDraft, sender: self)
     }
 
+    /// we have to handle the ipad/iphone segue in a different way. see IOS-1737
     private func showEmail(forCellAt indexPath: IndexPath) {
         guard let splitViewController = self.splitViewController else {
             return
