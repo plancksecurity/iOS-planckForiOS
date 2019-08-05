@@ -16,6 +16,11 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
     var keySyncDeviceGroupServiceMoc: KeySyncDeviceGroupServiceMoc!
     var messageModelServiceMoc: MessageModelServiceMoc!
 
+    func givenThereAreTwoAccounts() {
+        _ = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
+        moc.saveAndLogErrors()
+    }
+
 
     //Number of sections corresponding to SettingsSectionViewModel.SectionType count
     let sections = 4
@@ -54,9 +59,25 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(thereIsOneLessAccount)
     }
 
-    func givenThereAreTwoAccounts() {
-        _ = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
-        moc.saveAndLogErrors()
+    func testDeleteAccountWithMoreThanOneAccountUpdatesDefaultAccount() {
+
+        givenThereAreTwoAccounts()
+        setupViewModel()
+
+        let firstAccountPosition = (0,0)
+        let secondAccountPosition = (0,0)
+        let defaultAddress = (settingsVM[0][0] as? SettingsCellViewModel)?.account?.user.address
+
+        AppSettings.defaultAccount = defaultAddress
+        XCTAssertEqual(AppSettings.defaultAccount, defaultAddress)
+
+        settingsVM.delete(section: firstAccountPosition.0, cell: firstAccountPosition.1)
+
+        XCTAssertNotEqual(AppSettings.defaultAccount, defaultAddress)
+        XCTAssertNotNil(AppSettings.defaultAccount)
+        let newDefaultAddress = (settingsVM[secondAccountPosition.0][secondAccountPosition.1] as? SettingsCellViewModel)?.account?.user.address
+        XCTAssertEqual(AppSettings.defaultAccount, newDefaultAddress)
+
     }
 
     func testLeaveDeviceGroupPressed() {
