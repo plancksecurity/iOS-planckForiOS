@@ -405,10 +405,10 @@ class BodyCellViewModelTest: XCTestCase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
-    func testShouldReplaceText_attachment_removeFive() {
-        shouldReplaceText_attachment(remove: 10)
+    func testShouldReplaceText_attachment_multipleRemove() {
+        let attachmentsToRemoveCount = 10
+        shouldReplaceText_attachment(remove: attachmentsToRemoveCount)
     }
-
     func shouldReplaceText_attachment (remove: Int) {
         var textBuilder = NSAttributedString(string: "Test text")
         let range = NSRange(location: 0, length: 0)
