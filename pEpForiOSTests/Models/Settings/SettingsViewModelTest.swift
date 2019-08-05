@@ -16,6 +16,11 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
     var keySyncDeviceGroupServiceMoc: KeySyncDeviceGroupServiceMoc!
     var messageModelServiceMoc: MessageModelServiceMoc!
 
+    func givenThereAreTwoAccounts() {
+        _ = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
+        moc.saveAndLogErrors()
+    }
+
 
     //Number of sections corresponding to SettingsSectionViewModel.SectionType count
     let sections = 4
@@ -54,9 +59,25 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(thereIsOneLessAccount)
     }
 
-    func givenThereAreTwoAccounts() {
-        _ = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
-        moc.saveAndLogErrors()
+    func testDeleteAccountWithMoreThanOneAccountUpdatesDefaultAccount() {
+
+        givenThereAreTwoAccounts()
+        setupViewModel()
+
+        let firstAccountPosition = (0,0)
+        let secondAccountPosition = (0,0)
+        let defaultAddress = (settingsVM[0][0] as? SettingsCellViewModel)?.account?.user.address
+
+        AppSettings.defaultAccount = defaultAddress
+        XCTAssertEqual(AppSettings.defaultAccount, defaultAddress)
+
+        settingsVM.delete(section: firstAccountPosition.0, cell: firstAccountPosition.1)
+
+        XCTAssertNotEqual(AppSettings.defaultAccount, defaultAddress)
+        XCTAssertNotNil(AppSettings.defaultAccount)
+        let newDefaultAddress = (settingsVM[secondAccountPosition.0][secondAccountPosition.1] as? SettingsCellViewModel)?.account?.user.address
+        XCTAssertEqual(AppSettings.defaultAccount, newDefaultAddress)
+
     }
 
     func testLeaveDeviceGroupPressed() {
@@ -68,6 +89,11 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
 
         // THEN
         XCTAssertTrue(keySyncDeviceGroupServiceMoc.didCallLeaveDeviceGroup)
+        guard let section = keySyncSection() else { return }
+        for cell in section.cells {
+            guard let cell = cell as? SettingsActionCellViewModel else { continue }
+            XCTAssertFalse(cell.type == .leaveKeySyncGroup)
+        }
     }
 
     func testKeySyncEnabledSetTrue() {
@@ -75,12 +101,13 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
         setupViewModel()
 
         // WHEN
-        for section in settingsVM.sections {
-            guard section.type == SettingsSectionViewModel.SectionType.keySync else { continue }
-            for cell in section.cells {
-                guard let cell = cell as? EnableKeySyncViewModel else { continue }
-                cell.setSwitch(value: true)
-            }
+        guard let section = keySyncSection() else {
+            XCTFail()
+            return
+        }
+        for cell in section.cells {
+            guard let cell = cell as? EnableKeySyncViewModel else { continue }
+            cell.setSwitch(value: true)
         }
 
         // THEN
@@ -111,5 +138,13 @@ extension SettingsViewModelTest {
         messageModelServiceMoc = MessageModelServiceMoc()
         keySyncDeviceGroupServiceMoc = KeySyncDeviceGroupServiceMoc()
         settingsVM = SettingsViewModel(messageModelServiceMoc, keySyncDeviceGroupServiceMoc)
+    }
+
+    private func keySyncSection() -> SettingsSectionViewModel? {
+        for section in settingsVM.sections {
+            guard section.type == SettingsSectionViewModel.SectionType.keySync else { continue }
+            return section
+        }
+        return nil
     }
 }
