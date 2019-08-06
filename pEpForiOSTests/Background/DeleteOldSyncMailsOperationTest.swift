@@ -1,5 +1,5 @@
 //
-//  DeleteOldSyncMessagesTest.swift
+//  DeleteOldSyncMailsOperationTest.swift
 //  pEpForiOSTests
 //
 //  Created by Dirk Zimmermann on 30.07.19.
