@@ -45,6 +45,7 @@ final class SettingsViewModel {
         }
         do {
             try keySyncDeviceGroupService.leaveDeviceGroup()
+            removeLeaveDeviceGroupCell()
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)
             return error
@@ -79,5 +80,14 @@ final class SettingsViewModel {
 extension SettingsViewModel {
     private func sectionIsValid(section: Int) -> Bool {
         return section >= 0 && section < sections.count
+    }
+
+    private func removeLeaveDeviceGroupCell() {
+        for section in sections {
+            guard section.type == .keySync else {
+                continue
+            }
+            section.removeLeaveDeviceGroupCell()
+        }
     }
 }
