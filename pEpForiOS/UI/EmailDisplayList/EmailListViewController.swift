@@ -20,8 +20,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     public static let storyboardId = "EmailListViewController"
-    ///This is used to handle the selection row when it recives an update
-    ///and also when swipeCellAction is performed to store from which cell the action is done.
+    /// This is used to handle the selection row when it recives an update
+    /// and also when swipeCellAction is performed to store from which cell the action is done.
     private var lastSelectedIndexPath: IndexPath?
 
     let searchController = UISearchController(searchResultsController: nil)

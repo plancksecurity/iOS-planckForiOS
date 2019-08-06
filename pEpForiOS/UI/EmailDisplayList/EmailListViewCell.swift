@@ -231,8 +231,8 @@ extension EmailListViewCell {
     }
 
 
-    ///This method highlights the cell that is being pressed.
-    ///- Note: We only accept this if the cell is not in edit mode.
+    /// This method highlights the cell that is being pressed.
+    /// - Note: We only accept this if the cell is not in edit mode.
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         if !isEditing {
             super.setHighlighted(highlighted, animated: animated)
@@ -250,8 +250,8 @@ extension EmailListViewCell {
         }
     }
 
-    ///- Returns: " " (a space) instead of an empty String, otherwise the original String
-    ///unchanged.
+    /// - Returns: " " (a space) instead of an empty String, otherwise the original String
+    /// unchanged.
     private func atLeastOneSpace(possiblyEmptyString: String) -> String {
         if possiblyEmptyString == "" {
             return " "
