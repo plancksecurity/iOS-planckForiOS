@@ -609,12 +609,8 @@ extension ComposeViewModel {
         // We MUST use an independent Session here. We do not want the outer world to see it nor to
         //save it when saving the MainSession.
         let session = Session()
-        var privateState = ComposeViewModelState(initData: state.initData, delegate: state.delegate)
-        privateState.inlinedAttachments =
-            Attachment.makeSafe(state.inlinedAttachments, forSession: session)
-        privateState.nonInlinedAttachments =
-            Attachment.makeSafe(state.nonInlinedAttachments, forSession: session)
-        guard let msg = ComposeUtil.messageToSend(withDataFrom: privateState, session: session) else {
+        let safeState = state.makeSafe(forSession: session)
+        guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState, session: session) else {
                 Log.shared.errorAndCrash("No message")
                 return
         }
