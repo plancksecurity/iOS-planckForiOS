@@ -223,9 +223,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
         if splitViewController.isCollapsed {
-            performSegue(withIdentifier: SegueIdentifier.segueShowEmailIphone, sender: self)
+            performSegue(withIdentifier: SegueIdentifier.segueShowEmailNotSplitView, sender: self)
         } else {
-            performSegue(withIdentifier: SegueIdentifier.segueShowEmailIpad, sender: self)
+            performSegue(withIdentifier: SegueIdentifier.segueShowEmailSplitView, sender: self)
         }
     }
 
