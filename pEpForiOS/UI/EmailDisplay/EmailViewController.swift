@@ -98,6 +98,7 @@ class EmailViewController: BaseTableViewController {
 
     private func showPepRating() {
         if let privacyStatusIcon = showPepRating(pEpRating: message?.pEpRating()) {
+
             let handshakeCombos = message?.handshakeActionCombinations() ?? []
             if !handshakeCombos.isEmpty {
                 let tapGestureRecognizer = UITapGestureRecognizer(
@@ -424,7 +425,6 @@ class EmailViewController: BaseTableViewController {
         }
         Message.imapDelete(messages: [message])
         delegate?.emailDisplayDidDelete(message: message)
-        navigationController?.popViewController(animated: true)
     }
 
     /**
