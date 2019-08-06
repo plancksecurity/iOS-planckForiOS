@@ -10,9 +10,6 @@ import Foundation
 
 extension String {
     var isDigits: Bool {
-        guard !self.isEmpty else {
-            return false
-        }
         return self.contains { Int(String($0)) == nil }
     }
 }
