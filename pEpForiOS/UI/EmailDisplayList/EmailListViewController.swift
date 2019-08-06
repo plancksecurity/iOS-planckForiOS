@@ -1087,7 +1087,7 @@ extension EmailListViewController: SegueHandlerType {
              .segueCompose,
              .segueEditDraft:
             setupComposeViewController(for: segue)
-        case .segueShowEmailNotSplitView:
+        case .segueShowEmailSplitView:
             guard let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? EmailViewController,
                 let indexPath = lastSelectedIndexPath,
@@ -1104,7 +1104,7 @@ extension EmailListViewController: SegueHandlerType {
             vc.delegate = model
             model?.currentDisplayedMessage = vc
             model?.indexPathShown = indexPath
-        case .segueShowEmailSplitView:
+        case .segueShowEmailNotSplitView:
             guard let vc = segue.destination as? EmailViewController,
                 let indexPath = lastSelectedIndexPath,
                 let message = model?.message(representedByRowAt: indexPath) else {
