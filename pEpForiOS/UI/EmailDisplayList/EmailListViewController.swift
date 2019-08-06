@@ -1063,8 +1063,8 @@ extension EmailListViewController: SegueHandlerType {
     
     enum SegueIdentifier: String {
         case segueAddNewAccount
-        case segueShowEmailIpad
-        case segueShowEmailIphone
+        case segueShowEmailSplitView
+        case segueShowEmailNotSplitView
         case segueCompose
         case segueReply
         case segueReplyAll
@@ -1087,7 +1087,7 @@ extension EmailListViewController: SegueHandlerType {
              .segueCompose,
              .segueEditDraft:
             setupComposeViewController(for: segue)
-        case .segueShowEmailIpad:
+        case .segueShowEmailNotSplitView:
             guard let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? EmailViewController,
                 let indexPath = lastSelectedIndexPath,
@@ -1097,12 +1097,14 @@ extension EmailListViewController: SegueHandlerType {
             }
             vc.appConfig = appConfig
             vc.message = message
+            ///This is commented as we "disabled" the feature in the message of
+            ///showing next and previous directly from the emailView, that is needed for that feature
             //vc.folderShow = model?.getFolderToShow()
             vc.messageId = indexPath.row //!!!: that looks wrong
             vc.delegate = model
             model?.currentDisplayedMessage = vc
             model?.indexPathShown = indexPath
-        case .segueShowEmailIphone:
+        case .segueShowEmailSplitView:
             guard let vc = segue.destination as? EmailViewController,
                 let indexPath = lastSelectedIndexPath,
                 let message = model?.message(representedByRowAt: indexPath) else {
@@ -1111,6 +1113,8 @@ extension EmailListViewController: SegueHandlerType {
             }
             vc.appConfig = appConfig
             vc.message = message
+            ///This is commented as we "disabled" the feature in the message of
+            ///showing next and previous directly from the emailView, that is needed for that feature
             //vc.folderShow = model?.getFolderToShow()
             vc.messageId = indexPath.row //!!!: that looks wrong
             vc.delegate = model
