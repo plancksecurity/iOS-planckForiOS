@@ -76,7 +76,7 @@ extension PEPColor {
 
 extension PEPRating {
     func uiColor() -> UIColor? {
-        return PEPUtil.pEpColor(pEpRating: self).uiColor()
+        return PEPUtils.pEpColor(pEpRating: self).uiColor()
     }
 
     func statusIcon() -> UIImage? {

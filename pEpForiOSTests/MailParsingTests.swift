@@ -46,7 +46,7 @@ class MailParsingTests: CoreDataDrivenTestBase {
                 return
         }
 
-        let pEpMessage = PEPUtil.pEp(cdMessage: cdMessage, outgoing: true)
+        let pEpMessage = PEPUtils.pEp(cdMessage: cdMessage, outgoing: true)
 
         let theAttachments = pEpMessage.attachments ?? []
         XCTAssertEqual(theAttachments.count, 1)
@@ -83,7 +83,7 @@ class MailParsingTests: CoreDataDrivenTestBase {
                 return
         }
 
-        let pEpMessage = PEPUtil.pEp(cdMessage: cdMessage, outgoing: true)
+        let pEpMessage = PEPUtils.pEp(cdMessage: cdMessage, outgoing: true)
 
         let theAttachments = pEpMessage.attachments ?? []
         XCTAssertEqual(theAttachments.count, 2)
@@ -120,7 +120,7 @@ class MailParsingTests: CoreDataDrivenTestBase {
                 return
         }
 
-        let pEpMessage = PEPUtil.pEp(cdMessage: cdMessage, outgoing: true)
+        let pEpMessage = PEPUtils.pEp(cdMessage: cdMessage, outgoing: true)
 
         XCTAssertEqual(pEpMessage.shortMessage, "blah")
         XCTAssertNotNil(pEpMessage.longMessage)

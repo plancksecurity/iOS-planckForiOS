@@ -78,10 +78,12 @@ class HandshakePartnerTableViewCellViewModel {
      */
     let ownIdentity: Identity
 
+    private let partnerIdentity: Identity
+
     /**
      Cache the updated own identity.
      */
-    let pEpSelf: PEPIdentity
+    var pEpSelf: PEPIdentity
 
     /**
      Cache the updated partner identity.
@@ -93,12 +95,12 @@ class HandshakePartnerTableViewCellViewModel {
     init(ownIdentity: Identity, partner: Identity) {
         self.expandedState = .notExpanded
         self.trustwordsLanguage = "en"
-        self.partnerRating = PEPUtil.pEpRating(identity: partner)
-        self.partnerColor = partnerRating.pEpColor()
         self.ownIdentity = ownIdentity
-
-        pEpSelf = ownIdentity.updatedIdentity()
-        pEpPartner = partner.updatedIdentity()
+        self.partnerIdentity = partner
+        self.partnerRating = PEPUtils.pEpRating(identity: partner)
+        self.pEpPartner = partner.updatedIdentity()
+        self.pEpSelf = ownIdentity.updatedIdentity()
+        self.partnerColor = partnerRating.pEpColor()
 
         do {
             isPartnerpEpUser = try PEPSession().isPEPUser(pEpPartner).boolValue
@@ -106,7 +108,10 @@ class HandshakePartnerTableViewCellViewModel {
             Log.shared.error("%@", "\(err)")
             isPartnerpEpUser = false
         }
-        setPartnerImage(for: partner)
+
+        partnerIdentity.session.performAndWait { [weak self] in
+            self?.setPartnerImage(for: partner)
+        }
         updateTrustwords()
     }
 
@@ -170,7 +175,7 @@ class HandshakePartnerTableViewCellViewModel {
 
         do {
             partnerRating = try PEPSession().rating(for: pEpPartner).pEpRating
-            partnerColor = PEPUtil.pEpColor(pEpRating: partnerRating)
+            partnerColor = PEPUtils.pEpColor(pEpRating: partnerRating)
         } catch let error as NSError {
             assertionFailure("\(error)")
         }
