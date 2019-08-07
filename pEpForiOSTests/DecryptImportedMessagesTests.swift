@@ -9,7 +9,8 @@
 import XCTest
 import CoreData
 
-@testable import pEpForiOS
+//!!!: Must be moved to MM.
+
 @testable import MessageModel
 import PEPObjCAdapterFramework
 
