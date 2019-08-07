@@ -29,7 +29,64 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
         queue = OperationQueue()
     }
 
-    func testUnreadMail() {
+    // MARK: - No Mails
+
+    func testUnreadMail_normalOnly_none() {
+        assertNewMailsService(numNewNormalMessages: 0, numNewAutoconsumableMessages: 0)
+    }
+
+    // MARK: - Normal Mails Only
+
+    func testUnreadMail_normalOnly_one() {
+        assertNewMailsService(numNewNormalMessages: 1, numNewAutoconsumableMessages: 0)
+    }
+
+    func testUnreadMail_normalOnly_two() {
+        assertNewMailsService(numNewNormalMessages: 2, numNewAutoconsumableMessages: 0)
+    }
+
+    func testUnreadMail_normalOnly_many() {
+        assertNewMailsService(numNewNormalMessages: 5, numNewAutoconsumableMessages: 0)
+    }
+
+    // MARK: - Autocomsumable Mails Only
+
+    func testUnreadMail_autoconsumableOnly_one() {
+        assertNewMailsService(numNewNormalMessages: 0, numNewAutoconsumableMessages: 1)
+    }
+
+    func testUnreadMail_autoconsumableOnly_two() {
+        assertNewMailsService(numNewNormalMessages: 0, numNewAutoconsumableMessages: 2)
+    }
+
+    func testUnreadMail_autoconsumableOnly_many() {
+        assertNewMailsService(numNewNormalMessages: 0, numNewAutoconsumableMessages: 5)
+    }
+
+    // MARK: - Normal & Auto-Consumable Mails Exist
+
+    func testUnreadMail_normalAndAutoconsumable_one() {
+        assertNewMailsService(numNewNormalMessages: 1, numNewAutoconsumableMessages: 1)
+    }
+
+    func testUnreadMail_normalAndAutoconsumable_multi_sameCount() {
+        assertNewMailsService(numNewNormalMessages: 2, numNewAutoconsumableMessages: 2)
+    }
+
+    func testUnreadMail_normalAndAutoconsumable_multi_lessNormal() {
+        assertNewMailsService(numNewNormalMessages: 1, numNewAutoconsumableMessages: 2)
+    }
+
+    func testUnreadMail_normalAndAutoconsumable_multi_lessAutoconsumable() {
+        assertNewMailsService(numNewNormalMessages: 2, numNewAutoconsumableMessages: 1)
+    }
+}
+
+// MARK: - HELPERS
+
+extension FetchNumberOfNewMailsServiceTest {
+
+    func assertNewMailsService(numNewNormalMessages: Int, numNewAutoconsumableMessages: Int) {
         loginIMAP(imapSyncData: imapSyncData, errorContainer: errorContainer, queue: queue)
         fetchFoldersIMAP(imapSyncData: imapSyncData, queue: queue)
 
@@ -54,48 +111,48 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
         var newMailsExpectedToBeCounted = [CdMessage]()
         var newMailsNotExpectedToBeCounted = [CdMessage]()
 
-        let mail1 = CdMessage(context: moc)
-        mail1.uuid = MessageID.generateUUID(localPart: "testUnreadMail")
-        mail1.uid = 0
-        mail1.parent = cdInbox
-        mail1.addToTo(partnerId)
-        mail1.shortMessage = "Are you ok?"
-        mail1.longMessage = "Hi there!"
-        newMailsExpectedToBeCounted.append(mail1)
+        // Create new normal mails
+        for _ in 0..<numNewNormalMessages {
+            let newNormalMail = CdMessage(context: moc) //!!!: replace with TestuTil.createCdMessage after this file has been moved to MM
+            newNormalMail.uuid = MessageID.generateUUID(localPart: "testUnreadMail")
+            newNormalMail.uid = 0
+            newNormalMail.parent = cdInbox
+            newNormalMail.addToTo(partnerId)
+            newNormalMail.shortMessage = "Are you ok?"
+            newNormalMail.longMessage = "Hi there!"
+            newMailsExpectedToBeCounted.append(newNormalMail)
+        }
 
-        let mailAutoConsumable = CdMessage(context: moc)
-        mailAutoConsumable.uuid = MessageID.generateUUID(localPart: "testUnreadMail")
-        mailAutoConsumable.uid = 0
-        mailAutoConsumable.parent = cdInbox
-        mailAutoConsumable.addToTo(partnerId)
-        //
-        mailAutoConsumable.shortMessage = "auto-consumable"
-        mailAutoConsumable.longMessage = "auto-consumable"
-        let header = CdHeaderField(context: moc)
-        header.name = kPepHeaderAutoConsume
-        header.value = kPepValueAutoConsumeYes
-        mailAutoConsumable.optionalFields = NSOrderedSet(array: [header])
-        newMailsNotExpectedToBeCounted.append(mailAutoConsumable)
-        //
+        // Create new autoconsumable mails
+        for _ in 0..<numNewAutoconsumableMessages {
+            let newAutoConsumableMail = CdMessage(context: moc)//!!!: replace with TestuTil.createCdMessage after this file has been moved to MM
+            newAutoConsumableMail.uuid = MessageID.generateUUID(localPart: "testUnreadMail")
+            newAutoConsumableMail.uid = 0
+            newAutoConsumableMail.parent = cdInbox
+            newAutoConsumableMail.addToTo(partnerId)
+            //
+            newAutoConsumableMail.shortMessage = "auto-consumable"
+            newAutoConsumableMail.longMessage = "auto-consumable"
+            let header = CdHeaderField(context: moc)
+            header.name = kPepHeaderAutoConsume
+            header.value = kPepValueAutoConsumeYes
+            newAutoConsumableMail.optionalFields = NSOrderedSet(array: [header])
+            newMailsNotExpectedToBeCounted.append(newAutoConsumableMail)
+        }
+        // save
         moc.saveAndLogErrors()
 
-        XCTAssertFalse(mail1.hasAutoConsumeHeader)
-        XCTAssertTrue(mailAutoConsumable.hasAutoConsumeHeader)
-
+        // upload to server ...
         appendMailsIMAP(folder: cdInbox,
                         imapSyncData: imapSyncData,
                         errorContainer: errorContainer,
                         queue: queue)
-
+        // ... and fetch again
         guard let numNewMails = fetchNumberOfNewMails(errorContainer: errorContainer, context: moc)
             else {
                 XCTFail()
                 return
         }
-        //BUFF:
-        print("BUFF: numNewMailsOrig: \(numNewMailsOrig) ## numNewMailsOrig / 2: \(numNewMailsOrig / 2)(UID)")
-        print("BUFF: numNewMails: \(numNewMails) ## numNewMails / 2: \(numNewMails / 2)(UID)")
-            //
-        XCTAssertEqual(numNewMails, numNewMailsOrig + newMailsNotExpectedToBeCounted.count)
+        XCTAssertEqual(numNewMails, numNewMailsOrig + newMailsExpectedToBeCounted.count)
     }
 }
