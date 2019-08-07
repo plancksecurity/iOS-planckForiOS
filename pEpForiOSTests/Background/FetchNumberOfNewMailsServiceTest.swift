@@ -13,6 +13,7 @@
 import XCTest
 
 import CoreData
+import PEPObjCAdapterFramework
 
 @testable import pEpForiOS
 @testable import MessageModel
@@ -50,6 +51,9 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
         partnerId.addressBookID = nil
         partnerId.userName = "USER_somepartner@example.com"
 
+        var newMailsExpectedToBeCounted = [CdMessage]()
+        var newMailsNotExpectedToBeCounted = [CdMessage]()
+
         let mail1 = CdMessage(context: moc)
         mail1.uuid = MessageID.generateUUID(localPart: "testUnreadMail")
         mail1.uid = 0
@@ -57,7 +61,26 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
         mail1.addToTo(partnerId)
         mail1.shortMessage = "Are you ok?"
         mail1.longMessage = "Hi there!"
+        newMailsExpectedToBeCounted.append(mail1)
+
+        let mailAutoConsumable = CdMessage(context: moc)
+        mailAutoConsumable.uuid = MessageID.generateUUID(localPart: "testUnreadMail")
+        mailAutoConsumable.uid = 0
+        mailAutoConsumable.parent = cdInbox
+        mailAutoConsumable.addToTo(partnerId)
+        //
+        mailAutoConsumable.shortMessage = "auto-consumable"
+        mailAutoConsumable.longMessage = "auto-consumable"
+        let header = CdHeaderField(context: moc)
+        header.name = kPepHeaderAutoConsume
+        header.value = kPepValueAutoConsumeYes
+        mailAutoConsumable.optionalFields = NSOrderedSet(array: [header])
+        newMailsNotExpectedToBeCounted.append(mailAutoConsumable)
+        //
         moc.saveAndLogErrors()
+
+        XCTAssertFalse(mail1.hasAutoConsumeHeader)
+        XCTAssertTrue(mailAutoConsumable.hasAutoConsumeHeader)
 
         appendMailsIMAP(folder: cdInbox,
                         imapSyncData: imapSyncData,
@@ -69,6 +92,10 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
                 XCTFail()
                 return
         }
-        XCTAssertEqual(numNewMails, numNewMailsOrig + 1)
+        //BUFF:
+        print("BUFF: numNewMailsOrig: \(numNewMailsOrig) ## numNewMailsOrig / 2: \(numNewMailsOrig / 2)(UID)")
+        print("BUFF: numNewMails: \(numNewMails) ## numNewMails / 2: \(numNewMails / 2)(UID)")
+            //
+        XCTAssertEqual(numNewMails, numNewMailsOrig + newMailsNotExpectedToBeCounted.count)
     }
 }
