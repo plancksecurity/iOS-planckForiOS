@@ -51,7 +51,7 @@ final class KeySyncHandshakeViewModel {
         delegate?.change(handshakeWordsTo: trustWorkds())
     }
 
-    func didPress(action: Action) {
+    func handle(action: Action) {
         switch action {
         case .accept, .cancel, .decline:
             delegate?.didPress(action: action)
@@ -85,7 +85,7 @@ extension KeySyncHandshakeViewModel {
                                                       full: fullTrustWords)
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)
-            return String()
+            return ""
         }
     }
 

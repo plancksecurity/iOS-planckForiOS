@@ -44,7 +44,7 @@ extension UIViewController {
     func presentKeySyncHandShakeAlert(meFPR: String, partnerFPR: String,
                         completion: @escaping (KeySyncHandshakeViewController.Action) -> Void ) {
 
-        let storyboard = UIStoryboard(name: "Reusable", bundle: .main)
+        let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
         guard let handShakeViewController = storyboard.instantiateViewController(
             withIdentifier: KeySyncHandshakeViewController.storyboardId) as? KeySyncHandshakeViewController else {
                 Log.shared.errorAndCrash("Fail to instantiateViewController KeySyncHandshakeViewController")

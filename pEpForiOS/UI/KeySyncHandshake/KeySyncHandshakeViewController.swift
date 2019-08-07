@@ -9,6 +9,10 @@
 import UIKit
 
 final class KeySyncHandshakeViewController: UIViewController {
+    enum Action {
+        case cancel, decline, accept
+    }
+
     static let storyboardId = "KeySyncHandshakeViewController"
     
     @IBOutlet weak var keySyncWords: UILabel! {
@@ -30,12 +34,12 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
     @IBOutlet weak var alertTitle: UILabel! {
         didSet {
-            alertTitle.text = NSLocalizedString("p≡p Sync", comment: "handshake sync alert title")
+            alertTitle.text = NSLocalizedString("p≡p Sync", comment: "keySync handshake alert title")
         }
     }
     @IBOutlet weak var message: UILabel! {
         didSet {
-            message.text = NSLocalizedString("A second device is detected. Please confirm the Trustwords on both devices to sync all your privacy. Shall we synchronize?", comment: "handshake sync alert message")
+            message.text = NSLocalizedString("A second device is detected. Please confirm the Trustwords on both devices to sync all your privacy. Shall we synchronize?", comment: "keySync handshake alert message")
         }
     }
 
@@ -66,10 +70,6 @@ final class KeySyncHandshakeViewController: UIViewController {
         }
     }
 
-    enum Action {
-        case cancel, decline, accept
-    }
-
     var completion: ((Action) -> Void)?
 
     private let viewModel = KeySyncHandshakeViewModel()
@@ -92,7 +92,7 @@ final class KeySyncHandshakeViewController: UIViewController {
         guard let action = pressedAction(tag: sender.tag) else {
             return
         }
-        viewModel.didPress(action: action)
+        viewModel.handle(action: action)
     }
 
     @IBAction func didLongPressWords(_ sender: UILongPressGestureRecognizer) {

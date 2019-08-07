@@ -16,6 +16,8 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
     var expected: State?
 
     override func setUp() {
+        super.setUp()
+
         keySyncHandshakeVM = KeySyncHandshakeViewModel(pEpSession: PEPSessionMoc())
         keySyncHandshakeVM?.fingerPrints(meFPR: "", partnerFPR: "")
         keySyncHandshakeVM?.delegate = self
@@ -25,19 +27,20 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
     }
 
     override func tearDown() {
-        unwrap(value: keySyncHandshakeVM)
-        unwrap(value: actual)
-        unwrap(value: expected)
-
         keySyncHandshakeVM?.delegate = nil
         keySyncHandshakeVM = nil
         actual = nil
         expected = nil
+
+        super.tearDown()
     }
 
     func testDidSelectLanguageToOtherOrSame() {
         // GIVEN
-        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
+        guard let keySyncHandshakeVM = keySyncHandshakeVM else {
+            XCTFail()
+            return
+        }
         expected = State(didCallClosePicker: true, didCallToUpdateTrustedWords: true)
 
         // WHEN
@@ -49,11 +52,14 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
 
     func testDidPressActionAccept() {
         // GIVEN
-        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
+        guard let keySyncHandshakeVM = keySyncHandshakeVM else {
+            XCTFail()
+            return
+        }
         expected = State(didCallDidPressAction: true, pressedAction: .accept)
 
         // WHEN
-        keySyncHandshakeVM.didPress(action: .accept)
+        keySyncHandshakeVM.handle(action: .accept)
 
         // THEN
         assertExpectations()
@@ -61,11 +67,14 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
 
     func testDidPressActionChangeLanguage() {
         // GIVEN
-        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
+        guard let keySyncHandshakeVM = keySyncHandshakeVM else {
+            XCTFail()
+            return
+        }
         expected = State(didCallShowPicker: true, languagesToShow: ["", ""])
 
         // WHEN
-        keySyncHandshakeVM.didPress(action: .changeLanguage)
+        keySyncHandshakeVM.handle(action: .changeLanguage)
 
         // THEN
         assertExpectations()
@@ -73,11 +82,14 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
 
     func testDidPressActionDecline() {
         // GIVEN
-        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
+        guard let keySyncHandshakeVM = keySyncHandshakeVM else {
+            XCTFail()
+            return
+        }
         expected = State(didCallDidPressAction: true, pressedAction: .decline)
 
         // WHEN
-        keySyncHandshakeVM.didPress(action: .decline)
+        keySyncHandshakeVM.handle(action: .decline)
 
         // THEN
         assertExpectations()
@@ -85,11 +97,14 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
 
     func testDidPressActionCancel() {
         // GIVEN
-        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
+        guard let keySyncHandshakeVM = keySyncHandshakeVM else {
+            XCTFail()
+            return
+        }
         expected = State(didCallDidPressAction: true, pressedAction: .cancel)
 
         // WHEN
-        keySyncHandshakeVM.didPress(action: .cancel)
+        keySyncHandshakeVM.handle(action: .cancel)
 
         // THEN
         assertExpectations()
@@ -97,7 +112,10 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
 
     func testDidLongPressWords() {
         // GIVEN
-        let keySyncHandshakeVM = unwrap(value: self.keySyncHandshakeVM)
+        guard let keySyncHandshakeVM = keySyncHandshakeVM else {
+            XCTFail()
+            return
+        }
         expected = State(didCallToUpdateTrustedWords: true, fullWordsVersion: true)
 
         // WHEN
@@ -134,22 +152,16 @@ extension KeySyncHandshakeViewModelTest: KeySyncHandshakeViewModelDelegate {
 // MARK: - Private
 
 extension KeySyncHandshakeViewModelTest {
-    @discardableResult
-    private func unwrap<T>(value: T?) -> T {
-        guard let value = value else {
-            XCTFail()
-            fatalError("value is nil")
-        }
-        return value
-    }
-
     private func setDefaultActualState() {
         actual = State()
     }
 
     private func assertExpectations() {
-        let expected = unwrap(value: self.expected)
-        let actual = unwrap(value: self.actual)
+        guard let expected = expected,
+            let actual = actual else {
+                XCTFail()
+                return
+        }
 
         //bools
         XCTAssertEqual(expected.didCallShowPicker, actual.didCallShowPicker)
