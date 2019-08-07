@@ -405,6 +405,43 @@ class BodyCellViewModelTest: XCTestCase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    func testShouldReplaceText_attachment_multipleRemove() {
+        let attachmentsToRemoveCount = 10
+        shouldReplaceText_attachment(remove: attachmentsToRemoveCount)
+    }
+    func shouldReplaceText_attachment (remove: Int) {
+        var textBuilder = NSAttributedString(string: "Test text")
+        let range = NSRange(location: 0, length: 0)
+        var initialAttachments = [Attachment]()
+
+        for i in 0..<remove {
+            let testAttachment = createTestAttachment(fileName: String(i), addImage: true)
+            textBuilder = insertTextattachment(for: testAttachment, in: range, of: textBuilder)
+            initialAttachments.append(testAttachment)
+        }
+
+        let attachmentToRemoveRange = NSRange(location: 0, length: textBuilder.length)
+        let expectedAttachmentsLeft = [Attachment]()
+
+        setupAssertionDelegates(initialPlaintext: nil,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: initialAttachments,
+                                expectInsertCalled: nil,
+                                inserted: nil,
+                                expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
+                                expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: true),
+                                inlined: expectedAttachmentsLeft,
+                                expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
+                                exectedPlain: nil,
+                                exectedHtml: nil)
+        let shouldReplace = vm.shouldReplaceText(in: attachmentToRemoveRange,
+                                                 of: textBuilder,
+                                                 with: "")
+        XCTAssertTrue(shouldReplace, "Should alway be true")
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     // MARK: handleUserClickedSelectMedia
 
     func testHandleUserClickedSelectMedia() {

@@ -167,9 +167,12 @@ struct ComposeUtil {
         message.replaceAttachments(with: state.inlinedAttachments + state.nonInlinedAttachments)
         message.pEpProtected = state.pEpProtection
         if !state.pEpProtection {
-            message.setOriginalRatingHeader(rating: PEPRating.unencrypted)
+            let unprotectedRating = PEPRating.unencrypted
+            message.setOriginalRatingHeader(rating: unprotectedRating)
+            message.pEpRatingInt = Int(unprotectedRating.rawValue)
         } else {
             message.setOriginalRatingHeader(rating: state.rating)
+            message.pEpRatingInt = Int(state.rating.rawValue)
         }
 
         message.imapFlags.seen = imapSeenState(forMessageToSend: message)

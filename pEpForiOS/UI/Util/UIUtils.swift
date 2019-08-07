@@ -30,7 +30,8 @@ struct UIUtils {
                                         inViewController: vc)
     }
 
-    static func showAlertWithOnlyPositiveButton(title: String?, message: String?,
+    static func showAlertWithOnlyPositiveButton(title: String?,
+                                                message: String?,
                                                 inViewController vc: UIViewController) {
         // Do not show alerts when app is in background.
         if UIApplication.shared.applicationState != .active {

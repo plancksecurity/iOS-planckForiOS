@@ -111,14 +111,13 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     private func setBodyPeek(for message:Message) {
         if let bodyPeek = internalBoddyPeek {
-           self.bodyPeek = bodyPeek
+            self.bodyPeek = bodyPeek
         } else {
-            let operation = getBodyPeekOperation(for: message) { bodyPeek in
-                self.bodyPeek = bodyPeek
+            let operation = getBodyPeekOperation(for: message) { [weak self] bodyPeek in
+                // It's valid to loose self here. The view can dissappear @ any time.
+                self?.bodyPeek = bodyPeek
             }
-            if(!operation.isFinished){
-                addToRunningOperations(operation)
-            }
+            addToRunningOperations(operation)
         }
     }
 

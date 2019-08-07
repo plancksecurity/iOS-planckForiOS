@@ -18,21 +18,36 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     var draftsFolder: Folder!
     var emailListVM : EmailListViewModel!
     var masterViewController: TestMasterViewController!
+    var acc : Account!
 
     /** this set up a view model with one account and one folder saved **/
     override func setUp() {
         super.setUp()
 
-        let acc = cdAccount.account()
+        acc = cdAccount.account()
+
 
         folder = Folder(name: "inbox", parent: nil, account: acc, folderType: .inbox)
         trashFolder = Folder(name: "trash",
                              parent: nil,
-                             account: folder.account,
+                             account: acc,
                              folderType: .trash)
         outboxFolder = Folder(name: "outbox", parent: nil, account: acc, folderType: .outbox)
         draftsFolder = Folder(name: "drafts", parent: nil, account: acc, folderType: .drafts)
         moc.saveAndLogErrors()
+    }
+
+    func secondAccountSetUp() {
+        let acc2 = SecretTestData().createWorkingAccount(number: 1)
+        _ = Folder(name: "inbox", parent: nil, account: acc2, folderType: .inbox)
+        _ = Folder(name: "trash",
+                             parent: nil,
+                             account: acc2,
+                             folderType: .trash)
+        _ = Folder(name: "outbox", parent: nil, account: acc2, folderType: .outbox)
+        _ = Folder(name: "drafts", parent: nil, account: acc2, folderType: .drafts)
+        moc.saveAndLogErrors()
+
     }
 
     // MARK: - Test section
@@ -367,6 +382,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(emailListVM.rowCount, 11)
         setUpViewModelExpectations(expectationDidDeleteDataAt: true)
         msg.delete()
+        Session.main.commit()
         waitForExpectations(timeout: TestUtil.waitTime)
         var index = emailListVM.index(of: msg)
         XCTAssertNil(index)
@@ -464,14 +480,40 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(isSelectable)
     }
 
+    func testComposePrefilledFromAccountIsCorrectlySettedWithOnlyOneAccount() {
+        let expectedFrom = folder.account.user
+        setupViewModel()
+        let composeVM = emailListVM.composeViewModelForNewMessage()
+        XCTAssertEqual(composeVM.state.from, expectedFrom)
+    }
+
+    func testComposePrefilledFromAccountIsDefaultAccountFromUnifiedIboxWithMultipleAccounts() {
+        let expectedFrom = folder.account.user
+        secondAccountSetUp()
+        AppSettings.defaultAccount = acc.user.address
+        setupViewModel(forfolder: UnifiedInbox())
+        let composeVM = emailListVM.composeViewModelForNewMessage()
+        XCTAssertEqual(composeVM.state.from, expectedFrom)
+    }
+
+    func testComposePrefilledFromAccountIsFolderAccountFromSpecificFolderWithMultipleAccounts() {
+        let expectedFrom = folder.account.user
+        secondAccountSetUp()
+        setupViewModel(forfolder: folder)
+        let composeVM = emailListVM.composeViewModelForNewMessage()
+        XCTAssertEqual(composeVM.state.from, expectedFrom)
+    }
+
+
+
     // Mark: - setting up
 
-    fileprivate func setUpViewModel(forFolder folder: Folder, masterViewController: TestMasterViewController) {
+    private func setUpViewModel(forFolder folder: DisplayableFolderProtocol, masterViewController: TestMasterViewController) {
         self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController, folderToShow: folder)
     }
 
-    fileprivate func setupViewModel(forfolder internalFolder: Folder? = nil) {
-        let folderToUse: Folder
+    private func setupViewModel(forfolder internalFolder: DisplayableFolderProtocol? = nil) {
+        let folderToUse: DisplayableFolderProtocol
         if internalFolder == nil {
             folderToUse = folder
         } else {
@@ -480,29 +522,29 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         createViewModelWithExpectations(forFolder: folderToUse, expectedUpdateView: true)
     }
 
-    /*fileprivate func setSearchFilter(text: String) {
+    /*private func setSearchFilter(text: String) {
         setNewUpdateViewExpectation()
         emailListVM.setSearchFilter(forSearchText: text)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
 
-    fileprivate func removeSearchFilter() {
+    private func removeSearchFilter() {
         setNewUpdateViewExpectation()
         emailListVM.removeSearchFilter()
         waitForExpectations(timeout: TestUtil.waitTime)
     }*/
 
-    fileprivate func setNewUpdateViewExpectation() {
+    private func setNewUpdateViewExpectation() {
         let updateViewExpectation = expectation(description: "UpdateViewCalled")
         masterViewController.expectationUpdateViewCalled = updateViewExpectation
     }
 
-    fileprivate func createViewModelWithExpectations(forFolder folder: Folder, expectedUpdateView: Bool) {
+    private func createViewModelWithExpectations(forFolder folder: DisplayableFolderProtocol, expectedUpdateView: Bool) {
         let viewModelTestDelegate = TestMasterViewController()
         setUpViewModel(forFolder: folder, masterViewController: viewModelTestDelegate)
     }
 
-    fileprivate func setUpViewModelExpectations(expectedUpdateView: Bool = false,
+    private func setUpViewModelExpectations(expectedUpdateView: Bool = false,
                                                 expectationDidInsertDataAt: Bool = false,
                                                 expectationDidUpdateDataAt: Bool = false,
                                                 expectationDidDeleteDataAt: Bool = false ) {
@@ -536,7 +578,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
             expectationDidRemoveDataAt: excpectationDidDeleteDataAtCalled)
     }
 
-    fileprivate func getSafeLastLookAt() -> Date {
+    private func getSafeLastLookAt() -> Date {
         guard let safeLastLookedAt = folder?.lastLookedAt as Date? else {
             XCTFail()
             return Date()

@@ -38,6 +38,15 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 
     private var viewModel: MessageViewModel?
 
+    /**
+     Original selection background color
+     - Note: When a cell is selected in edit mode the background color must be the same as
+     unselected.
+     For that reason we need to store the original selected background color to avoid loosing it
+     if we need it in the future.
+     */
+    private var originalBackgroundSelectionColor: UIColor?
+
     private var hasAttachment:Bool = false {
         didSet {
             if hasAttachment {
@@ -72,6 +81,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        originalBackgroundSelectionColor = selectedBackgroundView?.backgroundColor
         contactImageView.applyContactImageCornerRadius()
         resetToDefault()
     }
@@ -220,10 +230,28 @@ extension EmailListViewCell {
         dateLabel.font = font
     }
 
-    /**
-     - Returns: " " (a space) instead of an empty String, otherwise the original String
-     unchanged.
-     */
+
+    /// This method highlights the cell that is being pressed.
+    /// - Note: We only accept this if the cell is not in edit mode.
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        if !isEditing {
+            super.setHighlighted(highlighted, animated: animated)
+        }
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: false)
+        let viewForHighlight = UIView()
+        self.selectedBackgroundView = viewForHighlight
+        if self.isEditing {
+            viewForHighlight.backgroundColor = UIColor.clear
+        } else {
+            viewForHighlight.backgroundColor = originalBackgroundSelectionColor
+        }
+    }
+
+    /// - Returns: " " (a space) instead of an empty String, otherwise the original String
+    /// unchanged.
     private func atLeastOneSpace(possiblyEmptyString: String) -> String {
         if possiblyEmptyString == "" {
             return " "
