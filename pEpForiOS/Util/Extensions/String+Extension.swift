@@ -9,7 +9,21 @@
 import Foundation
 
 extension String {
+
     var isDigits: Bool {
-        return self.contains { Int(String($0)) == nil }
+        return self.contains { Int(String($0)) != nil }
     }
+
+    var isBackspace: Bool {
+        guard let char = cString(using: .utf8) else {
+            return false
+        }
+        let isBackSpace = strcmp(char, "\\b")
+        if (isBackSpace == -92) {
+            return true
+        }
+        return false
+    }
+    
 }
+
