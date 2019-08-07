@@ -91,7 +91,7 @@ class DecryptImportedMessagesTests: CoreDataDrivenTestBase {
     func testSetOwnKey() {
         let cdOwnAccount = DecryptionUtil.createLocalAccount(
             ownUserName: "Rick Deckard",
-            ownUserID: "rick_deckard_uid",
+            ownUserID: CdIdentity.pEpOwnUserID,
             ownEmailAddress: "iostest001@peptest.ch",
             context: moc)
 
