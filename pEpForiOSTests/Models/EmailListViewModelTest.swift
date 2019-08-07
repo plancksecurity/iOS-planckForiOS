@@ -382,6 +382,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(emailListVM.rowCount, 11)
         setUpViewModelExpectations(expectationDidDeleteDataAt: true)
         msg.delete()
+        Session.main.commit()
         waitForExpectations(timeout: TestUtil.waitTime)
         var index = emailListVM.index(of: msg)
         XCTAssertNil(index)
