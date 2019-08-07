@@ -27,11 +27,10 @@ class DecryptImportedMessagesTests: CoreDataDrivenTestBase {
                                                              ownEmailAddress: "someone@gmx.de",
                                                              context: moc)
         self.backgroundQueue = OperationQueue()
-        let cdMessage = DecryptionUtil.decryptTheMessage(
-            testCase: self,
-            backgroundQueue: backgroundQueue,
-            cdOwnAccount: cdOwnAccount,
-            fileName: "IOS-1300_odt_attachment.txt")
+        let cdMessage = DecryptionUtil.decryptTheMessage(testCase: self,
+                                                         backgroundQueue: backgroundQueue,
+                                                         cdOwnAccount: cdOwnAccount,
+                                                         fileName: "IOS-1300_odt_attachment.txt")
 
         guard let theCdMessage = cdMessage else {
             XCTFail()
@@ -83,10 +82,10 @@ class DecryptImportedMessagesTests: CoreDataDrivenTestBase {
     /**
      IOS-1378
      - Note: If you need to manually verify something:
-       * The public/secret key pair of Leon Kowalski (subject)
-         is in `Leon Kowalski (19B9EE3B) – Private.asc`.
-       * The public/secret key pair of Harry Bryant (sender) is in
-         `Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc`.
+     * The public/secret key pair of Leon Kowalski (subject)
+     is in `Leon Kowalski (19B9EE3B) – Private.asc`.
+     * The public/secret key pair of Harry Bryant (sender) is in
+     `Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc`.
      */
     func testSetOwnKey() {
         let cdOwnAccount = DecryptionUtil.createLocalAccount(
@@ -134,76 +133,76 @@ class DecryptImportedMessagesTests: CoreDataDrivenTestBase {
 
     // ENGINE-505
     /*
-    func testNullInnerMimeType() {
-        let cdOwnAccount = DecryptionUtil.createLocalAccount(
-            ownUserName: "ThisIsMe",
-            ownUserID: "User_Me",
-            ownEmailAddress: "guile-user@gnu.org")
+     func testNullInnerMimeType() {
+     let cdOwnAccount = DecryptionUtil.createLocalAccount(
+     ownUserName: "ThisIsMe",
+     ownUserID: "User_Me",
+     ownEmailAddress: "guile-user@gnu.org")
 
-        self.backgroundQueue = OperationQueue()
-        let cdMessage = DecryptionUtil.decryptTheMessage(
-            testCase: self,
-            backgroundQueue: backgroundQueue,
-            cdOwnAccount: cdOwnAccount,
-            fileName: "ENGINE-505_Mail_NullInnerMimeType.txt")
+     self.backgroundQueue = OperationQueue()
+     let cdMessage = DecryptionUtil.decryptTheMessage(
+     testCase: self,
+     backgroundQueue: backgroundQueue,
+     cdOwnAccount: cdOwnAccount,
+     fileName: "ENGINE-505_Mail_NullInnerMimeType.txt")
 
-        guard let theCdMessage = cdMessage else {
-            XCTFail()
-            return
-        }
+     guard let theCdMessage = cdMessage else {
+     XCTFail()
+     return
+     }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(.unencrypted.rawValue))
-        XCTAssertEqual(theCdMessage.shortMessage,
-                       "Re: Help needed debugging segfault with Guile 1.8.7")
-        XCTAssertNil(theCdMessage.longMessage)
+     XCTAssertEqual(theCdMessage.pEpRating, Int16(.unencrypted.rawValue))
+     XCTAssertEqual(theCdMessage.shortMessage,
+     "Re: Help needed debugging segfault with Guile 1.8.7")
+     XCTAssertNil(theCdMessage.longMessage)
 
-        let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
-        XCTAssertEqual(attachments.count, 2)
+     let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
+     XCTAssertEqual(attachments.count, 2)
 
-        guard let msg = theCdMessage.message() else {
-            XCTFail()
-            return
-        }
+     guard let msg = theCdMessage.message() else {
+     XCTFail()
+     return
+     }
 
-        XCTAssertEqual(msg.attachments.count, 1)
-    }
+     XCTAssertEqual(msg.attachments.count, 1)
+     }
      */
 
     // ENGINE-456 / IOS-1258
     /*
-    func test_ENGINE_459() {
-        let cdOwnAccount = DecryptionUtil.createLocalAccount(
-            ownUserName: "ThisIsMe",
-            ownUserID: "User_Me",
-            ownEmailAddress: "iostest010@peptest.ch")
+     func test_ENGINE_459() {
+     let cdOwnAccount = DecryptionUtil.createLocalAccount(
+     ownUserName: "ThisIsMe",
+     ownUserID: "User_Me",
+     ownEmailAddress: "iostest010@peptest.ch")
 
-        self.backgroundQueue = OperationQueue()
-        let cdMessage = DecryptionUtil.decryptTheMessage(
-            testCase: self,
-            backgroundQueue: backgroundQueue,
-            cdOwnAccount: cdOwnAccount,
-            fileName: "ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt")
+     self.backgroundQueue = OperationQueue()
+     let cdMessage = DecryptionUtil.decryptTheMessage(
+     testCase: self,
+     backgroundQueue: backgroundQueue,
+     cdOwnAccount: cdOwnAccount,
+     fileName: "ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt")
 
-        guard let theCdMessage = cdMessage else {
-            XCTFail()
-            return
-        }
+     guard let theCdMessage = cdMessage else {
+     XCTFail()
+     return
+     }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(.unencrypted.rawValue))
-        XCTAssertEqual(theCdMessage.shortMessage,
-                       "Re: Help needed debugging segfault with Guile 1.8.7")
-        XCTAssertNil(theCdMessage.longMessage)
+     XCTAssertEqual(theCdMessage.pEpRating, Int16(.unencrypted.rawValue))
+     XCTAssertEqual(theCdMessage.shortMessage,
+     "Re: Help needed debugging segfault with Guile 1.8.7")
+     XCTAssertNil(theCdMessage.longMessage)
 
-        let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
-        XCTAssertEqual(attachments.count, 2)
+     let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
+     XCTAssertEqual(attachments.count, 2)
 
-        guard let msg = theCdMessage.message() else {
-            XCTFail()
-            return
-        }
+     guard let msg = theCdMessage.message() else {
+     XCTFail()
+     return
+     }
 
-        XCTAssertEqual(msg.attachments.count, 1)
-    }
+     XCTAssertEqual(msg.attachments.count, 1)
+     }
      */
 
     // MARK: - Helpers
