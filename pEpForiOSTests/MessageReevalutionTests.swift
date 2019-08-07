@@ -134,9 +134,9 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
         senderIdentity = theSenderIdentity
     }
     func testCommunicationTypes() {
-        let senderIdent = senderIdentity.updatedIdentity(session: session)
+        let senderIdent = senderIdentity.updatedIdentity()
         XCTAssertFalse(try! senderIdent.isPEPUser(session).boolValue)
-        XCTAssertEqual(senderIdentity.pEpRating(session: session), .reliable)
+        XCTAssertEqual(senderIdentity.pEpRating(), .reliable)
 
         try! session.keyMistrusted(senderIdent)
 
@@ -186,14 +186,14 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
         for _ in 0..<1 {
             try! session.trustPersonalKey(senderIdent)
             XCTAssertTrue(senderIdent.isConfirmed)
-            XCTAssertEqual(senderIdentity.pEpRating(session: session), .trusted)
+            XCTAssertEqual(senderIdentity.pEpRating(), .trusted)
             reevaluateMessage(
                 expectedRating: .trusted,
                 inBackground: runReevaluationInBackground,
                 infoMessage: "after trust")
 
             try! session.keyMistrusted(senderIdent)
-            XCTAssertEqual(senderIdentity.pEpRating(session: session), .haveNoKey)
+            XCTAssertEqual(senderIdentity.pEpRating(), .haveNoKey)
             reevaluateMessage(
                 expectedRating: .mistrust,
                 inBackground: runReevaluationInBackground,

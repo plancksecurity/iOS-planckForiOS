@@ -26,7 +26,7 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
 
-        XCTAssertTrue(PEPUtil.pEpClean())
+        XCTAssertTrue(PEPUtils.pEpClean())
 
         self.backgroundQueue = OperationQueue()
     }

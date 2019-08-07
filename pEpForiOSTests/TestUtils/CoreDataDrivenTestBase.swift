@@ -50,7 +50,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
         imapSyncData?.sync?.close()
         Stack.shared.reset()
         PEPSession.cleanup()
-        XCTAssertTrue(PEPUtil.pEpClean())
+        XCTAssertTrue(PEPUtils.pEpClean())
         super.tearDown()
     }
 

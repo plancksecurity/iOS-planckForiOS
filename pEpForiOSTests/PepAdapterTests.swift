@@ -24,7 +24,7 @@ class PepAdapterTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        XCTAssertTrue(PEPUtil.pEpClean())
+        XCTAssertTrue(PEPUtils.pEpClean())
     }
     
     override func tearDown() {

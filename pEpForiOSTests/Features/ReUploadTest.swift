@@ -168,7 +168,7 @@ import CoreData
 //
 //    // Similar to super.setup() but without bothering Xcode Test
 //    private func setupWithoutBotheringXCT() {
-//        XCTAssertTrue(PEPUtil.pEpClean())
+//        XCTAssertTrue(PEPUtils.pEpClean())
 //        persistentSetup = PersistentSetup()
 //        let cdAccount = SecretTestData().createWorkingCdAccount()
 //        moc.saveAndLogErrors()
@@ -181,7 +181,7 @@ import CoreData
 //        persistentSetup.tearDownCoreDataStack()
 //        persistentSetup = nil
 //        PEPSession.cleanup()
-//        XCTAssertTrue(PEPUtil.pEpClean())
+//        XCTAssertTrue(PEPUtils.pEpClean())
 //    }
 //
 //    // MARK: The actual test
@@ -253,7 +253,7 @@ import CoreData
 //        }
 //        XCTAssertTrue(msg.uid > 0, "We fetched the message from server")
 //
-//        let senderRatingOnServer = PEPUtil.pEpRatingFromInt(msg.pEpRatingInt)
+//        let senderRatingOnServer = PEPUtils.pEpRatingFromInt(msg.pEpRatingInt)
 //        if expectedSenderRatingOnServerEncrypted {
 //            XCTAssertFalse(senderRatingOnServer == .unencrypted,
 //                           "assumed stored rating on sever")
@@ -305,7 +305,7 @@ import CoreData
 //
 //        XCTAssertTrue(receivedMsg.uid > 0, "We fetched the message from server")
 //
-//        guard let receiverRatingOnServer = PEPUtil.pEpRatingFromInt(receivedMsg.pEpRatingInt) else {
+//        guard let receiverRatingOnServer = PEPUtils.pEpRatingFromInt(receivedMsg.pEpRatingInt) else {
 //            XCTFail("No rating.")
 //            return
 //        }
