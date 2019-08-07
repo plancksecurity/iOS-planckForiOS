@@ -697,7 +697,8 @@ extension EmailViewController: MessageAttachmentDelegate {
                 guard let url = attachmentOp.fileURL else {
                     return
                 }
-                me.didCreateLocally(attachment: attachment,
+                let safeAttachment = attachment.safeForSession(Session.main)
+                me.didCreateLocally(attachment: safeAttachment,
                                        url: url,
                                        cell: cell,
                                        location: location,
