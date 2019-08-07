@@ -54,12 +54,12 @@ class DecryptImportedMessagesTests: CoreDataDrivenTestBase {
      */
     func testDecryptUndisplayedAttachedJpegMessage() {
         let cdOwnAccount = DecryptionUtil.createLocalAccount(
-            ownUserName: CdIdentity.pEpOwnUserID,
-            ownUserID: "User_Me",
+            ownUserName: "User_Me",
+            ownUserID: CdIdentity.pEpOwnUserID,
             ownEmailAddress: "iostest001@peptest.ch",
             context: moc)
 
-        self.backgroundQueue = OperationQueue()
+        backgroundQueue = OperationQueue()
         let cdMessage = DecryptionUtil.decryptTheMessage(
             testCase: self,
             backgroundQueue: backgroundQueue,
