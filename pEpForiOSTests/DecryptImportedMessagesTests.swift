@@ -23,7 +23,7 @@ class DecryptImportedMessagesTests: CoreDataDrivenTestBase {
      */
     func testDecrypt002() {
         let cdOwnAccount = DecryptionUtil.createLocalAccount(ownUserName: "Someonei",
-                                                             ownUserID: "User_Someonei",
+                                                             ownUserID: CdIdentity.pEpOwnUserID,
                                                              ownEmailAddress: "someone@gmx.de",
                                                              context: moc)
         self.backgroundQueue = OperationQueue()
@@ -33,7 +33,7 @@ class DecryptImportedMessagesTests: CoreDataDrivenTestBase {
                                                          fileName: "IOS-1300_odt_attachment.txt")
 
         guard let theCdMessage = cdMessage else {
-            XCTFail()
+            XCTFail("no msg")
             return
         }
 
@@ -53,7 +53,7 @@ class DecryptImportedMessagesTests: CoreDataDrivenTestBase {
      */
     func testDecryptUndisplayedAttachedJpegMessage() {
         let cdOwnAccount = DecryptionUtil.createLocalAccount(
-            ownUserName: "ThisIsMe",
+            ownUserName: CdIdentity.pEpOwnUserID,
             ownUserID: "User_Me",
             ownEmailAddress: "iostest001@peptest.ch",
             context: moc)
