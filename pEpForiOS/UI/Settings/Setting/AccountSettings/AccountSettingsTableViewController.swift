@@ -285,6 +285,12 @@ UIPickerViewDataSource, UITextFieldDelegate {
         if textField == passwordTextfield {
             passWordChanged = true
         }
+        if textField == smtpPortTextfield || textField == imapPortTextfield {
+
+            return string.isDigits
+
+        }
+
         return true
     }
 
@@ -311,6 +317,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
                     inComponent component: Int) {
         if let c = current, let vm = viewModel {
             c.text = vm.svm[row]
+            self.view.endEditing(true)
         }
     }
 }

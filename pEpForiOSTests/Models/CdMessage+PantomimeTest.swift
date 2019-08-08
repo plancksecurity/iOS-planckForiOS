@@ -232,51 +232,52 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     }
 
     func testUpdateFromServer() {
-        let (m, _, localFlags, serverFlags) = createCdMessageForFlags()
+        let m = createCdMessageForFlags()
         let cwFlags = CWFlags()
 
         // Server adds .seen, user just flagged -> both
-        localFlags.flagFlagged = true
+        m.imapFields().localFlags?.flagFlagged = true
         cwFlags.add(.seen)
         XCTAssertTrue(cwFlags.contain(.seen))
         m.updateFromServer(cwFlags: cwFlags, context: moc)
-        XCTAssertTrue(localFlags.flagFlagged)
-        XCTAssertTrue(localFlags.flagSeen)
-        XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
+        XCTAssertTrue(m.imapFields().localFlags?.flagFlagged ?? false)
+        XCTAssertTrue(m.imapFields().localFlags?.flagSeen ?? false)
+        XCTAssertEqual(m.imapFields().serverFlags?.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
 
-        // No user action, server adds .seen -> .seen locally
-        localFlags.reset()
-        serverFlags.reset()
+        // No user action, server adds .seen -> .seen locally (ServerFags)
+        m.imapFields().localFlags?.reset()
+        m.imapFields().serverFlags?.reset()
         m.updateFromServer(cwFlags: cwFlags, context: moc)
-        XCTAssertTrue(localFlags.flagSeen)
-        XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
+        XCTAssertTrue(m.imapFields().localFlags?.flagSeen ?? false)
+        let invalid = Int16(-1)
+        XCTAssertEqual(m.imapFields().serverFlags?.rawFlagsAsShort() ?? invalid, cwFlags.rawFlagsAsShort())
 
         // Conflict: User just unflagged, that should win over the data from the server
-        localFlags.reset()
-        serverFlags.reset()
+        m.imapFields().localFlags?.reset()
+        m.imapFields().serverFlags?.reset()
         cwFlags.removeAll()
         cwFlags.add(.flagged)
-        serverFlags.flagFlagged = true
+        m.imapFields().serverFlags?.flagFlagged = true
         m.updateFromServer(cwFlags: cwFlags, context: moc)
-        XCTAssertFalse(localFlags.flagFlagged)
-        XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
+        XCTAssertFalse(m.imapFields().localFlags?.flagFlagged ?? true)
+        XCTAssertEqual(m.imapFields().serverFlags?.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
 
         // Conflict: User has unset .recent, but that comes as set from the server.
-        localFlags.reset()
-        serverFlags.reset()
+        m.imapFields().localFlags?.reset()
+        m.imapFields().serverFlags?.reset()
         cwFlags.removeAll()
         cwFlags.add(.recent)
         cwFlags.add(.flagged)
-        serverFlags.flagRecent = true
+        m.imapFields().serverFlags?.flagRecent = true
         m.updateFromServer(cwFlags: cwFlags, context: moc)
-        XCTAssertTrue(localFlags.flagRecent)
-        XCTAssertTrue(localFlags.flagFlagged)
-        XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
+        XCTAssertTrue(m.imapFields().localFlags?.flagRecent ?? false)
+        XCTAssertTrue(m.imapFields().localFlags?.flagFlagged ?? false)
+        XCTAssertEqual(m.imapFields().serverFlags?.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
     }
 
     // MARK: - HELPER
 
-    func createCdMessageForFlags() -> (CdMessage, CdImapFields, CdImapFlags, CdImapFlags) {
+    func createCdMessageForFlags() -> CdMessage {
         let m = CdMessage(context: moc)
         let imap = CdImapFields(context: moc)
         let serverFlags = CdImapFlags(context: moc)
@@ -293,7 +294,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         XCTAssertFalse(localFlags.flagDeleted)
         XCTAssertFalse(localFlags.flagFlagged)
 
-        return (m, imap, localFlags, serverFlags)
+        return m
     }
 
     func setAllCurrentImapFlags(of message: CdMessage, to isEnabled: Bool) {
