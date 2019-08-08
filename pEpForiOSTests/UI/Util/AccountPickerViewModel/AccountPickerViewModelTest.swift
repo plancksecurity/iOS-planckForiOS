@@ -76,7 +76,6 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
 
     func testHandleUserSelected_twoAccounts_shouldFail() {
         let firstAccountIdx = 0
-        let sndAccountIdx = 1
         let _ = createAndSaveSecondAccount()
 
         assertUserSelection(selectIdx: firstAccountIdx,
