@@ -50,12 +50,12 @@ extension UIViewController {
                 Log.shared.errorAndCrash("Fail to instantiateViewController KeySyncHandshakeViewController")
                 return
         }
-        handShakeViewController.completion = { action in
+        handShakeViewController.completionHandler { action in
             completion(action)
         }
         handShakeViewController.finderPrints(meFPR: meFPR, partnerFPR: partnerFPR)
 
-        handShakeViewController.modalPresentationStyle = .overCurrentContext
+        handShakeViewController.modalPresentationStyle = .fullScreen
         present(handShakeViewController, animated: true, completion: nil)
     }
 }

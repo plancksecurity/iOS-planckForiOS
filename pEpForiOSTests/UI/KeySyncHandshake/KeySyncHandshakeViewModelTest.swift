@@ -23,6 +23,9 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
         keySyncHandshakeVM?.delegate = self
 
         setDefaultActualState()
+        keySyncHandshakeVM?.completionHandler = { [weak self] action in
+            self?.actual?.pressedAction = action
+        }
         expected = nil
     }
 
@@ -56,7 +59,7 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
             XCTFail()
             return
         }
-        expected = State(didCallDidPressAction: true, pressedAction: .accept)
+        expected = State(didCallDissmissView: true, pressedAction: .accept)
 
         // WHEN
         keySyncHandshakeVM.handle(action: .accept)
@@ -86,7 +89,7 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
             XCTFail()
             return
         }
-        expected = State(didCallDidPressAction: true, pressedAction: .decline)
+        expected = State(didCallDissmissView: true, pressedAction: .decline)
 
         // WHEN
         keySyncHandshakeVM.handle(action: .decline)
@@ -101,7 +104,7 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
             XCTFail()
             return
         }
-        expected = State(didCallDidPressAction: true, pressedAction: .cancel)
+        expected = State(didCallDissmissView: true, pressedAction: .cancel)
 
         // WHEN
         keySyncHandshakeVM.handle(action: .cancel)
@@ -129,13 +132,12 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
 // MARK: - KeySyncHandshakeViewModelDelegate
 
 extension KeySyncHandshakeViewModelTest: KeySyncHandshakeViewModelDelegate {
-    func closePicker() {
-        actual?.didCallClosePicker = true
+    func dissmissView() {
+        actual?.didCallDissmissView = true
     }
 
-    func didPress(action: KeySyncHandshakeViewModel.Action) {
-        actual?.didCallDidPressAction = true
-        actual?.pressedAction = action
+    func closePicker() {
+        actual?.didCallClosePicker = true
     }
 
     func showPicker(withLanguages languages: [String]) {
@@ -166,7 +168,7 @@ extension KeySyncHandshakeViewModelTest {
         //bools
         XCTAssertEqual(expected.didCallShowPicker, actual.didCallShowPicker)
         XCTAssertEqual(expected.didCallClosePicker, actual.didCallClosePicker)
-        XCTAssertEqual(expected.didCallDidPressAction, actual.didCallDidPressAction)
+        XCTAssertEqual(expected.didCallDissmissView, actual.didCallDissmissView)
         XCTAssertEqual(expected.didCallToUpdateTrustedWords, actual.didCallToUpdateTrustedWords)
 
         //values
@@ -186,27 +188,27 @@ extension KeySyncHandshakeViewModelTest {
     struct State: Equatable {
         var didCallShowPicker: Bool
         var didCallClosePicker: Bool
-        var didCallDidPressAction: Bool
+        var didCallDissmissView: Bool
         var didCallToUpdateTrustedWords: Bool
 
         var fullWordsVersion: Bool?
         var languagesToShow: [String]?
         var handShakeWords: String?
-        var pressedAction: KeySyncHandshakeViewModel.Action?
+        var pressedAction: KeySyncHandshakeViewController.Action?
 
         // Default value are default initial state
         init(didCallShowPicker: Bool = false,
              didCallClosePicker: Bool = false,
-             didCallDidPressAction: Bool = false,
+             didCallDissmissView: Bool = false,
              didCallToUpdateTrustedWords: Bool = false,
              fullWordsVersion: Bool = false,
              languagesToShow: [String] = [],
              handShakeWords: String = "",
-             pressedAction: KeySyncHandshakeViewModel.Action? = nil) {
+             pressedAction: KeySyncHandshakeViewController.Action? = nil) {
 
             self.didCallShowPicker = didCallShowPicker
             self.didCallClosePicker = didCallClosePicker
-            self.didCallDidPressAction = didCallDidPressAction
+            self.didCallDissmissView = didCallDissmissView
             self.didCallToUpdateTrustedWords = didCallToUpdateTrustedWords
 
             self.fullWordsVersion = fullWordsVersion

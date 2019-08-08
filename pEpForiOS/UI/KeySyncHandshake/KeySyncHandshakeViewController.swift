@@ -39,7 +39,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
     @IBOutlet weak var message: UILabel! {
         didSet {
-            message.text = NSLocalizedString("A second device is detected. Please confirm the Trustwords on both devices to sync all your privacy. Shall we synchronize?", comment: "keySync handshake alert message")
+            message.text = NSLocalizedString("A second device is detected. \nPlease confirm the Trustwords on both devices to sync all your privacy. Shall we synchronize?", comment: "keySync handshake alert message")
         }
     }
 
@@ -70,8 +70,6 @@ final class KeySyncHandshakeViewController: UIViewController {
         }
     }
 
-    var completion: ((Action) -> Void)?
-
     private let viewModel = KeySyncHandshakeViewModel()
     private var pickerLanguages = [String]()
     private var meFPR: String?
@@ -101,15 +99,16 @@ final class KeySyncHandshakeViewController: UIViewController {
         }
         viewModel.didLongPressWords()
     }
+
+    func completionHandler(_ block: @escaping (Action) -> Void) {
+        viewModel.completionHandler = block
+    }
 }
 
 // MARK: - KeySyncHandshakeViewModelDelegate
+
 extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
-    func didPress(action: KeySyncHandshakeViewModel.Action) {
-        guard let action = viewControllerAction(viewModelAction: action) else {
-            return
-        }
-        completion?(action)
+    func dissmissView() {
         DispatchQueue.main.async { [weak self] in
             self?.dismiss(animated: true, completion: nil)
         }
@@ -170,19 +169,6 @@ extension KeySyncHandshakeViewController {
         case 4:
             return .accept
         default:
-            return nil
-        }
-    }
-
-    private func viewControllerAction(viewModelAction: KeySyncHandshakeViewModel.Action) -> Action? {
-        switch viewModelAction {
-        case .accept:
-            return .accept
-        case .cancel:
-            return .cancel
-        case .decline:
-            return .decline
-        case .changeLanguage:
             return nil
         }
     }
