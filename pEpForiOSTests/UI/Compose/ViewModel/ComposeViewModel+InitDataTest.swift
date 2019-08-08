@@ -278,6 +278,15 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                           expectedHtmlBody: nil)
     }
 
+
+    //BUFF: tet fails randomly. Reason is the random order of the recipients in the quoted text of the plainText. Suspect: caused by messign with the (correctly ordered) set of reciepient/sender CdIdentities (To, From ...).
+
+    // User test001@localhost, someone@someone.someone wrote:
+    // vs.
+    // someone@someone.someone, User test001@localhost wrote:
+
+    // Result is: plaintext != expeted plaintext
+    
     func testComposeMode_fromInbox_replyAll() {
         let mode = ComposeUtil.ComposeMode.replyAll
         guard let originalMessage = messageAllButBccSet else {
