@@ -21,6 +21,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                        partner: PEPIdentity,
                        completion: ((PEPSyncHandshakeResult)->())? = nil) {
 
+        //Temp, working simple alert version
         DispatchQueue.main.async { [weak self] in
             guard let safeSelf = self else {
                 Log.shared.errorAndCrash("Lost myself")

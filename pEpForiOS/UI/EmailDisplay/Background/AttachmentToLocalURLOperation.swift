@@ -17,8 +17,7 @@ class AttachmentToLocalURLOperation: Operation {
     private var safeAttachment: Attachment?
 
     init(attachment: Attachment) {
-        let session = Session()
-        self.session = session
+        self.session = Session()
         self.safeAttachment = attachment.safeForSession(session)
         super.init()
     }
