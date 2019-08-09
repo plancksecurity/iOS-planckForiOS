@@ -55,7 +55,7 @@ extension UIViewController {
         }
         handShakeViewController.finderPrints(meFPR: meFPR, partnerFPR: partnerFPR)
 
-        handShakeViewController.modalPresentationStyle = .fullScreen
+        handShakeViewController.modalPresentationStyle = .overFullScreen
         present(handShakeViewController, animated: true, completion: nil)
     }
 }
