@@ -34,7 +34,8 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
     @IBOutlet weak var alertTitle: UILabel! {
         didSet {
-            alertTitle.text = NSLocalizedString("p≡p Sync", comment: "keySync handshake alert title")
+            let alertTittle = NSLocalizedString("p≡p Sync", comment: "keySync handshake alert title")
+            alertTitle.attributedText = alertTittle.paintPEPToPEPColour()
         }
     }
     @IBOutlet weak var message: UILabel! {
