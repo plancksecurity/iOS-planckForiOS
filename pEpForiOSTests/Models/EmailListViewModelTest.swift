@@ -387,30 +387,6 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(index.count, postMessages.count)
     }
 
-    func testFlagUnflagMessageIsImmediate() {
-        givenThereIsAMessageIn(folderType: .inbox)
-        setupViewModel()
-        emailListVM.startMonitoring()
-
-        let indexPath = IndexPath(row: 0, section: 0)
-        emailListVM.setFlagged(forIndexPath: [indexPath])
-        guard let isFlagged = emailListVM.viewModel(for: indexPath.row)?.isFlagged else {
-            XCTFail()
-            return
-        }
-
-        emailListVM.unsetFlagged(forIndexPath: [indexPath])
-        guard let isNotFlagged = emailListVM.viewModel(for: indexPath.row)?.isFlagged else {
-            XCTFail()
-            return
-        }
-        let messageDidSaveExpectation = expectation(description: "message is saved")
-        messageDidSaveExpectation.expectedFulfillmentCount = 8
-        let isImmediate = isFlagged != isNotFlagged
-        XCTAssertTrue(isImmediate)
-        wait(for: [messageDidSaveExpectation], timeout: UnitTestUtils.waitTime)
-    }
-
     func testMessageInOutboxAreNonEditableAndNonSelectable() {
         TestUtil.createMessage(uid: 1, inFolder: outboxFolder)
         moc.saveAndLogErrors()
