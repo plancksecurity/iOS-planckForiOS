@@ -314,80 +314,64 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     //    }
 
     func testNewMessageReceivedAndDisplayedInTheCorrectPosition() {
-        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
+        var messages = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
         setupViewModel()
         emailListVM.startMonitoring()
-        XCTAssertEqual(emailListVM.rowCount, 10)
+        XCTAssertEqual(emailListVM.rowCount, messages.count)
         setUpViewModelExpectations(expectationDidInsertDataAt: true)
         let msg = TestUtil.createMessage(inFolder: inbox, from: inbox.account.user)
-        msg.save()
+        messages.append(msg)
+        Session.main.commit()
         waitForExpectations(timeout: TestUtil.waitTime)
-        XCTAssertEqual(emailListVM.rowCount, 11)
-        var index = emailListVM.index(of: msg)
-        XCTAssertEqual(index, 0)
-        let nonShownMsg = TestUtil.createMessage(inFolder: trashFolder, from: inbox.account.user)
-        nonShownMsg.save()
-        XCTAssertEqual(emailListVM.rowCount, 11)
-        index = emailListVM.index(of: msg)
-        XCTAssertEqual(index, 0)
+        XCTAssertEqual(emailListVM.rowCount, messages.count)
+
+        guard let firstMsgVM = emailListVM.viewModel(for: 0) else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(firstMsgVM.message(), msg)
+
+        // Create a message that must not be shown
+        TestUtil.createMessage(inFolder: trashFolder, from: inbox.account.user)
+        Session.main.commit()
+        XCTAssertEqual(emailListVM.rowCount, messages.count)
     }
 
     func testNewMessageUpdateReceivedAndDisplayed() {
-        let numMails = 10
-        TestUtil.createMessages(number: numMails, engineProccesed: true, inFolder: inbox)
-        let msg = TestUtil.createMessage(inFolder: inbox,
-                                         from: inbox.account.user,
-                                         uid: numMails + 1)
-        msg.imapFlags.flagged = false
-        msg.save()
-        XCTAssertFalse((msg.imapFlags.flagged))
+        var messages = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
+        Session.main.commit()
         setupViewModel()
         emailListVM.startMonitoring()
-        XCTAssertEqual(emailListVM.rowCount, 11)
-        msg.imapFlags.flagged = true
-        msg.save()
-        waitForExpectations(timeout: TestUtil.waitTime)
-        var index = emailListVM.index(of: msg)
-        if let ind = index {
-            let newMsg = emailListVM.message(representedByRowAt: IndexPath(row: ind, section: 0))
-            XCTAssertTrue((newMsg?.imapFlags.flagged)!)
-        } else {
-            XCTFail()
-        }
+        XCTAssertEqual(emailListVM.rowCount, messages.count)
+        waitForExpectations(timeout: TestUtil.waitTime) //BUFF: rm?
 
-        let nonShownMsg = TestUtil.createMessage(inFolder: trashFolder, from: inbox.account.user)
-        nonShownMsg.save()
-        XCTAssertEqual(emailListVM.rowCount, 11)
-        index = emailListVM.index(of: nonShownMsg)
-        XCTAssertNil(index)
+        let numFlagged = 2
+        for i in 0..<numFlagged {
+            messages[i].imapFlags.flagged = true
+        }
+        Session.main.commit()
+
+        XCTAssertEqual(emailListVM.rowCount, messages.count - numFlagged)
     }
 
     func testNewMessageDeleteReceivedAndDisplayed() {
-        let numMails = 10
-        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
-        let msg = TestUtil.createMessage(inFolder: inbox,
-                                         from: inbox.account.user,
-                                         uid: numMails + 1)
-        msg.imapFlags.flagged = false
-        msg.save()
-        XCTAssertFalse((msg.imapFlags.flagged))
+        var messages = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
+        Session.main.commit()
         setupViewModel()
         emailListVM.startMonitoring()
-        XCTAssertEqual(emailListVM.rowCount, 11)
+        XCTAssertEqual(emailListVM.rowCount, messages.count)
+
+
         setUpViewModelExpectations(expectationDidDeleteDataAt: true)
-        msg.delete()
+
+        let numDelete = 1
+        for i in 0..<numDelete {
+            messages[i].cdMessage()?.imapFields().localFlags?.flagDeleted = true
+        }
         Session.main.commit()
         waitForExpectations(timeout: TestUtil.waitTime)
-        var index = emailListVM.index(of: msg)
-        XCTAssertNil(index)
-        XCTAssertEqual(emailListVM.rowCount, 10)
 
-        let nonShownMsg = TestUtil.createMessage(inFolder: trashFolder, from: inbox.account.user)
-        nonShownMsg.save()
-        nonShownMsg.delete()
-        XCTAssertEqual(emailListVM.rowCount, 10)
-        index = emailListVM.index(of: nonShownMsg)
-        XCTAssertNil(index)
+        XCTAssertEqual(emailListVM.rowCount, messages.count - numDelete)
     }
 
     func testgetMoveToFolderViewModel() {
@@ -404,13 +388,11 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testFlagUnflagMessageIsImmediate() {
-        let message = givenThereIsAMessageIn(folderType: .inbox)
-        let messageMoc = message?.cdMessage()?.managedObjectContext
+        givenThereIsAMessageIn(folderType: .inbox)
         setupViewModel()
         emailListVM.startMonitoring()
 
         let indexPath = IndexPath(row: 0, section: 0)
-
         emailListVM.setFlagged(forIndexPath: [indexPath])
         guard let isFlagged = emailListVM.viewModel(for: indexPath.row)?.isFlagged else {
             XCTFail()
@@ -424,15 +406,6 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         }
         let messageDidSaveExpectation = expectation(description: "message is saved")
         messageDidSaveExpectation.expectedFulfillmentCount = 8
-
-        NotificationCenter.default
-            .addObserver(forName: Notification.Name.NSManagedObjectContextDidSave,
-                         object: messageMoc,
-                         queue: nil) { (notification) in
-                            print("fulfill")
-                            messageDidSaveExpectation.fulfill()
-        }
-
         let isImmediate = isFlagged != isNotFlagged
         XCTAssertTrue(isImmediate)
         wait(for: [messageDidSaveExpectation], timeout: UnitTestUtils.waitTime)
@@ -592,7 +565,9 @@ extension EmailListViewModelTest {
 
     @discardableResult private func givenThereIsAMessageIn(folderType: FolderType) -> Message? {
         givenThereIsA(folderType: folderType)
-        return TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox).first
+        let msg = TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox).first
+        Session.main.commit()
+        return msg
     }
 }
 

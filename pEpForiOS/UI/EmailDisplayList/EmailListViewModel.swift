@@ -164,11 +164,6 @@ class EmailListViewModel {
 
     // MARK: - Public Data Access & Manipulation
 
-    //BUFF: woa :-O.  Rm
-    func index(of message: Message) -> Int? {
-        return nil
-    }
-
     func viewModel(for index: Int) -> MessageViewModel? {
         let messageViewModel = MessageViewModel(with: messageQueryResults[index],
                                                 queue: queueForHeavyStuff)
