@@ -164,6 +164,7 @@ class EmailListViewModel {
 
     // MARK: - Public Data Access & Manipulation
 
+    //BUFF: woa :-O.  Rm
     func index(of message: Message) -> Int? {
         return nil
     }
