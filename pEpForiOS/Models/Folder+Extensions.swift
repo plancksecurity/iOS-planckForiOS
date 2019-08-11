@@ -19,12 +19,12 @@ extension Folder {
     }
 
     public func messageCount() -> Int {
-        return  allMessagesNonThreaded().count //allCdMessagesCount(ignoringPepRating: showsMessagesNeverSeenByEngine) //!!!: let CD count please
+        return  allMessages().count //allCdMessagesCount(ignoringPepRating: showsMessagesNeverSeenByEngine) //!!!: let CD count please
     }
 
     //!!!: should become obsolete
     public func messageAt(index: Int) -> Message? {
-        if let message = allMessagesNonThreaded()[safe: index] {
+        if let message = allMessages()[safe: index] {
             return message
         }
         return nil

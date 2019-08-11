@@ -11,11 +11,8 @@ import MessageModel
 //!!!: uses CD. move to MM. Or better re-move.
 extension Folder {
 
-    /**
-     - Returns: All the messages contained in that folder in a flat and linear way,
-     that is no threading involved.
-     */
-    public func allMessagesNonThreaded() -> [Message] {
+    /// Returns: All the messages contained in that folder.
+    public func allMessages() -> [Message] {
         return
             allCdMessages(ignoringPepRating: showsMessagesNeverSeenByEngine)
                 .compactMap { $0.message() }
