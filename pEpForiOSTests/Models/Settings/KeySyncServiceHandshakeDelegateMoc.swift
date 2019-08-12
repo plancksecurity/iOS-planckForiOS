@@ -11,12 +11,13 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 class KeySyncServiceHandshakeDelegateMoc: KeySyncServiceHandshakeDelegate {
-
     var presenter: UIViewController?
 
     func showHandshake(me: PEPIdentity,
                        partner: PEPIdentity,
                        completion: ((PEPSyncHandshakeResult) -> ())?) { }
+
+    func showCurrentlyGroupingDevices() {}
 
     func cancelHandshake() {}
 
