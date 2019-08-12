@@ -219,8 +219,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         performSegue(withIdentifier: SegueIdentifier.segueEditDraft, sender: self)
     }
 
+    /// we have to handle the ipad/iphone segue in a different way. see IOS-1737
     private func showEmail(forCellAt indexPath: IndexPath) {
-        performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
+        guard let splitViewController = self.splitViewController else {
+            return
+        }
+        if splitViewController.isCollapsed {
+            performSegue(withIdentifier: SegueIdentifier.segueShowEmailNotSplitView, sender: self)
+        } else {
+            performSegue(withIdentifier: SegueIdentifier.segueShowEmailSplitView, sender: self)
+        }
     }
 
     private func showNoMessageSelectedIfNeeded() {
@@ -1046,7 +1054,8 @@ extension EmailListViewController: SegueHandlerType {
     
     enum SegueIdentifier: String {
         case segueAddNewAccount
-        case segueShowEmail
+        case segueShowEmailSplitView
+        case segueShowEmailNotSplitView
         case segueCompose
         case segueReply
         case segueReplyAll
@@ -1069,7 +1078,7 @@ extension EmailListViewController: SegueHandlerType {
              .segueCompose,
              .segueEditDraft:
             setupComposeViewController(for: segue)
-        case .segueShowEmail:
+        case .segueShowEmailSplitView:
             guard let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? EmailViewController,
                 let indexPath = lastSelectedIndexPath,
@@ -1079,11 +1088,30 @@ extension EmailListViewController: SegueHandlerType {
             }
             vc.appConfig = appConfig
             vc.message = message
+            ///This is commented as we "disabled" the feature in the message of
+            ///showing next and previous directly from the emailView, that is needed for that feature
             //vc.folderShow = model?.getFolderToShow()
             vc.messageId = indexPath.row //!!!: that looks wrong
             vc.delegate = model
             model?.currentDisplayedMessage = vc
             model?.indexPathShown = indexPath
+        case .segueShowEmailNotSplitView:
+            guard let vc = segue.destination as? EmailViewController,
+                let indexPath = lastSelectedIndexPath,
+                let message = model?.message(representedByRowAt: indexPath) else {
+                    Log.shared.errorAndCrash("Segue issue")
+                    return
+            }
+            vc.appConfig = appConfig
+            vc.message = message
+            ///This is commented as we "disabled" the feature in the message of
+            ///showing next and previous directly from the emailView, that is needed for that feature
+            //vc.folderShow = model?.getFolderToShow()
+            vc.messageId = indexPath.row //!!!: that looks wrong
+            vc.delegate = model
+            model?.currentDisplayedMessage = vc
+            model?.indexPathShown = indexPath
+
       //  case .segueShowThreadedEmail:
         /*    guard let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? ThreadViewController,
