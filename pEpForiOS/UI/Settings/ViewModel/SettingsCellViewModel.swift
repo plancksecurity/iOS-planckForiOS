@@ -89,6 +89,24 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     }
 
     func delete() {
-        account?.delete()
+        guard let acc = account else {
+            Log.shared.errorAndCrash(message: "Account lost")
+            return
+        }
+
+        let oldAddress = acc.user.address
+        acc.delete()
+
+        if AppSettings.defaultAccount == oldAddress {
+            let newDefaultAccount = Account.all().first
+            guard let newDefaultAddress = newDefaultAccount?.user.address else {
+                return
+                //no more accounts, no default account
+            }
+            AppSettings.defaultAccount = newDefaultAddress
+        }
+
     }
+
+
 }

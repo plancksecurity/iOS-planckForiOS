@@ -39,7 +39,7 @@ class PepProfilePictureComposer: ProfilePictureComposerProtocol {
         let safeMsg = message.safeForSession(session)
         DispatchQueue.global(qos: .userInitiated).async {
             session.performAndWait {
-                let color = PEPUtil.pEpColor(pEpRating: safeMsg.pEpRating())
+                let color = PEPUtils.pEpColor(pEpRating: safeMsg.pEpRating())
                 var image: UIImage? = nil
                 if color != PEPColor.noColor {
                     image = color.statusIconInContactPicture()
