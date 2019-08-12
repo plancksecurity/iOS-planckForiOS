@@ -88,7 +88,6 @@ class NewAccountSetupUITest: XCTestCase {
         app().launch()
 
         dismissInitialSystemAlerts()
-
         let account1 = secretTestData().workingAccount1
         newAccountSetup(account: account1)
 
