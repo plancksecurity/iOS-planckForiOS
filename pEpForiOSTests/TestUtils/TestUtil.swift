@@ -396,7 +396,7 @@ class TestUtil {
     @discardableResult static func createMessages(number: Int,
                                                   engineProccesed: Bool = true,
                                                   inFolder: Folder,
-                                                  setUids: Bool = true) -> [Message]{
+                                                  setUids: Bool = true) -> [Message] {
         var messages : [Message] = []
         for i in 1...number {
             let uid = setUids ? i : nil

@@ -28,7 +28,7 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
         super.setUp()
 
         let ownIdentity = PEPIdentity(address: "iostest002@peptest.ch",
-                                      userID: "iostest002@peptest.ch_ID",
+                                      userID: CdIdentity.pEpOwnUserID,
                                       userName: "iOS Test 002",
                                       isOwn: true)
 
@@ -146,32 +146,6 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
         XCTAssertEqual(senderIdentity.pEpRating(), .haveNoKey)
     }
 
-    func reevaluateMessage(expectedRating: PEPRating, inBackground: Bool = true,
-                           infoMessage: String) {
-        let message = MessageModelObjectUtils.getMessage(fromCdMessage: cdDecryptedMessage)
-
-        if inBackground {
-            let expReevaluated = expectation(description: "expReevaluated")
-            let reevalOp = ReevaluateMessageRatingOperation(parentName: #function, message: message)
-            reevalOp.completionBlock = {
-                reevalOp.completionBlock = nil
-                expReevaluated.fulfill()
-            }
-            backgroundQueue.addOperation(reevalOp)
-            waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-                XCTAssertNil(error)
-            })
-
-            moc.refreshAllObjects()
-            XCTAssertEqual(cdDecryptedMessage.pEpRating, Int16(expectedRating.rawValue),
-                           infoMessage)
-        } else {
-            let reevalOp = ReevaluateMessageRatingOperation(
-                parentName: #function, message: message)
-            reevalOp.reEvaluate()
-        }
-    }
-
     func testTrustMistrust() {
         let runReevaluationInBackground = false
         let senderIdent = senderIdentity.updatedIdentity(session: session)
@@ -200,6 +174,37 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
                 infoMessage: "after mistrust")
             try! session.update(senderIdent)
             XCTAssertFalse(senderIdent.isConfirmed)
+        }
+    }
+}
+
+// MARK: - HELPER
+
+extension MessageReevalutionTests {
+
+    private func reevaluateMessage(expectedRating: PEPRating, inBackground: Bool = true,
+                                   infoMessage: String) {
+        let message = MessageModelObjectUtils.getMessage(fromCdMessage: cdDecryptedMessage)
+
+        if inBackground {
+            let expReevaluated = expectation(description: "expReevaluated")
+            let reevalOp = ReevaluateMessageRatingOperation(parentName: #function, message: message)
+            reevalOp.completionBlock = {
+                reevalOp.completionBlock = nil
+                expReevaluated.fulfill()
+            }
+            backgroundQueue.addOperation(reevalOp)
+            waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+                XCTAssertNil(error)
+            })
+
+            moc.refreshAllObjects()
+            XCTAssertEqual(cdDecryptedMessage.pEpRating, Int16(expectedRating.rawValue),
+                           infoMessage)
+        } else {
+            let reevalOp = ReevaluateMessageRatingOperation(
+                parentName: #function, message: message)
+            reevalOp.reEvaluate()
         }
     }
 }
