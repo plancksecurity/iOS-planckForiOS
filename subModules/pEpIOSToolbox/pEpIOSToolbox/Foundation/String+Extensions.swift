@@ -315,6 +315,20 @@ extension String {
             return String(dropLast(theLength - maxCount))
         }
     }
+
+    /// it's true when the string only contains digits
+    public var isDigits: Bool {
+        let digits = CharacterSet.decimalDigits
+        return unicodeScalars.allSatisfy { digits.contains($0) }
+    }
+
+    /// it's true when the string is only a backspace
+    public var isBackspace: Bool {
+        var backspace = CharacterSet()
+        backspace.insert(Unicode.Scalar("\u{0008}"))
+        return unicodeScalars.allSatisfy { backspace.contains($0) }
+    }
+
 }
 
 extension NSAttributedString {
