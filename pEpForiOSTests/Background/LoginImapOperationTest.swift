@@ -26,18 +26,18 @@ class LoginImapOperationTest: CoreDataDrivenTestBase {
 
         let imapLogin = LoginImapOperation(
             parentName: #function, errorContainer: errorContainer, imapSyncData: imapSyncData)
-        imapLogin.completionBlock = {
-            imapLogin.completionBlock = nil
-            XCTAssertNotNil(self.imapSyncData.sync)
+        imapLogin.completionBlock = { [weak self] in
+            XCTAssertNotNil(self?.imapSyncData?.sync)
             expLoginSucceeds.fulfill()
         }
 
         let queue = OperationQueue()
         queue.addOperation(imapLogin)
 
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
-            XCTAssertFalse(imapLogin.hasErrors())
-        })
+        }
+
+        XCTAssertFalse(imapLogin.hasErrors())
     }    
 }
