@@ -288,8 +288,12 @@ extension ComposeTableViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("No vm")
+                return
+            }
             destination.appConfig = appConfig
-            viewModel?.setup(handshakeViewController: destination)
+            vm.setup(handshakeViewController: destination)
         }
     }
 }
@@ -585,7 +589,7 @@ extension ComposeTableViewController {
         }
         let action: UIAlertAction
         let text = vm.deleteActionTitle
-        action = ac.action(text, .destructive) {[weak self] in
+        action = ac.action(text, .destructive) { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
@@ -621,7 +625,7 @@ extension ComposeTableViewController {
         }
         let action: UIAlertAction
         let text = vm.keepInOutboxActionTitle
-        action = ac.action(text, .default) {[weak self] in
+        action = ac.action(text, .default) { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return

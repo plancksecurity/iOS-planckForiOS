@@ -40,7 +40,8 @@ public class FolderSectionViewModel {
         let sorted = sort(foldersToSort: ac.rootFolders)
         for folder in sorted {
             items.append(FolderCellViewModel(folder: folder, level: 0))
-            calculateChildFolder(root: folder, level: 1)
+            let level = folder.folderType == .inbox ? 0 : 1
+            calculateChildFolder(root: folder, level: level)
         }
     }
 

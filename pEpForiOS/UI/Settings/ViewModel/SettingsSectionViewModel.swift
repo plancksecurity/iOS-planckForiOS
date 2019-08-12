@@ -59,10 +59,12 @@ final class SettingsSectionViewModel {
         }
     }
 
-    private func generateKeySyncCells(_ messageModelService: MessageModelServiceProtocol) {
-        cells.append(EnableKeySyncViewModel(messageModelService))
-        if isInDeviceGroup() {
-            cells.append(SettingsActionCellViewModel(type: .leaveKeySyncGroup))
+    func removeLeaveDeviceGroupCell() {
+        cells.removeAll { cell in
+            guard let actionCell = cell as? SettingsActionCellViewModel else {
+                return false
+            }
+            return actionCell.type == .leaveKeySyncGroup
         }
     }
 
@@ -79,8 +81,8 @@ final class SettingsSectionViewModel {
     }
 
     func delete(cell: Int) {
-        if let remove = cells[cell] as? SettingsCellViewModel {
-            remove.delete()
+        if let cellToRemove = cells[cell] as? SettingsCellViewModel {
+            cellToRemove.delete()
             cells.remove(at: cell)
         }
     }
@@ -112,5 +114,12 @@ extension SettingsSectionViewModel {
             return false
         }
         return keySyncDeviceGroupService.deviceGroupState == .grouped
+    }
+
+    private func generateKeySyncCells(_ messageModelService: MessageModelServiceProtocol) {
+        cells.append(EnableKeySyncViewModel(messageModelService))
+        if isInDeviceGroup() {
+            cells.append(SettingsActionCellViewModel(type: .leaveKeySyncGroup))
+        }
     }
 }

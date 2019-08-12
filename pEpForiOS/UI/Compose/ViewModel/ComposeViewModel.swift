@@ -548,6 +548,7 @@ extension ComposeViewModel {
             Log.shared.errorAndCrash("No data")
             return
         }
+
         if data.isOutbox {
             data.originalMessage?.delete()
             if let message = data.originalMessage {
@@ -566,6 +567,7 @@ extension ComposeViewModel {
             // Technically we have to create a new one and delete the original message, as the
             // mail is already synced with the IMAP server and thus we must not modify it.
             deleteOriginalMessage()
+
             if data.isOutbox {
                 // Message will be saved (moved from user perspective) to drafts, but we are in
                 // outbox folder.
@@ -604,7 +606,20 @@ extension ComposeViewModel {
     // There is no view model for HandshakeViewController yet, thus we are setting up the VC itself
     // as a workaround to avoid letting the VC know MessageModel
     func setup(handshakeViewController: HandshakeViewController) {
-        handshakeViewController.message = ComposeUtil.messageToSend(withDataFrom: state)
+        // We MUST use an independent Session here. We do not want the outer world to see it nor to
+        //save it when saving the MainSession.
+        let session = Session()
+        let safeState = state.makeSafe(forSession: session)
+        guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState, session: session) else {
+                Log.shared.errorAndCrash("No message")
+                return
+        }
+        handshakeViewController.session = session
+        session.performAndWait {
+            handshakeViewController.message = msg
+            let evaluator = RatingReEvaluator(message: msg)
+            handshakeViewController.ratingReEvaluator = evaluator
+        }
     }
 }
 
@@ -613,6 +628,7 @@ extension ComposeViewModel {
 // MARK: RecipientCellViewModelResultDelegate
 
 extension ComposeViewModel: RecipientCellViewModelResultDelegate {
+
     func recipientCellViewModel(_ vm: RecipientCellViewModel,
                                 didChangeRecipients newRecipients: [Identity]) {
         switch vm.type {

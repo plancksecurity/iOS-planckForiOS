@@ -19,7 +19,7 @@ struct UIUtils {
     ///   - error: error to preset to user
     ///   - vc: ViewController to present the error on
     static func show(error: Error, inViewController vc: UIViewController) {
-        Log.shared.error("Will display error to user: (interpolate) %@", "\(error)")
+        Log.shared.error("May or may not display error to user: (interpolate) %@", "\(error)")
 
         guard let displayError = DisplayUserError(withError: error) else {
             // Do nothing. The error type is not suitable to bother the user with.
@@ -30,7 +30,8 @@ struct UIUtils {
                                         inViewController: vc)
     }
 
-    static func showAlertWithOnlyPositiveButton(title: String?, message: String?,
+    static func showAlertWithOnlyPositiveButton(title: String?,
+                                                message: String?,
                                                 inViewController vc: UIViewController) {
         // Do not show alerts when app is in background.
         if UIApplication.shared.applicationState != .active {
