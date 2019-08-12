@@ -20,6 +20,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     public static let storyboardId = "EmailListViewController"
+    /// This is used to handle the selection row when it recives an update
+    /// and also when swipeCellAction is performed to store from which cell the action is done.
     private var lastSelectedIndexPath: IndexPath?
 
     let searchController = UISearchController(searchResultsController: nil)
@@ -80,7 +82,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        guard let isIphone = splitViewController?.isCollapsed, let last = lastSelectedIndexPath else {
+        guard let isIphone = splitViewController?.isCollapsed else {
             return
         }
         if !isIphone {
@@ -435,12 +437,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
-    private func resetSelectionIfNeeded(for indexPath: IndexPath) {
-        if lastSelectedIndexPath == indexPath {
-            resetSelection()
-        }
-    }
-
     private func resetSelection() {
         tableView.selectRow(at: lastSelectedIndexPath, animated: false, scrollPosition: .none)
     }
@@ -507,11 +503,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if lastSelectedIndexPath == indexPath {
-            defer {
-                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-            }
-        }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: EmailListViewCell.storyboardId,
                                                  for: indexPath)
@@ -524,6 +515,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             theCell.configure(for:viewModel)
         } else {
             Log.shared.errorAndCrash("dequeued wrong cell")
+        }
+
+        //restores selection state for updated or replaced cells.
+        if lastSelectedIndexPath == indexPath {
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         }
 
         return cell
@@ -808,7 +804,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
 
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath]) {
-        lastSelectedIndexPath = tableView.indexPathForSelectedRow
+        lastSelectedIndexPath = nil
         tableView.insertRows(at: indexPaths, with: .automatic)
     }
 
@@ -826,14 +822,9 @@ extension EmailListViewController: EmailListViewModelDelegate {
             showNoMessageSelectedIfNeeded()
         }
     }
-    //!!!: comented code probably not needed anymore. if something strange appears, check this.
-    //!!!: the reselection of the cell is performed in the cell for row. 
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.reloadRows(at: indexPaths, with: .none)
-//        for indexPath in indexPaths {
-//            resetSelectionIfNeeded(for: indexPath)
-//        }
     }
 
     func emailListViewModel(viewModel: EmailListViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath) {
@@ -1168,8 +1159,6 @@ extension EmailListViewController: SegueHandlerType {
                 return
             }
             vC.appConfig = appConfig
-            //!!!: was commented. Is this dead code? if so, rm!
-            //vC.hidesBottomBarWhenPushed = true
             break
         case .segueShowMoveToFolder:
             var selectedRows: [IndexPath] = []

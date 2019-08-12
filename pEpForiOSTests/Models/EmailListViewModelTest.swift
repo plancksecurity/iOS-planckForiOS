@@ -12,42 +12,38 @@ import XCTest
 @testable import MessageModel
 
 class EmailListViewModelTest: CoreDataDrivenTestBase {
-    var folder: Folder!
+    var inbox: Folder!
     var trashFolder: Folder!
     var outboxFolder: Folder!
     var draftsFolder: Folder!
     var emailListVM : EmailListViewModel!
-    var masterViewController: TestMasterViewController!
+    fileprivate var masterViewController: TestMasterViewController!
     var acc : Account!
 
-    /** this set up a view model with one account and one folder saved **/
     override func setUp() {
         super.setUp()
 
         acc = cdAccount.account()
 
-
-        folder = Folder(name: "inbox", parent: nil, account: acc, folderType: .inbox)
-        trashFolder = Folder(name: "trash",
-                             parent: nil,
-                             account: acc,
-                             folderType: .trash)
+        inbox = Folder(name: "inbox", parent: nil, account: acc, folderType: .inbox)
+        trashFolder = Folder(name: "trash", parent: nil, account: acc, folderType: .trash)
         outboxFolder = Folder(name: "outbox", parent: nil, account: acc, folderType: .outbox)
         draftsFolder = Folder(name: "drafts", parent: nil, account: acc, folderType: .drafts)
-        moc.saveAndLogErrors()
+        Session.main.commit()
+    }
+
+    override func tearDown() {
+        masterViewController = nil
+        super.tearDown()
     }
 
     func secondAccountSetUp() {
         let acc2 = SecretTestData().createWorkingAccount(number: 1)
         _ = Folder(name: "inbox", parent: nil, account: acc2, folderType: .inbox)
-        _ = Folder(name: "trash",
-                             parent: nil,
-                             account: acc2,
-                             folderType: .trash)
+        _ = Folder(name: "trash", parent: nil, account: acc2, folderType: .trash)
         _ = Folder(name: "outbox", parent: nil, account: acc2, folderType: .outbox)
         _ = Folder(name: "drafts", parent: nil, account: acc2, folderType: .drafts)
-        moc.saveAndLogErrors()
-
+        Session.main.commit()
     }
 
     // MARK: - Test section
@@ -64,7 +60,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func test10MessagesInInitialSetup() {
-         TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder, setUids: true)
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox, setUids: true)
         setupViewModel()
         emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 10)
@@ -72,11 +68,11 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func testGetFolderName() {
         setupViewModel()
-        XCTAssertEqual(Folder.localizedName(realName: self.folder.realName), emailListVM.folderName)
+        XCTAssertEqual(Folder.localizedName(realName: self.inbox.realName), emailListVM.folderName)
     }
 
     func testGetDestructiveAction() {
-        TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox)
         setupViewModel()
         emailListVM.startMonitoring()
         let destructiveAction = emailListVM.getDestructiveActtion(forMessageAt: 0)
@@ -107,7 +103,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testDefaultFilterActiveIsUnread() {
-        let messages = TestUtil.createMessages(number: 20, engineProccesed: true, inFolder: folder)
+        let messages = TestUtil.createMessages(number: 20, engineProccesed: true, inFolder: inbox)
         messages.forEach { (msg) in
             msg.imapFlags.seen = true
         }
@@ -130,7 +126,9 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         let imap = ImapFlags()
         imap.seen = true
         messages[0].imapFlags = imap
+
         waitForExpectations(timeout: TestUtil.waitTime)
+
         XCTAssertEqual(4, emailListVM.rowCount)
         unreadActive = emailListVM.unreadFilterEnabled()
         XCTAssertTrue(unreadActive)
@@ -139,7 +137,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testGetFlagAndMoreAction() {
-        let messages = TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: folder)
+        let messages = TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox)
         setupViewModel()
         emailListVM.startMonitoring()
         var flagAction = emailListVM.getFlagAction(forMessageAt: 0)
@@ -186,7 +184,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
         XCTAssertFalse(noAccounts)
 
-        cdAccount.delete()
+        moc.delete(cdAccount)
         setupViewModel()
         noAccounts = emailListVM.showLoginView
 
@@ -196,7 +194,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     // MARK: - Search section
 
     func testSetSearchFilterWith0results() {
-        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
         setupViewModel()
         emailListVM.startMonitoring()
         emailListVM.setSearch(forSearchText: "blabla@blabla.com")
@@ -204,7 +202,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testRemoveSearchFilterAfter0Results() {
-        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
         setupViewModel()
         emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 10)
@@ -216,19 +214,19 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func testSetSearchFilterAddressWith3results() {
         let textToSearch = "searchTest@mail.com"
-        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
-        TestUtil.createMessage(inFolder: folder,
-                      from: Identity(address: textToSearch),
-                      tos: [folder.account.user],
-                      uid: 666).save()
-        TestUtil.createMessage(inFolder: folder,
-                      from: Identity(address: textToSearch),
-                      tos: [folder.account.user],
-                      uid: 667).save()
-        TestUtil.createMessage(inFolder: folder,
-                      from: Identity(address: textToSearch),
-                      tos: [folder.account.user],
-                      uid: 668).save()
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
+        TestUtil.createMessage(inFolder: inbox,
+                               from: Identity(address: textToSearch),
+                               tos: [inbox.account.user],
+                               uid: 666).save()
+        TestUtil.createMessage(inFolder: inbox,
+                               from: Identity(address: textToSearch),
+                               tos: [inbox.account.user],
+                               uid: 667).save()
+        TestUtil.createMessage(inFolder: inbox,
+                               from: Identity(address: textToSearch),
+                               tos: [inbox.account.user],
+                               uid: 668).save()
         setupViewModel()
         emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 13)
@@ -238,12 +236,12 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func testSetSearchFilterShortMessageWith1results() {
         let textToSearch = "searchTest"
-        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
-        TestUtil.createMessage(inFolder: folder,
-                      from: Identity(address: "mail@mail.com"),
-                      tos: [folder.account.user],
-                      shortMessage: textToSearch,
-                      uid: 666).save()
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
+        TestUtil.createMessage(inFolder: inbox,
+                               from: Identity(address: "mail@mail.com"),
+                               tos: [inbox.account.user],
+                               shortMessage: textToSearch,
+                               uid: 666).save()
         setupViewModel()
         emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 11)
@@ -254,16 +252,16 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     func testSetSearchMultipleSitesMatchInMessagesWith2results() {
         let textToSearch = "searchTest"
         let longText = "bla " + textToSearch + " bla"
-        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
-        TestUtil.createMessage(inFolder: folder,
-                      from: Identity(address: "mail@mail.com"),
-                      shortMessage: textToSearch,
-                      uid: 666).save()
-        TestUtil.createMessage(inFolder: folder,
-                      from: Identity(address: "mail@mail.com"),
-                      tos: [folder.account.user],
-                      longMessage: longText,
-                      uid: 667).save()
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
+        TestUtil.createMessage(inFolder: inbox,
+                               from: Identity(address: "mail@mail.com"),
+                               shortMessage: textToSearch,
+                               uid: 666).save()
+        TestUtil.createMessage(inFolder: inbox,
+                               from: Identity(address: "mail@mail.com"),
+                               tos: [inbox.account.user],
+                               longMessage: longText,
+                               uid: 667).save()
         setupViewModel()
         emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 12)
@@ -272,131 +270,112 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     // Threading feature is currently non-existing. Keep this code, might help later.
-//    //thread view nos is totaly disabled that means always false
-//    func testCheckIfSettingsChanged() {
-//        setupViewModel()
-//        emailListVM.startMonitoring()
-//        XCTAssertFalse(AppSettings.threadedViewEnabled)
-//        AppSettings.threadedViewEnabled = true
-//        XCTAssertFalse(emailListVM.checkIfSettingsChanged())
-//    }
+    //    //thread view nos is totaly disabled that means always false
+    //    func testCheckIfSettingsChanged() {
+    //        setupViewModel()
+    //        emailListVM.startMonitoring()
+    //        XCTAssertFalse(AppSettings.threadedViewEnabled)
+    //        AppSettings.threadedViewEnabled = true
+    //        XCTAssertFalse(emailListVM.checkIfSettingsChanged())
+    //    }
 
     // MARK: - cell for row
-/*
-    func testIndexFromMessage() {
-        let msgs = TestUtil.createMessages(number: 10, inFolder: folder)
-        setupViewModel()
-        emailListVM.startMonitoring()
-        var index = emailListVM.index(of: msgs[0])
-        XCTAssertEqual(index, 9)
-        index = emailListVM.index(of: msgs[9])
-        XCTAssertEqual(index, 0)
-    }*/
+    /*
+     func testIndexFromMessage() {
+     let msgs = TestUtil.createMessages(number: 10, inFolder: folder)
+     setupViewModel()
+     emailListVM.startMonitoring()
+     var index = emailListVM.index(of: msgs[0])
+     XCTAssertEqual(index, 9)
+     index = emailListVM.index(of: msgs[9])
+     XCTAssertEqual(index, 0)
+     }*/
 
     func testViewModel() {
-        let msg = TestUtil.createMessage(inFolder: folder, from: folder.account.user, uid: 1)
+        let msg = TestUtil.createMessage(inFolder: inbox, from: inbox.account.user, uid: 1)
         msg.save()
         setupViewModel()
         emailListVM.startMonitoring()
-        let index = emailListVM.index(of: msg)
-        guard let ind = index else {
-            XCTFail()
-            return
-        }
-        let vm = emailListVM.viewModel(for: ind)
+        let indexOfTheOneAndOnlyMsg = 0
+        let vm = emailListVM.viewModel(for: indexOfTheOneAndOnlyMsg)
         XCTAssertEqual(vm?.message(), msg)
         XCTAssertEqual(vm?.subject, msg.shortMessage)
     }
 
-//    func testSetUpFilterViewModel() {
-//        var filterEnabled = false
-//        setupViewModel()
-//        XCTAssertEqual(filterEnabled, emailListVM.isFilterEnabled)
-//        filterEnabled = true
-//        setUpViewModelExpectations(expectedUpdateView: true)
-//        emailListVM.isFilterEnabled = filterEnabled
-//        waitForExpectations(timeout: TestUtil.waitTime)
-//        XCTAssertEqual(filterEnabled, emailListVM.isFilterEnabled)
-//    }
+    //    func testSetUpFilterViewModel() {
+    //        var filterEnabled = false
+    //        setupViewModel()
+    //        XCTAssertEqual(filterEnabled, emailListVM.isFilterEnabled)
+    //        filterEnabled = true
+    //        setUpViewModelExpectations(expectedUpdateView: true)
+    //        emailListVM.isFilterEnabled = filterEnabled
+    //        waitForExpectations(timeout: TestUtil.waitTime)
+    //        XCTAssertEqual(filterEnabled, emailListVM.isFilterEnabled)
+    //    }
 
     func testNewMessageReceivedAndDisplayedInTheCorrectPosition() {
-        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        var messages = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
         setupViewModel()
         emailListVM.startMonitoring()
-        XCTAssertEqual(emailListVM.rowCount, 10)
+        XCTAssertEqual(emailListVM.rowCount, messages.count)
         setUpViewModelExpectations(expectationDidInsertDataAt: true)
-        let msg = TestUtil.createMessage(inFolder: folder, from: folder.account.user)
-        msg.save()
+        let msg = TestUtil.createMessage(inFolder: inbox, from: inbox.account.user)
+        messages.append(msg)
+        Session.main.commit()
         waitForExpectations(timeout: TestUtil.waitTime)
-        XCTAssertEqual(emailListVM.rowCount, 11)
-        var index = emailListVM.index(of: msg)
-        XCTAssertEqual(index, 0)
-        let nonShownMsg = TestUtil.createMessage(inFolder: trashFolder, from: folder.account.user)
-        nonShownMsg.save()
-        XCTAssertEqual(emailListVM.rowCount, 11)
-        index = emailListVM.index(of: msg)
-        XCTAssertEqual(index, 0)
+        XCTAssertEqual(emailListVM.rowCount, messages.count)
+
+        guard let firstMsgVM = emailListVM.viewModel(for: 0) else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(firstMsgVM.message(), msg)
+
+        // Create a message that must not be shown
+        TestUtil.createMessage(inFolder: trashFolder, from: inbox.account.user)
+        Session.main.commit()
+        XCTAssertEqual(emailListVM.rowCount, messages.count)
     }
 
     func testNewMessageUpdateReceivedAndDisplayed() {
-        let numMails = 10
-        TestUtil.createMessages(number: numMails, engineProccesed: true, inFolder: folder)
-        let msg = TestUtil.createMessage(inFolder: folder,
-                                         from: folder.account.user,
-                                         uid: numMails + 1)
-        msg.imapFlags.flagged = false
-        msg.save()
-        XCTAssertFalse((msg.imapFlags.flagged))
+        var messages = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
+        Session.main.commit()
         setupViewModel()
         emailListVM.startMonitoring()
-        XCTAssertEqual(emailListVM.rowCount, 11)
-        msg.imapFlags.flagged = true
-        msg.save()
-        waitForExpectations(timeout: TestUtil.waitTime)
-        var index = emailListVM.index(of: msg)
-        if let ind = index {
-            let newMsg = emailListVM.message(representedByRowAt: IndexPath(row: ind, section: 0))
-            XCTAssertTrue((newMsg?.imapFlags.flagged)!)
-        } else {
-            XCTFail()
-        }
+        XCTAssertEqual(emailListVM.rowCount, messages.count)
+        waitForExpectations(timeout: TestUtil.waitTime) //BUFF: rm?
 
-        let nonShownMsg = TestUtil.createMessage(inFolder: trashFolder, from: folder.account.user)
-        nonShownMsg.save()
-        XCTAssertEqual(emailListVM.rowCount, 11)
-        index = emailListVM.index(of: nonShownMsg)
-        XCTAssertNil(index)
+        let numFlagged = 2
+        for i in 0..<numFlagged {
+            messages[i].imapFlags.flagged = true
+        }
+        Session.main.commit()
+
+        XCTAssertEqual(emailListVM.rowCount, messages.count - numFlagged)
     }
 
     func testNewMessageDeleteReceivedAndDisplayed() {
-        let numMails = 10
-        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
-        let msg = TestUtil.createMessage(inFolder: folder,
-                                         from: folder.account.user,
-                                         uid: numMails + 1)
-        msg.imapFlags.flagged = false
-        msg.save()
-        XCTAssertFalse((msg.imapFlags.flagged))
+        var messages = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
+        Session.main.commit()
         setupViewModel()
         emailListVM.startMonitoring()
-        XCTAssertEqual(emailListVM.rowCount, 11)
-        setUpViewModelExpectations(expectationDidDeleteDataAt: true)
-        msg.delete()
-        waitForExpectations(timeout: TestUtil.waitTime)
-        var index = emailListVM.index(of: msg)
-        XCTAssertNil(index)
-        XCTAssertEqual(emailListVM.rowCount, 10)
+        XCTAssertEqual(emailListVM.rowCount, messages.count)
 
-        let nonShownMsg = TestUtil.createMessage(inFolder: trashFolder, from: folder.account.user)
-        nonShownMsg.save()
-        nonShownMsg.delete()
-        XCTAssertEqual(emailListVM.rowCount, 10)
-        index = emailListVM.index(of: nonShownMsg)
-        XCTAssertNil(index)
+
+        setUpViewModelExpectations(expectationDidDeleteDataAt: true)
+
+        let numDelete = 1
+        for i in 0..<numDelete {
+            messages[i].cdMessage()?.imapFields().localFlags?.flagDeleted = true
+        }
+        Session.main.commit()
+        waitForExpectations(timeout: TestUtil.waitTime)
+
+        XCTAssertEqual(emailListVM.rowCount, messages.count - numDelete)
     }
 
     func testgetMoveToFolderViewModel() {
-        TestUtil.createMessages(number: 4, inFolder: folder)
+        TestUtil.createMessages(number: 4, inFolder: inbox)
         let index: [IndexPath] = [IndexPath(row: 0, section: 1),
                                   IndexPath(row: 0, section: 2)]
         setupViewModel()
@@ -406,41 +385,6 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
         let postMessages = accountvm!.items[0].messages
         XCTAssertEqual(index.count, postMessages.count)
-    }
-
-    func testFlagUnflagMessageIsImmediate() {
-        let message = givenThereIsAMessageIn(folderType: .inbox)
-        let messageMoc = message?.cdMessage()?.managedObjectContext
-        setupViewModel()
-        emailListVM.startMonitoring()
-
-        let indexPath = IndexPath(row: 0, section: 0)
-
-        emailListVM.setFlagged(forIndexPath: [indexPath])
-        guard let isFlagged = emailListVM.viewModel(for: indexPath.row)?.isFlagged else {
-            XCTFail()
-            return
-        }
-
-        emailListVM.unsetFlagged(forIndexPath: [indexPath])
-        guard let isNotFlagged = emailListVM.viewModel(for: indexPath.row)?.isFlagged else {
-            XCTFail()
-            return
-        }
-        let messageDidSaveExpectation = expectation(description: "message is saved")
-        messageDidSaveExpectation.expectedFulfillmentCount = 8
-
-        NotificationCenter.default
-            .addObserver(forName: Notification.Name.NSManagedObjectContextDidSave,
-                         object: messageMoc,
-                         queue: nil) { (notification) in
-                            print("fulfill")
-                            messageDidSaveExpectation.fulfill()
-        }
-
-        let isImmediate = isFlagged != isNotFlagged
-        XCTAssertTrue(isImmediate)
-        wait(for: [messageDidSaveExpectation], timeout: UnitTestUtils.waitTime)
     }
 
     func testMessageInOutboxAreNonEditableAndNonSelectable() {
@@ -456,7 +400,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testMessageInInboxAreOnlySelectable() {
-        TestUtil.createMessage(uid: 1, inFolder: folder)
+        TestUtil.createMessage(uid: 1, inFolder: inbox)
         moc.saveAndLogErrors()
         setupViewModel()
         emailListVM.startMonitoring()
@@ -480,14 +424,14 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testComposePrefilledFromAccountIsCorrectlySettedWithOnlyOneAccount() {
-        let expectedFrom = folder.account.user
+        let expectedFrom = inbox.account.user
         setupViewModel()
         let composeVM = emailListVM.composeViewModelForNewMessage()
         XCTAssertEqual(composeVM.state.from, expectedFrom)
     }
 
     func testComposePrefilledFromAccountIsDefaultAccountFromUnifiedIboxWithMultipleAccounts() {
-        let expectedFrom = folder.account.user
+        let expectedFrom = inbox.account.user
         secondAccountSetUp()
         AppSettings.defaultAccount = acc.user.address
         setupViewModel(forfolder: UnifiedInbox())
@@ -496,25 +440,28 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testComposePrefilledFromAccountIsFolderAccountFromSpecificFolderWithMultipleAccounts() {
-        let expectedFrom = folder.account.user
+        let expectedFrom = inbox.account.user
         secondAccountSetUp()
-        setupViewModel(forfolder: folder)
+        setupViewModel(forfolder: inbox)
         let composeVM = emailListVM.composeViewModelForNewMessage()
         XCTAssertEqual(composeVM.state.from, expectedFrom)
     }
+}
 
+// MARK: - HELPER
 
+extension EmailListViewModelTest {
 
-    // Mark: - setting up
-
-    private func setUpViewModel(forFolder folder: DisplayableFolderProtocol, masterViewController: TestMasterViewController) {
-        self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController, folderToShow: folder)
+    private func setUpViewModel(forFolder folder: DisplayableFolderProtocol,
+                                masterViewController: TestMasterViewController) {
+        self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController,
+                                              folderToShow: folder)
     }
 
     private func setupViewModel(forfolder internalFolder: DisplayableFolderProtocol? = nil) {
         let folderToUse: DisplayableFolderProtocol
         if internalFolder == nil {
-            folderToUse = folder
+            folderToUse = inbox
         } else {
             folderToUse = internalFolder!
         }
@@ -522,16 +469,16 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     /*private func setSearchFilter(text: String) {
-        setNewUpdateViewExpectation()
-        emailListVM.setSearchFilter(forSearchText: text)
-        waitForExpectations(timeout: TestUtil.waitTime)
-    }
+     setNewUpdateViewExpectation()
+     emailListVM.setSearchFilter(forSearchText: text)
+     waitForExpectations(timeout: TestUtil.waitTime)
+     }
 
-    private func removeSearchFilter() {
-        setNewUpdateViewExpectation()
-        emailListVM.removeSearchFilter()
-        waitForExpectations(timeout: TestUtil.waitTime)
-    }*/
+     private func removeSearchFilter() {
+     setNewUpdateViewExpectation()
+     emailListVM.removeSearchFilter()
+     waitForExpectations(timeout: TestUtil.waitTime)
+     }*/
 
     private func setNewUpdateViewExpectation() {
         let updateViewExpectation = expectation(description: "UpdateViewCalled")
@@ -540,13 +487,14 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     private func createViewModelWithExpectations(forFolder folder: DisplayableFolderProtocol, expectedUpdateView: Bool) {
         let viewModelTestDelegate = TestMasterViewController()
+        masterViewController = viewModelTestDelegate
         setUpViewModel(forFolder: folder, masterViewController: viewModelTestDelegate)
     }
 
     private func setUpViewModelExpectations(expectedUpdateView: Bool = false,
-                                                expectationDidInsertDataAt: Bool = false,
-                                                expectationDidUpdateDataAt: Bool = false,
-                                                expectationDidDeleteDataAt: Bool = false ) {
+                                            expectationDidInsertDataAt: Bool = false,
+                                            expectationDidUpdateDataAt: Bool = false,
+                                            expectationDidDeleteDataAt: Bool = false ) {
         var expectationUpdateViewCalled: XCTestExpectation?
         if expectedUpdateView {
             expectationUpdateViewCalled = expectation(description: "UpdateViewCalled")
@@ -570,15 +518,16 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
                 expectation(description: "excpectationDidInsertDataAtCalled")
         }
 
-        emailListVM.emailListViewModelDelegate = TestMasterViewController(
-            expectationUpdateView: expectationUpdateViewCalled,
-            expectationDidInsertDataAt: excpectationDidInsertDataAtCalled,
-            expectationDidUpdateDataAt: excpectationDidUpdateDataAtCalled,
-            expectationDidRemoveDataAt: excpectationDidDeleteDataAtCalled)
+        masterViewController =
+            TestMasterViewController(expectationUpdateView: expectationUpdateViewCalled,
+                                     expectationDidInsertDataAt: excpectationDidInsertDataAtCalled,
+                                     expectationDidUpdateDataAt: excpectationDidUpdateDataAtCalled,
+                                     expectationDidRemoveDataAt: excpectationDidDeleteDataAtCalled)
+        emailListVM.emailListViewModelDelegate = masterViewController
     }
 
     private func getSafeLastLookAt() -> Date {
-        guard let safeLastLookedAt = folder?.lastLookedAt as Date? else {
+        guard let safeLastLookedAt = inbox?.lastLookedAt as Date? else {
             XCTFail()
             return Date()
         }
@@ -586,18 +535,19 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     private func givenThereIsA(folderType: FolderType) {
-        folder = Folder(name: "-", parent: folder, account: account, folderType: folderType)
-        folder.save()
+        inbox = Folder(name: "-", parent: inbox, account: account, folderType: folderType)
+        inbox.save()
     }
 
     @discardableResult private func givenThereIsAMessageIn(folderType: FolderType) -> Message? {
         givenThereIsA(folderType: folderType)
-        return TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: folder).first
+        let msg = TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox).first
+        Session.main.commit()
+        return msg
     }
 }
 
-class TestMasterViewController: EmailListViewModelDelegate {
-
+private class TestMasterViewController: EmailListViewModelDelegate {
     var expectationUpdateViewCalled: XCTestExpectation?
     var excpectationDidInsertDataAtCalled: XCTestExpectation?
     var expectationDidUpdateDataAtCalled: XCTestExpectation?
@@ -616,17 +566,14 @@ class TestMasterViewController: EmailListViewModelDelegate {
 
     func willReceiveUpdates(viewModel: EmailListViewModel) {
         //not yet defined
-        XCTFail()
     }
 
     func allUpdatesReceived(viewModel: EmailListViewModel) {
         //not yet defined
-        XCTFail()
     }
 
     func reloadData(viewModel: EmailListViewModel) {
         //not yet defined
-        XCTFail()
     }
 
 
@@ -667,7 +614,7 @@ class TestMasterViewController: EmailListViewModelDelegate {
                             toIndexPath: IndexPath) {
         XCTFail()
     }
-//not exist anymore
+    //not exist anymore
     func emailListViewModel(viewModel: EmailListViewModel,
                             didUpdateUndisplayedMessage message: Message) {
         XCTFail()

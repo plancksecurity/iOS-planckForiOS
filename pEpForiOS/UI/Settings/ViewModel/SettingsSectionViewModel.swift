@@ -81,8 +81,8 @@ final class SettingsSectionViewModel {
     }
 
     func delete(cell: Int) {
-        if let remove = cells[cell] as? SettingsCellViewModel {
-            remove.delete()
+        if let cellToRemove = cells[cell] as? SettingsCellViewModel {
+            cellToRemove.delete()
             cells.remove(at: cell)
         }
     }

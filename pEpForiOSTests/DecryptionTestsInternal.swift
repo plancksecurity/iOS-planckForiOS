@@ -170,14 +170,14 @@ class DecryptionTestsInternal: CoreDataDrivenTestBase {
         cdMsg.parent = cdInbox
 
         XCTAssertFalse(cdMsg.imap?.localFlags?.flagDeleted ?? true)
-        XCTAssertEqual(cdMsg.pEpRating, PEPUtil.pEpRatingNone)
+        XCTAssertEqual(cdMsg.pEpRating, PEPUtils.pEpRatingNone)
         if shouldEncrypt {
             XCTAssertTrue(cdMsg.isProbablyPGPMime())
         }
 
         moc.saveAndLogErrors()
 
-        XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEPUtil.pEpRatingNone))
+        XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEPUtils.pEpRatingNone))
 
         let expectationDecryptHasRun = expectation(description: "expectationDecryptHasRun")
         let errorContainer = ErrorContainer()

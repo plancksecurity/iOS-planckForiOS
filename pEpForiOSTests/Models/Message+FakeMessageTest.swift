@@ -37,7 +37,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
                     return
             }
             XCTAssertEqual(allCdMesgs.count, 1, "Exactly one faked message exists in CD")
-            let all = folder.allMessagesNonThreaded()
+            let all = folder.allMessages()
             XCTAssertEqual(all.count, 1, "Fake message is shown")
             guard let testee = all.first else {
                 XCTFail()
@@ -49,23 +49,17 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
 
     // MARK: - isFakeMessage
 
-    func testIsFakeMessage() {
-        for folderTpe in FolderType.allCases {
-            deleteAllMessages()
-            guard
-                let folder = assureCleanFolderContainingExactlyOneFakeMessage(folderType: folderTpe)
-                else {
-                    XCTFail()
-                    return
-            }
-            let all = folder.allMessagesNonThreaded()
-            guard let testee = all.first else {
-                XCTFail()
-                return
-            }
-            XCTAssertTrue(testee.isFakeMessage,
-                          "All fake messages in all folder types MUST be recognized")
-        }
+    func testIsFakeMessage_itIs() {
+        let testee = CdMessage(context: moc)
+        testee.uid = Int32(CdMessage.uidFakeResponsivenes)
+        XCTAssertTrue(testee.isFakeMessage)
+    }
+
+    func testIsFakeMessage_itIsNot() {
+        let testee = CdMessage(context: moc)
+        let randomPositiveUID = 666
+        testee.uid = Int32(randomPositiveUID)
+        XCTAssertFalse(testee.isFakeMessage)
     }
 
     // MARK: - saveForAppend
@@ -185,7 +179,6 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
     }
 
     private func deleteAllMessages() {
-        let moc: NSManagedObjectContext = Stack.shared.mainContext
         moc.performAndWait {
             guard let allCdMesgs = CdMessage.all() as? [CdMessage] else {
                 return

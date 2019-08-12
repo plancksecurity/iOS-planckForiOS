@@ -16,9 +16,7 @@ import PEPObjCAdapterFramework
 class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
     var backgroundQueue: OperationQueue!
 
-    /**
-     The fingerprint that will be part of the call to set_own_key.
-     */
+    ///The fingerprint that will be part of the call to set_own_key.
     let leonsFingerprint = "63FC29205A57EB3AEB780E846F239B0F19B9EE3B"
 
     // MARK: - setUp, tearDown
@@ -26,7 +24,7 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
 
-        XCTAssertTrue(PEPUtil.pEpClean())
+        XCTAssertTrue(PEPUtils.pEpClean())
 
         self.backgroundQueue = OperationQueue()
     }
@@ -38,10 +36,11 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
     }
 
     // MARK: - Tests
+
     func testSetOwnKeyDirectly() {
         doTestSetOwnKey() {
             let leon = PEPIdentity(address: "iostest003@peptest.ch",
-                                   userID: UUID().uuidString,
+                                   userID: CdIdentity.pEpOwnUserID,
                                    userName: "Leon Kowalski",
                                    isOwn: true)
             try! session.update(leon)
@@ -59,8 +58,11 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
             XCTAssertEqual(vm.rawErrorString, nil)
         }
     }
+}
 
-    // MARK: - Helpers
+// MARK: - HELPER
+
+extension SetOwnKeyViewModelTests {
 
     /**
      - Note: If you need to manually verify something:
@@ -72,7 +74,7 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
     private func doTestSetOwnKey(afterDecryption: () -> ()) {
         let cdOwnAccount1 = DecryptionUtil.createLocalAccount(
             ownUserName: "Rick Deckard",
-            ownUserID: "rick_deckard_uid",
+            ownUserID: CdIdentity.pEpOwnUserID,
             ownEmailAddress: "iostest001@peptest.ch",
             context: moc)
 
@@ -83,7 +85,7 @@ class SetOwnKeyViewModelTests: CoreDataDrivenTestBase {
 
         let cdOwnAccount2 = DecryptionUtil.createLocalAccount(
             ownUserName: "Leon Kowalski",
-            ownUserID: "leon_kowalski_uid",
+            ownUserID: CdIdentity.pEpOwnUserID,
             ownEmailAddress: "iostest003@peptest.ch",
             context: moc)
         let leonIdent = cdOwnAccount2.account().user
