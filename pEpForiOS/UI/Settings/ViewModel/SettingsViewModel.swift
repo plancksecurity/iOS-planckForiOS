@@ -10,21 +10,21 @@ import Foundation
 import MessageModel
 
 protocol SettingsViewModelDelegate: class {
-    func showExtraKeyEditabilityStateChangeAlert(newValue: Bool)
+    func showExtraKeyEditabilityStateChangeAlert(newValue: String)
 }
 
 final class SettingsViewModel {
-    weak var deletage: SettingsViewModelDelegate?
+    weak var delegate: SettingsViewModelDelegate?
     var sections = [SettingsSectionViewModel]()
     private let keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol?
     private let messageModelService: MessageModelServiceProtocol
 
     init(_ messageModelService: MessageModelServiceProtocol,
          _ keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol = KeySyncDeviceGroupService(),
-         deletage: SettingsViewModelDelegate? = nil) {
+         delegate: SettingsViewModelDelegate? = nil) {
         self.keySyncDeviceGroupService = keySyncDeviceGroupService
         self.messageModelService = messageModelService
-        self.deletage = deletage
+        self.delegate = delegate
         generateSections()
     }
 
@@ -103,8 +103,10 @@ extension SettingsViewModel {
 // MARK: - ExtryKeysEditability
 
 extension SettingsViewModel {
+
     func handleExtryKeysEditabilityGestureTriggered() {
-        fatalError("BUFF: unimplemented stub")
-//        deletage?.showExtraKeyEditabilityStateChangeAlert(newValue: <#T##Bool#>)
+        let newValue = !AppSettings.extraKeysEditable
+        AppSettings.extraKeysEditable = newValue
+        delegate?.showExtraKeyEditabilityStateChangeAlert(newValue: newValue ? "ON" : "OFF")
     }
 }

@@ -38,7 +38,9 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         }
         self.navigationController?.setToolbarHidden(true, animated: false)
 
-        if MiscUtil.isUnitTest() {
+        viewModel.delegate = self
+
+        if MiscUtil.isUnitTest() { //!!!: must go away. Check if it is needless already and rm.
             super.viewWillAppear(animated)
             return
         }
@@ -334,5 +336,16 @@ extension SettingsTableViewController {
 
         self.present(alertController, animated: true) {
         }
+    }
+}
+
+// MARK: - SettingsViewModelDelegate
+
+extension SettingsTableViewController: SettingsViewModelDelegate {
+
+    func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
+        UIUtils.showAlertWithOnlyPositiveButton(title: "Extra Keys Editable",
+                                                message: newValue,
+                                                inViewController: self)
     }
 }
