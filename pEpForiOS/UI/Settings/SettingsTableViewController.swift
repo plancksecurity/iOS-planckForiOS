@@ -28,6 +28,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         super.viewDidLoad()
         title = NSLocalizedString("Settings", comment: "Settings view title")
         UIHelper.variableCellHeightsTableView(tableView)
+        addExtraKeysEditabilityToggleGesture()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -43,6 +44,24 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         }
         updateModel()
     }
+
+    //BUFF: move to extension
+
+    /// Adds easter egg gesture to [en|dis]able the editability of extra keys
+    private func addExtraKeysEditabilityToggleGesture() {
+        let gestureRecogniser =
+            UITapGestureRecognizer(target: self,
+                                   action: Selector(("extraKeysEditabilityToggleGestureTriggered")))
+        gestureRecogniser.numberOfTapsRequired = 6
+        gestureRecogniser.numberOfTouchesRequired = 3
+        tableView.addGestureRecognizer(gestureRecogniser)
+    }
+
+    private func extraKeysEditabilityToggleGestureTriggered() {
+        viewModel.handleExtryKeysEditabilityGestureTriggered()
+    }
+
+
 
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.setToolbarHidden(oldToolbarStatus, animated: false)
