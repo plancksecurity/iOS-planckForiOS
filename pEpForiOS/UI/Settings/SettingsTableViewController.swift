@@ -47,24 +47,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         updateModel()
     }
 
-    //BUFF: move to extension
-
-    /// Adds easter egg gesture to [en|dis]able the editability of extra keys
-    private func addExtraKeysEditabilityToggleGesture() {
-        let gestureRecogniser =
-            UITapGestureRecognizer(target: self,
-                                   action: Selector(("extraKeysEditabilityToggleGestureTriggered")))
-        gestureRecogniser.numberOfTapsRequired = 6
-        gestureRecogniser.numberOfTouchesRequired = 3
-        tableView.addGestureRecognizer(gestureRecogniser)
-    }
-
-    private func extraKeysEditabilityToggleGestureTriggered() {
-        viewModel.handleExtryKeysEditabilityGestureTriggered()
-    }
-
-
-
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.setToolbarHidden(oldToolbarStatus, animated: false)
         guard let isIphone = splitViewController?.isCollapsed else {
@@ -336,6 +318,26 @@ extension SettingsTableViewController {
 
         self.present(alertController, animated: true) {
         }
+    }
+}
+
+// MARK: - Extra Keys
+
+extension SettingsTableViewController {
+    
+    /// Adds easter egg gesture to [en|dis]able the editability of extra keys
+    private func addExtraKeysEditabilityToggleGesture() {
+        let gestureRecogniser =
+            UITapGestureRecognizer(target: self,
+                                   action: #selector(extraKeysEditabilityToggleGestureTriggered))
+        gestureRecogniser.numberOfTapsRequired = 6
+        gestureRecogniser.numberOfTouchesRequired = 3
+        tableView.addGestureRecognizer(gestureRecogniser)
+    }
+
+    @objc // @objc is required for selector
+    private func extraKeysEditabilityToggleGestureTriggered() {
+        viewModel.handleExtryKeysEditabilityGestureTriggered()
     }
 }
 
