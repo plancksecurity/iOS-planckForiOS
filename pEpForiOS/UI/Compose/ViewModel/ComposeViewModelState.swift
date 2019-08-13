@@ -119,6 +119,11 @@ extension ComposeViewModel {
                     $0.delete()
                 }
             }
+            nonInlinedAttachments.forEach {
+                if  $0.message == nil {
+                    $0.delete()
+                }
+            }
         }
 
         public func makeSafe(forSession session: Session) -> ComposeViewModelState {
