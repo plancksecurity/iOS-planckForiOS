@@ -167,6 +167,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 performSegue(withIdentifier: .segueShowSettingTrustedServers, sender: self)
             case .setOwnKey:
                 performSegue(withIdentifier: .segueSetOwnKey, sender: self)
+            case .extraKeys:
+                performSegue(withIdentifier: .segueExtraKeys, sender: self)
             }
         case let vm as SettingsActionCellViewModelProtocol:
             switch vm.type {
@@ -190,6 +192,7 @@ extension SettingsTableViewController: SegueHandlerType {
         case segueShowSettingDefaultAccount
         case sequeShowCredits
         case segueShowSettingTrustedServers
+        case segueExtraKeys
         case segueSetOwnKey
         case noAccounts
         case noSegue
@@ -221,7 +224,8 @@ extension SettingsTableViewController: SegueHandlerType {
             }
             destination.appConfig = self.appConfig
         case .segueShowSettingDefaultAccount,
-             .segueShowSettingTrustedServers:
+             .segueShowSettingTrustedServers,
+             .segueExtraKeys:
             guard let destination = segue.destination as? BaseTableViewController else {
                 return
             }
@@ -237,7 +241,7 @@ extension SettingsTableViewController: SegueHandlerType {
 
 // MARK: - Private
 extension SettingsTableViewController {
-    private func updateModel() {
+    private func updateModel() { //!!!: looks wrong. Is named updateModel but does not.
         //reload data in view model
         tableView.reloadData()
     }

@@ -64,6 +64,8 @@
 		151F7200202A06760057C74D /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F71F5202A06750057C74D /* TestUtil.swift */; };
 		151F7201202A06760057C74D /* CdAccount+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F71F6202A06750057C74D /* CdAccount+TestUtils.swift */; };
 		151F7205202A070E0057C74D /* PantomimeFolderAttribute+ExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F7204202A070E0057C74D /* PantomimeFolderAttribute+ExtensionsTest.swift */; };
+		152295542302F72900204FD3 /* ExtraKeysSettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152295532302F72900204FD3 /* ExtraKeysSettingTableViewController.swift */; };
+		152295572302F7E200204FD3 /* ExtraKeysSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152295562302F7E200204FD3 /* ExtraKeysSettingViewModel.swift */; };
 		15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */; };
 		15265962216230B1006A78DF /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265949216230B0006A78DF /* ContactCell.swift */; };
 		1526596A216230B1006A78DF /* ComposeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265952216230B0006A78DF /* ComposeDataSource.swift */; };
@@ -542,6 +544,8 @@
 		151F71F6202A06750057C74D /* CdAccount+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+TestUtils.swift"; sourceTree = "<group>"; };
 		151F7204202A070E0057C74D /* PantomimeFolderAttribute+ExtensionsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PantomimeFolderAttribute+ExtensionsTest.swift"; sourceTree = "<group>"; };
 		152130531FD00B7A00688DF2 /* DisplayUserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayUserError.swift; sourceTree = "<group>"; };
+		152295532302F72900204FD3 /* ExtraKeysSettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtraKeysSettingTableViewController.swift; sourceTree = "<group>"; };
+		152295562302F7E200204FD3 /* ExtraKeysSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtraKeysSettingViewModel.swift; sourceTree = "<group>"; };
 		15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityImageTool.swift; sourceTree = "<group>"; };
 		15265949216230B0006A78DF /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		15265952216230B0006A78DF /* ComposeDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeDataSource.swift; sourceTree = "<group>"; };
@@ -1108,6 +1112,15 @@
 			path = IMAP;
 			sourceTree = "<group>";
 		};
+		152295552302F73400204FD3 /* ExtraKeysSetting */ = {
+			isa = PBXGroup;
+			children = (
+				152295532302F72900204FD3 /* ExtraKeysSettingTableViewController.swift */,
+				152295562302F7E200204FD3 /* ExtraKeysSettingViewModel.swift */,
+			);
+			path = ExtraKeysSetting;
+			sourceTree = "<group>";
+		};
 		15265942216230B0006A78DF /* Compose */ = {
 			isa = PBXGroup;
 			children = (
@@ -1435,6 +1448,7 @@
 				15874BB12127493E00A3A4A6 /* OnOffSettings */,
 				15874BB62127493E00A3A4A6 /* AccountSettings */,
 				15874BBE2127493E00A3A4A6 /* TrustedServerSetting */,
+				152295552302F73400204FD3 /* ExtraKeysSetting */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -2728,6 +2742,7 @@
 				4351C2D61F4441190053381F /* man.c in Sources */,
 				150B8EB31FCEB93D00374438 /* UIUtils.swift in Sources */,
 				43AAC22A1F7A5AEE00F435F4 /* BaseTableViewController.swift in Sources */,
+				152295542302F72900204FD3 /* ExtraKeysSettingTableViewController.swift in Sources */,
 				220DCE351E0AB5CC002FE716 /* MessageContentCell.swift in Sources */,
 				1526597A21623652006A78DF /* SuggestViewModel.swift in Sources */,
 				4351C2D31F4441190053381F /* inlines.c in Sources */,
@@ -2861,6 +2876,7 @@
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				496C0EE720BC2A880009B5B9 /* EmailDisplayDelegate.swift in Sources */,
 				152A39DD21905C3E00D9F8E4 /* AccountCell.swift in Sources */,
+				152295572302F7E200204FD3 /* ExtraKeysSettingViewModel.swift in Sources */,
 				B7DB7FDC221ADDBD003968DA /* UIImageView+Extension.swift in Sources */,
 				37C3C0E62260C64D003E290C /* Log.swift in Sources */,
 				43306EC21FE129840045DD00 /* OAuth2Type.swift in Sources */,

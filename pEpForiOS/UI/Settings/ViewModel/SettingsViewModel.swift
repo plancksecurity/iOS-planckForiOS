@@ -35,6 +35,7 @@ final class SettingsViewModel {
         sections.append(SettingsSectionViewModel(type: .keySync,
                                                  messageModelService: messageModelService,
                                                  keySyncDeviceGroupService: keySyncDeviceGroupService))
+        sections.append(SettingsSectionViewModel(type: .companyFeatures))
     }
 
     func delete(section: Int, cell: Int) {

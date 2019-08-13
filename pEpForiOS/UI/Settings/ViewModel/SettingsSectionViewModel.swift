@@ -16,6 +16,7 @@ final class SettingsSectionViewModel {
         case globalSettings
         case pgpCompatibilitySettings
         case keySync
+        case companyFeatures
     }
 
     var cells = [SettingCellViewModelProtocol]()
@@ -45,14 +46,18 @@ final class SettingsSectionViewModel {
                                        comment: "Tableview section footer")
         case .keySync:
             guard let messageModelService = messageModelService else {
-                Log.shared.errorAndCrash("%@", SettingsInternalError.nilMessageModelService.localizedDescription)
+                Log.shared.errorAndCrash("missing service")
                 return
             }
             generateKeySyncCells(messageModelService)
             title = NSLocalizedString("Key sync", comment: "Tableview section header")
+        case .companyFeatures:
+            generateExtaKeysCells()
+            title = NSLocalizedString("Company Features", comment: "Tableview section header")
         }
     }
 
+    //BUFF: move private (and make all generate... and other private)
     func generateAccountCells() {
         Account.all().forEach { (acc) in
             self.cells.append(SettingsCellViewModel(account: acc))
@@ -107,7 +112,10 @@ final class SettingsSectionViewModel {
 
 // MARK: - Private
 
+// MARK: KeySync
+
 extension SettingsSectionViewModel {
+
     private func isInDeviceGroup() -> Bool {
         guard let keySyncDeviceGroupService = keySyncDeviceGroupService else {
             Log.shared.errorAndCrash("%@", SettingsInternalError.nilKeySyncDeviceGroupService.localizedDescription)
@@ -121,5 +129,14 @@ extension SettingsSectionViewModel {
         if isInDeviceGroup() {
             cells.append(SettingsActionCellViewModel(type: .leaveKeySyncGroup))
         }
+    }
+}
+
+// MARK: Extra Keys
+
+extension SettingsSectionViewModel {
+
+    private func generateExtaKeysCells() {
+        cells.append(SettingsCellViewModel(type: .extraKeys))
     }
 }
