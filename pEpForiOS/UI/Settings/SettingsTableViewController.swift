@@ -123,11 +123,11 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         if indexPath.section == 0 {
             let deleteAction = SwipeAction(style: .destructive, title: NSLocalizedString("Delete", comment: "Account delete")) {
                 [weak self] action, indexPath in
-                    guard let me = self else {
-                        Log.shared.lostMySelf()
-                        return
-                    }
-                    me.showAlertBeforeDelete(indexPath)
+                guard let me = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+                me.showAlertBeforeDelete(indexPath)
             }
             return (orientation == .right ? [deleteAction] : nil)
         }
@@ -208,10 +208,10 @@ extension SettingsTableViewController: SegueHandlerType {
             if let path = ipath ,
                 let vm = viewModel[path.section][path.row] as? SettingsCellViewModel,
                 let acc = vm.account  {
-                    let vm = AccountSettingsViewModel(
-                        account: acc,
-                        messageModelService: appConfig.messageModelService)
-                    destination.viewModel = vm
+                let vm = AccountSettingsViewModel(
+                    account: acc,
+                    messageModelService: appConfig.messageModelService)
+                destination.viewModel = vm
             }
         case .noAccounts,
              .segueAddNewAccount,
@@ -324,7 +324,7 @@ extension SettingsTableViewController {
 // MARK: - Extra Keys
 
 extension SettingsTableViewController {
-    
+
     /// Adds easter egg gesture to [en|dis]able the editability of extra keys
     private func addExtraKeysEditabilityToggleGesture() {
         let gestureRecogniser =
