@@ -7,7 +7,6 @@
 //
 
 import XCTest
-import pEpIOSToolbox
 
 class StringTest: XCTestCase {
     let numericString = "0123456789"
@@ -22,13 +21,39 @@ class StringTest: XCTestCase {
         mixedString = String(mixedString.shuffled())
         XCTAssertFalse(mixedString.isDigits)
     }
-    func testIsBackspace() {
 
+    func testIsBackspace() {
         //this is backspace in swift
         let backspace = "\u{8}"
         XCTAssertFalse(numericString.isBackspace)
         XCTAssertFalse(alphabetString.isBackspace)
         XCTAssertFalse(otherCharacterString.isBackspace)
         XCTAssertTrue(backspace.isBackspace)
+    }
+
+    // MARK: - alphaNumericOnly
+
+    func testAlphaNumericOnly_numeric() {
+        XCTAssertEqual(numericString.alphaNumericOnly(), numericString)
+    }
+
+    func testAlphaNumericOnly_notAlphanumeric() {
+        XCTAssertNotEqual(otherCharacterString.alphaNumericOnly(), otherCharacterString)
+    }
+
+    func testAlphaNumericOnly_notDigitsStript() {
+        let testee = "1234567890 1 !!!\"§$%&/()=?\nabcdefghijklmnopqrstuvwxyz"
+        let expected = "12345678901abcdefghijklmnopqrstuvwxyz"
+        XCTAssertEqual(testee.alphaNumericOnly(), expected)
+    }
+
+    // MARK: - everythingStrippedThatIsNotInCharset
+
+    func testeverythingStrippedThatIsNotInCharset() {
+        let testee = "1234567890 1 !!!\"§$%&/()=?\nabcdefghijklmnopqrstuvwxyz"
+        let expected = "12345678901"
+        let charset = CharacterSet.decimalDigits
+        XCTAssertEqual(testee.string(everythingStrippedThatIsNotInCharset: charset),
+                          expected)
     }
 }
