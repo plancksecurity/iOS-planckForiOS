@@ -42,9 +42,10 @@ extension ExtraKeysSettingViewController {
         tableView.delegate = self
 
         addExtraKeyButton.tintColor = UIColor.pEpGreen
-//        addFprView.isHidden = !(viewModel?.isEditable ?? false)
 
         viewModel = ExtraKeysSettingViewModel()
+
+        addFprView.isHidden = !(viewModel?.isEditable ?? false)
     }
 }
 
