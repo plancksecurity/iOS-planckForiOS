@@ -78,6 +78,12 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
         //        }
     }
 
+    //!!!: unimplemented stub
+    func showCurrentlyGroupingDevices() {
+        // When implementing IOS-1712, show the additional (animated) view here.
+        Log.shared.warn("Unimplemented stub. \n\n################################\n################################\nshowCurrentlyGroupingDevices called")
+    }
+
     func cancelHandshake() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
