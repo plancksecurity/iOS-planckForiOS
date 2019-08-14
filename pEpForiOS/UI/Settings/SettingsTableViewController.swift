@@ -218,14 +218,14 @@ extension SettingsTableViewController: SegueHandlerType {
             }
         case .noAccounts,
              .segueAddNewAccount,
-             .sequeShowCredits:
+             .sequeShowCredits,
+             .segueExtraKeys:
             guard let destination = segue.destination as? BaseViewController else {
                 return
             }
             destination.appConfig = self.appConfig
         case .segueShowSettingDefaultAccount,
-             .segueShowSettingTrustedServers,
-             .segueExtraKeys:
+             .segueShowSettingTrustedServers:
             guard let destination = segue.destination as? BaseTableViewController else {
                 return
             }

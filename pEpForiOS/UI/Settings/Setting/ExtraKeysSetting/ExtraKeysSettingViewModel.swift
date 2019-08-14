@@ -26,15 +26,21 @@ class ExtraKeysSettingViewModel {
         return fprsOfExtraKeys.count
     }
 
+    init() {
+        fprsOfExtraKeys = ExtraKeysService.extraKeys.map { $0.fingerprint }
+    }
+
     subscript(index: Int) -> Fingerprint {
         get {
             return self.fprsOfExtraKeys[index]
         }
     }
 
-    init() {
-        fprsOfExtraKeys = ExtraKeysService.extraKeys.map { $0.fingerprint }
+    var isEditable: Bool {
+        return AppSettings.extraKeysEditable
     }
+
+
 
 
 
