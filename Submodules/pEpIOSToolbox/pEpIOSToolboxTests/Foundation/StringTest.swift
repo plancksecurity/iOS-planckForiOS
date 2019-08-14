@@ -25,10 +25,10 @@ class StringTest: XCTestCase {
     func testIsBackspace() {
 
         //this is backspace in swift
-        let string4 = "\u{8}"
+        let backspace = "\u{8}"
         XCTAssertFalse(numericString.isBackspace)
         XCTAssertFalse(alphabetString.isBackspace)
         XCTAssertFalse(otherCharacterString.isBackspace)
-        XCTAssertTrue(string4.isBackspace)
+        XCTAssertTrue(backspace.isBackspace)
     }
 }
