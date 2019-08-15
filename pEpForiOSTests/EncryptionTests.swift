@@ -9,7 +9,9 @@
 import XCTest
 
 import PEPObjCAdapterFramework
+import MessageModel
 
+//!!!: move to MM
 class EncryptionTests: XCTestCase {
     func testPassiveMode() {
         testPassiveModeHelper(enablePassiveMode: false)
@@ -35,7 +37,7 @@ class EncryptionTests: XCTestCase {
         msg.to = [recipient]
         msg.shortMessage = "subject: whatever"
         msg.longMessage = "text: whatever"
-        let (status, encMsg) = try! session.encrypt(pEpMessage: msg)
+        let (status, encMsg) = try! PEPUtils.encrypt(pEpMessage: msg)
         XCTAssertEqual(status, PEPStatus.unencrypted)
 
         guard let theEncryptedMessage = encMsg else {

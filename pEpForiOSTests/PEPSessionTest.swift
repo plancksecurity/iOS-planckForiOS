@@ -79,7 +79,7 @@ class PEPSessionTest: CoreDataDrivenTestBase {
 
         try! session.mySelf(myself)
 
-        let (_, encMsg1) = try! session.encrypt(pEpMessage: pEpMessage, forSelf: myself)
+        let (_, encMsg1) = try! PEPUtils.encrypt(pEpMessage: pEpMessage, forSelf: myself)
         if let theEncMsg = encMsg1 {
             // expecting that sensitive data gets hidden (ENGINE-287)
             XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
@@ -92,7 +92,7 @@ class PEPSessionTest: CoreDataDrivenTestBase {
             XCTFail()
         }
 
-        let (_, encMsg2) = try! session.encrypt(pEpMessage: pEpMessage)
+        let (_, encMsg2) = try! PEPUtils.encrypt(pEpMessage: pEpMessage)
         if let theEncMsg = encMsg2 {
             // expecting that message ID gets hidden (ENGINE-288)
             XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
