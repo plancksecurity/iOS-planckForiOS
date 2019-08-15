@@ -30,6 +30,11 @@ class ExtraKeysSettingViewController: BaseViewController {
         tableView.reloadData()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        AppSettings.extraKeysEditable = false
+    }
+
     deinit {
         unsubscribeAll()
     }
@@ -38,6 +43,8 @@ class ExtraKeysSettingViewController: BaseViewController {
 
     @IBAction func addExtraKeyButtonPressed(_ sender: UIButton) {
         viewModel?.handleAddButtonPress(fpr: fpr.text)
+        fpr.resignFirstResponder()
+        fpr.text = ""
     }
 }
 
@@ -48,15 +55,24 @@ extension ExtraKeysSettingViewController {
     private func setup() {
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(SwipeTableViewCell.self,
+        tableView.tableFooterView = UIView(frame: CGRect.zero) // Hides lines for non empty rows
+        tableView.register(UITableViewCell.self,
                            forCellReuseIdentifier: ExtraKeysSettingViewController.uiTableViewCellID)
-        tableView.isEditing = true
-
-        addExtraKeyButton.tintColor = UIColor.pEpGreen
 
         viewModel = ExtraKeysSettingViewModel(delegate: self)
 
-        addFprView.isHidden = !(viewModel?.isEditable ?? false)
+        // Editable
+        let isEditable = viewModel?.isEditable ?? false
+        tableView.isEditing = isEditable
+        addFprView.isHidden = !isEditable
+
+        // FPR input field
+        fpr.layer.borderWidth = 5.0
+        fpr.layer.borderColor = UIColor.pEpGreen.cgColor
+        fpr.backgroundColor = UIColor.pEpLightBackground
+
+        // add button
+        addExtraKeyButton.tintColor = UIColor.pEpGreen
     }
 
     private func subscribeForKeyboardNotifications() {
@@ -101,7 +117,7 @@ extension ExtraKeysSettingViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Enables swipe to delete
-        return true
+        return viewModel?.isEditable ?? false
     }
 
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
@@ -162,16 +178,12 @@ extension ExtraKeysSettingViewController {
     func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize =
             (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y > -keyboardSize.height {
-                self.view.frame.origin.y -= keyboardSize.height
-            }
+                self.view.frame.origin.y = -keyboardSize.height
         }
     }
 
     @objc
     func keyboardWillHide(notification: NSNotification) {
-//        if self.view.frame.origin.y != 0 {
             self.view.frame.origin.y = 0
-//        }
     }
 }

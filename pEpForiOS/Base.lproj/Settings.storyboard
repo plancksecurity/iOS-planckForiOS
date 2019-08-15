@@ -134,10 +134,10 @@
             </objects>
             <point key="canvasLocation" x="-1327" y="-1170"/>
         </scene>
-        <!--Extra Keys Setting View Controller-->
+        <!--Extra Keys-->
         <scene sceneID="KkR-yF-e30">
             <objects>
-                <viewController id="4fP-ku-UtU" customClass="ExtraKeysSettingViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Extra Keys" id="4fP-ku-UtU" customClass="ExtraKeysSettingViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MFw-tL-ska">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -172,7 +172,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardType="alphabet"/>
                                     </textView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J2v-Vi-URg">
                                         <rect key="frame" x="0.0" y="70" width="375" height="30"/>
