@@ -58,6 +58,7 @@ extension ExtraKeysSettingViewController {
         tableView.tableFooterView = UIView(frame: CGRect.zero) // Hides lines for non empty rows
         tableView.register(UITableViewCell.self,
                            forCellReuseIdentifier: ExtraKeysSettingViewController.uiTableViewCellID)
+        tableView.rowHeight = UITableView.automaticDimension
 
         viewModel = ExtraKeysSettingViewModel(delegate: self)
 
@@ -110,6 +111,8 @@ extension ExtraKeysSettingViewController: UITableViewDataSource {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: ExtraKeysSettingViewController.uiTableViewCellID,
                                                  for: indexPath)
+        // Multi line to avoud truncation of FPRs
+        cell.textLabel?.numberOfLines = 0
         cell.textLabel?.text = viewModel?[indexPath.row]
 
         return cell
