@@ -6,8 +6,6 @@
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
-import SwipeCellKit
-
 class ExtraKeysSettingViewController: BaseViewController {
     static private let uiTableViewCellID = "ExtraKeysSettingCell"
 
@@ -52,6 +50,7 @@ extension ExtraKeysSettingViewController {
         tableView.delegate = self
         tableView.register(SwipeTableViewCell.self,
                            forCellReuseIdentifier: ExtraKeysSettingViewController.uiTableViewCellID)
+        tableView.isEditing = true
 
         addExtraKeyButton.tintColor = UIColor.pEpGreen
 
@@ -95,23 +94,46 @@ extension ExtraKeysSettingViewController: UITableViewDataSource {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: ExtraKeysSettingViewController.uiTableViewCellID,
                                                  for: indexPath)
+        cell.textLabel?.text = viewModel?[indexPath.row]
 
-        guard let swipeCell = cell as? SwipeTableViewCell
-            else {
-                Log.shared.errorAndCrash("Invalid state.")
-                return cell
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // Enables swipe to delete
+        return true
+    }
+
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+
+    func tableView(_ tableView: UITableView,
+                   editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+
+       let title = NSLocalizedString("Delete", comment: "swipe delete ExtraKey action title")
+        let deleteAction =
+            UITableViewRowAction(style: .destructive, title: title) {
+                [weak self] (action , indexPath) -> Void in
+                guard let me = self, let vm = me.viewModel else {
+                    Log.shared.errorAndCrash("Uups")
+                    return
+                }
+                vm.handleDeleteActionTriggered(for: indexPath.row)
+                me.removeCell(at: indexPath)
         }
-        swipeCell.delegate = self
-        swipeCell.textLabel?.text = viewModel?[indexPath.row]
-
-        return swipeCell
+        return [deleteAction]
     }
 }
 
-
 // MARK: - UITableViewDelegate
 
-extension ExtraKeysSettingViewController: UITableViewDelegate { }
+extension ExtraKeysSettingViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        cell?.isSelected = false
+    }
+}
 
 // MARK: - ExtraKeysSettingViewModelDelegate
 
@@ -129,29 +151,6 @@ extension ExtraKeysSettingViewController: ExtraKeysSettingViewModelDelegate {
 
     func refreshView() {
         tableView.reloadData()
-    }
-}
-
-// MARK: - SwipeTableViewCellDelegate
-
-extension ExtraKeysSettingViewController: SwipeTableViewCellDelegate {
-    func tableView(_ tableView: UITableView,
-                   editActionsForRowAt indexPath: IndexPath,
-                   for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        let actionTitle = NSLocalizedString("Delete",
-                                            comment: "swipe action title: delete ExtraKey FPR")
-        let deleteAction = SwipeAction(style: .destructive, title: actionTitle) {
-            [weak self] action, indexPath in
-
-            guard let me = self, let vm = me.viewModel else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            vm.handleDeleteActionTriggered(for: indexPath.row)
-            me.removeCell(at: indexPath)
-
-        }
-        return (orientation == .left ? [deleteAction] : nil)
     }
 }
 
