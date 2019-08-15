@@ -53,7 +53,7 @@ class ExtraKeysSettingViewModel {
     }
 
     func handleDeleteActionTriggered(for row: Int) {
-        let extraKey = extraKeys[row]
+        let extraKey = extraKeys.remove(at: row)
         extraKey.delete()
         extraKey.session.commit()
         //BUFF: is SwipeKit removing the row?
