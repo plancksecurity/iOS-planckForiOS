@@ -6,10 +6,10 @@
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
+import SwipeCellKit
 
 class ExtraKeysSettingViewController: BaseViewController {
-    static private let uiTableViewCellID = "ExtraKeysSettingFprCell"
+    static private let uiTableViewCellID = "ExtraKeysSettingCell"
 
     @IBOutlet weak var addExtraKeyButton: UIButton!
     @IBOutlet weak var addFprView: UIStackView!
@@ -18,34 +18,61 @@ class ExtraKeysSettingViewController: BaseViewController {
 
     private var viewModel: ExtraKeysSettingViewModel?
 
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//
-//    }
+    // MARK: - Life Cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        subscribeForKeyboardNotifications()
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        subscribeForKeyboardNotifications()
         setup()
         tableView.reloadData()
     }
 
+    deinit {
+        unsubscribeAll()
+    }
+
+    // MARK: - Action
+
     @IBAction func addExtraKeyButtonPressed(_ sender: UIButton) {
-        fatalError("Unimplemented stub")
+        viewModel?.handleAddButtonPress(fpr: fpr.text)
     }
 }
 
 // MARK: - Private
 
 extension ExtraKeysSettingViewController {
+    
     private func setup() {
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.register(SwipeTableViewCell.self,
+                           forCellReuseIdentifier: ExtraKeysSettingViewController.uiTableViewCellID)
 
         addExtraKeyButton.tintColor = UIColor.pEpGreen
 
-        viewModel = ExtraKeysSettingViewModel()
+        viewModel = ExtraKeysSettingViewModel(delegate: self)
 
         addFprView.isHidden = !(viewModel?.isEditable ?? false)
+    }
+
+    private func subscribeForKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+
+    private func unsubscribeAll() {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -58,19 +85,86 @@ extension ExtraKeysSettingViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView,
-                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell =
-            tableView.dequeueReusableCell(withIdentifier: ExtraKeysSettingViewController.uiTableViewCellID,
-                                          for: indexPath)
-        cell.textLabel?.text = viewModel?[indexPath.row]
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: ExtraKeysSettingViewController.uiTableViewCellID,
+                                                 for: indexPath)
+
+        guard let swipeCell = cell as? SwipeTableViewCell
+            else {
+                Log.shared.errorAndCrash("Invalid state.")
+                return cell
+        }
+        swipeCell.delegate = self
+        swipeCell.textLabel?.text = viewModel?[indexPath.row]
+
+        return swipeCell
     }
 }
 
 
 // MARK: - UITableViewDelegate
 
-extension ExtraKeysSettingViewController: UITableViewDelegate {
+extension ExtraKeysSettingViewController: UITableViewDelegate { }
 
+// MARK: - ExtraKeysSettingViewModelDelegate
+
+extension ExtraKeysSettingViewController: ExtraKeysSettingViewModelDelegate {
+
+    func showFprInvalidAlert() {
+        let title = NSLocalizedString("Invalid FPR",
+                                      comment: "alert title. trying to add an invalid fingerprint")
+        let message = NSLocalizedString("Invalid FPR",
+                                        comment: "alert message. trying to add an invalid fingerprint")
+        UIUtils.showAlertWithOnlyPositiveButton(title: title,
+                                                message: message,
+                                                inViewController: self)
+    }
+
+    func refreshView() {
+        tableView.reloadData()
+    }
+}
+
+// MARK: - SwipeTableViewCellDelegate
+
+extension ExtraKeysSettingViewController: SwipeTableViewCellDelegate {
+    func tableView(_ tableView: UITableView,
+                   editActionsForRowAt indexPath: IndexPath,
+                   for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        let actionTitle = NSLocalizedString("Delete",
+                                            comment: "swipe action title: delete ExtraKey FPR")
+        let deleteAction = SwipeAction(style: .destructive, title: actionTitle) {
+            [weak self] action, indexPath in
+
+            guard let vm = self?.viewModel else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            vm.handleDeleteActionTriggered(for: indexPath.row)
+        }
+        return (orientation == .left ? [deleteAction] : nil)
+    }
+}
+
+// MARK: - Keyboard Notifications
+
+extension ExtraKeysSettingViewController {
+
+    @objc
+    func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize =
+            (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y > -keyboardSize.height {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+
+    @objc
+    func keyboardWillHide(notification: NSNotification) {
+//        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+//        }
+    }
 }
