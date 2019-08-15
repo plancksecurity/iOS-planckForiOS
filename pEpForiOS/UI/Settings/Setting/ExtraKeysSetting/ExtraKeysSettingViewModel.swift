@@ -8,31 +8,29 @@
 
 import MessageModel
 
-//extension ExtraKeysSettingViewModel {
-//
-////    struct Row {
-////        let fpr: String
-////    }
-//
-//
-//}
+protocol ExtraKeysSettingViewModelDelegate {
+    func showFprInvalidAlert()
+    func refreshView()
+}
 
 class ExtraKeysSettingViewModel {
     typealias Fingerprint = String
-//    private var rows = [Row]()
-    private let fprsOfExtraKeys: [String]
+    private var extraKeys = [ExtraKey]()
+
+    var delegate: ExtraKeysSettingViewModelDelegate?
 
     var numRows: Int {
-        return fprsOfExtraKeys.count
+        return extraKeys.count
     }
 
-    init() {
-        fprsOfExtraKeys = ExtraKeysService.extraKeys.map { $0.fingerprint }
+    init(delegate: ExtraKeysSettingViewModelDelegate? = nil) {
+        self.delegate = delegate
+        reset()
     }
 
     subscript(index: Int) -> Fingerprint {
         get {
-            return self.fprsOfExtraKeys[index]
+            return extraKeys[index].fingerprint
         }
     }
 
@@ -40,17 +38,35 @@ class ExtraKeysSettingViewModel {
         return AppSettings.extraKeysEditable
     }
 
+    /// Updates or creates an ExtraKey.
+    ///
+    /// - Parameter fpr: fingerprint to of extraKey
+    /// - Throws: an Error in case the FPR is invalid
+    func handleAddButtonPress(fpr: Fingerprint) {
+        do {
+            try ExtraKeysService.store(fpr: fpr)
+            reset()
+            delegate?.refreshView()
+        } catch {
+            delegate?.showFprInvalidAlert()
+        }
+    }
 
-
+    func handleDeleteActionTriggered(for row: Int) {
+        let extraKey = extraKeys[row]
+        extraKey.delete()
+        extraKey.session.commit()
+        //BUFF: is SwipeKit removing the row?
+    }
 
 
 }
-//
-//// MARK: - Private
-//
-//extension ExtraKeysSettingViewModel {
-//
-//    private func setup() {
-//        let extraKeys = ExtraKeysService.extraKeys
-//    }
-//}
+
+// MARK: - Private
+
+extension ExtraKeysSettingViewModel {
+
+    private func reset() {
+        extraKeys = ExtraKeysService.extraKeys
+    }
+}
