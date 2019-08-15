@@ -74,6 +74,12 @@ extension ExtraKeysSettingViewController {
     private func unsubscribeAll() {
         NotificationCenter.default.removeObserver(self)
     }
+
+    private func removeCell(at indexPath: IndexPath) {
+        tableView.beginUpdates()
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        tableView.endUpdates()
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -137,11 +143,13 @@ extension ExtraKeysSettingViewController: SwipeTableViewCellDelegate {
         let deleteAction = SwipeAction(style: .destructive, title: actionTitle) {
             [weak self] action, indexPath in
 
-            guard let vm = self?.viewModel else {
+            guard let me = self, let vm = me.viewModel else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
             vm.handleDeleteActionTriggered(for: indexPath.row)
+            me.removeCell(at: indexPath)
+
         }
         return (orientation == .left ? [deleteAction] : nil)
     }
