@@ -343,7 +343,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         setupViewModel()
         emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, messages.count)
-        waitForExpectations(timeout: TestUtil.waitTime) //BUFF: rm?
+        waitForExpectations(timeout: TestUtil.waitTime) //!!!: rm? Which expectation to wait for?
 
         let numFlagged = 2
         for i in 0..<numFlagged {
