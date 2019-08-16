@@ -43,19 +43,19 @@ class PEPSessionTest: CoreDataDrivenTestBase {
 //        let first = message.cdObject
         let cdmessage1 = first
         let cdmessage2 = cdmessage1
-        let pepmessage = cdmessage1.pEpMessageDict()
+        let pEpMessage = cdmessage1.pEpMessage()
 
-        try! session.encryptMessageDict(pepmessage,
-                                        extraKeys: nil,
-                                        encFormat: .PEP,
-                                        status: nil)
-        try! session.decryptMessageDict(pepmessage.mutableDictionary(),
-                                        flags: nil,
-                                        rating: nil,
-                                        extraKeys: nil,
-                                        status: nil)
+        try! session.encryptMessage(pEpMessage,
+                                    extraKeys: nil,
+                                    encFormat: .PEP,
+                                    status: nil)
+        try! session.decryptMessage(pEpMessage,
+                                    flags: nil,
+                                    rating: nil,
+                                    extraKeys: nil,
+                                    status: nil)
         let moc = cdmessage2.managedObjectContext! //!!!: not nice
-        cdmessage2.update(pEpMessageDict: pepmessage, context: moc)
+        cdmessage2.update(pEpMessage: pEpMessage, context: moc)
         XCTAssertEqual(cdmessage2, cdmessage1)
     }
 
