@@ -14,6 +14,8 @@ import CoreData
 import PantomimeFramework
 import PEPObjCAdapterFramework
 
+//!!!: must be moved!
+
 /**
  Tests internal encryption and decryption (that is, the test creates encrypted messages itself,
  and does not rely on outside data/services).
@@ -202,7 +204,7 @@ extension DecryptionTestsInternal {
         XCTAssertFalse(cdMsg.imap?.localFlags?.flagDeleted ?? true)
         XCTAssertEqual(cdMsg.pEpRating, PEPUtils.pEpRatingNone)
         if shouldEncrypt {
-            XCTAssertTrue(cdMsg.isProbablyPGPMime())
+            XCTAssertTrue(PEPUtils.isProbablyPGPMime(cdMessage: cdMsg))
         }
 
         moc.saveAndLogErrors()
