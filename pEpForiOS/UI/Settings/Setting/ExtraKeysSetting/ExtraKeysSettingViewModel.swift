@@ -44,7 +44,7 @@ class ExtraKeysSettingViewModel {
     /// - Throws: an Error in case the FPR is invalid
     func handleAddButtonPress(fpr: Fingerprint) {
         do {
-            try ExtraKeysService.store(fpr: fpr)
+            try ExtraKey.store(fpr: fpr)
             reset()
             delegate?.refreshView()
         } catch {
@@ -57,8 +57,6 @@ class ExtraKeysSettingViewModel {
         extraKey.delete()
         extraKey.session.commit()
     }
-
-
 }
 
 // MARK: - Private
@@ -66,6 +64,6 @@ class ExtraKeysSettingViewModel {
 extension ExtraKeysSettingViewModel {
 
     private func reset() {
-        extraKeys = ExtraKeysService.extraKeys
+        extraKeys = ExtraKey.extraKeys
     }
 }
