@@ -21,6 +21,7 @@
 		B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */; };
 		B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */; };
 		B70A3A77220091D400EDCE61 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A75220091D400EDCE61 /* Logger.swift */; };
+		B7371AA1230175B7007B37A3 /* StringTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7371AA0230175B7007B37A3 /* StringTest.swift */; };
 		B7465DBE22119D3A008A1708 /* Thread+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DBD22119D39008A1708 /* Thread+Extension.swift */; };
 		B7465DC622119EB1008A1708 /* Array+SortingAndSearching.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DC522119EB1008A1708 /* Array+SortingAndSearching.swift */; };
 		B7465DCC2211BEEA008A1708 /* Tuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DCB2211BEE9008A1708 /* Tuple.swift */; };
@@ -70,6 +71,7 @@
 		B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
 		B70A3A75220091D400EDCE61 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		B7371AA0230175B7007B37A3 /* StringTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StringTest.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Foundation/StringTest.swift; sourceTree = "<group>"; };
 		B7465DBD22119D39008A1708 /* Thread+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Thread+Extension.swift"; sourceTree = "<group>"; };
 		B7465DC522119EB1008A1708 /* Array+SortingAndSearching.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+SortingAndSearching.swift"; sourceTree = "<group>"; };
 		B7465DCB2211BEE9008A1708 /* Tuple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tuple.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 		15175ED8221E9F3800C91DB8 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				B7371AA0230175B7007B37A3 /* StringTest.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -439,6 +442,7 @@
 				B7DB7F8422144E4E003968DA /* SortedSetTest.swift in Sources */,
 				37904569223FA52B006DAB3B /* NetworkReachibilityMock.swift in Sources */,
 				378B76552240F93A00D6662C /* TestUtils.swift in Sources */,
+				B7371AA1230175B7007B37A3 /* StringTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
