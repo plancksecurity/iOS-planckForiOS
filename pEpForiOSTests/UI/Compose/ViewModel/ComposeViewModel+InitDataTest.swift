@@ -535,7 +535,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
             XCTAssertEqual(testee.composeMode, exp)
         }
         if let exp = originalMessage {
-            XCTAssertEqual(testee.originalMessage, exp)
+            XCTAssertEqual(testee.cloneOriginalMessage, exp)
         }
         if let exp = isDraftsOrOutbox {
             XCTAssertEqual(testee.isDraftsOrOutbox, exp)

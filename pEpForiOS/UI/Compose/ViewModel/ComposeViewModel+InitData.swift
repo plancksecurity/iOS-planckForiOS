@@ -23,18 +23,18 @@ extension ComposeViewModel {
         public let prefilledFrom: Identity?
 
         /// Original message to compute content and recipients from (e.g. a message we reply to).
-        private var _originalMessage: Message? = nil
-        public var originalMessage: Message? {
+        private var _cloneMessage: Message? = nil
+        public var cloneMessage: Message? {
             get {
-                guard !(_originalMessage?.isDeleted ?? true) else {
+                guard !(_cloneMessage?.isDeleted ?? true) else {
                     // Makes sure we do not access properties af a messages that has been deleted
                     // in the DB.
                     return nil
                 }
-                return _originalMessage
+                return _cloneMessage
             }
             set {
-                _originalMessage = newValue
+                _cloneMessage = newValue
             }
         }
 
@@ -47,7 +47,7 @@ extension ComposeViewModel {
 
         /// Whether or not the original message is in Drafts folder
         var isDrafts: Bool {
-            if let om = originalMessage {
+            if let om = cloneMessage {
                 return om.parent.folderType == .drafts
             }
             return false
@@ -55,23 +55,23 @@ extension ComposeViewModel {
 
         /// Whether or not the original message is in Outbox
         var isOutbox: Bool {
-            if let om = originalMessage {
+            if let om = cloneMessage {
                 return om.parent.folderType == .outbox
             }
             return false
         }
 
         var pEpProtection: Bool {
-            return originalMessage?.pEpProtected ?? true
+            return cloneMessage?.pEpProtected ?? true
         }
 
         var from: Identity? {
             return prefilledFrom ?? ComposeUtil.initialFrom(composeMode: composeMode,
-                                           originalMessage: originalMessage)
+                                           originalMessage: cloneMessage)
         }
 
         var toRecipients: [Identity] {
-            if let om = originalMessage {
+            if let om = cloneMessage {
                 return ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
             } else if let presetTo = prefilledTo {
                 return [presetTo]
@@ -80,14 +80,14 @@ extension ComposeViewModel {
         }
 
         var ccRecipients: [Identity] {
-            guard let om = originalMessage else {
+            guard let om = cloneMessage else {
                 return []
             }
             return ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
         }
 
         var bccRecipients: [Identity] {
-            guard let om = originalMessage else {
+            guard let om = cloneMessage else {
                 return []
             }
             return ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
@@ -98,32 +98,42 @@ extension ComposeViewModel {
         var bodyPlaintext = ""
         var bodyHtml: NSAttributedString?
 
-        public var nonInlinedAttachments: [Attachment] {
-            return ComposeUtil.initialAttachments(composeMode: composeMode,
-                                                  contentDisposition: .attachment,
-                                                  originalMessage: originalMessage)
-        }
-
-        public var inlinedAttachments: [Attachment] {
-            return ComposeUtil.initialAttachments(composeMode: composeMode,
-                                                  contentDisposition: .inline,
-                                                  originalMessage: originalMessage)
-        }
+        public var nonInlinedAttachments = [Attachment]()
+        public var inlinedAttachments = [Attachment]()
 
         init(withPrefilledToRecipient prefilledTo: Identity? = nil,
              prefilledFromSender prefilledFrom: Identity? = nil,
              orForOriginalMessage om: Message? = nil,
              composeMode: ComposeUtil.ComposeMode? = nil) {
+
+            let cloneMessage = om?.cloneWithZeroUID(session: Session.main)
             self.composeMode = composeMode ?? ComposeUtil.ComposeMode.normal
-            self.prefilledTo = om == nil ? prefilledTo : nil
+            self.prefilledTo = cloneMessage == nil ? prefilledTo : nil
             self.prefilledFrom = prefilledFrom
-            self.originalMessage = om
+            self.cloneMessage = cloneMessage
+            self.inlinedAttachments = ComposeUtil.initialAttachments(composeMode: self.composeMode,
+                                                                     contentDisposition: .inline,
+                                                                     originalMessage: cloneMessage)
+            self.nonInlinedAttachments = ComposeUtil.initialAttachments(composeMode: self.composeMode,
+                                                                        contentDisposition: .attachment,
+                                                                        originalMessage: cloneMessage)
             setupInitialSubject()
             setupInitialBody()
         }
 
+        /// Delte the cloned message used to get all the message data
+        ///
+        /// Note: Must be call after using init data
+        ///
+        func deleteClonedMessage() {
+            guard let cloneMessage = _cloneMessage else {
+                return
+            }
+            cloneMessage.delete()
+        }
+
         mutating private func setupInitialSubject() {
-            guard let om = originalMessage else {
+            guard let om = cloneMessage else {
                 // We have no original message. That's OK for compose mode .normal.
                 return
             }
@@ -142,7 +152,7 @@ extension ComposeViewModel {
         }
 
         mutating private func setupInitialBody() {
-            guard let om = originalMessage else {
+            guard let om = cloneMessage else {
                 // We have no original message. That's OK for compose mode .normal.
                 return
             }
@@ -175,7 +185,7 @@ extension ComposeViewModel {
 
         /// Is sutable for isDraftsOrOutbox || composeMode == .forward only.
         mutating private func setBodyPotetionallyTakingOverAttachments() {
-            guard let msg = originalMessage else {
+            guard let msg = cloneMessage else {
                 Log.shared.errorAndCrash("Inconsitant state")
                 return
             }
