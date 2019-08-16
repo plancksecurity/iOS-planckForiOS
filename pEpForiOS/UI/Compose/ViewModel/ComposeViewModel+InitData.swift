@@ -23,18 +23,18 @@ extension ComposeViewModel {
         public let prefilledFrom: Identity?
 
         /// Original message to compute content and recipients from (e.g. a message we reply to).
-        private var _cloneMessage: Message? = nil
-        public var cloneMessage: Message? {
+        private var _originalMessage: Message? = nil
+        public var originalMessage: Message? {
             get {
-                guard !(_cloneMessage?.isDeleted ?? true) else {
+                guard !(_originalMessage?.isDeleted ?? true) else {
                     // Makes sure we do not access properties af a messages that has been deleted
                     // in the DB.
                     return nil
                 }
-                return _cloneMessage
+                return _originalMessage
             }
             set {
-                _cloneMessage = newValue
+                _originalMessage = newValue
             }
         }
 
@@ -47,7 +47,7 @@ extension ComposeViewModel {
 
         /// Whether or not the original message is in Drafts folder
         var isDrafts: Bool {
-            if let om = cloneMessage {
+            if let om = originalMessage {
                 return om.parent.folderType == .drafts
             }
             return false
@@ -55,23 +55,23 @@ extension ComposeViewModel {
 
         /// Whether or not the original message is in Outbox
         var isOutbox: Bool {
-            if let om = cloneMessage {
+            if let om = originalMessage {
                 return om.parent.folderType == .outbox
             }
             return false
         }
 
         var pEpProtection: Bool {
-            return cloneMessage?.pEpProtected ?? true
+            return originalMessage?.pEpProtected ?? true
         }
 
         var from: Identity? {
             return prefilledFrom ?? ComposeUtil.initialFrom(composeMode: composeMode,
-                                           originalMessage: cloneMessage)
+                                           originalMessage: originalMessage)
         }
 
         var toRecipients: [Identity] {
-            if let om = cloneMessage {
+            if let om = originalMessage {
                 return ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
             } else if let presetTo = prefilledTo {
                 return [presetTo]
@@ -80,14 +80,14 @@ extension ComposeViewModel {
         }
 
         var ccRecipients: [Identity] {
-            guard let om = cloneMessage else {
+            guard let om = originalMessage else {
                 return []
             }
             return ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
         }
 
         var bccRecipients: [Identity] {
-            guard let om = cloneMessage else {
+            guard let om = originalMessage else {
                 return []
             }
             return ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
@@ -110,30 +110,23 @@ extension ComposeViewModel {
             self.composeMode = composeMode ?? ComposeUtil.ComposeMode.normal
             self.prefilledTo = cloneMessage == nil ? prefilledTo : nil
             self.prefilledFrom = prefilledFrom
-            self.cloneMessage = cloneMessage
+            self.originalMessage = om
             self.inlinedAttachments = ComposeUtil.initialAttachments(composeMode: self.composeMode,
                                                                      contentDisposition: .inline,
                                                                      originalMessage: cloneMessage)
             self.nonInlinedAttachments = ComposeUtil.initialAttachments(composeMode: self.composeMode,
                                                                         contentDisposition: .attachment,
                                                                         originalMessage: cloneMessage)
-            setupInitialSubject()
-            setupInitialBody()
-        }
+            inlinedAttachments.forEach { $0.message = nil }
+            nonInlinedAttachments.forEach { $0.message = nil }
 
-        /// Delte the cloned message used to get all the message data
-        ///
-        /// Note: Must be call after using init data
-        ///
-        func deleteClonedMessage() {
-            guard let cloneMessage = _cloneMessage else {
-                return
-            }
-            cloneMessage.delete()
+            setupInitialSubject()
+            setupInitialBody(from: cloneMessage)
+            cloneMessage?.delete()
         }
 
         mutating private func setupInitialSubject() {
-            guard let om = cloneMessage else {
+            guard let om = originalMessage else {
                 // We have no original message. That's OK for compose mode .normal.
                 return
             }
@@ -151,16 +144,16 @@ extension ComposeViewModel {
             }
         }
 
-        mutating private func setupInitialBody() {
-            guard let om = cloneMessage else {
+        mutating private func setupInitialBody(from message: Message?) {
+            guard let message = message else {
                 // We have no original message. That's OK for compose mode .normal.
                 return
             }
             switch composeMode {
             case .replyFrom:
-                setInitialBody(text: ReplyUtil.quotedMessageText(message: om, replyAll: false))
+                setInitialBody(text: ReplyUtil.quotedMessageText(message: message, replyAll: false))
             case .replyAll:
-                setInitialBody(text: ReplyUtil.quotedMessageText(message: om, replyAll: true))
+                setInitialBody(text: ReplyUtil.quotedMessageText(message: message, replyAll: true))
             case .forward:
                 setBodyPotetionallyTakingOverAttachments()
             case .normal:
@@ -185,7 +178,7 @@ extension ComposeViewModel {
 
         /// Is sutable for isDraftsOrOutbox || composeMode == .forward only.
         mutating private func setBodyPotetionallyTakingOverAttachments() {
-            guard let msg = cloneMessage else {
+            guard let msg = originalMessage else {
                 Log.shared.errorAndCrash("Inconsitant state")
                 return
             }

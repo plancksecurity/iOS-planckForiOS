@@ -181,13 +181,8 @@ extension ComposeViewModel {
 
             pEpProtection = initData.pEpProtection
 
-            initData.inlinedAttachments.forEach { $0.message = nil }
             inlinedAttachments = initData.inlinedAttachments
-
-            initData.nonInlinedAttachments.forEach { $0.message = nil }
             nonInlinedAttachments = initData.nonInlinedAttachments
-
-            initData.deleteClonedMessage()
         }
 
         private func validateForSending() {

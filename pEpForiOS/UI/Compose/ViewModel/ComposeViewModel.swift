@@ -167,7 +167,7 @@ class ComposeViewModel {
             Log.shared.errorAndCrash("No data")
             return
         }
-        guard let om = data.cloneMessage else {
+        guard let om = data.originalMessage else {
             // That might happen. Message might be sent already and thus has been moved to
             // Sent folder.
             return
@@ -550,8 +550,8 @@ extension ComposeViewModel {
         }
 
         if data.isOutbox {
-            data.cloneMessage?.delete()
-            if let message = data.cloneMessage {
+            data.originalMessage?.delete()
+            if let message = data.originalMessage {
                 resultDelegate?.composeViewModelDidDeleteMessage(message: message)
             }
         }
@@ -571,7 +571,7 @@ extension ComposeViewModel {
             if data.isOutbox {
                 // Message will be saved (moved from user perspective) to drafts, but we are in
                 // outbox folder.
-                if let message = data.cloneMessage {
+                if let message = data.originalMessage {
                     resultDelegate?.composeViewModelDidDeleteMessage(message: message)
                 }
             }
@@ -593,7 +593,7 @@ extension ComposeViewModel {
         if data.isDrafts {
             // We save a modified version of a drafted message. The UI might want to updtate
             // its model.
-            if let message = data.cloneMessage {
+            if let message = data.originalMessage {
                 resultDelegate?.composeViewModelDidModifyMessage(message: message)
             }
         }
