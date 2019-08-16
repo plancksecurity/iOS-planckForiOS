@@ -87,6 +87,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
         let imap = viewModel?.imapServer
         self.imapServerTextfield.text = imap?.address
         self.imapPortTextfield.text = imap?.port
+        imapPortTextfield.delegate = self
         self.imapSecurityTextfield.text = imap?.transport
         self.imapSecurityTextfield.inputView = securityPicker
         self.imapSecurityTextfield.delegate = self
@@ -95,6 +96,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
         let smtp = viewModel?.smtpServer
         self.smtpServerTextfield.text = smtp?.address
         self.smtpPortTextfield.text = smtp?.port
+        smtpPortTextfield.delegate = self
         self.smtpSecurityTextfield.text = smtp?.transport
         self.smtpSecurityTextfield.inputView = securityPicker
         self.smtpSecurityTextfield.delegate = self
@@ -286,9 +288,10 @@ UIPickerViewDataSource, UITextFieldDelegate {
             passWordChanged = true
         }
         if textField == smtpPortTextfield || textField == imapPortTextfield {
-
+            if string.isBackspace {
+                return true
+            }
             return string.isDigits
-
         }
 
         return true
