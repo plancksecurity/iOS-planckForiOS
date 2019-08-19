@@ -50,7 +50,7 @@ final class KeySyncHandshakeViewModel {
     func didSelect(languageRow: Int) {
         languageCode = languages[languageRow].code
         delegate?.closePicker()
-        delegate?.change(handshakeWordsTo: trustWorkds())
+        delegate?.change(handshakeWordsTo: trustWords())
     }
 
     func handle(action: Action) {
@@ -69,19 +69,19 @@ final class KeySyncHandshakeViewModel {
     func fingerPrints(meFPR: String?, partnerFPR: String?) {
         self.meFPR = meFPR
         self.partnerFPR = partnerFPR
-        delegate?.change(handshakeWordsTo: trustWorkds())
+        delegate?.change(handshakeWordsTo: trustWords())
     }
 
     func didLongPressWords() {
         fullTrustWords = !fullTrustWords
-        delegate?.change(handshakeWordsTo: trustWorkds())
+        delegate?.change(handshakeWordsTo: trustWords())
     }
 }
 
 // MARK: - Private
 
 extension KeySyncHandshakeViewModel {
-    private func trustWorkds() -> String {
+    private func trustWords() -> String {
         guard let meFPR = meFPR, let partnerFPR = partnerFPR else {
             Log.shared.errorAndCrash("Nil meFingerPrints or Nil partnerFingerPrints")
             return String()
