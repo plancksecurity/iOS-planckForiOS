@@ -36,6 +36,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
 
+    private let refreshController = UIRefreshControl()
+
     var textFilterButton: UIBarButtonItem = UIBarButtonItem(title: "",
                                                             style: .plain,
                                                             target: nil,
@@ -120,6 +122,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                        folderToShow: UnifiedInbox())
         }
 
+        ///the refresh controller is added to the tableview
+        tableView.refreshControl = refreshController
+        refreshController.addTarget(self, action: #selector(self.refreshView(_:)), for: .valueChanged)
+
         title = model?.folderName
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
@@ -172,6 +178,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 name: UIApplication.didEnterBackgroundNotification,
                 object: nil)
         }
+    }
+
+    ///
+    @objc private func refreshView(_ sender: Any) {
+        //model.refresh
     }
 
     /**
