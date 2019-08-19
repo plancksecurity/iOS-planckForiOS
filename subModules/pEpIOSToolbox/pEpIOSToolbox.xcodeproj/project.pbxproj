@@ -13,6 +13,7 @@
 		158A6E0C2306DD9A006A9ECE /* Array+UnsafePointer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6E0B2306DD9A006A9ECE /* Array+UnsafePointer.swift */; };
 		370DB3CF22804A3600BC929A /* NSSecureCoding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */; };
 		378B76552240F93A00D6662C /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378B76542240F93A00D6662C /* TestUtils.swift */; };
+		37903EE422FD667700E0AB39 /* String+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37903EE322FD667700E0AB39 /* String+pEp.swift */; };
 		37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */; };
 		37904563223FA486006DAB3B /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455F223FA486006DAB3B /* Reachability.swift */; };
 		37904564223FA486006DAB3B /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904560223FA486006DAB3B /* NetworkReachability.swift */; };
@@ -66,6 +67,7 @@
 		158A6E0B2306DD9A006A9ECE /* Array+UnsafePointer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+UnsafePointer.swift"; sourceTree = "<group>"; };
 		370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSecureCoding+Extension.swift"; sourceTree = "<group>"; };
 		378B76542240F93A00D6662C /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TestUtils.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/TestUtils/TestUtils.swift; sourceTree = "<group>"; };
+		37903EE322FD667700E0AB39 /* String+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "String+pEp.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/String+pEp.swift"; sourceTree = "<group>"; };
 		3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityProtocol.swift; sourceTree = "<group>"; };
 		3790455F223FA486006DAB3B /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		37904560223FA486006DAB3B /* NetworkReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				B7465DBD22119D39008A1708 /* Thread+Extension.swift */,
 				B7465DC522119EB1008A1708 /* Array+SortingAndSearching.swift */,
 				1522956123044EAA00204FD3 /* String+FPR.swift */,
+				37903EE322FD667700E0AB39 /* String+pEp.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -428,6 +431,7 @@
 				B7911EC221F8694100D7F66F /* UIColor+Extension.swift in Sources */,
 				B753907E2212D6B500B1FCF9 /* CGSize+Extension.swift in Sources */,
 				B7DB7F522213120B003968DA /* SortedSet.swift in Sources */,
+				37903EE422FD667700E0AB39 /* String+pEp.swift in Sources */,
 				B7911EC621F88AF800D7F66F /* UIImage+Extension.swift in Sources */,
 				B70A3A77220091D400EDCE61 /* Logger.swift in Sources */,
 				B7A46C56220DA5EB0027CCB5 /* Substring+Email.swift in Sources */,
