@@ -80,9 +80,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func gracefullyShutdownServices() {
         guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
             else {
-                Log.shared.warn(
-                    "Will not start background sync, pending %d",
-                    syncUserActionsAndCleanupbackgroundTaskId.rawValue)
+                Log.shared.errorAndCrash("Will not start background sync, pending %d",
+                                         syncUserActionsAndCleanupbackgroundTaskId.rawValue)
                 return
         }
         syncUserActionsAndCleanupbackgroundTaskId =
@@ -115,7 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func deleteManagementDBIfRequired() -> Bool {
         if AppSettings.shouldReinitializePepOnNextStartup {
             AppSettings.shouldReinitializePepOnNextStartup = false
-            let _ = PEPUtil.pEpClean()
+            let _ = PEPUtils.pEpClean()
             return true
         }
         return false

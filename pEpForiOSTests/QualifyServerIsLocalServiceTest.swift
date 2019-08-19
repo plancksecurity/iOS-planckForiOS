@@ -12,6 +12,36 @@ import MessageModel
 
 @testable import pEpForiOS
 
+//!!!: must be moved to MM as the tested class is also in MM.
+class QualifyServerIsLocalServiceTest: XCTestCase {
+
+    func testServerQualification() {
+        XCTAssertEqual(isLocalServer(serverName: "localhost"), true)
+        XCTAssertEqual(isLocalServer(serverName: "peptest.ch"), false)
+    }
+}
+
+// MARK: - HELPER
+
+extension QualifyServerIsLocalServiceTest {
+
+    private func isLocalServer(serverName: String) -> Bool? {
+        let expQualified = expectation(description: "expQualified")
+        let myDelegate = QualifyTestDelegate(expQualified: expQualified)
+        let service = QualifyServerIsLocalService()
+        service.delegate = myDelegate
+        service.qualify(serverName: serverName)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertNil(myDelegate.error)
+            XCTAssertEqual(myDelegate.serverName, serverName)
+        })
+
+        return myDelegate.isLocal
+    }
+}
+
 class QualifyTestDelegate: QualifyServerIsLocalServiceDelegate {
     let expQualified: XCTestExpectation
 
@@ -28,28 +58,5 @@ class QualifyTestDelegate: QualifyServerIsLocalServiceDelegate {
         self.isLocal = isLocal
         self.error = error
         expQualified.fulfill()
-    }
-}
-
-class QualifyServerIsLocalServiceTest: XCTestCase {
-    func testServerQualification() {
-        XCTAssertEqual(isLocalServer(serverName: "localhost"), true)
-        XCTAssertEqual(isLocalServer(serverName: "peptest.ch"), false)
-    }
-
-    func isLocalServer(serverName: String) -> Bool? {
-        let expQualified = expectation(description: "expQualified")
-        let myDelegate = QualifyTestDelegate(expQualified: expQualified)
-        let service = QualifyServerIsLocalService()
-        service.delegate = myDelegate
-        service.qualify(serverName: serverName)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertNil(myDelegate.error)
-            XCTAssertEqual(myDelegate.serverName, serverName)
-        })
-
-        return myDelegate.isLocal
     }
 }

@@ -164,10 +164,6 @@ class EmailListViewModel {
 
     // MARK: - Public Data Access & Manipulation
 
-    func index(of message: Message) -> Int? {
-        return nil
-    }
-
     func viewModel(for index: Int) -> MessageViewModel? {
         let messageViewModel = MessageViewModel(with: messageQueryResults[index],
                                                 queue: queueForHeavyStuff)
@@ -193,7 +189,7 @@ class EmailListViewModel {
             return nil
         }
         let message = messageQueryResults[indexPath.row]
-        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
+        let color = PEPUtils.pEpColor(pEpRating: message.pEpRating())
         if color != PEPColor.noColor {
             return color.statusIcon()
         } else {

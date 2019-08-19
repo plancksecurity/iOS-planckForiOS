@@ -14,6 +14,7 @@ import CoreData
 @testable import MessageModel
 
 class DecryptionUtil {
+
     public static func decryptTheMessage(
         testCase: XCTestCase,
         backgroundQueue: OperationQueue,
@@ -48,7 +49,7 @@ class DecryptionUtil {
         }
 
         XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
-        Record.Context.main.refreshAllObjects()
+        Stack.shared.mainContext.refreshAllObjects()
 
         guard
             let cdRecipients = cdMessage.to?.array as? [CdIdentity],

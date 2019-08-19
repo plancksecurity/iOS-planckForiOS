@@ -97,7 +97,7 @@ class MessagePantomimeTests: CoreDataDrivenTestBase {
         let pEpMsgDict = cdMsg.pEpMessageDict()
         XCTAssertEqual(pEpMsgDict[kPepReferences] as? [String] ?? [], allRefs)
 
-        let cwMsg2 = PEPUtil.pantomime(pEpMessageDict: pEpMsgDict)
+        let cwMsg2 = PEPUtils.pantomime(pEpMessageDict: pEpMsgDict)
         XCTAssertEqual(cwMsg2.allReferences() as? [String] ?? [], allRefs)
     }
 }

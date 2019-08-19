@@ -10,6 +10,7 @@
 		154944CF229A97AA00CC6431 /* SelfReferencingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154944CE229A97AA00CC6431 /* SelfReferencingOperation.swift */; };
 		370DB3CF22804A3600BC929A /* NSSecureCoding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */; };
 		378B76552240F93A00D6662C /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378B76542240F93A00D6662C /* TestUtils.swift */; };
+		37903EE422FD667700E0AB39 /* String+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37903EE322FD667700E0AB39 /* String+pEp.swift */; };
 		37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */; };
 		37904563223FA486006DAB3B /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455F223FA486006DAB3B /* Reachability.swift */; };
 		37904564223FA486006DAB3B /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904560223FA486006DAB3B /* NetworkReachability.swift */; };
@@ -21,6 +22,7 @@
 		B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */; };
 		B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */; };
 		B70A3A77220091D400EDCE61 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A75220091D400EDCE61 /* Logger.swift */; };
+		B7371AA1230175B7007B37A3 /* StringTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7371AA0230175B7007B37A3 /* StringTest.swift */; };
 		B7465DBE22119D3A008A1708 /* Thread+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DBD22119D39008A1708 /* Thread+Extension.swift */; };
 		B7465DC622119EB1008A1708 /* Array+SortingAndSearching.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DC522119EB1008A1708 /* Array+SortingAndSearching.swift */; };
 		B7465DCC2211BEEA008A1708 /* Tuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DCB2211BEE9008A1708 /* Tuple.swift */; };
@@ -59,6 +61,7 @@
 		154944CE229A97AA00CC6431 /* SelfReferencingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelfReferencingOperation.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Other/SelfReferencingOperation.swift; sourceTree = "<group>"; };
 		370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSecureCoding+Extension.swift"; sourceTree = "<group>"; };
 		378B76542240F93A00D6662C /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TestUtils.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/TestUtils/TestUtils.swift; sourceTree = "<group>"; };
+		37903EE322FD667700E0AB39 /* String+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "String+pEp.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/String+pEp.swift"; sourceTree = "<group>"; };
 		3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityProtocol.swift; sourceTree = "<group>"; };
 		3790455F223FA486006DAB3B /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		37904560223FA486006DAB3B /* NetworkReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
@@ -70,6 +73,7 @@
 		B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
 		B70A3A75220091D400EDCE61 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		B7371AA0230175B7007B37A3 /* StringTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StringTest.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Foundation/StringTest.swift; sourceTree = "<group>"; };
 		B7465DBD22119D39008A1708 /* Thread+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Thread+Extension.swift"; sourceTree = "<group>"; };
 		B7465DC522119EB1008A1708 /* Array+SortingAndSearching.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+SortingAndSearching.swift"; sourceTree = "<group>"; };
 		B7465DCB2211BEE9008A1708 /* Tuple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tuple.swift; sourceTree = "<group>"; };
@@ -119,6 +123,7 @@
 		15175ED8221E9F3800C91DB8 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				B7371AA0230175B7007B37A3 /* StringTest.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -191,6 +196,7 @@
 				B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */,
 				B7465DBD22119D39008A1708 /* Thread+Extension.swift */,
 				B7465DC522119EB1008A1708 /* Array+SortingAndSearching.swift */,
+				37903EE322FD667700E0AB39 /* String+pEp.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -415,6 +421,7 @@
 				B7911EC221F8694100D7F66F /* UIColor+Extension.swift in Sources */,
 				B753907E2212D6B500B1FCF9 /* CGSize+Extension.swift in Sources */,
 				B7DB7F522213120B003968DA /* SortedSet.swift in Sources */,
+				37903EE422FD667700E0AB39 /* String+pEp.swift in Sources */,
 				B7911EC621F88AF800D7F66F /* UIImage+Extension.swift in Sources */,
 				B70A3A77220091D400EDCE61 /* Logger.swift in Sources */,
 				B7A46C56220DA5EB0027CCB5 /* Substring+Email.swift in Sources */,
@@ -439,6 +446,7 @@
 				B7DB7F8422144E4E003968DA /* SortedSetTest.swift in Sources */,
 				37904569223FA52B006DAB3B /* NetworkReachibilityMock.swift in Sources */,
 				378B76552240F93A00D6662C /* TestUtils.swift in Sources */,
+				B7371AA1230175B7007B37A3 /* StringTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

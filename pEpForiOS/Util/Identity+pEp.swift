@@ -17,7 +17,7 @@ extension Identity {
 
     public func decorateButton(button: UIButton) {
         button.setTitleColor(.black, for: .normal)
-        if let color = PEPUtil.pEpColor(identity: self).uiColor() {
+        if let color = PEPUtils.pEpColor(identity: self).uiColor() {
             button.backgroundColor = color
         } else {
             let buttonDefault = UIButton()

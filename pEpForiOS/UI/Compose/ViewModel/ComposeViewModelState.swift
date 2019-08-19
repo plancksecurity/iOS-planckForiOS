@@ -113,6 +113,38 @@ extension ComposeViewModel {
             edited = false
         }
 
+        public func makeSafe(forSession session: Session) -> ComposeViewModelState {
+            let newValue = ComposeViewModelState(initData: initData, delegate: nil)
+
+            newValue.toRecipients = Identity.makeSafe(toRecipients, forSession: session)
+            newValue.ccRecipients = Identity.makeSafe(ccRecipients, forSession: session)
+            newValue.bccRecipients = Identity.makeSafe(bccRecipients, forSession: session)
+            if let from = from {
+                newValue.from = Identity.makeSafe(from, forSession: session)
+            }
+            newValue.inlinedAttachments = Attachment.makeSafe(inlinedAttachments,
+                                                              forSession: session)
+            newValue.nonInlinedAttachments = Attachment.makeSafe(nonInlinedAttachments,
+                                                                 forSession: session)
+
+
+            newValue.isValidatedForSending = isValidatedForSending
+            newValue.pEpProtection = pEpProtection
+            newValue.bccWrapped = bccWrapped
+            newValue.subject = subject
+            newValue.bodyPlaintext = bodyPlaintext
+            newValue.bodyHtml = bodyHtml
+
+
+
+            newValue.isValidatedForSending = isValidatedForSending
+            newValue.rating = rating
+            newValue.edited = edited
+            newValue.delegate = delegate
+
+            return newValue
+        }
+
         public func setBccUnwrapped() {
             bccWrapped = false
         }
