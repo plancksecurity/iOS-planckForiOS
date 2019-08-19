@@ -135,6 +135,24 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    public func testSavePasswordAfterEndVerification() {
+        // GIVEN
+        setUpViewModel()
+        let successResult: Result<Void, Error> = .success(())
+        let expectedPassword = "passwordChanged"
+        let imap = AccountSettingsViewModel.ServerViewModel(address: nil, port: nil, transport: nil)
+        let smtp = AccountSettingsViewModel.ServerViewModel(address: nil, port: nil, transport: nil)
+        viewModel.update(loginName: "", name: "", password: expectedPassword, imap: imap, smtp: smtp)
+
+        // WHEN
+        viewModel.didEndVerification(result: successResult)
+
+        // THEN
+        let connectionInfo = account.cdObject.imapConnectInfo
+        let actualPassword = connectionInfo?.loginPassword
+        XCTAssertEqual(actualPassword, expectedPassword)
+    }
+
 
     private func setUpViewModel() {
         account.save()
