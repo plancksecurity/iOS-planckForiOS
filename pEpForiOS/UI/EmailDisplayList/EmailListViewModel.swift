@@ -393,6 +393,14 @@ class EmailListViewModel {
         }
         folderToShow.fetchOlder()
     }
+
+    //MARK: - FetchNewMessages
+
+    public func fetchNewMessages(completition: (() -> Void)? = nil) {
+        folderToShow.fetchNewMessages() {
+            completition?()
+        }
+    }
 }
 
 // MARK: - Filter & Search
