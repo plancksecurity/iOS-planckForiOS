@@ -126,19 +126,19 @@ extension ComposeViewModel {
         }
 
         mutating private func setupInitialSubject() {
-            guard let om = originalMessage else {
+            guard let originalMessage = originalMessage else {
                 // We have no original message. That's OK for compose mode .normal.
                 return
             }
             switch composeMode {
             case .replyFrom,
                  .replyAll:
-                subject = ReplyUtil.replySubject(message: om)
+                subject = ReplyUtil.replySubject(message: originalMessage)
             case .forward:
-                subject = ReplyUtil.forwardSubject(message: om)
+                subject = ReplyUtil.forwardSubject(message: originalMessage)
             case .normal:
                 if isDraftsOrOutbox {
-                    subject = om.shortMessage ?? " "
+                    subject = originalMessage.shortMessage ?? " "
                 }
                 // .normal is intentionally ignored here for other folder types
             }
