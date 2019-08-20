@@ -217,7 +217,14 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
     public func didEndVerification(result: Result<Void, Error>) {
         switch result {
         case .success(()):
+            do {
+                try verifiableAccount?.save { [weak self] _ in
+                    self?.delegate?.didVerify(result: .ok)
+                }
+            } catch {
+                Log.shared.errorAndCrash(error: error)
                 delegate?.didVerify(result: .ok)
+            }
         case .failure(let error):
             if let imapError = error as? ImapSyncError {
                 delegate?.didVerify(
