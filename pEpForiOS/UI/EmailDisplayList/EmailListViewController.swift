@@ -180,9 +180,17 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
-    ///
+    ///called when the view is scrolled down to
     @objc private func refreshView(_ sender: Any) {
-        //model.refresh
+        model?.fetchNewMessages() { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(message: "Lost myself")
+                return
+            }
+            DispatchQueue.main.async {
+                me.refreshControl?.endRefreshing()
+            }
+        }
     }
 
     /**
