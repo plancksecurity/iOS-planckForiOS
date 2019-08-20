@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import PantomimeFramework
 @testable import pEpForiOS
 @testable import MessageModel
 
@@ -138,24 +139,49 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
     public func testSavePasswordAfterEndVerification() {
         // GIVEN
         setUpViewModel()
-        let successResult: Result<Void, Error> = .success(())
-        let expectedPassword = "passwordChanged"
-        let imap = AccountSettingsViewModel.ServerViewModel(address: nil, port: nil, transport: nil)
-        let smtp = AccountSettingsViewModel.ServerViewModel(address: nil, port: nil, transport: nil)
-        viewModel.update(loginName: "", name: "", password: expectedPassword, imap: imap, smtp: smtp)
+        guard let imapPort = account.imapServer?.port,
+            let smtpPort = account.smtpServer?.port else {
+                XCTFail()
+                return
+        }
+        let correctPwd = account.imapServer?.credentials.password
+        let wrongPwd = "Wrong Password"
+        account.imapServer?.credentials.password = wrongPwd
+
+        let savedExpectation = expectation(description: "Did save expectation")
+        let verifiableAccount = VerifiableAccount(messageModelService: viewModel.messageModelService,
+                                                  address: account.user.address,
+                                                  userName: account.user.userName,
+                                                  loginName: account.imapServer!.credentials.loginName,
+                                                  password: correctPwd,
+                                                  serverIMAP: account.imapServer?.address,
+                                                  portIMAP: imapPort,
+                                                  transportIMAP: ConnectionTransport.init(transport: account.imapServer!.transport),
+                                                  serverSMTP: account.smtpServer?.address,
+                                                  portSMTP: smtpPort,
+                                                  transportSMTP: ConnectionTransport.init(transport: account.smtpServer!.transport),
+                                                  automaticallyTrustedImapServer: true)
+
 
         // WHEN
-        viewModel.didEndVerification(result: successResult)
+        try? verifiableAccount.save { _ in
+            savedExpectation.fulfill()
+        }
 
         // THEN
-        let connectionInfo = account.cdObject.imapConnectInfo
-        let actualPassword = connectionInfo?.loginPassword
-        XCTAssertEqual(actualPassword, expectedPassword)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
+        let actualPassword = account.imapServer?.credentials.password
+        XCTAssertEqual(actualPassword, correctPwd)
     }
 
 
     private func setUpViewModel() {
-        account.save()
+        let inbox = CdFolder(context: moc)
+        inbox.account = account.cdObject
+        inbox.folderType = .inbox
+        inbox.name = ImapSync.defaultImapInboxName
+        moc.saveAndLogErrors()
+
         keySyncServiceHandshakeDelegateMoc = KeySyncServiceHandshakeDelegateMoc()
         let theMessageModelService = MessageModelService(
             errorPropagator: ErrorPropagator(),
