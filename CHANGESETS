@@ -1,9 +1,9 @@
-v0.0.51
-pEpEngine a4837da81310 (sync)
+v0.0.52
+pEpEngine 86a14a7b4cfa (sync)
 sequoia4ios 7540a1acfff0d7c231529fc0eb6987e0887bccca
-pEpObjCAdapter bcdc0be31b68
-MessageModel 415e44cf027c
-pantomime-iOS bf8093eeadab
+pEpObjCAdapter 91dae11f1818
+MessageModel 15e0d7fb8663
+pantomime-iOS 275cac375607
 libAccountSettings 47e92b7bacc1
 ldns bcdca923e53896e8b5467f3de136a68d124c3fc2
 OpenSSL-for-iPhone 10019638e80e8a8a5fc19642a840d8a69fac7349
