@@ -12,9 +12,9 @@ public struct GCD {
      Since you will do this all the time in UI callbacks.
      */
     public static func onMain(_ block: @escaping () -> Void) {
-        DispatchQueue.main.async(execute: {
+        DispatchQueue.main.async {
             block()
-        })
+        }
     }
 
     /**
@@ -24,9 +24,9 @@ public struct GCD {
         if Thread.isMainThread {
             block()
         } else {
-            DispatchQueue.main.sync(execute: {
+            DispatchQueue.main.sync {
                 block()
-            })
+            }
         }
     }
 }
