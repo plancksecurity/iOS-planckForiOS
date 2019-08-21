@@ -207,12 +207,8 @@ struct ComposeUtil {
             Log.shared.errorAndCrash("No outbox")
             return nil
         }
-        let message: Message
-        if let safeSession = session {
-            message = Message.newObject(onSession: safeSession)
-        } else {
-            message = Message(uuid: MessageID.generate(), parentFolder: outbox)
-        }
+        let session = session ?? Session.main
+        let message = Message.newObject(onSession: session)
         message.parent = outbox
         message.from = from
         message.replaceTo(with: toRecipients)
