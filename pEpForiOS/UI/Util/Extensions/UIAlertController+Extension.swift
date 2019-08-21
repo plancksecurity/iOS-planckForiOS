@@ -21,13 +21,29 @@ extension UIAlertController {
         }
     }
 
-    public static func pEpAlertController(
-        title: String? = nil,
-        message: String? = nil,
-        preferredStyle: UIAlertController.Style = .actionSheet) -> UIAlertController {
-        let alertCtrl = UIAlertController(title: title, message: message,
-                                          preferredStyle: preferredStyle)
-        alertCtrl.view.tintColor = .pEpGreen
-        return alertCtrl
+    public static func pEpAlertController(title: String? = nil,
+                                          message: String? = nil,
+                                          preferredStyle: UIAlertController.Style = .actionSheet,
+                                          pEpGreenInTitile: Bool = false,
+                                          alertImages: [UIImage] )
+        -> UIAlertController {
+            let alertCtrl = UIAlertController(title: title, message: message,
+                                              preferredStyle: preferredStyle)
+            alertCtrl.view.tintColor = .pEpGreen
+            paintTitle(pEpGreenInTitile, alert: alertCtrl)
+
+
+            return alertCtrl
     }
+}
+
+// MARK: - Private
+
+extension UIAlertController {
+    private static func paintTitle(_ pEpGreenColor: Bool = false, alert: UIAlertController) {
+        guard pEpGreenColor else { return }
+        alert.setValue(alert.title?.paintPEPToPEPColour(), forKey: "attributedTitle")
+    }
+
+//    private static func 
 }
