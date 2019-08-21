@@ -78,6 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
     private func gracefullyShutdownServices() {
+        AddressBook.shared.cancelImport()
         guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
             else {
                 Log.shared.errorAndCrash("Will not start background sync, pending %d",

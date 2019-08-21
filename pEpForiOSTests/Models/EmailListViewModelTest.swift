@@ -298,7 +298,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         emailListVM.startMonitoring()
         let indexOfTheOneAndOnlyMsg = 0
         let vm = emailListVM.viewModel(for: indexOfTheOneAndOnlyMsg)
-        XCTAssertEqual(vm?.message(), msg)
+        XCTAssertEqual(vm?.message, msg)
         XCTAssertEqual(vm?.subject, msg.shortMessage)
     }
 
@@ -329,7 +329,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
             XCTFail()
             return
         }
-        XCTAssertEqual(firstMsgVM.message(), msg)
+        XCTAssertEqual(firstMsgVM.message, msg)
 
         // Create a message that must not be shown
         TestUtil.createMessage(inFolder: trashFolder, from: inbox.account.user)
@@ -343,7 +343,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         setupViewModel()
         emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, messages.count)
-        waitForExpectations(timeout: TestUtil.waitTime) //BUFF: rm?
+        waitForExpectations(timeout: TestUtil.waitTime) //!!!: rm? Which expectation to wait for?
 
         let numFlagged = 2
         for i in 0..<numFlagged {

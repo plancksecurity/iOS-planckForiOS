@@ -122,7 +122,7 @@ class HandshakePartnerTableViewCellViewModel {
         } else {
             let session = Session()
             let safePartnerIdentity = partnerIdentity.safeForSession(session)
-            DispatchQueue.global().async { [weak self] in
+            DispatchQueue.global(qos: .userInteractive).async { [weak self] in
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
                     return
@@ -136,7 +136,7 @@ class HandshakePartnerTableViewCellViewModel {
         }
     }
 
-    func updateTrustwords(session: PEPSession = PEPSession()) {
+    func updateTrustwords() {
         if !isPartnerpEpUser,
             let fprSelf = pEpSelf.fingerPrint,
             let fprPartner = pEpPartner.fingerPrint {
@@ -152,11 +152,10 @@ class HandshakePartnerTableViewCellViewModel {
 
     func determineTrustwords(identitySelf: PEPIdentity, identityPartner: PEPIdentity) -> String? {
         do {
-            return try PEPSession().getTrustwordsIdentity1(
-                identitySelf,
-                identity2: identityPartner,
-                language: trustwordsLanguage,
-                full: trustwordsFull)
+            return try PEPSession().getTrustwordsIdentity1(identitySelf,
+                                                           identity2: identityPartner,
+                                                           language: trustwordsLanguage,
+                                                           full: trustwordsFull)
         } catch let err as NSError {
             Log.shared.error("%@", "\(err)")
             return nil

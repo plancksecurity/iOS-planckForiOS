@@ -13,6 +13,10 @@ extension UIColor {
     public static let pEpDarkGreenHex = "#1AAA50"
     public static let pEpRedHex = "#FF3B30"
     public static let pEpGreyHex = "#8e8e93"
+    public static let pEpGreyLinesHex = "#9F9F9F"
+    public static let pEpGreyButtonLinesHex = "#CDCED2"
+    public static let pEpGreyTextHex = "#8A8A8F"
+    public static let pEpGreyBackgroundHex = "#EDEEED"
     public static let pEpYellowHex = "#FFCC00"
     public static let pEpLightBackgroundHex = "#F2F2F2"
     public static let pEpNavigationBarColor = "#f7f7f7"
@@ -23,6 +27,10 @@ extension UIColor {
     public static var pEpGray = UIColor(hexString: pEpGreyHex)
     public static var pEpYellow = UIColor(hexString: pEpYellowHex)
     public static var pEpNavigation = UIColor(hexString: pEpNavigationBarColor)
+    public static var pEpGreyLines = UIColor(hexString: pEpGreyLinesHex)
+    public static var pEpGreyButtonLines = UIColor(hexString: pEpGreyButtonLinesHex)
+    public static var pEpGreyText = UIColor(hexString: pEpGreyTextHex)
+    public static var pEpGreyBackground = UIColor(hexString: pEpGreyBackgroundHex)
 
     public static let AppleRed =
                 UIColor(red: 255/255.0, green: 59/255, blue: 48/255.0, alpha: 1.0)
