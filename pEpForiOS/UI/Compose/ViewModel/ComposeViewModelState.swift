@@ -113,6 +113,19 @@ extension ComposeViewModel {
             edited = false
         }
 
+        deinit {
+            inlinedAttachments.forEach {
+                if  $0.message == nil {
+                    $0.delete()
+                }
+            }
+            nonInlinedAttachments.forEach {
+                if  $0.message == nil {
+                    $0.delete()
+                }
+            }
+        }
+
         public func makeSafe(forSession session: Session) -> ComposeViewModelState {
             let newValue = ComposeViewModelState(initData: initData, delegate: nil)
 
@@ -168,8 +181,8 @@ extension ComposeViewModel {
 
             pEpProtection = initData.pEpProtection
 
-            inlinedAttachments =  initData.inlinedAttachments
-            nonInlinedAttachments =  initData.nonInlinedAttachments
+            inlinedAttachments = initData.inlinedAttachments
+            nonInlinedAttachments = initData.nonInlinedAttachments
         }
 
         private func validateForSending() {

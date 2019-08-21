@@ -83,8 +83,11 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
         let testee = AccountCellViewModel(resultDelegate: dumbResultDelegate)
         XCTAssertNotNil(testee)
     }
+}
 
-   // MARK: - Helper
+// MARK: - Helper
+
+extension AccountCellViewModelTest {
 
     private func assert(initialAccount: Account? = nil,
                         accountChangedMustBeCalled: Bool?,
@@ -96,12 +99,12 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
             expAccountChangedCalled = expectation(inverted: !mustBeCalled)
         }
         let newResultDelegate = TestResultDelegate(expAccountChangedToCalled: expAccountChangedToCalled,
-                                                         expectedAccount: expectedAccount ?? nil)
+                                                   expectedAccount: expectedAccount ?? nil)
         resultDelegate = newResultDelegate
         delegate = TestDelegate(expAccountChangedCalled: expAccountChangedCalled,
-                                    expectedAddress: expectedAccount?.user.address ?? nil)
+                                expectedAddress: expectedAccount?.user.address ?? nil)
         vm = AccountCellViewModel(resultDelegate: newResultDelegate,
-                                      initialAccount: initialAccount)
+                                  initialAccount: initialAccount)
         vm.delegate = delegate
     }
 

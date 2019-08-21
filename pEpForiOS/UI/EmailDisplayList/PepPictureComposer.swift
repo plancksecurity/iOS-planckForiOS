@@ -44,9 +44,7 @@ class PepProfilePictureComposer: ProfilePictureComposerProtocol {
                 if color != PEPColor.noColor {
                     image = color.statusIconInContactPicture()
                 }
-                DispatchQueue.main.async {
-                    completion(image)
-                }
+                completion(image)
             }
         }
     }
