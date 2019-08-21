@@ -28,7 +28,7 @@ public class UnifiedInbox: VirtualFolderProtocol {
             return
         }
         let folders = Folder.getAll(folderType: folderType)
-        fetchMessagesService.fetchMessages(inFolders: folders) {
+        fetchMessagesService.runService(inFolders: folders) {
             completion?()
         }
     }
