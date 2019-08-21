@@ -173,6 +173,7 @@
 		15874BD12127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BBF2127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift */; };
 		15874BD22127493E00A3A4A6 /* TrustedServerSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BC02127493E00A3A4A6 /* TrustedServerSettingsViewController.swift */; };
 		15874BD421274BD400A3A4A6 /* TrustedServerSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BD321274BD400A3A4A6 /* TrustedServerSettingCell.swift */; };
+		158A6E2F230D53E3006A9ECE /* ExtraKeysSettingViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6E2E230D53E3006A9ECE /* ExtraKeysSettingViewModelTest.swift */; };
 		159E1F1322BD074F007D711F /* PantomimeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 159E1F1222BD074F007D711F /* PantomimeFramework.framework */; };
 		159E1F1522BD0756007D711F /* PEPObjCAdapterFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 159E1F1422BD0756007D711F /* PEPObjCAdapterFramework.framework */; };
 		15A536902155136800CF6204 /* PEPUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A5368F2155136800CF6204 /* PEPUtilTest.swift */; };
@@ -650,6 +651,7 @@
 		15874BBF2127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingsViewModel.swift; sourceTree = "<group>"; };
 		15874BC02127493E00A3A4A6 /* TrustedServerSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingsViewController.swift; sourceTree = "<group>"; };
 		15874BD321274BD400A3A4A6 /* TrustedServerSettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingCell.swift; sourceTree = "<group>"; };
+		158A6E2E230D53E3006A9ECE /* ExtraKeysSettingViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtraKeysSettingViewModelTest.swift; sourceTree = "<group>"; };
 		159E1F1222BD074F007D711F /* PantomimeFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		159E1F1422BD0756007D711F /* PEPObjCAdapterFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PEPObjCAdapterFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		15A5368F2155136800CF6204 /* PEPUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPUtilTest.swift; sourceTree = "<group>"; };
@@ -1043,6 +1045,7 @@
 		150707DD21006D0200AA213F /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				158A6E2B230D53B8006A9ECE /* Settings */,
 				3705095B22CF465300CB73D6 /* KeySyncHandshake */,
 				15D4399D216F703100EB3933 /* Compose */,
 				4356FFEA21356CB600804089 /* Util */,
@@ -1503,6 +1506,30 @@
 				15874BD321274BD400A3A4A6 /* TrustedServerSettingCell.swift */,
 			);
 			path = TrustedServerSetting;
+			sourceTree = "<group>";
+		};
+		158A6E2B230D53B8006A9ECE /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				158A6E2C230D53C0006A9ECE /* Setting */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		158A6E2C230D53C0006A9ECE /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				158A6E2D230D53C7006A9ECE /* ExtraKeysSetting */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		158A6E2D230D53C7006A9ECE /* ExtraKeysSetting */ = {
+			isa = PBXGroup;
+			children = (
+				158A6E2E230D53E3006A9ECE /* ExtraKeysSettingViewModelTest.swift */,
+			);
+			path = ExtraKeysSetting;
 			sourceTree = "<group>";
 		};
 		15B483DF1F290B14000FB2CF /* Background */ = {
@@ -3063,6 +3090,7 @@
 				1541D7F51FC82A4900D52A5D /* URL+MIME.swift in Sources */,
 				00172F462163C2EE0079B189 /* SettingsSectionViewModelTest.swift in Sources */,
 				00172F432163AC110079B189 /* SettingsViewModelTest.swift in Sources */,
+				158A6E2F230D53E3006A9ECE /* ExtraKeysSettingViewModelTest.swift in Sources */,
 				438281831E891B7E00087343 /* DateTests.swift in Sources */,
 				15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */,
 				151F71FB202A06760057C74D /* MockBackgrounder.swift in Sources */,
