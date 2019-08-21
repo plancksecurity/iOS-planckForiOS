@@ -110,7 +110,7 @@ public class DefaultAppSettings: AppSettingsProtocol {
     private func registerDefaults() {
         var defaults = [String: Any]()
         defaults[AppSettings.keyReinitializePepOnNextStartup] = false
-        defaults[AppSettings.keyKeySyncEnabled] = false
+        defaults[AppSettings.keyKeySyncEnabled] = true
         defaults[AppSettings.keyUnencryptedSubjectEnabled] = true
         defaults[AppSettings.keyThreadedViewEnabled] = true
         defaults[AppSettings.keyPassiveMode] = false
