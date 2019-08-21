@@ -391,7 +391,7 @@ class EmailListViewModel {
         if !triggerFetchOlder(lastDisplayedRow: indexPath.row) {
             return
         }
-        folderToShow.fetchOlder()
+        folderToShow.fetchOlder(completion: nil)
     }
 
     //MARK: - FetchNewMessages

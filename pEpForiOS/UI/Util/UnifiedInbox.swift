@@ -9,16 +9,23 @@ import pEpIOSToolbox
 import MessageModel
 
 public class UnifiedInbox: VirtualFolderProtocol {
+
     private lazy var fetchMessagesService = FetchMessagesService()
+    private lazy var fetchOlderMessagesService = FetchOlderImapMessagesService()
     static public let defaultUnifiedInboxName = "Unified Inbox"
 
     public var agregatedFolderType: FolderType? {
         return FolderType.inbox
     }
 
-    public func fetchOlder() {
-        for folder in Folder.getAll(folderType: .inbox) {
-            folder.fetchOlder()
+    public func fetchOlder(completion: (()->())? = nil) {
+        guard let foldertype = agregatedFolderType else {
+            Log.shared.errorAndCrash(message: "missing folder type for unified inbox?")
+            return
+        }
+        let folders = Folder.getAll(folderType: foldertype)
+        fetchMessagesService.runService(inFolders: folders) {
+            completion?()
         }
     }
 
