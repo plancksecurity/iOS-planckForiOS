@@ -176,11 +176,6 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
 
     private func setUpViewModel() {
-        let inbox = CdFolder(context: moc)
-        inbox.account = account.cdObject
-        inbox.folderType = .inbox
-        inbox.name = ImapSync.defaultImapInboxName
-        moc.saveAndLogErrors()
 
         keySyncServiceHandshakeDelegateMoc = KeySyncServiceHandshakeDelegateMoc()
         let theMessageModelService = MessageModelService(
