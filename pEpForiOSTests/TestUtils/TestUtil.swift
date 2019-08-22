@@ -569,14 +569,18 @@ class TestUtil {
 
     // MARK: - FOLDER
 
-    static func makeFolderInteresting(folderType: FolderType, cdAccount: CdAccount) {
-        let folder = cdFolder(ofType: folderType, in: cdAccount)
+    static func makeFolderInteresting(folderType: FolderType,
+                                      cdAccount: CdAccount,
+                                      context: NSManagedObjectContext? = nil) {
+        let folder = cdFolder(ofType: folderType, in: cdAccount, context: context)
         folder.lastLookedAt = Date(timeInterval: -1, since: Date())
         Record.saveAndWait()
     }
 
-    static func cdFolder(ofType type: FolderType, in cdAccount: CdAccount) -> CdFolder {
-        guard let folder = CdFolder.by(folderType: type, account: cdAccount, context: nil)
+    static func cdFolder(ofType type: FolderType,
+                         in cdAccount: CdAccount,
+                         context: NSManagedObjectContext? = nil) -> CdFolder {
+        guard let folder = CdFolder.by(folderType: type, account: cdAccount, context: context)
             else {
                 fatalError()
         }
