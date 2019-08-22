@@ -10,6 +10,7 @@ import XCTest
 import MessageModel
 @testable import pEpForiOS
 
+//!!!: move to MM
 extension CdAccount {
     /**
      - Note: The test for the `sendFrom` identity is very strict and will fail
@@ -17,21 +18,25 @@ extension CdAccount {
      */
     public func allMessages(inFolderOfType type: FolderType,
                             sendFrom from: CdIdentity? = nil) -> [CdMessage] {
-        guard let messages = CdMessage.all() as? [CdMessage] else {
+        var predicates = [NSPredicate]()
+        let pIsInAccount = NSPredicate(format: "parent.%@ = %@",
+                                     CdFolder.RelationshipName.account, self)
+        predicates.append(pIsInAccount)
+        let pIsInFolderOfType = NSPredicate(format: "parent.%@ == %d",
+                                CdFolder.AttributeName.folderTypeRawValue, type.rawValue)
+        predicates.append(pIsInFolderOfType)
+        if let from = from {
+            let pSenderIdentity = NSPredicate(format: "%K = %@",
+                                              CdMessage.RelationshipName.from, from)
+            predicates.append(pSenderIdentity)
+        }
+        let finalPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+
+        guard let messages = CdMessage.all(predicate: finalPredicate) as? [CdMessage] else {
             return []
         }
 
-        let msgs1 = messages.filter {
-            $0.parent?.account == self && $0.parent?.folderType == type
-        }
-        if let id = from {
-            let msgs2 = msgs1.filter {
-                $0.from == id
-            }
-            return msgs2
-        } else {
-            return msgs1
-        }
+        return messages
     }
     
     public func createRequiredFoldersAndWait(testCase: XCTestCase) {
