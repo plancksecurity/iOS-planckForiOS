@@ -195,7 +195,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func importContacts() {
         DispatchQueue.global(qos: .background).async { //!!!: Must become background task. Or stoped when going to background imo.
-            AddressBook.shared.transferContacts()
+            AddressBook.shared.startImport()
         }
     }
 
