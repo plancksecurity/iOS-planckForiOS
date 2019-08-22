@@ -16,6 +16,7 @@ final class SettingsSectionViewModel {
         case globalSettings
         case pgpCompatibilitySettings
         case keySync
+        case companyFeatures
     }
 
     var cells = [SettingCellViewModelProtocol]()
@@ -25,7 +26,7 @@ final class SettingsSectionViewModel {
     private let keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol?
     
     init(type: SectionType, messageModelService: MessageModelServiceProtocol? = nil,
-                            keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol? = nil) {
+         keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol? = nil) {
         self.type = type
         self.keySyncDeviceGroupService = keySyncDeviceGroupService
 
@@ -45,17 +46,32 @@ final class SettingsSectionViewModel {
                                        comment: "Tableview section footer")
         case .keySync:
             guard let messageModelService = messageModelService else {
-                Log.shared.errorAndCrash("%@", SettingsInternalError.nilMessageModelService.localizedDescription)
+                Log.shared.errorAndCrash("missing service")
                 return
             }
             generateKeySyncCells(messageModelService)
             title = NSLocalizedString("Key sync", comment: "Tableview section header")
+        case .companyFeatures:
+            generateExtaKeysCells()
+            title = NSLocalizedString("Company Features", comment: "Tableview section header")
         }
     }
 
-    func generateAccountCells() {
-        Account.all().forEach { (acc) in
-            self.cells.append(SettingsCellViewModel(account: acc))
+    var count: Int {
+        return cells.count
+    }
+
+    subscript(cell: Int) -> SettingCellViewModelProtocol {
+        get {
+            assert(cellIsValid(cell: cell), "Cell out of range")
+            return cells[cell]
+        }
+    }
+
+    func delete(cell: Int) {
+        if let cellToRemove = cells[cell] as? SettingsCellViewModel {
+            cellToRemove.delete()
+            cells.remove(at: cell)
         }
     }
 
@@ -68,7 +84,22 @@ final class SettingsSectionViewModel {
         }
     }
 
-    func generateGlobalSettingsCells() {
+    func cellIsValid(cell: Int) -> Bool {
+        return cell >= 0 && cell < cells.count
+    }
+}
+
+// MARK: - Private
+
+extension SettingsSectionViewModel {
+
+    private func generateAccountCells() {
+        Account.all().forEach { (acc) in
+            self.cells.append(SettingsCellViewModel(account: acc))
+        }
+    }
+
+    private func generateGlobalSettingsCells() {
         self.cells.append(SettingsCellViewModel(type: .defaultAccount))
         self.cells.append(SettingsCellViewModel(type: .credits))
         self.cells.append(SettingsCellViewModel(type: .trustedServer))
@@ -76,38 +107,15 @@ final class SettingsSectionViewModel {
         self.cells.append(PassiveModeViewModel())
     }
 
-    func generatePgpCompatibilitySettingsCells() {
+    private func generatePgpCompatibilitySettingsCells() {
         self.cells.append(UnecryptedSubjectViewModel())
-    }
-
-    func delete(cell: Int) {
-        if let cellToRemove = cells[cell] as? SettingsCellViewModel {
-            cellToRemove.delete()
-            cells.remove(at: cell)
-        }
-    }
-
-    func cellIsValid(cell: Int) -> Bool {
-        return cell >= 0 && cell < cells.count
-    }
-
-    var count: Int {
-        get {
-            return cells.count
-        }
-    }
-
-    subscript(cell: Int) -> SettingCellViewModelProtocol {
-        get {
-            assert(cellIsValid(cell: cell), "Cell out of range")
-            return cells[cell]
-        }
     }
 }
 
-// MARK: - Private
+// MARK: KeySync
 
 extension SettingsSectionViewModel {
+
     private func isInDeviceGroup() -> Bool {
         guard let keySyncDeviceGroupService = keySyncDeviceGroupService else {
             Log.shared.errorAndCrash("%@", SettingsInternalError.nilKeySyncDeviceGroupService.localizedDescription)
@@ -121,5 +129,14 @@ extension SettingsSectionViewModel {
         if isInDeviceGroup() {
             cells.append(SettingsActionCellViewModel(type: .leaveKeySyncGroup))
         }
+    }
+}
+
+// MARK: Extra Keys
+
+extension SettingsSectionViewModel {
+
+    private func generateExtaKeysCells() {
+        cells.append(SettingsCellViewModel(type: .extraKeys))
     }
 }

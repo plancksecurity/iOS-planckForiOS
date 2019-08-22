@@ -93,8 +93,8 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
 
         let expDecrypted = expectation(description: "expDecrypted")
         let errorContainer = ErrorContainer()
-        let decryptOperation = DecryptMessagesOperation(
-            parentName: #function, errorContainer: errorContainer)
+        let decryptOperation = DecryptMessagesOperation(parentName: #function,
+                                                        errorContainer: errorContainer)
         decryptOperation.completionBlock = {
             decryptOperation.completionBlock = nil
             expDecrypted.fulfill()

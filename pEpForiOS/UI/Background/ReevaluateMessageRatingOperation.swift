@@ -61,14 +61,14 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
                 return
             }
             let pEpSession = PEPSession()
-            let pepMessage = cdMsg.pEpMessageDict()
+            let pepMessage = cdMsg.pEpMessage()
             do {
                 let keys = cdMsg.keysFromDecryption?.array as? [String] // Needs to be extented when implementing "Extra Keys" feature to take X-KeyList header into account
                 var newRating = PEPRating.undefined
-                try pEpSession.reEvaluateMessageDict(pepMessage,
-                                                     xKeyList: keys,
-                                                     rating: &newRating,
-                                                     status: nil)
+                try pEpSession.reEvaluateMessage(pepMessage,
+                                                 xKeyList: keys,
+                                                 rating: &newRating,
+                                                 status: nil)
                 cdMsg.pEpRating = Int16(newRating.rawValue)
                 privateMOC.saveAndLogErrors()
             } catch let error as NSError {
