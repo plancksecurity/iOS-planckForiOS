@@ -288,7 +288,6 @@ class TestUtil {
     /// - Returns: created mails
     /// - Throws: error importing key
     static func createOutgoingMails(cdAccount: CdAccount,
-                                    fromIdentity: CdIdentity? = nil,
                                     toIdentity: CdIdentity? = nil,
                                     setSentTimeOffsetForManualOrdering: Bool = false,
                                     testCase: XCTestCase,
@@ -298,7 +297,6 @@ class TestUtil {
                                     encrypt: Bool = true,
                                     forceUnencrypted: Bool = false,
                                     context: NSManagedObjectContext) throws -> [CdMessage] {
-        let cdAccount = fromIdentity?.accounts?.allObjects.first as? CdAccount ?? cdAccount 
         testCase.continueAfterFailure = false
 
         if numberOfMails == 0 {
@@ -321,18 +319,7 @@ class TestUtil {
             return []
         }
 
-        let from: CdIdentity
-        if let fromIdentity = fromIdentity {
-            from = fromIdentity
-        } else {
-            from = CdIdentity(context: context)
-            from.userName = cdAccount.identity?.userName ?? "Unit 004"
-            from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
-        }
-        guard let fromUserId = cdAccount.identity?.userID else {
-            fatalError("No userId")
-        }
-        from.userID = fromUserId
+        let from = cdAccount.identity
 
         let to: CdIdentity
         if let toIdentity = toIdentity {
