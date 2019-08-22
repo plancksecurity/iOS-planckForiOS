@@ -28,6 +28,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         super.viewDidLoad()
         title = NSLocalizedString("Settings", comment: "Settings view title")
         UIHelper.variableCellHeightsTableView(tableView)
+        addExtraKeysEditabilityToggleGesture()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -37,7 +38,9 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         }
         self.navigationController?.setToolbarHidden(true, animated: false)
 
-        if MiscUtil.isUnitTest() {
+        viewModel.delegate = self
+
+        if MiscUtil.isUnitTest() { //!!!: must go away. Check if it is needless already and rm.
             super.viewWillAppear(animated)
             return
         }
@@ -120,11 +123,11 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         if indexPath.section == 0 {
             let deleteAction = SwipeAction(style: .destructive, title: NSLocalizedString("Delete", comment: "Account delete")) {
                 [weak self] action, indexPath in
-                    guard let me = self else {
-                        Log.shared.lostMySelf()
-                        return
-                    }
-                    me.showAlertBeforeDelete(indexPath)
+                guard let me = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+                me.showAlertBeforeDelete(indexPath)
             }
             return (orientation == .right ? [deleteAction] : nil)
         }
@@ -164,6 +167,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 performSegue(withIdentifier: .segueShowSettingTrustedServers, sender: self)
             case .setOwnKey:
                 performSegue(withIdentifier: .segueSetOwnKey, sender: self)
+            case .extraKeys:
+                performSegue(withIdentifier: .segueExtraKeys, sender: self)
             }
         case let vm as SettingsActionCellViewModelProtocol:
             switch vm.type {
@@ -187,6 +192,7 @@ extension SettingsTableViewController: SegueHandlerType {
         case segueShowSettingDefaultAccount
         case sequeShowCredits
         case segueShowSettingTrustedServers
+        case segueExtraKeys
         case segueSetOwnKey
         case noAccounts
         case noSegue
@@ -205,14 +211,15 @@ extension SettingsTableViewController: SegueHandlerType {
             if let path = ipath ,
                 let vm = viewModel[path.section][path.row] as? SettingsCellViewModel,
                 let acc = vm.account  {
-                    let vm = AccountSettingsViewModel(
-                        account: acc,
-                        messageModelService: appConfig.messageModelService)
-                    destination.viewModel = vm
+                let vm = AccountSettingsViewModel(
+                    account: acc,
+                    messageModelService: appConfig.messageModelService)
+                destination.viewModel = vm
             }
         case .noAccounts,
              .segueAddNewAccount,
-             .sequeShowCredits:
+             .sequeShowCredits,
+             .segueExtraKeys:
             guard let destination = segue.destination as? BaseViewController else {
                 return
             }
@@ -234,7 +241,7 @@ extension SettingsTableViewController: SegueHandlerType {
 
 // MARK: - Private
 extension SettingsTableViewController {
-    private func updateModel() {
+    private func updateModel() { //!!!: looks wrong. Is named updateModel but does not.
         //reload data in view model
         tableView.reloadData()
     }
@@ -315,5 +322,36 @@ extension SettingsTableViewController {
 
         self.present(alertController, animated: true) {
         }
+    }
+}
+
+// MARK: - Extra Keys
+
+extension SettingsTableViewController {
+
+    /// Adds easter egg gesture to [en|dis]able the editability of extra keys
+    private func addExtraKeysEditabilityToggleGesture() {
+        let gestureRecogniser =
+            UITapGestureRecognizer(target: self,
+                                   action: #selector(extraKeysEditabilityToggleGestureTriggered))
+        gestureRecogniser.numberOfTapsRequired = 6
+        gestureRecogniser.numberOfTouchesRequired = 3
+        tableView.addGestureRecognizer(gestureRecogniser)
+    }
+
+    @objc // @objc is required for selector
+    private func extraKeysEditabilityToggleGestureTriggered() {
+        viewModel.handleExtryKeysEditabilityGestureTriggered()
+    }
+}
+
+// MARK: - SettingsViewModelDelegate
+
+extension SettingsTableViewController: SettingsViewModelDelegate {
+
+    func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
+        UIUtils.showAlertWithOnlyPositiveButton(title: "Extra Keys Editable",
+                                                message: newValue,
+                                                inViewController: self)
     }
 }

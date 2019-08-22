@@ -9,15 +9,22 @@
 import Foundation
 import MessageModel
 
+protocol SettingsViewModelDelegate: class {
+    func showExtraKeyEditabilityStateChangeAlert(newValue: String)
+}
+
 final class SettingsViewModel {
+    weak var delegate: SettingsViewModelDelegate?
     var sections = [SettingsSectionViewModel]()
     private let keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol?
     private let messageModelService: MessageModelServiceProtocol
 
     init(_ messageModelService: MessageModelServiceProtocol,
-         _ keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol = KeySyncDeviceGroupService()) {
+         _ keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol = KeySyncDeviceGroupService(),
+         delegate: SettingsViewModelDelegate? = nil) {
         self.keySyncDeviceGroupService = keySyncDeviceGroupService
         self.messageModelService = messageModelService
+        self.delegate = delegate
         generateSections()
     }
 
@@ -28,6 +35,7 @@ final class SettingsViewModel {
         sections.append(SettingsSectionViewModel(type: .keySync,
                                                  messageModelService: messageModelService,
                                                  keySyncDeviceGroupService: keySyncDeviceGroupService))
+        sections.append(SettingsSectionViewModel(type: .companyFeatures))
     }
 
     func delete(section: Int, cell: Int) {
@@ -77,6 +85,7 @@ final class SettingsViewModel {
 }
 
 // MARK: - Private
+
 extension SettingsViewModel {
     private func sectionIsValid(section: Int) -> Bool {
         return section >= 0 && section < sections.count
@@ -89,5 +98,16 @@ extension SettingsViewModel {
             }
             section.removeLeaveDeviceGroupCell()
         }
+    }
+}
+
+// MARK: - ExtryKeysEditability
+
+extension SettingsViewModel {
+
+    func handleExtryKeysEditabilityGestureTriggered() {
+        let newValue = !AppSettings.extraKeysEditable
+        AppSettings.extraKeysEditable = newValue
+        delegate?.showExtraKeyEditabilityStateChangeAlert(newValue: newValue ? "ON" : "OFF")
     }
 }

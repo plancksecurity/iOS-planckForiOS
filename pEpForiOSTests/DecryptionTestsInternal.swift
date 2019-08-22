@@ -14,6 +14,8 @@ import CoreData
 import PantomimeFramework
 import PEPObjCAdapterFramework
 
+//!!!: must be moved!
+
 /**
  Tests internal encryption and decryption (that is, the test creates encrypted messages itself,
  and does not rely on outside data/services).
@@ -60,10 +62,40 @@ class DecryptionTestsInternal: CoreDataDrivenTestBase {
         super.tearDown()
     }
 
+    func testBasicDecryptionOfEncryptedMailWithSubject() {
+        testBasicDecryption(shouldEncrypt: true, useSubject: true)
+    }
+
+    func testBasicDecryptionOfEncryptedMailWithoutSubject() {
+        testBasicDecryption(shouldEncrypt: true, useSubject: false)
+    }
+
+    func testBasicDecryptionOfUnEncryptedMail() {
+        testBasicDecryption(shouldEncrypt: false, useSubject: true)
+    }
+
+    func testBasicDecryptionOfUnEncryptedMailWithNilPersonal() {
+        pEpSenderIdentity.userName = nil
+        testBasicDecryption(shouldEncrypt: false, useSubject: true)
+    }
+
+    func testIncomingUnencryptedOutlookProbingMessage() {
+        guard let _ = TestUtil.cdMessageAndSetUpPepFromMail(
+            emailFilePath: "Microsoft_Outlook_Probing_Message_001.txt") else {
+                XCTFail()
+                return
+        }
+    }
+}
+
+// MARK: - HELPER
+
+extension DecryptionTestsInternal {
+
     func pEpIdentity(cdAccount: CdAccount) -> PEPIdentity? {
         guard let cdIdentity = cdAccount.identity, cdIdentity.isMySelf else {
-                XCTFail("An account must have an identity that is mySelf.")
-                return nil
+            XCTFail("An account must have an identity that is mySelf.")
+            return nil
         }
         let identity = cdIdentity.pEpIdentity()
         try! session.mySelf(identity)
@@ -99,7 +131,7 @@ class DecryptionTestsInternal: CoreDataDrivenTestBase {
 
         if shouldEncrypt {
             do {
-                let (_, encryptedDictOpt) = try session.encrypt(pEpMessageDict: pEpMsg)
+                let (_, encryptedDictOpt) = try PEPUtils.encrypt(pEpMessageDict: pEpMsg)
                 guard
                     let theEncryptedDict = encryptedDictOpt as? PEPMessageDict,
                     let theAttachments = theEncryptedDict[kPepAttachments] as? NSArray else {
@@ -163,8 +195,8 @@ class DecryptionTestsInternal: CoreDataDrivenTestBase {
                                                  messageUpdate: CWMessageUpdate.newComplete(),
                                                  context: moc)
             else {
-                    XCTFail()
-                    return
+                XCTFail()
+                return
         }
 
         cdMsg.parent = cdInbox
@@ -172,7 +204,7 @@ class DecryptionTestsInternal: CoreDataDrivenTestBase {
         XCTAssertFalse(cdMsg.imap?.localFlags?.flagDeleted ?? true)
         XCTAssertEqual(cdMsg.pEpRating, PEPUtils.pEpRatingNone)
         if shouldEncrypt {
-            XCTAssertTrue(cdMsg.isProbablyPGPMime())
+            XCTAssertTrue(PEPUtils.isProbablyPGPMime(cdMessage: cdMsg))
         }
 
         moc.saveAndLogErrors()
@@ -232,8 +264,8 @@ class DecryptionTestsInternal: CoreDataDrivenTestBase {
         }
         for header in [kXEncStatus, kXpEpVersion, kXKeylist] {
             let p = NSPredicate(format: "%K = %@ and %K = %@",
-                                 CdHeaderField.RelationshipName.message, cdMsg,
-                                 CdHeaderField.AttributeName.name, header)
+                                CdHeaderField.RelationshipName.message, cdMsg,
+                                CdHeaderField.AttributeName.name, header)
             let headerField = CdHeaderField.first(predicate: p)
             if shouldEncrypt {
                 // check header in core data
@@ -246,31 +278,6 @@ class DecryptionTestsInternal: CoreDataDrivenTestBase {
                 // check header in dictionary derived from core data
                 XCTAssertNil(valueOf(header: header, inOptionalFields: optFields))
             }
-        }
-    }
-
-    func testBasicDecryptionOfEncryptedMailWithSubject() {
-        testBasicDecryption(shouldEncrypt: true, useSubject: true)
-    }
-
-    func testBasicDecryptionOfEncryptedMailWithoutSubject() {
-        testBasicDecryption(shouldEncrypt: true, useSubject: false)
-    }
-
-    func testBasicDecryptionOfUnEncryptedMail() {
-        testBasicDecryption(shouldEncrypt: false, useSubject: true)
-    }
-
-    func testBasicDecryptionOfUnEncryptedMailWithNilPersonal() {
-        pEpSenderIdentity.userName = nil
-        testBasicDecryption(shouldEncrypt: false, useSubject: true)
-    }
-
-    func testIncomingUnencryptedOutlookProbingMessage() {
-        guard let _ = TestUtil.cdMessageAndSetUpPepFromMail(
-            emailFilePath: "Microsoft_Outlook_Probing_Message_001.txt") else {
-                XCTFail()
-                return
         }
     }
 }
