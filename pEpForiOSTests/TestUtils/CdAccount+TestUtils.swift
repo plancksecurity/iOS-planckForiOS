@@ -61,17 +61,16 @@ extension CdAccount {
         backgroundQueue.addOperation(imapLogin)
         backgroundQueue.addOperation(syncFoldersOp)
 
-        testCase.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+        testCase.waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
             XCTAssertFalse(imapLogin.hasErrors())
             XCTAssertFalse(syncFoldersOp.hasErrors())
-        })
+        }
 
         let expCreated1 = testCase.expectation(description: "expCreated")
-        let opCreate1 = CreateRequiredFoldersOperation(
-            parentName: #function, imapSyncData: imapSyncData)
+        let opCreate1 = CreateRequiredFoldersOperation(parentName: #function,
+                                                       imapSyncData: imapSyncData)
         opCreate1.completionBlock = {
-            opCreate1.completionBlock = nil
             expCreated1.fulfill()
         }
         backgroundQueue.addOperation(opCreate1)
