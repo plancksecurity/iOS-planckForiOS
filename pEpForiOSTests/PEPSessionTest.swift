@@ -43,19 +43,19 @@ class PEPSessionTest: CoreDataDrivenTestBase {
 //        let first = message.cdObject
         let cdmessage1 = first
         let cdmessage2 = cdmessage1
-        let pepmessage = cdmessage1.pEpMessageDict()
+        let pEpMessage = cdmessage1.pEpMessage()
 
-        try! session.encryptMessageDict(pepmessage,
-                                        extraKeys: nil,
-                                        encFormat: .PEP,
-                                        status: nil)
-        try! session.decryptMessageDict(pepmessage.mutableDictionary(),
-                                        flags: nil,
-                                        rating: nil,
-                                        extraKeys: nil,
-                                        status: nil)
+        try! session.encryptMessage(pEpMessage,
+                                    extraKeys: nil,
+                                    encFormat: .PEP,
+                                    status: nil)
+        try! session.decryptMessage(pEpMessage,
+                                    flags: nil,
+                                    rating: nil,
+                                    extraKeys: nil,
+                                    status: nil)
         let moc = cdmessage2.managedObjectContext! //!!!: not nice
-        cdmessage2.update(pEpMessageDict: pepmessage, context: moc)
+        cdmessage2.update(pEpMessage: pEpMessage, context: moc)
         XCTAssertEqual(cdmessage2, cdmessage1)
     }
 
@@ -79,7 +79,7 @@ class PEPSessionTest: CoreDataDrivenTestBase {
 
         try! session.mySelf(myself)
 
-        let (_, encMsg1) = try! session.encrypt(pEpMessage: pEpMessage, forSelf: myself)
+        let (_, encMsg1) = try! PEPUtils.encrypt(pEpMessage: pEpMessage, forSelf: myself)
         if let theEncMsg = encMsg1 {
             // expecting that sensitive data gets hidden (ENGINE-287)
             XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
@@ -92,7 +92,7 @@ class PEPSessionTest: CoreDataDrivenTestBase {
             XCTFail()
         }
 
-        let (_, encMsg2) = try! session.encrypt(pEpMessage: pEpMessage)
+        let (_, encMsg2) = try! PEPUtils.encrypt(pEpMessage: pEpMessage)
         if let theEncMsg = encMsg2 {
             // expecting that message ID gets hidden (ENGINE-288)
             XCTAssertNotEqual(theEncMsg.messageID, myMessageID)

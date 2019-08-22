@@ -22,6 +22,7 @@ struct AppSettings {
     static public let keyThreadedViewEnabled = "keyThreadedViewEnabled"
     static public let keyPassiveMode = "keyPassiveMode"
     static public let keyLastKnowDeviceGroupStateRawValue = "keyLastKnowDeviceGroupStateRawValue"
+    static public let keyExtraKeysEditable = "keyExtraKeysEditable"
 
     /**
      The actual implementation of `AppSettingsProtocol` to defer to.
@@ -45,6 +46,15 @@ struct AppSettings {
         }
         set {
             settingsHandler.keySyncEnabled = newValue
+        }
+    }
+
+    static var extraKeysEditable: Bool {
+        get {
+            return settingsHandler.extraKeysEditable
+        }
+        set {
+            settingsHandler.extraKeysEditable = newValue
         }
     }
     

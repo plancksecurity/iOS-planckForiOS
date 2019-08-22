@@ -98,59 +98,62 @@ extension ComposeViewModel {
         var bodyPlaintext = ""
         var bodyHtml: NSAttributedString?
 
-        public var nonInlinedAttachments: [Attachment] {
-            return ComposeUtil.initialAttachments(composeMode: composeMode,
-                                                  contentDisposition: .attachment,
-                                                  originalMessage: originalMessage)
-        }
-
-        public var inlinedAttachments: [Attachment] {
-            return ComposeUtil.initialAttachments(composeMode: composeMode,
-                                                  contentDisposition: .inline,
-                                                  originalMessage: originalMessage)
-        }
+        public var nonInlinedAttachments = [Attachment]()
+        public var inlinedAttachments = [Attachment]()
 
         init(withPrefilledToRecipient prefilledTo: Identity? = nil,
              prefilledFromSender prefilledFrom: Identity? = nil,
              orForOriginalMessage om: Message? = nil,
              composeMode: ComposeUtil.ComposeMode? = nil) {
+
+            let cloneMessage = om?.cloneWithZeroUID(session: Session.main)
             self.composeMode = composeMode ?? ComposeUtil.ComposeMode.normal
-            self.prefilledTo = om == nil ? prefilledTo : nil
+            self.prefilledTo = cloneMessage == nil ? prefilledTo : nil
             self.prefilledFrom = prefilledFrom
             self.originalMessage = om
+            self.inlinedAttachments = ComposeUtil.initialAttachments(composeMode: self.composeMode,
+                                                                     contentDisposition: .inline,
+                                                                     originalMessage: cloneMessage)
+            self.nonInlinedAttachments = ComposeUtil.initialAttachments(composeMode: self.composeMode,
+                                                                        contentDisposition: .attachment,
+                                                                        originalMessage: cloneMessage)
+            inlinedAttachments.forEach { $0.message = nil }
+            nonInlinedAttachments.forEach { $0.message = nil }
+
             setupInitialSubject()
-            setupInitialBody()
+            setupInitialBody(from: cloneMessage)
+            cloneMessage?.delete()
         }
 
         mutating private func setupInitialSubject() {
-            guard let om = originalMessage else {
+            guard let originalMessage = originalMessage else {
                 // We have no original message. That's OK for compose mode .normal.
                 return
             }
             switch composeMode {
             case .replyFrom,
                  .replyAll:
-                subject = ReplyUtil.replySubject(message: om)
+                subject = ReplyUtil.replySubject(message: originalMessage)
             case .forward:
-                subject = ReplyUtil.forwardSubject(message: om)
+                subject = ReplyUtil.forwardSubject(message: originalMessage)
             case .normal:
                 if isDraftsOrOutbox {
-                    subject = om.shortMessage ?? " "
+                    subject = originalMessage.shortMessage ?? " "
                 }
                 // .normal is intentionally ignored here for other folder types
             }
         }
 
-        mutating private func setupInitialBody() {
-            guard let om = originalMessage else {
+        mutating private func setupInitialBody(from message: Message?) {
+            guard let message = message else {
                 // We have no original message. That's OK for compose mode .normal.
                 return
             }
             switch composeMode {
             case .replyFrom:
-                setInitialBody(text: ReplyUtil.quotedMessageText(message: om, replyAll: false))
+                setInitialBody(text: ReplyUtil.quotedMessageText(message: message, replyAll: false))
             case .replyAll:
-                setInitialBody(text: ReplyUtil.quotedMessageText(message: om, replyAll: true))
+                setInitialBody(text: ReplyUtil.quotedMessageText(message: message, replyAll: true))
             case .forward:
                 setBodyPotetionallyTakingOverAttachments()
             case .normal:
