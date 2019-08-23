@@ -121,11 +121,11 @@ class HandshakePartnerTableViewCellViewModelTests: CoreDataDrivenTestBase {
      Test trust/reset/mistrust cycle using view model.
      */
     func testViewModelTrustMistrustCycles() {
-        let session = PEPSession()
+        let pEpSession = PEPSession()
 
         guard
             let (message: _, mySelfID: mySelfID,
-                 partnerID: partnerID) = importMail(session: session) else {
+                 partnerID: partnerID) = importMail(session: pEpSession) else {
                     XCTFail()
                     return
         }
@@ -134,22 +134,22 @@ class HandshakePartnerTableViewCellViewModelTests: CoreDataDrivenTestBase {
 
         XCTAssertEqual(vm.partnerRating, .reliable)
 
-        vm.confirmTrust()
+        vm.confirmTrust(pEpSession: pEpSession)
         XCTAssertEqual(vm.partnerRating, .trustedAndAnonymized)
 
-        vm.resetOrUndoTrustOrMistrust()
+        vm.resetOrUndoTrustOrMistrust(pEpSession: pEpSession)
         XCTAssertEqual(vm.partnerRating, .reliable)
 
-        vm.denyTrust()
+        vm.denyTrust(pEpSession: pEpSession)
         XCTAssertEqual(vm.partnerRating, .haveNoKey)
 
-        vm.resetOrUndoTrustOrMistrust()
+        vm.resetOrUndoTrustOrMistrust(pEpSession: pEpSession)
         XCTAssertEqual(vm.partnerRating, .reliable)
 
-        vm.confirmTrust()
+        vm.confirmTrust(pEpSession: pEpSession)
         XCTAssertEqual(vm.partnerRating, .trustedAndAnonymized)
 
-        vm.resetOrUndoTrustOrMistrust()
+        vm.resetOrUndoTrustOrMistrust(pEpSession: pEpSession)
         XCTAssertEqual(vm.partnerRating, .reliable)
     }
 
@@ -157,7 +157,7 @@ class HandshakePartnerTableViewCellViewModelTests: CoreDataDrivenTestBase {
      Test mistrust/reset cycle using view model.
      */
     func testViewModelMistrustResetTrustCycle() {
-        let session = PEPSession()
+        let pEpSession = PEPSession()
 
         guard
             let (message: _, mySelfID: mySelfID,
@@ -170,16 +170,16 @@ class HandshakePartnerTableViewCellViewModelTests: CoreDataDrivenTestBase {
 
         XCTAssertEqual(vm.partnerRating, .reliable)
 
-        vm.denyTrust()
+        vm.denyTrust(pEpSession: pEpSession)
         XCTAssertEqual(vm.partnerRating, .haveNoKey)
 
-        vm.resetOrUndoTrustOrMistrust()
+        vm.resetOrUndoTrustOrMistrust(pEpSession: pEpSession)
         XCTAssertEqual(vm.partnerRating, .reliable)
 
-        vm.confirmTrust()
+        vm.confirmTrust(pEpSession: pEpSession)
         XCTAssertEqual(vm.partnerRating, .trustedAndAnonymized)
 
-        vm.resetOrUndoTrustOrMistrust()
+        vm.resetOrUndoTrustOrMistrust(pEpSession: pEpSession)
         XCTAssertEqual(vm.partnerRating, .reliable)
     }
 }
