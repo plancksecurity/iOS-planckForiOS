@@ -217,6 +217,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return false
         }
 
+        // Desparate try to wokaround lagging PEPSessionProvider issue (IOS-1769)
+        // The suspect is that PEPSessionProvider has problems when the first call for a PEPSession is done from a non-main thread.
+        let _ = PEPSession()
+
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
 
         Appearance.pEp()
