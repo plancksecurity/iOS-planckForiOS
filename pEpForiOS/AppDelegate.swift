@@ -186,12 +186,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func askForContactAccessPermissionsAndImportContacts() {
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            if AddressBook.shared.isAuthorized() {
-                DispatchQueue.main.async {
-                    self?.importContacts()
-                }
+        // We dispatch this to tweak the timing to avoid gliches with the different Permission
+        // requests at the same time (AllowNotifications, AllowContacts)
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
             }
+            me.importContacts()
         }
     }
 
@@ -266,6 +268,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Desparate try to wokaround lagging PEPSessionProvider issue (IOS-1769)
         // The suspect is that PEPSessionProvider has problems when the first call for a PEPSession is done from a non-main thread.
         let _ = PEPSession()
+        // We start import here instead of applicationDidBecomeActive to avoid gliches asking the
+        // user for permissions twice (once from didFinishLaunching, once from
+        // applicationDidBecomeActive)
+        askForContactAccessPermissionsAndImportContacts()
     }
 
     /// Restart any tasks that were paused (or not yet started) while the application was inactive.
@@ -283,7 +289,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         shutdownAndPrepareServicesForRestart()
         UserNotificationTool.resetApplicationIconBadgeNumber()
-        importContacts()
     }
 
     /// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
