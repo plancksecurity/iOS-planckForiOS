@@ -72,7 +72,7 @@ class MoveToFolderViewModel {
     }
 
     private func generateFolderCells() {
-        let sorted = Array<Any>.sort(foldersToSort: acc.rootFolders)
+        let sorted = acc.rootFolders.sort()
         for folder in sorted {
             items.append(MoveToFolderCellViewModel(folder: folder, level: 0))
             childFolder(root: folder, level: 1)
@@ -80,7 +80,7 @@ class MoveToFolderViewModel {
     }
 
     private func childFolder(root folder: Folder, level: Int) {
-        let sorted = Array<Any>.sort(foldersToSort: folder.subFolders())
+        let sorted = folder.subFolders().sort()
         for subFolder in sorted {
             items.append(MoveToFolderCellViewModel(folder: subFolder, level: level))
             childFolder(root: subFolder, level: level + 1)
