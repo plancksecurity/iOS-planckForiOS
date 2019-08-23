@@ -23,10 +23,12 @@ class AccountCell: TextViewContainingTableViewCell {
 
     public func setup(with viewModel: AccountCellViewModel) {
         self.viewModel = viewModel
-        if viewModel.content != nil {
-            self.textView.text = viewModel.content
-        }
         setupPickerView()
+        guard let accountToShow = viewModel.displayAccount,
+            let pickerPosition = viewModel.accountPickerViewModel.row(at: accountToShow) else {
+            return
+        }
+        self.picker?.selectRow(pickerPosition, inComponent: 0, animated: true)
     }
 
     private func setupPickerView() {
