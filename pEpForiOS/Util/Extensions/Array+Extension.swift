@@ -9,10 +9,10 @@
 import Foundation
 import MessageModel
 
-extension Array {
+extension Array where Element == Folder {
 
-    public static func sort(foldersToSort: [Folder]) -> [Folder] {
-        return foldersToSort.sorted { (first, second) -> Bool in
+    public func sort() -> [Folder] {
+        return sorted { (first, second) -> Bool in
             guard let idx1 = FolderType.displayOrder.firstIndex(of: first.folderType),
                 let idx2 = FolderType.displayOrder.firstIndex(of: second.folderType) else {
                     return false
