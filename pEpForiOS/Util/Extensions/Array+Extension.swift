@@ -11,7 +11,7 @@ import MessageModel
 
 extension Array where Element == Folder {
 
-    public func sort() -> [Folder] {
+    public func sorted() -> [Folder] {
         return sorted { (first, second) -> Bool in
             guard let idx1 = FolderType.displayOrder.firstIndex(of: first.folderType),
                 let idx2 = FolderType.displayOrder.firstIndex(of: second.folderType) else {

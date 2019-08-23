@@ -37,7 +37,7 @@ public class FolderSectionViewModel {
             Log.shared.errorAndCrash("No account selected")
             return
         }
-        let sorted = ac.rootFolders.sort()
+        let sorted = ac.rootFolders.sorted()
         for folder in sorted {
             items.append(FolderCellViewModel(folder: folder, level: 0))
             let level = folder.folderType == .inbox ? 0 : 1
@@ -46,7 +46,7 @@ public class FolderSectionViewModel {
     }
 
     private func calculateChildFolder(root folder: Folder, level: Int) {
-        let sorted = folder.subFolders().sort()
+        let sorted = folder.subFolders().sorted()
         for subFolder in sorted {
             items.append(FolderCellViewModel(folder: subFolder, level: level))
             calculateChildFolder(root: subFolder, level: level + 1)
