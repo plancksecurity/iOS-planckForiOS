@@ -15,50 +15,89 @@ class PEPAlertViewController: UIViewController {
     @IBOutlet weak var alertImageView: UIImageView!
     @IBOutlet weak var butonsStackView: UIStackView!
 
-    private var _alertTitle: String?
+    private var viewModel: PEPAlertViewModelProtocol
 
     static let storyboardId = "PEPAlertViewController"
 
 
-    private init() { super.init(nibName: nil, bundle: nil) }
-    required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+    private init() {
+        viewModel = PEPAlertViewModel()
+        super.init(nibName: nil, bundle: nil)
+    }
+    required init?(coder aDecoder: NSCoder) {
+        viewModel = PEPAlertViewModel()
+        super.init(coder: aDecoder)
+    }
 
-    static func `init`(title: String? = nil,
+    static func fromStoryboard(title: String? = nil,
                      message: String? = nil,
                      paintPEPInTitle: Bool = false,
-                     image: [UIImage]? = nil) -> PEPAlertViewController? {
-        let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
-        guard let pEpAlertViewController = storyboard.instantiateViewController(
-            withIdentifier: PEPAlertViewController.storyboardId) as? PEPAlertViewController else {
-                Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
-                return nil
-        }
+                     image: [UIImage]? = nil,
+                     viewModel: PEPAlertViewModelProtocol = PEPAlertViewModel())
+        -> PEPAlertViewController? {
 
-        pEpAlertViewController._alertTitle = title
-        pEpAlertViewController.alertMessage.text = message
-        pEpAlertViewController.paint(greenPEPInTitle: paintPEPInTitle)
+            let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
+            guard let pEpAlertViewController = storyboard.instantiateViewController(
+                withIdentifier: PEPAlertViewController.storyboardId) as? PEPAlertViewController else {
+                    Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
+                    return nil
+            }
 
-        return pEpAlertViewController
+            pEpAlertViewController.viewModel = viewModel
+            pEpAlertViewController.viewModel.delegate = pEpAlertViewController
+
+            setUp(alert: pEpAlertViewController,
+                  title: title,
+                  paintPEPInTitle: paintPEPInTitle,
+                  message: message)
+
+            setUp(alert: pEpAlertViewController,
+                  images: image)
+
+            return pEpAlertViewController
     }
 
     func add(action: PEPUIAlertAction) {
-//        let button = UIButton(type: .system)
-//        button.isEnabled = action.isEnabled
-//        button.setTitle(action.title, for: .normal)
-//        button.setTitleColor(<#T##color: UIColor?##UIColor?#>, for: .normal)
-////        button.state =
+        let button = UIButton(type: .system)
+
+        button.setTitle(action.title, for: .normal)
+        button.setTitleColor(action.style, for: .normal)
+        button.tag = viewModel.alertActionsCount
+        button.addTarget(self, action: #selector(didPress(sender:)), for: .touchUpInside)
+        viewModel.add(action: action)
+
+        butonsStackView.addArrangedSubview(button)
     }
 }
 
+// MARK: - PEPAlertViewModelDelegate
+
+extension PEPAlertViewController: PEPAlertViewModelDelegate {
+    func dissmiss() {
+        self.dismiss(animated: true, completion: nil)
+    }
+}
 
 // MARK: - Private
 
 extension PEPAlertViewController {
-    private func paint(greenPEPInTitle: Bool) {
-        if greenPEPInTitle {
-            alertTitle.attributedText = alertTitle.text?.paintPEPToPEPColour()
+    @objc private func didPress(sender: UIButton) {
+        viewModel.handleButtonEvent(tag: sender.tag)
+    }
+
+    private static func setUp(alert: PEPAlertViewController, title: String?, paintPEPInTitle: Bool, message: String?) {
+        alert.alertMessage.text = message
+
+        if paintPEPInTitle {
+            alert.alertTitle.attributedText = title?.paintPEPToPEPColour()
         } else {
-            alertTitle.text = _alertTitle
+            alert.alertTitle.text = title
         }
+    }
+
+    private static func setUp(alert: PEPAlertViewController, images: [UIImage]?) {
+        alert.alertImageView.animationImages = images
+        alert.alertImageView.animationDuration = 0.33
+        alert.alertImageView.startAnimating()
     }
 }
