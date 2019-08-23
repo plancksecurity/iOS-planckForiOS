@@ -315,6 +315,36 @@ extension String {
             return String(dropLast(theLength - maxCount))
         }
     }
+
+    /// it's true when the string only contains digits
+    public var isDigits: Bool {
+        let digits = CharacterSet.decimalDigits
+        return unicodeScalars.allSatisfy { digits.contains($0) }
+    }
+
+    /// it's true when the string is only a backspace
+    public var isBackspace: Bool {
+        var backspace = CharacterSet()
+        backspace.insert(Unicode.Scalar("\u{0008}"))
+        return unicodeScalars.allSatisfy { backspace.contains($0) }
+    }
+
+    /// Returns the string with all characters removed that are not alpha-numeric.
+    ///
+    /// - Returns: string with non-alpha-numeric stripped.
+    public func alphaNumericOnly() -> String {
+        var alphaNumeric = CharacterSet()
+        alphaNumeric.formUnion(CharacterSet.letters)
+        alphaNumeric.formUnion(CharacterSet.decimalDigits)
+        return self.string(everythingStrippedThatIsNotInCharset: alphaNumeric)
+    }
+
+    /// Returns the string with all characters removed that are in thegiven charset.
+    ///
+    /// - Returns: string with all chars stripped that are not in the given charset
+    public func string(everythingStrippedThatIsNotInCharset charset: CharacterSet) -> String {
+        return String(self.unicodeScalars.filter { charset.contains($0) })
+    }
 }
 
 extension NSAttributedString {
