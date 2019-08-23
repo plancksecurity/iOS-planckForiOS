@@ -8,19 +8,23 @@
 
 import UIKit
 
-/// An UIAlertAction that hold the handler block and can execute it
-final class PEPUIAlertAction: UIAlertAction {
+final class PEPUIAlertAction {
 
-    private var handler: ((UIAlertAction) -> Void)?
+    private var handler: ((PEPUIAlertAction) -> Void)?
 
-    static func with(title: String?,
-                     style: UIAlertAction.Style,
-                     handler: ((UIAlertAction) -> Void)? = nil) -> PEPUIAlertAction {
-        let action = PEPUIAlertAction(title: title, style: style, handler: handler)
-        action.handler = handler
-        return action
+    let style: UIColor
+    let title: String?
+
+    init(title: String?,
+         style: UIColor,
+         handler: ((PEPUIAlertAction) -> Void)? = nil) {
+
+        self.title = title
+        self.style = style
+        self.handler = handler
     }
 
+    /// Execute PEPUIAlertAction block
     func execute() {
         handler?(self)
     }

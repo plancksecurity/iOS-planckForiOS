@@ -42,9 +42,11 @@ class PEPAlertViewController: UIViewController {
     }
 
     func add(action: PEPUIAlertAction) {
-        let button = UIButton(type: .system)
-        let ac = UIAlertAction(title: nil, style: .cancel, handler: nil)
-//        button.state = 
+//        let button = UIButton(type: .system)
+//        button.isEnabled = action.isEnabled
+//        button.setTitle(action.title, for: .normal)
+//        button.setTitleColor(<#T##color: UIColor?##UIColor?#>, for: .normal)
+////        button.state =
     }
 }
 
