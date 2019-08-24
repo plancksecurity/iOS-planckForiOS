@@ -86,9 +86,9 @@ class HandshakePartnerTableViewCellViewModel {
         self.trustwordsLanguage = "en"
         self.ownIdentity = ownIdentity
         self.partnerIdentity = partner
-        self.partnerRating = PEPUtils.pEpRating(identity: partner, pEpSession: pEpSession)
-        self.pEpPartner = partner.updatedIdentity(session: pEpSession)
-        self.pEpSelf = ownIdentity.updatedIdentity(session: pEpSession)
+        self.partnerRating = partner.pEpRating(pEpSession: pEpSession)
+        self.pEpPartner = partner.updatedIdentity(pEpSession: pEpSession)
+        self.pEpSelf = ownIdentity.updatedIdentity(pEpSession: pEpSession)
         self.partnerColor = partnerRating.pEpColor()
 
         do {
