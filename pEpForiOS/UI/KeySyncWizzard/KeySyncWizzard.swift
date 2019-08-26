@@ -32,9 +32,9 @@ extension KeySyncWizzard {
         let keySyncIntroMessage = NSLocalizedString("A second device is detected. Please make sure you have both devices together so you can compare trustwords to sync.",
                                                     comment: "KeySyncWizzard introduction message")
         return PEPAlertViewController.fromStoryboard(title: keySyncIntroTitle,
-                                                                     message: keySyncIntroMessage,
-                                                                     paintPEPInTitle: true,
-                                                                     image: [#imageLiteral(resourceName: "pEpForiOS-icon-device-detected")])
+                                                     message: keySyncIntroMessage,
+                                                     paintPEPInTitle: true,
+                                                     image: [#imageLiteral(resourceName: "pEpForiOS-icon-device-detected")])
     }
 
     private func trustWordsView(meFPR: String, partnerFPR: String)
@@ -54,14 +54,25 @@ extension KeySyncWizzard {
             return handShakeViewController
     }
 
-    private func keySyncAnimationView() -> PEPAlertViewController? {
-        let keySyncAnimatioTitle = NSLocalizedString("p≡p Sync",
-                                                  comment: "KeySyncAnimation view title")
-        let keySyncAnimatioMessage = NSLocalizedString("Please give us a moment while we sync your devices. This can take up to a minute.",
-                                                    comment: "KeySyncAnimation view message")
-        return PEPAlertViewController.fromStoryboard(title: keySyncAnimatioTitle,
-                                                     message: keySyncAnimatioMessage,
-                                                     paintPEPInTitle: true,
-                                                     image: [])
-    }
+//    private func keySyncAnimationView() -> PEPAlertViewController? {
+//        let keySyncAnimatioTitle = NSLocalizedString("p≡p Sync",
+//                                                  comment: "KeySyncAnimation view title")
+//        let keySyncAnimatioMessage = NSLocalizedString("Please give us a moment while we sync your devices. This can take up to a minute.",
+//                                                    comment: "KeySyncAnimation view message")
+//        let keySyncAnimatioCancelTitle = NSLocalizedString("Cancel",
+//                                                     comment: "KeySyncAnimation view cancel button title")
+//        let keySyncAnimatioCancelAction = PEPUIAlertAction(title: keySyncAnimatioCancelTitle,
+//                                                           style: .pEpBlue,
+//                                                           handler: { alert in
+//                                                            //TODO: Ale
+//        })
+//
+//        let pepAlertViewController =
+//            PEPAlertViewController.fromStoryboard(title: keySyncAnimatioTitle,
+//                                                  message: keySyncAnimatioMessage,
+//                                                  paintPEPInTitle: true,
+//                                                  image: [#imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-1"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2"), #imageLiteral(resourceName: "pEpForiOS-icon-device-group"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2")])
+//        pepAlertViewController?.add(action: keySyncAnimatioCancelAction)
+//        return pepAlertViewController
+//    }
 }
