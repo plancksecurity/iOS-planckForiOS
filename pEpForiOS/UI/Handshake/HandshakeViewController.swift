@@ -47,6 +47,7 @@ class HandshakeViewController: BaseTableViewController {
 
         let leftItem = UIBarButtonItem(customView: backButton())
         self.navigationItem.leftBarButtonItem = leftItem
+        navigationController?.navigationBar.isTranslucent = false
     }
 
     override func viewWillAppear(_ animated: Bool) {
