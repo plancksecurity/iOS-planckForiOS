@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PEPAlertViewController: UIViewController {
+final class PEPAlertViewController: UIViewController {
 
     @IBOutlet weak var alertTitle: UILabel!
     @IBOutlet weak var alertMessage: UILabel!
@@ -19,11 +19,6 @@ class PEPAlertViewController: UIViewController {
 
     static let storyboardId = "PEPAlertViewController"
 
-
-    private init() {
-        viewModel = PEPAlertViewModel()
-        super.init(nibName: nil, bundle: nil)
-    }
     required init?(coder aDecoder: NSCoder) {
         viewModel = PEPAlertViewModel()
         super.init(coder: aDecoder)

@@ -269,7 +269,7 @@
         <!--Page View Controller-->
         <scene sceneID="90y-KL-RKm">
             <objects>
-                <pageViewController storyboardIdentifier="HandShakeWizzardPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="i7k-e5-hMO" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="WizzardPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="i7k-e5-hMO" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YmW-fu-J15" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-338" y="353"/>
