@@ -54,25 +54,56 @@ extension KeySyncWizzard {
             return handShakeViewController
     }
 
-//    private func keySyncAnimationView() -> PEPAlertViewController? {
-//        let keySyncAnimatioTitle = NSLocalizedString("p≡p Sync",
-//                                                  comment: "KeySyncAnimation view title")
-//        let keySyncAnimatioMessage = NSLocalizedString("Please give us a moment while we sync your devices. This can take up to a minute.",
-//                                                    comment: "KeySyncAnimation view message")
-//        let keySyncAnimatioCancelTitle = NSLocalizedString("Cancel",
-//                                                     comment: "KeySyncAnimation view cancel button title")
-//        let keySyncAnimatioCancelAction = PEPUIAlertAction(title: keySyncAnimatioCancelTitle,
-//                                                           style: .pEpBlue,
-//                                                           handler: { alert in
-//                                                            //TODO: Ale
-//        })
-//
-//        let pepAlertViewController =
-//            PEPAlertViewController.fromStoryboard(title: keySyncAnimatioTitle,
-//                                                  message: keySyncAnimatioMessage,
-//                                                  paintPEPInTitle: true,
-//                                                  image: [#imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-1"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2"), #imageLiteral(resourceName: "pEpForiOS-icon-device-group"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2")])
-//        pepAlertViewController?.add(action: keySyncAnimatioCancelAction)
-//        return pepAlertViewController
-//    }
+    private func keySyncAnimationView() -> PEPAlertViewController? {
+        let keySyncAnimatioTitle = NSLocalizedString("p≡p Sync",
+                                                     comment: "KeySyncAnimation view title")
+        let keySyncAnimatioMessage = NSLocalizedString("Please give us a moment while we sync your devices. This can take up to a minute.",
+                                                       comment: "KeySyncAnimation view message")
+        let keySyncAnimatioCancelTitle = NSLocalizedString("Cancel",
+                                                           comment: "KeySyncAnimation view cancel button title")
+        let keySyncAnimatioCancelAction = PEPUIAlertAction(title: keySyncAnimatioCancelTitle,
+                                                           style: .pEpBlue,
+                                                           handler: { alert in
+                                                            //TODO: Ale
+        })
+
+        let pepAlertViewController =
+            PEPAlertViewController.fromStoryboard(title: keySyncAnimatioTitle,
+                                                  message: keySyncAnimatioMessage,
+                                                  paintPEPInTitle: true,
+                                                  image: [#imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-1"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2"), #imageLiteral(resourceName: "pEpForiOS-icon-device-group"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2")])
+        pepAlertViewController?.add(action: keySyncAnimatioCancelAction)
+        return pepAlertViewController
+    }
+
+    private func keySyncCompletionView() -> PEPAlertViewController? {
+        let keySyncAnimatioTitle = NSLocalizedString("Device Group",
+                                                     comment: "keySyncCompletion view title")
+        let keySyncAnimatioMessage = NSLocalizedString("Your device is now member of your device group.",
+                                                       comment: "keySyncCompletion view message")
+        let keySyncAnimatioLeavelTitle = NSLocalizedString("Leave",
+                                                           comment: "keySyncCompletion view leave button title")
+        let keySyncAnimatioLeavelAction = PEPUIAlertAction(title: keySyncAnimatioLeavelTitle,
+                                                           style: .pEpRed,
+                                                           handler: { alert in
+                                                            //TODO: Ale
+        })
+
+        let keySyncAnimatioOKlTitle = NSLocalizedString("OK",
+                                                           comment: "keySyncCompletion view OK button title")
+        let keySyncAnimatioOKlAction = PEPUIAlertAction(title: keySyncAnimatioOKlTitle,
+                                                           style: .pEpBlue,
+                                                           handler: { alert in
+                                                            //TODO: Ale
+        })
+
+        let pepAlertViewController =
+            PEPAlertViewController.fromStoryboard(title: keySyncAnimatioTitle,
+                                                  message: keySyncAnimatioMessage,
+                                                  paintPEPInTitle: true,
+                                                  image: [#imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-1"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2"), #imageLiteral(resourceName: "pEpForiOS-icon-device-group"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2")])
+        pepAlertViewController?.add(action: keySyncAnimatioLeavelAction)
+        pepAlertViewController?.add(action: keySyncAnimatioOKlAction)
+        return pepAlertViewController
+    }
 }
