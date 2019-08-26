@@ -236,19 +236,20 @@ class TestUtil {
         let expAccountsSynced = testCase.expectation(description: "allAccountsSynced")
         // A temp variable is necassary, since the replicationServiceUnitTestDelegate is weak
         let del = ReplicationServiceObserver(numAccountsToSync: numAccountsToSync,
-                                         expAccountsSynced: expAccountsSynced,
-                                         failOnError: true)
+                                             expAccountsSynced: expAccountsSynced,
+                                             failOnError: true)
 
         replicationService.unitTestDelegate = del
         replicationService.delegate = del
-        replicationService.start()
+        replicationService.start(runOnceOnly: true)
 
         let canTakeSomeTimeFactor = 3.0
-        testCase.waitForExpectations(timeout: TestUtil.waitTime * canTakeSomeTimeFactor) { error in
-            XCTAssertNil(error)
-        }
+        testCase.wait(for: [expAccountsSynced], timeout: TestUtil.waitTime * canTakeSomeTimeFactor)
 
-        TestUtil.cancelReplicationServiceAndWait(replicationService: replicationService, testCase: testCase)
+        // Even we do not repeate the sync loop we have to wait until all background tasks of
+        // ReplicationService have finished.
+        TestUtil.cancelReplicationServiceAndWait(replicationService: replicationService,
+                                                 testCase: testCase)
     }
 
     // MARK: - ReplicationService
