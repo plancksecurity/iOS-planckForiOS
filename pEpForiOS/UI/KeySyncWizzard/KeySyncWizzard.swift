@@ -34,7 +34,7 @@ extension KeySyncWizzard {
         return PEPAlertViewController.fromStoryboard(title: keySyncIntroTitle,
                                                                      message: keySyncIntroMessage,
                                                                      paintPEPInTitle: true,
-                                                                     image: [#imageLiteral(resourceName: "DeviceGroup-animation-3")])
+                                                                     image: [#imageLiteral(resourceName: "pEpForiOS-icon-device-detected")])
     }
 
     private func trustWordsView(meFPR: String, partnerFPR: String)
@@ -54,14 +54,14 @@ extension KeySyncWizzard {
             return handShakeViewController
     }
 
-//    private func keySyncAnimationView() -> PEPAlertViewController? {
-//        let keySyncAnimatioTitle = NSLocalizedString("p≡p Sync",
-//                                                  comment: "KeySyncAnimation view title")
-//        let keySyncAnimatioMessage = NSLocalizedString("Please give us a moment while we sync your devices. This can take up to a minute.",
-//                                                    comment: "KeySyncAnimation view message")
-//        return PEPAlertViewController.fromStoryboard(title: keySyncIntroTitle,
-//                                                     message: keySyncIntroMessage,
-//                                                     paintPEPInTitle: true,
-//                                                     image: [#imageLiteral(resourceName: "DeviceGroup-animation-3")])
-//    }
+    private func keySyncAnimationView() -> PEPAlertViewController? {
+        let keySyncAnimatioTitle = NSLocalizedString("p≡p Sync",
+                                                  comment: "KeySyncAnimation view title")
+        let keySyncAnimatioMessage = NSLocalizedString("Please give us a moment while we sync your devices. This can take up to a minute.",
+                                                    comment: "KeySyncAnimation view message")
+        return PEPAlertViewController.fromStoryboard(title: keySyncAnimatioTitle,
+                                                     message: keySyncAnimatioMessage,
+                                                     paintPEPInTitle: true,
+                                                     image: [])
+    }
 }
