@@ -336,13 +336,14 @@ extension MessageViewModel {
             guard let me = self else {
                 return
             }
-
+            var badgeImage: UIImage? = nil
             session.performAndWait {
                 guard let operation = operation, !operation.isCancelled else {
                     return
                 }
-                me.profilePictureComposer.securityBadge(for: safeMsg, completion: completion)
+                badgeImage = me.profilePictureComposer.securityBadge(for: safeMsg)
             }
+            completion(badgeImage)
         }
         return getSecurityBadgeOperation
     }
@@ -352,7 +353,7 @@ extension MessageViewModel {
 
             let identitykey = IdentityImageTool.IdentityKey(identity: displayedImageIdentity)
 
-            let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
+            let profilePictureOperation = SelfReferencingOperation { [weak self] operation in
                 guard let me = self else {
                     return
                 }
@@ -361,9 +362,9 @@ extension MessageViewModel {
                     !operation.isCancelled else {
                         return
                 }
-                me.profilePictureComposer.profilePicture(for: identitykey,
-                                                         completion: completion)
+                let profileImage = me.profilePictureComposer.profilePicture(for: identitykey)
+                completion(profileImage)
             }
-            return getSecurityBadgeOperation
+            return profilePictureOperation
     }
 }

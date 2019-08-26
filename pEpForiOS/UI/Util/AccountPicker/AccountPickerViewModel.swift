@@ -30,6 +30,10 @@ class AccountPickerViewModel {
         return content[row]
     }
 
+    public func row(at account: String) -> Int? {
+        return content.firstIndex(of: account)
+    }
+
     public func handleUserSelected(row: Int) {
         resultDelegate?.accountPickerViewModel(self, didSelect: accounts[row])
     }
