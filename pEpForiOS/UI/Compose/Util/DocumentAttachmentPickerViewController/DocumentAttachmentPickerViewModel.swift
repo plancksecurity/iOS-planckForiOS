@@ -68,8 +68,7 @@ class DocumentAttachmentPickerViewModel {
                 completion(nil)
                 return
             }
-            let mimeType = self?.mimeUtils?.mimeType(fromURL: resourceUrl) ??
-                MimeTypeUtils.MimesType.defaultMimeType
+            let mimeType = MimeTypeUtils.mimeType(fromURL: resourceUrl)
             let filename = resourceUrl.fileName(includingExtension: true)
             let mainSession = Session.main
             mainSession.performAndWait {

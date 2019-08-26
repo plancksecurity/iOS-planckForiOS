@@ -33,8 +33,7 @@ class MiscTests: XCTestCase {
     }
 
     func testMimeTypeJson() {
-        let mimeTypeController = MimeTypeUtils()
-        let s = mimeTypeController?.mimeType(fromFileExtension: "pdf")
+        let s = MimeTypeUtils.mimeType(fromFileExtension: "pdf")
         XCTAssertEqual(s, MimeTypeUtils.MimesType.pdf)
     }
 

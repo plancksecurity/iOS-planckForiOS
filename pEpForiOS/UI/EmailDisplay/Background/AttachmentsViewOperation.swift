@@ -77,7 +77,7 @@ class AttachmentsViewOperation: Operation {
 
                 let isImage: Bool
                 if let mimeType = att.mimeType {
-                    isImage = me.mimeTypes?.isImage(mimeType: mimeType) ?? false
+                    isImage = MimeTypeUtils.isImage(mimeType: mimeType)
                 } else {
                     isImage = false
                 }
