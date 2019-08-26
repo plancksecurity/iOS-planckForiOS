@@ -7,3 +7,11 @@
 //
 
 import Foundation
+
+protocol WizzardViewModelProtocol: class {
+
+}
+
+final class WizzardViewModel: WizzardViewModelProtocol{
+    
+}
