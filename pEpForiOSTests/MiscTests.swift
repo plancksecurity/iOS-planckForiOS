@@ -32,11 +32,6 @@ class MiscTests: XCTestCase {
         XCTAssertEqual(i1, i3)
     }
 
-    func testMimeTypeJson() {
-        let s = MimeTypeUtils.mimeType(fromFileExtension: "pdf")
-        XCTAssertEqual(s, MimeTypeUtils.MimesType.pdf)
-    }
-
     func testBinaryIndex() {
         func shouldInsert(e1: Int, e2: Int) -> Bool {
             if e1 < e2 || e1 == e2 {
