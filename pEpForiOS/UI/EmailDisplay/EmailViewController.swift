@@ -662,21 +662,27 @@ extension EmailViewController: MessageAttachmentDelegate {
         coordinator.animate(alongsideTransition: nil)
     }
 
-    func didCreateLocally(attachment: Attachment, url: URL, cell: MessageCell, location: CGPoint,
+    func didCreateLocally(attachment: Attachment,
+                          url: URL,
+                          cell: MessageCell,
+                          location: CGPoint,
                           inView: UIView?) {
-        if attachment.mimeType == MimeTypeUtils.MimesType.pdf
-            && QLPreviewController.canPreview(url as QLPreviewItem){
+        let mimeType = MimeTypeUtils.findBestMimeType(forFileAt: url,
+                                                      withGivenMimeType: attachment.mimeType)
+        if mimeType == MimeTypeUtils.MimesType.pdf
+            && QLPreviewController.canPreview(url as QLPreviewItem) {
                 selectedAttachmentURL = url
                 let previewController = QLPreviewController()
                 previewController.dataSource = self
                 present(previewController, animated: true, completion: nil)
-        }
-        else {
+        } else {
             documentInteractionController.url = url
             let theView = inView ?? cell
             let dim: CGFloat = 40
             let rect = CGRect.rectAround(center: location, width: dim, height: dim)
-            documentInteractionController.presentOptionsMenu(from: rect, in: theView, animated: true)
+            documentInteractionController.presentOptionsMenu(from: rect,
+                                                             in: theView,
+                                                             animated: true)
         }
     }
 
@@ -694,7 +700,7 @@ extension EmailViewController: MessageAttachmentDelegate {
                         inView?.stopDisplayingAsBusy(viewBusyState: bState)
                     }
                 }
-                guard let url = attachmentOp.fileURL else {
+                guard let url = attachmentOp.fileURL else { //!!!: looks suspicously like retain cycle. attachmentOp <-> completionBlock
                     return
                 }
                 let safeAttachment = attachment.safeForSession(Session.main)
