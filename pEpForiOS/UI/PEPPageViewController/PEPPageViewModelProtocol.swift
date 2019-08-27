@@ -1,5 +1,5 @@
 //
-//  KeySyncWizzardViewModel.swift
+//  PEPViewViewModel.swift
 //  pEp
 //
 //  Created by Alejandro Gelos on 22/08/2019.
@@ -8,10 +8,10 @@
 
 import Foundation
 
-protocol WizzardViewModelProtocol: class {
+protocol PEPPageViewModelProtocol: class {
 
 }
 
-final class WizzardViewModel: WizzardViewModelProtocol{
+final class PEPViewViewModel: PEPPageViewModelProtocol{
     
 }

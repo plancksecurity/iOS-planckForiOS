@@ -16,12 +16,29 @@ final class PEPAlertViewController: UIViewController {
     @IBOutlet weak var butonsStackView: UIStackView!
 
     private var viewModel: PEPAlertViewModelProtocol
+    private var _title: String?
+    private var _message: String?
+    private var _paintPEPInTitle = false
+    private var _images: [UIImage]?
+    private var _action = [PEPUIAlertAction]()
 
     static let storyboardId = "PEPAlertViewController"
 
     required init?(coder aDecoder: NSCoder) {
         viewModel = PEPAlertViewModel()
         super.init(coder: aDecoder)
+    }
+
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setUp(title: _title,
+              paintPEPInTitle: _paintPEPInTitle,
+              message: _message)
+
+        setUp(images: _images)
+        setUp(actions: _action)
     }
 
     static func fromStoryboard(title: String? = nil,
@@ -41,27 +58,16 @@ final class PEPAlertViewController: UIViewController {
             pEpAlertViewController.viewModel = viewModel
             pEpAlertViewController.viewModel.delegate = pEpAlertViewController
 
-            setUp(alert: pEpAlertViewController,
-                  title: title,
-                  paintPEPInTitle: paintPEPInTitle,
-                  message: message)
-
-            setUp(alert: pEpAlertViewController,
-                  images: image)
+            pEpAlertViewController._title = title
+            pEpAlertViewController._paintPEPInTitle = paintPEPInTitle
+            pEpAlertViewController._message = message
+            pEpAlertViewController._images = image
 
             return pEpAlertViewController
     }
 
     func add(action: PEPUIAlertAction) {
-        let button = UIButton(type: .system)
-
-        button.setTitle(action.title, for: .normal)
-        button.setTitleColor(action.style, for: .normal)
-        button.tag = viewModel.alertActionsCount
-        button.addTarget(self, action: #selector(didPress(sender:)), for: .touchUpInside)
-        viewModel.add(action: action)
-
-        butonsStackView.addArrangedSubview(button)
+        _action.append(action)
     }
 }
 
@@ -80,19 +86,33 @@ extension PEPAlertViewController {
         viewModel.handleButtonEvent(tag: sender.tag)
     }
 
-    private static func setUp(alert: PEPAlertViewController, title: String?, paintPEPInTitle: Bool, message: String?) {
-        alert.alertMessage.text = message
+    private func setUp(title: String?, paintPEPInTitle: Bool, message: String?) {
+        alertMessage.text = message
 
         if paintPEPInTitle {
-            alert.alertTitle.attributedText = title?.paintPEPToPEPColour()
+            alertTitle.attributedText = title?.paintPEPToPEPColour()
         } else {
-            alert.alertTitle.text = title
+            alertTitle.text = title
         }
     }
 
-    private static func setUp(alert: PEPAlertViewController, images: [UIImage]?) {
-        alert.alertImageView.animationImages = images
-        alert.alertImageView.animationDuration = 0.33
-        alert.alertImageView.startAnimating()
+    private func setUp(images: [UIImage]?) {
+        alertImageView.animationImages = images
+        alertImageView.animationDuration = 0.33
+        alertImageView.startAnimating()
+    }
+
+    private func setUp(actions: [PEPUIAlertAction]) {
+        actions.forEach { action in
+            let button = UIButton(type: .system)
+
+            button.setTitle(action.title, for: .normal)
+            button.setTitleColor(action.style, for: .normal)
+            button.tag = viewModel.alertActionsCount
+            button.addTarget(self, action: #selector(didPress(sender:)), for: .touchUpInside)
+            viewModel.add(action: action)
+
+            butonsStackView.addArrangedSubview(button)
+        }
     }
 }

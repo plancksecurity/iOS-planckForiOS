@@ -38,15 +38,17 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                 return
             }
 
-            viewController.presentKeySyncHandShakeAlert(meFPR: meFPR, partnerFPR: partnerFPR)
-            { action in
+            viewController.presentKeySyncWizard(meFPR: meFPR, partnerFPR: partnerFPR) { action in
                 switch action {
                 case .accept:
-                    completion?(PEPSyncHandshakeResult.accepted)
+                    break
+                //TODO: ALE
                 case .cancel:
-                    completion?(PEPSyncHandshakeResult.cancel)
+                    break
                 case .decline:
-                    completion?(PEPSyncHandshakeResult.rejected)
+                    break
+                case .leave:
+                    break
                 }
             }
         }
