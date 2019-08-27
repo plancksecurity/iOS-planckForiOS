@@ -78,7 +78,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
     private func gracefullyShutdownServices() {
+        // Stop importing contacts
         AddressBook.shared.cancelImport()
+
         guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
             else {
                 Log.shared.errorAndCrash("Will not start background sync, pending %d",
@@ -172,7 +174,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         messageModelService?.cancel()
     }
 
-    private func askUserForPermissions() {
+    private func askUserForPermissionsAndStartImportingContacts() {
         UserNotificationTool.resetApplicationIconBadgeNumber()
         UserNotificationTool.askForPermissions() { [weak self] _ in
             // We do not care about whether or not the user granted permissions to
@@ -184,18 +186,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func askForContactAccessPermissionsAndImportContacts() {
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            if AddressBook.shared.isAuthorized() {
-                DispatchQueue.main.async {
-                    self?.importContacts()
-                }
+        // We dispatch this to tweak the timing to avoid gliches with the different Permission
+        // requests at the same time (AllowNotifications, AllowContacts)
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
             }
+            me.importContacts()
         }
     }
 
     private func importContacts() {
-        DispatchQueue.global(qos: .background).async { //!!!: Must become background task. Or stoped when going to background imo.
-            AddressBook.shared.transferContacts()
+        DispatchQueue.global(qos: .background).async {
+            AddressBook.shared.startImport()
         }
     }
 
@@ -217,6 +221,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return false
         }
 
+        // Desparate try to wokaround lagging PEPSessionProvider issue (IOS-1769)
+        // The suspect is that PEPSessionProvider has problems when the first call for a PEPSession is done from a non-main thread.
+        let _ = PEPSession()
+
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
 
         Appearance.pEp()
@@ -227,33 +235,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
-        askUserForPermissions()
+        askUserForPermissionsAndStartImportingContacts()
 
         let result = setupInitialViewController()
 
         return result
     }
 
+    /// Sent when the application is about to move from active to inactive state. This can occur
+    /// for certain types of temporary interruptions (such as an incoming phone call or SMS message)
+    /// or when the user quits the application and it begins the transition to the background state.
+    /// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame
+    /// rates. Games should use this method to pause the game.
     func applicationWillResignActive(_ application: UIApplication) {
         shutdownAndPrepareServicesForRestart()
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
+    /// Use this method to release shared resources, save user data, invalidate timers, and store
+    /// enough application state information to restore your application to its current state in
+    /// case it is terminated later.
+    /// If your application supports background execution, this method is called instead of
+    /// applicationWillTerminate: when the user quits.
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.shared.info("applicationDidEnterBackground")
         shouldDestroySession = true
         gracefullyShutdownServices()
     }
 
+    /// Called as part of the transition from the background to the inactive state; here you can
+    /// undo many of the changes made on entering the background.
     func applicationWillEnterForeground(_ application: UIApplication) {
-        importContacts()
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        // Desparate try to wokaround lagging PEPSessionProvider issue (IOS-1769)
+        // The suspect is that PEPSessionProvider has problems when the first call for a PEPSession is done from a non-main thread.
+        let _ = PEPSession()
+        // We start import here instead of applicationDidBecomeActive to avoid gliches asking the
+        // user for permissions twice (once from didFinishLaunching, once from
+        // applicationDidBecomeActive)
+        askForContactAccessPermissionsAndImportContacts()
     }
 
-    // Note: this is also called when:
-    // - swiping down the iOS system notification center
-    // - iOS auto lock takes place
+    /// Restart any tasks that were paused (or not yet started) while the application was inactive.
+    /// If the application was previously in the background, optionally refresh the user interface.
+    /// Note: this is also called when:
+    /// - swiping down the iOS system notification center
+    /// - iOS auto lock takes place
     func applicationDidBecomeActive(_ application: UIApplication) {
         if MiscUtil.isUnitTest() {
             // Do nothing if unit tests are running
@@ -264,16 +289,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         shutdownAndPrepareServicesForRestart()
         UserNotificationTool.resetApplicationIconBadgeNumber()
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
+    /// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        // Saves changes in the application's managed object context before the application terminates.
         shouldDestroySession = true
-
         // Just in case, last chance to clean up. Should not be necessary though.
-        PEPSession.cleanup()
+        cleanupPEPSessionIfNeeded()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
@@ -356,6 +379,8 @@ extension AppDelegate: MessageModelServiceDelegate {
         case .active:
             // We have been cancelled soley to assure a clean restart.
             startServices()
+        @unknown default:
+            Log.shared.errorAndCrash("Apple, please folow your own advice and use CLOSED_ENUM in Obj-C")
         }
     }
 }

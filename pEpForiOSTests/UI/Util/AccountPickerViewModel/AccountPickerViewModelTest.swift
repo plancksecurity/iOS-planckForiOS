@@ -55,6 +55,35 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
                               shouldFail: true)
     }
 
+    //MARK: - row(at:)
+    func testRowForAccountAt_0() {
+        createAndSaveSecondAccount()
+        let expectedAccountIndex = 0
+        assertPickerViewModel(account: firstAccount().user.address, expectedPosition: expectedAccountIndex)
+    }
+
+    func testRowForAccountAt_1() {
+        let second = createAndSaveSecondAccount()
+        let expectedAccountIndex = 1
+        assertPickerViewModel(account: second.user.address, expectedPosition: expectedAccountIndex)
+    }
+
+    func testRowForAccountNotAt_0() {
+        let second = createAndSaveSecondAccount()
+        let expectedAccountIndex = 0
+        assertPickerViewModel(account: second.user.address,
+                              expectedPosition: expectedAccountIndex,
+                              shouldFail: true)
+    }
+
+    func testRowForAccountNotAt_1() {
+        createAndSaveSecondAccount()
+        let expectedAccountIndex = 1
+        assertPickerViewModel(account: firstAccount().user.address,
+                              expectedPosition: expectedAccountIndex,
+                              shouldFail: true)
+    }
+
     // MARK: - handleUserSelected
 
     func testHandleUserSelected_oneAccount_correct() {
@@ -104,6 +133,18 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
             XCTAssertNotEqual(testee, expected.user.address)
         } else {
             XCTAssertEqual(testee, expected.user.address)
+        }
+    }
+
+    private func assertPickerViewModel(account: String,
+                                       expectedPosition: Int,
+                                       shouldFail: Bool = false) {
+        let vm = AccountPickerViewModel(resultDelegate: nil)
+        let testee = vm.row(at: account)
+        if shouldFail {
+            XCTAssertNotEqual(testee, expectedPosition)
+        } else {
+            XCTAssertEqual(testee, expectedPosition)
         }
     }
 

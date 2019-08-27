@@ -156,8 +156,8 @@ class ComposeViewModel {
 
     public func handleRemovedRow(at indexPath: IndexPath) {
         guard let removeeVM = viewModel(for: indexPath) as? AttachmentViewModel else {
-                Log.shared.errorAndCrash("Only attachmnets can be removed by the user")
-                return
+            Log.shared.errorAndCrash("Only attachmnets can be removed by the user")
+            return
         }
         removeNonInlinedAttachment(removeeVM.attachment)
     }
@@ -319,11 +319,11 @@ extension ComposeViewModel {
 
         let recipientsSection = section(for: .recipients)
         recipientsSection?.rows.append(RecipientCellViewModel(resultDelegate: self,
-                                           type: .cc,
-                                           recipients: []))
+                                                              type: .cc,
+                                                              recipients: []))
         recipientsSection?.rows.append(RecipientCellViewModel(resultDelegate: self,
-                                           type: .bcc,
-                                           recipients: []))
+                                                              type: .bcc,
+                                                              recipients: []))
         let idxRecipients = 0
         delegate?.sectionChanged(section: idxRecipients)
     }
@@ -427,7 +427,7 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
             let recipientVM = sections[idxPath.section].rows[idxPath.row] as? RecipientCellViewModel
             else {
                 Log.shared.errorAndCrash("No row VM")
-            return
+                return
         }
         recipientVM.add(recipient: identity)
     }
@@ -611,8 +611,8 @@ extension ComposeViewModel {
         let session = Session()
         let safeState = state.makeSafe(forSession: session)
         guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState, session: session) else {
-                Log.shared.errorAndCrash("No message")
-                return
+            Log.shared.errorAndCrash("No message")
+            return
         }
         handshakeViewController.session = session
         session.performAndWait {
@@ -671,7 +671,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
     }
 }
 
-    // MARK: AccountCellViewModelResultDelegate
+// MARK: AccountCellViewModelResultDelegate
 
 extension ComposeViewModel: AccountCellViewModelResultDelegate {
     func accountCellViewModel(_ vm: AccountCellViewModel, accountChangedTo account: Account) {

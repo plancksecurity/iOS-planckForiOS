@@ -19,8 +19,8 @@ class URL_MimeTest: XCTestCase {
     func testJpg() {
         let jpgExt = "jpg"
         let url = urlWithExtension(ext: jpgExt)
-        let testee = mimeUtils?.mimeType(fromURL: url)
-        let expected = mimeUtils?.mimeType(fromFileExtension: jpgExt)
+        let testee = MimeTypeUtils.mimeType(fromURL: url)
+        let expected = MimeTypeUtils.mimeType(fromFileExtension: jpgExt)
         XCTAssertEqual(testee, expected)
     }
 

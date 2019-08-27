@@ -140,7 +140,7 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
 
         try! session.keyMistrusted(senderIdent)
 
-        let senderDict2 = senderIdentity.updatedIdentity(session: session)
+        let senderDict2 = senderIdentity.updatedIdentity(pEpSession: session)
         XCTAssertFalse(try! senderDict2.isPEPUser(session).boolValue)
         // ENGINE-343: At one point the rating was .Undefined.
         XCTAssertEqual(senderIdentity.pEpRating(), .haveNoKey)
@@ -148,7 +148,7 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
 
     func testTrustMistrust() {
         let runReevaluationInBackground = false
-        let senderIdent = senderIdentity.updatedIdentity(session: session)
+        let senderIdent = senderIdentity.updatedIdentity(pEpSession: session)
 
         try! session.keyResetTrust(senderIdent)
         XCTAssertFalse(senderIdent.isConfirmed)
