@@ -122,9 +122,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                        folderToShow: UnifiedInbox())
         }
 
-        ///the refresh controller is added to the tableview
-        tableView.refreshControl = refreshController
+        ///the refresh controller is configured and added to the tableview
+        refreshController.tintColor = UIColor.pEpGreen
         refreshController.addTarget(self, action: #selector(self.refreshView(_:)), for: .valueChanged)
+        tableView.refreshControl = refreshController
 
         title = model?.folderName
         let item = UIBarButtonItem.getPEPButton(
