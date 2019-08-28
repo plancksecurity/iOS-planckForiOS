@@ -28,7 +28,6 @@ class RatingReEvaluator {
     func reevaluateRating() {
         let op = ReevaluateMessageRatingOperation(parentName: parentName, message: message)
         op.completionBlock = {
-            op.completionBlock = nil
             if !op.hasErrors() {
                 self.delegate?.ratingChanged(message: self.message)
             }
