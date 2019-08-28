@@ -103,7 +103,6 @@ extension HandshakeViewController {
 
     @objc
     private func back(sender: UIBarButtonItem) {
-        // Perform your custom action
         self.dismiss(animated: true, completion: nil)
     }
 
