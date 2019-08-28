@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1505C5152316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1505C5142316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift */; };
 		1522956223044EAA00204FD3 /* String+FPR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1522956123044EAA00204FD3 /* String+FPR.swift */; };
 		1522956623044FD000204FD3 /* String+FPRTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1522956523044FD000204FD3 /* String+FPRTest.swift */; };
 		154944CF229A97AA00CC6431 /* SelfReferencingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154944CE229A97AA00CC6431 /* SelfReferencingOperation.swift */; };
@@ -60,6 +61,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1505C5142316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+NetworkActivitySpinner.swift"; sourceTree = "<group>"; };
 		1522956123044EAA00204FD3 /* String+FPR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "String+FPR.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/String+FPR.swift"; sourceTree = "<group>"; };
 		1522956523044FD000204FD3 /* String+FPRTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "String+FPRTest.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Foundation/String+FPRTest.swift"; sourceTree = "<group>"; };
 		154944CE229A97AA00CC6431 /* SelfReferencingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelfReferencingOperation.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Other/SelfReferencingOperation.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 		B70A3A5322005B9600EDCE61 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				1505C5142316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift */,
 				B7465DE22211C890008A1708 /* CGImageSource+Extension.swift */,
 				B7465DE62211E969008A1708 /* CGRect+Util.swift */,
 				B753907D2212D6B500B1FCF9 /* CGSize+Extension.swift */,
@@ -417,6 +420,7 @@
 				37904565223FA486006DAB3B /* ReachabilityProtocol.swift in Sources */,
 				37954C6E227C90C10099B8D8 /* Log.swift in Sources */,
 				B7A46C62220DCEA80027CCB5 /* NSAttributedString+Parsing.swift in Sources */,
+				1505C5152316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift in Sources */,
 				B7465DE72211E969008A1708 /* CGRect+Util.swift in Sources */,
 				B7465DCC2211BEEA008A1708 /* Tuple.swift in Sources */,
 				37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */,
