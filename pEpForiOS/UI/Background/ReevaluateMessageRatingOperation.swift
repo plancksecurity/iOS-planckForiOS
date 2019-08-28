@@ -36,8 +36,7 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            let potentialMessage = try? privateMOC.existingObject(with: msgObjId)
-            me.cdMessage = potentialMessage as? CdMessage
+            me.cdMessage = try? privateMOC.existingObject(with: msgObjId) as? CdMessage
         }
     }
 
@@ -47,17 +46,16 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
             return
         }
         reEvaluate()
-        markAsFinished()
     }
 
     func reEvaluate() {
-        privateMOC.performAndWait { [weak self] in
+        privateMOC.perform { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
             guard let cdMsg = me.cdMessage else {
-                addError(ReevaluationError.noMessageFound)
+                me.addError(ReevaluationError.noMessageFound)
                 return
             }
             let pEpSession = PEPSession()
@@ -70,10 +68,11 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
                                                  rating: &newRating,
                                                  status: nil)
                 cdMsg.pEpRating = Int16(newRating.rawValue)
-                privateMOC.saveAndLogErrors()
+                me.privateMOC.saveAndLogErrors()
             } catch let error as NSError {
                 Log.shared.log(error: error)
             }
+            me.markAsFinished()
         }
     }
 }
