@@ -22,7 +22,8 @@ extension UIViewController {
             let minimumHittestDimension: CGFloat = 44
 
             let minimumImageWidth = max(minimumHittestDimension / 2, img.size.width)
-            let img2 = img.resized(newWidth: minimumImageWidth)
+            //33good size
+            let img2 = img.resized(newWidth: self.navigationController!.navigationBar.bounds.height - 10)
             let v = UIImageView(image: img2)
             v.contentMode = .center // DON'T stretch the image, leave it at original size
 
