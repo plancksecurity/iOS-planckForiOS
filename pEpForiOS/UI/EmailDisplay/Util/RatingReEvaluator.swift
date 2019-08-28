@@ -11,7 +11,7 @@ import UIKit
 import MessageModel
 
 public protocol RatingReEvaluatorDelegate: class {
-    func ratingChanged(message: Message)
+    func messageReEvaluatorFinishedReEvaluating(message: Message)
 }
 
 class RatingReEvaluator {
@@ -26,10 +26,11 @@ class RatingReEvaluator {
     }
 
     func reevaluateRating() {
-        let op = ReevaluateMessageRatingOperation(parentName: parentName, message: message)
+        let op = ReevaluateMessageRatingOperation(parentName: parentName,
+                                                  message: message)
         op.completionBlock = {
             if !op.hasErrors() {
-                self.delegate?.ratingChanged(message: self.message)
+                self.delegate?.messageReEvaluatorFinishedReEvaluating(message: self.message)
             }
         }
         queue.addOperation(op)

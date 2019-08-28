@@ -340,7 +340,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
 // MARK: - RatingReEvaluatorDelegate
 
 extension HandshakeViewController : RatingReEvaluatorDelegate {
-    func ratingChanged(message: Message) {
+    func messageReEvaluatorFinishedReEvaluating(message: Message) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
