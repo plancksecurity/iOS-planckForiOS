@@ -19,13 +19,22 @@ public class UnifiedInbox: VirtualFolderProtocol {
     }
 
     public func fetchOlder(completion: (()->())? = nil) {
-        guard let foldertype = agregatedFolderType else {
+        guard let folderType = agregatedFolderType else {
             Log.shared.errorAndCrash(message: "missing folder type for unified inbox?")
             return
         }
-        let folders = Folder.getAll(folderType: foldertype)
-        fetchMessagesService.runService(inFolders: folders) {
-            completion?()
+        let folders = Folder.getAll(folderType: folderType)
+        do {
+            try fetchOlderMessagesService.runService(inFolders:folders) {
+                completion?()
+            }
+        } catch {
+            guard let er = error as? FetchServiceBaseClass.FetchError,
+                er != FetchServiceBaseClass.FetchError.isFetching else {
+                    Log.shared.errorAndCrash("Unexpected error")
+                    return
+            }
+            // Alredy fetching do nothing
         }
     }
 
@@ -35,8 +44,17 @@ public class UnifiedInbox: VirtualFolderProtocol {
             return
         }
         let folders = Folder.getAll(folderType: folderType)
-        fetchMessagesService.runService(inFolders: folders) {
-            completion?()
+        do {
+            try fetchMessagesService.runService(inFolders:folders) {
+                completion?()
+            }
+        } catch {
+            guard let er = error as? FetchServiceBaseClass.FetchError,
+                er != FetchServiceBaseClass.FetchError.isFetching else {
+                    Log.shared.errorAndCrash("Unexpected error")
+                    return
+            }
+            // Alredy fetching do nothing
         }
     }
 
