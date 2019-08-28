@@ -427,40 +427,6 @@ class EmailViewController: BaseTableViewController {
         delegate?.emailDisplayDidDelete(message: message)
     }
 
-    /**
-     For the unwind segue from the trustwords controller, when the user choses "trusted".
-     */
-    @IBAction func segueUnwindTrusted(segue: UIStoryboardSegue) {
-        if let p = partnerIdentity {
-            do {
-                try PEPUtils.trust(identity: p) //!!!: BUFF: very bad. HandshakeVC (actually VM) must be responsible for trusting.
-            } catch let error as NSError {
-                assertionFailure("\(error)")
-            }
-            decryptAgain()
-        }
-    }
-
-    /**
-     For the unwind segue from the trustwords controller, when the user choses "untrusted".
-     */
-    @IBAction func segueUnwindUnTrusted(segue: UIStoryboardSegue) {
-        if let p = partnerIdentity {
-            do {
-                try PEPUtils.mistrust(identity: p)
-            } catch let error as NSError {
-                assertionFailure("\(error)")
-            }
-            decryptAgain()
-        }
-    }
-
-    //BUFF: well that _is_ a misleading name.
-    // Also, I _think_, as a message should never change the color, EmailView should never reevaluate.
-    private func decryptAgain() {
-        ratingReEvaluator?.reevaluateRating()
-    }
-
     @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer) {
         if (splitViewController?.isCollapsed) ?? true {
             performSegue(withIdentifier: .segueHandshakeCollapsed, sender: self)
