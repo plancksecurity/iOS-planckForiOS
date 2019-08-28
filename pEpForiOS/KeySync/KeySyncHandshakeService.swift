@@ -42,7 +42,6 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                 switch action {
                 case .accept:
                     break
-                //TODO: ALE
                 case .cancel:
                     break
                 case .decline:

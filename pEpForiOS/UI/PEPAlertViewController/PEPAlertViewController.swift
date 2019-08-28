@@ -113,7 +113,7 @@ extension PEPAlertViewController {
 
             button.setTitle(action.title, for: .normal)
             button.setTitleColor(action.style, for: .normal)
-            button.titleLabel?.font = .boldSystemFont(ofSize: 16)
+            button.titleLabel?.font = .boldSystemFont(ofSize: 15)
             button.backgroundColor = .white
             button.tag = viewModel.alertActionsCount
             button.addTarget(self, action: #selector(didPress(sender:)), for: .touchUpInside)

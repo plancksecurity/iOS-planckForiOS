@@ -11,8 +11,9 @@ import UIKit
 final class PEPPageViewController: UIPageViewController {
 
     private var viewModel: PEPPageViewModelProtocol
-    private var _views = [UIViewController]()
-    private var _pageControlBackgroundColor: UIColor?
+    private var pageControlBackgroundColor: UIColor?
+
+    var views = [UIViewController]()
 
     static let storyboardId = "PEPPageViewController"
 
@@ -22,12 +23,15 @@ final class PEPPageViewController: UIPageViewController {
         dataSource = self
         delegate = self
         disableScrolling()
+
+        guard let firstView = views.first else { return }
+        setViewControllers([firstView], direction: .forward, animated: true, completion: nil)
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        pageControl(backgroundColor: _pageControlBackgroundColor)
+        pageControl(backgroundColor: pageControlBackgroundColor)
     }
 
     private override init(transitionStyle: UIPageViewController.TransitionStyle,
@@ -43,11 +47,9 @@ final class PEPPageViewController: UIPageViewController {
         super.init(coder: aDecoder)
     }
 
-    static func fromStoryboard(withViews views: [UIViewController],
-                               dotsBackground: UIColor? = nil,
+    static func fromStoryboard(dotsBackground: UIColor? = nil,
                                viewModel: PEPPageViewModelProtocol = PEPViewViewModel())
         -> PEPPageViewController? {
-            guard let firstView = views.first else { return nil }
 
             let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
             guard let pEpPageViewController = storyboard.instantiateViewController(
@@ -57,14 +59,27 @@ final class PEPPageViewController: UIPageViewController {
             }
 
             pEpPageViewController.viewModel = viewModel
-            pEpPageViewController._pageControlBackgroundColor = dotsBackground
-            pEpPageViewController._views = views
-            pEpPageViewController.setViewControllers([firstView],
-                                                     direction: .forward,
-                                                     animated: true,
-                                                     completion: nil)
+            pEpPageViewController.pageControlBackgroundColor = dotsBackground
 
             return pEpPageViewController
+    }
+
+    func goToNextView(current: UIViewController) {
+        guard let nextView = nextView(current: current) else { return }
+        setViewControllers([nextView], direction: .forward, animated: true, completion: nil)
+    }
+
+    func goToPreviousView(current: UIViewController) {
+        guard let previousView = previousView(current: current) else { return }
+        setViewControllers([previousView], direction: .reverse, animated: true, completion: nil)
+    }
+
+    func didComplete(current: UIViewController) {
+        goToNextView(current: current)
+    }
+
+    func disMiss() {
+        dismiss(animated: true, completion: nil)
     }
 }
 
@@ -84,7 +99,7 @@ extension PEPPageViewController: UIPageViewControllerDataSource {
     }
 
     func presentationCount(for pageViewController: UIPageViewController) -> Int {
-        return _views.count
+        return views.count
     }
 
     func presentationIndex(for pageViewController: UIPageViewController) -> Int {
@@ -105,18 +120,18 @@ extension PEPPageViewController {
         let currentPossition = currentIndex(current)
         guard currentPossition > 0 else { return nil }
 
-        return _views[currentPossition - 1]
+        return views[currentPossition - 1]
     }
 
     private func nextView(current: UIViewController) -> UIViewController? {
         let currentPossition = currentIndex(current)
-        guard currentPossition < _views.count - 1 else { return nil }
+        guard currentPossition < views.count - 1 else { return nil }
 
-        return _views[currentPossition + 1]
+        return views[currentPossition + 1]
     }
 
     private func currentIndex(_ current: UIViewController) -> Int {
-        guard let currentIndex = _views.firstIndex(of: current) else {
+        guard let currentIndex = views.firstIndex(of: current) else {
             return 0
         }
         return currentIndex
