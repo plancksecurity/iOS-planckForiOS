@@ -14,6 +14,11 @@ final class PEPAlertViewController: UIViewController {
     @IBOutlet weak var alertMessage: UILabel!
     @IBOutlet weak var alertImageView: UIImageView!
     @IBOutlet weak var butonsStackView: UIStackView!
+    @IBOutlet weak var buttonsView: UIView! {
+        didSet {
+            buttonsView.backgroundColor = .pEpGreyButtonLines
+        }
+    }
 
     private var viewModel: PEPAlertViewModelProtocol
     private var _title: String?
@@ -98,7 +103,7 @@ extension PEPAlertViewController {
 
     private func setUp(images: [UIImage]?) {
         alertImageView.animationImages = images
-        alertImageView.animationDuration = 0.33
+        alertImageView.animationDuration = 3.0
         alertImageView.startAnimating()
     }
 
@@ -108,6 +113,8 @@ extension PEPAlertViewController {
 
             button.setTitle(action.title, for: .normal)
             button.setTitleColor(action.style, for: .normal)
+            button.titleLabel?.font = .boldSystemFont(ofSize: 16)
+            button.backgroundColor = .white
             button.tag = viewModel.alertActionsCount
             button.addTarget(self, action: #selector(didPress(sender:)), for: .touchUpInside)
             viewModel.add(action: action)

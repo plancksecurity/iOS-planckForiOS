@@ -375,6 +375,7 @@
                         <outlet property="alertMessage" destination="KYt-Qv-FPp" id="hjm-Fz-lSO"/>
                         <outlet property="alertTitle" destination="kNd-Jx-X9l" id="4hG-Oa-myi"/>
                         <outlet property="butonsStackView" destination="8Bk-30-sb6" id="qvg-5b-ekQ"/>
+                        <outlet property="buttonsView" destination="66h-xV-F9x" id="Tp5-8s-rZH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W8j-ep-qHS" userLabel="First Responder" sceneMemberID="firstResponder"/>

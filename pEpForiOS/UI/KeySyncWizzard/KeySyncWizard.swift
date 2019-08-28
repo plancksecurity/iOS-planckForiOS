@@ -23,7 +23,9 @@ struct KeySyncWizard {
 
 
             let pageViews = wizardViews(meFPR: meFPR, partnerFPR: partnerFPR)
-            return PEPPageViewController.fromStoryboard(withViews: pageViews)
+            let dotsBackgrounColo = UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 0.3)
+            return PEPPageViewController.fromStoryboard(withViews: pageViews,
+                                                        dotsBackground: dotsBackgrounColo)
     }
 }
 
@@ -62,7 +64,7 @@ extension KeySyncWizard {
         let nextButtonTitle = NSLocalizedString("Next",
                                                 comment: "KeySyncIntro view Next button title")
         let introNextAction = PEPUIAlertAction(title: nextButtonTitle,
-                                               style: .blue,
+                                               style: .pEpBlue,
                                                handler: { alert in
                                                 //TODO: Ale
         })

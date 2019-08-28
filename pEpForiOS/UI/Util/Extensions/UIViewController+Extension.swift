@@ -45,11 +45,9 @@ extension UIViewController {
                               completion: @escaping (KeySyncWizard.Action) -> Void ) {
         guard let pageViewController = KeySyncWizard.fromStoryboard(meFPR: meFPR,
                                                                     partnerFPR: partnerFPR,
-                                                                    completion: completion)
-            else {
-                return
+                                                                    completion: completion) else {
+                                                                        return
         }
-
         pageViewController.modalPresentationStyle = .overFullScreen
         present(pageViewController, animated: true, completion: nil)
     }
