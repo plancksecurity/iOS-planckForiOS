@@ -41,11 +41,11 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
             viewController.presentKeySyncWizard(meFPR: meFPR, partnerFPR: partnerFPR) { action in
                 switch action {
                 case .accept:
-                    break
+                    completion?(PEPSyncHandshakeResult.accepted)
                 case .cancel:
-                    break
+                    completion?(PEPSyncHandshakeResult.cancel)
                 case .decline:
-                    break
+                    completion?(PEPSyncHandshakeResult.rejected)
                 case .leave:
                     break
                 }
