@@ -32,7 +32,6 @@ class EmailViewController: BaseTableViewController {
 
     private var partnerIdentity: Identity?
     private var tableData: ComposeDataSource?
-    private var ratingReEvaluator: RatingReEvaluator?
     lazy private var backgroundQueue = OperationQueue()
     lazy private var documentInteractionController = UIDocumentInteractionController()
 
@@ -41,8 +40,6 @@ class EmailViewController: BaseTableViewController {
     }()
     
     private var selectedAttachmentURL: URL?
-
-    weak var delegate: EmailDisplayDelegate?
 
     // MARK: - LIFE CYCLE
 
@@ -89,26 +86,21 @@ class EmailViewController: BaseTableViewController {
         }
     }
 
-    private func checkMessageReEvaluation() {
-        if let m = message, ratingReEvaluator?.message != m {
-            ratingReEvaluator = RatingReEvaluator(parentName: #function, message: m)
-            ratingReEvaluator?.delegate = self
-        }
-    }
-
     private func showPepRating() {
-        if let privacyStatusIcon = showPepRating(pEpRating: message?.pEpRating()) {
-
-            let handshakeCombos = message?.handshakeActionCombinations() ?? []
-            if !handshakeCombos.isEmpty {
-                let tapGestureRecognizer = UITapGestureRecognizer(
-                    target: self,
-                    action: #selector(showHandshakeView(gestureRecognizer:)))
-                privacyStatusIcon.addGestureRecognizer(tapGestureRecognizer)
-            }
+        guard let privacyStatusIcon = showPepRating(pEpRating: message?.pEpRating()) else {
+            return
         }
+        guard
+            let handshakeCombos = message?.handshakeActionCombinations(), //!!!: EmailView must not know about handshakeCombinations.
+            !handshakeCombos.isEmpty
+            else {
+                return
+        }
+        let tapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(showHandshakeView(gestureRecognizer:)))
+        privacyStatusIcon.addGestureRecognizer(tapGestureRecognizer)
     }
-
 
     private final func loadDatasource(_ file: String) {
         if let path = Bundle.main.path(forResource: file, ofType: "plist") {
@@ -154,24 +146,15 @@ class EmailViewController: BaseTableViewController {
 
         showPepRating()
 
-        DispatchQueue.main.async {
-            self.checkMessageReEvaluation()
-
-            if let message = self.message, !message.imapFlags.seen{
-                message.markAsSeen()
-                self.delegate?.emailDisplayDidChangeMarkSeen(message: message)
-            }
-
-            if let message = self.message {
-                self.delegate?.emailDisplayDidChangeRating(message: message)
-            }
-            
-            if let total = self.folderShow?.messageCount(), self.messageId >= total - 1 {
-                self.nextMessage.isEnabled = false
-            } else {
-                self.nextMessage.isEnabled = true
-            }
-        }
+        ///TODO: reimplement next-previous
+        //        DispatchQueue.main.async {
+        //
+        //            if let total = self.folderShow?.messageCount(), self.messageId >= total - 1 {
+        //                self.nextMessage.isEnabled = false
+        //            } else {
+        //                self.nextMessage.isEnabled = true
+        //            }
+        //        }
         updateFlaggedStatus()
     }
 
@@ -189,7 +172,7 @@ class EmailViewController: BaseTableViewController {
     }
 
     @objc internal func okButtonPressed(sender: UIBarButtonItem) {
-        performSegue(withIdentifier: .unwindToThread, sender: self)
+        performSegue(withIdentifier: .unwindToThread, sender: self) //!!!: rm, thread does not exist
     }
 
     // Sets the destructive bottom bar item accordint to the message (trash/archive)
@@ -401,14 +384,10 @@ class EmailViewController: BaseTableViewController {
             let imap = message.imapFlags
             imap.flagged = false
             message.imapFlags = imap
-            //!!!: not needed? let's see if message query is fast enought? seems yes
-            delegate?.emailDisplayDidUnflag(message: message) //!!!: Why is this in again? I think FRC is fast enough? 
         } else {
             let imap = message.imapFlags
             imap.flagged = true
             message.imapFlags = imap
-            //!!!: not needed? let's see if message query is fast enought? seems yes
-            delegate?.emailDisplayDidFlag(message: message)
         }
         message.save()
     }
@@ -424,7 +403,6 @@ class EmailViewController: BaseTableViewController {
             return
         }
         Message.imapDelete(messages: [message])
-        delegate?.emailDisplayDidDelete(message: message)
     }
 
     @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer) {
@@ -526,7 +504,6 @@ extension EmailViewController: SegueHandlerType {
             if let msg = message {
                 destination.viewModel = MoveToAccountViewModel(messages: [msg])
             }
-            destination.delegate = self
         case .segueHandshake, .segueHandshakeCollapsed:
 
             guard let nv = segue.destination as? UINavigationController,
@@ -534,6 +511,11 @@ extension EmailViewController: SegueHandlerType {
                 let titleView = navigationItem.titleView else {
                 Log.shared.errorAndCrash("No DVC?")
                 break
+            }
+
+            guard let message = message else {
+                Log.shared.errorAndCrash("No message")
+                return
             }
 
             nv.popoverPresentationController?.delegate = self
@@ -544,7 +526,7 @@ extension EmailViewController: SegueHandlerType {
                                                                   height: 0)
             vc.appConfig = appConfig
             vc.message = message
-            vc.ratingReEvaluator = ratingReEvaluator
+            vc.ratingReEvaluator = RatingReEvaluator(message: message)
             break
         case .noSegue, .unwindToThread:
             break
@@ -604,21 +586,7 @@ extension EmailViewController: SegueHandlerType {
             }
         }
     }
-}
 
-// MARK: - RatingReEvaluatorDelegate
-
-extension EmailViewController: RatingReEvaluatorDelegate {
-    func messageReEvaluatorFinishedReEvaluating(message: Message) {
-        GCD.onMain { [weak self] in
-            self?.showPepRating()
-        }
-    }
-}
-
-// MARK: - MessageAttachmentDelegate
-
-extension EmailViewController: MessageAttachmentDelegate {
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         if UI_USER_INTERFACE_IDIOM() == .pad {
@@ -629,30 +597,11 @@ extension EmailViewController: MessageAttachmentDelegate {
 
         coordinator.animate(alongsideTransition: nil)
     }
+}
 
-    func didCreateLocally(attachment: Attachment,
-                          url: URL,
-                          cell: MessageCell,
-                          location: CGPoint,
-                          inView: UIView?) {
-        let mimeType = MimeTypeUtils.findBestMimeType(forFileAt: url,
-                                                      withGivenMimeType: attachment.mimeType)
-        if mimeType == MimeTypeUtils.MimesType.pdf
-            && QLPreviewController.canPreview(url as QLPreviewItem) {
-                selectedAttachmentURL = url
-                let previewController = QLPreviewController()
-                previewController.dataSource = self
-                present(previewController, animated: true, completion: nil)
-        } else {
-            documentInteractionController.url = url
-            let theView = inView ?? cell
-            let dim: CGFloat = 40
-            let rect = CGRect.rectAround(center: location, width: dim, height: dim)
-            documentInteractionController.presentOptionsMenu(from: rect,
-                                                             in: theView,
-                                                             animated: true)
-        }
-    }
+// MARK: - MessageAttachmentDelegate
+
+extension EmailViewController: MessageAttachmentDelegate {
 
     func didTap(cell: MessageCell, attachment: Attachment, location: CGPoint, inView: UIView?) {
         let busyState = inView?.displayAsBusy()
@@ -680,6 +629,30 @@ extension EmailViewController: MessageAttachmentDelegate {
             }
         }
         backgroundQueue.addOperation(attachmentOp)
+    }
+
+    private func didCreateLocally(attachment: Attachment,
+                                  url: URL,
+                                  cell: MessageCell,
+                                  location: CGPoint,
+                                  inView: UIView?) {
+        let mimeType = MimeTypeUtils.findBestMimeType(forFileAt: url,
+                                                      withGivenMimeType: attachment.mimeType)
+        if mimeType == MimeTypeUtils.MimesType.pdf
+            && QLPreviewController.canPreview(url as QLPreviewItem) {
+            selectedAttachmentURL = url
+            let previewController = QLPreviewController()
+            previewController.dataSource = self
+            present(previewController, animated: true, completion: nil)
+        } else {
+            documentInteractionController.url = url
+            let theView = inView ?? cell
+            let dim: CGFloat = 40
+            let rect = CGRect.rectAround(center: location, width: dim, height: dim)
+            documentInteractionController.presentOptionsMenu(from: rect,
+                                                             in: theView,
+                                                             animated: true)
+        }
     }
 }
 

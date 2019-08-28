@@ -15,30 +15,30 @@ extension UIViewController {
         return presentedViewController != nil
     }
 
-    @discardableResult func showPepRating(pEpRating: PEPRating?, pEpProtection: Bool = true) -> UIView? {
-        if let img = pEpRating?.pEpColor().statusIcon(enabled: pEpProtection) {
-            // according to apple's design guidelines ('Hit Targets'):
-            // https://developer.apple.com/design/tips/
-            let minimumHittestDimension: CGFloat = 44
-
-            let minimumImageWidth = max(minimumHittestDimension / 2, img.size.width)
-            let img2 = img.resized(newWidth: minimumImageWidth)
-            let v = UIImageView(image: img2)
-            v.contentMode = .center // DON'T stretch the image, leave it at original size
-
-            // try to make the hit area of the icon a minimum of 44x44
-            let desiredHittestDimension: CGFloat = min(
-                minimumHittestDimension,
-                navigationController?.navigationBar.frame.size.height ?? minimumHittestDimension)
-            v.bounds.size = CGSize(width: desiredHittestDimension, height: desiredHittestDimension)
-
-            navigationItem.titleView = v
-            v.isUserInteractionEnabled = true
-            return v
-        } else {
+    @discardableResult func showPepRating(pEpRating: PEPRating?,
+                                          pEpProtection: Bool = true) -> UIView? {
+        guard let img = pEpRating?.pEpColor().statusIcon(enabled: pEpProtection) else {
             navigationItem.titleView = nil
             return nil
         }
+        // according to apple's design guidelines ('Hit Targets'):
+        // https://developer.apple.com/design/tips/
+        let minimumHittestDimension: CGFloat = 44
+
+        let minimumImageWidth = max(minimumHittestDimension / 2, img.size.width)
+        let img2 = img.resized(newWidth: minimumImageWidth)
+        let v = UIImageView(image: img2)
+        v.contentMode = .center // DON'T stretch the image, leave it at original size
+
+        // try to make the hit area of the icon a minimum of 44x44
+        let desiredHittestDimension: CGFloat = min(
+            minimumHittestDimension,
+            navigationController?.navigationBar.frame.size.height ?? minimumHittestDimension)
+        v.bounds.size = CGSize(width: desiredHittestDimension, height: desiredHittestDimension)
+
+        navigationItem.titleView = v
+        v.isUserInteractionEnabled = true
+        return v
     }
 
     func presentKeySyncHandShakeAlert(meFPR: String, partnerFPR: String,

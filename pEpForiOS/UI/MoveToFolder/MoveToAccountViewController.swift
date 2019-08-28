@@ -15,7 +15,6 @@ class MoveToAccountViewController: BaseViewController {
     var viewModel: MoveToAccountViewModel?
     private let cellId = "AccountCell"
     private var selectedViewModel : MoveToFolderViewModel?
-    weak var delegate : MoveToFolderDelegate?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -90,7 +89,6 @@ extension MoveToAccountViewController {
         if segue.identifier == "showAccount" {
             if let vc = segue.destination as? MoveToFolderTableViewController, let appCfg = self.appConfig, let vm = selectedViewModel {
                 vc.appConfig = appCfg
-                vm.delegate = self.delegate
                 vc.viewModel = vm
             }
         }

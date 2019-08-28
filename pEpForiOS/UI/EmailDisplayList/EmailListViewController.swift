@@ -47,10 +47,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         super.viewDidLoad()
 
         tableView.allowsMultipleSelectionDuringEditing = true
-
-        if #available(iOS 10.0, *) {
-            tableView.prefetchDataSource = self
-        }
         setupSearchBar()
         setup()
     }
@@ -731,7 +727,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
         tableView.endUpdates()
     }
 
-    func showThreadView(for indexPath: IndexPath) {
+//    func showThreadView(for indexPath: IndexPath) {
        /* guard let splitViewController = splitViewController else {
             return
         }
@@ -759,7 +755,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
         } else {
             showEmail(forCellAt: indexPath)
         }*/
-    }
+//    }
 
     func toolbarIs(enabled: Bool) {
         if model?.shouldShowToolbarEditButtons() ?? true {
@@ -1092,8 +1088,7 @@ extension EmailListViewController: SegueHandlerType {
             ///showing next and previous directly from the emailView, that is needed for that feature
             //vc.folderShow = model?.getFolderToShow()
             vc.messageId = indexPath.row //!!!: that looks wrong
-            vc.delegate = model
-            model?.currentDisplayedMessage = vc
+            //            model?.currentDisplayedMessage = vc //BUFF: rm
             model?.indexPathShown = indexPath
         case .segueShowEmailNotSplitView:
             guard let vc = segue.destination as? EmailViewController,
@@ -1108,8 +1103,7 @@ extension EmailListViewController: SegueHandlerType {
             ///showing next and previous directly from the emailView, that is needed for that feature
             //vc.folderShow = model?.getFolderToShow()
             vc.messageId = indexPath.row //!!!: that looks wrong
-            vc.delegate = model
-            model?.currentDisplayedMessage = vc
+//            model?.currentDisplayedMessage = vc  //BUFF: rm
             model?.indexPathShown = indexPath
 
       //  case .segueShowThreadedEmail:
@@ -1178,7 +1172,6 @@ extension EmailListViewController: SegueHandlerType {
 
             destination.viewModel
                 = model?.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
-            destination.delegate = model
             destination.appConfig = appConfig
             break
         case .showNoMessage:
