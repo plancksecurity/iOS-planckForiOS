@@ -21,9 +21,8 @@ struct KeySyncWizard {
                                completion: @escaping (KeySyncWizard.Action) -> Void )
         -> PEPPageViewController? {
 
-            let dotsBackgrounColo = UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 0.3)
             guard let pEpPageViewController =
-                PEPPageViewController.fromStoryboard(dotsBackground: dotsBackgrounColo) else {
+                PEPPageViewController.fromStoryboard() else {
                     return nil
             }
             let pageViews = wizardViews(page: pEpPageViewController,

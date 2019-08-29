@@ -12,6 +12,7 @@ final class PEPPageViewController: UIPageViewController {
 
     private var viewModel: PEPPageViewModelProtocol
     private var pageControlBackgroundColor: UIColor?
+    private var showDots = false
 
     var views = [UIViewController]()
 
@@ -20,7 +21,7 @@ final class PEPPageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        dataSource = self
+        dataSource = showDots ? self : nil //nil dataSource will hide dots and disable scrolling
         delegate = self
         disableScrolling()
 
@@ -47,7 +48,8 @@ final class PEPPageViewController: UIPageViewController {
         super.init(coder: aDecoder)
     }
 
-    static func fromStoryboard(dotsBackground: UIColor? = nil,
+    static func fromStoryboard(showDots: Bool = false,
+                               dotsBackground: UIColor? = nil,
                                viewModel: PEPPageViewModelProtocol = PEPViewViewModel())
         -> PEPPageViewController? {
 
@@ -57,7 +59,7 @@ final class PEPPageViewController: UIPageViewController {
                     Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
                     return nil
             }
-
+            pEpPageViewController.showDots = showDots
             pEpPageViewController.viewModel = viewModel
             pEpPageViewController.pageControlBackgroundColor = dotsBackground
 
