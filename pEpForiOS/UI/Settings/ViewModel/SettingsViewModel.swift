@@ -46,13 +46,8 @@ final class SettingsViewModel {
     }
 
     func leaveDeviceGroupPressed() -> Error? {
-        guard let keySyncDeviceGroupService = keySyncDeviceGroupService else {
-            let error = SettingsInternalError.nilKeySyncDeviceGroupService
-            Log.shared.errorAndCrash("%@", error.localizedDescription)
-            return error
-        }
         do {
-            try keySyncDeviceGroupService.leaveDeviceGroup()
+            try KeySyncDeviceGroupService.leaveDeviceGroup()
             removeLeaveDeviceGroupCell()
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)

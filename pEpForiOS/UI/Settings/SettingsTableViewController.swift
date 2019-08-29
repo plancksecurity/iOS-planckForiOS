@@ -39,8 +39,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 break
             case .decline:
                 break
-            case .leave:
-                break
             }
         }
     }

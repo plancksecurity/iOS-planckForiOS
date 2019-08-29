@@ -11,7 +11,7 @@ import PEPObjCAdapterFramework
 
 protocol KeySyncDeviceGroupServiceProtocol: class {
     var deviceGroupState: DeviceGroupState { get }
-    func leaveDeviceGroup() throws
+    static func leaveDeviceGroup() throws
 }
 
 class KeySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol {
@@ -19,7 +19,7 @@ class KeySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol {
         return AppSettings.lastKnownDeviceGroupState
     }
 
-    func leaveDeviceGroup() throws {
+    static func leaveDeviceGroup() throws {
         try PEPSession().leaveDeviceGroupError()
         AppSettings.lastKnownDeviceGroupState = .sole
     }

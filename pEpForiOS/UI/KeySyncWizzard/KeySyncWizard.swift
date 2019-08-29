@@ -11,7 +11,7 @@ import Foundation
 struct KeySyncWizard {
 
     enum Action {
-        case cancel, decline, accept, leave
+        case cancel, decline, accept
     }
 
     private init() {}
@@ -146,7 +146,7 @@ extension KeySyncWizard {
             let animatioCancelAction = PEPUIAlertAction(title: animatioCanceButtonlTitle,
                                                         style: .pEpBlue,
                                                         handler: { [weak page] alert in
-                                                            pageCompletion(.leave)
+                                                            pageCompletion(.cancel)
                                                             page?.disMiss()
             })
             pepAlertViewController?.add(action: animatioCancelAction)
@@ -172,7 +172,7 @@ extension KeySyncWizard {
             let completionLeavelAction = PEPUIAlertAction(title: completionLeavelTitle,
                                                           style: .pEpRed,
                                                           handler: { [weak page] alert in
-                                                            pageCompletion(.leave)
+                                                            leaveDeviceGroup()
                                                             page?.disMiss()
             })
 
@@ -186,5 +186,18 @@ extension KeySyncWizard {
             pepAlertViewController?.add(action: completionLeavelAction)
             pepAlertViewController?.add(action: completionOKlAction)
             return pepAlertViewController
+    }
+}
+
+
+// MARK: - Private
+
+extension KeySyncWizard {
+    private static func leaveDeviceGroup() {
+        do {
+            try KeySyncDeviceGroupService.leaveDeviceGroup()
+        } catch {
+            Log.shared.errorAndCrash("%@", error.localizedDescription)
+        }
     }
 }

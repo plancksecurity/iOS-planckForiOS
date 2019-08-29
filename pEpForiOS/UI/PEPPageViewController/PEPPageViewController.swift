@@ -108,7 +108,9 @@ final class PEPPageViewController: UIPageViewController {
     }
 
     func disMiss() {
-        dismiss(animated: true, completion: nil)
+        DispatchQueue.main.async { [weak self] in
+            self?.dismiss(animated: true, completion: nil)
+        }
     }
 }
 
