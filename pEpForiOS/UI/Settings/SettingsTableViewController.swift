@@ -29,18 +29,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         title = NSLocalizedString("Settings", comment: "Settings view title")
         UIHelper.variableCellHeightsTableView(tableView)
         addExtraKeysEditabilityToggleGesture()
-        presentKeySyncWizard(meFPR: "76B67A6C30FED2E6264C1FED1727EFE28E1A6F72",
-                             partnerFPR: "105B85F84D53E68B73A341F1F84FF300211131BA") { action in
-            switch action {
-            case .accept:
-                break
-            //TODO: ALE
-            case .cancel:
-                break
-            case .decline:
-                break
-            }
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
