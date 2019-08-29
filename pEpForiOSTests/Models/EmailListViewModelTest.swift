@@ -689,25 +689,4 @@ private class TestMasterViewController: EmailListViewModelDelegate {
 //    }
 //}
 
-class TestDetailsViewController {
-    var emailDisplayDelegate : EmailDisplayDelegate
-    init(emailDisplayDelegate: EmailDisplayDelegate) {
-        self.emailDisplayDelegate = emailDisplayDelegate
-    }
-
-    func emailDisplayDidChangeMarkSeen(message: Message) {
-        self.emailDisplayDelegate.emailDisplayDidChangeMarkSeen(message: message)
-    }
-
-    func emailDisplayDidDelete(message: Message) {
-        self.emailDisplayDelegate.emailDisplayDidDelete(message: message)
-    }
-
-    func emailDisplayDidFlag(message: Message) {
-        self.emailDisplayDelegate.emailDisplayDidFlag(message: message)
-    }
-
-    func emailDisplayDidUnflag(message: Message) {
-        self.emailDisplayDelegate.emailDisplayDidUnflag(message: message)
-    }
-}
+//BUFF: HERE 16:40 - 19:51
