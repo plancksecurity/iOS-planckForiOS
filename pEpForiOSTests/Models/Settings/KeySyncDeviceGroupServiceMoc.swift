@@ -11,14 +11,14 @@ import MessageModel
 @testable import pEpForiOS
 
 class KeySyncDeviceGroupServiceMoc: KeySyncDeviceGroupServiceProtocol {
-    var didCallLeaveDeviceGroup = false
+    static var didCallLeaveDeviceGroup = false
     var deviceGroupValueForTest: DeviceGroupState = .grouped
 
     var deviceGroupState: DeviceGroupState {
         return deviceGroupValueForTest
     }
 
-    func leaveDeviceGroup() throws {
+    static func leaveDeviceGroup() throws {
         didCallLeaveDeviceGroup = true
     }
 }

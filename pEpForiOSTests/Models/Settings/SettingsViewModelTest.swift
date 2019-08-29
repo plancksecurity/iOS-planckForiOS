@@ -23,7 +23,7 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
 
 
     //Number of sections corresponding to SettingsSectionViewModel.SectionType count
-    let sections = 4
+    let sections = 5
 
     func testNumberOfSections() {
         setupViewModel()
@@ -88,7 +88,7 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
         _ = settingsVM.leaveDeviceGroupPressed()
 
         // THEN
-        XCTAssertTrue(keySyncDeviceGroupServiceMoc.didCallLeaveDeviceGroup)
+        XCTAssertTrue(KeySyncDeviceGroupServiceMoc.didCallLeaveDeviceGroup)
         guard let section = keySyncSection() else { return }
         for cell in section.cells {
             guard let cell = cell as? SettingsActionCellViewModel else { continue }
