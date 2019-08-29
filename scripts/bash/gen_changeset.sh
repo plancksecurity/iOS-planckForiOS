@@ -24,7 +24,7 @@ dir="`pwd`"
 printf %s  "v" >> $CHANGESET
 
 INFO_PLIST=${dir}/pEp_for_iOS/pEpForiOS/Info.plist
-VERSION=$(sudo /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "${INFO_PLIST}") 
+VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "${INFO_PLIST}") 
 echo "${VERSION}" >> $CHANGESET
 
 
