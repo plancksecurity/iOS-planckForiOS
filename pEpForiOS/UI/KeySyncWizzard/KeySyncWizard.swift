@@ -77,7 +77,7 @@ extension KeySyncWizard {
                                                      style: .pEpGray,
                                                      handler: { [weak page] alert in
                                                         pageCompletion(.cancel)
-                                                        page?.disMiss()
+                                                        page?.dismiss()
 
 
             })
@@ -114,10 +114,10 @@ extension KeySyncWizard {
                     page?.goToNextView(current: handShakeViewController)
                 case .cancel:
                     pageCompletion(.cancel)
-                    page?.disMiss()
+                    page?.dismiss()
                 case .decline:
                     pageCompletion(.decline)
-                    page?.disMiss()
+                    page?.dismiss()
                 }
             }
 
@@ -146,7 +146,7 @@ extension KeySyncWizard {
                                                         style: .pEpBlue,
                                                         handler: { [weak page] alert in
                                                             pageCompletion(.cancel)
-                                                            page?.disMiss()
+                                                            page?.dismiss()
             })
             pepAlertViewController?.add(action: animatioCancelAction)
             return pepAlertViewController
@@ -172,7 +172,7 @@ extension KeySyncWizard {
                                                           style: .pEpRed,
                                                           handler: { [weak page] alert in
                                                             leaveDeviceGroup()
-                                                            page?.disMiss()
+                                                            page?.dismiss()
             })
 
             let completionOKlTitle = NSLocalizedString("OK",
@@ -180,7 +180,7 @@ extension KeySyncWizard {
             let completionOKlAction = PEPUIAlertAction(title: completionOKlTitle,
                                                        style: .pEpBlue,
                                                        handler: { [weak page] alert in
-                                                        page?.disMiss()
+                                                        page?.dismiss()
             })
             pepAlertViewController?.add(action: completionLeavelAction)
             pepAlertViewController?.add(action: completionOKlAction)

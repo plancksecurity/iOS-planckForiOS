@@ -61,7 +61,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
         guard let keySyncWizard = presenter?.presentedViewController as? PEPPageViewController else {
             return
         }
-        keySyncWizard.disMiss()
+        keySyncWizard.dismiss()
     }
 
     func showSuccessfullyGrouped() {

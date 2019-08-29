@@ -104,7 +104,7 @@ final class PEPPageViewController: UIPageViewController {
         }
     }
 
-    func disMiss() {
+    func dismiss() {
         DispatchQueue.main.async { [weak self] in
             self?.dismiss(animated: true, completion: nil)
         }
@@ -131,7 +131,6 @@ extension PEPPageViewController: UIPageViewControllerDataSource {
     }
 
     func presentationIndex(for pageViewController: UIPageViewController) -> Int {
-        guard let currentView = pageViewController.viewControllers?.first else { return 0 }
         return currentIndex()
     }
 }
@@ -143,7 +142,6 @@ extension PEPPageViewController: UIPageViewControllerDelegate {
                             didFinishAnimating finished: Bool,
                             previousViewControllers: [UIViewController],
                             transitionCompleted completed: Bool) {
-        guard let currentView = previousViewControllers.first else { return }
         pageControl()?.currentPage = currentIndex()
     }
 }
