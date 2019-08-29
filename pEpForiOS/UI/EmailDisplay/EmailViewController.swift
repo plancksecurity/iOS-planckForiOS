@@ -433,7 +433,7 @@ class EmailViewController: BaseTableViewController {
     @IBAction func segueUnwindTrusted(segue: UIStoryboardSegue) {
         if let p = partnerIdentity {
             do {
-                try PEPUtils.trust(identity: p)
+                try PEPUtils.trust(identity: p) //!!!: BUFF: very bad. HandshakeVC (actually VM) must be responsible for trusting.
             } catch let error as NSError {
                 assertionFailure("\(error)")
             }
@@ -455,6 +455,8 @@ class EmailViewController: BaseTableViewController {
         }
     }
 
+    //BUFF: well that _is_ a misleading name.
+    // Also, I _think_, as a message should never change the color, EmailView should never reevaluate.
     private func decryptAgain() {
         ratingReEvaluator?.reevaluateRating()
     }
@@ -641,7 +643,7 @@ extension EmailViewController: SegueHandlerType {
 // MARK: - RatingReEvaluatorDelegate
 
 extension EmailViewController: RatingReEvaluatorDelegate {
-    func ratingChanged(message: Message) {
+    func messageReEvaluatorFinishedReEvaluating(message: Message) {
         GCD.onMain { [weak self] in
             self?.showPepRating()
         }

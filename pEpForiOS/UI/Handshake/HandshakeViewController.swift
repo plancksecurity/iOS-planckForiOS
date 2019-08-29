@@ -103,7 +103,6 @@ extension HandshakeViewController {
 
     @objc
     private func back(sender: UIBarButtonItem) {
-        // Perform your custom action
         self.dismiss(animated: true, completion: nil)
     }
 
@@ -340,7 +339,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
 // MARK: - RatingReEvaluatorDelegate
 
 extension HandshakeViewController : RatingReEvaluatorDelegate {
-    func ratingChanged(message: Message) {
+    func messageReEvaluatorFinishedReEvaluating(message: Message) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
