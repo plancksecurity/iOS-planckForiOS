@@ -10,7 +10,6 @@ import UIKit
 
 final class PEPPageViewController: UIPageViewController {
 
-    private var viewModel: PEPPageViewModelProtocol
     private var pageControlBackgroundColor: UIColor?
     private var showDots = false
 
@@ -38,19 +37,16 @@ final class PEPPageViewController: UIPageViewController {
     private override init(transitionStyle: UIPageViewController.TransitionStyle,
                           navigationOrientation: UIPageViewController.NavigationOrientation,
                           options: [UIPageViewController.OptionsKey : Any]?) {
-        viewModel = PEPViewViewModel()
         super.init(transitionStyle: transitionStyle,
                    navigationOrientation: navigationOrientation,
                    options: options)
     }
     required init?(coder aDecoder: NSCoder) {
-        viewModel = PEPViewViewModel()
         super.init(coder: aDecoder)
     }
 
     static func fromStoryboard(showDots: Bool = false,
-                               dotsBackground: UIColor? = nil,
-                               viewModel: PEPPageViewModelProtocol = PEPViewViewModel())
+                               dotsBackground: UIColor? = nil)
         -> PEPPageViewController? {
 
             let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
@@ -60,7 +56,6 @@ final class PEPPageViewController: UIPageViewController {
                     return nil
             }
             pEpPageViewController.showDots = showDots
-            pEpPageViewController.viewModel = viewModel
             pEpPageViewController.pageControlBackgroundColor = dotsBackground
 
             return pEpPageViewController
