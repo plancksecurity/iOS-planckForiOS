@@ -20,7 +20,7 @@ final class KeySyncHandshakeViewModel {
         case cancel, decline, accept, changeLanguage
     }
 
-    var completionHandler: ((KeySyncHandshakeViewController.Action) -> Void)?
+    var completionHandler: ((KeySyncHandshakeViewController.Action) -> Void)? //!!!: A viewModel must not know the Controller
 
     weak var delegate: KeySyncHandshakeViewModelDelegate?
     var fullTrustWords = false //Internal since testing
