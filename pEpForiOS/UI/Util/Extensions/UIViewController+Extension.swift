@@ -16,7 +16,7 @@ extension UIViewController {
     }
 
     @discardableResult func showPepRating(pEpRating: PEPRating?, pEpProtection: Bool = true) -> UIView? {
-        if let img = pEpRating?.pEpColor().statusIcon(enabled: pEpProtection) {
+        if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
             // according to apple's design guidelines ('Hit Targets'):
             // https://developer.apple.com/design/tips/
             let minimumHittestDimension: CGFloat = 44
