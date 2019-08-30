@@ -15,16 +15,20 @@ extension UIApplication {
     ///         spinner is not shown on those devices.
     @available(iOS, deprecated: 13.0, message: "Apple marked it deprecated.")
     static public func showStatusBarNetworkActivitySpinner() {
-        if !UIApplication.shared.isNetworkActivityIndicatorVisible {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        GCD.onMain {
+            if !UIApplication.shared.isNetworkActivityIndicatorVisible {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            }
         }
     }
 
     /// Hides the OS's networkActivitySpinner in the statusbar.
     @available(iOS, deprecated: 13.0, message: "Apple marked it deprecated.")
     static public func hideStatusBarNetworkActivitySpinner() {
-        if UIApplication.shared.isNetworkActivityIndicatorVisible {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        GCD.onMain {
+            if UIApplication.shared.isNetworkActivityIndicatorVisible {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            }
         }
     }
 }
