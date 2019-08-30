@@ -88,7 +88,7 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
         _ = settingsVM.leaveDeviceGroupPressed()
 
         // THEN
-        XCTAssertTrue(KeySyncDeviceGroupServiceMoc.didCallLeaveDeviceGroup)
+        XCTAssertTrue(keySyncDeviceGroupServiceMoc.didCallLeaveDeviceGroup)
         guard let section = keySyncSection() else { return }
         for cell in section.cells {
             guard let cell = cell as? SettingsActionCellViewModel else { continue }

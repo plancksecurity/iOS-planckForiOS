@@ -51,7 +51,7 @@ final class SettingsViewModel {
             return nil
         }
         do {
-            try type(of: keySyncDeviceGroupService).leaveDeviceGroup()
+            try keySyncDeviceGroupService.leaveDeviceGroup()
             removeLeaveDeviceGroupCell()
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)

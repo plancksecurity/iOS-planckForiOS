@@ -18,6 +18,8 @@ struct KeySyncWizard {
 
     static func fromStoryboard(meFPR: String,
                                partnerFPR: String,
+                               keySyncDeviceGroupService:
+        KeySyncDeviceGroupServiceProtocol = KeySyncDeviceGroupService(),
                                completion: @escaping (KeySyncWizard.Action) -> Void )
         -> PEPPageViewController? {
 
@@ -28,7 +30,8 @@ struct KeySyncWizard {
             let pageViews = wizardViews(page: pEpPageViewController,
                                         pageCompletion: completion,
                                         meFPR: meFPR,
-                                        partnerFPR: partnerFPR)
+                                        partnerFPR: partnerFPR,
+                                        keySyncDeviceGroupService: keySyncDeviceGroupService)
             pEpPageViewController.views = pageViews
             return pEpPageViewController
     }
@@ -41,18 +44,23 @@ extension KeySyncWizard {
     static private func wizardViews(page: PEPPageViewController,
                                     pageCompletion: @escaping (KeySyncWizard.Action) -> Void,
                                     meFPR: String,
-                                    partnerFPR: String) -> [UIViewController] {
-        guard let introView = introView(page: page, pageCompletion: pageCompletion),
-            let trustWordsView = trustWordsView(meFPR: meFPR,
-                                                partnerFPR: partnerFPR,
-                                                page: page,
-                                                pageCompletion: pageCompletion),
-            let animationView = animationView(page: page, pageCompletion: pageCompletion),
-            let completionView = completionView(page: page, pageCompletion: pageCompletion) else {
-                return []
-        }
+                                    partnerFPR: String,
+                                    keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol)
+        -> [UIViewController] {
 
-        return [introView, trustWordsView, animationView, completionView]
+            guard let introView = introView(page: page, pageCompletion: pageCompletion),
+                let trustWordsView = trustWordsView(meFPR: meFPR,
+                                                    partnerFPR: partnerFPR,
+                                                    page: page,
+                                                    pageCompletion: pageCompletion),
+                let animationView = animationView(page: page, pageCompletion: pageCompletion),
+                let completionView = completionView(page: page,
+                                                    keySyncDeviceGroupService: keySyncDeviceGroupService,
+                                                    pageCompletion: pageCompletion) else {
+                    return []
+            }
+
+            return [introView, trustWordsView, animationView, completionView]
     }
 
     static private func introView(page: PEPPageViewController,
@@ -153,6 +161,7 @@ extension KeySyncWizard {
     }
 
     static private func completionView(page: PEPPageViewController,
+                                       keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol,
                                        pageCompletion: @escaping (KeySyncWizard.Action) -> Void)
         -> PEPAlertViewController? {
             let completionTitle = NSLocalizedString("Device Group",
@@ -171,7 +180,7 @@ extension KeySyncWizard {
             let completionLeavelAction = PEPUIAlertAction(title: completionLeavelTitle,
                                                           style: .pEpRed,
                                                           handler: { [weak page] alert in
-                                                            leaveDeviceGroup()
+                                                            leaveDeviceGroup(keySyncDeviceGroupService)
                                                             page?.dismiss()
             })
 
@@ -192,9 +201,10 @@ extension KeySyncWizard {
 // MARK: - Private
 
 extension KeySyncWizard {
-    private static func leaveDeviceGroup() {
+    private static func leaveDeviceGroup(_ keySyncDeviceGroupService:
+        KeySyncDeviceGroupServiceProtocol) {
         do {
-            try KeySyncDeviceGroupService.leaveDeviceGroup()
+            try keySyncDeviceGroupService.leaveDeviceGroup()
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)
         }
