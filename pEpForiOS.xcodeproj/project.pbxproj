@@ -213,6 +213,12 @@
 		3705704122B8EB27002E3AAD /* KeySyncDeviceGroupServiceMoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705704022B8EB27002E3AAD /* KeySyncDeviceGroupServiceMoc.swift */; };
 		3747094122B900AF00215283 /* SettingsInternalError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705704222B8FCB8002E3AAD /* SettingsInternalError.swift */; };
 		3747094322BA4E3B00215283 /* EnableKeySyncViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3747094222BA4E3B00215283 /* EnableKeySyncViewModel.swift */; };
+		3781653C230EC59400B967E3 /* PEPPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3781653B230EC59400B967E3 /* PEPPageViewController.swift */; };
+		37816542230EC72C00B967E3 /* PEPAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816541230EC72C00B967E3 /* PEPAlertViewController.swift */; };
+		37816544230EC73900B967E3 /* PEPAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816543230EC73900B967E3 /* PEPAlertViewModel.swift */; };
+		37816546230EE5F700B967E3 /* PEPUIAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816545230EE5F700B967E3 /* PEPUIAlertAction.swift */; };
+		37816549231035F000B967E3 /* PEPAlertViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816548231035F000B967E3 /* PEPAlertViewModelTest.swift */; };
+		3781654C2313F84700B967E3 /* KeySyncWizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3781654B2313F84700B967E3 /* KeySyncWizard.swift */; };
 		3791A45F22BA6A0300A9E534 /* MessageModelServiceMoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3791A45E22BA6A0300A9E534 /* MessageModelServiceMoc.swift */; };
 		3791A46122BA77C900A9E534 /* KeySyncServiceHandshakeDelegateMoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3791A46022BA77C900A9E534 /* KeySyncServiceHandshakeDelegateMoc.swift */; };
 		37C3C0E62260C64D003E290C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C3C0E52260C64D003E290C /* Log.swift */; };
@@ -682,6 +688,12 @@
 		3705704022B8EB27002E3AAD /* KeySyncDeviceGroupServiceMoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncDeviceGroupServiceMoc.swift; sourceTree = "<group>"; };
 		3705704222B8FCB8002E3AAD /* SettingsInternalError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInternalError.swift; sourceTree = "<group>"; };
 		3747094222BA4E3B00215283 /* EnableKeySyncViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableKeySyncViewModel.swift; sourceTree = "<group>"; };
+		3781653B230EC59400B967E3 /* PEPPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPPageViewController.swift; sourceTree = "<group>"; };
+		37816541230EC72C00B967E3 /* PEPAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewController.swift; sourceTree = "<group>"; };
+		37816543230EC73900B967E3 /* PEPAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewModel.swift; sourceTree = "<group>"; };
+		37816545230EE5F700B967E3 /* PEPUIAlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPUIAlertAction.swift; sourceTree = "<group>"; };
+		37816548231035F000B967E3 /* PEPAlertViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewModelTest.swift; sourceTree = "<group>"; };
+		3781654B2313F84700B967E3 /* KeySyncWizard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncWizard.swift; sourceTree = "<group>"; };
 		3791A45E22BA6A0300A9E534 /* MessageModelServiceMoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModelServiceMoc.swift; sourceTree = "<group>"; };
 		3791A46022BA77C900A9E534 /* KeySyncServiceHandshakeDelegateMoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncServiceHandshakeDelegateMoc.swift; sourceTree = "<group>"; };
 		37C3C0E52260C64D003E290C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -1025,6 +1037,7 @@
 		150707DD21006D0200AA213F /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				37816547231035CF00B967E3 /* PEPAlertViewController */,
 				158A6E2B230D53B8006A9ECE /* Settings */,
 				3705095B22CF465300CB73D6 /* KeySyncHandshake */,
 				15D4399D216F703100EB3933 /* Compose */,
@@ -1641,6 +1654,40 @@
 			path = KeySyncHandshake;
 			sourceTree = "<group>";
 		};
+		3781653A230EC51100B967E3 /* KeySyncWizzard */ = {
+			isa = PBXGroup;
+			children = (
+				3781654B2313F84700B967E3 /* KeySyncWizard.swift */,
+			);
+			path = KeySyncWizzard;
+			sourceTree = "<group>";
+		};
+		37816540230EC66F00B967E3 /* PEPAlertViewController */ = {
+			isa = PBXGroup;
+			children = (
+				37816541230EC72C00B967E3 /* PEPAlertViewController.swift */,
+				37816543230EC73900B967E3 /* PEPAlertViewModel.swift */,
+				37816545230EE5F700B967E3 /* PEPUIAlertAction.swift */,
+			);
+			path = PEPAlertViewController;
+			sourceTree = "<group>";
+		};
+		37816547231035CF00B967E3 /* PEPAlertViewController */ = {
+			isa = PBXGroup;
+			children = (
+				37816548231035F000B967E3 /* PEPAlertViewModelTest.swift */,
+			);
+			path = PEPAlertViewController;
+			sourceTree = "<group>";
+		};
+		3781654A2313F25800B967E3 /* PEPPageViewController */ = {
+			isa = PBXGroup;
+			children = (
+				3781653B230EC59400B967E3 /* PEPPageViewController.swift */,
+			);
+			path = PEPPageViewController;
+			sourceTree = "<group>";
+		};
 		4304FCFD1EBB8C2C0086DADA /* LanguageList */ = {
 			isa = PBXGroup;
 			children = (
@@ -2091,7 +2138,10 @@
 				B71EBBB41E55E43100150177 /* Folder */,
 				432E80FA2191AF5100359879 /* Fonts */,
 				438D5A6F1EA77CFC001A37E1 /* Handshake */,
+				37816540230EC66F00B967E3 /* PEPAlertViewController */,
 				3705096422CF686C00CB73D6 /* KeySyncHandshake */,
+				3781653A230EC51100B967E3 /* KeySyncWizzard */,
+				3781654A2313F25800B967E3 /* PEPPageViewController */,
 				B70D32AA205BCCC70094A92A /* Login */,
 				B70D32AF205BCF460094A92A /* ManualLogin */,
 				15BA537A20A1F5CA0090F126 /* MoveToFolder */,
@@ -2727,6 +2777,7 @@
 				B7DFEA56225397AB0080A2BA /* Folder+LocalizedName.swift in Sources */,
 				43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */,
 				4351C2D51F4441190053381F /* latex.c in Sources */,
+				37816546230EE5F700B967E3 /* PEPUIAlertAction.swift in Sources */,
 				43498CDB200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift in Sources */,
 				15874BC42127493E00A3A4A6 /* SettingsCellViewModel.swift in Sources */,
 				438D5A711EA77CFC001A37E1 /* HandshakeViewController.swift in Sources */,
@@ -2774,6 +2825,7 @@
 				B7DB7FD6221AD3BB003968DA /* UITextField+Extension.swift in Sources */,
 				B716056020D3ECC900A733D6 /* MoveToFolderTableViewController.swift in Sources */,
 				1543B6B022ABF53C002B59AB /* KeySyncDeviceGroupService.swift in Sources */,
+				3781653C230EC59400B967E3 /* PEPPageViewController.swift in Sources */,
 				15874BCB2127493E00A3A4A6 /* AccountVerificationResultDelegate.swift in Sources */,
 				43E657E71F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift in Sources */,
 				43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */,
@@ -2821,6 +2873,7 @@
 				15B220521FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift in Sources */,
 				496355B120ECEA2900AA4387 /* ThreadedEmailViewModel+EmailDisplayDelegate.swift in Sources */,
 				43D070332133DC500013B120 /* DefaultAppSettings.swift in Sources */,
+				37816544230EC73900B967E3 /* PEPAlertViewModel.swift in Sources */,
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
 				4351C2C81F4441190053381F /* blocks.c in Sources */,
 				15BBBC6C1FD05F4300B9DCC8 /* DisplayUserError.swift in Sources */,
@@ -2865,6 +2918,7 @@
 				434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */,
 				B7DB7FC42215C4FF003968DA /* UINavigationController+Extensions.swift in Sources */,
 				430D73651E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift in Sources */,
+				3781654C2313F84700B967E3 /* KeySyncWizard.swift in Sources */,
 				B7DB7FC82215C57F003968DA /* UIView+Util.swift in Sources */,
 				495F607C20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift in Sources */,
 				152A39CC21905C3E00D9F8E4 /* MediaAttachmentPickerProvider.swift in Sources */,
@@ -2933,6 +2987,7 @@
 				4380528B1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift in Sources */,
 				43293EFB1EB9DD6700EEE010 /* UIViewController+Extension.swift in Sources */,
 				152A39D521905C3E00D9F8E4 /* SubjectCellViewModel.swift in Sources */,
+				37816542230EC72C00B967E3 /* PEPAlertViewController.swift in Sources */,
 				43D0702F2133DB3F0013B120 /* AppSettings.swift in Sources */,
 				00FD0CE62101F7D700BA0C56 /* ScreenComposerProtocol.swift in Sources */,
 				3705703B22B7C793002E3AAD /* ActionCellViewModel.swift in Sources */,
@@ -2981,6 +3036,7 @@
 				438BA0F5214F89CD001A4A82 /* MailParsingTests.swift in Sources */,
 				15A8B8FC20908D2300D2B0B6 /* Keychain+TestUtils.swift in Sources */,
 				0017CD1D2162614400F62F13 /* MoveToFolderCellViewModelTests.swift in Sources */,
+				37816549231035F000B967E3 /* PEPAlertViewModelTest.swift in Sources */,
 				4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */,
 				1526597D21637759006A78DF /* SuggestViewModelTest.swift in Sources */,
 				43FAA0D41EC9CBC0005BFC4B /* DecryptionTestsInternal.swift in Sources */,

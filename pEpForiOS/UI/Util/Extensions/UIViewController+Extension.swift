@@ -40,21 +40,14 @@ extension UIViewController {
         }
     }
 
-    func presentKeySyncHandShakeAlert(meFPR: String, partnerFPR: String,
-                        completion: @escaping (KeySyncHandshakeViewController.Action) -> Void ) {
-
-        let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
-        guard let handShakeViewController = storyboard.instantiateViewController(
-            withIdentifier: KeySyncHandshakeViewController.storyboardId) as? KeySyncHandshakeViewController else {
-                Log.shared.errorAndCrash("Fail to instantiateViewController KeySyncHandshakeViewController")
-                return
+    func presentKeySyncWizard(meFPR: String, partnerFPR: String,
+                              completion: @escaping (KeySyncWizard.Action) -> Void ) {
+        guard let pageViewController = KeySyncWizard.fromStoryboard(meFPR: meFPR,
+                                                                    partnerFPR: partnerFPR,
+                                                                    completion: completion) else {
+                                                                        return
         }
-        handShakeViewController.completionHandler { action in
-            completion(action)
-        }
-        handShakeViewController.finderPrints(meFPR: meFPR, partnerFPR: partnerFPR)
-
-        handShakeViewController.modalPresentationStyle = .overFullScreen
-        present(handShakeViewController, animated: true, completion: nil)
+        pageViewController.modalPresentationStyle = .overFullScreen
+        present(pageViewController, animated: true, completion: nil)
     }
 }
