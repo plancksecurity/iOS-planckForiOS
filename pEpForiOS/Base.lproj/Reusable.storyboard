@@ -371,11 +371,11 @@
                         <viewLayoutGuide key="safeArea" id="93N-jY-xaV"/>
                     </view>
                     <connections>
-                        <outlet property="alertImageView" destination="tFF-uc-upe" id="JyJ-DN-gBx"/>
-                        <outlet property="alertMessage" destination="KYt-Qv-FPp" id="hjm-Fz-lSO"/>
-                        <outlet property="alertTitleString" destination="kNd-Jx-X9l" id="4hG-Oa-myi"/>
-                        <outlet property="butonsStackView" destination="8Bk-30-sb6" id="qvg-5b-ekQ"/>
-                        <outlet property="buttonsView" destination="66h-xV-F9x" id="Tp5-8s-rZH"/>
+                        <outlet property="alertImageView" destination="tFF-uc-upe" id="eBz-ke-eZc"/>
+                        <outlet property="alertMessage" destination="KYt-Qv-FPp" id="oQ3-k3-gkW"/>
+                        <outlet property="alertTitle" destination="kNd-Jx-X9l" id="eVk-uI-1Ci"/>
+                        <outlet property="butonsStackView" destination="8Bk-30-sb6" id="dhe-o3-OCn"/>
+                        <outlet property="buttonsView" destination="66h-xV-F9x" id="EGD-4m-7KG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W8j-ep-qHS" userLabel="First Responder" sceneMemberID="firstResponder"/>
