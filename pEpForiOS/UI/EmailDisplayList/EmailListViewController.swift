@@ -1088,7 +1088,6 @@ extension EmailListViewController: SegueHandlerType {
             ///showing next and previous directly from the emailView, that is needed for that feature
             //vc.folderShow = model?.getFolderToShow()
             vc.messageId = indexPath.row //!!!: that looks wrong
-            //            model?.currentDisplayedMessage = vc //BUFF: rm
             model?.indexPathShown = indexPath
         case .segueShowEmailNotSplitView:
             guard let vc = segue.destination as? EmailViewController,
@@ -1103,7 +1102,6 @@ extension EmailListViewController: SegueHandlerType {
             ///showing next and previous directly from the emailView, that is needed for that feature
             //vc.folderShow = model?.getFolderToShow()
             vc.messageId = indexPath.row //!!!: that looks wrong
-//            model?.currentDisplayedMessage = vc  //BUFF: rm
             model?.indexPathShown = indexPath
 
       //  case .segueShowThreadedEmail:
