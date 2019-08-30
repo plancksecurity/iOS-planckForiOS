@@ -23,9 +23,8 @@ struct KeySyncWizard {
                                completion: @escaping (KeySyncWizard.Action) -> Void )
         -> PEPPageViewController? {
 
-            guard let pEpPageViewController =
-                PEPPageViewController.fromStoryboard() else {
-                    return nil
+            guard let pEpPageViewController = PEPPageViewController.fromStoryboard() else {
+                return nil
             }
             let pageViews = wizardViews(page: pEpPageViewController,
                                         pageCompletion: completion,
@@ -95,7 +94,7 @@ extension KeySyncWizard {
             let introNextAction = PEPUIAlertAction(title: nextButtonTitle,
                                                    style: .pEpBlue,
                                                    handler: { [weak page] alert in
-                                                    page?.goToNextView(current: introView)
+                                                    page?.goToNextView()
             })
 
             introView.add(action: introNotNowAction)
@@ -119,7 +118,7 @@ extension KeySyncWizard {
                 switch action {
                 case .accept:
                     pageCompletion(.accept)
-                    page?.goToNextView(current: handShakeViewController)
+                    page?.goToNextView()
                 case .cancel:
                     pageCompletion(.cancel)
                     page?.dismiss()

@@ -76,8 +76,8 @@ final class PEPPageViewController: UIPageViewController {
 
     }
 
-    func goToNextView(current: UIViewController) {
-        guard let nextView = nextView(current: current) else { return }
+    func goToNextView() {
+        guard let nextView = nextView() else { return }
         setViewControllers([nextView], direction: .forward, animated: true) {
             [weak self] completed in
             guard let me = self else {
@@ -90,8 +90,8 @@ final class PEPPageViewController: UIPageViewController {
         }
     }
 
-    func goToPreviousView(current: UIViewController) {
-        guard let previousView = previousView(current: current) else { return }
+    func goToPreviousView() {
+        guard let previousView = previousView() else { return }
         setViewControllers([previousView], direction: .reverse, animated: true) {
             [weak self] completed in
             guard let me = self else {
@@ -115,14 +115,14 @@ extension PEPPageViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController,
                             viewControllerBefore viewController: UIViewController)
         -> UIViewController? {
-            guard let previousView = previousView(current: viewController) else { return nil }
+            guard let previousView = previousView(      ) else { return nil }
             return previousView
     }
 
     func pageViewController(_ pageViewController: UIPageViewController,
                             viewControllerAfter viewController: UIViewController)
         -> UIViewController? {
-            guard let nextView = nextView(current: viewController) else { return nil }
+            guard let nextView = nextView() else { return nil }
             return nextView
     }
 
@@ -149,14 +149,14 @@ extension PEPPageViewController: UIPageViewControllerDelegate {
 // MARK: - Private
 
 extension PEPPageViewController {
-    private func previousView(current: UIViewController) -> UIViewController? {
+    private func previousView() -> UIViewController? {
         let currentPossition = currentIndex()
         guard currentPossition > 0 else { return nil }
 
         return views[currentPossition - 1]
     }
 
-    private func nextView(current: UIViewController) -> UIViewController? {
+    private func nextView() -> UIViewController? {
         let currentPossition = currentIndex()
         guard currentPossition < views.count - 1 else { return nil }
 
