@@ -7,7 +7,6 @@
 //
 
 import Foundation
-
 import MessageModel
 
 /// View Model for folder hierarchy.
