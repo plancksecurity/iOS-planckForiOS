@@ -12,10 +12,12 @@ import PEPObjCAdapterFramework
 import MessageModel
 
 extension PEPColor {
-    /**
-     The icon suitable for indicating the rating of an outgoing message.
-     */
-    func statusIcon(enabled: Bool = true) -> UIImage? {
+
+    /// The icon suitable for indicating the pEp rating of a message.
+    ///
+    /// - Parameter enabled: whether or not pEp protection is enabled
+    /// - Returns: icon suitable for indicating the pEp rating of a message
+    func statusIconForMessage(enabled: Bool = true) -> UIImage? {
         switch self {
         case PEPColor.noColor:
             return UIImage(named: "pEp-status-grey")
@@ -81,6 +83,6 @@ extension PEPRating {
 
     func statusIcon() -> UIImage? {
         let color = pEpColor()
-        return color.statusIcon()
+        return color.statusIconForMessage()
     }
 }
