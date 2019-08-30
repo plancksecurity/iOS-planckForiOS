@@ -62,7 +62,6 @@ class MoveToFolderViewModel {
     var items : [MoveToFolderCellViewModel]
     var acc : Account
     var messages: [Message]
-    var delegate : MoveToFolderDelegate?
 
     init(account: Account, messages: [Message]) {
         items = []
@@ -99,9 +98,6 @@ class MoveToFolderViewModel {
             result = true
             Message.move(messages: msgs, to: targetFolder)
         }
-        if result {
-            delegate?.didmove(messages: messages)
-        }
         return result
     }
 
@@ -132,6 +128,5 @@ class MoveToFolderCellViewModel {
         self.title = folder.realName
         self.indentationLevel = level
         self.icon = folder.folderType.getIcon()
-
     }
 }

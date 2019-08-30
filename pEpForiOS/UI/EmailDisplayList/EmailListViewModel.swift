@@ -50,7 +50,7 @@ class EmailListViewModel {
 
     let folderToShow: DisplayableFolderProtocol
 
-    public var currentDisplayedMessage: DisplayedMessage?
+    //    public var currentDisplayedMessage: DisplayedMessage? //BUFF: rm if possible
 
     // MARK: - Filter
 
