@@ -103,7 +103,7 @@ extension PEPAlertViewController {
 
     private func setUp(images: [UIImage]?) {
         alertImageView.animationImages = images
-        alertImageView.animationDuration = 3.0
+        alertImageView.animationDuration = 2.6
         alertImageView.startAnimating()
     }
 
