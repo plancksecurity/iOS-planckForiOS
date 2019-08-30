@@ -21,11 +21,11 @@ final class PEPAlertViewController: UIViewController {
     }
 
     private var viewModel: PEPAlertViewModelProtocol
-    private var _title: String?
-    private var _message: String?
-    private var _paintPEPInTitle = false
-    private var _images: [UIImage]?
-    private var _action = [PEPUIAlertAction]()
+    private var titleString: String?
+    private var message: String?
+    private var paintPEPInTitle = false
+    private var images: [UIImage]?
+    private var action = [PEPUIAlertAction]()
 
     static let storyboardId = "PEPAlertViewController"
 
@@ -38,12 +38,12 @@ final class PEPAlertViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setUp(title: _title,
-              paintPEPInTitle: _paintPEPInTitle,
-              message: _message)
+        setUp(title: titleString,
+              paintPEPInTitle: paintPEPInTitle,
+              message: message)
 
-        setUp(images: _images)
-        setUp(actions: _action)
+        setUp(images: images)
+        setUp(actions: action)
     }
 
     static func fromStoryboard(title: String? = nil,
@@ -63,16 +63,16 @@ final class PEPAlertViewController: UIViewController {
             pEpAlertViewController.viewModel = viewModel
             pEpAlertViewController.viewModel.delegate = pEpAlertViewController
 
-            pEpAlertViewController._title = title
-            pEpAlertViewController._paintPEPInTitle = paintPEPInTitle
-            pEpAlertViewController._message = message
-            pEpAlertViewController._images = image
+            pEpAlertViewController.titleString = title
+            pEpAlertViewController.paintPEPInTitle = paintPEPInTitle
+            pEpAlertViewController.message = message
+            pEpAlertViewController.images = image
 
             return pEpAlertViewController
     }
 
     func add(action: PEPUIAlertAction) {
-        _action.append(action)
+        self.action.append(action)
     }
 }
 
