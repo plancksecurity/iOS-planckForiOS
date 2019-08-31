@@ -36,6 +36,9 @@ struct KeySyncWizard {
             pEpPageViewController.views = pageViews
             return pEpPageViewController
     }
+
+    static var completionIndex = 3
+    static var errorViewIndex = 4
 }
 
 
@@ -61,11 +64,14 @@ extension KeySyncWizard {
                 let completionView = completionView(page: page,
                                                     isNewGroup: isNewGroup,
                                                     keySyncDeviceGroupService: keySyncDeviceGroupService,
-                                                    pageCompletion: pageCompletion) else {
-                    return []
+                                                    pageCompletion: pageCompletion),
+                let errorView = errorView(page: page,
+                                          keySyncDeviceGroupService: keySyncDeviceGroupService,
+                                          pageCompletion: pageCompletion) else {
+                                            return []
             }
 
-            return [introView, trustWordsView, animationView, completionView]
+            return [introView, trustWordsView, animationView, completionView, errorView]
     }
 
     static private func introView(isNewGroup: Bool,
@@ -73,8 +79,7 @@ extension KeySyncWizard {
                                   pageCompletion: @escaping (KeySyncWizard.Action) -> Void)
         -> PEPAlertViewController? {
 
-            let keySyncIntroTitle = NSLocalizedString("p≡p Sync",
-                                                      comment: "KeySyncWizard introduction title")
+            let keySyncIntroTitle = alertTitle()
             let keySyncIntroMessage = introMessage(isNewGroup: isNewGroup)
 
 
@@ -86,7 +91,7 @@ extension KeySyncWizard {
             }
 
             let notNowButtonTitle = NSLocalizedString("Not Now",
-                                                      comment: "KeySyncIntro view Not Now button title")
+                                                      comment: "keySyncWizard intro view Not Now button title")
             let introNotNowAction = PEPUIAlertAction(title: notNowButtonTitle,
                                                      style: .pEpGray,
                                                      handler: { [weak page] alert in
@@ -97,7 +102,7 @@ extension KeySyncWizard {
             })
 
             let nextButtonTitle = NSLocalizedString("Next",
-                                                    comment: "KeySyncIntro view Next button title")
+                                                    comment: "keySyncWizard intro view Next button title")
             let introNextAction = PEPUIAlertAction(title: nextButtonTitle,
                                                    style: .pEpBlue,
                                                    handler: { [weak page] alert in
@@ -143,10 +148,9 @@ extension KeySyncWizard {
     static private func animationView(page: PEPPageViewController,
                                       pageCompletion: @escaping (KeySyncWizard.Action) -> Void)
         -> PEPAlertViewController? {
-            let animatioTitle = NSLocalizedString("p≡p Sync",
-                                                  comment: "KeySyncAnimation view title")
+            let animatioTitle = alertTitle()
             let animatioMessage = NSLocalizedString("Please give us a moment while we sync your devices. This can take up to a minute.",
-                                                    comment: "KeySyncAnimation view message")
+                                                    comment: "keySyncWizard animation view message")
 
             let pepAlertViewController =
                 PEPAlertViewController.fromStoryboard(title: animatioTitle,
@@ -155,7 +159,7 @@ extension KeySyncWizard {
                                                       image: [#imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-1"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2"), #imageLiteral(resourceName: "pEpForiOS-icon-device-group"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2")])
 
             let animatioCanceButtonlTitle = NSLocalizedString("Cancel",
-                                                              comment: "KeySyncAnimation view cancel button title")
+                                                              comment: "keySyncWizard animation view cancel button title")
             let animatioCancelAction = PEPUIAlertAction(title: animatioCanceButtonlTitle,
                                                         style: .pEpBlue,
                                                         handler: { [weak page] alert in
@@ -171,8 +175,7 @@ extension KeySyncWizard {
                                        keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol,
                                        pageCompletion: @escaping (KeySyncWizard.Action) -> Void)
         -> PEPAlertViewController? {
-            let completionTitle = NSLocalizedString("Device Group",
-                                                    comment: "keySyncCompletion view title")
+            let completionTitle = alertTitle()
             let completionMessage = completeMessage(isNewGroup: isNewGroup)
 
             let pepAlertViewController =
@@ -182,7 +185,7 @@ extension KeySyncWizard {
                                                       image: [#imageLiteral(resourceName: "pEpForiOS-icon-device-group")])
 
             let completionLeavelTitle = NSLocalizedString("Leave",
-                                                          comment: "keySyncCompletion view leave button title")
+                                                          comment: "keySyncWizard completion view leave button title")
             let completionLeavelAction = PEPUIAlertAction(title: completionLeavelTitle,
                                                           style: .pEpRed,
                                                           handler: { [weak page] alert in
@@ -191,7 +194,7 @@ extension KeySyncWizard {
             })
 
             let completionOKlTitle = NSLocalizedString("OK",
-                                                       comment: "keySyncCompletion view OK button title")
+                                                       comment: "keySyncWizard completion view OK button title")
             let completionOKlAction = PEPUIAlertAction(title: completionOKlTitle,
                                                        style: .pEpBlue,
                                                        handler: { [weak page] alert in
@@ -199,6 +202,43 @@ extension KeySyncWizard {
             })
             pepAlertViewController?.add(action: completionLeavelAction)
             pepAlertViewController?.add(action: completionOKlAction)
+            return pepAlertViewController
+    }
+
+    static private func errorView(page: PEPPageViewController,
+                                       keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol,
+                                       pageCompletion: @escaping (KeySyncWizard.Action) -> Void)
+        -> PEPAlertViewController? {
+            let errorTitle = alertTitle()
+            let errorMessage = NSLocalizedString("Something went wrong with syncing the devices. Please try again.",
+                                                      comment: "keySyncWizard error view message")
+
+            let pepAlertViewController =
+                PEPAlertViewController.fromStoryboard(title: errorTitle,
+                                                      message: errorMessage,
+                                                      paintPEPInTitle: true,
+                                                      image: [#imageLiteral(resourceName: "pEpForiOS-icon-device-group")])
+
+            let errorNotNowTitle = NSLocalizedString("Not now",
+                                                          comment: "keySyncWizard error view NotNow button title")
+            let errorNotNowAction = PEPUIAlertAction(title: errorNotNowTitle,
+                                                          style: .pEpGray,
+                                                          handler: { [weak page] alert in
+                                                            pageCompletion(.cancel)
+                                                            page?.dismiss()
+            })
+
+            let errorTryAaginTitle = NSLocalizedString("Try Again",
+                                                       comment: "keySyncWizard error view Try Again button title")
+            let errorTryAaginAction = PEPUIAlertAction(title: errorTryAaginTitle,
+                                                       style: .pEpBlue,
+                                                       handler: { [weak page] alert in
+                                                        page?.dismiss()
+                                                        //TODO: Ale
+
+            })
+            pepAlertViewController?.add(action: errorNotNowAction)
+            pepAlertViewController?.add(action: errorTryAaginAction)
             return pepAlertViewController
     }
 
@@ -227,5 +267,9 @@ extension KeySyncWizard {
         } else {
             return "The device is now member of your device group. All your privacy is now synchronized."
         }
+    }
+
+    static private func alertTitle() -> String {
+        return NSLocalizedString("p≡p Sync", comment: "keySyncWizard animation view title")
     }
 }

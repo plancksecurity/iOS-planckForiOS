@@ -71,7 +71,15 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
         guard let keySyncWizard = presenter?.presentedViewController as? PEPPageViewController else {
             return
         }
-        let completedViewIndex = keySyncWizard.views.count - 1
+        let completedViewIndex = KeySyncWizard.completionIndex
         keySyncWizard.goTo(index: completedViewIndex)
+    }
+
+    func showError(error: Error?) {
+        guard let keySyncWizard = presenter?.presentedViewController as? PEPPageViewController else {
+            return
+        }
+        let errorViewIndes = KeySyncWizard.errorViewIndex
+        keySyncWizard.goTo(index: errorViewIndes)
     }
 }
