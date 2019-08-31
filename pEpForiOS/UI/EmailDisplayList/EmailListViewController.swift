@@ -220,11 +220,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         tableView.reloadRows(at: [row], with: .none)
     }
 
-    //BUFF: looks dead
-//    private func weCameBackFromAPushedView() -> Bool {
-//        return model != nil
-//    }
-
     private func showComposeView() {
         performSegue(withIdentifier: SegueIdentifier.segueEditDraft, sender: self)
     }
