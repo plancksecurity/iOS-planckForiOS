@@ -57,8 +57,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if MiscUtil.isUnitTest() {
             return
         }
-        reloadRowWithPotetiallyUpdatedRatingBatch()
-        lastSelectedIndexPath = nil
+        reloadRowWithPotetiallyUpdatedRatingBatchAndNilLastSelectedIndexPath()
 
         setUpTextFilter()
 
@@ -213,10 +212,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     /// - note: I would have expected (and still think) this is reported by QueryResultsController.
     ///         If someone can assure that this potential changes are handled in out update logic,
     ///         please remove this workaround method.
-    private func reloadRowWithPotetiallyUpdatedRatingBatch() {
+    private func reloadRowWithPotetiallyUpdatedRatingBatchAndNilLastSelectedIndexPath() {
         guard let row = lastSelectedIndexPath else {
             return
         }
+        lastSelectedIndexPath = nil
         tableView.reloadRows(at: [row], with: .none)
     }
 
