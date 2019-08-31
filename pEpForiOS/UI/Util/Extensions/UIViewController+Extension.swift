@@ -40,10 +40,13 @@ extension UIViewController {
         }
     }
 
-    func presentKeySyncWizard(meFPR: String, partnerFPR: String,
+    func presentKeySyncWizard(meFPR: String,
+                              partnerFPR: String,
+                              isNewGroup: Bool,
                               completion: @escaping (KeySyncWizard.Action) -> Void ) {
         guard let pageViewController = KeySyncWizard.fromStoryboard(meFPR: meFPR,
                                                                     partnerFPR: partnerFPR,
+                                                                    isNewGroup: isNewGroup,
                                                                     completion: completion) else {
                                                                         return
         }

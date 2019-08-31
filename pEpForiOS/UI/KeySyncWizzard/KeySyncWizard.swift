@@ -18,6 +18,7 @@ struct KeySyncWizard {
 
     static func fromStoryboard(meFPR: String,
                                partnerFPR: String,
+                               isNewGroup: Bool,
                                keySyncDeviceGroupService:
         KeySyncDeviceGroupServiceProtocol = KeySyncDeviceGroupService(),
                                completion: @escaping (KeySyncWizard.Action) -> Void )
@@ -30,6 +31,7 @@ struct KeySyncWizard {
                                         pageCompletion: completion,
                                         meFPR: meFPR,
                                         partnerFPR: partnerFPR,
+                                        isNewGroup: isNewGroup,
                                         keySyncDeviceGroupService: keySyncDeviceGroupService)
             pEpPageViewController.views = pageViews
             return pEpPageViewController
@@ -44,16 +46,20 @@ extension KeySyncWizard {
                                     pageCompletion: @escaping (KeySyncWizard.Action) -> Void,
                                     meFPR: String,
                                     partnerFPR: String,
+                                    isNewGroup: Bool,
                                     keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol)
         -> [UIViewController] {
 
-            guard let introView = introView(page: page, pageCompletion: pageCompletion),
+            guard let introView = introView(isNewGroup: isNewGroup,
+                                            page: page,
+                                            pageCompletion: pageCompletion),
                 let trustWordsView = trustWordsView(meFPR: meFPR,
                                                     partnerFPR: partnerFPR,
                                                     page: page,
                                                     pageCompletion: pageCompletion),
                 let animationView = animationView(page: page, pageCompletion: pageCompletion),
                 let completionView = completionView(page: page,
+                                                    isNewGroup: isNewGroup,
                                                     keySyncDeviceGroupService: keySyncDeviceGroupService,
                                                     pageCompletion: pageCompletion) else {
                     return []
@@ -62,14 +68,15 @@ extension KeySyncWizard {
             return [introView, trustWordsView, animationView, completionView]
     }
 
-    static private func introView(page: PEPPageViewController,
+    static private func introView(isNewGroup: Bool,
+                                  page: PEPPageViewController,
                                   pageCompletion: @escaping (KeySyncWizard.Action) -> Void)
         -> PEPAlertViewController? {
 
             let keySyncIntroTitle = NSLocalizedString("p≡p Sync",
                                                       comment: "KeySyncWizard introduction title")
-            let keySyncIntroMessage = NSLocalizedString("A second device is detected. Please make sure you have both devices together so you can compare trustwords to sync.",
-                                                        comment: "KeySyncWizard introduction message")
+            let keySyncIntroMessage = introMessage(isNewGroup: isNewGroup)
+
 
             guard let introView = PEPAlertViewController.fromStoryboard(title: keySyncIntroTitle,
                                                                         message: keySyncIntroMessage,
@@ -160,13 +167,13 @@ extension KeySyncWizard {
     }
 
     static private func completionView(page: PEPPageViewController,
+                                       isNewGroup: Bool,
                                        keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol,
                                        pageCompletion: @escaping (KeySyncWizard.Action) -> Void)
         -> PEPAlertViewController? {
             let completionTitle = NSLocalizedString("Device Group",
                                                     comment: "keySyncCompletion view title")
-            let completionMessage = NSLocalizedString("Your device is now member of your device group.",
-                                                      comment: "keySyncCompletion view message")
+            let completionMessage = completeMessage(isNewGroup: isNewGroup)
 
             let pepAlertViewController =
                 PEPAlertViewController.fromStoryboard(title: completionTitle,
@@ -194,18 +201,31 @@ extension KeySyncWizard {
             pepAlertViewController?.add(action: completionOKlAction)
             return pepAlertViewController
     }
-}
 
-
-// MARK: - Private
-
-extension KeySyncWizard {
-    private static func leaveDeviceGroup(_ keySyncDeviceGroupService:
+    static private func leaveDeviceGroup(_ keySyncDeviceGroupService:
         KeySyncDeviceGroupServiceProtocol) {
         do {
             try keySyncDeviceGroupService.leaveDeviceGroup()
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)
+        }
+    }
+
+    static private func introMessage(isNewGroup: Bool) -> String {
+        if isNewGroup {
+            return NSLocalizedString("A second device is detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?",
+                                     comment: "KeySyncWizard introduction message")
+        } else {
+            return NSLocalizedString("Another device is detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?",
+                                     comment: "KeySyncWizard introduction message")
+        }
+    }
+
+    static private func completeMessage(isNewGroup: Bool) -> String {
+        if isNewGroup {
+            return "We successfully created a device group. All your privacy is now synchronized."
+        } else {
+            return "The device is now member of your device group. All your privacy is now synchronized."
         }
     }
 }
