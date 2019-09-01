@@ -50,7 +50,13 @@ extension UIViewController {
                                                                         return
         }
         DispatchQueue.main.async { [weak self] in
-            self?.present(pageViewController, animated: true, completion: nil)
+            if let presented = self?.presentedViewController {
+                presented.dismiss(animated: true, completion: {
+                    self?.present(pageViewController, animated: true, completion: nil)
+                })
+            } else {
+                self?.present(pageViewController, animated: true, completion: nil)
+            }
         }
     }
 }
