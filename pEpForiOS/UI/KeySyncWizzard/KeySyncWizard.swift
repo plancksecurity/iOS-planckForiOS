@@ -40,8 +40,6 @@ struct KeySyncWizard {
             
             return pEpPageViewController
     }
-
-    static var completionIndex = 3
 }
 
 
