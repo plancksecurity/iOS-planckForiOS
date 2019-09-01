@@ -6,7 +6,6 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import PEPObjCAdapterFramework
 
@@ -50,7 +49,8 @@ extension UIViewController {
                                                                     completion: completion) else {
                                                                         return
         }
-        pageViewController.modalPresentationStyle = .overFullScreen
-        present(pageViewController, animated: true, completion: nil)
+        DispatchQueue.main.async { [weak self] in
+            self?.present(pageViewController, animated: true, completion: nil)
+        }
     }
 }

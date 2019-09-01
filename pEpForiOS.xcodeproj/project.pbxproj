@@ -203,6 +203,7 @@
 		220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE331E0AB5CC002FE716 /* MessageSubjectCell.swift */; };
 		222B35581DF96389007A1F82 /* Capability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35571DF96389007A1F82 /* Capability.swift */; };
 		228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
+		37033E9B231AD8FE008DD6F0 /* KeySyncErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37033E9A231AD8FE008DD6F0 /* KeySyncErrorView.swift */; };
 		3705095D22CF4AC900CB73D6 /* KeySyncHandshakeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705095C22CF4AC900CB73D6 /* KeySyncHandshakeViewModelTest.swift */; };
 		3705096622CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705096522CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift */; };
 		3705096822CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705096722CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift */; };
@@ -678,6 +679,7 @@
 		220DCE331E0AB5CC002FE716 /* MessageSubjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSubjectCell.swift; sourceTree = "<group>"; };
 		222B35571DF96389007A1F82 /* Capability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Capability.swift; sourceTree = "<group>"; };
 		228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextfieldResponder.swift; sourceTree = "<group>"; };
+		37033E9A231AD8FE008DD6F0 /* KeySyncErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncErrorView.swift; sourceTree = "<group>"; };
 		3705095C22CF4AC900CB73D6 /* KeySyncHandshakeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncHandshakeViewModelTest.swift; sourceTree = "<group>"; };
 		3705096522CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncHandshakeViewModel.swift; sourceTree = "<group>"; };
 		3705096722CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncHandshakeViewController.swift; sourceTree = "<group>"; };
@@ -1636,6 +1638,14 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
+		37033E99231AD8D7008DD6F0 /* KeySyncErrorView */ = {
+			isa = PBXGroup;
+			children = (
+				37033E9A231AD8FE008DD6F0 /* KeySyncErrorView.swift */,
+			);
+			path = KeySyncErrorView;
+			sourceTree = "<group>";
+		};
 		3705095B22CF465300CB73D6 /* KeySyncHandshake */ = {
 			isa = PBXGroup;
 			children = (
@@ -2141,6 +2151,7 @@
 				37816540230EC66F00B967E3 /* PEPAlertViewController */,
 				3705096422CF686C00CB73D6 /* KeySyncHandshake */,
 				3781653A230EC51100B967E3 /* KeySyncWizzard */,
+				37033E99231AD8D7008DD6F0 /* KeySyncErrorView */,
 				3781654A2313F25800B967E3 /* PEPPageViewController */,
 				B70D32AA205BCCC70094A92A /* Login */,
 				B70D32AF205BCF460094A92A /* ManualLogin */,
@@ -2789,6 +2800,7 @@
 				15874BC92127493E00A3A4A6 /* PassiveModeViewModel.swift in Sources */,
 				B7DFEA5422536D5E0080A2BA /* UnifiedInbox.swift in Sources */,
 				4334CF302020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift in Sources */,
+				37033E9B231AD8FE008DD6F0 /* KeySyncErrorView.swift in Sources */,
 				00A12CAE20D3D9AC00B82BE3 /* FullMessageCell.swift in Sources */,
 				006BE6BC20F4B63C00DDE8C9 /* EmailDetailType.swift in Sources */,
 				00EB89AB20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift in Sources */,

@@ -6,7 +6,7 @@
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct KeySyncWizard {
 
@@ -34,11 +34,14 @@ struct KeySyncWizard {
                                         isNewGroup: isNewGroup,
                                         keySyncDeviceGroupService: keySyncDeviceGroupService)
             pEpPageViewController.views = pageViews
+
+            pEpPageViewController.modalTransitionStyle = .crossDissolve
+            pEpPageViewController.modalPresentationStyle = .overFullScreen
+            
             return pEpPageViewController
     }
 
     static var completionIndex = 3
-    static var errorViewIndex = 4
 }
 
 
@@ -64,14 +67,11 @@ extension KeySyncWizard {
                 let completionView = completionView(page: page,
                                                     isNewGroup: isNewGroup,
                                                     keySyncDeviceGroupService: keySyncDeviceGroupService,
-                                                    pageCompletion: pageCompletion),
-                let errorView = errorView(page: page,
-                                          keySyncDeviceGroupService: keySyncDeviceGroupService,
-                                          pageCompletion: pageCompletion) else {
-                                            return []
+                                                    pageCompletion: pageCompletion) else {
+                                                        return []
             }
 
-            return [introView, trustWordsView, animationView, completionView, errorView]
+            return [introView, trustWordsView, animationView, completionView]
     }
 
     static private func introView(isNewGroup: Bool,
@@ -202,43 +202,6 @@ extension KeySyncWizard {
             })
             pepAlertViewController?.add(action: completionLeavelAction)
             pepAlertViewController?.add(action: completionOKlAction)
-            return pepAlertViewController
-    }
-
-    static private func errorView(page: PEPPageViewController,
-                                       keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol,
-                                       pageCompletion: @escaping (KeySyncWizard.Action) -> Void)
-        -> PEPAlertViewController? {
-            let errorTitle = alertTitle()
-            let errorMessage = NSLocalizedString("Something went wrong with syncing the devices. Please try again.",
-                                                      comment: "keySyncWizard error view message")
-
-            let pepAlertViewController =
-                PEPAlertViewController.fromStoryboard(title: errorTitle,
-                                                      message: errorMessage,
-                                                      paintPEPInTitle: true,
-                                                      image: [#imageLiteral(resourceName: "pEpForiOS-icon-device-group")])
-
-            let errorNotNowTitle = NSLocalizedString("Not now",
-                                                          comment: "keySyncWizard error view NotNow button title")
-            let errorNotNowAction = PEPUIAlertAction(title: errorNotNowTitle,
-                                                          style: .pEpGray,
-                                                          handler: { [weak page] alert in
-                                                            pageCompletion(.cancel)
-                                                            page?.dismiss()
-            })
-
-            let errorTryAaginTitle = NSLocalizedString("Try Again",
-                                                       comment: "keySyncWizard error view Try Again button title")
-            let errorTryAaginAction = PEPUIAlertAction(title: errorTryAaginTitle,
-                                                       style: .pEpBlue,
-                                                       handler: { [weak page] alert in
-                                                        page?.dismiss()
-                                                        //TODO: Ale
-
-            })
-            pepAlertViewController?.add(action: errorNotNowAction)
-            pepAlertViewController?.add(action: errorTryAaginAction)
             return pepAlertViewController
     }
 

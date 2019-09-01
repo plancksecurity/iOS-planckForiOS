@@ -21,36 +21,28 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                        partner: PEPIdentity,
                        isNewGroup: Bool,
                        completion: ((PEPSyncHandshakeResult)->())? = nil) {
-        
-        //Temp, working simple alert version
-        DispatchQueue.main.async { [weak self] in
-            guard let safeSelf = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            
-            guard let meFPR = me.fingerPrint, let partnerFPR = partner.fingerPrint else {
-                Log.shared.errorAndCrash("Missing FPRs")
-                return
-            }
-            
-            guard let viewController = safeSelf.presenter else {
-                Log.shared.errorAndCrash("No Presenter")
-                return
-            }
-            
-            viewController.presentKeySyncWizard(meFPR: meFPR,
-                                                partnerFPR: partnerFPR,
-                                                isNewGroup: isNewGroup) { action in
-                                                    switch action {
-                                                    case .accept:
-                                                        completion?(.accepted)
-                                                    case .cancel:
-                                                        completion?(.cancel)
-                                                    case .decline:
-                                                        completion?(.rejected)
-                                                    }
-            }
+
+        guard let viewController = presenter else {
+            Log.shared.errorAndCrash("No Presenter")
+            return
+        }
+        guard let meFPR = me.fingerPrint, let partnerFPR = partner.fingerPrint else {
+            Log.shared.errorAndCrash("Missing FPRs")
+            return
+        }
+
+        viewController.presentedViewController?.dismiss(animated: false, completion: nil)
+        viewController.presentKeySyncWizard(meFPR: meFPR,
+                                            partnerFPR: partnerFPR,
+                                            isNewGroup: isNewGroup) { action in
+                                                switch action {
+                                                case .accept:
+                                                    completion?(.accepted)
+                                                case .cancel:
+                                                    completion?(.cancel)
+                                                case .decline:
+                                                    completion?(.rejected)
+                                                }
         }
     }
     
@@ -75,11 +67,20 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
         keySyncWizard.goTo(index: completedViewIndex)
     }
 
-    func showError(error: Error?) {
-        guard let keySyncWizard = presenter?.presentedViewController as? PEPPageViewController else {
+    func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
+        guard let viewController = presenter else {
+            Log.shared.errorAndCrash("No Presenter")
             return
         }
-        let errorViewIndes = KeySyncWizard.errorViewIndex
-        keySyncWizard.goTo(index: errorViewIndes)
+
+        KeySyncErrorView.presentKeySyncError(viewController: viewController, error: error) {
+            action in
+            switch action {
+            case .tryAgain:
+                completion?(.tryAgain)
+            case .notNow:
+                completion?(.notNow)
+            }
+        }
     }
 }
