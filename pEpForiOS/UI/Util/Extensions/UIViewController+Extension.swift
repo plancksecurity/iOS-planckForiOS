@@ -6,7 +6,6 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import PEPObjCAdapterFramework
 
@@ -40,14 +39,24 @@ extension UIViewController {
         }
     }
 
-    func presentKeySyncWizard(meFPR: String, partnerFPR: String,
+    func presentKeySyncWizard(meFPR: String,
+                              partnerFPR: String,
+                              isNewGroup: Bool,
                               completion: @escaping (KeySyncWizard.Action) -> Void ) {
         guard let pageViewController = KeySyncWizard.fromStoryboard(meFPR: meFPR,
                                                                     partnerFPR: partnerFPR,
+                                                                    isNewGroup: isNewGroup,
                                                                     completion: completion) else {
                                                                         return
         }
-        pageViewController.modalPresentationStyle = .overFullScreen
-        present(pageViewController, animated: true, completion: nil)
+        DispatchQueue.main.async { [weak self] in
+            if let presented = self?.presentedViewController {
+                presented.dismiss(animated: true, completion: {
+                    self?.present(pageViewController, animated: true, completion: nil)
+                })
+            } else {
+                self?.present(pageViewController, animated: true, completion: nil)
+            }
+        }
     }
 }
