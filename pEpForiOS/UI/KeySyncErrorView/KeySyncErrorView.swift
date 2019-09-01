@@ -81,7 +81,6 @@ extension KeySyncErrorView {
                                                        style: .pEpBlue,
                                                        handler: { alert in
                                                         completion?(.tryAgain)
-
             })
             pepAlertViewController?.add(action: errorNotNowAction)
             pepAlertViewController?.add(action: errorTryAaginAction)

@@ -16,6 +16,13 @@ struct KeySyncWizard {
 
     private init() {}
 
+    /// init KeySyncWizard PEPPageViewController, to guide the user with the KeySync proccess.
+    ///
+    /// - Parameters:
+    ///   - me: my trust words
+    ///   - partner: my partner trust words
+    ///   - isNewGroup: is it a new group creation or i am joining an existing group
+    ///   - completion: handle the possible results of type PEPSyncHandshakeResult
     static func fromStoryboard(meFPR: String,
                                partnerFPR: String,
                                isNewGroup: Bool,
