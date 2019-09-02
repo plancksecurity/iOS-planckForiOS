@@ -45,19 +45,13 @@ public class FolderViewModel {
     }
 
     func refreshFolderList(completion: (()->())? = nil) {
-        /*DispatchQueue.global(qos: .userInitiated).async {
-            MessageModelUtil.perform {
-                self.folderSyncService.requestFolders(inAccounts: Account.all()) //!!!: must not be in UI. According to fetchOlder()
-            }
-        }*/
         do {
             try folderSyncService.runService(inAccounts: Account.all()) { Success in
                 completion?()
             }
         } catch {
-            //missing error handling
+            completion?()
         }
-
     }
 
     subscript(index: Int) -> FolderSectionViewModel {
