@@ -148,4 +148,8 @@ class PEPSessionMoc: NSObject, PEPSessionProtocol  {
 
     func disableSync(for identity: PEPIdentity) throws {
     }
+
+    func queryKeySyncEnabled(for identity: PEPIdentity) throws -> NSNumber {
+        return NSNumber(value: false)
+    }
 }
