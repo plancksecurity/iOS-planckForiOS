@@ -143,4 +143,6 @@ class PEPSessionMoc: NSObject, PEPSessionProtocol  {
     func leaveDeviceGroupError() throws {
     }
 
+    func enableSync(for identity: PEPIdentity) throws {
+    }
 }
