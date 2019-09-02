@@ -10,7 +10,6 @@ import Foundation
 import PEPObjCAdapterFramework
 
 protocol KeySyncHandshakeViewModelDelegate: class {
-    func dissmissView()
     func showPicker(withLanguages languages: [String])
     func closePicker()
     func change(handshakeWordsTo: String)
@@ -21,7 +20,7 @@ final class KeySyncHandshakeViewModel {
         case cancel, decline, accept, changeLanguage
     }
 
-    var completionHandler: ((KeySyncHandshakeViewController.Action) -> Void)?
+    var completionHandler: ((KeySyncHandshakeViewController.Action) -> Void)? //!!!: A viewModel must not know the Controller
 
     weak var delegate: KeySyncHandshakeViewModelDelegate?
     var fullTrustWords = false //Internal since testing
@@ -60,7 +59,6 @@ final class KeySyncHandshakeViewModel {
                 return
             }
             completionHandler?(action)
-            delegate?.dissmissView()
         case .changeLanguage:
             handleChangeLanguageButton()
         }

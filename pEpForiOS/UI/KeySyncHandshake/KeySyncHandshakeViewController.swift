@@ -109,12 +109,6 @@ final class KeySyncHandshakeViewController: UIViewController {
 // MARK: - KeySyncHandshakeViewModelDelegate
 
 extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
-    func dissmissView() {
-        DispatchQueue.main.async { [weak self] in
-            self?.dismiss(animated: true, completion: nil)
-        }
-    }
-
     func showPicker(withLanguages languages: [String]) {
         pickerLanguages = languages
         DispatchQueue.main.async { [weak self] in
