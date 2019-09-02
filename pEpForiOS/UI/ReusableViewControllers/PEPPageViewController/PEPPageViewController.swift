@@ -23,9 +23,15 @@ final class PEPPageViewController: UIPageViewController {
         dataSource = showDots ? self : nil //nil dataSource will hide dots and disable scrolling
         delegate = self
         disableScrolling()
+    }
 
-        guard let firstView = views.first else { return }
-        setViewControllers([firstView], direction: .forward, animated: true, completion: nil)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if viewControllers?.isEmpty ?? true {
+            guard let firstView = views.first else { return }
+            setViewControllers([firstView], direction: .forward, animated: true, completion: nil)
+        }
     }
 
     override func viewDidLayoutSubviews() {
