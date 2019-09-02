@@ -145,4 +145,7 @@ class PEPSessionMoc: NSObject, PEPSessionProtocol  {
 
     func enableSync(for identity: PEPIdentity) throws {
     }
+
+    func disableSync(for identity: PEPIdentity) throws {
+    }
 }
