@@ -50,6 +50,20 @@ public class FolderViewModel {
                 completion?()
             }
         } catch {
+            guard let er = error as? FetchImapFoldersService.FetchError else {
+                Log.shared.errorAndCrash("Unexpected error")
+                completion?()
+                return
+            }
+
+            switch er {
+            case .accountNotFound:
+                Log.shared.errorAndCrash("Account not found")
+                completion?()
+            case .isFetching:
+                //is Fetching do nothing
+                break
+            }
             completion?()
         }
     }
