@@ -10,7 +10,7 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-class FolderTableViewController: BaseTableViewController, FolderViewModelDelegate {
+class FolderTableViewController: BaseTableViewController {
     var folderVM: FolderViewModel?
     var showNext: Bool = true
     // MARK: - Life Cycle
@@ -38,7 +38,6 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
                 return
             }
             me.folderVM =  FolderViewModel()
-            me.folderVM?.delegate = self
             me.tableView.reloadData()
         }
     }
@@ -66,14 +65,21 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
     }
     
     @objc private func pullToRefresh() {
-        folderVM?.refreshFolderList()
+        folderVM?.refreshFolderList() {[weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(message: "Lost myself")
+                return
+            }
+            me.setup()
+            me.refreshControl?.endRefreshing()
+        }
     }
     
-    func folderViewModelDidUpdateFolderList(viewModel: FolderViewModel) {
-            setup()
-            self.refreshControl?.endRefreshing()
-    }
-   
+//    func folderViewModelDidUpdateFolderList(viewModel: FolderViewModel) {
+//            setup()
+//            self.refreshControl?.endRefreshing()
+//    }
+
     // MARK: - Action
 
     @objc private func showSettingsViewController() {

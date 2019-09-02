@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol FolderViewModelDelegate: class {
-    func folderViewModelDidUpdateFolderList(viewModel: FolderViewModel)
-}
+//protocol FolderViewModelDelegate: class {
+//    func folderViewModelDidUpdateFolderList(viewModel: FolderViewModel)
+//}

@@ -11,8 +11,7 @@ import MessageModel
 
 /// View Model for folder hierarchy.
 public class FolderViewModel {
-    weak var delegate : FolderViewModelDelegate?
-    let folderSyncService: FolderSyncService
+    let folderSyncService = FetchImapFoldersService()
     
     var items: [FolderSectionViewModel]
 
@@ -29,8 +28,6 @@ public class FolderViewModel {
         } else {
             accountsToUse = Account.all()
         }
-        folderSyncService = FolderSyncService()
-        folderSyncService.delegate = self
         generateSections(accounts: accountsToUse, includeUnifiedInbox: includeUnifiedInbox)
     }
 
@@ -47,12 +44,20 @@ public class FolderViewModel {
         return Account.all().isEmpty
     }
 
-    func refreshFolderList() {
-        DispatchQueue.global(qos: .userInitiated).async {
+    func refreshFolderList(completion: (()->())? = nil) {
+        /*DispatchQueue.global(qos: .userInitiated).async {
             MessageModelUtil.perform {
                 self.folderSyncService.requestFolders(inAccounts: Account.all()) //!!!: must not be in UI. According to fetchOlder()
             }
+        }*/
+        do {
+            try folderSyncService.runService(inAccounts: Account.all()) { Success in
+                completion?()
+            }
+        } catch {
+            //missing error handling
         }
+
     }
 
     subscript(index: Int) -> FolderSectionViewModel {
@@ -63,13 +68,5 @@ public class FolderViewModel {
 
     var count: Int {
         return self.items.count
-    }
-}
-
-extension FolderViewModel : FolderSyncServiceDelegate {
-    public func finishedSyncingFolders() {
-        DispatchQueue.main.async {
-            self.delegate?.folderViewModelDidUpdateFolderList(viewModel: self)
-        }
     }
 }
