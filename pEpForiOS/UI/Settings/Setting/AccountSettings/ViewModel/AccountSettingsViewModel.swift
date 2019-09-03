@@ -226,15 +226,12 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
         switch result {
         case .success(()):
             do {
-                try verifiableAccount?.save() { [weak self] success in
-                    guard let me = self else {
-                        Log.shared.errorAndCrash("Lost MySelf")
-                        return
-                    }
-                    me.delegate?.didVerify(result: .ok)
+                try verifiableAccount?.save { [weak self] _ in
+                    self?.delegate?.didVerify(result: .ok)
                 }
             } catch {
                 Log.shared.errorAndCrash(error: error)
+                delegate?.didVerify(result: .ok)
             }
         case .failure(let error):
             if let imapError = error as? ImapSyncError {

@@ -11,73 +11,76 @@ import PEPObjCAdapterFramework
 
 class KeySyncHandshakeService {
     weak var presenter: UIViewController?
-
+    
     private var alertView: UIAlertController? = nil
 }
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
-
+    
     func showHandshake(me: PEPIdentity,
                        partner: PEPIdentity,
+                       isNewGroup: Bool,
                        completion: ((PEPSyncHandshakeResult)->())? = nil) {
 
-        //Temp, working simple alert version
-        DispatchQueue.main.async { [weak self] in
-            guard let safeSelf = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
+        guard let viewController = presenter else {
+            Log.shared.errorAndCrash("No Presenter")
+            return
+        }
+        guard let meFPR = me.fingerPrint, let partnerFPR = partner.fingerPrint else {
+            Log.shared.errorAndCrash("Missing FPRs")
+            return
+        }
 
-            guard let meFPR = me.fingerPrint, let partnerFPR = partner.fingerPrint else {
-                Log.shared.errorAndCrash("Missing FPRs")
-                return
-            }
-
-            guard let viewController = safeSelf.presenter else {
-                Log.shared.errorAndCrash("No Presenter")
-                return
-            }
-
-            viewController.presentKeySyncHandShakeAlert(meFPR: meFPR, partnerFPR: partnerFPR)
-            { action in
-                switch action {
-                case .accept:
-                    completion?(PEPSyncHandshakeResult.accepted)
-                case .cancel:
-                    completion?(PEPSyncHandshakeResult.cancel)
-                case .decline:
-                    completion?(PEPSyncHandshakeResult.rejected)
-                }
-            }
+        viewController.presentedViewController?.dismiss(animated: false, completion: nil)
+        viewController.presentKeySyncWizard(meFPR: meFPR,
+                                            partnerFPR: partnerFPR,
+                                            isNewGroup: isNewGroup) { action in
+                                                switch action {
+                                                case .accept:
+                                                    completion?(.accepted)
+                                                case .cancel:
+                                                    completion?(.cancel)
+                                                case .decline:
+                                                    completion?(.rejected)
+                                                }
         }
     }
-
+    
     //!!!: unimplemented stub
     func showCurrentlyGroupingDevices() {
         // When implementing IOS-1712, show the additional (animated) view here.
         Log.shared.warn("Unimplemented stub. \n\n################################\n################################\nshowCurrentlyGroupingDevices called")
     }
-
+    
     func cancelHandshake() {
-        guard let keySyncHandShakeAlert  =
-            presenter?.presentedViewController as? KeySyncHandshakeViewController else {
-                return
-        }
-        DispatchQueue.main.async {
-            keySyncHandShakeAlert.dismiss(animated: true)
-        }
-    }
-
-    func showSuccessfullyGrouped() {
-        guard let vc = presenter else {
-            Log.shared.errorAndCrash("No presenter")
+        guard let keySyncWizard = presenter?.presentedViewController as? PEPPageViewController else {
             return
         }
-        let title = NSLocalizedString("In Device Group",
-                                      comment: "Title of alert in keysync protocol informing the user about successfull device grouping.")
-        let message = NSLocalizedString("Your device has been added to the device group.", comment: "Message of alert in keysync protocol informing the user about successfull device grouping.")
-        UIUtils.showAlertWithOnlyPositiveButton(title: title,
-                                                message: message,
-                                                inViewController: vc)
+        keySyncWizard.dismiss()
+    }
+    
+    func showSuccessfullyGrouped() {
+        guard let keySyncWizard = presenter?.presentedViewController as? PEPPageViewController else {
+            return
+        }
+        let completedViewIndex = keySyncWizard.views.count - 1
+        keySyncWizard.goTo(index: completedViewIndex)
+    }
+
+    func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
+        guard let viewController = presenter else {
+            Log.shared.errorAndCrash("No Presenter")
+            return
+        }
+
+        KeySyncErrorView.presentKeySyncError(viewController: viewController, error: error) {
+            action in
+            switch action {
+            case .tryAgain:
+                completion?(.tryAgain)
+            case .notNow:
+                completion?(.notNow)
+            }
+        }
     }
 }

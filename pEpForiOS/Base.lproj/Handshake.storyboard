@@ -40,7 +40,7 @@
                                                                     <accessibility key="accessibilityConfiguration" identifier="partnerImageView"/>
                                                                 </imageView>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hZH-e1-puE">
-                                                                    <rect key="frame" x="28" y="32" width="20" height="20"/>
+                                                                    <rect key="frame" x="32" y="32" width="20" height="20"/>
                                                                     <accessibility key="accessibilityConfiguration" identifier="pEpStatusImageView"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" secondItem="hZH-e1-puE" secondAttribute="height" multiplier="1:1" id="And-L7-gTh"/>
@@ -55,7 +55,7 @@
                                                                 <constraint firstItem="rG1-9L-QdA" firstAttribute="width" secondItem="SFH-dH-XjY" secondAttribute="width" id="KPA-o5-y53"/>
                                                                 <constraint firstItem="rG1-9L-QdA" firstAttribute="height" secondItem="SFH-dH-XjY" secondAttribute="height" id="cOE-W5-pie"/>
                                                                 <constraint firstAttribute="bottom" secondItem="hZH-e1-puE" secondAttribute="bottom" constant="-4" id="do2-MY-H0j"/>
-                                                                <constraint firstAttribute="trailing" secondItem="hZH-e1-puE" secondAttribute="trailing" id="jF0-Ie-G4Z"/>
+                                                                <constraint firstAttribute="trailing" secondItem="hZH-e1-puE" secondAttribute="trailing" constant="-4" id="jF0-Ie-G4Z"/>
                                                                 <constraint firstItem="rG1-9L-QdA" firstAttribute="leading" secondItem="SFH-dH-XjY" secondAttribute="leading" id="keh-aa-d4N"/>
                                                             </constraints>
                                                         </view>

@@ -62,7 +62,6 @@ class MoveToFolderViewModel {
     var items : [MoveToFolderCellViewModel]
     var acc : Account
     var messages: [Message]
-    var delegate : MoveToFolderDelegate?
 
     init(account: Account, messages: [Message]) {
         items = []
@@ -72,14 +71,16 @@ class MoveToFolderViewModel {
     }
 
     private func generateFolderCells() {
-        for folder in acc.rootFolders {
+        let sorted = acc.rootFolders.sorted()
+        for folder in sorted {
             items.append(MoveToFolderCellViewModel(folder: folder, level: 0))
             childFolder(root: folder, level: 1)
         }
     }
 
     private func childFolder(root folder: Folder, level: Int) {
-        for subFolder in folder.subFolders() {
+        let sorted = folder.subFolders().sorted()
+        for subFolder in sorted {
             items.append(MoveToFolderCellViewModel(folder: subFolder, level: level))
             childFolder(root: subFolder, level: level + 1)
         }
@@ -96,9 +97,6 @@ class MoveToFolderViewModel {
         if !msgs.isEmpty {
             result = true
             Message.move(messages: msgs, to: targetFolder)
-        }
-        if result {
-            delegate?.didmove(messages: messages)
         }
         return result
     }
@@ -130,6 +128,5 @@ class MoveToFolderCellViewModel {
         self.title = folder.realName
         self.indentationLevel = level
         self.icon = folder.folderType.getIcon()
-
     }
 }

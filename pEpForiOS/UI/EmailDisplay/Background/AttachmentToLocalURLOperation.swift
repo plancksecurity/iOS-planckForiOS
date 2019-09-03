@@ -10,6 +10,7 @@ import Foundation
 import pEpIOSToolbox
 import MessageModel
 
+//!!!: must go to MM interfaces. 
 class AttachmentToLocalURLOperation: Operation {
     var fileURL: URL?
 

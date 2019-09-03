@@ -92,8 +92,7 @@ class MediaAttachmentPickerProviderViewModel {
                 completion(nil)
                 return
             }
-            let mimeType = me.mimeTypeUtils?.mimeType(fromURL: resourceUrl) ??
-                MimeTypeUtils.MimesType.defaultMimeType
+            let mimeType = MimeTypeUtils.mimeType(fromURL: resourceUrl)
             let filename = me.fileName(forVideoAt: resourceUrl)
             DispatchQueue.main.async {
                 let attachment =  Attachment(data: resourceData,
@@ -116,7 +115,7 @@ class MediaAttachmentPickerProviderViewModel {
     }
 
     private func createAttachment(forAssetWithUrl assetUrl: URL, image: UIImage) -> Attachment {
-        let mimeType = mimeTypeUtils?.mimeType(fromURL: assetUrl) ?? MimeTypeUtils.MimesType.defaultMimeType
+        let mimeType = MimeTypeUtils.mimeType(fromURL: assetUrl)
         return Attachment.createFromAsset(mimeType: mimeType,
                                           assetUrl: assetUrl,
                                           image: image,

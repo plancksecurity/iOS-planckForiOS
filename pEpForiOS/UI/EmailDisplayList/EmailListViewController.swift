@@ -47,10 +47,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         super.viewDidLoad()
 
         tableView.allowsMultipleSelectionDuringEditing = true
-
-        if #available(iOS 10.0, *) {
-            tableView.prefetchDataSource = self
-        }
         setupSearchBar()
         setup()
     }
@@ -61,7 +57,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if MiscUtil.isUnitTest() {
             return
         }
-        lastSelectedIndexPath = nil
+        reloadRowWithPotetiallyUpdatedRatingBatchAndNilLastSelectedIndexPath()
 
         setUpTextFilter()
 
@@ -211,8 +207,17 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     // MARK: - Other
 
-    private func weCameBackFromAPushedView() -> Bool {
-        return model != nil
+    /// The trust state might have changed by another controller.
+    /// Reload the row to make sure it's updated.
+    /// - note: I would have expected (and still think) this is reported by QueryResultsController.
+    ///         If someone can assure that this potential changes are handled in out update logic,
+    ///         please remove this workaround method.
+    private func reloadRowWithPotetiallyUpdatedRatingBatchAndNilLastSelectedIndexPath() {
+        guard let row = lastSelectedIndexPath else {
+            return
+        }
+        lastSelectedIndexPath = nil
+        tableView.reloadRows(at: [row], with: .none)
     }
 
     private func showComposeView() {
@@ -731,7 +736,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
         tableView.endUpdates()
     }
 
-    func showThreadView(for indexPath: IndexPath) {
+//    func showThreadView(for indexPath: IndexPath) {
        /* guard let splitViewController = splitViewController else {
             return
         }
@@ -759,7 +764,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
         } else {
             showEmail(forCellAt: indexPath)
         }*/
-    }
+//    }
 
     func toolbarIs(enabled: Bool) {
         if model?.shouldShowToolbarEditButtons() ?? true {
@@ -1092,8 +1097,6 @@ extension EmailListViewController: SegueHandlerType {
             ///showing next and previous directly from the emailView, that is needed for that feature
             //vc.folderShow = model?.getFolderToShow()
             vc.messageId = indexPath.row //!!!: that looks wrong
-            vc.delegate = model
-            model?.currentDisplayedMessage = vc
             model?.indexPathShown = indexPath
         case .segueShowEmailNotSplitView:
             guard let vc = segue.destination as? EmailViewController,
@@ -1108,8 +1111,6 @@ extension EmailListViewController: SegueHandlerType {
             ///showing next and previous directly from the emailView, that is needed for that feature
             //vc.folderShow = model?.getFolderToShow()
             vc.messageId = indexPath.row //!!!: that looks wrong
-            vc.delegate = model
-            model?.currentDisplayedMessage = vc
             model?.indexPathShown = indexPath
 
       //  case .segueShowThreadedEmail:
@@ -1178,7 +1179,6 @@ extension EmailListViewController: SegueHandlerType {
 
             destination.viewModel
                 = model?.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
-            destination.delegate = model
             destination.appConfig = appConfig
             break
         case .showNoMessage:

@@ -126,12 +126,95 @@
                         <segue destination="pQb-5p-QId" kind="showDetail" identifier="segueShowSettingDefaultAccount" id="qiY-7g-nll"/>
                         <segue destination="95U-QI-nlr" kind="showDetail" identifier="segueShowSettingTrustedServers" id="tvG-bN-ITt"/>
                         <segue destination="cMW-fr-EKn" kind="showDetail" identifier="segueSetOwnKey" id="D3B-Zt-U43"/>
+                        <segue destination="4fP-ku-UtU" kind="showDetail" identifier="segueExtraKeys" id="DPP-UI-qfC"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="1at-88-jou" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-1327" y="-1170"/>
+        </scene>
+        <!--Extra Keys-->
+        <scene sceneID="KkR-yF-e30">
+            <objects>
+                <viewController title="Extra Keys" id="4fP-ku-UtU" customClass="ExtraKeysSettingViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="MFw-tL-ska">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xwh-71-o4X">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="567"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ExtraKeysSettingCell" textLabel="hHr-Jq-PRg" style="IBUITableViewCellStyleDefault" id="ux3-4L-chV">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ux3-4L-chV" id="cho-gl-9KY">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hHr-Jq-PRg">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="PG6-XN-MQm">
+                                <rect key="frame" x="0.0" y="567" width="375" height="100"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="zHk-jf-vFQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardType="alphabet"/>
+                                    </textView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J2v-Vi-URg">
+                                        <rect key="frame" x="0.0" y="70" width="375" height="30"/>
+                                        <state key="normal" title="add fingerprint"/>
+                                        <connections>
+                                            <action selector="addExtraKeyButtonPressed:" destination="4fP-ku-UtU" eventType="touchUpInside" id="Q5c-il-RpN"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="A7G-lK-k6l"/>
+                                    <constraint firstItem="J2v-Vi-URg" firstAttribute="centerX" secondItem="PG6-XN-MQm" secondAttribute="centerX" id="Dnt-Wf-gJD"/>
+                                    <constraint firstItem="zHk-jf-vFQ" firstAttribute="top" secondItem="PG6-XN-MQm" secondAttribute="top" id="IHk-U2-dvC"/>
+                                    <constraint firstItem="zHk-jf-vFQ" firstAttribute="leading" secondItem="PG6-XN-MQm" secondAttribute="leading" id="QSX-Hp-UqL"/>
+                                    <constraint firstItem="J2v-Vi-URg" firstAttribute="top" secondItem="zHk-jf-vFQ" secondAttribute="bottom" id="Yx5-BL-EoH"/>
+                                    <constraint firstAttribute="trailing" secondItem="zHk-jf-vFQ" secondAttribute="trailing" id="g2w-X2-stM"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="xQW-kk-bIV"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="kNC-Mm-Vwn" firstAttribute="trailing" secondItem="xwh-71-o4X" secondAttribute="trailing" id="6dj-HV-KIE"/>
+                            <constraint firstItem="xwh-71-o4X" firstAttribute="top" secondItem="MFw-tL-ska" secondAttribute="top" id="Dlj-xX-Arp"/>
+                            <constraint firstItem="PG6-XN-MQm" firstAttribute="trailing" secondItem="kNC-Mm-Vwn" secondAttribute="trailing" id="ZS1-ex-qZP"/>
+                            <constraint firstItem="PG6-XN-MQm" firstAttribute="leading" secondItem="kNC-Mm-Vwn" secondAttribute="leading" id="bqW-S5-e7M"/>
+                            <constraint firstItem="xwh-71-o4X" firstAttribute="leading" secondItem="kNC-Mm-Vwn" secondAttribute="leading" id="h7D-Db-2bK"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="PG6-XN-MQm" secondAttribute="bottom" id="icq-he-U1m"/>
+                            <constraint firstItem="PG6-XN-MQm" firstAttribute="top" secondItem="xwh-71-o4X" secondAttribute="bottom" id="vLH-8z-dxl"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="kNC-Mm-Vwn"/>
+                    </view>
+                    <connections>
+                        <outlet property="addExtraKeyButton" destination="J2v-Vi-URg" id="y2f-4x-YZS"/>
+                        <outlet property="addFprView" destination="PG6-XN-MQm" id="Xdx-jc-jYu"/>
+                        <outlet property="fpr" destination="zHk-jf-vFQ" id="bca-yo-WNG"/>
+                        <outlet property="tableView" destination="xwh-71-o4X" id="Tiv-pl-sxU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LCO-IG-Rwh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-476" y="-1891"/>
         </scene>
         <!--Set Own Key View Controller-->
         <scene sceneID="k12-LM-gr9">

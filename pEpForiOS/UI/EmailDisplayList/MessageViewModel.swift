@@ -15,8 +15,14 @@ import PEPObjCAdapterFramework
 class MessageViewModel: CustomDebugStringConvertible {
     static fileprivate var maxBodyPreviewCharacters = 120
 
-    private var queue: OperationQueue
-    private var runningOperations = [Operation]()
+    private let queueForHeavyStuff: OperationQueue = {
+        let createe = OperationQueue()
+        createe.qualityOfService = .userInitiated
+        createe.name = "security.pep.MessageViewModel.queueForHeavyStuff"
+        return createe
+    }()
+
+    let message: Message
 
     let uid: Int
     private let uuid: MessageID
@@ -55,8 +61,8 @@ class MessageViewModel: CustomDebugStringConvertible {
         }
     }
 
-    required init(with message: Message, queue: OperationQueue) {
-        self.queue = queue
+    required init(with message: Message) {
+        self.message = message
 
         uid = message.uid
         uuid = message.uuid
@@ -102,14 +108,10 @@ class MessageViewModel: CustomDebugStringConvertible {
     }
 
     func unsubscribeForUpdates() {
-        cancelAllBackgroundOperations()
+        queueForHeavyStuff.cancelAllOperations()
     }
 
-    private func cancelAllBackgroundOperations() {
-        runningOperations.forEach { $0.cancel() }
-    }
-
-    private func setBodyPeek(for message:Message) {
+    private func setBodyPeek(for message: Message) {
         if let bodyPeek = internalBoddyPeek {
             self.bodyPeek = bodyPeek
         } else {
@@ -117,7 +119,7 @@ class MessageViewModel: CustomDebugStringConvertible {
                 // It's valid to loose self here. The view can dissappear @ any time.
                 self?.bodyPeek = bodyPeek
             }
-            addToRunningOperations(operation)
+            queueForHeavyStuff.addOperation(operation)
         }
     }
 
@@ -195,9 +197,6 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     func appendInlinedAttachmentsPlainText(to text: String) -> String {
         var result = text
-        guard let message = message() else {
-            return result
-        }
         let inlinedText = message.inlinedTextAttachments()
         for inlinedTextAttachment in inlinedText {
             guard
@@ -221,33 +220,17 @@ class MessageViewModel: CustomDebugStringConvertible {
         return result
     }
 
-    public func message() -> Message? {
-        guard let msg = Message.by(uid: uid,
-                                   uuid: uuid,
-                                   folderName: parentFolderName,
-                                   accountAddress: accountAddress)
-            else {
-                // The model has changed.
-                return nil
-        }
-        return msg
-    }
-
     func getProfilePicture(completion: @escaping (UIImage?) -> ()) {
         let operation = getProfilePictureOperation(completion: completion)
-        addToRunningOperations(operation)
+        queueForHeavyStuff.addOperation(operation)
     }
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
         let operation = getSecurityBadgeOperation(completion: completion)
-        addToRunningOperations(operation)
+        queueForHeavyStuff.addOperation(operation)
     }
 
     func getBodyMessage() -> NSMutableAttributedString {
-        guard let message = message() else {
-            //crash and return nonsense
-            return NSMutableAttributedString()
-        }
         let finalText = NSMutableAttributedString()
         if message.underAttack {
             let status = String.pEpRatingTranslation(pEpRating: .underAttack)
@@ -282,7 +265,7 @@ class MessageViewModel: CustomDebugStringConvertible {
             NSAttributedString.Key.foregroundColor: UIColor.lightGray
         ]
         var temp: [String] = []
-        message()?.allRecipients.forEach { (recepient) in
+        message.allRecipients.forEach { (recepient) in
             let recepient = recepient.address
             temp.append(recepient)
         }
@@ -312,11 +295,6 @@ extension MessageViewModel: Equatable {
 // MARK: Operations
 
 extension MessageViewModel {
-
-    private func addToRunningOperations(_ op: Operation) {
-        runningOperations.append(op)
-        queue.addOperation(op)
-    }
 
     private func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> Operation {
         let session = Session()
@@ -351,24 +329,21 @@ extension MessageViewModel {
     }
 
     private func getSecurityBadgeOperation(completion: @escaping (UIImage?) -> ()) -> Operation {
-        let msg = message()
         let session = Session()
-        guard let safeMsg = msg?.safeForSession(session) else {
-            // return empty OP
-            return Operation()
-        }
+        let safeMsg = message.safeForSession(session)
         
         let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
             guard let me = self else {
                 return
             }
-
+            var badgeImage: UIImage? = nil
             session.performAndWait {
                 guard let operation = operation, !operation.isCancelled else {
                     return
                 }
-                me.profilePictureComposer.securityBadge(for: safeMsg, completion: completion)
+                badgeImage = me.profilePictureComposer.securityBadge(for: safeMsg)
             }
+            completion(badgeImage)
         }
         return getSecurityBadgeOperation
     }
@@ -378,7 +353,7 @@ extension MessageViewModel {
 
             let identitykey = IdentityImageTool.IdentityKey(identity: displayedImageIdentity)
 
-            let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
+            let profilePictureOperation = SelfReferencingOperation { [weak self] operation in
                 guard let me = self else {
                     return
                 }
@@ -387,9 +362,9 @@ extension MessageViewModel {
                     !operation.isCancelled else {
                         return
                 }
-                me.profilePictureComposer.profilePicture(for: identitykey,
-                                                         completion: completion)
+                let profileImage = me.profilePictureComposer.profilePicture(for: identitykey)
+                completion(profileImage)
             }
-            return getSecurityBadgeOperation
+            return profilePictureOperation
     }
 }

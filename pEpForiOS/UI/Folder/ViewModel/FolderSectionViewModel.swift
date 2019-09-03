@@ -37,7 +37,7 @@ public class FolderSectionViewModel {
             Log.shared.errorAndCrash("No account selected")
             return
         }
-        let sorted = sort(foldersToSort: ac.rootFolders)
+        let sorted = ac.rootFolders.sorted()
         for folder in sorted {
             items.append(FolderCellViewModel(folder: folder, level: 0))
             let level = folder.folderType == .inbox ? 0 : 1
@@ -46,20 +46,10 @@ public class FolderSectionViewModel {
     }
 
     private func calculateChildFolder(root folder: Folder, level: Int) {
-        let sorted = sort(foldersToSort: folder.subFolders())
+        let sorted = folder.subFolders().sorted()
         for subFolder in sorted {
             items.append(FolderCellViewModel(folder: subFolder, level: level))
             calculateChildFolder(root: subFolder, level: level + 1)
-        }
-    }
-
-    private func sort(foldersToSort: [Folder]) -> [Folder] {
-        return foldersToSort.sorted { (first, second) -> Bool in
-            guard let idx1 = FolderType.displayOrder.firstIndex(of: first.folderType),
-                let idx2 = FolderType.displayOrder.firstIndex(of: second.folderType) else {
-                    return false
-            }
-            return idx1 < idx2
         }
     }
 

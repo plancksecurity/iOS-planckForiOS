@@ -43,21 +43,12 @@ class EmailListViewModel {
 
     var indexPathShown: IndexPath?
 
-    private let queueForHeavyStuff: OperationQueue = {
-        let createe = OperationQueue()
-        createe.qualityOfService = .userInitiated
-        createe.name = "security.pep.EmailListViewModel.queueForHeavyStuff"
-        return createe
-    }()
-
     var lastSearchTerm = ""
     var updatesEnabled = true
 
     weak var emailListViewModelDelegate: EmailListViewModelDelegate?
 
     let folderToShow: DisplayableFolderProtocol
-
-    public var currentDisplayedMessage: DisplayedMessage?
 
     // MARK: - Filter
 
@@ -165,8 +156,7 @@ class EmailListViewModel {
     // MARK: - Public Data Access & Manipulation
 
     func viewModel(for index: Int) -> MessageViewModel? {
-        let messageViewModel = MessageViewModel(with: messageQueryResults[index],
-                                                queue: queueForHeavyStuff)
+        let messageViewModel = MessageViewModel(with: messageQueryResults[index])
         return messageViewModel
     }
 
@@ -191,7 +181,7 @@ class EmailListViewModel {
         let message = messageQueryResults[indexPath.row]
         let color = PEPUtils.pEpColor(pEpRating: message.pEpRating())
         if color != PEPColor.noColor {
-            return color.statusIcon()
+            return color.statusIconForMessage()
         } else {
             return nil
         }

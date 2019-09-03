@@ -1,12 +1,15 @@
-v0.0.51
-pEpEngine a4837da81310 (sync)
-sequoia4ios 7540a1acfff0d7c231529fc0eb6987e0887bccca
-pEpObjCAdapter bcdc0be31b68
-MessageModel 415e44cf027c
-pantomime-iOS bf8093eeadab
-libAccountSettings 47e92b7bacc1
-ldns bcdca923e53896e8b5467f3de136a68d124c3fc2
-OpenSSL-for-iPhone 10019638e80e8a8a5fc19642a840d8a69fac7349
-libetpan abb29cd702605ba518628f818a0b7892ae051a5c
-AppAuth-iOS b9d3ce7f02d817beea002241c3de45dbe9504d16
-SwipeCellKit 338db33b96fe79a4149844be0685d3614dac36a0
+v0.0.55
+AppAuth-iOS: c9103384853af90b046219573f322286de306564
+MessageModel: fa1fa2637093
+OpenSSL-for-iPhone: 10019638e80e8a8a5fc19642a840d8a69fac7349
+SwipeCellKit: 00cd0cb5f9ceb4ae7a245fe21bf45643285d454b
+ldns: bcdca923e53896e8b5467f3de136a68d124c3fc2
+libAccountSettings: 47e92b7bacc1
+libetpan: dc9bdf3d8bcdb8673727b1575782cfeeb4cbbea2
+pEp-Translate: 0a038f72b49184ad37f0b4931730391ee59ca097
+pEpEngine: ff0b4d80b6dc
+pEpObjCAdapter: 91dae11f1818
+pEp_for_iOS: a08284b7b3f3+
+pEp_for_iOS_intern: 49f635073179
+pantomime-iOS: 60f0c23d7e98
+sequoia4ios: 7540a1acfff0d7c231529fc0eb6987e0887bccca

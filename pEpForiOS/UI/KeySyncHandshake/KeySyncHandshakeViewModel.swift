@@ -10,7 +10,6 @@ import Foundation
 import PEPObjCAdapterFramework
 
 protocol KeySyncHandshakeViewModelDelegate: class {
-    func dissmissView()
     func showPicker(withLanguages languages: [String])
     func closePicker()
     func change(handshakeWordsTo: String)
@@ -21,7 +20,7 @@ final class KeySyncHandshakeViewModel {
         case cancel, decline, accept, changeLanguage
     }
 
-    var completionHandler: ((KeySyncHandshakeViewController.Action) -> Void)?
+    var completionHandler: ((KeySyncHandshakeViewController.Action) -> Void)? //!!!: A viewModel must not know the Controller
 
     weak var delegate: KeySyncHandshakeViewModelDelegate?
     var fullTrustWords = false //Internal since testing
@@ -50,7 +49,7 @@ final class KeySyncHandshakeViewModel {
     func didSelect(languageRow: Int) {
         languageCode = languages[languageRow].code
         delegate?.closePicker()
-        delegate?.change(handshakeWordsTo: trustWorkds())
+        delegate?.change(handshakeWordsTo: trustWords())
     }
 
     func handle(action: Action) {
@@ -60,7 +59,6 @@ final class KeySyncHandshakeViewModel {
                 return
             }
             completionHandler?(action)
-            delegate?.dissmissView()
         case .changeLanguage:
             handleChangeLanguageButton()
         }
@@ -69,19 +67,19 @@ final class KeySyncHandshakeViewModel {
     func fingerPrints(meFPR: String?, partnerFPR: String?) {
         self.meFPR = meFPR
         self.partnerFPR = partnerFPR
-        delegate?.change(handshakeWordsTo: trustWorkds())
+        delegate?.change(handshakeWordsTo: trustWords())
     }
 
     func didLongPressWords() {
         fullTrustWords = !fullTrustWords
-        delegate?.change(handshakeWordsTo: trustWorkds())
+        delegate?.change(handshakeWordsTo: trustWords())
     }
 }
 
 // MARK: - Private
 
 extension KeySyncHandshakeViewModel {
-    private func trustWorkds() -> String {
+    private func trustWords() -> String {
         guard let meFPR = meFPR, let partnerFPR = partnerFPR else {
             Log.shared.errorAndCrash("Nil meFingerPrints or Nil partnerFingerPrints")
             return String()

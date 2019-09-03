@@ -11,10 +11,12 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class TestDelegate: ReportingErrorContainerDelegate {
-    var delegateCalled = false
-    func reportingErrorContainer(_ errorContainer: ReportingErrorContainer, didReceive error: Error) {
-        delegateCalled = true
+extension ReportingErrorContainerTest {
+    fileprivate class TestDelegate: ReportingErrorContainerDelegate {
+        var delegateCalled = false
+        func reportingErrorContainer(_ errorContainer: ReportingErrorContainer, didReceive error: Error) {
+            delegateCalled = true
+        }
     }
 }
 

@@ -14,40 +14,21 @@ class PepProfilePictureComposer: ProfilePictureComposerProtocol {
 
     let contactImageTool = IdentityImageTool()
 
-    func profilePicture(for identityKey: IdentityImageTool.IdentityKey,
-                        completion: @escaping (UIImage?) -> ()) {
+    func profilePicture(for identityKey: IdentityImageTool.IdentityKey) -> UIImage? {
         if let image = contactImageTool.cachedIdentityImage(for: identityKey){
-            DispatchQueue.main.async {
-                completion(image)
-            }
+            return image
         } else {
-            DispatchQueue.global(qos: .userInitiated).async{ [weak self] in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
-                    return
-                }
-                let senderImage = me.contactImageTool.identityImage(for: identityKey)
-                DispatchQueue.main.async {
-                    completion(senderImage)
-                }
-            }
+            let senderImage = contactImageTool.identityImage(for: identityKey)
+            return senderImage
         }
     }
 
-    func securityBadge(for message: Message, completion: @escaping (UIImage?) ->()){
-        let session = Session()
-        let safeMsg = message.safeForSession(session)
-        DispatchQueue.global(qos: .userInitiated).async {
-            session.performAndWait {
-                let color = PEPUtils.pEpColor(pEpRating: safeMsg.pEpRating())
-                var image: UIImage? = nil
-                if color != PEPColor.noColor {
-                    image = color.statusIconInContactPicture()
-                }
-                DispatchQueue.main.async {
-                    completion(image)
-                }
-            }
+    func securityBadge(for message: Message) -> UIImage? {
+        let color = PEPUtils.pEpColor(pEpRating: message.pEpRating())
+        var image: UIImage? = nil
+        if color != PEPColor.noColor {
+            image = color.statusIconInContactPicture()
         }
+        return image
     }
 }
