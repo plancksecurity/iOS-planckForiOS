@@ -11,8 +11,8 @@ import MessageModel
 
 /// View Model for folder hierarchy.
 public class FolderViewModel {
-    let folderSyncService = FetchImapFoldersService()
-    
+
+    lazy var folderSyncService = FetchImapFoldersService()
     var items: [FolderSectionViewModel]
 
     /// Instantiates a folder hierarchy model with:

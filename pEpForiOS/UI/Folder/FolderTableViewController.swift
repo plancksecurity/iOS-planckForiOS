@@ -74,11 +74,6 @@ class FolderTableViewController: BaseTableViewController {
             me.refreshControl?.endRefreshing()
         }
     }
-    
-//    func folderViewModelDidUpdateFolderList(viewModel: FolderViewModel) {
-//            setup()
-//            self.refreshControl?.endRefreshing()
-//    }
 
     // MARK: - Action
 

@@ -446,7 +446,6 @@
 		B7F676BD227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F676BC227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift */; };
 		F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */; };
 		F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */; };
-		F7C16A5D21A59187004B44F2 /* FolderViewModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C16A5C21A59186004B44F2 /* FolderViewModelDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -958,7 +957,6 @@
 		B7F676BC227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageQueryResultsFilter+FilterButtonTitle.swift"; sourceTree = "<group>"; };
 		F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionViewModelTests.swift; sourceTree = "<group>"; };
 		F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCellViewModelTests.swift; sourceTree = "<group>"; };
-		F7C16A5C21A59186004B44F2 /* FolderViewModelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModelDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2422,7 +2420,6 @@
 				B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */,
 				B722EC791E5C879000A2B9D5 /* FolderUiProtocols.swift */,
 				B70A3C3F1E817CFA0036876F /* FolderViewModel.swift */,
-				F7C16A5C21A59186004B44F2 /* FolderViewModelDelegate.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -2975,7 +2972,6 @@
 				15FE1F761FE122D900CC2D97 /* CreditsViewController.swift in Sources */,
 				152A39942190587200D9F8E4 /* TextViewInTableViewScrollUtil.swift in Sources */,
 				43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */,
-				F7C16A5D21A59187004B44F2 /* FolderViewModelDelegate.swift in Sources */,
 				43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */,
 				B7C487A122E0B7DE0005304B /* nonPasteableUiTextField.swift in Sources */,
 				15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */,
