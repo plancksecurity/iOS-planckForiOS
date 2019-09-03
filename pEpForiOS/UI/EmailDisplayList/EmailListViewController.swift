@@ -245,8 +245,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 Log.shared.errorAndCrash("Invalid state")
                 return
             }
-            let unreadFilterActive = vm.unreadFilterEnabled()
-            if navigationController?.topViewController != self && !unreadFilterActive {
+            if navigationController?.topViewController != self {
                 navigationController?.popViewController(animated: true)
             }
         } else {
