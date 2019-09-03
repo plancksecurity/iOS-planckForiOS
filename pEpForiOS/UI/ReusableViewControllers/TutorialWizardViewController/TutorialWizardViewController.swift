@@ -50,7 +50,7 @@ class TutorialWizardViewController: UIViewController {
     }
 
     static func wizardImages() -> [UIImage] {
-        return [#imageLiteral(resourceName: "pEpForIOS-Tutorial-1"), #imageLiteral(resourceName: "pEpForIOS-Tutorial-2"), #imageLiteral(resourceName: "pEpForIOS-Tutorial-3"), #imageLiteral(resourceName: "pEpForIOS-Tutorial-4"), #imageLiteral(resourceName: "pEpForIOS-Tutorial-5")]
+        return [#imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-1", comment: "TutorialWizrd image 1")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-2", comment: "TutorialWizrd image 2")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-3", comment: "TutorialWizrd image 3")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-4", comment: "TutorialWizrd image 4")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-5", comment: "TutorialWizrd image 5"))]
     }
 
     static func presentTutorialWizard(viewController: UIViewController) {
