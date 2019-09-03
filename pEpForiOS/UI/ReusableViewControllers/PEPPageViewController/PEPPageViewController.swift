@@ -10,8 +10,12 @@ import UIKit
 
 final class PEPPageViewController: UIPageViewController {
 
+    private var pageControlPageIndicatorColor: UIColor?
     private var pageControlBackgroundColor: UIColor?
+    private var pageControlTint: UIColor?
     private var showDots = false
+    private var isScrollEnable = false
+    private var didLoadValues = false
 
     var views = [UIViewController]()
 
@@ -20,24 +24,28 @@ final class PEPPageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        dataSource = showDots ? self : nil //nil dataSource will hide dots and disable scrolling
         delegate = self
-        disableScrolling()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if viewControllers?.isEmpty ?? true {
-            guard let firstView = views.first else { return }
-            setViewControllers([firstView], direction: .forward, animated: true, completion: nil)
+        if !didLoadValues {
+            didLoadValues = true
+            dataSource = showDots ? self : nil //nil dataSource will hide dots and disable scrolling
+            if !isScrollEnable {
+                disableScrolling()
+            }
+            if let firstView = views.first {
+                setViewControllers([firstView], direction: .forward, animated: true, completion: nil)
+            }
         }
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        pageControl(backgroundColor: pageControlBackgroundColor)
+        setUpPageControl()
     }
 
     private override init(transitionStyle: UIPageViewController.TransitionStyle,
@@ -52,7 +60,10 @@ final class PEPPageViewController: UIPageViewController {
     }
 
     static func fromStoryboard(showDots: Bool = false,
-                               dotsBackground: UIColor? = nil)
+                               isScrollingEnable: Bool = false,
+                               pageIndicatorBackground: UIColor? = nil,
+                               pageIndicatorTint: UIColor? = nil,
+                               pageIndicatorCurrent: UIColor? = nil)
         -> PEPPageViewController? {
 
             let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
@@ -61,8 +72,11 @@ final class PEPPageViewController: UIPageViewController {
                     Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
                     return nil
             }
+            pEpPageViewController.isScrollEnable = isScrollingEnable
+            pEpPageViewController.pageControlTint = pageIndicatorTint
+            pEpPageViewController.pageControlPageIndicatorColor = pageIndicatorCurrent
             pEpPageViewController.showDots = showDots
-            pEpPageViewController.pageControlBackgroundColor = dotsBackground
+            pEpPageViewController.pageControlBackgroundColor = pageIndicatorBackground
 
             return pEpPageViewController
     }
@@ -79,7 +93,6 @@ final class PEPPageViewController: UIPageViewController {
                                              previousViewControllers: [newView],
                                              transitionCompleted: completed)
         }
-
     }
 
     func goToNextView() {
@@ -117,18 +130,21 @@ final class PEPPageViewController: UIPageViewController {
     }
 }
 
+
+// MARK: - UIPageViewControllerDataSource
+
 extension PEPPageViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController,
                             viewControllerBefore viewController: UIViewController)
         -> UIViewController? {
-            guard let previousView = previousView(      ) else { return nil }
+            guard let previousView = previousView(of: viewController) else { return nil }
             return previousView
     }
 
     func pageViewController(_ pageViewController: UIPageViewController,
                             viewControllerAfter viewController: UIViewController)
         -> UIViewController? {
-            guard let nextView = nextView() else { return nil }
+            guard let nextView = nextView(of: viewController) else { return nil }
             return nextView
     }
 
@@ -155,23 +171,25 @@ extension PEPPageViewController: UIPageViewControllerDelegate {
 // MARK: - Private
 
 extension PEPPageViewController {
-    private func previousView() -> UIViewController? {
-        let currentPossition = currentIndex()
+    private func previousView(of viewController: UIViewController? = nil) -> UIViewController? {
+        let currentPossition = currentIndex(of: viewController)
         guard currentPossition > 0 else { return nil }
 
         return views[currentPossition - 1]
     }
 
-    private func nextView() -> UIViewController? {
-        let currentPossition = currentIndex()
+    private func nextView(of viewController: UIViewController? = nil) -> UIViewController? {
+        let currentPossition = currentIndex(of: viewController)
         guard currentPossition < views.count - 1 else { return nil }
 
         return views[currentPossition + 1]
     }
 
-    private func currentIndex() -> Int {
-        guard let currentView = viewControllers?.first,
-            let currentIndex = views.firstIndex(of: currentView) else {
+    private func currentIndex(of viewController: UIViewController? = nil) -> Int {
+        guard let currentView = viewControllers?.first else {
+            return 0
+        }
+        guard let currentIndex = views.firstIndex(of: viewController ?? currentView) else {
                 return 0
         }
         return currentIndex
@@ -182,10 +200,18 @@ extension PEPPageViewController {
         scrollView?.isScrollEnabled = false
     }
 
-    private func pageControl(backgroundColor: UIColor?) {
-        guard let backgroundColor = backgroundColor,
-            let pageControl = pageControl() else { return }
-        pageControl.backgroundColor = backgroundColor
+    private func setUpPageControl() {
+        guard let pageControl = pageControl() else { return }
+        if let pageControlPageIndicatorColor = pageControlPageIndicatorColor {
+            pageControl.currentPageIndicatorTintColor = pageControlPageIndicatorColor
+        }
+        if let pageControlBackgroundColor = pageControlBackgroundColor {
+            pageControl.backgroundColor = pageControlBackgroundColor
+        }
+
+        if let pageControlTint = pageControlTint {
+            pageControl.pageIndicatorTintColor = pageControlTint
+        }
     }
 
     private func pageControl() -> UIPageControl? {

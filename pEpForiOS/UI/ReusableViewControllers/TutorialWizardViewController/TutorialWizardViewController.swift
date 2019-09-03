@@ -89,7 +89,10 @@ extension TutorialWizardViewController {
 
     private func addPEPPageViewCotnroller() {
         guard let pEpPageViewController =
-            PEPPageViewController.fromStoryboard(showDots: true, dotsBackground: .blue),
+            PEPPageViewController.fromStoryboard(showDots: true,
+                                                 isScrollingEnable: true,
+                                                 pageIndicatorTint: .pEpGray,
+                                                 pageIndicatorCurrent: .black),
             let pageView = pEpPageViewController.view else {
                 return
         }
