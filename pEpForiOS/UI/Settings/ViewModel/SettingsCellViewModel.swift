@@ -101,6 +101,7 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
 
         let oldAddress = acc.user.address
         acc.delete()
+        acc.session.commit()
 
         if AppSettings.defaultAccount == oldAddress {
             let newDefaultAccount = Account.all().first
@@ -110,8 +111,5 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
             }
             AppSettings.defaultAccount = newDefaultAddress
         }
-
     }
-
-
 }
