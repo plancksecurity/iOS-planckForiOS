@@ -329,8 +329,6 @@ extension MessageViewModel {
     }
 
     private func getSecurityBadgeOperation(completion: @escaping (UIImage?) -> ()) -> Operation {
-        //!!!: see IOS-1821
-        message.save()
         let session = Session()
         let safeMsg = message.safeForSession(session)
         
