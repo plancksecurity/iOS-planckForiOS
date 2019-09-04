@@ -16,7 +16,7 @@ class TutorialWizardViewController: UIViewController {
     static let storyboardId = "TutorialWizardViewController"
 
     private var viewModel = TutorialWizardViewMode()
-    private var images = [UIImage]()
+    private var tutorialImages = [TutorialViewController.TutorialImage]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,29 +34,35 @@ class TutorialWizardViewController: UIViewController {
         }
     }
 
-    static func fromStoryboard(images: [UIImage]) -> TutorialWizardViewController? {
-        let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
-        guard let tutorialWizard = storyboard.instantiateViewController(
-            withIdentifier: TutorialWizardViewController.storyboardId) as?
-            TutorialWizardViewController else {
-                Log.shared.errorAndCrash("Fail to instantiateViewController TutorialWizardViewController")
-                return nil
-        }
-        tutorialWizard.images = images
+    static func fromStoryboard(tutorialImages: [TutorialViewController.TutorialImage])
+        -> TutorialWizardViewController? {
+            let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
+            guard let tutorialWizard = storyboard.instantiateViewController(
+                withIdentifier: TutorialWizardViewController.storyboardId) as?
+                TutorialWizardViewController else {
+                    Log.shared.errorAndCrash("Fail to instantiateViewController TutorialWizardViewController")
+                    return nil
+            }
+            tutorialWizard.tutorialImages = tutorialImages
 
-        tutorialWizard.modalPresentationStyle = .overFullScreen
+            tutorialWizard.modalPresentationStyle = .overFullScreen
 
-        return tutorialWizard
+            return tutorialWizard
     }
 
-    static func wizardImages() -> [UIImage] {
-        return [#imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-1", comment: "TutorialWizrd image 1")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-2", comment: "TutorialWizrd image 2")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-3", comment: "TutorialWizrd image 3")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-4", comment: "TutorialWizrd image 4")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-5", comment: "TutorialWizrd image 5"))]
+    static func wizardImages() -> [TutorialViewController.TutorialImage] {
+        let view_1:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-1", comment: "TutorialWizard image 1")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-1-horizontal", comment: "TutorialWizard image 1 horizontal")))
+        let view_2:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-2", comment: "TutorialWizard image 2")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-2-horizontal", comment: "TutorialWizard image 2 horizontal")))
+        let view_3:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-3", comment: "TutorialWizard image 3")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-3-horizontal", comment: "TutorialWizard image 3 horizontal")))
+        let view_4:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-4", comment: "TutorialWizard image 4")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-4-horizontal", comment: "TutorialWizard image 4 horizontal")))
+        let view_5:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-5", comment: "TutorialWizard image 5")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-5-horizontal", comment: "TutorialWizard image 5 horizontal")))
+        return [view_1, view_2, view_3, view_4, view_5]
     }
 
     static func presentTutorialWizard(viewController: UIViewController) {
-        let images = wizardImages()
+        let tutrialImages = wizardImages()
         guard let tutorialWizard =
-            TutorialWizardViewController.fromStoryboard(images: images) else {
+            TutorialWizardViewController.fromStoryboard(tutorialImages: tutrialImages) else {
                 return
         }
 
@@ -115,9 +121,9 @@ extension TutorialWizardViewController {
 
     private func tutorialViewControllers() -> [TutorialViewController] {
         var result = [TutorialViewController]()
-        for image in images {
+        for tutorialImage in tutorialImages {
             guard let tutorialViewController =
-                TutorialViewController.fromStoryboard(image: image) else {
+                TutorialViewController.fromStoryboard(tutorialImage: tutorialImage) else {
                     continue
             }
             result.append(tutorialViewController)

@@ -11,26 +11,35 @@ import UIKit
 class TutorialViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
 
+    typealias TutorialImage = (portrait: UIImage, landscape: UIImage?)
+
     static let storyboardId = "TutorialViewController"
+    private var landscapeImage: UIImage?
+    private var portraitImages: UIImage?
 
-    private var image: UIImage?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
         setUpViews()
     }
 
-    static func fromStoryboard(image: UIImage) -> TutorialViewController? {
-            let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
-            guard let tutorialViewController = storyboard.instantiateViewController(
-                withIdentifier: TutorialViewController.storyboardId) as? TutorialViewController else {
-                    Log.shared.errorAndCrash("Fail to instantiateViewController TutorialViewController")
-                    return nil
-            }
+    static func fromStoryboard(tutorialImage: TutorialImage) -> TutorialViewController? {
+        let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
+        guard let tutorialViewController = storyboard.instantiateViewController(
+            withIdentifier: TutorialViewController.storyboardId) as? TutorialViewController else {
+                Log.shared.errorAndCrash("Fail to instantiateViewController TutorialViewController")
+                return nil
+        }
 
-            tutorialViewController.image = image
-            return tutorialViewController
+        tutorialViewController.portraitImages = tutorialImage.portrait
+        tutorialViewController.landscapeImage = tutorialImage.landscape
+        return tutorialViewController
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        setUpViews()
     }
 }
 
@@ -39,6 +48,11 @@ class TutorialViewController: UIViewController {
 
 extension TutorialViewController {
     private func setUpViews() {
-        imageView.image = image
+        if UIApplication.shared.statusBarOrientation.isLandscape,
+            let landscapeImage = landscapeImage {
+            imageView.image = landscapeImage
+        } else {
+            imageView.image = portraitImages
+        }
     }
 }
