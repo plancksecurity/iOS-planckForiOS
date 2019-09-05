@@ -246,11 +246,7 @@ extension ComposeViewModel.ComposeViewModelState {
 
 //        print("COMPOSE: before going to background")
 
-        let session = Session()
-        let safeFrom = from.safeForSession(session)
-        let safeTo = Identity.makeSafe(toRecipients, forSession: session)
-        let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
-        let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
+
 
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in //HERE:
             //!!!:
@@ -260,6 +256,11 @@ extension ComposeViewModel.ComposeViewModelState {
                 return
             }
 
+            let session = Session()
+            let safeFrom = from.safeForSession(session)
+            let safeTo = Identity.makeSafe(me.toRecipients, forSession: session)
+            let safeCc = Identity.makeSafe(me.ccRecipients, forSession: session)
+            let safeBcc = Identity.makeSafe(me.bccRecipients, forSession: session)
             session.performAndWait {
                 let pEpsession = PEPSession()
                 newRating = pEpsession.outgoingMessageRating(from: safeFrom,
