@@ -57,6 +57,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if MiscUtil.isUnitTest() {
             return
         }
+
         lastSelectedIndexPath = nil
 
         setUpTextFilter()
