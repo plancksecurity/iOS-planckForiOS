@@ -28,11 +28,11 @@ extension Attachment {
                               contentDisposition: .inline)
         } else {
             return Attachment(data: nil,
-                                     mimeType: mimeType,
-                                     fileName: assetUrl.absoluteString,
-                                     image: image,
-                                     assetUrl: assetUrl,
-                                     contentDisposition: contentDisposition)
+                              mimeType: mimeType,
+                              fileName: assetUrl.absoluteString,
+                              image: image,
+                              assetUrl: assetUrl,
+                              contentDisposition: contentDisposition)
         }
     }
 }
