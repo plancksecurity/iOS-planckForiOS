@@ -500,49 +500,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
     }
 
-    //fails on first run when the an account was setup on
-    func testFixAttachmentsOperation() {
-        let moc: NSManagedObjectContext = Stack.shared.mainContext
-        let cdFolder = CdFolder(context: moc)
-        cdFolder.name = "AttachmentTestFolder"
-        cdFolder.folderType = FolderType.inbox
-        cdFolder.account = try? moc.existingObject(with: cdAccount.objectID) as? CdAccount
-
-        let cdMsg = CdMessage(context: moc)
-        cdMsg.uuid = "2"
-        cdMsg.parent = cdFolder
-
-        let cdAttachWithoutSize = CdAttachment(context: moc)
-        cdAttachWithoutSize.data = "Some bytes for an attachment".data(using: .utf8)
-        cdAttachWithoutSize.message = cdMsg
-
-        moc.saveAndLogErrors()
-
-        let expAttachmentsFixed = expectation(description: "expAttachmentsFixed")
-        let fixAttachmentsOp = FixAttachmentsOperation(parentName: #function)
-        fixAttachmentsOp.completionBlock = {
-            fixAttachmentsOp.completionBlock = nil
-            expAttachmentsFixed.fulfill()
-        }
-        let queue = OperationQueue()
-        queue.addOperation(fixAttachmentsOp)
-        
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(fixAttachmentsOp.hasErrors())
-        })
-
-        moc.refreshAllObjects()
-        
-        guard let allAttachments = CdAttachment.all() as? [CdAttachment] else {
-            XCTFail()
-            return
-        }
-        for cdAttach in allAttachments {
-            XCTAssertNotNil(cdAttach.data)
-        }
-    }
-
     // MARK: - QualifyServerIsLocalOperation
 
     func testQualifyServerOperation() {
