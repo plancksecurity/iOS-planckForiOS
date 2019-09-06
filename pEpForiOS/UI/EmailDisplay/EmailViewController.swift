@@ -146,6 +146,10 @@ class EmailViewController: BaseTableViewController {
 
         showPepRating()
 
+        if let internalMessage = message, !internalMessage.imapFlags.seen {
+            internalMessage.markAsSeen()
+        }
+
         ///TODO: reimplement next-previous
         //        DispatchQueue.main.async {
         //
