@@ -274,8 +274,6 @@ UIPickerViewDataSource, UITextFieldDelegate {
                 password = nil
             }
 
-            let keySyncEnable = keySyncEnableSwith.isOn
-
             showSpinnerAndDisableUI()
             viewModel?.update(loginName: validated.loginName, name: validated.accountName,
                               password: password, imap: imap, smtp: smtp,
