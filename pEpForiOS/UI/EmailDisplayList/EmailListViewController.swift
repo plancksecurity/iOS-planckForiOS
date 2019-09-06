@@ -57,7 +57,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if MiscUtil.isUnitTest() {
             return
         }
-        reloadRowWithPotetiallyUpdatedRatingBatchAndNilLastSelectedIndexPath()
+
+        lastSelectedIndexPath = nil
 
         setUpTextFilter()
 
@@ -206,19 +207,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     // MARK: - Other
-
-    /// The trust state might have changed by another controller.
-    /// Reload the row to make sure it's updated.
-    /// - note: I would have expected (and still think) this is reported by QueryResultsController.
-    ///         If someone can assure that this potential changes are handled in out update logic,
-    ///         please remove this workaround method.
-    private func reloadRowWithPotetiallyUpdatedRatingBatchAndNilLastSelectedIndexPath() {
-        guard let row = lastSelectedIndexPath else {
-            return
-        }
-        lastSelectedIndexPath = nil
-        tableView.reloadRows(at: [row], with: .none)
-    }
 
     private func showComposeView() {
         performSegue(withIdentifier: SegueIdentifier.segueEditDraft, sender: self)
