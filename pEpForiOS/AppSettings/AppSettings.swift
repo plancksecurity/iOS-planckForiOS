@@ -23,6 +23,7 @@ struct AppSettings {
     static public let keyPassiveMode = "keyPassiveMode"
     static public let keyLastKnowDeviceGroupStateRawValue = "keyLastKnowDeviceGroupStateRawValue"
     static public let keyExtraKeysEditable = "keyExtraKeysEditable"
+    static public let keyShouldShowTutorialWizard = "keyShouldShowTutorialWizard"
 
     /**
      The actual implementation of `AppSettingsProtocol` to defer to.
@@ -91,6 +92,15 @@ struct AppSettings {
         }
         set {
             settingsHandler.lastKnownDeviceGroupState = newValue
+        }
+    }
+
+    static var shouldShowTutorialWizard: Bool {
+        get {
+            return settingsHandler.shouldShowTutorialWizard
+        }
+        set {
+            settingsHandler.shouldShowTutorialWizard = newValue
         }
     }
 

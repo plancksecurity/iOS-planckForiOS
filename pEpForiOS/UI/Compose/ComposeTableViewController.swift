@@ -149,6 +149,13 @@ extension ComposeTableViewController {
                 alert.addAction(actionReply)
             }
 
+            let tutorialAction = UIAlertAction(
+                title: NSLocalizedString("Tutorial", comment: "show tutorial from compose view"),
+                style: .default) { _ in
+                    TutorialWizardViewController.presentTutorialWizard(viewController: self)
+            }
+            alert.addAction(tutorialAction)
+
             if theCanToggleProtection {
                 let originalValueOfProtection = vm.state.pEpProtection
                 let title = vm.state.pEpProtection ?
