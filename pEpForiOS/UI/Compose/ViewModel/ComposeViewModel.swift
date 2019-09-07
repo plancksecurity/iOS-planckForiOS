@@ -137,6 +137,8 @@ class ComposeViewModel {
             return
         }
         msg.save()
+        // The user crafted a new message. We must persist that.
+        Session.saveToDisk()
         guard let data = state.initData else {
             Log.shared.errorAndCrash("No data")
             return
