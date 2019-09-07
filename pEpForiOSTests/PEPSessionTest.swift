@@ -36,7 +36,7 @@ class PEPSessionTest: CoreDataDrivenTestBase {
         message.sent = Date()
         message.save()
         let session = PEPSession()
-        guard let first = CdMessage.first() else {
+        guard let first = CdMessage.first(in: moc) else {
             XCTFail("No messages ...")
             return
         }

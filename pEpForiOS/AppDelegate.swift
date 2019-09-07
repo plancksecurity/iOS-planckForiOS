@@ -128,23 +128,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      If pEp has been reinitialized, delete all folders and messsages.
      */
     func deleteAllFolders(pEpReInitialized: Bool) {
-        if pEpReInitialized {
-            // NSBatchDeleteRequest doesn't work so well here because of the need
-            // to nullify the relations. This is used only for internal testing, so the
-            // performance is neglible.
-            let folders = CdFolder.all() as? [CdFolder] ?? []
-            for f in folders {
-                f.delete()
-            }
-
-            let msgs = CdMessage.all() as? [CdMessage] ?? []
-            for m in msgs {
-                m.delete()
-            }
-
-            CdHeaderField.deleteOrphans()
-            Record.saveAndWait()
-        }
+        //!!! This is a mess. Keeept as a reminder to think of whether or not we want to keep the
+        //      Settings.app setting.
+//        if pEpReInitialized {
+//            // NSBatchDeleteRequest doesn't work so well here because of the need
+//            // to nullify the relations. This is used only for internal testing, so the
+//            // performance is neglible.
+//            let folders = CdFolder.all() as? [CdFolder] ?? []
+//            for f in folders {
+//                f.delete()
+//            }
+//
+//            let msgs = CdMessage.all() as? [CdMessage] ?? []
+//            for m in msgs {
+//                m.delete()
+//            }
+//
+//            CdHeaderField.deleteOrphans()
+//            Record.saveAndWait()
+//        }
     }
 
     private func setupServices() {

@@ -30,7 +30,7 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
 
     func testDisplayAccount_unknownAccount() {
         let initialAccount = account
-        let anotherAccount = SecretTestData().createWorkingAccount(number: 1)
+        let anotherAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
         assert(initialAccount: initialAccount,
                accountChangedMustBeCalled: false,
                expectedAccount: nil)
@@ -43,7 +43,7 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
 
     func testAccountPickerViewModelDidSelect_initialSet() {
         let initialAccount = account
-        let selectedAccount = SecretTestData().createWorkingAccount(number: 1)
+        let selectedAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
         assert(initialAccount: initialAccount,
                accountChangedMustBeCalled: true,
                expectedAccount: selectedAccount)
@@ -55,7 +55,7 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testAccountPickerViewModelDidSelect_initialNotSet() {
-        let selectedAccount = SecretTestData().createWorkingAccount(number: 1)
+        let selectedAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
         assert(initialAccount: nil,
                accountChangedMustBeCalled: true,
                expectedAccount: selectedAccount)

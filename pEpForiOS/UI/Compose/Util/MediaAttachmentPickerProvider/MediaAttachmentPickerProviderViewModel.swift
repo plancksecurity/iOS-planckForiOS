@@ -8,6 +8,7 @@
 
 import MessageModel
 import pEpIOSToolbox
+import Photos
 
 protocol MediaAttachmentPickerProviderViewModelResultDelegate: class {
     func mediaAttachmentPickerProviderViewModel(_ vm: MediaAttachmentPickerProviderViewModel,
@@ -54,8 +55,36 @@ class MediaAttachmentPickerProviderViewModel {
         }
 
         let attachment = createAttachment(forAssetWithUrl: url, image: image)
-        let result = MediaAttachment(type: .image, attachment: attachment)
-        resultDelegate?.mediaAttachmentPickerProviderViewModel(self, didSelect: result)
+
+        if attachment.data == nil {
+            do {
+                attachment.data = try Data(contentsOf: url)
+
+            } catch let err {
+                Log.shared.error("%@", "\(err)")
+            }
+        }
+        let group = DispatchGroup()
+        if attachment.data == nil {
+            let assets = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil)
+            if let theAsset = assets.firstObject {
+
+                group.enter()
+                PHImageManager().requestImageData(for: theAsset, options: nil) {
+                    data, string, orientation, options in
+                    attachment.data = data
+                    group.leave()
+                }
+            }
+        }
+        group.notify(queue: .main) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            let result = MediaAttachment(type: .image, attachment: attachment)
+            me.resultDelegate?.mediaAttachmentPickerProviderViewModel(me, didSelect: result)
+        }
     }
 
     private func createMovieAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) {

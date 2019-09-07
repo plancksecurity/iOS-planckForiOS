@@ -37,7 +37,7 @@ class FolderSectionViewModelTests: CoreDataDrivenTestBase {
     }
     
     func testUserNameWithAccount() {
-        let account = SecretTestData().createWorkingAccount()
+        let account = SecretTestData().createWorkingAccount(context: moc)
         givenThereIsAViewModel(withUnifiedInbox: true, and: account)
         let userName = viewModel.userName
         guard let accountUserName = account.user.userName else {
@@ -48,7 +48,7 @@ class FolderSectionViewModelTests: CoreDataDrivenTestBase {
     }
     
     func testUserAddressWithAccount() {
-        let account = SecretTestData().createWorkingAccount()
+        let account = SecretTestData().createWorkingAccount(context: moc)
         givenThereIsAViewModel(withUnifiedInbox: true, and: account)
         let userAddress = viewModel.userAddress
         let accountUserAddress = account.user.address

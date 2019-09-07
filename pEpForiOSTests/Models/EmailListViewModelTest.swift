@@ -38,7 +38,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func secondAccountSetUp() {
-        let acc2 = SecretTestData().createWorkingAccount(number: 1)
+        let acc2 = SecretTestData().createWorkingAccount(number: 1, context: moc)
         _ = Folder(name: "inbox", parent: nil, account: acc2, folderType: .inbox)
         _ = Folder(name: "trash", parent: nil, account: acc2, folderType: .trash)
         _ = Folder(name: "outbox", parent: nil, account: acc2, folderType: .outbox)
@@ -123,7 +123,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         emailListVM.isFilterEnabled = true
         XCTAssertEqual(5, emailListVM.rowCount)
         setUpViewModelExpectations(expectationDidDeleteDataAt: true)
-        let imap = ImapFlags()
+        let imap = messages[0].imapFlags
         imap.seen = true
         messages[0].imapFlags = imap
 

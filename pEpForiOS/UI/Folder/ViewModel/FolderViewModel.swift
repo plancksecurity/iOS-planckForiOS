@@ -49,11 +49,13 @@ public class FolderViewModel {
     }
 
     func refreshFolderList() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            MessageModelUtil.perform {
-                self.folderSyncService.requestFolders(inAccounts: Account.all()) //!!!: must not be in UI. According to fetchOlder()
-            }
-        }
+        // Is currentzly broken so I commented inststead of fixing multithreading mess.
+        // Please delete all the commented code when merging IOS-1787
+//        DispatchQueue.global(qos: .userInitiated).async {
+//            MessageModelUtil.perform {
+//                self.folderSyncService.requestFolders(inAccounts: Account.all(in: )) //!!!: must not be in UI. According to fetchOlder()
+//            }
+//        }
     }
 
     subscript(index: Int) -> FolderSectionViewModel {

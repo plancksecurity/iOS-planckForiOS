@@ -29,9 +29,8 @@ class ImapFlagsTests: CoreDataDrivenTestBase {
 
 extension ImapFlagsTests {
 
-    func loopAllFlags(
-        cdFlags: CdImapFlags, cwFlags: CWFlags, value: Bool) {
-        let imapFlags = ImapFlags()
+    func loopAllFlags(cdFlags: CdImapFlags, cwFlags: CWFlags, value: Bool) {
+        let imapFlags = ImapFlags(cdObject: cdFlags, context: moc)
 
         imapFlags.answered = cdFlags.flagAnswered
         imapFlags.draft = cdFlags.flagDraft
@@ -62,6 +61,8 @@ extension ImapFlagsTests {
                 case .deleted:
                     cdFlags.flagDeleted = value
                     imapFlags.deleted = value
+                @unknown default:
+                    XCTFail("unhandled case")
                 }
                 if value {
                     cwFlags.add(pflag)

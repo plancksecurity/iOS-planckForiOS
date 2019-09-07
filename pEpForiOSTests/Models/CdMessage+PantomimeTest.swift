@@ -187,7 +187,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
                 XCTFail("error parsing message")
                 return
         }
-        XCTAssertEqual(CdMessage.all()?.count, 1)
+        XCTAssertEqual(CdMessage.all(in: moc)?.count, 1)
         guard let testee = CdMessage.search(message: message,
                                             inAccount: cdAccount,
                                             context: moc) else {
@@ -221,8 +221,8 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
                 XCTFail("error parsing message")
                 return
         }
-        XCTAssertEqual(CdMessage.all()?.count, 1)
-        guard let testee = CdMessage.search(message: message, inAccount: cdAccount) else {
+        XCTAssertEqual(CdMessage.all(in: moc)?.count, 1)
+        guard let testee = CdMessage.search(message: message, inAccount: cdAccount, context: moc) else {
             XCTFail("No message")
             return
         }

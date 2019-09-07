@@ -20,16 +20,16 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testFetchMessagesOperation() {
-        XCTAssertNil(CdMessage.all())
+        XCTAssertNil(CdMessage.all(in: moc))
 
         fetchMessages(parentName: #function)
 
         XCTAssertGreaterThan(
-            CdFolder.countBy(predicate: NSPredicate(value: true)), 0)
+            CdFolder.countBy(predicate: NSPredicate(value: true), context: moc), 0)
         XCTAssertGreaterThan(
-            CdMessage.all()?.count ?? 0, 0)
+            CdMessage.all(in: moc)?.count ?? 0, 0)
 
-        guard let allMessages = CdMessage.all() as? [CdMessage] else {
+        guard let allMessages = CdMessage.all(in: moc) as? [CdMessage] else {
             XCTFail()
             return
         }
@@ -66,21 +66,17 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
             XCTAssertTrue(m.isValidMessage())
 
-            guard let folder = m.parent else {
+            guard let cdFolder = m.parent else {
                 XCTFail()
                 break
             }
-            XCTAssertEqual(folder.name?.lowercased(), ImapSync.defaultImapInboxName.lowercased())
-            guard let messages = CdMessage.all(
-                attributes: ["uid": m.uid, "parent": folder]) as? [CdMessage] else {
-                    XCTFail()
-                    break
-            }
-            XCTAssertEqual(messages.count, 1)
+            XCTAssertEqual(cdFolder.name?.lowercased(), ImapSync.defaultImapInboxName.lowercased())
+           let cdMessages = cdFolder.allMessages(context: moc)
+            XCTAssertEqual(cdMessages.count, 1)
 
             XCTAssertNotNil(m.imap)
         }
-        TestUtil.checkForExistanceAndUniqueness(uuids: uuids)
+        TestUtil.checkForExistanceAndUniqueness(uuids: uuids, context: moc)
     }
 
     /**
@@ -95,7 +91,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             return
         }
 
-        guard let allMessages = CdMessage.all() as? [CdMessage] else {
+        guard let allMessages = CdMessage.all(in: moc) as? [CdMessage] else {
             XCTFail()
             return
         }
@@ -131,8 +127,8 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
         let op = SyncMessagesOperation(imapSyncData: imapSyncData,
                                        folderName: folderName,
-                                       firstUID: folder.firstUID(context: folder.managedObjectContext),
-                                       lastUID: folder.lastUID(context: folder.managedObjectContext))
+                                       firstUID: folder.firstUID(context: moc),
+                                       lastUID: folder.lastUID(context: moc))
         op.completionBlock = {
             op.completionBlock = nil
             expMailsSynced.fulfill()
@@ -144,7 +140,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors())
         })
 
-        guard let allMessagesToTest = CdMessage.all() as? [CdMessage] else {
+        guard let allMessagesToTest = CdMessage.all(in: moc) as? [CdMessage] else {
             XCTFail()
             return
         }
@@ -208,7 +204,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         })
 
         XCTAssertGreaterThanOrEqual(
-            CdFolder.countBy(predicate: NSPredicate(value: true)), 1)
+            CdFolder.countBy(predicate: NSPredicate(value: true), context: moc), 1)
 
         var options: [String: Any] = ["folderTypeRawValue": FolderType.inbox.rawValue,
                                       "account": cdAccount as Any]
@@ -223,7 +219,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func dumpAllAccounts() {
-        let cdAccounts = CdAccount.all() as? [CdAccount]
+        let cdAccounts = CdAccount.all(in: moc) as? [CdAccount]
         if let accs = cdAccounts {
             for acc in accs {
                 print("\(String(describing: acc.identity?.address)) \(String(describing: acc.identity?.userName))")
@@ -320,7 +316,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
         moc.saveAndLogErrors()
 
-        if let msgs = CdMessage.all() as? [CdMessage] {
+        if let msgs = CdMessage.all(in: moc) as? [CdMessage] {
             for m in msgs {
                 XCTAssertEqual(m.parent?.folderType, FolderType.sent)
                 XCTAssertEqual(m.uid, Int32(0))
@@ -334,7 +330,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
                         errorContainer: errorContainer,
                         queue: queue)
 
-        XCTAssertEqual((CdMessage.all() ?? []).count, 0)
+        XCTAssertEqual((CdMessage.all(in: moc) ?? []).count, 0)
     }
 
     func testAppendDraftMailsOperation() {
@@ -398,7 +394,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
         moc.saveAndLogErrors()
 
-        if let msgs = CdMessage.all() as? [CdMessage] {
+        if let msgs = CdMessage.all(in: moc) as? [CdMessage] {
             for m in msgs {
                 XCTAssertEqual(m.parent?.folderType, FolderType.drafts)
                 XCTAssertEqual(m.uid, Int32(0))
@@ -425,7 +421,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertFalse(appendOp.hasErrors())
         })
 
-        XCTAssertEqual((CdMessage.all() ?? []).count, 0)
+        XCTAssertEqual((CdMessage.all(in: moc) ?? []).count, 0)
     }
 
     /**

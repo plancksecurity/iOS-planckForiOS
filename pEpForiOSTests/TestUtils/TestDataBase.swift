@@ -128,7 +128,7 @@ class TestDataBase {
         func account(context: NSManagedObjectContext) -> Account {
             let id = Identity(address: idAddress,
                               userName: idUserName,
-                              context: context)
+                              session: Session(context: context))
 
             let credSmtp = ServerCredentials.create(loginName: id.address)
             credSmtp.password = password
@@ -323,17 +323,15 @@ class TestDataBase {
     /**
      - Returns: A valid `Account`.
      */
-    func createWorkingAccount(number: Int = 0, context: NSManagedObjectContext? = nil) -> Account {
-        let moc = context ?? Record.Context.main
-        return createWorkingAccountSettings(number: number).account(context: moc)
+    func createWorkingAccount(number: Int = 0, context: NSManagedObjectContext) -> Account {
+        return createWorkingAccountSettings(number: number).account(context: context)
     }
 
     /**
      - Returns: A valid `Account`.
      */
-    func createVerifiableAccount(number: Int = 0, context: NSManagedObjectContext? = nil) -> Account {
-        let moc = context ?? Record.Context.main
-        return createVerifiableAccountSettings(number: number).account(context: moc)
+    func createVerifiableAccount(number: Int = 0, context: NSManagedObjectContext) -> Account {
+        return createVerifiableAccountSettings(number: number).account(context: context)
     }
 
     /**
@@ -341,10 +339,9 @@ class TestDataBase {
      */
     func createWorkingIdentity(number: Int = 0,
                                isMyself: Bool = false,
-                               context: NSManagedObjectContext? = nil) -> PEPIdentity {
+                               context: NSManagedObjectContext) -> PEPIdentity {
         populateAccounts()
-        let moc = context ?? Record.Context.main
-        return createWorkingCdIdentity(number: number, isMyself: isMyself, context: moc)
+        return createWorkingCdIdentity(number: number, isMyself: isMyself, context: context)
             .pEpIdentity()
     }
 
@@ -380,17 +377,15 @@ class TestDataBase {
     /**
      - Returns: An `Account` around `createSmtpTimeOutAccountSettings`.
      */
-    func createSmtpTimeOutAccount(context: NSManagedObjectContext? = nil) -> Account {
-        let moc = context ?? Record.Context.main
-        return createSmtpTimeOutAccountSettings().account(context: moc)
+    func createSmtpTimeOutAccount(context: NSManagedObjectContext) -> Account {
+        return createSmtpTimeOutAccountSettings().account(context: context)
     }
 
     /**
      - Returns: An `Account` around `createImapTimeOutAccountSettings`.
      */
-    func createImapTimeOutAccount(context: NSManagedObjectContext? = nil) -> Account {
-        let moc = context ?? Record.Context.main
-        return createImapTimeOutAccountSettings().account(context: moc)
+    func createImapTimeOutAccount(context: NSManagedObjectContext) -> Account {
+        return createImapTimeOutAccountSettings().account(context: context)
     }
 
     func populateVerifiableAccount(number: Int = 0,

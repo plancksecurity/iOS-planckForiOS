@@ -32,7 +32,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
 
             guard
                 let folder = assureCleanFolderContainingExactlyOneFakeMessage(folderType: folderTpe),
-                let allCdMesgs = CdMessage.all() as? [CdMessage] else {
+                let allCdMesgs = CdMessage.all(in: moc) as? [CdMessage] else {
                     // That is a valid case. E.g. folderType .normal.
                     return
             }
@@ -129,7 +129,6 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
                                                             withUid uid: Int,
                                                             in folder: Folder) -> Message? {
         var result: Message? = nil
-        let moc: NSManagedObjectContext = Stack.shared.mainContext
         moc.performAndWait {
             guard let cdFolder =  folder.cdFolder() else {
                 XCTFail()
@@ -141,7 +140,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
                                  CdMessage.RelationshipName.parent,
                                  cdFolder)
             guard
-                let allCdMesgs = CdMessage.all(predicate: p) as? [CdMessage],
+                let allCdMesgs = CdMessage.all(predicate: p, in: moc) as? [CdMessage],
                 let cdMsg = allCdMesgs.first
                 else {
                     if mustExist {
@@ -180,7 +179,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
 
     private func deleteAllMessages() {
         moc.performAndWait {
-            guard let allCdMesgs = CdMessage.all() as? [CdMessage] else {
+            guard let allCdMesgs = CdMessage.all(in: moc) as? [CdMessage] else {
                 return
             }
             for cdMsg in allCdMesgs {

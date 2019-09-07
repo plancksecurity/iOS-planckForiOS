@@ -18,9 +18,9 @@ class UnifiedInboxTest: CoreDataDrivenTestBase {
 
     override func setUp() {
         super.setUp()
-        let account1 = SecretTestData().createWorkingAccount()
+        let account1 = SecretTestData().createWorkingAccount(context: moc)
         account1.save()
-        let account2 = SecretTestData().createWorkingAccount(number: 1)
+        let account2 = SecretTestData().createWorkingAccount(number: 1, context: moc)
         account2.save()
         let folder1 = Folder(name: "inbox", parent: nil, account: account1, folderType: .inbox)
         folder1.save()
