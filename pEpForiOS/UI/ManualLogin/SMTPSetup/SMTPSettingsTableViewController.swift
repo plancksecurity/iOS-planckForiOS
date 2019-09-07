@@ -155,35 +155,6 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     }
 }
 
-// MARK: - AccountVerificationServiceDelegate
-
-//BUFF: obsolete?
-//extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
-//    func verified(account: Account, service: AccountVerificationServiceProtocol,
-//                  result: AccountVerificationResult) {
-//        if result == .ok {
-//            MessageModelUtil.performAndWait {
-//                account.save()
-//            }
-//        }
-//        GCD.onMain() {
-//            self.isCurrentlyVerifying =  false
-//            switch result {
-//            case .ok:
-//                // unwind back to INBOX or folder list on success
-//                self.performSegue(withIdentifier: .backToEmailListSegue, sender: self)
-//            case .imapError(let err):
-//                UIUtils.show(error: err, inViewController: self)
-//            case .smtpError(let err):
-//                UIUtils.show(error: err, inViewController: self)
-//            case .noImapConnectData, .noSmtpConnectData:
-//                let error = LoginViewController.LoginError.noConnectData
-//                UIUtils.show(error: error, inViewController: self)
-//            }
-//        }
-//    }
-//}
-
 // MARK: - SegueHandlerType
 
 extension SMTPSettingsTableViewController: SegueHandlerType {
@@ -220,33 +191,21 @@ extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
     func didEndVerification(result: Result<Void, Error>) {
         switch result {
         case .success(()):
-            //            MessageModelUtil.performAndWait { [weak self] in //BUFF: FIX IT! check why this is used and impl alternative.
-            // Note: Currently, there is no way for the VC to disappear
-            // before the verification has happened.
-            let theSelf = self
-            //                guard let theSelf = self else {
-            //                    Log.shared.lostMySelf()
-            //                    return
-            //                }
-
             do {
-                try theSelf.model?.save() { success in
+                try model?.save() { success in
                     //!!!: //BUFF: completion ignored!
                 }
             } catch {
                 Log.shared.errorAndCrash(error: error)
             }
-            //            }
             GCD.onMain() {  [weak self] in
-                // Note: Currently, there is no way for the VC to disappear
-                // before the verification has happened.
-                guard let theSelf = self else {
+                guard let me = self else {
                     Log.shared.lostMySelf()
                     return
                 }
 
-                theSelf.isCurrentlyVerifying = false
-                theSelf.performSegue(withIdentifier: .backToEmailListSegue, sender: theSelf)
+                me.isCurrentlyVerifying = false
+                me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
             }
         case .failure(let error):
             GCD.onMain() { [weak self] in
