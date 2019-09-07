@@ -53,18 +53,19 @@ class DecryptionUtil {
 
         guard
             let cdRecipients = cdMessage.to?.array as? [CdIdentity],
-            cdRecipients.count == 1,
-            let recipientIdentity = cdRecipients[0].identity()
+            cdRecipients.count == 1
             else {
                 XCTFail()
                 return cdMessage
         }
+        let recipientIdentity = MessageModelObjectUtils.getIdentity(fromCdIdentity: cdRecipients[0])
         XCTAssertTrue(recipientIdentity.isMySelf)
 
-        guard let theSenderIdentity = cdMessage.from?.identity() else {
+        guard let from = cdMessage.from else {
             XCTFail()
             return cdMessage
         }
+        let theSenderIdentity = MessageModelObjectUtils.getIdentity(fromCdIdentity: from)
         XCTAssertFalse(theSenderIdentity.isMySelf)
 
         return cdMessage

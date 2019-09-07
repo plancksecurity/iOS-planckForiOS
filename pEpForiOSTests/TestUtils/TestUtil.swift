@@ -722,12 +722,12 @@ class TestUtil {
         -> (mySelf: Identity, partner: Identity, message: Message)? {
             guard
                 let (mySelfID, partnerID, cdMessage) = cdMessageAndSetUpPepFromMail(
-                    emailFilePath: emailFilePath, decryptDelegate: decryptDelegate),
-                let mySelf = mySelfID.identity(),
-                let partner = partnerID.identity()
+                    emailFilePath: emailFilePath, decryptDelegate: decryptDelegate)
                 else {
                     return nil
             }
+            let mySelf = MessageModelObjectUtils.getIdentity(fromCdIdentity: mySelfID)
+            let partner = MessageModelObjectUtils.getIdentity(fromCdIdentity: partnerID)
             let msg = MessageModelObjectUtils.getMessage(fromCdMessage: cdMessage)
             return (mySelf: mySelf, partner: partner, message: msg)
     }
