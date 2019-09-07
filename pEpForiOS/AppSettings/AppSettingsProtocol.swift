@@ -17,4 +17,5 @@ public protocol AppSettingsProtocol {
     var passiveMode: Bool { get set }
     var defaultAccount: String? { get set }
     var lastKnownDeviceGroupState: DeviceGroupState { get set }
+    var shouldShowTutorialWizard: Bool { get set }
 }
