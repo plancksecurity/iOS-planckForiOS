@@ -65,7 +65,7 @@ class FolderTableViewController: BaseTableViewController {
     }
     
     @objc private func pullToRefresh() {
-        folderVM?.refreshFolderList() {[weak self] in
+        folderVM?.refreshFolderList() { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(message: "Lost myself")
                 return
