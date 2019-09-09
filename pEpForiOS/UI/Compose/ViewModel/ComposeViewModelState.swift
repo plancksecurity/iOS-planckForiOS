@@ -219,7 +219,7 @@ extension ComposeViewModel.ComposeViewModelState {
     }
 
     private func calculatePepRating() {
-        guard !isForceUnprotectedDueToBccSet && pEpProtection else {
+        guard !isForceUnprotectedDueToBccSet else {
             rating = .unencrypted
             return
         }
