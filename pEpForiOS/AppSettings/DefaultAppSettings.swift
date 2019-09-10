@@ -74,6 +74,16 @@ public class DefaultAppSettings: AppSettingsProtocol {
         }
     }
 
+    public var shouldShowTutorialWizard: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: AppSettings.keyShouldShowTutorialWizard)
+        }
+        set {
+            UserDefaults.standard.set(newValue,
+                                      forKey: AppSettings.keyShouldShowTutorialWizard)
+        }
+    }
+
     /// Address of the default account
     public var defaultAccount: String? {
         get {
@@ -116,6 +126,7 @@ public class DefaultAppSettings: AppSettingsProtocol {
         defaults[AppSettings.keyPassiveMode] = false
         defaults[AppSettings.keyLastKnowDeviceGroupStateRawValue] = DeviceGroupState.sole.rawValue
         defaults[AppSettings.keyExtraKeysEditable] = false
+        defaults[AppSettings.keyShouldShowTutorialWizard] = true
 
         UserDefaults.standard.register(defaults: defaults)
     }

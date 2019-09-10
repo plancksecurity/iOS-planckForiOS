@@ -31,7 +31,6 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
             return
         }
 
-        viewController.presentedViewController?.dismiss(animated: false, completion: nil)
         viewController.presentKeySyncWizard(meFPR: meFPR,
                                             partnerFPR: partnerFPR,
                                             isNewGroup: isNewGroup) { action in
