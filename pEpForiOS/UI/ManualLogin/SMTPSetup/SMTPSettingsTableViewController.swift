@@ -215,48 +215,6 @@ extension SMTPSettingsTableViewController: UITextFieldDelegate {
     }
 }
 
-//extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
-//    func didEndVerification(result: Result<Void, Error>) {
-//        switch result {
-//        case .success(()):
-//            MessageModelUtil.performAndWait { [weak self] in
-//                // Note: Currently, there is no way for the VC to disappear
-//                // before the verification has happened.
-//                guard let theSelf = self else {
-//                    Log.shared.lostMySelf()
-//                    return
-//                }
-//
-//                do {
-//                    try theSelf.model?.save() { success in
-//
-//                    }
-//                } catch {
-//                    Log.shared.errorAndCrash(error: error)
-//                }
-//            }
-//            GCD.onMain() {  [weak self] in
-//                // Note: Currently, there is no way for the VC to disappear
-//                // before the verification has happened.
-//                guard let theSelf = self else {
-//                    Log.shared.lostMySelf()
-//                    return
-//                }
-//
-//                theSelf.isCurrentlyVerifying = false
-//                theSelf.performSegue(withIdentifier: .backToEmailListSegue, sender: theSelf)
-//            }
-//        case .failure(let error):
-//            GCD.onMain() { [weak self] in
-//                if let theSelf = self {
-//                    theSelf.isCurrentlyVerifying = false
-//                    UIUtils.show(error: error, inViewController: theSelf)
-//                }
-//            }
-//        }
-//    }
-//}
-
 extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
 
     func didEndVerification(result: Result<Void, Error>) {
@@ -264,19 +222,27 @@ extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
         case .success(()):
             do {
                 try model?.save() { [weak self] success in
-                    guard let me = self else {
-                        Log.shared.errorAndCrash("Lost MySelf")
-                        return
+                    DispatchQueue.main.async { [weak self] in
+                        guard let me = self else {
+                            Log.shared.errorAndCrash("Lost MySelf")
+                            return
+                        }
+                        me.isCurrentlyVerifying = false
+                        me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
                     }
-                    me.isCurrentlyVerifying = false
-                    me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
                 }
             } catch {
                 Log.shared.errorAndCrash(error: error)
             }
         case .failure(let error):
-            isCurrentlyVerifying = false
-            UIUtils.show(error: error, inViewController: self)
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost MySelf")
+                    return
+                }
+                me.isCurrentlyVerifying = false
+            UIUtils.show(error: error, inViewController: me)
+            }
         }
     }
 }
