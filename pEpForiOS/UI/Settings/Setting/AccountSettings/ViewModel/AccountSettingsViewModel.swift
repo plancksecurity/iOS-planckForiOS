@@ -9,7 +9,6 @@
 import Foundation
 import MessageModel
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 
 import PantomimeFramework
 
@@ -66,8 +65,6 @@ public class AccountSettingsViewModel {
         self.name = account.user.userName ?? ""
         self.keySyncEnable = isKeySyncEnable(account: account)
 
-        pepSyncOrinalState =
-
         if let server = account.imapServer {
             self.originalPassword = server.credentials.password
             self.imapServer = ServerViewModel(
@@ -107,9 +104,6 @@ public class AccountSettingsViewModel {
     private(set) var loginName: String
     private(set) var smtpServer: ServerViewModel
     private(set) var imapServer: ServerViewModel
-
-    private let pepSyncOrinalState: Bool
-    private let accountPEPIdentity: PEPIdentity
 
     weak var delegate: AccountVerificationResultDelegate?
 
@@ -257,12 +251,3 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
  case .success(()):
 
  */
-
-
-// MARK: - Private
-
-extension AccountSettingsViewModel {
-    private func isKeySyncEnable(account: Account) -> Bool {
-        return try? account.isKeySyncEnable() ?? false
-    }
-}

@@ -79,9 +79,8 @@ UIPickerViewDataSource, UITextFieldDelegate {
         self.usernameTextfield.text = viewModel?.loginName
         self.passwordTextfield.text = "JustAPassword"
 
-        if let keySyncEnableSwith = keySyncEnableSwith,
-           let viewModel = viewModel {
-            keySyncEnableSwith.isOn = viewModel.keySyncEnable
+        if let viewModel = viewModel {
+            keySyncEnableSwith?.isOn = viewModel.is
         }
 
         securityPicker = UIPickerView(frame: CGRect(x: 0, y: 50, width: 100, height: 150))
