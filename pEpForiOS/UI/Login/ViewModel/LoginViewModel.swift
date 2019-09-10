@@ -228,7 +228,11 @@ extension LoginViewModel: VerifiableAccountDelegate {
                         Log.shared.errorAndCrash("Lost MySelf")
                         return
                     }
-                    me.informAccountVerificationResultDelegate(error: nil)
+                    var error: Error? = nil
+                    if !success {
+                        error = VerifiableAccountValidationError.invalidUserData
+                    }
+                    me.informAccountVerificationResultDelegate(error: error)
                 }
             } catch {
                 Log.shared.errorAndCrash(error: error)
