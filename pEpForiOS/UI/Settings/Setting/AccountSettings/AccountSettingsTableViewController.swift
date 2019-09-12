@@ -81,7 +81,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
         self.passwordTextfield.text = "JustAPassword"
 
         if let viewModel = viewModel {
-            pEpSyncToggle?.isOn = viewModel.pEpSync
+            pEpSyncToggle.isOn = viewModel.pEpSync
         }
 
         securityPicker = UIPickerView(frame: CGRect(x: 0, y: 50, width: 100, height: 150))
@@ -281,7 +281,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
             informUser(about: error)
         }
     }
-    @IBAction func pEpSyncTogglePressed(_ sender: UISwitch) {
+    @IBAction func didPressPEPSyncToggle(_ sender: UISwitch) {
         viewModel?.pEpSync(enable: sender.isOn)
     }
 
@@ -413,7 +413,14 @@ extension AccountSettingsTableViewController {
 
 extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
     func undoPEPSyncToggle() {
-        pEpSyncToggle.isOn = !pEpSyncToggle.isOn
+
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.pEpSyncToggle.setOn(!me.pEpSyncToggle.isOn, animated: true)
+        }
     }
 
     func showErrorAlert(title: String, message: String, buttonTitle: String) {
@@ -423,7 +430,6 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
 
         let okAction = UIAlertAction(title: buttonTitle, style: .cancel, handler: nil)
         alert.addAction(okAction)
-
         DispatchQueue.main.async { [weak self] in
             self?.present(alert, animated: true)
         }

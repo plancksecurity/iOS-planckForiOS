@@ -670,7 +670,7 @@
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MZb-TK-ECd">
                                                     <rect key="frame" x="308" y="6.5" width="51" height="31"/>
                                                     <connections>
-                                                        <action selector="pEpSyncTogglePressed:" destination="Eri-pJ-T3J" eventType="valueChanged" id="heG-Q5-pFX"/>
+                                                        <action selector="didPressPEPSyncToggle:" destination="Eri-pJ-T3J" eventType="valueChanged" id="bjg-Ed-BUN"/>
                                                     </connections>
                                                 </switch>
                                             </subviews>
