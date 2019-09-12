@@ -277,6 +277,7 @@ class TestDataBase {
     /**
      - Returns: A valid `CdAccount`.
      */
+    @discardableResult
     func createWorkingCdAccount(number: Int = 0, context: NSManagedObjectContext) -> CdAccount {
         let result = createWorkingAccountSettings(number: number).cdAccount(context: context)
         // The identity of an account is mySelf by definion.

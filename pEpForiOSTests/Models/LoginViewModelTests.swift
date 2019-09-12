@@ -21,6 +21,7 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
 
 class LoginViewModelTests: CoreDataDrivenTestBase {
     class TestVerifiableAccount: VerifiableAccountProtocol {
+
         let accountSettings: TestDataBase.AccountSettings
         let expLookedUp: XCTestExpectation
 
@@ -45,6 +46,7 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         var isManuallyTrustedImapServer = false
         var verifiableAccountDelegate: VerifiableAccountDelegate?
 
+        var keySyncEnable = false
         let isValidName = false
 
         let isValidUser = false
