@@ -252,8 +252,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame
     /// rates. Games should use this method to pause the game.
     func applicationWillResignActive(_ application: UIApplication) {
-//        Session.saveToDisk()
-        shutdownAndPrepareServicesForRestart() //!!!: This is wrong!
+        Session.main.commit()
+        shutdownAndPrepareServicesForRestart()
     }
 
     /// Use this method to release shared resources, save user data, invalidate timers, and store
@@ -263,7 +263,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// applicationWillTerminate: when the user quits.
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.shared.info("applicationDidEnterBackground")
-//        Session.saveToDisk()
+        Session.main.commit()
         shouldDestroySession = true
         gracefullyShutdownServices()
     }
@@ -300,7 +300,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
-//        Session.saveToDisk()
+        Session.main.commit()
         shouldDestroySession = true
         // Just in case, last chance to clean up. Should not be necessary though.
         cleanupPEPSessionIfNeeded()
