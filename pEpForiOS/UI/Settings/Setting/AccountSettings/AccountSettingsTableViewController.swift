@@ -64,6 +64,8 @@ UIPickerViewDataSource, UITextFieldDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.navigationController?.setToolbarHidden(true, animated: false)
+
         guard let isIphone = splitViewController?.isCollapsed else {
             return
         }

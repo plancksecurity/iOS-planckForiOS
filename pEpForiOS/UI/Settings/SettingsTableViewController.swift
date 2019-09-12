@@ -22,8 +22,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     var state = UIState()
 
-    var oldToolbarStatus : Bool = true
-
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Settings", comment: "Settings view title")
@@ -33,11 +31,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let nc = self.navigationController {
-            oldToolbarStatus = nc.isToolbarHidden
-        }
-        self.navigationController?.setToolbarHidden(true, animated: false)
 
+        navigationController?.setToolbarHidden(true, animated: false)
         viewModel.delegate = self
 
         if MiscUtil.isUnitTest() { //!!!: must go away. Check if it is needless already and rm.
