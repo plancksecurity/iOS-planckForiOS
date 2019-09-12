@@ -13,7 +13,8 @@ extension Attachment {
     public static func createFromAsset(mimeType: String,
                                        assetUrl: URL,
                                        image: UIImage,
-                                       contentDisposition: ContentDispositionType) -> Attachment {
+                                       contentDisposition: ContentDispositionType,
+                                       session: Session = Session.main) -> Attachment {
         var urlExtension = assetUrl.pathExtension
         // We do not support HEIC for inlined images. Convert to JPG.
         if urlExtension == "HEIC" && contentDisposition == .inline,
@@ -24,14 +25,16 @@ extension Attachment {
             return Attachment(data: jpgData,
                               mimeType: mime,
                               image:jpg,
-                              contentDisposition: .inline)
+                              contentDisposition: .inline,
+                              session: session)
         } else {
             return Attachment(data: image.pngData() ?? image.jpegData(compressionQuality: 1.0),
                               mimeType: mimeType,
                               fileName: assetUrl.absoluteString,
                               image: image,
                               assetUrl: assetUrl,
-                              contentDisposition: contentDisposition)
+                              contentDisposition: contentDisposition,
+                              session: session)
         }
     }
 }

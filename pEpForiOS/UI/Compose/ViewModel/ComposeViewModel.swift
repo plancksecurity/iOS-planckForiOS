@@ -132,13 +132,13 @@ class ComposeViewModel {
     }
 
     public func handleUserClickedSendButton() {
-        guard let msg = ComposeUtil.messageToSend(withDataFrom: state) else {
+        let safeState = state.makeSafe(forSession: Session.main)
+        guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
             Log.shared.warn("No message for sending")
             return
         }
         msg.save()
-        // The user crafted a new message. We must persist that.
-//        Session.saveToDisk()
+
         guard let data = state.initData else {
             Log.shared.errorAndCrash("No data")
             return

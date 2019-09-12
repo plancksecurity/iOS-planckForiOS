@@ -16,28 +16,45 @@ class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
     private lazy var mimeUtils = MimeTypeUtils()
     
     func stringFor(attachment: NSTextAttachment) -> String? {
-        if let textAttachment = attachment as? TextAttachment,
-            let theAttachment = textAttachment.attachment,
-            let mimeType = theAttachment.mimeType {
-            attachments.append(theAttachment)
-            let count = attachments.count
-            
+        guard
+            let textAttachment = attachment as? TextAttachment,
+            let attachment = textAttachment.attachment
+            else {
+                return nil
+        }
+
+        var result: String? = nil
+        // Attachments in compose MUST be on a private Session, as they are in invalid state
+        // (message == nil) and thus must not be seen nor saved on other Sessions.
+        attachment.session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let mimeType = attachment.mimeType else {
+                result = nil
+                return
+            }
+
+            me.attachments.append(attachment)
+            let count = me.attachments.count
+
             let theID = MessageID.generateUUID()
-            let theExt = mimeUtils?.fileExtension(fromMimeType: mimeType) ?? "jpg"
+            let theExt = me.mimeUtils?.fileExtension(fromMimeType: mimeType) ?? "jpg"
             let cidBase = "attached-inline-image-\(count)-\(theExt)-\(theID)"
             let cidSrc = "cid:\(cidBase)"
             let cidUrl = "cid://\(cidBase)"
-            theAttachment.fileName = cidUrl
-            
+            attachment.fileName = cidUrl
+
             let alt = String.localizedStringWithFormat(
                 NSLocalizedString(
                     "Attached Image %1$d (%2$@)",
                     comment: "Alt text for image attachment in markdown. Placeholders: Attachment number, extension."),
                 count, theExt)
 
-            return "![\(alt)](\(cidSrc))"
+            result = "![\(alt)](\(cidSrc))"
         }
-        return nil
+        return result
     }
 }
 
@@ -117,9 +134,9 @@ extension NSAttributedString {
     public func baselineOffsetRemoved() -> NSAttributedString {
         let createe = NSMutableAttributedString(attributedString: self)
         createe.addAttribute(NSAttributedString.Key.baselineOffset,
-                                                   value: 0.0,
-                                                   range: NSRange(location: 0,
-                                                                  length: createe.length)
+                             value: 0.0,
+                             range: NSRange(location: 0,
+                                            length: createe.length)
         )
         return createe
     }

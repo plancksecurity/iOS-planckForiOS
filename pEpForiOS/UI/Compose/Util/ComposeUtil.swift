@@ -124,9 +124,12 @@ struct ComposeUtil {
             // No om, no initial attachments
             return []
         }
-        let attachments = om.viewableAttachments()
+        let viewAbleAttachments = om.viewableAttachments()
             .filter { $0.contentDisposition == contentDisposition }
-        return attachments
+
+        let privateSession = Session()
+        let result = viewAbleAttachments.map { $0.clone(for: privateSession) }
+        return result
     }
 
     /// Computes whether or not attachments must be taken over in current compose mode
@@ -204,7 +207,6 @@ struct ComposeUtil {
     /// - Parameter session: session to work on. MUST NOT be the main Session.
     /// - Returns: new message with data from given state
     static public func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
-
         guard
             let from = state.from,
             let session = state.from?.session,
@@ -214,14 +216,6 @@ struct ComposeUtil {
                 Log.shared.errorAndCrash("No outbox")
                 return nil
         }
-//        let message: Message
-//        if let safeSession = session {
-//            message = Message.newObject(onSession: safeSession)
-//        } else {
-//            message = Message(uuid: MessageID.generate(), parentFolder: outbox)
-//        }
-
-
 
         let message = Message.newObject(onSession: session)
         message.uuid = MessageID.generate()
@@ -245,7 +239,6 @@ struct ComposeUtil {
         }
 
         message.imapFlags.seen = imapSeenState(forMessageToSend: message)
-
 
         return message
     }
