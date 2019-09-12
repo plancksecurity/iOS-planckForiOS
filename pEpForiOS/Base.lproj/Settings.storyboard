@@ -669,6 +669,9 @@
                                                 </textField>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MZb-TK-ECd">
                                                     <rect key="frame" x="308" y="6.5" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="pEpSyncTogglePressed:" destination="Eri-pJ-T3J" eventType="valueChanged" id="heG-Q5-pFX"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -709,10 +712,10 @@
                         <outlet property="imapPortTextfield" destination="ukB-K0-MMG" id="rGA-tC-CYA"/>
                         <outlet property="imapSecurityTextfield" destination="rCJ-UW-Jmn" id="Vz4-6T-rdl"/>
                         <outlet property="imapServerTextfield" destination="LOO-6m-Q5O" id="2JT-EB-GaR"/>
-                        <outlet property="keySyncEnableSwith" destination="MZb-TK-ECd" id="kCr-dX-jty"/>
                         <outlet property="nameTextfield" destination="RpU-jD-tx7" id="eBg-fx-AAF"/>
                         <outlet property="oauth2ActivityIndicator" destination="tUA-ey-cn7" id="r97-xz-SfT"/>
                         <outlet property="oauth2TableViewCell" destination="Bp7-9N-v9r" id="2w0-dL-3iG"/>
+                        <outlet property="pEpSyncToggle" destination="MZb-TK-ECd" id="wPh-5r-ozE"/>
                         <outlet property="passwordTableViewCell" destination="ha3-pb-H6q" id="hS0-M0-ZIT"/>
                         <outlet property="passwordTextfield" destination="74n-su-y4m" id="cdw-kQ-Z8v"/>
                         <outlet property="smtpPortTextfield" destination="f4i-WV-eyd" id="SWD-86-mCa"/>

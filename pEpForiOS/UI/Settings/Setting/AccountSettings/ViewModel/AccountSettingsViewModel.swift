@@ -12,6 +12,11 @@ import pEpIOSToolbox
 
 import PantomimeFramework
 
+protocol AccountSettingsViewModelDelegate: class {
+    func showErrorAlert(title: String, message: String, buttonTitle: String)
+    func undoPEPSyncToggle()
+}
+
 public class AccountSettingsViewModel {
     public struct ServerViewModel {
         var address: String?
@@ -54,6 +59,41 @@ public class AccountSettingsViewModel {
 
     var messageModelService: MessageModelServiceProtocol
 
+    private(set) var email: String
+
+    /// - Note: The email model is based on the assumption that imap.loginName == smtp.loginName
+    private(set) var name: String
+    private(set) var loginName: String
+    private(set) var smtpServer: ServerViewModel
+    private(set) var imapServer: ServerViewModel
+    private(set) var pEpSync: Bool
+
+    weak var verifiableDelegate: AccountVerificationResultDelegate?
+    weak var delegate: AccountSettingsViewModelDelegate?
+
+    /// If the credentials have either an IMAP or SMTP password,
+    /// it gets stored here.
+    private var originalPassword: String?
+
+    /// If there was OAUTH2 for this account, here is a current token.
+    /// This trumps both the `originalPassword` and a password given by the user
+    /// via the UI.
+    /// - Note: For logins that require it, there must be an up-to-date token
+    ///         for the verification be able to succeed.
+    ///         It is extracted from the existing server credentials on `init`.
+    private var accessToken: OAuth2AccessTokenProtocol?
+
+    private enum AccountSettingsError: Error, LocalizedError {
+        case accountNotFound, failToModifyAccountPEPSync
+
+        public var errorDescription: String? {
+            switch self {
+            case .accountNotFound, .failToModifyAccountPEPSync:
+                return NSLocalizedString("Something went wrong, please try again later", comment: "AccountSettings viewModel no account error")
+            }
+        }
+    }
+
     public init(account: Account, messageModelService: MessageModelServiceProtocol) {
         self.messageModelService = messageModelService
 
@@ -63,7 +103,6 @@ public class AccountSettingsViewModel {
         self.email = account.user.address
         self.loginName = account.imapServer?.credentials.loginName ?? ""
         self.name = account.user.userName ?? ""
-        self.keySyncEnable = isKeySyncEnable(account: account)
 
         if let server = account.imapServer {
             self.originalPassword = server.credentials.password
@@ -95,36 +134,15 @@ public class AccountSettingsViewModel {
                 Log.shared.errorAndCrash("Supposed to do OAUTH2, but no existing token")
             }
         }
+        let pEpSyncState = try? account.isPEPSyncEnable()
+        pEpSync = pEpSyncState ?? false
     }
-
-    private(set) var email: String
-
-    /// - Note: The email model is based on the assumption that imap.loginName == smtp.loginName
-    private(set) var name: String
-    private(set) var loginName: String
-    private(set) var smtpServer: ServerViewModel
-    private(set) var imapServer: ServerViewModel
-
-    weak var delegate: AccountVerificationResultDelegate?
-
-    /// If the credentials have either an IMAP or SMTP password,
-    /// it gets stored here.
-    private var originalPassword: String?
-
-    /// If there was OAUTH2 for this account, here is a current token.
-    /// This trumps both the `originalPassword` and a password given by the user
-    /// via the UI.
-    /// - Note: For logins that require it, there must be an up-to-date token
-    ///         for the verification be able to succeed.
-    ///         It is extracted from the existing server credentials on `init`.
-    private var accessToken: OAuth2AccessTokenProtocol?
 
     func update(loginName: String,
                 name: String,
                 password: String? = nil,
                 imap: ServerViewModel,
-                smtp: ServerViewModel,
-                keySyncEnable: Bool) {
+                smtp: ServerViewModel) {
         var theVerifier = verifiableAccount ??
             VerifiableAccount(messageModelService: messageModelService)
         theVerifier.verifiableAccountDelegate = self
@@ -133,7 +151,6 @@ public class AccountSettingsViewModel {
         theVerifier.address = email
         theVerifier.userName = name
         theVerifier.loginName = loginName
-        theVerifier.keySyncEnable = keySyncEnable
 
         if isOAuth2 {
             if self.accessToken == nil {
@@ -171,7 +188,7 @@ public class AccountSettingsViewModel {
         do {
             try theVerifier.verify()
         } catch {
-            delegate?.didVerify(result: .noImapConnectData)
+            verifiableDelegate?.didVerify(result: .noImapConnectData)
         }
     }
 
@@ -190,6 +207,28 @@ public class AccountSettingsViewModel {
             assert(sectionIsValid(section: section), "Section out of range")
             return headers[section]
         }
+    }
+
+    func pEpSync(enable: Bool) {
+        guard let account = Account.by(address: email) else {
+            Log.shared.errorAndCrash("Account for email not found")
+            delegate?.undoPEPSyncToggle()
+            showErrorAlert(message: AccountSettingsError.accountNotFound.localizedDescription)
+            return
+        }
+
+        do {
+            try account.pEpSync(enable: enable)
+        } catch {
+            delegate?.undoPEPSyncToggle()
+            showErrorAlert(message: AccountSettingsError.failToModifyAccountPEPSync.localizedDescription)
+        }
+    }
+
+    private func showErrorAlert(message: String) {
+        let title = NSLocalizedString("Error", comment: "Fail to update pEpSync value alert title")
+        let buttonTitle = NSLocalizedString("OK", comment: "OK button for pEpSyncError alert")
+        delegate?.showErrorAlert(title: title, message: message, buttonTitle: buttonTitle)
     }
 
     private func server(from viewModel:ServerViewModel, serverType:Server.ServerType,
@@ -226,18 +265,18 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
         case .success(()):
             do {
                 try verifiableAccount?.save { [weak self] _ in
-                    self?.delegate?.didVerify(result: .ok)
+                    self?.verifiableDelegate?.didVerify(result: .ok)
                 }
             } catch {
                 Log.shared.errorAndCrash(error: error)
-                delegate?.didVerify(result: .ok)
+                verifiableDelegate?.didVerify(result: .ok)
             }
         case .failure(let error):
             if let imapError = error as? ImapSyncError {
-                delegate?.didVerify(
+                verifiableDelegate?.didVerify(
                     result: .imapError(imapError))
             } else if let smtpError = error as? SmtpSendError {
-                delegate?.didVerify(
+                verifiableDelegate?.didVerify(
                     result: .smtpError(smtpError))
             } else {
                 Log.shared.errorAndCrash(error: error)
