@@ -28,7 +28,7 @@ extension Attachment {
                               contentDisposition: .inline,
                               session: session)
         } else {
-            return Attachment(data: image.pngData() ?? image.jpegData(compressionQuality: 1.0),
+            return Attachment(data: image.jpegData(compressionQuality: 0.7),
                               mimeType: mimeType,
                               fileName: assetUrl.absoluteString,
                               image: image,
