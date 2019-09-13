@@ -87,7 +87,7 @@ class EmailViewController: BaseTableViewController {
     }
 
     private func showPepRating() {
-        guard let privacyStatusIcon = showPepRating(pEpRating: message?.pEpRating()) else {
+        guard let privacyStatusIcon = showPepRating(pEpRating: message?.pEpRating(), showGreyBadge: false) else {
             return
         }
         guard
@@ -115,7 +115,7 @@ class EmailViewController: BaseTableViewController {
     private func setupToolbar() {
 
         let item = UIBarButtonItem.getPEPButton(
-            action: #selector(showSettingsViewController),
+            action: #selector(showPepActions),
             target: self)
         item.tag = BarButtonType.settings.rawValue
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
@@ -310,6 +310,41 @@ class EmailViewController: BaseTableViewController {
 
     // MARK: - IBActions
 
+    @objc private func showPepActions() {
+        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+        actionSheetController.addAction(UIAlertAction(
+            title: NSLocalizedString("Privacy Status",
+                                     comment: "action sheet title 1"),
+            style: .default) { [weak self] (action) in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "lost myself")
+                    return
+                }
+                me.showHandshakeView()
+        })
+        actionSheetController.addAction(UIAlertAction(
+            title: NSLocalizedString("Settings",
+                                     comment: "acction sheet title 2"),
+            style: .default) {[weak self] (action) in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "lost myself")
+                    return
+                }
+                me.showSettingsViewController()
+        })
+        present(actionSheetController, animated: true)
+
+    }
+
+    @objc private func showHandshakeScreen() {
+        splitViewController?.preferredDisplayMode = .allVisible
+        guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
+            let vc = nav.topViewController else {
+                return
+        }
+        UIUtils.presentSettings(on: vc, appConfig: appConfig)
+    }
+
     @objc private func showSettingsViewController() {
         splitViewController?.preferredDisplayMode = .allVisible
         guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
@@ -409,7 +444,7 @@ class EmailViewController: BaseTableViewController {
         Message.imapDelete(messages: [message])
     }
 
-    @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer) {
+    @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer? = nil) {
         if (splitViewController?.isCollapsed) ?? true {
             performSegue(withIdentifier: .segueHandshakeCollapsed, sender: self)
 
