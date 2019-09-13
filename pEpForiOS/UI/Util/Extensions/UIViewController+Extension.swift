@@ -14,29 +14,32 @@ extension UIViewController {
         return presentedViewController != nil
     }
 
-    @discardableResult func showPepRating(pEpRating: PEPRating?, pEpProtection: Bool = true) -> UIView? {
-        if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
-            // according to apple's design guidelines ('Hit Targets'):
-            // https://developer.apple.com/design/tips/
-            let minimumHittestDimension: CGFloat = 44
-            let ImageWidht = self.navigationController!.navigationBar.bounds.height - 10
-            let img2 = img.resized(newWidth: ImageWidht)
-            let v = UIImageView(image: img2)
-            v.contentMode = .center // DON'T stretch the image, leave it at original size
+    @discardableResult func showPepRating(pEpRating: PEPRating?, pEpProtection: Bool = true, showGreyBadge: Bool = true) -> UIView? {
+        if pEpRating?.uiColor() != UIColor.gray {
+            if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
+                // according to apple's design guidelines ('Hit Targets'):
+                // https://developer.apple.com/design/tips/
+                let minimumHittestDimension: CGFloat = 44
+                let ImageWidht = self.navigationController!.navigationBar.bounds.height - 10
+                let img2 = img.resized(newWidth: ImageWidht)
+                let badgeView = UIImageView(image: img2)
+                badgeView.contentMode = .center // DON'T stretch the image, leave it at original size
 
-            // try to make the hit area of the icon a minimum of 44x44
-            let desiredHittestDimension: CGFloat = min(
-                minimumHittestDimension,
-                navigationController?.navigationBar.frame.size.height ?? minimumHittestDimension)
-            v.bounds.size = CGSize(width: desiredHittestDimension, height: desiredHittestDimension)
+                // try to make the hit area of the icon a minimum of 44x44
+                let desiredHittestDimension: CGFloat = min(
+                    minimumHittestDimension,
+                    navigationController?.navigationBar.frame.size.height ?? minimumHittestDimension)
+                badgeView.bounds.size = CGSize(width: desiredHittestDimension, height: desiredHittestDimension)
 
-            navigationItem.titleView = v
-            v.isUserInteractionEnabled = true
-            return v
-        } else {
-            navigationItem.titleView = nil
-            return nil
+                navigationItem.titleView = badgeView
+                badgeView.isUserInteractionEnabled = true
+                return badgeView
+            } else {
+                navigationItem.titleView = nil
+                return nil
+            }
         }
+        return nil
     }
 
     func presentKeySyncWizard(meFPR: String,
