@@ -24,22 +24,29 @@ class SuggestViewModel {
     struct Row {
         public let name: String
         public let email: String
+        let addressBookID: String?
 
-        fileprivate init(name: String, email: String) {
+        fileprivate init(name: String, email: String, addressBookID: String? = nil) {
             self.name = name
             self.email = email
+            self.addressBookID = addressBookID
         }
 
         fileprivate init(identity: Identity) {
             name = identity.userName ?? ""
             email = identity.address
+            addressBookID = identity.addressBookID
         }
+
+        //BUFF: inti for contact
+
+
     }
 
     weak public var resultDelegate: SuggestViewModelResultDelegate?
     weak public var delegate: SuggestViewModelDelegate?
 
-    private var identities = [Identity]()
+    private var rows = [Row]()
     private let minNumberSearchStringChars: UInt
     private let showEmptyList = false
 
@@ -53,34 +60,37 @@ class SuggestViewModel {
     }
 
     public func handleRowSelected(at index: Int) {
-        guard index < identities.count else {
+        guard index < rows.count else {
             Log.shared.errorAndCrash("Out of bounds")
             return
         }
-        resultDelegate?.suggestViewModelDidSelectContact(identity: identities[index])
+        let selectedRow = rows[index]
+        let selectedIdentity = Identity(address: selectedRow.email)
+        // Potetially update data from Apple Contacts
+        if selectedIdentity.update(userName: selectedRow.name,
+                                   addressBookID: selectedRow.addressBookID) {
+            // Save identity if it has been updated
+            Session.main.commit()
+        }
+        resultDelegate?.suggestViewModelDidSelectContact(identity: selectedIdentity)
     }
 
     public var numRows: Int {
-        return identities.count
+        return rows.count
     }
 
-    public func row(at index: Int) -> Row {
-        guard index < identities.count else {
-            Log.shared.errorAndCrash("Index out of bounds")
-            return Row(name: "Problem", email: "child")
-        }
-        let identity = identities[index]
-
-        return Row(identity: identity)
+    public subscript(index: Int) -> Row {
+        return rows[index]
     }
 
     public func updateSuggestion(searchString: String) {
-        identities.removeAll()
-        let search = searchString.cleanAttachments
+        rows.removeAll()
+        let search = searchString
         if (search.count >= minNumberSearchStringChars) {
-            identities = Identity.by(snippet: search)
+            let identities = Identity.by(snippet: search)
+            rows = identities.map { Row(identity: $0) }
         }
-        let showResults = identities.count > 0 || showEmptyList
+        let showResults = rows.count > 0 || showEmptyList
         delegate?.suggestViewModelDidResetModel(showResults: showResults)
         resultDelegate?.suggestViewModel(self, didToggleVisibilityTo: showResults)
     }
