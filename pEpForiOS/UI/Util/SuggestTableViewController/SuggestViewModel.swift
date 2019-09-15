@@ -125,6 +125,7 @@ class SuggestViewModel {
             rows = Row.rows(fromIdentities: identities)
             informDelegatesModelChanged()
         }
+
         let op = SelfReferencingOperation() { [weak self] (operation) in
             guard let me = self else {
                 // self == nil is a valid case here. The view might have been dismissed.
@@ -132,6 +133,7 @@ class SuggestViewModel {
             }
             let contacts = AddressBook.shared.searchContacts(searchterm: searchString)
             me.updateRows(with: identities, contacts: contacts, callingOperation: operation)
+            AppSettings.userHasBeenAskedForContactAccessPermissions = true
         }
         workQueue.addOperation(op)
     }

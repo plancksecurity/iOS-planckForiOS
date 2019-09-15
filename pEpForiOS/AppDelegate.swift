@@ -64,8 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    /// Signals al services to start/resume.
-    /// Also signals it is save to use PEPSessions (again)
+    /// Tell the model that is is save to start services.
     private func startServices() {
         do {
             try messageModelService?.start()
@@ -167,9 +166,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // Safely restarts all services
     private func shutdownAndPrepareServicesForRestart() {
+        // For better  user acceptance we want to ask the user for contact access permissions in the
+        // moment he uses a feature that requires access. Thus we do not touch CNContacts before
+        // that happened.
+        let shouldUpdateIdentities = AppSettings.userHasBeenAskedForContactAccessPermissions
         // We cancel the Network Service to make sure it is idle and ready for a clean restart.
         // The actual restart of the services happens in ReplicationServiceDelegate callbacks.
-        messageModelService?.cancel()
+        messageModelService?.cancel(updateIdentities: shouldUpdateIdentities)
     }
 
     private func askUserForNotificationPermissions() {
