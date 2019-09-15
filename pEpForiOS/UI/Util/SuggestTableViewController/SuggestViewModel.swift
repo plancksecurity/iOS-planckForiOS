@@ -131,9 +131,10 @@ class SuggestViewModel {
                 // self == nil is a valid case here. The view might have been dismissed.
                 return
             }
-            let contacts = AddressBook.shared.searchContacts(searchterm: searchString)
+            let contacts = AddressBook.searchContacts(searchterm: searchString)
             me.updateRows(with: identities, contacts: contacts, callingOperation: operation)
             AppSettings.userHasBeenAskedForContactAccessPermissions = true
+
         }
         workQueue.addOperation(op)
     }
