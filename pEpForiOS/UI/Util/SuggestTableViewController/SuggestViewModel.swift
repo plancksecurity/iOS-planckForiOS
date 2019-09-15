@@ -85,6 +85,7 @@ class SuggestViewModel {
     // MARK: - API
 
     public func handleRowSelected(at index: Int) {
+        workQueue.cancelAllOperations()
         guard index < rows.count else {
             Log.shared.errorAndCrash("Out of bounds")
             return
@@ -161,6 +162,7 @@ extension SuggestViewModel {
             mergedRows = Row.rows(fromIdentities: identities)
             for contact in contacts {
                 let name = contact.givenName + " " + contact.familyName
+                var contactRowsToAdd = [Row]()
                 for email in contact.emailAddresses {
                     if let idx = emailsOfIdentities.firstIndex(of: email.value as String) {
                         // An Identity fort he contact exists already. Update it and ignore the
@@ -168,14 +170,18 @@ extension SuggestViewModel {
                         let identitity = identities[idx]
                         identitity.update(userName: name, addressBookID: contact.identifier)
                         self?.needsSave = true
+                        contactRowsToAdd.removeAll()
+                        break
                     } else {
                         // No Identity exists for the contact. Show it.
                         let row = Row(name: name,
                                       email: email.value as String,
                                       addressBookID: contact.identifier)
-                        mergedRows.append(row)
+                        contactRowsToAdd.append(row)
+
                     }
                 }
+                mergedRows.append(contentsOf: contactRowsToAdd)
             }
         }
         return mergedRows
