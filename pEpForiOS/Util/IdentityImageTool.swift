@@ -41,13 +41,23 @@ extension IdentityImageTool {
     }
 }
 
+// MARK: - ChacheObject
+
+extension IdentityImageTool {
+    struct CacheObject: Hashable {
+        let image: UIImage
+        let cnContactHasBeenTakenIntoAccount: Bool
+    }
+
+}
+
 class IdentityImageTool {
     static private let cacheAccessSyncQueue = DispatchQueue(label: "security.pep.IdentityImageTool.chacheSyncQueue",
                                                             qos: .userInitiated)
-    static private var _imageCache = [IdentityKey:UIImage]()
-    static private var imageCache: [IdentityKey:UIImage] {
+    static private var _imageCache = [IdentityKey:CacheObject]()
+    static private var imageCache: [IdentityKey:CacheObject] {
         get {
-            var result = [IdentityKey:UIImage]()
+            var result = [IdentityKey:CacheObject]()
             cacheAccessSyncQueue.sync {
                 result = _imageCache
             }
@@ -65,7 +75,18 @@ class IdentityImageTool {
     }
 
     func cachedIdentityImage(for key: IdentityKey) -> UIImage? {
-        return IdentityImageTool.imageCache[key]
+        guard let cache = IdentityImageTool.imageCache[key] else {
+            return nil
+        }
+        if
+            let cache = IdentityImageTool.imageCache[key],
+            let _ = key.addressBookId, !cache.cnContactHasBeenTakenIntoAccount {
+            // The cache holds image that is not from contacts, but we have a CNContact.identifier
+            // now. Invalidate cache and try to get image from contacts.
+            IdentityImageTool.imageCache.removeValue(forKey: key)
+            return nil
+        }
+        return cache.image
     }
 
 
@@ -79,13 +100,14 @@ class IdentityImageTool {
         }
 
         var image:UIImage?
-
+        var contactHasBeenCheckedForImage = false
         if let addressBookID = identityKey.addressBookId {
             // Get image from system AddressBook if any
             if let contact = AddressBook.contactBy(addressBookID: addressBookID),
                 let imgData = contact.thumbnailImageData {
                 image = UIImage(data: imgData)
             }
+            contactHasBeenCheckedForImage = true
         }
 
         if image == nil {
@@ -97,14 +119,16 @@ class IdentityImageTool {
                 let namePart = identityKey.address.namePartOfEmail()
                 initials = namePart.initials()
             }
-            image =  identityImageFromName(initials: initials,
-                                              size: imageSize,
-                                              textColor: textColor,
-                                              imageBackgroundColor: backgroundColor)
+            image = identityImageFromName(initials: initials,
+                                          size: imageSize,
+                                          textColor: textColor,
+                                          imageBackgroundColor: backgroundColor)
         }
         if let safeImage = image {
             // save image to cache
-            IdentityImageTool.imageCache[identityKey] = safeImage
+            IdentityImageTool.imageCache[identityKey] =
+                IdentityImageTool.CacheObject(image: safeImage,
+                                              cnContactHasBeenTakenIntoAccount: contactHasBeenCheckedForImage)
         }
         return image
     }
