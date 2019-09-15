@@ -2027,7 +2027,6 @@
 				434F40931EB0B173002FBF0D /* ObservableValue.swift */,
 				15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */,
 				155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */,
-				1543B6A722ABDAAE002B59AB /* Identity+pEp.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2138,6 +2137,7 @@
 				155475632137FD96005A52D0 /* FolderType+Extensions.swift */,
 				15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */,
 				433E7437225B564400B84CD9 /* Account+Extension.swift */,
+				1543B6A722ABDAAE002B59AB /* Identity+pEp.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
