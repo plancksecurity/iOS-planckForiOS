@@ -64,8 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    /// Signals al services to start/resume.
-    /// Also signals it is save to use PEPSessions (again)
+    /// Tell the model that is is save to start services.
     private func startServices() {
         do {
             try messageModelService?.start()
@@ -78,9 +77,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
     private func gracefullyShutdownServices() {
-        // Stop importing contacts
-        AddressBook.shared.cancelImport()
-
         guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
             else {
                 Log.shared.errorAndCrash("Will not start background sync, pending %d",
@@ -127,6 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /**
      If pEp has been reinitialized, delete all folders and messsages.
      */
+    //!!!: rm all
     func deleteAllFolders(pEpReInitialized: Bool) {
         //!!! This is a mess. Keeept as a reminder to think of whether or not we want to keep the
         //      Settings.app setting.
@@ -171,38 +168,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // Safely restarts all services
     private func shutdownAndPrepareServicesForRestart() {
+        // For better  user acceptance we want to ask the user for contact access permissions in the
+        // moment he uses a feature that requires access. Thus we do not touch CNContacts before
+        // that happened.
+        let shouldUpdateIdentities = AppSettings.userHasBeenAskedForContactAccessPermissions
         // We cancel the Network Service to make sure it is idle and ready for a clean restart.
         // The actual restart of the services happens in ReplicationServiceDelegate callbacks.
-        messageModelService?.cancel()
+        messageModelService?.cancel(updateIdentities: shouldUpdateIdentities)
     }
 
-    private func askUserForPermissionsAndStartImportingContacts() {
+    private func askUserForNotificationPermissions() {
         UserNotificationTool.resetApplicationIconBadgeNumber()
-        UserNotificationTool.askForPermissions() { [weak self] _ in
-            // We do not care about whether or not the user granted permissions to
-            // post notifications here (e.g. we ignore granted)
-            // The calls are nested to avoid simultaniously showing permissions alert for notifications
-            // and contact access.
-            self?.askForContactAccessPermissionsAndImportContacts()
-        }
-    }
-
-    private func askForContactAccessPermissionsAndImportContacts() {
-        // We dispatch this to tweak the timing to avoid gliches with the different Permission
-        // requests at the same time (AllowNotifications, AllowContacts)
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.importContacts()
-        }
-    }
-
-    private func importContacts() {
-        DispatchQueue.global(qos: .background).async {
-            AddressBook.shared.startImport()
-        }
+        UserNotificationTool.askForPermissions()
     }
 
     // MARK: - UIApplicationDelegate
@@ -239,7 +216,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
-        askUserForPermissionsAndStartImportingContacts()
+        askUserForNotificationPermissions()
 
         let result = setupInitialViewController()
 
@@ -274,10 +251,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Desparate try to wokaround lagging PEPSessionProvider issue (IOS-1769)
         // The suspect is that PEPSessionProvider has problems when the first call for a PEPSession is done from a non-main thread.
         let _ = PEPSession()
-        // We start import here instead of applicationDidBecomeActive to avoid gliches asking the
-        // user for permissions twice (once from didFinishLaunching, once from
-        // applicationDidBecomeActive)
-        askForContactAccessPermissionsAndImportContacts()
     }
 
     /// Restart any tasks that were paused (or not yet started) while the application was inactive.

@@ -15,16 +15,6 @@ import MessageModel
  `settingsHandler`.
  */
 struct AppSettings {
-    static public let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
-    static public let keyKeySyncEnabled = "keyStartpEpSync"
-    static public let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
-    static public let keyDefaultAccountAddress = "keyDefaultAccountAddress"
-    static public let keyThreadedViewEnabled = "keyThreadedViewEnabled"
-    static public let keyPassiveMode = "keyPassiveMode"
-    static public let keyLastKnowDeviceGroupStateRawValue = "keyLastKnowDeviceGroupStateRawValue"
-    static public let keyExtraKeysEditable = "keyExtraKeysEditable"
-    static public let keyShouldShowTutorialWizard = "keyShouldShowTutorialWizard"
-
     /**
      The actual implementation of `AppSettingsProtocol` to defer to.
      */
@@ -101,6 +91,15 @@ struct AppSettings {
         }
         set {
             settingsHandler.shouldShowTutorialWizard = newValue
+        }
+    }
+
+    static var userHasBeenAskedForContactAccessPermissions: Bool {
+        get {
+            return settingsHandler.userHasBeenAskedForContactAccessPermissions
+        }
+        set {
+            settingsHandler.userHasBeenAskedForContactAccessPermissions = newValue
         }
     }
 

@@ -191,7 +191,6 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     }
 
     func showSuggestions(forRowAt indexPath: IndexPath) {
-        suggestionsChildViewController?.view.isHidden = false
         updateSuggestTable(suggestionsForCellAt: indexPath)
         tableView.isScrollEnabled = false
     }
