@@ -297,8 +297,7 @@ extension MessageViewModel: Equatable {
 extension MessageViewModel {
 
     private func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> Operation {
-        let session = Session()
-        let safeMsg = message.safeForSession(session)
+
 
         let getBodyPeekOperation = SelfReferencingOperation { [weak self] operation in
             guard
@@ -309,6 +308,8 @@ extension MessageViewModel {
             guard let me = self else {
                 return
             }
+            let session = Session()
+            let safeMsg = me.message.safeForSession(session)
             session.performAndWait {
                 guard !operation.isCancelled else {
                     return
@@ -329,13 +330,14 @@ extension MessageViewModel {
     }
 
     private func getSecurityBadgeOperation(completion: @escaping (UIImage?) -> ()) -> Operation {
-        let session = Session()
-        let safeMsg = message.safeForSession(session)
+
         
         let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
             guard let me = self else {
                 return
             }
+            let session = Session()
+            let safeMsg = me.message.safeForSession(session)
             var badgeImage: UIImage? = nil
             session.performAndWait {
                 guard let operation = operation, !operation.isCancelled else {

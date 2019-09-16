@@ -156,7 +156,7 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
     }
 
     @discardableResult private func createAndSaveSecondAccount () -> Account {
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1)
+        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
         secondAccount.save()
         return secondAccount
     }

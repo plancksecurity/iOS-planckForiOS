@@ -41,7 +41,7 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
                 return
         }
 
-        guard let cur = CdMessage.search(message: message, inAccount: cdAccount) else {
+        guard let cur = CdMessage.search(message: message, inAccount: cdAccount, context: moc) else {
             XCTFail("No message")
             return
         }
@@ -64,7 +64,11 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
             XCTAssertNil(error)
         })
 
-        guard let again = CdMessage.search(message: message, inAccount: cdAccount) else {
+        guard
+            let again = CdMessage.search(message: message,
+                                           inAccount: cdAccount,
+                                           context: moc)
+            else {
             XCTFail("No message")
             return
         }

@@ -64,6 +64,6 @@ class ExtraKeysSettingViewModel {
 extension ExtraKeysSettingViewModel {
 
     private func reset() {
-        extraKeys = ExtraKey.extraKeys
+        extraKeys = ExtraKey.extraKeys()
     }
 }

@@ -44,7 +44,7 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
 
         // Sync both acocunts and remember what we got before starting the actual test
         TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
-        let msgsBeforeId2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id1)
+        let msgsBeforeId2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id1, in: moc)
 
         // Create mails from ID1 to ID2 with attachments (inlined or not)
         let dateBeforeSend = Date().addingTimeInterval(-1.0)
@@ -71,7 +71,7 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
         TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
 
         // Now let's see what we got.
-        let msgsAfterId2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id1)
+        let msgsAfterId2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id1, in: moc)
         XCTAssertEqual(msgsAfterId2.count, msgsBeforeId2.count + numMailsToSend)
 
         // Ignore messages that have not been created by this test

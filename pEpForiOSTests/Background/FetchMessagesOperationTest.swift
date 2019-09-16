@@ -92,9 +92,13 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
                 return
         }
         syncFoldersOp.addDependency(imapLogin)
-        syncFoldersOp.completionBlock = {
+        syncFoldersOp.completionBlock = { [weak self] in
+            guard let me = self else {
+                pEpForiOS.Log.shared.errorAndCrash("Lost myself")
+                return
+            }
             syncFoldersOp.completionBlock = nil
-            guard let _ = CdFolder.all() as? [CdFolder] else {
+            guard let _ = CdFolder.all(in: me.moc) as? [CdFolder] else {
                 XCTFail("No folders?")
                 return
             }
@@ -105,8 +109,12 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         let createRequiredFoldersOp = CreateRequiredFoldersOperation(parentName: #function,
                                                                      imapSyncData: imapSyncData)
         createRequiredFoldersOp.addDependency(syncFoldersOp)
-        createRequiredFoldersOp.completionBlock = {
-            guard let _ = CdFolder.all() as? [CdFolder] else {
+        createRequiredFoldersOp.completionBlock = { [weak self] in
+            guard let me = self else {
+                pEpForiOS.Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let _ = CdFolder.all(in: me.moc) as? [CdFolder] else {
                 XCTFail("No folders?")
                 return
             }
@@ -129,13 +137,17 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         // fetch messages
         let expMessagesSynced = expectation(description: "expMessagesSynced")
         let fetchOp = FetchMessagesOperation(parentName: #function, imapSyncData: imapSyncData)
-        fetchOp.completionBlock = {
-            guard let _ = CdMessage.all() as? [CdMessage] else {
+        fetchOp.completionBlock = { [weak self] in
+            guard let me = self else {
+                pEpForiOS.Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let _ = CdMessage.all(in: me.moc) as? [CdMessage] else {
                 XCTFail("No messages?")
                 return
             }
             // ... remember count ...
-            msgCountBefore = CdMessage.all()?.count
+            msgCountBefore = CdMessage.all(in: me.moc)?.count
             expMessagesSynced.fulfill()
         }
         queue.addOperation(fetchOp)
@@ -143,12 +155,16 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         // ... and fetch again.
         let expMessagesSynced2 = expectation(description: "expMessagesSynced2")
         let fetch2Op = FetchMessagesOperation(parentName: #function, imapSyncData: imapSyncData)
-        fetch2Op.completionBlock = {
-            guard let _ = CdMessage.all() as? [CdMessage] else {
+        fetch2Op.completionBlock = { [weak self] in
+            guard let me = self else {
+                pEpForiOS.Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let _ = CdMessage.all(in: me.moc) as? [CdMessage] else {
                 XCTFail("No messages?")
                 return
             }
-            let msgCountAfter = CdMessage.all()?.count
+            let msgCountAfter = CdMessage.all(in: me.moc)?.count
             // no mail should no have been dupliccated
             XCTAssertEqual(msgCountBefore, msgCountAfter)
             expMessagesSynced2.fulfill()

@@ -125,23 +125,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     //!!!: rm all
     func deleteAllFolders(pEpReInitialized: Bool) {
-        if pEpReInitialized {
-            // NSBatchDeleteRequest doesn't work so well here because of the need
-            // to nullify the relations. This is used only for internal testing, so the
-            // performance is neglible.
-            let folders = CdFolder.all() as? [CdFolder] ?? []
-            for f in folders {
-                f.delete()
-            }
-
-            let msgs = CdMessage.all() as? [CdMessage] ?? []
-            for m in msgs {
-                m.delete()
-            }
-
-            CdHeaderField.deleteOrphans()
-            Record.saveAndWait()
-        }
+        //!!! This is a mess. Keeept as a reminder to think of whether or not we want to keep the
+        //      Settings.app setting.
+//        if pEpReInitialized {
+//            // NSBatchDeleteRequest doesn't work so well here because of the need
+//            // to nullify the relations. This is used only for internal testing, so the
+//            // performance is neglible.
+//            let folders = CdFolder.all() as? [CdFolder] ?? []
+//            for f in folders {
+//                f.delete()
+//            }
+//
+//            let msgs = CdMessage.all() as? [CdMessage] ?? []
+//            for m in msgs {
+//                m.delete()
+//            }
+//
+//            CdHeaderField.deleteOrphans()
+//            Record.saveAndWait()
+//        }
     }
 
     private func setupServices() {
@@ -200,7 +202,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Desparate try to wokaround lagging PEPSessionProvider issue (IOS-1769)
         // The suspect is that PEPSessionProvider has problems when the first call for a PEPSession is done from a non-main thread.
-        let _ = PEPSession()
+        let _ = try! PEPSession().trustwords(forFingerprint: "0000-0000-0000-0000-0000",
+                                             languageID: "de",
+                                             shortened: true)
 
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
 
@@ -225,6 +229,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame
     /// rates. Games should use this method to pause the game.
     func applicationWillResignActive(_ application: UIApplication) {
+        UIApplication.hideStatusBarNetworkActivitySpinner()
+        Session.main.commit()
         shutdownAndPrepareServicesForRestart()
     }
 
@@ -234,7 +240,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// If your application supports background execution, this method is called instead of
     /// applicationWillTerminate: when the user quits.
     func applicationDidEnterBackground(_ application: UIApplication) {
+        UIApplication.hideStatusBarNetworkActivitySpinner()
         Log.shared.info("applicationDidEnterBackground")
+        Session.main.commit()
         shouldDestroySession = true
         gracefullyShutdownServices()
     }
@@ -267,6 +275,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
+        UIApplication.hideStatusBarNetworkActivitySpinner()
+        Session.main.commit()
         shouldDestroySession = true
         // Just in case, last chance to clean up. Should not be necessary though.
         cleanupPEPSessionIfNeeded()
@@ -279,7 +289,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Log.shared.error("no networkService")
             return
         }
-        
+
         messageModelService.checkForNewMails() {[unowned self] (numMails: Int?) in
             guard let numMails = numMails else {
                 self.cleanupAndCall(completionHandler: completionHandler, result: .failed)

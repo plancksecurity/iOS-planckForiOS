@@ -14,7 +14,7 @@ protocol AttachmentsViewHelperDelegate: class {
     /**
      You can rely on this method always be called on the UI thread.
      */
-    func didCreate(attachmentsView: UIView?, message: Message)
+    func didCreate(attachmentsView: UIView?)
 }
 
 class AttachmentsViewHelper {
@@ -31,8 +31,12 @@ class AttachmentsViewHelper {
 
     let mimeTypes = MimeTypeUtils()
     var buildOp: AttachmentsViewOperation?
-    let operationQueue = OperationQueue()
-
+    let operationQueue: OperationQueue = {
+        let createe = OperationQueue()
+        createe.qualityOfService = .userInitiated
+        return createe
+    }()
+    
     init(delegate: AttachmentsViewHelperDelegate?) {
         self.delegate = delegate
     }
@@ -67,9 +71,9 @@ class AttachmentsViewHelper {
                                                    attachment: attachment)
                 case .docAttachment(let attachment):
                     var resultView: AttachmentSummaryView?
-                    let session = Session()
-                    let safeAttachment = attachment.safeForSession(session) //???: why do we need a new session here
+                    let session = Session.main
                     session.performAndWait {
+                        let safeAttachment = attachment.safeForSession(session)
                         let dic = UIDocumentInteractionController()
                         dic.name = safeAttachment.fileName
 
@@ -88,7 +92,7 @@ class AttachmentsViewHelper {
                 }
         }
         imageView.attachmentViewContainers = viewContainers
-        delegate?.didCreate(attachmentsView: imageView, message: theBuildOp.message)
+        delegate?.didCreate(attachmentsView: imageView)
     }
 
     func updateQuickMetaData(message: Message) {
