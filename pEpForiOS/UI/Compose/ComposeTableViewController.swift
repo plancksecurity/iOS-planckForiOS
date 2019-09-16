@@ -116,9 +116,9 @@ extension ComposeTableViewController {
             return
         }
         //Not so nice. The view(controller) should not know about state and protection.
-        var view = showPepRating(pEpRating: pEpRating, pEpProtection: pEpProtected, showGreyBadge: false)
+        var view = showNavigationBarSecurityBadge(pEpRating: pEpRating)
         if view == nil {
-            view = showPepLogo(pEpRating: pEpRating)
+            view = showNavigationBarPEpLogo(pEpRating: pEpRating)
         }
         if view != nil {
             if vm.state.canHandshake() || vm.state.userCanToggleProtection() {

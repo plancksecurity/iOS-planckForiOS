@@ -87,7 +87,7 @@ class EmailViewController: BaseTableViewController {
     }
 
     private func showPepRating() {
-        showPepRating(pEpRating:  message?.pEpRating(), showGreyBadge: false)
+        showNavigationBarSecurityBadge(pEpRating: message?.pEpRating())
     }
 
     private final func loadDatasource(_ file: String) {

@@ -14,9 +14,8 @@ extension UIViewController {
         return presentedViewController != nil
     }
 
-    @discardableResult func showPepRating(pEpRating: PEPRating?,
-                                          pEpProtection: Bool = true,
-                                          showGreyBadge: Bool = true) -> UIView? {
+    @discardableResult func showNavigationBarSecurityBadge(pEpRating: PEPRating?,
+                                          pEpProtection: Bool = true) -> UIView? {
         if pEpRating?.uiColor() != UIColor.gray {
             if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
                 // according to apple's design guidelines ('Hit Targets'):
@@ -44,7 +43,7 @@ extension UIViewController {
         return nil
     }
 
-    func showPepLogo(pEpRating: PEPRating?) -> UIView? {
+    func showNavigationBarPEpLogo(pEpRating: PEPRating?) -> UIView? {
         if pEpRating?.uiColor() == UIColor.gray {
             if let img = UIImage(named: "icon-settings") {
                 let minimumHittestDimension: CGFloat = 44
@@ -67,24 +66,6 @@ extension UIViewController {
         }
         return nil
     }
-
-    func imageWith(name: String?) -> UIImage? {
-        let frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        let nameLabel = UILabel(frame: frame)
-        nameLabel.textAlignment = .center
-        nameLabel.backgroundColor = .lightGray
-        nameLabel.textColor = .white
-        nameLabel.font = UIFont.boldSystemFont(ofSize: 40)
-        nameLabel.text = name
-        UIGraphicsBeginImageContext(frame.size)
-        if let currentContext = UIGraphicsGetCurrentContext() {
-            nameLabel.layer.render(in: currentContext)
-            let nameImage = UIGraphicsGetImageFromCurrentImageContext()
-            return nameImage
-        }
-        return nil
-    }
-
 
     func presentKeySyncWizard(meFPR: String,
                               partnerFPR: String,
