@@ -261,7 +261,6 @@ class NewAccountSetupUITest: XCTestCase {
      */
     func dismissInitialSystemAlerts() {
         dismissSystemAlert(buttonTitle: "Allow")
-        dismissSystemAlert(buttonTitle: "OK")
     }
 
     func dismissSystemAlert(buttonTitle: String) {
