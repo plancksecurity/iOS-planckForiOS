@@ -87,19 +87,7 @@ class EmailViewController: BaseTableViewController {
     }
 
     private func showPepRating() {
-        guard let privacyStatusIcon = showPepRating(pEpRating: message?.pEpRating(), showGreyBadge: false) else {
-            return
-        }
-        guard
-            let handshakeCombos = message?.handshakeActionCombinations(), //!!!: EmailView must not know about handshakeCombinations.
-            !handshakeCombos.isEmpty
-            else {
-                return
-        }
-        let tapGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(showHandshakeView(gestureRecognizer:)))
-        privacyStatusIcon.addGestureRecognizer(tapGestureRecognizer)
+        showPepRating(pEpRating:  message?.pEpRating(), showGreyBadge: false)
     }
 
     private final func loadDatasource(_ file: String) {
@@ -312,28 +300,53 @@ class EmailViewController: BaseTableViewController {
 
     @objc private func showPepActions() {
         let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
-        actionSheetController.addAction(UIAlertAction(
-            title: NSLocalizedString("Privacy Status",
-                                     comment: "action sheet title 1"),
-            style: .default) { [weak self] (action) in
-                guard let me = self else {
-                    Log.shared.errorAndCrash(message: "lost myself")
-                    return
-                }
-                me.showHandshakeView()
-        })
-        actionSheetController.addAction(UIAlertAction(
-            title: NSLocalizedString("Settings",
-                                     comment: "acction sheet title 2"),
+
+            if let handshakeCombos = message?.handshakeActionCombinations(), //!!!: EmailView must not know about handshakeCombinations.
+            !handshakeCombos.isEmpty, let handshakeAction = showHandshakeViewAction()
+            {
+                actionSheetController.addAction(handshakeAction)
+        }
+        actionSheetController.addAction(showSettingsAction())
+
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("Cancel", comment: "possible private status action"),
+            style: .cancel) { (action) in }
+        actionSheetController.addAction(cancelAction)
+
+        present(actionSheetController, animated: true)
+    }
+
+    private func showSettingsAction() -> UIAlertAction {
+        let action = UIAlertAction(
+            title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
             style: .default) {[weak self] (action) in
                 guard let me = self else {
                     Log.shared.errorAndCrash(message: "lost myself")
                     return
                 }
                 me.showSettingsViewController()
-        })
-        present(actionSheetController, animated: true)
+        }
+        return action
+    }
 
+    private func showHandshakeViewAction() -> UIAlertAction? {
+        guard
+            let handshakeCombos = message?.handshakeActionCombinations(), //!!!: EmailView must not know about handshakeCombinations.
+            !handshakeCombos.isEmpty
+            else {
+                return nil
+        }
+        let action = UIAlertAction(
+            title: NSLocalizedString("Privacy Status", comment: "action sheet title 1"),
+            style: .default) { [weak self] (action) in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "lost myself")
+                    return
+                }
+                me.showHandshakeView()
+        }
+
+        return action
     }
 
     @objc private func showHandshakeScreen() {
