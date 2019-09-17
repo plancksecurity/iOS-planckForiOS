@@ -109,13 +109,13 @@ class HandshakePartnerTableViewCellViewModel {
             contactImageTool.cachedIdentityImage(for: IdentityImageTool.IdentityKey(identity: partnerIdentity)) {
             partnerImage.value = cachedContactImage
         } else {
-            let session = Session()
-            let safePartnerIdentity = partnerIdentity.safeForSession(session)
             DispatchQueue.global(qos: .userInteractive).async { [weak self] in
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
                     return
                 }
+                let session = Session()
+                let safePartnerIdentity = partnerIdentity.safeForSession(session)
                 session.performAndWait {
                     let contactImage = me.contactImageTool.identityImage(for:
                         IdentityImageTool.IdentityKey(identity: safePartnerIdentity))

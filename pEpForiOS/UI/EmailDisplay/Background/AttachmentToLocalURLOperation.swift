@@ -13,39 +13,40 @@ import MessageModel
 //!!!: must go to MM interfaces. 
 class AttachmentToLocalURLOperation: Operation {
     var fileURL: URL?
-
-    private let session: Session
-    private var safeAttachment: Attachment?
+    private var attachment: Attachment
 
     init(attachment: Attachment) {
-        self.session = Session()
-        self.safeAttachment = attachment.safeForSession(session)
+        self.attachment = attachment
         super.init()
     }
 
     override func main() {
+        let session = Session()
         session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            guard let data =  me.safeAttachment?.data else {
+
+            let safeAttachment = me.attachment.safeForSession(session)
+
+            guard let data =  safeAttachment.data else {
                 Log.shared.warn("Attachment without data")
                 return
             }
             let tmpDirURL =  FileManager.default.temporaryDirectory
             
-            let fileName = ( me.safeAttachment?.fileName ?? Constants.defaultFileName).extractFileNameOrCid()
+            let fileName = ( safeAttachment.fileName ?? Constants.defaultFileName).extractFileNameOrCid()
             var theURL = tmpDirURL.appendingPathComponent(fileName)
 
-            if let mimeType = me.safeAttachment?.mimeType, mimeType == MimeTypeUtils.MimesType.pdf {
+            if let mimeType = safeAttachment.mimeType, mimeType == MimeTypeUtils.MimesType.pdf {
                 theURL = theURL.appendingPathExtension("pdf")
             }
             do {
                 try data.write(to: theURL)
                 me.fileURL = theURL
             } catch {
-                Log.shared.log(error: error)
+                Log.shared.errorAndCrash(error: error)
             }
         }
     }

@@ -8,6 +8,7 @@
 
 import XCTest
 import MessageModel
+import CoreData
 @testable import pEpForiOS
 
 extension CdAccount {
@@ -16,8 +17,9 @@ extension CdAccount {
      in cases like "two identities that 'only' differ in their username".
      */
     public func allMessages(inFolderOfType type: FolderType,
-                            sendFrom from: CdIdentity? = nil) -> [CdMessage] {
-        guard let messages = CdMessage.all() as? [CdMessage] else {
+                            sendFrom from: CdIdentity? = nil,
+                            in context: NSManagedObjectContext) -> [CdMessage] {
+        guard let messages = CdMessage.all(in: context) as? [CdMessage] else {
             return []
         }
 

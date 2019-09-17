@@ -266,7 +266,7 @@ extension DecryptionTestsInternal {
             let p = NSPredicate(format: "%K = %@ and %K = %@",
                                 CdHeaderField.RelationshipName.message, cdMsg,
                                 CdHeaderField.AttributeName.name, header)
-            let headerField = CdHeaderField.first(predicate: p)
+            let headerField = CdHeaderField.first(predicate: p, in: moc)
             if shouldEncrypt {
                 // check header in core data
                 XCTAssertNotNil(headerField)
