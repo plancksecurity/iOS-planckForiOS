@@ -236,7 +236,6 @@ private class InitDataHtmlToAttributedTextSaxParserAttachmentDelegate: HtmlToAtt
                 if attachment.contentID == src?.extractCid() {
                     // The attachment is inlined.
                     me.assertImage(inAttachment: attachment)
-                    //                    return attachment //BUFF:
                     result = attachment
                 }
             }
