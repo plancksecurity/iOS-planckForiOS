@@ -117,16 +117,14 @@ extension ComposeTableViewController {
         }
         //Not so nice. The view(controller) should not know about state and protection.
         var view = showNavigationBarSecurityBadge(pEpRating: pEpRating)
-        if view == nil {
-            view = showNavigationBarPEpLogo(pEpRating: pEpRating)
-        }
-        if view != nil {
-            if vm.state.canHandshake() || vm.state.userCanToggleProtection() {
-                let tapGestureRecognizer = UITapGestureRecognizer(
-                    target: self,
-                    action: #selector(actionHandshakeOrForceUnprotected))
-                view?.addGestureRecognizer(tapGestureRecognizer)
+        if vm.canDoHandshake() {
+            if view == nil {
+                view = showNavigationBarPEpLogo(pEpRating: pEpRating)
             }
+            let tapGestureRecognizer = UITapGestureRecognizer(
+                target: self,
+                action: #selector(actionHandshakeOrForceUnprotected))
+            view?.addGestureRecognizer(tapGestureRecognizer)
         }
     }
 
