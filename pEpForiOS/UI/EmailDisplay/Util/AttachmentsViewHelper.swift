@@ -72,8 +72,8 @@ class AttachmentsViewHelper {
                 case .docAttachment(let attachment):
                     var resultView: AttachmentSummaryView?
                     let session = Session.main
+                    let safeAttachment = attachment.safeForSession(session)
                     session.performAndWait {
-                        let safeAttachment = attachment.safeForSession(session)
                         let dic = UIDocumentInteractionController()
                         dic.name = safeAttachment.fileName
 

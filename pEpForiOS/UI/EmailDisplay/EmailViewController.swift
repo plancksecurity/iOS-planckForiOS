@@ -615,6 +615,8 @@ extension EmailViewController: MessageAttachmentDelegate {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            let safeAttachment = attachment.safeForSession(Session.main)
+
             GCD.onMain {
                 defer {
                     if let bState = busyState {
@@ -624,7 +626,6 @@ extension EmailViewController: MessageAttachmentDelegate {
                 guard let url = attachmentOp.fileURL else { //!!!: looks suspicously like retain cycle. attachmentOp <-> completionBlock
                     return
                 }
-                let safeAttachment = attachment.safeForSession(Session.main)
                 me.didCreateLocally(attachment: safeAttachment,
                                        url: url,
                                        cell: cell,

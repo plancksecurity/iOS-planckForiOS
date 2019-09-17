@@ -22,13 +22,12 @@ class AttachmentToLocalURLOperation: Operation {
 
     override func main() {
         let session = Session()
+        let safeAttachment = attachment.safeForSession(session)
         session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-
-            let safeAttachment = me.attachment.safeForSession(session)
 
             guard let data =  safeAttachment.data else {
                 Log.shared.warn("Attachment without data")

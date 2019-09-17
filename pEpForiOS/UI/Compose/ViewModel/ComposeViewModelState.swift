@@ -213,6 +213,12 @@ extension ComposeViewModel.ComposeViewModelState {
             return
         }
 
+        let session = Session()
+        let safeFrom = from.safeForSession(session)
+        let safeTo = Identity.makeSafe(toRecipients, forSession: session)
+        let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
+        let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
+
         //!!!: This async call makes tests failing and randomly failing. We probalby should extract
         //     calculatePepRating(for state: State) and inject in tests
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
@@ -221,11 +227,6 @@ extension ComposeViewModel.ComposeViewModelState {
                 return
             }
 
-            let session = Session()
-            let safeFrom = from.safeForSession(session)
-            let safeTo = Identity.makeSafe(me.toRecipients, forSession: session)
-            let safeCc = Identity.makeSafe(me.ccRecipients, forSession: session)
-            let safeBcc = Identity.makeSafe(me.bccRecipients, forSession: session)
             session.performAndWait {
                 let pEpsession = PEPSession()
                 newRating = pEpsession.outgoingMessageRating(from: safeFrom,

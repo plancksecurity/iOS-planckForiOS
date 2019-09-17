@@ -144,6 +144,7 @@ struct ComposeUtil {
         return composeMode == .forward || isInDraftsOrOutbox
     }
 
+    //BUFF: cleanup
 //    // MARK: - Message to send
 //
 //    /// Creates a message from the given ComposeView State

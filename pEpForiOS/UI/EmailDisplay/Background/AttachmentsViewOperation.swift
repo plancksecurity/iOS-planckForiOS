@@ -48,13 +48,13 @@ class AttachmentsViewOperation: Operation {
 
     override func main() {
         let session = Session()
+        let safeMessage = message.safeForSession(session)
+
         session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-
-            let safeMessage = me.message.safeForSession(session)
 
             let attachments = safeMessage.viewableAttachments()
             for att in attachments {
