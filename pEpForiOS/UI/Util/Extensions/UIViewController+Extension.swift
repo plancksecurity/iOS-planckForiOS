@@ -16,7 +16,7 @@ extension UIViewController {
 
     @discardableResult func showNavigationBarSecurityBadge(pEpRating: PEPRating?,
                                           pEpProtection: Bool = true) -> UIView? {
-        if pEpRating?.uiColor() != UIColor.gray {
+        if let rating = pEpRating, rating.isNoColor {
             if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
                 // according to apple's design guidelines ('Hit Targets'):
                 // https://developer.apple.com/design/tips/
@@ -43,8 +43,8 @@ extension UIViewController {
         return nil
     }
 
-    func showNavigationBarPEpLogo(pEpRating: PEPRating?) -> UIView? {
-        if pEpRating?.uiColor() == UIColor.gray {
+    func showNavigationBarPEPLogo(pEpRating: PEPRating?) -> UIView? {
+        if let rating = pEpRating, rating.isNoColor {
             if let img = UIImage(named: "icon-settings") {
                 let minimumHittestDimension: CGFloat = 44
                 let ImageWidht = self.navigationController!.navigationBar.bounds.height - 10

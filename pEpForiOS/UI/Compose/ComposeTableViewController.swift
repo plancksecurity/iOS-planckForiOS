@@ -119,7 +119,7 @@ extension ComposeTableViewController {
         var view = showNavigationBarSecurityBadge(pEpRating: pEpRating)
         if vm.canDoHandshake() {
             if view == nil {
-                view = showNavigationBarPEpLogo(pEpRating: pEpRating)
+                view = showNavigationBarPEPLogo(pEpRating: pEpRating)
             }
             let tapGestureRecognizer = UITapGestureRecognizer(
                 target: self,
