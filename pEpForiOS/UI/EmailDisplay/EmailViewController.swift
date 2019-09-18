@@ -407,6 +407,12 @@ class EmailViewController: BaseTableViewController {
             return
         }
         Message.imapDelete(messages: [message])
+        guard let splitViewController = self.splitViewController else {
+            return
+        }
+        if splitViewController.isCollapsed {
+            navigationController?.popViewController(animated: true)
+        }
     }
 
     @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer) {
