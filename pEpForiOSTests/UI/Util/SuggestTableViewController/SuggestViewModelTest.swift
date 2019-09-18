@@ -80,7 +80,8 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
     func testUserSelection_oneExists() {
         let numSuggestionsExpected = 1
         let selectRow = numSuggestionsExpected - 1
-        let existing = Identity(address: "testUserSelection@oneExists.security")
+        let existing = Identity(address: "testUserSelection@oneExists.security",
+                                userID: UUID().uuidString)
         existing.save()
         existingIdentities = [existing]
         assertResults(for: existing.address,
@@ -141,12 +142,12 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
         existingIdentities = []
         for i in 1...numContacts {
             let id = Identity(address: "email\(i)@pep.security",
-                userID: nil,
+                userID: "\(i)",
                 addressBookID: nil,
                 userName: "id\(i)")
-            id.save()
             existingIdentities.append(id)
         }
+        moc.saveAndLogErrors()
     }
 
     /// - Parameters:
