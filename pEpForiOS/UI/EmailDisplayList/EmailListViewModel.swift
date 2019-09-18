@@ -304,6 +304,14 @@ class EmailListViewModel {
         }
     }
 
+    func shouldShowTutorialWizard() -> Bool {
+        return AppSettings.shouldShowTutorialWizard
+    }
+
+    func didShowTutorialWizard() {
+        AppSettings.shouldShowTutorialWizard = false
+    }
+
     public func getDestructiveActtion(forMessageAt index: Int) -> SwipeActionDescriptor {
         let parentFolder = getParentFolder(forMessageAt: index)
         let defaultDestructiveAction: SwipeActionDescriptor
