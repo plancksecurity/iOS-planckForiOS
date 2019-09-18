@@ -121,7 +121,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                    editActionsForRowAt indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         if indexPath.section == 0 {
-            let deleteAction = SwipeAction(style: .destructive, title: NSLocalizedString("Delete", comment: "Account delete")) {
+            let deleteAction = SwipeAction(style: .destructive,
+                                           title: NSLocalizedString("Delete", comment: "Account delete")) {
                 [weak self] action, indexPath in
                 guard let me = self else {
                     Log.shared.lostMySelf()

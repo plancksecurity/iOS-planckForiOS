@@ -143,4 +143,13 @@ class PEPSessionMoc: NSObject, PEPSessionProtocol  {
     func leaveDeviceGroupError() throws {
     }
 
+    func enableSync(for identity: PEPIdentity) throws {
+    }
+
+    func disableSync(for identity: PEPIdentity) throws {
+    }
+
+    func queryKeySyncEnabled(for identity: PEPIdentity) throws -> NSNumber {
+        return NSNumber(value: false)
+    }
 }

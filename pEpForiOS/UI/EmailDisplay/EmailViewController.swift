@@ -146,6 +146,10 @@ class EmailViewController: BaseTableViewController {
 
         showPepRating()
 
+        if let internalMessage = message, !internalMessage.imapFlags.seen {
+            internalMessage.markAsSeen()
+        }
+
         ///TODO: reimplement next-previous
         //        DispatchQueue.main.async {
         //
@@ -403,6 +407,12 @@ class EmailViewController: BaseTableViewController {
             return
         }
         Message.imapDelete(messages: [message])
+        guard let splitViewController = self.splitViewController else {
+            return
+        }
+        if splitViewController.isCollapsed {
+            navigationController?.popViewController(animated: true)
+        }
     }
 
     @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer) {

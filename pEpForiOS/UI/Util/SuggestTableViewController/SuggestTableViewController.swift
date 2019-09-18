@@ -64,7 +64,7 @@ extension SuggestTableViewController {
                 Log.shared.errorAndCrash("Illegal state")
                 return UITableViewCell()
         }
-        let row = viewModel.row(at: indexPath.row)
+        let row = viewModel[indexPath.row]
         cell.nameLabel.text = row.name
         cell.emailLabel.text = row.email
         return cell

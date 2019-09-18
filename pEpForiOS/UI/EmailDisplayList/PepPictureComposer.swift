@@ -12,13 +12,13 @@ import PEPObjCAdapterFramework
 
 class PepProfilePictureComposer: ProfilePictureComposerProtocol {
 
-    let contactImageTool = IdentityImageTool()
+    let identityImageTool = IdentityImageTool()
 
     func profilePicture(for identityKey: IdentityImageTool.IdentityKey) -> UIImage? {
-        if let image = contactImageTool.cachedIdentityImage(for: identityKey){
+        if let image = identityImageTool.cachedIdentityImage(for: identityKey){
             return image
         } else {
-            let senderImage = contactImageTool.identityImage(for: identityKey)
+            let senderImage = identityImageTool.identityImage(for: identityKey)
             return senderImage
         }
     }
