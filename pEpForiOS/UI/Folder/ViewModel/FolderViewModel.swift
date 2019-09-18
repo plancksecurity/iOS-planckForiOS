@@ -7,14 +7,12 @@
 //
 
 import Foundation
-
 import MessageModel
 
 /// View Model for folder hierarchy.
 public class FolderViewModel {
-    weak var delegate : FolderViewModelDelegate?
-    let folderSyncService: FolderSyncService
-    
+
+    lazy var folderSyncService = FetchImapFoldersService()
     var items: [FolderSectionViewModel]
 
     /// Instantiates a folder hierarchy model with:
@@ -30,8 +28,6 @@ public class FolderViewModel {
         } else {
             accountsToUse = Account.all()
         }
-        folderSyncService = FolderSyncService()
-        folderSyncService.delegate = self
         generateSections(accounts: accountsToUse, includeUnifiedInbox: includeUnifiedInbox)
     }
 
@@ -48,11 +44,27 @@ public class FolderViewModel {
         return Account.all().isEmpty
     }
 
-    func refreshFolderList() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            MessageModelUtil.perform {
-                self.folderSyncService.requestFolders(inAccounts: Account.all()) //!!!: must not be in UI. According to fetchOlder()
+    func refreshFolderList(completion: (()->())? = nil) {
+        do {
+            try folderSyncService.runService(inAccounts: Account.all()) { Success in
+                completion?()
             }
+        } catch {
+            guard let er = error as? FetchImapFoldersService.FetchError else {
+                Log.shared.errorAndCrash("Unexpected error")
+                completion?()
+                return
+            }
+
+            switch er {
+            case .accountNotFound:
+                Log.shared.errorAndCrash("Account not found")
+                completion?()
+            case .isFetching:
+                //is Fetching do nothing
+                break
+            }
+            completion?()
         }
     }
 
@@ -64,13 +76,5 @@ public class FolderViewModel {
 
     var count: Int {
         return self.items.count
-    }
-}
-
-extension FolderViewModel : FolderSyncServiceDelegate {
-    public func finishedSyncingFolders() {
-        DispatchQueue.main.async {
-            self.delegate?.folderViewModelDidUpdateFolderList(viewModel: self)
-        }
     }
 }
