@@ -125,10 +125,11 @@ class TestDataBase {
             return id
         }
 
+        //!!!: very wrong. MMO + MOC
         func account(context: NSManagedObjectContext) -> Account {
             let id = Identity(address: idAddress,
                               userName: idUserName,
-                              context: context)
+                              session: Session(context: context))
 
             let credSmtp = ServerCredentials.create(loginName: id.address)
             credSmtp.password = password

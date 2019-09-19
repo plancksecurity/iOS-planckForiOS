@@ -152,6 +152,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 
     public func clear() {
         viewModel?.unsubscribeForUpdates()
+        viewModel = nil
     }
 }
 
