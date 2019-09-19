@@ -233,16 +233,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         guard let splitViewController = self.splitViewController else {
             return
         }
-        if splitViewController.isCollapsed {
-            guard let vm = model else {
-                Log.shared.errorAndCrash("Invalid state")
-                return
-            }
-            let unreadFilterActive = vm.unreadFilterEnabled()
-            if navigationController?.topViewController != self && !unreadFilterActive {
-                navigationController?.popViewController(animated: true)
-            }
-        } else {
+        if !splitViewController.isCollapsed {
             performSegue(withIdentifier: "showNoMessage", sender: nil)
         }
     }
