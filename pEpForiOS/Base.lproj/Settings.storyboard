@@ -127,6 +127,7 @@
                         <segue destination="95U-QI-nlr" kind="showDetail" identifier="segueShowSettingTrustedServers" id="tvG-bN-ITt"/>
                         <segue destination="cMW-fr-EKn" kind="showDetail" identifier="segueSetOwnKey" id="D3B-Zt-U43"/>
                         <segue destination="4fP-ku-UtU" kind="showDetail" identifier="segueExtraKeys" id="DPP-UI-qfC"/>
+                        <segue destination="tfJ-nw-QBg" kind="showDetail" identifier="ResetTrust" id="5cb-wE-DbE"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -215,6 +216,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LCO-IG-Rwh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-476" y="-1891"/>
+        </scene>
+        <!--Reset Trust View Controller-->
+        <scene sceneID="lLJ-n0-lb9">
+            <objects>
+                <viewController id="tfJ-nw-QBg" customClass="ResetTrustViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="uT5-Zf-g2y">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QbB-pS-PJb">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="QbB-pS-PJb" firstAttribute="leading" secondItem="59K-Nz-i2C" secondAttribute="leading" id="H03-Fg-8PJ"/>
+                            <constraint firstItem="59K-Nz-i2C" firstAttribute="trailing" secondItem="QbB-pS-PJb" secondAttribute="trailing" id="MpV-hJ-uMa"/>
+                            <constraint firstItem="QbB-pS-PJb" firstAttribute="top" secondItem="59K-Nz-i2C" secondAttribute="top" id="gnj-td-rxM"/>
+                            <constraint firstItem="59K-Nz-i2C" firstAttribute="bottom" secondItem="QbB-pS-PJb" secondAttribute="bottom" id="kzd-tM-jaJ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="59K-Nz-i2C"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="QbB-pS-PJb" id="OZH-9s-fQa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Sv-m8-kZO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1327" y="-1951"/>
         </scene>
         <!--Set Own Key View Controller-->
         <scene sceneID="k12-LM-gr9">

@@ -167,7 +167,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             case .extraKeys:
                 performSegue(withIdentifier: .segueExtraKeys, sender: self)
             case .contacts:
-                //performsegue to contacts view
+                performSegue(withIdentifier: .ResetTrust , sender: self)
                 break
             }
         case let vm as SettingsActionCellViewModelProtocol:
@@ -195,6 +195,7 @@ extension SettingsTableViewController: SegueHandlerType {
         case segueExtraKeys
         case segueSetOwnKey
         case noAccounts
+        case ResetTrust
         case noSegue
     }
 
@@ -219,6 +220,7 @@ extension SettingsTableViewController: SegueHandlerType {
         case .noAccounts,
              .segueAddNewAccount,
              .sequeShowCredits,
+             .ResetTrust,
              .segueExtraKeys:
             guard let destination = segue.destination as? BaseViewController else {
                 return

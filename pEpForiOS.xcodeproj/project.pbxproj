@@ -432,6 +432,7 @@
 		B792889A2302D3DE00D2C68B /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79288992302D3DE00D2C68B /* Array+Extension.swift */; };
 		B7A50746224CD27A007B988F /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A50745224CD27A007B988F /* FilterViewModel.swift */; };
 		B7C487A122E0B7DE0005304B /* nonPasteableUiTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C487A022E0B7DE0005304B /* nonPasteableUiTextField.swift */; };
+		B7C7E3122334E054009ABFFE /* ResetTrustViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E3112334E054009ABFFE /* ResetTrustViewController.swift */; };
 		B7D1EEC81E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D1EEC71E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift */; };
 		B7DB7FC42215C4FF003968DA /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FC32215C4FF003968DA /* UINavigationController+Extensions.swift */; };
 		B7DB7FC72215C57F003968DA /* UIView+Autolayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FC52215C57F003968DA /* UIView+Autolayout.swift */; };
@@ -947,6 +948,7 @@
 		B79288992302D3DE00D2C68B /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		B7A50745224CD27A007B988F /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FilterViewModel.swift; path = Filter/ViewModel/FilterViewModel.swift; sourceTree = "<group>"; };
 		B7C487A022E0B7DE0005304B /* nonPasteableUiTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nonPasteableUiTextField.swift; sourceTree = "<group>"; };
+		B7C7E3112334E054009ABFFE /* ResetTrustViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetTrustViewController.swift; sourceTree = "<group>"; };
 		B7D1EEC71E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollapsibleTableViewHeader.swift; path = Folder/CollapsibleTableViewHeader.swift; sourceTree = "<group>"; };
 		B7DB7FC32215C4FF003968DA /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
 		B7DB7FC52215C57F003968DA /* UIView+Autolayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Autolayout.swift"; sourceTree = "<group>"; };
@@ -1428,6 +1430,7 @@
 		15874BA72127493E00A3A4A6 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				B7C7E3102334E028009ABFFE /* TrustSetting */,
 				15874BA82127493E00A3A4A6 /* SettingSwitchTableViewCell.swift */,
 				15874BA92127493E00A3A4A6 /* ViewModel */,
 				15874BAE2127493E00A3A4A6 /* SettingsTableViewController.swift */,
@@ -2498,6 +2501,14 @@
 			name = ViewModel;
 			sourceTree = "<group>";
 		};
+		B7C7E3102334E028009ABFFE /* TrustSetting */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7E3112334E054009ABFFE /* ResetTrustViewController.swift */,
+			);
+			path = TrustSetting;
+			sourceTree = "<group>";
+		};
 		B7DB7FC22215C484003968DA /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -2893,6 +2904,7 @@
 				43257C801F50064100DDC7F0 /* HtmlToTextSaxParser.swift in Sources */,
 				431C2B191F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift in Sources */,
 				00EB89AF20E3E4A000CDFA0D /* ReplyAlertCreator.swift in Sources */,
+				B7C7E3122334E054009ABFFE /* ResetTrustViewController.swift in Sources */,
 				B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */,
 				222B35581DF96389007A1F82 /* Capability.swift in Sources */,
 				15874BC82127493E00A3A4A6 /* ThreadedSettingViewModel.swift in Sources */,

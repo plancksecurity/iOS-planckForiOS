@@ -116,7 +116,7 @@ extension SettingsSectionViewModel {
     }
 
     private func generateContactsCells() {
-        //cells.append(settingsCellViewModel(type: .contacts)
+        cells.append(SettingsCellViewModel(type: .contacts))
     }
 }
 
