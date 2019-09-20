@@ -22,6 +22,9 @@ class ResetTrustViewController: UIViewController {
     }
 
     func setupView() {
+        ///set up tableview delegate and datasource
+        tableView.dataSource = self
+        tableView.delegate = self
         ///Hide toolbar
         navigationController?.setToolbarHidden(true, animated: false)
     }
@@ -49,6 +52,4 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return viewModel.indexElements()
     }
-
-
 }

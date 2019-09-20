@@ -13,21 +13,21 @@ class ResetTrustViewModel {
 
     func numberOfSections() -> Int {
         //!!!: To Be Implemented
-        return 0
+        return 1
     }
 
     func titleForSection(section: Int) -> String {
         //!!!: To Be Implemented
-        return ""
+        return "test"
     }
 
     func numberOfRowsPerSection(section: Int) -> Int {
         //!!!: To Be Implemented
-        return 0
+        return 1
     }
 
     func indexElements() -> [String] {
         //!!!: To Be Implemented
-        return [""]
+        return ["T"]
     }
 }
