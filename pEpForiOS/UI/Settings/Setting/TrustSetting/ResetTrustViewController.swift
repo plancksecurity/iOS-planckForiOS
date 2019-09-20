@@ -10,25 +10,44 @@ import UIKit
 
 class ResetTrustViewController: UIViewController {
 
+    let viewModel = ResetTrustViewModel()
+
     @IBOutlet var tableView: UITableView!
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
 
-        // Do any additional setup after loading the view.
+    }
+
+    func setupView() {
+        ///Hide toolbar
+        navigationController?.setToolbarHidden(true, animated: false)
     }
 
 }
 
 extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
 
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.numberOfSections()
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return viewModel.numberOfRowsPerSection(section: section)
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.titleForSection(section: section)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return UITableViewCell()
+    }
+
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return viewModel.indexElements()
     }
 
 
