@@ -285,9 +285,13 @@ extension SettingsTableViewController {
                 return
             }
             me.deleteRowAt(indexPath)
-            me.tableView.beginUpdates()
-            me.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
-            me.tableView.endUpdates()}
+            me.tableView.beginUpdates() //Change to performBatchUpdates when iOS 10 is deprecated
+            if let pEpSyncSection = self?.viewModel.pEpSyncSection() {
+                me.tableView.reloadSections([pEpSyncSection], with: UITableView.RowAnimation.none)
+            }
+            me.tableView.deleteRows(at: [indexPath], with: .fade)
+            me.tableView.endUpdates()
+        }
         showAlert(title, comment, buttonTitle, deleteAction, indexPath)
     }
 
