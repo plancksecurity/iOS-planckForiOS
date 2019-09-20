@@ -58,7 +58,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsActionCell" textLabel="Pdx-rN-QPm" style="IBUITableViewCellStyleDefault" id="7NR-lI-dKq" userLabel="Account" customClass="SwipeTableViewCell" customModule="SwipeCellKit">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsActionCell" textLabel="Pdx-rN-QPm" style="IBUITableViewCellStyleDefault" id="7NR-lI-dKq" userLabel="Account">
                                 <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7NR-lI-dKq" id="7Pm-jS-o7c">

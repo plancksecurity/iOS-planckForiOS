@@ -96,13 +96,9 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             cell.delegate = self
             return cell
         case let vm as SettingsActionCellViewModel:
-            guard let cell = dequeuedCell as? SwipeTableViewCell else {
-                Log.shared.errorAndCrash("Invalid state.")
-                return dequeuedCell
-            }
+            let cell = dequeuedCell
             cell.textLabel?.text = vm.title
             cell.textLabel?.textColor = vm.titleColor
-            cell.delegate = self
             return cell
         case let vm as SwitchSettingCellViewModelProtocol:
             guard let cell = dequeuedCell as? SettingSwitchTableViewCell else {
@@ -170,6 +166,9 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 performSegue(withIdentifier: .segueSetOwnKey, sender: self)
             case .extraKeys:
                 performSegue(withIdentifier: .segueExtraKeys, sender: self)
+            case .contacts:
+                //performsegue to contacts view
+                break
             }
         case let vm as SettingsActionCellViewModelProtocol:
             switch vm.type {
