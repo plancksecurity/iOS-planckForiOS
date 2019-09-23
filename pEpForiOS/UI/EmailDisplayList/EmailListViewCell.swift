@@ -142,12 +142,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
                 }
             }
         }
-
-        viewModel.getSecurityBadge { [weak self] image in
-            DispatchQueue.main.async {
-                self?.setPepRatingImage(image: image)
-            }
-        }
+        setPepRatingImage(image: viewModel.getSecurityBadge())
     }
 
     public func clear() {
