@@ -623,7 +623,6 @@ class TestUtil {
      you can do handshakes on.
      */
     static func cdMessageAndSetUpPepFromMail(emailFilePath: String,
-                                             decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil,
                                              context: NSManagedObjectContext = Stack.shared.mainContext)
         -> (mySelf: CdIdentity, partner: CdIdentity, message: CdMessage)? {
             guard let pantomimeMail = cwImapMessage(fileName: emailFilePath) else {
@@ -688,18 +687,14 @@ class TestUtil {
             XCTAssertEqual(cdM.messageID, pantomimeMail.messageID())
 
             let errorContainer = TestErrorContainer()
-            let decOp = DecryptMessagesOperation(errorContainer: errorContainer)
-
-            decOp.delegate = decryptDelegate ?? DecryptionAttemptCounterDelegate()
+            let decOp = DecryptMessageOperation(cdMessageToDecrypt: cdM,
+                                                context: context,
+                                                errorContainer: errorContainer)
 
             let bgQueue = OperationQueue()
             bgQueue.addOperation(decOp)
             bgQueue.waitUntilAllOperationsAreFinished()
             XCTAssertFalse(errorContainer.hasErrors())
-
-            if let ownDecryptDelegate = decOp.delegate as? DecryptionAttemptCounterDelegate {
-                XCTAssertEqual(ownDecryptDelegate.numberOfMessageDecryptAttempts, 1)
-            }
 
             return (mySelf: cdMySelfIdentity, partner: partnerID, message: cdMessage)
     }
@@ -707,12 +702,11 @@ class TestUtil {
     /**
      Uses 'cdMessageAndSetUpPepFromMail', but returns the message as 'Message'.
      */
-    static func setUpPepFromMail(emailFilePath: String,
-                                 decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
+    static func setUpPepFromMail(emailFilePath: String)
         -> (mySelf: Identity, partner: Identity, message: Message)? {
             guard
-                let (mySelfID, partnerID, cdMessage) = cdMessageAndSetUpPepFromMail(
-                    emailFilePath: emailFilePath, decryptDelegate: decryptDelegate),
+                let (mySelfID, partnerID, cdMessage) =
+                cdMessageAndSetUpPepFromMail(emailFilePath: emailFilePath),
                 let mySelf = mySelfID.identity(),
                 let partner = partnerID.identity()
                 else {
