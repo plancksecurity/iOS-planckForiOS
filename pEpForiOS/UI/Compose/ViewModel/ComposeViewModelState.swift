@@ -219,62 +219,26 @@ extension ComposeViewModel.ComposeViewModelState {
     }
 
     private func calculatePepRating() {
-        guard !isForceUnprotectedDueToBccSet && pEpProtection else {
+        guard !isForceUnprotectedDueToBccSet else {
             rating = .unencrypted
             return
         }
 
-        var newRating = PEPRating.undefined
         guard let from = from else {
-            rating = newRating
+            rating = PEPRating.undefined
             return
         }
 
-        /*
-        //!!!: In tests (ComposeViewModelStateTest) this block is triggered by setup and modt test, but never  executed:
-        DEBUG: will setup
-        DEBUG: before going to background
-        DEBUG: on background
-        DEBUG: did setup
-        DEBUG: will tearDown
-        DEBUG: did tearDown
-        DEBUG: will setup
-        DEBUG: before going to background
-        DEBUG: did setup
-        DEBUG: on background
- */
-
-//        print("COMPOSE: before going to background")
-
-        let session = Session()
+        let session = Session.main
         let safeFrom = from.safeForSession(session)
         let safeTo = Identity.makeSafe(toRecipients, forSession: session)
         let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
         let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
-
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in //HERE:
-            //!!!:
-//            print("COMPOSE: on background")
-            guard let me = self else {
-                // That is a valid case. Compose view is gone before this block started to run.
-                return
-            }
-
-            session.performAndWait {
-                let pEpsession = PEPSession()
-                newRating = pEpsession.outgoingMessageRating(from: safeFrom,
-                                                             to: safeTo,
-                                                             cc: safeCc,
-                                                             bcc: safeBcc)
-            }
-            //!!!:
-//            print("COMPOSE: did outgoingMessageRating")
-            DispatchQueue.main.async {
-                me.rating = newRating
-                //!!!:
-//                print("COMPOSE: did newRating")
-            }
-        }
+        let pEpsession = PEPSession()
+        rating = pEpsession.outgoingMessageRating(from: safeFrom,
+                                                  to: safeTo,
+                                                  cc: safeCc,
+                                                  bcc: safeBcc)
     }
 }
 

@@ -6,7 +6,6 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import PEPObjCAdapterFramework
 
@@ -16,7 +15,7 @@ extension UIViewController {
     }
 
     @discardableResult func showPepRating(pEpRating: PEPRating?, pEpProtection: Bool = true) -> UIView? {
-        if let img = pEpRating?.pEpColor().statusIcon(enabled: pEpProtection) {
+        if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
             // according to apple's design guidelines ('Hit Targets'):
             // https://developer.apple.com/design/tips/
             let minimumHittestDimension: CGFloat = 44
@@ -40,21 +39,24 @@ extension UIViewController {
         }
     }
 
-    func presentKeySyncHandShakeAlert(meFPR: String, partnerFPR: String,
-                        completion: @escaping (KeySyncHandshakeViewController.Action) -> Void ) {
-
-        let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
-        guard let handShakeViewController = storyboard.instantiateViewController(
-            withIdentifier: KeySyncHandshakeViewController.storyboardId) as? KeySyncHandshakeViewController else {
-                Log.shared.errorAndCrash("Fail to instantiateViewController KeySyncHandshakeViewController")
-                return
+    func presentKeySyncWizard(meFPR: String,
+                              partnerFPR: String,
+                              isNewGroup: Bool,
+                              completion: @escaping (KeySyncWizard.Action) -> Void ) {
+        guard let pageViewController = KeySyncWizard.fromStoryboard(meFPR: meFPR,
+                                                                    partnerFPR: partnerFPR,
+                                                                    isNewGroup: isNewGroup,
+                                                                    completion: completion) else {
+                                                                        return
         }
-        handShakeViewController.completionHandler { action in
-            completion(action)
+        DispatchQueue.main.async { [weak self] in
+            if let presented = self?.presentedViewController {
+                presented.dismiss(animated: true, completion: {
+                    self?.present(pageViewController, animated: true, completion: nil)
+                })
+            } else {
+                self?.present(pageViewController, animated: true, completion: nil)
+            }
         }
-        handShakeViewController.finderPrints(meFPR: meFPR, partnerFPR: partnerFPR)
-
-        handShakeViewController.modalPresentationStyle = .overFullScreen
-        present(handShakeViewController, animated: true, completion: nil)
     }
 }

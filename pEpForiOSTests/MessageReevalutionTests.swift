@@ -182,13 +182,13 @@ class MessageReevalutionTests: CoreDataDrivenTestBase {
 
 extension MessageReevalutionTests {
 
-    private func reevaluateMessage(expectedRating: PEPRating, inBackground: Bool = true,
+    private func reevaluateMessage(expectedRating: PEPRating,
+                                   inBackground: Bool = true,
                                    infoMessage: String) {
-        let message = MessageModelObjectUtils.getMessage(fromCdMessage: cdDecryptedMessage)
-
         if inBackground {
             let expReevaluated = expectation(description: "expReevaluated")
-            let reevalOp = ReevaluateMessageRatingOperation(parentName: #function, message: message)
+            let reevalOp = ReevaluateMessageRatingOperation(parentName: #function,
+                                                            cdMessage: cdDecryptedMessage)
             reevalOp.completionBlock = {
                 reevalOp.completionBlock = nil
                 expReevaluated.fulfill()
@@ -202,8 +202,8 @@ extension MessageReevalutionTests {
             XCTAssertEqual(cdDecryptedMessage.pEpRating, Int16(expectedRating.rawValue),
                            infoMessage)
         } else {
-            let reevalOp = ReevaluateMessageRatingOperation(
-                parentName: #function, message: message)
+            let reevalOp = ReevaluateMessageRatingOperation(parentName: #function,
+                                                            cdMessage: cdDecryptedMessage)
             reevalOp.reEvaluate()
         }
     }

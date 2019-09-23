@@ -23,7 +23,7 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
 
 
     //Number of sections corresponding to SettingsSectionViewModel.SectionType count
-    let sections = 4
+    let sections = 5
 
     func testNumberOfSections() {
         setupViewModel()

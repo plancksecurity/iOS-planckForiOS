@@ -50,8 +50,6 @@ class EmailListViewModel {
 
     let folderToShow: DisplayableFolderProtocol
 
-    public var currentDisplayedMessage: DisplayedMessage?
-
     // MARK: - Filter
 
     public var isFilterEnabled = false {
@@ -183,7 +181,7 @@ class EmailListViewModel {
         let message = messageQueryResults[indexPath.row]
         let color = PEPUtils.pEpColor(pEpRating: message.pEpRating())
         if color != PEPColor.noColor {
-            return color.statusIcon()
+            return color.statusIconForMessage()
         } else {
             return nil
         }
@@ -304,6 +302,14 @@ class EmailListViewModel {
         default:
             return true
         }
+    }
+
+    func shouldShowTutorialWizard() -> Bool {
+        return AppSettings.shouldShowTutorialWizard
+    }
+
+    func didShowTutorialWizard() {
+        AppSettings.shouldShowTutorialWizard = false
     }
 
     public func getDestructiveActtion(forMessageAt index: Int) -> SwipeActionDescriptor {

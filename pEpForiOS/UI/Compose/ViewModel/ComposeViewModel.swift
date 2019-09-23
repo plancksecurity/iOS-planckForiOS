@@ -648,7 +648,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         }
         lastRowWithSuggestions = idxPath
         delegate?.showSuggestions(forRowAt: idxPath)
-        suggestionsVM?.updateSuggestion(searchString: text)
+        suggestionsVM?.updateSuggestion(searchString: text.cleanAttachments)
     }
 
     func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel) {
@@ -666,8 +666,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 
         delegate?.contentChanged(inRowAt: idxPath)
         delegate?.showSuggestions(forRowAt: idxPath)
-        suggestionsVM?.updateSuggestion(searchString: newText)
-        state.validate()
+        suggestionsVM?.updateSuggestion(searchString: newText.cleanAttachments)
     }
 }
 

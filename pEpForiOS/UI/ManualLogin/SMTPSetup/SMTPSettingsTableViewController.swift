@@ -216,42 +216,41 @@ extension SMTPSettingsTableViewController: UITextFieldDelegate {
 }
 
 extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
+
     func didEndVerification(result: Result<Void, Error>) {
         switch result {
         case .success(()):
-            MessageModelUtil.performAndWait { [weak self] in
-                // Note: Currently, there is no way for the VC to disappear
-                // before the verification has happened.
-                guard let theSelf = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
+            do {
+                try model?.save() { [weak self] success in
+                    DispatchQueue.main.async { [weak self] in
+                        guard let me = self else {
+                            Log.shared.errorAndCrash("Lost MySelf")
+                            return
+                        }
 
-                do {
-                    try theSelf.model?.save() { success in
+                        switch success {
+                            
+                        case true:
+                            me.isCurrentlyVerifying = false
+                            me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
 
+                        case false:
+                            me.isCurrentlyVerifying = false
+                            UIUtils.show(error: VerifiableAccountValidationError.invalidUserData, inViewController: me)
+                        }
                     }
-                } catch {
-                    Log.shared.errorAndCrash(error: error)
                 }
-            }
-            GCD.onMain() {  [weak self] in
-                // Note: Currently, there is no way for the VC to disappear
-                // before the verification has happened.
-                guard let theSelf = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-
-                theSelf.isCurrentlyVerifying = false
-                theSelf.performSegue(withIdentifier: .backToEmailListSegue, sender: theSelf)
+            } catch {
+                Log.shared.errorAndCrash(error: error)
             }
         case .failure(let error):
-            GCD.onMain() { [weak self] in
-                if let theSelf = self {
-                    theSelf.isCurrentlyVerifying = false
-                    UIUtils.show(error: error, inViewController: theSelf)
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost MySelf")
+                    return
                 }
+                me.isCurrentlyVerifying = false
+                UIUtils.show(error: error, inViewController: me)
             }
         }
     }

@@ -16,7 +16,7 @@ public class FolderSectionViewModel {
     public var hidden = false
     private var items = [FolderCellViewModel]()
     private var help = [FolderCellViewModel]()
-    let contactImageTool = IdentityImageTool()
+    let identityImageTool = IdentityImageTool()
 
     public init(account acc: Account?, Unified: Bool) {
         if Unified {
@@ -59,11 +59,11 @@ public class FolderSectionViewModel {
             return
         }
         let userKey = IdentityImageTool.IdentityKey(identity: ac.user)
-        if let cachedContactImage = contactImageTool.cachedIdentityImage(for: userKey) {
+        if let cachedContactImage = identityImageTool.cachedIdentityImage(for: userKey) {
             callback(cachedContactImage)
         } else {
-            DispatchQueue.global(qos: .userInitiated) .async {
-                let contactImage = self.contactImageTool.identityImage(for: userKey)
+            DispatchQueue.global(qos: .userInitiated).async {
+                let contactImage = self.identityImageTool.identityImage(for: userKey)
                 DispatchQueue.main.async {
                     callback(contactImage)
                 }
