@@ -12,7 +12,7 @@ import PEPObjCAdapterFramework
 class KeySyncHandshakeService {
     weak var presenter: UIViewController?
     
-    private var alertView: UIAlertController? = nil
+    private weak var pEpSyncWizard: PEPPageViewController?
 }
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
@@ -22,7 +22,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                        isNewGroup: Bool,
                        completion: ((PEPSyncHandshakeResult)->())? = nil) {
 
-        guard let viewController = presenter else {
+        guard let presenter = presenter else {
             Log.shared.errorAndCrash("No Presenter")
             return
         }
@@ -31,17 +31,22 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
             return
         }
 
-        viewController.presentKeySyncWizard(meFPR: meFPR,
-                                            partnerFPR: partnerFPR,
-                                            isNewGroup: isNewGroup) { action in
-                                                switch action {
-                                                case .accept:
-                                                    completion?(.accepted)
-                                                case .cancel:
-                                                    completion?(.cancel)
-                                                case .decline:
-                                                    completion?(.rejected)
-                                                }
+        var viewController = presenter
+        if let pEpModal = presenter.presentedViewController,
+            UIHelper.isPEPModal(viewController: pEpModal) {
+            viewController = pEpModal
+        }
+        pEpSyncWizard = viewController.presentKeySyncWizard(meFPR: meFPR,
+                                                            partnerFPR: partnerFPR,
+                                                            isNewGroup: isNewGroup) { action in
+                                                                switch action {
+                                                                case .accept:
+                                                                    completion?(.accepted)
+                                                                case .cancel:
+                                                                    completion?(.cancel)
+                                                                case .decline:
+                                                                    completion?(.rejected)
+                                                                }
         }
     }
     
@@ -59,27 +64,29 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
     }
     
     func showSuccessfullyGrouped() {
-        guard let keySyncWizard = presenter?.presentedViewController as? PEPPageViewController else {
+        guard let pEpSyncWizard = pEpSyncWizard else {
             return
         }
-        let completedViewIndex = keySyncWizard.views.count - 1
-        keySyncWizard.goTo(index: completedViewIndex)
+        let completedViewIndex = pEpSyncWizard.views.count - 1
+        pEpSyncWizard.goTo(index: completedViewIndex)
     }
 
     func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
-        guard let viewController = presenter else {
+        guard let presentingViewController = pEpSyncWizard?.presentingViewController else {
             Log.shared.errorAndCrash("No Presenter")
             return
         }
 
-        KeySyncErrorView.presentKeySyncError(viewController: viewController, error: error) {
-            action in
-            switch action {
-            case .tryAgain:
-                completion?(.tryAgain)
-            case .notNow:
-                completion?(.notNow)
+        pEpSyncWizard?.dismiss(animated: true, completion: {
+            KeySyncErrorView.presentKeySyncError(viewController: presentingViewController, error: error) {
+                action in
+                switch action {
+                case .tryAgain:
+                    completion?(.tryAgain)
+                case .notNow:
+                    completion?(.notNow)
+                }
             }
-        }
+        })
     }
 }

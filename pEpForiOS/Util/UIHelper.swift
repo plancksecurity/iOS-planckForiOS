@@ -120,4 +120,21 @@ class UIHelper {
         UIGraphicsEndImageContext()
         return img!
     }
+
+    static func isPEPModal(viewController: UIViewController?) -> Bool {
+        guard let viewController = viewController else {
+            return false
+        }
+
+        if viewController is TutorialWizardViewController {
+            return true
+        }
+
+        if let nav = viewController as? UINavigationController,
+            nav.rootViewController is LoginViewController {
+            return true
+        }
+
+        return false
+    }
 }
