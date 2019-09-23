@@ -501,7 +501,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             guard let viewModel = model?.viewModel(for: indexPath.row) else {
                 return cell
             }
-            theCell.configure(for:viewModel)
+            theCell.configure(for: viewModel)
         } else {
             Log.shared.errorAndCrash("dequeued wrong cell")
         }
