@@ -18,13 +18,4 @@ protocol ProfilePictureComposerProtocol {
     /// - Parameter identityKey: data to compute profile picture for
     /// - Returns: profile image if we were able to compute one, nil otherwize
     func profilePicture(for identityKey: IdentityImageTool.IdentityKey) -> UIImage?
-
-    /// Retrieves a status icon matching the status of the given message.
-    ///
-    /// - note: This is an expensive operation! Do NOT call this on the main queue.
-    ///
-    /// - Parameters:
-    ///   - message: message to get badge for
-    /// - Returns: pEp security badge image
-    func securityBadge(for message: Message) -> UIImage?
 }

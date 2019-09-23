@@ -225,9 +225,8 @@ class MessageViewModel: CustomDebugStringConvertible {
         queueForHeavyStuff.addOperation(operation)
     }
 
-    func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
-        let operation = getSecurityBadgeOperation(completion: completion)
-        queueForHeavyStuff.addOperation(operation)
+    func getSecurityBadge() -> UIImage? {
+        return message.securityBadgeForContactPicture
     }
 
     func getBodyMessage() -> NSMutableAttributedString {
@@ -326,26 +325,6 @@ extension MessageViewModel {
             }
         }
         return getBodyPeekOperation
-    }
-
-    private func getSecurityBadgeOperation(completion: @escaping (UIImage?) -> ()) -> Operation {
-        let session = Session()
-        let safeMsg = message.safeForSession(session)
-        
-        let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
-            guard let me = self else {
-                return
-            }
-            var badgeImage: UIImage? = nil
-            session.performAndWait {
-                guard let operation = operation, !operation.isCancelled else {
-                    return
-                }
-                badgeImage = me.profilePictureComposer.securityBadge(for: safeMsg)
-            }
-            completion(badgeImage)
-        }
-        return getSecurityBadgeOperation
     }
 
     private func getProfilePictureOperation(completion: @escaping (UIImage?) -> ())

@@ -22,13 +22,4 @@ class PepProfilePictureComposer: ProfilePictureComposerProtocol {
             return senderImage
         }
     }
-
-    func securityBadge(for message: Message) -> UIImage? {
-        let color = PEPUtils.pEpColor(pEpRating: message.pEpRating())
-        var image: UIImage? = nil
-        if color != PEPColor.noColor {
-            image = color.statusIconInContactPicture()
-        }
-        return image
-    }
 }
