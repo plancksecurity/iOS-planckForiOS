@@ -12,6 +12,8 @@ import CoreData
 @testable import MessageModel
 @testable import pEpForiOS
 
+import Foundation
+
     // Commented as randomly failing. See IOS-1382.
 //class MoveToFolderOperationTest: CoreDataDrivenTestBase {
 //
@@ -23,7 +25,7 @@ import CoreData
 //        cdAccount.createRequiredFoldersAndWait(testCase: self)
 //        moc.saveAndLogErrors()
 //        // the sender
-//        let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
+//        let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
 //        moc.saveAndLogErrors()
 //        cdAccount2.createRequiredFoldersAndWait(testCase: self)
 //        moc.saveAndLogErrors()
@@ -33,7 +35,7 @@ import CoreData
 //
 //        // User deletes all messages.
 //        for msg in receivedMsgs {
-//            msg.imapDelete()
+//            Message.imapDelete(messages: [msg])
 //        }
 //
 //        // Sync
@@ -81,7 +83,7 @@ import CoreData
 //        cdAccount.createRequiredFoldersAndWait(testCase: self)
 //        moc.saveAndLogErrors()
 //        // the sender
-//        let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
+//        let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
 //        moc.saveAndLogErrors()
 //        cdAccount2.createRequiredFoldersAndWait(testCase: self)
 //        moc.saveAndLogErrors()
@@ -112,7 +114,7 @@ import CoreData
 //
 //    private func move(messages:[Message], toFolderOfType type: FolderType, in account: Account) {
 //        for msg in messages {
-//            guard let targetFolder = account.folder(ofType: type) else {
+//            guard let targetFolder = account.firstFolder(ofType: type) else {
 //                // Can't seem to find the target folder. If this is an optional test
 //                // (working on for certain accounts), ignore it.
 //                if isMandatoryFolderType(type: type) {
@@ -120,7 +122,7 @@ import CoreData
 //                }
 //                return
 //            }
-//            msg.move(to: targetFolder)
+//            Message.move(messages: [msg], to: targetFolder)
 //        }
 //    }
 //
@@ -143,7 +145,7 @@ import CoreData
 //                                in cdAccountToCheck: CdAccount,
 //                                mustExist: Bool) {
 //        let msgsInFolderToTest = cdAccountToCheck.allMessages(inFolderOfType: type)
-//            .map { $0.message()! }
+//            .map { MessageModelObjectUtils.getMessage(fromCdMessage: $0) }
 //        for msg in msgs {
 //            if mustExist {
 //                XCTAssertTrue(messages(msgs: msgsInFolderToTest, contain: msg))
@@ -176,7 +178,8 @@ import CoreData
 //                                                            testCase: self,
 //                                                            numberOfMails: num,
 //                                                            withAttachments: false,
-//                                                            encrypt: false)
+//                                                            encrypt: false,
+//                                                            context: moc)
 //        XCTAssertEqual(mailsToSend.count, num)
 //
 //        for mail in mailsToSend {
@@ -185,8 +188,8 @@ import CoreData
 //                return []
 //            }
 //            mail.from = id2
-//            mail.removeTos(cdIdentities: currentReceipinets)
-//            mail.addTo(cdIdentity: id1)
+//            mail.removeFromTo(NSOrderedSet(array: currentReceipinets))
+//            mail.addToTo(id1)
 //        }
 //        moc.saveAndLogErrors()
 //
@@ -202,7 +205,7 @@ import CoreData
 //        XCTAssertEqual(msgsAfter.count, msgsBefore.count + num)
 //
 //        let messagesReceived = msgsAfter.filter { !msgsBefore.contains($0) }
-//        let result = messagesReceived.map { $0.message()! }
+//        let result = messagesReceived.map { MessageModelObjectUtils.getMessage(fromCdMessage: $0) }
 //
 //        return result
 //    }

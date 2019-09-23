@@ -36,6 +36,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
 
+    private let refreshController = UIRefreshControl()
+
     var textFilterButton: UIBarButtonItem = UIBarButtonItem(title: "",
                                                             style: .plain,
                                                             target: nil,
@@ -122,6 +124,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                        folderToShow: UnifiedInbox())
         }
 
+        ///the refresh controller is configured and added to the tableview
+        refreshController.tintColor = UIColor.pEpGreen
+        refreshController.addTarget(self, action: #selector(self.refreshView(_:)), for: .valueChanged)
+        tableView.refreshControl = refreshController
+
         title = model?.folderName
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
@@ -173,6 +180,19 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 selector: #selector(didBecomeInactiveUninstallSearchbar10),
                 name: UIApplication.didEnterBackgroundNotification,
                 object: nil)
+        }
+    }
+
+    ///called when the view is scrolled down to
+    @objc private func refreshView(_ sender: Any) {
+        model?.fetchNewMessages() { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(message: "Lost myself")
+                return
+            }
+            DispatchQueue.main.async {
+                me.refreshControl?.endRefreshing()
+            }
         }
     }
 
