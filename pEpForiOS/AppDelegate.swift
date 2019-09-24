@@ -106,44 +106,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    /**
-     Removes all keys, and the management DB, when the user chooses so.
-     - Returns: True if the pEp management DB was deleted, so further actions can be taken.
-     */
-    func deleteManagementDBIfRequired() -> Bool {
-        if AppSettings.shouldReinitializePepOnNextStartup {
-            AppSettings.shouldReinitializePepOnNextStartup = false
-            let _ = PEPUtils.pEpClean()
-            return true
-        }
-        return false
-    }
-
-    //!!!: uses CD. Must go away (rm? else to MM)
-    /**
-     If pEp has been reinitialized, delete all folders and messsages.
-     */
-    //!!!: rm all
-    func deleteAllFolders(pEpReInitialized: Bool) {
-        if pEpReInitialized {
-            // NSBatchDeleteRequest doesn't work so well here because of the need
-            // to nullify the relations. This is used only for internal testing, so the
-            // performance is neglible.
-            let folders = CdFolder.all() as? [CdFolder] ?? []
-            for f in folders {
-                f.delete()
-            }
-
-            let msgs = CdMessage.all() as? [CdMessage] ?? []
-            for m in msgs {
-                m.delete()
-            }
-
-            CdHeaderField.deleteOrphans()
-            Record.saveAndWait()
-        }
-    }
-
     private func setupServices() {
         let keySyncHandshakeService = KeySyncHandshakeService()
         let deviceGroupService = KeySyncDeviceGroupService()
@@ -206,11 +168,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         Appearance.pEp()
 
-        let pEpReInitialized = deleteManagementDBIfRequired()
-
         setupServices()
-
-        deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
         askUserForNotificationPermissions()
 
