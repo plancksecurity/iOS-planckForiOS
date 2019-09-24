@@ -76,10 +76,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals all PEPSession users to stop using a session as soon as possible.
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
-    private func gracefullyShutdownServices() {
+    private func gracefullyShutdownServices() { //BUFF: must go change
         guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
             else {
-                Log.shared.errorAndCrash("Will not start background sync, pending %d",
+                Log.shared.error("Will not start background sync, pending %d",
                                          syncUserActionsAndCleanupbackgroundTaskId.rawValue)
                 return
         }
@@ -97,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
                     self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
             })
-        messageModelService?.processAllUserActionsAndStop()
+        messageModelService?.processAllUserActionsAndStop() //BUFF: must go away
     }
 
     func cleanupPEPSessionIfNeeded() {
@@ -225,7 +225,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame
     /// rates. Games should use this method to pause the game.
     func applicationWillResignActive(_ application: UIApplication) {
-        shutdownAndPrepareServicesForRestart()
+        shutdownAndPrepareServicesForRestart() //BUFF: this is even called when showing an alert !
     }
 
     /// Use this method to release shared resources, save user data, invalidate timers, and store
@@ -282,15 +282,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         messageModelService.checkForNewMails() {[unowned self] (numMails: Int?) in
             guard let numMails = numMails else {
-                self.cleanupAndCall(completionHandler: completionHandler, result: .failed)
+                self.cleanup(andCall: completionHandler, result: .failed)
                 return
             }
             switch numMails {
             case 0:
-                self.cleanupAndCall(completionHandler: completionHandler, result: .noData)
+                self.cleanup(andCall: completionHandler, result: .noData)
             default:
                 self.informUser(numNewMails: numMails) {
-                    self.cleanupAndCall(completionHandler: completionHandler, result: .newData)
+                    self.cleanup(andCall: completionHandler, result: .newData)
                 }
             }
         }
@@ -314,7 +314,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - HELPER
 
-    private func cleanupAndCall(completionHandler:(UIBackgroundFetchResult) -> Void,
+    private func cleanup(andCall completionHandler:(UIBackgroundFetchResult) -> Void,
                                 result:UIBackgroundFetchResult) {
         PEPSession.cleanup()
         completionHandler(result)
@@ -325,7 +325,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: MessageModelServiceDelegate {
 
-    func messageModelServiceDidFinishLastSyncLoop() {
+    func messageModelServiceDidFinishLastSyncLoop() { //BUFF: must go away
         // Cleanup sessions.
         PEPSession.cleanup()
         if syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid {
@@ -340,7 +340,7 @@ extension AppDelegate: MessageModelServiceDelegate {
         syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
 
-    func messageModelServiceDidCancel() {
+    func messageModelServiceDidCancel() { //BUFF: must go away
         switch UIApplication.shared.applicationState {
         case .background:
             // We have been cancelled because we are entering background.
