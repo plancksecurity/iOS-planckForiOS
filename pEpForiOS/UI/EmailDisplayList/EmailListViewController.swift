@@ -1095,6 +1095,11 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
+            if message.pEpRating().isUnDecryptable() {
+                // The user may be about to open an yet undecrypted message.
+                // If so, try to decrypt it again.
+                message.markForRetryDecryptIfUndecryptable()
+            }
             vc.appConfig = appConfig
             vc.message = message
             ///This is commented as we "disabled" the feature in the message of
@@ -1108,6 +1113,11 @@ extension EmailListViewController: SegueHandlerType {
                 let message = model?.message(representedByRowAt: indexPath) else {
                     Log.shared.errorAndCrash("Segue issue")
                     return
+            }
+            if message.pEpRating().isUnDecryptable() {
+                // The user may be about to open an yet undecrypted message.
+                // If so, try to decrypt it again.
+                message.markForRetryDecryptIfUndecryptable()
             }
             vc.appConfig = appConfig
             vc.message = message
