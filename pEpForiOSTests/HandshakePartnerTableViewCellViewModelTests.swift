@@ -12,29 +12,13 @@ import XCTest
 @testable import pEpForiOS
 import PEPObjCAdapterFramework
 
-class DecryptionDelegate: DecryptionAttemptCounterDelegate {
-    var decryptedMessageDict: NSDictionary?
-
-    override func decrypted(originalCdMessage: CdMessage, decryptedMessageDict: NSDictionary?,
-                   rating: PEPRating, keys: [String]) {
-        super.decrypted(
-            originalCdMessage: originalCdMessage, decryptedMessageDict: decryptedMessageDict,
-            rating: rating, keys: keys)
-        self.decryptedMessageDict = decryptedMessageDict
-    }
-}
-
 class HandshakePartnerTableViewCellViewModelTests: CoreDataDrivenTestBase {
 
     func importMail(session: PEPSession = PEPSession()) ->
         (message: Message, mySelfID: Identity, partnerID: Identity)? {
-            let decryptDelegate = DecryptionDelegate()
-
             guard
                 let (mySelf: mySelfID, partner: partnerID, message: message) =
-                TestUtil.setUpPepFromMail(
-                    emailFilePath: "HandshakeTests_mail_001.txt",
-                    decryptDelegate: decryptDelegate) else {
+                TestUtil.setUpPepFromMail(emailFilePath: "HandshakeTests_mail_001.txt") else {
                         XCTFail()
                         return nil
             }
