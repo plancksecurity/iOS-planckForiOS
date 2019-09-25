@@ -12,7 +12,7 @@ import PEPObjCAdapterFramework
 class KeySyncHandshakeService {
     weak var presenter: UIViewController?
     
-    private weak var pEpSyncWizard: PEPPageViewController?
+    private var pEpSyncWizard: PEPPageViewController?
 }
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
@@ -31,6 +31,9 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
             return
         }
 
+        // pEpSyncWizard should be presented over other pEp modals (like Login, Tutorial, etc)
+        // if a pEpModal is being presented. We present pEpSyncWizard over it.
+        // Else the viewController to present it
         var viewController = presenter
         if let pEpModal = presenter.presentedViewController,
             UIHelper.isPEPModal(viewController: pEpModal) {
@@ -71,6 +74,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
         pEpSyncWizard.goTo(index: completedViewIndex)
     }
 
+    // We must dismiss pEpSyncWizard before presenting pEpSyncWizard error view.
     func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
         guard let presentingViewController = pEpSyncWizard?.presentingViewController else {
             Log.shared.errorAndCrash("No Presenter")
