@@ -37,9 +37,9 @@ class ResetTrustViewController: UIViewController {
 
 extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
 
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return 1
-//    }
+    //    func numberOfSections(in tableView: UITableView) -> Int {
+    //        return 1
+    //    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return model.numberOfRowsPerSection(section: section)
@@ -56,32 +56,43 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        <#code#>
+        showAlert(indexPath: indexPath)
+    }
+
+    private func showAlert(indexPath: IndexPath) {
+
+        let alertView = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+        let resetTrustThisIdentityAction = UIAlertAction(
+            title: NSLocalizedString("Reset Trust For This Identity", comment: "alert action 1"),
+            style: .destructive, handler: { [weak self] action in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "lost myself")
+                    return
+                }
+                me.model.resetTrustFor(indexPath: indexPath)
+        })
+
+        let resetTrustAllIdentityAction = UIAlertAction(
+            title: NSLocalizedString("Reset Trust For All Identities", comment: "alert action 2"),
+            style: .destructive, handler: { [weak self] action in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "lost myself")
+                    return
+                }
+                me.model.resetTrustFor(indexPath: indexPath)
+        })
+
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("Cancel", comment: "alert action 3"),
+            style: .cancel)
+
+        alertView.addAction(resetTrustThisIdentityAction)
+        alertView.addAction(resetTrustAllIdentityAction)
+        alertView.addAction(cancelAction)
+
+        present(alertView, animated: true, completion: nil)
     }
 }
-
-/*
-
- let cell = tableView.dequeueReusableCell(withIdentifier: EmailListViewCell.storyboardId,
- for: indexPath)
- if let theCell = cell as? EmailListViewCell {
- theCell.delegate = self
-
- guard let viewModel = model?.viewModel(for: indexPath.row) else {
- return cell
- }
- theCell.configure(for: viewModel)
- } else {
- Log.shared.errorAndCrash("dequeued wrong cell")
- }
-
- //restores selection state for updated or replaced cells.
- if lastSelectedIndexPath == indexPath {
- tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
- }
-
- return cell
- */
 
 extension ResetTrustViewController: ResetTrustViewModelDelegate {
     func willReceiveUpdates(viewModel: ResetTrustViewModel) {

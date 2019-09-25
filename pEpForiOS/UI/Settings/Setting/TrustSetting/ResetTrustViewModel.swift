@@ -37,6 +37,14 @@ class ResetTrustViewModel {
         return id.userNameOrAddress
     }
 
+    func resetTrustFor(indexPath: IndexPath) {
+
+    }
+
+    func resetTrustAllFor(indexPath: IndexPath) {
+
+    }
+
     func numberOfSections() -> Int {
         //!!!: To Be Implemented
         return 1
