@@ -1095,11 +1095,10 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
-            if message.pEpRating().isUnDecryptable() {
-                // The user may be about to open an yet undecrypted message.
-                // If so, try to decrypt it again.
-                message.markForRetryDecryptIfUndecryptable()
-            }
+            //!!!: this logic (mark for redecrypt) must go to getter of longMessage(formatted) as a side effect when HTML parser is in toolbox
+            // The user may be about to open an yet undecrypted message.
+            // If so, try again to decrypt it.
+            message.markForRetryDecryptIfUndecryptable()
             vc.appConfig = appConfig
             vc.message = message
             ///This is commented as we "disabled" the feature in the message of
@@ -1114,11 +1113,10 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
-            if message.pEpRating().isUnDecryptable() {
-                // The user may be about to open an yet undecrypted message.
-                // If so, try to decrypt it again.
-                message.markForRetryDecryptIfUndecryptable()
-            }
+            //!!!: this logic (mark for redecrypt) must go to getter of longMessage(formatted) as a side effect when HTML parser is in toolbox
+            // The user may be about to open an yet undecrypted message.
+            // If so, try again to decrypt it.
+            message.markForRetryDecryptIfUndecryptable()
             vc.appConfig = appConfig
             vc.message = message
             ///This is commented as we "disabled" the feature in the message of
