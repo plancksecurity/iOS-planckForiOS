@@ -443,15 +443,6 @@
 //            }
 //            safeProfilePictureExpectation.fulfill()
 //        }
-//
-//        func securityBadge(for message: Message, completion: @escaping (UIImage?) -> ()) {
-//            guard let safeSecurityBadgeExpectation = securityBadgeExpectation else {
-//                XCTFail()
-//                return
-//            }
-//            safeSecurityBadgeExpectation.fulfill()
-//        }
-//
 //    }
 //
 //    class OperationQueueSpy: OperationQueue {

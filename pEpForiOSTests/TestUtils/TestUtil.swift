@@ -236,19 +236,20 @@ class TestUtil {
         let expAccountsSynced = testCase.expectation(description: "allAccountsSynced")
         // A temp variable is necassary, since the replicationServiceUnitTestDelegate is weak
         let del = ReplicationServiceObserver(numAccountsToSync: numAccountsToSync,
-                                         expAccountsSynced: expAccountsSynced,
-                                         failOnError: true)
+                                             expAccountsSynced: expAccountsSynced,
+                                             failOnError: true)
 
         replicationService.unitTestDelegate = del
         replicationService.delegate = del
-        replicationService.start()
+        replicationService.start(runOnceOnly: true)
 
         let canTakeSomeTimeFactor = 3.0
-        testCase.waitForExpectations(timeout: TestUtil.waitTime * canTakeSomeTimeFactor) { error in
-            XCTAssertNil(error)
-        }
+        testCase.wait(for: [expAccountsSynced], timeout: TestUtil.waitTime * canTakeSomeTimeFactor)
 
-        TestUtil.cancelReplicationServiceAndWait(replicationService: replicationService, testCase: testCase)
+        // Even we do not repeate the sync loop we have to wait until all background tasks of
+        // ReplicationService have finished.
+        TestUtil.cancelReplicationServiceAndWait(replicationService: replicationService,
+                                                 testCase: testCase)
     }
 
     // MARK: - ReplicationService
@@ -288,7 +289,6 @@ class TestUtil {
     /// - Returns: created mails
     /// - Throws: error importing key
     static func createOutgoingMails(cdAccount: CdAccount,
-                                    fromIdentity: CdIdentity? = nil,
                                     toIdentity: CdIdentity? = nil,
                                     setSentTimeOffsetForManualOrdering: Bool = false,
                                     testCase: XCTestCase,
@@ -298,7 +298,6 @@ class TestUtil {
                                     encrypt: Bool = true,
                                     forceUnencrypted: Bool = false,
                                     context: NSManagedObjectContext) throws -> [CdMessage] {
-        let cdAccount = fromIdentity?.accounts?.allObjects.first as? CdAccount ?? cdAccount 
         testCase.continueAfterFailure = false
 
         if numberOfMails == 0 {
@@ -321,18 +320,7 @@ class TestUtil {
             return []
         }
 
-        let from: CdIdentity
-        if let fromIdentity = fromIdentity {
-            from = fromIdentity
-        } else {
-            from = CdIdentity(context: context)
-            from.userName = cdAccount.identity?.userName ?? "Unit 004"
-            from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
-        }
-        guard let fromUserId = cdAccount.identity?.userID else {
-            fatalError("No userId")
-        }
-        from.userID = fromUserId
+        let from = cdAccount.identity
 
         let to: CdIdentity
         if let toIdentity = toIdentity {
@@ -569,14 +557,18 @@ class TestUtil {
 
     // MARK: - FOLDER
 
-    static func makeFolderInteresting(folderType: FolderType, cdAccount: CdAccount) {
-        let folder = cdFolder(ofType: folderType, in: cdAccount)
+    static func makeFolderInteresting(folderType: FolderType,
+                                      cdAccount: CdAccount,
+                                      context: NSManagedObjectContext? = nil) {
+        let folder = cdFolder(ofType: folderType, in: cdAccount, context: context)
         folder.lastLookedAt = Date(timeInterval: -1, since: Date())
         Record.saveAndWait()
     }
 
-    static func cdFolder(ofType type: FolderType, in cdAccount: CdAccount) -> CdFolder {
-        guard let folder = CdFolder.by(folderType: type, account: cdAccount, context: nil)
+    static func cdFolder(ofType type: FolderType,
+                         in cdAccount: CdAccount,
+                         context: NSManagedObjectContext? = nil) -> CdFolder {
+        guard let folder = CdFolder.by(folderType: type, account: cdAccount, context: context)
             else {
                 fatalError()
         }
