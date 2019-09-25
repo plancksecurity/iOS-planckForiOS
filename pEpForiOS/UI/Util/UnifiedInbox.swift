@@ -28,13 +28,11 @@ public class UnifiedInbox: VirtualFolderProtocol {
             try fetchOlderMessagesService.runService(inFolders:folders) {
                 completion?()
             }
-        } catch {
-            guard let er = error as? FetchServiceBaseClass.FetchError,
-                er != FetchServiceBaseClass.FetchError.isFetching else {
-                    Log.shared.errorAndCrash("Unexpected error")
-                    return
-            }
+        } catch FetchServiceBaseClass.FetchError.isFetching {
             // Alredy fetching do nothing
+        } catch {
+            // Unexpected error
+            Log.shared.errorAndCrash(error: error)
         }
     }
 
