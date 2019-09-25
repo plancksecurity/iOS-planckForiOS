@@ -50,7 +50,7 @@ final class SettingsSectionViewModel {
                 return
             }
             generateKeySyncCells(messageModelService)
-            title = NSLocalizedString("Key sync", comment: "Tableview section header")
+            title = NSLocalizedString("p≡p Sync", comment: "Tableview section header")
         case .companyFeatures:
             generateExtaKeysCells()
             title = NSLocalizedString("Company Features", comment: "Tableview section header")
