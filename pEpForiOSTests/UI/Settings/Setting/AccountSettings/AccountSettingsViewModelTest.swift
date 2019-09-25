@@ -70,44 +70,26 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         moc.saveAndLogErrors()
 
         setUpViewModel(keySyncEnabled: true)
-        let expectedHeadersCount = 4
         let expectedHeader = NSLocalizedString("pEp Sync", comment: "Account settings title Key Sync")
 
         // WHEN
         let actualHeader = viewModel[3]
-        let actualCount = viewModel.count
 
         //THEN
         XCTAssertEqual(expectedHeader, actualHeader)
-        XCTAssertEqual(expectedHeadersCount, actualCount)
     }
 
     func testKeySyncSectionIsNOTShown() {
         // GIVEN
-        setUpViewModel(keySyncEnabled: false)
-        let expectedHeadersCount = 3
         let expectedHeaderNOTShown = NSLocalizedString("Key Sync", comment: "Account settings title Key Sync")
 
         // WHEN
-        let actualCount = viewModel.count
+        setUpViewModel(keySyncEnabled: false)
 
         //THEN
         for i in 0..<viewModel.count {
             XCTAssertNotEqual(expectedHeaderNOTShown, viewModel[i])
         }
-        XCTAssertEqual(expectedHeadersCount, actualCount)
-    }
-
-    func testKeySyncSectionIsNotShownWithOneAccount() {
-        // GIVEN
-        setUpViewModel(keySyncEnabled: true)
-        let expectedHeadersCount = 3
-
-        // WHEN
-        let actualCount = viewModel.count
-
-        //THEN
-        XCTAssertEqual(expectedHeadersCount, actualCount)
     }
 
     func testUpdate() {

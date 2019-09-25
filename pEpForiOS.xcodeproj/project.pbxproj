@@ -1012,7 +1012,6 @@
 				004422C92179ECD600BDF6DF /* PassiveModeViewModelTest.swift */,
 				004422D8217A25AD00BDF6DF /* UnencryptedSubjectViewModelTest.swift */,
 				00262055217DCCB200DDAFB5 /* TrustedServerSettingsViewModelTest.swift */,
-				00262057217DE97100DDAFB5 /* AccountSettingsViewModelTest.swift */,
 				3705704022B8EB27002E3AAD /* KeySyncDeviceGroupServiceMoc.swift */,
 				3705703E22B8E3B9002E3AAD /* ActionCellViewModelTest.swift */,
 				3791A45E22BA6A0300A9E534 /* MessageModelServiceMoc.swift */,
@@ -1520,6 +1519,7 @@
 		158A6E2C230D53C0006A9ECE /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				37A710E2233B7A96001FEAF0 /* AccountSettings */,
 				158A6E2D230D53C7006A9ECE /* ExtraKeysSetting */,
 			);
 			path = Setting;
@@ -1722,6 +1722,14 @@
 				37816548231035F000B967E3 /* PEPAlertViewModelTest.swift */,
 			);
 			path = PEPAlertViewController;
+			sourceTree = "<group>";
+		};
+		37A710E2233B7A96001FEAF0 /* AccountSettings */ = {
+			isa = PBXGroup;
+			children = (
+				00262057217DE97100DDAFB5 /* AccountSettingsViewModelTest.swift */,
+			);
+			path = AccountSettings;
 			sourceTree = "<group>";
 		};
 		4304FCFD1EBB8C2C0086DADA /* LanguageList */ = {
