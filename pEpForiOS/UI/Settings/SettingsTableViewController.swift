@@ -285,7 +285,7 @@ extension SettingsTableViewController {
                 return
             }
             me.deleteRowAt(indexPath)
-            me.tableView.beginUpdates() //Change to performBatchUpdates when iOS 10 is deprecated
+            me.tableView.beginUpdates()
             if let pEpSyncSection = self?.viewModel.pEpSyncSection() {
                 me.tableView.reloadSections([pEpSyncSection], with: UITableView.RowAnimation.none)
             }
