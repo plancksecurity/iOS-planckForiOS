@@ -134,7 +134,7 @@ public class AccountSettingsViewModel {
                 Log.shared.errorAndCrash("Supposed to do OAUTH2, but no existing token")
             }
         }
-        let pEpSyncState = try? account.isPEPSyncEnable()
+        let pEpSyncState = try? account.isPEPSyncEnabled()
         pEpSync = pEpSyncState ?? false
     }
 
@@ -284,9 +284,3 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
         }
     }
 }
-
-
-/*
- case .success(()):
-
- */

@@ -111,7 +111,7 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
         if Account.all().count == 1,
             let account = Account.all().first {
             do {
-                if try !account.isPEPSyncEnable() {
+                if try !account.isPEPSyncEnabled() {
                     messageModelService.disableKeySync()
                     AppSettings.keySyncEnabled = false
                 }
