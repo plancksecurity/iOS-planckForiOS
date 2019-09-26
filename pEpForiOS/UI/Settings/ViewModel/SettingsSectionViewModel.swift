@@ -32,7 +32,11 @@ final class SettingsSectionViewModel {
 
         switch type {
         case .accounts:
-            generateAccountCells()
+            guard let messageModelService = messageModelService else {
+                Log.shared.errorAndCrash("missing service")
+                return
+            }
+            generateAccountCells(messageModelService: messageModelService)
             title = NSLocalizedString("Accounts", comment: "Tableview section  header")
         case .globalSettings:
             generateGlobalSettingsCells()
@@ -93,9 +97,10 @@ final class SettingsSectionViewModel {
 
 extension SettingsSectionViewModel {
 
-    private func generateAccountCells() {
+    private func generateAccountCells(messageModelService: MessageModelServiceProtocol) {
         Account.all().forEach { (acc) in
-            self.cells.append(SettingsCellViewModel(account: acc))
+            self.cells.append(SettingsCellViewModel(account: acc,
+                                                    messageModelService: messageModelService))
         }
     }
 

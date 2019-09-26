@@ -442,9 +442,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="ssl-zJ-MuL" firstAttribute="trailing" secondItem="1Xe-2b-3bV" secondAttribute="trailing" id="QZY-pj-NHE"/>
-                            <constraint firstItem="1Xe-2b-3bV" firstAttribute="leading" secondItem="ssl-zJ-MuL" secondAttribute="leading" id="VPo-2a-xZG"/>
-                            <constraint firstItem="1Xe-2b-3bV" firstAttribute="top" secondItem="ssl-zJ-MuL" secondAttribute="top" constant="-20" id="kYs-ca-Bsu"/>
+                            <constraint firstAttribute="trailing" secondItem="1Xe-2b-3bV" secondAttribute="trailing" id="QZY-pj-NHE"/>
+                            <constraint firstItem="1Xe-2b-3bV" firstAttribute="leading" secondItem="OJU-yg-9Hf" secondAttribute="leading" id="VPo-2a-xZG"/>
+                            <constraint firstItem="1Xe-2b-3bV" firstAttribute="top" secondItem="OJU-yg-9Hf" secondAttribute="top" id="kYs-ca-Bsu"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ssl-zJ-MuL"/>
                     </view>

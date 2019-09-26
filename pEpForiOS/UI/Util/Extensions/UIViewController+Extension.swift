@@ -39,24 +39,22 @@ extension UIViewController {
         }
     }
 
+    @discardableResult
     func presentKeySyncWizard(meFPR: String,
                               partnerFPR: String,
                               isNewGroup: Bool,
-                              completion: @escaping (KeySyncWizard.Action) -> Void ) {
-        guard let pageViewController = KeySyncWizard.fromStoryboard(meFPR: meFPR,
-                                                                    partnerFPR: partnerFPR,
-                                                                    isNewGroup: isNewGroup,
-                                                                    completion: completion) else {
-                                                                        return
-        }
-        DispatchQueue.main.async { [weak self] in
-            if let presented = self?.presentedViewController {
-                presented.dismiss(animated: true, completion: {
-                    self?.present(pageViewController, animated: true, completion: nil)
-                })
-            } else {
+                              completion: @escaping (KeySyncWizard.Action) -> Void )
+        -> PEPPageViewController? {
+            guard let pageViewController = KeySyncWizard.fromStoryboard(meFPR: meFPR,
+                                                                        partnerFPR: partnerFPR,
+                                                                        isNewGroup: isNewGroup,
+                                                                        completion: completion) else {
+                                                                            return nil
+            }
+            DispatchQueue.main.async { [weak self] in
                 self?.present(pageViewController, animated: true, completion: nil)
             }
-        }
+            return pageViewController
     }
 }
+

@@ -28,7 +28,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var doneButton: UIBarButtonItem!
-
+    @IBOutlet weak var pEpSyncToggle: UISwitch!
 
     private let spinner: UIActivityIndicatorView = {
         let createe = UIActivityIndicatorView()
@@ -56,6 +56,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
         super.viewDidLoad()
         configureView()
         if let vm = viewModel {
+            vm.verifiableDelegate = self
             vm.delegate = self
         }
         passwordTextfield.delegate = self
@@ -63,6 +64,8 @@ UIPickerViewDataSource, UITextFieldDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.navigationController?.setToolbarHidden(true, animated: false)
+
         guard let isIphone = splitViewController?.isCollapsed else {
             return
         }
@@ -78,6 +81,10 @@ UIPickerViewDataSource, UITextFieldDelegate {
         self.emailTextfield.text = viewModel?.email
         self.usernameTextfield.text = viewModel?.loginName
         self.passwordTextfield.text = "JustAPassword"
+
+        if let viewModel = viewModel {
+            pEpSyncToggle.isOn = viewModel.pEpSync
+        }
 
         securityPicker = UIPickerView(frame: CGRect(x: 0, y: 50, width: 100, height: 150))
         securityPicker?.delegate = self
@@ -272,10 +279,12 @@ UIPickerViewDataSource, UITextFieldDelegate {
             showSpinnerAndDisableUI()
             viewModel?.update(loginName: validated.loginName, name: validated.accountName,
                               password: password, imap: imap, smtp: smtp)
-
         } catch {
             informUser(about: error)
         }
+    }
+    @IBAction func didPressPEPSyncToggle(_ sender: UISwitch) {
+        viewModel?.pEpSync(enable: sender.isOn)
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -398,5 +407,33 @@ extension AccountSettingsTableViewController {
         doneButton.isEnabled = true
         tableView.isUserInteractionEnabled = true
         spinner.stopAnimating()
+    }
+}
+
+
+// MARK: - AccountSettingsViewModelDelegate
+
+extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
+    func undoPEPSyncToggle() {
+
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.pEpSyncToggle.setOn(!me.pEpSyncToggle.isOn, animated: true)
+        }
+    }
+
+    func showErrorAlert(title: String, message: String, buttonTitle: String) {
+        let alert = UIAlertController.pEpAlertController(title: title,
+                                                         message: message,
+                                                         preferredStyle: .alert)
+
+        let okAction = UIAlertAction(title: buttonTitle, style: .cancel, handler: nil)
+        alert.addAction(okAction)
+        DispatchQueue.main.async { [weak self] in
+            self?.present(alert, animated: true)
+        }
     }
 }
