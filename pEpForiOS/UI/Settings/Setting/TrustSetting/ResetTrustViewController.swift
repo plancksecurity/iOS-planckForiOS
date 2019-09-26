@@ -71,23 +71,24 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
                 }
                 me.model.resetTrustFor(indexPath: indexPath)
         })
+        alertView.addAction(resetTrustThisIdentityAction)
 
-        let resetTrustAllIdentityAction = UIAlertAction(
-            title: NSLocalizedString("Reset Trust For All Identities", comment: "alert action 2"),
-            style: .destructive, handler: { [weak self] action in
-                guard let me = self else {
-                    Log.shared.errorAndCrash(message: "lost myself")
-                    return
-                }
-                me.model.resetTrustAllFor(indexPath: indexPath)
-        })
+        if model.relatedIdentities(indexPath: indexPath) {
+            let resetTrustAllIdentityAction = UIAlertAction(
+                title: NSLocalizedString("Reset Trust For All Identities", comment: "alert action 2"),
+                style: .destructive, handler: { [weak self] action in
+                    guard let me = self else {
+                        Log.shared.errorAndCrash(message: "lost myself")
+                        return
+                    }
+                    me.model.resetTrustAllFor(indexPath: indexPath)
+            })
+            alertView.addAction(resetTrustAllIdentityAction)
+        }
 
         let cancelAction = UIAlertAction(
             title: NSLocalizedString("Cancel", comment: "alert action 3"),
             style: .cancel)
-
-        alertView.addAction(resetTrustThisIdentityAction)
-        alertView.addAction(resetTrustAllIdentityAction)
         alertView.addAction(cancelAction)
 
         present(alertView, animated: true, completion: nil)
