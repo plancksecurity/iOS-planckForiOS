@@ -446,6 +446,32 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         let composeVM = emailListVM.composeViewModelForNewMessage()
         XCTAssertEqual(composeVM.state.from, expectedFrom)
     }
+
+    func testPullToRefreshAction() {
+
+        let pullToRefreshExpectation = expectation(description: "pullToRefreshExpectation")
+        let message = TestUtil.createMessage(uid: 0, inFolder: inbox)
+        message.pEpProtected = false
+        moc.saveAndLogErrors()
+        let uuid = message.uuid
+        TestUtil.syncAndWait(testCase: self)
+        let cdMessages = CdMessage.all()
+        for message in cdMessages! {
+            moc.delete(message)
+        }
+        moc.saveAndLogErrors()
+        setupViewModel(forfolder: inbox)
+        emailListVM.startMonitoring()
+        setUpViewModelExpectations(expectationDidInsertDataAt: true)
+        emailListVM.fetchNewMessages() {
+            pullToRefreshExpectation.fulfill()
+        }
+        waitForExpectations(timeout: TestUtil.waitTime)
+        let messagesAfterFetch = emailListVM.message(representedByRowAt: IndexPath(item: 0, section: 0))//get the first message which is te one we append
+        XCTAssertEqual(messagesAfterFetch?.uuid, uuid)
+        XCTAssertNotEqual(messagesAfterFetch?.uid, Message.uidNeedsAppend)
+    }
+
 }
 
 // MARK: - HELPER

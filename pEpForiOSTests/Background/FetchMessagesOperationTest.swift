@@ -13,16 +13,16 @@ import CoreData
 @testable import pEpForiOS
 
 class FetchMessagesOperationTest: CoreDataDrivenTestBase {
+
     // IOS-671 pEp app has two accounts. Someone sends a mail to both
     // (with both accounts in receipients).
     // Message must exist twice, once for each account, after fetching mails from server.
-    // Commented as randomly failing and crashing. See IOS-1465.
 //    func testMailSentToBothPepAccounts() {
 //        // Setup 2 accounts
 //        cdAccount.createRequiredFoldersAndWait(testCase: self)
 //        moc.saveAndLogErrors()
 //
-//        let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
+//        let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
 //        moc.saveAndLogErrors()
 //        cdAccount2.createRequiredFoldersAndWait(testCase: self)
 //        moc.saveAndLogErrors()
@@ -40,14 +40,13 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
 //
 //        // Create mails from cdAccount2 with both accounts in receipients (cdAccount & cdAccount2)
 //        let numMailsToSend = 2
-//        let mailsToSend = try! TestUtil.createOutgoingMails(
-//            cdAccount: cdAccount2,
-//            fromIdentity: id2,
-//            toIdentity: id1,
-//            testCase: self,
-//            numberOfMails: numMailsToSend,
-//            withAttachments: false,
-//            encrypt: false)
+//        let mailsToSend = try! TestUtil.createOutgoingMails(cdAccount: cdAccount2,
+//                                                            toIdentity: id1,
+//                                                            testCase: self,
+//                                                            numberOfMails: numMailsToSend,
+//                                                            withAttachments: false,
+//                                                            encrypt: false,
+//                                                            context: moc)
 //        XCTAssertEqual(mailsToSend.count, numMailsToSend)
 //
 //        for mail in mailsToSend {
@@ -57,7 +56,7 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
 //        moc.saveAndLogErrors()
 //
 //        // ... and send them.
-//        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
+//        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self) //BUFF: THIS
 //
 //        // Sync once again to make sure we mirror the servers state (i.e. receive the sent mails)
 //        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
