@@ -1,9 +1,9 @@
 //
-//  NSAttributedString+Extension.swift
-//  pEp
+//  NSAttributedString+AttributeCleanup.swift
+//  pEpIOSToolbox
 //
-//  Created by Andreas Buff on 20.09.18.
-//  Copyright © 2018 p≡p Security S.A. All rights reserved.
+//  Created by Andreas Buff on 24.09.19.
+//  Copyright © 2019 pEp Security SA. All rights reserved.
 //
 
 import Foundation
@@ -27,7 +27,7 @@ extension String {
     /// Strips NSAttributedString attribute text representaions.
     ///
     /// - Returns: cleaned `string` value
-    func stringCleanedFromNSAttributedStingAttributes() -> String {
+    public func stringCleanedFromNSAttributedStingAttributes() -> String {
         // Currently strips NSTextAttachment ralated information only. More stuff might need to be
         // stripped, e.g. font information.
         return NSAttributedString.cleanNSAttributedStingAttributes(from: self)
