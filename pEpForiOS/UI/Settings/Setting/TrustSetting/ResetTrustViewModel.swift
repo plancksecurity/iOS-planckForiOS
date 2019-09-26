@@ -17,12 +17,14 @@ protocol ResetTrustViewModelDelegate: class, TableViewUpdate {
     func resetTrustViewModel(viewModel: ResetTrustViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath)
     func willReceiveUpdates(viewModel: ResetTrustViewModel)
     func allUpdatesReceived(viewModel: ResetTrustViewModel)
+    func reloadData(viewModel: ResetTrustViewModel)
 }
 
 class ResetTrustViewModel {
 
     var identityQueryResult: IdentityQueryResults
     var delegate: ResetTrustViewModelDelegate?
+    var lastSearchTerm = ""
 
     init() {
         identityQueryResult = IdentityQueryResults()
@@ -38,7 +40,36 @@ class ResetTrustViewModel {
         return id.userNameOrAddress
     }
 
+    public func removeSearch() {
+        setNewSearchAndReload(search: nil)
+    }
 
+    public func setSearch(forSearchText txt: String) {
+        if txt == lastSearchTerm {
+            // Happens e.g. when initially setting the cursor in search bar.
+            return
+        }
+        lastSearchTerm = txt
+
+        let search = txt == "" ? nil : IdentityQueryResultsSearch(searchTerm: txt)
+        setNewSearchAndReload(search: search)
+    }
+
+    private func setNewSearchAndReload(search: IdentityQueryResultsSearch?) {
+        resetQueryResultsAndReload(search: search)
+    }
+
+    // Every time filter or search changes, we have to rest QueryResults
+    private func resetQueryResultsAndReload(search: IdentityQueryResultsSearch? = nil) {
+        defer { delegate?.reloadData(viewModel: self) }
+        identityQueryResult = IdentityQueryResults(search: search, delegate: self)
+        do {
+            try identityQueryResult.startMonitoring()
+        } catch {
+            Log.shared.errorAndCrash("Failed to fetch data")
+            return
+        }
+    }
 
     func resetTrustFor(indexPath: IndexPath) {
         let identity = identityQueryResult[indexPath.row]
@@ -55,27 +86,12 @@ class ResetTrustViewModel {
         return identity.relatedIdentities()
     }
 
-    func numberOfSections() -> Int {
-        //!!!: To Be Implemented
-        return 1
-    }
-
-    func titleForSection(section: Int) -> String {
-        //!!!: To Be Implemented
-        return "test"
-    }
-
     func numberOfRowsPerSection(section: Int) -> Int {
         do {
             return try identityQueryResult.count()
         } catch {
             return 0
         }
-    }
-
-    func indexElements() -> [String] {
-        //!!!: To Be Implemented
-        return ["T"]
     }
 }
 

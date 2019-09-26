@@ -98,15 +98,15 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
         guard let searchText = searchController.searchBar.text else {
                 return
         }
-        //vm.setSearch(forSearchText: searchText)
+        model.setSearch(forSearchText: searchText)
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
-        //model.removeSearBar()
+        model.removeSearch()
     }
 }
 
-// MARK: - UISearchResultsUpdating, UISearchControllerDelegate
+// MARK: - UITableViewDataSource, UITableViewDelegate
 
 extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
 
@@ -165,6 +165,7 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension ResetTrustViewController: ResetTrustViewModelDelegate {
+
     func willReceiveUpdates(viewModel: ResetTrustViewModel) {
         tableView.beginUpdates()
     }
@@ -193,4 +194,7 @@ extension ResetTrustViewController: ResetTrustViewModelDelegate {
         tableView.reloadData()
     }
 
+    func reloadData(viewModel: ResetTrustViewModel) {
+        tableView.reloadData()
+    }
 }
