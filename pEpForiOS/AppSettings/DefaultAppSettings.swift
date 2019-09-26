@@ -145,7 +145,7 @@ public class DefaultAppSettings: AppSettingsProtocol {
         var defaults = [String: Any]()
         defaults[DefaultAppSettings.keyReinitializePepOnNextStartup] = false
         defaults[DefaultAppSettings.keyKeySyncEnabled] = true
-        defaults[DefaultAppSettings.keyUnencryptedSubjectEnabled] = true
+        defaults[DefaultAppSettings.keyUnencryptedSubjectEnabled] = false
         defaults[DefaultAppSettings.keyThreadedViewEnabled] = true
         defaults[DefaultAppSettings.keyPassiveMode] = false
         defaults[DefaultAppSettings.keyLastKnowDeviceGroupStateRawValue] = DeviceGroupState.sole.rawValue
