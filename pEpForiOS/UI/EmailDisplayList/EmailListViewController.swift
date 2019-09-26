@@ -36,6 +36,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
 
+    private let refreshController = UIRefreshControl()
+
     var textFilterButton: UIBarButtonItem = UIBarButtonItem(title: "",
                                                             style: .plain,
                                                             target: nil,
@@ -122,6 +124,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                        folderToShow: UnifiedInbox())
         }
 
+        ///the refresh controller is configured and added to the tableview
+        refreshController.tintColor = UIColor.pEpGreen
+        refreshController.addTarget(self, action: #selector(self.refreshView(_:)), for: .valueChanged)
+        tableView.refreshControl = refreshController
+
         title = model?.folderName
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
@@ -173,6 +180,19 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 selector: #selector(didBecomeInactiveUninstallSearchbar10),
                 name: UIApplication.didEnterBackgroundNotification,
                 object: nil)
+        }
+    }
+
+    ///called when the view is scrolled down to
+    @objc private func refreshView(_ sender: Any) {
+        model?.fetchNewMessages() { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(message: "Lost myself")
+                return
+            }
+            DispatchQueue.main.async {
+                me.refreshControl?.endRefreshing()
+            }
         }
     }
 
@@ -501,7 +521,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             guard let viewModel = model?.viewModel(for: indexPath.row) else {
                 return cell
             }
-            theCell.configure(for:viewModel)
+            theCell.configure(for: viewModel)
         } else {
             Log.shared.errorAndCrash("dequeued wrong cell")
         }
@@ -1075,6 +1095,10 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
+            //!!!: this logic (mark for redecrypt) must go to getter of longMessage(formatted) as a side effect when HTML parser is in toolbox
+            // The user may be about to open an yet undecrypted message.
+            // If so, try again to decrypt it.
+            message.markForRetryDecryptIfUndecryptable()
             vc.appConfig = appConfig
             vc.message = message
             ///This is commented as we "disabled" the feature in the message of
@@ -1089,6 +1113,10 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
+            //!!!: this logic (mark for redecrypt) must go to getter of longMessage(formatted) as a side effect when HTML parser is in toolbox
+            // The user may be about to open an yet undecrypted message.
+            // If so, try again to decrypt it.
+            message.markForRetryDecryptIfUndecryptable()
             vc.appConfig = appConfig
             vc.message = message
             ///This is commented as we "disabled" the feature in the message of

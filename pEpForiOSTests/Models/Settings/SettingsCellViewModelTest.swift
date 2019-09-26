@@ -82,7 +82,9 @@ class SettingsCellViewModelTest: CoreDataDrivenTestBase {
 
     //MARK: Initialization
     private func setUpViewModel(with account: Account) {
-        viewModel = SettingsCellViewModel(account: account)
+        let messageModelServiceMoc = MessageModelServiceMoc()
+        viewModel = SettingsCellViewModel(account: account,
+                                          messageModelService: messageModelServiceMoc)
     }
 
     private func setUpViewModel() {
