@@ -8,13 +8,14 @@
 
 import UIKit
 
-class ResetTrustViewController: UIViewController {
+class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UISearchResultsUpdating {
 
     let cellId = "ResetTrustSettingCell"
     let model = ResetTrustViewModel()
 
     @IBOutlet var tableView: UITableView!
 
+    let searchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,15 +32,83 @@ class ResetTrustViewController: UIViewController {
         ///Hide toolbar
         navigationController?.setToolbarHidden(true, animated: false)
         model.delegate = self
+        ///searchBar configuration
+        configureSearchBar()
+        if #available(iOS 11.0, *) {
+            searchController.isActive = false
+            navigationItem.searchController = searchController
+            navigationItem.hidesSearchBarWhenScrolling = true
+        } else {
+            addSearchBar10()
+
+            if tableView.tableHeaderView == nil {
+                tableView.tableHeaderView = searchController.searchBar
+            }
+
+            // some notifications to control when the app enter and recover from background
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(didBecomeActiveInstallSearchBar10),
+                name: UIApplication.didBecomeActiveNotification,
+                object: nil)
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(didBecomeInactiveUninstallSearchbar10),
+                name: UIApplication.didEnterBackgroundNotification,
+                object: nil)
+        }
     }
 
+    /**
+     Configure the search controller, shared between iOS versions 11 and earlier.
+     */
+    private func configureSearchBar() {
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.delegate = self
+    }
+
+    /**
+     Add the search bar when running on iOS 10 or earlier.
+     */
+    private func addSearchBar10() {
+        tableView.tableHeaderView = searchController.searchBar
+        tableView.setContentOffset(CGPoint(x: 0.0,
+                                           y: searchController.searchBar.frame.size.height),
+                                   animated: false)
+    }
+
+    /**
+     Showing the search controller in versions iOS 10 and earlier.
+     */
+    @objc func didBecomeActiveInstallSearchBar10() {
+        if tableView.tableHeaderView == nil {
+            tableView.tableHeaderView = searchController.searchBar
+        }
+    }
+
+    /**
+     Hide/remove the search controller in versions iOS 10 and earlier.
+     */
+    @objc func didBecomeInactiveUninstallSearchbar10() {
+        tableView.tableHeaderView = nil
+    }
+
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else {
+                return
+        }
+        //vm.setSearch(forSearchText: searchText)
+    }
+
+    func didDismissSearchController(_ searchController: UISearchController) {
+        //model.removeSearBar()
+    }
 }
 
-extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
+// MARK: - UISearchResultsUpdating, UISearchControllerDelegate
 
-    //    func numberOfSections(in tableView: UITableView) -> Int {
-    //        return 1
-    //    }
+extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return model.numberOfRowsPerSection(section: section)
@@ -123,6 +192,5 @@ extension ResetTrustViewController: ResetTrustViewModelDelegate {
     func updateView() {
         tableView.reloadData()
     }
-
 
 }
