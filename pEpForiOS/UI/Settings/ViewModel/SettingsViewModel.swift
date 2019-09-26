@@ -29,7 +29,8 @@ final class SettingsViewModel {
     }
 
     private func generateSections() {
-        sections.append(SettingsSectionViewModel(type: .accounts))
+        sections.append(SettingsSectionViewModel(type: .accounts,
+                                                 messageModelService: messageModelService))
         sections.append(SettingsSectionViewModel(type: .globalSettings))
         sections.append(SettingsSectionViewModel(type: .pgpCompatibilitySettings))
         sections.append(SettingsSectionViewModel(type: .keySync,
@@ -80,6 +81,12 @@ final class SettingsViewModel {
         get {
             assert(sectionIsValid(section: section), "Section out of range")
             return sections[section]
+        }
+    }
+
+    func pEpSyncSection() -> Int? {
+        return sections.firstIndex {
+            $0.type == .keySync
         }
     }
 }
