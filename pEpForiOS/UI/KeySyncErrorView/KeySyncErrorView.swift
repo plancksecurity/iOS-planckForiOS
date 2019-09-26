@@ -23,11 +23,11 @@ struct KeySyncErrorView {
             action in
             switch action {
             case .tryAgain:
+                dismiss(from: viewController)
                 completion?(.tryAgain)
-                dismiss(from: viewController)
             case .notNow:
-                completion?(.notNow)
                 dismiss(from: viewController)
+                completion?(.notNow)
             }
         }) else {
             return
@@ -92,8 +92,12 @@ extension KeySyncErrorView {
     }
 
     static func dismiss(from viewController: UIViewController) {
-        DispatchQueue.main.async { [weak viewController] in
-            viewController?.dismiss(animated: true, completion: nil)
+        guard let errorView = viewController.presentedViewController else {
+            Log.shared.errorAndCrash("pEPSyncError view is not presented")
+            return
+        }
+        DispatchQueue.main.async {
+            errorView.dismiss(animated: true, completion: nil)
         }
     }
 }

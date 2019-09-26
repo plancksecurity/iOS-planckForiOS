@@ -223,6 +223,7 @@
 		3781654C2313F84700B967E3 /* KeySyncWizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3781654B2313F84700B967E3 /* KeySyncWizard.swift */; };
 		3791A45F22BA6A0300A9E534 /* MessageModelServiceMoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3791A45E22BA6A0300A9E534 /* MessageModelServiceMoc.swift */; };
 		3791A46122BA77C900A9E534 /* KeySyncServiceHandshakeDelegateMoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3791A46022BA77C900A9E534 /* KeySyncServiceHandshakeDelegateMoc.swift */; };
+		37A710E0233B5AA5001FEAF0 /* UIHelper+PEP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */; };
 		37C3C0E62260C64D003E290C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C3C0E52260C64D003E290C /* Log.swift */; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
 		4304FD001EBB8EBB0086DADA /* LanguageListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */; };
@@ -694,6 +695,7 @@
 		3781654B2313F84700B967E3 /* KeySyncWizard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncWizard.swift; sourceTree = "<group>"; };
 		3791A45E22BA6A0300A9E534 /* MessageModelServiceMoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModelServiceMoc.swift; sourceTree = "<group>"; };
 		3791A46022BA77C900A9E534 /* KeySyncServiceHandshakeDelegateMoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncServiceHandshakeDelegateMoc.swift; sourceTree = "<group>"; };
+		37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIHelper+PEP.swift"; sourceTree = "<group>"; };
 		37C3C0E52260C64D003E290C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
 		4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageListViewController.swift; sourceTree = "<group>"; };
@@ -996,7 +998,6 @@
 				004422C92179ECD600BDF6DF /* PassiveModeViewModelTest.swift */,
 				004422D8217A25AD00BDF6DF /* UnencryptedSubjectViewModelTest.swift */,
 				00262055217DCCB200DDAFB5 /* TrustedServerSettingsViewModelTest.swift */,
-				00262057217DE97100DDAFB5 /* AccountSettingsViewModelTest.swift */,
 				3705704022B8EB27002E3AAD /* KeySyncDeviceGroupServiceMoc.swift */,
 				3705703E22B8E3B9002E3AAD /* ActionCellViewModelTest.swift */,
 				3791A45E22BA6A0300A9E534 /* MessageModelServiceMoc.swift */,
@@ -1495,6 +1496,7 @@
 		158A6E2C230D53C0006A9ECE /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				37A710E2233B7A96001FEAF0 /* AccountSettings */,
 				158A6E2D230D53C7006A9ECE /* ExtraKeysSetting */,
 			);
 			path = Setting;
@@ -1696,6 +1698,14 @@
 				37816548231035F000B967E3 /* PEPAlertViewModelTest.swift */,
 			);
 			path = PEPAlertViewController;
+			sourceTree = "<group>";
+		};
+		37A710E2233B7A96001FEAF0 /* AccountSettings */ = {
+			isa = PBXGroup;
+			children = (
+				00262057217DE97100DDAFB5 /* AccountSettingsViewModelTest.swift */,
+			);
+			path = AccountSettings;
 			sourceTree = "<group>";
 		};
 		4304FCFD1EBB8C2C0086DADA /* LanguageList */ = {
@@ -1987,6 +1997,7 @@
 				433BCD941D5388C100DD98EF /* ReplyUtil.swift */,
 				228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */,
 				436C5A8D1CFEDF59006A195F /* UIHelper.swift */,
+				37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */,
 				43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */,
 				222B35571DF96389007A1F82 /* Capability.swift */,
 				8B69E3981E30F80E0022959E /* Appearance.swift */,
@@ -2810,6 +2821,7 @@
 				220DCE361E0AB5CC002FE716 /* MessageSenderCell.swift in Sources */,
 				15874BCD2127493E00A3A4A6 /* AccountSettingsError.swift in Sources */,
 				15D4399A216E697700EB3933 /* AccountPickerView.swift in Sources */,
+				37A710E0233B5AA5001FEAF0 /* UIHelper+PEP.swift in Sources */,
 				15265962216230B1006A78DF /* ContactCell.swift in Sources */,
 				43425EDF1FE3E052004A2728 /* OAuth2ProviderFactory.swift in Sources */,
 				43E657E01F3C74030014CBEC /* AXHTMLParser.m in Sources */,
