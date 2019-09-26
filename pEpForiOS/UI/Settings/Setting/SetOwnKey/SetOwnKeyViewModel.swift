@@ -45,6 +45,8 @@ class SetOwnKeyViewModel {
             let session = PEPSession()
             try session.setOwnKey(someIdent, fingerprint: theFingerprint.despaced())
             rawErrorString = nil
+            // We got a new key. Try to derypt yet undecryptable messages.
+            Message.tryRedecryptYetUndecryptableMessages()
         } catch {
             rawErrorString = error.localizedDescription
         }
