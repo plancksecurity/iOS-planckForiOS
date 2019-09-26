@@ -682,7 +682,6 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         delegate?.contentChanged(inRowAt: idxPath)
         delegate?.showSuggestions(forRowAt: idxPath)
         suggestionsVM?.updateSuggestion(searchString: newText.cleanAttachments)
-        state.validate()
     }
 }
 

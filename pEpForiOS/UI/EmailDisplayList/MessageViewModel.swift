@@ -225,9 +225,8 @@ class MessageViewModel: CustomDebugStringConvertible {
         queueForHeavyStuff.addOperation(operation)
     }
 
-    func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
-        let operation = getSecurityBadgeOperation(completion: completion)
-        queueForHeavyStuff.addOperation(operation)
+    func getSecurityBadge() -> UIImage? {
+        return message.securityBadgeForContactPicture
     }
 
     func getBodyMessage() -> NSMutableAttributedString {
@@ -297,7 +296,8 @@ extension MessageViewModel: Equatable {
 extension MessageViewModel {
 
     private func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> Operation {
-
+        let session = Session()
+        let safeMsg = message.safeForSession(session)
 
         let getBodyPeekOperation = SelfReferencingOperation { [weak self] operation in
             guard
@@ -308,8 +308,6 @@ extension MessageViewModel {
             guard let me = self else {
                 return
             }
-            let session = Session()
-            let safeMsg = me.message.safeForSession(session)
             session.performAndWait {
                 guard !operation.isCancelled else {
                     return
@@ -327,27 +325,6 @@ extension MessageViewModel {
             }
         }
         return getBodyPeekOperation
-    }
-
-    private func getSecurityBadgeOperation(completion: @escaping (UIImage?) -> ()) -> Operation {
-
-        
-        let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
-            guard let me = self else {
-                return
-            }
-            let session = Session()
-            let safeMsg = me.message.safeForSession(session)
-            var badgeImage: UIImage? = nil
-            session.performAndWait {
-                guard let operation = operation, !operation.isCancelled else {
-                    return
-                }
-                badgeImage = me.profilePictureComposer.securityBadge(for: safeMsg)
-            }
-            completion(badgeImage)
-        }
-        return getSecurityBadgeOperation
     }
 
     private func getProfilePictureOperation(completion: @escaping (UIImage?) -> ())

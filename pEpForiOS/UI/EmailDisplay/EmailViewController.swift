@@ -122,6 +122,15 @@ class EmailViewController: BaseTableViewController {
         // Make sure the NavigationBar is shown, even if the previous view has hidden it.
         navigationController?.setNavigationBarHidden(false, animated: false)
 
+        //ToolBar
+        if let splitViewController = splitViewController {
+            if splitViewController.isCollapsed {
+                navigationController?.setToolbarHidden(false, animated: false)
+            } else {
+                navigationController?.setToolbarHidden(true, animated: false)
+            }
+        }
+
         title = NSLocalizedString("Message", comment: "Message view title")
 
         setupDestructiveButtonIcon()
@@ -455,6 +464,12 @@ class EmailViewController: BaseTableViewController {
             return
         }
         Message.imapDelete(messages: [message])
+        guard let splitViewController = self.splitViewController else {
+            return
+        }
+        if splitViewController.isCollapsed {
+            navigationController?.popViewController(animated: true)
+        }
     }
 
     @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer? = nil) {

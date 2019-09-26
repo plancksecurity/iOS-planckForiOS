@@ -14,14 +14,14 @@ import CoreData
 
 class ContentDispositionTest: CoreDataDrivenTestBase {
     // Commented as randomly failing and crashing. See IOS-1465. //!!!:
-//    func testInlinedAttachmentRoundTrip() {
-//        attchmentRoundTrip(attachmentsInlined: true)
-//    }
+    func testInlinedAttachmentRoundTrip() {
+        attchmentRoundTrip(attachmentsInlined: true)
+    }
 
     // Commented as randomly failing. See IOS-1382.
-//    func testNonInlinedAttachmentRoundTrip() {
-//        attchmentRoundTrip(attachmentsInlined: false)
-//    }
+    func testNonInlinedAttachmentRoundTrip() {
+        attchmentRoundTrip(attachmentsInlined: false)
+    }
 
     // MARK: - HELPER
 
@@ -51,7 +51,6 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
         let numMailsToSend = 1
         let mailsToSend = try!
             TestUtil.createOutgoingMails(cdAccount: cdAccount,
-                                         fromIdentity: id1,
                                          toIdentity: id2,
                                          setSentTimeOffsetForManualOrdering: false,
                                          testCase: self,

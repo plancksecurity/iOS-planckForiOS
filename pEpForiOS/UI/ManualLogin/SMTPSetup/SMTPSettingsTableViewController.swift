@@ -155,6 +155,34 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     }
 }
 
+// MARK: - AccountVerificationServiceDelegate
+
+extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
+    func verified(account: Account, service: AccountVerificationServiceProtocol,
+                  result: AccountVerificationResult) {
+        if result == .ok {
+            MessageModelUtil.performAndWait {
+                account.save()
+            }
+        }
+        GCD.onMain() {
+            self.isCurrentlyVerifying =  false
+            switch result {
+            case .ok:
+                // unwind back to INBOX or folder list on success
+                self.performSegue(withIdentifier: .backToEmailListSegue, sender: self)
+            case .imapError(let err):
+                UIUtils.show(error: err, inViewController: self)
+            case .smtpError(let err):
+                UIUtils.show(error: err, inViewController: self)
+            case .noImapConnectData, .noSmtpConnectData:
+                let error = LoginViewController.LoginError.noConnectData
+                UIUtils.show(error: error, inViewController: self)
+            }
+        }
+    }
+}
+
 // MARK: - SegueHandlerType
 
 extension SMTPSettingsTableViewController: SegueHandlerType {
@@ -188,31 +216,41 @@ extension SMTPSettingsTableViewController: UITextFieldDelegate {
 }
 
 extension SMTPSettingsTableViewController: VerifiableAccountDelegate {
+
     func didEndVerification(result: Result<Void, Error>) {
         switch result {
         case .success(()):
             do {
-                try model?.save() { success in
-                    //!!!: //BUFF: completion ignored!
+                try model?.save() { [weak self] success in
+                    DispatchQueue.main.async { [weak self] in
+                        guard let me = self else {
+                            Log.shared.errorAndCrash("Lost MySelf")
+                            return
+                        }
+
+                        switch success {
+                            
+                        case true:
+                            me.isCurrentlyVerifying = false
+                            me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
+
+                        case false:
+                            me.isCurrentlyVerifying = false
+                            UIUtils.show(error: VerifiableAccountValidationError.invalidUserData, inViewController: me)
+                        }
+                    }
                 }
             } catch {
                 Log.shared.errorAndCrash(error: error)
             }
-            GCD.onMain() {  [weak self] in
+        case .failure(let error):
+            DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
-                    Log.shared.lostMySelf()
+                    Log.shared.errorAndCrash("Lost MySelf")
                     return
                 }
-
                 me.isCurrentlyVerifying = false
-                me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
-            }
-        case .failure(let error):
-            GCD.onMain() { [weak self] in
-                if let theSelf = self {
-                    theSelf.isCurrentlyVerifying = false
-                    UIUtils.show(error: error, inViewController: theSelf)
-                }
+                UIUtils.show(error: error, inViewController: me)
             }
         }
     }

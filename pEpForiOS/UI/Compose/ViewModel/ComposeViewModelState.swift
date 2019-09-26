@@ -23,7 +23,7 @@ protocol ComposeViewModelStateDelegate: class {
 
 extension ComposeViewModel {
 
-    /// Wraps bookholding properties
+/// Wraps bookholding properties
     class ComposeViewModelState {
         private(set) var initData: InitData?
         private var isValidatedForSending = false {
@@ -113,8 +113,20 @@ extension ComposeViewModel {
             edited = false
         }
 
-        public func makeSafe(forSession session: Session,
-                             cloneAttachments: Bool = false) -> ComposeViewModelState {
+        deinit {
+            inlinedAttachments.forEach {
+                if  $0.message == nil {
+                    $0.delete()
+                }
+            }
+            nonInlinedAttachments.forEach {
+                if  $0.message == nil {
+                    $0.delete()
+                }
+            }
+        }
+
+        public func makeSafe(forSession session: Session) -> ComposeViewModelState {
             let newValue = ComposeViewModelState(initData: initData, delegate: nil)
 
             newValue.toRecipients = Identity.makeSafe(toRecipients, forSession: session)
@@ -123,16 +135,21 @@ extension ComposeViewModel {
             if let from = from {
                 newValue.from = Identity.makeSafe(from, forSession: session)
             }
-            newValue.inlinedAttachments = Attachment.clone(attachmnets: inlinedAttachments,
-                                                           for: session)
-            newValue.nonInlinedAttachments = Attachment.clone(attachmnets: nonInlinedAttachments,
-                                                              for: session)
+            newValue.inlinedAttachments = Attachment.makeSafe(inlinedAttachments,
+                                                              forSession: session)
+            newValue.nonInlinedAttachments = Attachment.makeSafe(nonInlinedAttachments,
+                                                                 forSession: session)
+
+
             newValue.isValidatedForSending = isValidatedForSending
             newValue.pEpProtection = pEpProtection
             newValue.bccWrapped = bccWrapped
             newValue.subject = subject
             newValue.bodyPlaintext = bodyPlaintext
             newValue.bodyHtml = bodyHtml
+
+
+
             newValue.isValidatedForSending = isValidatedForSending
             newValue.rating = rating
             newValue.edited = edited
@@ -207,36 +224,21 @@ extension ComposeViewModel.ComposeViewModelState {
             return
         }
 
-        var newRating = PEPRating.undefined
         guard let from = from else {
-            rating = newRating
+            rating = PEPRating.undefined
             return
         }
 
-        //!!!: This async call makes tests failing and randomly failing. We probalby should extract
-        //     calculatePepRating(for state: State) and inject in tests
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let me = self else {
-                // That is a valid case. Compose view is gone before this block started to run.
-                return
-            }
-
-            let session = Session()
-            let safeFrom = from.safeForSession(session)
-            let safeTo = Identity.makeSafe(me.toRecipients, forSession: session)
-            let safeCc = Identity.makeSafe(me.ccRecipients, forSession: session)
-            let safeBcc = Identity.makeSafe(me.bccRecipients, forSession: session)
-            session.performAndWait {
-                let pEpsession = PEPSession()
-                newRating = pEpsession.outgoingMessageRating(from: safeFrom,
-                                                             to: safeTo,
-                                                             cc: safeCc,
-                                                             bcc: safeBcc)
-            }
-            DispatchQueue.main.async {
-                me.rating = newRating
-            }
-        }
+        let session = Session.main
+        let safeFrom = from.safeForSession(session)
+        let safeTo = Identity.makeSafe(toRecipients, forSession: session)
+        let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
+        let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
+        let pEpsession = PEPSession()
+        rating = pEpsession.outgoingMessageRating(from: safeFrom,
+                                                  to: safeTo,
+                                                  cc: safeCc,
+                                                  bcc: safeBcc)
     }
 }
 

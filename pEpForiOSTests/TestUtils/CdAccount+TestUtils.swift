@@ -8,32 +8,35 @@
 
 import XCTest
 import MessageModel
-import CoreData
 @testable import pEpForiOS
 
+//!!!: move to MM
 extension CdAccount {
     /**
      - Note: The test for the `sendFrom` identity is very strict and will fail
      in cases like "two identities that 'only' differ in their username".
      */
     public func allMessages(inFolderOfType type: FolderType,
-                            sendFrom from: CdIdentity? = nil,
-                            in context: NSManagedObjectContext) -> [CdMessage] {
-        guard let messages = CdMessage.all(in: context) as? [CdMessage] else {
+                            sendFrom from: CdIdentity? = nil) -> [CdMessage] {
+        var predicates = [NSPredicate]()
+        let pIsInAccount = NSPredicate(format: "parent.%@ = %@",
+                                     CdFolder.RelationshipName.account, self)
+        predicates.append(pIsInAccount)
+        let pIsInFolderOfType = NSPredicate(format: "parent.%@ == %d",
+                                CdFolder.AttributeName.folderTypeRawValue, type.rawValue)
+        predicates.append(pIsInFolderOfType)
+        if let from = from {
+            let pSenderIdentity = NSPredicate(format: "%K = %@",
+                                              CdMessage.RelationshipName.from, from)
+            predicates.append(pSenderIdentity)
+        }
+        let finalPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+
+        guard let messages = CdMessage.all(predicate: finalPredicate) as? [CdMessage] else {
             return []
         }
 
-        let msgs1 = messages.filter {
-            $0.parent?.account == self && $0.parent?.folderType == type
-        }
-        if let id = from {
-            let msgs2 = msgs1.filter {
-                $0.from == id
-            }
-            return msgs2
-        } else {
-            return msgs1
-        }
+        return messages
     }
     
     public func createRequiredFoldersAndWait(testCase: XCTestCase) {
@@ -63,17 +66,16 @@ extension CdAccount {
         backgroundQueue.addOperation(imapLogin)
         backgroundQueue.addOperation(syncFoldersOp)
 
-        testCase.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+        testCase.waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
             XCTAssertFalse(imapLogin.hasErrors())
             XCTAssertFalse(syncFoldersOp.hasErrors())
-        })
+        }
 
         let expCreated1 = testCase.expectation(description: "expCreated")
-        let opCreate1 = CreateRequiredFoldersOperation(
-            parentName: #function, imapSyncData: imapSyncData)
+        let opCreate1 = CreateRequiredFoldersOperation(parentName: #function,
+                                                       imapSyncData: imapSyncData)
         opCreate1.completionBlock = {
-            opCreate1.completionBlock = nil
             expCreated1.fulfill()
         }
         backgroundQueue.addOperation(opCreate1)

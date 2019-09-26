@@ -217,13 +217,13 @@ struct ComposeUtil {
                 return nil
         }
 
+        let session = session ?? Session.main
         let message = Message.newObject(onSession: session)
-        message.uuid = MessageID.generate()
-        message.parent = outbox.safeForSession(session)
-        message.from = state.from
-        message.replaceTo(with: state.toRecipients)
-        message.replaceCc(with: state.ccRecipients)
-        message.replaceBcc(with: state.bccRecipients)
+        message.parent = outbox
+        message.from = from
+        message.replaceTo(with: toRecipients)
+        message.replaceCc(with: ccRecipients)
+        message.replaceBcc(with: bccRecipients)
         message.shortMessage = state.subject
         message.longMessage = state.bodyPlaintext
         message.longMessageFormatted = !state.bodyHtml.isEmpty ? state.bodyHtml : nil

@@ -76,10 +76,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals all PEPSession users to stop using a session as soon as possible.
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
-    private func gracefullyShutdownServices() {
+    private func gracefullyShutdownServices() { //BUFF: must go change
         guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
             else {
-                Log.shared.errorAndCrash("Will not start background sync, pending %d",
+                Log.shared.error("Will not start background sync, pending %d",
                                          syncUserActionsAndCleanupbackgroundTaskId.rawValue)
                 return
         }
@@ -97,53 +97,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
                     self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
             })
-        messageModelService?.processAllUserActionsAndStop()
+        messageModelService?.processAllUserActionsAndStop() //BUFF: must go away
     }
 
     func cleanupPEPSessionIfNeeded() {
         if shouldDestroySession {
             PEPSession.cleanup()
         }
-    }
-
-    /**
-     Removes all keys, and the management DB, when the user chooses so.
-     - Returns: True if the pEp management DB was deleted, so further actions can be taken.
-     */
-    func deleteManagementDBIfRequired() -> Bool {
-        if AppSettings.shouldReinitializePepOnNextStartup {
-            AppSettings.shouldReinitializePepOnNextStartup = false
-            let _ = PEPUtils.pEpClean()
-            return true
-        }
-        return false
-    }
-
-    //!!!: uses CD. Must go away (rm? else to MM)
-    /**
-     If pEp has been reinitialized, delete all folders and messsages.
-     */
-    //!!!: rm all
-    func deleteAllFolders(pEpReInitialized: Bool) {
-        //!!! This is a mess. Keeept as a reminder to think of whether or not we want to keep the
-        //      Settings.app setting.
-//        if pEpReInitialized {
-//            // NSBatchDeleteRequest doesn't work so well here because of the need
-//            // to nullify the relations. This is used only for internal testing, so the
-//            // performance is neglible.
-//            let folders = CdFolder.all() as? [CdFolder] ?? []
-//            for f in folders {
-//                f.delete()
-//            }
-//
-//            let msgs = CdMessage.all() as? [CdMessage] ?? []
-//            for m in msgs {
-//                m.delete()
-//            }
-//
-//            CdHeaderField.deleteOrphans()
-//            Record.saveAndWait()
-//        }
     }
 
     private func setupServices() {
@@ -202,19 +162,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Desparate try to wokaround lagging PEPSessionProvider issue (IOS-1769)
         // The suspect is that PEPSessionProvider has problems when the first call for a PEPSession is done from a non-main thread.
-        let _ = try! PEPSession().trustwords(forFingerprint: "0000-0000-0000-0000-0000",
-                                             languageID: "de",
-                                             shortened: true)
+        let _ = PEPSession()
 
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
 
         Appearance.pEp()
 
-        let pEpReInitialized = deleteManagementDBIfRequired()
-
         setupServices()
-
-        deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
         askUserForNotificationPermissions()
 
@@ -229,9 +183,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame
     /// rates. Games should use this method to pause the game.
     func applicationWillResignActive(_ application: UIApplication) {
-        UIApplication.hideStatusBarNetworkActivitySpinner()
-        Session.main.commit()
-        shutdownAndPrepareServicesForRestart()
+        shutdownAndPrepareServicesForRestart() //BUFF: this is even called when showing an alert !
     }
 
     /// Use this method to release shared resources, save user data, invalidate timers, and store
@@ -240,9 +192,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// If your application supports background execution, this method is called instead of
     /// applicationWillTerminate: when the user quits.
     func applicationDidEnterBackground(_ application: UIApplication) {
-        UIApplication.hideStatusBarNetworkActivitySpinner()
         Log.shared.info("applicationDidEnterBackground")
-        Session.main.commit()
         shouldDestroySession = true
         gracefullyShutdownServices()
     }
@@ -275,8 +225,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
-        UIApplication.hideStatusBarNetworkActivitySpinner()
-        Session.main.commit()
         shouldDestroySession = true
         // Just in case, last chance to clean up. Should not be necessary though.
         cleanupPEPSessionIfNeeded()
@@ -289,18 +237,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Log.shared.error("no networkService")
             return
         }
-
+        
         messageModelService.checkForNewMails() {[unowned self] (numMails: Int?) in
             guard let numMails = numMails else {
-                self.cleanupAndCall(completionHandler: completionHandler, result: .failed)
+                self.cleanup(andCall: completionHandler, result: .failed)
                 return
             }
             switch numMails {
             case 0:
-                self.cleanupAndCall(completionHandler: completionHandler, result: .noData)
+                self.cleanup(andCall: completionHandler, result: .noData)
             default:
                 self.informUser(numNewMails: numMails) {
-                    self.cleanupAndCall(completionHandler: completionHandler, result: .newData)
+                    self.cleanup(andCall: completionHandler, result: .newData)
                 }
             }
         }
@@ -324,7 +272,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - HELPER
 
-    private func cleanupAndCall(completionHandler:(UIBackgroundFetchResult) -> Void,
+    private func cleanup(andCall completionHandler:(UIBackgroundFetchResult) -> Void,
                                 result:UIBackgroundFetchResult) {
         PEPSession.cleanup()
         completionHandler(result)
@@ -335,7 +283,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: MessageModelServiceDelegate {
 
-    func messageModelServiceDidFinishLastSyncLoop() {
+    func messageModelServiceDidFinishLastSyncLoop() { //BUFF: must go away
         // Cleanup sessions.
         PEPSession.cleanup()
         if syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid {
@@ -350,7 +298,7 @@ extension AppDelegate: MessageModelServiceDelegate {
         syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
 
-    func messageModelServiceDidCancel() {
+    func messageModelServiceDidCancel() { //BUFF: must go away
         switch UIApplication.shared.applicationState {
         case .background:
             // We have been cancelled because we are entering background.

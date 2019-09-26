@@ -29,9 +29,13 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     var account: Account?
     var status: Bool?
 
-    init(account: Account) {
+    private var messageModelService: MessageModelServiceProtocol?
+
+    init(account: Account,
+         messageModelService: MessageModelServiceProtocol) {
         self.type = .account
         self.account = account
+        self.messageModelService = messageModelService
     }
 
     init(type: SettingType) {
@@ -94,14 +98,27 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     }
 
     func delete() {
-        guard let acc = account else {
-            Log.shared.errorAndCrash(message: "Account lost")
-            return
+        guard let acc = account,
+            let messageModelService = messageModelService else {
+                Log.shared.errorAndCrash(message: "Account lost")
+                return
         }
-
+        
         let oldAddress = acc.user.address
         acc.delete()
         acc.session.commit()
+
+        if Account.all().count == 1,
+            let account = Account.all().first {
+            do {
+                if try !account.isPEPSyncEnabled() {
+                    messageModelService.disableKeySync()
+                    AppSettings.keySyncEnabled = false
+                }
+            } catch {
+                Log.shared.errorAndCrash("Fail to get account pEpSync state")
+            }
+        }
 
         if AppSettings.defaultAccount == oldAddress {
             let newDefaultAccount = Account.all().first

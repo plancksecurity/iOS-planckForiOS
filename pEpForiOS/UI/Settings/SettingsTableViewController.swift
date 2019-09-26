@@ -22,8 +22,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     var state = UIState()
 
-    var oldToolbarStatus : Bool = true
-
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Settings", comment: "Settings view title")
@@ -33,11 +31,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let nc = self.navigationController {
-            oldToolbarStatus = nc.isToolbarHidden
-        }
-        self.navigationController?.setToolbarHidden(true, animated: false)
 
+        navigationController?.setToolbarHidden(true, animated: false)
         viewModel.delegate = self
 
         if MiscUtil.isUnitTest() { //!!!: must go away. Check if it is needless already and rm.
@@ -48,7 +43,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.setToolbarHidden(oldToolbarStatus, animated: false)
         guard let isIphone = splitViewController?.isCollapsed else {
             return
         }
@@ -294,8 +288,12 @@ extension SettingsTableViewController {
             }
             me.deleteRowAt(indexPath)
             me.tableView.beginUpdates()
-            me.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
-            me.tableView.endUpdates()}
+            if let pEpSyncSection = self?.viewModel.pEpSyncSection() {
+                me.tableView.reloadSections([pEpSyncSection], with: UITableView.RowAnimation.none)
+            }
+            me.tableView.deleteRows(at: [indexPath], with: .fade)
+            me.tableView.endUpdates()
+        }
         showAlert(title, comment, buttonTitle, deleteAction, indexPath)
     }
 
