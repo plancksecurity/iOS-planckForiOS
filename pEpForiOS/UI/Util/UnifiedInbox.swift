@@ -28,13 +28,11 @@ public class UnifiedInbox: VirtualFolderProtocol {
             try fetchOlderMessagesService.runService(inFolders:folders) {
                 completion?()
             }
-        } catch {
-            guard let er = error as? FetchServiceBaseClass.FetchError,
-                er != FetchServiceBaseClass.FetchError.isFetching else {
-                    Log.shared.errorAndCrash("Unexpected error")
-                    return
-            }
+        } catch FetchServiceBaseClass.FetchError.isFetching {
             // Alredy fetching do nothing
+        } catch {
+            // Unexpected error
+            Log.shared.errorAndCrash(error: error)
         }
     }
 
@@ -67,9 +65,9 @@ public class UnifiedInbox: VirtualFolderProtocol {
     public var messagesPredicate: NSPredicate {
         get {
             var predicates = [NSPredicate]()
-            predicates.append(CdMessage.PredicateFactory.isInInbox())
-            predicates.append(CdMessage.PredicateFactory.existingMessages())
-            predicates.append(CdMessage.PredicateFactory.processed())
+            predicates.append(Message.PredicateFactory.isInInbox())
+            predicates.append(Message.PredicateFactory.existingMessages())
+            predicates.append(Message.PredicateFactory.processed())
             predicates.append(Message.PredicateFactory.isNotAutoConsumable())
             return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         }
