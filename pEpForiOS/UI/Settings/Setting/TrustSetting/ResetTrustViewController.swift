@@ -139,6 +139,7 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
                     return
                 }
                 me.model.resetTrustFor(indexPath: indexPath)
+                me.tableView.deselectRow(at: indexPath, animated: true)
         })
         alertView.addAction(resetTrustThisIdentityAction)
 
@@ -151,13 +152,20 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
                         return
                     }
                     me.model.resetTrustAllFor(indexPath: indexPath)
+                    me.tableView.deselectRow(at: indexPath, animated: true)
             })
             alertView.addAction(resetTrustAllIdentityAction)
         }
 
         let cancelAction = UIAlertAction(
             title: NSLocalizedString("Cancel", comment: "alert action 3"),
-            style: .cancel)
+            style: .cancel, handler: { [weak self] action in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "lost myself")
+                    return
+                }
+                me.tableView.deselectRow(at: indexPath, animated: true)
+        })
         alertView.addAction(cancelAction)
 
         present(alertView, animated: true, completion: nil)
