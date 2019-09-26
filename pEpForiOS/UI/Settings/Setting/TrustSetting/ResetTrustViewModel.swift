@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageModel
+import PEPObjCAdapterFramework
 
 protocol ResetTrustViewModelDelegate: class, TableViewUpdate {
     func resetTrustViewModel(viewModel: ResetTrustViewModel, didInsertDataAt indexPaths: [IndexPath])
@@ -37,12 +38,21 @@ class ResetTrustViewModel {
         return id.userNameOrAddress
     }
 
-    func resetTrustFor(indexPath: IndexPath) {
 
+
+    func resetTrustFor(indexPath: IndexPath) {
+        let identity = identityQueryResult[indexPath.row]
+        identity.resetTrust()
     }
 
     func resetTrustAllFor(indexPath: IndexPath) {
+        let identity = identityQueryResult[indexPath.row]
+        Identity.resetTrustAllIdentities(for: identity)
+    }
 
+    func relatedIdentities(indexPath: IndexPath) -> Bool {
+        let identity = identityQueryResult[indexPath.row]
+        return identity.relatedIdentities()
     }
 
     func numberOfSections() -> Int {

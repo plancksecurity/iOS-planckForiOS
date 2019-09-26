@@ -79,7 +79,7 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
                     Log.shared.errorAndCrash(message: "lost myself")
                     return
                 }
-                me.model.resetTrustFor(indexPath: indexPath)
+                me.model.resetTrustAllFor(indexPath: indexPath)
         })
 
         let cancelAction = UIAlertAction(
