@@ -138,6 +138,14 @@ public class AccountSettingsViewModel {
         pEpSync = pEpSyncState ?? false
     }
 
+    func handleResetIdentity() {
+        guard let account = Account.by(address: email) else {
+            Log.shared.errorAndCrash("Account for email not found")
+            return
+        }
+        try? account.resetKeys()
+    }
+
     func update(loginName: String,
                 name: String,
                 password: String? = nil,

@@ -63,7 +63,9 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
         guard let keySyncWizard = presenter?.presentedViewController as? PEPPageViewController else {
             return
         }
-        keySyncWizard.dismiss()
+        DispatchQueue.main.async {
+            keySyncWizard.dismiss()
+        }
     }
     
     func showSuccessfullyGrouped() {
@@ -71,7 +73,9 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
             return
         }
         let completedViewIndex = pEpSyncWizard.views.count - 1
-        pEpSyncWizard.goTo(index: completedViewIndex)
+        DispatchQueue.main.async { [weak self] in
+            self?.pEpSyncWizard?.goTo(index: completedViewIndex)
+        }
     }
 
     // We must dismiss pEpSyncWizard before presenting pEpSyncWizard error view.
@@ -81,16 +85,18 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
             return
         }
 
-        pEpSyncWizard?.dismiss(animated: true, completion: {
-            KeySyncErrorView.presentKeySyncError(viewController: presentingViewController, error: error) {
-                action in
-                switch action {
-                case .tryAgain:
-                    completion?(.tryAgain)
-                case .notNow:
-                    completion?(.notNow)
+        DispatchQueue.main.async { [weak self] in
+            self?.pEpSyncWizard?.dismiss(animated: true, completion: {
+                KeySyncErrorView.presentKeySyncError(viewController: presentingViewController, error: error) {
+                    action in
+                    switch action {
+                    case .tryAgain:
+                        completion?(.tryAgain)
+                    case .notNow:
+                        completion?(.notNow)
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 }
