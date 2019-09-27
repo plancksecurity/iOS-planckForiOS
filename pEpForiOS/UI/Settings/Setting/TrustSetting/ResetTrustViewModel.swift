@@ -83,7 +83,7 @@ class ResetTrustViewModel {
 
     func relatedIdentities(indexPath: IndexPath) -> Bool {
         let identity = identityQueryResult[indexPath.row]
-        return identity.relatedIdentities()
+        return identity.userHasMoreThenOneIdentity()
     }
 
     func numberOfRowsPerSection(section: Int) -> Int {
