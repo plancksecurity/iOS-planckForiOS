@@ -63,7 +63,7 @@ class ResetTrustViewModel {
 
     private var identityQueryResult: IdentityQueryResults
     private var lastSearchTerm = ""
-    var delegate: ResetTrustViewModelDelegate?
+    weak var delegate: ResetTrustViewModelDelegate?
 
     init() {
         identityQueryResult = IdentityQueryResults()
