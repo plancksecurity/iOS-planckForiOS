@@ -23,13 +23,13 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
     }
 
     func setupView() {
-        ///set up tableview delegate and datasource
+        /// set up tableview delegate and datasource
         tableView.dataSource = self
         tableView.delegate = self
-        ///Hide toolbar
+        /// Hide toolbar
         navigationController?.setToolbarHidden(true, animated: false)
         model.delegate = self
-        ///searchBar configuration
+        /// searchBar configuration
         configureSearchBar()
         if #available(iOS 11.0, *) {
             searchController.isActive = false
@@ -42,7 +42,7 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
                 tableView.tableHeaderView = searchController.searchBar
             }
 
-            // some notifications to control when the app enter and recover from background
+            /// some notifications to control when the app enter and recover from background
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(didBecomeActiveInstallSearchBar10),
@@ -56,18 +56,14 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
         }
     }
 
-    /**
-     Configure the search controller, shared between iOS versions 11 and earlier.
-     */
+    /// Configure the search controller, shared between iOS versions 11 and earlier.
     private func configureSearchBar() {
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         searchController.delegate = self
     }
 
-    /**
-     Add the search bar when running on iOS 10 or earlier.
-     */
+    /// Add the search bar when running on iOS 10 or earlier.
     private func addSearchBar10() {
         tableView.tableHeaderView = searchController.searchBar
         tableView.setContentOffset(CGPoint(x: 0.0,
@@ -75,18 +71,14 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
                                    animated: false)
     }
 
-    /**
-     Showing the search controller in versions iOS 10 and earlier.
-     */
+    /// Showing the search controller in versions iOS 10 and earlier.
     @objc func didBecomeActiveInstallSearchBar10() {
         if tableView.tableHeaderView == nil {
             tableView.tableHeaderView = searchController.searchBar
         }
     }
 
-    /**
-     Hide/remove the search controller in versions iOS 10 and earlier.
-     */
+    /// Hide/remove the search controller in versions iOS 10 and earlier.
     @objc func didBecomeInactiveUninstallSearchbar10() {
         tableView.tableHeaderView = nil
     }
