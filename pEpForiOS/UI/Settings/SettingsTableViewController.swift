@@ -171,7 +171,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 showAlertBeforeLeavingDeviceGroup(indexPath)
             case .resetAllIdentities:
                 handleResetAllIdentity()
-                tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
+                tableView.deselectRow(at: indexPath, animated: true)
             }
         default:
             // SwitchSettingCellViewModelProtocol will drop here, but nothing to do when selected
@@ -263,9 +263,9 @@ extension SettingsTableViewController {
         let resetAction = PEPUIAlertAction(title: resetTitle,
                                            style: .pEpRed,
                                            handler: { [weak self] _ in
-                                            self?.viewModel.handleResetAllIdentities()
                                             pepAlertViewController.dismiss(animated: true,
                                                                            completion: nil)
+                                            self?.viewModel.handleResetAllIdentities()
         })
         pepAlertViewController.add(action: resetAction)
 

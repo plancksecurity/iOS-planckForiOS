@@ -246,7 +246,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
         default:
             break
         }
-        tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     // MARK: - Actions
@@ -297,9 +297,9 @@ UIPickerViewDataSource, UITextFieldDelegate {
         let resetAction = PEPUIAlertAction(title: resetTitle,
                                            style: .pEpRed,
                                            handler: { [weak self] _ in
-                                            self?.viewModel?.handleResetIdentity()
                                             pepAlertViewController.dismiss(animated: true,
                                                                            completion: nil)
+                                            self?.viewModel?.handleResetIdentity()
         })
         pepAlertViewController.add(action: resetAction)
 
