@@ -135,12 +135,12 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
                     Log.shared.errorAndCrash(message: "lost myself")
                     return
                 }
-                me.model.resetTrustFor(indexPath: indexPath)
+                me.model.resetTrust(foridentityAt: indexPath)
                 me.tableView.deselectRow(at: indexPath, animated: true)
         })
         alertView.addAction(resetTrustThisIdentityAction)
 
-        if model.relatedIdentities(indexPath: indexPath) {
+        if model.multipleIdentitiesExist(forIdentityAt: indexPath) {
             let resetTrustAllIdentityAction = UIAlertAction(
                 title: NSLocalizedString("Reset Trust For All Identities", comment: "alert action 2"),
                 style: .destructive, handler: { [weak self] action in
@@ -148,7 +148,7 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
                         Log.shared.errorAndCrash(message: "lost myself")
                         return
                     }
-                    me.model.resetTrustAllFor(indexPath: indexPath)
+                    me.model.resetTrustAll(foridentityAt: indexPath)
                     me.tableView.deselectRow(at: indexPath, animated: true)
             })
             alertView.addAction(resetTrustAllIdentityAction)

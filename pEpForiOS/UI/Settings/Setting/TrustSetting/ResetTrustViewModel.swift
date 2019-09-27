@@ -22,9 +22,9 @@ protocol ResetTrustViewModelDelegate: class, TableViewUpdate {
 
 class ResetTrustViewModel {
 
-    var identityQueryResult: IdentityQueryResults
+    private var identityQueryResult: IdentityQueryResults
+    private var lastSearchTerm = ""
     var delegate: ResetTrustViewModelDelegate?
-    var lastSearchTerm = ""
 
     init() {
         identityQueryResult = IdentityQueryResults()
@@ -72,17 +72,17 @@ class ResetTrustViewModel {
         }
     }
 
-    func resetTrustFor(indexPath: IndexPath) {
+    func resetTrust(foridentityAt indexPath: IndexPath) {
         let identity = identityQueryResult[indexPath.row]
         identity.resetTrust()
     }
 
-    func resetTrustAllFor(indexPath: IndexPath) {
+    func resetTrustAll(foridentityAt indexPath: IndexPath) {
         let identity = identityQueryResult[indexPath.row]
         Identity.resetTrustAllIdentities(for: identity)
     }
 
-    func relatedIdentities(indexPath: IndexPath) -> Bool {
+    func multipleIdentitiesExist(forIdentityAt indexPath: IndexPath) -> Bool {
         let identity = identityQueryResult[indexPath.row]
         return identity.userHasMoreThenOneIdentity()
     }
