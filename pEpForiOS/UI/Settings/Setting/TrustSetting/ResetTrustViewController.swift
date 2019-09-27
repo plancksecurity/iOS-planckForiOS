@@ -10,19 +10,16 @@ import UIKit
 
 class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UISearchResultsUpdating {
 
-    let cellId = "ResetTrustSettingCell"
-    let model = ResetTrustViewModel()
+    private let cellId = "ResetTrustSettingCell"
+    private let model = ResetTrustViewModel()
 
     @IBOutlet var tableView: UITableView!
 
-    let searchController = UISearchController(searchResultsController: nil)
+    private let searchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        model.startMonitoring()
     }
 
     func setupView() {

@@ -29,10 +29,11 @@ class ResetTrustViewModel {
     init() {
         identityQueryResult = IdentityQueryResults()
         identityQueryResult.delegate = self
-    }
-
-    func startMonitoring() {
-        try? identityQueryResult.startMonitoring()
+        do {
+            try identityQueryResult.startMonitoring()
+        } catch  {
+            Log.shared.errorAndCrash(error: error)
+        }
     }
 
     func nameFor(indexPath: IndexPath) -> String {
