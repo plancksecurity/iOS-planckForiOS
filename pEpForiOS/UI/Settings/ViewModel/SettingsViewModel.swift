@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageModel
+import PEPObjCAdapterFramework
 
 protocol SettingsViewModelDelegate: class {
     func showExtraKeyEditabilityStateChangeAlert(newValue: String)
@@ -86,6 +87,16 @@ final class SettingsViewModel {
     func pEpSyncSection() -> Int? {
         return sections.firstIndex {
             $0.type == .keySync
+        }
+    }
+
+    func handleResetAllIdentities() {
+        for identity in Identity.all() {
+            guard let account = Account.by(address: identity.address) else {
+                Log.shared.errorAndCrash("Account for email not found")
+                return
+            }
+            try? account.resetKeys()
         }
     }
 }

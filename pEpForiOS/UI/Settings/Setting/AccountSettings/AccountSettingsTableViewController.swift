@@ -297,7 +297,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
         let resetAction = PEPUIAlertAction(title: resetTitle,
                                            style: .pEpRed,
                                            handler: { [weak self] _ in
-                                            self?.handleResetIdentity()
+                                            self?.viewModel?.handleResetIdentity()
                                             pepAlertViewController.dismiss(animated: true,
                                                                            completion: nil)
         })
