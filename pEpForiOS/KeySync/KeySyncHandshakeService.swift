@@ -52,11 +52,10 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                                                                 }
         }
     }
-    
-    //!!!: unimplemented stub
+
     func showCurrentlyGroupingDevices() {
-        // When implementing IOS-1712, show the additional (animated) view here.
-        Log.shared.warn("Unimplemented stub. \n\n################################\n################################\nshowCurrentlyGroupingDevices called")
+        //Ignoring for now. We show the syncing animation right away, when the user press Sync button.
+        //So nothing to do here :-/
     }
     
     func cancelHandshake() {
