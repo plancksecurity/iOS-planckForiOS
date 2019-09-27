@@ -10,13 +10,52 @@ import Foundation
 import MessageModel
 import PEPObjCAdapterFramework
 
+
+/// delegate protocol to inform about incoming changes in the tableview
 protocol ResetTrustViewModelDelegate: class, TableViewUpdate {
+
+    /// called when new data will be introduced
+    ///
+    /// - Parameters:
+    ///   - viewModel: viewModel who performs the call
+    ///   - indexPaths: indexPath to be inserted
     func resetTrustViewModel(viewModel: ResetTrustViewModel, didInsertDataAt indexPaths: [IndexPath])
+
+    /// called when existing data needs to be updateds
+    ///
+    /// - Parameters:
+    ///   - viewModel: viewModel who performs the call
+    ///   - indexPaths: indexPath to be updated
     func resetTrustViewModel(viewModel: ResetTrustViewModel, didUpdateDataAt indexPaths: [IndexPath])
+
+    /// called when existing data needs to be removed
+    ///
+    /// - Parameters:
+    ///   - viewModel: viewModel who performs the call
+    ///   - indexPaths: indexpath to be removed
     func resetTrustViewModel(viewModel: ResetTrustViewModel, didRemoveDataAt indexPaths: [IndexPath])
+
+    /// called when existing data must change its position
+    ///
+    /// - Parameters:
+    ///   - viewModel: viewModel who performs the call
+    ///   - atIndexPath: original indexpath of the data
+    ///   - toIndexPath: destination indexpath of the data
     func resetTrustViewModel(viewModel: ResetTrustViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath)
+
+    /// called when some new operation will be executed
+    /// operation can be: update, delte, move, insert
+    /// - Parameter viewModel: viewModel who performs the call
     func willReceiveUpdates(viewModel: ResetTrustViewModel)
+
+    /// called when there is no more operations to be executed
+    /// operation can be: update, delte, move, insert
+    /// - Parameter viewModel: viewModel who performs the call
     func allUpdatesReceived(viewModel: ResetTrustViewModel)
+
+    /// called when data must be reload
+    ///
+    /// - Parameter viewModel: viewModel who performs the call
     func reloadData(viewModel: ResetTrustViewModel)
 }
 
