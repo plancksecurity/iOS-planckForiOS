@@ -55,7 +55,7 @@ final class SettingsSectionViewModel {
                 return
             }
             generateKeySyncCells(messageModelService)
-            title = NSLocalizedString("Key sync", comment: "Tableview section header")
+            title = NSLocalizedString("p≡p sync", comment: "Tableview section header")
         case .contacts:
             generateContactsCells()
             title = NSLocalizedString("Contacts", comment: "TableView section header")
