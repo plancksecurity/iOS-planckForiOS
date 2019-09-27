@@ -399,12 +399,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     @IBAction func readToolbar(_ sender:UIBarButtonItem!) {
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            model?.markSelectedAsRead(indexPaths: selectedItems)
             selectedItems.forEach { (ip) in
                 if let cell = self.tableView.cellForRow(at: ip) as? EmailListViewCell {
                     cell.isSeen = true
                 }
             }
+            model?.markSelectedAsRead(indexPaths: selectedItems)
         }
         cancelToolbar(sender)
     }
