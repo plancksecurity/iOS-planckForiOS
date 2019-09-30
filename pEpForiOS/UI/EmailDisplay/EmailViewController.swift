@@ -322,6 +322,7 @@ class EmailViewController: BaseTableViewController {
             {
                 actionSheetController.addAction(handshakeAction)
         }
+        actionSheetController.addAction(tutorialAction())
         actionSheetController.addAction(showSettingsAction())
 
         let cancelAction = UIAlertAction(
@@ -343,6 +344,14 @@ class EmailViewController: BaseTableViewController {
                 me.showSettingsViewController()
         }
         return action
+    }
+
+    private func tutorialAction() -> UIAlertAction{
+        return UIAlertAction(
+            title: NSLocalizedString("Tutorial", comment: "show tutorial from compose view"),
+            style: .default) { _ in
+                TutorialWizardViewController.presentTutorialWizard(viewController: self)
+        }
     }
 
     private func showHandshakeViewAction() -> UIAlertAction? {
