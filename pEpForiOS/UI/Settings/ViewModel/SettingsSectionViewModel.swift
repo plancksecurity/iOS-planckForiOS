@@ -16,6 +16,7 @@ final class SettingsSectionViewModel {
         case globalSettings
         case pgpCompatibilitySettings
         case keySync
+        case contacts
         case companyFeatures
     }
 
@@ -54,7 +55,10 @@ final class SettingsSectionViewModel {
                 return
             }
             generateKeySyncCells(messageModelService)
-            title = NSLocalizedString("p≡p Sync", comment: "Tableview section header")
+            title = NSLocalizedString("p≡p sync", comment: "Tableview section header")
+        case .contacts:
+            generateContactsCells()
+            title = NSLocalizedString("Contacts", comment: "TableView section header")
         case .companyFeatures:
             generateExtaKeysCells()
             title = NSLocalizedString("Company Features", comment: "Tableview section header")
@@ -115,6 +119,10 @@ extension SettingsSectionViewModel {
 
     private func generatePgpCompatibilitySettingsCells() {
         self.cells.append(UnecryptedSubjectViewModel())
+    }
+
+    private func generateContactsCells() {
+        cells.append(SettingsCellViewModel(type: .contacts))
     }
 }
 
