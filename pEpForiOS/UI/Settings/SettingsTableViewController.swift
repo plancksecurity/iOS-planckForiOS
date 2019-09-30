@@ -253,11 +253,10 @@ extension SettingsTableViewController {
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
         let cancelAction = PEPUIAlertAction(title: cancelTitle,
-                                            style: .pEpGray,
-                                            handler: { _ in
+                                            style: .pEpGray) { _ in
                                                 pepAlertViewController.dismiss(animated: true,
                                                                                completion: nil)
-        })
+        }
         pepAlertViewController.add(action: cancelAction)
         
         let resetTitle = NSLocalizedString("Reset All", comment: "Reset account identity button title")
