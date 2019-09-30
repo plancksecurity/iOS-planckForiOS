@@ -15,7 +15,7 @@ import PEPObjCAdapterFramework
 
 class PEPSessionTest: CoreDataDrivenTestBase {
 
-    //MARK: - Test
+    // MARK: - Test
 
     func testPEPConversion() {
         let account = SecretTestData().createWorkingAccount(context: moc)
@@ -79,31 +79,25 @@ class PEPSessionTest: CoreDataDrivenTestBase {
 
         try! session.mySelf(myself)
 
-        let (_, encMsg1) = try! PEPUtils.encrypt(pEpMessage: pEpMessage, forSelf: myself)
-        if let theEncMsg = encMsg1 {
-            // expecting that sensitive data gets hidden (ENGINE-287)
-            XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
-            XCTAssertNotEqual(theEncMsg.references ?? [], references)
-            XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
+        let theEncMsg = try! PEPUtils.encrypt(pEpMessage: pEpMessage, forSelf: myself)
+        // expecting that sensitive data gets hidden (ENGINE-287)
+        XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
+        XCTAssertNotEqual(theEncMsg.references ?? [], references)
+        XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
 
-            tryDecryptMessage(
-                message: theEncMsg, myID:myMessageID, references: references, session: session)
-        } else {
-            XCTFail()
-        }
+        tryDecryptMessage(
+            message: theEncMsg, myID:myMessageID, references: references, session: session)
 
-        let (_, encMsg2) = try! PEPUtils.encrypt(pEpMessage: pEpMessage)
-        if let theEncMsg = encMsg2 {
-            // expecting that message ID gets hidden (ENGINE-288)
-            XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
+        let theEncMsg2 = try! PEPUtils.encrypt(pEpMessage: pEpMessage)
+        // expecting that message ID gets hidden (ENGINE-288)
+        XCTAssertNotEqual(theEncMsg2.messageID, myMessageID)
 
-            XCTAssertNotEqual(theEncMsg.references ?? [], references)
-            XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
-            tryDecryptMessage(
-                message: theEncMsg, myID: myMessageID, references: references, session: session)
-        } else {
-            XCTFail()
-        }
+        XCTAssertNotEqual(theEncMsg2.references ?? [], references)
+        XCTAssertNotEqual(theEncMsg2.shortMessage, mySubject)
+        tryDecryptMessage(message: theEncMsg2,
+                          myID: myMessageID,
+                          references: references,
+                          session: session)
     }
 
     func testParseMessageHeapBufferOverflow() {
