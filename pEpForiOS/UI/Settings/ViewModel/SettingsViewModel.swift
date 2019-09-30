@@ -8,9 +8,12 @@
 
 import Foundation
 import MessageModel
+import PEPObjCAdapterFramework
 
 protocol SettingsViewModelDelegate: class {
     func showExtraKeyEditabilityStateChangeAlert(newValue: String)
+    func showLoadingView()
+    func hideLoadingView()
 }
 
 final class SettingsViewModel {
@@ -87,6 +90,20 @@ final class SettingsViewModel {
     func pEpSyncSection() -> Int? {
         return sections.firstIndex {
             $0.type == .keySync
+        }
+    }
+
+    func handleResetAllIdentities() {
+        delegate?.showLoadingView()
+        Account.resetAllOwnKeys() { [weak self] result in
+            switch result {
+            case .success():
+                self?.delegate?.hideLoadingView()
+            case .failure(let error):
+                self?.delegate?.hideLoadingView()
+                Log.shared.errorAndCrash("Fail to reset all identities, with error %@ ",
+                                         error.localizedDescription)
+            }
         }
     }
 }
