@@ -509,14 +509,9 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
     }
 
     func hideLoadingView() {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
             UIApplication.shared.endIgnoringInteractionEvents()
-        }
-        guard let activityIndicatorView = activityIndicatorView else {
-            return
-        }
-        DispatchQueue.main.async {
-            activityIndicatorView.removeFromSuperview()
+            self?.activityIndicatorView?.removeFromSuperview()
         }
     }
 }
