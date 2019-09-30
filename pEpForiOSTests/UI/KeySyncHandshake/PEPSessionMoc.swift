@@ -152,4 +152,7 @@ class PEPSessionMoc: NSObject, PEPSessionProtocol  {
     func queryKeySyncEnabled(for identity: PEPIdentity) throws -> NSNumber {
         return NSNumber(value: false)
     }
+
+    func keyResetAllOwnKeysError() throws {
+    }
 }
