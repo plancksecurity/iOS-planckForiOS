@@ -59,6 +59,13 @@ class EmailViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        //!!!: this logic (mark for redecrypt) must go to getter of Message.longMessage(formatted)
+        // as a side effect. (Do after HTML parser is in toolbox
+        // The user may be about to view an yet undecrypted message.
+        // If so, try again to decrypt it.
+        message?.markForRetryDecryptIfUndecryptable()
+        Session.main.commit()
+
         configureTableRows()
         configureView()
     }
@@ -87,19 +94,7 @@ class EmailViewController: BaseTableViewController {
     }
 
     private func showPepRating() {
-        guard let privacyStatusIcon = showPepRating(pEpRating: message?.pEpRating()) else {
-            return
-        }
-        guard
-            let handshakeCombos = message?.handshakeActionCombinations(), //!!!: EmailView must not know about handshakeCombinations.
-            !handshakeCombos.isEmpty
-            else {
-                return
-        }
-        let tapGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(showHandshakeView(gestureRecognizer:)))
-        privacyStatusIcon.addGestureRecognizer(tapGestureRecognizer)
+        showNavigationBarSecurityBadge(pEpRating: message?.pEpRating())
     }
 
     private final func loadDatasource(_ file: String) {
@@ -115,7 +110,7 @@ class EmailViewController: BaseTableViewController {
     private func setupToolbar() {
 
         let item = UIBarButtonItem.getPEPButton(
-            action: #selector(showSettingsViewController),
+            action: #selector(showPepActions),
             target: self)
         item.tag = BarButtonType.settings.rawValue
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
@@ -319,6 +314,66 @@ class EmailViewController: BaseTableViewController {
 
     // MARK: - IBActions
 
+    @objc private func showPepActions() {
+        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+
+            if let handshakeCombos = message?.handshakeActionCombinations(), //!!!: EmailView must not know about handshakeCombinations.
+            !handshakeCombos.isEmpty, let handshakeAction = showHandshakeViewAction()
+            {
+                actionSheetController.addAction(handshakeAction)
+        }
+        actionSheetController.addAction(showSettingsAction())
+
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("Cancel", comment: "possible private status action"),
+            style: .cancel) { (action) in }
+        actionSheetController.addAction(cancelAction)
+
+        present(actionSheetController, animated: true)
+    }
+
+    private func showSettingsAction() -> UIAlertAction {
+        let action = UIAlertAction(
+            title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
+            style: .default) {[weak self] (action) in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "lost myself")
+                    return
+                }
+                me.showSettingsViewController()
+        }
+        return action
+    }
+
+    private func showHandshakeViewAction() -> UIAlertAction? {
+        guard
+            let handshakeCombos = message?.handshakeActionCombinations(), //!!!: EmailView must not know about handshakeCombinations.
+            !handshakeCombos.isEmpty
+            else {
+                return nil
+        }
+        let action = UIAlertAction(
+            title: NSLocalizedString("Privacy Status", comment: "action sheet title 1"),
+            style: .default) { [weak self] (action) in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "lost myself")
+                    return
+                }
+                me.showHandshakeView()
+        }
+
+        return action
+    }
+
+    @objc private func showHandshakeScreen() {
+        splitViewController?.preferredDisplayMode = .allVisible
+        guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
+            let vc = nav.topViewController else {
+                return
+        }
+        UIUtils.presentSettings(on: vc, appConfig: appConfig)
+    }
+
     @objc private func showSettingsViewController() {
         splitViewController?.preferredDisplayMode = .allVisible
         guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
@@ -424,7 +479,7 @@ class EmailViewController: BaseTableViewController {
         }
     }
 
-    @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer) {
+    @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer? = nil) {
         if (splitViewController?.isCollapsed) ?? true {
             performSegue(withIdentifier: .segueHandshakeCollapsed, sender: self)
 

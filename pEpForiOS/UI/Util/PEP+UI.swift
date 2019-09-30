@@ -81,6 +81,12 @@ extension PEPRating {
         return PEPUtils.pEpColor(pEpRating: self).uiColor()
     }
 
+    var isNoColor: Bool {
+        get {
+            return pEpColor() == PEPColor.noColor
+        }
+    }
+
     func statusIcon() -> UIImage? {
         let color = pEpColor()
         return color.statusIconForMessage()

@@ -96,7 +96,7 @@ extension HandshakeViewController {
 extension HandshakeViewController {
 
     private func updateStatusBadge() {
-        showPepRating(pEpRating: message?.pEpRating())
+        showNavigationBarSecurityBadge(pEpRating: message?.pEpRating())
     }
 
     // MARK: - UI & Layout
