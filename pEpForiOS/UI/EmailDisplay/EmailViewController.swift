@@ -138,8 +138,6 @@ class EmailViewController: BaseTableViewController {
             }
         }
 
-        title = NSLocalizedString("Message", comment: "Message view title")
-
         setupDestructiveButtonIcon()
 
         if messageId <= 0 {
