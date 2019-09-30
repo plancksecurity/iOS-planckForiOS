@@ -110,7 +110,7 @@ class EmailViewController: BaseTableViewController {
     private func setupToolbar() {
 
         let item = UIBarButtonItem.getPEPButton(
-            action: #selector(showPepActions),
+            action: #selector(showPepActions(sender:)),
             target: self)
         item.tag = BarButtonType.settings.rawValue
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
@@ -314,7 +314,7 @@ class EmailViewController: BaseTableViewController {
 
     // MARK: - IBActions
 
-    @objc private func showPepActions() {
+    @objc private func showPepActions(sender: UIBarButtonItem) {
         let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
 
             if let handshakeCombos = message?.handshakeActionCombinations(), //!!!: EmailView must not know about handshakeCombinations.
@@ -329,7 +329,17 @@ class EmailViewController: BaseTableViewController {
             style: .cancel) { (action) in }
         actionSheetController.addAction(cancelAction)
 
-        present(actionSheetController, animated: true)
+
+        if let splitViewController = splitViewController {
+            if !splitViewController.isCollapsed {
+                if let popoverController = actionSheetController.popoverPresentationController {
+                    popoverController.barButtonItem = sender// .sourceView = self.view //to set the source of your alert
+                    //popoverController.sourceRect = CGRect(x: 0, y: 0, width: 0, height: 0) // you can set this as per your requirement.
+                    //popoverController.permittedArrowDirections = [] //to hide the arrow of any particular direction
+                }
+            }
+            present(actionSheetController, animated: true)
+        }
     }
 
     private func showSettingsAction() -> UIAlertAction {
