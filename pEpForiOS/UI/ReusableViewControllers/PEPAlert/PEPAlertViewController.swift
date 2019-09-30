@@ -101,6 +101,11 @@ extension PEPAlertViewController {
     }
 
     private func setUp(images: [UIImage]?) {
+        guard let images = images else {
+            alertImageView.removeFromSuperview()
+            return
+        }
+
         alertImageView.animationImages = images
         alertImageView.animationDuration = 2.6
         alertImageView.startAnimating()

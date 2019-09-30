@@ -106,6 +106,7 @@ extension SettingsSectionViewModel {
             self.cells.append(SettingsCellViewModel(account: acc,
                                                     messageModelService: messageModelService))
         }
+        cells.append(SettingsActionCellViewModel(type: .resetAllIdentities))
     }
 
     private func generateGlobalSettingsCells() {
