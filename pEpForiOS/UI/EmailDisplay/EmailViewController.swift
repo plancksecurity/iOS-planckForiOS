@@ -327,23 +327,16 @@ class EmailViewController: BaseTableViewController {
             style: .cancel) { (action) in }
         actionSheetController.addAction(cancelAction)
 
-
-        if let splitViewController = splitViewController {
-            if !splitViewController.isCollapsed {
-                if let popoverController = actionSheetController.popoverPresentationController {
-                    popoverController.barButtonItem = sender// .sourceView = self.view //to set the source of your alert
-                    //popoverController.sourceRect = CGRect(x: 0, y: 0, width: 0, height: 0) // you can set this as per your requirement.
-                    //popoverController.permittedArrowDirections = [] //to hide the arrow of any particular direction
-                }
-            }
-            present(actionSheetController, animated: true)
+        if let splitViewController = splitViewController, !splitViewController.isCollapsed {
+            actionSheetController.popoverPresentationController?.barButtonItem = sender
         }
+        present(actionSheetController, animated: true)
     }
 
     private func showSettingsAction() -> UIAlertAction {
         let action = UIAlertAction(
             title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
-            style: .default) {[weak self] (action) in
+            style: .default) { [weak self] (action) in
                 guard let me = self else {
                     Log.shared.errorAndCrash(message: "lost myself")
                     return
