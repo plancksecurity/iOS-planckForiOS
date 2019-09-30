@@ -110,7 +110,7 @@ class EmailViewController: BaseTableViewController {
     private func setupToolbar() {
 
         let item = UIBarButtonItem.getPEPButton(
-            action: #selector(showPepActions),
+            action: #selector(showPepActions(sender:)),
             target: self)
         item.tag = BarButtonType.settings.rawValue
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
@@ -137,8 +137,6 @@ class EmailViewController: BaseTableViewController {
                 navigationController?.setToolbarHidden(true, animated: false)
             }
         }
-
-        title = NSLocalizedString("Message", comment: "Message view title")
 
         setupDestructiveButtonIcon()
 
@@ -314,7 +312,7 @@ class EmailViewController: BaseTableViewController {
 
     // MARK: - IBActions
 
-    @objc private func showPepActions() {
+    @objc private func showPepActions(sender: UIBarButtonItem) {
         let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
 
             if let handshakeCombos = message?.handshakeActionCombinations(), //!!!: EmailView must not know about handshakeCombinations.
@@ -322,6 +320,7 @@ class EmailViewController: BaseTableViewController {
             {
                 actionSheetController.addAction(handshakeAction)
         }
+        actionSheetController.addAction(tutorialAction())
         actionSheetController.addAction(showSettingsAction())
 
         let cancelAction = UIAlertAction(
@@ -329,13 +328,16 @@ class EmailViewController: BaseTableViewController {
             style: .cancel) { (action) in }
         actionSheetController.addAction(cancelAction)
 
+        if let splitViewController = splitViewController, !splitViewController.isCollapsed {
+            actionSheetController.popoverPresentationController?.barButtonItem = sender
+        }
         present(actionSheetController, animated: true)
     }
 
     private func showSettingsAction() -> UIAlertAction {
         let action = UIAlertAction(
             title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
-            style: .default) {[weak self] (action) in
+            style: .default) { [weak self] (action) in
                 guard let me = self else {
                     Log.shared.errorAndCrash(message: "lost myself")
                     return
@@ -343,6 +345,14 @@ class EmailViewController: BaseTableViewController {
                 me.showSettingsViewController()
         }
         return action
+    }
+
+    private func tutorialAction() -> UIAlertAction{
+        return UIAlertAction(
+            title: NSLocalizedString("Tutorial", comment: "show tutorial from compose view"),
+            style: .default) { _ in
+                TutorialWizardViewController.presentTutorialWizard(viewController: self)
+        }
     }
 
     private func showHandshakeViewAction() -> UIAlertAction? {

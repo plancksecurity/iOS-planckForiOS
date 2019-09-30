@@ -14,6 +14,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     lazy var viewModel = SettingsViewModel(appConfig.messageModelService)
     var settingSwitchViewModel: SwitchSettingCellViewModelProtocol?
 
+    private weak var activityIndicatorView: UIActivityIndicatorView?
+
     var ipath : IndexPath?
 
     struct UIState {
@@ -167,8 +169,10 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         case let vm as SettingsActionCellViewModelProtocol:
             switch vm.type {
             case .leaveKeySyncGroup:
-                
                 showAlertBeforeLeavingDeviceGroup(indexPath)
+            case .resetAllIdentities:
+                handleResetAllIdentity()
+                tableView.deselectRow(at: indexPath, animated: true)
             }
         default:
             // SwitchSettingCellViewModelProtocol will drop here, but nothing to do when selected
@@ -237,6 +241,45 @@ extension SettingsTableViewController: SegueHandlerType {
 
 // MARK: - Private
 extension SettingsTableViewController {
+    private func handleResetAllIdentity() {
+        let title = NSLocalizedString("Reset All Identities", comment: "Settings confirm to reset all identity title alert")
+        let message = NSLocalizedString("This action will reset all your identities. \n Are you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
+
+        guard let pepAlertViewController =
+            PEPAlertViewController.fromStoryboard(title: title,
+                                                  message: message,
+                                                  paintPEPInTitle: true) else {
+                                                    Log.shared.errorAndCrash("Fail to init PEPAlertViewController")
+                                                    return
+        }
+
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
+        let cancelAction = PEPUIAlertAction(title: cancelTitle,
+                                            style: .pEpGray) { _ in
+                                                pepAlertViewController.dismiss(animated: true,
+                                                                               completion: nil)
+        }
+        pepAlertViewController.add(action: cancelAction)
+        
+        let resetTitle = NSLocalizedString("Reset All", comment: "Reset account identity button title")
+        let resetAction = PEPUIAlertAction(title: resetTitle,
+                                           style: .pEpRed,
+                                           handler: { [weak self] _ in
+                                            pepAlertViewController.dismiss(animated: true,
+                                                                           completion: nil)
+                                            self?.viewModel.handleResetAllIdentities()
+        })
+        pepAlertViewController.add(action: resetAction)
+
+        pepAlertViewController.modalPresentationStyle = .overFullScreen
+        pepAlertViewController.modalTransitionStyle = .crossDissolve
+
+        DispatchQueue.main.async { [weak self] in
+            self?.present(pepAlertViewController, animated: true)
+        }
+    }
+
+
     private func updateModel() { //!!!: looks wrong. Is named updateModel but does not.
         //reload data in view model
         tableView.reloadData()
@@ -348,6 +391,19 @@ extension SettingsTableViewController {
 // MARK: - SettingsViewModelDelegate
 
 extension SettingsTableViewController: SettingsViewModelDelegate {
+    func showLoadingView() {
+        DispatchQueue.main.async { [weak self] in
+            UIApplication.shared.beginIgnoringInteractionEvents()
+            self?.activityIndicatorView = self?.showActivityIndicator()
+        }
+    }
+    
+    func hideLoadingView() {
+        DispatchQueue.main.async { [weak self] in
+            UIApplication.shared.endIgnoringInteractionEvents()
+            self?.activityIndicatorView?.removeFromSuperview()
+        }
+    }
 
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
         UIUtils.showAlertWithOnlyPositiveButton(title: "Extra Keys Editable",
