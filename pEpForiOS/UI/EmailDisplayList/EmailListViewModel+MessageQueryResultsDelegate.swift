@@ -1,5 +1,5 @@
 //
-//  EmailListViewModel+MessageQueryResultsDelegate.swift
+//  EmailListViewModel+QueryResultsDelegate.swift
 //  pEp
 //
 //  Created by Xavier Algarra on 13/03/2019.
@@ -9,7 +9,7 @@
 import Foundation
 import MessageModel
 
-extension EmailListViewModel : MessageQueryResultsDelegate {
+extension EmailListViewModel : QueryResultsDelegate {
     
     func didInsert(indexPath: IndexPath) {
         if updatesEnabled {
