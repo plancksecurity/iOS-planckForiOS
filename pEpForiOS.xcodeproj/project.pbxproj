@@ -1319,7 +1319,6 @@
 				431394A81E4B03AA00D92F33 /* Settings.bundle */,
 				43980E301CBD0BCA00A7FC3C /* Assets.xcassets */,
 				43C98AC5219C3691006418B0 /* InfoPlist.strings */,
-				43C98AC1219C275E006418B0 /* Localizable.strings */,
 				4388A0E02008AF61008CB98D /* public.xcconfig */,
 			);
 			path = Resources;
@@ -1934,6 +1933,7 @@
 				43980E261CBD0BC900A7FC3C /* AppDelegate.swift */,
 				1543B69F22AAC882002B59AB /* Resources */,
 				43980E351CBD0BCA00A7FC3C /* Info.plist */,
+				43C98AC1219C275E006418B0 /* Localizable.strings */,
 				43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */,
 			);
 			path = pEpForiOS;
