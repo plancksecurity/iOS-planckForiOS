@@ -399,12 +399,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     @IBAction func readToolbar(_ sender:UIBarButtonItem!) {
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            model?.markSelectedAsRead(indexPaths: selectedItems)
             selectedItems.forEach { (ip) in
                 if let cell = self.tableView.cellForRow(at: ip) as? EmailListViewCell {
                     cell.isSeen = true
                 }
             }
+            model?.markSelectedAsRead(indexPaths: selectedItems)
         }
         cancelToolbar(sender)
     }
@@ -719,6 +719,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListViewModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
+
     func checkIfSplitNeedsUpdate(indexpath: [IndexPath]) {
         guard let isIphone = splitViewController?.isCollapsed, let last = lastSelectedIndexPath else {
             return
@@ -1095,10 +1096,6 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
-            //!!!: this logic (mark for redecrypt) must go to getter of longMessage(formatted) as a side effect when HTML parser is in toolbox
-            // The user may be about to open an yet undecrypted message.
-            // If so, try again to decrypt it.
-            message.markForRetryDecryptIfUndecryptable()
             vc.appConfig = appConfig
             vc.message = message
             ///This is commented as we "disabled" the feature in the message of
@@ -1113,10 +1110,6 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
-            //!!!: this logic (mark for redecrypt) must go to getter of longMessage(formatted) as a side effect when HTML parser is in toolbox
-            // The user may be about to open an yet undecrypted message.
-            // If so, try again to decrypt it.
-            message.markForRetryDecryptIfUndecryptable()
             vc.appConfig = appConfig
             vc.message = message
             ///This is commented as we "disabled" the feature in the message of
