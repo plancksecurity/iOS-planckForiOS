@@ -14,6 +14,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     lazy var viewModel = SettingsViewModel(appConfig.messageModelService)
     var settingSwitchViewModel: SwitchSettingCellViewModelProtocol?
 
+    private weak var activityIndicatorView: UIActivityIndicatorView?
+
     var ipath : IndexPath?
 
     struct UIState {
@@ -389,6 +391,25 @@ extension SettingsTableViewController {
 // MARK: - SettingsViewModelDelegate
 
 extension SettingsTableViewController: SettingsViewModelDelegate {
+    func showLoadingView() {
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicatorView = self?.showActivityIndicator()
+        }
+    }
+    
+    func hideLoadingView() {
+        DispatchQueue.main.async {
+            UIApplication.shared.endIgnoringInteractionEvents()
+        }
+        guard let activityIndicatorView = activityIndicatorView else {
+            return
+        }
+        DispatchQueue.main.async {
+            activityIndicatorView.removeFromSuperview()
+        }
+    }
+    
 
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
         UIUtils.showAlertWithOnlyPositiveButton(title: "Extra Keys Editable",

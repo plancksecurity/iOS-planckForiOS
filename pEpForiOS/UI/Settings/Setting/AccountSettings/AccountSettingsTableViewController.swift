@@ -56,6 +56,8 @@ UIPickerViewDataSource, UITextFieldDelegate {
     var oauth2ReauthIndexPath: IndexPath?
     var resetIdentityIndexPath: IndexPath?
 
+    private weak var activityIndicatorView: UIActivityIndicatorView?
+
      override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
@@ -496,6 +498,25 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
         alert.addAction(okAction)
         DispatchQueue.main.async { [weak self] in
             self?.present(alert, animated: true)
+        }
+    }
+
+    func showLoadingView() {
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicatorView = self?.showActivityIndicator()
+        }
+    }
+
+    func hideLoadingView() {
+        DispatchQueue.main.async {
+            UIApplication.shared.endIgnoringInteractionEvents()
+        }
+        guard let activityIndicatorView = activityIndicatorView else {
+            return
+        }
+        DispatchQueue.main.async {
+            activityIndicatorView.removeFromSuperview()
         }
     }
 }

@@ -12,6 +12,8 @@ import PEPObjCAdapterFramework
 
 protocol SettingsViewModelDelegate: class {
     func showExtraKeyEditabilityStateChangeAlert(newValue: String)
+    func showLoadingView()
+    func hideLoadingView()
 }
 
 final class SettingsViewModel {
@@ -92,12 +94,16 @@ final class SettingsViewModel {
     }
 
     func handleResetAllIdentities() {
-        for identity in Identity.all() {
-            guard let account = Account.by(address: identity.address) else {
-                Log.shared.errorAndCrash("Account for email not found")
-                return
+        delegate?.showLoadingView()
+        Account.resetAllOwnKeys() { [weak self] result in
+            switch result {
+            case .success():
+                self?.delegate?.hideLoadingView()
+            case .failure(let error):
+                self?.delegate?.hideLoadingView()
+                Log.shared.errorAndCrash("Fail to reset all identities, with error %@ ",
+                                         error.localizedDescription)
             }
-            try? account.resetKeys()
         }
     }
 }
