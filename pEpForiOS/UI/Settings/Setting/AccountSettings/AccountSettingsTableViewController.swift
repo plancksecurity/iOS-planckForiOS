@@ -54,7 +54,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
      should trigger the reauthorization.
      */
     var oauth2ReauthIndexPath: IndexPath?
-    var resetIdentityIndexPath: IndexPath?
+    private var resetIdentityIndexPath: IndexPath?
 
     private weak var activityIndicatorView: UIActivityIndicatorView?
 
@@ -253,7 +253,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
 
     // MARK: - Actions
     
-    fileprivate func popViewController() {
+    private func popViewController() {
          //!!!: see IOS-1608 this is a patch as we have 2 navigationControllers and need to pop to the previous view.
             (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
     }

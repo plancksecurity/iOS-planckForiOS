@@ -392,24 +392,18 @@ extension SettingsTableViewController {
 
 extension SettingsTableViewController: SettingsViewModelDelegate {
     func showLoadingView() {
-        UIApplication.shared.beginIgnoringInteractionEvents()
         DispatchQueue.main.async { [weak self] in
+            UIApplication.shared.beginIgnoringInteractionEvents()
             self?.activityIndicatorView = self?.showActivityIndicator()
         }
     }
     
     func hideLoadingView() {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
             UIApplication.shared.endIgnoringInteractionEvents()
-        }
-        guard let activityIndicatorView = activityIndicatorView else {
-            return
-        }
-        DispatchQueue.main.async {
-            activityIndicatorView.removeFromSuperview()
+            self?.activityIndicatorView?.removeFromSuperview()
         }
     }
-    
 
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
         UIUtils.showAlertWithOnlyPositiveButton(title: "Extra Keys Editable",
