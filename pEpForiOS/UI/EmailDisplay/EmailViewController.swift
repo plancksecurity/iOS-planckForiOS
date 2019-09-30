@@ -634,7 +634,7 @@ extension EmailViewController: SegueHandlerType {
             return
         }
 
-        let useToolbarItemsDirectly = traitCollection.verticalSizeClass == .regular
+        let useToolbarItemsDirectly = splitViewController?.displayMode == UISplitViewController.DisplayMode.allVisible || splitViewController?.displayMode == UISplitViewController.DisplayMode.primaryOverlay
 
         var barButtonItems = useToolbarItemsDirectly ?
             toolbarItems ?? [] : navigationItem.rightBarButtonItems ?? []
