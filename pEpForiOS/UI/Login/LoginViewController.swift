@@ -68,7 +68,7 @@ class LoginViewController: BaseViewController {
     @IBOutlet var user: UITextField!
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
 
-    @IBOutlet var textFieldsContainerView: UIView!
+    @IBOutlet var textFieldsContainerStackView: UIStackView!
     @IBOutlet var contentScrollView: UIScrollView!
 
     var isCurrentlyVerifying = false {

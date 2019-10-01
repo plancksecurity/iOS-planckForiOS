@@ -46,8 +46,8 @@ extension LoginViewController: UIScrollViewDelegate {
 
             if self.password.isFirstResponder {
                 contentScrollView.isScrollEnabled = true
-                var textFieldsFrame = self.textFieldsContainerView.frame
-                textFieldsFrame.size = CGSize(width: textFieldsContainerView.frame.width, height: textFieldsContainerView.frame.height + 20)
+                var textFieldsFrame = self.textFieldsContainerStackView.frame
+                textFieldsFrame.size = CGSize(width: textFieldsContainerStackView.frame.width, height: textFieldsContainerStackView.frame.height + 20)
                 self.contentScrollView.scrollRectToVisible(textFieldsFrame, animated: false)
             }
             else {
