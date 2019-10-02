@@ -77,14 +77,9 @@ final class TutorialWizardViewController: PEPPageViewController {
         self.navigationItem.rightBarButtonItem  = endButton
     }
 
-    override func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        let next = super.pageViewController(pageViewController, viewControllerAfter: viewController)
-        if next == nil {
-            updateNavButton(lastScreen: true)
-        } else {
-            updateNavButton(lastScreen: false)
-        }
-        return next
+    override func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+
+        super.pageViewController(pageViewController, didFinishAnimating: finished, previousViewControllers: previousViewControllers, transitionCompleted: completed)
     }
 }
 
