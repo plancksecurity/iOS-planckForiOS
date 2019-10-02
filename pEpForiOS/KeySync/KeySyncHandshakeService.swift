@@ -80,7 +80,9 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
     // We must dismiss pEpSyncWizard before presenting pEpSyncWizard error view.
     func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
         guard let presentingViewController = pEpSyncWizard?.presentingViewController else {
-            Log.shared.errorAndCrash("No Presenter")
+            //presentingViewController is nil then, pEpSyncWizard failed to be shown.
+            //So we call tryAgain to engine, to give it a another try to show pEpSyncWizard.
+            completion?(.tryAgain)
             return
         }
 
