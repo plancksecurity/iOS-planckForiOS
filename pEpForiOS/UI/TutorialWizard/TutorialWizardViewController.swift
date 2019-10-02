@@ -65,6 +65,27 @@ final class TutorialWizardViewController: PEPPageViewController {
     @objc func closeScreen() {
         dismiss(animated: true)
     }
+
+    func updateNavButton(lastScreen: Bool) {
+        var navBarButtonTitle = ""
+        if lastScreen {
+            navBarButtonTitle = NSLocalizedString("Finish", comment: "Start up tutorial finish button")
+        } else {
+            navBarButtonTitle = NSLocalizedString("Skip", comment: "Start up tutorial finish button")
+        }
+        let endButton = UIBarButtonItem(title: navBarButtonTitle, style: .done, target: self, action: #selector(closeScreen))
+        self.navigationItem.rightBarButtonItem  = endButton
+    }
+
+    override func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        let next = super.pageViewController(pageViewController, viewControllerAfter: viewController)
+        if next == nil {
+            updateNavButton(lastScreen: true)
+        } else {
+            updateNavButton(lastScreen: false)
+        }
+        return next
+    }
 }
 
 // MARK: - Private
@@ -72,11 +93,7 @@ final class TutorialWizardViewController: PEPPageViewController {
 extension TutorialWizardViewController {
     private func setUpView() {
         views = tutorialViewControllers()
-        let skipButtonTitle = NSLocalizedString("Skip", comment: "Start up tutorial finish button")
-
-        let endButton = UIBarButtonItem(title: skipButtonTitle, style: .done, target: self, action: #selector(closeScreen))
-        self.navigationItem.rightBarButtonItem  = endButton
-
+        updateNavButton(lastScreen: false)
     }
 
     private func tutorialViewControllers() -> [TutorialViewController] {
