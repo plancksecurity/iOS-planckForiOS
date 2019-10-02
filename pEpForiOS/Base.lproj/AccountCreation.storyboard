@@ -554,14 +554,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashscreen" translatesAutoresizingMaskIntoConstraints="NO" id="qYA-qu-vFE" userLabel="BackgroungImage">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                            </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="45" translatesAutoresizingMaskIntoConstraints="NO" id="RIc-dS-MIJ">
-                                <rect key="frame" x="30" y="186.5" width="265" height="195"/>
+                                <rect key="frame" x="30" y="186.5" width="260" height="195"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Email Address" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="36s-Iw-b58" customClass="CredentialTextField" customModule="pEpForiOS">
-                                        <rect key="frame" x="0.0" y="0.0" width="265" height="35"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="260" height="35"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <accessibility key="accessibilityConfiguration" identifier="email"/>
                                         <constraints>
@@ -586,7 +583,7 @@
                                         </connections>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3wB-RC-5fz" customClass="CredentialTextField" customModule="pEpForiOS">
-                                        <rect key="frame" x="0.0" y="80" width="265" height="35"/>
+                                        <rect key="frame" x="0.0" y="80" width="260" height="35"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <accessibility key="accessibilityConfiguration" identifier="password"/>
                                         <constraints>
@@ -608,7 +605,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Username" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mKi-gF-bu9" customClass="CredentialTextField" customModule="pEpForiOS">
-                                        <rect key="frame" x="0.0" y="160" width="265" height="35"/>
+                                        <rect key="frame" x="0.0" y="160" width="260" height="35"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <accessibility key="accessibilityConfiguration" identifier="username"/>
                                         <constraints>
@@ -630,6 +627,9 @@
                                         </userDefinedRuntimeAttributes>
                                     </textField>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" priority="750" constant="300" id="6Xr-iw-12Q"/>
+                                </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7IS-Mp-8VB">
                                 <rect key="frame" x="82" y="368" width="250" height="0.0"/>
@@ -664,15 +664,18 @@
                                 <rect key="frame" x="188" y="349" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </activityIndicatorView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashscreen" translatesAutoresizingMaskIntoConstraints="NO" id="qYA-qu-vFE" userLabel="BackgroungImage">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="jAI-Xy-z2r" firstAttribute="trailing" secondItem="RIc-dS-MIJ" secondAttribute="trailing" constant="25" id="0sR-6M-e2j"/>
                             <constraint firstAttribute="top" secondItem="qYA-qu-vFE" secondAttribute="top" id="ROq-f2-ftF"/>
                             <constraint firstItem="RIc-dS-MIJ" firstAttribute="centerY" secondItem="7n3-u6-UKe" secondAttribute="centerY" id="UPo-NK-aUf"/>
                             <constraint firstAttribute="trailing" secondItem="qYA-qu-vFE" secondAttribute="trailing" id="bxU-Wr-YR8"/>
                             <constraint firstItem="qYA-qu-vFE" firstAttribute="leading" secondItem="7n3-u6-UKe" secondAttribute="leading" id="d6E-4y-WDe"/>
-                            <constraint firstItem="RIc-dS-MIJ" firstAttribute="leading" secondItem="jAI-Xy-z2r" secondAttribute="leading" constant="30" id="ohz-bV-mtM"/>
+                            <constraint firstItem="RIc-dS-MIJ" firstAttribute="centerX" secondItem="jAI-Xy-z2r" secondAttribute="centerX" id="d6c-ev-PRu"/>
+                            <constraint firstItem="RIc-dS-MIJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jAI-Xy-z2r" secondAttribute="leading" constant="30" id="ohz-bV-mtM"/>
                             <constraint firstAttribute="bottom" secondItem="qYA-qu-vFE" secondAttribute="bottom" id="qSn-Aj-v80"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="jAI-Xy-z2r"/>
@@ -690,7 +693,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bBb-dZ-w49" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6413" y="-396"/>
+            <point key="canvasLocation" x="6412.5" y="-396.12676056338029"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="aJL-6s-3px">
