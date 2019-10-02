@@ -8,14 +8,14 @@
 
 import UIKit
 
-final class PEPPageViewController: UIPageViewController {
+class PEPPageViewController: UIPageViewController {
 
-    private var pageControlPageIndicatorColor: UIColor?
-    private var pageControlBackgroundColor: UIColor?
-    private var pageControlTint: UIColor?
-    private var showDots = false
-    private var isScrollEnable = false
-    private var didLoadValues = false
+    var pageControlPageIndicatorColor: UIColor?
+    var pageControlBackgroundColor: UIColor?
+    var pageControlTint: UIColor?
+    var showDots = false
+    var isScrollEnable = false
+    var didLoadValues = false
 
     var views = [UIViewController]()
 
