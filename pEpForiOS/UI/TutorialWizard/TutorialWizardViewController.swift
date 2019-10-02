@@ -61,6 +61,10 @@ final class TutorialWizardViewController: PEPPageViewController {
             viewController?.present(navigationController, animated: true, completion: nil)
         }
     }
+
+    @objc func closeScreen() {
+        dismiss(animated: true)
+    }
 }
 
 // MARK: - Private
@@ -68,42 +72,12 @@ final class TutorialWizardViewController: PEPPageViewController {
 extension TutorialWizardViewController {
     private func setUpView() {
         views = tutorialViewControllers()
-        //aqui seteamos el boton de la nav y lo canviamos como toca cuando toca
-//        topBar.backgroundColor = .pEpGreen
-//
-//        let skipButtonTitle = NSLocalizedString("Finish", comment: "Start up tutorial finish button")
-//        skipeButton.setTitle(skipButtonTitle, for: .normal)
-//        skipeButton.setTitleColor(.white, for: .normal)
+        let skipButtonTitle = NSLocalizedString("Skip", comment: "Start up tutorial finish button")
 
-        //addPEPPageViewCotnroller()
+        let endButton = UIBarButtonItem(title: skipButtonTitle, style: .done, target: self, action: #selector(closeScreen))
+        self.navigationItem.rightBarButtonItem  = endButton
+
     }
-
-//    private func addPEPPageViewCotnroller() {
-//        guard let pEpPageViewController =
-//            PEPPageViewController.fromStoryboard(showDots: true,
-//                                                 isScrollingEnable: true,
-//                                                 pageIndicatorTint: .pEpGray,
-//                                                 pageIndicatorCurrent: .black),
-//            let pageView = pEpPageViewController.view else {
-//                return
-//        }
-//        pEpPageViewController.views = TutorialWizardViewController.tutorialViewControllers()
-//        //self.presentViewController(navigationController, animated: true, completion: nil)
-//        addChild(pEpPageViewController)
-//        view.addSubview(pEpPageViewController.view)
-//        pEpPageViewController.didMove(toParent: self)
-//
-//        pageView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint(item: pageView, attribute: .bottom, relatedBy: .equal,
-//                           toItem: view, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: pageView, attribute: .trailing, relatedBy: .equal,
-//                           toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: pageView, attribute: .leading, relatedBy: .equal,
-//                           toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: pageView, attribute: .top, relatedBy: .equal,
-//                           toItem: topBar, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-//
-//    }
 
     private func tutorialViewControllers() -> [TutorialViewController] {
         var result = [TutorialViewController]()
