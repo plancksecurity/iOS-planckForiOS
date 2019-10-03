@@ -122,41 +122,54 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
         let alertView = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
         let resetTrustThisIdentityAction = UIAlertAction(
             title: NSLocalizedString("Reset Trust For This Identity", comment: "alert action 1"),
-            style: .destructive, handler: { [weak self] action in
+            style: .destructive) { [weak self] action in
                 guard let me = self else {
                     Log.shared.errorAndCrash(message: "lost myself")
                     return
                 }
                 me.model.resetTrust(foridentityAt: indexPath)
                 me.tableView.deselectRow(at: indexPath, animated: true)
-        })
+        }
         alertView.addAction(resetTrustThisIdentityAction)
 
         if model.multipleIdentitiesExist(forIdentityAt: indexPath) {
             let resetTrustAllIdentityAction = UIAlertAction(
                 title: NSLocalizedString("Reset Trust For All Identities", comment: "alert action 2"),
-                style: .destructive, handler: { [weak self] action in
+                style: .destructive) { [weak self] action in
                     guard let me = self else {
                         Log.shared.errorAndCrash(message: "lost myself")
                         return
                     }
                     me.model.resetTrustAll(foridentityAt: indexPath)
                     me.tableView.deselectRow(at: indexPath, animated: true)
-            })
+            }
             alertView.addAction(resetTrustAllIdentityAction)
         }
 
         let cancelAction = UIAlertAction(
             title: NSLocalizedString("Cancel", comment: "alert action 3"),
-            style: .cancel, handler: { [weak self] action in
+            style: .cancel) { [weak self] action in
                 guard let me = self else {
                     Log.shared.errorAndCrash(message: "lost myself")
                     return
                 }
                 me.tableView.deselectRow(at: indexPath, animated: true)
-        })
+        }
         alertView.addAction(cancelAction)
 
+        if let splitViewController = splitViewController, !splitViewController.isCollapsed {
+            let cell = tableView.cellForRow(at: indexPath)
+            alertView.popoverPresentationController?.sourceView = cell?.contentView
+            if let label = cell?.textLabel {
+                let contentSize = label.intrinsicContentSize
+                alertView.popoverPresentationController?.sourceRect =
+                    CGRect(x: label.frame.origin.x + contentSize.width + 5,
+                           y: label.frame.origin.y + contentSize.height + 5,
+                           width: 0,
+                           height: 0)
+            }
+
+        }
         present(alertView, animated: true, completion: nil)
     }
 }
