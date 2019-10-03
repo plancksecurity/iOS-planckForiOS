@@ -80,6 +80,11 @@ class ResetTrustViewModel {
         return id.userNameOrAddress
     }
 
+    func detailFor(indexPath: IndexPath) -> String {
+        let id = identityQueryResult[indexPath.row]
+        return id.address
+    }
+
     public func removeSearch() {
         setNewSearchAndReload(search: nil)
     }
