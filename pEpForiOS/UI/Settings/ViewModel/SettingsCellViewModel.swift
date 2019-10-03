@@ -83,7 +83,7 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
                                          comment:
                     "Settings: Cell (button) title to view Extra Keys setting")
             case .contacts:
-                return NSLocalizedString("Reset trust", comment:
+                return NSLocalizedString("Reset", comment:
                     "Settings: cell (button) title to view the trust contacts option")
             }
         }
