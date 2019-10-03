@@ -688,9 +688,9 @@
                                         <constraints>
                                             <constraint firstItem="xhB-VB-bct" firstAttribute="leading" secondItem="tnx-EP-0Xk" secondAttribute="trailing" constant="6" id="7Mw-MP-1hM"/>
                                             <constraint firstAttribute="height" constant="31" id="7vV-Vh-RLl"/>
+                                            <constraint firstItem="xhB-VB-bct" firstAttribute="centerY" secondItem="D6X-yW-wbf" secondAttribute="centerY" id="Hoi-4m-rk0"/>
                                             <constraint firstItem="tnx-EP-0Xk" firstAttribute="centerY" secondItem="D6X-yW-wbf" secondAttribute="centerY" id="Zvs-ML-e2n"/>
                                             <constraint firstAttribute="trailing" secondItem="xhB-VB-bct" secondAttribute="trailing" id="a4e-gZ-fTe"/>
-                                            <constraint firstItem="xhB-VB-bct" firstAttribute="centerY" secondItem="tnx-EP-0Xk" secondAttribute="centerY" id="uz0-3H-IZR"/>
                                             <constraint firstItem="tnx-EP-0Xk" firstAttribute="leading" secondItem="D6X-yW-wbf" secondAttribute="leading" id="vlk-U9-aep"/>
                                         </constraints>
                                     </view>
@@ -698,13 +698,10 @@
                                 <constraints>
                                     <constraint firstItem="lTY-gw-zK9" firstAttribute="centerX" secondItem="7IS-Mp-8VB" secondAttribute="centerX" id="2rr-kc-6GZ"/>
                                     <constraint firstItem="lTY-gw-zK9" firstAttribute="top" secondItem="7IS-Mp-8VB" secondAttribute="top" id="Blg-9o-dgW"/>
-                                    <constraint firstAttribute="height" priority="750" constant="300" id="U2y-zU-KKs"/>
-                                    <constraint firstItem="D6X-yW-wbf" firstAttribute="top" relation="greaterThanOrEqual" secondItem="lTY-gw-zK9" secondAttribute="bottom" constant="30" id="Wzh-oK-tIL"/>
                                     <constraint firstItem="D6X-yW-wbf" firstAttribute="leading" secondItem="7IS-Mp-8VB" secondAttribute="leading" id="ePg-UJ-nuX"/>
                                     <constraint firstAttribute="trailing" secondItem="O4c-eF-dJT" secondAttribute="trailing" id="l1v-ab-IGD"/>
                                     <constraint firstAttribute="bottom" secondItem="O4c-eF-dJT" secondAttribute="bottom" id="orU-ib-Q2I"/>
                                     <constraint firstAttribute="bottom" secondItem="D6X-yW-wbf" secondAttribute="bottom" id="pU9-pi-KoN"/>
-                                    <constraint firstItem="O4c-eF-dJT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="D6X-yW-wbf" secondAttribute="trailing" constant="20" id="y6a-EK-iD0"/>
                                 </constraints>
                             </view>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="dja-Bh-vu3">
@@ -714,18 +711,17 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="7IS-Mp-8VB" firstAttribute="top" secondItem="RIc-dS-MIJ" secondAttribute="bottom" priority="800" constant="30" id="Btw-nE-OVS"/>
-                            <constraint firstItem="7IS-Mp-8VB" firstAttribute="leading" secondItem="RIc-dS-MIJ" secondAttribute="leading" priority="750" id="FfQ-Dq-A3N"/>
-                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="7IS-Mp-8VB" secondAttribute="bottom" constant="25" id="QmO-bu-xqf"/>
+                            <constraint firstItem="7IS-Mp-8VB" firstAttribute="top" secondItem="RIc-dS-MIJ" secondAttribute="bottom" constant="30" id="Btw-nE-OVS"/>
+                            <constraint firstItem="7IS-Mp-8VB" firstAttribute="leading" secondItem="RIc-dS-MIJ" secondAttribute="leading" id="FfQ-Dq-A3N"/>
+                            <constraint firstAttribute="bottom" secondItem="7IS-Mp-8VB" secondAttribute="bottom" constant="25" id="QmO-bu-xqf"/>
                             <constraint firstAttribute="top" secondItem="qYA-qu-vFE" secondAttribute="top" id="ROq-f2-ftF"/>
                             <constraint firstItem="RIc-dS-MIJ" firstAttribute="centerY" secondItem="7n3-u6-UKe" secondAttribute="centerY" id="UPo-NK-aUf"/>
                             <constraint firstAttribute="trailing" secondItem="qYA-qu-vFE" secondAttribute="trailing" id="bxU-Wr-YR8"/>
-                            <constraint firstItem="7IS-Mp-8VB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="RIc-dS-MIJ" secondAttribute="bottom" constant="10" id="ceO-dM-A24"/>
                             <constraint firstItem="qYA-qu-vFE" firstAttribute="leading" secondItem="7n3-u6-UKe" secondAttribute="leading" id="d6E-4y-WDe"/>
                             <constraint firstItem="RIc-dS-MIJ" firstAttribute="centerX" secondItem="jAI-Xy-z2r" secondAttribute="centerX" id="d6c-ev-PRu"/>
                             <constraint firstItem="RIc-dS-MIJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jAI-Xy-z2r" secondAttribute="leading" constant="30" id="ohz-bV-mtM"/>
                             <constraint firstAttribute="bottom" secondItem="qYA-qu-vFE" secondAttribute="bottom" id="qSn-Aj-v80"/>
-                            <constraint firstItem="7IS-Mp-8VB" firstAttribute="trailing" secondItem="RIc-dS-MIJ" secondAttribute="trailing" priority="750" id="rbR-pb-Ev5"/>
+                            <constraint firstItem="7IS-Mp-8VB" firstAttribute="trailing" secondItem="RIc-dS-MIJ" secondAttribute="trailing" id="rbR-pb-Ev5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="jAI-Xy-z2r"/>
                     </view>
