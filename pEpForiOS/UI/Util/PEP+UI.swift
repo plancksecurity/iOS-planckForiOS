@@ -20,7 +20,7 @@ extension PEPColor {
     func statusIconForMessage(enabled: Bool = true) -> UIImage? {
         switch self {
         case PEPColor.noColor:
-            return UIImage(named: "pEp-status-grey")
+            return nil
         case PEPColor.red:
             return UIImage(named: "pEp-status-red")
         case .yellow:
@@ -35,8 +35,6 @@ extension PEPColor {
             } else {
                 return UIImage(named: "pEp-status-green-disabled")
             }
-        default:
-            return nil
         }
     }
 

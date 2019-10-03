@@ -86,7 +86,7 @@ extension TutorialWizardViewController {
     private func setUpView() {
         topBar.backgroundColor = .pEpGreen
 
-        let skipButtonTitle = NSLocalizedString("Skip", comment: "Start up tutorial skip button")
+        let skipButtonTitle = NSLocalizedString("Finish", comment: "Start up tutorial finish button")
         skipeButton.setTitle(skipButtonTitle, for: .normal)
         skipeButton.setTitleColor(.white, for: .normal)
 
