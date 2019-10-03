@@ -108,7 +108,6 @@ class EmailViewController: BaseTableViewController {
     // MARK: - SETUP
 
     private func setupToolbar() {
-
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showPepActions(sender:)),
             target: self)
@@ -119,6 +118,10 @@ class EmailViewController: BaseTableViewController {
             action: nil)
         flexibleSpace.tag = BarButtonType.space.rawValue
         toolbarItems?.append(contentsOf: [flexibleSpace,item])
+        if !(splitViewController?.isCollapsed ?? true) {
+            navigationItem.rightBarButtonItems = toolbarItems
+        }
+
     }
 
     func configureTableRows() {
@@ -635,7 +638,7 @@ extension EmailViewController: SegueHandlerType {
             return
         }
 
-        let useToolbarItemsDirectly = traitCollection.verticalSizeClass == .regular
+        let useToolbarItemsDirectly = splitViewController?.displayMode == UISplitViewController.DisplayMode.allVisible || splitViewController?.displayMode == UISplitViewController.DisplayMode.primaryOverlay
 
         var barButtonItems = useToolbarItemsDirectly ?
             toolbarItems ?? [] : navigationItem.rightBarButtonItems ?? []
