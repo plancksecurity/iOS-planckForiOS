@@ -50,6 +50,10 @@ public class AccountSettingsViewModel {
         }
         return tempHeader
     }
+
+    private var footers: [String] {
+        return [NSLocalizedString("Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.", comment: "Footer for Account settings section 1")]
+    }
     private var controlWord = "noRealPassword"
 
     public let svm = SecurityViewModel()
@@ -227,6 +231,13 @@ public class AccountSettingsViewModel {
             assert(sectionIsValid(section: section), "Section out of range")
             return headers[section]
         }
+    }
+
+    func footerFor(section: Int) -> String {
+        if section < footers.count {
+            return footers[section]
+        }
+        return ""
     }
 
     func pEpSync(enable: Bool) {

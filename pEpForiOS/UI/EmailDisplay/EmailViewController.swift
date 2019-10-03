@@ -120,7 +120,6 @@ class EmailViewController: BaseTableViewController {
         toolbarItems?.append(contentsOf: [flexibleSpace,item])
         if !(splitViewController?.isCollapsed ?? true) {
             navigationItem.rightBarButtonItems = toolbarItems
-            toolbarItems = []
         }
 
     }
