@@ -67,9 +67,9 @@ class LoginViewController: BaseViewController {
     @IBOutlet var loginButton: UIButton!
     @IBOutlet var user: UITextField!
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet weak var fieldsContainerCenterConstraint: NSLayoutConstraint!
 
-    @IBOutlet var textFieldsContainerStackView: UIStackView!
-    @IBOutlet var contentScrollView: UIScrollView!
+    @IBOutlet var textFieldsContainerStackView: UIStackView! //TODO: ALE remove if not used
 
     var isCurrentlyVerifying = false {
         didSet {
@@ -132,10 +132,6 @@ class LoginViewController: BaseViewController {
 
     @objc func backButton() {
         self.dismiss(animated: true, completion: nil)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
 
     func updateView() {

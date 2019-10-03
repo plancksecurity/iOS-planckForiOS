@@ -2,79 +2,45 @@
 //  LoginViewController+Keyboard.swift
 //  pEp
 //
-//  Created by Miguel Berrocal Gómez on 20/07/2018.
+//  Created by Alejandro Gelos on 3/10/2019.
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-
-extension LoginViewController: UIScrollViewDelegate {
+extension LoginViewController {
 
     func configureKeyboardAwareness() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(adjustForKeyboard),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(adjustForKeyboard),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
     }
 
     
-    @objc func keyboardWillChangeFrame(notification: NSNotification) {
-        guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?
-            .cgRectValue else {
-                return
-        }
-        if UIDevice.current.userInterfaceIdiom == .pad && self.traitCollection.verticalSizeClass == .regular {
-            var loginButtonUnderSpace = loginButton.frame.maxY
-            loginButtonUnderSpace = self.view.frame.height - loginButtonUnderSpace
-            
-            var contentInset:UIEdgeInsets = contentScrollView.contentInset
-            contentInset.bottom = keyboardFrame.size.height - loginButtonUnderSpace
-            contentScrollView.contentInset = contentInset
-            contentScrollView.scrollIndicatorInsets = contentInset
-            
-            var biggerLoginButtonFrame = loginButton.frame
-            biggerLoginButtonFrame.size = CGSize(width: loginButton.frame.width, height: loginButton.frame.height + 20)
-            contentScrollView.scrollRectToVisible(biggerLoginButtonFrame, animated: true)
-            contentScrollView.isScrollEnabled = false
-            
-        }
-        else if self.traitCollection.verticalSizeClass == .compact {
-            var contentInset:UIEdgeInsets = contentScrollView.contentInset
-            contentInset.bottom = keyboardFrame.size.height
-            contentScrollView.contentInset = contentInset
-            contentScrollView.scrollIndicatorInsets = contentInset
-            self.contentScrollView.delegate = self
+    @objc func adjustForKeyboard(notification: NSNotification) {
+        fieldsContainerCenterConstraint.constant = viewNewCenter(notification: notification)
 
-            if self.password.isFirstResponder {
-                contentScrollView.isScrollEnabled = true
-                var textFieldsFrame = self.textFieldsContainerStackView.frame
-                textFieldsFrame.size = CGSize(width: textFieldsContainerStackView.frame.width, height: textFieldsContainerStackView.frame.height + 20)
-                self.contentScrollView.scrollRectToVisible(textFieldsFrame, animated: false)
-            }
-            else {
-                self.contentScrollView.scrollRectToVisible(self.loginButton.frame, animated: false)
-            }
-            
-        }
-        else {
-            var contentInset:UIEdgeInsets = contentScrollView.contentInset
-            contentInset.bottom = keyboardFrame.size.height
-            contentScrollView.contentInset = contentInset
-            contentScrollView.scrollIndicatorInsets = contentInset
-            self.contentScrollView.delegate = self
-            self.contentScrollView.scrollRectToVisible(self.loginButton.frame, animated: false)
-        }
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+            [weak self] in
+            self?.view.layoutIfNeeded()
+        })
     }
+}
 
-    @objc func keyboardWillHide(notification:NSNotification){
+// MARK: - Private
+extension LoginViewController {
+    private func viewNewCenter(notification: NSNotification) -> CGFloat {
+        guard notification.name == UIResponder.keyboardWillShowNotification,
+            let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+                //Keyboard is hidding, move view to original center
+                return 0
+        }
 
-        let contentInset:UIEdgeInsets = UIEdgeInsets.zero
-        self.contentScrollView.contentInset = contentInset
-        contentScrollView.isScrollEnabled = true
-        self.contentScrollView.delegate = nil
+        return -(keyboardValue.cgRectValue.height / 2 + 20)
     }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        contentScrollView.isScrollEnabled = false
-    }
-
 }
