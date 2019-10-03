@@ -54,6 +54,7 @@ final class TutorialWizardViewController: PEPPageViewController {
         tutorialWizard.showDots = true
         tutorialWizard.pageControlTint = .pEpGray
         tutorialWizard.pageControlPageIndicatorColor = .black
+        tutorialWizard.pageControlBackgroundColor = .white
 
         let navigationController = UINavigationController(rootViewController: tutorialWizard)
 
@@ -78,8 +79,8 @@ final class TutorialWizardViewController: PEPPageViewController {
     }
 
     override func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-
         super.pageViewController(pageViewController, didFinishAnimating: finished, previousViewControllers: previousViewControllers, transitionCompleted: completed)
+        updateNavButton(lastScreen: isLast())
     }
 }
 
@@ -88,6 +89,8 @@ final class TutorialWizardViewController: PEPPageViewController {
 extension TutorialWizardViewController {
     private func setUpView() {
         views = tutorialViewControllers()
+        navigationController?.navigationBar.barTintColor = .pEpGreen
+        navigationController?.navigationBar.tintColor = .white
         updateNavButton(lastScreen: false)
     }
 

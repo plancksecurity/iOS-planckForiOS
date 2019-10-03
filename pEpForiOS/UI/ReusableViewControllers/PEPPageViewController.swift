@@ -128,6 +128,13 @@ class PEPPageViewController: UIPageViewController {
             self?.dismiss(animated: true, completion: nil)
         }
     }
+
+    func isLast() -> Bool{
+        guard nextView() != nil else {
+            return true
+        }
+        return false
+    }
 }
 
 
