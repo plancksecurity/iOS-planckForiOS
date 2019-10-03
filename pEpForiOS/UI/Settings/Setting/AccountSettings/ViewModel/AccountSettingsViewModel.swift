@@ -52,7 +52,7 @@ public class AccountSettingsViewModel {
     }
 
     private var footers: [String] {
-        return [NSLocalizedString("Performs a reset of the privvacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.", comment: "Footer for Account settings section 1")]
+        return [NSLocalizedString("Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.", comment: "Footer for Account settings section 1")]
     }
     private var controlWord = "noRealPassword"
 
