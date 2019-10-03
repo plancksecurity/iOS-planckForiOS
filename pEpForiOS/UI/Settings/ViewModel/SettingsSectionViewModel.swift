@@ -63,7 +63,7 @@ final class SettingsSectionViewModel {
                                        comment: "TableView Contacts section footer")
         case .companyFeatures:
             generateExtaKeysCells()
-            title = NSLocalizedString("Company Features", comment: "Tableview section header")
+            title = NSLocalizedString("Enterprise Features", comment: "Tableview section header")
         }
     }
 
