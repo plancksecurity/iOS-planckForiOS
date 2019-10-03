@@ -20,7 +20,7 @@ extension PEPColor {
     func statusIconForMessage(enabled: Bool = true) -> UIImage? {
         switch self {
         case PEPColor.noColor:
-            return UIImage(named: "pEp-status-grey")
+            return nil
         case PEPColor.red:
             return UIImage(named: "pEp-status-red")
         case .yellow:
@@ -35,8 +35,6 @@ extension PEPColor {
             } else {
                 return UIImage(named: "pEp-status-green-disabled")
             }
-        default:
-            return nil
         }
     }
 
@@ -79,6 +77,12 @@ extension PEPColor {
 extension PEPRating {
     func uiColor() -> UIColor? {
         return PEPUtils.pEpColor(pEpRating: self).uiColor()
+    }
+
+    var isNoColor: Bool {
+        get {
+            return pEpColor() == PEPColor.noColor
+        }
     }
 
     func statusIcon() -> UIImage? {

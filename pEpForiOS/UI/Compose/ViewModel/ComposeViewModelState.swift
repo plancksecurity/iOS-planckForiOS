@@ -207,37 +207,21 @@ extension ComposeViewModel.ComposeViewModelState {
             return
         }
 
-        var newRating = PEPRating.undefined
         guard let from = from else {
-            rating = newRating
+            rating = PEPRating.undefined
             return
         }
 
-        let session = Session()
+        let session = Session.main
         let safeFrom = from.safeForSession(session)
         let safeTo = Identity.makeSafe(toRecipients, forSession: session)
         let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
         let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
-
-        //!!!: This async call makes tests failing and randomly failing. We probalby should extract
-        //     calculatePepRating(for state: State) and inject in tests
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let me = self else {
-                // That is a valid case. Compose view is gone before this block started to run.
-                return
-            }
-
-            session.performAndWait {
-                let pEpsession = PEPSession()
-                newRating = pEpsession.outgoingMessageRating(from: safeFrom,
-                                                             to: safeTo,
-                                                             cc: safeCc,
-                                                             bcc: safeBcc)
-            }
-            DispatchQueue.main.async {
-                me.rating = newRating
-            }
-        }
+        let pEpsession = PEPSession()
+        rating = pEpsession.outgoingMessageRating(from: safeFrom,
+                                                  to: safeTo,
+                                                  cc: safeCc,
+                                                  bcc: safeBcc)
     }
 }
 

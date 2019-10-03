@@ -14,6 +14,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     lazy var viewModel = SettingsViewModel(appConfig.messageModelService)
     var settingSwitchViewModel: SwitchSettingCellViewModelProtocol?
 
+    private weak var activityIndicatorView: UIActivityIndicatorView?
+
     var ipath : IndexPath?
 
     struct UIState {
@@ -21,8 +23,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     }
 
     var state = UIState()
-
-    var oldToolbarStatus : Bool = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,11 +33,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let nc = self.navigationController {
-            oldToolbarStatus = nc.isToolbarHidden
-        }
-        self.navigationController?.setToolbarHidden(true, animated: false)
 
+        navigationController?.setToolbarHidden(true, animated: false)
         viewModel.delegate = self
 
         if MiscUtil.isUnitTest() { //!!!: must go away. Check if it is needless already and rm.
@@ -48,7 +45,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.setToolbarHidden(oldToolbarStatus, animated: false)
         guard let isIphone = splitViewController?.isCollapsed else {
             return
         }
@@ -97,13 +93,9 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             cell.delegate = self
             return cell
         case let vm as SettingsActionCellViewModel:
-            guard let cell = dequeuedCell as? SwipeTableViewCell else {
-                Log.shared.errorAndCrash("Invalid state.")
-                return dequeuedCell
-            }
+            let cell = dequeuedCell
             cell.textLabel?.text = vm.title
             cell.textLabel?.textColor = vm.titleColor
-            cell.delegate = self
             return cell
         case let vm as SwitchSettingCellViewModelProtocol:
             guard let cell = dequeuedCell as? SettingSwitchTableViewCell else {
@@ -171,12 +163,17 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 performSegue(withIdentifier: .segueSetOwnKey, sender: self)
             case .extraKeys:
                 performSegue(withIdentifier: .segueExtraKeys, sender: self)
+            case .contacts:
+                performSegue(withIdentifier: .ResetTrust , sender: self)
+                break
             }
         case let vm as SettingsActionCellViewModelProtocol:
             switch vm.type {
             case .leaveKeySyncGroup:
-                
                 showAlertBeforeLeavingDeviceGroup(indexPath)
+            case .resetAllIdentities:
+                handleResetAllIdentity()
+                tableView.deselectRow(at: indexPath, animated: true)
             }
         default:
             // SwitchSettingCellViewModelProtocol will drop here, but nothing to do when selected
@@ -197,6 +194,7 @@ extension SettingsTableViewController: SegueHandlerType {
         case segueExtraKeys
         case segueSetOwnKey
         case noAccounts
+        case ResetTrust
         case noSegue
     }
 
@@ -221,6 +219,7 @@ extension SettingsTableViewController: SegueHandlerType {
         case .noAccounts,
              .segueAddNewAccount,
              .sequeShowCredits,
+             .ResetTrust,
              .segueExtraKeys:
             guard let destination = segue.destination as? BaseViewController else {
                 return
@@ -243,6 +242,45 @@ extension SettingsTableViewController: SegueHandlerType {
 
 // MARK: - Private
 extension SettingsTableViewController {
+    private func handleResetAllIdentity() {
+        let title = NSLocalizedString("Reset All Identities", comment: "Settings confirm to reset all identity title alert")
+        let message = NSLocalizedString("This action will reset all your identities. \n Are you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
+
+        guard let pepAlertViewController =
+            PEPAlertViewController.fromStoryboard(title: title,
+                                                  message: message,
+                                                  paintPEPInTitle: true) else {
+                                                    Log.shared.errorAndCrash("Fail to init PEPAlertViewController")
+                                                    return
+        }
+
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
+        let cancelAction = PEPUIAlertAction(title: cancelTitle,
+                                            style: .pEpGray) { _ in
+                                                pepAlertViewController.dismiss(animated: true,
+                                                                               completion: nil)
+        }
+        pepAlertViewController.add(action: cancelAction)
+        
+        let resetTitle = NSLocalizedString("Reset All", comment: "Reset account identity button title")
+        let resetAction = PEPUIAlertAction(title: resetTitle,
+                                           style: .pEpRed,
+                                           handler: { [weak self] _ in
+                                            pepAlertViewController.dismiss(animated: true,
+                                                                           completion: nil)
+                                            self?.viewModel.handleResetAllIdentities()
+        })
+        pepAlertViewController.add(action: resetAction)
+
+        pepAlertViewController.modalPresentationStyle = .overFullScreen
+        pepAlertViewController.modalTransitionStyle = .crossDissolve
+
+        DispatchQueue.main.async { [weak self] in
+            self?.present(pepAlertViewController, animated: true)
+        }
+    }
+
+
     private func updateModel() { //!!!: looks wrong. Is named updateModel but does not.
         //reload data in view model
         tableView.reloadData()
@@ -294,8 +332,12 @@ extension SettingsTableViewController {
             }
             me.deleteRowAt(indexPath)
             me.tableView.beginUpdates()
-            me.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
-            me.tableView.endUpdates()}
+            if let pEpSyncSection = self?.viewModel.pEpSyncSection() {
+                me.tableView.reloadSections([pEpSyncSection], with: UITableView.RowAnimation.none)
+            }
+            me.tableView.deleteRows(at: [indexPath], with: .fade)
+            me.tableView.endUpdates()
+        }
         showAlert(title, comment, buttonTitle, deleteAction, indexPath)
     }
 
@@ -351,6 +393,19 @@ extension SettingsTableViewController {
 // MARK: - SettingsViewModelDelegate
 
 extension SettingsTableViewController: SettingsViewModelDelegate {
+    func showLoadingView() {
+        DispatchQueue.main.async { [weak self] in
+            UIApplication.shared.beginIgnoringInteractionEvents()
+            self?.activityIndicatorView = self?.showActivityIndicator()
+        }
+    }
+    
+    func hideLoadingView() {
+        DispatchQueue.main.async { [weak self] in
+            UIApplication.shared.endIgnoringInteractionEvents()
+            self?.activityIndicatorView?.removeFromSuperview()
+        }
+    }
 
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
         UIUtils.showAlertWithOnlyPositiveButton(title: "Extra Keys Editable",

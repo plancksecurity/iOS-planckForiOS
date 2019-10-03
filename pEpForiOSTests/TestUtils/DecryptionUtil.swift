@@ -15,62 +15,6 @@ import CoreData
 
 class DecryptionUtil {
 
-    public static func decryptTheMessage(
-        testCase: XCTestCase,
-        backgroundQueue: OperationQueue,
-        cdOwnAccount: CdAccount,
-        fileName: String,
-        checkCdMessage: ((CdMessage) -> ())? = nil) -> CdMessage? {
-        guard let cdMessage = TestUtil.cdMessage(
-            fileName: fileName,
-            cdOwnAccount: cdOwnAccount) else {
-                XCTFail()
-                return nil
-        }
-
-        if let theChecker = checkCdMessage {
-            theChecker(cdMessage)
-        }
-
-        let expDecrypted = testCase.expectation(description: "expDecrypted")
-        let errorContainer = ErrorContainer()
-        let decryptOperation = DecryptMessagesOperation(
-            parentName: #function, errorContainer: errorContainer)
-        decryptOperation.completionBlock = {
-            decryptOperation.completionBlock = nil
-            expDecrypted.fulfill()
-        }
-        let decryptDelegate = DecryptionAttemptCounterDelegate()
-        decryptOperation.delegate = decryptDelegate
-        backgroundQueue.addOperation(decryptOperation)
-
-        testCase.waitForExpectations(timeout: TestUtil.waitTime) { error in
-            XCTAssertNil(error)
-        }
-
-        XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
-        Stack.shared.mainContext.refreshAllObjects()
-
-        guard
-            let cdRecipients = cdMessage.to?.array as? [CdIdentity],
-            cdRecipients.count == 1
-            else {
-                XCTFail()
-                return cdMessage
-        }
-        let recipientIdentity = MessageModelObjectUtils.getIdentity(fromCdIdentity: cdRecipients[0])
-        XCTAssertTrue(recipientIdentity.isMySelf)
-
-        guard let from = cdMessage.from else {
-            XCTFail()
-            return cdMessage
-        }
-        let theSenderIdentity = MessageModelObjectUtils.getIdentity(fromCdIdentity: from)
-        XCTAssertFalse(theSenderIdentity.isMySelf)
-
-        return cdMessage
-    }
-
     public static func createLocalAccount(ownUserName: String,
                                           ownUserID: String,
                                           ownEmailAddress: String,

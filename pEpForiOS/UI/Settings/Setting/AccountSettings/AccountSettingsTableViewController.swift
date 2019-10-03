@@ -16,6 +16,8 @@ UIPickerViewDataSource, UITextFieldDelegate {
     @IBOutlet weak var emailTextfield: UITextField!
     @IBOutlet weak var usernameTextfield: UITextField!
     @IBOutlet weak var passwordTextfield: UITextField!
+    @IBOutlet weak var resetIdentityLabel: UILabel!
+
 
     @IBOutlet weak var imapServerTextfield: UITextField!
     @IBOutlet weak var imapPortTextfield: UITextField!
@@ -28,7 +30,8 @@ UIPickerViewDataSource, UITextFieldDelegate {
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var doneButton: UIBarButtonItem!
-
+    @IBOutlet weak var pEpSyncToggle: UISwitch!
+    @IBOutlet weak var resetIdentityCell: UITableViewCell!
 
     private let spinner: UIActivityIndicatorView = {
         let createe = UIActivityIndicatorView()
@@ -51,11 +54,15 @@ UIPickerViewDataSource, UITextFieldDelegate {
      should trigger the reauthorization.
      */
     var oauth2ReauthIndexPath: IndexPath?
+    private var resetIdentityIndexPath: IndexPath?
+
+    private weak var activityIndicatorView: UIActivityIndicatorView?
 
      override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
         if let vm = viewModel {
+            vm.verifiableDelegate = self
             vm.delegate = self
         }
         passwordTextfield.delegate = self
@@ -63,6 +70,8 @@ UIPickerViewDataSource, UITextFieldDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.navigationController?.setToolbarHidden(true, animated: false)
+
         guard let isIphone = splitViewController?.isCollapsed else {
             return
         }
@@ -78,6 +87,12 @@ UIPickerViewDataSource, UITextFieldDelegate {
         self.emailTextfield.text = viewModel?.email
         self.usernameTextfield.text = viewModel?.loginName
         self.passwordTextfield.text = "JustAPassword"
+        resetIdentityLabel.text = NSLocalizedString("Reset This Identity", comment: "Account settings reset this identity")
+        resetIdentityLabel.textColor = .pEpRed
+
+        if let viewModel = viewModel {
+            pEpSyncToggle.isOn = viewModel.pEpSync
+        }
 
         securityPicker = UIPickerView(frame: CGRect(x: 0, y: 50, width: 100, height: 150))
         securityPicker?.delegate = self
@@ -213,33 +228,89 @@ UIPickerViewDataSource, UITextFieldDelegate {
         if (viewModel?.isOAuth2 ?? false) && cell == passwordTableViewCell {
             oauth2ReauthIndexPath = indexPath
             return oauth2TableViewCell
-        } else {
-            return cell
         }
+
+        if cell == resetIdentityCell {
+            resetIdentityIndexPath = indexPath
+        }
+
+        return cell
     }
 
     // MARK: - UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let ind = oauth2ReauthIndexPath, ind == indexPath, let address = viewModel?.email {
-            oauth2ActivityIndicator.startAnimating()
-
-            // don't accept errors form other places
-            shouldHandleErrors = false
-
-            oauthViewModel.delegate = self
-            oauthViewModel.authorize(
-                authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
-                emailAddress: address,
-                viewController: self)
+        switch indexPath {
+        case oauth2ReauthIndexPath:
+            handleOauth2Reauth()
+        case resetIdentityIndexPath:
+            handleResetIdentity()
+        default:
+            break
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     // MARK: - Actions
     
-    fileprivate func popViewController() {
+    private func popViewController() {
          //!!!: see IOS-1608 this is a patch as we have 2 navigationControllers and need to pop to the previous view.
             (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
+    }
+
+    private func handleOauth2Reauth() {
+        guard let address = viewModel?.email else {
+            return
+        }
+        oauth2ActivityIndicator.startAnimating()
+
+        // don't accept errors form other places
+        shouldHandleErrors = false
+
+        oauthViewModel.delegate = self
+        oauthViewModel.authorize(
+            authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
+            emailAddress: address,
+            viewController: self)
+    }
+
+    private func handleResetIdentity() {
+        let title = NSLocalizedString("Reset", comment: "Account settings confirm to reset identity title alert")
+        let message = NSLocalizedString("This action will reset your identity. \n Are you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
+
+        guard let pepAlertViewController =
+            PEPAlertViewController.fromStoryboard(title: title,
+                                                  message: message,
+                                                  paintPEPInTitle: true) else {
+                                                    Log.shared.errorAndCrash("Fail to init PEPAlertViewController")
+                                                    return
+        }
+
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
+        let cancelAction = PEPUIAlertAction(title: cancelTitle,
+                                            style: .pEpGray,
+                                            handler: { _ in
+                                                pepAlertViewController.dismiss(animated: true,
+                                                                                completion: nil)
+        })
+        pepAlertViewController.add(action: cancelAction)
+
+        let resetTitle = NSLocalizedString("Reset", comment: "Reset account identity button title")
+        let resetAction = PEPUIAlertAction(title: resetTitle,
+                                           style: .pEpRed,
+                                           handler: { [weak self] _ in
+                                            pepAlertViewController.dismiss(animated: true,
+                                                                           completion: nil)
+                                            self?.viewModel?.handleResetIdentity()
+        })
+        pepAlertViewController.add(action: resetAction)
+
+        pepAlertViewController.modalPresentationStyle = .overFullScreen
+        pepAlertViewController.modalTransitionStyle = .crossDissolve
+
+        DispatchQueue.main.async { [weak self] in
+            self?.present(pepAlertViewController, animated: true)
+        }
     }
 
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
@@ -272,10 +343,12 @@ UIPickerViewDataSource, UITextFieldDelegate {
             showSpinnerAndDisableUI()
             viewModel?.update(loginName: validated.loginName, name: validated.accountName,
                               password: password, imap: imap, smtp: smtp)
-
         } catch {
             informUser(about: error)
         }
+    }
+    @IBAction func didPressPEPSyncToggle(_ sender: UISwitch) {
+        viewModel?.pEpSync(enable: sender.isOn)
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -398,5 +471,47 @@ extension AccountSettingsTableViewController {
         doneButton.isEnabled = true
         tableView.isUserInteractionEnabled = true
         spinner.stopAnimating()
+    }
+}
+
+
+// MARK: - AccountSettingsViewModelDelegate
+
+extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
+    func undoPEPSyncToggle() {
+
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.pEpSyncToggle.setOn(!me.pEpSyncToggle.isOn, animated: true)
+        }
+    }
+
+    func showErrorAlert(title: String, message: String, buttonTitle: String) {
+        let alert = UIAlertController.pEpAlertController(title: title,
+                                                         message: message,
+                                                         preferredStyle: .alert)
+
+        let okAction = UIAlertAction(title: buttonTitle, style: .cancel, handler: nil)
+        alert.addAction(okAction)
+        DispatchQueue.main.async { [weak self] in
+            self?.present(alert, animated: true)
+        }
+    }
+
+    func showLoadingView() {
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicatorView = self?.showActivityIndicator()
+        }
+    }
+
+    func hideLoadingView() {
+        DispatchQueue.main.async { [weak self] in
+            UIApplication.shared.endIgnoringInteractionEvents()
+            self?.activityIndicatorView?.removeFromSuperview()
+        }
     }
 }

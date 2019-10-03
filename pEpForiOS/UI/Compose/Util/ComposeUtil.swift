@@ -144,61 +144,6 @@ struct ComposeUtil {
         return composeMode == .forward || isInDraftsOrOutbox
     }
 
-    //BUFF: cleanup
-//    // MARK: - Message to send
-//
-//    /// Creates a message from the given ComposeView State
-//    ///
-//    /// - note: Must only be used on the main Session
-//    ///
-//    /// - Parameter state: state to get data from
-//    /// - Returns: new message with data from given state
-//    static public func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
-//        guard let from = state.from, let account = Account.by(address: from.address) else {
-//                Log.shared.errorAndCrash(
-//                    "We have a problem here getting the senders account.")
-//                return nil
-//        }
-//        return messageToSend(withDataFrom: state,
-//                             inAccount: account,
-//                             from: from,
-//                             toRecipients: state.toRecipients,
-//                             ccRecipients: state.ccRecipients,
-//                             bccRecipients: state.bccRecipients)
-//    }
-
-//    /// Creates a message from the given ComposeView State
-//    ///
-//    /// - note: MUST NOT be used on the main Session. For the maion Session, use
-//    ///         messageToSend(withDataFrom:) instead.
-//    ///
-//    /// - Parameter state: state to get data from
-//    /// - Parameter session: session to work on. MUST NOT be the main Session.
-//    /// - Returns: new message with data from given state
-//    static public func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
-//        var message: Message?
-////        session.performAndWait {
-//            guard let from = state.from?.safeForSession(session),
-//                let account = Account.by(address: from.address)?.safeForSession(session) else {
-//                    Log.shared.errorAndCrash(
-//                        "We have a problem here getting the senders account.")
-//                    return nil
-//            }
-////            let toRecipients = Identity.makeSafe(state.toRecipients, forSession: session)
-////            let ccRecipients = Identity.makeSafe(state.ccRecipients, forSession: session)
-////            let bccRecipients = Identity.makeSafe(state.bccRecipients, forSession: session)
-//            message = messageToSend(withDataFrom: state,
-//                                    inAccount: account,
-//                                    from: from,
-//                                    toRecipients: state.toRecipients,
-//                                    ccRecipients: state.ccRecipients,
-//                                    bccRecipients: state.bccRecipients,
-//                                    session: from.session)
-////        }
-//
-//        return message
-//    }
-
     /// Creates a message from the given ComposeView State
     ///
     /// - note: MUST NOT be used on the main Session. For the maion Session, use
@@ -217,11 +162,9 @@ struct ComposeUtil {
                 Log.shared.errorAndCrash("No outbox")
                 return nil
         }
-
         let message = Message.newObject(onSession: session)
-        message.uuid = MessageID.generate()
-        message.parent = outbox.safeForSession(session)
-        message.from = state.from
+        message.parent = outbox
+        message.from = from
         message.replaceTo(with: state.toRecipients)
         message.replaceCc(with: state.ccRecipients)
         message.replaceBcc(with: state.bccRecipients)

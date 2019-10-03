@@ -632,6 +632,10 @@ extension ComposeViewModel {
             handshakeViewController.ratingReEvaluator = evaluator
         }
     }
+
+    func canDoHandshake() -> Bool {
+        return state.canHandshake() || state.userCanToggleProtection()
+    }
 }
 
 // MARK: - Cell-ViewModel Delegates
@@ -678,7 +682,6 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         delegate?.contentChanged(inRowAt: idxPath)
         delegate?.showSuggestions(forRowAt: idxPath)
         suggestionsVM?.updateSuggestion(searchString: newText.cleanAttachments)
-        state.validate()
     }
 }
 

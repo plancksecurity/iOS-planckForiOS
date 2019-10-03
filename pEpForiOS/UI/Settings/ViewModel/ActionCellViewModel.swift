@@ -11,7 +11,7 @@ import pEpIOSToolbox
 
 extension SettingsActionCellViewModel {
     enum ActionCellType {
-        case leaveKeySyncGroup
+        case leaveKeySyncGroup, resetAllIdentities
     }
 }
 
@@ -31,6 +31,9 @@ final class SettingsActionCellViewModel: SettingsActionCellViewModelProtocol {
             case .leaveKeySyncGroup:
                 return NSLocalizedString("Leave Device Group",
                                          comment: "Settings: Cell (button) title for leaving device group")
+            case .resetAllIdentities:
+                return NSLocalizedString("Reset All Identities",
+                                  comment: "Settings: Cell (button) title for reset all identities")
             }
         }
     }
@@ -38,8 +41,8 @@ final class SettingsActionCellViewModel: SettingsActionCellViewModelProtocol {
     var titleColor: UIColor {
         get {
             switch type {
-            case .leaveKeySyncGroup:
-                return .AppleRed
+            case .leaveKeySyncGroup, .resetAllIdentities:
+                return .pEpRed
             }
         }
     }

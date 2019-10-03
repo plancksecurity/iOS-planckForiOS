@@ -18,6 +18,7 @@ extension SettingsCellViewModel {
         case trustedServer
         case setOwnKey
         case extraKeys
+        case contacts
     }
 }
 
@@ -29,9 +30,13 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     var account: Account?
     var status: Bool?
 
-    init(account: Account) {
+    private var messageModelService: MessageModelServiceProtocol?
+
+    init(account: Account,
+         messageModelService: MessageModelServiceProtocol) {
         self.type = .account
         self.account = account
+        self.messageModelService = messageModelService
     }
 
     init(type: SettingType) {
@@ -77,6 +82,9 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
                 return NSLocalizedString("Extra Keys",
                                          comment:
                     "Settings: Cell (button) title to view Extra Keys setting")
+            case .contacts:
+                return NSLocalizedString("Reset trust", comment:
+                    "Settings: cell (button) title to view the trust contacts option")
             }
         }
     }
@@ -84,7 +92,7 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     var value : String? {
         get {
             switch type {
-            case .account, .credits, .trustedServer, .setOwnKey, .extraKeys:
+            case .account, .credits, .trustedServer, .setOwnKey, .extraKeys, .contacts:
                 // Have no value.
                 return nil
             case .defaultAccount:
@@ -94,14 +102,27 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     }
 
     func delete() {
-        guard let acc = account else {
-            Log.shared.errorAndCrash(message: "Account lost")
-            return
+        guard let acc = account,
+            let messageModelService = messageModelService else {
+                Log.shared.errorAndCrash(message: "Account lost")
+                return
         }
-
+        
         let oldAddress = acc.user.address
         acc.delete()
         acc.session.commit()
+
+        if Account.all().count == 1,
+            let account = Account.all().first {
+            do {
+                if try !account.isPEPSyncEnabled() {
+                    messageModelService.disableKeySync()
+                    AppSettings.keySyncEnabled = false
+                }
+            } catch {
+                Log.shared.errorAndCrash("Fail to get account pEpSync state")
+            }
+        }
 
         if AppSettings.defaultAccount == oldAddress {
             let newDefaultAccount = Account.all().first

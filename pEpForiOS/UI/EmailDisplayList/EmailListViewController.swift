@@ -36,6 +36,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
 
+    private let refreshController = UIRefreshControl()
+
     var textFilterButton: UIBarButtonItem = UIBarButtonItem(title: "",
                                                             style: .plain,
                                                             target: nil,
@@ -122,6 +124,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                        folderToShow: UnifiedInbox())
         }
 
+        ///the refresh controller is configured and added to the tableview
+        refreshController.tintColor = UIColor.pEpGreen
+        refreshController.addTarget(self, action: #selector(self.refreshView(_:)), for: .valueChanged)
+        tableView.refreshControl = refreshController
+
         title = model?.folderName
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
@@ -173,6 +180,19 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 selector: #selector(didBecomeInactiveUninstallSearchbar10),
                 name: UIApplication.didEnterBackgroundNotification,
                 object: nil)
+        }
+    }
+
+    ///called when the view is scrolled down to
+    @objc private func refreshView(_ sender: Any) {
+        model?.fetchNewMessages() { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(message: "Lost myself")
+                return
+            }
+            DispatchQueue.main.async {
+                me.refreshControl?.endRefreshing()
+            }
         }
     }
 
@@ -233,16 +253,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         guard let splitViewController = self.splitViewController else {
             return
         }
-        if splitViewController.isCollapsed {
-            guard let vm = model else {
-                Log.shared.errorAndCrash("Invalid state")
-                return
-            }
-            let unreadFilterActive = vm.unreadFilterEnabled()
-            if navigationController?.topViewController != self && !unreadFilterActive {
-                navigationController?.popViewController(animated: true)
-            }
-        } else {
+        if !splitViewController.isCollapsed {
             performSegue(withIdentifier: "showNoMessage", sender: nil)
         }
     }
@@ -388,12 +399,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     @IBAction func readToolbar(_ sender:UIBarButtonItem!) {
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            model?.markSelectedAsRead(indexPaths: selectedItems)
             selectedItems.forEach { (ip) in
                 if let cell = self.tableView.cellForRow(at: ip) as? EmailListViewCell {
                     cell.isSeen = true
                 }
             }
+            model?.markSelectedAsRead(indexPaths: selectedItems)
         }
         cancelToolbar(sender)
     }
@@ -510,7 +521,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             guard let viewModel = model?.viewModel(for: indexPath.row) else {
                 return cell
             }
-            theCell.configure(for:viewModel)
+            theCell.configure(for: viewModel)
         } else {
             Log.shared.errorAndCrash("dequeued wrong cell")
         }
@@ -708,6 +719,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListViewModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
+
     func checkIfSplitNeedsUpdate(indexpath: [IndexPath]) {
         guard let isIphone = splitViewController?.isCollapsed, let last = lastSelectedIndexPath else {
             return

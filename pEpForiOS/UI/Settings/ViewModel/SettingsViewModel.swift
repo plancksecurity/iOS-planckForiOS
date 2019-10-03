@@ -8,9 +8,12 @@
 
 import Foundation
 import MessageModel
+import PEPObjCAdapterFramework
 
 protocol SettingsViewModelDelegate: class {
     func showExtraKeyEditabilityStateChangeAlert(newValue: String)
+    func showLoadingView()
+    func hideLoadingView()
 }
 
 final class SettingsViewModel {
@@ -29,12 +32,14 @@ final class SettingsViewModel {
     }
 
     private func generateSections() {
-        sections.append(SettingsSectionViewModel(type: .accounts))
+        sections.append(SettingsSectionViewModel(type: .accounts,
+                                                 messageModelService: messageModelService))
         sections.append(SettingsSectionViewModel(type: .globalSettings))
         sections.append(SettingsSectionViewModel(type: .pgpCompatibilitySettings))
         sections.append(SettingsSectionViewModel(type: .keySync,
                                                  messageModelService: messageModelService,
                                                  keySyncDeviceGroupService: keySyncDeviceGroupService))
+        sections.append(SettingsSectionViewModel(type: .contacts))
         sections.append(SettingsSectionViewModel(type: .companyFeatures))
     }
 
@@ -79,6 +84,26 @@ final class SettingsViewModel {
         get {
             assert(sectionIsValid(section: section), "Section out of range")
             return sections[section]
+        }
+    }
+
+    func pEpSyncSection() -> Int? {
+        return sections.firstIndex {
+            $0.type == .keySync
+        }
+    }
+
+    func handleResetAllIdentities() {
+        delegate?.showLoadingView()
+        Account.resetAllOwnKeys() { [weak self] result in
+            switch result {
+            case .success():
+                self?.delegate?.hideLoadingView()
+            case .failure(let error):
+                self?.delegate?.hideLoadingView()
+                Log.shared.errorAndCrash("Fail to reset all identities, with error %@ ",
+                                         error.localizedDescription)
+            }
         }
     }
 }

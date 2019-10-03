@@ -115,15 +115,16 @@ extension ComposeTableViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-
         //Not so nice. The view(controller) should not know about state and protection.
-        if let view = showPepRating(pEpRating: pEpRating, pEpProtection: pEpProtected) {
-            if vm.state.canHandshake() || vm.state.userCanToggleProtection() {
-                let tapGestureRecognizer = UITapGestureRecognizer(
-                    target: self,
-                    action: #selector(actionHandshakeOrForceUnprotected))
-                view.addGestureRecognizer(tapGestureRecognizer)
+        var view = showNavigationBarSecurityBadge(pEpRating: pEpRating, pEpProtection: pEpProtected)
+        if vm.canDoHandshake() {
+            if view == nil {
+                view = showNavigationBarPEPLogo(pEpRating: pEpRating)
             }
+            let tapGestureRecognizer = UITapGestureRecognizer(
+                target: self,
+                action: #selector(actionHandshakeOrForceUnprotected))
+            view?.addGestureRecognizer(tapGestureRecognizer)
         }
     }
 

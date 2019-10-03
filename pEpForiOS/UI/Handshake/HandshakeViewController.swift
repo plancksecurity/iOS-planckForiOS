@@ -22,8 +22,6 @@ class HandshakeViewController: BaseTableViewController {
 
     private var indexPathRequestingLanguage: IndexPath?
 
-    private let mainPEPSession = PEPSession()
-
     var message: Message? {
         didSet {
             handshakePartnerTableViewCellViewModel = handshakePartnerTableViewCellViewModels()
@@ -64,7 +62,7 @@ extension HandshakeViewController {
     private func languageSelectedAction(_ sender: Any) {
         var languages: [PEPLanguage] = []
         do {
-            languages = try mainPEPSession.languageList()
+            languages = try PEPSession().languageList()
         } catch let err as NSError {
             Log.shared.error("%@", "\(err)")
             languages = []
@@ -96,7 +94,7 @@ extension HandshakeViewController {
 extension HandshakeViewController {
 
     private func updateStatusBadge() {
-        showPepRating(pEpRating: message?.pEpRating())
+        showNavigationBarSecurityBadge(pEpRating: message?.pEpRating())
     }
 
     // MARK: - UI & Layout
@@ -301,7 +299,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
                                   indexPath: IndexPath,
                                   viewModel: HandshakePartnerTableViewCellViewModel?) {
         invokeTrustAction(cell: cell, indexPath: indexPath) {
-            viewModel?.resetOrUndoTrustOrMistrust(pEpSession: mainPEPSession)
+            viewModel?.resetOrUndoTrustOrMistrust()
         }
     }
 
@@ -309,7 +307,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
                       indexPath: IndexPath,
                       viewModel: HandshakePartnerTableViewCellViewModel?) {
         invokeTrustAction(cell: cell, indexPath: indexPath) {
-            viewModel?.confirmTrust(pEpSession: mainPEPSession)
+            viewModel?.confirmTrust()
         }
     }
 
@@ -317,7 +315,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
                    indexPath: IndexPath,
                    viewModel: HandshakePartnerTableViewCellViewModel?) {
         invokeTrustAction(cell: cell, indexPath: indexPath) {
-            viewModel?.denyTrust(pEpSession: mainPEPSession)
+            viewModel?.denyTrust()
         }
     }
 
@@ -330,7 +328,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
     func toggleTrustwordsLength(sender: UIView, cell: HandshakePartnerTableViewCell,
                                 indexPath: IndexPath,
                                 viewModel: HandshakePartnerTableViewCellViewModel?) {
-        viewModel?.toggleTrustwordsLength(pEpSession: mainPEPSession)
+        viewModel?.toggleTrustwordsLength()
         cell.updateTrustwords()
         tableView.updateSize()
     }
@@ -372,7 +370,7 @@ extension HandshakeViewController: SegueHandlerType {
 
     func prepare(destination: LanguageListViewController) {
         do {
-            destination.languages = try mainPEPSession.languageList()
+            destination.languages = try PEPSession().languageList()
         } catch let err as NSError {
             Log.shared.error("%@", "\(err)")
             destination.languages = []
