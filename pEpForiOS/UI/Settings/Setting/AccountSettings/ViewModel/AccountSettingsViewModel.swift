@@ -15,6 +15,8 @@ import PantomimeFramework
 protocol AccountSettingsViewModelDelegate: class {
     func showErrorAlert(title: String, message: String, buttonTitle: String)
     func undoPEPSyncToggle()
+    func showLoadingView()
+    func hideLoadingView()
 }
 
 public class AccountSettingsViewModel {
@@ -136,6 +138,24 @@ public class AccountSettingsViewModel {
         }
         let pEpSyncState = try? account.isPEPSyncEnabled()
         pEpSync = pEpSyncState ?? false
+    }
+
+    func handleResetIdentity() {
+        guard let account = Account.by(address: email) else {
+            Log.shared.errorAndCrash("Account for email not found")
+            return
+        }
+        delegate?.showLoadingView()
+        account.resetKeys() { [weak self] result in
+            switch result {
+            case .success():
+                self?.delegate?.hideLoadingView()
+            case .failure(let error):
+                self?.delegate?.hideLoadingView()
+                Log.shared.errorAndCrash("Fail to reset identity, with error %@ ",
+                                         error.localizedDescription)
+            }
+        }
     }
 
     func update(loginName: String,

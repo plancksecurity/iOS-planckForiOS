@@ -52,18 +52,19 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                                                                 }
         }
     }
-    
-    //!!!: unimplemented stub
+
     func showCurrentlyGroupingDevices() {
-        // When implementing IOS-1712, show the additional (animated) view here.
-        Log.shared.warn("Unimplemented stub. \n\n################################\n################################\nshowCurrentlyGroupingDevices called")
+        //Ignoring for now. We show the syncing animation right away, when the user press Sync button.
+        //So nothing to do here :-/
     }
     
     func cancelHandshake() {
         guard let keySyncWizard = presenter?.presentedViewController as? PEPPageViewController else {
             return
         }
-        keySyncWizard.dismiss()
+        DispatchQueue.main.async {
+            keySyncWizard.dismiss()
+        }
     }
     
     func showSuccessfullyGrouped() {
@@ -71,7 +72,9 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
             return
         }
         let completedViewIndex = pEpSyncWizard.views.count - 1
-        pEpSyncWizard.goTo(index: completedViewIndex)
+        DispatchQueue.main.async { [weak self] in
+            self?.pEpSyncWizard?.goTo(index: completedViewIndex)
+        }
     }
 
     // We must dismiss pEpSyncWizard before presenting pEpSyncWizard error view.
@@ -81,16 +84,18 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
             return
         }
 
-        pEpSyncWizard?.dismiss(animated: true, completion: {
-            KeySyncErrorView.presentKeySyncError(viewController: presentingViewController, error: error) {
-                action in
-                switch action {
-                case .tryAgain:
-                    completion?(.tryAgain)
-                case .notNow:
-                    completion?(.notNow)
+        DispatchQueue.main.async { [weak self] in
+            self?.pEpSyncWizard?.dismiss(animated: true, completion: {
+                KeySyncErrorView.presentKeySyncError(viewController: presentingViewController, error: error) {
+                    action in
+                    switch action {
+                    case .tryAgain:
+                        completion?(.tryAgain)
+                    case .notNow:
+                        completion?(.notNow)
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 }

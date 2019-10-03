@@ -16,7 +16,6 @@ extension LoginViewController: UIScrollViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:UIResponder.keyboardWillHideNotification, object: nil)
     }
 
-    
     @objc func keyboardWillChangeFrame(notification: NSNotification) {
         guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?
             .cgRectValue else {

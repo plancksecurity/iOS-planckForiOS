@@ -15,32 +15,30 @@ extension UIViewController {
     }
 
     @discardableResult func showNavigationBarSecurityBadge(pEpRating: PEPRating?,
-                                          pEpProtection: Bool = true) -> UIView? {
-        if let rating = pEpRating, !rating.isNoColor {
-            if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
-                // according to apple's design guidelines ('Hit Targets'):
-                // https://developer.apple.com/design/tips/
-                let minimumHittestDimension: CGFloat = 44
-                let ImageWidht = self.navigationController!.navigationBar.bounds.height - 10
-                let img2 = img.resized(newWidth: ImageWidht)
-                let badgeView = UIImageView(image: img2)
-                badgeView.contentMode = .center // DON'T stretch the image, leave it at original size
-
-                // try to make the hit area of the icon a minimum of 44x44
-                let desiredHittestDimension: CGFloat = min(
-                    minimumHittestDimension,
-                    navigationController?.navigationBar.frame.size.height ?? minimumHittestDimension)
-                badgeView.bounds.size = CGSize(width: desiredHittestDimension, height: desiredHittestDimension)
-
-                navigationItem.titleView = badgeView
-                badgeView.isUserInteractionEnabled = true
-                return badgeView
-            } else {
-                navigationItem.titleView = nil
-                return nil
-            }
+                                                           pEpProtection: Bool = true) -> UIView? {
+        guard let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) else {
+            // No security badge image should be shown. Make sure to remove previously set img.
+            navigationItem.titleView = nil
+            return nil
         }
-        return nil
+        // according to apple's design guidelines ('Hit Targets'):
+        // https://developer.apple.com/design/tips/
+        let minimumHitTestDimension: CGFloat = 44
+        let ImageWidht = self.navigationController!.navigationBar.bounds.height - 10
+        let img2 = img.resized(newWidth: ImageWidht)
+        let badgeView = UIImageView(image: img2)
+        badgeView.contentMode = .center // DON'T stretch the image, leave it at original size
+
+        // try to make the hit area of the icon a minimum of 44x44
+        let desiredHittestDimension: CGFloat = min(
+            minimumHitTestDimension,
+            navigationController?.navigationBar.frame.size.height ?? minimumHitTestDimension)
+        badgeView.bounds.size = CGSize(width: desiredHittestDimension,
+                                       height: desiredHittestDimension)
+
+        navigationItem.titleView = badgeView
+        badgeView.isUserInteractionEnabled = true
+        return badgeView
     }
 
     func showNavigationBarPEPLogo(pEpRating: PEPRating?) -> UIView? {
@@ -83,6 +81,27 @@ extension UIViewController {
                 self?.present(pageViewController, animated: true, completion: nil)
             }
             return pageViewController
+    }
+
+    @discardableResult
+    /// Show simple UIActivityIndicatorView in midle of current view
+    ///
+    /// - Returns: UIActivityIndicatorView. Useful to hold for removing from super view
+    func showActivityIndicator() -> UIActivityIndicatorView {
+        let activityIndicator = UIActivityIndicatorView(style: .gray)
+        activityIndicator.startAnimating()
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(activityIndicator)
+
+        NSLayoutConstraint(item: activityIndicator, attribute: .centerX, relatedBy: .equal,
+                           toItem: view, attribute: .centerX, multiplier: 1,
+                           constant: 0).isActive = true
+        NSLayoutConstraint(item: activityIndicator, attribute: .centerY, relatedBy: .equal,
+                           toItem: view, attribute: .centerY, multiplier: 1,
+                           constant: 0).isActive = true
+
+        return activityIndicator
     }
 }
 
