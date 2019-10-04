@@ -1027,6 +1027,15 @@
 			name = Row;
 			sourceTree = "<group>";
 		};
+		15033C7223473CD20060A1A2 /* KeySync */ = {
+			isa = PBXGroup;
+			children = (
+				3781653A230EC51100B967E3 /* KeySyncWizzard */,
+				3705096422CF686C00CB73D6 /* KeySyncHandshake */,
+			);
+			path = KeySync;
+			sourceTree = "<group>";
+		};
 		150707DD21006D0200AA213F /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -1646,17 +1655,6 @@
 			path = KeySyncHandshake;
 			sourceTree = "<group>";
 		};
-		371A7156231D234F008B31F3 /* ReusableViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				3781653B230EC59400B967E3 /* PEPPageViewController.swift */,
-				371A7157231D239B008B31F3 /* TutorialViewController.swift */,
-				3705096422CF686C00CB73D6 /* KeySyncHandshake */,
-				37816540230EC66F00B967E3 /* PEPAlert */,
-			);
-			path = ReusableViewControllers;
-			sourceTree = "<group>";
-		};
 		371D641B231D17100036AE62 /* StartUpTutotial */ = {
 			isa = PBXGroup;
 			children = (
@@ -1668,6 +1666,7 @@
 		371D641E231D17A80036AE62 /* TutorialWizard */ = {
 			isa = PBXGroup;
 			children = (
+				371A7157231D239B008B31F3 /* TutorialViewController.swift */,
 				371D641F231D17F80036AE62 /* TutorialWizardViewController.swift */,
 				371A7159231D45D0008B31F3 /* TutorialViewModel.swift */,
 			);
@@ -2022,6 +2021,7 @@
 				15D43998216E695500EB3933 /* AccountPicker */,
 				15265973216234C0006A78DF /* SuggestTableViewController */,
 				150DF6D12052A99800A9DCF7 /* SecureWebViewController */,
+				3781653B230EC59400B967E3 /* PEPPageViewController.swift */,
 				43AAC2281F7A5AED00F435F4 /* BaseTableViewController.swift */,
 				B7DB7FD1221AD332003968DA /* SegueHandlerType.swift */,
 				43AAC2291F7A5AEE00F435F4 /* BaseViewController.swift */,
@@ -2145,7 +2145,9 @@
 		43ED53611CC77F95006AB156 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				371A7156231D234F008B31F3 /* ReusableViewControllers */,
+				B706C0EF1EA8C378006B2F6C /* StoryboardFiles */,
+				37816540230EC66F00B967E3 /* PEPAlert */,
+				15033C7223473CD20060A1A2 /* KeySync */,
 				37033E99231AD8D7008DD6F0 /* KeySyncErrorView */,
 				371D641E231D17A80036AE62 /* TutorialWizard */,
 				15265942216230B0006A78DF /* Compose */,
@@ -2156,14 +2158,12 @@
 				B71EBBB41E55E43100150177 /* Folder */,
 				432E80FA2191AF5100359879 /* Fonts */,
 				438D5A6F1EA77CFC001A37E1 /* Handshake */,
-				3781653A230EC51100B967E3 /* KeySyncWizzard */,
 				B70D32AA205BCCC70094A92A /* Login */,
 				B70D32AF205BCF460094A92A /* ManualLogin */,
 				15BA537A20A1F5CA0090F126 /* MoveToFolder */,
 				15874BA72127493E00A3A4A6 /* Settings */,
 				371D641B231D17100036AE62 /* StartUpTutotial */,
 				003C0FAA20B57C2E0093A987 /* SplitView */,
-				B706C0EF1EA8C378006B2F6C /* StoryboardFiles */,
 				492EF92B20C69547004EAE14 /* Thread */,
 				43AA82511E9B925000ABD5A8 /* Util */,
 			);
