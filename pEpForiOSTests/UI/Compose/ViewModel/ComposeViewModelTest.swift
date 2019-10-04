@@ -155,7 +155,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                didDeleteMessageMustBeCalled: false)
         let countBefore = vm?.state.nonInlinedAttachments.count ?? -1
         let att = attachment()
-        vm?.documentAttachmentPickerViewModel(TestDocumentAttachmentPickerViewModel(), didPick: att)
+        vm?.documentAttachmentPickerViewModel(TestDocumentAttachmentPickerViewModel(session: Session()),
+                                              didPick: att)
         let countAfter = vm?.state.nonInlinedAttachments.count ?? -1
         XCTAssertEqual(countAfter, countBefore + 1)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
@@ -177,7 +178,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                didComposeNewMailMustBeCalled: false,
                didModifyMessageMustBeCalled: false,
                didDeleteMessageMustBeCalled: false)
-        vm?.documentAttachmentPickerViewModelDidCancel(TestDocumentAttachmentPickerViewModel())
+        vm?.documentAttachmentPickerViewModelDidCancel(TestDocumentAttachmentPickerViewModel(session: Session()))
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -213,7 +214,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                                                    attachment: imageAttachment)
         let countBefore = vm?.state.inlinedAttachments.count ?? -1
         vm?.mediaAttachmentPickerProviderViewModel(
-            TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil),
+            TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil, session: Session()),
             didSelect: mediaAtt)
         let countAfter = vm?.state.inlinedAttachments.count ?? -1
         XCTAssertEqual(countAfter, countBefore + 1)
@@ -250,7 +251,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                                                    attachment: imageAttachment)
         let countBefore = vm?.state.nonInlinedAttachments.count ?? -1
         vm?.mediaAttachmentPickerProviderViewModel(
-            TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil),
+            TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil, session: Session()),
             didSelect: mediaAtt)
         let countAfter = vm?.state.nonInlinedAttachments.count ?? -1
         XCTAssertEqual(countAfter, countBefore + 1)
@@ -274,7 +275,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                didModifyMessageMustBeCalled: false,
                didDeleteMessageMustBeCalled: false)
       vm?.mediaAttachmentPickerProviderViewModelDidCancel(
-        TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil))
+        TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil, session: Session()))
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
