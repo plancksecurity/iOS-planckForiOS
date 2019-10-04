@@ -59,9 +59,11 @@ final class SettingsSectionViewModel {
         case .contacts:
             generateContactsCells()
             title = NSLocalizedString("Contacts", comment: "TableView section header")
+            footer = NSLocalizedString("Permorms a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.",
+                                       comment: "TableView Contacts section footer")
         case .companyFeatures:
             generateExtaKeysCells()
-            title = NSLocalizedString("Company Features", comment: "Tableview section header")
+            title = NSLocalizedString("Enterprise Features", comment: "Tableview section header")
         }
     }
 
@@ -122,7 +124,9 @@ extension SettingsSectionViewModel {
     }
 
     private func generateContactsCells() {
-        cells.append(SettingsCellViewModel(type: .contacts))
+        cells.append(SettingsActionCellViewModel(type: .resetTrust))
+
+         //SettingsCellViewModel(type: .contacts))
     }
 }
 

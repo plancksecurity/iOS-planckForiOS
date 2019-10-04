@@ -207,10 +207,9 @@ UIPickerViewDataSource, UITextFieldDelegate {
         _ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return viewModel?[section]
     }
-    
-    override func tableView(
-        _ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return viewModel?.footerFor(section: section)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

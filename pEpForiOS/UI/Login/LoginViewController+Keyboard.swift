@@ -21,7 +21,6 @@ extension LoginViewController {
                                                object: nil)
     }
 
-    
     @objc func adjustForKeyboard(notification: NSNotification) {
         fieldsContainerCenterConstraint.constant = viewNewCenter(notification: notification)
 
