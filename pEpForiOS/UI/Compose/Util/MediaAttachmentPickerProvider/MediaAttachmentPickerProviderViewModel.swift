@@ -35,10 +35,13 @@ class MediaAttachmentPickerProviderViewModel {
                                                            qos: .userInitiated)
     private var numVideosSelected = 0
     private let mimeTypeUtils = MimeTypeUtils()
+    let session: Session
     weak public var resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?
 
-    public init(resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?) {
+    public init(resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?,
+                session: Session) {
         self.resultDelegate = resultDelegate
+        self.session = session
     }
 
     public func handleDidFinishPickingMedia(info: [UIImagePickerController.InfoKey: Any]) {
@@ -63,16 +66,15 @@ class MediaAttachmentPickerProviderViewModel {
                 Log.shared.errorAndCrash("No Data")
                 return
         }
-        let privateSession = Session()
         var attachment: Attachment!
-        privateSession.performAndWait {[weak self] in
+        session.performAndWait {[weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
             attachment = me.createAttachment(forAssetWithUrl: url,
                                              image: image,
-                                             session: privateSession)
+                                             session: me.session)
 
             if attachment.data == nil {
                 do {
@@ -96,14 +98,14 @@ class MediaAttachmentPickerProviderViewModel {
                 }
             }
             group.notify(queue: .main) { [weak self] in
-                privateSession.performAndWait {
-                    attachment.data = data
-                }
-
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
                     return
                 }
+                me.session.performAndWait {
+                    attachment.data = data
+                }
+
                 let result = MediaAttachment(type: .image, attachment: attachment)
                 me.resultDelegate?.mediaAttachmentPickerProviderViewModel(me, didSelect: result)
             }
@@ -115,9 +117,7 @@ class MediaAttachmentPickerProviderViewModel {
             Log.shared.errorAndCrash("No URL")
             return
         }
-
-        let privateSession = Session()
-        createAttachment(forResource: url, session: privateSession) {[weak self] (attachment)  in
+        createAttachment(forResource: url, session: session) {[weak self] (attachment)  in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
@@ -150,10 +150,10 @@ class MediaAttachmentPickerProviderViewModel {
             let filename = me.fileName(forVideoAt: resourceUrl)
             session.perform {
                 let attachment = Attachment(data: resourceData,
-                                             mimeType: mimeType,
-                                             fileName: filename,
-                                             contentDisposition: .attachment,
-                                             session: session)
+                                            mimeType: mimeType,
+                                            fileName: filename,
+                                            contentDisposition: .attachment,
+                                            session: session)
                 completion(attachment)
             }
         }
@@ -173,7 +173,6 @@ class MediaAttachmentPickerProviderViewModel {
                                   image: UIImage,
                                   session: Session) -> Attachment {
         let mimeType = MimeTypeUtils.mimeType(fromURL: assetUrl)
-        let privateSession = Session()
         return Attachment.createFromAsset(mimeType: mimeType,
                                           assetUrl: assetUrl,
                                           image: image,
