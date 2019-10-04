@@ -75,14 +75,26 @@ class ResetTrustViewModel {
         }
     }
 
+    func numberOfSections() -> Int {
+        return identityQueryResult.sections!.count
+    }
+
+    func titleForSections(index: Int) -> String {
+        return identityQueryResult.sections![index].indexTitle!
+    }
+
+    func numberOfRowsIn(section: Int) -> Int {
+        return identityQueryResult.sections![section].numberOfObjects
+    }
+
     func nameFor(indexPath: IndexPath) -> String {
-        let id = identityQueryResult[indexPath.row]
-        return id.userNameOrAddress
+        let id = identityQueryResult.sections![indexPath.section].objects![indexPath.row] as? CdIdentity
+        return id!.identity()!.userNameOrAddress
     }
 
     func detailFor(indexPath: IndexPath) -> String {
-        let id = identityQueryResult[indexPath.row]
-        return id.address
+        let id = identityQueryResult.sections![indexPath.section].objects![indexPath.row] as? CdIdentity
+        return id!.identity()!.address
     }
 
     public func removeSearch() {

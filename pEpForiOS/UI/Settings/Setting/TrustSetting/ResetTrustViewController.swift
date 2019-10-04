@@ -99,8 +99,16 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
 
 extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
 
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return model.numberOfSections()
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return model.titleForSections(index: section)
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return model.numberOfRowsPerSection(section: section)
+        return model.numberOfRowsIn(section: section)// numberOfRowsPerSection(section: section)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
