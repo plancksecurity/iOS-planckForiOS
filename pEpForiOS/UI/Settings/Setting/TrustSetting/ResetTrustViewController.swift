@@ -104,11 +104,14 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId)
-        cell?.textLabel?.text = model.nameFor(indexPath: indexPath)
-        cell?.detailTextLabel?.text = model.detailFor(indexPath: indexPath)
-        cell?.detailTextLabel?.textColor = UIColor.lightGray
-        return cell ?? UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId) else {
+            Log.shared.errorAndCrash(message: "cell imposible to get")
+            return UITableViewCell()
+        }
+        cell.textLabel?.text = model.nameFor(indexPath: indexPath)
+        cell.detailTextLabel?.text = model.detailFor(indexPath: indexPath)
+        cell.detailTextLabel?.textColor = UIColor.lightGray
+        return cell
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
