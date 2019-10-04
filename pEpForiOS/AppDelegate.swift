@@ -76,7 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals all PEPSession users to stop using a session as soon as possible.
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
-    private func gracefullyShutdownServices() { //BUFF: must go change
+    private func gracefullyShutdownServices() { //BUFF: must go away
         guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
             else {
                 Log.shared.error("Will not start background sync, pending %d",

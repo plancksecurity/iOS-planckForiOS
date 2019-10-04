@@ -138,26 +138,6 @@ class TestUtil {
     }
 
     /**
-     Recursively removes some (not so important) keys from dictionaries
-     so they don't interfere with `isEqual`.
-     */
-    static func removeUnneededKeysForComparison(
-        _ keys: [String], fromMail: PEPMessageDict) -> PEPMessageDict {
-        var m: [String: AnyObject] = fromMail
-        for k in keys {
-            m.removeValue(forKey: k)
-        }
-        let keysToCheckRecursively = m.keys
-        for k in keysToCheckRecursively {
-            let value = m[k]
-            if let dict = value as? PEPMessageDict {
-                m[k] = removeUnneededKeysForComparison(keys, fromMail: dict) as AnyObject?
-            }
-        }
-        return m
-    }
-
-    /**
      Dumps some diff between two NSDirectories to the console.
      */
     static func diffDictionaries(_ dict1: NSDictionary, dict2: NSDictionary) {

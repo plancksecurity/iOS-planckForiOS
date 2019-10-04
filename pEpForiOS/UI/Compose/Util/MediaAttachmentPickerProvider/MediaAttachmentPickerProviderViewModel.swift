@@ -112,7 +112,7 @@ class MediaAttachmentPickerProviderViewModel {
         }
     }
 
-    private func createMovieAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) { //BUFF: probably needs private session too
+    private func createMovieAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) { 
         guard let url = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
             Log.shared.errorAndCrash("No URL")
             return

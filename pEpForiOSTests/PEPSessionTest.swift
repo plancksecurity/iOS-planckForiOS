@@ -79,31 +79,24 @@ class PEPSessionTest: CoreDataDrivenTestBase {
 
         try! session.mySelf(myself)
 
-        let (_, encMsg1) = try! PEPUtils.encrypt(pEpMessage: pEpMessage, forSelf: myself)
-        if let theEncMsg = encMsg1 {
-            // expecting that sensitive data gets hidden (ENGINE-287)
-            XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
-            XCTAssertNotEqual(theEncMsg.references ?? [], references)
-            XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
+        var theEncMsg = try! PEPUtils.encrypt(pEpMessage: pEpMessage, forSelf: myself)
+        // expecting that sensitive data gets hidden (ENGINE-287)
+        XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
+        XCTAssertNotEqual(theEncMsg.references ?? [], references)
+        XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
 
-            tryDecryptMessage(
-                message: theEncMsg, myID:myMessageID, references: references, session: session)
-        } else {
-            XCTFail()
-        }
+        tryDecryptMessage(
+            message: theEncMsg, myID:myMessageID, references: references, session: session)
 
-        let (_, encMsg2) = try! PEPUtils.encrypt(pEpMessage: pEpMessage)
-        if let theEncMsg = encMsg2 {
-            // expecting that message ID gets hidden (ENGINE-288)
-            XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
+        let encMsg2 = try! PEPUtils.encrypt(pEpMessage: pEpMessage)
+        theEncMsg = encMsg2
+        // expecting that message ID gets hidden (ENGINE-288)
+        XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
 
-            XCTAssertNotEqual(theEncMsg.references ?? [], references)
-            XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
-            tryDecryptMessage(
-                message: theEncMsg, myID: myMessageID, references: references, session: session)
-        } else {
-            XCTFail()
-        }
+        XCTAssertNotEqual(theEncMsg.references ?? [], references)
+        XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
+        tryDecryptMessage(
+            message: theEncMsg, myID: myMessageID, references: references, session: session)
     }
 
     func testParseMessageHeapBufferOverflow() {
@@ -141,12 +134,15 @@ class PEPSessionTest: CoreDataDrivenTestBase {
                 return
         }
 
-        let pEpMessage = cdMessage.pEpMessageDict(outgoing: false)
+        let pEpMessage = cdMessage.pEpMessage(outgoing: false)
         let session = PEPSession()
         var keys: NSArray?
-        let pepDecryptedMessage = try! session.decryptMessageDict(
-            pEpMessage.mutableDictionary(), flags: nil, rating: nil, extraKeys: &keys, status: nil)
-        XCTAssertNotNil(pepDecryptedMessage[kPepLongMessage])
+        let pepDecryptedMessage = try! session.decryptMessage(pEpMessage,
+                                                              flags: nil,
+                                                              rating: nil,
+                                                              extraKeys: &keys,
+                                                              status: nil)
+        XCTAssertNotNil(pepDecryptedMessage.longMessage)
     }
 
     // IOS-211
