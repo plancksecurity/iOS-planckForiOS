@@ -116,7 +116,8 @@ class MediaAttachmentPickerProviderViewModel {
             return
         }
 
-        createAttachment(forResource: url) {[weak self] (attachment)  in
+        let privateSession = Session()
+        createAttachment(forResource: url, session: privateSession) {[weak self] (attachment)  in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
@@ -133,6 +134,7 @@ class MediaAttachmentPickerProviderViewModel {
     }
 
     private func createAttachment(forResource resourceUrl: URL,
+                                  session: Session,
                                   completion: @escaping (Attachment?) -> Void) {
         attachmentFileIOQueue.async { [weak self] in
             guard let me = self else {
@@ -146,11 +148,12 @@ class MediaAttachmentPickerProviderViewModel {
             }
             let mimeType = MimeTypeUtils.mimeType(fromURL: resourceUrl)
             let filename = me.fileName(forVideoAt: resourceUrl)
-            DispatchQueue.main.async {
-                let attachment =  Attachment(data: resourceData,
+            session.perform {
+                let attachment = Attachment(data: resourceData,
                                              mimeType: mimeType,
                                              fileName: filename,
-                                             contentDisposition: .attachment)
+                                             contentDisposition: .attachment,
+                                             session: session)
                 completion(attachment)
             }
         }
