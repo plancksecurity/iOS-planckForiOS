@@ -24,7 +24,7 @@ class PEPSessionTest: CoreDataDrivenTestBase {
         let folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
         folder.save()
 
-        let uuid = MessageID.generate()
+        let uuid = UUID().uuidString
         let message = Message(uuid: uuid, parentFolder: folder)
         message.shortMessage = "short message"
         message.longMessage = "long message"

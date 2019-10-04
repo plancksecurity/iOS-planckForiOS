@@ -269,7 +269,7 @@
         <!--Tutorial Wizard View Controller-->
         <scene sceneID="90y-KL-RKm">
             <objects>
-                <pageViewController storyboardIdentifier="PEPPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="i7k-e5-hMO" customClass="TutorialWizardViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <pageViewController storyboardIdentifier="TutorialWizardViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="i7k-e5-hMO" customClass="TutorialWizardViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="YgY-Ba-ltR"/>
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YmW-fu-J15" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -426,6 +426,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kLc-9o-Rna" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="588" y="356.67166416791605"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="lYo-ST-D9h">
+            <objects>
+                <pageViewController storyboardIdentifier="PEPPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="Yin-3D-gL9" customClass="PEPPageViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="SJu-ms-UOh"/>
+                </pageViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oiz-Em-VVk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1548" y="356.67166416791605"/>
         </scene>
     </scenes>
     <resources>

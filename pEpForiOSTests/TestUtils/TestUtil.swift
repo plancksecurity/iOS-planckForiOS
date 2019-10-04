@@ -416,15 +416,15 @@ class TestUtil {
                               uid: Int? = nil) -> Message {
         let msg : Message
         if let uid = uid {
-            msg = Message(uuid: MessageID.generate(), uid: uid, parentFolder: folder)
+            msg = Message(uuid: UUID().uuidString, uid: uid, parentFolder: folder)
         } else {
-            msg = Message(uuid: MessageID.generate(), parentFolder: folder)
+            msg = Message(uuid: UUID().uuidString, parentFolder: folder)
         }
         msg.from = from
         msg.replaceTo(with: tos)
         msg.replaceCc(with: ccs)
         msg.replaceBcc(with: bccs)
-        msg.messageID = MessageID.generate()
+        msg.messageID = UUID().uuidString
         msg.shortMessage = shortMessage
         msg.longMessage = longMessage
         msg.longMessageFormatted = longMessageFormatted
