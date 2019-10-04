@@ -514,11 +514,11 @@ extension EmailViewController {
         Log.shared.info("cell for %d:%d", indexPath.section, indexPath.row)
         guard
             let row = tableData?.getRow(at: indexPath.row),
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: row.identifier,
-                for: indexPath) as? MessageCell,
-            let m = message else {
-                    return UITableViewCell()
+            let cell = tableView.dequeueReusableCell(withIdentifier: row.identifier,
+                                                     for: indexPath) as? MessageCell,
+            let m = message
+            else {
+                return UITableViewCell()
         }
         if let contentCell = cell as? MessageContentCell {
             setup(contentCell: contentCell, rowData: row)
