@@ -83,6 +83,11 @@ class ComposeViewModel {
         return body
     }
 
+    /// Private session to use for attachments (and maybe others) that are dangling/invalid until a
+    /// message to send is crafted. (E.g. attachments have message == nil, which is invalid and
+    /// would thus crash if anone commits the main session.
+    private let session = Session()
+
     init(resultDelegate: ComposeViewModelResultDelegate? = nil,
          composeMode: ComposeUtil.ComposeMode? = nil,
          prefilledTo: Identity? = nil,
@@ -367,27 +372,30 @@ extension ComposeViewModel {
 
 extension ComposeViewModel {
     private func removeNonInlinedAttachment(_ removee: Attachment) {
-        guard let section = section(for: .attachments) else {
-            Log.shared.errorAndCrash("Only attachmnets can be removed by the user")
-            return
+        guard
+            let section = section(for: .attachments),
+            let rows = section.rows as? [AttachmentViewModel]
+            else {
+                Log.shared.errorAndCrash("Only attachments can be removed by the user")
+                return
         }
         // Remove from section
         var newAttachmentVMs = [AttachmentViewModel]()
-        for vm in section.rows {
-            guard let aVM = vm as? AttachmentViewModel else {
-                Log.shared.errorAndCrash("Error casting")
-                return
-            }
-            if aVM.attachment != removee {
-                newAttachmentVMs.append(aVM)
+        for vm in rows {
+            vm.attachment.session.performAndWait {
+                if vm.attachment != removee {
+                    newAttachmentVMs.append(vm)
+                }
             }
         }
         section.rows = newAttachmentVMs
         // Remove from state
         var newNonInlinedAttachments = [Attachment]()
         for att in state.nonInlinedAttachments {
-            if att != removee {
-                newNonInlinedAttachments.append(att)
+            att.session.performAndWait {
+                if att != removee {
+                    newNonInlinedAttachments.append(att)
+                }
             }
         }
         state.nonInlinedAttachments = newNonInlinedAttachments
@@ -443,7 +451,7 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
 
 extension ComposeViewModel {
     func documentAttachmentPickerViewModel() -> DocumentAttachmentPickerViewModel {
-        return DocumentAttachmentPickerViewModel(resultDelegate: self)
+        return DocumentAttachmentPickerViewModel(resultDelegate: self, session: session)
     }
 }
 
@@ -463,7 +471,7 @@ extension ComposeViewModel: DocumentAttachmentPickerViewModelResultDelegate {
 
 extension ComposeViewModel {
     func mediaAttachmentPickerProviderViewModel() -> MediaAttachmentPickerProviderViewModel {
-        return MediaAttachmentPickerProviderViewModel(resultDelegate: self)
+        return MediaAttachmentPickerProviderViewModel(resultDelegate: self, session: session)
     }
 
     func mediaAttachmentPickerProviderViewModelDidCancel(
