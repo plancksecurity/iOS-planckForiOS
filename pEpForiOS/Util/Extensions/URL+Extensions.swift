@@ -11,8 +11,8 @@ import Foundation
 extension URL {
     public func fileName(includingExtension incl: Bool = false) -> String {
         if incl {
-            return self.lastPathComponent
+            return lastPathComponent
         }
-        return self.deletingPathExtension().lastPathComponent
+        return deletingPathExtension().lastPathComponent
     }
 }
