@@ -57,10 +57,14 @@ def delete_all_in_current_mailbox(connection):
             print('could not expunge')
 
 def rm_all_mailbox_content(connection, mailbox_name):
-    status, data = connection.select(mailbox_name)
-    if status == 'OK':
-        print('mailbox "{}"'.format(mailbox_name))
-        delete_all_in_current_mailbox(connection)
+    print('trying mailbox "{}"'.format(mailbox_name))
+    try:
+        status, data = connection.select(mailbox_name)
+        if status == 'OK':
+            delete_all_in_current_mailbox(connection)
+    except imaplib.IMAP4.error as error:
+        print('could not select mailbox "{}", or delete from it'.format(mailbox_name))
+        print(error)
 
 def erase_mailboxes(connection):
     traverse_mailboxes(connection, rm_all_mailbox_content)
