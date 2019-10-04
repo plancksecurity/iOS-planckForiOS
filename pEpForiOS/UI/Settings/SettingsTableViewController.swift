@@ -163,9 +163,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 performSegue(withIdentifier: .segueSetOwnKey, sender: self)
             case .extraKeys:
                 performSegue(withIdentifier: .segueExtraKeys, sender: self)
-            case .contacts:
-                performSegue(withIdentifier: .ResetTrust , sender: self)
-                break
             }
         case let vm as SettingsActionCellViewModelProtocol:
             switch vm.type {
@@ -174,6 +171,9 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             case .resetAllIdentities:
                 handleResetAllIdentity()
                 tableView.deselectRow(at: indexPath, animated: true)
+            case .resetTrust:
+                performSegue(withIdentifier: .ResetTrust , sender: self)
+                break
             }
         default:
             // SwitchSettingCellViewModelProtocol will drop here, but nothing to do when selected
