@@ -40,6 +40,8 @@ class ActionCellViewModelTest: XCTestCase {
                                                  comment: "Settings: Cell (button) title for leaving device group"))
             case .resetAllIdentities, .resetTrust:
                 XCTFail()
+            case .resetTrust:
+                XCTFail()
             }
         }
     }
@@ -58,6 +60,8 @@ class ActionCellViewModelTest: XCTestCase {
             case .leaveKeySyncGroup:
                 XCTAssertEqual(actionCellViewModel.titleColor, UIColor.AppleRed)
             case .resetAllIdentities, .resetTrust:
+                XCTFail()
+            case .resetTrust:
                 XCTFail()
             }
         }

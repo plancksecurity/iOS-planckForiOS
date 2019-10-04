@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import CoreData
 @testable import pEpForiOS
 
 extension CdMessage {
@@ -18,20 +19,23 @@ extension CdMessage {
     }
 
     //???: looks like there are redundant search(..) and by(..) methods in MM, App and AppTest target. Double check, merge.
-    public static func search(byUUID uuid: MessageID, includeFakeMessages: Bool) -> [CdMessage] {
-        return by(uuid: uuid, includeFakeMessages: includeFakeMessages)
+    public static func search(byUUID uuid: MessageID,
+                              includeFakeMessages: Bool,
+                              context: NSManagedObjectContext) -> [CdMessage] {
+        return by(uuid: uuid, includeFakeMessages: includeFakeMessages, in: context)
     }
 
-    static func by(uuid: MessageID, includeFakeMessages: Bool) -> [CdMessage] {
+    static func by(uuid: MessageID, includeFakeMessages: Bool, in context: NSManagedObjectContext) -> [CdMessage] {
         if includeFakeMessages {
-            return CdMessage.all(predicate: NSPredicate(format: "%K = %@", CdMessage.AttributeName.uuid, uuid))
+            return CdMessage.all(predicate: NSPredicate(format: "%K = %@", CdMessage.AttributeName.uuid, uuid), in:context)
                 as? [CdMessage] ?? []
         } else {
             return CdMessage.all(predicate: NSPredicate(format: "%K = %@ AND %K != %d",
                                                         CdMessage.AttributeName.uuid,
                                                         uuid,
                                                         CdMessage.AttributeName.uid,
-                                                        Int32(Message.uidFakeResponsivenes)))
+                                                        Int32(Message.uidFakeResponsivenes)),
+                                 in: context)
                 as? [CdMessage] ?? []
         }
     }

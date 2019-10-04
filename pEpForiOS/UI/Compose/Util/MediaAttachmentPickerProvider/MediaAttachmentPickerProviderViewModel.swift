@@ -8,12 +8,23 @@
 
 import MessageModel
 import pEpIOSToolbox
+import Photos
 
 protocol MediaAttachmentPickerProviderViewModelResultDelegate: class {
+
+    /// Called when the user finished selecting media content and retruns the MediaAttchement.
+    ///
+    /// - note: The returned attachment is created on a private Session. No other Session must see
+    ///         it unless it has been connected to a message to avoid saving invalid data.
+    ///
+    /// - Parameters:
+    ///   - vm: sender
+    ///   - mediaAttachment: attachment for media file selected by the user
     func mediaAttachmentPickerProviderViewModel(_ vm: MediaAttachmentPickerProviderViewModel,
                                                 didSelect mediaAttachment:
         MediaAttachmentPickerProviderViewModel.MediaAttachment)
 
+    /// Called when the user decided not to pick any image by clicking `cancel`.
     func mediaAttachmentPickerProviderViewModelDidCancel(
         _ vm: MediaAttachmentPickerProviderViewModel)
 }
@@ -24,10 +35,13 @@ class MediaAttachmentPickerProviderViewModel {
                                                            qos: .userInitiated)
     private var numVideosSelected = 0
     private let mimeTypeUtils = MimeTypeUtils()
+    let session: Session
     weak public var resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?
 
-    public init(resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?) {
+    public init(resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?,
+                session: Session) {
         self.resultDelegate = resultDelegate
+        self.session = session
     }
 
     public func handleDidFinishPickingMedia(info: [UIImagePickerController.InfoKey: Any]) {
@@ -52,19 +66,58 @@ class MediaAttachmentPickerProviderViewModel {
                 Log.shared.errorAndCrash("No Data")
                 return
         }
+        var attachment: Attachment!
+        session.performAndWait {[weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            attachment = me.createAttachment(forAssetWithUrl: url,
+                                             image: image,
+                                             session: me.session)
 
-        let attachment = createAttachment(forAssetWithUrl: url, image: image)
-        let result = MediaAttachment(type: .image, attachment: attachment)
-        resultDelegate?.mediaAttachmentPickerProviderViewModel(self, didSelect: result)
+            if attachment.data == nil {
+                do {
+                    attachment.data = try Data(contentsOf: url)
+
+                } catch let err {
+                    Log.shared.error("%@", "\(err)")
+                }
+            }
+            let group = DispatchGroup()
+            var data = attachment.data
+            if data == nil {
+                let assets = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil)
+                if let theAsset = assets.firstObject {
+                    group.enter()
+                    PHImageManager().requestImageData(for: theAsset, options: nil) {
+                        inData, string, orientation, options in
+                        data = inData
+                        group.leave()
+                    }
+                }
+            }
+            group.notify(queue: .main) { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.session.performAndWait {
+                    attachment.data = data
+                }
+
+                let result = MediaAttachment(type: .image, attachment: attachment)
+                me.resultDelegate?.mediaAttachmentPickerProviderViewModel(me, didSelect: result)
+            }
+        }
     }
 
-    private func createMovieAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) {
+    private func createMovieAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) { //BUFF: probably needs private session too
         guard let url = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
             Log.shared.errorAndCrash("No URL")
             return
         }
-
-        createAttachment(forResource: url) {[weak self] (attachment)  in
+        createAttachment(forResource: url, session: session) {[weak self] (attachment)  in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
@@ -81,6 +134,7 @@ class MediaAttachmentPickerProviderViewModel {
     }
 
     private func createAttachment(forResource resourceUrl: URL,
+                                  session: Session,
                                   completion: @escaping (Attachment?) -> Void) {
         attachmentFileIOQueue.async { [weak self] in
             guard let me = self else {
@@ -94,11 +148,12 @@ class MediaAttachmentPickerProviderViewModel {
             }
             let mimeType = MimeTypeUtils.mimeType(fromURL: resourceUrl)
             let filename = me.fileName(forVideoAt: resourceUrl)
-            DispatchQueue.main.async {
-                let attachment =  Attachment(data: resourceData,
-                                             mimeType: mimeType,
-                                             fileName: filename,
-                                             contentDisposition: .attachment)
+            session.perform {
+                let attachment = Attachment(data: resourceData,
+                                            mimeType: mimeType,
+                                            fileName: filename,
+                                            contentDisposition: .attachment,
+                                            session: session)
                 completion(attachment)
             }
         }
@@ -114,12 +169,15 @@ class MediaAttachmentPickerProviderViewModel {
         return fileName + numDisplay + "." + fileExtension
     }
 
-    private func createAttachment(forAssetWithUrl assetUrl: URL, image: UIImage) -> Attachment {
+    private func createAttachment(forAssetWithUrl assetUrl: URL,
+                                  image: UIImage,
+                                  session: Session) -> Attachment {
         let mimeType = MimeTypeUtils.mimeType(fromURL: assetUrl)
         return Attachment.createFromAsset(mimeType: mimeType,
                                           assetUrl: assetUrl,
                                           image: image,
-                                          contentDisposition: .inline)
+                                          contentDisposition: .inline,
+                                          session: session)
     }
 }
 

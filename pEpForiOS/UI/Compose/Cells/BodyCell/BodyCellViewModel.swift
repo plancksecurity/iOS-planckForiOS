@@ -120,30 +120,46 @@ extension BodyCellViewModel {
             Log.shared.errorAndCrash("No image")
             return
         }
-        attachment.contentDisposition = .inline
-        // Workaround: If the image has a higher resolution than that, UITextView has serious
-        // performance issues (delay typing).
-        guard let scaledImage = image.resized(newWidth: maxTextattachmentWidth / 2, useAlpha: false)
-            else {
-                Log.shared.errorAndCrash("Error resizing")
+        attachment.session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
                 return
-        }
-        let textAttachment = TextAttachment()
-        textAttachment.image = scaledImage
-        textAttachment.attachment = attachment
-        let margin: CGFloat = 10.0
-        textAttachment.bounds = CGRect.rect(withWidth: maxTextattachmentWidth - margin,
-                                            ratioOf: scaledImage.size)
-        let imageString = NSAttributedString(attachment: textAttachment)
+            }
+            attachment.contentDisposition = .inline
+            // Workaround: If the image has a higher resolution than that, UITextView has serious
+            // performance issues (delay typing).
+            guard let scaledImage = image.resized(newWidth: me.maxTextattachmentWidth / 2,
+                                                  useAlpha: false)
+                else {
+                    Log.shared.errorAndCrash("Error resizing")
+                    return
+            }
+            let textAttachment = TextAttachment()
+            textAttachment.image = scaledImage
+            textAttachment.attachment = attachment
+            let margin: CGFloat = 10.0
+            textAttachment.bounds = CGRect.rect(withWidth: me.maxTextattachmentWidth - margin,
+                                                ratioOf: scaledImage.size)
+            let imageString = NSAttributedString(attachment: textAttachment)
 
-        delegate?.insert(text: imageString)
-        inlinedAttachments.append(attachment)
+            me.delegate?.insert(text: imageString)
+            me.inlinedAttachments.append(attachment)
+        }
     }
 
     private func removeInlinedAttachments(_ removees: [Attachment]) {
         guard !removees.isEmpty else { return }
-        inlinedAttachments = inlinedAttachments.filter { !removees.contains($0) } //Delete from message
-        removees.forEach { $0.delete() } //Delete from session
+        inlinedAttachments = inlinedAttachments.filter { //Delete from message
+            let attachment = $0
+            var result = false
+            attachment.session.performAndWait {
+                result = !removees.contains(attachment)
+            }
+            return result
+        }
+        removees.first?.session.perform {
+            removees.forEach { $0.delete() } //Delete from session
+        }
     }
 }
 
