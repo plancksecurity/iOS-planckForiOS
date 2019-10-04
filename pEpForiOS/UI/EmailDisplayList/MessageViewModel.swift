@@ -296,6 +296,7 @@ extension MessageViewModel: Equatable {
 extension MessageViewModel {
 
     private func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> Operation {
+
         let session = Session()
         let safeMsg = message.safeForSession(session)
 
@@ -308,6 +309,7 @@ extension MessageViewModel {
             guard let me = self else {
                 return
             }
+
             session.performAndWait {
                 guard !operation.isCancelled else {
                     return

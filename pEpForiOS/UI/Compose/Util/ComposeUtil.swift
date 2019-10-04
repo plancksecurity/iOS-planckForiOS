@@ -124,9 +124,12 @@ struct ComposeUtil {
             // No om, no initial attachments
             return []
         }
-        let attachments = om.viewableAttachments()
+        let viewAbleAttachments = om.viewableAttachments()
             .filter { $0.contentDisposition == contentDisposition }
-        return attachments
+
+        let privateSession = Session()
+        let result = viewAbleAttachments.map { $0.clone(for: privateSession) }
+        return result
     }
 
     /// Computes whether or not attachments must be taken over in current compose mode
@@ -141,28 +144,6 @@ struct ComposeUtil {
         return composeMode == .forward || isInDraftsOrOutbox
     }
 
-    // MARK: - Message to send
-
-    /// Creates a message from the given ComposeView State
-    ///
-    /// - note: Must only be used on the main Session
-    ///
-    /// - Parameter state: state to get data from
-    /// - Returns: new message with data from given state
-    static public func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
-        guard let from = state.from, let account = Account.by(address: from.address) else {
-                Log.shared.errorAndCrash(
-                    "We have a problem here getting the senders account.")
-                return nil
-        }
-        return messageToSend(withDataFrom: state,
-                             inAccount: account,
-                             from: from,
-                             toRecipients: state.toRecipients,
-                             ccRecipients: state.ccRecipients,
-                             bccRecipients: state.bccRecipients)
-    }
-
     /// Creates a message from the given ComposeView State
     ///
     /// - note: MUST NOT be used on the main Session. For the maion Session, use
@@ -171,49 +152,22 @@ struct ComposeUtil {
     /// - Parameter state: state to get data from
     /// - Parameter session: session to work on. MUST NOT be the main Session.
     /// - Returns: new message with data from given state
-    static public func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState,
-                                     session: Session) -> Message? {
-        var message: Message?
-        session.performAndWait {
-            guard let from = state.from?.safeForSession(session),
-                let account = Account.by(address: from.address)?.safeForSession(session) else {
-                    Log.shared.errorAndCrash(
-                        "We have a problem here getting the senders account.")
-                    return
-            }
-            let toRecipients = Identity.makeSafe(state.toRecipients, forSession: session)
-            let ccRecipients = Identity.makeSafe(state.ccRecipients, forSession: session)
-            let bccRecipients = Identity.makeSafe(state.bccRecipients, forSession: session)
-            message = messageToSend(withDataFrom: state,
-                                    inAccount: account,
-                                    from: from,
-                                    toRecipients: toRecipients,
-                                    ccRecipients: ccRecipients,
-                                    bccRecipients: bccRecipients,
-                                    session: session)
+    static public func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
+        guard
+            let from = state.from,
+            let session = state.from?.session,
+            let account = Account.by(address: from.address)?.safeForSession(session),
+            let outbox = Folder.by(account: account, folderType: .outbox)?.safeForSession(session)
+            else {
+                Log.shared.errorAndCrash("No outbox")
+                return nil
         }
-
-        return message
-    }
-
-    static private func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState,
-                                      inAccount account: Account,
-                                      from: Identity,
-                                      toRecipients: [Identity],
-                                      ccRecipients: [Identity],
-                                      bccRecipients: [Identity],
-                                      session: Session? = nil) -> Message? {
-        guard let outbox = Folder.by(account: account, folderType: .outbox) else {
-            Log.shared.errorAndCrash("No outbox")
-            return nil
-        }
-        let session = session ?? Session.main
         let message = Message.newObject(onSession: session)
         message.parent = outbox
         message.from = from
-        message.replaceTo(with: toRecipients)
-        message.replaceCc(with: ccRecipients)
-        message.replaceBcc(with: bccRecipients)
+        message.replaceTo(with: state.toRecipients)
+        message.replaceCc(with: state.ccRecipients)
+        message.replaceBcc(with: state.bccRecipients)
         message.shortMessage = state.subject
         message.longMessage = state.bodyPlaintext
         message.longMessageFormatted = !state.bodyHtml.isEmpty ? state.bodyHtml : nil
@@ -229,7 +183,6 @@ struct ComposeUtil {
         }
 
         message.imapFlags.seen = imapSeenState(forMessageToSend: message)
-
 
         return message
     }

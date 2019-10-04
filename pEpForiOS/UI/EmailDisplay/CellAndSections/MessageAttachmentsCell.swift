@@ -61,7 +61,8 @@ extension MessageAttachmentsCell: AttachmentsViewDelegate {
 // MARK: - AttachmentsViewHelperDelegate
 
 extension MessageAttachmentsCell: AttachmentsViewHelperDelegate {
-    func didCreate(attachmentsView: UIView?, message: Message) {
+    
+    func didCreate(attachmentsView: UIView?) {
         (delegate as? MessageContentCellDelegate)?.didUpdate(cell: self, height: 0)
     }
 }

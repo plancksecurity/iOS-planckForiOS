@@ -35,11 +35,11 @@ final class SettingsViewModel {
         sections.append(SettingsSectionViewModel(type: .accounts,
                                                  messageModelService: messageModelService))
         sections.append(SettingsSectionViewModel(type: .globalSettings))
-        sections.append(SettingsSectionViewModel(type: .pgpCompatibilitySettings))
         sections.append(SettingsSectionViewModel(type: .keySync,
                                                  messageModelService: messageModelService,
                                                  keySyncDeviceGroupService: keySyncDeviceGroupService))
         sections.append(SettingsSectionViewModel(type: .contacts))
+        sections.append(SettingsSectionViewModel(type: .pgpCompatibilitySettings))
         sections.append(SettingsSectionViewModel(type: .companyFeatures))
     }
 

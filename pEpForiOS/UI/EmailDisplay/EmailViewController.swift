@@ -120,7 +120,6 @@ class EmailViewController: BaseTableViewController {
         toolbarItems?.append(contentsOf: [flexibleSpace,item])
         if !(splitViewController?.isCollapsed ?? true) {
             navigationItem.rightBarButtonItems = toolbarItems
-            toolbarItems = []
         }
 
     }
@@ -515,11 +514,11 @@ extension EmailViewController {
         Log.shared.info("cell for %d:%d", indexPath.section, indexPath.row)
         guard
             let row = tableData?.getRow(at: indexPath.row),
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: row.identifier,
-                for: indexPath) as? MessageCell,
-            let m = message else {
-                    return UITableViewCell()
+            let cell = tableView.dequeueReusableCell(withIdentifier: row.identifier,
+                                                     for: indexPath) as? MessageCell,
+            let m = message
+            else {
+                return UITableViewCell()
         }
         if let contentCell = cell as? MessageContentCell {
             setup(contentCell: contentCell, rowData: row)
@@ -699,6 +698,8 @@ extension EmailViewController: MessageAttachmentDelegate {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            let safeAttachment = attachment.safeForSession(Session.main)
+
             GCD.onMain {
                 defer {
                     if let bState = busyState {
@@ -708,7 +709,6 @@ extension EmailViewController: MessageAttachmentDelegate {
                 guard let url = attachmentOp.fileURL else { //!!!: looks suspicously like retain cycle. attachmentOp <-> completionBlock
                     return
                 }
-                let safeAttachment = attachment.safeForSession(Session.main)
                 me.didCreateLocally(attachment: safeAttachment,
                                        url: url,
                                        cell: cell,
