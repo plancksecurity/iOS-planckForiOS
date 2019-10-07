@@ -620,16 +620,12 @@ extension ComposeViewModel {
         //save somthinng from the state (Attachments, Identitie, ...) when saving the MainSession.
         let session = Session()
         let safeState = state.makeSafe(forSession: session)
-
-        handshakeViewController.session = session
         session.performAndWait {
             guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
                 Log.shared.errorAndCrash("No message")
                 return
             }
             handshakeViewController.message = msg
-            let evaluator = RatingReEvaluator(message: msg)
-            handshakeViewController.ratingReEvaluator = evaluator
         }
     }
 

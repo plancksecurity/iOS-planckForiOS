@@ -613,7 +613,6 @@ extension EmailViewController: SegueHandlerType {
                                                                   height: 0)
             vc.appConfig = appConfig
             vc.message = message
-            vc.ratingReEvaluator = RatingReEvaluator(message: message)
             break
         case .noSegue, .unwindToThread:
             break
