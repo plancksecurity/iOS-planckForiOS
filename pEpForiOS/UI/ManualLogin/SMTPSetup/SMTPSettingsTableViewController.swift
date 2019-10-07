@@ -155,34 +155,6 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     }
 }
 
-// MARK: - AccountVerificationServiceDelegate
-
-extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
-    func verified(account: Account, service: AccountVerificationServiceProtocol,
-                  result: AccountVerificationResult) {
-        if result == .ok {
-            MessageModelUtil.performAndWait {
-                account.save()
-            }
-        }
-        GCD.onMain() {
-            self.isCurrentlyVerifying =  false
-            switch result {
-            case .ok:
-                // unwind back to INBOX or folder list on success
-                self.performSegue(withIdentifier: .backToEmailListSegue, sender: self)
-            case .imapError(let err):
-                UIUtils.show(error: err, inViewController: self)
-            case .smtpError(let err):
-                UIUtils.show(error: err, inViewController: self)
-            case .noImapConnectData, .noSmtpConnectData:
-                let error = LoginViewController.LoginError.noConnectData
-                UIUtils.show(error: error, inViewController: self)
-            }
-        }
-    }
-}
-
 // MARK: - SegueHandlerType
 
 extension SMTPSettingsTableViewController: SegueHandlerType {

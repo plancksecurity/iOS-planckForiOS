@@ -9,7 +9,6 @@
 import UIKit
 
 final class TutorialWizardViewController: PEPPageViewController {
-
     private var viewModel = TutorialWizardViewMode()
     private var tutorialImages = [TutorialViewController.TutorialImage]()
 
@@ -22,7 +21,7 @@ final class TutorialWizardViewController: PEPPageViewController {
         -> TutorialWizardViewController? {
             let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
             guard let tutorialWizard = storyboard.instantiateViewController(
-                withIdentifier: PEPPageViewController.storyboardId) as?
+                withIdentifier: "TutorialWizardViewController") as?
                 TutorialWizardViewController else {
                     Log.shared.errorAndCrash("Fail to instantiateViewController TutorialWizardViewController")
                     return nil

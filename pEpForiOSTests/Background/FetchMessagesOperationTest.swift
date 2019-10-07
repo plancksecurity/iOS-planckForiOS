@@ -14,61 +14,6 @@ import CoreData
 
 class FetchMessagesOperationTest: CoreDataDrivenTestBase {
 
-    // IOS-671 pEp app has two accounts. Someone sends a mail to both
-    // (with both accounts in receipients).
-    // Message must exist twice, once for each account, after fetching mails from server.
-//    func testMailSentToBothPepAccounts() {
-//        // Setup 2 accounts
-//        cdAccount.createRequiredFoldersAndWait(testCase: self)
-//        moc.saveAndLogErrors()
-//
-//        let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
-//        moc.saveAndLogErrors()
-//        cdAccount2.createRequiredFoldersAndWait(testCase: self)
-//        moc.saveAndLogErrors()
-//
-//        guard let id1 = cdAccount.identity,
-//            let id2 = cdAccount2.identity else {
-//                XCTFail("We all loose identity ...")
-//                return
-//        }
-//
-//        // Sync both acocunts and remember what we got before starting the actual test
-//        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
-//        let msgsBefore1 = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)
-//        let msgsBefore2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id2)
-//
-//        // Create mails from cdAccount2 with both accounts in receipients (cdAccount & cdAccount2)
-//        let numMailsToSend = 2
-//        let mailsToSend = try! TestUtil.createOutgoingMails(cdAccount: cdAccount2,
-//                                                            toIdentity: id1,
-//                                                            testCase: self,
-//                                                            numberOfMails: numMailsToSend,
-//                                                            withAttachments: false,
-//                                                            encrypt: false,
-//                                                            context: moc)
-//        XCTAssertEqual(mailsToSend.count, numMailsToSend)
-//
-//        for mail in mailsToSend {
-//            mail.addToTo(id2)
-//            mail.pEpProtected = false // force unencrypted
-//        }
-//        moc.saveAndLogErrors()
-//
-//        // ... and send them.
-//        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self) //BUFF: THIS
-//
-//        // Sync once again to make sure we mirror the servers state (i.e. receive the sent mails)
-//        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
-//
-//        // Now let's see what we got.
-//        let msgsAfter1 = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)
-//        let msgsAfter2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id2)
-//
-//        XCTAssertEqual(msgsAfter1.count, msgsBefore1.count + numMailsToSend)
-//        XCTAssertEqual(msgsAfter2.count, msgsBefore2.count + numMailsToSend)
-//    }
-
     // IOS-615 (Only) the first email in an Yahoo account gets duplicated locally
     // on every sync cycle
     func testMailsNotDuplicated() {
@@ -91,9 +36,13 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
                 return
         }
         syncFoldersOp.addDependency(imapLogin)
-        syncFoldersOp.completionBlock = {
+        syncFoldersOp.completionBlock = { [weak self] in
+            guard let me = self else {
+                pEpForiOS.Log.shared.errorAndCrash("Lost myself")
+                return
+            }
             syncFoldersOp.completionBlock = nil
-            guard let _ = CdFolder.all() as? [CdFolder] else {
+            guard let _ = CdFolder.all(in: me.moc) as? [CdFolder] else {
                 XCTFail("No folders?")
                 return
             }
@@ -104,8 +53,12 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         let createRequiredFoldersOp = CreateRequiredFoldersOperation(parentName: #function,
                                                                      imapSyncData: imapSyncData)
         createRequiredFoldersOp.addDependency(syncFoldersOp)
-        createRequiredFoldersOp.completionBlock = {
-            guard let _ = CdFolder.all() as? [CdFolder] else {
+        createRequiredFoldersOp.completionBlock = { [weak self] in
+            guard let me = self else {
+                pEpForiOS.Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let _ = CdFolder.all(in: me.moc) as? [CdFolder] else {
                 XCTFail("No folders?")
                 return
             }
@@ -128,13 +81,17 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         // fetch messages
         let expMessagesSynced = expectation(description: "expMessagesSynced")
         let fetchOp = FetchMessagesOperation(parentName: #function, imapSyncData: imapSyncData)
-        fetchOp.completionBlock = {
-            guard let _ = CdMessage.all() as? [CdMessage] else {
+        fetchOp.completionBlock = { [weak self] in
+            guard let me = self else {
+                pEpForiOS.Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let _ = CdMessage.all(in: me.moc) as? [CdMessage] else {
                 XCTFail("No messages?")
                 return
             }
             // ... remember count ...
-            msgCountBefore = CdMessage.all()?.count
+            msgCountBefore = CdMessage.all(in: me.moc)?.count
             expMessagesSynced.fulfill()
         }
         queue.addOperation(fetchOp)
@@ -142,12 +99,16 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         // ... and fetch again.
         let expMessagesSynced2 = expectation(description: "expMessagesSynced2")
         let fetch2Op = FetchMessagesOperation(parentName: #function, imapSyncData: imapSyncData)
-        fetch2Op.completionBlock = {
-            guard let _ = CdMessage.all() as? [CdMessage] else {
+        fetch2Op.completionBlock = { [weak self] in
+            guard let me = self else {
+                pEpForiOS.Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let _ = CdMessage.all(in: me.moc) as? [CdMessage] else {
                 XCTFail("No messages?")
                 return
             }
-            let msgCountAfter = CdMessage.all()?.count
+            let msgCountAfter = CdMessage.all(in: me.moc)?.count
             // no mail should no have been dupliccated
             XCTAssertEqual(msgCountBefore, msgCountAfter)
             expMessagesSynced2.fulfill()

@@ -173,7 +173,6 @@
 		15A8B8FC20908D2300D2B0B6 /* Keychain+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A8B8FB20908D2300D2B0B6 /* Keychain+TestUtils.swift */; };
 		15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B2204F1FBF5D6E00CA52BA /* InfoPlist.swift */; };
 		15B220521FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */; };
-		15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */; };
 		15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */; };
 		15BA536E20A095410090F126 /* UnifiedInboxTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BA536D20A095410090F126 /* UnifiedInboxTest.swift */; };
 		15BBBC681FD04DFC00B9DCC8 /* ReportingErrorContainerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BBBC671FD04DFC00B9DCC8 /* ReportingErrorContainerTest.swift */; };
@@ -263,7 +262,6 @@
 		43306EBE1FE125B50045DD00 /* OAuth2Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43306EBD1FE125B50045DD00 /* OAuth2Authorization.swift */; };
 		43306EC21FE129840045DD00 /* OAuth2Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43306EC11FE129840045DD00 /* OAuth2Type.swift */; };
 		4334CF302020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334CF2F2020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift */; };
-		4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4336229D1DC76B8100133B3D /* MessageModelTests.swift */; };
 		433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433BCD941D5388C100DD98EF /* ReplyUtil.swift */; };
 		433E7438225B564400B84CD9 /* Account+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E7437225B564400B84CD9 /* Account+Extension.swift */; };
 		433F2E2A21E3581800E1CA49 /* ENGINE-505_Mail_NullInnerMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = 433F2E2921E3581800E1CA49 /* ENGINE-505_Mail_NullInnerMimeType.txt */; };
@@ -647,7 +645,6 @@
 		15A8B8FB20908D2300D2B0B6 /* Keychain+TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keychain+TestUtils.swift"; sourceTree = "<group>"; };
 		15B2204F1FBF5D6E00CA52BA /* InfoPlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPlist.swift; sourceTree = "<group>"; };
 		15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InfoPlist+pEpStrings.swift"; sourceTree = "<group>"; };
-		15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialUseMailboxesTest.swift; sourceTree = "<group>"; };
 		15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginImapOperationTest.swift; sourceTree = "<group>"; };
 		15BA536D20A095410090F126 /* UnifiedInboxTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedInboxTest.swift; sourceTree = "<group>"; };
 		15BA537B20A1F5F50090F126 /* MoveToAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToAccountViewController.swift; sourceTree = "<group>"; };
@@ -738,7 +735,6 @@
 		43306EBD1FE125B50045DD00 /* OAuth2Authorization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2Authorization.swift; sourceTree = "<group>"; };
 		43306EC11FE129840045DD00 /* OAuth2Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Type.swift; sourceTree = "<group>"; };
 		4334CF2F2020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2Type+LibAccountSettings.swift"; sourceTree = "<group>"; };
-		4336229D1DC76B8100133B3D /* MessageModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModelTests.swift; sourceTree = "<group>"; };
 		433724FC1DA2C2B1005E8DF5 /* pEp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = pEp.entitlements; path = pEpForiOS/Resources/pEp.entitlements; sourceTree = "<group>"; };
 		433BCD941D5388C100DD98EF /* ReplyUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyUtil.swift; sourceTree = "<group>"; };
 		433E7437225B564400B84CD9 /* Account+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Extension.swift"; sourceTree = "<group>"; };
@@ -1031,6 +1027,15 @@
 				0038494B20D2587F008000EA /* PepPictureComposer.swift */,
 			);
 			name = Row;
+			sourceTree = "<group>";
+		};
+		15033C7223473CD20060A1A2 /* KeySync */ = {
+			isa = PBXGroup;
+			children = (
+				3781653A230EC51100B967E3 /* KeySyncWizzard */,
+				3705096422CF686C00CB73D6 /* KeySyncHandshake */,
+			);
+			path = KeySync;
 			sourceTree = "<group>";
 		};
 		150707DD21006D0200AA213F /* UI */ = {
@@ -1652,17 +1657,6 @@
 			path = KeySyncHandshake;
 			sourceTree = "<group>";
 		};
-		371A7156231D234F008B31F3 /* ReusableViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				3781653B230EC59400B967E3 /* PEPPageViewController.swift */,
-				371A7157231D239B008B31F3 /* TutorialViewController.swift */,
-				3705096422CF686C00CB73D6 /* KeySyncHandshake */,
-				37816540230EC66F00B967E3 /* PEPAlert */,
-			);
-			path = ReusableViewControllers;
-			sourceTree = "<group>";
-		};
 		371D641B231D17100036AE62 /* StartUpTutotial */ = {
 			isa = PBXGroup;
 			children = (
@@ -1674,6 +1668,7 @@
 		371D641E231D17A80036AE62 /* TutorialWizard */ = {
 			isa = PBXGroup;
 			children = (
+				371A7157231D239B008B31F3 /* TutorialViewController.swift */,
 				371D641F231D17F80036AE62 /* TutorialWizardViewController.swift */,
 				371A7159231D45D0008B31F3 /* TutorialViewModel.swift */,
 			);
@@ -1955,7 +1950,6 @@
 				151F7202202A06D30057C74D /* Util */,
 				15F82A072006552B0084F9EA /* Tests from MessageModel in Exile due to Apple Bug */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
-				4336229D1DC76B8100133B3D /* MessageModelTests.swift */,
 				438D253B1D4B9E7500BFF7AA /* MimeTests.swift */,
 				43C7B9D01CEC4DDF007A612F /* MiscTests.swift */,
 				430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */,
@@ -1967,7 +1961,6 @@
 				5DEBAA471DE59C3B00FAE12C /* ReplicationServiceTests.swift */,
 				43E74C731E38DE2200A2F7A6 /* ImapFlagsTests.swift */,
 				438281821E891B7E00087343 /* DateTests.swift */,
-				15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */,
 				43F7F0791F6AD44600BDF151 /* HandshakeTests.swift */,
 				431F987E1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift */,
 				1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */,
@@ -2031,6 +2024,7 @@
 				15265973216234C0006A78DF /* SuggestTableViewController */,
 				150DF6D12052A99800A9DCF7 /* SecureWebViewController */,
 				37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */,
+				3781653B230EC59400B967E3 /* PEPPageViewController.swift */,
 				43AAC2281F7A5AED00F435F4 /* BaseTableViewController.swift */,
 				B7DB7FD1221AD332003968DA /* SegueHandlerType.swift */,
 				43AAC2291F7A5AEE00F435F4 /* BaseViewController.swift */,
@@ -2154,7 +2148,9 @@
 		43ED53611CC77F95006AB156 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				371A7156231D234F008B31F3 /* ReusableViewControllers */,
+				B706C0EF1EA8C378006B2F6C /* StoryboardFiles */,
+				37816540230EC66F00B967E3 /* PEPAlert */,
+				15033C7223473CD20060A1A2 /* KeySync */,
 				37033E99231AD8D7008DD6F0 /* KeySyncErrorView */,
 				371D641E231D17A80036AE62 /* TutorialWizard */,
 				15265942216230B0006A78DF /* Compose */,
@@ -2165,14 +2161,12 @@
 				B71EBBB41E55E43100150177 /* Folder */,
 				432E80FA2191AF5100359879 /* Fonts */,
 				438D5A6F1EA77CFC001A37E1 /* Handshake */,
-				3781653A230EC51100B967E3 /* KeySyncWizzard */,
 				B70D32AA205BCCC70094A92A /* Login */,
 				B70D32AF205BCF460094A92A /* ManualLogin */,
 				15BA537A20A1F5CA0090F126 /* MoveToFolder */,
 				15874BA72127493E00A3A4A6 /* Settings */,
 				371D641B231D17100036AE62 /* StartUpTutotial */,
 				003C0FAA20B57C2E0093A987 /* SplitView */,
-				B706C0EF1EA8C378006B2F6C /* StoryboardFiles */,
 				492EF92B20C69547004EAE14 /* Thread */,
 				43AA82511E9B925000ABD5A8 /* Util */,
 			);
@@ -3076,7 +3070,6 @@
 				15A8B8FC20908D2300D2B0B6 /* Keychain+TestUtils.swift in Sources */,
 				0017CD1D2162614400F62F13 /* MoveToFolderCellViewModelTests.swift in Sources */,
 				37816549231035F000B967E3 /* PEPAlertViewModelTest.swift in Sources */,
-				4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */,
 				1526597D21637759006A78DF /* SuggestViewModelTest.swift in Sources */,
 				F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */,
 				15A763D11F72D68000670313 /* KeyChainTest.swift in Sources */,
@@ -3125,7 +3118,6 @@
 				00172F432163AC110079B189 /* SettingsViewModelTest.swift in Sources */,
 				158A6E2F230D53E3006A9ECE /* ExtraKeysSettingViewModelTest.swift in Sources */,
 				438281831E891B7E00087343 /* DateTests.swift in Sources */,
-				15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */,
 				151F71FB202A06760057C74D /* MockBackgrounder.swift in Sources */,
 				43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */,
 				3705096A22D4D83B00CB73D6 /* PEPSessionMoc.swift in Sources */,

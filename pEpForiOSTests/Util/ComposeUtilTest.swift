@@ -485,7 +485,7 @@
 //                "Sorry, I had to crash here. The burn or buy bill would be too negative " +
 //                "returning an Optional ")
 //        }
-//        let createe = Message(uuid: MessageID.generate(), parentFolder: parentFolder)
+//        let createe = Message(uuid: UUID().uuidString, parentFolder: parentFolder)
 //        createe.from = from
 //        createe.replaceTo(with: tos)
 //        createe.replaceCc(with: ccs)

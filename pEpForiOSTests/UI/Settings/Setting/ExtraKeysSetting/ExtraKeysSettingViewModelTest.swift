@@ -58,19 +58,19 @@ class ExtraKeysSettingViewModelTest: CoreDataDrivenTestBase {
     func testStore_validFpr() {
         var numExtraKeysDefined = 1
         createAndSaveExtraKeys(numKeys: numExtraKeysDefined)
-        XCTAssertEqual(ExtraKey.extraKeys.count, numExtraKeysDefined)
+        XCTAssertEqual(ExtraKey.extraKeys().count, numExtraKeysDefined)
 
         let testee = ExtraKeysSettingViewModel(delegate: nil)
         let validFPR = UUID().uuidString
         XCTAssertNoThrow(testee.handleAddButtonPress(fpr: validFPR))
         numExtraKeysDefined += 1
-        XCTAssertEqual(ExtraKey.extraKeys.count, numExtraKeysDefined)
+        XCTAssertEqual(ExtraKey.extraKeys().count, numExtraKeysDefined)
     }
 
     func testStore_invalidFprShowsAlert() {
         let numExtraKeysDefined = 1
         createAndSaveExtraKeys(numKeys: numExtraKeysDefined)
-        XCTAssertEqual(ExtraKey.extraKeys.count, numExtraKeysDefined)
+        XCTAssertEqual(ExtraKey.extraKeys().count, numExtraKeysDefined)
 
         let expAlertShown = expectation(description: "expAlertShown")
         let delegate = TestDelegate(expectationShowFprInvalidAlert: expAlertShown)
@@ -86,13 +86,13 @@ class ExtraKeysSettingViewModelTest: CoreDataDrivenTestBase {
         let numExtraKeysDefined = 1
         createAndSaveExtraKeys(numKeys: numExtraKeysDefined)
         let testee = ExtraKeysSettingViewModel(delegate: nil)
-        XCTAssertEqual(ExtraKey.extraKeys.count, numExtraKeysDefined)
+        XCTAssertEqual(ExtraKey.extraKeys().count, numExtraKeysDefined)
         XCTAssertEqual(testee.numRows, numExtraKeysDefined)
 
         let expectedNumKeysAfterDeletion = numExtraKeysDefined - 1
         let idxOfOnlyFpr = 0
         testee.handleDeleteActionTriggered(for: idxOfOnlyFpr)
-        XCTAssertEqual(ExtraKey.extraKeys.count, expectedNumKeysAfterDeletion)
+        XCTAssertEqual(ExtraKey.extraKeys().count, expectedNumKeysAfterDeletion)
         XCTAssertEqual(testee.numRows, expectedNumKeysAfterDeletion)
 
     }

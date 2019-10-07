@@ -76,7 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals all PEPSession users to stop using a session as soon as possible.
     /// ReplicationService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
-    private func gracefullyShutdownServices() { //BUFF: must go change
+    private func gracefullyShutdownServices() { //BUFF: must go away
         guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
             else {
                 Log.shared.error("Will not start background sync, pending %d",
@@ -179,6 +179,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame
     /// rates. Games should use this method to pause the game.
     func applicationWillResignActive(_ application: UIApplication) {
+        UIApplication.hideStatusBarNetworkActivitySpinner()
+        Session.main.commit()
         shutdownAndPrepareServicesForRestart() //BUFF: this is even called when showing an alert !
     }
 
@@ -188,7 +190,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// If your application supports background execution, this method is called instead of
     /// applicationWillTerminate: when the user quits.
     func applicationDidEnterBackground(_ application: UIApplication) {
+        UIApplication.hideStatusBarNetworkActivitySpinner()
         Log.shared.info("applicationDidEnterBackground")
+        Session.main.commit()
         shouldDestroySession = true
         gracefullyShutdownServices()
     }
@@ -221,6 +225,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
+        UIApplication.hideStatusBarNetworkActivitySpinner()
+        Session.main.commit()
         shouldDestroySession = true
         // Just in case, last chance to clean up. Should not be necessary though.
         cleanupPEPSessionIfNeeded()
@@ -233,7 +239,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Log.shared.error("no networkService")
             return
         }
-        
+
         messageModelService.checkForNewMails() {[unowned self] (numMails: Int?) in
             guard let numMails = numMails else {
                 self.cleanup(andCall: completionHandler, result: .failed)

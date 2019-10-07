@@ -21,7 +21,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
                                                 expectedMediaAttachment: nil,
                                                 expDidCancelCalled: nil)
             as MediaAttachmentPickerProviderViewModelResultDelegate
-        let testeeVM = MediaAttachmentPickerProviderViewModel(resultDelegate: resultDelegate)
+        let testeeVM = MediaAttachmentPickerProviderViewModel(resultDelegate: resultDelegate,
+                                                              session: Session())
         XCTAssertNotNil(testeeVM)
         guard let testeeResultDelegate = testeeVM.resultDelegate else {
             XCTFail()
@@ -121,7 +122,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
             TestResultDelegate(expDidSelectMediaAttachmentCalled: expDidSelectMediaAttachmentCalled,
                                expectedMediaAttachment: expectedMediaAttachment,
                                expDidCancelCalled: expDidCancelCalled)
-        vm = MediaAttachmentPickerProviderViewModel(resultDelegate: resultDelegate)
+        vm = MediaAttachmentPickerProviderViewModel(resultDelegate: resultDelegate,
+                                                    session: Session())
     }
 
     private func infoDict(mediaType: MediaAttachmentPickerProviderViewModel.MediaAttachment.MediaAttachmentType)

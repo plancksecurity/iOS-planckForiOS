@@ -70,7 +70,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         return viewModel[section].title
     }
 
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView,
+                            titleForFooterInSection section: Int) -> String? {
         return viewModel[section].footer
     }
 
@@ -113,14 +114,14 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                    editActionsForRowAt indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         if indexPath.section == 0 {
-            let deleteAction = SwipeAction(style: .destructive,
-                                           title: NSLocalizedString("Delete", comment: "Account delete")) {
-                [weak self] action, indexPath in
-                guard let me = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-                me.showAlertBeforeDelete(indexPath)
+            let deleteAction =
+                SwipeAction(style: .destructive, title: NSLocalizedString("Delete", comment: "Account delete")) {
+                    [weak self] action, indexPath in
+                    guard let me = self else {
+                        Log.shared.lostMySelf()
+                        return
+                    }
+                    me.showAlertBeforeDelete(indexPath)
             }
             return (orientation == .right ? [deleteAction] : nil)
         }
@@ -303,7 +304,8 @@ extension SettingsTableViewController {
     }
 
     private func showAlertBeforeLeavingDeviceGroup(_ indexPath: IndexPath) {
-        let title = NSLocalizedString("Are you sure you want to leave your device group?", comment: "Leave device group confirmation")
+        let title = NSLocalizedString("Are you sure you want to leave your device group?",
+                                      comment: "Leave device group confirmation")
         let comment = NSLocalizedString("leaving device group", comment: "Leave device group confirmation comment")
         let buttonTitle = NSLocalizedString("Leave", comment: "Leave device group button title")
         let leavingAction: (UIAlertAction)-> () = { [weak self] _ in
