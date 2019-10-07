@@ -156,7 +156,7 @@ struct ComposeUtil {
         guard
             let from = state.from,
             let session = state.from?.session,
-            let account = Account.by(address: from.address)?.safeForSession(session),
+            let account = Account.by(address: from.address, in: session)?.safeForSession(session),
             let outbox = Folder.by(account: account, folderType: .outbox)?.safeForSession(session)
             else {
                 Log.shared.errorAndCrash("No outbox")

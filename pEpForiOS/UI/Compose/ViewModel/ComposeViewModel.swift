@@ -619,18 +619,10 @@ extension ComposeViewModel {
         // We MUST use an independent Session here. We do not want the outer world to see it nor to
         //save somthinng from the state (Attachments, Identitie, ...) when saving the MainSession.
         let session = Session()
-//        let safeState = state.makeSafe(forSession: session)
-//        guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState, session: session) else {
-//            Log.shared.errorAndCrash("No message")
-//            return
-//        }
+        let safeState = state.makeSafe(forSession: session)
+
         handshakeViewController.session = session
         session.perform{ [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            let safeState = me.state.makeSafe(forSession: session)
             guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
                 Log.shared.errorAndCrash("No message")
                 return
