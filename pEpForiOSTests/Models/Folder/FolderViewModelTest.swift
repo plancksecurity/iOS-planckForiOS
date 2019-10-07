@@ -101,7 +101,7 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         var accounts = [Account]()
 
         for i in 0..<numberOfAccounts {
-            let account = SecretTestData().createWorkingAccount(number: i)
+            let account = SecretTestData().createWorkingAccount(number: i, context: moc)
             accounts.append(account)
         }
 

@@ -23,7 +23,7 @@ protocol ComposeViewModelStateDelegate: class {
 
 extension ComposeViewModel {
 
-/// Wraps bookholding properties
+    /// Wraps bookholding properties
     class ComposeViewModelState {
         private(set) var initData: InitData?
         private var isValidatedForSending = false {
@@ -113,20 +113,8 @@ extension ComposeViewModel {
             edited = false
         }
 
-        deinit {
-            inlinedAttachments.forEach {
-                if  $0.message == nil {
-                    $0.delete()
-                }
-            }
-            nonInlinedAttachments.forEach {
-                if  $0.message == nil {
-                    $0.delete()
-                }
-            }
-        }
-
-        public func makeSafe(forSession session: Session) -> ComposeViewModelState {
+        public func makeSafe(forSession session: Session,
+                             cloneAttachments: Bool = false) -> ComposeViewModelState {
             let newValue = ComposeViewModelState(initData: initData, delegate: nil)
 
             newValue.toRecipients = Identity.makeSafe(toRecipients, forSession: session)
@@ -135,21 +123,16 @@ extension ComposeViewModel {
             if let from = from {
                 newValue.from = Identity.makeSafe(from, forSession: session)
             }
-            newValue.inlinedAttachments = Attachment.makeSafe(inlinedAttachments,
-                                                              forSession: session)
-            newValue.nonInlinedAttachments = Attachment.makeSafe(nonInlinedAttachments,
-                                                                 forSession: session)
-
-
+            newValue.inlinedAttachments = Attachment.clone(attachmnets: inlinedAttachments,
+                                                           for: session)
+            newValue.nonInlinedAttachments = Attachment.clone(attachmnets: nonInlinedAttachments,
+                                                              for: session)
             newValue.isValidatedForSending = isValidatedForSending
             newValue.pEpProtection = pEpProtection
             newValue.bccWrapped = bccWrapped
             newValue.subject = subject
             newValue.bodyPlaintext = bodyPlaintext
             newValue.bodyHtml = bodyHtml
-
-
-
             newValue.isValidatedForSending = isValidatedForSending
             newValue.rating = rating
             newValue.edited = edited

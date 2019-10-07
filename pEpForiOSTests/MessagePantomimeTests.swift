@@ -94,10 +94,10 @@ class MessagePantomimeTests: CoreDataDrivenTestBase {
         let cdRefs = cdMsg.references?.array as? [CdMessageReference] ?? []
         XCTAssertEqual(cdRefs.count, refs.count + 1)
 
-        let pEpMsgDict = cdMsg.pEpMessageDict()
-        XCTAssertEqual(pEpMsgDict[kPepReferences] as? [String] ?? [], allRefs)
+        let pEpMsg = cdMsg.pEpMessage()
+        XCTAssertEqual(pEpMsg.references as? [String] ?? [], allRefs)
 
-        let cwMsg2 = PEPUtils.pantomime(pEpMessageDict: pEpMsgDict)
+        let cwMsg2 = PEPUtils.pantomime(pEpMessage: pEpMsg)
         XCTAssertEqual(cwMsg2.allReferences() as? [String] ?? [], allRefs)
     }
 }

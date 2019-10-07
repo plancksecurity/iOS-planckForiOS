@@ -8,6 +8,7 @@
 
 import XCTest
 import MessageModel
+import CoreData
 @testable import pEpForiOS
 
 //!!!: move to MM
@@ -18,6 +19,10 @@ extension CdAccount {
      */
     public func allMessages(inFolderOfType type: FolderType,
                             sendFrom from: CdIdentity? = nil) -> [CdMessage] {
+        guard let moc = from?.managedObjectContext else {
+            Log.shared.errorAndCrash("No MOC")
+            return []
+        }
         var predicates = [NSPredicate]()
         let pIsInAccount = NSPredicate(format: "parent.%@ = %@",
                                      CdFolder.RelationshipName.account, self)
@@ -32,7 +37,9 @@ extension CdAccount {
         }
         let finalPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
 
-        guard let messages = CdMessage.all(predicate: finalPredicate) as? [CdMessage] else {
+        guard
+            let messages = CdMessage.all(predicate: finalPredicate, in: moc) as? [CdMessage]
+            else {
             return []
         }
 

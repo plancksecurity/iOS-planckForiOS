@@ -28,9 +28,10 @@ class HandshakeViewController: BaseTableViewController {
         }
     }
 
-    var session: Session?
+    private var session: Session? {
+        return message?.session
+    }
     var handshakePartnerTableViewCellViewModel = [HandshakePartnerTableViewCellViewModel]()
-    var ratingReEvaluator: RatingReEvaluator?
 
     // MARK: - Life Cycle
 
@@ -279,9 +280,14 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         action()
         cell.updateView()
         tableView.updateSize()
-
-        ratingReEvaluator?.delegate = self
-        ratingReEvaluator?.reevaluateRating()
+        guard let msg = message else {
+            Log.shared.errorAndCrash("No message")
+            return
+        }
+        session?.performAndWait {
+            RatingReEvaluator.reevaluate(message: msg)
+        }
+        updateStatusBadge()
 
         // reload cells after that one, to ensure the alternating colors are upheld
         var paths = [IndexPath]()
@@ -331,20 +337,6 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         viewModel?.toggleTrustwordsLength()
         cell.updateTrustwords()
         tableView.updateSize()
-    }
-}
-
-// MARK: - RatingReEvaluatorDelegate
-
-extension HandshakeViewController : RatingReEvaluatorDelegate {
-    func messageReEvaluatorFinishedReEvaluating(message: Message) {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.updateStatusBadge()
-        }
     }
 }
 

@@ -114,7 +114,7 @@ extension FetchNumberOfNewMailsServiceTest {
         // Create new normal mails
         for _ in 0..<numNewNormalMessages {
             let newNormalMail = CdMessage(context: moc) //!!!: replace with TestuTil.createCdMessage after this file has been moved to MM
-            newNormalMail.uuid = MessageID.generateUUID(localPart: "testUnreadMail")
+            newNormalMail.uuid = UUID().uuidString
             newNormalMail.uid = 0
             newNormalMail.parent = cdInbox
             newNormalMail.addToTo(partnerId)
@@ -126,7 +126,7 @@ extension FetchNumberOfNewMailsServiceTest {
         // Create new autoconsumable mails
         for _ in 0..<numNewAutoconsumableMessages {
             let newAutoConsumableMail = CdMessage(context: moc)//!!!: replace with TestuTil.createCdMessage after this file has been moved to MM
-            newAutoConsumableMail.uuid = MessageID.generateUUID(localPart: "testUnreadMail")
+            newAutoConsumableMail.uuid = UUID().uuidString
             newAutoConsumableMail.uid = 0
             newAutoConsumableMail.parent = cdInbox
             newAutoConsumableMail.addToTo(partnerId)

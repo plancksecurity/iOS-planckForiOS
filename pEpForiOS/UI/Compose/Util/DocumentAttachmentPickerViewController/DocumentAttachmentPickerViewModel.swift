@@ -21,10 +21,13 @@ class DocumentAttachmentPickerViewModel {
         "security.pep.DocumentAttachmentPickerViewModel.attachmentFileIOQueue",
                                                            qos: .userInitiated)
     private let mimeUtils = MimeTypeUtils()
+    private let session: Session
     weak public var resultDelegate: DocumentAttachmentPickerViewModelResultDelegate?
 
-    public init(resultDelegate: DocumentAttachmentPickerViewModelResultDelegate? = nil) {
+    public init(resultDelegate: DocumentAttachmentPickerViewModelResultDelegate? = nil,
+                session: Session) {
         self.resultDelegate = resultDelegate
+        self.session = session
     }
 
     public func handleDidPickDocuments(at urls: [URL]) {
@@ -61,6 +64,10 @@ class DocumentAttachmentPickerViewModel {
                                   completion: @escaping (Attachment?) -> Void) {
         let cfUrl = resourceUrl as CFURL
         attachmentFileIOQueue.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
             CFURLStartAccessingSecurityScopedResource(cfUrl)
             defer { CFURLStopAccessingSecurityScopedResource(cfUrl) }
             guard  let resourceData = try? Data(contentsOf: resourceUrl)  else {
@@ -70,12 +77,13 @@ class DocumentAttachmentPickerViewModel {
             }
             let mimeType = MimeTypeUtils.mimeType(fromURL: resourceUrl)
             let filename = resourceUrl.fileName(includingExtension: true)
-            let mainSession = Session.main
-            mainSession.performAndWait {
+
+            me.session.performAndWait {
                 let attachment = Attachment(data: resourceData,
                                             mimeType: mimeType,
                                             fileName: filename,
-                                            contentDisposition: .attachment)
+                                            contentDisposition: .attachment,
+                                            session: me.session)
                 completion(attachment)
             }
         }

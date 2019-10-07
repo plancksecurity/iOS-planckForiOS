@@ -9,7 +9,9 @@
 import MessageModel
 
 class AttachmentViewModel: CellViewModel {
-    public let attachment: Attachment
+    /// - note: Before crafting a message to send, this is a dangling Attachment! (message == nil).
+    ///         Thus it MUST life on a private Session and MUST NOT be saved.
+    let attachment: Attachment
     private lazy var mimeTypeUtils = MimeTypeUtils()
 
     init(attachment: Attachment) {
@@ -20,14 +22,30 @@ class AttachmentViewModel: CellViewModel {
                                                    comment:
         "Displayed attachment filename if unknown")
     public var fileName: String {
-        return attachment.fileName ?? AttachmentViewModel.defaultFileName
+        var result: String? = nil
+        attachment.session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            result = me.attachment.fileName
+        }
+        return result ?? AttachmentViewModel.defaultFileName
     }
 
     public var fileExtension: String {
-        guard let mimeType = attachment.mimeType else {
-            Log.shared.errorAndCrash("No MimeType")
-            return ""
+        var result: String? = nil
+        attachment.session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let mimeType = me.attachment.mimeType else {
+                Log.shared.errorAndCrash("No MimeType")
+                return
+            }
+            result = me.mimeTypeUtils?.fileExtension(fromMimeType: mimeType)
         }
-        return mimeTypeUtils?.fileExtension(fromMimeType: mimeType) ?? ""
+        return result ?? ""
     }
 }
