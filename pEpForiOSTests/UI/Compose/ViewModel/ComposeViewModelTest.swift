@@ -112,7 +112,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     func testSections_accountSelector() {
         let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: false)
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1)
+        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
         secondAccount.save()
         assertSections(forVMIniitaliizedWith: testOriginalMessage,
                        expectBccWrapperSectionExists: true,
@@ -155,7 +155,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                didDeleteMessageMustBeCalled: false)
         let countBefore = vm?.state.nonInlinedAttachments.count ?? -1
         let att = attachment()
-        vm?.documentAttachmentPickerViewModel(TestDocumentAttachmentPickerViewModel(), didPick: att)
+        vm?.documentAttachmentPickerViewModel(TestDocumentAttachmentPickerViewModel(session: Session()),
+                                              didPick: att)
         let countAfter = vm?.state.nonInlinedAttachments.count ?? -1
         XCTAssertEqual(countAfter, countBefore + 1)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
@@ -177,7 +178,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                didComposeNewMailMustBeCalled: false,
                didModifyMessageMustBeCalled: false,
                didDeleteMessageMustBeCalled: false)
-        vm?.documentAttachmentPickerViewModelDidCancel(TestDocumentAttachmentPickerViewModel())
+        vm?.documentAttachmentPickerViewModelDidCancel(TestDocumentAttachmentPickerViewModel(session: Session()))
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -213,7 +214,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                                                    attachment: imageAttachment)
         let countBefore = vm?.state.inlinedAttachments.count ?? -1
         vm?.mediaAttachmentPickerProviderViewModel(
-            TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil),
+            TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil, session: Session()),
             didSelect: mediaAtt)
         let countAfter = vm?.state.inlinedAttachments.count ?? -1
         XCTAssertEqual(countAfter, countBefore + 1)
@@ -250,7 +251,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                                                    attachment: imageAttachment)
         let countBefore = vm?.state.nonInlinedAttachments.count ?? -1
         vm?.mediaAttachmentPickerProviderViewModel(
-            TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil),
+            TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil, session: Session()),
             didSelect: mediaAtt)
         let countAfter = vm?.state.nonInlinedAttachments.count ?? -1
         XCTAssertEqual(countAfter, countBefore + 1)
@@ -274,7 +275,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                didModifyMessageMustBeCalled: false,
                didDeleteMessageMustBeCalled: false)
       vm?.mediaAttachmentPickerProviderViewModelDidCancel(
-        TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil))
+        TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil, session: Session()))
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -446,7 +447,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testAccountCellViewModelAccountChangedTo() {
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1)
+        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
         secondAccount.save()
         assert(contentChangedMustBeCalled: true,
                focusSwitchedMustBeCalled: false,
@@ -686,7 +687,10 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         vm?.handleDeleteActionTriggered()
 
         // THEN
-        let notSavedMessage = Message.by(uid: safeHandShakeMessageUID, folderName: safeHandshakeMessageFolderName, accountAddress: account.user.address)
+        let notSavedMessage = Message.by(uid: safeHandShakeMessageUID,
+                                         folderName: safeHandshakeMessageFolderName,
+                                         accountAddress: account.user.address,
+                                         context: moc)
         XCTAssertNil(notSavedMessage)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -1422,7 +1426,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     private func assertRecipientCellViewModelDidChangeRecipients(
         fieldType type: RecipientCellViewModel.FieldType) {
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1)
+        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
         secondAccount.save()
         let om = draftMessage(bccSet: true, attachmentsSet: false)
         assert(originalMessage: om,

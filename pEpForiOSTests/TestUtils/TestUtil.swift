@@ -12,6 +12,7 @@ import CoreData
 
 @testable import pEpForiOS
 @testable import MessageModel
+import pEpIOSToolbox
 import PEPObjCAdapterFramework
 import PantomimeFramework
 
@@ -137,26 +138,6 @@ class TestUtil {
     }
 
     /**
-     Recursively removes some (not so important) keys from dictionaries
-     so they don't interfere with `isEqual`.
-     */
-    static func removeUnneededKeysForComparison(
-        _ keys: [String], fromMail: PEPMessageDict) -> PEPMessageDict {
-        var m: [String: AnyObject] = fromMail
-        for k in keys {
-            m.removeValue(forKey: k)
-        }
-        let keysToCheckRecursively = m.keys
-        for k in keysToCheckRecursively {
-            let value = m[k]
-            if let dict = value as? PEPMessageDict {
-                m[k] = removeUnneededKeysForComparison(keys, fromMail: dict) as AnyObject?
-            }
-        }
-        return m
-    }
-
-    /**
      Dumps some diff between two NSDirectories to the console.
      */
     static func diffDictionaries(_ dict1: NSDictionary, dict2: NSDictionary) {
@@ -176,9 +157,10 @@ class TestUtil {
         }
     }
 
-    static func checkForExistanceAndUniqueness(uuids: [MessageID]) {
+    static func checkForExistanceAndUniqueness(uuids: [MessageID],
+                                               context: NSManagedObjectContext) {
         for uuid in uuids {
-            if let ms = CdMessage.all(attributes: ["uuid": uuid]) as? [CdMessage] {
+            if let ms = CdMessage.all(attributes: ["uuid": uuid], in: context) as? [CdMessage] {
                 var folder: CdFolder? = nil
                 // check if that message is either unique, or all copies are in different folders
                 for m in ms {
@@ -220,11 +202,11 @@ class TestUtil {
             cdServer.address = "localhost"
             cdServer.port = 2525
         }
-        if let context = cdAccount.managedObjectContext {
-            context.saveAndLogErrors()
-        } else {
-            Record.saveAndWait()
+        guard let context = cdAccount.managedObjectContext else {
+            pEpForiOS.Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
+            return
         }
+        context.saveAndLogErrors()
     }
 
     // MARK: - Sync Loop
@@ -316,8 +298,8 @@ class TestUtil {
         guard let outbox = CdFolder.by(folderType: .outbox,
                                        account: cdAccount,
                                        context: context) else {
-            XCTFail()
-            return []
+                                        XCTFail()
+                                        return []
         }
 
         let from = cdAccount.identity
@@ -414,15 +396,15 @@ class TestUtil {
                               uid: Int? = nil) -> Message {
         let msg : Message
         if let uid = uid {
-            msg = Message(uuid: MessageID.generate(), uid: uid, parentFolder: folder)
+            msg = Message(uuid: UUID().uuidString, uid: uid, parentFolder: folder)
         } else {
-            msg = Message(uuid: MessageID.generate(), parentFolder: folder)
+            msg = Message(uuid: UUID().uuidString, parentFolder: folder)
         }
         msg.from = from
         msg.replaceTo(with: tos)
         msg.replaceCc(with: ccs)
         msg.replaceBcc(with: bccs)
-        msg.messageID = MessageID.generate()
+        msg.messageID = UUID().uuidString
         msg.shortMessage = shortMessage
         msg.longMessage = longMessage
         msg.longMessageFormatted = longMessageFormatted
@@ -536,9 +518,9 @@ class TestUtil {
     /**
      Determines the highest UID of _all_ the messages currently in the DB.
      */
-    static func highestUid() -> Int {
+    static func highestUid(context: NSManagedObjectContext) -> Int {
         var theHighestUid: Int32 = 0
-        if let allCdMessages = CdMessage.all() as? [CdMessage] {
+        if let allCdMessages = CdMessage.all(in: context) as? [CdMessage] {
             for cdMsg in allCdMessages {
                 if cdMsg.uid > theHighestUid {
                     theHighestUid = cdMsg.uid
@@ -551,8 +533,8 @@ class TestUtil {
     /**
      - Returns: `highestUid()` + 1
      */
-    static func nextUid() -> Int {
-        return highestUid() + 1
+    static func nextUid(context: NSManagedObjectContext) -> Int {
+        return highestUid(context: context) + 1
     }
 
     // MARK: - FOLDER
@@ -562,7 +544,11 @@ class TestUtil {
                                       context: NSManagedObjectContext? = nil) {
         let folder = cdFolder(ofType: folderType, in: cdAccount, context: context)
         folder.lastLookedAt = Date(timeInterval: -1, since: Date())
-        Record.saveAndWait()
+        guard let context = cdAccount.managedObjectContext else {
+            pEpForiOS.Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
+            return
+        }
+        context.saveAndLogErrors()
     }
 
     static func cdFolder(ofType type: FolderType,
@@ -585,7 +571,11 @@ class TestUtil {
         for server in cdServers {
             server.automaticallyTrusted = true
         }
-        Record.saveAndWait()
+        guard let context = cdAccount.managedObjectContext else {
+            pEpForiOS.Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
+            return
+        }
+        context.saveAndLogErrors()
     }
 
     // MARK: - ERROR
@@ -637,7 +627,7 @@ class TestUtil {
                 return nil
             }
 
-            Record.saveAndWait()
+            context.saveAndLogErrors()
 
             let cdMySelfIdentity = safeOptId
             XCTAssertNotNil(cdMySelfIdentity)
@@ -667,12 +657,12 @@ class TestUtil {
                                                            account: cdMyAccount,
                                                            messageUpdate: CWMessageUpdate(),
                                                            context: context) else {
-                    XCTFail()
-                    return nil
+                                                            XCTFail()
+                                                            return nil
             }
             XCTAssertEqual(cdMessage.pEpRating, CdMessage.pEpRatingNone)
 
-            guard let cdM = CdMessage.first() else {
+            guard let cdM = CdMessage.first(in: context) else {
                 XCTFail("Expected the one message in the DB that we imported")
                 return nil
             }
@@ -698,12 +688,12 @@ class TestUtil {
         -> (mySelf: Identity, partner: Identity, message: Message)? {
             guard
                 let (mySelfID, partnerID, cdMessage) =
-                cdMessageAndSetUpPepFromMail(emailFilePath: emailFilePath),
-                let mySelf = mySelfID.identity(),
-                let partner = partnerID.identity()
+                cdMessageAndSetUpPepFromMail(emailFilePath: emailFilePath)
                 else {
                     return nil
             }
+            let mySelf = MessageModelObjectUtils.getIdentity(fromCdIdentity: mySelfID)
+            let partner = MessageModelObjectUtils.getIdentity(fromCdIdentity: partnerID)
             let msg = MessageModelObjectUtils.getMessage(fromCdMessage: cdMessage)
             return (mySelf: mySelf, partner: partner, message: msg)
     }

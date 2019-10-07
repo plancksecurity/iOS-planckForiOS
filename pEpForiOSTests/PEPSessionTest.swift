@@ -24,7 +24,7 @@ class PEPSessionTest: CoreDataDrivenTestBase {
         let folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
         folder.save()
 
-        let uuid = MessageID.generate()
+        let uuid = UUID().uuidString
         let message = Message(uuid: uuid, parentFolder: folder)
         message.shortMessage = "short message"
         message.longMessage = "long message"
@@ -36,7 +36,7 @@ class PEPSessionTest: CoreDataDrivenTestBase {
         message.sent = Date()
         message.save()
         let session = PEPSession()
-        guard let first = CdMessage.first() else {
+        guard let first = CdMessage.first(in: moc) else {
             XCTFail("No messages ...")
             return
         }
@@ -79,7 +79,7 @@ class PEPSessionTest: CoreDataDrivenTestBase {
 
         try! session.mySelf(myself)
 
-        let theEncMsg = try! PEPUtils.encrypt(pEpMessage: pEpMessage, forSelf: myself)
+        var theEncMsg = try! PEPUtils.encrypt(pEpMessage: pEpMessage, forSelf: myself)
         // expecting that sensitive data gets hidden (ENGINE-287)
         XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
         XCTAssertNotEqual(theEncMsg.references ?? [], references)
@@ -88,16 +88,14 @@ class PEPSessionTest: CoreDataDrivenTestBase {
         tryDecryptMessage(
             message: theEncMsg, myID:myMessageID, references: references, session: session)
 
-        let theEncMsg2 = try! PEPUtils.encrypt(pEpMessage: pEpMessage)
-        // expecting that message ID gets hidden (ENGINE-288)
-        XCTAssertNotEqual(theEncMsg2.messageID, myMessageID)
+        let encMsg2 = try! PEPUtils.encrypt(pEpMessage: pEpMessage)
+        theEncMsg = encMsg2
+        XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
 
-        XCTAssertNotEqual(theEncMsg2.references ?? [], references)
-        XCTAssertNotEqual(theEncMsg2.shortMessage, mySubject)
-        tryDecryptMessage(message: theEncMsg2,
-                          myID: myMessageID,
-                          references: references,
-                          session: session)
+        XCTAssertNotEqual(theEncMsg.references ?? [], references)
+        XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
+        tryDecryptMessage(
+            message: theEncMsg, myID: myMessageID, references: references, session: session)
     }
 
     func testParseMessageHeapBufferOverflow() {
@@ -135,12 +133,15 @@ class PEPSessionTest: CoreDataDrivenTestBase {
                 return
         }
 
-        let pEpMessage = cdMessage.pEpMessageDict(outgoing: false)
+        let pEpMessage = cdMessage.pEpMessage(outgoing: false)
         let session = PEPSession()
         var keys: NSArray?
-        let pepDecryptedMessage = try! session.decryptMessageDict(
-            pEpMessage.mutableDictionary(), flags: nil, rating: nil, extraKeys: &keys, status: nil)
-        XCTAssertNotNil(pepDecryptedMessage[kPepLongMessage])
+        let pepDecryptedMessage = try! session.decryptMessage(pEpMessage,
+                                                              flags: nil,
+                                                              rating: nil,
+                                                              extraKeys: &keys,
+                                                              status: nil)
+        XCTAssertNotNil(pepDecryptedMessage.longMessage)
     }
 
     // IOS-211

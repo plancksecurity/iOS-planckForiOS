@@ -11,7 +11,7 @@ import pEpIOSToolbox
 
 extension SettingsActionCellViewModel {
     enum ActionCellType {
-        case leaveKeySyncGroup, resetAllIdentities
+        case leaveKeySyncGroup, resetAllIdentities, resetTrust
     }
 }
 
@@ -34,6 +34,9 @@ final class SettingsActionCellViewModel: SettingsActionCellViewModelProtocol {
             case .resetAllIdentities:
                 return NSLocalizedString("Reset All Identities",
                                   comment: "Settings: Cell (button) title for reset all identities")
+            case .resetTrust:
+                return NSLocalizedString("Reset", comment:
+                    "Settings: cell (button) title to view the trust contacts option")
             }
         }
     }
@@ -41,7 +44,7 @@ final class SettingsActionCellViewModel: SettingsActionCellViewModelProtocol {
     var titleColor: UIColor {
         get {
             switch type {
-            case .leaveKeySyncGroup, .resetAllIdentities:
+            default:
                 return .pEpRed
             }
         }

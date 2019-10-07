@@ -264,15 +264,17 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-1785" y="357"/>
+            <point key="canvasLocation" x="-847.20000000000005" y="356.67166416791605"/>
         </scene>
-        <!--Page View Controller-->
+        <!--Tutorial Wizard View Controller-->
         <scene sceneID="90y-KL-RKm">
             <objects>
-                <pageViewController storyboardIdentifier="PEPPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="i7k-e5-hMO" customClass="PEPPageViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="TutorialWizardViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="i7k-e5-hMO" customClass="TutorialWizardViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="YgY-Ba-ltR"/>
+                </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YmW-fu-J15" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2487" y="357"/>
+            <point key="canvasLocation" x="-1548" y="356.67166416791605"/>
         </scene>
         <!--Alert View Controller-->
         <scene sceneID="Xge-Qw-SEe">
@@ -394,7 +396,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W8j-ep-qHS" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="mgg-Oe-QNz"/>
             </objects>
-            <point key="canvasLocation" x="-1066.4000000000001" y="356.67166416791605"/>
+            <point key="canvasLocation" x="-127.2" y="356.67166416791605"/>
         </scene>
         <!--Tutorial View Controller-->
         <scene sceneID="wc0-cd-Qeh">
@@ -423,52 +425,17 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kLc-9o-Rna" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-350" y="357"/>
+            <point key="canvasLocation" x="588" y="356.67166416791605"/>
         </scene>
-        <!--Tutorial Wizard View Controller-->
-        <scene sceneID="bwp-Ef-gtp">
+        <!--Page View Controller-->
+        <scene sceneID="lYo-ST-D9h">
             <objects>
-                <viewController storyboardIdentifier="TutorialWizardViewController" id="Smc-T2-8ea" customClass="TutorialWizardViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="OJU-yg-9Hf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Xe-2b-3bV">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
-                                <subviews>
-                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uUU-vf-eyB">
-                                        <rect key="frame" x="333" y="20" width="30" height="44"/>
-                                        <state key="normal" title="Skip"/>
-                                        <connections>
-                                            <action selector="didPress:" destination="Smc-T2-8ea" eventType="touchUpInside" id="Lvc-yb-q8O"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="uUU-vf-eyB" firstAttribute="top" secondItem="1Xe-2b-3bV" secondAttribute="top" constant="20" id="Cvd-Yo-BFG"/>
-                                    <constraint firstAttribute="trailing" secondItem="uUU-vf-eyB" secondAttribute="trailing" constant="12" id="FP4-fA-8FX"/>
-                                    <constraint firstAttribute="height" constant="64" id="Obg-XX-jXb"/>
-                                    <constraint firstAttribute="bottom" secondItem="uUU-vf-eyB" secondAttribute="bottom" id="jf0-JN-bZh"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="1Xe-2b-3bV" secondAttribute="trailing" id="QZY-pj-NHE"/>
-                            <constraint firstItem="1Xe-2b-3bV" firstAttribute="leading" secondItem="OJU-yg-9Hf" secondAttribute="leading" id="VPo-2a-xZG"/>
-                            <constraint firstItem="1Xe-2b-3bV" firstAttribute="top" secondItem="OJU-yg-9Hf" secondAttribute="top" id="kYs-ca-Bsu"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="ssl-zJ-MuL"/>
-                    </view>
-                    <connections>
-                        <outlet property="skipeButton" destination="uUU-vf-eyB" id="bV2-PM-AhW"/>
-                        <outlet property="topBar" destination="1Xe-2b-3bV" id="u4c-71-zNO"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SOw-ed-7rT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pageViewController storyboardIdentifier="PEPPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="Yin-3D-gL9" customClass="PEPPageViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="SJu-ms-UOh"/>
+                </pageViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oiz-Em-VVk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3194" y="357"/>
+            <point key="canvasLocation" x="-1548" y="356.67166416791605"/>
         </scene>
     </scenes>
     <resources>
