@@ -622,7 +622,7 @@ extension ComposeViewModel {
         let safeState = state.makeSafe(forSession: session)
 
         handshakeViewController.session = session
-        session.perform{ [weak self] in
+        session.performAndWait {
             guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
                 Log.shared.errorAndCrash("No message")
                 return
