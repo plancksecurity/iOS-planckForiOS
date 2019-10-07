@@ -22,8 +22,9 @@ extension LoginViewController {
     }
 
     @objc func adjustForKeyboard(notification: NSNotification) {
-        fieldsContainerCenterConstraint.constant = viewNewCenter(notification: notification)
-
+        let newCenterYConstant = viewNewCenter(notification: notification)
+        fieldsContainerCenterConstraint.constant = newCenterYConstant
+        buttonsContainerCenterConstraint.constant = newCenterYConstant
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
             [weak self] in
             self?.view.layoutIfNeeded()
@@ -33,6 +34,8 @@ extension LoginViewController {
 
 // MARK: - Private
 extension LoginViewController {
+
+
     private func viewNewCenter(notification: NSNotification) -> CGFloat {
         guard notification.name == UIResponder.keyboardWillShowNotification,
             let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
@@ -40,6 +43,21 @@ extension LoginViewController {
                 return 0
         }
 
-        return -(keyboardValue.cgRectValue.height / 2 + 20)
+        return fieldsContainerCenterConstraint.constant - keyboardValue.cgRectValue.height / 2
+
+//        if UIScreen.main.traitCollection.verticalSizeClass == .compact {
+//            return heightCompactViewCenter(keyboardValue: keyboardValue)
+//        } else {
+//            return heightRegularViewCenter(keyboardValue: keyboardValue)
+//        }
     }
+
+//    private func heightCompactViewCenter(keyboardValue: NSValue) -> CGFloat {
+//        return 0
+//    }
+//
+//    func heightRegularViewCenter(keyboardValue: NSValue) -> CGFloat {
+//        return -keyboardValue.cgRectValue.height / 2
+//    }
 }
+

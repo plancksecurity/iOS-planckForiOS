@@ -11,46 +11,6 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-extension LoginViewController {
-    enum LoginError: Error {
-        case missingEmail
-        case invalidEmail
-        case missingPassword
-        case noConnectData
-        case missingUsername
-        case minimumLengthUsername
-        case accountExistence
-    }
-}
-
-extension LoginViewController.LoginError: LocalizedError {
-    var errorDescription: String? {
-        switch self {
-        case .missingEmail:
-            return NSLocalizedString("A valid email is required",
-                                     comment: "error message for .missingEmail")
-        case .invalidEmail:
-            return NSLocalizedString("A valid email is required",
-                                     comment: "error message for .invalidEmail")
-        case .missingPassword:
-            return NSLocalizedString("A non-empty password is required",
-                                     comment: "error message for .missingPassword")
-        case .missingUsername:
-            return NSLocalizedString("A non-empty username is required",
-                                     comment: "error message for .missingUsername")
-        case .minimumLengthUsername:
-            return NSLocalizedString("The username must contain more than 1 characters",
-                                     comment: "error message for .minimumLengthUsername")
-        case .noConnectData:
-            return NSLocalizedString("An internal error occurred",
-                                     comment: "error message for .noConnectData")
-        case .accountExistence:
-            return NSLocalizedString("The account already exists",
-                                     comment: "error message for .accountExistence")
-        }
-    }
-}
-
 protocol LoginViewControllerDelegate: class  {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController)
 }
@@ -61,6 +21,12 @@ class LoginViewController: BaseViewController {
     var offerManualSetup = false
     weak var delegate: LoginViewControllerDelegate?
 
+    private var currentFirstResponder: UITextField? {
+        didSet {
+            print("")
+        }
+    }
+
     @IBOutlet var emailAddress: UITextField!
     @IBOutlet var password: UITextField!
     @IBOutlet var manualConfigButton: UIButton!
@@ -68,7 +34,8 @@ class LoginViewController: BaseViewController {
     @IBOutlet var user: UITextField!
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var fieldsContainerCenterConstraint: NSLayoutConstraint!
-
+    @IBOutlet weak var buttonsContainerCenterConstraint: NSLayoutConstraint!
+    
     @IBOutlet var textFieldsContainerStackView: UIStackView! //TODO: ALE remove if not used
 
     var isCurrentlyVerifying = false {
@@ -274,15 +241,25 @@ extension LoginViewController {
 
 extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == self.user {
-            self.emailAddress.becomeFirstResponder()
-        } else if textField == self.emailAddress {
-            self.password.becomeFirstResponder()
-        } else if textField == self.password {
-            textField.resignFirstResponder()
-            self.logIn(self.password as Any)
+        switch textField {
+        case emailAddress:
+            password.becomeFirstResponder()
+        case password:
+            user.becomeFirstResponder()
+        case user:
+            user.resignFirstResponder()
+            logIn(textField as Any)
+        default:
+            break
         }
         return true
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        fieldsContainerCenterConstraint.constant = fieldsContainerCenterConstraint.constant
+//        fieldsContainerCenterConstraint.constant = textField.center.y
+//        view.layoutIfNeeded()
+//        currentFirstResponder = textField
     }
 }
 
@@ -349,5 +326,45 @@ extension LoginViewController: LoginViewModelLoginErrorDelegate {
 extension LoginViewController: LoginViewModelOAuth2ErrorDelegate {
     func handle(oauth2Error: Error) {
         self.handleLoginError(error: oauth2Error, offerManualSetup: false)
+    }
+}
+
+extension LoginViewController {
+    enum LoginError: Error {
+        case missingEmail
+        case invalidEmail
+        case missingPassword
+        case noConnectData
+        case missingUsername
+        case minimumLengthUsername
+        case accountExistence
+    }
+}
+
+extension LoginViewController.LoginError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .missingEmail:
+            return NSLocalizedString("A valid email is required",
+                                     comment: "error message for .missingEmail")
+        case .invalidEmail:
+            return NSLocalizedString("A valid email is required",
+                                     comment: "error message for .invalidEmail")
+        case .missingPassword:
+            return NSLocalizedString("A non-empty password is required",
+                                     comment: "error message for .missingPassword")
+        case .missingUsername:
+            return NSLocalizedString("A non-empty username is required",
+                                     comment: "error message for .missingUsername")
+        case .minimumLengthUsername:
+            return NSLocalizedString("The username must contain more than 1 characters",
+                                     comment: "error message for .minimumLengthUsername")
+        case .noConnectData:
+            return NSLocalizedString("An internal error occurred",
+                                     comment: "error message for .noConnectData")
+        case .accountExistence:
+            return NSLocalizedString("The account already exists",
+                                     comment: "error message for .accountExistence")
+        }
     }
 }
