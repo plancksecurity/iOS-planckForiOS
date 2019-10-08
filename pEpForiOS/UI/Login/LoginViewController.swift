@@ -21,22 +21,18 @@ class LoginViewController: BaseViewController {
     var offerManualSetup = false
     weak var delegate: LoginViewControllerDelegate?
 
-    private var currentFirstResponder: UITextField? {
-        didSet {
-            print("")
-        }
-    }
-
     @IBOutlet var emailAddress: UITextField!
     @IBOutlet var password: UITextField!
     @IBOutlet var manualConfigButton: UIButton!
     @IBOutlet var loginButton: UIButton!
     @IBOutlet var user: UITextField!
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
-    @IBOutlet weak var fieldsContainerCenterConstraint: NSLayoutConstraint!
-    @IBOutlet weak var buttonsContainerCenterConstraint: NSLayoutConstraint!
-    
-    @IBOutlet var textFieldsContainerStackView: UIStackView! //TODO: ALE remove if not used
+    @IBOutlet weak var mainContainerView: UIView!
+    @IBOutlet weak var mainContainerViewCenterYConstraint: NSLayoutConstraint!
+    @IBOutlet weak var stackViewCenterYhCConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonsViewCenterYhRConstraint: NSLayoutConstraint!
+
+    @IBOutlet var stackView: UIStackView! //TODO: ALE remove if not used
 
     var isCurrentlyVerifying = false {
         didSet {
@@ -256,10 +252,20 @@ extension LoginViewController: UITextFieldDelegate {
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-//        fieldsContainerCenterConstraint.constant = fieldsContainerCenterConstraint.constant
-//        fieldsContainerCenterConstraint.constant = textField.center.y
-//        view.layoutIfNeeded()
-//        currentFirstResponder = textField
+        stackViewCenterYhCConstraint.constant = stackView.bounds.height / 2 - textField.center.y
+//        stackViewCenterYConstraint.constant += -(textField.center.y -  mainContainerView.center.y)
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+            [weak self] in
+            self?.view.layoutIfNeeded()
+        })
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        stackViewCenterYhCConstraint.constant = 0
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+            [weak self] in
+            self?.view.layoutIfNeeded()
+        })
     }
 }
 

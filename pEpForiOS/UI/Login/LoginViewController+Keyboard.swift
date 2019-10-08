@@ -22,9 +22,11 @@ extension LoginViewController {
     }
 
     @objc func adjustForKeyboard(notification: NSNotification) {
-        let newCenterYConstant = viewNewCenter(notification: notification)
-        fieldsContainerCenterConstraint.constant = newCenterYConstant
-        buttonsContainerCenterConstraint.constant = newCenterYConstant
+//        if UIScreen.main.traitCollection.verticalSizeClass == .compact {
+            buttonsViewCenterYhRConstraint.constant = viewNewCenter(notification: notification)
+//        } else {
+            mainContainerViewCenterYConstraint.constant = viewNewCenter(notification: notification)
+//        }
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
             [weak self] in
             self?.view.layoutIfNeeded()
@@ -43,7 +45,7 @@ extension LoginViewController {
                 return 0
         }
 
-        return fieldsContainerCenterConstraint.constant - keyboardValue.cgRectValue.height / 2
+        return -keyboardValue.cgRectValue.height / 2
 
 //        if UIScreen.main.traitCollection.verticalSizeClass == .compact {
 //            return heightCompactViewCenter(keyboardValue: keyboardValue)
