@@ -208,6 +208,10 @@
 		3705703B22B7C793002E3AAD /* ActionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705703A22B7C793002E3AAD /* ActionCellViewModel.swift */; };
 		3705703F22B8E3B9002E3AAD /* ActionCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705703E22B8E3B9002E3AAD /* ActionCellViewModelTest.swift */; };
 		3705704122B8EB27002E3AAD /* KeySyncDeviceGroupServiceMoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705704022B8EB27002E3AAD /* KeySyncDeviceGroupServiceMoc.swift */; };
+		37156E44234CD47C00845A28 /* EditableAccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E43234CD47C00845A28 /* EditableAccountSettingsViewController.swift */; };
+		37156E46234CD49F00845A28 /* EditableAccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E45234CD49F00845A28 /* EditableAccountSettingsViewModel.swift */; };
+		37156E48234CDD4A00845A28 /* EditableAccountSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E47234CDD4A00845A28 /* EditableAccountSettingsTableViewController.swift */; };
+		37156E4C234CDDF100845A28 /* EditableAccountSettingsTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E4B234CDDF100845A28 /* EditableAccountSettingsTableViewModel.swift */; };
 		371A7158231D239B008B31F3 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371A7157231D239B008B31F3 /* TutorialViewController.swift */; };
 		371A715A231D45D0008B31F3 /* TutorialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371A7159231D45D0008B31F3 /* TutorialViewModel.swift */; };
 		371D641D231D17390036AE62 /* StartUpTutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371D641C231D17390036AE62 /* StartUpTutorial.swift */; };
@@ -681,6 +685,10 @@
 		3705703E22B8E3B9002E3AAD /* ActionCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCellViewModelTest.swift; sourceTree = "<group>"; };
 		3705704022B8EB27002E3AAD /* KeySyncDeviceGroupServiceMoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncDeviceGroupServiceMoc.swift; sourceTree = "<group>"; };
 		3705704222B8FCB8002E3AAD /* SettingsInternalError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInternalError.swift; sourceTree = "<group>"; };
+		37156E43234CD47C00845A28 /* EditableAccountSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewController.swift; sourceTree = "<group>"; };
+		37156E45234CD49F00845A28 /* EditableAccountSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModel.swift; sourceTree = "<group>"; };
+		37156E47234CDD4A00845A28 /* EditableAccountSettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsTableViewController.swift; sourceTree = "<group>"; };
+		37156E4B234CDDF100845A28 /* EditableAccountSettingsTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsTableViewModel.swift; sourceTree = "<group>"; };
 		371A7157231D239B008B31F3 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		371A7159231D45D0008B31F3 /* TutorialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewModel.swift; sourceTree = "<group>"; };
 		371D641C231D17390036AE62 /* StartUpTutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartUpTutorial.swift; sourceTree = "<group>"; };
@@ -1468,6 +1476,7 @@
 		15874BB62127493E00A3A4A6 /* AccountSettings */ = {
 			isa = PBXGroup;
 			children = (
+				37156E42234CD43600845A28 /* EditableAccountSettings */,
 				15874BB72127493E00A3A4A6 /* ViewModel */,
 				15874BBC2127493E00A3A4A6 /* AccountSettingsTableViewController.swift */,
 			);
@@ -1653,6 +1662,33 @@
 				3705096722CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift */,
 			);
 			path = KeySyncHandshake;
+			sourceTree = "<group>";
+		};
+		37156E42234CD43600845A28 /* EditableAccountSettings */ = {
+			isa = PBXGroup;
+			children = (
+				37156E49234CDD5700845A28 /* Container */,
+				37156E4A234CDDB700845A28 /* TableView */,
+			);
+			path = EditableAccountSettings;
+			sourceTree = "<group>";
+		};
+		37156E49234CDD5700845A28 /* Container */ = {
+			isa = PBXGroup;
+			children = (
+				37156E43234CD47C00845A28 /* EditableAccountSettingsViewController.swift */,
+				37156E45234CD49F00845A28 /* EditableAccountSettingsViewModel.swift */,
+			);
+			path = Container;
+			sourceTree = "<group>";
+		};
+		37156E4A234CDDB700845A28 /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				37156E47234CDD4A00845A28 /* EditableAccountSettingsTableViewController.swift */,
+				37156E4B234CDDF100845A28 /* EditableAccountSettingsTableViewModel.swift */,
+			);
+			path = TableView;
 			sourceTree = "<group>";
 		};
 		371D641B231D17100036AE62 /* StartUpTutotial */ = {
@@ -2802,6 +2838,7 @@
 				B7DFEA56225397AB0080A2BA /* Folder+LocalizedName.swift in Sources */,
 				43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */,
 				4351C2D51F4441190053381F /* latex.c in Sources */,
+				37156E4C234CDDF100845A28 /* EditableAccountSettingsTableViewModel.swift in Sources */,
 				37816546230EE5F700B967E3 /* PEPUIAlertAction.swift in Sources */,
 				43498CDB200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift in Sources */,
 				15874BC42127493E00A3A4A6 /* SettingsCellViewModel.swift in Sources */,
@@ -2857,6 +2894,7 @@
 				43E657E71F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift in Sources */,
 				43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */,
 				155475642137FD96005A52D0 /* FolderType+Extensions.swift in Sources */,
+				37156E48234CDD4A00845A28 /* EditableAccountSettingsTableViewController.swift in Sources */,
 				1543B6A222AACA4E002B59AB /* KeySyncHandshakeService.swift in Sources */,
 				3747094322BA4E3B00215283 /* EnableKeySyncViewModel.swift in Sources */,
 				43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */,
@@ -2972,6 +3010,7 @@
 				152A39DB21905C3E00D9F8E4 /* CellViewModel.swift in Sources */,
 				155050F01FE82356009CEAD2 /* UserNotificationTool.swift in Sources */,
 				430D73671E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift in Sources */,
+				37156E44234CD47C00845A28 /* EditableAccountSettingsViewController.swift in Sources */,
 				4351C2D21F4441190053381F /* html.c in Sources */,
 				152A39DE21905C3E00D9F8E4 /* AccountCellViewModel.swift in Sources */,
 				4304FD001EBB8EBB0086DADA /* LanguageListViewController.swift in Sources */,
@@ -2995,6 +3034,7 @@
 				43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */,
 				43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */,
 				B7C487A122E0B7DE0005304B /* nonPasteableUiTextField.swift in Sources */,
+				37156E46234CD49F00845A28 /* EditableAccountSettingsViewModel.swift in Sources */,
 				15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */,
 				15874BD421274BD400A3A4A6 /* TrustedServerSettingCell.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,

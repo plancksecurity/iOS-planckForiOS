@@ -29,7 +29,6 @@ UIPickerViewDataSource, UITextFieldDelegate {
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var pEpSyncToggle: UISwitch!
     @IBOutlet weak var resetIdentityCell: UITableViewCell!
 
@@ -312,40 +311,6 @@ UIPickerViewDataSource, UITextFieldDelegate {
         }
     }
 
-    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
-
-        guard let isSplitViewShown = splitViewController?.isCollapsed else {
-            return
-        }
-        if isSplitViewShown {
-            popViewController()
-        }
-    }
-
-    @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
-        do {
-            let validated = try validateInput()
-
-            let imap = AccountSettingsViewModel.ServerViewModel(address: validated.addrImap,
-                                                                port: validated.portImap,
-                                                                transport: validated.transImap)
-
-            let smtp = AccountSettingsViewModel.ServerViewModel(address: validated.addrSmpt,
-                                                                port: validated.portSmtp,
-                                                                transport: validated.transSmtp)
-
-            var password: String? = passwordTextfield.text
-            if passWordChanged == false {
-                password = nil
-            }
-
-            showSpinnerAndDisableUI()
-            viewModel?.update(loginName: validated.loginName, name: validated.accountName,
-                              password: password, imap: imap, smtp: smtp)
-        } catch {
-            informUser(about: error)
-        }
-    }
     @IBAction func didPressPEPSyncToggle(_ sender: UISwitch) {
         viewModel?.pEpSync(enable: sender.isOn)
     }
@@ -444,32 +409,6 @@ extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
             return
         }
         viewModel?.updateToken(accessToken: token)
-    }
-}
-
-// MARK: - SPINNER
-
-extension AccountSettingsTableViewController {
-    /// Shows the spinner and disables UI parts that could lead to
-    /// launching another verification while one is already in process.
-    private func showSpinnerAndDisableUI() {
-        doneButton.isEnabled = false
-
-        spinner.center =
-            CGPoint(x: tableView.frame.width / 2,
-                    y:
-                (tableView.frame.height / 2) - (navigationController?.navigationBar.frame.height
-                    ?? 0.0))
-        spinner.superview?.bringSubviewToFront(spinner)
-        tableView.isUserInteractionEnabled = false
-        spinner.startAnimating()
-    }
-
-    /// Hides the spinner and enables all UI elements again.
-    private func hideSpinnerAndEnableUI() {
-        doneButton.isEnabled = true
-        tableView.isUserInteractionEnabled = true
-        spinner.stopAnimating()
     }
 }
 
