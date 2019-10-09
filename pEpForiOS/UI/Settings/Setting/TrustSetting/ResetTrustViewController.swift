@@ -108,7 +108,7 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return model.numberOfRowsIn(section: section)// numberOfRowsPerSection(section: section)
+        return model.numberOfRowsIn(section: section)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -184,6 +184,10 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
 
         }
         present(alertView, animated: true, completion: nil)
+    }
+
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return model.indexTitles()
     }
 }
 

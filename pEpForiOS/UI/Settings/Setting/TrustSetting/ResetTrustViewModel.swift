@@ -83,6 +83,10 @@ class ResetTrustViewModel {
         return identityQueryResult[index].name
     }
 
+    func indexTitles() -> [String] {
+        return identityQueryResult.indexTitles
+    }
+
     func numberOfRowsIn(section: Int) -> Int {
         return identityQueryResult[section].objects.count
     }
