@@ -79,15 +79,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         return viewModel?.backgroundColorDark ?? false
     }
 
-    var expandedState: HandshakePartnerTableViewCellViewModel.ExpandedState {
-        get {
-            return viewModel?.expandedState ?? .notExpanded
-        }
-        set {
-            viewModel?.expandedState = newValue
-        }
-    }
-
     var isPartnerPEPUser: Bool {
         return viewModel?.isPartnerpEpUser ?? false
     }
@@ -166,16 +157,11 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     func updateAdditionalConstraints() {
         updateStartStopTrustingButtonVisibility()
-        updateExplanationExpansionVisibility()
         updateTrustwordsExpansionVisibility()
     }
 
     func updateStartStopTrustingButtonVisibility() {
         startStopTrustingButton.isHidden = !showStopStartTrustButton
-    }
-
-    func updateExplanationExpansionVisibility() {
-        privacyStatusDescription.isHidden = expandedState == .notExpanded
     }
 
     func updateTrustwordsExpansionVisibility() {
@@ -241,18 +227,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         privacyStatusTitle.text = color.privacyStatusTitle
         privacyStatusDescription.text = color.privacyStatusDescription
         pEpStatusImageView.image = color.statusIconForMessage()
-    }
-
-    func didChangeSelection() {
-        if expandedState == .expanded {
-            expandedState = .notExpanded
-        } else {
-            expandedState = .expanded
-        }
-        updateExplanationExpansionVisibility()
-        //UIView.animate(withDuration: 0.3) {
-            self.contentView.layoutIfNeeded()
-        //}
     }
 
     // MARK: - Gestures

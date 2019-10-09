@@ -225,18 +225,6 @@ extension HandshakeViewController {
     }
 }
 
-// MARK: - UITableViewDelegate
-
-extension HandshakeViewController {
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) as? HandshakePartnerTableViewCell {
-            cell.didChangeSelection()
-            tableView.updateSize()
-        }
-    }
-}
-
 // MARK: - Data
 
 extension HandshakeViewController {
