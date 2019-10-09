@@ -86,7 +86,9 @@ class ResetTrustViewModel {
     //!!!: workarround to change the first name index
     func indexTitles() -> [String] {
         var titles = identityQueryResult.indexTitles
-        titles[0] = "#"
+        if titleForSections(index: 0) == "Undefined names" {
+            titles[0] = "#"
+        }
         return titles
     }
 
