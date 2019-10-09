@@ -48,7 +48,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var privacyStatusDescription: UILabel!
     @IBOutlet weak var trustWordsLabel: UILabel!
     @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var trustWordsView: UIView!
     @IBOutlet weak var trustMistrustButtonsStackView: UIStackView!
     @IBOutlet weak var privacyStatusDecription: UILabel!
 
