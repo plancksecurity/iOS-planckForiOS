@@ -76,25 +76,23 @@ class ResetTrustViewModel {
     }
 
     func numberOfSections() -> Int {
-        return identityQueryResult.sections!.count
+        return identityQueryResult.count()
     }
 
-    func titleForSections(index: Int) -> String {
-        return identityQueryResult.sections![index].indexTitle!
+    func titleForSections(index: Int) -> String? {
+        return identityQueryResult[index].name
     }
 
     func numberOfRowsIn(section: Int) -> Int {
-        return identityQueryResult.sections![section].numberOfObjects
+        return identityQueryResult[section].objects.count
     }
 
     func nameFor(indexPath: IndexPath) -> String {
-        let id = identityQueryResult.sections![indexPath.section].objects![indexPath.row] as? CdIdentity
-        return id!.identity()!.userNameOrAddress
+        return identityQueryResult[indexPath.section][indexPath.row].userNameOrAddress
     }
 
     func detailFor(indexPath: IndexPath) -> String {
-        let id = identityQueryResult.sections![indexPath.section].objects![indexPath.row] as? CdIdentity
-        return id!.identity()!.address
+        return identityQueryResult[indexPath.section][indexPath.row].address
     }
 
     public func removeSearch() {
@@ -129,26 +127,22 @@ class ResetTrustViewModel {
     }
 
     func resetTrust(foridentityAt indexPath: IndexPath) {
-        let identity = identityQueryResult[indexPath.row]
+        let identity = identityQueryResult[indexPath.row].objects[indexPath.section]
         identity.resetTrust()
     }
 
     func resetTrustAll(foridentityAt indexPath: IndexPath) {
-        let identity = identityQueryResult[indexPath.row]
+        let identity = identityQueryResult[indexPath.row].objects[indexPath.section]
         Identity.resetTrustAllIdentities(for: identity)
     }
 
     func multipleIdentitiesExist(forIdentityAt indexPath: IndexPath) -> Bool {
-        let identity = identityQueryResult[indexPath.row]
+        let identity = identityQueryResult[indexPath.row].objects[indexPath.section]
         return identity.userHasMoreThenOneIdentity()
     }
 
     func numberOfRowsPerSection(section: Int) -> Int {
-        do {
-            return try identityQueryResult.count()
-        } catch {
-            return 0
-        }
+        return identityQueryResult.count()
     }
 }
 
