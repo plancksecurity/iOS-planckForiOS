@@ -25,4 +25,9 @@ struct Constants {
 
     /// Name of Storyboard that contains SuggestTableViewController.
     static let suggestionsStoryboard = "Reusable"
+
+    struct XibNames {
+        static let loadingInterface = "LoadingInterface"
+    }
 }
+

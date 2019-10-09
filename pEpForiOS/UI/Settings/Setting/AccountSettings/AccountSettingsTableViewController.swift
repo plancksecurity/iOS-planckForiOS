@@ -371,27 +371,6 @@ extension AccountSettingsTableViewController {
     }
 }
 
-// MARK: - AccountVerificationResultDelegate
-
-extension AccountSettingsTableViewController: AccountVerificationResultDelegate {
-    func didVerify(result: AccountVerificationResult) {
-        GCD.onMain() {
-            self.hideSpinnerAndEnableUI()
-            switch result {
-            case .ok:
-                //self.navigationController?.popViewController(animated: true)
-                self.popViewController()
-            case .imapError(let err):
-                self.handleLoginError(error: err)
-            case .smtpError(let err):
-                self.handleLoginError(error: err)
-            case .noImapConnectData, .noSmtpConnectData:
-                self.handleLoginError(error: LoginViewController.LoginError.noConnectData)
-            }
-        }
-    }
-}
-
 // MARK: - OAuth2AuthViewModelDelegate
 
 extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
@@ -451,5 +430,31 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
             UIApplication.shared.endIgnoringInteractionEvents()
             self?.activityIndicatorView?.removeFromSuperview()
         }
+    }
+}
+
+// MARK: - SPINNER
+
+extension AccountSettingsTableViewController {
+    /// Shows the spinner and disables UI parts that could lead to
+    /// launching another verification while one is already in process.
+    private func showSpinnerAndDisableUI() {
+        doneButton.isEnabled = false
+
+        spinner.center =
+            CGPoint(x: tableView.frame.width / 2,
+                    y:
+                (tableView.frame.height / 2) - (navigationController?.navigationBar.frame.height
+                    ?? 0.0))
+        spinner.superview?.bringSubviewToFront(spinner)
+        tableView.isUserInteractionEnabled = false
+        spinner.startAnimating()
+    }
+
+    /// Hides the spinner and enables all UI elements again.
+    private func hideSpinnerAndEnableUI() {
+        doneButton.isEnabled = true
+        tableView.isUserInteractionEnabled = true
+        spinner.stopAnimating()
     }
 }

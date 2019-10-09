@@ -26,6 +26,7 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
             didSetAppConfig()
         }
     }
+    weak var loadingInterface: UIView?
 
     func didSetAppConfig() {
         // Do nothing. Meant to override in subclasses.

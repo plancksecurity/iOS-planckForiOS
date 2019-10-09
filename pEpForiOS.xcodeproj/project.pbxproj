@@ -212,6 +212,8 @@
 		37156E46234CD49F00845A28 /* EditableAccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E45234CD49F00845A28 /* EditableAccountSettingsViewModel.swift */; };
 		37156E48234CDD4A00845A28 /* EditableAccountSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E47234CDD4A00845A28 /* EditableAccountSettingsTableViewController.swift */; };
 		37156E4C234CDDF100845A28 /* EditableAccountSettingsTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E4B234CDDF100845A28 /* EditableAccountSettingsTableViewModel.swift */; };
+		37156E4E234DCE2B00845A28 /* UIViewController+LoadingInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E4D234DCE2B00845A28 /* UIViewController+LoadingInterface.swift */; };
+		37156E50234DD3FB00845A28 /* LoadingInterface.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37156E4F234DD3FB00845A28 /* LoadingInterface.xib */; };
 		371A7158231D239B008B31F3 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371A7157231D239B008B31F3 /* TutorialViewController.swift */; };
 		371A715A231D45D0008B31F3 /* TutorialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371A7159231D45D0008B31F3 /* TutorialViewModel.swift */; };
 		371D641D231D17390036AE62 /* StartUpTutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371D641C231D17390036AE62 /* StartUpTutorial.swift */; };
@@ -689,6 +691,8 @@
 		37156E45234CD49F00845A28 /* EditableAccountSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		37156E47234CDD4A00845A28 /* EditableAccountSettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsTableViewController.swift; sourceTree = "<group>"; };
 		37156E4B234CDDF100845A28 /* EditableAccountSettingsTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsTableViewModel.swift; sourceTree = "<group>"; };
+		37156E4D234DCE2B00845A28 /* UIViewController+LoadingInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+LoadingInterface.swift"; sourceTree = "<group>"; };
+		37156E4F234DD3FB00845A28 /* LoadingInterface.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingInterface.xib; sourceTree = "<group>"; };
 		371A7157231D239B008B31F3 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		371A7159231D45D0008B31F3 /* TutorialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewModel.swift; sourceTree = "<group>"; };
 		371D641C231D17390036AE62 /* StartUpTutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartUpTutorial.swift; sourceTree = "<group>"; };
@@ -1691,6 +1695,24 @@
 			path = TableView;
 			sourceTree = "<group>";
 		};
+		37156E51234DD49A00845A28 /* LoadingInterface */ = {
+			isa = PBXGroup;
+			children = (
+				37156E4D234DCE2B00845A28 /* UIViewController+LoadingInterface.swift */,
+				37156E4F234DD3FB00845A28 /* LoadingInterface.xib */,
+			);
+			path = LoadingInterface;
+			sourceTree = "<group>";
+		};
+		37156E52234DD4CC00845A28 /* UIViewController */ = {
+			isa = PBXGroup;
+			children = (
+				43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */,
+				37156E51234DD49A00845A28 /* LoadingInterface */,
+			);
+			path = UIViewController;
+			sourceTree = "<group>";
+		};
 		371D641B231D17100036AE62 /* StartUpTutotial */ = {
 			isa = PBXGroup;
 			children = (
@@ -2532,7 +2554,7 @@
 				B7DB7FC62215C57F003968DA /* UIView+Util.swift */,
 				B7DB7FC52215C57F003968DA /* UIView+Autolayout.swift */,
 				B7DB7FC32215C4FF003968DA /* UINavigationController+Extensions.swift */,
-				43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */,
+				37156E52234DD4CC00845A28 /* UIViewController */,
 				434AC3E220A450D700C11B7F /* UIAlertController+Extension.swift */,
 				B7C487A022E0B7DE0005304B /* nonPasteableUiTextField.swift */,
 			);
@@ -2689,6 +2711,7 @@
 				43C98AC7219C3691006418B0 /* InfoPlist.strings in Resources */,
 				B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */,
 				1543B6A422AACD69002B59AB /* secret.xcconfig in Resources */,
+				37156E50234DD3FB00845A28 /* LoadingInterface.xib in Resources */,
 				431394A91E4B03AA00D92F33 /* Settings.bundle in Resources */,
 				43C98AC3219C275E006418B0 /* Localizable.strings in Resources */,
 				151DE7E11FC5D3FA00CDC273 /* Handshake.storyboard in Resources */,
@@ -2968,6 +2991,7 @@
 				152A39E421905C3E00D9F8E4 /* NSAttributedString+RecipientTextUtils.swift in Sources */,
 				00EB89AD20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift in Sources */,
 				155050F21FE95D8A009CEAD2 /* UserNotificationTool+pEp.swift in Sources */,
+				37156E4E234DCE2B00845A28 /* UIViewController+LoadingInterface.swift in Sources */,
 				15874BC72127493E00A3A4A6 /* SettingDefaultAccountTableViewController.swift in Sources */,
 				4388A0E22008F813008CB98D /* (null) in Sources */,
 				152A39D021905C3E00D9F8E4 /* AttachmentCell.swift in Sources */,

@@ -8,6 +8,10 @@
 
 import UIKit
 
+//protocol EditableAcoountSettingsTableViewController: class {
+//    func 
+//}
+
 class EditableAccountSettingsTableViewController: UITableViewController {
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var emailTextfield: UITextField!
