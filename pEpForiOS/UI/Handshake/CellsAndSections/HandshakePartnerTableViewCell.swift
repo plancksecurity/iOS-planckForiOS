@@ -50,6 +50,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var trustWordsView: UIView!
     @IBOutlet weak var trustMistrustButtonsStackView: UIStackView!
+    @IBOutlet weak var privacyStatusDecription: UILabel!
 
     var sizeHelper = false
 
@@ -122,6 +123,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             self.backgroundColor = UIColor.white
         }
         partnerNameLabel.text = viewModel?.partnerName
+        privacyStatusDecription.text = viewModel?.privacyStatusDecription
         updateStopTrustingButtonTitle()
         updatePrivacyStatus(color: partnerColor)
         updateTrustwords()
