@@ -214,7 +214,6 @@ extension HandshakeViewController {
             cell.needsUpdateConstraints()
             cell.updateConstraintsIfNeeded()
 
-
             return cell
         }
 
