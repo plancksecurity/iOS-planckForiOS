@@ -150,7 +150,6 @@
                                     <outlet property="pEpStatusImageView" destination="hZH-e1-puE" id="YT2-Mj-hro"/>
                                     <outlet property="partnerImageView" destination="rG1-9L-QdA" id="Czw-W0-5iJ"/>
                                     <outlet property="partnerNameLabel" destination="hFh-wv-YAc" id="ZDB-k9-YM8"/>
-                                    <outlet property="privacyStatusDecription" destination="eaF-0u-kGb" id="2Cs-GW-E8C"/>
                                     <outlet property="privacyStatusDescription" destination="eaF-0u-kGb" id="VWh-tP-wgG"/>
                                     <outlet property="privacyStatusTitle" destination="5RJ-Gx-qBT" id="0qJ-kY-o93"/>
                                     <outlet property="startStopTrustingButton" destination="Y4f-BW-EI0" id="MXW-Ms-cMz"/>
