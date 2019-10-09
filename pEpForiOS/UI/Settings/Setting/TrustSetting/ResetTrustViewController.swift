@@ -23,15 +23,15 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
     }
 
     func setupView() {
-        /// set up tableview delegate and datasource
+        // set up tableview delegate and datasource
         tableView.dataSource = self
         tableView.delegate = self
-        /// Hide toolbar
+        // Hide toolbar
         navigationController?.setToolbarHidden(true, animated: false)
         model.delegate = self
-        /// searchBar configuration
+        // searchBar configuration
         configureSearchBar()
-        ///set the index color
+        //set the index color
         tableView.sectionIndexColor = UIColor.pEpGreen
 
         title = NSLocalizedString("Contacts", comment: "ResetTrustView title")
