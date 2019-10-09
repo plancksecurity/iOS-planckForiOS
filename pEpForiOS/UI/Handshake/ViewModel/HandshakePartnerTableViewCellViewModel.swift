@@ -81,7 +81,7 @@ class HandshakePartnerTableViewCellViewModel {
     lazy var contactImageTool = IdentityImageTool()
 
     /// Description of the partner's rating.
-    let ratingExplanation = "Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call."
+    let privacyStatusDecription = "Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call."
 
     init(ownIdentity: Identity, partner: Identity) {
         self.expandedState = .notExpanded
