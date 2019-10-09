@@ -21,7 +21,6 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
         moc.saveAndLogErrors()
     }
 
-
     //Number of sections corresponding to SettingsSectionViewModel.SectionType count
     let sections = 5
 
