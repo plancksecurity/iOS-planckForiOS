@@ -83,8 +83,11 @@ class ResetTrustViewModel {
         return identityQueryResult[index].name
     }
 
+    //!!!: workarround to change the first name index
     func indexTitles() -> [String] {
-        return identityQueryResult.indexTitles
+        var titles = identityQueryResult.indexTitles
+        titles[0] = "#"
+        return titles
     }
 
     func numberOfRowsIn(section: Int) -> Int {
