@@ -15,8 +15,6 @@
 		<string>group.security.pep.pep4ios</string>
 	</array>
 	<key>keychain-access-groups</key>
-	<array>
-		<string>$(AppIdentifierPrefix)net.pep-security.apps.pEpAlpha</string>
-	</array>
+	<array/>
 </dict>
 </plist>
