@@ -61,7 +61,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
         super.viewDidLoad()
         configureView()
         if let vm = viewModel {
-            vm.verifiableDelegate = self
+//            vm.verifiableDelegate = self
             vm.delegate = self
         }
         passwordTextfield.delegate = self
@@ -439,7 +439,7 @@ extension AccountSettingsTableViewController {
     /// Shows the spinner and disables UI parts that could lead to
     /// launching another verification while one is already in process.
     private func showSpinnerAndDisableUI() {
-        doneButton.isEnabled = false
+//        doneButton.isEnabled = false
 
         spinner.center =
             CGPoint(x: tableView.frame.width / 2,
@@ -453,7 +453,7 @@ extension AccountSettingsTableViewController {
 
     /// Hides the spinner and enables all UI elements again.
     private func hideSpinnerAndEnableUI() {
-        doneButton.isEnabled = true
+//        doneButton.isEnabled = true
         tableView.isUserInteractionEnabled = true
         spinner.stopAnimating()
     }

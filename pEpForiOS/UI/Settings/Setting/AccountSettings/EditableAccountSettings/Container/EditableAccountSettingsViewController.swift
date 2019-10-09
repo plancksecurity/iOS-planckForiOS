@@ -8,9 +8,13 @@
 
 import UIKit
 
-final class EditableAccountSettingsViewController: UIViewController {
+final class EditableAccountSettingsViewController: BaseViewController {
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var loadingOverlayView: UIView!
+
+    override func viewDidLoad() {
+        showLoadingInterface()
+    }
 
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
         guard let isSplitViewShown = splitViewController?.isCollapsed else {
@@ -22,28 +26,28 @@ final class EditableAccountSettingsViewController: UIViewController {
     }
 
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-        do {
-            let validated = try validateInput()
-
-            let imap = AccountSettingsViewModel.ServerViewModel(address: validated.addrImap,
-                                                                port: validated.portImap,
-                                                                transport: validated.transImap)
-
-            let smtp = AccountSettingsViewModel.ServerViewModel(address: validated.addrSmpt,
-                                                                port: validated.portSmtp,
-                                                                transport: validated.transSmtp)
-
-            var password: String? = passwordTextfield.text
-            if passWordChanged == false {
-                password = nil
-            }
-
-            setLoadingOverlayView(hidden: false, animated: true)
-            viewModel?.update(loginName: validated.loginName, name: validated.accountName,
-                              password: password, imap: imap, smtp: smtp)
-        } catch {
-            informUser(about: error)
-        }
+//        do {
+//            let validated = try validateInput()
+//
+//            let imap = AccountSettingsViewModel.ServerViewModel(address: validated.addrImap,
+//                                                                port: validated.portImap,
+//                                                                transport: validated.transImap)
+//
+//            let smtp = AccountSettingsViewModel.ServerViewModel(address: validated.addrSmpt,
+//                                                                port: validated.portSmtp,
+//                                                                transport: validated.transSmtp)
+//
+//            var password: String? = passwordTextfield.text
+//            if passWordChanged == false {
+//                password = nil
+//            }
+//
+//            setLoadingOverlayView(hidden: false, animated: true)
+//            viewModel?.update(loginName: validated.loginName, name: validated.accountName,
+//                              password: password, imap: imap, smtp: smtp)
+//        } catch {
+//            informUser(about: error)
+//        }
     }
 }
 
@@ -73,24 +77,24 @@ extension EditableAccountSettingsViewController {
 
 // MARK: - AccountVerificationResultDelegate
 
-extension EditableAccountSettingsViewController: AccountVerificationResultDelegate {
-    func didVerify(result: AccountVerificationResult) {
-        DispatchQueue.main.async { [weak self] in
-            self?.hideSpinnerAndEnableUI()
-            switch result {
-            case .ok:
-                //self.navigationController?.popViewController(animated: true)
-                self?.popViewController()
-            case .imapError(let err):
-                self?.handleLoginError(error: err)
-            case .smtpError(let err):
-                self?.handleLoginError(error: err)
-            case .noImapConnectData, .noSmtpConnectData:
-                self?.handleLoginError(error: LoginViewController.LoginError.noConnectData)
-            }
-        }
-    }
-}
+//extension EditableAccountSettingsViewController: AccountVerificationResultDelegate {
+//    func didVerify(result: AccountVerificationResult) {
+//        DispatchQueue.main.async { [weak self] in
+//            self?.hideSpinnerAndEnableUI()
+//            switch result {
+//            case .ok:
+//                //self.navigationController?.popViewController(animated: true)
+//                self?.popViewController()
+//            case .imapError(let err):
+//                self?.handleLoginError(error: err)
+//            case .smtpError(let err):
+//                self?.handleLoginError(error: err)
+//            case .noImapConnectData, .noSmtpConnectData:
+//                self?.handleLoginError(error: LoginViewController.LoginError.noConnectData)
+//            }
+//        }
+//    }
+//}
 
 
 // MARK: - Private
