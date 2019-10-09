@@ -31,6 +31,10 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
         model.delegate = self
         /// searchBar configuration
         configureSearchBar()
+        ///set the index color
+        tableView.sectionIndexColor = UIColor.pEpGreen
+
+        title = NSLocalizedString("Contacts", comment: "ResetTrustView title")
         if #available(iOS 11.0, *) {
             searchController.isActive = false
             navigationItem.searchController = searchController
