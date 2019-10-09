@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import PEPObjCAdapterFramework
 @testable import pEpForiOS
 
 final class KeySyncHandshakeViewModelTest: XCTestCase {
@@ -59,7 +60,7 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
             XCTFail()
             return
         }
-        expected = State(didCallDissmissView: true, pressedAction: .accept)
+        expected = State(pressedAction: .accept)
 
         // WHEN
         keySyncHandshakeVM.handle(action: .accept)
@@ -74,7 +75,13 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
             XCTFail()
             return
         }
-        expected = State(didCallShowPicker: true, languagesToShow: ["", ""])
+        let languages = pEpSessionMocLanaguages()
+        let languagesToShow = languages.map { $0.name }
+        let selectedLanguageIndex =
+            languages.map { $0.code }.firstIndex(of: Locale.current.languageCode)
+        expected = State(didCallShowPicker: true,
+                         languagesToShow: languagesToShow,
+                         selectedLanguageIndex: selectedLanguageIndex)
 
         // WHEN
         keySyncHandshakeVM.handle(action: .changeLanguage)
@@ -89,7 +96,7 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
             XCTFail()
             return
         }
-        expected = State(didCallDissmissView: true, pressedAction: .decline)
+        expected = State(pressedAction: .decline)
 
         // WHEN
         keySyncHandshakeVM.handle(action: .decline)
@@ -104,7 +111,7 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
             XCTFail()
             return
         }
-        expected = State(didCallDissmissView: true, pressedAction: .cancel)
+        expected = State(pressedAction: .cancel)
 
         // WHEN
         keySyncHandshakeVM.handle(action: .cancel)
@@ -132,17 +139,14 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
 // MARK: - KeySyncHandshakeViewModelDelegate
 
 extension KeySyncHandshakeViewModelTest: KeySyncHandshakeViewModelDelegate {
-    func dissmissView() {
-        actual?.didCallDissmissView = true
-    }
-
     func closePicker() {
         actual?.didCallClosePicker = true
     }
 
-    func showPicker(withLanguages languages: [String]) {
+    func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?) {
         actual?.didCallShowPicker = true
         actual?.languagesToShow = languages
+        actual?.selectedLanguageIndex = selectedLanguageIndex
     }
 
     func change(handshakeWordsTo: String) {
@@ -168,51 +172,61 @@ extension KeySyncHandshakeViewModelTest {
         //bools
         XCTAssertEqual(expected.didCallShowPicker, actual.didCallShowPicker)
         XCTAssertEqual(expected.didCallClosePicker, actual.didCallClosePicker)
-        XCTAssertEqual(expected.didCallDissmissView, actual.didCallDissmissView)
         XCTAssertEqual(expected.didCallToUpdateTrustedWords, actual.didCallToUpdateTrustedWords)
 
         //values
         XCTAssertEqual(expected.fullWordsVersion, actual.fullWordsVersion)
         XCTAssertEqual(expected.languagesToShow, actual.languagesToShow)
+        XCTAssertEqual(expected.selectedLanguageIndex, actual.selectedLanguageIndex)
         XCTAssertEqual(expected.handShakeWords, actual.handShakeWords)
         XCTAssertEqual(expected.pressedAction, actual.pressedAction)
 
         //In case some if missing or added but not checked
         XCTAssertEqual(expected, actual)
     }
+
+    private func pEpSessionMocLanaguages() -> [PEPLanguage] {
+        do {
+            return try PEPSessionMoc().languageList()
+        } catch {
+            XCTFail("No languages from pepSessionMoc")
+            return []
+        }
+    }
 }
 
 
 // MARK: - Helper Structs
+
 extension KeySyncHandshakeViewModelTest {
     struct State: Equatable {
         var didCallShowPicker: Bool
         var didCallClosePicker: Bool
-        var didCallDissmissView: Bool
         var didCallToUpdateTrustedWords: Bool
 
         var fullWordsVersion: Bool?
         var languagesToShow: [String]?
+        var selectedLanguageIndex: Int?
         var handShakeWords: String?
         var pressedAction: KeySyncHandshakeViewController.Action?
 
         // Default value are default initial state
         init(didCallShowPicker: Bool = false,
              didCallClosePicker: Bool = false,
-             didCallDissmissView: Bool = false,
              didCallToUpdateTrustedWords: Bool = false,
              fullWordsVersion: Bool = false,
              languagesToShow: [String] = [],
+             selectedLanguageIndex: Int? = nil,
              handShakeWords: String = "",
              pressedAction: KeySyncHandshakeViewController.Action? = nil) {
 
             self.didCallShowPicker = didCallShowPicker
             self.didCallClosePicker = didCallClosePicker
-            self.didCallDissmissView = didCallDissmissView
             self.didCallToUpdateTrustedWords = didCallToUpdateTrustedWords
 
             self.fullWordsVersion = fullWordsVersion
             self.languagesToShow = languagesToShow
+            self.selectedLanguageIndex = selectedLanguageIndex
             self.handShakeWords = handShakeWords
             self.pressedAction = pressedAction
         }

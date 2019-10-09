@@ -109,9 +109,13 @@ final class KeySyncHandshakeViewController: UIViewController {
 // MARK: - KeySyncHandshakeViewModelDelegate
 
 extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
-    func showPicker(withLanguages languages: [String]) {
+    func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?) {
         pickerLanguages = languages
         DispatchQueue.main.async { [weak self] in
+            if let row = selectedLanguageIndex,
+                let picker = self?.contentView.inputView as? UIPickerView {
+                picker.selectRow(row, inComponent: 0, animated: true)
+            }
             self?.contentView.becomeFirstResponder()
         }
     }
