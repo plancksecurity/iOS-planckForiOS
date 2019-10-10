@@ -10,7 +10,7 @@ import Foundation
 import PEPObjCAdapterFramework
 
 protocol KeySyncHandshakeViewModelDelegate: class {
-    func showPicker(withLanguages languages: [String])
+    func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?)
     func closePicker()
     func change(handshakeWordsTo: String)
 }
@@ -99,7 +99,10 @@ extension KeySyncHandshakeViewModel {
             return
         }
         let languagesNames = languages.map { $0.name }
-        delegate?.showPicker(withLanguages: languagesNames)
+        let selectedlanguageIndex = languages.map { $0.code }.firstIndex(of: languageCode)
+
+        delegate?.showPicker(withLanguages: languagesNames,
+                             selectedLanguageIndex: selectedlanguageIndex)
     }
 
     private func viewControllerAction(viewModelAction: KeySyncHandshakeViewModel.Action)

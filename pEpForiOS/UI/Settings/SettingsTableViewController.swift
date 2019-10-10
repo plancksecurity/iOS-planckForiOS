@@ -172,7 +172,14 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 handleResetAllIdentity()
                 tableView.deselectRow(at: indexPath, animated: true)
             case .resetTrust:
-                performSegue(withIdentifier: .ResetTrust , sender: self)
+                guard let splitViewController = self.splitViewController else {
+                    return
+                }
+                if splitViewController.isCollapsed {
+                    performSegue(withIdentifier: .ResetTrust, sender: self)
+                } else {
+                    performSegue(withIdentifier: .ResetTrustSplitView , sender: self)
+                }
                 break
             }
         default:
@@ -194,6 +201,7 @@ extension SettingsTableViewController: SegueHandlerType {
         case segueExtraKeys
         case segueSetOwnKey
         case noAccounts
+        case ResetTrustSplitView
         case ResetTrust
         case noSegue
     }
@@ -216,6 +224,14 @@ extension SettingsTableViewController: SegueHandlerType {
                     messageModelService: appConfig.messageModelService)
                 destination.viewModel = vm
             }
+        case .ResetTrustSplitView:
+            guard
+            let nav = segue.destination as? UINavigationController,
+            let destination = nav.topViewController as? BaseTableViewController
+            else {
+                return
+            }
+            destination.appConfig = self.appConfig
         case .noAccounts,
              .segueAddNewAccount,
              .sequeShowCredits,
