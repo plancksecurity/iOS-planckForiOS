@@ -8,28 +8,45 @@
 
 import UIKit
 
-extension BaseViewController {
-    func showLoadingInterface() {
+final class LoadingInterface {
+    static weak var loadingInterface: UIView?
+
+    static func showLoadingInterface(completion: ((Bool) -> ())? = nil) {
         if loadingInterface == nil {
             addLoadingInterfaceToKeyWindow()
         }
 
-        UIView.animate(withDuration: 0.3) {[weak self] in
-            self?.loadingInterface?.alpha = 1
-        }
-    }
-
-    func removeLoadingInterface() {
-        guard loadingInterface != nil else { return }
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.loadingInterface?.alpha = 0
-        }, completion: { [weak self] finish in
-            guard finish else { return }
-            self?.loadingInterface?.removeFromSuperview()
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: {
+                        loadingInterface?.alpha = 1
+            },
+                       completion: { didFinishAnimation in
+                            completion?(didFinishAnimation)
         })
     }
 
-    private func addLoadingInterfaceToKeyWindow() {
+    static func removeLoadingInterface(completion: ((Bool) -> ())? = nil ) {
+        guard loadingInterface != nil else { return }
+
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: {
+                        loadingInterface?.alpha = 0
+            },
+                       completion: { didFinishAnimation in
+                        guard didFinishAnimation else {
+                            completion?(didFinishAnimation)
+                            return
+                        }
+                        loadingInterface?.removeFromSuperview()
+                        completion?(didFinishAnimation)
+        })
+    }
+
+    static private func addLoadingInterfaceToKeyWindow() {
         guard let loadingInterface = loadingInterfaceFromXib(),
             let keyWindow = UIApplication.shared.keyWindow else {
                 return
@@ -47,7 +64,7 @@ extension BaseViewController {
         NSLayoutConstraint(item: loadingInterface, attribute: .bottom, relatedBy: .equal, toItem: keyWindow, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
     }
 
-    private func loadingInterfaceFromXib() -> UIView? {
+    static private func loadingInterfaceFromXib() -> UIView? {
         let uiNib = UINib(nibName: Constants.XibNames.loadingInterface, bundle: .main)
         guard let loadingView = uiNib.instantiate(withOwner: nil, options: nil)[0] as? UIView else {
             Log.shared.errorAndCrash("Fail to init Loading Interface from xib")

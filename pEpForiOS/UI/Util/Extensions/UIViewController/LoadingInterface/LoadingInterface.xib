@@ -19,8 +19,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bg9-4q-o43">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                     <subviews>
-                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="v4l-dE-XBy">
-                            <rect key="frame" x="197" y="438" width="20" height="20"/>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="v4l-dE-XBy">
+                            <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
                         </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -30,7 +30,6 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Bg9-4q-o43" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="4Mz-s8-mUt"/>
                 <constraint firstAttribute="bottom" secondItem="Bg9-4q-o43" secondAttribute="bottom" id="BSM-ud-QVI"/>

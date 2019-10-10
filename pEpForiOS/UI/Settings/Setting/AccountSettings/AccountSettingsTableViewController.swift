@@ -360,6 +360,15 @@ UIPickerViewDataSource, UITextFieldDelegate {
             self.view.endEditing(true)
         }
     }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.destination {
+        case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
+            editableAccountSettingsViewController.appConfig = appConfig
+        default:
+            break
+        }
+    }
 }
 
 // MARK: - Error Handling

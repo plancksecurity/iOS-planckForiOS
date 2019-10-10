@@ -920,28 +920,11 @@
                                     <segue destination="a1y-j3-omP" kind="embed" id="oMT-qb-PGX"/>
                                 </connections>
                             </containerView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gvg-xz-3OO">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <subviews>
-                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="u9j-Iy-EpJ">
-                                        <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
-                                    </activityIndicatorView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="u9j-Iy-EpJ" firstAttribute="centerX" secondItem="gvg-xz-3OO" secondAttribute="centerX" id="Ca6-ef-GIG"/>
-                                    <constraint firstItem="u9j-Iy-EpJ" firstAttribute="centerY" secondItem="gvg-xz-3OO" secondAttribute="centerY" id="uzR-er-4A7"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="EC5-YV-DuZ" firstAttribute="leading" secondItem="vQj-0A-xwF" secondAttribute="leading" id="54f-ka-EgW"/>
-                            <constraint firstItem="gvg-xz-3OO" firstAttribute="leading" secondItem="i60-v8-zoo" secondAttribute="leading" id="EYj-6Z-HEz"/>
                             <constraint firstItem="EC5-YV-DuZ" firstAttribute="top" secondItem="vQj-0A-xwF" secondAttribute="top" id="El9-lc-3Ov"/>
-                            <constraint firstItem="gvg-xz-3OO" firstAttribute="top" secondItem="i60-v8-zoo" secondAttribute="top" id="GTO-Vw-Ljr"/>
-                            <constraint firstAttribute="trailing" secondItem="gvg-xz-3OO" secondAttribute="trailing" id="N4O-mD-ziM"/>
-                            <constraint firstAttribute="bottom" secondItem="gvg-xz-3OO" secondAttribute="bottom" id="l02-1c-4LM"/>
                             <constraint firstItem="vQj-0A-xwF" firstAttribute="trailing" secondItem="EC5-YV-DuZ" secondAttribute="trailing" id="v6g-Ye-c4q"/>
                             <constraint firstItem="vQj-0A-xwF" firstAttribute="bottom" secondItem="EC5-YV-DuZ" secondAttribute="bottom" id="vvh-jt-8UC"/>
                         </constraints>
@@ -960,7 +943,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="loadingOverlayView" destination="gvg-xz-3OO" id="bvq-Zt-gR2"/>
                         <outlet property="saveButton" destination="YEF-pQ-yxL" id="Vwa-h3-AAR"/>
                     </connections>
                 </viewController>
@@ -971,7 +953,6 @@
         <!--Editable Account Settings Table View Controller-->
         <scene sceneID="9s9-Il-XHa">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gb9-RM-5S8" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="a1y-j3-omP" customClass="EditableAccountSettingsTableViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="ACY-84-B35">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
@@ -1313,6 +1294,7 @@
                         <outlet property="usernameTextfield" destination="YhU-oF-sEk" id="jdH-ce-k67"/>
                     </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gb9-RM-5S8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1103" y="424"/>
         </scene>

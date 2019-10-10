@@ -10,10 +10,13 @@ import UIKit
 
 final class EditableAccountSettingsViewController: BaseViewController {
     @IBOutlet weak var saveButton: UIBarButtonItem!
-    @IBOutlet weak var loadingOverlayView: UIView!
 
     override func viewDidLoad() {
-        showLoadingInterface()
+        DispatchQueue.main.async {
+            LoadingInterface.showLoadingInterface()
+            LoadingInterface.removeLoadingInterface()
+            LoadingInterface.showLoadingInterface()
+        }
     }
 
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
@@ -48,30 +51,6 @@ final class EditableAccountSettingsViewController: BaseViewController {
 //        } catch {
 //            informUser(about: error)
 //        }
-    }
-}
-
-extension EditableAccountSettingsViewController {
-    func setLoadingOverlayView(hidden: Bool, animated: Bool) {
-        guard loadingOverlayView.isHidden != hidden else {
-            return
-        }
-        guard animated else {
-            loadingOverlayView.isHidden = hidden
-            return
-        }
-
-        let finalAlpha:CGFloat = hidden ? 0 : 1
-        loadingOverlayView.alpha = hidden ? 1 : 0
-        loadingOverlayView.isHidden = false
-
-        UIView.animate(withDuration: 0.3,
-                       animations: { [weak self] in
-                        self?.loadingOverlayView.alpha = finalAlpha
-            },
-                       completion: { [weak self] _ in
-                        self?.loadingOverlayView.isHidden = hidden
-        })
     }
 }
 
