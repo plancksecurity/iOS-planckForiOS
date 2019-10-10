@@ -87,6 +87,9 @@ class ResetTrustViewModel {
     // as first section name come from the fetch results with "U" as a title index
     // is needed to change it to "#" to make it more understandeble
     func indexTitles() -> [String] {
+        guard identityQueryResult.count() > 0 else {
+            return []
+        }
         var titles = identityQueryResult.indexTitles
         if titleForSections(index: 0) == "Undefined names" {
             titles[0] = "#"
