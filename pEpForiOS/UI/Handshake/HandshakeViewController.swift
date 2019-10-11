@@ -33,6 +33,9 @@ class HandshakeViewController: BaseTableViewController {
     }
     var handshakePartnerTableViewCellViewModel = [HandshakePartnerTableViewCellViewModel]()
 
+    /// Our own undo manager
+    private let undoTrustOrMistrustManager = UndoManager()
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -58,7 +61,6 @@ class HandshakeViewController: BaseTableViewController {
 // MARK: - Target & Action
 
 extension HandshakeViewController {
-
     @IBAction
     private func languageSelectedAction(_ sender: Any) {
         var languages: [PEPLanguage] = []
@@ -299,16 +301,28 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
     func confirmTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
                       indexPath: IndexPath,
                       viewModel: HandshakePartnerTableViewCellViewModel?) {
-        invokeTrustAction(cell: cell, indexPath: indexPath) {
-            viewModel?.confirmTrust()
+        if let vm = viewModel {
+            let undoInfo = UndoInfoContainer(indexPath: indexPath, viewModel: vm)
+            undoTrustOrMistrustManager.registerUndo(withTarget: self,
+                                                    selector: #selector(undoTrust(_:)),
+                                                    object: undoInfo)
+            invokeTrustAction(cell: cell, indexPath: indexPath) {
+                vm.confirmTrust()
+            }
         }
     }
 
     func denyTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
                    indexPath: IndexPath,
                    viewModel: HandshakePartnerTableViewCellViewModel?) {
-        invokeTrustAction(cell: cell, indexPath: indexPath) {
-            viewModel?.denyTrust()
+        if let vm = viewModel {
+            let undoInfo = UndoInfoContainer(indexPath: indexPath, viewModel: vm)
+            undoTrustOrMistrustManager.registerUndo(withTarget: self,
+                                                    selector: #selector(undoMistrust(_:)),
+                                                    object: undoInfo)
+            invokeTrustAction(cell: cell, indexPath: indexPath) {
+                vm.denyTrust()
+            }
         }
     }
 
@@ -354,5 +368,27 @@ extension HandshakeViewController: SegueHandlerType {
             Log.shared.error("%@", "\(err)")
             destination.languages = []
         }
+    }
+}
+
+// MARK: - Undo
+
+extension HandshakeViewController {
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            undoTrustOrMistrustManager.undo()
+        } else {
+            super.motionEnded(motion, with: event)
+        }
+    }
+
+    @objc func undoTrust(_ undoInfo: UndoInfoContainer) {
+        undoInfo.viewModel.resetOrUndoTrustOrMistrust()
+        self.tableView.reloadRows(at: [undoInfo.indexPath], with: .automatic)
+    }
+
+    @objc func undoMistrust(_ undoInfo: UndoInfoContainer) {
+        undoInfo.viewModel.resetOrUndoTrustOrMistrust()
+        self.tableView.reloadRows(at: [undoInfo.indexPath], with: .automatic)
     }
 }
