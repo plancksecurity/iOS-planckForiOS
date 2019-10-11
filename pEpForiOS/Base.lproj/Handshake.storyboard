@@ -95,9 +95,6 @@
                                                     <accessibility key="accessibilityConfiguration" identifier="startStopTrustingButton"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <state key="normal" title="Stop Trusting"/>
-                                                    <connections>
-                                                        <action selector="startStopTrustingAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="XzM-B3-yD3"/>
-                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" text="OUTDISTANCE BLAH BLAH2" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR" userLabel="TrustWordsLabel">
                                                     <rect key="frame" x="0.0" y="236.5" width="324.5" height="20.5"/>

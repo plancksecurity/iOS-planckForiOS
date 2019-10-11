@@ -15,10 +15,6 @@ import PEPObjCAdapterFramework
  That delegate is in control to handle the actual trust changes.
  */
 protocol HandshakePartnerTableViewCellDelegate: class {
-    func resetTrustOrUndoMistrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
-                                  indexPath: IndexPath,
-                                  viewModel: HandshakePartnerTableViewCellViewModel?)
-
     func confirmTrust(sender: UIButton,  cell: HandshakePartnerTableViewCell,
                       indexPath: IndexPath,
                       viewModel: HandshakePartnerTableViewCellViewModel?)
@@ -250,11 +246,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     // MARK: - Actions
-
-    @IBAction func startStopTrustingAction(_ sender: UIButton) {
-        delegate?.resetTrustOrUndoMistrust(sender: sender, cell: self, indexPath: indexPath,
-                                           viewModel: viewModel)
-    }
 
     @IBAction func confirmAction(_ sender: UIButton) {
         delegate?.confirmTrust(sender: sender, cell: self, indexPath: indexPath,
