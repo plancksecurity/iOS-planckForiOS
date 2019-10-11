@@ -28,69 +28,84 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="1sS-UJ-WGa" userLabel="OuterStackView">
                                             <rect key="frame" x="20" y="20" width="335" height="310"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pop-7I-1lF" userLabel="HeaderView">
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iKV-f0-ptX" userLabel="HeaderStackView">
                                                     <rect key="frame" x="0.0" y="0.0" width="335" height="67"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="empty-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="rG1-9L-QdA" userLabel="PartnerImage">
-                                                            <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
-                                                            <accessibility key="accessibilityConfiguration" identifier="partnerImageView"/>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pop-7I-1lF" userLabel="HeaderView">
+                                                            <rect key="frame" x="0.0" y="0.0" width="335" height="67"/>
+                                                            <subviews>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="empty-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="rG1-9L-QdA" userLabel="PartnerImage">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                                                    <accessibility key="accessibilityConfiguration" identifier="partnerImageView"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="64" id="RmW-bM-KIy"/>
+                                                                        <constraint firstAttribute="height" constant="64" id="SeI-tk-oVr"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" text="Hannibal Chew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFh-wv-YAc" userLabel="PartnerNameLabel">
+                                                                    <rect key="frame" x="78" y="16.5" width="237" height="31.5"/>
+                                                                    <accessibility key="accessibilityConfiguration" identifier="partnerNameLabel"/>
+                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" text="Privacy Status: Mistrusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5RJ-Gx-qBT" userLabel="PrivacyStatusLabel">
+                                                                    <rect key="frame" x="78" y="56" width="237" height="18"/>
+                                                                    <accessibility key="accessibilityConfiguration" identifier="privacyStatusTitle"/>
+                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hZH-e1-puE">
+                                                                    <rect key="frame" x="46" y="43" width="24" height="24"/>
+                                                                    <accessibility key="accessibilityConfiguration" identifier="pEpStatusImageView"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" secondItem="hZH-e1-puE" secondAttribute="height" multiplier="1:1" id="And-L7-gTh"/>
+                                                                        <constraint firstAttribute="width" constant="24" id="GNL-nL-hic"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="64" id="RmW-bM-KIy"/>
-                                                                <constraint firstAttribute="height" constant="64" id="SeI-tk-oVr"/>
+                                                                <constraint firstItem="rG1-9L-QdA" firstAttribute="leading" secondItem="Pop-7I-1lF" secondAttribute="leading" id="9pU-Ch-8xO"/>
+                                                                <constraint firstItem="5RJ-Gx-qBT" firstAttribute="leading" secondItem="hFh-wv-YAc" secondAttribute="leading" id="AcG-z4-yj8"/>
+                                                                <constraint firstAttribute="bottom" secondItem="hZH-e1-puE" secondAttribute="bottom" id="Ju6-6r-9Ns"/>
+                                                                <constraint firstItem="hZH-e1-puE" firstAttribute="top" secondItem="rG1-9L-QdA" secondAttribute="bottom" constant="-21" id="LcD-m4-ahF"/>
+                                                                <constraint firstItem="hFh-wv-YAc" firstAttribute="centerY" secondItem="rG1-9L-QdA" secondAttribute="centerY" id="Lhs-IC-MBY"/>
+                                                                <constraint firstItem="5RJ-Gx-qBT" firstAttribute="top" secondItem="hFh-wv-YAc" secondAttribute="bottom" constant="8" symbolic="YES" id="Obp-39-oFK"/>
+                                                                <constraint firstAttribute="trailing" secondItem="5RJ-Gx-qBT" secondAttribute="trailing" constant="20" symbolic="YES" id="ZDE-kr-qKa"/>
+                                                                <constraint firstItem="hFh-wv-YAc" firstAttribute="leading" secondItem="rG1-9L-QdA" secondAttribute="trailing" constant="14" id="eRk-tY-aQl"/>
+                                                                <constraint firstAttribute="trailing" secondItem="hFh-wv-YAc" secondAttribute="trailing" constant="20" symbolic="YES" id="jjw-i6-Emj"/>
+                                                                <constraint firstItem="hZH-e1-puE" firstAttribute="leading" secondItem="rG1-9L-QdA" secondAttribute="trailing" constant="-18" id="nKj-8d-MQ8"/>
+                                                                <constraint firstItem="rG1-9L-QdA" firstAttribute="top" secondItem="Pop-7I-1lF" secondAttribute="top" id="z3f-My-hHo"/>
                                                             </constraints>
-                                                        </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" text="Hannibal Chew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFh-wv-YAc" userLabel="PartnerNameLabel">
-                                                            <rect key="frame" x="78" y="16.5" width="237" height="31.5"/>
-                                                            <accessibility key="accessibilityConfiguration" identifier="partnerNameLabel"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" text="Privacy Status: Mistrusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5RJ-Gx-qBT" userLabel="PrivacyStatusLabel">
-                                                            <rect key="frame" x="78" y="56" width="237" height="18"/>
-                                                            <accessibility key="accessibilityConfiguration" identifier="privacyStatusTitle"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hZH-e1-puE">
-                                                            <rect key="frame" x="46" y="43" width="24" height="24"/>
-                                                            <accessibility key="accessibilityConfiguration" identifier="pEpStatusImageView"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" secondItem="hZH-e1-puE" secondAttribute="height" multiplier="1:1" id="And-L7-gTh"/>
-                                                                <constraint firstAttribute="width" constant="24" id="GNL-nL-hic"/>
-                                                            </constraints>
-                                                        </imageView>
+                                                        </view>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <constraints>
-                                                        <constraint firstItem="rG1-9L-QdA" firstAttribute="leading" secondItem="Pop-7I-1lF" secondAttribute="leading" id="9pU-Ch-8xO"/>
-                                                        <constraint firstItem="5RJ-Gx-qBT" firstAttribute="leading" secondItem="hFh-wv-YAc" secondAttribute="leading" id="AcG-z4-yj8"/>
-                                                        <constraint firstAttribute="bottom" secondItem="hZH-e1-puE" secondAttribute="bottom" id="Ju6-6r-9Ns"/>
-                                                        <constraint firstItem="hZH-e1-puE" firstAttribute="top" secondItem="rG1-9L-QdA" secondAttribute="bottom" constant="-21" id="LcD-m4-ahF"/>
-                                                        <constraint firstItem="hFh-wv-YAc" firstAttribute="centerY" secondItem="rG1-9L-QdA" secondAttribute="centerY" id="Lhs-IC-MBY"/>
-                                                        <constraint firstItem="5RJ-Gx-qBT" firstAttribute="top" secondItem="hFh-wv-YAc" secondAttribute="bottom" constant="8" symbolic="YES" id="Obp-39-oFK"/>
-                                                        <constraint firstAttribute="trailing" secondItem="5RJ-Gx-qBT" secondAttribute="trailing" constant="20" symbolic="YES" id="ZDE-kr-qKa"/>
-                                                        <constraint firstItem="hFh-wv-YAc" firstAttribute="leading" secondItem="rG1-9L-QdA" secondAttribute="trailing" constant="14" id="eRk-tY-aQl"/>
-                                                        <constraint firstAttribute="trailing" secondItem="hFh-wv-YAc" secondAttribute="trailing" constant="20" symbolic="YES" id="jjw-i6-Emj"/>
-                                                        <constraint firstItem="hZH-e1-puE" firstAttribute="leading" secondItem="rG1-9L-QdA" secondAttribute="trailing" constant="-18" id="nKj-8d-MQ8"/>
-                                                        <constraint firstItem="rG1-9L-QdA" firstAttribute="top" secondItem="Pop-7I-1lF" secondAttribute="top" id="z3f-My-hHo"/>
-                                                    </constraints>
-                                                </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" text="Your communication partner is mistrusted." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eaF-0u-kGb" userLabel="PrivacyStatusDescription">
+                                                </stackView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0lc-1T-Z20" userLabel="PrivacyStatusDescriptionStackView">
                                                     <rect key="frame" x="0.0" y="87" width="335" height="20.5"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="privacyStatusDescription"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" text="OUTDISTANCE BLAH BLAH2" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR" userLabel="TrustWordsLabel">
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" text="Your communication partner is mistrusted." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eaF-0u-kGb" userLabel="PrivacyStatusDescription">
+                                                            <rect key="frame" x="0.0" y="0.0" width="335" height="20.5"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="privacyStatusDescription"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YPS-lz-S3W" userLabel="TrustwordsStackView">
                                                     <rect key="frame" x="0.0" y="127.5" width="335" height="20.5"/>
-                                                    <accessibility key="accessibilityConfiguration" label="trustWordsLabel"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                    <subviews>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" text="OUTDISTANCE BLAH BLAH2" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR" userLabel="TrustWordsLabel">
+                                                            <rect key="frame" x="0.0" y="0.0" width="335" height="20.5"/>
+                                                            <accessibility key="accessibilityConfiguration" label="trustWordsLabel"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="O51-e1-VQJ" userLabel="TrustButtonsStackView">
                                                     <rect key="frame" x="0.0" y="168" width="335" height="142"/>
                                                     <subviews>
