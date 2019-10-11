@@ -39,7 +39,7 @@ extension PEPColor {
                 "This contact is completely trusted. All communication will be with the maximum level of privacy.",
                 comment: "privacyStatusDescription green")
         case PEPColor.noColor:
-            return NSLocalizedString("None", comment: "privacyStatusDescription no_color")
+            return NSLocalizedString("Unknown", comment: "privacyStatusDescription no_color")
         default:
             return "Undefined"
         }
