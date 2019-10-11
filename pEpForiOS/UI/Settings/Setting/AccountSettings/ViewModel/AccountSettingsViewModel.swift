@@ -26,20 +26,20 @@ public class AccountSettingsViewModel {
         var transport: String?
     }
 
-    public struct SecurityViewModel {
-        var options = Server.Transport.toArray()
-        var size : Int {
-            get {
-                return options.count
-            }
-        }
-
-        subscript(option: Int) -> String {
-            get {
-                return options[option].asString()
-            }
-        }
-    }
+//    public struct SecurityViewModel {
+//        var options = Server.Transport.toArray()
+//        var size : Int {
+//            get {
+//                return options.count
+//            }
+//        }
+//
+//        subscript(option: Int) -> String {
+//            get {
+//                return options[option].asString()
+//            }
+//        }
+//    }
 
     private var headers: [String] {
         var tempHeader = [NSLocalizedString("Account", comment: "Account settings"),
@@ -56,7 +56,7 @@ public class AccountSettingsViewModel {
     }
     private var controlWord = "noRealPassword"
 
-    public let svm = SecurityViewModel()
+//    public let svm = SecurityViewModel()
     public let isOAuth2: Bool
 
     /// Holding both the data of the current account in verification,
@@ -216,9 +216,9 @@ public class AccountSettingsViewModel {
         }
     }
 
-    func sectionIsValid(section: Int) -> Bool {
-        return section >= 0 && section < headers.count
-    }
+//    func sectionIsValid(section: Int) -> Bool {
+//        return section >= 0 && section < headers.count
+//    }
 
     var count: Int {
         get {

@@ -9,14 +9,11 @@
 import UIKit
 
 final class EditableAccountSettingsViewController: BaseViewController {
+
     @IBOutlet weak var saveButton: UIBarButtonItem!
 
     override func viewDidLoad() {
-        DispatchQueue.main.async {
-            LoadingInterface.showLoadingInterface()
-            LoadingInterface.removeLoadingInterface()
-            LoadingInterface.showLoadingInterface()
-        }
+
     }
 
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {

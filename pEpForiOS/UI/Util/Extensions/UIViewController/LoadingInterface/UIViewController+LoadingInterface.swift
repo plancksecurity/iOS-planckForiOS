@@ -58,10 +58,18 @@ final class LoadingInterface {
         self.loadingInterface = loadingInterface
         keyWindow.addSubview(loadingInterface)
 
-        NSLayoutConstraint(item: loadingInterface, attribute: .leading, relatedBy: .equal, toItem: keyWindow, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: loadingInterface, attribute: .trailing, relatedBy: .equal, toItem: keyWindow, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: loadingInterface, attribute: .top, relatedBy: .equal, toItem: keyWindow, attribute: .top, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: loadingInterface, attribute: .bottom, relatedBy: .equal, toItem: keyWindow, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: loadingInterface, attribute: .leading, relatedBy: .equal,
+                           toItem: keyWindow, attribute: .leading, multiplier: 1,
+                           constant: 0).isActive = true
+        NSLayoutConstraint(item: loadingInterface, attribute: .trailing, relatedBy: .equal,
+                           toItem: keyWindow, attribute: .trailing, multiplier: 1,
+                           constant: 0).isActive = true
+        NSLayoutConstraint(item: loadingInterface, attribute: .top, relatedBy: .equal,
+                           toItem: keyWindow, attribute: .top, multiplier: 1,
+                           constant: 0).isActive = true
+        NSLayoutConstraint(item: loadingInterface, attribute: .bottom, relatedBy: .equal,
+                           toItem: keyWindow, attribute: .bottom, multiplier: 1,
+                           constant: 0).isActive = true
     }
 
     static private func loadingInterfaceFromXib() -> UIView? {

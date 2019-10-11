@@ -32,21 +32,10 @@ UIPickerViewDataSource, UITextFieldDelegate {
     @IBOutlet weak var pEpSyncToggle: UISwitch!
     @IBOutlet weak var resetIdentityCell: UITableViewCell!
 
-    private let spinner: UIActivityIndicatorView = {
-        let createe = UIActivityIndicatorView()
-        createe.hidesWhenStopped = true
-        createe.style = .gray
-        return createe
-    }()
-
     var securityPicker: UIPickerView?
-
-    var passWordChanged: Bool = false
 
     var viewModel: AccountSettingsViewModel? = nil
     let oauthViewModel = OAuth2AuthViewModel()
-
-    var current: UITextField?
 
     /**
      When dealing with an OAuth2 account, this is the index path of the cell that
@@ -61,7 +50,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
         super.viewDidLoad()
         configureView()
         if let vm = viewModel {
-//            vm.verifiableDelegate = self
+            vm.verifiableDelegate = self
             vm.delegate = self
         }
         passwordTextfield.delegate = self
@@ -80,8 +69,6 @@ UIPickerViewDataSource, UITextFieldDelegate {
     }
 
     private func configureView() {
-        tableView.addSubview(spinner)
-
         self.nameTextfield.text = viewModel?.name
         self.emailTextfield.text = viewModel?.email
         self.usernameTextfield.text = viewModel?.loginName
@@ -315,52 +302,6 @@ UIPickerViewDataSource, UITextFieldDelegate {
         viewModel?.pEpSync(enable: sender.isOn)
     }
 
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        current = textField
-    }
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
-        if textField == passwordTextfield {
-            passWordChanged = true
-        }
-        if textField == smtpPortTextfield || textField == imapPortTextfield {
-            if string.isBackspace {
-                return true
-            }
-            return string.isDigits
-        }
-
-        return true
-    }
-
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if let vm = viewModel {
-            return vm.svm.size
-        }
-        return 0
-    }
-
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int,
-                    forComponent component: Int) -> String? {
-        if let vm = viewModel {
-            return vm.svm[row]
-        }
-        return nil
-    }
-
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int,
-                    inComponent component: Int) {
-        if let c = current, let vm = viewModel {
-            c.text = vm.svm[row]
-            self.view.endEditing(true)
-        }
-    }
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.destination {
         case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
@@ -428,42 +369,14 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
     }
 
     func showLoadingView() {
-        UIApplication.shared.beginIgnoringInteractionEvents()
-        DispatchQueue.main.async { [weak self] in
-            self?.activityIndicatorView = self?.showActivityIndicator()
+        DispatchQueue.main.async {
+            LoadingInterface.showLoadingInterface()
         }
     }
 
     func hideLoadingView() {
-        DispatchQueue.main.async { [weak self] in
-            UIApplication.shared.endIgnoringInteractionEvents()
-            self?.activityIndicatorView?.removeFromSuperview()
+        DispatchQueue.main.async {
+            LoadingInterface.removeLoadingInterface()
         }
-    }
-}
-
-// MARK: - SPINNER
-
-extension AccountSettingsTableViewController {
-    /// Shows the spinner and disables UI parts that could lead to
-    /// launching another verification while one is already in process.
-    private func showSpinnerAndDisableUI() {
-//        doneButton.isEnabled = false
-
-        spinner.center =
-            CGPoint(x: tableView.frame.width / 2,
-                    y:
-                (tableView.frame.height / 2) - (navigationController?.navigationBar.frame.height
-                    ?? 0.0))
-        spinner.superview?.bringSubviewToFront(spinner)
-        tableView.isUserInteractionEnabled = false
-        spinner.startAnimating()
-    }
-
-    /// Hides the spinner and enables all UI elements again.
-    private func hideSpinnerAndEnableUI() {
-//        doneButton.isEnabled = true
-        tableView.isUserInteractionEnabled = true
-        spinner.stopAnimating()
     }
 }
