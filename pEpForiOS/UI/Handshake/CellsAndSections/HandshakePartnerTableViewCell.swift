@@ -34,7 +34,6 @@ protocol HandshakePartnerTableViewCellDelegate: class {
 }
 
 class HandshakePartnerTableViewCell: UITableViewCell {
-    @IBOutlet weak var startStopTrustingButton: UIButton!
     @IBOutlet weak var confirmButton: HandshakeButton!
     @IBOutlet weak var wrongButton: HandshakeButton!
     @IBOutlet weak var partnerImageView: UIImageView!
@@ -86,11 +85,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         updateConfirmDistrustButtonsTitle()
         trustWordsLabel.preferredMaxLayoutWidth = self.bounds.width
-        startStopTrustingButton.pEpIfyForTrust(backgroundColor: UIColor.pEpYellow,
-                                               textColor: .black)
         wrongButton.pEpIfyForTrust(backgroundColor: UIColor.pEpRed, textColor: .white)
         confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)
-
     }
 
     override func layoutSubviews() {
@@ -98,7 +94,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
         confirmButton.roundCorners(corners: [.bottomRight, .topRight], radius: 10)
         wrongButton.roundCorners(corners: [.topLeft, .bottomLeft], radius: 10)
-        startStopTrustingButton.layer.cornerRadius = 10
     }
 
     func updateView() {
@@ -108,7 +103,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             self.backgroundColor = UIColor.white
         }
         partnerNameLabel.text = viewModel?.partnerName
-        updateStopTrustingButtonTitle()
         updatePrivacyStatus(color: partnerColor)
         updateTrustwords()
         partnerImageView.image = viewModel?.partnerImage.value
@@ -121,8 +115,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
                 action: #selector(toggleTrustwordsLengthAction(_:))),
                     view: trustWordsLabel)
         }
-
-        updateStopTrustingButtonTitle()
 
         updateConfirmDistrustButtonsTitle()
 
@@ -152,37 +144,12 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     func updateAdditionalConstraints() {
-        updateStartStopTrustingButtonVisibility()
         updateTrustwordsExpansionVisibility()
-    }
-
-    func updateStartStopTrustingButtonVisibility() {
-        startStopTrustingButton.isHidden = !showStopStartTrustButton
     }
 
     func updateTrustwordsExpansionVisibility() {
         trustWordsLabel.isHidden = !showTrustwords
         trustMistrustButtonsStackView.isHidden = !showTrustwords
-    }
-
-    func updateStopTrustingButtonTitle() {
-        if !showStopStartTrustButton {
-            return
-        }
-
-        let titleMistrusted = NSLocalizedString(
-            "Start Trusting",
-            comment: "Stop/trust button in handshake overview")
-        let titleTrusted = NSLocalizedString(
-            "Stop Trusting",
-            comment: "Stop/trust button in handshake overview")
-
-        if viewModel?.partnerColor == PEPColor.red ||
-            viewModel?.partnerRating == .haveNoKey {
-            startStopTrustingButton.setTitle(titleMistrusted, for: .normal)
-        } else {
-            startStopTrustingButton.setTitle(titleTrusted, for: .normal)
-        }
     }
 
     func updateTitle(button: UIButton) {

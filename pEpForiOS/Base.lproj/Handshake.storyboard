@@ -90,24 +90,18 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4f-BW-EI0" userLabel="StartStopTrustingButton">
-                                                    <rect key="frame" x="0.0" y="108.5" width="324.5" height="108"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="startStopTrustingButton"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <state key="normal" title="Stop Trusting"/>
-                                                </button>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" text="OUTDISTANCE BLAH BLAH2" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR" userLabel="TrustWordsLabel">
-                                                    <rect key="frame" x="0.0" y="236.5" width="324.5" height="20.5"/>
+                                                    <rect key="frame" x="0.0" y="108.5" width="324.5" height="20.5"/>
                                                     <accessibility key="accessibilityConfiguration" label="trustWordsLabel"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="O51-e1-VQJ" userLabel="TrustButtonsStackView">
-                                                    <rect key="frame" x="0.0" y="277" width="324.5" height="33"/>
+                                                    <rect key="frame" x="0.0" y="149" width="324.5" height="161"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="dbO-2K-SpB" userLabel="WrongButton" customClass="HandshakeButton" customModule="pEpForiOS" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="162" height="33"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="162" height="161"/>
                                                             <accessibility key="accessibilityConfiguration" label="wrongButton"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <state key="normal" title="Wrong Trustwords"/>
@@ -116,7 +110,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Jgi-7k-Ymf" userLabel="ConfirmButton" customClass="HandshakeButton" customModule="pEpForiOS" customModuleProvider="target">
-                                                            <rect key="frame" x="162" y="0.0" width="162.5" height="33"/>
+                                                            <rect key="frame" x="162" y="0.0" width="162.5" height="161"/>
                                                             <accessibility key="accessibilityConfiguration" label="confirmButton"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <state key="normal" title="Confirm Trustwords"/>
@@ -149,7 +143,6 @@
                                     <outlet property="partnerNameLabel" destination="hFh-wv-YAc" id="ZDB-k9-YM8"/>
                                     <outlet property="privacyStatusDescription" destination="eaF-0u-kGb" id="VWh-tP-wgG"/>
                                     <outlet property="privacyStatusTitle" destination="5RJ-Gx-qBT" id="0qJ-kY-o93"/>
-                                    <outlet property="startStopTrustingButton" destination="Y4f-BW-EI0" id="MXW-Ms-cMz"/>
                                     <outlet property="trustMistrustButtonsStackView" destination="O51-e1-VQJ" id="BVf-gU-GaJ"/>
                                     <outlet property="trustWordsLabel" destination="lHS-sc-yWR" id="9rC-fg-eDL"/>
                                     <outlet property="wrongButton" destination="dbO-2K-SpB" id="Noy-9E-GaM"/>
