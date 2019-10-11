@@ -42,7 +42,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var privacyStatusTitle: UILabel!
     @IBOutlet weak var privacyStatusDescription: UILabel!
     @IBOutlet weak var trustWordsLabel: UILabel!
-    @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var trustMistrustButtonsStackView: UIStackView!
 
     var sizeHelper = false
