@@ -224,9 +224,17 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     func updatePrivacyStatus(color: PEPColor) {
-        privacyStatusTitle.text = color.privacyStatusTitle
-        privacyStatusDescription.text = color.privacyStatusDescription
-        pEpStatusImageView.image = color.statusIconForMessage()
+        if color == .noColor {
+            privacyStatusDescription.text = nil
+            pEpStatusImageView.image = nil
+        } else {
+            privacyStatusDescription.text = color.privacyStatusDescription
+            pEpStatusImageView.image = color.statusIconForMessage()
+        }
+
+        let privacyStatus = NSLocalizedString("Privacy Status",
+                                              comment: "Privacy status title part in handshake list")
+        privacyStatusTitle.text = "\(privacyStatus): \(color.privacyStatusTitle)"
     }
 
     // MARK: - Gestures
