@@ -280,6 +280,11 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
                                                 object: undoInfo)
 
         action(vm)
+
+        reevaluateAndUpdate(cell: cell, indexPath: indexPath)
+    }
+
+    func reevaluateAndUpdate(cell: HandshakePartnerTableViewCell, indexPath: IndexPath) {
         cell.updateView()
         tableView.updateSize()
         guard let msg = message else {
