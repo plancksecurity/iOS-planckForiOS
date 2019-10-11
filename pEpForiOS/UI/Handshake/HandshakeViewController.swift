@@ -203,9 +203,6 @@ extension HandshakeViewController {
             viewModel.trustwordsLanguage = currentLanguageCode
             cell.viewModel = viewModel
             cell.indexPath = indexPath
-            cell.sizeToFit()
-            cell.needsUpdateConstraints()
-            cell.updateConstraintsIfNeeded()
 
             return cell
         }
