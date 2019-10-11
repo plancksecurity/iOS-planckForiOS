@@ -274,7 +274,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         }
 
         // set undo action
-        let undoInfo = UndoInfoContainer(indexPath: indexPath, viewModel: vm)
+        let undoInfo = UndoInfoContainer(cell: cell, indexPath: indexPath, viewModel: vm)
         undoTrustOrMistrustManager.registerUndo(withTarget: self,
                                                 selector: undoSelector,
                                                 object: undoInfo)
@@ -388,11 +388,11 @@ extension HandshakeViewController {
 
     @objc func undoTrust(_ undoInfo: UndoInfoContainer) {
         undoInfo.viewModel.resetOrUndoTrustOrMistrust()
-        self.tableView.reloadRows(at: [undoInfo.indexPath], with: .automatic)
+        reevaluateAndUpdate(cell: undoInfo.cell, indexPath: undoInfo.indexPath)
     }
 
     @objc func undoMistrust(_ undoInfo: UndoInfoContainer) {
         undoInfo.viewModel.resetOrUndoTrustOrMistrust()
-        self.tableView.reloadRows(at: [undoInfo.indexPath], with: .automatic)
+        reevaluateAndUpdate(cell: undoInfo.cell, indexPath: undoInfo.indexPath)
     }
 }

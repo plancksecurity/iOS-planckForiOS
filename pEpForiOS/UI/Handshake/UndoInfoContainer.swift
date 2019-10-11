@@ -11,10 +11,14 @@ import Foundation
 /// Contains trust or mistrust undo information suitable for being used
 /// in connection with an undo manager, being able to being cast to Any.
 @objc class UndoInfoContainer: NSObject {
+    let cell: HandshakePartnerTableViewCell
     let indexPath: IndexPath
     let viewModel: HandshakePartnerTableViewCellViewModel
 
-    init(indexPath: IndexPath, viewModel: HandshakePartnerTableViewCellViewModel) {
+    init(cell: HandshakePartnerTableViewCell,
+         indexPath: IndexPath,
+         viewModel: HandshakePartnerTableViewCellViewModel) {
+        self.cell = cell
         self.indexPath = indexPath
         self.viewModel = viewModel
     }
