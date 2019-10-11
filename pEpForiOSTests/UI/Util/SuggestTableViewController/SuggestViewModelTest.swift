@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 class SuggestViewModelTest: CoreDataDrivenTestBase {
     static let defaultNumExistingContacts = 5

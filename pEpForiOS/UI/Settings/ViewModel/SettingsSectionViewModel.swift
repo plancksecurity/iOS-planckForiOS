@@ -59,7 +59,7 @@ final class SettingsSectionViewModel {
         case .contacts:
             generateContactsCells()
             title = NSLocalizedString("Contacts", comment: "TableView section header")
-            footer = NSLocalizedString("Permorms a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.",
+            footer = NSLocalizedString("Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.",
                                        comment: "TableView Contacts section footer")
         case .companyFeatures:
             generateExtaKeysCells()

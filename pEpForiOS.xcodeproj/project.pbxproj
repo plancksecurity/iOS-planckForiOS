@@ -114,7 +114,6 @@
 		1541D7F01FC81ED900D52A5D /* URL+ExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */; };
 		1541D7F51FC82A4900D52A5D /* URL+MIME.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7F41FC82A4900D52A5D /* URL+MIME.swift */; };
 		1543B6A222AACA4E002B59AB /* KeySyncHandshakeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6A122AACA4E002B59AB /* KeySyncHandshakeService.swift */; };
-		1543B6A422AACD69002B59AB /* secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1543B6A322AACD69002B59AB /* secret.xcconfig */; };
 		1543B6A822ABDAAE002B59AB /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6A722ABDAAE002B59AB /* Identity+pEp.swift */; };
 		1543B6B022ABF53C002B59AB /* KeySyncDeviceGroupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6AF22ABF53C002B59AB /* KeySyncDeviceGroupService.swift */; };
 		154660D42334E2FC008D2137 /* Message+SecurityBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154660D32334E2FC008D2137 /* Message+SecurityBadge.swift */; };
@@ -2581,7 +2580,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1110;
 				ORGANIZATIONNAME = "p≡p Security S.A.";
 				TargetAttributes = {
 					43980E221CBD0BC900A7FC3C = {
@@ -2590,14 +2589,17 @@
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.Keychain = {
 								enabled = 1;
 							};
 							com.apple.SafariKeychain = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.iCloud = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -2652,7 +2654,6 @@
 				152A39D221905C3E00D9F8E4 /* AttachmentCell.xib in Resources */,
 				43C98AC7219C3691006418B0 /* InfoPlist.strings in Resources */,
 				B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */,
-				1543B6A422AACD69002B59AB /* secret.xcconfig in Resources */,
 				431394A91E4B03AA00D92F33 /* Settings.bundle in Resources */,
 				43C98AC3219C275E006418B0 /* Localizable.strings in Resources */,
 				151DE7E11FC5D3FA00CDC273 /* Handshake.storyboard in Resources */,

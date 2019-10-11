@@ -12,6 +12,7 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 public class DefaultAppSettings: AppSettingsProtocol {
+    // Keys
     static private let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
     static private let keyKeySyncEnabled = "keyStartpEpSync"
     static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
@@ -23,45 +24,54 @@ public class DefaultAppSettings: AppSettingsProtocol {
     static private let keyShouldShowTutorialWizard = "keyShouldShowTutorialWizard"
     static private let keyUserHasBeenAskedForContactAccessPermissions = "keyUserHasBeenAskedForContactAccessPermissions"
 
+    static private let appGroupId = "group.security.pep.pep4ios"
+    static private var userDefaults: UserDefaults = {
+        guard let appGroupDefaults = UserDefaults.init(suiteName: appGroupId) else {
+            Log.shared.errorAndCrash("Could not find app group defaults")
+            return UserDefaults.standard
+        }
+        return appGroupDefaults
+    }()
+
     init() {
         setup()
     }
 
     public var shouldReinitializePepOnNextStartup: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: DefaultAppSettings.keyReinitializePepOnNextStartup)
+            return DefaultAppSettings.userDefaults.bool(forKey: DefaultAppSettings.keyReinitializePepOnNextStartup)
         }
         set {
-            UserDefaults.standard.set(newValue,
+            DefaultAppSettings.userDefaults.set(newValue,
                                       forKey: DefaultAppSettings.keyReinitializePepOnNextStartup)
         }
     }
 
     public var keySyncEnabled: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: DefaultAppSettings.keyKeySyncEnabled)
+            return DefaultAppSettings.userDefaults.bool(forKey: DefaultAppSettings.keyKeySyncEnabled)
         }
         set {
-            UserDefaults.standard.set(newValue,
+            DefaultAppSettings.userDefaults.set(newValue,
                                       forKey: DefaultAppSettings.keyKeySyncEnabled)
         }
     }
 
     public var extraKeysEditable: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: DefaultAppSettings.keyExtraKeysEditable)
+            return DefaultAppSettings.userDefaults.bool(forKey: DefaultAppSettings.keyExtraKeysEditable)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: DefaultAppSettings.keyExtraKeysEditable)
+            DefaultAppSettings.userDefaults.set(newValue, forKey: DefaultAppSettings.keyExtraKeysEditable)
         }
     }
     
     public var unencryptedSubjectEnabled: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: DefaultAppSettings.keyUnencryptedSubjectEnabled)
+            return DefaultAppSettings.userDefaults.bool(forKey: DefaultAppSettings.keyUnencryptedSubjectEnabled)
         }
         set {
-            UserDefaults.standard.set(newValue,
+            DefaultAppSettings.userDefaults.set(newValue,
                                       forKey: DefaultAppSettings.keyUnencryptedSubjectEnabled)
             PEPObjCAdapter.setUnEncryptedSubjectEnabled(newValue)
         }
@@ -72,36 +82,36 @@ public class DefaultAppSettings: AppSettingsProtocol {
             return false
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: DefaultAppSettings.keyThreadedViewEnabled)
+            DefaultAppSettings.userDefaults.set(newValue, forKey: DefaultAppSettings.keyThreadedViewEnabled)
         }
     }
 
     public var passiveMode: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: DefaultAppSettings.keyPassiveMode)
+            return DefaultAppSettings.userDefaults.bool(forKey: DefaultAppSettings.keyPassiveMode)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: DefaultAppSettings.keyPassiveMode)
+            DefaultAppSettings.userDefaults.set(newValue, forKey: DefaultAppSettings.keyPassiveMode)
             PEPObjCAdapter.setPassiveModeEnabled(newValue)
         }
     }
 
     public var shouldShowTutorialWizard: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: DefaultAppSettings.keyShouldShowTutorialWizard)
+            return DefaultAppSettings.userDefaults.bool(forKey: DefaultAppSettings.keyShouldShowTutorialWizard)
         }
         set {
-            UserDefaults.standard.set(newValue,
+            DefaultAppSettings.userDefaults.set(newValue,
                                       forKey: DefaultAppSettings.keyShouldShowTutorialWizard)
         }
     }
 
     public var userHasBeenAskedForContactAccessPermissions: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: DefaultAppSettings.keyUserHasBeenAskedForContactAccessPermissions)
+            return DefaultAppSettings.userDefaults.bool(forKey: DefaultAppSettings.keyUserHasBeenAskedForContactAccessPermissions)
         }
         set {
-            UserDefaults.standard.set(newValue,
+            DefaultAppSettings.userDefaults.set(newValue,
                                       forKey: DefaultAppSettings.keyUserHasBeenAskedForContactAccessPermissions)
         }
     }
@@ -110,21 +120,21 @@ public class DefaultAppSettings: AppSettingsProtocol {
     public var defaultAccount: String? {
         get {
             assureDefaultAccountIsSetAndExists()
-            return UserDefaults.standard.string(forKey: DefaultAppSettings.keyDefaultAccountAddress)
+            return DefaultAppSettings.userDefaults.string(forKey: DefaultAppSettings.keyDefaultAccountAddress)
         }
         set {
-            UserDefaults.standard.set(newValue,
+            DefaultAppSettings.userDefaults.set(newValue,
                                       forKey: DefaultAppSettings.keyDefaultAccountAddress)
         }
     }
 
     public var lastKnownDeviceGroupState: DeviceGroupState {
         get {
-            let rawValue = UserDefaults.standard.integer(forKey: DefaultAppSettings.keyLastKnowDeviceGroupStateRawValue)
+            let rawValue = DefaultAppSettings.userDefaults.integer(forKey: DefaultAppSettings.keyLastKnowDeviceGroupStateRawValue)
             return DeviceGroupState(rawValue: rawValue) ?? DeviceGroupState.sole
         }
         set {
-            UserDefaults.standard.set(newValue.rawValue,
+            DefaultAppSettings.userDefaults.set(newValue.rawValue,
                                       forKey: DefaultAppSettings.keyLastKnowDeviceGroupStateRawValue)
         }
     }
@@ -153,20 +163,20 @@ public class DefaultAppSettings: AppSettingsProtocol {
         defaults[DefaultAppSettings.keyShouldShowTutorialWizard] = true
         defaults[DefaultAppSettings.keyUserHasBeenAskedForContactAccessPermissions] = false
 
-        UserDefaults.standard.register(defaults: defaults)
+        DefaultAppSettings.userDefaults.register(defaults: defaults)
     }
 
     // MARK: - Other
 
     private func assureDefaultAccountIsSetAndExists() {
-        if UserDefaults.standard.string(forKey: DefaultAppSettings.keyDefaultAccountAddress) == nil {
+        if DefaultAppSettings.userDefaults.string(forKey: DefaultAppSettings.keyDefaultAccountAddress) == nil {
             // Default account is not set. Take the first MessageModel provides as a starting point
             let initialDefault = Account.all().first?.user.address
-            UserDefaults.standard.set(initialDefault, forKey: DefaultAppSettings.keyDefaultAccountAddress)
+            DefaultAppSettings.userDefaults.set(initialDefault, forKey: DefaultAppSettings.keyDefaultAccountAddress)
         }
         // Assure the default account still exists. The user might have deleted it.
         guard
-            let currentDefault = UserDefaults.standard.string(
+            let currentDefault = DefaultAppSettings.userDefaults.string(
                 forKey: DefaultAppSettings.keyDefaultAccountAddress),
             let _ = Account.by(address: currentDefault)
             else {

@@ -23,14 +23,18 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
     }
 
     func setupView() {
-        /// set up tableview delegate and datasource
+        // set up tableview delegate and datasource
         tableView.dataSource = self
         tableView.delegate = self
-        /// Hide toolbar
+        // Hide toolbar
         navigationController?.setToolbarHidden(true, animated: false)
         model.delegate = self
-        /// searchBar configuration
+        // searchBar configuration
         configureSearchBar()
+        //set the index color
+        tableView.sectionIndexColor = UIColor.pEpGreen
+
+        title = NSLocalizedString("Contacts", comment: "ResetTrustView title")
         if #available(iOS 11.0, *) {
             searchController.isActive = false
             navigationItem.searchController = searchController
@@ -99,8 +103,16 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
 
 extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
 
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return model.numberOfSections()
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return model.titleForSections(index: section)
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return model.numberOfRowsPerSection(section: section)
+        return model.numberOfRowsIn(section: section)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -176,6 +188,10 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
 
         }
         present(alertView, animated: true, completion: nil)
+    }
+
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return model.indexTitles()
     }
 }
 

@@ -50,7 +50,6 @@ struct KeySyncErrorView {
     }
 }
 
-
 // MARK: - Private
 
 extension KeySyncErrorView {
