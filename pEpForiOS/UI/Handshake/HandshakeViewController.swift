@@ -158,17 +158,8 @@ extension HandshakeViewController {
     /// and the color of the previous one.
     private func adjustBackgroundColor(viewModel: HandshakePartnerTableViewCellViewModel,
                                        indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            viewModel.backgroundColorDark = false
-        } else {
-            let prevRow = indexPath.row - 1
-            let prevViewModel = handshakePartnerTableViewCellViewModel[prevRow]
-            if prevViewModel.showTrustwords {
-                viewModel.backgroundColorDark = true
-            } else {
-                viewModel.backgroundColorDark = !prevViewModel.backgroundColorDark
-            }
-        }
+        // dark background on all odd rows
+        viewModel.backgroundColorDark = indexPath.row % 2 == 1
     }
 
     override func viewDidLayoutSubviews() {
