@@ -264,8 +264,21 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         tableView.updateSize()
     }
 
-    func invokeTrustAction(cell: HandshakePartnerTableViewCell, indexPath: IndexPath,
+    func invokeTrustAction(cell: HandshakePartnerTableViewCell,
+                           indexPath: IndexPath,
+                           viewModel: HandshakePartnerTableViewCellViewModel?,
+                           undoSelector: Selector,
                            action: () -> ()) {
+        guard let vm = viewModel else {
+            return
+        }
+
+        // set undo action
+        let undoInfo = UndoInfoContainer(indexPath: indexPath, viewModel: vm)
+        undoTrustOrMistrustManager.registerUndo(withTarget: self,
+                                                selector: undoSelector,
+                                                object: undoInfo)
+
         action()
         cell.updateView()
         tableView.updateSize()
@@ -293,7 +306,10 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
     func resetTrustOrUndoMistrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
                                   indexPath: IndexPath,
                                   viewModel: HandshakePartnerTableViewCellViewModel?) {
-        invokeTrustAction(cell: cell, indexPath: indexPath) {
+        invokeTrustAction(cell: cell,
+                          indexPath: indexPath,
+                          viewModel: viewModel,
+                          undoSelector: #selector(doNothing(_:))) {
             viewModel?.resetOrUndoTrustOrMistrust()
         }
     }
@@ -301,28 +317,22 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
     func confirmTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
                       indexPath: IndexPath,
                       viewModel: HandshakePartnerTableViewCellViewModel?) {
-        if let vm = viewModel {
-            let undoInfo = UndoInfoContainer(indexPath: indexPath, viewModel: vm)
-            undoTrustOrMistrustManager.registerUndo(withTarget: self,
-                                                    selector: #selector(undoTrust(_:)),
-                                                    object: undoInfo)
-            invokeTrustAction(cell: cell, indexPath: indexPath) {
-                vm.confirmTrust()
-            }
+        invokeTrustAction(cell: cell,
+                          indexPath: indexPath,
+                          viewModel: viewModel,
+                          undoSelector: #selector(undoTrust(_:))) {
+                            viewModel?.confirmTrust()
         }
     }
 
     func denyTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
                    indexPath: IndexPath,
                    viewModel: HandshakePartnerTableViewCellViewModel?) {
-        if let vm = viewModel {
-            let undoInfo = UndoInfoContainer(indexPath: indexPath, viewModel: vm)
-            undoTrustOrMistrustManager.registerUndo(withTarget: self,
-                                                    selector: #selector(undoMistrust(_:)),
-                                                    object: undoInfo)
-            invokeTrustAction(cell: cell, indexPath: indexPath) {
-                vm.denyTrust()
-            }
+        invokeTrustAction(cell: cell,
+                          indexPath: indexPath,
+                          viewModel: viewModel,
+                          undoSelector: #selector(undoMistrust(_:))) {
+                            viewModel?.denyTrust()
         }
     }
 
@@ -390,5 +400,8 @@ extension HandshakeViewController {
     @objc func undoMistrust(_ undoInfo: UndoInfoContainer) {
         undoInfo.viewModel.resetOrUndoTrustOrMistrust()
         self.tableView.reloadRows(at: [undoInfo.indexPath], with: .automatic)
+    }
+
+    @objc func doNothing(_ undoInfo: UndoInfoContainer) {
     }
 }
