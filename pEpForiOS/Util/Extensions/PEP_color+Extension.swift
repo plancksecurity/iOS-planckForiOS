@@ -19,7 +19,7 @@ extension PEPColor {
         case .green:
             return NSLocalizedString("Secure & Trusted", comment: "privacyStatusTitle green")
         case PEPColor.noColor:
-            return NSLocalizedString("None", comment: "privacyStatusTitle no_color")
+            return NSLocalizedString("Unknown", comment: "privacyStatusTitle no_color")
         default:
             return "Undefined"
         }
