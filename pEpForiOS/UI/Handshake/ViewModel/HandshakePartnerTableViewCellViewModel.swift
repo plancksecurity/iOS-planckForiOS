@@ -128,13 +128,19 @@ class HandshakePartnerTableViewCellViewModel {
         if !isPartnerpEpUser,
             let fprSelf = pEpSelf.fingerPrint,
             let fprPartner = pEpPartner.fingerPrint {
+            // partner is a PGP user
             let fprPrettySelf = fprSelf.prettyFingerPrint()
             let fprPrettyPartner = fprPartner.prettyFingerPrint()
             self.trustwords =
                 "\(partnerName):\n\(fprPrettyPartner)\n\n" + "\(ownName):\n\(fprPrettySelf)"
         } else {
-            self.trustwords = determineTrustwords(identitySelf: pEpSelf,
-                                                  identityPartner: pEpPartner)
+            // partner is a pEp user
+            if pEpPartner.fingerPrint != nil {
+                self.trustwords = determineTrustwords(identitySelf: pEpSelf,
+                                                      identityPartner: pEpPartner)
+            } else {
+                self.trustwords = nil
+            }
         }
     }
 
