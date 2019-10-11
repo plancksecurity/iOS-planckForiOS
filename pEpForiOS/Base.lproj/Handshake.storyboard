@@ -65,7 +65,6 @@
                                                                     </constraints>
                                                                 </imageView>
                                                             </subviews>
-                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
                                                                 <constraint firstItem="rG1-9L-QdA" firstAttribute="leading" secondItem="Pop-7I-1lF" secondAttribute="leading" id="9pU-Ch-8xO"/>
                                                                 <constraint firstItem="5RJ-Gx-qBT" firstAttribute="leading" secondItem="hFh-wv-YAc" secondAttribute="leading" id="AcG-z4-yj8"/>
