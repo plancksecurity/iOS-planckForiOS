@@ -21,13 +21,13 @@ class PassiveModeViewModelTest: CoreDataDrivenTestBase {
 
     public func testSwitch() {
         viewModel.setSwitch(value: true)
-        XCTAssertTrue(AppSettings.passiveMode)
+        XCTAssertTrue(AppSettings.shared.passiveMode)
 
         var switchValue = viewModel.switchValue()
         XCTAssertTrue(switchValue)
 
         viewModel.setSwitch(value: false)
-        XCTAssertFalse(AppSettings.passiveMode)
+        XCTAssertFalse(AppSettings.shared.passiveMode)
 
         switchValue = viewModel.switchValue()
         XCTAssertFalse(switchValue)

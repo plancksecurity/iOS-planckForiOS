@@ -15,7 +15,7 @@ extension Account {
     ///
     /// - Returns: default account
     static public func defaultAccount() -> Account? {
-        guard let addressDefaultAccount = AppSettings.defaultAccount
+        guard let addressDefaultAccount = AppSettings.shared.defaultAccount
             else {
                 return all().first
         }
