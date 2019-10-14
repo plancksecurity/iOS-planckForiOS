@@ -20,6 +20,7 @@ class ExtraKeysSettingViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        fpr.delegate = self
         subscribeForKeyboardNotifications()
     }
 
@@ -173,20 +174,35 @@ extension ExtraKeysSettingViewController: ExtraKeysSettingViewModelDelegate {
     }
 }
 
-// MARK: - Keyboard Notifications
+// MARK: - Keyboard
 
 extension ExtraKeysSettingViewController {
 
     @objc
     func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize =
-            (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-                self.view.frame.origin.y = -keyboardSize.height
+        guard let keyboardSize =
+            (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else {
+                return
         }
+        self.view.frame.origin.y = -keyboardSize.height
     }
 
     @objc
     func keyboardWillHide(notification: NSNotification) {
             self.view.frame.origin.y = 0
+    }
+}
+
+extension ExtraKeysSettingViewController: UITextViewDelegate {
+
+    // Dismiss keyboard on return key
+    func textView(_ textView: UITextView,
+                  shouldChangeTextIn range: NSRange,
+                  replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
     }
 }
