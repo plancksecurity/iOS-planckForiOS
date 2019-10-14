@@ -115,7 +115,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         moc.saveAndLogErrors()
 
-        let changedMessages = SyncFlagsToServerOperation.messagesToBeSynced(folder: folder,
+        let changedMessages = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: folder,
                                                                             context: moc)
         XCTAssertEqual(changedMessages.count, allMessages.count)
 
@@ -125,15 +125,15 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTFail()
             return
         }
-        let op = SyncMessagesOperation(imapSyncData: imapSyncData,
-                                       folderName: folderName,
-                                       firstUID: folder.firstUID(context: moc),
-                                       lastUID: folder.lastUID(context: moc))
+        let op = SyncMessagesInImapFolderOperation(imapSyncData: imapSyncData,
+                                                   folderName: folderName,
+                                                   firstUID: folder.firstUID(context: moc),
+                                                   lastUID: folder.lastUID(context: moc))
         op.completionBlock = {
             op.completionBlock = nil
             expMailsSynced.fulfill()
         }
-
+        
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
@@ -164,9 +164,11 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         let expMailsSynced = expectation(description: "expMailsSynced")
 
-        let op = SyncMessagesOperation(
-            parentName: #function,
-            imapSyncData: imapSyncData, folderName: folderName, firstUID: 10, lastUID: 5)
+        let op = SyncMessagesInImapFolderOperation(parentName: #function,
+                                                   imapSyncData: imapSyncData,
+                                                   folderName: folderName,
+                                                   firstUID: 10,
+                                                   lastUID: 5)
         op.completionBlock = {
             op.completionBlock = nil
             expMailsSynced.fulfill()
