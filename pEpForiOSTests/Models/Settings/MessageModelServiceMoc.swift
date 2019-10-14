@@ -14,13 +14,13 @@ final class MessageModelServiceMoc: MessageModelServiceProtocol {
     var disableKeySyncWasCalled = false
 
 
-    func start() throws {}
+    func start_old() throws {}
 
-    func processAllUserActionsAndStop() {}
+    func processAllUserActionsAndStop_old() {}
 
-    func cancel(updateIdentities: Bool) {}
+    func cancel_old(updateIdentities: Bool) {}
 
-    func checkForNewMails(completionHandler: @escaping (Int?) -> ()) {}
+    func checkForNewMails_old(completionHandler: @escaping (Int?) -> ()) {}
 
     func enableKeySync() {
         enableKeySyncWasCalled = true
@@ -29,4 +29,10 @@ final class MessageModelServiceMoc: MessageModelServiceProtocol {
     func disableKeySync() {
         disableKeySyncWasCalled = true
     }
+
+    func start() { }
+
+    func stop() { }
+
+    func finish() { }
 }
