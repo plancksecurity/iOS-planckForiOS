@@ -111,14 +111,25 @@ extension HandshakeViewController {
         return UIModalPresentationStyle.none
     }
 
+    private func addRightImage(button: UIButton, image: UIImage?, offset: CGFloat) {
+        button.setImage(image, for: .normal)
+        button.imageView?.translatesAutoresizingMaskIntoConstraints = false
+        button.imageView?.centerYAnchor.constraint(equalTo: button.centerYAnchor,
+                                                   constant: 0.0).isActive = true
+        button.imageView?.trailingAnchor.constraint(equalTo: button.trailingAnchor,
+                                                    constant: -offset).isActive = true
+    }
+
     private func languageButton() -> UIButton {
         //language button
         let img = UIImage(named: "pEpForiOS-icon-languagechange")
         let button = UIButton(type: UIButton.ButtonType.custom)
         button.imageEdgeInsets = UIEdgeInsets.init(top: 10.0, left: 0.0, bottom: 10.0, right: 0.0)
+        addRightImage(button: button, image: img, offset: 5)
         button.setImage(img, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
-        button.addTarget(self, action: #selector(self.languageSelectedAction(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(self.languageSelectedAction(_:)),
+                         for: .touchUpInside)
         return button
     }
 
