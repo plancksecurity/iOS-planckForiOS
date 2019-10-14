@@ -117,18 +117,27 @@ extension HandshakeViewController {
     /// - Parameter parentView: The view (which is probably a button) to overlay.
     /// - Returns: The newly created overlay view that has been added to the given view.
     @discardableResult private func addLanguageButtonView(parentView: UIView) -> UIView {
+        let totalHeightGap: CGFloat = 16 // Combined max gap to parent, top and bottom
         let img = UIImage(named: "pEpForiOS-icon-languagechange")
 
         let imgView = UIImageView(image: img)
         parentView.addSubview(imgView)
+
+        // Turn off automatically created constraints that come into the way.
         imgView.translatesAutoresizingMaskIntoConstraints = false
 
+        // aspect ratio
         imgView.heightAnchor.constraint(equalTo: imgView.widthAnchor).isActive = true
 
+        // center in parent
         imgView.centerYAnchor.constraint(equalTo: parentView.centerYAnchor).isActive = true
+
+        // glue to the right/trailing
         imgView.trailingAnchor.constraint(lessThanOrEqualTo: parentView.trailingAnchor).isActive = true
+
+        // leave some space on top and bottom
         imgView.heightAnchor.constraint(lessThanOrEqualTo: parentView.heightAnchor,
-                                        constant: -10).isActive = true
+                                        constant: -totalHeightGap).isActive = true
 
         return imgView
     }
