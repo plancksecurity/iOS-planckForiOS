@@ -180,9 +180,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// or when the user quits the application and it begins the transition to the background state.
     /// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame
     /// rates. Games should use this method to pause the game.
+    ///
+    /// - note: this is even called when:
+    ///         * an alert is shown (e.g. OS asks for CNContact access permissions)
+    ///         * theuser swipes up/down the "ControllCenter"
     func applicationWillResignActive(_ application: UIApplication) {
         UIApplication.hideStatusBarNetworkActivitySpinner()
-        shutdownAndPrepareServicesForRestart() //BUFF: this is even called when showing an alert !
+        shutdownAndPrepareServicesForRestart() //BUFF:
         messageModelService?.finish()
     }
 
