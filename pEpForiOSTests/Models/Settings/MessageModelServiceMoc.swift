@@ -18,7 +18,7 @@ final class MessageModelServiceMoc: MessageModelServiceProtocol {
 
     func processAllUserActionsAndStop_old() {}
 
-    func cancel_old(updateIdentities: Bool) {}
+    func cancel_old() {}
 
     func checkForNewMails_old(completionHandler: @escaping (Int?) -> ()) {}
 
