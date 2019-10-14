@@ -110,37 +110,30 @@ extension HandshakeViewController {
         return UIModalPresentationStyle.none
     }
 
-    private func languageButtonView() -> UIView {
+    @discardableResult private func addLanguageButtonView(parentView: UIView) -> UIView {
         let img = UIImage(named: "pEpForiOS-icon-languagechange")
 
-        let container = UIView()
         let imgView = UIImageView(image: img)
+        parentView.addSubview(imgView)
         imgView.translatesAutoresizingMaskIntoConstraints = false
-        container.addSubview(imgView)
 
         imgView.heightAnchor.constraint(equalTo: imgView.widthAnchor).isActive = true
 
-        imgView.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
-        imgView.trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor).isActive = true
+        imgView.centerYAnchor.constraint(equalTo: parentView.centerYAnchor).isActive = true
+        imgView.trailingAnchor.constraint(lessThanOrEqualTo: parentView.trailingAnchor).isActive = true
+        imgView.heightAnchor.constraint(lessThanOrEqualTo: parentView.heightAnchor,
+                                        constant: -10).isActive = true
 
-        imgView.heightAnchor.constraint(lessThanOrEqualToConstant: 25).isActive = true
-
-        return container
-    }
-
-    @objc func handleLanguageButtonTap(_ sender: UITapGestureRecognizer) {
-        if sender.state == .ended {
-            languageSelectedAction(sender)
-        }
+        return imgView
     }
 
     private func languageButton() -> UIBarButtonItem {
-        let worldView = languageButtonView()
-        worldView.isUserInteractionEnabled = true
-        let gr = UITapGestureRecognizer(target: self,
-                                        action: #selector(self.handleLanguageButtonTap(_:)))
-        worldView.addGestureRecognizer(gr)
-        return UIBarButtonItem(customView: worldView)
+        let button = UIButton(type: .custom)
+        button.addTarget(self,
+                         action: #selector(self.languageSelectedAction(_:)),
+                         for: .touchUpInside)
+        addLanguageButtonView(parentView: button)
+        return UIBarButtonItem(customView: button)
     }
 
     private func backButton() -> UIButton {
