@@ -145,12 +145,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - UIApplicationDelegate
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.warn("applicationDidReceiveMemoryWarning")
+        Log.shared.errorAndCrash("applicationDidReceiveMemoryWarning")
     }
 
-    func application(
-        _ application: UIApplication, didFinishLaunchingWithOptions
-        launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         Log.shared.info("Library url: %@", String(describing: applicationDirectory()))
 
@@ -182,8 +181,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// rates. Games should use this method to pause the game.
     func applicationWillResignActive(_ application: UIApplication) {
         UIApplication.hideStatusBarNetworkActivitySpinner()
-        Session.main.commit()
         shutdownAndPrepareServicesForRestart() //BUFF: this is even called when showing an alert !
+        messageModelService?.finish()
     }
 
     /// Use this method to release shared resources, save user data, invalidate timers, and store
@@ -197,6 +196,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Session.main.commit()
         shouldDestroySession = true
         gracefullyShutdownServices()
+        messageModelService?.finish()
     }
 
     /// Called as part of the transition from the background to the inactive state; here you can
@@ -222,16 +222,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         shutdownAndPrepareServicesForRestart()
         UserNotificationTool.resetApplicationIconBadgeNumber()
+        messageModelService?.start()
     }
 
     /// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
+        // applicationWillTerminate is not called when running backlground tasks. We clean up
+        // anyway, just to be safe.
         UIApplication.hideStatusBarNetworkActivitySpinner()
-        Session.main.commit()
         shouldDestroySession = true
         // Just in case, last chance to clean up. Should not be necessary though.
         cleanupPEPSessionIfNeeded()
+        messageModelService?.finish()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
