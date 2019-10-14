@@ -35,7 +35,7 @@ class ExtraKeysSettingViewModel {
     }
 
     var isEditable: Bool {
-        return AppSettings.extraKeysEditable
+        return AppSettings.shared.extraKeysEditable
     }
 
     /// Updates or creates an ExtraKey.

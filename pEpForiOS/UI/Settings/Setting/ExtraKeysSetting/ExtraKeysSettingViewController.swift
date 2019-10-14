@@ -33,7 +33,7 @@ class ExtraKeysSettingViewController: BaseViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        AppSettings.extraKeysEditable = false
+        AppSettings.shared.extraKeysEditable = false
     }
 
     deinit {

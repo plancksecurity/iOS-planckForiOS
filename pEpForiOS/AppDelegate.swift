@@ -111,9 +111,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let deviceGroupService = KeySyncDeviceGroupService()
         self.deviceGroupService = deviceGroupService
         let theMessageModelService = MessageModelService(errorPropagator: errorPropagator,
+                                                         cnContactsAccessPermissionProvider: AppSettings.shared, //BUFF: make app setting proper singleton
                                                          keySyncServiceDelegate: keySyncHandshakeService,
                                                          deviceGroupDelegate: deviceGroupService,
-                                                         keySyncEnabled: AppSettings.keySyncEnabled)
+                                                         keySyncEnabled: AppSettings.shared.keySyncEnabled)
         theMessageModelService.delegate = self
         messageModelService = theMessageModelService
 
@@ -131,7 +132,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // For better  user acceptance we want to ask the user for contact access permissions in the
         // moment he uses a feature that requires access. Thus we do not touch CNContacts before
         // that happened.
-        let shouldUpdateIdentities = AppSettings.userHasBeenAskedForContactAccessPermissions
+        let shouldUpdateIdentities = AppSettings.shared.userHasBeenAskedForContactAccessPermissions
         // We cancel the Network Service to make sure it is idle and ready for a clean restart.
         // The actual restart of the services happens in ReplicationServiceDelegate callbacks.
         messageModelService?.cancel_old(updateIdentities: shouldUpdateIdentities)

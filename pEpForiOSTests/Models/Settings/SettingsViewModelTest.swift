@@ -67,15 +67,15 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
         let secondAccountPosition = (0,0)
         let defaultAddress = (settingsVM[0][0] as? SettingsCellViewModel)?.account?.user.address
 
-        AppSettings.defaultAccount = defaultAddress
-        XCTAssertEqual(AppSettings.defaultAccount, defaultAddress)
+        AppSettings.shared.defaultAccount = defaultAddress
+        XCTAssertEqual(AppSettings.shared.defaultAccount, defaultAddress)
 
         settingsVM.delete(section: firstAccountPosition.0, cell: firstAccountPosition.1)
 
-        XCTAssertNotEqual(AppSettings.defaultAccount, defaultAddress)
-        XCTAssertNotNil(AppSettings.defaultAccount)
+        XCTAssertNotEqual(AppSettings.shared.defaultAccount, defaultAddress)
+        XCTAssertNotNil(AppSettings.shared.defaultAccount)
         let newDefaultAddress = (settingsVM[secondAccountPosition.0][secondAccountPosition.1] as? SettingsCellViewModel)?.account?.user.address
-        XCTAssertEqual(AppSettings.defaultAccount, newDefaultAddress)
+        XCTAssertEqual(AppSettings.shared.defaultAccount, newDefaultAddress)
 
     }
 
