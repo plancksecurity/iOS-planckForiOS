@@ -220,11 +220,6 @@ extension HandshakeViewController {
             cell.viewModel = viewModel
             cell.indexPath = indexPath
 
-            // The width (on iPad etc.) should not exceed 400, but at the same time
-            // be as wide as possible and the same for all cells.
-            let maxWidth = min(cell.bounds.width, 400)
-            cell.widthAnchor.constraint(equalToConstant: maxWidth).isActive = true
-
             return cell
         }
 
