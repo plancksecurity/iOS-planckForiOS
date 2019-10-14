@@ -67,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Tell the model that is is save to start services.
     private func startServices() {
         do {
-            try messageModelService?.start()
+            try messageModelService?.start_old()
         } catch {
             Log.shared.log(error: error)
         }
@@ -97,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
                     self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
             })
-        messageModelService?.processAllUserActionsAndStop() //BUFF: must go away
+        messageModelService?.processAllUserActionsAndStop_old() //BUFF: must go away
     }
 
     func cleanupPEPSessionIfNeeded() {
@@ -134,7 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let shouldUpdateIdentities = AppSettings.userHasBeenAskedForContactAccessPermissions
         // We cancel the Network Service to make sure it is idle and ready for a clean restart.
         // The actual restart of the services happens in ReplicationServiceDelegate callbacks.
-        messageModelService?.cancel(updateIdentities: shouldUpdateIdentities)
+        messageModelService?.cancel_old(updateIdentities: shouldUpdateIdentities)
     }
 
     private func askUserForNotificationPermissions() {
@@ -169,6 +169,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         askUserForNotificationPermissions()
 
         let result = setupInitialViewController()
+
+        try! messageModelService?.start_old()
 
         return result
     }
@@ -240,7 +242,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
 
-        messageModelService.checkForNewMails() {[unowned self] (numMails: Int?) in
+        messageModelService.checkForNewMails_old() {[unowned self] (numMails: Int?) in
             guard let numMails = numMails else {
                 self.cleanup(andCall: completionHandler, result: .failed)
                 return
