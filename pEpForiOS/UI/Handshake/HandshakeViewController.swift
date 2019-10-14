@@ -110,6 +110,12 @@ extension HandshakeViewController {
         return UIModalPresentationStyle.none
     }
 
+    /// Creates an overlay view of the globe and adds it to the given view in such a way
+    /// that it will cover as much space as possible while not exceeding the parent view
+    /// and maintaining aspect ratio.
+    ///
+    /// - Parameter parentView: The view (which is probably a button) to overlay.
+    /// - Returns: The newly created overlay view that has been added to the given view.
     @discardableResult private func addLanguageButtonView(parentView: UIView) -> UIView {
         let img = UIImage(named: "pEpForiOS-icon-languagechange")
 
@@ -127,6 +133,9 @@ extension HandshakeViewController {
         return imgView
     }
 
+    /// Creates a bar button item for invoking the trustwords language list.
+    ///
+    /// - Returns: UIBarButtonItem suitable for adding to the navigation bar.
     private func languageButton() -> UIBarButtonItem {
         let button = UIButton(type: .custom)
         button.addTarget(self,
