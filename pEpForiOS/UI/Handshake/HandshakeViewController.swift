@@ -44,8 +44,7 @@ class HandshakeViewController: BaseTableViewController {
         tableView.estimatedRowHeight = 400.0
         tableView.rowHeight = UITableView.automaticDimension
 
-        let item = UIBarButtonItem(customView: languageButton())
-        self.navigationItem.rightBarButtonItems = [item]
+        self.navigationItem.rightBarButtonItems = [languageButton()]
 
         let leftItem = UIBarButtonItem(customView: backButton())
         self.navigationItem.leftBarButtonItem = leftItem
@@ -124,18 +123,24 @@ extension HandshakeViewController {
         imgView.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
         imgView.trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor).isActive = true
 
+        imgView.heightAnchor.constraint(lessThanOrEqualToConstant: 25).isActive = true
+
         return container
     }
 
-    private func languageButton() -> UIButton {
-        //language button
-        let img = UIImage(named: "pEpForiOS-icon-languagechange")
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.imageEdgeInsets = UIEdgeInsets.init(top: 10.0, left: 0.0, bottom: 10.0, right: 0.0)
-        button.setImage(img, for: .normal)
-        button.imageView?.contentMode = .scaleAspectFit
-        button.addTarget(self, action: #selector(self.languageSelectedAction(_:)), for: .touchUpInside)
-        return button
+    @objc func handleLanguageButtonTap(_ sender: UITapGestureRecognizer) {
+        if sender.state == .ended {
+            languageSelectedAction(sender)
+        }
+    }
+
+    private func languageButton() -> UIBarButtonItem {
+        let worldView = languageButtonView()
+        worldView.isUserInteractionEnabled = true
+        let gr = UITapGestureRecognizer(target: self,
+                                        action: #selector(self.handleLanguageButtonTap(_:)))
+        worldView.addGestureRecognizer(gr)
+        return UIBarButtonItem(customView: worldView)
     }
 
     private func backButton() -> UIButton {
