@@ -169,7 +169,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let result = setupInitialViewController()
 
-        try! messageModelService?.start_old()
+        try? messageModelService?.start_old()
 
         return result
     }
