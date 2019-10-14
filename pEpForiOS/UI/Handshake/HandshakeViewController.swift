@@ -196,22 +196,6 @@ extension HandshakeViewController {
 
     override func viewDidLayoutSubviews() {
         popoverPresentationController?.sourceView = navigationItem.titleView
-        var changedPreferredMaxLayoutWidth = false
-
-        let cells = tableView.visibleCells
-        for cell in cells {
-            if let c = cell as? HandshakePartnerTableViewCell {
-                let width = c.trustWordsLabel.frame.size.width
-                if width != c.trustWordsLabel.preferredMaxLayoutWidth {
-                    c.trustWordsLabel.preferredMaxLayoutWidth = width
-                    changedPreferredMaxLayoutWidth = true
-                }
-            }
-        }
-
-        if changedPreferredMaxLayoutWidth {
-            tableView.updateSize()
-        }
     }
 }
 
@@ -281,6 +265,7 @@ extension HandshakeViewController {
 
 extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
     func updateSize() {
+        print("**** updateSize")
         tableView.updateSize()
     }
 
@@ -350,6 +335,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
                                 viewModel: HandshakePartnerTableViewCellViewModel?) {
         viewModel?.toggleTrustwordsLength()
         cell.updateTrustwords()
+        print("**** toggleTrustwordsLength")
         tableView.updateSize()
     }
 }
