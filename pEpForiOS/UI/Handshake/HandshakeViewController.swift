@@ -284,16 +284,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         }
         updateStatusBadge()
 
-        // reload cells after that one, to ensure the alternating colors are upheld
-        var paths = [IndexPath]()
-        let i1 = indexPath.row + 1
-        let i2 = handshakePartnerTableViewCellViewModel.count
-        if i1 < i2 {
-            for i in i1..<i2 {
-                paths.append(IndexPath(row: i, section: indexPath.section))
-            }
-        }
-        tableView.reloadRows(at: paths, with: .automatic)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 
     func confirmTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
