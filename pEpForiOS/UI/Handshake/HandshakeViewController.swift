@@ -273,8 +273,8 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
     }
 
     func reevaluateAndUpdate(cell: HandshakePartnerTableViewCell, indexPath: IndexPath) {
-        cell.updateView()
-        tableView.updateSize()
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+
         guard let msg = message else {
             Log.shared.errorAndCrash("No message")
             return
@@ -283,8 +283,6 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
             RatingReEvaluator.reevaluate(message: msg)
         }
         updateStatusBadge()
-
-        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 
     func confirmTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
