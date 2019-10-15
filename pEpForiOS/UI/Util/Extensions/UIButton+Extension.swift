@@ -39,9 +39,6 @@ extension UIButton {
         let actSize = bounds.size
         return iSize.width < actSize.width
     }
-}
-
-public class HandshakeButton: UIButton {
 
     public func roundCorners(corners: UIRectCorner, radius: CGFloat){
         clipsToBounds = true
