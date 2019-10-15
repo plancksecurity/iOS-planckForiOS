@@ -324,8 +324,8 @@ extension String {
 
     /// it's true when the string only contains letters
     public var isLetter: Bool {
-        let digits = CharacterSet.letters
-        return unicodeScalars.allSatisfy { digits.contains($0) }
+        let letters = CharacterSet.letters
+        return unicodeScalars.allSatisfy { letters.contains($0) }
     }
 
     /// it's true when the string is only a backspace
