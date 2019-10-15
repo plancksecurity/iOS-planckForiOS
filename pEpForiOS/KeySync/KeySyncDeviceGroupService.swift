@@ -16,17 +16,17 @@ protocol KeySyncDeviceGroupServiceProtocol: class {
 
 class KeySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol {
     var deviceGroupState: DeviceGroupState {
-        return AppSettings.lastKnownDeviceGroupState
+        return AppSettings.shared.lastKnownDeviceGroupState
     }
 
     func leaveDeviceGroup() throws {
         try PEPSession().leaveDeviceGroupError()
-        AppSettings.lastKnownDeviceGroupState = .sole
+        AppSettings.shared.lastKnownDeviceGroupState = .sole
     }
 }
 
 extension KeySyncDeviceGroupService: KeySyncServiceDeviceGroupDelegate {
     func deviceGroupStateChanged(newValue: DeviceGroupState) {
-        AppSettings.lastKnownDeviceGroupState = newValue
+        AppSettings.shared.lastKnownDeviceGroupState = newValue
     }
 }

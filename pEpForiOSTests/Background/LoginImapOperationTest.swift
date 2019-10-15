@@ -21,7 +21,7 @@ class LoginImapOperationTest: CoreDataDrivenTestBase {
      - OAuth has to be deactivated for the Yahoo account (enable the "allow less secure clients" option in your Yahoo account)
      */
     func testLoginWorkingAccount() {
-        let errorContainer = ErrorContainer()
+        let errorContainer = ErrorPropagator()
         let expLoginSucceeds = expectation(description: "LoginSucceeds")
 
         let imapLogin = LoginImapOperation(
