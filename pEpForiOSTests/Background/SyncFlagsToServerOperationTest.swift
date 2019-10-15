@@ -23,8 +23,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTFail()
             return
         }
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
             op.completionBlock = nil
@@ -94,13 +93,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertNotEqual(serverFlags.flagFlagged, localFlags.flagFlagged)
         }
 
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                               context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
 
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -114,8 +111,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                                       context: moc)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                           context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0)
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count)
     }
@@ -164,13 +161,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
         moc.saveAndLogErrors()
 
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                               context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
 
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -184,8 +179,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                                       context: moc)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                           context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0)
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count)
     }
@@ -236,13 +231,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
         moc.saveAndLogErrors()
 
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                               context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -256,8 +249,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                                       context: moc)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                           context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0, "all done")
         XCTAssertEqual(op.numberOfMessagesSynced, 0,
                        "no messages have been synced as all flag were already set before")
@@ -316,15 +309,13 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         moc.saveAndLogErrors()
 
         // ...so all messages should need to be synced
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                               context: moc)
 
         XCTAssertEqual(messagesToBeSynced.count, messages.count,
                        "all messages should need to be synced")
 
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -338,8 +329,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                                       context: moc)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                           context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0, "all done")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
                        "flagDeleted changes, so all messages should be updated")
@@ -396,13 +387,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         moc.saveAndLogErrors()
 
         // since a flag has be added on all messages, all messages need to be synced
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                               context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -416,8 +405,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                                       context: moc)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: inbox,
+                                                                           context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -475,13 +464,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         moc.saveAndLogErrors()
 
         // since a flag has be added on all messages, all messages need to be synced
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -495,9 +482,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -555,13 +541,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         moc.saveAndLogErrors()
 
         // since a flag has be added on all messages, all messages need to be synced
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -575,7 +559,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
             folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
@@ -633,13 +617,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         moc.saveAndLogErrors()
 
         // since a flag has be added on all messages, all messages need to be synced
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -653,8 +635,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                                       context: moc)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -705,13 +687,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
         moc.saveAndLogErrors()
 
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -725,8 +705,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                                       context: moc)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0)
         XCTAssertEqual(op.numberOfMessagesSynced, 0, "no message has been synced")
     }
@@ -780,13 +760,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         moc.saveAndLogErrors()
 
         // nothing changed, so no sync should take place
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -800,8 +778,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                                       context: moc)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, 0,
@@ -857,13 +835,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -877,8 +853,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                                       context: moc)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -934,13 +910,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -954,8 +928,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                                       context: moc)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -1011,13 +985,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -1031,8 +1003,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                                       context: moc)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -1088,13 +1060,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -1108,8 +1078,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                                       context: moc)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -1165,13 +1135,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        let op = SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                        folderID: inbox.objectID)
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -1185,8 +1153,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
 
-        messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                                       context: moc)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -1247,17 +1215,15 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         moc.saveAndLogErrors()
 
         // since a flag has be removed on all messages, all messages need to be synced
-        var messagesToBeSynced =
-            SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                      context: moc)
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
 
         let numSyncOpsToTrigger = 5
-        var ops = [SyncFlagsToServerInImapFolderOperation]()
+        var ops = [SyncFlagsToServerOperation]()
         for i in 1...numSyncOpsToTrigger {
             let op =
-                SyncFlagsToServerInImapFolderOperation(imapSyncData: imapSyncData,
-                                                       folderID: inbox.objectID)
+                SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
             let expEmailsSynced = expectation(description: "expEmailsSynced\(i)")
             op.completionBlock = {
                 op.completionBlock = nil
@@ -1282,8 +1248,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             }
         })
 
-        messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
-                                                                                       context: moc)
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: moc)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
         var first = true
@@ -1296,4 +1262,5 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             }
         }
     }
+
 }
