@@ -120,7 +120,7 @@
                                                                 <action selector="wrongAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="UGm-r5-suP"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Jgi-7k-Ymf" userLabel="ConfirmButton" customClass="HandshakeButton" customModule="pEpForiOS" customModuleProvider="target">
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Jgi-7k-Ymf" userLabel="ConfirmButton">
                                                             <rect key="frame" x="167.5" y="0.0" width="167.5" height="42"/>
                                                             <accessibility key="accessibilityConfiguration" label="confirmButton"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
