@@ -95,10 +95,10 @@
                                                     </subviews>
                                                     <edgeInsets key="layoutMargins" top="0.0" left="8" bottom="0.0" right="8"/>
                                                 </stackView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YPS-lz-S3W" userLabel="TrustwordsStackView">
+                                                <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="YPS-lz-S3W" userLabel="TrustwordsStackView">
                                                     <rect key="frame" x="0.0" y="152.5" width="335" height="20.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" text="OUTDISTANCE BLAH BLAH2" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR" userLabel="TrustWordsLabel">
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="OUTDISTANCE BLAH BLAH2" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR" userLabel="TrustWordsLabel">
                                                             <rect key="frame" x="8" y="0.0" width="319" height="20.5"/>
                                                             <accessibility key="accessibilityConfiguration" label="trustWordsLabel"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
