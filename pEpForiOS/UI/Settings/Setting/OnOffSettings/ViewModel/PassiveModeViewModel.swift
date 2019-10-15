@@ -20,10 +20,10 @@ struct PassiveModeViewModel: SwitchSettingCellViewModelProtocol  {
     private(set) var title = NSLocalizedString("Enable passive mode", comment: "Passive mode title")
 
     func setSwitch(value: Bool) {
-        AppSettings.passiveMode = value
+        AppSettings.shared.passiveMode = value
     }
 
     func switchValue() -> Bool {
-        return AppSettings.passiveMode
+        return AppSettings.shared.passiveMode
     }
 }

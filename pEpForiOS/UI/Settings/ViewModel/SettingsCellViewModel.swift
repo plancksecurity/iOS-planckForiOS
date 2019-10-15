@@ -46,7 +46,7 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
         get {
             switch type {
             case .defaultAccount:
-                return AppSettings.defaultAccount
+                return AppSettings.shared.defaultAccount
             default:
                 return nil
             }
@@ -92,7 +92,7 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
                 // Have no value.
                 return nil
             case .defaultAccount:
-                return AppSettings.defaultAccount
+                return AppSettings.shared.defaultAccount
             }
         }
     }
@@ -113,20 +113,20 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
             do {
                 if try !account.isPEPSyncEnabled() {
                     messageModelService.disableKeySync()
-                    AppSettings.keySyncEnabled = false
+                    AppSettings.shared.keySyncEnabled = false
                 }
             } catch {
                 Log.shared.errorAndCrash("Fail to get account pEpSync state")
             }
         }
 
-        if AppSettings.defaultAccount == oldAddress {
+        if AppSettings.shared.defaultAccount == oldAddress {
             let newDefaultAccount = Account.all().first
             guard let newDefaultAddress = newDefaultAccount?.user.address else {
                 return
                 //no more accounts, no default account
             }
-            AppSettings.defaultAccount = newDefaultAddress
+            AppSettings.shared.defaultAccount = newDefaultAddress
         }
     }
 }
