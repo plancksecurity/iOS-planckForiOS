@@ -669,7 +669,8 @@ class TestUtil {
             XCTAssertEqual(cdM.messageID, pantomimeMail.messageID())
 
             let errorContainer = TestErrorContainer()
-            let decOp = DecryptMessageOperation(cdMessageToDecryptObjectId: cdM.objectID,
+            let decOp = DecryptMessageOperation(cdMessageToDecrypt: cdM,
+                                                context: context,
                                                 errorContainer: errorContainer)
 
             let bgQueue = OperationQueue()
