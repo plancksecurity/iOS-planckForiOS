@@ -43,7 +43,7 @@ class AccountSettingsTableViewController: BaseTableViewController {
      override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureView()
+        setUpView()
         viewModel?.delegate = self
     }
 
@@ -59,11 +59,11 @@ class AccountSettingsTableViewController: BaseTableViewController {
         }
     }
 
-    private func configureView() {
-        self.nameTextfield.text = viewModel?.name
-        self.emailTextfield.text = viewModel?.email
-        self.usernameTextfield.text = viewModel?.loginName
-        self.passwordTextfield.text = "JustAPassword"
+    private func setUpView() {
+        nameTextfield.text = viewModel?.account.user.userName
+        emailTextfield.text = viewModel?.account.user.address
+        usernameTextfield.text = viewModel?.account.imapServer?.credentials.loginName
+        passwordTextfield.text = "JustAPassword"
         resetIdentityLabel.text = NSLocalizedString("Reset This Identity", comment: "Account settings reset this identity")
         resetIdentityLabel.textColor = .pEpRed
 
@@ -71,21 +71,17 @@ class AccountSettingsTableViewController: BaseTableViewController {
             pEpSyncToggle.isOn = viewModel.pEpSync
         }
 
-        let imap = viewModel?.imapServer
-        imapServerTextfield.text = imap?.address
-        imapPortTextfield.text = imap?.port
-//        imapPortTextfield.delegate = self
-        imapSecurityTextfield.text = imap?.transport
-//        self.imapSecurityTextfield.delegate = self
-        imapSecurityTextfield.tag = 1
+        if let imapServer = viewModel?.account.imapServer {
+            imapServerTextfield.text = imapServer.address
+            imapPortTextfield.text = String(imapServer.port)
+            imapSecurityTextfield.text = imapServer.transport.asString()
+        }
 
-        let smtp = viewModel?.smtpServer
-        self.smtpServerTextfield.text = smtp?.address
-        self.smtpPortTextfield.text = smtp?.port
-//        smtpPortTextfield.delegate = self
-        smtpSecurityTextfield.text = smtp?.transport
-//        self.smtpSecurityTextfield.delegate = self
-        smtpSecurityTextfield.tag = 2
+        if let smtpServer = viewModel?.account.smtpServer {
+            self.smtpServerTextfield.text = smtpServer.address
+            self.smtpPortTextfield.text = String(smtpServer.port)
+            smtpSecurityTextfield.text = smtpServer.transport.asString()
+        }
     }
 
     private func informUser(about error:Error) {
@@ -106,66 +102,6 @@ class AccountSettingsTableViewController: BaseTableViewController {
         present(alert, animated: true)
     }
 
-    // MARK: - Helper
-    
-    private func validateInput() throws -> (addrImap: String, portImap: String, transImap: String,
-        addrSmpt: String, portSmtp: String, transSmtp: String, accountName: String,
-        loginName: String) {
-            //IMAP
-            guard let addrImap = imapServerTextfield.text, addrImap != "" else {
-                let msg = NSLocalizedString("IMAP server must not be empty.",
-                                            comment: "Empty IMAP server message")
-                throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
-            }
-
-            guard let portImap = imapPortTextfield.text, portImap != "" else {
-                let msg = NSLocalizedString("IMAP Port must not be empty.",
-                                            comment: "Empty IMAP port server message")
-                throw AccountSettingsUserInputError.invalidInputPort(localizedMessage: msg)
-            }
-
-            guard let transImap = imapSecurityTextfield.text, transImap != "" else {
-                let msg = NSLocalizedString("Choose IMAP transport security method.",
-                                            comment: "Empty IMAP transport security method")
-                throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
-            }
-
-            //SMTP
-            guard let addrSmpt = smtpServerTextfield.text, addrSmpt != "" else {
-                let msg = NSLocalizedString("SMTP server must not be empty.",
-                                            comment: "Empty SMTP server message")
-                throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
-            }
-
-            guard let portSmtp = smtpPortTextfield.text, portSmtp != "" else {
-                let msg = NSLocalizedString("SMTP Port must not be empty.",
-                                            comment: "Empty SMTP port server message")
-                throw AccountSettingsUserInputError.invalidInputPort(localizedMessage: msg)
-            }
-
-            guard let transSmtp = smtpSecurityTextfield.text, transSmtp != "" else {
-                let msg = NSLocalizedString("Choose SMTP transport security method.",
-                                            comment: "Empty SMTP transport security method")
-                throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
-            }
-
-            //other
-            guard let name = nameTextfield.text, name != "" else {
-                let msg = NSLocalizedString("Account name must not be empty.",
-                                            comment: "Empty account name message")
-                throw AccountSettingsUserInputError.invalidInputAccountName(localizedMessage: msg)
-            }
-
-            guard let loginName = usernameTextfield.text, loginName != "" else {
-                let msg = NSLocalizedString("Username must not be empty.",
-                                            comment: "Empty username message")
-                throw AccountSettingsUserInputError.invalidInputUserName(localizedMessage: msg)
-            }
-
-            return (addrImap: addrImap, portImap: portImap, transImap: transImap,
-                    addrSmpt: addrSmpt, portSmtp: portSmtp, transSmtp: transSmtp, accountName: name,
-                    loginName: loginName)
-    }
 
     // MARK: - UITableViewDataSource
 
@@ -228,7 +164,7 @@ class AccountSettingsTableViewController: BaseTableViewController {
     }
 
     private func handleOauth2Reauth() {
-        guard let address = viewModel?.email else {
+        guard let address = viewModel?.account.user.address else {
             return
         }
         oauth2ActivityIndicator.startAnimating()
@@ -296,41 +232,11 @@ class AccountSettingsTableViewController: BaseTableViewController {
     }
 }
 
-// MARK: - Error Handling
-
-extension AccountSettingsTableViewController {
-    public func handleLoginError(error: Error) {
-        Log.shared.error("%@", "\(error)")
-        UIUtils.show(error: error, inViewController: self)
-    }
-}
-
-// MARK: - OAuth2AuthViewModelDelegate
-
-extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
-    func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
-        oauth2ActivityIndicator.stopAnimating()
-
-        shouldHandleErrors = true
-
-        if let err = oauth2Error {
-            self.handleLoginError(error: err)
-            return
-        }
-        guard let token = accessToken else {
-            self.handleLoginError(error: OAuth2AuthViewModelError.noToken)
-            return
-        }
-        viewModel?.updateToken(accessToken: token)
-    }
-}
-
 
 // MARK: - AccountSettingsViewModelDelegate
 
 extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
     func undoPEPSyncToggle() {
-
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
@@ -362,5 +268,26 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
         DispatchQueue.main.async {
             LoadingInterface.removeLoadingInterface()
         }
+    }
+}
+
+
+// MARK: - OAuth2AuthViewModelDelegate
+
+extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
+    func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
+        oauth2ActivityIndicator.stopAnimating()
+
+        shouldHandleErrors = true
+
+        if let err = oauth2Error {
+            self.handleLoginError(error: err)
+            return
+        }
+        guard let token = accessToken else {
+            self.handleLoginError(error: OAuth2AuthViewModelError.noToken)
+            return
+        }
+        viewModel?.updateToken(accessToken: token)
     }
 }

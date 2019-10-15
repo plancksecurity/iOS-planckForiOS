@@ -97,4 +97,16 @@ extension EditableAccountSettingsViewController {
         //!!!: see IOS-1608 this is a patch as we have 2 navigationControllers and need to pop to the previous view.
         (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
     }
+
+    
+}
+
+
+// MARK: - Error Handling
+
+extension AccountSettingsTableViewController {
+    public func handleLoginError(error: Error) {
+        Log.shared.error("%@", "\(error)")
+        UIUtils.show(error: error, inViewController: self)
+    }
 }
