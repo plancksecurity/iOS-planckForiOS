@@ -83,18 +83,11 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         updateConfirmDistrustButtonsTitle()
-        trustWordsLabel.preferredMaxLayoutWidth = self.bounds.width
         wrongButton.pEpIfyForTrust(backgroundColor: UIColor.pEpRed, textColor: .white)
         confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)
     }
 
     override func layoutSubviews() {
-        super.layoutSubviews()
-
-        // After the layout is done, text labels know their width, but they
-        // don't take that into account for the layout (because that is already over).
-        // So set the actual width as the preferred one, and do one additional layout.
-        trustWordsLabel.preferredMaxLayoutWidth = trustWordsLabel.frame.size.width
         super.layoutSubviews()
 
         confirmButton.roundCorners(corners: [.bottomRight, .topRight], radius: 10)
