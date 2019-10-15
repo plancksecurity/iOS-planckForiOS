@@ -18,7 +18,7 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
     // on every sync cycle
     func testMailsNotDuplicated() {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
-        let errorContainer = ErrorContainer()
+        let errorContainer = ErrorPropagator()
 
         // fetch emails in inbox ...
         let imapLogin = LoginImapOperation(parentName: #function, errorContainer: errorContainer,

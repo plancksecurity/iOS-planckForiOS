@@ -17,7 +17,7 @@ import CoreData
 //!!!: must be moved to MM
 extension XCTestCase {
     public func loginIMAP(imapSyncData: ImapSyncData,
-                          errorContainer: ServiceErrorProtocol,
+                          errorContainer: ErrorContainerProtocol,
                           queue: OperationQueue,
                           context: NSManagedObjectContext? = nil) {
         let expImapLoggedIn = expectation(description: "expImapLoggedIn")
@@ -64,7 +64,7 @@ extension XCTestCase {
     //!!!: used in tests only! move to test target
     func appendMailsIMAP(folder: CdFolder,
                          imapSyncData: ImapSyncData,
-                         errorContainer: ServiceErrorProtocol,
+                         errorContainer: ErrorContainerProtocol,
                          queue: OperationQueue) {
         let expSentAppended = expectation(description: "expSentAppended")
         let appendOp = AppendMailsToFolderOperation(parentName: #function,
@@ -84,7 +84,7 @@ extension XCTestCase {
         })
     }
 
-    public func fetchNumberOfNewMails(errorContainer: ServiceErrorProtocol,
+    public func fetchNumberOfNewMails(errorContainer: ErrorContainerProtocol,
                                       context: NSManagedObjectContext) -> Int? {
         let expNumMails = expectation(description: "expNumMails")
         var numMails: Int?

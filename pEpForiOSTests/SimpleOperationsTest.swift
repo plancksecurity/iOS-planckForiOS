@@ -240,7 +240,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 //                                                          context: moc).map { $0.uuid! }
 //        // ... Login ...
 //        let smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
-//        let errorContainer = ErrorContainer()
+//        let errorContainer = ErrorPropagator()
 //        let smtpLogin = LoginSmtpOperation(parentName: #function,
 //                                           smtpSendData: smtpSendData,
 //                                           errorContainer: errorContainer)
@@ -283,7 +283,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
     func testAppendSentMailsOperation() {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
-        let errorContainer = ErrorContainer()
+        let errorContainer = ErrorPropagator()
 
         let queue = OperationQueue()
 
@@ -337,7 +337,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
     func testAppendDraftMailsOperation() {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
-        let errorContainer = ErrorContainer()
+        let errorContainer = ErrorPropagator()
 
         let imapLogin = LoginImapOperation(
             parentName: #function,

@@ -580,7 +580,7 @@ class TestUtil {
 
     // MARK: - ERROR
 
-    class TestErrorContainer: ServiceErrorProtocol {
+    class TestErrorContainer: ErrorContainerProtocol {
         var error: Error?
 
         func addError(_ error: Error) {
