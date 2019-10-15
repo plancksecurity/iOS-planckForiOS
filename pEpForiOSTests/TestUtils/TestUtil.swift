@@ -580,7 +580,7 @@ class TestUtil {
 
     // MARK: - ERROR
 
-    class TestErrorContainer: ServiceErrorProtocol {
+    class TestErrorContainer: ErrorContainerProtocol {
         var error: Error?
 
         func addError(_ error: Error) {
@@ -669,8 +669,7 @@ class TestUtil {
             XCTAssertEqual(cdM.messageID, pantomimeMail.messageID())
 
             let errorContainer = TestErrorContainer()
-            let decOp = DecryptMessageOperation(cdMessageToDecrypt: cdM,
-                                                context: context,
+            let decOp = DecryptMessageOperation(cdMessageToDecryptObjectId: cdM.objectID,
                                                 errorContainer: errorContainer)
 
             let bgQueue = OperationQueue()

@@ -67,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Tell the model that is is save to start services.
     private func startServices() {
         do {
-            try messageModelService?.start()
+            try messageModelService?.start_old()
         } catch {
             Log.shared.log(error: error)
         }
@@ -97,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
                     self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
             })
-        messageModelService?.processAllUserActionsAndStop() //BUFF: must go away
+        messageModelService?.processAllUserActionsAndStop_old() //BUFF: must go away
     }
 
     func cleanupPEPSessionIfNeeded() {
@@ -111,9 +111,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let deviceGroupService = KeySyncDeviceGroupService()
         self.deviceGroupService = deviceGroupService
         let theMessageModelService = MessageModelService(errorPropagator: errorPropagator,
+                                                         cnContactsAccessPermissionProvider: AppSettings.shared, //BUFF: make app setting proper singleton
                                                          keySyncServiceDelegate: keySyncHandshakeService,
                                                          deviceGroupDelegate: deviceGroupService,
-                                                         keySyncEnabled: AppSettings.keySyncEnabled)
+                                                         keySyncEnabled: AppSettings.shared.keySyncEnabled)
         theMessageModelService.delegate = self
         messageModelService = theMessageModelService
 
@@ -128,13 +129,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // Safely restarts all services
     private func shutdownAndPrepareServicesForRestart() {
-        // For better  user acceptance we want to ask the user for contact access permissions in the
-        // moment he uses a feature that requires access. Thus we do not touch CNContacts before
-        // that happened.
-        let shouldUpdateIdentities = AppSettings.userHasBeenAskedForContactAccessPermissions
         // We cancel the Network Service to make sure it is idle and ready for a clean restart.
         // The actual restart of the services happens in ReplicationServiceDelegate callbacks.
-        messageModelService?.cancel(updateIdentities: shouldUpdateIdentities)
+        messageModelService?.cancel_old()
     }
 
     private func askUserForNotificationPermissions() {
@@ -145,12 +142,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - UIApplicationDelegate
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.warn("applicationDidReceiveMemoryWarning")
+        Log.shared.errorAndCrash("applicationDidReceiveMemoryWarning")
     }
 
-    func application(
-        _ application: UIApplication, didFinishLaunchingWithOptions
-        launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         Log.shared.info("Library url: %@", String(describing: applicationDirectory()))
 
@@ -170,6 +166,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let result = setupInitialViewController()
 
+        try? messageModelService?.start_old()
+
         return result
     }
 
@@ -178,10 +176,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// or when the user quits the application and it begins the transition to the background state.
     /// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame
     /// rates. Games should use this method to pause the game.
+    ///
+    /// - note: this is even called when:
+    ///         * an alert is shown (e.g. OS asks for CNContact access permissions)
+    ///         * theuser swipes up/down the "ControllCenter"
     func applicationWillResignActive(_ application: UIApplication) {
         UIApplication.hideStatusBarNetworkActivitySpinner()
-        Session.main.commit()
-        shutdownAndPrepareServicesForRestart() //BUFF: this is even called when showing an alert !
+        shutdownAndPrepareServicesForRestart() //BUFF:
+        messageModelService?.finish()
     }
 
     /// Use this method to release shared resources, save user data, invalidate timers, and store
@@ -195,14 +197,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Session.main.commit()
         shouldDestroySession = true
         gracefullyShutdownServices()
+        messageModelService?.finish()
     }
 
     /// Called as part of the transition from the background to the inactive state; here you can
     /// undo many of the changes made on entering the background.
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // Desparate try to wokaround lagging PEPSessionProvider issue (IOS-1769)
-        // The suspect is that PEPSessionProvider has problems when the first call for a PEPSession is done from a non-main thread.
-        let _ = PEPSession()
+
     }
 
     /// Restart any tasks that were paused (or not yet started) while the application was inactive.
@@ -220,16 +221,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         shutdownAndPrepareServicesForRestart()
         UserNotificationTool.resetApplicationIconBadgeNumber()
+        messageModelService?.start()
     }
 
     /// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
+        // applicationWillTerminate is not called when running backlground tasks. We clean up
+        // anyway, just to be safe.
         UIApplication.hideStatusBarNetworkActivitySpinner()
-        Session.main.commit()
         shouldDestroySession = true
         // Just in case, last chance to clean up. Should not be necessary though.
         cleanupPEPSessionIfNeeded()
+        messageModelService?.finish()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
@@ -240,7 +244,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
 
-        messageModelService.checkForNewMails() {[unowned self] (numMails: Int?) in
+        messageModelService.checkForNewMails_old() {[unowned self] (numMails: Int?) in
             guard let numMails = numMails else {
                 self.cleanup(andCall: completionHandler, result: .failed)
                 return

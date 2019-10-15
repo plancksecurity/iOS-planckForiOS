@@ -115,7 +115,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         moc.saveAndLogErrors()
 
-        let changedMessages = SyncFlagsToServerOperation.messagesToBeSynced(folder: folder,
+        let changedMessages = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: folder,
                                                                             context: moc)
         XCTAssertEqual(changedMessages.count, allMessages.count)
 
@@ -125,15 +125,15 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTFail()
             return
         }
-        let op = SyncMessagesOperation(imapSyncData: imapSyncData,
-                                       folderName: folderName,
-                                       firstUID: folder.firstUID(context: moc),
-                                       lastUID: folder.lastUID(context: moc))
+        let op = SyncMessagesInImapFolderOperation(imapSyncData: imapSyncData,
+                                                   folderName: folderName,
+                                                   firstUID: folder.firstUID(context: moc),
+                                                   lastUID: folder.lastUID(context: moc))
         op.completionBlock = {
             op.completionBlock = nil
             expMailsSynced.fulfill()
         }
-
+        
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
@@ -164,9 +164,11 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         let expMailsSynced = expectation(description: "expMailsSynced")
 
-        let op = SyncMessagesOperation(
-            parentName: #function,
-            imapSyncData: imapSyncData, folderName: folderName, firstUID: 10, lastUID: 5)
+        let op = SyncMessagesInImapFolderOperation(parentName: #function,
+                                                   imapSyncData: imapSyncData,
+                                                   folderName: folderName,
+                                                   firstUID: 10,
+                                                   lastUID: 5)
         op.completionBlock = {
             op.completionBlock = nil
             expMailsSynced.fulfill()
@@ -238,7 +240,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 //                                                          context: moc).map { $0.uuid! }
 //        // ... Login ...
 //        let smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
-//        let errorContainer = ErrorContainer()
+//        let errorContainer = ErrorPropagator()
 //        let smtpLogin = LoginSmtpOperation(parentName: #function,
 //                                           smtpSendData: smtpSendData,
 //                                           errorContainer: errorContainer)
@@ -281,7 +283,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
     func testAppendSentMailsOperation() {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
-        let errorContainer = ErrorContainer()
+        let errorContainer = ErrorPropagator()
 
         let queue = OperationQueue()
 
@@ -335,7 +337,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
     func testAppendDraftMailsOperation() {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
-        let errorContainer = ErrorContainer()
+        let errorContainer = ErrorPropagator()
 
         let imapLogin = LoginImapOperation(
             parentName: #function,
@@ -405,7 +407,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         let expDraftsStored = expectation(description: "expDraftsStored")
 
-        let appendOp = AppendMailsOperation(parentName: #function,
+        let appendOp = AppendMailsToFolderOperation(parentName: #function,
                                             folder: folder,
                                             imapSyncData: imapSyncData,
                                             errorContainer: errorContainer)
