@@ -265,7 +265,6 @@ extension HandshakeViewController {
 
 extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
     func updateSize() {
-        print("**** updateSize")
         tableView.updateSize()
     }
 
@@ -335,7 +334,6 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
                                 viewModel: HandshakePartnerTableViewCellViewModel?) {
         viewModel?.toggleTrustwordsLength()
         cell.updateTrustwords()
-        print("**** toggleTrustwordsLength")
         tableView.updateSize()
     }
 }
