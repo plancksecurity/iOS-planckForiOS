@@ -15,7 +15,7 @@ import PEPObjCAdapterFramework
 
 class PEPSessionTest: CoreDataDrivenTestBase {
 
-    //MARK: - Test
+    // MARK: - Test
 
     func testPEPConversion() {
         let account = SecretTestData().createWorkingAccount(context: moc)
@@ -90,7 +90,6 @@ class PEPSessionTest: CoreDataDrivenTestBase {
 
         let encMsg2 = try! PEPUtils.encrypt(pEpMessage: pEpMessage)
         theEncMsg = encMsg2
-        // expecting that message ID gets hidden (ENGINE-288)
         XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
 
         XCTAssertNotEqual(theEncMsg.references ?? [], references)

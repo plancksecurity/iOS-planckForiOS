@@ -30,10 +30,10 @@ struct EnableKeySyncViewModel: SwitchSettingCellViewModelProtocol  {
         case false:
             messageModelService.disableKeySync()
         }
-        AppSettings.keySyncEnabled = value
+        AppSettings.shared.keySyncEnabled = value
     }
 
     func switchValue() -> Bool {
-        return AppSettings.keySyncEnabled
+        return AppSettings.shared.keySyncEnabled
     }
 }

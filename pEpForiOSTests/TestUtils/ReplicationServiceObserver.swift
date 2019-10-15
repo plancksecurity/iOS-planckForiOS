@@ -40,7 +40,7 @@ class ReplicationServiceObserver: CustomDebugStringConvertible {
 
 extension ReplicationServiceObserver: ReplicationServiceUnitTestDelegate {
     func replicationServiceDidSync(service: ReplicationService, accountInfo: AccountConnectInfo,
-                 errorProtocol: ServiceErrorProtocol) {
+                 errorProtocol: ErrorContainerProtocol) {
         if errorProtocol.hasErrors() && failOnError {
             XCTFail()
         }
