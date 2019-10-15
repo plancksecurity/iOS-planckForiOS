@@ -78,6 +78,7 @@ extension UIViewController {
                                                                             return nil
             }
             DispatchQueue.main.async { [weak self] in
+                pageViewController.modalPresentationStyle = .overFullScreen
                 self?.present(pageViewController, animated: true, completion: nil)
             }
             return pageViewController

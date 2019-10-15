@@ -35,21 +35,23 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
         // if a pEpModal is being presented. We present pEpSyncWizard over it.
         // Else the viewController to present it
         var viewController = presenter
-        if let pEpModal = presenter.presentedViewController,
-            UIHelper.isPEPModal(viewController: pEpModal) {
-            viewController = pEpModal
-        }
-        pEpSyncWizard = viewController.presentKeySyncWizard(meFPR: meFPR,
-                                                            partnerFPR: partnerFPR,
-                                                            isNewGroup: isNewGroup) { action in
-                                                                switch action {
-                                                                case .accept:
-                                                                    completion?(.accepted)
-                                                                case .cancel:
-                                                                    completion?(.cancel)
-                                                                case .decline:
-                                                                    completion?(.rejected)
-                                                                }
+        DispatchQueue.main.async { [weak self] in
+            if let pEpModal = presenter.presentedViewController,
+                UIHelper.isPEPModal(viewController: pEpModal) {
+                viewController = pEpModal
+            }
+            self?.pEpSyncWizard = viewController.presentKeySyncWizard(meFPR: meFPR,
+                                                                partnerFPR: partnerFPR,
+                                                                isNewGroup: isNewGroup) { action in
+                                                                    switch action {
+                                                                    case .accept:
+                                                                        completion?(.accepted)
+                                                                    case .cancel:
+                                                                        completion?(.cancel)
+                                                                    case .decline:
+                                                                        completion?(.rejected)
+                                                                    }
+            }
         }
     }
 
@@ -59,10 +61,10 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
     }
     
     func cancelHandshake() {
-        guard let keySyncWizard = presenter?.presentedViewController as? PEPPageViewController else {
-            return
-        }
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let keySyncWizard = self?.presenter?.presentedViewController as? PEPPageViewController else {
+                return
+            }
             keySyncWizard.dismiss()
         }
     }
@@ -79,14 +81,14 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
 
     // We must dismiss pEpSyncWizard before presenting pEpSyncWizard error view.
     func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
-        guard let presentingViewController = pEpSyncWizard?.presentingViewController else {
-            //presentingViewController is nil then, pEpSyncWizard failed to be shown.
-            //So we call tryAgain to engine, to give it a another try to show pEpSyncWizard.
-            completion?(.tryAgain)
-            return
-        }
-
         DispatchQueue.main.async { [weak self] in
+            guard let presentingViewController = self?.pEpSyncWizard?.presentingViewController else {
+                //presentingViewController is nil then, pEpSyncWizard failed to be shown.
+                //So we call tryAgain to engine, to give it a another try to show pEpSyncWizard.
+                completion?(.tryAgain)
+                return
+            }
+
             self?.pEpSyncWizard?.dismiss(animated: true, completion: {
                 KeySyncErrorView.presentKeySyncError(viewController: presentingViewController, error: error) {
                     action in

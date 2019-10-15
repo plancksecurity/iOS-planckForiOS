@@ -31,7 +31,27 @@ class EditableAccountSettingsTableViewController: BaseTableViewController {
     private var passWordChanged: Bool = false
     var viewModel: EditableAccountSettingsTableViewModel? = nil
 
+    override func viewDidLoad() {
+        setUpView()
+    }
+
 }
+
+// MARK: - Private
+extension EditableAccountSettingsTableViewController {
+    private func setUpView() {
+        let securityPicker = UIPickerView(frame: CGRect(x: 0, y: 50, width: 100, height: 150))
+        securityPicker?.delegate = self
+        securityPicker?.dataSource = self
+        securityPicker?.showsSelectionIndicator = true
+
+        self.smtpSecurityTextfield.inputView = securityPicker
+        self.imapSecurityTextfield.inputView = securityPicker
+    }
+}
+
+
+// MARK: - UITextFieldDelegate
 
 extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -53,6 +73,9 @@ extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
         return true
     }
 }
+
+
+// MARK: - UIPickerViewDelegate
 
 extension EditableAccountSettingsTableViewController: UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -82,6 +105,9 @@ extension EditableAccountSettingsTableViewController: UIPickerViewDelegate {
         }
     }
 }
+
+
+// MARK: - UITableViewDataSource
 
 extension EditableAccountSettingsTableViewController: UITableViewDataSource {
     override func numberOfSections(in tableView: UITableView) -> Int {

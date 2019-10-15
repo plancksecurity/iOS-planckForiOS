@@ -10,8 +10,7 @@ import UIKit
 import MessageModel
 import pEpIOSToolbox
 
-class AccountSettingsTableViewController: BaseTableViewController, UIPickerViewDelegate,
-UIPickerViewDataSource, UITextFieldDelegate {
+class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var emailTextfield: UITextField!
     @IBOutlet weak var usernameTextfield: UITextField!
@@ -31,8 +30,6 @@ UIPickerViewDataSource, UITextFieldDelegate {
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var pEpSyncToggle: UISwitch!
     @IBOutlet weak var resetIdentityCell: UITableViewCell!
-
-    var securityPicker: UIPickerView?
 
     var viewModel: AccountSettingsViewModel? = nil
     let oauthViewModel = OAuth2AuthViewModel()
@@ -80,28 +77,21 @@ UIPickerViewDataSource, UITextFieldDelegate {
             pEpSyncToggle.isOn = viewModel.pEpSync
         }
 
-        securityPicker = UIPickerView(frame: CGRect(x: 0, y: 50, width: 100, height: 150))
-        securityPicker?.delegate = self
-        securityPicker?.dataSource = self
-        securityPicker?.showsSelectionIndicator = true
-
         let imap = viewModel?.imapServer
-        self.imapServerTextfield.text = imap?.address
-        self.imapPortTextfield.text = imap?.port
-        imapPortTextfield.delegate = self
-        self.imapSecurityTextfield.text = imap?.transport
-        self.imapSecurityTextfield.inputView = securityPicker
-        self.imapSecurityTextfield.delegate = self
-        self.imapSecurityTextfield.tag = 1
+        imapServerTextfield.text = imap?.address
+        imapPortTextfield.text = imap?.port
+//        imapPortTextfield.delegate = self
+        imapSecurityTextfield.text = imap?.transport
+//        self.imapSecurityTextfield.delegate = self
+        imapSecurityTextfield.tag = 1
 
         let smtp = viewModel?.smtpServer
         self.smtpServerTextfield.text = smtp?.address
         self.smtpPortTextfield.text = smtp?.port
-        smtpPortTextfield.delegate = self
-        self.smtpSecurityTextfield.text = smtp?.transport
-        self.smtpSecurityTextfield.inputView = securityPicker
-        self.smtpSecurityTextfield.delegate = self
-        self.smtpSecurityTextfield.tag = 2
+//        smtpPortTextfield.delegate = self
+        smtpSecurityTextfield.text = smtp?.transport
+//        self.smtpSecurityTextfield.delegate = self
+        smtpSecurityTextfield.tag = 2
     }
 
     private func informUser(about error:Error) {

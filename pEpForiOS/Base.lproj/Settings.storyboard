@@ -127,13 +127,13 @@
                         <segue destination="95U-QI-nlr" kind="showDetail" identifier="segueShowSettingTrustedServers" id="tvG-bN-ITt"/>
                         <segue destination="cMW-fr-EKn" kind="showDetail" identifier="segueSetOwnKey" id="D3B-Zt-U43"/>
                         <segue destination="4fP-ku-UtU" kind="showDetail" identifier="segueExtraKeys" id="DPP-UI-qfC"/>
-                        <segue destination="tfJ-nw-QBg" kind="showDetail" identifier="ResetTrust" id="5cb-wE-DbE"/>
+                        <segue destination="tfJ-nw-QBg" kind="show" identifier="ResetTrust" id="sr5-ig-b4W"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="1at-88-jou" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1327" y="-1170"/>
+            <point key="canvasLocation" x="-1327" y="-1186"/>
         </scene>
         <!--Extra Keys-->
         <scene sceneID="KkR-yF-e30">
@@ -169,11 +169,11 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="PG6-XN-MQm">
                                 <rect key="frame" x="0.0" y="567" width="375" height="100"/>
                                 <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="zHk-jf-vFQ">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="zHk-jf-vFQ">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardType="alphabet"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="alphabet" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                     </textView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J2v-Vi-URg">
                                         <rect key="frame" x="0.0" y="70" width="375" height="30"/>
@@ -215,7 +215,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LCO-IG-Rwh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-476" y="-1891"/>
+            <point key="canvasLocation" x="463.19999999999999" y="-1891.304347826087"/>
         </scene>
         <!--Reset Trust View Controller-->
         <scene sceneID="lLJ-n0-lb9">
@@ -265,13 +265,14 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="59K-Nz-i2C"/>
                     </view>
+                    <navigationItem key="navigationItem" id="Uc0-Oa-PEn"/>
                     <connections>
                         <outlet property="tableView" destination="QbB-pS-PJb" id="OZH-9s-fQa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Sv-m8-kZO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1327" y="-1951"/>
+            <point key="canvasLocation" x="-388" y="-1951.5742128935533"/>
         </scene>
         <!--Set Own Key View Controller-->
         <scene sceneID="k12-LM-gr9">
@@ -1069,6 +1070,9 @@
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="a1y-j3-omP" id="0Eo-2S-KJe"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>

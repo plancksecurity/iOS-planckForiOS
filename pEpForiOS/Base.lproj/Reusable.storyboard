@@ -132,7 +132,7 @@
                                                             <constraint firstAttribute="width" secondItem="6fr-an-tAC" secondAttribute="height" multiplier="1:1" id="sB9-cU-tpx"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="10" minY="5" maxX="0.0" maxY="5"/>
-                                                        <state key="normal" title="Button" image="pEpForiOS-icon-languagechange"/>
+                                                        <state key="normal" image="pEpForiOS-icon-languagechange"/>
                                                         <connections>
                                                             <action selector="didPress:" destination="GZS-2u-rXb" eventType="touchUpInside" id="XwJ-Yx-Fbk"/>
                                                         </connections>
