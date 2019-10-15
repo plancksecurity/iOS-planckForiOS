@@ -30,6 +30,7 @@ class PEPPageViewController: UIPageViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        navigationController?.isToolbarHidden = false
         if !didLoadValues {
             didLoadValues = true
             dataSource = showDots ? self : nil //nil dataSource will hide dots and disable scrolling
