@@ -203,9 +203,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Called as part of the transition from the background to the inactive state; here you can
     /// undo many of the changes made on entering the background.
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // Desparate try to wokaround lagging PEPSessionProvider issue (IOS-1769)
-        // The suspect is that PEPSessionProvider has problems when the first call for a PEPSession is done from a non-main thread.
-        let _ = PEPSession()
+
     }
 
     /// Restart any tasks that were paused (or not yet started) while the application was inactive.
