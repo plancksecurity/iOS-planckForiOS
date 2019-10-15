@@ -29,7 +29,7 @@ public class UnifiedInbox: VirtualFolderProtocol {
                 completion?()
             }
         } catch FetchServiceBaseClass.FetchError.isFetching {
-            // Already fetching do nothing
+            // Alredy fetching do nothing
         } catch {
             // Unexpected error
             Log.shared.errorAndCrash(error: error)
