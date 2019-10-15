@@ -118,10 +118,10 @@ class EmailViewController: BaseTableViewController {
             action: nil)
         flexibleSpace.tag = BarButtonType.space.rawValue
         toolbarItems?.append(contentsOf: [flexibleSpace,item])
-
-        if !onlySplitViewMasterIsShown {
+        if !(splitViewController?.isCollapsed ?? true) {
             navigationItem.rightBarButtonItems = toolbarItems
         }
+
     }
 
     func configureTableRows() {
@@ -133,10 +133,12 @@ class EmailViewController: BaseTableViewController {
         navigationController?.setNavigationBarHidden(false, animated: false)
 
         //ToolBar
-        if onlySplitViewMasterIsShown {
-            navigationController?.setToolbarHidden(false, animated: false)
-        } else {
-            navigationController?.setToolbarHidden(true, animated: false)
+        if let splitViewController = splitViewController {
+            if splitViewController.isCollapsed {
+                navigationController?.setToolbarHidden(false, animated: false)
+            } else {
+                navigationController?.setToolbarHidden(true, animated: false)
+            }
         }
 
         setupDestructiveButtonIcon()
@@ -329,7 +331,7 @@ class EmailViewController: BaseTableViewController {
             style: .cancel) { (action) in }
         actionSheetController.addAction(cancelAction)
 
-        if !onlySplitViewMasterIsShown {
+        if let splitViewController = splitViewController, !splitViewController.isCollapsed {
             actionSheetController.popoverPresentationController?.barButtonItem = sender
         }
         present(actionSheetController, animated: true)
@@ -482,14 +484,18 @@ class EmailViewController: BaseTableViewController {
             return
         }
         Message.imapDelete(messages: [message])
-        if onlySplitViewMasterIsShown {
+        guard let splitViewController = self.splitViewController else {
+            return
+        }
+        if splitViewController.isCollapsed {
             navigationController?.popViewController(animated: true)
         }
     }
 
     @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer? = nil) {
-        if onlySplitViewMasterIsShown {
+        if (splitViewController?.isCollapsed) ?? true {
             performSegue(withIdentifier: .segueHandshakeCollapsed, sender: self)
+
         } else {
             performSegue(withIdentifier: .segueHandshake, sender: self)
         }
