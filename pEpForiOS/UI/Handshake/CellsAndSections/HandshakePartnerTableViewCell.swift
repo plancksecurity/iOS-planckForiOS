@@ -91,14 +91,14 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        confirmButton.roundCorners(corners: [.bottomRight, .topRight], radius: 10)
-        wrongButton.roundCorners(corners: [.topLeft, .bottomLeft], radius: 10)
-
         // After the layout is done, text labels know their width, but they
         // don't take that into account for the layout (because that is already over).
         // So set the actual width as the preferred one, and do one additional layout.
         trustWordsLabel.preferredMaxLayoutWidth = trustWordsLabel.frame.size.width
         super.layoutSubviews()
+
+        confirmButton.roundCorners(corners: [.bottomRight, .topRight], radius: 10)
+        wrongButton.roundCorners(corners: [.topLeft, .bottomLeft], radius: 10)
     }
 
     func updateView() {
