@@ -246,6 +246,8 @@ struct DisplayUserError: LocalizedError {
             return .brokenServerConnectionSmtp
         case .badResponse:
             return .internalError
+        case .invalidAccount:
+            return .internalError
         }
     }
 
