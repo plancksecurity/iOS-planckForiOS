@@ -604,6 +604,8 @@ extension EmailViewController: SegueHandlerType {
                 return
             }
 
+            //as we need a view to be source of the popover and title view is not always present.
+            //we directly use the navigation bar view.
             nv.popoverPresentationController?.delegate = self
             nv.popoverPresentationController?.sourceView = nv.view
             nv.popoverPresentationController?.sourceRect = CGRect(x: nv.view.bounds.midX,
