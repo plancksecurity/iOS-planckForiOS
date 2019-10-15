@@ -12,8 +12,25 @@ final class EditableAccountSettingsViewController: BaseViewController {
 
     @IBOutlet weak var saveButton: UIBarButtonItem!
 
-    override func viewDidLoad() {
+    var viewModel: EditableAccountSettingsViewModel? = nil
 
+//    let oauthViewModel = OAuth2AuthViewModel()
+
+    override func viewDidLoad() {
+        viewModel?.verifiableDelegate = self
+        viewModel?.delegate = self
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationController?.setToolbarHidden(true, animated: false)
+
+        guard let isIphone = splitViewController?.isCollapsed else {
+            return
+        }
+        if !isIphone {
+            self.navigationItem.leftBarButtonItem = nil// hidesBackButton = true
+        }
     }
 
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
@@ -51,26 +68,26 @@ final class EditableAccountSettingsViewController: BaseViewController {
     }
 }
 
-// MARK: - AccountVerificationResultDelegate
+ // MARK: - AccountVerificationResultDelegate
 
-//extension EditableAccountSettingsViewController: AccountVerificationResultDelegate {
-//    func didVerify(result: AccountVerificationResult) {
-//        DispatchQueue.main.async { [weak self] in
-//            self?.hideSpinnerAndEnableUI()
-//            switch result {
-//            case .ok:
-//                //self.navigationController?.popViewController(animated: true)
-//                self?.popViewController()
-//            case .imapError(let err):
-//                self?.handleLoginError(error: err)
-//            case .smtpError(let err):
-//                self?.handleLoginError(error: err)
-//            case .noImapConnectData, .noSmtpConnectData:
-//                self?.handleLoginError(error: LoginViewController.LoginError.noConnectData)
-//            }
-//        }
-//    }
-//}
+extension EditableAccountSettingsViewController: AccountVerificationResultDelegate {
+    func didVerify(result: AccountVerificationResult) {
+        DispatchQueue.main.async { [weak self] in
+            self?.hideSpinnerAndEnableUI()
+            switch result {
+            case .ok:
+                //self.navigationController?.popViewController(animated: true)
+                self?.popViewController()
+            case .imapError(let err):
+                self?.handleLoginError(error: err)
+            case .smtpError(let err):
+                self?.handleLoginError(error: err)
+            case .noImapConnectData, .noSmtpConnectData:
+                self?.handleLoginError(error: LoginViewController.LoginError.noConnectData)
+            }
+        }
+    }
+}
 
 
 // MARK: - Private

@@ -1292,6 +1292,7 @@
                         <outlet property="nameTextfield" destination="ff8-vj-4Ej" id="pcZ-iz-Cqc"/>
                         <outlet property="passwordTableViewCell" destination="IIt-5z-bsQ" id="QyA-zJ-HMv"/>
                         <outlet property="passwordTextfield" destination="uNX-Zg-59c" id="x30-HT-ODP"/>
+                        <outlet property="securityPicker" destination="LxS-OW-kjx" id="Ir0-J8-GxM"/>
                         <outlet property="smtpPortTextfield" destination="85g-mE-AIj" id="SNo-2D-HfD"/>
                         <outlet property="smtpSecurityTextfield" destination="ftR-ql-mBD" id="hbR-KE-m8k"/>
                         <outlet property="smtpServerTextfield" destination="7YP-at-PfI" id="krD-pL-2Py"/>
@@ -1299,8 +1300,19 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gb9-RM-5S8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pickerView contentMode="scaleToFill" id="LxS-OW-kjx">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="216"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="showsSelectionIndicator" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="dataSource" destination="a1y-j3-omP" id="onQ-2X-Beh"/>
+                        <outlet property="delegate" destination="a1y-j3-omP" id="b1s-v8-QA0"/>
+                    </connections>
+                </pickerView>
             </objects>
-            <point key="canvasLocation" x="1103" y="424"/>
+            <point key="canvasLocation" x="1148" y="457"/>
         </scene>
     </scenes>
 </document>

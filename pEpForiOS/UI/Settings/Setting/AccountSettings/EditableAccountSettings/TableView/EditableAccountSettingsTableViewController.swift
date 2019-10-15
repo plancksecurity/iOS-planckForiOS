@@ -26,13 +26,18 @@ class EditableAccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var smtpPortTextfield: UITextField!
     @IBOutlet weak var smtpSecurityTextfield: UITextField!
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
+    @IBOutlet weak var securityPicker: UIPickerView!
 
     private var current: UITextField?
     private var passWordChanged: Bool = false
     var viewModel: EditableAccountSettingsTableViewModel? = nil
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         setUpView()
+//        viewModel?.delegate = self
+//        passwordTextfield.delegate = self
     }
 
 }
@@ -40,13 +45,10 @@ class EditableAccountSettingsTableViewController: BaseTableViewController {
 // MARK: - Private
 extension EditableAccountSettingsTableViewController {
     private func setUpView() {
-        let securityPicker = UIPickerView(frame: CGRect(x: 0, y: 50, width: 100, height: 150))
-        securityPicker?.delegate = self
-        securityPicker?.dataSource = self
-        securityPicker?.showsSelectionIndicator = true
 
-        self.smtpSecurityTextfield.inputView = securityPicker
-        self.imapSecurityTextfield.inputView = securityPicker
+
+        smtpSecurityTextfield.inputView = securityPicker
+        imapSecurityTextfield.inputView = securityPicker
     }
 }
 
@@ -77,7 +79,7 @@ extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
 
 // MARK: - UIPickerViewDelegate
 
-extension EditableAccountSettingsTableViewController: UIPickerViewDelegate {
+extension EditableAccountSettingsTableViewController {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -109,7 +111,7 @@ extension EditableAccountSettingsTableViewController: UIPickerViewDelegate {
 
 // MARK: - UITableViewDataSource
 
-extension EditableAccountSettingsTableViewController: UITableViewDataSource {
+extension EditableAccountSettingsTableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel?.count ?? 0
     }

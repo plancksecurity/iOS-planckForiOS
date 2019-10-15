@@ -17,7 +17,6 @@ class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var passwordTextfield: UITextField!
     @IBOutlet weak var resetIdentityLabel: UILabel!
 
-
     @IBOutlet weak var imapServerTextfield: UITextField!
     @IBOutlet weak var imapPortTextfield: UITextField!
     @IBOutlet weak var imapSecurityTextfield: UITextField!
@@ -41,16 +40,11 @@ class AccountSettingsTableViewController: BaseTableViewController {
     var oauth2ReauthIndexPath: IndexPath?
     private var resetIdentityIndexPath: IndexPath?
 
-    private weak var activityIndicatorView: UIActivityIndicatorView?
-
      override func viewDidLoad() {
         super.viewDidLoad()
+
         configureView()
-        if let vm = viewModel {
-            vm.verifiableDelegate = self
-            vm.delegate = self
-        }
-        passwordTextfield.delegate = self
+        viewModel?.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
