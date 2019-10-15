@@ -80,7 +80,7 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         var msgCountBefore: Int? = 0
         // fetch messages
         let expMessagesSynced = expectation(description: "expMessagesSynced")
-        let fetchOp = FetchMessagesInImapFolderOperation(parentName: #function, imapSyncData: imapSyncData)
+        let fetchOp = FetchMessagesOperation(parentName: #function, imapSyncData: imapSyncData)
         fetchOp.completionBlock = { [weak self] in
             guard let me = self else {
                 pEpForiOS.Log.shared.errorAndCrash("Lost myself")
@@ -98,7 +98,7 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
 
         // ... and fetch again.
         let expMessagesSynced2 = expectation(description: "expMessagesSynced2")
-        let fetch2Op = FetchMessagesInImapFolderOperation(parentName: #function, imapSyncData: imapSyncData)
+        let fetch2Op = FetchMessagesOperation(parentName: #function, imapSyncData: imapSyncData)
         fetch2Op.completionBlock = { [weak self] in
             guard let me = self else {
                 pEpForiOS.Log.shared.errorAndCrash("Lost myself")
