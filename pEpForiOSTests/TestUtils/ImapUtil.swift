@@ -67,7 +67,7 @@ extension XCTestCase {
                          errorContainer: ServiceErrorProtocol,
                          queue: OperationQueue) {
         let expSentAppended = expectation(description: "expSentAppended")
-        let appendOp = AppendMailsToFolderOperation(parentName: #function,
+        let appendOp = AppendMailsOperation(parentName: #function,
                                             folder: folder,
                                             imapSyncData: imapSyncData,
                                             errorContainer: errorContainer)

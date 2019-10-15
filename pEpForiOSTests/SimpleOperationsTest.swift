@@ -405,7 +405,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         let expDraftsStored = expectation(description: "expDraftsStored")
 
-        let appendOp = AppendMailsToFolderOperation(parentName: #function,
+        let appendOp = AppendMailsOperation(parentName: #function,
                                             folder: folder,
                                             imapSyncData: imapSyncData,
                                             errorContainer: errorContainer)
