@@ -41,7 +41,7 @@ class HandshakeViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.estimatedRowHeight = 400.0
+        tableView.estimatedRowHeight = 200.0
         tableView.rowHeight = UITableView.automaticDimension
 
         self.navigationItem.rightBarButtonItems = [languageButton()]
