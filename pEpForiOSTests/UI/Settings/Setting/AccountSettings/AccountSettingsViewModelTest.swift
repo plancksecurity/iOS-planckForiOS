@@ -221,10 +221,9 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
     private func setUpViewModel(keySyncEnabled: Bool = false) {
 
         keySyncServiceHandshakeDelegateMoc = KeySyncServiceHandshakeDelegateMoc()
-        let theMessageModelService = MessageModelService(errorPropagator: ErrorPropagator(),
-                                                         cnContactsAccessPermissionProvider: AppSettings.shared,
-                                                         keySyncServiceDelegate: keySyncServiceHandshakeDelegateMoc,
-                                                         keySyncEnabled: keySyncEnabled)
+        let theMessageModelService = MessageModelService(
+            errorPropagator: ErrorPropagator(),
+            keySyncServiceDelegate: keySyncServiceHandshakeDelegateMoc, keySyncEnabled: keySyncEnabled)
 
         viewModel = AccountSettingsViewModel(
             account: account,

@@ -275,8 +275,8 @@
 //    //    func testCheckIfSettingsChanged() {
 //    //        setupViewModel()
 //    //        emailListVM.startMonitoring()
-//    //        XCTAssertFalse(AppSettings.shared.threadedViewEnabled)
-//    //        AppSettings.shared.threadedViewEnabled = true
+//    //        XCTAssertFalse(AppSettings.threadedViewEnabled)
+//    //        AppSettings.threadedViewEnabled = true
 //    //        XCTAssertFalse(emailListVM.checkIfSettingsChanged())
 //    //    }
 //
@@ -434,7 +434,7 @@
 //    func testComposePrefilledFromAccountIsDefaultAccountFromUnifiedIboxWithMultipleAccounts() {
 //        let expectedFrom = inbox.account.user
 //        secondAccountSetUp()
-//        AppSettings.shared.defaultAccount = acc.user.address
+//        AppSettings.defaultAccount = acc.user.address
 //        setupViewModel(forfolder: UnifiedInbox())
 //        let composeVM = emailListVM.composeViewModelForNewMessage()
 //        XCTAssertEqual(composeVM.state.from, expectedFrom)

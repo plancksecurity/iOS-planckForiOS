@@ -133,7 +133,7 @@ class SuggestViewModel {
             }
             let contacts = AddressBook.searchContacts(searchterm: searchString)
             me.updateRows(with: identities, contacts: contacts, callingOperation: operation)
-            AppSettings.shared.userHasBeenAskedForContactAccessPermissions = true
+            AppSettings.userHasBeenAskedForContactAccessPermissions = true
 
         }
         workQueue.addOperation(op)

@@ -130,8 +130,8 @@ extension SettingsViewModel {
 extension SettingsViewModel {
 
     func handleExtryKeysEditabilityGestureTriggered() {
-        let newValue = !AppSettings.shared.extraKeysEditable
-        AppSettings.shared.extraKeysEditable = newValue
+        let newValue = !AppSettings.extraKeysEditable
+        AppSettings.extraKeysEditable = newValue
         delegate?.showExtraKeyEditabilityStateChangeAlert(newValue: newValue ? "ON" : "OFF")
     }
 }

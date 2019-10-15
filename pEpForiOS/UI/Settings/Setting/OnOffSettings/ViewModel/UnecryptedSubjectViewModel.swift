@@ -17,10 +17,10 @@ struct UnecryptedSubjectViewModel: SwitchSettingCellViewModelProtocol  {
     private(set) var title = NSLocalizedString("Enable Protected Subject",
                                            comment: "title for subject protection")
     func setSwitch(value: Bool) {
-        AppSettings.shared.unencryptedSubjectEnabled = !value
+        AppSettings.unencryptedSubjectEnabled = !value
     }
 
     func switchValue() -> Bool {
-        return !AppSettings.shared.unencryptedSubjectEnabled
+        return !AppSettings.unencryptedSubjectEnabled
     }
 }

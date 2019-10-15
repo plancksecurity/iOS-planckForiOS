@@ -24,7 +24,7 @@ class SettingsCellViewModelTest: CoreDataDrivenTestBase {
 
         let detail = viewModel.detail
 
-        XCTAssertEqual(AppSettings.shared.defaultAccount, detail)
+        XCTAssertEqual(AppSettings.defaultAccount, detail)
     }
 
     public func testDeleteAccount() {
@@ -76,7 +76,7 @@ class SettingsCellViewModelTest: CoreDataDrivenTestBase {
 
         let value = viewModel.value
 
-        XCTAssertEqual(AppSettings.shared.defaultAccount, value )
+        XCTAssertEqual(AppSettings.defaultAccount, value )
     }
 
 
