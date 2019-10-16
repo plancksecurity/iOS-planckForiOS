@@ -57,25 +57,25 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    var partnerColor: PEPColor { return viewModel?.partnerColor ?? PEPColor.noColor }
+    private var partnerColor: PEPColor { return viewModel?.partnerColor ?? PEPColor.noColor }
 
-    var showStopStartTrustButton: Bool {
+    private var showStopStartTrustButton: Bool {
         return viewModel?.showStopStartTrustButton ?? false
     }
 
-    var showTrustwords: Bool {
+    private var showTrustwords: Bool {
         return viewModel?.showTrustwords ?? false
     }
 
-    var backgroundColorDark: Bool {
+    private var backgroundColorDark: Bool {
         return viewModel?.backgroundColorDark ?? false
     }
 
-    var isPartnerPEPUser: Bool {
+    private var isPartnerPEPUser: Bool {
         return viewModel?.isPartnerpEpUser ?? false
     }
 
-    var trustwordsFull: Bool {
+    private var trustwordsFull: Bool {
         return viewModel?.trustwordsFull ?? false
     }
 
@@ -85,7 +85,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)
     }
 
-    func updateView() {
+    private func updateView() {
         if backgroundColorDark {
             self.backgroundColor = UIColor.pEpLightBackground
         } else {
@@ -113,7 +113,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     /**
      Installs a gesture recognizer on a view, removing all previously existing ones.
      */
-    func install(gestureRecognizer: UIGestureRecognizer, view: UIView) {
+    private func install(gestureRecognizer: UIGestureRecognizer, view: UIView) {
         // rm all exsting
         let existingGRs = view.gestureRecognizers ?? []
         for gr in existingGRs {
@@ -132,16 +132,16 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    func updateAdditionalConstraints() {
+    private func updateAdditionalConstraints() {
         updateTrustwordsExpansionVisibility()
     }
 
-    func updateTrustwordsExpansionVisibility() {
+    private func updateTrustwordsExpansionVisibility() {
         trustWordsLabel.isHidden = !showTrustwords
         trustMistrustButtonsStackView.isHidden = !showTrustwords
     }
 
-    func updateTitle(button: UIButton) {
+    private func updateTitle(button: UIButton) {
         let confirmPGPLong =
             NSLocalizedString("Confirm Fingerprint",
                               comment: "Confirm correct fingerprint (PGP, long version)")
@@ -170,12 +170,12 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    func updateConfirmDistrustButtonsTitle() {
+    private func updateConfirmDistrustButtonsTitle() {
         updateTitle(button: confirmButton)
         updateTitle(button: wrongButton)
     }
 
-    func updatePrivacyStatus(color: PEPColor) {
+    private func updatePrivacyStatus(color: PEPColor) {
         if color == .noColor {
             privacyStatusDescription.text = nil
             pEpStatusImageView.image = nil
