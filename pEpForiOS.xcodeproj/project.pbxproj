@@ -226,6 +226,7 @@
 		37C3C0E62260C64D003E290C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C3C0E52260C64D003E290C /* Log.swift */; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
 		4304FD001EBB8EBB0086DADA /* LanguageListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */; };
+		4307D5DA23575853004569C4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4307D5D823575853004569C4 /* InfoPlist.strings */; };
 		430BA229203438A3003B041C /* CdMessagePEPMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */; };
 		430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */; };
 		430D73651E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430D73641E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift */; };
@@ -698,6 +699,15 @@
 		37C3C0E52260C64D003E290C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
 		4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageListViewController.swift; sourceTree = "<group>"; };
+		4307D5D923575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4307D5DB23575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/FolderViews.strings; sourceTree = "<group>"; };
+		4307D5DC23575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4307D5DD23575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AccountCreation.strings; sourceTree = "<group>"; };
+		4307D5DE23575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Settings.strings; sourceTree = "<group>"; };
+		4307D5DF23575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Reusable.strings; sourceTree = "<group>"; };
+		4307D5E023575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Handshake.strings; sourceTree = "<group>"; };
+		4307D5E123575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Thread.strings; sourceTree = "<group>"; };
+		4307D5E223575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdMessagePEPMessageTests.swift; sourceTree = "<group>"; };
 		430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PepAdapterTests.swift; sourceTree = "<group>"; };
 		430D73641E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsViewOperation.swift; sourceTree = "<group>"; };
@@ -1927,6 +1937,7 @@
 				43980E261CBD0BC900A7FC3C /* AppDelegate.swift */,
 				1543B69F22AAC882002B59AB /* Resources */,
 				43980E351CBD0BCA00A7FC3C /* Info.plist */,
+				4307D5D823575853004569C4 /* InfoPlist.strings */,
 				43C98AC1219C275E006418B0 /* Localizable.strings */,
 				43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */,
 			);
@@ -2650,6 +2661,7 @@
 				220DCE2F1E0AB544002FE716 /* MessageData.plist in Resources */,
 				432E80FE2191AF5100359879 /* UniversLTStd-Bold.otf in Resources */,
 				43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */,
+				4307D5DA23575853004569C4 /* InfoPlist.strings in Resources */,
 				151DE7E41FC5D41600CDC273 /* FolderViews.storyboard in Resources */,
 				152A39D221905C3E00D9F8E4 /* AttachmentCell.xib in Resources */,
 				43C98AC7219C3691006418B0 /* InfoPlist.strings in Resources */,
@@ -3181,6 +3193,7 @@
 			children = (
 				151DE7DF1FC5D3E200CDC273 /* Base */,
 				43C98AC0219C22E8006418B0 /* de */,
+				4307D5DE23575853004569C4 /* en */,
 			);
 			name = Settings.storyboard;
 			sourceTree = "<group>";
@@ -3190,6 +3203,7 @@
 			children = (
 				151DE7E21FC5D3FA00CDC273 /* Base */,
 				43C98AC8219C3691006418B0 /* de */,
+				4307D5E023575853004569C4 /* en */,
 			);
 			name = Handshake.storyboard;
 			sourceTree = "<group>";
@@ -3199,6 +3213,7 @@
 			children = (
 				151DE7E51FC5D41600CDC273 /* Base */,
 				4372ECD5219C436D00F84099 /* de */,
+				4307D5DB23575853004569C4 /* en */,
 			);
 			name = FolderViews.storyboard;
 			sourceTree = "<group>";
@@ -3208,8 +3223,17 @@
 			children = (
 				155F2D9F20530798001B4B1C /* Base */,
 				4372ECD6219C436D00F84099 /* de */,
+				4307D5DF23575853004569C4 /* en */,
 			);
 			name = Reusable.storyboard;
+			sourceTree = "<group>";
+		};
+		4307D5D823575853004569C4 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4307D5D923575853004569C4 /* en */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		43980E2A1CBD0BC900A7FC3C /* Main.storyboard */ = {
@@ -3217,6 +3241,7 @@
 			children = (
 				43980E2B1CBD0BC900A7FC3C /* Base */,
 				43C98AC4219C275E006418B0 /* de */,
+				4307D5E223575853004569C4 /* en */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -3233,6 +3258,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				43C98AC2219C275E006418B0 /* de */,
+				4307D5DC23575853004569C4 /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -3250,6 +3276,7 @@
 			children = (
 				491B656120CFE0FD00C2ADDA /* Base */,
 				4372ECD7219C436D00F84099 /* de */,
+				4307D5E123575853004569C4 /* en */,
 			);
 			name = Thread.storyboard;
 			sourceTree = "<group>";
@@ -3259,6 +3286,7 @@
 			children = (
 				B78309C71EAA09040051A2E0 /* Base */,
 				43C98ABF219C22E8006418B0 /* de */,
+				4307D5DD23575853004569C4 /* en */,
 			);
 			name = AccountCreation.storyboard;
 			sourceTree = "<group>";
