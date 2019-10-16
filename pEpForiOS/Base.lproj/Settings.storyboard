@@ -918,7 +918,7 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EC5-YV-DuZ">
                                 <rect key="frame" x="0.0" y="64" width="375" height="559"/>
                                 <connections>
-                                    <segue destination="a1y-j3-omP" kind="embed" id="oMT-qb-PGX"/>
+                                    <segue destination="a1y-j3-omP" kind="embed" identifier="EditableAccountTableViewControllerEmbed" id="oMT-qb-PGX"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -1312,7 +1312,7 @@
                     </connections>
                 </pickerView>
             </objects>
-            <point key="canvasLocation" x="1148" y="457"/>
+            <point key="canvasLocation" x="1186" y="480"/>
         </scene>
     </scenes>
 </document>

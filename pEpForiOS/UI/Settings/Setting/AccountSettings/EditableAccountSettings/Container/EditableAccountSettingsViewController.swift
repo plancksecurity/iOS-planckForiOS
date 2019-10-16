@@ -7,106 +7,88 @@
 //
 
 import UIKit
+import MessageModel
 
 final class EditableAccountSettingsViewController: BaseViewController {
 
     @IBOutlet weak var saveButton: UIBarButtonItem!
 
-    var viewModel: EditableAccountSettingsViewModel? = nil
-
-//    let oauthViewModel = OAuth2AuthViewModel()
+    var viewModel: EditableAccountSettingsViewModel?
 
     override func viewDidLoad() {
-        viewModel?.verifiableDelegate = self
         viewModel?.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
 
-        guard let isIphone = splitViewController?.isCollapsed else {
-            return
-        }
-        if !isIphone {
-            self.navigationItem.leftBarButtonItem = nil// hidesBackButton = true
-        }
+        guard splitViewController?.isCollapsed == false else { return }
+        self.navigationItem.leftBarButtonItem = nil// hidesBackButton = true
     }
 
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
-        guard let isSplitViewShown = splitViewController?.isCollapsed else {
-            return
-        }
-        if isSplitViewShown {
-            popViewController()
-        }
+        guard splitViewController?.isCollapsed == true else { return }
+        popViewController()
     }
 
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-//        do {
-//            let validated = try validateInput()
-//
-//            let imap = AccountSettingsViewModel.ServerViewModel(address: validated.addrImap,
-//                                                                port: validated.portImap,
-//                                                                transport: validated.transImap)
-//
-//            let smtp = AccountSettingsViewModel.ServerViewModel(address: validated.addrSmpt,
-//                                                                port: validated.portSmtp,
-//                                                                transport: validated.transSmtp)
-//
-//            var password: String? = passwordTextfield.text
-//            if passWordChanged == false {
-//                password = nil
-//            }
-//
-//            setLoadingOverlayView(hidden: false, animated: true)
-//            viewModel?.update(loginName: validated.loginName, name: validated.accountName,
-//                              password: password, imap: imap, smtp: smtp)
-//        } catch {
-//            informUser(about: error)
-//        }
+        viewModel?.handleSaveButton()
     }
-}
 
- // MARK: - AccountVerificationResultDelegate
-
-extension EditableAccountSettingsViewController: AccountVerificationResultDelegate {
-    func didVerify(result: AccountVerificationResult) {
-        DispatchQueue.main.async { [weak self] in
-            self?.hideSpinnerAndEnableUI()
-            switch result {
-            case .ok:
-                //self.navigationController?.popViewController(animated: true)
-                self?.popViewController()
-            case .imapError(let err):
-                self?.handleLoginError(error: err)
-            case .smtpError(let err):
-                self?.handleLoginError(error: err)
-            case .noImapConnectData, .noSmtpConnectData:
-                self?.handleLoginError(error: LoginViewController.LoginError.noConnectData)
-            }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.destination {
+        case let tableViewController as EditableAccountSettingsTableViewController:
+            tableViewController.viewModel = EditableAccountSettingsTableViewModel()
+            viewModel?.tableViewModel = tableViewController.viewModel
+        default:
+            break
         }
     }
 }
 
 
-// MARK: - Private
+// MARK: - EditableAccountSettingsViewModelDelegate
 
-extension EditableAccountSettingsViewController {
-    private func popViewController() {
-        //!!!: see IOS-1608 this is a patch as we have 2 navigationControllers and need to pop to the previous view.
-        (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
-    }
-
-    
-}
-
-
-// MARK: - Error Handling
-
-extension AccountSettingsTableViewController {
-    public func handleLoginError(error: Error) {
+extension EditableAccountSettingsViewController: EditableAccountSettingsViewModelDelegate {
+    func showErrorAlert(error: Error) {
         Log.shared.error("%@", "\(error)")
         UIUtils.show(error: error, inViewController: self)
+    }
+
+//    func showErrorAlert(title: String, message: String, buttonTitle: String) {
+//        guard let errorAlert =
+//            PEPAlertViewController.fromStoryboard(title: title, message: message) else {
+//                return
+//        }
+//
+//        let okAction = PEPUIAlertAction(title: buttonTitle,
+//                                        style: .pEpBlue,
+//                                        handler: { [weak errorAlert] alert in
+//                                            errorAlert?.dismiss(animated: true)
+//        })
+//
+//        errorAlert.add(action: okAction)
+//        DispatchQueue.main.async { [weak self] in
+//            self?.present(errorAlert, animated: true)
+//        }
+//    }
+
+    func showLoadingView() {
+        DispatchQueue.main.async {
+            LoadingInterface.showLoadingInterface()
+        }
+    }
+
+    func hideLoadingView() {
+        DispatchQueue.main.async {
+            LoadingInterface.removeLoadingInterface()
+        }
+    }
+
+    func popViewController() {
+        //!!!: see IOS-1608 this is a patch as we have 2 navigationControllers and need to pop to the previous view.
+        (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
     }
 }

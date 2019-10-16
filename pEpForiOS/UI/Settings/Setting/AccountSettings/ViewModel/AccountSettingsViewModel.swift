@@ -9,7 +9,6 @@
 import Foundation
 import MessageModel
 import pEpIOSToolbox
-
 import PantomimeFramework
 
 protocol AccountSettingsViewModelDelegate: class {
@@ -126,7 +125,7 @@ public class AccountSettingsViewModel {
     }
 
     func updateToken(accessToken: OAuth2AccessTokenProtocol) {
-        accessToken = accessToken
+        self.accessToken = accessToken
     }
 
     private func showErrorAlert(message: String) {
