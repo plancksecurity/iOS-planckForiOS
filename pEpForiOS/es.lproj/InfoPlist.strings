@@ -5,14 +5,14 @@
 "CFBundleName" = "pEp";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Use Camera";
+"NSCameraUsageDescription" = "Usar Cámara";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "- p≡p is an app for encrypted emails. To be able to send\n     emails to saved contacts, it is necessary to allow p≡p to\n     use them.\n\n- Contact data will never leave the mobile device, and will not be\n     sent to p≡p or to any third party.";
+"NSContactsUsageDescription" = "- p≡p es una aplicación para correos electrónicos cifrados.Para poder enviar\n     correos electrónicos a los contactos guardados, es necesario permitir que p≡p\n     pueda usarlos.- Los datos de los contactos se mantendrán en el teléfono móvil. No se\n     enviarán a p≡p ni a terceros.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Enables you to save photos to the Photo Gallery";
+"NSPhotoLibraryAddUsageDescription" = "Te permite guardar fotos en la Galería de fotos";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "Enables you to pick photos from the Photo Gallery";
+"NSPhotoLibraryUsageDescription" = "Te permite usar fotos de la Galería de fotos";
 

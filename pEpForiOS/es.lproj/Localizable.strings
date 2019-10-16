@@ -1,89 +1,65 @@
 /* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
-"\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n";
+"\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nSe han inhabilitado los archivos adjuntos.\n\n";
 
 /* No privacy status explanation
    No privacy status suggestion */
 "-" = "-";
 
 /* Title for notification show on lock screen for new mails */
-"(numMails) new messages received" = "(numMails) new messages received";
+"(numMails) new messages received" = "(numMails) mensajes nuevos recibidos";
 
 /* Reply to single contact, with date. Placeholders: Name, date. */
-"%1$@ wrote on %2$@:" = "%1$@ wrote on %2$@:";
+"%1$@ wrote on %2$@:" = "%1$@ ha escrito en %2$@:";
 
 /* Reply to single contact, without date. Placeholder: Name. */
-"%1$@ wrote:" = "%1$@ wrote:";
-
-/* error message for .missingPassword */
-"A non-empty password is required" = "Password is required";
-
-/* error message for .missingUsername */
-"A non-empty username is required" = "Username is required";
-
-/* keySync handshake alert message */
-"A second device is detected. \nPlease confirm the Trustwords on both devices to sync all your privacy. Shall we synchronize?" = "A second device has been detected. \nPlease confirm the Trustwords on both devices to sync all your information. Should we synchronize?";
-
-/* KeySyncWizard introduction message */
-"A second device is detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "A second device has been detected. We can form a device group to sync all your information on both devices. Should we start synchronizing?";
+"%1$@ wrote:" = "%1$@ ha escrito:";
 
 /* error message for .invalidEmail
    error message for .missingEmail */
-"A valid email is required" = "A valid email is required";
+"A valid email is required" = "Es necesario un correo electrónico válido.";
 
 /* Account settings
    Title for manual account setup */
-"Account" = "Account";
+"Account" = "Cuenta";
 
 /* Error description detecting account settings */
-"Account detection timed out" = "Account detection timed out";
+"Account detection timed out" = "Se ha agotado el tiempo de espera para detectar una cuenta";
 
 /* Empty account name message */
-"Account name must not be empty." = "Account name must not be empty.";
+"Account name must not be empty." = "El nombre de la cuenta no debe estar vacío.";
 
 /* Tableview section  header */
-"Accounts" = "Accounts";
+"Accounts" = "Cuentas";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
-"Add to Contacts" = "Add to Contacts";
+"Add to Contacts" = "Añadir a Contactos";
 
 /* Name of unified inbox (showing messages of all accoounts */
-"All" = "All";
-
-/* Error message shown to the user in case an error in the app occured that is not caused or related to the server */
-"An internal error occured. Sorry, that should not happen." = "An internal error occurred. Sorry, that shouldn't have happened.";
+"All" = "Todo";
 
 /* error message for .noConnectData */
-"An internal error occurred" = "An internal error occurred";
-
-/* KeySyncWizard introduction message */
-"Another device is detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Another device has been detected. We can add it to your device group to sync your information on all devices. Should we start synchronizing?";
+"An internal error occurred" = "Se ha producido un error interno";
 
 /* Archive button in slide-left menu */
-"Archive" = "Archive";
+"Archive" = "Archivo";
 
 /* Account delete confirmation */
-"Are you sure you want to delete the account?" = "Are you sure you want to delete the account?";
+"Are you sure you want to delete the account?" = "¿Seguro que quieres eliminar la cuenta?";
 
 /* Leave device group confirmation */
-"Are you sure you want to leave your device group?" = "Are you sure you want to leave your device group?";
+"Are you sure you want to leave your device group?" = "¿Seguro que quieres abandonar el grupo de dispositivos?";
 
 /* Insert document in message text context menu */
-"Attach file" = "Attach file";
+"Attach file" = "Adjuntar archivo";
 
 /* Attach photo/video (message text context menu) */
-"Attach media" = "Attach media";
-
-/* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
-"Attached Image %1$d (%2$@)" = "Attached image %1$d (%2$@)";
+"Attach media" = "Adjuntar archivo multimedia";
 
 /* title attachments filter cell */
-"Attachments" = "Attachments";
-
-/* Compose field title */
-"BCC:" = "Bcc:";
+"Attachments" = "Archivos adjuntos";
 
 /* Privacy status title */
-"Broken" = "Broken";
+"Broken" = "Interrumpido";
 
 /* alert action 3
    Cancel for an alert view
@@ -97,88 +73,73 @@
    MoveToFolderViewController NavigationBar canel button title
    possible private status action
    UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
-"Cancel" = "Cancel";
+"Cancel" = "Cancelar";
 
 /* Privacy status title */
-"Cannot Decrypt" = "Cannot Decrypt";
-
-/* Compose field title */
-"CC:" = "Cc:";
+"Cannot Decrypt" = "No se puede desencriptar";
 
 /* Compose field title */
 "Cc/Bcc:" = "Cc/Bcc:";
 
-/* UI alert message for transport protocol */
-"Choose a Security protocol for your accont" = "Choose a Security protocol for your account";
-
 /* Empty IMAP transport security method */
-"Choose IMAP transport security method." = "Choose IMAP transport security method.";
-
-/* Empty SMTP transport security method */
-"Choose SMTP transport security method." = "Choose SMTP transport security method";
+"Choose IMAP transport security method." = "Selecciona el método de seguridad de transporte IMAP.";
 
 /* Privacy status suggestion */
-"Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication.";
+"Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Establece un protocolo de enlace con el contacto. Este protocolo solo es necesario una vez por contacto y garantiza que la comunicación sea segura y de confianza.";
 
 /* Confirm correct fingerprint (PGP, long version) */
-"Confirm Fingerprint" = "Confirm Fingerprint";
+"Confirm Fingerprint" = "Confirmar Huella digital";
 
 /* Confirm correct trustwords (pEp, long version) */
-"Confirm Trustwords" = "Confirm Trustwords";
+"Confirm Trustwords" = "Confirmar Trustwords";
 
 /* ResetTrustView title
    TableView section header */
-"Contacts" = "Contacts";
+"Contacts" = "Contactos";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title Copy Email */
-"Copy Email" = "Copy Email";
-
-/* Error description detecting account settings */
-"Could not find servers. Please enter manually" = "Could not find servers. Please enter manually.";
+"Copy Email" = "Copiar correo electrónico";
 
 /* Settings: Cell (button) title to view app credits */
-"Credits" = "Credits";
+"Credits" = "Créditos";
 
 /* decline button */
-"Decline" = "Decline";
+"Decline" = "Rechazar";
 
 /* Default Account Setting Section Title
    Settings: Cell (button) title to view default account setting */
-"Default Account" = "Default Account";
+"Default Account" = "Cuenta predeterminada";
 
 /* Account delete
    compose email delete
    ComposeTableView: button to decide to delete a message from Outbox after making changes.
    Delete account button title
    swipe delete ExtraKey action title */
-"Delete" = "Delete";
+"Delete" = "Eliminar";
 
 /* Account delete confirmation comment */
-"delete account message" = "delete account message";
-
-/* possible private status action */
-"Disable Protection" = "Disable protection";
+"delete account message" = "eliminar mensaje de la cuenta";
 
 /* ComposeTableView: button to decide to discharge changes made on a drafted mail. */
-"Discharge changes" = "Discharge changes";
+"Discharge changes" = "Deshacer los cambios";
 
 /* Email */
-"Email" = "Email";
+"Email" = "Correo electrónico";
 
 /* Title of alert: a required field is empty */
-"Empty Field" = "Empty Field";
+"Empty Field" = "Campo vacío";
 
 /* enable p≡p Sync with other devices in the group */
-"Enable p≡p Sync" = "Enable p≡p Sync";
+"Enable p≡p Sync" = "Habilitar Sincronización p≡p";
 
 /* Passive mode title */
-"Enable passive mode" = "Enable passive mode";
+"Enable passive mode" = "Habilitar el modo pasivo";
 
 /* title for subject protection */
-"Enable Protected Subject" = "Enable Protected Subject";
+"Enable Protected Subject" = "Habilitar Asunto protegido";
 
 /* possible private status action */
-"Enable Protection" = "Enable Protection";
+"Enable Protection" = "Habilitar Protección";
 
 /* Fail to update pEpSync value alert title
    Title of error alert shown to the user in case a message could not be sent
@@ -186,180 +147,156 @@
 "Error" = "Error";
 
 /* Settings: Cell (button) title to view Extra Keys setting */
-"Extra Keys" = "Extra Keys";
+"Extra Keys" = "Claves extras";
 
 /* Filter Title */
-"Filters" = "Filters";
+"Filters" = "Filtros";
 
 /* read button in slide-left menu */
-"Flag" = "Flag";
+"Flag" = "Marcar";
 
 /* Title for Flagged filter
    title unread filter cell */
-"Flagged" = "Flagged";
+"Flagged" = "Se ha marcado";
 
 /* FoldersView */
-"Folders" = "Folders";
+"Folders" = "Carpetas";
 
 /* EmailList action title
    Message actions */
-"Forward" = "Forward";
+"Forward" = "Reenviar";
 
 /* Compose field title
    Title of account picker when composing a message */
-"From:" = "From:";
+"From:" = "De:";
 
 /* The 'Fwd:' that gets appended to the subject line */
-"Fwd: " = "Fwd: ";
+"Fwd: " = "Re: ";
 
 /* Tableview section header */
-"Global Settings" = "Global Settings";
+"Global Settings" = "Configuración global";
 
 /* possible privacy status action */
-"Handshake" = "Handshake";
+"Handshake" = "Protocolo de enlace";
 
 /* Trusted Server Setting Section Footer */
-"If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!" = "If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!";
+"If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!" = "Si se inhabilita, se guardará en el servidor una copia sin cifrar de cada mensaje.\n\nNo inhabilites esta opción si no estás seguro.";
 
 /* Tableview section footer */
-"If enabled, message subjects are also protected." = "If enabled, message subjects are also protected.";
-
-/* Privacy status suggestion */
-"If this message was addressed to you, please inform the sender that you don't have the key." = "If this message was addressed to you. Please inform the sender that you don't have the key.";
+"If enabled, message subjects are also protected." = "Si se habilita, los asuntos de los mensajes también se protegen.";
 
 /* Manual account setup */
 "IMAP" = "IMAP";
 
-/* Empty IMAP port server message */
-"IMAP Port must not be empty." = "IMAP port must not be empty.";
-
 /* Empty IMAP server message */
-"IMAP server must not be empty." = "IMAP server must not be empty.";
+"IMAP server must not be empty." = "El servidor IMAP no debe estar vacío.";
 
 /* Account settings title IMAP */
-"IMAP Settings" = "IMAP Settings";
+"IMAP Settings" = "Configuración de IMAP";
 
 /* Name of INBOX mailbox (of one account) */
-"Inbox" = "Inbox";
+"Inbox" = "Bandeja de entrada";
 
 /* title for the accounts section */
-"INCLUDE MAIL FROM:" = "INCLUDE MAIL FROM:";
+"INCLUDE MAIL FROM:" = "INCLUIR CORREO DE:";
 
 /* title for the include section */
-"INCLUDE:" = "INCLUDE:";
+"INCLUDE:" = "INCLUIR:";
 
 /* Title of error alert shown to the user in case an error in the app occured that is not caused or related to the server */
-"Internal Error" = "Internal Error";
+"Internal Error" = "Error interno";
 
 /* Invalid input for account */
-"Invalid account name: %1$@" = "Invalid account name: %1$@";
+"Invalid account name: %1$@" = "Nombre de cuenta no válido: %1$@";
 
 /* Invalid input for email address */
-"Invalid email address: %1$@" = "Invalid email address: %1$@";
+"Invalid email address: %1$@" = "Dirección de correo electrónico no válida: %1$@";
 
 /* alert message. trying to add an invalid fingerprint
    alert title. trying to add an invalid fingerprint */
-"Invalid FPR" = "Invalid FPR";
+"Invalid FPR" = "HDG no válida";
 
 /* Title of invalid accout settings user input alert */
-"Invalid Input" = "Invalid Input";
+"Invalid Input" = "Entrada no válida";
 
 /* Invalid input for por */
-"Invalid port: %1$@" = "Invalid port: %1$@";
+"Invalid port: %1$@" = "Puerto no válido: %1$@";
 
 /* Invalid input for server */
-"Invalid server: %1$@" = "Invalid server: %1$@";
+"Invalid server: %1$@" = "Servidor no válido: %1$@";
 
 /* Invalid input for transport security */
-"Invalid transport security: %1$@" = "Invalid transport security: %1$@";
+"Invalid transport security: %1$@" = "Seguridad de transporte no válida: %1$@";
 
 /* Invalid input for username */
-"Invalid username: %1$@" = "Invalid username: %1$@";
-
-/* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
-"It was impossible to login to %1$@. Username or password is wrong." = "It was not possible to log in to %1$@. Username or password is wrong.";
-
-/* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
-"It was impossible to login to the server. Username or password is wrong." = "It was not possible to log in to the server. Username or password is wrong.";
+"Invalid username: %1$@" = "Nombre de usuario no válido: %1$@";
 
 /* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
-"Keep in Outbox" = "Keep in Outbox";
+"Keep in Outbox" = "Guardar en la bandeja de salida";
 
 /* keySyncWizard completion view leave button title
    Leave device group button title */
-"Leave" = "Leave";
+"Leave" = "Salir";
 
 /* Settings: Cell (button) title for leaving device group */
-"Leave Device Group" = "Leave Device Group";
+"Leave Device Group" = "Abandonar el grupo de dispositivos";
 
 /* Leave device group confirmation comment */
-"leaving device group" = "leaving device group";
+"leaving device group" = "abandonar el grupo de dispositivos";
 
 /* Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed. */
-"Login Failed" = "Login Failed";
+"Login Failed" = "Error al iniciar sesión";
 
 /* Privacy status suggestion */
-"Make sure the privacy status for each communication partner listed is at least secure" = "Make sure the privacy status for each communication partner listed is at least secure";
-
-/* privacyStatusDescription yellow */
-"Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call" = "Make this communication partner secure and trusted by comparing the trustwords below with them, for example by making a phone call";
+"Make sure the privacy status for each communication partner listed is at least secure" = "Comprueba que el estado de privacidad de cada contacto que aparece en la lista es seguro.";
 
 /* manual */
-"Manual configuration" = "Manual configuration";
+"Manual configuration" = "Configuración manual";
 
 /* EmailList action title */
-"Mark as Read" = "Mark as read";
-
-/* EmailList action title */
-"Mark as unread" = "Mark as unread";
+"Mark as unread" = "Marcar como no leído";
 
 /* Privacy status title
    privacyStatusTitle red */
-"Mistrusted" = "Mistrusted";
+"Mistrusted" = "No es de confianza";
 
 /* more button in slide-left menu */
-"More" = "More";
-
-/* MoveToFolderViewController title */
-"Move To" = "Move to";
+"More" = "Más";
 
 /* EmailList action title */
-"Move to Folder" = "Move to Folder";
-
-/* File name used for videos the user attaches. */
-"Movie" = "Move";
+"Move to Folder" = "Mover a Carpeta";
 
 /* username */
-"Name" = "Name";
+"Name" = "Nombre";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title New Mail Message */
-"New Mail Message" = "New Mail Message";
+"New Mail Message" = "Nuevo mensaje";
 
 /* Title for notification show on lock screen for *one* new mail */
-"New message received" = "New message received";
+"New message received" = "Nuevo mensaje recibido";
 
 /* keySyncWizard intro view Next button title */
-"Next" = "Next";
+"Next" = "Siguiente";
 
 /* Error when no account found for set_own_key UI */
-"No account found with the given email." = "No account found with the given email.";
+"No account found with the given email." = "No se ha encontrado ninguna cuenta con ese correo electrónico.";
 
 /* Privacy status suggestion */
-"No action needed!" = "No action needed!";
+"No action needed!" = "No es necesario realizar ninguna acción.";
 
 /* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
-"No Permissions" = "No Permissions";
+"No Permissions" = "Sin permisos";
 
 /* privacyStatusDescription no_color
    privacyStatusTitle no_color */
-"None" = "None";
+"None" = "Ninguno";
 
 /* keySyncWizard error view NotNow button title */
-"Not now" = "Not now";
+"Not now" = "Ahora no";
 
 /* keySyncWizard intro view Not Now button title
    not now button */
-"Not Now" = "Not Now";
+"Not Now" = "Ahora no";
 
 /* Filter accept text
    General alert positive button
@@ -367,26 +304,23 @@
    OK button for invalid accout settings user input alert
    OK button for pEpSyncError alert
    UIAlertAction ok after error */
-"OK" = "OK";
+"OK" = "Aceptar";
 
 /* Name of outbox (showing messages to send */
-"Outbox" = "Outbox";
-
-/* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
-"p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App." = "p≡p does not have permission to access \nthe Photo Gallery. You can grant permission in App Settings.";
+"Outbox" = "Bandeja de salida";
 
 /* Tableview section header */
-"p≡p sync" = "p≡p sync";
+"p≡p sync" = "sincronización p≡p";
 
 /* keySync handshake alert title
    keySyncWizard animation view title */
-"p≡p Sync" = "p≡p Sync";
+"p≡p Sync" = "Sincronización p≡p";
 
 /* password */
-"Password" = "Password";
+"Password" = "Contraseña";
 
 /* Account settings title pEp Sync */
-"pEp Sync" = "pEp Sync";
+"pEp Sync" = "Sincronización pEp";
 
 /* TutorialWizard image 1 */
 "pEpForIOS-Tutorial-1" = "pEpForIOS-Tutorial-1";
@@ -419,254 +353,215 @@
 "pEpForIOS-Tutorial-5-horizontal" = "pEpForIOS-Tutorial-5-horizontal";
 
 /* Tableview section header */
-"PGP Compatibility" = "PGP Compatibility";
+"PGP Compatibility" = "Compatibilidad PGP";
 
 /* Privacy status suggestion */
-"Please add the necessary information." = "Please add the necessary information.";
+"Please add the necessary information." = "Añade la información necesaria.";
 
 /* Privacy status suggestion */
-"Please ask your communication partner to use an encryption solution or install p≡p." = "Please ask your communication partner to use an encryption solution or install p≡p.";
-
-/* keySyncWizard animation view message */
-"Please give us a moment while we sync your devices. This can take up to a minute." = "Please give us a moment while we sync your devices. This can take up to one minute.";
-
-/* Validation error for set_own_key UI */
-"Please provide an email and a fingerprint. The email must match an existing account." = "Please provide an email address and a fingerprint. The email address must match an existing account.";
+"Please ask your communication partner to use an encryption solution or install p≡p." = "Solicita al contacto que use una solución de cifrado o se instale p≡p.";
 
 /* action sheet title 1 */
-"Privacy Status" = "Privacy Status";
+"Privacy Status" = "Estado de privacidad";
 
 /* passive mode description */
-"Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p." = "Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p.";
+"Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p." = "El material de las claves públicas solo se adjuntarán a un mensaje si p≡p detecta que el destinatario también usa p≡p.";
 
 /* Privacy status suggestion */
-"Re-establish the connection with your communication partner and try to complete another handshake." = "Re-establish the connection with your communication partner and try to complete another handshake.";
+"Re-establish the connection with your communication partner and try to complete another handshake." = "Vuelve a establecer la conexión con el contacto e intenta establecer otro protocolo de enlace.";
 
 /* read button in slide-left menu */
-"Read" = "Read";
+"Read" = "Leer";
 
 /* ComposeTableView: Label of swipe left. Removing of attachment. */
-"Remove" = "Remove";
+"Remove" = "Eliminar";
 
 /* EmailList action title
    Message actions
    read button in slide-left menu */
-"Reply" = "Reply";
+"Reply" = "Responder";
 
 /* EmailList action title
    Message actions */
-"Reply All" = "Reply All";
-
-/* alert action 2 */
-"Reset Trust For All Identities" = "Reset Trust for All Identities";
-
-/* alert action 1 */
-"Reset Trust For This Identity" = "Reset Trust for This Identity";
-
-/* ComposeTableView: button to decide to save changes made on a drafted mail. */
-"Save changes" = "Save Changes";
+"Reply All" = "Responder a todos";
 
 /* compose email save */
-"Save Draft" = "Save Draft";
+"Save Draft" = "Guardar borrador";
 
 /* Privacy status title
    privacyStatusTitle yellow */
-"Secure" = "Secure";
+"Secure" = "Comunicación segura";
 
 /* Privacy status title
    privacyStatusTitle green */
-"Secure & Trusted" = "Secure & Trusted";
-
-/* Privacy status suggestion */
-"Separately verify the content of this message with your communication partner." = "Verify the content of this message with your communication partner separately.";
+"Secure & Trusted" = "Comunicación segura y de confianza";
 
 /* Title of error alert shown to the user in case we can not connect to the IMAP server
    Title of error alert shown to the user in case we can not connect to the SMTP server */
-"Server Unreachable" = "Server Unreachable";
+"Server Unreachable" = "No se puede acceder al servidor";
 
 /* Settings: Cell (button) title for entering fingerprints that are made own keys */
-"Set Own Key" = "Set Own Key";
+"Set Own Key" = "Establecer clave propia";
 
 /* acction sheet title 2
    Settings view title */
-"Settings" = "Settings";
+"Settings" = "Configuración";
 
 /* Login */
-"Sign In" = "Sign In";
+"Sign In" = "Iniciar sesión";
 
 /* Start up tutorial skip button */
-"Skip" = "Skip";
+"Skip" = "Saltar";
 
 /* Body for notifications show on lock screen for new mail(s) */
-"Slide for more" = "Slide for more";
+"Slide for more" = "Desliza para obtener más información";
 
 /* Manual account setup */
 "SMTP" = "SMTP";
 
-/* Empty SMTP port server message */
-"SMTP Port must not be empty." = "IMAP port must not be empty.";
-
 /* Empty SMTP server message */
-"SMTP server must not be empty." = "SMTP server must not be empty.";
+"SMTP server must not be empty." = "El servidor SMTP no debe estar vacío.";
 
 /* Account settings title SMTP */
-"SMTP Settings" = "SMTP Settings";
+"SMTP Settings" = "Configuración de SMTP";
 
 /* Title for address filter */
-"some address" = "some address";
+"some address" = "alguna dirección";
 
 /* Reply to unknown sender with date */
-"Someone wrote on %1$@:" = "Someone wrote on %1$@:";
+"Someone wrote on %1$@:" = "Alguien ha escrito en %1$@:";
 
 /* Reply to unknown sender without date */
-"Someone wrote:" = "Someone wrote:";
+"Someone wrote:" = "Alguien ha escrito:";
 
 /* keySyncWizard error view message */
-"Something went wrong with syncing the devices. Please try again." = "Something went wrong with syncing the devices. Please try again.";
-
-/* AccountSettings viewModel no account error */
-"Something went wrong, please try again later" = "Something went wrong. Please try again later";
+"Something went wrong with syncing the devices. Please try again." = "Se ha producido un error al sincronizar los dispositivos.Vuelve a intentarlo.";
 
 /* Stop/trust button in handshake overview */
-"Start Trusting" = "Start Trusting";
+"Start Trusting" = "Establecer confianza";
 
 /* Stop/trust button in handshake overview */
-"Stop Trusting" = "Stop Trusting";
+"Stop Trusting" = "Dejar de confiar";
 
 /* Settings: Cell (button) title to view default account setting
    Trusted Server Setting Section Title */
-"Store Messages Securely" = "Store Messages Securely";
+"Store Messages Securely" = "Almacenar mensajes de forma segura";
 
 /* Compose field title */
-"Subject:" = "Subject:";
+"Subject:" = "Asunto:";
 
 /* accept hand shake sync button */
-"Sync" = "Sync";
-
-/* error message for .accountExistence */
-"The account already exists" = "This account already exists";
+"Sync" = "Sincronizar";
 
 /* Error message shown to the user in case a message could not be sent. */
-"The message could not be sent. Please try again later." = "The message could not be sent. Please try again later.";
-
-/* error message for .minimumLengthUsername */
-"The username must contain more than 1 characters" = "The username must contain more than 1 character";
+"The message could not be sent. Please try again later." = "No se ha podido enviar el mensaje. Vuelve a intentarlo más tarde.";
 
 /* privacyStatusDescription red */
-"This communication partner is mistrusted" = "This communication partner is mistrusted";
+"This communication partner is mistrusted" = "El contacto no es de confianza";
 
 /* privacyStatusDescription green */
-"This communication partner is secure and trusted" = "This communication partner is secure and trusted";
+"This communication partner is secure and trusted" = "El contacto es seguro y de confianza";
 
 /* Privacy status explanation */
-"This message cannot be decrypted because the key is not available." = "This message cannot be decrypted because the key is not available.";
+"This message cannot be decrypted because the key is not available." = "No se puede desencriptar este mensaje porque la clave no está disponible.";
 
 /* Privacy status explanation */
-"This message cannot be decrypted." = "This message cannot be decrypted.";
+"This message cannot be decrypted." = "No se puede desencriptar este mensaje.";
 
 /* content that is shown for undecryptable messages */
-"This message could not be decrypted." = "This message could not be decrypted.";
+"This message could not be decrypted." = "No se ha podido desencriptar este mensaje.";
 
 /* Privacy status explanation */
-"This message does not contain enough information to determine if it is secure." = "This message does not contain enough information to determine if it is secure.";
-
-/* Privacy status explanation */
-"This message has a communication partner that has previously been marked as mistrusted." = "This message includes a communication partner that has previously been marked as mistrusted.";
+"This message does not contain enough information to determine if it is secure." = "Este mensaje no tiene información suficiente para determinar si es seguro.";
 
 /* Privacy status suggestion */
-"This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p.";
-
-/* Privacy status explanation */
-"This message has unreliable protection" = "This message has unreliable protection.";
+"This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "Este mensaje tiene un cifrado que no es de confianza o no tiene firma. Solicita al contacto que actualice su solución de cifrado o que instale p≡p.";
 
 /* Compose field title */
-"This message is from a mailing list." = "This message is from a mailing list.";
+"This message is from a mailing list." = "Este mensaje proviene de una lista de distribución de correos.";
 
 /* Privacy status explanation */
-"This message is not secure and has been tampered with." = "This message is not secure and has been tampered with.";
+"This message is not secure and has been tampered with." = "Este mensaje no es seguro y se ha manipulado.";
 
 /* Privacy status explanation */
-"This message is secure and trusted." = "This message is secure and trusted.";
+"This message is secure and trusted." = "Este mensaje es seguro y de confianza.";
 
 /* Privacy status explanation */
-"This message is secure but you still need to verify the identity of your communication partner." = "This message is secure but you still need to verify the identity of your communication partner.";
+"This message is secure but you still need to verify the identity of your communication partner." = "Este mensaje es seguro, pero debes verificar la identidad de tu contacto.";
 
 /* Privacy status explanation */
-"This message is unsecure for some communication partners." = "This message is unsecure for some communication partners.";
+"This message is unsecure for some communication partners." = "Este mensaje no es seguro para algunos contactos.";
 
 /* Privacy status explanation */
-"This message is unsecure." = "This message is unsecure.";
+"This message is unsecure." = "Este mensaje no es seguro.";
 
 /* settings, enable thread view or not */
-"Thread Messages" = "Thread Messages";
+"Thread Messages" = "Mensajes de la conversación";
 
 /* Compose field title */
-"To:" = "To:";
-
-/* Compose field title */
-"To: " = "To:";
+"To:" = "Para:";
 
 /* UI alert title for transport protocol */
-"Transport protocol" = "Transport protocol";
+"Transport protocol" = "Protocolo de transporte";
 
 /* Trash button in slide-left menu */
-"Trash" = "Trash";
+"Trash" = "Papelera";
 
 /* keySyncWizard error view Try Again button title */
-"Try Again" = "Try Again";
+"Try Again" = "Volver a intentarlo";
 
 /* show tutorial from compose view */
 "Tutorial" = "Tutorial";
 
 /* Privacy status title */
-"Under Attack" = "Under Attack";
+"Under Attack" = "Objeto de ataque";
 
 /* read button in slide-left menu */
-"Unflag" = "Unflag";
+"Unflag" = "Desmarcar";
 
 /* Displayed attachment filename if unknown */
-"unknown" = "unknown";
+"unknown" = "desconocido";
 
 /* Privacy status title */
-"Unknown" = "Unknown";
+"Unknown" = "Desconocido";
 
 /* file name used for unnamed attachments */
-"unnamed" = "unnamed";
+"unnamed" = "sin nombre";
 
 /* Title for unread filter
    title unread filter cell */
-"Unread" = "Unread";
+"Unread" = "No leído";
 
 /* Privacy status title */
-"Unreliable Security" = "Unreliable Security";
+"Unreliable Security" = "Seguridad no confiable";
 
 /* Privacy status title */
-"Unsecure" = "Unsecure";
+"Unsecure" = "No seguro";
 
 /* Privacy status title */
-"Unsecure for Some" = "Unsecure for Some";
+"Unsecure for Some" = "No seguro para algunos";
 
 /* Empty username message */
-"Username must not be empty." = "Username must not be empty.";
+"Username must not be empty." = "El nombre de usuario no debe estar vacío.";
 
 /* Error title for validation errors on login screen */
-"Validation Error" = "Validation Error";
+"Validation Error" = "Error de validación";
 
 /* AccountsView: Prefix for version. Shows up like this: \"Version: 2.0.1 build 234\" */
-"Version" = "Version";
+"Version" = "Versión";
 
 /* Error message shown to the user in case we can not connect to the IMAP server */
-"We could not connect to the IMAP server." = "We could not connect to the IMAP server.";
+"We could not connect to the IMAP server." = "No hemos podido establecer la conexión al servidor IMAP.";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
-"We could not connect to the SMTP server." = "We could not connect to the SMTP server.";
+"We could not connect to the SMTP server." = "No hemos podido establecer la conexión al servidor SMTP.";
 
 /* Title for attachments filter */
-"With attachments" = "With attachments";
+"With attachments" = "Con archivos adjuntos.";
 
 /* Incorrect fingerprint (PGP, long version) */
-"Wrong Fingerprint" = "Wrong Fingerprint";
+"Wrong Fingerprint" = "Huella digital incorrecta";
 
 /* Incorrect trustwords (pEp, long version) */
-"Wrong Trustwords" = "Wrong Trustwords";
+"Wrong Trustwords" = "Trustwords erróneas";
 

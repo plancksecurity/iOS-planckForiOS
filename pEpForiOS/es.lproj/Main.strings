@@ -1,72 +1,72 @@
-
 /* Class = "UITableViewController"; title = "Show email"; ObjectID = "3bx-34-vLD"; */
-"3bx-34-vLD.title" = "Show email";
+"3bx-34-vLD.title" = "Mostrar correo electrónico";
 
 /* Class = "UILabel"; text = "Subject"; ObjectID = "5Py-55-oem"; */
-"5Py-55-oem.text" = "Subject";
+"5Py-55-oem.text" = "Asunto";
 
 /* Class = "UILabel"; text = "To:"; ObjectID = "Bd2-Nr-sTF"; */
-"Bd2-Nr-sTF.text" = "To:";
+"Bd2-Nr-sTF.text" = "Para:";
+
+/* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "bgm-ua-A0f"; */
+"bgm-ua-A0f.title" = "Bandeja de entrada";
 
 /* Class = "UILabel"; text = "This email has been sent as part of a mailing list."; ObjectID = "BjL-CL-0Cu"; */
-"BjL-CL-0Cu.text" = "This email has been sent as part of a mailing list.";
+"BjL-CL-0Cu.text" = "Has recibido este correo electrónico porque te has suscrito a una lista de distribución de correos.";
 
 /* Class = "UILabel"; text = "Summary"; ObjectID = "BvI-Zi-zU6"; */
-"BvI-Zi-zU6.text" = "Summary";
+"BvI-Zi-zU6.text" = "Resumen";
 
 /* Class = "UIViewController"; title = "Move to Account"; ObjectID = "EmS-3d-sKb"; */
-"EmS-3d-sKb.title" = "Move to Account";
+"EmS-3d-sKb.title" = "Mover a Cuenta";
+
+/* Class = "UIBarButtonItem"; title = "Edit"; ObjectID = "hax-OT-dfL"; */
+"hax-OT-dfL.title" = "Editar";
+
+/* Class = "UILabel"; text = "Sender"; ObjectID = "hnw-Tp-mga"; */
+"hnw-Tp-mga.text" = "Remitente";
+
+/* Class = "UITableViewController"; title = "Email List"; ObjectID = "kcA-RK-9Xg"; */
+"kcA-RK-9Xg.title" = "Lista de correos electrónicos";
 
 /* Class = "UILabel"; text = "To: Recipients"; ObjectID = "Mfx-AS-hpP"; */
-"Mfx-AS-hpP.text" = "To: Recipients";
-
-/* Class = "UILabel"; text = "Subject:"; ObjectID = "NTc-GH-Ell"; */
-"NTc-GH-Ell.text" = "Subject:";
+"Mfx-AS-hpP.text" = "Para: destinatarios";
 
 /* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "NoQ-uw-dGp"; */
-"NoQ-uw-dGp.title" = "Cancel";
+"NoQ-uw-dGp.title" = "Cancelar";
+
+/* Class = "UILabel"; text = "Subject:"; ObjectID = "NTc-GH-Ell"; */
+"NTc-GH-Ell.text" = "Asunto:";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "OLo-8A-CCo"; */
-"OLo-8A-CCo.text" = "Title";
+"OLo-8A-CCo.text" = "Título";
+
+/* Class = "UIButton"; normalTitle = "Unsubscribe"; ObjectID = "oWA-cC-IZF"; */
+"oWA-cC-IZF.normalTitle" = "Anular la suscripción";
+
+/* Class = "UILabel"; text = "From:"; ObjectID = "pkd-ua-DYh"; */
+"pkd-ua-DYh.text" = "De:";
 
 /* Class = "UILabel"; text = "Cc/Bcc:"; ObjectID = "QgY-uq-4qZ"; */
 "QgY-uq-4qZ.text" = "Cc/Bcc:";
 
+/* Class = "UILabel"; text = "Title"; ObjectID = "riI-qM-PeJ"; */
+"riI-qM-PeJ.text" = "Título";
+
 /* Class = "UILabel"; text = "No Message Selected"; ObjectID = "Rk5-l1-Vt8"; */
-"Rk5-l1-Vt8.text" = "No Message Selected";
+"Rk5-l1-Vt8.text" = "No se ha seleccionado ningún mensaje";
 
 /* Class = "UILabel"; text = "Date"; ObjectID = "Swb-L2-8yp"; */
-"Swb-L2-8yp.text" = "Date";
-
-/* Class = "UILabel"; text = "Date"; ObjectID = "Wkg-wf-Dbd"; */
-"Wkg-wf-Dbd.text" = "Date";
-
-/* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "bgm-ua-A0f"; */
-"bgm-ua-A0f.title" = "Inbox";
-
-/* Class = "UIBarButtonItem"; title = "Edit"; ObjectID = "hax-OT-dfL"; */
-"hax-OT-dfL.title" = "Edit";
-
-/* Class = "UILabel"; text = "Sender"; ObjectID = "hnw-Tp-mga"; */
-"hnw-Tp-mga.text" = "Sender";
-
-/* Class = "UITableViewController"; title = "Email List"; ObjectID = "kcA-RK-9Xg"; */
-"kcA-RK-9Xg.title" = "Email List";
-
-/* Class = "UIButton"; normalTitle = "Unsubscribe"; ObjectID = "oWA-cC-IZF"; */
-"oWA-cC-IZF.normalTitle" = "Unsubscribe";
-
-/* Class = "UILabel"; text = "From:"; ObjectID = "pkd-ua-DYh"; */
-"pkd-ua-DYh.text" = "From:";
-
-/* Class = "UILabel"; text = "Title"; ObjectID = "riI-qM-PeJ"; */
-"riI-qM-PeJ.text" = "Title";
+"Swb-L2-8yp.text" = "Fecha";
 
 /* Class = "UILabel"; text = "Sender"; ObjectID = "tWZ-jW-sUg"; */
-"tWZ-jW-sUg.text" = "Sender";
+"tWZ-jW-sUg.text" = "Remitente";
+
+/* Class = "UILabel"; text = "Date"; ObjectID = "Wkg-wf-Dbd"; */
+"Wkg-wf-Dbd.text" = "Fecha";
 
 /* Class = "UILabel"; text = "Subject"; ObjectID = "xrz-WN-2Dg"; */
-"xrz-WN-2Dg.text" = "Subject";
+"xrz-WN-2Dg.text" = "Asunto";
 
 /* Class = "UIBarButtonItem"; title = "Send"; ObjectID = "yQg-rY-YPK"; */
-"yQg-rY-YPK.title" = "Send";
+"yQg-rY-YPK.title" = "Enviar";
+
