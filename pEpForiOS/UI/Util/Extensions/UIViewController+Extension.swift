@@ -105,4 +105,3 @@ extension UIViewController {
         return activityIndicator
     }
 }
-

@@ -322,6 +322,12 @@ extension String {
         return unicodeScalars.allSatisfy { digits.contains($0) }
     }
 
+    /// it's true when the string only contains letters
+    public var isLetter: Bool {
+        let letters = CharacterSet.letters
+        return unicodeScalars.allSatisfy { letters.contains($0) }
+    }
+
     /// it's true when the string is only a backspace
     public var isBackspace: Bool {
         var backspace = CharacterSet()

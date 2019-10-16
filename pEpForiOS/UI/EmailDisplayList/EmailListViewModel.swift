@@ -110,7 +110,7 @@ class EmailListViewModel {
                                                        search: nil)
         messageQueryResults.delegate = self
         // Threading feature is currently non-existing. Keep this code, might help later.
-//        self.oldThreadSetting = AppSettings.threadedViewEnabled
+//        self.oldThreadSetting = AppSettings.shared.threadedViewEnabled
     }
 
     func startMonitoring() {
@@ -146,8 +146,8 @@ class EmailListViewModel {
     // Threading feature is currently non-existing. Keep this code, might help later.
 //    //check if there are some important settings that have changed to force a reload
 //    func checkIfSettingsChanged() -> Bool {
-//        if AppSettings.threadedViewEnabled != oldThreadSetting {
-//            oldThreadSetting = AppSettings.threadedViewEnabled
+//        if AppSettings.shared.threadedViewEnabled != oldThreadSetting {
+//            oldThreadSetting = AppSettings.shared.threadedViewEnabled
 //            return true
 //        }
 //        return false
@@ -305,11 +305,11 @@ class EmailListViewModel {
     }
 
     func shouldShowTutorialWizard() -> Bool {
-        return AppSettings.shouldShowTutorialWizard
+        return AppSettings.shared.shouldShowTutorialWizard
     }
 
     func didShowTutorialWizard() {
-        AppSettings.shouldShowTutorialWizard = false
+        AppSettings.shared.shouldShowTutorialWizard = false
     }
 
     public func getDestructiveActtion(forMessageAt index: Int) -> SwipeActionDescriptor {

@@ -20,12 +20,12 @@ import PEPObjCAdapterFramework
 
 //!!!: must be moved to MM
 class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
-    var errorContainer: ServiceErrorProtocol!
+    var errorContainer: ErrorContainerProtocol!
     var queue: OperationQueue!
 
     override func setUp() {
         super.setUp()
-        errorContainer = ErrorContainer()
+        errorContainer = ErrorPropagator()
         queue = OperationQueue()
     }
 

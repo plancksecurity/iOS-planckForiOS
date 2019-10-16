@@ -20,13 +20,13 @@ class UnencryptedSubjectViewModelTest: CoreDataDrivenTestBase {
 
     public func testSwitch() {
         viewModel.setSwitch(value: true)
-        XCTAssertFalse(AppSettings.unencryptedSubjectEnabled)
+        XCTAssertFalse(AppSettings.shared.unencryptedSubjectEnabled)
 
         var switchValue = viewModel.switchValue()
         XCTAssertTrue(switchValue)
 
         viewModel.setSwitch(value: false)
-        XCTAssertTrue(AppSettings.unencryptedSubjectEnabled)
+        XCTAssertTrue(AppSettings.shared.unencryptedSubjectEnabled)
 
         switchValue = viewModel.switchValue()
         XCTAssertFalse(switchValue)
