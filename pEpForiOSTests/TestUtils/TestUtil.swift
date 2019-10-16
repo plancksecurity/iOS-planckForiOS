@@ -592,6 +592,10 @@ class TestUtil {
         func hasErrors() -> Bool {
             return error != nil
         }
+
+        func reset() {
+            error = nil
+        }
     }
 
     /**
