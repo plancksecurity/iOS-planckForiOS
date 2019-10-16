@@ -36,6 +36,8 @@ class HandshakeViewController: BaseTableViewController {
     /// Our own undo manager
     private let undoTrustOrMistrustManager = UndoManager()
 
+    private var orientationChangeObserver: NSObjectProtocol?
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -54,6 +56,19 @@ class HandshakeViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateStatusBadge()
+        orientationChangeObserver = NotificationCenter.default.addObserver(
+            forName: UIDevice.orientationDidChangeNotification,
+            object: nil,
+            queue: OperationQueue.main) { [weak self] notification in
+                self?.tableView.updateSize()
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let observer = orientationChangeObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
 }
 
