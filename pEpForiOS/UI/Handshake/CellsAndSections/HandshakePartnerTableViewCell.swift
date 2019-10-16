@@ -44,8 +44,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var trustWordsLabel: UILabel!
     @IBOutlet weak var trustMistrustButtonsStackView: UIStackView!
 
-    var sizeHelper = false
-
     weak var delegate: HandshakePartnerTableViewCellDelegate?
 
     var indexPath: IndexPath = IndexPath()
