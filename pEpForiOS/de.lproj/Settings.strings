@@ -1,3 +1,9 @@
+/* Class = "UILabel"; text = "Detail"; ObjectID = "0Qq-nB-Xso"; */
+"0Qq-nB-Xso.text" = "Detail";
+
+/* Class = "UIViewController"; title = "Extra Keys"; ObjectID = "4fP-ku-UtU"; */
+"4fP-ku-UtU.title" = "Extra Schlüssel";
+
 /* Class = "UILabel"; text = "Email"; ObjectID = "7Lp-ph-4lC"; */
 "7Lp-ph-4lC.text" = "E-Mail";
 
@@ -7,29 +13,41 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "Ag8-Qj-N8l"; */
 "Ag8-Qj-N8l.text" = "Label";
 
-/* Class = "UIButton"; normalTitle = "Copy Log"; ObjectID = "AzW-rt-GWz"; */
-"AzW-rt-GWz.normalTitle" = "Log kopieren";
+/* Class = "UILabel"; text = "Title"; ObjectID = "D99-2G-2i2"; */
+"D99-2G-2i2.text" = "Titel";
 
 /* Class = "UILabel"; text = "Transport Security:"; ObjectID = "daw-LF-EZF"; */
-"daw-LF-EZF.text" = "Transport-Verschlüsselung:";
+"daw-LF-EZF.text" = "Transportverschlüsselung:";
 
 /* Class = "UILabel"; text = "Server:"; ObjectID = "DQ0-sB-CRx"; */
 "DQ0-sB-CRx.text" = "Server:";
+
+/* Class = "UILabel"; text = "KeySync"; ObjectID = "E8I-np-XGR"; */
+"E8I-np-XGR.text" = "KeySync";
 
 /* Class = "UILabel"; text = "Password:"; ObjectID = "En6-h6-xZD"; */
 "En6-h6-xZD.text" = "Passwort:";
 
 /* Class = "UILabel"; text = "Transport Security:"; ObjectID = "hAL-c1-ngD"; */
-"hAL-c1-ngD.text" = "Transport-Verschlüsselung:";
+"hAL-c1-ngD.text" = "Transportverschlüsselung:";
 
-/* Class = "UILabel"; text = "Enable/Disable Logging"; ObjectID = "Imh-fw-p8J"; */
-"Imh-fw-p8J.text" = "Protokollierung Aktivieren/Deaktivieren";
+/* Class = "UILabel"; text = "Title"; ObjectID = "hHr-Jq-PRg"; */
+"hHr-Jq-PRg.text" = "Titel";
+
+/* Class = "UIButton"; normalTitle = "add fingerprint"; ObjectID = "J2v-Vi-URg"; */
+"J2v-Vi-URg.normalTitle" = "Fingerabdruck hinzufügen";
 
 /* Class = "UIButton"; normalTitle = "Set Own Key"; ObjectID = "lzc-xZ-iKm"; */
 "lzc-xZ-iKm.normalTitle" = "Eigenen Schlüssel festlegen";
 
+/* Class = "UITableViewSection"; headerTitle = "Section-4"; ObjectID = "NDe-dz-nXc"; */
+"NDe-dz-nXc.headerTitle" = "Section-4";
+
 /* Class = "UILabel"; text = "Email:"; ObjectID = "Ne5-6o-O4F"; */
 "Ne5-6o-O4F.text" = "E-Mail:";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "Pdx-rN-QPm"; */
+"Pdx-rN-QPm.text" = "Titel";
 
 /* Class = "UILabel"; text = "Name:"; ObjectID = "QcW-va-Qh4"; */
 "QcW-va-Qh4.text" = "Name:";
