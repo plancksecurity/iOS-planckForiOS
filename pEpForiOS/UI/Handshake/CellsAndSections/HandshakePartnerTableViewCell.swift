@@ -87,13 +87,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        confirmButton.roundCorners(corners: [.bottomRight, .topRight], radius: 10)
-        wrongButton.roundCorners(corners: [.topLeft, .bottomLeft], radius: 10)
-    }
-
     func updateView() {
         if backgroundColorDark {
             self.backgroundColor = UIColor.pEpLightBackground

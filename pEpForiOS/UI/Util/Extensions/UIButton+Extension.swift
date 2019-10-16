@@ -19,10 +19,6 @@ extension UIButton {
 
         self.backgroundColor = backgroundColor
         setTitleColor(textColor, for: .normal)
-        layer.cornerRadius = 2
-        let insetV: CGFloat = 15
-        let insetH: CGFloat = 15
-        contentEdgeInsets = UIEdgeInsets(top: insetV, left: insetH, bottom: insetV, right: insetH)
     }
 
     public func convertToLoginButton(placeholder: String) {
