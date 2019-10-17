@@ -19,24 +19,10 @@ protocol EditableAccountSettingsViewModelDelegate: class {
 }
 
 final class EditableAccountSettingsViewModel {
-
-    /// If there was OAUTH2 for this account, here is a current token.
-    /// This trumps both the `originalPassword` and a password given by the user
-    /// via the UI.
-    /// - Note: For logins that require it, there must be an up-to-date token
-    ///         for the verification be able to succeed.
-    ///         It is extracted from the existing server credentials on `init`.
-    private var accessToken: OAuth2AccessTokenProtocol?
-    /// If the credentials have either an IMAP or SMTP password,
-    /// it gets stored here.
-    private var originalPassword: String?
-
-    /// - Note: The email model is based on the assumption that imap.loginName == smtp.loginName
-    private(set) var email: String
-    private(set) var name: String
-    private(set) var loginName: String
-    private(set) var smtpServer: ServerViewModel
-    private(set) var imapServer: ServerViewModel
+//    private(set) var name: String
+//    private(set) var loginName: String
+//    private(set) var smtpServer: ServerViewModel
+//    private(set) var imapServer: ServerViewModel
 
     let isOAuth2: Bool
 
@@ -49,9 +35,22 @@ final class EditableAccountSettingsViewModel {
     weak var delegate: EditableAccountSettingsViewModelDelegate?
     weak var tableViewModel: EditableAccountSettingsTableViewModel?
 
+    /// If there was OAUTH2 for this account, here is a current token.
+    /// This trumps both the `originalPassword` and a password given by the user
+    /// via the UI.
+    /// - Note: For logins that require it, there must be an up-to-date token
+    ///         for the verification be able to succeed.
+    ///         It is extracted from the existing server credentials on `init`.
+    private var accessToken: OAuth2AccessTokenProtocol?
+    /// If the credentials have either an IMAP or SMTP password,
+    /// it gets stored here.
+    private var originalPassword: String?
+    private var account: Account
+
     public init(account: Account, messageModelService: MessageModelServiceProtocol) {
         self.messageModelService = messageModelService
 
+        self.account = account
         // We are using a copy of the data here.
         // The outside world must not know changed settings until they have been verified.
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
@@ -114,6 +113,7 @@ final class EditableAccountSettingsViewModel {
     func validateInputs() throws -> (addrImap: String, portImap: String, transImap: String,
         addrSmpt: String, portSmtp: String, transSmtp: String, accountName: String,
         loginName: String) {
+            //Validate all inputs, so far only tableViewModel
             guard let tableViewModel = tableViewModel else {
                 Log.shared.errorAndCrash("No viewModel for EditableAccountSettingsViewController")
                 throw SettingsInternalError.nilViewModel
@@ -125,7 +125,7 @@ final class EditableAccountSettingsViewModel {
 // MARK: - VerifiableAccountDelegate
 
 extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
-    public func didEndVerification(result: Result<Void, Error>) {
+    func didEndVerification(result: Result<Void, Error>) {
         switch result {
         case .success(()):
             do {
@@ -143,32 +143,6 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
                 delegate?.showErrorAlert(error: smtpError)
             } else {
                 Log.shared.errorAndCrash(error: error)
-            }
-        }
-    }
-}
-
-
-// MARK: - Helping structures
-
-extension EditableAccountSettingsViewModel {
-    struct ServerViewModel {
-        var address: String?
-        var port: String?
-        var transport: String?
-    }
-
-    struct SecurityViewModel {
-        var options = Server.Transport.toArray()
-        var size : Int {
-            get {
-                return options.count
-            }
-        }
-
-        subscript(option: Int) -> String {
-            get {
-                return options[option].asString()
             }
         }
     }
@@ -229,6 +203,32 @@ extension EditableAccountSettingsViewModel {
             try theVerifier.verify()
         } catch {
             delegate?.showErrorAlert(error: LoginViewController.LoginError.noConnectData)
+        }
+    }
+}
+
+
+// MARK: - Helping structures
+
+extension EditableAccountSettingsViewModel {
+    struct ServerViewModel {
+        var address: String?
+        var port: String?
+        var transport: String?
+    }
+
+    struct SecurityViewModel {
+        var options = Server.Transport.toArray()
+        var size : Int {
+            get {
+                return options.count
+            }
+        }
+
+        subscript(option: Int) -> String {
+            get {
+                return options[option].asString()
+            }
         }
     }
 }

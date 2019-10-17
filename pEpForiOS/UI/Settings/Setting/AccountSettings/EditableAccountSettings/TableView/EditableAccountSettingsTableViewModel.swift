@@ -14,17 +14,18 @@ final class EditableAccountSettingsTableViewModel {
     let securityViewModelvm = SecurityViewModel()
 
     var count: Int { return headers.count }
-    var imapSecurityTextfieldText: String?
-    var smtpSecurityTextfieldText: String?
-    var imapServerTextfieldText: String?
-    var smtpServerTextfieldText: String?
-    var textFeildPasswordText: String?
-    var imapPortTextfieldText: String?
-    var smtpPortTextfieldText: String?
-    var usernameTextfieldText: String?
-    var nameTextfieldText: String?
-
-    private var headers: [String] = [NSLocalizedString("Account", comment: "Account settings"),
+    /// - Note: The email model is based on the assumption that imap.loginName == smtp.loginName
+    var email: String
+    var name: String
+    var password: String
+    var imapPort: String
+    var smtpPort: String
+    var username: String
+    var imapServer: String
+    var smtpServer: String
+    var imapSecurity: String
+    var smtpSecurity: String
+    var headers: [String] = [NSLocalizedString("Account", comment: "Account settings"),
                                NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
                                NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP")]
 

@@ -111,6 +111,11 @@ extension AccountSettingsTableViewController {
         switch segue.destination {
         case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
             editableAccountSettingsViewController.appConfig = appConfig
+            if let account = viewModel?.account {
+                editableAccountSettingsViewController.viewModel =
+                    EditableAccountSettingsViewModel(account: account,
+                                                messageModelService: appConfig.messageModelService)
+            }
         default:
             break
         }
@@ -120,7 +125,7 @@ extension AccountSettingsTableViewController {
 
 // MARK: - UITextFieldDelegate
 
-extension AccountSettingsTableViewController {
+extension AccountSettingsTableViewController: UITextFieldDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath {
         case oauth2ReauthIndexPath:

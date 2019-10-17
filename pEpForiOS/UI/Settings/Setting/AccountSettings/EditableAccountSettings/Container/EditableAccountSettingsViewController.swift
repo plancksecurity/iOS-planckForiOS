@@ -42,6 +42,7 @@ final class EditableAccountSettingsViewController: BaseViewController {
         case let tableViewController as EditableAccountSettingsTableViewController:
             tableViewController.viewModel = EditableAccountSettingsTableViewModel()
             viewModel?.tableViewModel = tableViewController.viewModel
+            tableViewController.appConfig = appConfig
         default:
             break
         }

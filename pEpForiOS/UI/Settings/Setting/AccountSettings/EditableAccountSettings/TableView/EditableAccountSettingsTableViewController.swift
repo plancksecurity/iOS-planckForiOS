@@ -26,7 +26,7 @@ final class EditableAccountSettingsTableViewController: BaseTableViewController 
 
     var viewModel: EditableAccountSettingsTableViewModel?
 
-    private var current: UITextField?
+    private var firstResponder: UITextField?
     private var passWordChanged = false
 
     override func viewDidLoad() {
@@ -41,16 +41,32 @@ final class EditableAccountSettingsTableViewController: BaseTableViewController 
 
 extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        current = textField
+        firstResponder = textField
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
         switch textField {
+        case imapSecurityTextfield:
+            viewModel?.imapSecurityTextfieldText = textField.text
+        case smtpSecurityTextfield:
+            viewModel?.smtpSecurityTextfieldText = textField.text
+        case imapPortTextfield:
+            viewModel?.imapPortTextfieldText = textField.text
+        case smtpPortTextfield:
+            viewModel?.smtpPortTextfieldText = textField.text
+        case usernameTextfield:
+            viewModel?.usernameTextfieldText = textField.text
+        case nameTextfield:
+            viewModel?.nameTextfieldText = textField.text
         case passwordTextfield:
             viewModel?.textFeildPasswordText = textField.text
             passWordChanged = true
-        case smtpPortTextfield, imapPortTextfield:
+        case smtpPortTextfield:
+            viewModel?.smtpServerTextfieldText = textField.text
+            return string.isBackspace ? true : string.isDigits
+        case imapPortTextfield:
+            viewModel?.imapServerTextfieldText = textField.text
             return string.isBackspace ? true : string.isDigits
         default:
             break
@@ -60,34 +76,36 @@ extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
 }
 
 
-// MARK: - UIPickerViewDelegate
+// MARK: - UIPickerViewDataSource
 
-extension EditableAccountSettingsTableViewController {
+extension EditableAccountSettingsTableViewController: UIPickerViewDataSource {
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if let vm = viewModel {
-            return vm.securityViewModelvm.size
-        }
-        return 0
+        guard let viewModel = viewModel else { return 0 }
+        return viewModel.securityViewModelvm.size
     }
+}
 
+
+// MARK: - UIPickerViewDelegate
+
+extension EditableAccountSettingsTableViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int,
                     forComponent component: Int) -> String? {
-        if let vm = viewModel {
-            return vm.securityViewModelvm[row]
-        }
-        return nil
+
+        guard let viewModel = viewModel else { return nil }
+        return viewModel.securityViewModelvm[row]
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int,
                     inComponent component: Int) {
-        if let c = current, let vm = viewModel {
-            c.text = vm.securityViewModelvm[row]
-            self.view.endEditing(true)
-        }
+        guard let firstResponder = firstResponder, let viewModel = viewModel else { return }
+        firstResponder.text = viewModel.securityViewModelvm[row]
+        view.endEditing(true)
     }
 }
 
@@ -119,3 +137,20 @@ extension EditableAccountSettingsTableViewController {
     }
 }
 
+
+// MARK: - Helping Structures
+
+extension EditableAccountSettingsTableViewController {
+    struct TableFieldsData {
+        let nameTextfield: String?
+        let emailTextfield: String?
+        let usernameTextfield: String?
+        let smtpPortTextfield: String?
+        let passwordTextfield: String?
+        let imapPortTextfield: String?
+        let smtpServerTextfield: String?
+        let imapServerTextfield: String?
+        let imapSecurityTextfield: String?
+        let smtpSecurityTextfield: String?
+    }
+}
