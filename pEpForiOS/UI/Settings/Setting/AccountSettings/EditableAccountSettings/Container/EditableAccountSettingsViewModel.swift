@@ -9,6 +9,7 @@
 import Foundation
 import MessageModel
 import pEpIOSToolbox
+import PantomimeFramework
 
 protocol EditableAccountSettingsViewModelDelegate: class {
     func showErrorAlert(error: Error)
@@ -100,7 +101,7 @@ final class EditableAccountSettingsViewModel {
                 EditableAccountSettingsViewModel.ServerViewModel(address: validated.addrSmpt,
                                                                  port: validated.portSmtp,
                                                                  transport: validated.transSmtp)
-            var password = passwordChanged ? withTextFieldPassword : nil
+            let password = passwordChanged ? tableViewModel?.textFeildPasswordText : nil
             delegate?.hideLoadingView()
             update(loginName: validated.loginName, name: validated.accountName,
                    password: password, imap: imap, smtp: smtp)
@@ -212,7 +213,7 @@ extension EditableAccountSettingsViewModel {
             theVerifier.portIMAP = port
         }
         if let transport = Server.Transport(fromString: imap.transport) {
-            theVerifier.transportIMAP = ConnectionTransport.init(transport: transport)
+            theVerifier.transportIMAP = ConnectionTransport(transport: transport)
         }
 
         // SMTP
@@ -221,7 +222,7 @@ extension EditableAccountSettingsViewModel {
             theVerifier.portSMTP = port
         }
         if let transport = Server.Transport(fromString: smtp.transport) {
-            theVerifier.transportSMTP = ConnectionTransport.init(transport: transport)
+            theVerifier.transportSMTP = ConnectionTransport(transport: transport)
         }
 
         do {

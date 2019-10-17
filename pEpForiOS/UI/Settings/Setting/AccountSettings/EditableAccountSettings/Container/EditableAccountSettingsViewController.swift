@@ -57,24 +57,6 @@ extension EditableAccountSettingsViewController: EditableAccountSettingsViewMode
         UIUtils.show(error: error, inViewController: self)
     }
 
-//    func showErrorAlert(title: String, message: String, buttonTitle: String) {
-//        guard let errorAlert =
-//            PEPAlertViewController.fromStoryboard(title: title, message: message) else {
-//                return
-//        }
-//
-//        let okAction = PEPUIAlertAction(title: buttonTitle,
-//                                        style: .pEpBlue,
-//                                        handler: { [weak errorAlert] alert in
-//                                            errorAlert?.dismiss(animated: true)
-//        })
-//
-//        errorAlert.add(action: okAction)
-//        DispatchQueue.main.async { [weak self] in
-//            self?.present(errorAlert, animated: true)
-//        }
-//    }
-
     func showLoadingView() {
         DispatchQueue.main.async {
             LoadingInterface.showLoadingInterface()

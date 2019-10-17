@@ -8,11 +8,7 @@
 
 import UIKit
 
-//protocol EditableAcoountSettingsTableViewController: class {
-//    func 
-//}
-
-class EditableAccountSettingsTableViewController: BaseTableViewController {
+final class EditableAccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var emailTextfield: UITextField!
     @IBOutlet weak var usernameTextfield: UITextField!
@@ -28,32 +24,15 @@ class EditableAccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
     @IBOutlet weak var securityPicker: UIPickerView!
 
+    var viewModel: EditableAccountSettingsTableViewModel?
+
     private var current: UITextField?
-    private var passWordChanged: Bool = false
-    var viewModel: EditableAccountSettingsTableViewModel? = nil
+    private var passWordChanged = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setUpView()
-//        viewModel?.delegate = self
-//        passwordTextfield.delegate = self
-    }
-
-    func validateInputs() throws -> (addrImap: String, portImap: String, transImap: String,
-        addrSmpt: String, portSmtp: String, transSmtp: String, accountName: String,
-        loginName: String) {
-            viewModel.validateInputs()
-    }
-}
-
-// MARK: - Private
-extension EditableAccountSettingsTableViewController {
-    private func setUpView() {
-
-
-        smtpSecurityTextfield.inputView = securityPicker
-        imapSecurityTextfield.inputView = securityPicker
     }
 }
 
@@ -67,16 +46,15 @@ extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-        if textField == passwordTextfield {
+        switch textField {
+        case passwordTextfield:
+            viewModel?.textFeildPasswordText = textField.text
             passWordChanged = true
+        case smtpPortTextfield, imapPortTextfield:
+            return string.isBackspace ? true : string.isDigits
+        default:
+            break
         }
-        if textField == smtpPortTextfield || textField == imapPortTextfield {
-            if string.isBackspace {
-                return true
-            }
-            return string.isDigits
-        }
-
         return true
     }
 }
@@ -91,7 +69,7 @@ extension EditableAccountSettingsTableViewController {
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if let vm = viewModel {
-            return vm.svm.size
+            return vm.securityViewModelvm.size
         }
         return 0
     }
@@ -99,7 +77,7 @@ extension EditableAccountSettingsTableViewController {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int,
                     forComponent component: Int) -> String? {
         if let vm = viewModel {
-            return vm.svm[row]
+            return vm.securityViewModelvm[row]
         }
         return nil
     }
@@ -107,7 +85,7 @@ extension EditableAccountSettingsTableViewController {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int,
                     inComponent component: Int) {
         if let c = current, let vm = viewModel {
-            c.text = vm.svm[row]
+            c.text = vm.securityViewModelvm[row]
             self.view.endEditing(true)
         }
     }
@@ -131,4 +109,13 @@ extension EditableAccountSettingsTableViewController {
     }
 }
 
+
+// MARK: - Private
+
+extension EditableAccountSettingsTableViewController {
+    private func setUpView() {
+        smtpSecurityTextfield.inputView = securityPicker
+        imapSecurityTextfield.inputView = securityPicker
+    }
+}
 

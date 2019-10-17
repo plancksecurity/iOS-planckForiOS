@@ -10,7 +10,7 @@ import UIKit
 import MessageModel
 import pEpIOSToolbox
 
-class AccountSettingsTableViewController: BaseTableViewController {
+final class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var emailTextfield: UITextField!
     @IBOutlet weak var usernameTextfield: UITextField!
@@ -30,14 +30,15 @@ class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var pEpSyncToggle: UISwitch!
     @IBOutlet weak var resetIdentityCell: UITableViewCell!
 
-    var viewModel: AccountSettingsViewModel? = nil
-    let oauthViewModel = OAuth2AuthViewModel()
-
     /**
      When dealing with an OAuth2 account, this is the index path of the cell that
      should trigger the reauthorization.
      */
     var oauth2ReauthIndexPath: IndexPath?
+    var viewModel: AccountSettingsViewModel? = nil
+
+    let oauthViewModel = OAuth2AuthViewModel()
+
     private var resetIdentityIndexPath: IndexPath?
 
      override func viewDidLoad() {
@@ -59,6 +60,136 @@ class AccountSettingsTableViewController: BaseTableViewController {
         }
     }
 
+    @IBAction func didPressPEPSyncToggle(_ sender: UISwitch) {
+        viewModel?.pEpSync(enable: sender.isOn)
+    }
+}
+
+
+// MARK: - UITableViewDataSource
+
+extension AccountSettingsTableViewController {
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel?.count ?? 0
+    }
+    
+    override func tableView(
+        _ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel?[section]
+    }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return viewModel?.footerFor(section: section)
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let origCount = super.tableView(tableView, numberOfRowsInSection: section)
+        if section == 0 {
+            return origCount - 1
+        } else {
+            return origCount
+        }
+    }
+
+    override func tableView(_ tableView: UITableView,
+                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        if (viewModel?.isOAuth2 ?? false) && cell == passwordTableViewCell {
+            oauth2ReauthIndexPath = indexPath
+            return oauth2TableViewCell
+        }
+
+        if cell == resetIdentityCell {
+            resetIdentityIndexPath = indexPath
+        }
+
+        return cell
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.destination {
+        case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
+            editableAccountSettingsViewController.appConfig = appConfig
+        default:
+            break
+        }
+    }
+}
+
+
+// MARK: - UITextFieldDelegate
+
+extension AccountSettingsTableViewController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath {
+        case oauth2ReauthIndexPath:
+            handleOauth2Reauth()
+        case resetIdentityIndexPath:
+            handleResetIdentity()
+        default:
+            break
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+
+// MARK: - AccountSettingsViewModelDelegate
+
+extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
+    func undoPEPSyncToggle() {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.pEpSyncToggle.setOn(!me.pEpSyncToggle.isOn, animated: true)
+        }
+    }
+
+    func showErrorAlert(error: Error) {
+        Log.shared.error("%@", "\(error)")
+        UIUtils.show(error: error, inViewController: self)
+    }
+
+    func showLoadingView() {
+        DispatchQueue.main.async {
+            LoadingInterface.showLoadingInterface()
+        }
+    }
+
+    func hideLoadingView() {
+        DispatchQueue.main.async {
+            LoadingInterface.removeLoadingInterface()
+        }
+    }
+}
+
+
+// MARK: - OAuth2AuthViewModelDelegate
+
+extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
+    func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
+        oauth2ActivityIndicator.stopAnimating()
+        shouldHandleErrors = true
+
+        if let error = oauth2Error {
+            showErrorAlert(error: error)
+            return
+        }
+        guard let token = accessToken else {
+            showErrorAlert(error: OAuth2AuthViewModelError.noToken)
+            return
+        }
+        viewModel?.updateToken(accessToken: token)
+    }
+}
+
+
+// MARK: - Private
+
+extension AccountSettingsTableViewController {
     private func setUpView() {
         nameTextfield.text = viewModel?.account.user.userName
         emailTextfield.text = viewModel?.account.user.address
@@ -102,65 +233,9 @@ class AccountSettingsTableViewController: BaseTableViewController {
         present(alert, animated: true)
     }
 
-
-    // MARK: - UITableViewDataSource
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel?.count ?? 0
-    }
-    
-    override func tableView(
-        _ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return viewModel?[section]
-    }
-
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return viewModel?.footerFor(section: section)
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let origCount = super.tableView(tableView, numberOfRowsInSection: section)
-        if section == 0 {
-            return origCount - 1
-        } else {
-            return origCount
-        }
-    }
-
-    override func tableView(_ tableView: UITableView,
-                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        if (viewModel?.isOAuth2 ?? false) && cell == passwordTableViewCell {
-            oauth2ReauthIndexPath = indexPath
-            return oauth2TableViewCell
-        }
-
-        if cell == resetIdentityCell {
-            resetIdentityIndexPath = indexPath
-        }
-
-        return cell
-    }
-
-    // MARK: - UITableViewDelegate
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath {
-        case oauth2ReauthIndexPath:
-            handleOauth2Reauth()
-        case resetIdentityIndexPath:
-            handleResetIdentity()
-        default:
-            break
-        }
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-
-    // MARK: - Actions
-    
     private func popViewController() {
-         //!!!: see IOS-1608 this is a patch as we have 2 navigationControllers and need to pop to the previous view.
-            (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
+        //!!!: see IOS-1608 this is a patch as we have 2 navigationControllers and need to pop to the previous view.
+        (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
     }
 
     private func handleOauth2Reauth() {
@@ -196,7 +271,7 @@ class AccountSettingsTableViewController: BaseTableViewController {
                                             style: .pEpGray,
                                             handler: { _ in
                                                 pepAlertViewController.dismiss(animated: true,
-                                                                                completion: nil)
+                                                                               completion: nil)
         })
         pepAlertViewController.add(action: cancelAction)
 
@@ -216,78 +291,5 @@ class AccountSettingsTableViewController: BaseTableViewController {
         DispatchQueue.main.async { [weak self] in
             self?.present(pepAlertViewController, animated: true)
         }
-    }
-
-    @IBAction func didPressPEPSyncToggle(_ sender: UISwitch) {
-        viewModel?.pEpSync(enable: sender.isOn)
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segue.destination {
-        case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
-            editableAccountSettingsViewController.appConfig = appConfig
-        default:
-            break
-        }
-    }
-}
-
-
-// MARK: - AccountSettingsViewModelDelegate
-
-extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
-    func undoPEPSyncToggle() {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            me.pEpSyncToggle.setOn(!me.pEpSyncToggle.isOn, animated: true)
-        }
-    }
-
-    func showErrorAlert(title: String, message: String, buttonTitle: String) {
-        let alert = UIAlertController.pEpAlertController(title: title,
-                                                         message: message,
-                                                         preferredStyle: .alert)
-
-        let okAction = UIAlertAction(title: buttonTitle, style: .cancel, handler: nil)
-        alert.addAction(okAction)
-        DispatchQueue.main.async { [weak self] in
-            self?.present(alert, animated: true)
-        }
-    }
-
-    func showLoadingView() {
-        DispatchQueue.main.async {
-            LoadingInterface.showLoadingInterface()
-        }
-    }
-
-    func hideLoadingView() {
-        DispatchQueue.main.async {
-            LoadingInterface.removeLoadingInterface()
-        }
-    }
-}
-
-
-// MARK: - OAuth2AuthViewModelDelegate
-
-extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
-    func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
-        oauth2ActivityIndicator.stopAnimating()
-
-        shouldHandleErrors = true
-
-        if let err = oauth2Error {
-            self.handleLoginError(error: err)
-            return
-        }
-        guard let token = accessToken else {
-            self.handleLoginError(error: OAuth2AuthViewModelError.noToken)
-            return
-        }
-        viewModel?.updateToken(accessToken: token)
     }
 }
