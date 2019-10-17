@@ -664,7 +664,7 @@ class TestUtil {
                                                             XCTFail()
                                                             return nil
             }
-            XCTAssertEqual(cdMessage.pEpRating, CdMessage.pEpRatingNone)
+            XCTAssertEqual(cdMessage.pEpRating, Int16(PEPRating.undefined.rawValue))
 
             guard let cdM = CdMessage.first(in: context) else {
                 XCTFail("Expected the one message in the DB that we imported")
@@ -741,7 +741,7 @@ class TestUtil {
                 XCTFail()
                 return nil
         }
-        XCTAssertEqual(cdMessage.pEpRating, CdMessage.pEpRatingNone)
+        XCTAssertEqual(cdMessage.pEpRating, Int16(PEPRating.undefined.rawValue))
 
         return cdMessage
     }
