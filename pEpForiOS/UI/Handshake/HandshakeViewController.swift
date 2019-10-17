@@ -36,6 +36,7 @@ class HandshakeViewController: BaseTableViewController {
     /// Our own undo manager
     private let undoTrustOrMistrustManager = UndoManager()
 
+    /// This is used for versions before 13.
     private var orientationChangeObserver: NSObjectProtocol?
 
     // MARK: - Life Cycle
@@ -56,16 +57,24 @@ class HandshakeViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateStatusBadge()
-        orientationChangeObserver = NotificationCenter.default.addObserver(
-            forName: UIDevice.orientationDidChangeNotification,
-            object: nil,
-            queue: OperationQueue.main) { [weak self] notification in
-                self?.tableView.updateSize()
+
+        if #available(iOS 13.0, *) {
+            // nothing to do, layout on iOS 13 is fine
+        } else {
+            // resize the table on orientation change
+            orientationChangeObserver = NotificationCenter.default.addObserver(
+                forName: UIDevice.orientationDidChangeNotification,
+                object: nil,
+                queue: OperationQueue.main) { [weak self] notification in
+                    self?.tableView.updateSize()
+            }
         }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
+        // if the observer exists (iOS versions < 13), then remove it
         if let observer = orientationChangeObserver {
             NotificationCenter.default.removeObserver(observer)
         }
