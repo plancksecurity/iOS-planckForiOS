@@ -213,6 +213,7 @@ class FolderTableViewController: BaseTableViewController {
                     Log.shared.errorAndCrash("Missing VCs")
                     return
             }
+            nav.modalPresentationStyle = .overFullScreen
             vc.appConfig = self.appConfig
             vc.hidesBottomBarWhenPushed = true
             vc.delegate = self

@@ -1,14 +1,14 @@
 /* Class = "UILabel"; text = "Privacy Status: Mistrusted"; ObjectID = "5RJ-Gx-qBT"; */
-"5RJ-Gx-qBT.text" = "Datenschutzstatus: Nicht vertrauenswürdig";
+"5RJ-Gx-qBT.text" = "Estado de privacidad: no es de confianza";
 
 /* Class = "UIButton"; accessibilityLabel = "wrongButton"; ObjectID = "dbO-2K-SpB"; */
 "dbO-2K-SpB.accessibilityLabel" = "wrongButton";
 
 /* Class = "UIButton"; normalTitle = "Wrong Trustwords"; ObjectID = "dbO-2K-SpB"; */
-"dbO-2K-SpB.normalTitle" = "Falsche Trustwords";
+"dbO-2K-SpB.normalTitle" = "Trustwords erróneas";
 
 /* Class = "UILabel"; text = "Your communication partner is mistrusted."; ObjectID = "eaF-0u-kGb"; */
-"eaF-0u-kGb.text" = "Ihr Kommunikationspartner ist nicht vertrauenswürdig.";
+"eaF-0u-kGb.text" = "El contacto no es de confianza.";
 
 /* Class = "UILabel"; text = "Hannibal Chew"; ObjectID = "hFh-wv-YAc"; */
 "hFh-wv-YAc.text" = "Hannibal Chew";
@@ -17,10 +17,10 @@
 "Jgi-7k-Ymf.accessibilityLabel" = "confirmButton";
 
 /* Class = "UIButton"; normalTitle = "Confirm Trustwords"; ObjectID = "Jgi-7k-Ymf"; */
-"Jgi-7k-Ymf.normalTitle" = "Trustwords bestätigen";
+"Jgi-7k-Ymf.normalTitle" = "Confirmar Trustwords";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "KmG-tH-SGP"; */
-"KmG-tH-SGP.text" = "Label";
+"KmG-tH-SGP.text" = "Etiqueta";
 
 /* Class = "UILabel"; accessibilityLabel = "trustWordsLabel"; ObjectID = "lHS-sc-yWR"; */
 "lHS-sc-yWR.accessibilityLabel" = "trustWordsLabel";
@@ -29,8 +29,8 @@
 "lHS-sc-yWR.text" = "OUTDISTANCE BLAH BLAH2";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "o5v-C8-2iy"; */
-"o5v-C8-2iy.text" = "Label";
+"o5v-C8-2iy.text" = "Etiqueta";
 
 /* Class = "UIButton"; normalTitle = "Stop Trusting"; ObjectID = "Y4f-BW-EI0"; */
-"Y4f-BW-EI0.normalTitle" = "Vertrauen aufheben";
+"Y4f-BW-EI0.normalTitle" = "Dejar de confiar";
 
