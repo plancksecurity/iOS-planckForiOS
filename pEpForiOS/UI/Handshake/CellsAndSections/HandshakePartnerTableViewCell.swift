@@ -83,6 +83,14 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         updateConfirmDistrustButtonsTitle()
         wrongButton.pEpIfyForTrust(backgroundColor: UIColor.pEpRed, textColor: .white)
         confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)
+        addMultilineButtonConstraints(button: wrongButton)
+        addMultilineButtonConstraints(button: confirmButton)
+    }
+
+    private func addMultilineButtonConstraints(button: UIButton) {
+        if let label = button.titleLabel {
+            button.heightAnchor.constraint(greaterThanOrEqualTo: label.heightAnchor).isActive = true
+        }
     }
 
     private func updateView() {
