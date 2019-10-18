@@ -66,14 +66,6 @@ final class AccountSettingsViewModel {
         }
     }
 
-    //    private var controlWord = "noRealPassword"
-
-    //    public let svm = SecurityViewModel()
-
-    /// If the credentials have either an IMAP or SMTP password,
-    /// it gets stored here.
-//    private var originalPassword: String?
-
     init(account: Account) {
         // We are using a copy of the data here.
         // The outside world must not know changed settings until they have been verified.

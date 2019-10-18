@@ -15,19 +15,23 @@ final class EditableAccountSettingsTableViewModel {
 
     var count: Int { return headers.count }
     /// - Note: The email model is based on the assumption that imap.loginName == smtp.loginName
-    var email: String
-    var name: String
-    var password: String
-    var imapPort: String
-    var smtpPort: String
-    var username: String
-    var imapServer: String
-    var smtpServer: String
-    var imapSecurity: String
-    var smtpSecurity: String
-    var headers: [String] = [NSLocalizedString("Account", comment: "Account settings"),
+    private var email: String?
+    private var password: String?
+    private var imapPort: String?
+    private var smtpPort: String?
+    private var loginName: String?
+    private var username: String?
+    private var imapServer: ServerViewModel?
+    private var smtpServer: ServerViewModel?
+    private var imapSecurity: String?
+    private var smtpSecurity: String?
+    private var headers: [String] = [NSLocalizedString("Account", comment: "Account settings"),
                                NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
                                NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP")]
+
+    /// If the credentials have either an IMAP or SMTP password,
+    /// it gets stored here.
+    private var originalPassword: String?
 
     subscript(section: Int) -> String {
         get {
@@ -45,6 +49,42 @@ final class EditableAccountSettingsTableViewModel {
             return footers[section]
         }
         return ""
+    }
+
+    init(account: Account) {
+        // We are using a copy of the data here.
+        email = account.user.address
+        loginName = account.imapServer?.credentials.loginName
+        username = account.user.userName
+
+        if let server = account.imapServer {
+            originalPassword = server.credentials.password
+            imapServer = ServerViewModel(address: server.address,
+                                         port: "\(server.port)",
+                transport: server.transport.asString())
+        } else {
+            imapServer = ServerViewModel()
+        }
+
+        if let server = account.smtpServer {
+            originalPassword = originalPassword ?? server.credentials.password
+            smtpServer = ServerViewModel(address: server.address,
+                                         port: "\(server.port)",
+                transport: server.transport.asString())
+        } else {
+            smtpServer = ServerViewModel()
+        }
+
+        if isOAuth2 {
+            if let payload = account.imapServer?.credentials.password ??
+                account.smtpServer?.credentials.password,
+                let token = OAuth2AccessToken.from(base64Encoded: payload)
+                    as? OAuth2AccessTokenProtocol {
+                self.accessToken = token
+            } else {
+                Log.shared.errorAndCrash("Supposed to do OAUTH2, but no existing token")
+            }
+        }
     }
 
     func validateInputs() throws -> (addrImap: String, portImap: String, transImap: String,
