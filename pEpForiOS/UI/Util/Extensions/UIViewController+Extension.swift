@@ -24,17 +24,25 @@ extension UIViewController {
         // according to apple's design guidelines ('Hit Targets'):
         // https://developer.apple.com/design/tips/
         let minimumHitTestDimension: CGFloat = 44
-        let ImageWidht = self.navigationController!.navigationBar.bounds.height - 10
-        let img2 = img.resized(newWidth: ImageWidht)
-        let badgeView = UIImageView(image: img2)
-        badgeView.contentMode = .center // DON'T stretch the image, leave it at original size
 
-        // try to make the hit area of the icon a minimum of 44x44
-        let desiredHittestDimension: CGFloat = min(
-            minimumHitTestDimension,
-            navigationController?.navigationBar.frame.size.height ?? minimumHitTestDimension)
-        badgeView.bounds.size = CGSize(width: desiredHittestDimension,
-                                       height: desiredHittestDimension)
+        let imgView = UIImageView(image: img)
+        imgView.translatesAutoresizingMaskIntoConstraints = false
+        imgView.heightAnchor.constraint(equalTo: imgView.widthAnchor).isActive = true
+
+        let badgeView = UIView()
+        badgeView.translatesAutoresizingMaskIntoConstraints = false
+        badgeView.heightAnchor.constraint(
+            greaterThanOrEqualToConstant: minimumHitTestDimension).isActive = true
+
+        badgeView.addSubview(imgView)
+
+        let imagePadding: CGFloat = 10
+        imgView.centerXAnchor.constraint(equalTo: badgeView.centerXAnchor).isActive = true
+        imgView.centerYAnchor.constraint(equalTo: badgeView.centerYAnchor).isActive = true
+        imgView.heightAnchor.constraint(
+            lessThanOrEqualTo: badgeView.heightAnchor, constant: -imagePadding).isActive = true
+        imgView.widthAnchor.constraint(
+            lessThanOrEqualTo: badgeView.widthAnchor, constant: -imagePadding).isActive = true
 
         navigationItem.titleView = badgeView
         badgeView.isUserInteractionEnabled = true
