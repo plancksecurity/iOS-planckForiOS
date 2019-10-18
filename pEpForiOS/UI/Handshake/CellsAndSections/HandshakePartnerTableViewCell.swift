@@ -87,6 +87,12 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         addMultilineButtonConstraints(button: confirmButton)
     }
 
+    /// Adds vertical constraints so a button respects the content height of its label
+    /// with respect to laying itself out,
+    /// even if that label is wrapping into an additional line.
+    ///
+    /// Without this, multiline UIButtons tend to cut off parts of the inner content
+    /// instead of pushing to expand, even with higher compression resistance.
     private func addMultilineButtonConstraints(button: UIButton) {
         if let label = button.titleLabel {
             button.heightAnchor.constraint(greaterThanOrEqualTo: label.heightAnchor).isActive = true
