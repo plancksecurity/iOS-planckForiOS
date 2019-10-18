@@ -24,8 +24,9 @@ class LoginImapOperationTest: CoreDataDrivenTestBase {
         let errorContainer = ErrorPropagator()
         let expLoginSucceeds = expectation(description: "LoginSucceeds")
 
-        let imapLogin = LoginImapOperation(
-            parentName: #function, errorContainer: errorContainer, imapSyncData: imapSyncData)
+        let imapLogin = LoginImapOperation(parentName: #function,
+                                           errorContainer: errorContainer,
+                                           imapSyncData: imapSyncData)
         imapLogin.completionBlock = { [weak self] in
             XCTAssertNotNil(self?.imapSyncData?.sync)
             expLoginSucceeds.fulfill()
