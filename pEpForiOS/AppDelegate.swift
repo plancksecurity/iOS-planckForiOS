@@ -64,42 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    /// Tell the model that is is save to start services.
-    private func startServices() {
-        do {
-            try messageModelService?.start_old()
-        } catch {
-            Log.shared.log(error: error)
-        }
-    }
-
-    /// Signals all PEPSession users to stop using a session as soon as possible.
-    /// ReplicationService will assure all local changes triggered by the user are synced to the server
-    /// and call it's delegate (me) after the last sync operation has finished.
-    private func gracefullyShutdownServices() { //BUFF: must go away
-        guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
-            else {
-                Log.shared.error("Will not start background sync, pending %d",
-                                         syncUserActionsAndCleanupbackgroundTaskId.rawValue)
-                return
-        }
-        syncUserActionsAndCleanupbackgroundTaskId =
-            UIApplication.shared.beginBackgroundTask(expirationHandler: { [unowned self] in
-                Log.shared.warn(
-                    "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
-                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
-                // We migh want to call some (yet unexisting) emergency shutdown on
-                // ReplicationService here that brutally shuts down everything.
-                UIApplication.shared.endBackgroundTask(self.syncUserActionsAndCleanupbackgroundTaskId)
-                self.syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
-
-                Log.shared.errorAndCrash(
-                    "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
-                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
-            })
-        messageModelService?.processAllUserActionsAndStop_old() //BUFF: must go away
-    }
-
     func cleanupPEPSessionIfNeeded() {
         if shouldDestroySession {
             PEPSession.cleanup()
@@ -111,11 +75,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let deviceGroupService = KeySyncDeviceGroupService()
         self.deviceGroupService = deviceGroupService
         let theMessageModelService = MessageModelService(errorPropagator: errorPropagator,
-                                                         cnContactsAccessPermissionProvider: AppSettings.shared, //BUFF: make app setting proper singleton
+                                                         cnContactsAccessPermissionProvider: AppSettings.shared,
                                                          keySyncServiceDelegate: keySyncHandshakeService,
                                                          deviceGroupDelegate: deviceGroupService,
                                                          keySyncEnabled: AppSettings.shared.keySyncEnabled)
-        theMessageModelService.delegate = self
         messageModelService = theMessageModelService
 
         appConfig = AppConfig(errorPropagator: errorPropagator,
@@ -125,13 +88,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = appConfig
-    }
-
-    // Safely restarts all services
-    private func shutdownAndPrepareServicesForRestart() {
-        // We cancel the Network Service to make sure it is idle and ready for a clean restart.
-        // The actual restart of the services happens in ReplicationServiceDelegate callbacks.
-        messageModelService?.cancel_old()
     }
 
     private func askUserForNotificationPermissions() {
@@ -165,8 +121,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         askUserForNotificationPermissions()
 
         let result = setupInitialViewController()
-
-        try? messageModelService?.start_old()
+        messageModelService?.start() //BUFF: not needed. Handled by other delegate calls.
 
         return result
     }
@@ -182,7 +137,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ///         * theuser swipes up/down the "ControllCenter"
     func applicationWillResignActive(_ application: UIApplication) {
         UIApplication.hideStatusBarNetworkActivitySpinner()
-        shutdownAndPrepareServicesForRestart() //BUFF:
         messageModelService?.finish()
     }
 
@@ -196,14 +150,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.shared.info("applicationDidEnterBackground")
         Session.main.commit()
         shouldDestroySession = true
-        gracefullyShutdownServices()
         messageModelService?.finish()
     }
 
     /// Called as part of the transition from the background to the inactive state; here you can
     /// undo many of the changes made on entering the background.
     func applicationWillEnterForeground(_ application: UIApplication) {
-
+        // do nothing (?)
     }
 
     /// Restart any tasks that were paused (or not yet started) while the application was inactive.
@@ -217,9 +170,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
 
-        shouldDestroySession = false
-
-        shutdownAndPrepareServicesForRestart()
+        shouldDestroySession = false //BUFF: rewrite pepsession cleanup
         UserNotificationTool.resetApplicationIconBadgeNumber()
         messageModelService?.start()
     }
@@ -282,43 +233,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 result:UIBackgroundFetchResult) {
         PEPSession.cleanup()
         completionHandler(result)
-    }
-}
-
-// MARK: - ReplicationServiceDelegate
-
-extension AppDelegate: MessageModelServiceDelegate {
-
-    func messageModelServiceDidFinishLastSyncLoop() { //BUFF: must go away
-        // Cleanup sessions.
-        PEPSession.cleanup()
-        if syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid {
-            return
-        }
-        if UIApplication.shared.applicationState != .background {
-            // We got woken up again before syncUserActionsAndCleanupbackgroundTask finished.
-            // No problem, start regular sync loop.
-            startServices()
-        }
-        UIApplication.shared.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
-        syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
-    }
-
-    func messageModelServiceDidCancel() { //BUFF: must go away
-        switch UIApplication.shared.applicationState {
-        case .background:
-            // We have been cancelled because we are entering background.
-            // Quickly sync local changes and clean up.
-            gracefullyShutdownServices()
-        case .inactive:
-            // We re inactive. Keep services paused -> Do nothing
-            break
-        case .active:
-            // We have been cancelled soley to assure a clean restart.
-            startServices()
-        @unknown default:
-            Log.shared.errorAndCrash("Apple, please folow your own advice and use CLOSED_ENUM in Obj-C")
-        }
     }
 }
 
