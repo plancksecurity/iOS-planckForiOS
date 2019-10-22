@@ -40,9 +40,11 @@ extension UIViewController {
         imgView.centerXAnchor.constraint(equalTo: badgeView.centerXAnchor).isActive = true
         imgView.centerYAnchor.constraint(equalTo: badgeView.centerYAnchor).isActive = true
         imgView.heightAnchor.constraint(
-            lessThanOrEqualTo: badgeView.heightAnchor, constant: -imagePadding).isActive = true
+            lessThanOrEqualTo: badgeView.heightAnchor,
+            constant: -imagePadding).isActive = true
         imgView.widthAnchor.constraint(
-            lessThanOrEqualTo: badgeView.widthAnchor, constant: -imagePadding).isActive = true
+            lessThanOrEqualTo: badgeView.widthAnchor,
+            constant: -imagePadding).isActive = true
 
         navigationItem.titleView = badgeView
         badgeView.isUserInteractionEnabled = true
