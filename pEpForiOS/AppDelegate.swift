@@ -112,7 +112,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         askUserForNotificationPermissions()
 
         let result = setupInitialViewController()
-        messageModelService?.start() //BUFF: not needed. Handled by other delegate calls.
 
         return result
     }
