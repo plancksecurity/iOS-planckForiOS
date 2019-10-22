@@ -36,12 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Set to true whever the app goes into background, so the main PEPSession gets cleaned up.
     var shouldDestroySession = false
 
-    func applicationDirectory() -> URL? {
-        let fm = FileManager.default
-        let dirs = fm.urls(for: .libraryDirectory, in: .userDomainMask)
-        return dirs.first
-    }
-
     private func setupInitialViewController() -> Bool {
         guard let appConfig = appConfig else {
             Log.shared.errorAndCrash("No AppConfig")
@@ -103,9 +97,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
-        Log.shared.info("Library url: %@", String(describing: applicationDirectory()))
-
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them
             // and pretty much don't do anything.
