@@ -55,6 +55,10 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         appConfig.keySyncHandshakeService.presenter = self
         self.navigationController?.title = title
         BaseTableViewController.setupCommonSettings(tableView: tableView)
+
+        if #available(iOS 13, *) {
+            navigationController?.navigationBar.standardAppearance = Appearance.navigationBarAppearance()
+        }
     }
 
     static func setupCommonSettings(tableView: UITableView) {

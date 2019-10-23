@@ -35,6 +35,10 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
         super.viewWillAppear(animated)
         appConfig?.errorPropagator.subscriber = self
         appConfig?.keySyncHandshakeService.presenter = self
+
+        if #available(iOS 13, *) {
+            navigationController?.navigationBar.standardAppearance = Appearance.navigationBarAppearance()
+        }
     }
 
     // MARK: - ErrorPropagatorSubscriber

@@ -45,4 +45,16 @@ class Appearance {
         let view = UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self])
         view.tintColor = color
     }
+
+    @available(iOS 13, *)
+    static func navigationBarAppearance() -> UINavigationBarAppearance {
+        let appearance = UINavigationBarAppearance()
+
+        let buttonAppearance = UIBarButtonItemAppearance()
+        buttonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.pEpGreen]
+        appearance.backButtonAppearance = buttonAppearance
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.pEpGreen]
+
+        return appearance
+    }
 }
