@@ -50,9 +50,7 @@ class Appearance {
     static func navigationBarAppearance() -> UINavigationBarAppearance {
         let appearance = UINavigationBarAppearance()
 
-        let buttonAppearance = UIBarButtonItemAppearance()
-        buttonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.pEpGreen]
-        appearance.backButtonAppearance = buttonAppearance
+        appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.pEpGreen]
         appearance.titleTextAttributes = [.foregroundColor: UIColor.pEpGreen]
 
         return appearance
