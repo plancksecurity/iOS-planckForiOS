@@ -11,11 +11,15 @@ import UIKit
 
 class Appearance {
     public static func pEp(_ color: UIColor = .pEpGreen) {
-        UINavigationBar.appearance().backgroundColor = .white
-        UINavigationBar.appearance().barTintColor = .pEpNavigation
-        UINavigationBar.appearance().tintColor = color
-        UINavigationBar.appearance().titleTextAttributes =
-            [NSAttributedString.Key.foregroundColor: color]
+        if #available(iOS 13, *) {
+            UINavigationBar.appearance().standardAppearance = navigationBarAppearance()
+            UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance()
+        } else {
+            UINavigationBar.appearance().backgroundColor = .white
+            UINavigationBar.appearance().barTintColor = .pEpNavigation
+            UINavigationBar.appearance().tintColor = color
+            UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: color]
+        }
 
         UIToolbar.appearance().backgroundColor = color
         UIToolbar.appearance().barTintColor = color
@@ -54,6 +58,7 @@ class Appearance {
         appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.pEpGreen]
         appearance.titleTextAttributes = [.foregroundColor: UIColor.pEpGreen]
         appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.pEpGreen]
+        appearance.setBackIndicatorImage(UIImage(named: "chevron-icon"), transitionMaskImage: nil)
 
         return appearance
     }
