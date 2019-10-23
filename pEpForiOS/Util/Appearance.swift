@@ -59,10 +59,12 @@ class Appearance {
         let appearance = UINavigationBarAppearance()
 
         appearance.configureWithOpaqueBackground()
-        appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: color]
-        appearance.titleTextAttributes = [.foregroundColor: color]
-        appearance.largeTitleTextAttributes = [.foregroundColor: color]
-        appearance.doneButtonAppearance.normal.titleTextAttributes = [.foregroundColor: color]
+        let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: color]
+        appearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes
+        appearance.backButtonAppearance.normal.titleTextAttributes = titleTextAttributes
+        appearance.titleTextAttributes = titleTextAttributes
+        appearance.largeTitleTextAttributes = titleTextAttributes
+        appearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
         appearance.setBackIndicatorImage(UIImage(named: "chevron-icon"), transitionMaskImage: nil)
 
         return appearance
