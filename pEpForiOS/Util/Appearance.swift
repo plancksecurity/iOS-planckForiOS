@@ -65,7 +65,9 @@ class Appearance {
         appearance.titleTextAttributes = titleTextAttributes
         appearance.largeTitleTextAttributes = titleTextAttributes
         appearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
-        appearance.setBackIndicatorImage(UIImage(named: "chevron-icon"), transitionMaskImage: nil)
+
+        let arrow = UIImage(systemName:"chevron-left")
+        appearance.setBackIndicatorImage(arrow, transitionMaskImage: arrow)
 
         return appearance
     }
