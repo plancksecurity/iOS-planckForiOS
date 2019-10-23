@@ -58,6 +58,7 @@ class Appearance {
         appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: color]
         appearance.titleTextAttributes = [.foregroundColor: color]
         appearance.largeTitleTextAttributes = [.foregroundColor: color]
+        appearance.doneButtonAppearance.normal.titleTextAttributes = [.foregroundColor: color]
         appearance.setBackIndicatorImage(UIImage(named: "chevron-icon"), transitionMaskImage: nil)
 
         return appearance
