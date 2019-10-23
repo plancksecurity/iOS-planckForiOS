@@ -12,8 +12,8 @@ import UIKit
 class Appearance {
     public static func pEp(_ color: UIColor = .pEpGreen) {
         if #available(iOS 13, *) {
-            UINavigationBar.appearance().standardAppearance = navigationBarAppearance()
-            UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance()
+            UINavigationBar.appearance().standardAppearance = navigationBarAppearance(color: color)
+            UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance(color: color)
         } else {
             UINavigationBar.appearance().backgroundColor = .white
             UINavigationBar.appearance().barTintColor = .pEpNavigation
@@ -52,12 +52,12 @@ class Appearance {
 
     /// Appearance for navigation bars (iOS 13 and upwards).
     @available(iOS 13, *)
-    static func navigationBarAppearance() -> UINavigationBarAppearance {
+    static func navigationBarAppearance(color: UIColor) -> UINavigationBarAppearance {
         let appearance = UINavigationBarAppearance()
 
-        appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.pEpGreen]
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.pEpGreen]
-        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.pEpGreen]
+        appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: color]
+        appearance.titleTextAttributes = [.foregroundColor: color]
+        appearance.largeTitleTextAttributes = [.foregroundColor: color]
         appearance.setBackIndicatorImage(UIImage(named: "chevron-icon"), transitionMaskImage: nil)
 
         return appearance
