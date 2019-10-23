@@ -12,6 +12,9 @@ import UIKit
 class Appearance {
     public static func pEp(_ color: UIColor = .pEpGreen) {
         if #available(iOS 13, *) {
+            // iOS 13 introduced a new appearance API, keeping compatibility with the old way.
+            // Unfortunately, the pre-iOS-13 UINavigationBar.appearance().tintColor
+            // is not respected anymore in all cases.
             UINavigationBar.appearance().standardAppearance = navigationBarAppearance(color: color)
             UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance(color: color)
         } else {
