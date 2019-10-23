@@ -46,6 +46,7 @@ class Appearance {
         view.tintColor = color
     }
 
+    /// Appearance for navigation bars (iOS 13 and upwards).
     @available(iOS 13, *)
     static func navigationBarAppearance() -> UINavigationBarAppearance {
         let appearance = UINavigationBarAppearance()
