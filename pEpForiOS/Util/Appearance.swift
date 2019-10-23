@@ -53,6 +53,7 @@ class Appearance {
 
         appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.pEpGreen]
         appearance.titleTextAttributes = [.foregroundColor: UIColor.pEpGreen]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.pEpGreen]
 
         return appearance
     }
