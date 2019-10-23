@@ -126,7 +126,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ///         * an alert is shown (e.g. OS asks for CNContact access permissions)
     ///         * the user swipes up/down the "ControllCenter"
     func applicationWillResignActive(_ application: UIApplication) {
-        UIApplication.hideStatusBarNetworkActivitySpinner() //BUFF: spinner in imap repl service
         messageModelService?.finish()
     }
 
@@ -136,7 +135,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// If your application supports background execution, this method is called instead of
     /// applicationWillTerminate: when the user quits.
     func applicationDidEnterBackground(_ application: UIApplication) {
-        UIApplication.hideStatusBarNetworkActivitySpinner()
         Log.shared.info("applicationDidEnterBackground")
         Session.main.commit()
         shouldDestroySession = true
@@ -170,7 +168,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // applicationWillTerminate is not called when running backlground tasks. We clean up
         // anyway, just to be safe.
-        UIApplication.hideStatusBarNetworkActivitySpinner()
         shouldDestroySession = true
         // Just in case, last chance to clean up. Should not be necessary though.
         cleanupPEPSessionIfNeeded()
