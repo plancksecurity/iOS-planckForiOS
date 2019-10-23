@@ -122,11 +122,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame
     /// rates. Games should use this method to pause the game.
     ///
-    /// - note: this is even called when:
+    /// - note: this is also called when:
     ///         * an alert is shown (e.g. OS asks for CNContact access permissions)
-    ///         * theuser swipes up/down the "ControllCenter"
+    ///         * the user swipes up/down the "ControllCenter"
     func applicationWillResignActive(_ application: UIApplication) {
-        UIApplication.hideStatusBarNetworkActivitySpinner()
+        UIApplication.hideStatusBarNetworkActivitySpinner() //BUFF: spinner in imap repl service
         messageModelService?.finish()
     }
 
