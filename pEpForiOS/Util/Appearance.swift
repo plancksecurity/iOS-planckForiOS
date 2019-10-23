@@ -58,6 +58,7 @@ class Appearance {
     static func navigationBarAppearance(color: UIColor) -> UINavigationBarAppearance {
         let appearance = UINavigationBarAppearance()
 
+        appearance.configureWithOpaqueBackground()
         appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: color]
         appearance.titleTextAttributes = [.foregroundColor: color]
         appearance.largeTitleTextAttributes = [.foregroundColor: color]
