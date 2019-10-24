@@ -66,9 +66,20 @@ class Appearance {
         appearance.largeTitleTextAttributes = titleTextAttributes
         appearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
 
-        let chevronLeftImg = UIImage(named: "chevron-left-original")
-        let chevronLeftImg2 = chevronLeftImg?.withBaselineOffset(fromBottom: 0)
-        appearance.setBackIndicatorImage(chevronLeftImg2, transitionMaskImage: chevronLeftImg2)
+        if var chevronLeftImg = UIImage(named: "chevron-left-original") {
+            let optimumHeight: CGFloat = 24
+            let height = chevronLeftImg.size.height
+            if height < optimumHeight {
+                let diff = optimumHeight - height
+                let halveDiff = round(diff/2)
+                let edgeInsets = UIEdgeInsets(top: -halveDiff,
+                                              left: 0,
+                                              bottom: -halveDiff,
+                                              right: 0)
+                chevronLeftImg = chevronLeftImg.withAlignmentRectInsets(edgeInsets)
+            }
+            appearance.setBackIndicatorImage(chevronLeftImg, transitionMaskImage: chevronLeftImg)
+        }
 
         return appearance
     }
