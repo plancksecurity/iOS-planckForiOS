@@ -67,8 +67,7 @@ class Appearance {
         appearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
 
         let chevronLeftImg = UIImage(named: "chevron-left-original")
-        let chevronLeftImg2 = chevronLeftImg?.withBaselineOffset(fromBottom: 0)
-        appearance.setBackIndicatorImage(chevronLeftImg2, transitionMaskImage: chevronLeftImg2)
+        appearance.setBackIndicatorImage(chevronLeftImg, transitionMaskImage: chevronLeftImg)
 
         return appearance
     }
