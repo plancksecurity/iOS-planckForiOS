@@ -126,7 +126,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ///         * an alert is shown (e.g. OS asks for CNContact access permissions)
     ///         * the user swipes up/down the "ControllCenter"
     func applicationWillResignActive(_ application: UIApplication) {
-        messageModelService?.finish()
+        // I would love to stop() services here but decided to do nothing.
+        // Background: This is called:
+        //                      * when an alert is shown
+        //                      * user swipes to "Control Center"
+        //                      * before `applicationDidEnterBackground()` is called
+        // I can not think of a way to handle all those cases in one method.
+        // If we come into trouble doing nothing here, let's discuss
     }
 
     /// Use this method to release shared resources, save user data, invalidate timers, and store
@@ -166,12 +172,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
-        // applicationWillTerminate is not called when running backlground tasks. We clean up
-        // anyway, just to be safe.
+        messageModelService?.stop()
         shouldDestroySession = true
-        // Just in case, last chance to clean up. Should not be necessary though.
         cleanupPEPSessionIfNeeded()
-        messageModelService?.finish()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
