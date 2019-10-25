@@ -19,7 +19,6 @@ class Appearance {
             UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance(color: color)
         } else {
             UINavigationBar.appearance().backgroundColor = .white
-            UINavigationBar.appearance().barTintColor = .pEpNavigation
             UINavigationBar.appearance().tintColor = color
             UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: color]
         }
@@ -32,8 +31,14 @@ class Appearance {
         UITextField.appearance().tintColor = color
 
         UISearchBar.appearance().barTintColor = .white
-        UISearchBar.appearance().backgroundColor = .pEpNavigation
         UISearchBar.appearance().tintColor = color
+        if #available(iOS 13, *) {
+            // The navigation bar doesn't react to setting the tint color,
+            // so better do nothing there at all.
+        } else {
+            UINavigationBar.appearance().barTintColor = .pEpNavigation
+            UISearchBar.appearance().backgroundColor = .pEpNavigation
+        }
 
         setAlertControllerTintColor(color)
 
