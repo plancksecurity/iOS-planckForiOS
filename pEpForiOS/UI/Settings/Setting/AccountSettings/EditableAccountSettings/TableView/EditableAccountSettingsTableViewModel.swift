@@ -160,6 +160,12 @@ extension EditableAccountSettingsTableViewModel {
 // MARK: - HelpingStructures
 
 extension EditableAccountSettingsTableViewModel {
+    struct ServerViewModel {
+        var address: String?
+        var port: String?
+        var transport: String?
+    }
+
     struct SecurityViewModel {
         var options = Server.Transport.toArray()
         var size : Int {

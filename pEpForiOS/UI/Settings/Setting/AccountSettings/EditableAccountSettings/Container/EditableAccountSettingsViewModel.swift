@@ -208,27 +208,21 @@ extension EditableAccountSettingsViewModel {
 }
 
 
-// MARK: - Helping structures
-
-extension EditableAccountSettingsViewModel {
-    struct ServerViewModel {
-        var address: String?
-        var port: String?
-        var transport: String?
-    }
-
-    struct SecurityViewModel {
-        var options = Server.Transport.toArray()
-        var size : Int {
-            get {
-                return options.count
-            }
-        }
-
-        subscript(option: Int) -> String {
-            get {
-                return options[option].asString()
-            }
-        }
-    }
-}
+//// MARK: - Helping structures
+//
+//extension EditableAccountSettingsViewModel {
+//    struct SecurityViewModel {
+//        var options = Server.Transport.toArray()
+//        var size : Int {
+//            get {
+//                return options.count
+//            }
+//        }
+//
+//        subscript(option: Int) -> String {
+//            get {
+//                return options[option].asString()
+//            }
+//        }
+//    }
+//}

@@ -48,19 +48,19 @@ extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
                    replacementString string: String) -> Bool {
         switch textField {
         case imapSecurityTextfield:
-            viewModel?.imapSecurityTextfieldText = textField.text
+            viewModel?.imapSecurity = textField.text
         case smtpSecurityTextfield:
-            viewModel?.smtpSecurityTextfieldText = textField.text
+            viewModel?.smtpSecurity = textField.text
         case imapPortTextfield:
-            viewModel?.imapPortTextfieldText = textField.text
+            viewModel?.imapPort = textField.text
         case smtpPortTextfield:
-            viewModel?.smtpPortTextfieldText = textField.text
+            viewModel?.smtpPort = textField.text
         case usernameTextfield:
-            viewModel?.usernameTextfieldText = textField.text
+            viewModel?.username = textField.text
         case nameTextfield:
-            viewModel?.nameTextfieldText = textField.text
+            viewModel?.loginName = textField.text
         case passwordTextfield:
-            viewModel?.textFeildPasswordText = textField.text
+            viewModel?.password = textField.text
             passWordChanged = true
         case smtpPortTextfield:
             viewModel?.smtpServerTextfieldText = textField.text
