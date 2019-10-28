@@ -15,7 +15,7 @@ class Appearance {
             // iOS 13 introduced a new appearance API, keeping compatibility with the old way.
             // Unfortunately, the pre-iOS-13 UINavigationBar.appearance().tintColor
             // is not respected anymore in all cases.
-            UINavigationBar.appearance().standardAppearance = navigationBarAppearance(color: color)
+            UINavigationBar.appearance().standardAppearance = navigationBarAppearanceDefault(color: color)
         } else {
             UINavigationBar.appearance().backgroundColor = .white
             UINavigationBar.appearance().tintColor = color
@@ -59,7 +59,7 @@ class Appearance {
 
     /// Appearance for navigation bars (iOS 13 and upwards).
     @available(iOS 13, *)
-    static func navigationBarAppearance(color: UIColor) -> UINavigationBarAppearance {
+    static func navigationBarAppearanceDefault(color: UIColor) -> UINavigationBarAppearance {
         let appearance = UINavigationBarAppearance()
 
         appearance.configureWithOpaqueBackground()
