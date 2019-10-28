@@ -23,7 +23,7 @@
 "tKI-X2-ryx.text" = "Zusammenfassung";
 
 /* Class = "UILabel"; text = "To: "; ObjectID = "TKT-iA-rq1"; */
-"TKT-iA-rq1.text" = "An: ";
+"TKT-iA-rq1.text" = "An:";
 
 /* Class = "UILabel"; text = "Subject"; ObjectID = "Ux9-Hj-FDE"; */
 "Ux9-Hj-FDE.text" = "Betreff";

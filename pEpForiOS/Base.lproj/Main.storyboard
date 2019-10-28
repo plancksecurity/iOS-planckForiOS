@@ -186,7 +186,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="enableFilterButton" destination="VEt-1N-tdD" id="0iq-eB-HNI"/>
-                        <outlet property="searchDisplayController" destination="wi1-9j-AQt" id="5ik-CT-83m"/>
                         <segue destination="Rly-af-89k" kind="presentation" identifier="segueAddNewAccount" modalPresentationStyle="fullScreen" id="Na7-CM-lbe"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAll" id="xmi-xn-p8T"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="YH0-dx-pSs"/>
@@ -201,14 +200,6 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="wi1-9j-AQt">
-                    <connections>
-                        <outlet property="delegate" destination="kcA-RK-9Xg" id="HF4-ec-Iga"/>
-                        <outlet property="searchContentsController" destination="kcA-RK-9Xg" id="AAL-23-yNu"/>
-                        <outlet property="searchResultsDataSource" destination="kcA-RK-9Xg" id="Z6E-8J-aKn"/>
-                        <outlet property="searchResultsDelegate" destination="kcA-RK-9Xg" id="AVQ-xH-DgN"/>
-                    </connections>
-                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="4237.6000000000004" y="-895.50224887556226"/>
         </scene>
@@ -556,8 +547,8 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" modalPresentationStyle="pageSheet" id="2fD-kL-Bvj"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" modalPresentationStyle="pageSheet" id="RTR-We-Kc1"/>
                         <segue destination="Adk-MD-apd" kind="unwind" identifier="unwindToThread" unwindAction="segueUnwindEmailDisplayDoneWithSegue:" id="eRi-pR-kLP"/>
-                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshake" id="mZj-Mg-VzM"/>
-                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshakeCollapsed" id="0zl-tV-6Kr"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshake" modalPresentationStyle="automatic" id="mZj-Mg-VzM"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshakeCollapsed" modalPresentationStyle="fullScreen" id="0zl-tV-6Kr"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -923,7 +914,7 @@
                     <connections>
                         <outlet property="sendButton" destination="yQg-rY-YPK" id="lhg-qw-PDF"/>
                         <outlet property="view" destination="F0A-gK-Ftf" id="n0A-Pn-XJs"/>
-                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshake" id="JbP-D9-Vpg"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshake" modalPresentationStyle="fullScreen" id="JbP-D9-Vpg"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="te3-X0-7QD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -947,8 +938,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="d5O-Wk-gjZ"/>
-        <segue reference="0zl-tV-6Kr"/>
+        <segue reference="JbP-D9-Vpg"/>
         <segue reference="5Kn-pc-9Jc"/>
-        <segue reference="fJ0-cY-ZEb"/>
+        <segue reference="I15-Dm-oo1"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -38,7 +38,7 @@ final class AccountSettingsViewModel {
         var tempHeader = [NSLocalizedString("Account", comment: "Account settings"),
                           NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
                           NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP")]
-        if AppSettings.keySyncEnabled, Account.all().count > 1 {
+        if AppSettings.shared.keySyncEnabled, Account.all().count > 1 {
             tempHeader.append(NSLocalizedString("pEp Sync", comment: "Account settings title pEp Sync"))
         }
         return tempHeader
