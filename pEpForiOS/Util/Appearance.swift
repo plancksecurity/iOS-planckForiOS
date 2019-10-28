@@ -16,7 +16,6 @@ class Appearance {
             // Unfortunately, the pre-iOS-13 UINavigationBar.appearance().tintColor
             // is not respected anymore in all cases.
             UINavigationBar.appearance().standardAppearance = navigationBarAppearance(color: color)
-            UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance(color: color)
         } else {
             UINavigationBar.appearance().backgroundColor = .white
             UINavigationBar.appearance().tintColor = color
