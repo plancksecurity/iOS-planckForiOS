@@ -15,7 +15,12 @@ class Appearance {
             // iOS 13 introduced a new appearance API, keeping compatibility with the old way.
             // Unfortunately, the pre-iOS-13 UINavigationBar.appearance().tintColor
             // is not respected anymore in all cases.
-            UINavigationBar.appearance().standardAppearance = navigationBarAppearanceDefault(color: color)
+            UINavigationBar.appearance().standardAppearance = navigationBarAppearanceDefault(
+                color: color)
+            let tutorialNavigationBar = UINavigationBar.appearance(
+                whenContainedInInstancesOf: [TutorialViewController.self, LoginViewController.self])
+            tutorialNavigationBar.standardAppearance = navigationBarAppearanceTutorial(
+                color: color)
         } else {
             UINavigationBar.appearance().backgroundColor = .white
             UINavigationBar.appearance().tintColor = color
