@@ -90,7 +90,7 @@ class LoginViewController: BaseViewController {
         if #available(iOS 13, *) {
             if let appearance = navigationController?.navigationBar.standardAppearance.copy() {
                 Appearance.customiseForTutorial(navigationBarAppearance: appearance)
-                navigationController?.navigationItem.standardAppearance = appearance
+                navigationItem.standardAppearance = appearance
             }
         }
     }
