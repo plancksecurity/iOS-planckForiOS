@@ -58,9 +58,11 @@ class Appearance {
         view.tintColor = color
     }
 
+    // MARK: - iOS 13
+
     /// Default appearance for navigation bars (iOS 13 and upwards).
     @available(iOS 13, *)
-    static func navigationBarAppearanceDefault(color: UIColor) -> UINavigationBarAppearance {
+    static private func navigationBarAppearanceDefault(color: UIColor) -> UINavigationBarAppearance {
         let appearance = UINavigationBarAppearance()
 
         appearance.configureWithOpaqueBackground()
@@ -81,7 +83,7 @@ class Appearance {
     /// for the tutorial and login view (iOS 13 and upwards).
     /// - Parameter navigationBarAppearance: The appearance to customize.
     @available(iOS 13, *)
-    static func customiseButtons(navigationBarAppearance: UINavigationBarAppearance) {
+    static private func customiseButtons(navigationBarAppearance: UINavigationBarAppearance) {
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.white]
         navigationBarAppearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes
         navigationBarAppearance.backButtonAppearance.normal.titleTextAttributes = titleTextAttributes
