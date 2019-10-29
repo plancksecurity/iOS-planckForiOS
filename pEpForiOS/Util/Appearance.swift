@@ -79,8 +79,7 @@ class Appearance {
         return appearance
     }
 
-    /// Customises the buttons of a navigation bar appearance,
-    /// for the tutorial and login view (iOS 13 and upwards).
+    /// Customises the buttons of a navigation bar appearance, for the tutorial and login view.
     /// - Parameter navigationBarAppearance: The appearance to customize.
     @available(iOS 13, *)
     static private func customiseButtons(navigationBarAppearance: UINavigationBarAppearance) {
@@ -92,7 +91,7 @@ class Appearance {
         navigationBarAppearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
     }
 
-    /// Customises a navigation bar appearance for the login view (iOS 13 and upwards).
+    /// Customises a navigation bar appearance for the login view.
     /// - Parameter navigationBarAppearance: The appearance to customize.
     @available(iOS 13, *)
     static private func customiseForLogin(navigationBarAppearance: UINavigationBarAppearance) {
@@ -101,7 +100,7 @@ class Appearance {
         customiseButtons(navigationBarAppearance: navigationBarAppearance)
     }
 
-    /// Customises a navigation bar appearance for the tutorial view (iOS 13 and upwards).
+    /// Customises a navigation bar appearance for the tutorial view.
     /// - Parameter navigationBarAppearance: The appearance to customize.
     @available(iOS 13, *)
     static private func customiseForTutorial(navigationBarAppearance: UINavigationBarAppearance) {
@@ -110,9 +109,9 @@ class Appearance {
         customiseButtons(navigationBarAppearance: navigationBarAppearance)
     }
 
-    /// Helper that applies customiseForTutorial(navigationBarAppearance, color)
-    /// to the given navigation bar parts.
+    /// Helper for changing the appearance of a navigation bar containing a view controller.
     /// - Parameter viewController: The view controller that is embedded in a navigation controller.
+    /// - Parameter appearanceModifier: The block that can modify the navigation bar appearance.
     /// If it doesn't, nothing will be changed.
     @available(iOS 13, *)
     static private func customiseNavigationBar(viewController: UIViewController,
@@ -124,7 +123,7 @@ class Appearance {
         }
     }
 
-    /// Customises a view controller's navigation bar appearance for the tutorial view.
+    /// Customises a tutorial view controller's navigation bar appearance.
     /// - Parameter viewController: UIViewController: The view controller to customize.
     @available(iOS 13, *)
     static func customiseForTutorial(viewController: UIViewController) {
@@ -133,7 +132,7 @@ class Appearance {
         }
     }
 
-    /// Customises a view controller's navigation bar appearance for the login view.
+    /// Customises a login view controller's navigation bar appearance.
     /// - Parameter viewController: UIViewController: The view controller to customize.
     @available(iOS 13, *)
     static func customiseForLogin(viewController: UIViewController) {
