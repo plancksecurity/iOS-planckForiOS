@@ -15,6 +15,10 @@ final class TutorialWizardViewController: PEPPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
+
+        if #available(iOS 13, *) {
+            Appearance.customizeNavigationBar(viewController: self)
+        }
     }
 
     static func fromStoryboard(tutorialImages: [TutorialViewController.TutorialImage])

@@ -96,7 +96,7 @@ class LoginViewController: BaseViewController {
 
     private func configureAppearance() {
         if #available(iOS 13, *) {
-            Appearance.customizeForTutorial(viewController: self)
+            Appearance.customizeNavigationBar(viewController: self)
         } else {
             self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
             self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
