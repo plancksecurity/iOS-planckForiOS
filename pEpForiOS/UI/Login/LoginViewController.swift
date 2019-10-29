@@ -85,19 +85,28 @@ class LoginViewController: BaseViewController {
         super.viewDidLoad()
         setupViewModel()
         configureView()
+        configureAppearance()
         configureKeyboardAwareness()
-
-        if #available(iOS 13, *) {
-            if let appearance = navigationController?.navigationBar.standardAppearance.copy() {
-                Appearance.customiseForTutorial(navigationBarAppearance: appearance)
-                navigationItem.standardAppearance = appearance
-            }
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateView()
+    }
+
+    private func configureAppearance() {
+        if #available(iOS 13, *) {
+            if let appearance = navigationController?.navigationBar.standardAppearance.copy() {
+                Appearance.customiseForTutorial(navigationBarAppearance: appearance)
+                navigationItem.standardAppearance = appearance
+            }
+        } else {
+            self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            self.navigationController?.navigationBar.shadowImage = UIImage()
+            self.navigationController?.navigationBar.isTranslucent = true
+            self.navigationController?.navigationBar.backgroundColor = UIColor.clear
+        }
     }
 
     func configureView() {
@@ -128,14 +137,6 @@ class LoginViewController: BaseViewController {
             title:NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"),
             style:.plain, target:self,
             action:#selector(self.backButton))
-
-        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
-        
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.navigationBar.backgroundColor = UIColor.clear
-        
     }
 
     @objc func backButton() {
