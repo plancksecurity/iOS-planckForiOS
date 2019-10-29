@@ -43,9 +43,8 @@ extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         firstResponder = textField
     }
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
         switch textField {
         case imapSecurityTextfield:
             viewModel?.imapServer?.transport = textField.text
@@ -56,21 +55,28 @@ extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
         case smtpPortTextfield:
             viewModel?.smtpServer?.port = textField.text
         case usernameTextfield:
-            viewModel?.username = textField.text
-        case nameTextfield:
             viewModel?.loginName = textField.text
+        case nameTextfield:
+            viewModel?.username = textField.text
         case passwordTextfield:
             viewModel?.password = textField.text
         case smtpServerTextfield:
             viewModel?.smtpServer?.address = textField.text
-            return string.isBackspace ? true : string.isDigits
         case imapServerTextfield:
             viewModel?.imapServer?.address = textField.text
-            return string.isBackspace ? true : string.isDigits
         default:
             break
         }
-        return true
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        switch textField {
+        case imapServerTextfield, smtpServerTextfield:
+            return string.isBackspace ? true : string.isDigits
+        default:
+            return true
+        }
     }
 }
 
