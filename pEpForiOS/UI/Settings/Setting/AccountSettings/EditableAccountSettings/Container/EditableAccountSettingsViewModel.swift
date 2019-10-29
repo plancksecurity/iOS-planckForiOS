@@ -19,12 +19,22 @@ protocol EditableAccountSettingsViewModelDelegate: class {
 }
 
 final class EditableAccountSettingsViewModel {
-//    private(set) var name: String
-//    private(set) var loginName: String
-//    private(set) var smtpServer: ServerViewModel
-//    private(set) var imapServer: ServerViewModel
+    typealias Inputs = (addrImap: String, portImap: String, transImap: String,
+    addrSmpt: String, portSmtp: String, transSmtp: String, accountName: String,
+    loginName: String)
 
-    let isOAuth2: Bool
+    var account: Account
+    var isOAuth2: Bool {
+        return account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
+    }
+
+    var password: String? {
+        guard let tableViewModel = tableViewModel else {
+            Log.shared.errorAndCrash("Founded nil tableViewModel in EditableAccountSettingsViewModel")
+            return nil
+        }
+        return tableViewModel.passwordChanged ? tableViewModel.password : nil
+    }
 
     /// Holding both the data of the current account in verification,
     /// and also the implementation of the verification.
@@ -45,43 +55,17 @@ final class EditableAccountSettingsViewModel {
     /// If the credentials have either an IMAP or SMTP password,
     /// it gets stored here.
     private var originalPassword: String?
-    private var account: Account
 
     public init(account: Account, messageModelService: MessageModelServiceProtocol) {
         self.messageModelService = messageModelService
-
         self.account = account
-        // We are using a copy of the data here.
-        // The outside world must not know changed settings until they have been verified.
-        isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
-        email = account.user.address
-        loginName = account.imapServer?.credentials.loginName ?? ""
-        name = account.user.userName ?? ""
-
-        if let server = account.imapServer {
-            originalPassword = server.credentials.password
-            imapServer = ServerViewModel(address: server.address,
-                                         port: "\(server.port)",
-                                         transport: server.transport.asString())
-        } else {
-            imapServer = ServerViewModel()
-        }
-
-        if let server = account.smtpServer {
-            originalPassword = originalPassword ?? server.credentials.password
-            smtpServer = ServerViewModel(address: server.address,
-                                         port: "\(server.port)",
-                                         transport: server.transport.asString())
-        } else {
-            smtpServer = ServerViewModel()
-        }
 
         if isOAuth2 {
             if let payload = account.imapServer?.credentials.password ??
                 account.smtpServer?.credentials.password,
                 let token = OAuth2AccessToken.from(base64Encoded: payload)
                     as? OAuth2AccessTokenProtocol {
-                self.accessToken = token
+                accessToken = token
             } else {
                 Log.shared.errorAndCrash("Supposed to do OAUTH2, but no existing token")
             }
@@ -92,15 +76,13 @@ final class EditableAccountSettingsViewModel {
         delegate?.showLoadingView()
         do {
             let validated = try validateInputs()
-            let imap =
-                EditableAccountSettingsViewModel.ServerViewModel(address: validated.addrImap,
-                                                                 port: validated.portImap,
-                                                                 transport: validated.transImap)
-            let smtp =
-                EditableAccountSettingsViewModel.ServerViewModel(address: validated.addrSmpt,
-                                                                 port: validated.portSmtp,
-                                                                 transport: validated.transSmtp)
-            let password = passwordChanged ? tableViewModel?.textFeildPasswordText : nil
+            let imap = ServerViewModel(address: validated.addrImap,
+                                       port: validated.portImap,
+                                       transport: validated.transImap)
+            let smtp = ServerViewModel(address: validated.addrSmpt,
+                                       port: validated.portSmtp,
+                                       transport: validated.transSmtp)
+
             delegate?.hideLoadingView()
             update(loginName: validated.loginName, name: validated.accountName,
                    password: password, imap: imap, smtp: smtp)
@@ -110,9 +92,7 @@ final class EditableAccountSettingsViewModel {
         }
     }
 
-    func validateInputs() throws -> (addrImap: String, portImap: String, transImap: String,
-        addrSmpt: String, portSmtp: String, transSmtp: String, accountName: String,
-        loginName: String) {
+    func validateInputs() throws -> Inputs {
             //Validate all inputs, so far only tableViewModel
             guard let tableViewModel = tableViewModel else {
                 Log.shared.errorAndCrash("No viewModel for EditableAccountSettingsViewController")
@@ -162,7 +142,7 @@ extension EditableAccountSettingsViewModel {
         theVerifier.verifiableAccountDelegate = self
         verifiableAccount = theVerifier
 
-        theVerifier.address = email
+        theVerifier.address = tableViewModel?.email
         theVerifier.userName = name
         theVerifier.loginName = loginName
 
@@ -208,21 +188,12 @@ extension EditableAccountSettingsViewModel {
 }
 
 
-//// MARK: - Helping structures
-//
-//extension EditableAccountSettingsViewModel {
-//    struct SecurityViewModel {
-//        var options = Server.Transport.toArray()
-//        var size : Int {
-//            get {
-//                return options.count
-//            }
-//        }
-//
-//        subscript(option: Int) -> String {
-//            get {
-//                return options[option].asString()
-//            }
-//        }
-//    }
-//}
+// MARK: - Helping structures
+
+extension EditableAccountSettingsViewModel {
+    struct ServerViewModel {
+        var address: String?
+        var port: String?
+        var transport: String?
+    }
+}

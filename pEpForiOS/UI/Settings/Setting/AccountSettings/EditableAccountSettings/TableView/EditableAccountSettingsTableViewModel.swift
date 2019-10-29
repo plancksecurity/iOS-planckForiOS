@@ -10,22 +10,31 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
+protocol EditableAccountSettingsTableViewModelDelegate: class {
+    func reloadTable()
+}
+
 final class EditableAccountSettingsTableViewModel {
+    typealias TableInputs = (addrImap: String, portImap: String, transImap: String,
+    addrSmpt: String, portSmtp: String, transSmtp: String, accountName: String,
+    loginName: String)
+
     let securityViewModelvm = SecurityViewModel()
+
+    weak var delegate: EditableAccountSettingsTableViewModelDelegate?
 
     var count: Int { return headers.count }
     /// - Note: The email model is based on the assumption that imap.loginName == smtp.loginName
-    private var email: String?
-    private var password: String?
-    private var imapPort: String?
-    private var smtpPort: String?
-    private var loginName: String?
-    private var username: String?
-    private var imapServer: ServerViewModel?
-    private var smtpServer: ServerViewModel?
-    private var imapSecurity: String?
-    private var smtpSecurity: String?
-    private var headers: [String] = [NSLocalizedString("Account", comment: "Account settings"),
+    var password: String? {
+        didSet { passwordChanged = true }
+    }
+    var passwordChanged = false
+    var email: String
+    var loginName: String?
+    var username: String?
+    var imapServer: EditableAccountSettingsViewModel.ServerViewModel?
+    var smtpServer: EditableAccountSettingsViewModel.ServerViewModel?
+    var headers: [String] = [NSLocalizedString("Account", comment: "Account settings"),
                                NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
                                NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP")]
 
@@ -51,91 +60,80 @@ final class EditableAccountSettingsTableViewModel {
         return ""
     }
 
-    init(account: Account) {
+    init(account: Account, delegate: EditableAccountSettingsTableViewModelDelegate? = nil) {
         // We are using a copy of the data here.
+        // The outside world must not know changed settings until they have been verified.
         email = account.user.address
         loginName = account.imapServer?.credentials.loginName
         username = account.user.userName
 
         if let server = account.imapServer {
             originalPassword = server.credentials.password
-            imapServer = ServerViewModel(address: server.address,
-                                         port: "\(server.port)",
+            imapServer = EditableAccountSettingsViewModel.ServerViewModel(address: server.address,
+                                                                          port: "\(server.port)",
                 transport: server.transport.asString())
         } else {
-            imapServer = ServerViewModel()
+            imapServer = EditableAccountSettingsViewModel.ServerViewModel()
         }
 
         if let server = account.smtpServer {
             originalPassword = originalPassword ?? server.credentials.password
-            smtpServer = ServerViewModel(address: server.address,
-                                         port: "\(server.port)",
+            smtpServer = EditableAccountSettingsViewModel.ServerViewModel(address: server.address,
+                                                                          port: "\(server.port)",
                 transport: server.transport.asString())
         } else {
-            smtpServer = ServerViewModel()
+            smtpServer = EditableAccountSettingsViewModel.ServerViewModel()
         }
-
-        if isOAuth2 {
-            if let payload = account.imapServer?.credentials.password ??
-                account.smtpServer?.credentials.password,
-                let token = OAuth2AccessToken.from(base64Encoded: payload)
-                    as? OAuth2AccessTokenProtocol {
-                self.accessToken = token
-            } else {
-                Log.shared.errorAndCrash("Supposed to do OAUTH2, but no existing token")
-            }
-        }
+        delegate?.reloadTable()
     }
 
-    func validateInputs() throws -> (addrImap: String, portImap: String, transImap: String,
-        addrSmpt: String, portSmtp: String, transSmtp: String, accountName: String,
-        loginName: String) {
+    func validateInputs() throws -> TableInputs {
             //IMAP
-            guard let addrImap = imapServerTextfieldText, !addrImap.isEmpty else {
+            guard let addrImap = imapServer?.address, !addrImap.isEmpty else {
                 let msg = NSLocalizedString("IMAP server must not be empty.",
                                             comment: "Empty IMAP server message")
                 throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
             }
 
-            guard let portImap = imapPortTextfieldText, !portImap.isEmpty else {
+            guard let portImap = imapServer?.port, !portImap.isEmpty else {
                 let msg = NSLocalizedString("IMAP Port must not be empty.",
                                             comment: "Empty IMAP port server message")
                 throw AccountSettingsUserInputError.invalidInputPort(localizedMessage: msg)
             }
 
-            guard let transImap = imapSecurityTextfieldText, !transImap.isEmpty else {
+            guard let transImap = imapServer?.transport, !transImap.isEmpty else {
                 let msg = NSLocalizedString("Choose IMAP transport security method.",
                                             comment: "Empty IMAP transport security method")
                 throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
             }
 
             //SMTP
-            guard let addrSmpt = smtpServerTextfieldText, !addrSmpt.isEmpty else {
+            guard let addrSmpt = smtpServer?.address, !addrSmpt.isEmpty else {
                 let msg = NSLocalizedString("SMTP server must not be empty.",
                                             comment: "Empty SMTP server message")
                 throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
             }
 
-            guard let portSmtp = smtpPortTextfieldText, !portSmtp.isEmpty else {
+            guard let portSmtp = smtpServer?.port, !portSmtp.isEmpty else {
                 let msg = NSLocalizedString("SMTP Port must not be empty.",
                                             comment: "Empty SMTP port server message")
                 throw AccountSettingsUserInputError.invalidInputPort(localizedMessage: msg)
             }
 
-            guard let transSmtp = smtpSecurityTextfieldText, !transSmtp.isEmpty else {
+            guard let transSmtp = smtpServer?.transport, !transSmtp.isEmpty else {
                 let msg = NSLocalizedString("Choose SMTP transport security method.",
                                             comment: "Empty SMTP transport security method")
                 throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
             }
 
             //other
-            guard let name = nameTextfieldText, !name.isEmpty else {
+            guard let name = username, !name.isEmpty else {
                 let msg = NSLocalizedString("Account name must not be empty.",
                                             comment: "Empty account name message")
                 throw AccountSettingsUserInputError.invalidInputAccountName(localizedMessage: msg)
             }
 
-            guard let loginName = usernameTextfieldText, !loginName.isEmpty else {
+            guard let loginName = loginName, !loginName.isEmpty else {
                 let msg = NSLocalizedString("Username must not be empty.",
                                             comment: "Empty username message")
                 throw AccountSettingsUserInputError.invalidInputUserName(localizedMessage: msg)
@@ -160,12 +158,6 @@ extension EditableAccountSettingsTableViewModel {
 // MARK: - HelpingStructures
 
 extension EditableAccountSettingsTableViewModel {
-    struct ServerViewModel {
-        var address: String?
-        var port: String?
-        var transport: String?
-    }
-
     struct SecurityViewModel {
         var options = Server.Transport.toArray()
         var size : Int {

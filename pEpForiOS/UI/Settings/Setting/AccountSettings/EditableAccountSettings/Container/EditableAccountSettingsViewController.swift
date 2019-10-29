@@ -40,7 +40,13 @@ final class EditableAccountSettingsViewController: BaseViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.destination {
         case let tableViewController as EditableAccountSettingsTableViewController:
-            tableViewController.viewModel = EditableAccountSettingsTableViewModel()
+            guard let account = viewModel?.account else {
+                Log.shared.errorAndCrash("Founded nil account in EditableAccountSettingsViewController")
+                return
+            }
+            tableViewController.viewModel =
+                EditableAccountSettingsTableViewModel(account: account,
+                                                      delegate: tableViewController)
             viewModel?.tableViewModel = tableViewController.viewModel
             tableViewController.appConfig = appConfig
         default:

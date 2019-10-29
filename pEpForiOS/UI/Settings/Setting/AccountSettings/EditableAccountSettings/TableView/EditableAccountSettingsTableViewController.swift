@@ -21,13 +21,13 @@ final class EditableAccountSettingsTableViewController: BaseTableViewController 
     @IBOutlet weak var smtpServerTextfield: UITextField!
     @IBOutlet weak var smtpPortTextfield: UITextField!
     @IBOutlet weak var smtpSecurityTextfield: UITextField!
+
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
     @IBOutlet weak var securityPicker: UIPickerView!
 
     var viewModel: EditableAccountSettingsTableViewModel?
 
     private var firstResponder: UITextField?
-    private var passWordChanged = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,25 +48,24 @@ extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
                    replacementString string: String) -> Bool {
         switch textField {
         case imapSecurityTextfield:
-            viewModel?.imapSecurity = textField.text
+            viewModel?.imapServer?.transport = textField.text
         case smtpSecurityTextfield:
-            viewModel?.smtpSecurity = textField.text
+            viewModel?.smtpServer?.transport = textField.text
         case imapPortTextfield:
-            viewModel?.imapPort = textField.text
+            viewModel?.imapServer?.port = textField.text
         case smtpPortTextfield:
-            viewModel?.smtpPort = textField.text
+            viewModel?.smtpServer?.port = textField.text
         case usernameTextfield:
             viewModel?.username = textField.text
         case nameTextfield:
             viewModel?.loginName = textField.text
         case passwordTextfield:
             viewModel?.password = textField.text
-            passWordChanged = true
-        case smtpPortTextfield:
-            viewModel?.smtpServerTextfieldText = textField.text
+        case smtpServerTextfield:
+            viewModel?.smtpServer?.address = textField.text
             return string.isBackspace ? true : string.isDigits
-        case imapPortTextfield:
-            viewModel?.imapServerTextfieldText = textField.text
+        case imapServerTextfield:
+            viewModel?.imapServer?.address = textField.text
             return string.isBackspace ? true : string.isDigits
         default:
             break
@@ -128,29 +127,35 @@ extension EditableAccountSettingsTableViewController {
 }
 
 
+// MARK: - EditableAccountSettingsTableViewModelDelegate
+
+extension EditableAccountSettingsTableViewController: EditableAccountSettingsTableViewModelDelegate {
+    func reloadTable() {
+        DispatchQueue.main.async { [weak self] in
+            self?.nameTextfield.text = self?.viewModel?.username
+            self?.emailTextfield.text = self?.viewModel?.email
+            self?.usernameTextfield.text = self?.viewModel?.loginName
+            self?.passwordTextfield.text = self?.viewModel?.password
+
+            self?.imapServerTextfield.text = self?.viewModel?.imapServer?.address
+            self?.imapPortTextfield.text = self?.viewModel?.imapServer?.port
+            self?.imapSecurityTextfield.text = self?.viewModel?.imapServer?.transport
+
+            self?.smtpServerTextfield.text = self?.viewModel?.smtpServer?.address
+            self?.smtpPortTextfield.text = self?.viewModel?.smtpServer?.port
+            self?.smtpSecurityTextfield.text = self?.viewModel?.smtpServer?.transport
+
+            self?.tableView.reloadData()
+        }
+    }
+}
+
+
 // MARK: - Private
 
 extension EditableAccountSettingsTableViewController {
     private func setUpView() {
         smtpSecurityTextfield.inputView = securityPicker
         imapSecurityTextfield.inputView = securityPicker
-    }
-}
-
-
-// MARK: - Helping Structures
-
-extension EditableAccountSettingsTableViewController {
-    struct TableFieldsData {
-        let nameTextfield: String?
-        let emailTextfield: String?
-        let usernameTextfield: String?
-        let smtpPortTextfield: String?
-        let passwordTextfield: String?
-        let imapPortTextfield: String?
-        let smtpServerTextfield: String?
-        let imapServerTextfield: String?
-        let imapSecurityTextfield: String?
-        let smtpSecurityTextfield: String?
     }
 }
