@@ -77,10 +77,10 @@ class Appearance {
         return appearance
     }
 
-    /// Appearance for tutorial and login view navigation bars (iOS 13 and upwards).
+    /// Customises a navigation bar appearance for tutorial and login views (iOS 13 and upwards).
+    /// - Parameter navigationBarAppearance: The appearance to customize.
     @available(iOS 13, *)
-    static func customiseForTutorial(navigationBarAppearance: UINavigationBarAppearance,
-                                     color: UIColor = .pEpGreen) {
+    static func customiseForTutorial(navigationBarAppearance: UINavigationBarAppearance) {
         navigationBarAppearance.configureWithTransparentBackground()
         navigationBarAppearance.backgroundColor = UIColor.clear
 
