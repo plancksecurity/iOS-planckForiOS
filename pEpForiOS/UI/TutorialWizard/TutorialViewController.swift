@@ -17,6 +17,12 @@ class TutorialViewController: UIViewController {
     private var landscapeImage: UIImage?
     private var portraitImages: UIImage?
 
+    override func viewDidLoad() {
+        if #available(iOS 13, *) {
+            Appearance.customizeForTutorial(viewController: self)
+        }
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setUpViews()
