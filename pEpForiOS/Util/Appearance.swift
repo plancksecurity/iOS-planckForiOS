@@ -111,8 +111,7 @@ class Appearance {
 
     /// Helper for changing the appearance of a navigation bar containing a view controller.
     /// - Parameter viewController: The view controller that is embedded in a navigation controller.
-    /// - Parameter appearanceModifier: The block that can modify the navigation bar appearance.
-    /// If it doesn't, nothing will be changed.
+    /// - Parameter appearanceModifier: A block that will modify the navigation bar appearance.
     @available(iOS 13, *)
     static private func customiseNavigationBar(viewController: UIViewController,
                                                appearanceModifier: (UINavigationBarAppearance) -> Void) {
