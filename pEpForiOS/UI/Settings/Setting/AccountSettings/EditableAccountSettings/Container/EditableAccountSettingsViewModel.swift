@@ -52,9 +52,6 @@ final class EditableAccountSettingsViewModel {
     ///         for the verification be able to succeed.
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
-    /// If the credentials have either an IMAP or SMTP password,
-    /// it gets stored here.
-    private var originalPassword: String?
 
     public init(account: Account, messageModelService: MessageModelServiceProtocol) {
         self.messageModelService = messageModelService
@@ -82,8 +79,6 @@ final class EditableAccountSettingsViewModel {
             let smtp = ServerViewModel(address: validated.addrSmpt,
                                        port: validated.portSmtp,
                                        transport: validated.transSmtp)
-
-            delegate?.hideLoadingView()
             update(loginName: validated.loginName, name: validated.accountName,
                    password: password, imap: imap, smtp: smtp)
         } catch {
@@ -106,6 +101,7 @@ final class EditableAccountSettingsViewModel {
 
 extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
     func didEndVerification(result: Result<Void, Error>) {
+        delegate?.hideLoadingView()
         switch result {
         case .success(()):
             do {
@@ -155,7 +151,7 @@ extension EditableAccountSettingsViewModel {
             // OAUTH2 trumps any password
             theVerifier.password = nil
         } else {
-            theVerifier.password = originalPassword
+            theVerifier.password = tableViewModel?.originalPassword
             if password != nil {
                 theVerifier.password = password
             }

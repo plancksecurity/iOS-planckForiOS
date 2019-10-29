@@ -135,7 +135,7 @@ extension EditableAccountSettingsTableViewController: EditableAccountSettingsTab
             self?.nameTextfield.text = self?.viewModel?.username
             self?.emailTextfield.text = self?.viewModel?.email
             self?.usernameTextfield.text = self?.viewModel?.loginName
-            self?.passwordTextfield.text = self?.viewModel?.password
+            self?.passwordTextfield.text = self?.viewModel?.password ?? "JustAPassword"
 
             self?.imapServerTextfield.text = self?.viewModel?.imapServer?.address
             self?.imapPortTextfield.text = self?.viewModel?.imapServer?.port

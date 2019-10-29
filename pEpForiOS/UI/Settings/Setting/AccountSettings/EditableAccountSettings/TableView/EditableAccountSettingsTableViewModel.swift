@@ -23,6 +23,9 @@ final class EditableAccountSettingsTableViewModel {
 
     weak var delegate: EditableAccountSettingsTableViewModelDelegate?
 
+    /// If the credentials have either an IMAP or SMTP password,
+    /// it gets stored here.
+    var originalPassword: String?
     var count: Int { return headers.count }
     /// - Note: The email model is based on the assumption that imap.loginName == smtp.loginName
     var password: String? {
@@ -37,10 +40,6 @@ final class EditableAccountSettingsTableViewModel {
     var headers: [String] = [NSLocalizedString("Account", comment: "Account settings"),
                                NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
                                NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP")]
-
-    /// If the credentials have either an IMAP or SMTP password,
-    /// it gets stored here.
-    private var originalPassword: String?
 
     subscript(section: Int) -> String {
         get {
