@@ -91,4 +91,17 @@ class Appearance {
         navigationBarAppearance.largeTitleTextAttributes = titleTextAttributes
         navigationBarAppearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
     }
+
+    /// Helper that applies customiseForTutorial(navigationBarAppearance, color)
+    /// to the given navigation bar parts.
+    /// - Parameter viewController: The view controller that is embedded in a navigation controller.
+    /// If it doesn't, nothing will be changed.
+    @available(iOS 13, *)
+    static func customizeForTutorial(viewController: UIViewController) {
+        if let navigationController = viewController.navigationController {
+            let appearance = navigationController.navigationBar.standardAppearance.copy()
+            Appearance.customiseForTutorial(navigationBarAppearance: appearance)
+            viewController.navigationItem.standardAppearance = appearance
+        }
+    }
 }
