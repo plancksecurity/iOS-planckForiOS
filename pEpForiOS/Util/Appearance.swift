@@ -81,12 +81,14 @@ class Appearance {
     @available(iOS 13, *)
     static func customiseForTutorial(navigationBarAppearance: UINavigationBarAppearance,
                                      color: UIColor = .pEpGreen) {
+        navigationBarAppearance.configureWithTransparentBackground()
+        navigationBarAppearance.backgroundColor = UIColor.clear
+
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.white]
         navigationBarAppearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes
         navigationBarAppearance.backButtonAppearance.normal.titleTextAttributes = titleTextAttributes
         navigationBarAppearance.titleTextAttributes = titleTextAttributes
         navigationBarAppearance.largeTitleTextAttributes = titleTextAttributes
         navigationBarAppearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
-        navigationBarAppearance.backgroundColor = color
     }
 }
