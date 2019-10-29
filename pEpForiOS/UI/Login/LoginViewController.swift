@@ -86,6 +86,13 @@ class LoginViewController: BaseViewController {
         setupViewModel()
         configureView()
         configureKeyboardAwareness()
+
+        if #available(iOS 13, *) {
+            if let appearance = navigationController?.navigationBar.standardAppearance.copy() {
+                Appearance.customiseForTutorial(navigationBarAppearance: appearance)
+                navigationController?.navigationItem.standardAppearance = appearance
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

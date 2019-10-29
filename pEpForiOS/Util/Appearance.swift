@@ -79,18 +79,14 @@ class Appearance {
 
     /// Appearance for tutorial and login view navigation bars (iOS 13 and upwards).
     @available(iOS 13, *)
-    static func navigationBarAppearanceTutorial(color: UIColor) -> UINavigationBarAppearance {
-        let appearance = navigationBarAppearanceDefault(color: color)
-
+    static func customiseForTutorial(navigationBarAppearance: UINavigationBarAppearance,
+                                     color: UIColor = .pEpGreen) {
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.white]
-        appearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes
-        appearance.backButtonAppearance.normal.titleTextAttributes = titleTextAttributes
-        appearance.titleTextAttributes = titleTextAttributes
-        appearance.largeTitleTextAttributes = titleTextAttributes
-        appearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
-
-        appearance.backgroundColor = color
-
-        return appearance
+        navigationBarAppearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes
+        navigationBarAppearance.backButtonAppearance.normal.titleTextAttributes = titleTextAttributes
+        navigationBarAppearance.titleTextAttributes = titleTextAttributes
+        navigationBarAppearance.largeTitleTextAttributes = titleTextAttributes
+        navigationBarAppearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
+        navigationBarAppearance.backgroundColor = color
     }
 }
