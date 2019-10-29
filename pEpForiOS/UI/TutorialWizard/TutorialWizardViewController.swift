@@ -17,7 +17,9 @@ final class TutorialWizardViewController: PEPPageViewController {
         setUpView()
 
         if #available(iOS 13, *) {
-            Appearance.customizeNavigationBar(viewController: self)
+            Appearance.customizeNavigationBar(viewController: self) { appearance in
+                Appearance.customiseForTutorial(navigationBarAppearance: appearance)
+            }
         }
     }
 

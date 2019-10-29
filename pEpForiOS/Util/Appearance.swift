@@ -115,10 +115,11 @@ class Appearance {
     /// - Parameter viewController: The view controller that is embedded in a navigation controller.
     /// If it doesn't, nothing will be changed.
     @available(iOS 13, *)
-    static func customizeNavigationBar(viewController: UIViewController) {
+    static func customizeNavigationBar(viewController: UIViewController,
+                                       appearanceModifier: (UINavigationBarAppearance) -> Void) {
         if let navigationController = viewController.navigationController {
             let appearance = navigationController.navigationBar.standardAppearance.copy()
-            Appearance.customiseForLogin(navigationBarAppearance: appearance)
+            appearanceModifier(appearance)
             viewController.navigationItem.standardAppearance = appearance
         }
     }
