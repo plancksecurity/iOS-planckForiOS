@@ -16,11 +16,8 @@ extension UIViewController {
 
     @discardableResult func showNavigationBarSecurityBadge(pEpRating: PEPRating?,
                                                            pEpProtection: Bool = true) -> UIView? {
-        guard let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) else {
-            // No security badge image should be shown. Make sure to remove previously set img.
-            navigationItem.titleView = nil
-            return nil
-        }
+        let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) ?? UIImage(named: "pep-logo")
+
         // according to apple's design guidelines ('Hit Targets'):
         // https://developer.apple.com/design/tips/
         let minimumHitTestDimension: CGFloat = 44
