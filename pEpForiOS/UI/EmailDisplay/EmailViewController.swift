@@ -99,10 +99,12 @@ class EmailViewController: BaseTableViewController {
             return
         }
 
-        let tapGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(showHandshakeView(gestureRecognizer:)))
-        ratingView.addGestureRecognizer(tapGestureRecognizer)
+        if canShowPrivacyStatus() {
+            let tapGestureRecognizer = UITapGestureRecognizer(
+                target: self,
+                action: #selector(showHandshakeView(gestureRecognizer:)))
+            ratingView.addGestureRecognizer(tapGestureRecognizer)
+        }
     }
 
     private final func loadDatasource(_ file: String) {
