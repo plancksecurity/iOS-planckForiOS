@@ -101,18 +101,20 @@ final class EditableAccountSettingsViewModel {
 
 extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
     func didEndVerification(result: Result<Void, Error>) {
-        delegate?.hideLoadingView()
         switch result {
         case .success(()):
             do {
                 try verifiableAccount?.save { [weak self] _ in
+                    self?.delegate?.hideLoadingView()
                     self?.delegate?.popViewController()
                 }
             } catch {
                 Log.shared.errorAndCrash(error: error)
+                delegate?.hideLoadingView()
                 delegate?.popViewController()
             }
         case .failure(let error):
+            delegate?.hideLoadingView()
             if let imapError = error as? ImapSyncError {
                 delegate?.showErrorAlert(error: imapError)
             } else if let smtpError = error as? SmtpSendError {

@@ -34,7 +34,7 @@ final class EditableAccountSettingsTableViewModel {
     var passwordChanged = false
     var email: String
     var loginName: String?
-    var username: String?
+    var name: String?
     var imapServer: EditableAccountSettingsViewModel.ServerViewModel?
     var smtpServer: EditableAccountSettingsViewModel.ServerViewModel?
     var headers: [String] = [NSLocalizedString("Account", comment: "Account settings"),
@@ -64,7 +64,7 @@ final class EditableAccountSettingsTableViewModel {
         // The outside world must not know changed settings until they have been verified.
         email = account.user.address
         loginName = account.imapServer?.credentials.loginName
-        username = account.user.userName
+        name = account.user.userName
 
         if let server = account.imapServer {
             originalPassword = server.credentials.password
@@ -126,7 +126,7 @@ final class EditableAccountSettingsTableViewModel {
             }
 
             //other
-            guard let name = username, !name.isEmpty else {
+            guard let name = name, !name.isEmpty else {
                 let msg = NSLocalizedString("Account name must not be empty.",
                                             comment: "Empty account name message")
                 throw AccountSettingsUserInputError.invalidInputAccountName(localizedMessage: msg)

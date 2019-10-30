@@ -43,7 +43,7 @@ extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         firstResponder = textField
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         switch textField {
         case imapSecurityTextfield:
@@ -57,7 +57,7 @@ extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
         case usernameTextfield:
             viewModel?.loginName = textField.text
         case nameTextfield:
-            viewModel?.username = textField.text
+            viewModel?.name = textField.text
         case passwordTextfield:
             viewModel?.password = textField.text
         case smtpServerTextfield:
@@ -138,7 +138,7 @@ extension EditableAccountSettingsTableViewController {
 extension EditableAccountSettingsTableViewController: EditableAccountSettingsTableViewModelDelegate {
     func reloadTable() {
         DispatchQueue.main.async { [weak self] in
-            self?.nameTextfield.text = self?.viewModel?.username
+            self?.nameTextfield.text = self?.viewModel?.name
             self?.emailTextfield.text = self?.viewModel?.email
             self?.usernameTextfield.text = self?.viewModel?.loginName
             self?.passwordTextfield.text = self?.viewModel?.password ?? "JustAPassword"
