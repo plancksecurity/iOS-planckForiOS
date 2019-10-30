@@ -113,6 +113,15 @@ class EmailViewController: BaseTableViewController {
         }
     }
 
+    private func canShowPrivacyStatus() -> Bool {
+        //!!!: EmailView must not know about handshakeCombinations.
+        if let handshakeCombos = message?.handshakeActionCombinations(),
+            !handshakeCombos.isEmpty {
+            return true
+        }
+        return false
+    }
+
     // MARK: - SETUP
 
     private func setupToolbar() {
@@ -326,8 +335,7 @@ class EmailViewController: BaseTableViewController {
     @objc private func showPepActions(sender: UIBarButtonItem) {
         let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
 
-            if let handshakeCombos = message?.handshakeActionCombinations(), //!!!: EmailView must not know about handshakeCombinations.
-            !handshakeCombos.isEmpty, let handshakeAction = showHandshakeViewAction()
+            if canShowPrivacyStatus(), let handshakeAction = showHandshakeViewAction()
             {
                 actionSheetController.addAction(handshakeAction)
         }
