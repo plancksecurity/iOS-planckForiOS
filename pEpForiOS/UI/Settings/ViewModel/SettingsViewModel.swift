@@ -39,7 +39,6 @@ final class SettingsViewModel {
                                                  messageModelService: messageModelService,
                                                  keySyncDeviceGroupService: keySyncDeviceGroupService))
         sections.append(SettingsSectionViewModel(type: .contacts))
-        sections.append(SettingsSectionViewModel(type: .pgpCompatibilitySettings))
         sections.append(SettingsSectionViewModel(type: .companyFeatures))
     }
 
