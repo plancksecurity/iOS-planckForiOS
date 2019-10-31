@@ -52,7 +52,7 @@ extension UIViewController {
             return badgeView
         } else {
             let titleLabel = UILabel()
-            titleLabel.text = "p≡p"
+            titleLabel.text = "pEp"
             titleLabel.textColor = .pEpGreen
             if let univers = UIFont(name: "UniversLTStd-Bold", size: UIFont.labelFontSize) {
                 titleLabel.font = univers
