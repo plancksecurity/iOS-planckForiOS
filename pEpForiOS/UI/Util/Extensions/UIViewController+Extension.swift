@@ -17,6 +17,7 @@ extension UIViewController {
     @discardableResult func showNavigationBarSecurityBadge(pEpRating: PEPRating?,
                                                            pEpProtection: Bool = true) -> UIView? {
         let titleView = navigationItemTitleView(pEpRating: pEpRating, pEpProtection: pEpProtection)
+        titleView?.isUserInteractionEnabled = true
         navigationItem.titleView = titleView
         return titleView
     }
@@ -47,7 +48,6 @@ extension UIViewController {
             imgView.widthAnchor.constraint(lessThanOrEqualTo: badgeView.widthAnchor,
                                            constant: -imagePadding).isActive = true
 
-            badgeView.isUserInteractionEnabled = true
             return badgeView
         } else if let img = UIImage(named: "pEp-logo-original") {
             let imgView = UIImageView(image: img)
