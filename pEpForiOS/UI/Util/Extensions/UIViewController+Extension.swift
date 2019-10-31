@@ -51,6 +51,12 @@ extension UIViewController {
             return badgeView
         } else if let img = UIImage(named: "pEp-logo-original") {
             let imgView = UIImageView(image: img)
+            imgView.translatesAutoresizingMaskIntoConstraints = false
+            let ratio = imgView.aspectRatio()
+            imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor,
+                                           multiplier: ratio,
+                                           constant: 0.0).isActive = true
+            imgView.heightAnchor.constraint(equalToConstant: 22).isActive = true
             return imgView
         }
 
