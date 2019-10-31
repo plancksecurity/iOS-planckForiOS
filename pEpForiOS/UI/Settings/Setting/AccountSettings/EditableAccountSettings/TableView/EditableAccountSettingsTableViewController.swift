@@ -103,7 +103,12 @@ extension EditableAccountSettingsTableViewController: UIPickerViewDelegate {
                     forComponent component: Int) -> String? {
 
         guard let viewModel = viewModel else { return nil }
-        return viewModel.securityViewModelvm[row]
+        let title = viewModel.securityViewModelvm[row]
+        if title == firstResponder?.text,
+            firstResponder == imapSecurityTextfield || firstResponder == smtpSecurityTextfield {
+            pickerView.selectRow(row, inComponent: 0, animated: true)
+        }
+        return title
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int,
