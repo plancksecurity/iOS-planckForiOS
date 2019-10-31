@@ -94,16 +94,13 @@ class EmailViewController: BaseTableViewController {
     }
 
     private func showPepRating() {
-        guard let ratingView = showNavigationBarSecurityBadge(pEpRating: message?.pEpRating()) else {
-            Log.shared.errorAndCrash("No rating defined for this view")
-            return
-        }
-
-        if canShowPrivacyStatus() {
-            let tapGestureRecognizer = UITapGestureRecognizer(
-                target: self,
-                action: #selector(showHandshakeView(gestureRecognizer:)))
-            ratingView.addGestureRecognizer(tapGestureRecognizer)
+        if let ratingView = showNavigationBarSecurityBadge(pEpRating: message?.pEpRating()) {
+            if canShowPrivacyStatus() {
+                let tapGestureRecognizer = UITapGestureRecognizer(
+                    target: self,
+                    action: #selector(showHandshakeView(gestureRecognizer:)))
+                ratingView.addGestureRecognizer(tapGestureRecognizer)
+            }
         }
     }
 

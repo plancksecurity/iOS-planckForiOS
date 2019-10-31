@@ -56,7 +56,8 @@ extension UIViewController {
                                            constant: -imagePadding).isActive = true
 
             return badgeView
-        } else if let img = UIImage(named: "pEp-logo-original") {
+        } else if splitViewController == nil, let img = UIImage(named: "pEp-logo-original") {
+            // only if there is no split view, and we have the logo
             let imgView = UIImageView(image: img)
             imgView.translatesAutoresizingMaskIntoConstraints = false
             let ratio = imgView.aspectRatio()
