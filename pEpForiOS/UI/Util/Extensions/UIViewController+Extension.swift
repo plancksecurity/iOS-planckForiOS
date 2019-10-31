@@ -23,6 +23,7 @@ extension UIViewController {
 
     private func navigationItemTitleView(pEpRating: PEPRating?,
                                          pEpProtection: Bool = true) -> UIView? {
+        dumpFonts()
         if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
             // according to apple's design guidelines ('Hit Targets'):
             // https://developer.apple.com/design/tips/
@@ -53,7 +54,17 @@ extension UIViewController {
             let titleLabel = UILabel()
             titleLabel.text = "p≡p"
             titleLabel.textColor = .pEpGreen
+            if let univers = UIFont(name: "UniversLTStd-Bold", size: UIFont.labelFontSize) {
+                titleLabel.font = univers
+            }
             return titleLabel
+        }
+    }
+
+    private func dumpFonts() {
+        for family in UIFont.familyNames.sorted() {
+            let names = UIFont.fontNames(forFamilyName: family)
+            print("Family: \(family) Font names: \(names)")
         }
     }
 
