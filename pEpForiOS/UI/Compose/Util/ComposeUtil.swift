@@ -162,7 +162,7 @@ struct ComposeUtil {
                 Log.shared.errorAndCrash("No outbox")
                 return nil
         }
-        let message = Message.newObject(onSession: session)
+        let message = Message.newOutgoingMessage(session: session)
         message.parent = outbox
         message.from = from
         message.replaceTo(with: state.toRecipients)
