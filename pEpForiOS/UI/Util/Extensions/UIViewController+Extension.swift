@@ -50,15 +50,12 @@ extension UIViewController {
 
             badgeView.isUserInteractionEnabled = true
             return badgeView
-        } else {
-            let titleLabel = UILabel()
-            titleLabel.text = "pEp"
-            titleLabel.textColor = .pEpGreen
-            if let univers = UIFont(name: "UniversLTStd-Bold", size: UIFont.labelFontSize) {
-                titleLabel.font = univers
-            }
-            return titleLabel
+        } else if let img = UIImage(named: "pEp-logo-original") {
+            let imgView = UIImageView(image: img)
+            return imgView
         }
+
+        return nil
     }
 
     private func dumpFonts() {
