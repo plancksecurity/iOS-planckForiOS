@@ -59,16 +59,27 @@ extension UIViewController {
                                            constant: -imagePadding).isActive = true
 
             return badgeView
-        } else if splitViewController == nil, let img = UIImage(named: "pEp-logo-original") {
-            // only if there is no split view, and we have the logo
-            let imgView = UIImageView(image: img)
-            imgView.translatesAutoresizingMaskIntoConstraints = false
-            let ratio = imgView.aspectRatio()
-            imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor,
-                                           multiplier: ratio,
-                                           constant: 0.0).isActive = true
-            imgView.heightAnchor.constraint(equalToConstant: 22).isActive = true
-            return imgView
+        } else {
+            guard let img = UIImage(named: "pEp-logo-original") else {
+                return nil
+            }
+
+            // iPhone 8: .onlyMaster; iPad: .masterAndDetail
+            let mode = splitViewController?.currentDisplayMode ?? .masterAndDetail
+
+            switch mode {
+            case .onlyMaster:
+                let imgView = UIImageView(image: img)
+                imgView.translatesAutoresizingMaskIntoConstraints = false
+                let ratio = imgView.aspectRatio()
+                imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor,
+                                               multiplier: ratio,
+                                               constant: 0.0).isActive = true
+                imgView.heightAnchor.constraint(equalToConstant: 22).isActive = true
+                return imgView
+            case .onlyDetail, .masterAndDetail:
+                break
+            }
         }
 
         return nil
