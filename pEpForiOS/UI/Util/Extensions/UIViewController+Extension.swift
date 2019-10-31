@@ -23,7 +23,6 @@ extension UIViewController {
 
     private func navigationItemTitleView(pEpRating: PEPRating?,
                                          pEpProtection: Bool = true) -> UIView? {
-        dumpFonts()
         if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
             // according to apple's design guidelines ('Hit Targets'):
             // https://developer.apple.com/design/tips/
@@ -56,13 +55,6 @@ extension UIViewController {
         }
 
         return nil
-    }
-
-    private func dumpFonts() {
-        for family in UIFont.familyNames.sorted() {
-            let names = UIFont.fontNames(forFamilyName: family)
-            print("Family: \(family) Font names: \(names)")
-        }
     }
 
     func showNavigationBarPEPLogo(pEpRating: PEPRating?) -> UIView? {
