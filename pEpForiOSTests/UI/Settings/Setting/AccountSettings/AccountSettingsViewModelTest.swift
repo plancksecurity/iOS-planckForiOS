@@ -13,141 +13,142 @@ import PantomimeFramework
 
 class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
-    var viewModel: AccountSettingsViewModel!
-    var keySyncServiceHandshakeDelegateMoc: KeySyncServiceHandshakeDelegateMoc!
+    var viewModel: AccountSettingsViewModel?
+    var keySyncServiceHandshakeDelegateMoc: KeySyncServiceHandshakeDelegateMoc?
 
-    public func testEmail() {
-        setUpViewModel()
+    var actual: State?
+    var expected: State?
+    var expectation: XCTestExpectation?
 
-        let email = viewModel.email
+    override func setUp() {
+        super.setUp()
 
-        XCTAssertEqual(email, account.user.address)
+        viewModel = AccountSettingsViewModel(account: account)
+        viewModel?.delegate = self
+        setDefaultActualState()
+        expected = nil
+        expectation = nil
     }
 
-    public func testLoginName() {
-        setUpViewModel()
-
-        let loginName = viewModel.loginName
-
-        XCTAssertEqual(loginName, account.imapServer?.credentials.loginName)
-    }
-
-    public func testName() {
-        setUpViewModel()
-
-        let name = viewModel.name
-
-        XCTAssertEqual(account.user.userName, name)
-    }
-
-    public func testSmptServer() {
-        setUpViewModel()
-
-        let smptServer = viewModel.smtpServer
-
-        XCTAssertEqual(smptServer.address, account.smtpServer?.address)
-        let port =  account.smtpServer?.port
-        XCTAssertNotNil(port)
-        XCTAssertEqual(smptServer.port, "\(String(describing: port!))")
-        XCTAssertEqual(smptServer.transport, account.smtpServer?.transport.asString())
-    }
-
-    public func testImapServer() {
-        setUpViewModel()
-
-        let imapServer = viewModel.imapServer
-
-        XCTAssertEqual(imapServer.address, account.imapServer?.address)
-        let port =  account.imapServer?.port
-        XCTAssertNotNil(port)
-        XCTAssertEqual(imapServer.port, "\(String(describing: port!))")
-        XCTAssertEqual(imapServer.transport, account.imapServer?.transport.asString())
-    }
-
-    func testKeySyncSectionIsShown() {
+    func testPEPSyncSectionIsShown() {
         // GIVEN
         SecretTestData().createWorkingCdAccount(number: 1, context: moc)
-        moc.saveAndLogErrors()
 
-        setUpViewModel(keySyncEnabled: true)
-        let expectedHeader = NSLocalizedString("pEp Sync", comment: "Account settings title Key Sync")
+        updateActualWithPEPSyncSection()
+        expected = State(isPEPSyncSectionShown: true)
 
         // WHEN
-        let actualHeader = viewModel[3]
+        //no trigger, no when
 
         //THEN
-        XCTAssertEqual(expectedHeader, actualHeader)
+        assertExpectations()
     }
 
-    func testKeySyncSectionIsNOTShown() {
+    func testPEPSyncSectionIsNOTShown() {
         // GIVEN
-        let expectedHeaderNOTShown = NSLocalizedString("Key Sync", comment: "Account settings title Key Sync")
+        updateActualWithPEPSyncSection()
+        expected = State(isPEPSyncSectionShown: false)
 
         // WHEN
-        setUpViewModel(keySyncEnabled: false)
+        //no trigger, no when
 
-        //THEN
-        for i in 0..<viewModel.count {
-            XCTAssertNotEqual(expectedHeaderNOTShown, viewModel[i])
-        }
+        // THEN
+        assertExpectations()
     }
 
-    func testUpdate() {
-        let address = "localhost"
-        let login = "fakelogin"
-        let name = "fakeName"
-        let password = "fakePassword"
-        let portString = "1"
-        let portInt = UInt16(portString)!
+    func testSucceedHandleResetIdentity() {
+        // GIVEN
+        expected = State(didCallShowLoadingView: true, didCallHideLoadingView: true)
+        expectation = expectation(description: "Call for show and hide loadingView")
+        expectation?.expectedFulfillmentCount = 2
 
-        setUpViewModel()
+        // WHEN
+        viewModel?.handleResetIdentity()
+        waitForExpectations(timeout: TestUtil.modelSaveWaitTime)
 
-        let server = AccountSettingsViewModel.ServerViewModel(address: address,
-                                                              port: portString,
-                                                              transport: "StartTls")
-
-        let verifyExpectation =
-            expectation(description: AccountVerificationResultDelegateMock.DID_VERIFY_EXPECTATION)
-
-        let delegate = AccountVerificationResultDelegateMock()
-        delegate.expectationDidVerifyCalled = verifyExpectation
-        viewModel.verifiableDelegate = delegate
-
-        viewModel.update(loginName: login,
-                         name: name,
-                         password: password,
-                         imap: server,
-                         smtp: server)
-
-        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-
-        guard let verifier = viewModel.verifiableAccount else {
-            XCTFail()
-            return
-        }
-
-        XCTAssertEqual(verifier.loginName, login)
-        XCTAssertEqual(verifier.password, password)
-        XCTAssertEqual(verifier.serverIMAP, address)
-        XCTAssertEqual(verifier.serverSMTP, address)
-        XCTAssertEqual(verifier.portIMAP, portInt)
-        XCTAssertEqual(verifier.portSMTP, portInt)
-        XCTAssertNil(verifier.accessToken)
+        // THEN
+        assertExpectations()
     }
 
-    public func testSectionIsValid() {
-        setUpViewModel()
-        //Header count in AccountSettingViewModel
-        let headerCount = 3
-        var validSection: Bool!
-        for i in 0..<headerCount {
-            validSection = viewModel.sectionIsValid(section: i)
-            XCTAssertTrue(validSection)
-        }
+    func testpEpSyncEnableSucceed() {
+        // GIVEN
+        expected = State()
 
-        validSection = viewModel.sectionIsValid(section: headerCount)
-        XCTAssertFalse(validSection)
+        // WHEN
+        viewModel?.pEpSync(enable: true)
+
+        // THEN
+        assertExpectations()
     }
+
+    func testpEpSyncDisableSucceed() {
+        // GIVEN
+        expected = State()
+
+        // WHEN
+        viewModel?.pEpSync(enable: false)
+
+        // THEN
+        assertExpectations()
+    }
+
+    //MOVE!!! VERIFIABLE
+//    func testUpdate() {
+//        let address = "localhost"
+//        let login = "fakelogin"
+//        let name = "fakeName"
+//        let password = "fakePassword"
+//        let portString = "1"
+//        let portInt = UInt16(portString)!
+//
+//        let server = EditableAccountSettingsViewModel.ServerViewModel(address: address,
+//                                                              port: portString,
+//                                                              transport: "StartTls")
+//
+//        let verifyExpectation =
+//            expectation(description: AccountVerificationResultDelegateMock.DID_VERIFY_EXPECTATION)
+//
+//        let delegate = AccountVerificationResultDelegateMock()
+//        delegate.expectationDidVerifyCalled = verifyExpectation
+//        viewModel.verifiableDelegate = delegate
+//
+//        viewModel.update(loginName: login,
+//                         name: name,
+//                         password: password,
+//                         imap: server,
+//                         smtp: server)
+//
+//        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
+//
+//        guard let verifier = viewModel.verifiableAccount else {
+//            XCTFail()
+//            return
+//        }
+//
+//        XCTAssertEqual(verifier.loginName, login)
+//        XCTAssertEqual(verifier.password, password)
+//        XCTAssertEqual(verifier.serverIMAP, address)
+//        XCTAssertEqual(verifier.serverSMTP, address)
+//        XCTAssertEqual(verifier.portIMAP, portInt)
+//        XCTAssertEqual(verifier.portSMTP, portInt)
+//        XCTAssertNil(verifier.accessToken)
+//    }
+
+    //MOVE TO EDITABLE ACCOUNT SETT TABLE
+//    func testSectionIsValid() {
+//        //Header count in AccountSettingViewModel
+//        let headerCount = 3
+//        var validSection: Bool!
+//        for i in 0..<headerCount {
+//            validSection = viewModel.sectionIsValid(section: i)
+//            XCTAssertTrue(validSection)
+//        }
+//
+//        validSection = viewModel.sectionIsValid(section: headerCount)
+//        XCTAssertFalse(validSection)
+//    }
+
+
 
 //    public func testVerified() {
 //        let address = "localhost"
@@ -218,45 +219,134 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 //        XCTAssertEqual(actualPassword, correctPwd)
 //    }
 
-    private func setUpViewModel(keySyncEnabled: Bool = false) {
 
-        keySyncServiceHandshakeDelegateMoc = KeySyncServiceHandshakeDelegateMoc()
-        let theMessageModelService = MessageModelService(errorPropagator: ErrorPropagator(),
-                                                         cnContactsAccessPermissionProvider: AppSettings.shared,
-                                                         keySyncServiceDelegate: keySyncServiceHandshakeDelegateMoc,
-                                                         keySyncEnabled: keySyncEnabled)
 
-        viewModel = AccountSettingsViewModel(
-            account: account,
-            messageModelService: theMessageModelService)
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+//MOVE!!!
+//    private func setUpViewModel(keySyncEnabled: Bool = false) {
+//        keySyncServiceHandshakeDelegateMoc = KeySyncServiceHandshakeDelegateMoc()
+//        let theMessageModelService = MessageModelService(errorPropagator: ErrorPropagator(),
+//                                                         cnContactsAccessPermissionProvider: AppSettings.shared,
+//                                                         keySyncServiceDelegate: keySyncServiceHandshakeDelegateMoc,
+//                                                         keySyncEnabled: keySyncEnabled)
+//
+//        viewModel = AccountSettingsViewModel(
+//            account: account,
+//            messageModelService: theMessageModelService)
+//    }
 }
 
-class AccountVerificationResultDelegateMock: AccountVerificationResultDelegate {
-    static let DID_VERIFY_EXPECTATION = "DID_VERIFY_CALLED"
-    var expectationDidVerifyCalled: XCTestExpectation?
-    var error: Error? = nil
 
-    func didVerify(result: AccountVerificationResult) {
-        switch result {
-        case .ok:
-            self.error = nil
-        case .noImapConnectData, .noSmtpConnectData:
-            let theError = NSError(
-                domain: #function,
-                code: 777,
-                userInfo: [NSLocalizedDescriptionKey: "SMTP/IMAP ERROR"])
-            self.error = theError
-        case .imapError(let error):
-            self.error = error
-        case .smtpError(let error):
-            self.error = error
-        }
+// MARK: - Private
 
-        guard let expectation = expectationDidVerifyCalled else {
+extension AccountSettingsViewModelTest {
+    private func setDefaultActualState() {
+        actual = State()
+    }
+
+    private func updateActualWithPEPSyncSection() {
+        guard let viewModel = viewModel else {
             XCTFail()
             return
         }
-        expectation.fulfill()
+        let pEpSyncHeader = NSLocalizedString("pEp Sync", comment: "Account settings title pEp Sync")
+
+        for i in 0..<viewModel.count {
+            guard viewModel[i] == pEpSyncHeader else { continue }
+            actual?.isPEPSyncSectionShown = true
+        }
+    }
+
+    private func assertExpectations() {
+        guard let expected = expected,
+            let actual = actual else {
+                XCTFail()
+                return
+        }
+
+        XCTAssertEqual(expected.didCallHideLoadingView, actual.didCallHideLoadingView)
+        XCTAssertEqual(expected.didCallShowLoadingView, actual.didCallShowLoadingView)
+        XCTAssertEqual(expected.didCallShowErrorAlert, actual.didCallShowErrorAlert)
+        XCTAssertEqual(expected.didCallUndoPEPSyncToggle, actual.didCallUndoPEPSyncToggle)
+        XCTAssertEqual(expected.isPEPSyncSectionShown, actual.isPEPSyncSectionShown)
+
+        //In case some if missing or added but not checked
+        XCTAssertEqual(expected, actual)
+    }
+}
+
+// MARK: - Helper Structs
+
+extension AccountSettingsViewModelTest {
+    struct State: Equatable {
+        var isPEPSyncSectionShown: Bool = false
+        var didCallShowErrorAlert: Bool = false
+        var didCallShowLoadingView: Bool = false
+        var didCallHideLoadingView: Bool = false
+        var didCallUndoPEPSyncToggle: Bool = false
+    }
+}
+//    class AccountVerificationResultDelegateMock: AccountVerificationResultDelegate {
+//        static let DID_VERIFY_EXPECTATION = "DID_VERIFY_CALLED"
+//        var expectationDidVerifyCalled: XCTestExpectation?
+//        var error: Error? = nil
+//
+//        func didVerify(result: AccountVerificationResult) {
+//            switch result {
+//            case .ok:
+//                self.error = nil
+//            case .noImapConnectData, .noSmtpConnectData:
+//                let theError = NSError(
+//                    domain: #function,
+//                    code: 777,
+//                    userInfo: [NSLocalizedDescriptionKey: "SMTP/IMAP ERROR"])
+//                self.error = theError
+//            case .imapError(let error):
+//                self.error = error
+//            case .smtpError(let error):
+//                self.error = error
+//            }
+//
+//            guard let expectation = expectationDidVerifyCalled else {
+//                XCTFail()
+//                return
+//            }
+//            expectation.fulfill()
+//        }
+//    }
+
+
+// MARK: - AccountSettingsViewModelDelegate
+
+extension AccountSettingsViewModelTest: AccountSettingsViewModelDelegate {
+    func showErrorAlert(error: Error) {
+        actual?.didCallShowErrorAlert = true
+        expectation?.fulfill()
+    }
+
+    func undoPEPSyncToggle() {
+        actual?.didCallUndoPEPSyncToggle = true
+        expectation?.fulfill()
+    }
+
+    func showLoadingView() {
+        actual?.didCallShowLoadingView = true
+        expectation?.fulfill()
+    }
+
+    func hideLoadingView() {
+        actual?.didCallHideLoadingView = true
+        expectation?.fulfill()
     }
 }

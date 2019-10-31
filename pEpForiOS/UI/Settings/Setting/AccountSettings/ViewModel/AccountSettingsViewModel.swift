@@ -84,14 +84,11 @@ final class AccountSettingsViewModel {
                 self?.delegate?.hideLoadingView()
             case .failure(let error):
                 self?.delegate?.hideLoadingView()
+                //TODO: show error alert
                 Log.shared.errorAndCrash("Fail to reset identity, with error %@ ",
                                          error.localizedDescription)
             }
         }
-    }
-
-    func sectionIsValid(section: Int) -> Bool {
-        return section >= 0 && section < headers.count
     }
 
     func footerFor(section: Int) -> String {
@@ -112,5 +109,12 @@ final class AccountSettingsViewModel {
 
     func updateToken(accessToken: OAuth2AccessTokenProtocol) {
         self.accessToken = accessToken
+    }
+}
+
+// MARK: - Private
+extension AccountSettingsViewModel {
+    private func sectionIsValid(section: Int) -> Bool {
+        return section >= 0 && section < headers.count
     }
 }
