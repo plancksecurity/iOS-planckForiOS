@@ -49,12 +49,12 @@ extension UIViewController {
 
             badgeView.isUserInteractionEnabled = true
             return badgeView
-        } else if let img = UIImage(named: "pEp-logo-original") {
-            let imgView = UIImageView(image: img)
-            return imgView
+        } else {
+            let titleLabel = UILabel()
+            titleLabel.text = "pEp"
+            titleLabel.textColor = .pEpGreen
+            return titleLabel
         }
-
-        return nil
     }
 
     func showNavigationBarPEPLogo(pEpRating: PEPRating?) -> UIView? {
