@@ -60,7 +60,7 @@ extension UIViewController {
 
             return badgeView
         } else {
-            guard let img = UIImage(named: "pEp-logo-original") else {
+            guard let img = UIImage(named: "icon-settings") else {
                 return nil
             }
 
