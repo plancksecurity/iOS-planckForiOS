@@ -51,7 +51,7 @@ extension UIViewController {
             return badgeView
         } else {
             let titleLabel = UILabel()
-            titleLabel.text = "pEp"
+            titleLabel.text = "p≡p"
             titleLabel.textColor = .pEpGreen
             return titleLabel
         }
