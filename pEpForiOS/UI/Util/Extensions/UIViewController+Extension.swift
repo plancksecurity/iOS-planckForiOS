@@ -16,34 +16,40 @@ extension UIViewController {
 
     @discardableResult func showNavigationBarSecurityBadge(pEpRating: PEPRating?,
                                                            pEpProtection: Bool = true) -> UIView? {
-        let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) ?? UIImage(named: "pEp-logo-original")
+        if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
+            // according to apple's design guidelines ('Hit Targets'):
+            // https://developer.apple.com/design/tips/
+            let minimumHitTestDimension: CGFloat = 44
 
-        // according to apple's design guidelines ('Hit Targets'):
-        // https://developer.apple.com/design/tips/
-        let minimumHitTestDimension: CGFloat = 44
+            let imgView = UIImageView(image: img)
+            imgView.translatesAutoresizingMaskIntoConstraints = false
+            imgView.heightAnchor.constraint(equalTo: imgView.widthAnchor).isActive = true
 
-        let imgView = UIImageView(image: img)
-        imgView.translatesAutoresizingMaskIntoConstraints = false
-        imgView.heightAnchor.constraint(equalTo: imgView.widthAnchor).isActive = true
+            let badgeView = UIView()
+            badgeView.translatesAutoresizingMaskIntoConstraints = false
+            badgeView.heightAnchor.constraint(
+                greaterThanOrEqualToConstant: minimumHitTestDimension).isActive = true
 
-        let badgeView = UIView()
-        badgeView.translatesAutoresizingMaskIntoConstraints = false
-        badgeView.heightAnchor.constraint(
-            greaterThanOrEqualToConstant: minimumHitTestDimension).isActive = true
+            badgeView.addSubview(imgView)
 
-        badgeView.addSubview(imgView)
+            let imagePadding: CGFloat = 10
+            imgView.centerXAnchor.constraint(equalTo: badgeView.centerXAnchor).isActive = true
+            imgView.centerYAnchor.constraint(equalTo: badgeView.centerYAnchor).isActive = true
+            imgView.heightAnchor.constraint(lessThanOrEqualTo: badgeView.heightAnchor,
+                                            constant: -imagePadding).isActive = true
+            imgView.widthAnchor.constraint(lessThanOrEqualTo: badgeView.widthAnchor,
+                                           constant: -imagePadding).isActive = true
 
-        let imagePadding: CGFloat = 10
-        imgView.centerXAnchor.constraint(equalTo: badgeView.centerXAnchor).isActive = true
-        imgView.centerYAnchor.constraint(equalTo: badgeView.centerYAnchor).isActive = true
-        imgView.heightAnchor.constraint(lessThanOrEqualTo: badgeView.heightAnchor,
-                                        constant: -imagePadding).isActive = true
-        imgView.widthAnchor.constraint(lessThanOrEqualTo: badgeView.widthAnchor,
-                                       constant: -imagePadding).isActive = true
+            navigationItem.titleView = badgeView
+            badgeView.isUserInteractionEnabled = true
+            return badgeView
+        } else if let img = UIImage(named: "pEp-logo-original") {
+            let imgView = UIImageView(image: img)
+            navigationItem.titleView = imgView
+            return imgView
+        }
 
-        navigationItem.titleView = badgeView
-        badgeView.isUserInteractionEnabled = true
-        return badgeView
+        return nil
     }
 
     func showNavigationBarPEPLogo(pEpRating: PEPRating?) -> UIView? {
