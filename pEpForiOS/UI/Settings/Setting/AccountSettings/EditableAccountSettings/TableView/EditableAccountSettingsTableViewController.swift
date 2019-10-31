@@ -42,6 +42,7 @@ final class EditableAccountSettingsTableViewController: BaseTableViewController 
 extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         firstResponder = textField
+        reloadPickerIfNeeded()
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -99,13 +100,14 @@ extension EditableAccountSettingsTableViewController: UIPickerViewDataSource {
 // MARK: - UIPickerViewDelegate
 
 extension EditableAccountSettingsTableViewController: UIPickerViewDelegate {
+
+
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int,
                     forComponent component: Int) -> String? {
 
         guard let viewModel = viewModel else { return nil }
         let title = viewModel.securityViewModelvm[row]
-        if title == firstResponder?.text,
-            firstResponder == imapSecurityTextfield || firstResponder == smtpSecurityTextfield {
+        if title == firstResponder?.text, isTransportSecurityField() {
             pickerView.selectRow(row, inComponent: 0, animated: true)
         }
         return title
@@ -168,5 +170,16 @@ extension EditableAccountSettingsTableViewController {
     private func setUpView() {
         smtpSecurityTextfield.inputView = securityPicker
         imapSecurityTextfield.inputView = securityPicker
+    }
+
+    private func isTransportSecurityField() -> Bool {
+        return firstResponder == imapSecurityTextfield || firstResponder == smtpSecurityTextfield
+    }
+
+    private func reloadPickerIfNeeded() {
+        if isTransportSecurityField(),
+            let picker = firstResponder?.inputView as? UIPickerView {
+            picker.reloadAllComponents()
+        }
     }
 }
