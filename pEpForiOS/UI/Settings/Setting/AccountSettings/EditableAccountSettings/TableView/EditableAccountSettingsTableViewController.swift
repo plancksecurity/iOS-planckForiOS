@@ -72,7 +72,7 @@ extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
         switch textField {
-        case imapServerTextfield, smtpServerTextfield:
+        case imapPortTextfield, smtpPortTextfield:
             return string.isBackspace ? true : string.isDigits
         default:
             return true
