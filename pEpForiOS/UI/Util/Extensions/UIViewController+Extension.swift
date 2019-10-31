@@ -14,13 +14,16 @@ extension UIViewController {
         return presentedViewController != nil
     }
 
-    /// Puts the privacy rating or pEp logo into the navigation item.
+    /// Puts the privacy rating or pEp logo into the navigation item or removes it.
     ///
     /// When running on layouts _without_ a split view (that is, on smaller iPhones),
     /// and there is no rating or it's "no color", the pEp logo will be returned instead.
     /// - Parameter pEpRating: The privacy rating, or nil.
     /// - Parameter pEpProtection: False if the user decided to "force unprotected",
     ///   true otherwise.
+    /// - Returns: The view that was put into the navigation item title, or nil,
+    ///   if no view was put there. In that case, the navigation item title view has
+    ///   been nil'ed.
     @discardableResult func showNavigationBarSecurityBadge(pEpRating: PEPRating?,
                                                            pEpProtection: Bool = true) -> UIView? {
         let titleView = navigationItemTitleView(pEpRating: pEpRating, pEpProtection: pEpProtection)
