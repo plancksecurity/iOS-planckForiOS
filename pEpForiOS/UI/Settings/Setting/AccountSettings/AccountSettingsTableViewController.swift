@@ -43,20 +43,16 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
      override func viewDidLoad() {
         super.viewDidLoad()
-
-        setUpView()
         viewModel?.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
-
-        guard let isIphone = splitViewController?.isCollapsed else {
-            return
-        }
-        if !isIphone {
-            self.navigationItem.leftBarButtonItem = nil// hidesBackButton = true
+        hideBackButtonIfNeeded()
+        //Work around async old stack context merge behaviour
+        DispatchQueue.main.async { [weak self] in
+            self?.setUpView()
         }
     }
 
@@ -295,6 +291,15 @@ extension AccountSettingsTableViewController {
 
         DispatchQueue.main.async { [weak self] in
             self?.present(pepAlertViewController, animated: true)
+        }
+    }
+
+    private func hideBackButtonIfNeeded() {
+        guard let isIphone = splitViewController?.isCollapsed else {
+            return
+        }
+        if !isIphone {
+            navigationItem.leftBarButtonItem = nil// hidesBackButton = true
         }
     }
 }
