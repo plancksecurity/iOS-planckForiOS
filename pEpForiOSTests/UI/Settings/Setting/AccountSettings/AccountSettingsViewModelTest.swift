@@ -11,10 +11,10 @@ import PantomimeFramework
 @testable import pEpForiOS
 @testable import MessageModel
 
-class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
+final class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
     var viewModel: AccountSettingsViewModel?
-    var keySyncServiceHandshakeDelegateMoc: KeySyncServiceHandshakeDelegateMoc?
+    //    var keySyncServiceHandshakeDelegateMoc: KeySyncServiceHandshakeDelegateMoc?
 
     var actual: State?
     var expected: State?
@@ -26,15 +26,23 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         viewModel = AccountSettingsViewModel(account: account)
         viewModel?.delegate = self
         setDefaultActualState()
+    }
+
+    override func tearDown() {
+        super.tearDown()
+
+        actual = nil
         expected = nil
+        viewModel = nil
         expectation = nil
+        viewModel?.delegate = nil
     }
 
     func testPEPSyncSectionIsShown() {
         // GIVEN
         SecretTestData().createWorkingCdAccount(number: 1, context: moc)
 
-        updateActualWithPEPSyncSection()
+        updateViewModelState()
         expected = State(isPEPSyncSectionShown: true)
 
         // WHEN
@@ -46,7 +54,7 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
     func testPEPSyncSectionIsNOTShown() {
         // GIVEN
-        updateActualWithPEPSyncSection()
+        updateViewModelState()
         expected = State(isPEPSyncSectionShown: false)
 
         // WHEN
@@ -64,7 +72,7 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
         // WHEN
         viewModel?.handleResetIdentity()
-        waitForExpectations(timeout: TestUtil.modelSaveWaitTime)
+        waitForExpectations(timeout: TestUtil.waitTime)
 
         // THEN
         assertExpectations()
@@ -93,135 +101,131 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
     }
 
     //MOVE!!! VERIFIABLE
-//    func testUpdate() {
-//        let address = "localhost"
-//        let login = "fakelogin"
-//        let name = "fakeName"
-//        let password = "fakePassword"
-//        let portString = "1"
-//        let portInt = UInt16(portString)!
-//
-//        let server = EditableAccountSettingsViewModel.ServerViewModel(address: address,
-//                                                              port: portString,
-//                                                              transport: "StartTls")
-//
-//        let verifyExpectation =
-//            expectation(description: AccountVerificationResultDelegateMock.DID_VERIFY_EXPECTATION)
-//
-//        let delegate = AccountVerificationResultDelegateMock()
-//        delegate.expectationDidVerifyCalled = verifyExpectation
-//        viewModel.verifiableDelegate = delegate
-//
-//        viewModel.update(loginName: login,
-//                         name: name,
-//                         password: password,
-//                         imap: server,
-//                         smtp: server)
-//
-//        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-//
-//        guard let verifier = viewModel.verifiableAccount else {
-//            XCTFail()
-//            return
-//        }
-//
-//        XCTAssertEqual(verifier.loginName, login)
-//        XCTAssertEqual(verifier.password, password)
-//        XCTAssertEqual(verifier.serverIMAP, address)
-//        XCTAssertEqual(verifier.serverSMTP, address)
-//        XCTAssertEqual(verifier.portIMAP, portInt)
-//        XCTAssertEqual(verifier.portSMTP, portInt)
-//        XCTAssertNil(verifier.accessToken)
-//    }
+    //    func testUpdate() {
+    //        let address = "localhost"
+    //        let login = "fakelogin"
+    //        let name = "fakeName"
+    //        let password = "fakePassword"
+    //        let portString = "1"
+    //        let portInt = UInt16(portString)!
+    //
+    //        let server = EditableAccountSettingsViewModel.ServerViewModel(address: address,
+    //                                                              port: portString,
+    //                                                              transport: "StartTls")
+    //
+    //        let verifyExpectation =
+    //            expectation(description: AccountVerificationResultDelegateMock.DID_VERIFY_EXPECTATION)
+    //
+    //        let delegate = AccountVerificationResultDelegateMock()
+    //        delegate.expectationDidVerifyCalled = verifyExpectation
+    //        viewModel.verifiableDelegate = delegate
+    //
+    //        viewModel.update(loginName: login,
+    //                         name: name,
+    //                         password: password,
+    //                         imap: server,
+    //                         smtp: server)
+    //
+    //        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
+    //
+    //        guard let verifier = viewModel.verifiableAccount else {
+    //            XCTFail()
+    //            return
+    //        }
+    //
+    //        XCTAssertEqual(verifier.loginName, login)
+    //        XCTAssertEqual(verifier.password, password)
+    //        XCTAssertEqual(verifier.serverIMAP, address)
+    //        XCTAssertEqual(verifier.serverSMTP, address)
+    //        XCTAssertEqual(verifier.portIMAP, portInt)
+    //        XCTAssertEqual(verifier.portSMTP, portInt)
+    //        XCTAssertNil(verifier.accessToken)
+    //    }
 
     //MOVE TO EDITABLE ACCOUNT SETT TABLE
-//    func testSectionIsValid() {
-//        //Header count in AccountSettingViewModel
-//        let headerCount = 3
-//        var validSection: Bool!
-//        for i in 0..<headerCount {
-//            validSection = viewModel.sectionIsValid(section: i)
-//            XCTAssertTrue(validSection)
-//        }
-//
-//        validSection = viewModel.sectionIsValid(section: headerCount)
-//        XCTAssertFalse(validSection)
-//    }
+    //    func testSectionIsValid() {
+    //        //Header count in AccountSettingViewModel
+    //        let headerCount = 3
+    //        var validSection: Bool!
+    //        for i in 0..<headerCount {
+    //            validSection = viewModel.sectionIsValid(section: i)
+    //            XCTAssertTrue(validSection)
+    //        }
+    //
+    //        validSection = viewModel.sectionIsValid(section: headerCount)
+    //        XCTAssertFalse(validSection)
+    //    }
 
 
 
-//    public func testVerified() {
-//        let address = "localhost"
-//        let login = "fakelogin"
-//        let name = "fakeName"
-//        let password = "fakePassword"
-//        let portString = "1"
-//
-//        setUpViewModel()
-//
-//        let server = AccountSettingsViewModel.ServerViewModel(address: address,
-//                                                              port: portString,
-//                                                              transport: "StartTls")
-//
-//        let verifyExpectation =
-//            expectation(description: AccountVerificationResultDelegateMock.DID_VERIFY_EXPECTATION)
-//
-//        let delegate = AccountVerificationResultDelegateMock()
-//        delegate.expectationDidVerifyCalled = verifyExpectation
-//        viewModel.verifiableDelegate = delegate
-//
-//        viewModel.update(loginName: login,
-//                         name: name,
-//                         password: password,
-//                         imap: server,
-//                         smtp: server)
-//
-//        viewModel.didEndVerification(result: .success(()))
-//
-//        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-//    }
-//
-//    public func testSavePasswordAfterEndVerification() {
-//        // GIVEN
-//        setUpViewModel()
-//        guard let imapPort = account.imapServer?.port,
-//            let smtpPort = account.smtpServer?.port else {
-//                XCTFail()
-//                return
-//        }
-//        let correctPwd = account.imapServer?.credentials.password
-//        let wrongPwd = "Wrong Password"
-//        account.imapServer?.credentials.password = wrongPwd
-//
-//        let savedExpectation = expectation(description: "Did save expectation")
-//        let verifiableAccount = VerifiableAccount(messageModelService: viewModel.messageModelService,
-//                                                  address: account.user.address,
-//                                                  userName: account.user.userName,
-//                                                  loginName: account.imapServer!.credentials.loginName,
-//                                                  password: correctPwd,
-//                                                  serverIMAP: account.imapServer?.address,
-//                                                  portIMAP: imapPort,
-//                                                  transportIMAP: ConnectionTransport.init(transport: account.imapServer!.transport),
-//                                                  serverSMTP: account.smtpServer?.address,
-//                                                  portSMTP: smtpPort,
-//                                                  transportSMTP: ConnectionTransport.init(transport: account.smtpServer!.transport),
-//                                                  automaticallyTrustedImapServer: true)
-//
-//
-//        // WHEN
-//        try? verifiableAccount.save { _ in
-//            savedExpectation.fulfill()
-//        }
-//
-//        // THEN
-//        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-//        let actualPassword = account.imapServer?.credentials.password
-//        XCTAssertEqual(actualPassword, correctPwd)
-//    }
-
-
-
-
+    //    public func testVerified() {
+    //        let address = "localhost"
+    //        let login = "fakelogin"
+    //        let name = "fakeName"
+    //        let password = "fakePassword"
+    //        let portString = "1"
+    //
+    //        setUpViewModel()
+    //
+    //        let server = AccountSettingsViewModel.ServerViewModel(address: address,
+    //                                                              port: portString,
+    //                                                              transport: "StartTls")
+    //
+    //        let verifyExpectation =
+    //            expectation(description: AccountVerificationResultDelegateMock.DID_VERIFY_EXPECTATION)
+    //
+    //        let delegate = AccountVerificationResultDelegateMock()
+    //        delegate.expectationDidVerifyCalled = verifyExpectation
+    //        viewModel.verifiableDelegate = delegate
+    //
+    //        viewModel.update(loginName: login,
+    //                         name: name,
+    //                         password: password,
+    //                         imap: server,
+    //                         smtp: server)
+    //
+    //        viewModel.didEndVerification(result: .success(()))
+    //
+    //        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
+    //    }
+    //
+    //    public func testSavePasswordAfterEndVerification() {
+    //        // GIVEN
+    //        setUpViewModel()
+    //        guard let imapPort = account.imapServer?.port,
+    //            let smtpPort = account.smtpServer?.port else {
+    //                XCTFail()
+    //                return
+    //        }
+    //        let correctPwd = account.imapServer?.credentials.password
+    //        let wrongPwd = "Wrong Password"
+    //        account.imapServer?.credentials.password = wrongPwd
+    //
+    //        let savedExpectation = expectation(description: "Did save expectation")
+    //        let verifiableAccount = VerifiableAccount(messageModelService: viewModel.messageModelService,
+    //                                                  address: account.user.address,
+    //                                                  userName: account.user.userName,
+    //                                                  loginName: account.imapServer!.credentials.loginName,
+    //                                                  password: correctPwd,
+    //                                                  serverIMAP: account.imapServer?.address,
+    //                                                  portIMAP: imapPort,
+    //                                                  transportIMAP: ConnectionTransport.init(transport: account.imapServer!.transport),
+    //                                                  serverSMTP: account.smtpServer?.address,
+    //                                                  portSMTP: smtpPort,
+    //                                                  transportSMTP: ConnectionTransport.init(transport: account.smtpServer!.transport),
+    //                                                  automaticallyTrustedImapServer: true)
+    //
+    //
+    //        // WHEN
+    //        try? verifiableAccount.save { _ in
+    //            savedExpectation.fulfill()
+    //        }
+    //
+    //        // THEN
+    //        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
+    //        let actualPassword = account.imapServer?.credentials.password
+    //        XCTAssertEqual(actualPassword, correctPwd)
+    //    }
 
 
 
@@ -233,18 +237,22 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
 
 
-//MOVE!!!
-//    private func setUpViewModel(keySyncEnabled: Bool = false) {
-//        keySyncServiceHandshakeDelegateMoc = KeySyncServiceHandshakeDelegateMoc()
-//        let theMessageModelService = MessageModelService(errorPropagator: ErrorPropagator(),
-//                                                         cnContactsAccessPermissionProvider: AppSettings.shared,
-//                                                         keySyncServiceDelegate: keySyncServiceHandshakeDelegateMoc,
-//                                                         keySyncEnabled: keySyncEnabled)
-//
-//        viewModel = AccountSettingsViewModel(
-//            account: account,
-//            messageModelService: theMessageModelService)
-//    }
+
+
+
+
+    //MOVE!!!
+    //    private func setUpViewModel(keySyncEnabled: Bool = false) {
+    //        keySyncServiceHandshakeDelegateMoc = KeySyncServiceHandshakeDelegateMoc()
+    //        let theMessageModelService = MessageModelService(errorPropagator: ErrorPropagator(),
+    //                                                         cnContactsAccessPermissionProvider: AppSettings.shared,
+    //                                                         keySyncServiceDelegate: keySyncServiceHandshakeDelegateMoc,
+    //                                                         keySyncEnabled: keySyncEnabled)
+    //
+    //        viewModel = AccountSettingsViewModel(
+    //            account: account,
+    //            messageModelService: theMessageModelService)
+    //    }
 }
 
 
@@ -255,7 +263,7 @@ extension AccountSettingsViewModelTest {
         actual = State()
     }
 
-    private func updateActualWithPEPSyncSection() {
+    private func updateViewModelState() {
         guard let viewModel = viewModel else {
             XCTFail()
             return
