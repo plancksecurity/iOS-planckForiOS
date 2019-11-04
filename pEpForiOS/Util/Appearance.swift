@@ -15,8 +15,8 @@ class Appearance {
             // iOS 13 introduced a new appearance API, keeping compatibility with the old way.
             // Unfortunately, the pre-iOS-13 UINavigationBar.appearance().tintColor
             // is not respected anymore in all cases.
-            UINavigationBar.appearance().standardAppearance = navigationBarAppearance(color: color)
-            UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance(color: color)
+            let normalNavigationBar = UINavigationBar.appearance()
+            normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: color)
         } else {
             UINavigationBar.appearance().backgroundColor = .white
             UINavigationBar.appearance().tintColor = color
@@ -58,9 +58,11 @@ class Appearance {
         view.tintColor = color
     }
 
-    /// Appearance for navigation bars (iOS 13 and upwards).
+    // MARK: - iOS 13
+
+    /// Default appearance for navigation bars (iOS 13 and upwards).
     @available(iOS 13, *)
-    static func navigationBarAppearance(color: UIColor) -> UINavigationBarAppearance {
+    static private func navigationBarAppearanceDefault(color: UIColor) -> UINavigationBarAppearance {
         let appearance = UINavigationBarAppearance()
 
         appearance.configureWithOpaqueBackground()
@@ -75,5 +77,66 @@ class Appearance {
         appearance.setBackIndicatorImage(chevronLeftImg, transitionMaskImage: chevronLeftImg)
 
         return appearance
+    }
+
+    /// Customises the buttons of a navigation bar appearance, for the tutorial and login view.
+    /// - Parameter navigationBarAppearance: The appearance to customize.
+    @available(iOS 13, *)
+    static private func customiseButtons(navigationBarAppearance: UINavigationBarAppearance) {
+        let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.white]
+        navigationBarAppearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes
+        navigationBarAppearance.backButtonAppearance.normal.titleTextAttributes = titleTextAttributes
+        navigationBarAppearance.titleTextAttributes = titleTextAttributes
+        navigationBarAppearance.largeTitleTextAttributes = titleTextAttributes
+        navigationBarAppearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
+    }
+
+    /// Customises a navigation bar appearance for the login view.
+    /// - Parameter navigationBarAppearance: The appearance to customize.
+    @available(iOS 13, *)
+    static private func customiseForLogin(navigationBarAppearance: UINavigationBarAppearance) {
+        navigationBarAppearance.configureWithTransparentBackground()
+        navigationBarAppearance.backgroundColor = UIColor.clear
+        customiseButtons(navigationBarAppearance: navigationBarAppearance)
+    }
+
+    /// Customises a navigation bar appearance for the tutorial view.
+    /// - Parameter navigationBarAppearance: The appearance to customize.
+    @available(iOS 13, *)
+    static private func customiseForTutorial(navigationBarAppearance: UINavigationBarAppearance) {
+        navigationBarAppearance.configureWithOpaqueBackground()
+        navigationBarAppearance.backgroundColor = UIColor.pEpGreen
+        customiseButtons(navigationBarAppearance: navigationBarAppearance)
+    }
+
+    /// Helper for changing the appearance of a navigation bar containing a view controller.
+    /// - Parameter viewController: The view controller that is embedded in a navigation controller.
+    /// - Parameter appearanceModifier: A block that will modify the navigation bar appearance.
+    @available(iOS 13, *)
+    static private func customiseNavigationBar(viewController: UIViewController,
+                                               appearanceModifier: (UINavigationBarAppearance) -> Void) {
+        if let navigationController = viewController.navigationController {
+            let appearance = navigationController.navigationBar.standardAppearance.copy()
+            appearanceModifier(appearance)
+            viewController.navigationItem.standardAppearance = appearance
+        }
+    }
+
+    /// Customises a tutorial view controller's navigation bar appearance.
+    /// - Parameter viewController: UIViewController: The view controller to customize.
+    @available(iOS 13, *)
+    static func customiseForTutorial(viewController: UIViewController) {
+        customiseNavigationBar(viewController: viewController) { appearance in
+            customiseForTutorial(navigationBarAppearance: appearance)
+        }
+    }
+
+    /// Customises a login view controller's navigation bar appearance.
+    /// - Parameter viewController: UIViewController: The view controller to customize.
+    @available(iOS 13, *)
+    static func customiseForLogin(viewController: UIViewController) {
+        customiseNavigationBar(viewController: viewController) { appearance in
+            customiseForLogin(navigationBarAppearance: appearance)
+        }
     }
 }
