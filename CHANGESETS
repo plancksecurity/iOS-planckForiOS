@@ -1,15 +1,15 @@
 v$(MARKETING_VERSION)
 AppAuth-iOS: c9103384853af90b046219573f322286de306564
-MessageModel: b2525a515487
+MessageModel: fe0fe04cf4a3
 OpenSSL-for-iPhone: 10019638e80e8a8a5fc19642a840d8a69fac7349
 SwipeCellKit: 00cd0cb5f9ceb4ae7a245fe21bf45643285d454b
 ldns: e83e808f0c56f6235061f5c904ff476ca75aa576
 libAccountSettings: 23e0aedaf6a7
 libetpan: c76daba0153eed0003d6990a5adadba8d561b8fa
 pEp-Translate: 0a038f72b49184ad37f0b4931730391ee59ca097
-pEpEngine: efcda28ffd7e
-pEpObjCAdapter: 5ac4a2debde6
-pEp_for_iOS: ebf8db6d3cb4+
+pEpEngine: 2014852faf63
+pEpObjCAdapter: 5ac4a2debde6+
+pEp_for_iOS: f01568593b2e+
 pEp_for_iOS_intern: 49f635073179
 pantomime-iOS: a97d554b6cb3
 pep4applemail: 4834dd822a00419a61ec6d56018f1685fa430a18
