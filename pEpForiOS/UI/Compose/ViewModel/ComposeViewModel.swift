@@ -142,6 +142,7 @@ class ComposeViewModel {
             Log.shared.warn("No message for sending")
             return
         }
+        msg.sent = Date()
         msg.save()
 
         guard let data = state.initData else {
