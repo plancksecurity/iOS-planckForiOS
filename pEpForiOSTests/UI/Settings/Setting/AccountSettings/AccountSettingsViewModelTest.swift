@@ -18,7 +18,7 @@ final class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
     var actual: State?
     var expected: State?
-    var expectation: XCTestExpectation?
+    var expectations: TestExpectations?
 
     override func setUp() {
         super.setUp()
@@ -34,7 +34,7 @@ final class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         actual = nil
         expected = nil
         viewModel = nil
-        expectation = nil
+        expectations = nil
         viewModel?.delegate = nil
     }
 
@@ -67,8 +67,7 @@ final class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
     func testSucceedHandleResetIdentity() {
         // GIVEN
         expected = State(didCallShowLoadingView: true, didCallHideLoadingView: true)
-        expectation = expectation(description: "Call for show and hide loadingView")
-        expectation?.expectedFulfillmentCount = 2
+        expectations = TestExpectations(testCase: self, expected: expected)
 
         // WHEN
         viewModel?.handleResetIdentity()
@@ -329,27 +328,27 @@ extension AccountSettingsViewModelTest {
 extension AccountSettingsViewModelTest: AccountSettingsViewModelDelegate {
     func showErrorAlert(error: Error) {
         actual?.didCallShowErrorAlert = true
-        expectation?.fulfill()
+        expectations?.showErrorAlertExpectation?.fulfill()
     }
 
     func undoPEPSyncToggle() {
         actual?.didCallUndoPEPSyncToggle = true
-        expectation?.fulfill()
+        expectations?.undoPEPSyncToggleExpectation?.fulfill()
     }
 
     func showLoadingView() {
         actual?.didCallShowLoadingView = true
-        expectation?.fulfill()
+        expectations?.showLoadingViewExpectation?.fulfill()
     }
 
     func hideLoadingView() {
         actual?.didCallHideLoadingView = true
-        expectation?.fulfill()
+        expectations?.hideLoadingViewExpectation?.fulfill()
     }
 }
 
 
-// MARK: - Helper Structs
+// MARK: - Helper Structures
 
 extension AccountSettingsViewModelTest {
     struct State: Equatable {
@@ -358,5 +357,26 @@ extension AccountSettingsViewModelTest {
         var didCallShowLoadingView: Bool = false
         var didCallHideLoadingView: Bool = false
         var didCallUndoPEPSyncToggle: Bool = false
+    }
+
+    final class TestExpectations {
+        var showErrorAlertExpectation: XCTestExpectation?
+        var showLoadingViewExpectation: XCTestExpectation?
+        var hideLoadingViewExpectation: XCTestExpectation?
+        var undoPEPSyncToggleExpectation: XCTestExpectation?
+
+        init(testCase: XCTestCase, expected: State?) {
+            if expected?.didCallShowErrorAlert == true {
+                showErrorAlertExpectation = testCase.expectation(description: "showErrorAlert")
+            }
+            if expected?.didCallShowLoadingView == true {
+                showLoadingViewExpectation = testCase.expectation(description: "showLoadingView")
+            }
+            if expected?.didCallHideLoadingView == true {
+                hideLoadingViewExpectation = testCase.expectation(description: "hideLoadingView")
+            }
+            if expected?.didCallUndoPEPSyncToggle == true {
+                undoPEPSyncToggleExpectation = testCase.expectation(description: "undoPEPSyncToggle")
+            }        }
     }
 }

@@ -53,7 +53,7 @@ final class EditableAccountSettingsViewModel {
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
 
-    public init(account: Account, messageModelService: MessageModelServiceProtocol) {
+    init(account: Account, messageModelService: MessageModelServiceProtocol) {
         self.messageModelService = messageModelService
         self.account = account
 
@@ -86,16 +86,8 @@ final class EditableAccountSettingsViewModel {
             delegate?.showErrorAlert(error: error)
         }
     }
-
-    func validateInputs() throws -> Inputs {
-            //Validate all inputs, so far only tableViewModel
-            guard let tableViewModel = tableViewModel else {
-                Log.shared.errorAndCrash("No viewModel for EditableAccountSettingsViewController")
-                throw SettingsInternalError.nilViewModel
-            }
-            return try tableViewModel.validateInputs()
-    }
 }
+
 
 // MARK: - VerifiableAccountDelegate
 
@@ -130,6 +122,15 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
 // MARK: - Private
 
 extension EditableAccountSettingsViewModel {
+    private func validateInputs() throws -> Inputs {
+            //Validate all inputs, so far only tableViewModel
+            guard let tableViewModel = tableViewModel else {
+                Log.shared.errorAndCrash("No viewModel for EditableAccountSettingsViewController")
+                throw SettingsInternalError.nilViewModel
+            }
+            return try tableViewModel.validateInputs()
+    }
+
     private func update(loginName: String,
                         name: String,
                         password: String? = nil,
