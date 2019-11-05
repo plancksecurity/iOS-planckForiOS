@@ -16,8 +16,8 @@ protocol EditableAccountSettingsTableViewModelDelegate: class {
 
 final class EditableAccountSettingsTableViewModel {
     typealias TableInputs = (addrImap: String, portImap: String, transImap: String,
-    addrSmpt: String, portSmtp: String, transSmtp: String, accountName: String,
-    loginName: String)
+        addrSmpt: String, portSmtp: String, transSmtp: String, accountName: String,
+        loginName: String)
 
     let securityViewModelvm = SecurityViewModel()
 
@@ -32,31 +32,20 @@ final class EditableAccountSettingsTableViewModel {
         didSet { passwordChanged = true }
     }
     var passwordChanged = false
+    var name: String?
     var email: String
     var loginName: String?
-    var name: String?
     var imapServer: EditableAccountSettingsViewModel.ServerViewModel?
     var smtpServer: EditableAccountSettingsViewModel.ServerViewModel?
     var headers: [String] = [NSLocalizedString("Account", comment: "Account settings"),
-                               NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
-                               NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP")]
+                             NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
+                             NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP")]
 
     subscript(section: Int) -> String {
         get {
             assert(sectionIsValid(section: section), "Section out of range")
             return headers[section]
         }
-    }
-
-    func sectionIsValid(section: Int) -> Bool {
-        return section >= 0 && section < headers.count
-    }
-
-    func footerFor(section: Int) -> String {
-        if section < footers.count {
-            return footers[section]
-        }
-        return ""
     }
 
     init(account: Account, delegate: EditableAccountSettingsTableViewModelDelegate? = nil) {
@@ -87,60 +76,67 @@ final class EditableAccountSettingsTableViewModel {
     }
 
     func validateInputs() throws -> TableInputs {
-            //IMAP
-            guard let addrImap = imapServer?.address, !addrImap.isEmpty else {
-                let msg = NSLocalizedString("IMAP server must not be empty.",
-                                            comment: "Empty IMAP server message")
-                throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
-            }
+        //IMAP
+        guard let addrImap = imapServer?.address, !addrImap.isEmpty else {
+            let msg = NSLocalizedString("IMAP server must not be empty.",
+                                        comment: "Empty IMAP server message")
+            throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
+        }
 
-            guard let portImap = imapServer?.port, !portImap.isEmpty else {
-                let msg = NSLocalizedString("IMAP Port must not be empty.",
-                                            comment: "Empty IMAP port server message")
-                throw AccountSettingsUserInputError.invalidInputPort(localizedMessage: msg)
-            }
+        guard let portImap = imapServer?.port, !portImap.isEmpty else {
+            let msg = NSLocalizedString("IMAP Port must not be empty.",
+                                        comment: "Empty IMAP port server message")
+            throw AccountSettingsUserInputError.invalidInputPort(localizedMessage: msg)
+        }
 
-            guard let transImap = imapServer?.transport, !transImap.isEmpty else {
-                let msg = NSLocalizedString("Choose IMAP transport security method.",
-                                            comment: "Empty IMAP transport security method")
-                throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
-            }
+        guard let transImap = imapServer?.transport, !transImap.isEmpty else {
+            let msg = NSLocalizedString("Choose IMAP transport security method.",
+                                        comment: "Empty IMAP transport security method")
+            throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
+        }
 
-            //SMTP
-            guard let addrSmpt = smtpServer?.address, !addrSmpt.isEmpty else {
-                let msg = NSLocalizedString("SMTP server must not be empty.",
-                                            comment: "Empty SMTP server message")
-                throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
-            }
+        //SMTP
+        guard let addrSmpt = smtpServer?.address, !addrSmpt.isEmpty else {
+            let msg = NSLocalizedString("SMTP server must not be empty.",
+                                        comment: "Empty SMTP server message")
+            throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
+        }
 
-            guard let portSmtp = smtpServer?.port, !portSmtp.isEmpty else {
-                let msg = NSLocalizedString("SMTP Port must not be empty.",
-                                            comment: "Empty SMTP port server message")
-                throw AccountSettingsUserInputError.invalidInputPort(localizedMessage: msg)
-            }
+        guard let portSmtp = smtpServer?.port, !portSmtp.isEmpty else {
+            let msg = NSLocalizedString("SMTP Port must not be empty.",
+                                        comment: "Empty SMTP port server message")
+            throw AccountSettingsUserInputError.invalidInputPort(localizedMessage: msg)
+        }
 
-            guard let transSmtp = smtpServer?.transport, !transSmtp.isEmpty else {
-                let msg = NSLocalizedString("Choose SMTP transport security method.",
-                                            comment: "Empty SMTP transport security method")
-                throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
-            }
+        guard let transSmtp = smtpServer?.transport, !transSmtp.isEmpty else {
+            let msg = NSLocalizedString("Choose SMTP transport security method.",
+                                        comment: "Empty SMTP transport security method")
+            throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
+        }
 
-            //other
-            guard let name = name, !name.isEmpty else {
-                let msg = NSLocalizedString("Account name must not be empty.",
-                                            comment: "Empty account name message")
-                throw AccountSettingsUserInputError.invalidInputAccountName(localizedMessage: msg)
-            }
+        //other
+        guard let name = name, !name.isEmpty else {
+            let msg = NSLocalizedString("Account name must not be empty.",
+                                        comment: "Empty account name message")
+            throw AccountSettingsUserInputError.invalidInputAccountName(localizedMessage: msg)
+        }
 
-            guard let loginName = loginName, !loginName.isEmpty else {
-                let msg = NSLocalizedString("Username must not be empty.",
-                                            comment: "Empty username message")
-                throw AccountSettingsUserInputError.invalidInputUserName(localizedMessage: msg)
-            }
+        guard let loginName = loginName, !loginName.isEmpty else {
+            let msg = NSLocalizedString("Username must not be empty.",
+                                        comment: "Empty username message")
+            throw AccountSettingsUserInputError.invalidInputUserName(localizedMessage: msg)
+        }
 
-            return (addrImap: addrImap, portImap: portImap, transImap: transImap,
-                    addrSmpt: addrSmpt, portSmtp: portSmtp, transSmtp: transSmtp, accountName: name,
-                    loginName: loginName)
+        return (addrImap: addrImap, portImap: portImap, transImap: transImap,
+                addrSmpt: addrSmpt, portSmtp: portSmtp, transSmtp: transSmtp, accountName: name,
+                loginName: loginName)
+    }
+
+    func footerFor(section: Int) -> String {
+        if section < footers.count {
+            return footers[section]
+        }
+        return ""
     }
 }
 
@@ -150,6 +146,10 @@ final class EditableAccountSettingsTableViewModel {
 extension EditableAccountSettingsTableViewModel {
     private var footers: [String] {
         return [NSLocalizedString("Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.", comment: "Footer for Account settings section 1")]
+    }
+
+    private func sectionIsValid(section: Int) -> Bool {
+        return section >= 0 && section < headers.count
     }
 }
 

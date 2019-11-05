@@ -14,7 +14,6 @@ import PantomimeFramework
 final class EditableAccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
     var viewModel: EditableAccountSettingsViewModel?
-    //    var keySyncServiceHandshakeDelegateMoc: KeySyncServiceHandshakeDelegateMoc?
 
     var actual: State?
     var expected: State?
@@ -48,13 +47,29 @@ final class EditableAccountSettingsViewModelTest: CoreDataDrivenTestBase {
         viewModel?.verifiableAccount = nil
     }
 
-    func testHandleSaveButton() {
+    func testHandleSaveButtonSucceed() {
         // GIVEN
         expected = State(didCallShowLoadingView: true,
                          didCallHideLoadingView: true,
                          didCallPopViewController: true,
                          didSaveVerifiableAccount: true)
         expectations = TestExpectations(testCase: self, expected: expected)
+
+        // WHEN
+        viewModel?.handleSaveButton()
+        waitForExpectations(timeout: TestUtil.waitTime)
+
+        //THEN
+        assertExpectations()
+    }
+
+    func testHandleSaveButtonInputsFail() {
+        // GIVEN
+        expected = State(didCallShowErrorAlert: true,
+                         didCallShowLoadingView: true,
+                         didCallHideLoadingView: true)
+        expectations = TestExpectations(testCase: self, expected: expected)
+        talbeViewModel?.name = ""
 
         // WHEN
         viewModel?.handleSaveButton()
@@ -134,7 +149,7 @@ protocol VerifiableAccountMockDelegate: class {
 }
 
 
-// MARK: - Helper Structs
+// MARK: - Helping Structures
 
 extension EditableAccountSettingsViewModelTest {
     struct State: Equatable {

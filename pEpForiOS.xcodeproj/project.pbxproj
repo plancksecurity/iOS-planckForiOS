@@ -221,6 +221,7 @@
 		3747094122B900AF00215283 /* SettingsInternalError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705704222B8FCB8002E3AAD /* SettingsInternalError.swift */; };
 		3747094322BA4E3B00215283 /* EnableKeySyncViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3747094222BA4E3B00215283 /* EnableKeySyncViewModel.swift */; };
 		3756434E2370810400FB354D /* EditableAccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F272EF237075D9005C51AA /* EditableAccountSettingsViewModelTest.swift */; };
+		375643502371BC4600FB354D /* EditableAccountSettingsTableViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3756434F2371B92200FB354D /* EditableAccountSettingsTableViewModelTest.swift */; };
 		3781653C230EC59400B967E3 /* PEPPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3781653B230EC59400B967E3 /* PEPPageViewController.swift */; };
 		37816542230EC72C00B967E3 /* PEPAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816541230EC72C00B967E3 /* PEPAlertViewController.swift */; };
 		37816544230EC73900B967E3 /* PEPAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816543230EC73900B967E3 /* PEPAlertViewModel.swift */; };
@@ -698,6 +699,7 @@
 		371D641C231D17390036AE62 /* StartUpTutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartUpTutorial.swift; sourceTree = "<group>"; };
 		371D641F231D17F80036AE62 /* TutorialWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialWizardViewController.swift; sourceTree = "<group>"; };
 		3747094222BA4E3B00215283 /* EnableKeySyncViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableKeySyncViewModel.swift; sourceTree = "<group>"; };
+		3756434F2371B92200FB354D /* EditableAccountSettingsTableViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsTableViewModelTest.swift; sourceTree = "<group>"; };
 		3781653B230EC59400B967E3 /* PEPPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPPageViewController.swift; sourceTree = "<group>"; };
 		37816541230EC72C00B967E3 /* PEPAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewController.swift; sourceTree = "<group>"; };
 		37816543230EC73900B967E3 /* PEPAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewModel.swift; sourceTree = "<group>"; };
@@ -1784,6 +1786,7 @@
 		37F272EE237075B9005C51AA /* EditableAccountSettingsTableViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				3756434F2371B92200FB354D /* EditableAccountSettingsTableViewModelTest.swift */,
 			);
 			path = EditableAccountSettingsTableViewModel;
 			sourceTree = "<group>";
@@ -3232,6 +3235,7 @@
 				152B665C21E508F500FB925F /* Message+FakeMessageTest.swift in Sources */,
 				43257C861F50659200DDC7F0 /* StringHTMLExtensionTests.swift in Sources */,
 				43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */,
+				375643502371BC4600FB354D /* EditableAccountSettingsTableViewModelTest.swift in Sources */,
 				004422D9217A25AD00BDF6DF /* UnencryptedSubjectViewModelTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
