@@ -568,7 +568,7 @@ class TestUtil {
 
     // MARK: - ERROR
 
-    class TestErrorContainer: ErrorContainerProtocol {
+    class TestErrorContainer: ErrorContainerProtocol { //BUFF: rm. AFAICS the implementation is copy & pasted from ErrorContainer.
         var error: Error?
 
         func addError(_ error: Error) {
@@ -577,7 +577,7 @@ class TestUtil {
             }
         }
 
-        func hasErrors() -> Bool {
+        var hasErrors: Bool {
             return error != nil
         }
 
@@ -667,7 +667,7 @@ class TestUtil {
             let bgQueue = OperationQueue()
             bgQueue.addOperation(decOp)
             bgQueue.waitUntilAllOperationsAreFinished()
-            XCTAssertFalse(errorContainer.hasErrors())
+            XCTAssertFalse(errorContainer.hasErrors)
 
             return (mySelf: cdMySelfIdentity, partner: partnerID, message: cdMessage)
     }

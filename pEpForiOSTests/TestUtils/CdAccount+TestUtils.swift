@@ -75,8 +75,8 @@ extension CdAccount {
 
         testCase.waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
-            XCTAssertFalse(imapLogin.hasErrors())
-            XCTAssertFalse(syncFoldersOp.hasErrors())
+            XCTAssertFalse(imapLogin.hasErrors)
+            XCTAssertFalse(syncFoldersOp.hasErrors)
         }
 
         let expCreated1 = testCase.expectation(description: "expCreated")
@@ -89,7 +89,7 @@ extension CdAccount {
 
         testCase.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(opCreate1.hasErrors())
+            XCTAssertFalse(opCreate1.hasErrors)
         })
 
         for ft in FolderType.requiredTypes {

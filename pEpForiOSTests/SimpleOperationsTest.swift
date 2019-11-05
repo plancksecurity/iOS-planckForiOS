@@ -137,7 +137,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors())
+            XCTAssertFalse(op.hasErrors)
         })
 
         guard let allMessagesToTest = CdMessage.all(in: moc) as? [CdMessage] else {
@@ -177,7 +177,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertTrue(op.hasErrors())
+            XCTAssertTrue(op.hasErrors)
         })
     }
 
@@ -265,7 +265,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 //        queue.addOperation(sendOp)
 //        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
 //            XCTAssertNil(error)
-//            XCTAssertFalse(sendOp.hasErrors())
+//            XCTAssertFalse(sendOp.hasErrors)
 //        })
 //        // Check sent status of all sent mails
 //        for sentUuid in sentUUIDs {
@@ -366,8 +366,8 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(imapLogin.hasErrors())
-            XCTAssertFalse(syncFoldersOp.hasErrors())
+            XCTAssertFalse(imapLogin.hasErrors)
+            XCTAssertFalse(syncFoldersOp.hasErrors)
         })
 
         let from = CdIdentity(context: moc)
@@ -420,7 +420,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(appendOp.hasErrors())
+            XCTAssertFalse(appendOp.hasErrors)
         })
 
         XCTAssertEqual((CdMessage.all(in: moc) ?? []).count, 0)
@@ -515,7 +515,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         queue.addOperation(op)
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors())
+            XCTAssertFalse(op.hasErrors)
         })
         return op.isLocal
     }

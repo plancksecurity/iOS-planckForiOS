@@ -72,9 +72,9 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(imapLogin.hasErrors())
-            XCTAssertFalse(syncFoldersOp.hasErrors())
-            XCTAssertFalse(createRequiredFoldersOp.hasErrors())
+            XCTAssertFalse(imapLogin.hasErrors)
+            XCTAssertFalse(syncFoldersOp.hasErrors)
+            XCTAssertFalse(createRequiredFoldersOp.hasErrors)
         })
 
         var msgCountBefore: Int? = 0
@@ -117,8 +117,8 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         queue.addOperation(fetch2Op)
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(fetchOp.hasErrors())
-            XCTAssertFalse(fetch2Op.hasErrors())
+            XCTAssertFalse(fetchOp.hasErrors)
+            XCTAssertFalse(fetch2Op.hasErrors)
         })
     }
 }

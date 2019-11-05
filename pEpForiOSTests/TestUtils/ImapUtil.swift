@@ -35,7 +35,7 @@ extension XCTestCase {
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(imapLogin.hasErrors())
+            XCTAssertFalse(imapLogin.hasErrors)
         })
     }
 
@@ -57,7 +57,7 @@ extension XCTestCase {
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(syncFoldersOp.hasErrors())
+            XCTAssertFalse(syncFoldersOp.hasErrors)
         })
     }
 
@@ -80,7 +80,7 @@ extension XCTestCase {
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(appendOp.hasErrors())
+            XCTAssertFalse(appendOp.hasErrors)
         })
     }
 

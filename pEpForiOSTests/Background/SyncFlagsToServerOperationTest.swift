@@ -34,7 +34,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors())
+            XCTAssertFalse(op.hasErrors)
         })
 
         XCTAssertEqual(op.numberOfMessagesSynced, 0)
@@ -111,7 +111,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+            XCTAssertFalse(op.hasErrors, "\(op.error!)")
         })
 
         messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
@@ -181,7 +181,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+            XCTAssertFalse(op.hasErrors, "\(op.error!)")
         })
 
         messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
@@ -253,7 +253,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: 300, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+            XCTAssertFalse(op.hasErrors, "\(op.error!)")
         })
 
         messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
@@ -335,7 +335,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+            XCTAssertFalse(op.hasErrors, "\(op.error!)")
         })
 
         messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
@@ -413,7 +413,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+            XCTAssertFalse(op.hasErrors, "\(op.error!)")
         })
 
         messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
@@ -492,7 +492,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+            XCTAssertFalse(op.hasErrors, "\(op.error!)")
         })
 
         messagesToBeSynced =
@@ -572,7 +572,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+            XCTAssertFalse(op.hasErrors, "\(op.error!)")
         })
 
         messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(
@@ -650,7 +650,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+            XCTAssertFalse(op.hasErrors, "\(op.error!)")
         })
 
         messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
@@ -722,7 +722,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+            XCTAssertFalse(op.hasErrors, "\(op.error!)")
         })
 
         messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
@@ -797,7 +797,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+            XCTAssertFalse(op.hasErrors, "\(op.error!)")
         })
 
         messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
@@ -874,7 +874,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+            XCTAssertFalse(op.hasErrors, "\(op.error!)")
         })
 
         messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
@@ -951,7 +951,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+            XCTAssertFalse(op.hasErrors, "\(op.error!)")
         })
 
         messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
@@ -1028,7 +1028,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+            XCTAssertFalse(op.hasErrors, "\(op.error!)")
         })
 
         messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
@@ -1105,7 +1105,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+            XCTAssertFalse(op.hasErrors, "\(op.error!)")
         })
 
         messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
@@ -1182,7 +1182,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+            XCTAssertFalse(op.hasErrors, "\(op.error!)")
         })
 
         messagesToBeSynced = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: inbox,
@@ -1278,7 +1278,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             for op in ops {
-                XCTAssertFalse(op.hasErrors())
+                XCTAssertFalse(op.hasErrors)
             }
         })
 

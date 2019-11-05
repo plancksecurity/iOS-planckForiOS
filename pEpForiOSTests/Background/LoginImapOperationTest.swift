@@ -39,6 +39,6 @@ class LoginImapOperationTest: CoreDataDrivenTestBase {
             XCTAssertNil(error)
         }
 
-        XCTAssertFalse(imapLogin.hasErrors())
+        XCTAssertFalse(imapLogin.hasErrors)
     }    
 }
