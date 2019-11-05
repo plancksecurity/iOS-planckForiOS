@@ -155,10 +155,6 @@ class ResetTrustViewModel {
         let identity = identityQueryResult[indexPath.section].objects[indexPath.row]
         return identity.userHasMoreThenOneIdentity()
     }
-
-    func numberOfRowsPerSection(section: Int) -> Int {
-        return identityQueryResult.count()
-    }
 }
 
 extension ResetTrustViewModel: QueryResultsDelegate {
