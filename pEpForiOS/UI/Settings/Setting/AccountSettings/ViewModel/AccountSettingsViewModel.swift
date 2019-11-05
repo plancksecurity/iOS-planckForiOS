@@ -84,7 +84,7 @@ final class AccountSettingsViewModel {
                 self?.delegate?.hideLoadingView()
             case .failure(let error):
                 self?.delegate?.hideLoadingView()
-                //TODO: show error alert
+                self?.delegate?.showErrorAlert(error: error)
                 Log.shared.errorAndCrash("Fail to reset identity, with error %@ ",
                                          error.localizedDescription)
             }
