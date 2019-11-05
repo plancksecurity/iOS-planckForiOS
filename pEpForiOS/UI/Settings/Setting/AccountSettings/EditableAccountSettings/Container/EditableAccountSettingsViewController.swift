@@ -23,13 +23,9 @@ final class EditableAccountSettingsViewController: BaseViewController {
         super.viewWillAppear(animated)
 
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
-
-        guard splitViewController?.isCollapsed == false else { return }
-        self.navigationItem.leftBarButtonItem = nil// hidesBackButton = true
     }
 
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
-        guard splitViewController?.isCollapsed == true else { return }
         popViewController()
     }
 
