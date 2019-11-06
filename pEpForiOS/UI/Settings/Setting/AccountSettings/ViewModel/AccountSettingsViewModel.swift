@@ -79,12 +79,16 @@ final class AccountSettingsViewModel {
     func handleResetIdentity() {
         delegate?.showLoadingView()
         account.resetKeys() { [weak self] result in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
             switch result {
             case .success():
-                self?.delegate?.hideLoadingView()
+                me.delegate?.hideLoadingView()
             case .failure(let error):
-                self?.delegate?.hideLoadingView()
-                self?.delegate?.showErrorAlert(error: error)
+                me.delegate?.hideLoadingView()
+                me.delegate?.showErrorAlert(error: error)
                 Log.shared.errorAndCrash("Fail to reset identity, with error %@ ",
                                          error.localizedDescription)
             }

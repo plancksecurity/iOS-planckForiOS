@@ -36,7 +36,6 @@ final class EditableAccountSettingsTableViewController: BaseTableViewController 
     }
 }
 
-
 // MARK: - UITextFieldDelegate
 
 extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
@@ -81,7 +80,6 @@ extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
     }
 }
 
-
 // MARK: - UIPickerViewDataSource
 
 extension EditableAccountSettingsTableViewController: UIPickerViewDataSource {
@@ -95,7 +93,6 @@ extension EditableAccountSettingsTableViewController: UIPickerViewDataSource {
         return viewModel.securityViewModelvm.size
     }
 }
-
 
 // MARK: - UIPickerViewDelegate
 
@@ -121,7 +118,6 @@ extension EditableAccountSettingsTableViewController: UIPickerViewDelegate {
     }
 }
 
-
 // MARK: - UITableViewDataSource
 
 extension EditableAccountSettingsTableViewController {
@@ -138,7 +134,6 @@ extension EditableAccountSettingsTableViewController {
         return viewModel?.footerFor(section: section)
     }
 }
-
 
 // MARK: - EditableAccountSettingsTableViewModelDelegate
 
@@ -162,7 +157,6 @@ extension EditableAccountSettingsTableViewController: EditableAccountSettingsTab
         }
     }
 }
-
 
 // MARK: - Private
 

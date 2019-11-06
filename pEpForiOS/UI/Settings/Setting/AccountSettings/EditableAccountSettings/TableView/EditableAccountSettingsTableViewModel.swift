@@ -140,7 +140,6 @@ final class EditableAccountSettingsTableViewModel {
     }
 }
 
-
 // MARK: - Private
 
 extension EditableAccountSettingsTableViewModel {
@@ -152,7 +151,6 @@ extension EditableAccountSettingsTableViewModel {
         return section >= 0 && section < headers.count
     }
 }
-
 
 // MARK: - HelpingStructures
 

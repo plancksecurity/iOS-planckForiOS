@@ -99,7 +99,6 @@ final class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
     }
 }
 
-
 // MARK: - Private
 
 extension AccountSettingsViewModelTest {
@@ -138,7 +137,6 @@ extension AccountSettingsViewModelTest {
     }
 }
 
-
 // MARK: - AccountSettingsViewModelDelegate
 
 extension AccountSettingsViewModelTest: AccountSettingsViewModelDelegate {
@@ -162,7 +160,6 @@ extension AccountSettingsViewModelTest: AccountSettingsViewModelDelegate {
         expectations?.hideLoadingViewExpectation?.fulfill()
     }
 }
-
 
 // MARK: - Helping Structures
 
@@ -193,6 +190,7 @@ extension AccountSettingsViewModelTest {
             }
             if expected?.didCallUndoPEPSyncToggle == true {
                 undoPEPSyncToggleExpectation = testCase.expectation(description: "undoPEPSyncToggle")
-            }        }
+            }
+        }
     }
 }

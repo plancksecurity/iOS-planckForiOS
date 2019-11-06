@@ -102,7 +102,6 @@ final class EditableAccountSettingsTableViewModelTest: CoreDataDrivenTestBase {
     }
 }
 
-
 // MARK: - Private
 
 extension EditableAccountSettingsTableViewModelTest {
@@ -125,7 +124,6 @@ extension EditableAccountSettingsTableViewModelTest {
     }
 }
 
-
 // MARK: - EditableAccountSettingsTableViewModelDelegate
 
 extension EditableAccountSettingsTableViewModelTest: EditableAccountSettingsTableViewModelDelegate {
@@ -133,7 +131,6 @@ extension EditableAccountSettingsTableViewModelTest: EditableAccountSettingsTabl
         actual?.didCallReloadTable = true
     }
 }
-
 
 // MARK: - Helping Structures
 

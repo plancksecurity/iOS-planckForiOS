@@ -88,7 +88,6 @@ final class EditableAccountSettingsViewModel {
     }
 }
 
-
 // MARK: - VerifiableAccountDelegate
 
 extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
@@ -97,8 +96,12 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
         case .success(()):
             do {
                 try verifiableAccount?.save { [weak self] _ in
-                    self?.delegate?.hideLoadingView()
-                    self?.delegate?.popViewController()
+                    guard let me = self else {
+                        Log.shared.lostMySelf()
+                        return
+                    }
+                    me.delegate?.hideLoadingView()
+                    me.delegate?.popViewController()
                 }
             } catch {
                 Log.shared.errorAndCrash(error: error)
@@ -117,7 +120,6 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
         }
     }
 }
-
 
 // MARK: - Private
 
@@ -185,7 +187,6 @@ extension EditableAccountSettingsViewModel {
         }
     }
 }
-
 
 // MARK: - Helping structures
 

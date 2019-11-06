@@ -16,6 +16,8 @@ final class EditableAccountSettingsViewController: BaseViewController {
     var viewModel: EditableAccountSettingsViewModel?
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         viewModel?.delegate = self
     }
 
@@ -52,12 +54,10 @@ final class EditableAccountSettingsViewController: BaseViewController {
     }
 }
 
-
 // MARK: - EditableAccountSettingsViewModelDelegate
 
 extension EditableAccountSettingsViewController: EditableAccountSettingsViewModelDelegate {
     func showErrorAlert(error: Error) {
-        Log.shared.error("%@", "\(error)")
         UIUtils.show(error: error, inViewController: self)
     }
 

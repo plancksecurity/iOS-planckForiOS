@@ -61,11 +61,9 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     }
 }
 
-
 // MARK: - UITableViewDataSource
 
 extension AccountSettingsTableViewController {
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel?.count ?? 0
     }
@@ -118,7 +116,6 @@ extension AccountSettingsTableViewController {
     }
 }
 
-
 // MARK: - UITextFieldDelegate
 
 extension AccountSettingsTableViewController: UITextFieldDelegate {
@@ -134,7 +131,6 @@ extension AccountSettingsTableViewController: UITextFieldDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
-
 
 // MARK: - AccountSettingsViewModelDelegate
 
@@ -167,7 +163,6 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
     }
 }
 
-
 // MARK: - OAuth2AuthViewModelDelegate
 
 extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
@@ -186,7 +181,6 @@ extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
         viewModel?.updateToken(accessToken: token)
     }
 }
-
 
 // MARK: - Private
 
@@ -282,7 +276,11 @@ extension AccountSettingsTableViewController {
                                            handler: { [weak self] _ in
                                             pepAlertViewController.dismiss(animated: true,
                                                                            completion: nil)
-                                            self?.viewModel?.handleResetIdentity()
+                                            guard let me = self else {
+                                                Log.shared.lostMySelf()
+                                                return
+                                            }
+                                            me.viewModel?.handleResetIdentity()
         })
         pepAlertViewController.add(action: resetAction)
 

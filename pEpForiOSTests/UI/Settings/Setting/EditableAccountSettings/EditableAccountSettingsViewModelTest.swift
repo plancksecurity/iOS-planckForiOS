@@ -80,7 +80,6 @@ final class EditableAccountSettingsViewModelTest: CoreDataDrivenTestBase {
     }
 }
 
-
 // MARK: - Private
 
 extension EditableAccountSettingsViewModelTest {
@@ -106,7 +105,6 @@ extension EditableAccountSettingsViewModelTest {
     }
 }
 
-
 // MARK: - EditableAccountSettingsViewModelDelegate
 
 extension EditableAccountSettingsViewModelTest: EditableAccountSettingsViewModelDelegate {
@@ -131,7 +129,6 @@ extension EditableAccountSettingsViewModelTest: EditableAccountSettingsViewModel
     }
 }
 
-
 // MARK: - VerifiableAccountMockDelegate
 
 extension EditableAccountSettingsViewModelTest: VerifiableAccountMockDelegate {
@@ -141,13 +138,11 @@ extension EditableAccountSettingsViewModelTest: VerifiableAccountMockDelegate {
     }
 }
 
-
 // MARK: - Helper Protocols
 
 protocol VerifiableAccountMockDelegate: class {
     func didSaveVerifiableAccount()
 }
-
 
 // MARK: - Helping Structures
 
@@ -197,7 +192,6 @@ extension EditableAccountSettingsViewModelTest {
         func stop() {}
         func finish() {}
     }
-
 
     final class VerifiableAccountMock: VerifiableAccount {
 
