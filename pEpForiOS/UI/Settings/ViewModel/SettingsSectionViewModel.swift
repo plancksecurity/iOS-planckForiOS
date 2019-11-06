@@ -14,7 +14,6 @@ final class SettingsSectionViewModel {
     public enum SectionType {
         case accounts
         case globalSettings
-        case pgpCompatibilitySettings
         case keySync
         case contacts
         case companyFeatures
@@ -44,11 +43,6 @@ final class SettingsSectionViewModel {
             title = NSLocalizedString("Global Settings", comment: "Tableview section header")
             footer = NSLocalizedString("Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p.",
                                        comment: "passive mode description")
-        case .pgpCompatibilitySettings:
-            generatePgpCompatibilitySettingsCells()
-            title = NSLocalizedString("PGP Compatibility", comment: "Tableview section header")
-            footer = NSLocalizedString("If enabled, message subjects are also protected.",
-                                       comment: "Tableview section footer")
         case .keySync:
             guard let messageModelService = messageModelService else {
                 Log.shared.errorAndCrash("missing service")
@@ -117,9 +111,6 @@ extension SettingsSectionViewModel {
         self.cells.append(SettingsCellViewModel(type: .trustedServer))
         self.cells.append(SettingsCellViewModel(type: .setOwnKey))
         self.cells.append(PassiveModeViewModel())
-    }
-
-    private func generatePgpCompatibilitySettingsCells() {
         self.cells.append(UnecryptedSubjectViewModel())
     }
 
