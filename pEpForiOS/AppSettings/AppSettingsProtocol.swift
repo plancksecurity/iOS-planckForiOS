@@ -9,7 +9,6 @@
 import MessageModel
 
 public protocol AppSettingsProtocol {
-    var shouldReinitializePepOnNextStartup: Bool { get set }
     var keySyncEnabled: Bool { get set }
     var extraKeysEditable: Bool { get set }
     var unencryptedSubjectEnabled: Bool { get set }
