@@ -142,47 +142,49 @@ class ResetTrustViewModel {
     }
 
     func resetTrust(foridentityAt indexPath: IndexPath) {
-        let identity = identityQueryResult[indexPath.row].objects[indexPath.section]
+        let identity = identityQueryResult[indexPath.section].objects[indexPath.row]
         identity.resetTrust()
     }
 
     func resetTrustAll(foridentityAt indexPath: IndexPath) {
-        let identity = identityQueryResult[indexPath.row].objects[indexPath.section]
+        let identity = identityQueryResult[indexPath.section].objects[indexPath.row]
         Identity.resetTrustAllIdentities(for: identity)
     }
 
     func multipleIdentitiesExist(forIdentityAt indexPath: IndexPath) -> Bool {
-        let identity = identityQueryResult[indexPath.row].objects[indexPath.section]
+        let identity = identityQueryResult[indexPath.section].objects[indexPath.row]
         return identity.userHasMoreThenOneIdentity()
-    }
-
-    func numberOfRowsPerSection(section: Int) -> Int {
-        return identityQueryResult.count()
     }
 }
 
 extension ResetTrustViewModel: QueryResultsDelegate {
     func didInsert(indexPath: IndexPath) {
-        delegate?.resetTrustViewModel(viewModel: self, didInsertDataAt: [indexPath])
+        //delegate?.resetTrustViewModel(viewModel: self, didInsertDataAt: [indexPath])
+        delegate?.reloadData(viewModel: self)
     }
 
     func didUpdate(indexPath: IndexPath) {
-        delegate?.resetTrustViewModel(viewModel: self, didUpdateDataAt: [indexPath])
+        //delegate?.resetTrustViewModel(viewModel: self, didUpdateDataAt: [indexPath])
+        delegate?.reloadData(viewModel: self)
     }
 
     func didDelete(indexPath: IndexPath) {
-        delegate?.resetTrustViewModel(viewModel: self, didRemoveDataAt: [indexPath])
+        //delegate?.resetTrustViewModel(viewModel: self, didRemoveDataAt: [indexPath])
+        delegate?.reloadData(viewModel: self)
     }
 
     func didMove(from: IndexPath, to: IndexPath) {
-        delegate?.resetTrustViewModel(viewModel: self, didMoveData: from, toIndexPath: to)
+        //delegate?.resetTrustViewModel(viewModel: self, didMoveData: from, toIndexPath: to)
+        delegate?.reloadData(viewModel: self)
     }
 
     func willChangeResults() {
-        delegate?.willReceiveUpdates(viewModel: self)
+        //delegate?.willReceiveUpdates(viewModel: self)
+        delegate?.reloadData(viewModel: self)
     }
 
     func didChangeResults() {
-        delegate?.allUpdatesReceived(viewModel: self)
+        //delegate?.allUpdatesReceived(viewModel: self)
+        delegate?.reloadData(viewModel: self)
     }
 }
