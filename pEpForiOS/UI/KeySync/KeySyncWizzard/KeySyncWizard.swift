@@ -87,7 +87,6 @@ extension KeySyncWizard {
             let keySyncIntroTitle = alertTitle()
             let keySyncIntroMessage = introMessage(isNewGroup: isNewGroup)
 
-
             guard let introView = PEPAlertViewController.fromStoryboard(title: keySyncIntroTitle,
                                                                         message: keySyncIntroMessage,
                                                                         paintPEPInTitle: true,
