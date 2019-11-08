@@ -23,13 +23,13 @@
 "91l-1l-FuW.placeholder" = "electricsheep23";
 
 /* Class = "UILabel"; text = "TransportSecurity"; ObjectID = "b0p-Pv-I3v"; */
-"b0p-Pv-I3v.text" = "Transport Verschlüsselung";
+"b0p-Pv-I3v.text" = "Transportverschlüsselung";
 
 /* Class = "UIButton"; accessibilityLabel = "Transport Security"; ObjectID = "Cjb-ue-OdU"; */
-"Cjb-ue-OdU.accessibilityLabel" = "Transport Verschlüsselung";
+"Cjb-ue-OdU.accessibilityLabel" = "Transportverschlüsselung";
 
 /* Class = "UIButton"; normalTitle = "Plain >"; ObjectID = "Cjb-ue-OdU"; */
-"Cjb-ue-OdU.normalTitle" = "Klartext >";
+"Cjb-ue-OdU.normalTitle" = "Plain >";
 
 /* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "cUk-RH-Yos"; */
 "cUk-RH-Yos.normalTitle" = "Abbrechen";
@@ -41,10 +41,10 @@
 "g9y-3s-qnK.placeholder" = "Rick Deckard";
 
 /* Class = "UIButton"; accessibilityLabel = "Transport Security"; ObjectID = "H6H-wM-1tb"; */
-"H6H-wM-1tb.accessibilityLabel" = "Transport Verschlüsselung";
+"H6H-wM-1tb.accessibilityLabel" = "Transportverschlüsselung";
 
 /* Class = "UIButton"; normalTitle = "Plain >"; ObjectID = "H6H-wM-1tb"; */
-"H6H-wM-1tb.normalTitle" = "Klartext >";
+"H6H-wM-1tb.normalTitle" = "Plain >";
 
 /* Class = "UITextField"; accessibilityLabel = "SMTP Server"; ObjectID = "HIi-Wv-jJs"; */
 "HIi-Wv-jJs.accessibilityLabel" = "SMTP Server";
@@ -53,16 +53,13 @@
 "HIi-Wv-jJs.placeholder" = "smtp.pep.li";
 
 /* Class = "UILabel"; text = "TransportSecurity"; ObjectID = "HKb-4V-2g6"; */
-"HKb-4V-2g6.text" = "Transport Verschlüsselung";
+"HKb-4V-2g6.text" = "Transportverschlüsselung";
 
 /* Class = "UITextField"; accessibilityLabel = "IMAP Server"; ObjectID = "HOb-bu-iVh"; */
 "HOb-bu-iVh.accessibilityLabel" = "IMAP Server";
 
 /* Class = "UITextField"; placeholder = "mail.pep.li"; ObjectID = "HOb-bu-iVh"; */
 "HOb-bu-iVh.placeholder" = "mail.pep.li";
-
-/* Class = "UILabel"; accessibilityLabel = "Name of the user"; ObjectID = "hUQ-RI-kfE"; */
-"hUQ-RI-kfE.accessibilityLabel" = "Name des Benutzers";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "hUQ-RI-kfE"; */
 "hUQ-RI-kfE.text" = "Name";

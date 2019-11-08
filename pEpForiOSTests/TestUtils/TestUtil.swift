@@ -580,7 +580,7 @@ class TestUtil {
 
     // MARK: - ERROR
 
-    class TestErrorContainer: ServiceErrorProtocol {
+    class TestErrorContainer: ErrorContainerProtocol {
         var error: Error?
 
         func addError(_ error: Error) {
@@ -591,6 +591,10 @@ class TestUtil {
 
         func hasErrors() -> Bool {
             return error != nil
+        }
+
+        func reset() {
+            error = nil
         }
     }
 
@@ -660,7 +664,7 @@ class TestUtil {
                                                             XCTFail()
                                                             return nil
             }
-            XCTAssertEqual(cdMessage.pEpRating, CdMessage.pEpRatingNone)
+            XCTAssertEqual(cdMessage.pEpRating, Int16(PEPRating.undefined.rawValue))
 
             guard let cdM = CdMessage.first(in: context) else {
                 XCTFail("Expected the one message in the DB that we imported")
@@ -669,8 +673,7 @@ class TestUtil {
             XCTAssertEqual(cdM.messageID, pantomimeMail.messageID())
 
             let errorContainer = TestErrorContainer()
-            let decOp = DecryptMessageOperation(cdMessageToDecrypt: cdM,
-                                                context: context,
+            let decOp = DecryptMessageOperation(cdMessageToDecryptObjectId: cdM.objectID,
                                                 errorContainer: errorContainer)
 
             let bgQueue = OperationQueue()
@@ -738,7 +741,7 @@ class TestUtil {
                 XCTFail()
                 return nil
         }
-        XCTAssertEqual(cdMessage.pEpRating, CdMessage.pEpRatingNone)
+        XCTAssertEqual(cdMessage.pEpRating, Int16(PEPRating.undefined.rawValue))
 
         return cdMessage
     }

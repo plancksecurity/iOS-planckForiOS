@@ -11,14 +11,16 @@ Install [MacPorts](https://www.macports.org/) for your
 
 ### Dependencies of prerequisites
 
-For building the engine, you need a working python2 environment and all dependencies:
+For building the engine, you need a working python3 environment and all dependencies:
 
 ```
-sudo port install python27
 sudo port install asn1c
-sudo port install py27-lxml
 
-sudo port install python_select
+sudo port install python27
+sudo port install python38
+sudo port install py38-lxml
+sudo port select --set python python27
+sudo port select --set python3 python38
 
 sudo port install mercurial
 
@@ -66,9 +68,6 @@ Clone into your home directory:
 pushd ~
 hg clone https://pep.foundation/dev/repos/yml2/
 popd
-
-sudo port install pip
-sudo STATIC_DEPS=true pip install lxml
 ```
 
 ## Setup instructions

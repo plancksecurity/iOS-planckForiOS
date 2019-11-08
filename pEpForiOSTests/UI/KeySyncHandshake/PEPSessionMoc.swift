@@ -103,7 +103,10 @@ class PEPSessionMoc: NSObject, PEPSessionProtocol  {
     }
 
     func languageList() throws -> [PEPLanguage] {
-        return [PEPLanguage(), PEPLanguage()]
+        let currentLanguage = PEPLanguage()
+        currentLanguage.code = Locale.current.languageCode!
+
+        return [PEPLanguage(), PEPLanguage(), currentLanguage]
     }
 
     func rating(from string: String) -> PEPRating {

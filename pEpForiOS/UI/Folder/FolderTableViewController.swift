@@ -32,14 +32,8 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - Setup
 
     private func setup() {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.folderVM =  FolderViewModel()
-            me.tableView.reloadData()
-        }
+        folderVM =  FolderViewModel()
+        tableView.reloadData()
     }
     
     private func initialConfig() {
@@ -219,6 +213,7 @@ class FolderTableViewController: BaseTableViewController {
                     Log.shared.errorAndCrash("Missing VCs")
                     return
             }
+            nav.modalPresentationStyle = .overFullScreen
             vc.appConfig = self.appConfig
             vc.hidesBottomBarWhenPushed = true
             vc.delegate = self

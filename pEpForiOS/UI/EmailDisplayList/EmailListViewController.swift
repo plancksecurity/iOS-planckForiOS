@@ -186,12 +186,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     ///called when the view is scrolled down to
     @objc private func refreshView(_ sender: Any) {
         model?.fetchNewMessages() { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(message: "Lost myself")
-                return
-            }
+            // Loosing self is a valid use case here. We might have been dismissed.
             DispatchQueue.main.async {
-                me.refreshControl?.endRefreshing()
+                self?.refreshControl?.endRefreshing()
             }
         }
     }

@@ -15,6 +15,10 @@ final class TutorialWizardViewController: PEPPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
+
+        if #available(iOS 13, *) {
+            Appearance.customiseForTutorial(viewController: self)
+        }
     }
 
     static func fromStoryboard(tutorialImages: [TutorialViewController.TutorialImage])
@@ -58,6 +62,7 @@ final class TutorialWizardViewController: PEPPageViewController {
         let navigationController = UINavigationController(rootViewController: tutorialWizard)
 
         DispatchQueue.main.async { [weak viewController] in
+            navigationController.modalPresentationStyle = .fullScreen
             viewController?.present(navigationController, animated: true, completion: nil)
         }
     }
@@ -69,9 +74,11 @@ final class TutorialWizardViewController: PEPPageViewController {
     func updateNavButton(lastScreen: Bool) {
         var navBarButtonTitle = ""
         if lastScreen {
-            navBarButtonTitle = NSLocalizedString("Finish", comment: "Start up tutorial finish button")
+            navBarButtonTitle = NSLocalizedString("Finish",
+                                                  comment: "Start up tutorial finish button")
         } else {
-            navBarButtonTitle = NSLocalizedString("Skip", comment: "Start up tutorial finish button")
+            navBarButtonTitle = NSLocalizedString("Skip",
+                                                  comment: "Start up tutorial skip button")
         }
         let endButton = UIBarButtonItem(title: navBarButtonTitle, style: .done, target: self, action: #selector(closeScreen))
         self.navigationItem.rightBarButtonItem  = endButton

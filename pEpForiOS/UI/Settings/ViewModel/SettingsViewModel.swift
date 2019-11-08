@@ -39,7 +39,6 @@ final class SettingsViewModel {
                                                  messageModelService: messageModelService,
                                                  keySyncDeviceGroupService: keySyncDeviceGroupService))
         sections.append(SettingsSectionViewModel(type: .contacts))
-        sections.append(SettingsSectionViewModel(type: .pgpCompatibilitySettings))
         sections.append(SettingsSectionViewModel(type: .companyFeatures))
     }
 
@@ -130,8 +129,8 @@ extension SettingsViewModel {
 extension SettingsViewModel {
 
     func handleExtryKeysEditabilityGestureTriggered() {
-        let newValue = !AppSettings.extraKeysEditable
-        AppSettings.extraKeysEditable = newValue
+        let newValue = !AppSettings.shared.extraKeysEditable
+        AppSettings.shared.extraKeysEditable = newValue
         delegate?.showExtraKeyEditabilityStateChangeAlert(newValue: newValue ? "ON" : "OFF")
     }
 }
