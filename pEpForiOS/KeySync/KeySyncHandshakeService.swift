@@ -11,7 +11,6 @@ import PEPObjCAdapterFramework
 
 class KeySyncHandshakeService {
     weak var presenter: UIViewController?
-    
     private var pEpSyncWizard: PEPPageViewController?
 }
 
