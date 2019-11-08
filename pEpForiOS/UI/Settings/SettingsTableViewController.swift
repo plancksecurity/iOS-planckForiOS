@@ -215,14 +215,11 @@ extension SettingsTableViewController: SegueHandlerType {
                 else {
                     return
             }
-            destination.appConfig = self.appConfig
+            destination.appConfig = appConfig
             if let path = ipath ,
                 let vm = viewModel[path.section][path.row] as? SettingsCellViewModel,
                 let acc = vm.account  {
-                let vm = AccountSettingsViewModel(
-                    account: acc,
-                    messageModelService: appConfig.messageModelService)
-                destination.viewModel = vm
+                    destination.viewModel = AccountSettingsViewModel(account: acc)
             }
         case .ResetTrustSplitView:
             guard
