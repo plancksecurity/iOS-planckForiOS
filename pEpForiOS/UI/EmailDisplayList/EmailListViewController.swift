@@ -1175,7 +1175,12 @@ extension EmailListViewController: SegueHandlerType {
             destination.appConfig = appConfig
             break
         case .showNoMessage:
-            //No initialization needed
+            guard let destination = segue.destination as? NoMessagesViewController else {
+                return
+            }
+            destination.message = NSLocalizedString(
+                "No message selected",
+                comment: "No messages has been selected for detail view")
             break
         default:
             Log.shared.errorAndCrash("Unhandled segue")
