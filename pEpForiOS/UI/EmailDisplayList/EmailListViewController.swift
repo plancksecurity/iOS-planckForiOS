@@ -43,6 +43,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                                             target: nil,
                                                             action: nil)
 
+    /// If the primary VC goes away, we don't switch to "no message" when the
+    /// email list disappears, so the user can maximize a displayed message
+    /// without problems.
+    var splitViewControllerWillHidePrimary = false
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -1250,3 +1255,12 @@ extension EmailListViewController: LoginViewControllerDelegate {
     }
 }
 
+extension EmailListViewController {
+    func splitViewController(willChangeTo displayMode: UISplitViewController.DisplayMode) {
+        if displayMode == .primaryHidden {
+            splitViewControllerWillHidePrimary = true
+        } else {
+            splitViewControllerWillHidePrimary = false
+        }
+    }
+}
