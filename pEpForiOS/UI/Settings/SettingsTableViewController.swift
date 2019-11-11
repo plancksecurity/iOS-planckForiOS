@@ -251,7 +251,12 @@ extension SettingsTableViewController: SegueHandlerType {
         case .segueSetOwnKey:
             break
         case .segueNoSelection:
-            break
+            guard let destination = segue.destination as? NoMessagesViewController else {
+                return
+            }
+            destination.message = NSLocalizedString(
+                "Please chose a setting to show details",
+                comment: "Default detail view message in settings view when nothing has been selected")
         case .noSegue:
             // does not need preperation
             break
