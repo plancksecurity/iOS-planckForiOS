@@ -73,6 +73,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             updateFilterButtonView()
             vm.startMonitoring() //???: should UI know about startMonitoring?
 
+            // Show "nothing selected" in details
+            performSegue(withIdentifier: .showNoMessage, sender: nil)
+
             // Threading feature is currently non-existing. Keep this code, might help later.
             //            if vm.checkIfSettingsChanged() {
             //                settingsChanged()
@@ -1179,7 +1182,7 @@ extension EmailListViewController: SegueHandlerType {
                 return
             }
             destination.message = NSLocalizedString(
-                "No message selected",
+                "Please chose a message",
                 comment: "No messages has been selected for detail view")
             break
         default:
