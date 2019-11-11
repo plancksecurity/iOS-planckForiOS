@@ -8,4 +8,14 @@
 
 import UIKit
 
-class NoMessagesViewController: UIViewController { }
+class NoMessagesViewController: UIViewController {
+    @IBOutlet weak var labelMessage: UILabel!
+
+    var message: String = NSLocalizedString(
+        "Nothing Selected",
+        comment: "Default message in detail view when nothing has been selected")
+
+    override func viewWillAppear(_ animated: Bool) {
+        labelMessage.text = message
+    }
+}
