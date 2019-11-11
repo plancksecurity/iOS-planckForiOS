@@ -65,6 +65,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccountIphone" id="W2T-ax-nDz"/>
+                        <segue destination="mHw-6L-Bso" kind="showDetail" identifier="showNoMessage" id="muv-mQ-lip"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2c-UY-yR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -114,13 +115,14 @@
                 <viewControllerPlaceholder storyboardName="NoSelection" id="mHw-6L-Bso" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qgc-u0-OQQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9555" y="-419"/>
+            <point key="canvasLocation" x="9446" y="-706"/>
         </scene>
     </scenes>
     <resources>
         <image name="button-add" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="muv-mQ-lip"/>
         <segue reference="aKb-z0-Qyn"/>
     </inferredMetricsTieBreakers>
 </document>
