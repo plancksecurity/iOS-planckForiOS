@@ -73,9 +73,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             updateFilterButtonView()
             vm.startMonitoring() //???: should UI know about startMonitoring?
 
-            // Show "nothing selected" in details
-            performSegue(withIdentifier: .showNoMessage, sender: nil)
-
             // Threading feature is currently non-existing. Keep this code, might help later.
             //            if vm.checkIfSettingsChanged() {
             //                settingsChanged()
@@ -133,6 +130,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             action: nil)
         toolbarItems?.append(contentsOf: [flexibleSpace,item])
         navigationController?.title = title
+
+        // Show "nothing selected" in details
+        performSegue(withIdentifier: .showNoMessage, sender: nil)
     }
 
     private func setUpTextFilter() {
