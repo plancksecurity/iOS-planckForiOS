@@ -246,7 +246,7 @@ extension FolderTableViewController: SegueHandlerType {
         case showNoMessage
         case newAccountIphone
         case newAccountIpad
-        case SettingsSegue
+        case settingsSegue
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -265,7 +265,7 @@ extension FolderTableViewController: SegueHandlerType {
             vc.hidesBottomBarWhenPushed = true
             vc.delegate = self
 
-        case .SettingsSegue:
+        case .settingsSegue:
             guard let dvc = segue.destination as? SettingsTableViewController else {
                 Log.shared.errorAndCrash("Error casting DVC")
                 return
