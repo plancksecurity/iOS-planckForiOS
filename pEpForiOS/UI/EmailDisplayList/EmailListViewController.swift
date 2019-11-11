@@ -87,6 +87,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if !isIphone {
             performSegue(withIdentifier: "showNoMessage", sender: nil)
         }
+        super.viewWillDisappear(animated)
     }
 
     deinit {

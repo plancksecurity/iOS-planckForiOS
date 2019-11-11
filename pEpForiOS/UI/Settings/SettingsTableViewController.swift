@@ -53,6 +53,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             let detailViewController = storyBoard.instantiateViewController(withIdentifier: "noMessagesViewController") as! NoMessagesViewController
             self.splitViewController?.show(detailViewController, sender: nil)
         }
+        super.viewWillDisappear(animated)
     }
 
     // MARK: - UITableViewDataSource
