@@ -727,7 +727,7 @@ extension EmailViewController: MessageAttachmentDelegate {
         let mimeType = MimeTypeUtils.findBestMimeType(forFileAt: url,
                                                       withGivenMimeType: attachment.mimeType)
         if mimeType == MimeTypeUtils.MimesType.pdf
-            && QLPreviewController.canPreview(url as QLPreviewItem) {
+            && QLPreviewController.canPreviewItem(url as QLPreviewItem) {
             selectedAttachmentURL = url
             let previewController = QLPreviewController()
             previewController.dataSource = self
