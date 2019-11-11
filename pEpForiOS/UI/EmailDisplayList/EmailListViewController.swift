@@ -85,7 +85,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
         if !isIphone {
-            performSegue(withIdentifier: "showNoMessage", sender: nil)
+            performSegue(withIdentifier: .showNoMessage, sender: nil)
         }
     }
 
@@ -251,7 +251,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
         if !splitViewController.isCollapsed {
-            performSegue(withIdentifier: "showNoMessage", sender: nil)
+            performSegue(withIdentifier: .showNoMessage, sender: nil)
         }
     }
 
