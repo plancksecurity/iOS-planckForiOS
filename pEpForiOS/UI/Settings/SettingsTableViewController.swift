@@ -42,6 +42,9 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             return
         }
         updateModel()
+
+        // Show "nothing selected" in details
+        performSegue(withIdentifier: .segueNoSelection, sender: nil)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -203,6 +206,7 @@ extension SettingsTableViewController: SegueHandlerType {
         case noAccounts
         case ResetTrustSplitView
         case ResetTrust
+        case segueNoSelection
         case noSegue
     }
 
@@ -245,6 +249,8 @@ extension SettingsTableViewController: SegueHandlerType {
             }
             destination.appConfig = self.appConfig
         case .segueSetOwnKey:
+            break
+        case .segueNoSelection:
             break
         case .noSegue:
             // does not need preperation
