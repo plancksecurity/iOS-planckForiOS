@@ -81,17 +81,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        if let spvc = splitViewController {
-            switch spvc.currentDisplayMode {
-            case .onlyMaster: break
-            case .masterAndDetail:
-                // When the message list disappears for, e.g., settings,
-                // then the "no message" should be displayed.
-                if !splitViewControllerWillHidePrimary {
-                    performSegue(withIdentifier: .showNoMessage, sender: nil)
-                }
-            case .onlyDetail: break
-            }
+        guard let isIphone = splitViewController?.isCollapsed else {
+            return
+        }
+        if !isIphone {
+            performSegue(withIdentifier: .showNoMessage, sender: nil)
         }
     }
 
