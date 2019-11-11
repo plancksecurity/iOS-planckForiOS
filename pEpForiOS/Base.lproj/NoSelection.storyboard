@@ -1,7 +1,49 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13142" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wwj-Sj-78N">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12042"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <scenes/>
+    <scenes>
+        <!--No Messages View Controller-->
+        <scene sceneID="oge-k8-F6d">
+            <objects>
+                <viewController storyboardIdentifier="noMessagesViewController" id="wwj-Sj-78N" customClass="NoMessagesViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Z1H-wx-ONQ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Message Selected" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rk5-l1-Vt8">
+                                <rect key="frame" x="79" y="310" width="217.5" height="27.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <color key="textColor" red="0.48627450979999998" green="0.54901960780000003" blue="0.56078431370000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Rk5-l1-Vt8" firstAttribute="centerY" secondItem="Z1H-wx-ONQ" secondAttribute="centerY" id="RP8-NC-Ztd"/>
+                            <constraint firstItem="Rk5-l1-Vt8" firstAttribute="centerX" secondItem="Z1H-wx-ONQ" secondAttribute="centerX" id="Z7h-dY-jdK"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="LDs-Yu-BHN"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="fHc-eo-Igr"/>
+                    <connections>
+                        <segue destination="gnv-QF-y1k" kind="showDetail" id="anx-J8-OKE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="l31-uR-HtQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5420" y="-1649.3253373313344"/>
+        </scene>
+        <!--emailDetail-->
+        <scene sceneID="ac7-WH-duf">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="emailDetail" storyboardName="Main" referencedIdentifier="emailDetail" id="gnv-QF-y1k" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VO2-Y8-sUZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5327" y="-860"/>
+        </scene>
+    </scenes>
 </document>

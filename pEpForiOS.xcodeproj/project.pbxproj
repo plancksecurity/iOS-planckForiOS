@@ -2375,8 +2375,8 @@
 		B706C0EF1EA8C378006B2F6C /* StoryboardFiles */ = {
 			isa = PBXGroup;
 			children = (
-				433404CD2379789600E785F1 /* NoSelection.storyboard */,
 				43980E2A1CBD0BC900A7FC3C /* Main.storyboard */,
+				433404CD2379789600E785F1 /* NoSelection.storyboard */,
 				151DE7E01FC5D3E200CDC273 /* Settings.storyboard */,
 				B78309C61EAA09040051A2E0 /* AccountCreation.storyboard */,
 				151DE7E31FC5D3FA00CDC273 /* Handshake.storyboard */,
