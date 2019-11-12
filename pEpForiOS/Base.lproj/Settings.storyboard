@@ -134,7 +134,6 @@
                         <segue destination="cMW-fr-EKn" kind="showDetail" identifier="segueSetOwnKey" id="D3B-Zt-U43"/>
                         <segue destination="4fP-ku-UtU" kind="showDetail" identifier="segueExtraKeys" id="DPP-UI-qfC"/>
                         <segue destination="tfJ-nw-QBg" kind="show" identifier="ResetTrust" id="sr5-ig-b4W"/>
-                        <segue destination="tmC-cs-m93" kind="showDetail" identifier="segueNoSelection" id="kKA-ow-9C2"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
