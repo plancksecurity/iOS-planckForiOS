@@ -82,8 +82,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
+    /// Show a message like "nothing selected" or the like in the details view
     private func showDetailMessage() {
-        // Show "nothing selected" or the like in the details view
         performSegue(withIdentifier: .showNoMessage, sender: nil)
     }
 
@@ -1050,7 +1050,6 @@ extension EmailListViewController {
      */
     @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
         setup()
-        showDetailMessage()
     }
 }
 
@@ -1197,7 +1196,7 @@ extension EmailListViewController: SegueHandlerType {
     }
 
     @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
-        showDetailMessage()
+        // nothing to do.
     }
 
     private func setupComposeViewController(for segue: UIStoryboardSegue) {
