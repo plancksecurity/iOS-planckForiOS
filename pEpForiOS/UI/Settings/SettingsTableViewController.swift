@@ -45,6 +45,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
         guard let isIphone = splitViewController?.isCollapsed else {
             return
         }
@@ -53,7 +55,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             let detailViewController = storyBoard.instantiateViewController(withIdentifier: "noMessagesViewController") as! NoMessagesViewController
             self.splitViewController?.show(detailViewController, sender: nil)
         }
-        super.viewWillDisappear(animated)
     }
 
     // MARK: - UITableViewDataSource

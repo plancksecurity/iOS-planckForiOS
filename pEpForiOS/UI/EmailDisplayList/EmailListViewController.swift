@@ -81,13 +81,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
         guard let isIphone = splitViewController?.isCollapsed else {
             return
         }
         if !isIphone {
             performSegue(withIdentifier: "showNoMessage", sender: nil)
         }
-        super.viewWillDisappear(animated)
     }
 
     deinit {
