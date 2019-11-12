@@ -43,7 +43,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         }
         updateModel()
 
-        popToEmptyDetail(
+        showEmptyDetailViewIfApplicable(
             message: NSLocalizedString(
                 "Please chose a setting",
                 comment: "No setting has been selected yet in the settings VC"))

@@ -30,7 +30,7 @@ class FolderTableViewController: BaseTableViewController {
 
         self.navigationController?.setToolbarHidden(false, animated: false)
 
-        popToEmptyDetail(
+        showEmptyDetailViewIfApplicable(
             message: NSLocalizedString(
                 "Please chose a folder",
                 comment: "No folder has been selected yet in the folders VC"))
