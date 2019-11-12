@@ -193,7 +193,6 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueEditDraft" id="fJ0-cY-ZEb"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="d5O-Wk-gjZ"/>
                         <segue destination="lPr-gi-BrG" kind="showDetail" identifier="segueShowEmailSplitView" id="63y-AC-Fyu"/>
-                        <segue destination="YpT-pT-FbI" kind="showDetail" identifier="showNoMessage" id="a9I-b0-iqU"/>
                         <segue destination="eLD-PA-Nmx" kind="showDetail" identifier="segueShowThreadedEmail" id="rUh-Ai-iWA"/>
                         <segue destination="nc4-kR-K9D" kind="show" identifier="segueShowFilter" id="kQS-uu-oHl"/>
                         <segue destination="3bx-34-vLD" kind="show" identifier="segueShowEmailNotSplitView" id="5Kn-pc-9Jc"/>
@@ -889,14 +888,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="te3-X0-7QD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5252" y="833"/>
-        </scene>
-        <!--noMessagesViewController-->
-        <scene sceneID="cZd-ZD-iTW">
-            <objects>
-                <viewControllerPlaceholder storyboardIdentifier="noMessagesViewController" storyboardName="NoSelection" referencedIdentifier="noMessagesViewController" id="YpT-pT-FbI" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="m5z-Pv-P1H" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5420" y="-1649.3253373313344"/>
         </scene>
     </scenes>
     <resources>

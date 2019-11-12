@@ -23,14 +23,6 @@
             </objects>
             <point key="canvasLocation" x="-2242" y="-390"/>
         </scene>
-        <!--NoSelection-->
-        <scene sceneID="ied-IJ-p3k">
-            <objects>
-                <viewControllerPlaceholder storyboardName="NoSelection" id="tmC-cs-m93" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Igk-DT-vYE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1935" y="-1377"/>
-        </scene>
         <!--Settings Table View Controller-->
         <scene sceneID="ODz-Rf-1g6">
             <objects>
