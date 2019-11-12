@@ -57,34 +57,22 @@ class LoginViewController: BaseViewController {
         updateView()
     }
 
-    private func configureAppearance() {
-        if #available(iOS 13, *) {
-            Appearance.customiseForLogin(viewController: self)
-        } else {
-            self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            self.navigationController?.navigationBar.shadowImage = UIImage()
-            self.navigationController?.navigationBar.isTranslucent = true
-            self.navigationController?.navigationBar.backgroundColor = UIColor.clear
-        }
-    }
-
     func configureView() {
         password.isEnabled = true
         activityIndicatorView.hidesWhenStopped = true
 
-        self.emailAddress.convertToLoginField(
+        emailAddress.convertToLoginField(
             placeholder: NSLocalizedString("Email", comment: "Email"), delegate: self)
-        self.password.convertToLoginField(
+        password.convertToLoginField(
             placeholder: NSLocalizedString("Password", comment: "password"), delegate: self)
-        self.loginButton.convertToLoginButton(
+        loginButton.convertToLoginButton(
             placeholder: NSLocalizedString("Sign In", comment: "Login"))
-        self.manualConfigButton.convertToLoginButton(
+        manualConfigButton.convertToLoginButton(
             placeholder: NSLocalizedString("Manual configuration", comment: "manual"))
-        self.user.convertToLoginField(
+        user.convertToLoginField(
             placeholder: NSLocalizedString("Name", comment: "username"), delegate: self)
 
-        self.navigationController?.navigationBar.isHidden = !viewModelOrCrash().isThereAnAccount()
+        navigationController?.navigationBar.isHidden = !viewModelOrCrash().isThereAnAccount()
 
         // hide extended login fields
         manualConfigButton.isHidden = true
@@ -92,8 +80,8 @@ class LoginViewController: BaseViewController {
             target: self, action: #selector(LoginViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
 
-        self.navigationItem.hidesBackButton = true
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+        navigationItem.hidesBackButton = true
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
             title:NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"),
             style:.plain, target:self,
             action:#selector(self.backButton))
@@ -112,29 +100,6 @@ class LoginViewController: BaseViewController {
         navigationItem.rightBarButtonItem?.isEnabled = !isCurrentlyVerifying
         loginButton.isEnabled = !isCurrentlyVerifying
         manualConfigButton.isEnabled = !isCurrentlyVerifying
-    }
-
-    private func handleLoginError(error: Error, offerManualSetup: Bool) {
-        Log.shared.error("%@", "\(error)")
-        self.isCurrentlyVerifying = false
-        guard let error = DisplayUserError(withError: error) else {
-            // Do nothing. The error type is not suitable to bother the user with.
-            return
-        }
-        let alertView = UIAlertController.pEpAlertController(title: error.title,
-                                                             message:error.localizedDescription,
-                                                             preferredStyle: .alert)
-        alertView.addAction(UIAlertAction(
-            title: NSLocalizedString(
-                "OK",
-                comment: "UIAlertAction ok after error"),
-            style: .default, handler: {action in
-                if offerManualSetup {
-                    self.manualConfigButton.isHidden = false
-                    self.offerManualSetup = true
-                }
-        }))
-        present(alertView, animated: true, completion: nil)
     }
 
     @objc func dismissKeyboard() {
@@ -232,9 +197,11 @@ extension LoginViewController {
         let oauth2Possible = viewModelOrCrash().isOAuth2Possible(email: email)
         password.isEnabled = !oauth2Possible
 
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 10, initialSpringVelocity: 10, options: [.curveEaseInOut, .beginFromCurrentState], animations: { [weak self] in
-            self?.password.isHidden = oauth2Possible
-        }, completion: nil)
+        if oauth2Possible {
+            hidePasswordTextField()
+        } else {
+            showPasswordTextField()
+        }
     }
 }
 
@@ -258,7 +225,7 @@ extension LoginViewController: UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         stackViewCenterYhCConstraint.constant = stackView.bounds.height / 2 - textField.center.y
-//        stackViewCenterYConstraint.constant += -(textField.center.y -  mainContainerView.center.y)
+        //        stackViewCenterYConstraint.constant += -(textField.center.y -  mainContainerView.center.y)
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
             [weak self] in
             self?.view.layoutIfNeeded()
@@ -377,5 +344,72 @@ extension LoginViewController.LoginError: LocalizedError {
             return NSLocalizedString("The account already exists",
                                      comment: "error message for .accountExistence")
         }
+    }
+}
+
+// MARK: - Private
+
+extension LoginViewController {
+    private func hidePasswordTextField() {
+        UIView.animate(withDuration: 0.2,
+                       delay: 0,
+                       options: [.curveEaseInOut, .beginFromCurrentState],
+                       animations: { [weak self] in
+                        self?.password.alpha = 0
+            }, completion: { [weak self] completed in
+                guard completed else { return }
+                UIView.animate(withDuration: 0.2) {
+                    self?.password.isHidden = true
+                }
+        })
+    }
+
+    private func showPasswordTextField() {
+        UIView.animate(withDuration: 0.2, animations: { [weak self] in
+            self?.password.isHidden = false
+            }, completion: { [weak self] completed in
+                guard completed else { return }
+                UIView.animate(withDuration: 0.2,
+                               delay: 0,
+                               options: [.curveEaseInOut, .beginFromCurrentState],
+                               animations: { [weak self] in
+                                self?.password.alpha = 1.0
+                    }, completion: nil)
+        })
+    }
+
+    private func configureAppearance() {
+        if #available(iOS 13, *) {
+            Appearance.customiseForLogin(viewController: self)
+        } else {
+            self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            self.navigationController?.navigationBar.shadowImage = UIImage()
+            self.navigationController?.navigationBar.isTranslucent = true
+            self.navigationController?.navigationBar.backgroundColor = UIColor.clear
+        }
+    }
+
+    private func handleLoginError(error: Error, offerManualSetup: Bool) {
+        Log.shared.error("%@", "\(error)")
+        self.isCurrentlyVerifying = false
+        guard let error = DisplayUserError(withError: error) else {
+            // Do nothing. The error type is not suitable to bother the user with.
+            return
+        }
+        let alertView = UIAlertController.pEpAlertController(title: error.title,
+                                                             message:error.localizedDescription,
+                                                             preferredStyle: .alert)
+        alertView.addAction(UIAlertAction(
+            title: NSLocalizedString(
+                "OK",
+                comment: "UIAlertAction ok after error"),
+            style: .default, handler: {action in
+                if offerManualSetup {
+                    self.manualConfigButton.isHidden = false
+                    self.offerManualSetup = true
+                }
+        }))
+        present(alertView, animated: true, completion: nil)
     }
 }

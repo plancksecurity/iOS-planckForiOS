@@ -35,7 +35,6 @@ class AnimatedPlaceholderTextfield: UITextField {
 
     override public var placeholder: String? {
         set {
-
             _placeHolder = newValue
             updatePlaceholderLabel()
         }
