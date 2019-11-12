@@ -16,6 +16,11 @@ class NoMessagesViewController: UIViewController {
         comment: "Default message in detail view when nothing has been selected")
 
     override func viewWillAppear(_ animated: Bool) {
+        updateView()
+    }
+
+    /// Call this if you changed the message.
+    func updateView() {
         labelMessage.text = message
     }
 }

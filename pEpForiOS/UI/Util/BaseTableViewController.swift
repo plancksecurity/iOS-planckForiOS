@@ -71,13 +71,30 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         guard let spvc = splitViewController else {
             return
         }
+
+        /// Actually doing the work.
+        func showEmptyDetail() {
+            let detailIndex = 1 // The index of the detail view controller
+            let storyboardName = "NoSelection" // The storyboard name for the empty VC
+            let identifierEmptyVC = "noMessagesViewController" // The empty VC's identitifer
+
+            if let emptyVC = spvc.viewControllers[safe: detailIndex] as? NoMessagesViewController {
+                emptyVC.message = message
+                emptyVC.updateView()
+            } else {
+                let storyboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
+                guard let detailVC = storyboard.instantiateViewController(
+                    withIdentifier: identifierEmptyVC) as? NoMessagesViewController else {
+                        return
+                }
+                detailVC.message = message
+                spvc.showDetailViewController(detailVC, sender: self)
+            }
+        }
+
         switch spvc.currentDisplayMode {
         case .masterAndDetail:
-            if let emptyVC = spvc.viewControllers[safe: 1] as? NoMessagesViewController {
-                emptyVC.message = message
-            } else if let navDetail = spvc.viewControllers[safe: 1] as? UINavigationController {
-                //navDetail.popToViewController(detailVC, animated: true)
-            }
+            showEmptyDetail()
         case .onlyDetail:
             // nothing to do
             break
