@@ -73,7 +73,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         }
         switch spvc.currentDisplayMode {
         case .masterAndDetail:
-            guard let navDetail = spvc.viewControllers[safe: 2] as? UINavigationController else {
+            guard let navDetail = spvc.viewControllers[safe: 1] as? UINavigationController else {
                 return
             }
             guard let detailVC = navDetail.rootViewController as? NoMessagesViewController else {
