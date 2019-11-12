@@ -77,16 +77,16 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         /// Inner function for doing the actual work.
         func showEmptyDetail() {
             let detailIndex = 1 // The index of the detail view controller
-            let storyboardName = "NoSelection" // The storyboard name for the empty VC
-            let identifierEmptyVC = "nothingSelectedViewController" // The empty VC's identitifer
 
             if let emptyVC = spvc.viewControllers[safe: detailIndex] as? NothingSelectedViewController {
                 emptyVC.message = message
                 emptyVC.updateView()
             } else {
-                let storyboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
+                let storyboard: UIStoryboard = UIStoryboard(
+                    name: UIStoryboard.noSelectionStoryBoard,
+                    bundle: nil)
                 guard let detailVC = storyboard.instantiateViewController(
-                    withIdentifier: identifierEmptyVC) as? NothingSelectedViewController else {
+                    withIdentifier: UIStoryboard.nothingSelectedViewController) as? NothingSelectedViewController else {
                         return
                 }
                 detailVC.message = message
