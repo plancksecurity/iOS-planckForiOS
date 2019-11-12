@@ -24,9 +24,6 @@ class FolderTableViewController: BaseTableViewController {
         super.viewWillAppear(animated)
         setup()
 
-        // Show "nothing selected" in details
-        performSegue(withIdentifier: .showNoMessage, sender: nil)
-
         if showNext {
             show(folder: UnifiedInbox())
         }
@@ -243,7 +240,6 @@ extension FolderTableViewController: LoginViewControllerDelegate {
 
 extension FolderTableViewController: SegueHandlerType {
     enum SegueIdentifier: String {
-        case showNoMessage
         case newAccountIphone
         case newAccountIpad
         case settingsSegue
@@ -272,14 +268,6 @@ extension FolderTableViewController: SegueHandlerType {
             }
             dvc.appConfig = self.appConfig
             dvc.hidesBottomBarWhenPushed = true
-        case .showNoMessage:
-            guard let destination = segue.destination as? NoMessagesViewController else {
-                return
-            }
-            destination.message = NSLocalizedString(
-                "Please chose a folder",
-                comment: "No folder has been selected for detail view")
-            break
         }
     }
 }

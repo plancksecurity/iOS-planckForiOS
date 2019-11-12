@@ -42,9 +42,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             return
         }
         updateModel()
-
-        // Show "nothing selected" in details
-        performSegue(withIdentifier: .segueNoSelection, sender: nil)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -206,7 +203,6 @@ extension SettingsTableViewController: SegueHandlerType {
         case noAccounts
         case ResetTrustSplitView
         case ResetTrust
-        case segueNoSelection
         case noSegue
     }
 
@@ -250,13 +246,6 @@ extension SettingsTableViewController: SegueHandlerType {
             destination.appConfig = self.appConfig
         case .segueSetOwnKey:
             break
-        case .segueNoSelection:
-            guard let destination = segue.destination as? NoMessagesViewController else {
-                return
-            }
-            destination.message = NSLocalizedString(
-                "Please chose a setting to show details",
-                comment: "Default detail view message in settings view when nothing has been selected")
         case .noSegue:
             // does not need preperation
             break
