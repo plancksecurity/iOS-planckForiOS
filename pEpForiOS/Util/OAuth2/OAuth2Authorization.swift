@@ -16,7 +16,7 @@ import MessageModel
 class OAuth2Authorization: OAuth2AuthorizationProtocol {
     let uuid = Foundation.UUID()
 
-    var currentAuthorizationFlow: OIDAuthorizationFlowSession?
+    var currentAuthorizationFlow: OIDExternalUserAgentSession?
     var authState: OIDAuthState?
 
     // MARK: - OAuth2AuthorizationProtocol
@@ -25,17 +25,18 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
 
     func startAuthorizationRequest(viewController: UIViewController,
                                    oauth2Configuration: OAuth2ConfigurationProtocol) {
-        let request = OIDAuthorizationRequest(
-            configuration: oauth2Configuration.oauth2Type.configurationOID(),
-            clientId: oauth2Configuration.clientID,
-            clientSecret: oauth2Configuration.clientSecret,
-            scopes: oauth2Configuration.scopes,
-            redirectURL: oauth2Configuration.redirectURL,
-            responseType: OIDResponseTypeCode,
-            additionalParameters: nil)
+        let request =
+            OIDAuthorizationRequest(configuration: oauth2Configuration.oauth2Type.configurationOID(),
+                                    clientId: oauth2Configuration.clientID,
+                                    clientSecret: oauth2Configuration.clientSecret,
+                                    scopes: oauth2Configuration.scopes,
+                                    redirectURL: oauth2Configuration.redirectURL,
+                                    responseType: OIDResponseTypeCode,
+                                    additionalParameters: nil)
 
-        currentAuthorizationFlow = OIDAuthState.authState(
-        byPresenting: request, presenting: viewController) { [weak self] authState, error in
+        currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request,
+                                                          presenting: viewController)
+        { [weak self] authState, error in
             if error == nil, let state = authState {
                 self?.authState = state
                 self?.delegate?.authorizationRequestFinished(
@@ -56,7 +57,7 @@ extension OAuth2Authorization: OAuth2AuthorizationURLHandlerProtocol {
         guard let authFlow = currentAuthorizationFlow else {
             return false
         }
-        if authFlow.resumeAuthorizationFlow(with: url) {
+        if authFlow.resumeExternalUserAgentFlow(with: url) {
             self.currentAuthorizationFlow = nil
             return true
         }
