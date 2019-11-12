@@ -45,6 +45,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
         guard let isIphone = splitViewController?.isCollapsed else {
             return
         }
