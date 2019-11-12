@@ -11,6 +11,8 @@ import pEpIOSToolbox
 
 class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDelegate {
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         self.delegate = self
         preferredDisplayMode = .allVisible
     }
