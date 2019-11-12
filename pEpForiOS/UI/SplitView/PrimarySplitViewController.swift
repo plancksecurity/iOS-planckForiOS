@@ -38,7 +38,7 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
                 secondaryNavigationController.topViewController is EmailViewController /*||
                     secondaryNavigationController.topViewController is ThreadViewController*/ // Message threadding is currently umsupported. The code might be helpful.
                 else {
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let storyboard = UIStoryboard(name: "NoSelection", bundle: nil)
                     let vc = storyboard.instantiateViewController(withIdentifier: "noMessagesViewController")
                     return vc
             }
