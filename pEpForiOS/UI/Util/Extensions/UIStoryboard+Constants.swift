@@ -9,6 +9,6 @@
 import Foundation
 
 extension UIStoryboard {
-    static let noSelectionStoryBoard = "NoSelection"
+    static let noSelectionStoryBoard = "NothingSelected"
     static let nothingSelectedViewController = "nothingSelectedViewController"
 }
