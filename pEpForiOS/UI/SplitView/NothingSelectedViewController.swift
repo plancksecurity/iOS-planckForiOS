@@ -1,5 +1,5 @@
 //
-//  NoMessagesViewController.swift
+//  NothingSelectedViewController.swift
 //  pEp
 //
 //  Created by Borja González de Pablo on 25/05/2018.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NoMessagesViewController: UIViewController {
+class NothingSelectedViewController: UIViewController {
     @IBOutlet weak var labelMessage: UILabel!
 
     /// The message to display when this VC is shown in the details view.

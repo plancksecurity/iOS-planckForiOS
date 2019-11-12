@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--No Messages View Controller-->
+        <!--Nothing Selected View Controller-->
         <scene sceneID="oge-k8-F6d">
             <objects>
-                <viewController storyboardIdentifier="noMessagesViewController" id="wwj-Sj-78N" customClass="NoMessagesViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="noMessagesViewController" id="wwj-Sj-78N" customClass="NothingSelectedViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Z1H-wx-ONQ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

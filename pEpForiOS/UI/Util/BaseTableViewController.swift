@@ -80,13 +80,13 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             let storyboardName = "NoSelection" // The storyboard name for the empty VC
             let identifierEmptyVC = "noMessagesViewController" // The empty VC's identitifer
 
-            if let emptyVC = spvc.viewControllers[safe: detailIndex] as? NoMessagesViewController {
+            if let emptyVC = spvc.viewControllers[safe: detailIndex] as? NothingSelectedViewController {
                 emptyVC.message = message
                 emptyVC.updateView()
             } else {
                 let storyboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
                 guard let detailVC = storyboard.instantiateViewController(
-                    withIdentifier: identifierEmptyVC) as? NoMessagesViewController else {
+                    withIdentifier: identifierEmptyVC) as? NothingSelectedViewController else {
                         return
                 }
                 detailVC.message = message

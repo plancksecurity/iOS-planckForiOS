@@ -30,7 +30,7 @@
 		006BE6BC20F4B63C00DDE8C9 /* EmailDetailType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006BE6BB20F4B63C00DDE8C9 /* EmailDetailType.swift */; };
 		00A12CAE20D3D9AC00B82BE3 /* FullMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A12CAD20D3D9AC00B82BE3 /* FullMessageCell.swift */; };
 		00AEB2F620DBA7DA00DA185A /* NeedsRefreshDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AEB2F520DBA7DA00DA185A /* NeedsRefreshDelegate.swift */; };
-		00BEC89720B85FD300A36E60 /* NoMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BEC89620B85FD300A36E60 /* NoMessagesViewController.swift */; };
+		00BEC89720B85FD300A36E60 /* NothingSelectedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BEC89620B85FD300A36E60 /* NothingSelectedViewController.swift */; };
 		00D3CD3E20B58976009ABBC9 /* PrimarySplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D3CD3D20B58976009ABBC9 /* PrimarySplitViewController.swift */; };
 		00DF2C3B2164C53F004EBA6C /* FolderViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF2C3A2164C53F004EBA6C /* FolderViewModelTest.swift */; };
 		00EB89AB20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AA20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift */; };
@@ -512,7 +512,7 @@
 		006BE6BB20F4B63C00DDE8C9 /* EmailDetailType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailType.swift; sourceTree = "<group>"; };
 		00A12CAD20D3D9AC00B82BE3 /* FullMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullMessageCell.swift; sourceTree = "<group>"; };
 		00AEB2F520DBA7DA00DA185A /* NeedsRefreshDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedsRefreshDelegate.swift; sourceTree = "<group>"; };
-		00BEC89620B85FD300A36E60 /* NoMessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMessagesViewController.swift; sourceTree = "<group>"; };
+		00BEC89620B85FD300A36E60 /* NothingSelectedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NothingSelectedViewController.swift; sourceTree = "<group>"; };
 		00D3CD3D20B58976009ABBC9 /* PrimarySplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimarySplitViewController.swift; sourceTree = "<group>"; };
 		00DF2C3A2164C53F004EBA6C /* FolderViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModelTest.swift; sourceTree = "<group>"; };
 		00EB89AA20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadViewcontroller+SizeClasses.swift"; sourceTree = "<group>"; };
@@ -1035,7 +1035,7 @@
 			children = (
 				00D3CD3D20B58976009ABBC9 /* PrimarySplitViewController.swift */,
 				00FD0CE72102014C00BA0C56 /* PrimarySplitViewcontroller+ScreenComposerProtocol.swift */,
-				00BEC89620B85FD300A36E60 /* NoMessagesViewController.swift */,
+				00BEC89620B85FD300A36E60 /* NothingSelectedViewController.swift */,
 				00FD0CE52101F7D700BA0C56 /* ScreenComposerProtocol.swift */,
 			);
 			path = SplitView;
@@ -2999,7 +2999,7 @@
 				4351C2C81F4441190053381F /* blocks.c in Sources */,
 				15BBBC6C1FD05F4300B9DCC8 /* DisplayUserError.swift in Sources */,
 				43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */,
-				00BEC89720B85FD300A36E60 /* NoMessagesViewController.swift in Sources */,
+				00BEC89720B85FD300A36E60 /* NothingSelectedViewController.swift in Sources */,
 				431C6E041FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift in Sources */,
 				1541D7ED1FC81D4200D52A5D /* URL+Extensions.swift in Sources */,
 				152A39D421905C3E00D9F8E4 /* SubjectCell.swift in Sources */,
