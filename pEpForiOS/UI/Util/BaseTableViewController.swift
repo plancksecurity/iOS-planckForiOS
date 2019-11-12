@@ -73,15 +73,11 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         }
         switch spvc.currentDisplayMode {
         case .masterAndDetail:
-            guard let navDetail = spvc.viewControllers[safe: 1] as? UINavigationController else {
-                return
+            if let emptyVC = spvc.viewControllers[safe: 1] as? NoMessagesViewController {
+                emptyVC.message = message
+            } else if let navDetail = spvc.viewControllers[safe: 1] as? UINavigationController {
+                //navDetail.popToViewController(detailVC, animated: true)
             }
-            guard let detailVC = navDetail.rootViewController as? NoMessagesViewController else {
-                return
-            }
-            detailVC.message = message
-            navDetail.popToViewController(detailVC, animated: true)
-            break
         case .onlyDetail:
             // nothing to do
             break
