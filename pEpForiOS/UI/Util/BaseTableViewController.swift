@@ -67,6 +67,30 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         }
     }
 
+    func popToEmptyDetail(message: String) {
+        guard let spvc = splitViewController else {
+            return
+        }
+        switch spvc.currentDisplayMode {
+        case .masterAndDetail:
+            guard let navDetail = spvc.viewControllers[safe: 2] as? UINavigationController else {
+                return
+            }
+            guard let detailVC = navDetail.rootViewController as? NoMessagesViewController else {
+                return
+            }
+            detailVC.message = message
+            navDetail.popToViewController(detailVC, animated: true)
+            break
+        case .onlyDetail:
+            // nothing to do
+            break
+        case .onlyMaster:
+            // nothing to do
+            break
+        }
+    }
+
     // MARK: - ErrorPropagatorSubscriber
 
     var shouldHandleErrors: Bool = true
