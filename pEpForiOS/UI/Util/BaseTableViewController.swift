@@ -67,6 +67,8 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         }
     }
 
+    /// If applicable, shows the "empty selection" view controller in the details view.
+    /// - Parameter message: The message to show in the view.
     func popToEmptyDetail(message: String) {
         guard let spvc = splitViewController else {
             return
