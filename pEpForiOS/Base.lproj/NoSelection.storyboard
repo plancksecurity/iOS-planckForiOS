@@ -11,7 +11,7 @@
         <!--Nothing Selected View Controller-->
         <scene sceneID="oge-k8-F6d">
             <objects>
-                <viewController storyboardIdentifier="noMessagesViewController" id="wwj-Sj-78N" customClass="NothingSelectedViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="nothingSelectedViewController" id="wwj-Sj-78N" customClass="NothingSelectedViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Z1H-wx-ONQ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

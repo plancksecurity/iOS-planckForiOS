@@ -78,7 +78,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         func showEmptyDetail() {
             let detailIndex = 1 // The index of the detail view controller
             let storyboardName = "NoSelection" // The storyboard name for the empty VC
-            let identifierEmptyVC = "noMessagesViewController" // The empty VC's identitifer
+            let identifierEmptyVC = "nothingSelectedViewController" // The empty VC's identitifer
 
             if let emptyVC = spvc.viewControllers[safe: detailIndex] as? NothingSelectedViewController {
                 emptyVC.message = message
