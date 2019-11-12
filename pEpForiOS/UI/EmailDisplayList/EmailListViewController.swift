@@ -69,7 +69,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
 
-        showDetailMessage()
+        showNoMessageSelectedIfNeeded()
 
         if !vm.showLoginView {
             updateFilterButtonView()
@@ -80,11 +80,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             //                settingsChanged()
             //            }
         }
-    }
-
-    /// Show a message like "nothing selected" or the like in the details view
-    private func showDetailMessage() {
-        performSegue(withIdentifier: .showNoMessage, sender: nil)
     }
 
     deinit {
@@ -245,12 +240,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     private func showNoMessageSelectedIfNeeded() {
-        guard let splitViewController = self.splitViewController else {
-            return
-        }
-        if !splitViewController.isCollapsed {
-            performSegue(withIdentifier: .showNoMessage, sender: nil)
-        }
+        popToEmptyDetail(
+            message: NSLocalizedString(
+                "Please chose a message",
+                comment: "No messages has been selected for detail view"))
     }
 
     @objc private func settingsChanged() {
@@ -1069,7 +1062,6 @@ extension EmailListViewController: SegueHandlerType {
         case segueShowFilter
         case segueFolderViews
         case segueShowMoveToFolder
-        case showNoMessage
         case segueShowThreadedEmail
         case noSegue
     }
@@ -1180,14 +1172,6 @@ extension EmailListViewController: SegueHandlerType {
             destination.viewModel
                 = model?.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
             destination.appConfig = appConfig
-            break
-        case .showNoMessage:
-            guard let destination = segue.destination as? NoMessagesViewController else {
-                return
-            }
-            destination.message = NSLocalizedString(
-                "Please chose a message",
-                comment: "No messages has been selected for detail view")
             break
         default:
             Log.shared.errorAndCrash("Unhandled segue")
