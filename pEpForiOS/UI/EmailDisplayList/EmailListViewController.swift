@@ -69,6 +69,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
 
+        showDetailMessage()
+
         if !vm.showLoginView {
             updateFilterButtonView()
             vm.startMonitoring() //???: should UI know about startMonitoring?
@@ -78,6 +80,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             //                settingsChanged()
             //            }
         }
+    }
+
+    private func showDetailMessage() {
+        // Show "nothing selected" or the like in the details view
+        performSegue(withIdentifier: .showNoMessage, sender: nil)
     }
 
     deinit {
@@ -130,9 +137,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             action: nil)
         toolbarItems?.append(contentsOf: [flexibleSpace,item])
         navigationController?.title = title
-
-        // Show "nothing selected" in details
-        performSegue(withIdentifier: .showNoMessage, sender: nil)
     }
 
     private func setUpTextFilter() {
@@ -1046,6 +1050,7 @@ extension EmailListViewController {
      */
     @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
         setup()
+        showDetailMessage()
     }
 }
 
@@ -1192,7 +1197,7 @@ extension EmailListViewController: SegueHandlerType {
     }
 
     @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
-        // nothing to do.
+        showDetailMessage()
     }
 
     private func setupComposeViewController(for segue: UIStoryboardSegue) {
