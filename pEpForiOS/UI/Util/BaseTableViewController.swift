@@ -74,7 +74,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             return
         }
 
-        /// Actually doing the work.
+        /// Inner function for doing the actual work.
         func showEmptyDetail() {
             let detailIndex = 1 // The index of the detail view controller
             let storyboardName = "NoSelection" // The storyboard name for the empty VC
