@@ -42,6 +42,11 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             return
         }
         updateModel()
+
+        popToEmptyDetail(
+            message: NSLocalizedString(
+                "Please chose a setting",
+                comment: "No setting has been selected yet in the settings VC"))
     }
 
     override func viewWillDisappear(_ animated: Bool) {

@@ -29,6 +29,11 @@ class FolderTableViewController: BaseTableViewController {
         }
 
         self.navigationController?.setToolbarHidden(false, animated: false)
+
+        popToEmptyDetail(
+            message: NSLocalizedString(
+                "Please chose a folder",
+                comment: "No folder has been selected yet in the folders VC"))
     }
 
     // MARK: - Setup
