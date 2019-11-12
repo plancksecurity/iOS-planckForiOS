@@ -62,12 +62,13 @@ class MediaAttachmentPickerProviderViewModel {
     private func createImageAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) {
         guard
             let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
-            let url = info[UIImagePickerController.InfoKey.referenceURL] as? URL else {
+            let asset = info[UIImagePickerController.InfoKey.phAsset] as? PHAsset,
+            let url = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
                 Log.shared.errorAndCrash("No Data")
                 return
         }
         var attachment: Attachment!
-        session.performAndWait {[weak self] in
+        session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
@@ -76,25 +77,13 @@ class MediaAttachmentPickerProviderViewModel {
                                              image: image,
                                              session: me.session)
 
-            if attachment.data == nil {
-                do {
-                    attachment.data = try Data(contentsOf: url)
-
-                } catch let err {
-                    Log.shared.error("%@", "\(err)")
-                }
-            }
             let group = DispatchGroup()
-            var data = attachment.data
-            if data == nil {
-                let assets = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil)
-                if let theAsset = assets.firstObject {
-                    group.enter()
-                    PHImageManager().requestImageData(for: theAsset, options: nil) {
-                        inData, string, orientation, options in
-                        data = inData
-                        group.leave()
-                    }
+            var resultData = attachment.data
+            if resultData == nil {
+                group.enter()
+                asset.imageData(){ data in
+                    resultData = data
+                    group.leave()
                 }
             }
             group.notify(queue: .main) { [weak self] in
@@ -103,7 +92,7 @@ class MediaAttachmentPickerProviderViewModel {
                     return
                 }
                 me.session.performAndWait {
-                    attachment.data = data
+                    attachment.data = resultData
                 }
 
                 let result = MediaAttachment(type: .image, attachment: attachment)
