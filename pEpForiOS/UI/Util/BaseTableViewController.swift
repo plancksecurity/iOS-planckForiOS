@@ -52,18 +52,9 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             return
         }
         appConfig.errorPropagator.subscriber = self
-        appConfig.keySyncHandshakeService.presenters.append(self)
+        appConfig.keySyncHandshakeService.presenter = self
         self.navigationController?.title = title
         BaseTableViewController.setupCommonSettings(tableView: tableView)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        guard let indexOfSelf = appConfig.keySyncHandshakeService.presenters.lastIndex(of: self) else {
-            Log.shared.errorAndCrash("No index of self in prenseter")
-            return
-        }
-        appConfig.keySyncHandshakeService.presenters.remove(at: indexOfSelf)
-        super.viewWillDisappear(animated)
     }
 
     static func setupCommonSettings(tableView: UITableView) {

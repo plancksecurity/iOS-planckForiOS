@@ -34,16 +34,7 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         appConfig?.errorPropagator.subscriber = self
-        appConfig?.keySyncHandshakeService.presenters.append(self)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        guard let indexOfSelf = appConfig.keySyncHandshakeService.presenters.lastIndex(of: self) else {
-            Log.shared.errorAndCrash("No index of self in prenseter")
-            return
-        }
-        appConfig.keySyncHandshakeService.presenters.remove(at: indexOfSelf)
-        super.viewWillDisappear(animated)
+        appConfig?.keySyncHandshakeService.presenter = self
     }
 
     // MARK: - ErrorPropagatorSubscriber

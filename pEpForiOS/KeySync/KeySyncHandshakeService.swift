@@ -10,9 +10,9 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 class KeySyncHandshakeService {
-    var presenters = [UIViewController]()
+    weak var presenter: UIViewController?
     
-    private weak var pEpSyncWizard: PEPPageViewController?
+    private var pEpSyncWizard: PEPPageViewController?
 }
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
@@ -22,7 +22,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                        isNewGroup: Bool,
                        completion: ((PEPSyncHandshakeResult)->())? = nil) {
 
-        guard let presenter = presenters.last else {
+        guard let presenter = presenter else {
             Log.shared.errorAndCrash("No Presenter")
             return
         }
@@ -62,7 +62,10 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
     
     func cancelHandshake() {
         DispatchQueue.main.async { [weak self] in
-            self?.pEpSyncWizard?.dismiss()
+            guard let keySyncWizard = self?.presenter?.presentedViewController as? PEPPageViewController else {
+                return
+            }
+            keySyncWizard.dismiss()
         }
     }
     
