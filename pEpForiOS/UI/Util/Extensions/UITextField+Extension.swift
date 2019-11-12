@@ -13,29 +13,5 @@ extension UITextField {
         // common properties
         self.delegate = delegate
         self.placeholder = placeholder
-
-        // properties divided between enabled/disabled
-        if isEnabled {
-            enableLoginField()
-        } else {
-            disableLoginField()
-        }
-    }
-
-    public func disableLoginField() {
-        enableOrDisableLoginField(enable: false)
-    }
-
-    public func enableLoginField() {
-        enableOrDisableLoginField(enable: true)
-    }
-
-    public func enableOrDisableLoginField(enable: Bool) {
-        let theColor = enable ? UIColor.white : UIColor.gray
-        self.textColor = theColor
-        if let ph = placeholder {
-            self.attributedPlaceholder = NSAttributedString(
-                string: ph, attributes: [NSAttributedString.Key.foregroundColor: theColor])
-        }
     }
 }

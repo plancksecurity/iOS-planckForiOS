@@ -231,11 +231,10 @@ extension LoginViewController {
     func updatePasswordField(email: String?) {
         let oauth2Possible = viewModelOrCrash().isOAuth2Possible(email: email)
         password.isEnabled = !oauth2Possible
-        if password.isEnabled {
-            password.enableLoginField()
-        } else {
-            password.disableLoginField()
-        }
+
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 10, initialSpringVelocity: 10, options: [.curveEaseInOut, .beginFromCurrentState], animations: { [weak self] in
+            self?.password.isHidden = oauth2Possible
+        }, completion: nil)
     }
 }
 
