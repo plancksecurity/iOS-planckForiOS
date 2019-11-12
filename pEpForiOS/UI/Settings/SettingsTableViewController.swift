@@ -49,17 +49,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 comment: "No setting has been selected yet in the settings VC"))
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        guard let isIphone = splitViewController?.isCollapsed else {
-            return
-        }
-        if !isIphone {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let detailViewController = storyBoard.instantiateViewController(withIdentifier: "noMessagesViewController") as! NoMessagesViewController
-            self.splitViewController?.show(detailViewController, sender: nil)
-        }
-    }
-
     // MARK: - UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
