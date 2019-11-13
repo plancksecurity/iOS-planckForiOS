@@ -108,7 +108,7 @@ class LoginViewController: BaseViewController {
 
         viewModelOrCrash().accountVerificationResultDelegate = self
 
-        if viewModelOrCrash().isOAuth2Possible(email: email) {
+        if viewModelOrCrash().isOAuth2Possible(email: email) || isOauthAccount {
             let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
             viewModelOrCrash().loginWithOAuth2(
                 viewController: self, emailAddress: email, userName: username,
