@@ -34,6 +34,13 @@ class LoginViewController: BaseViewController {
 
     @IBOutlet var stackView: UIStackView! //TODO: ALE remove if not used
 
+    /// Set in prepare for segue, if the user selected an account with ouath from the menu
+    var isOauthAccount = false {
+        didSet {
+            password.isHidden = isOauthAccount
+        }
+    }
+
     var isCurrentlyVerifying = false {
         didSet {
             updateView()
@@ -57,49 +64,8 @@ class LoginViewController: BaseViewController {
         updateView()
     }
 
-    func configureView() {
-        password.isEnabled = true
-        activityIndicatorView.hidesWhenStopped = true
-
-        emailAddress.convertToLoginField(
-            placeholder: NSLocalizedString("Email", comment: "Email"), delegate: self)
-        password.convertToLoginField(
-            placeholder: NSLocalizedString("Password", comment: "password"), delegate: self)
-        loginButton.convertToLoginButton(
-            placeholder: NSLocalizedString("Sign In", comment: "Login"))
-        manualConfigButton.convertToLoginButton(
-            placeholder: NSLocalizedString("Manual configuration", comment: "manual"))
-        user.convertToLoginField(
-            placeholder: NSLocalizedString("Name", comment: "username"), delegate: self)
-
-        navigationController?.navigationBar.isHidden = !viewModelOrCrash().isThereAnAccount()
-
-        // hide extended login fields
-        manualConfigButton.isHidden = true
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
-            target: self, action: #selector(LoginViewController.dismissKeyboard))
-        view.addGestureRecognizer(tap)
-
-        navigationItem.hidesBackButton = true
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title:NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"),
-            style:.plain, target:self,
-            action:#selector(self.backButton))
-    }
-
     @objc func backButton() {
         self.dismiss(animated: true, completion: nil)
-    }
-
-    func updateView() {
-        if isCurrentlyVerifying {
-            activityIndicatorView.startAnimating()
-        } else {
-            activityIndicatorView.stopAnimating()
-        }
-        navigationItem.rightBarButtonItem?.isEnabled = !isCurrentlyVerifying
-        loginButton.isEnabled = !isCurrentlyVerifying
-        manualConfigButton.isEnabled = !isCurrentlyVerifying
     }
 
     @objc func dismissKeyboard() {
@@ -194,6 +160,8 @@ extension LoginViewController {
 
 extension LoginViewController {
     func updatePasswordField(email: String?) {
+        guard !isOauthAccount else { return }
+
         let oauth2Possible = viewModelOrCrash().isOAuth2Possible(email: email)
         password.isEnabled = !oauth2Possible
 
@@ -411,5 +379,44 @@ extension LoginViewController {
                 }
         }))
         present(alertView, animated: true, completion: nil)
+    }
+
+    private func configureView() {
+        password.isEnabled = true
+        activityIndicatorView.hidesWhenStopped = true
+
+        emailAddress.placeholder = NSLocalizedString("Email", comment: "Email")
+        password.placeholder = NSLocalizedString("Password", comment: "password")
+        user.placeholder = NSLocalizedString("Name", comment: "username")
+
+        loginButton.convertToLoginButton(
+            placeholder: NSLocalizedString("Sign In", comment: "Login"))
+        manualConfigButton.convertToLoginButton(
+            placeholder: NSLocalizedString("Manual configuration", comment: "manual"))
+
+        navigationController?.navigationBar.isHidden = !viewModelOrCrash().isThereAnAccount()
+
+        // hide extended login fields
+        manualConfigButton.isHidden = true
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self, action: #selector(LoginViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+
+        navigationItem.hidesBackButton = true
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title:NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"),
+            style:.plain, target:self,
+            action:#selector(self.backButton))
+    }
+
+    private func updateView() {
+        if isCurrentlyVerifying {
+            activityIndicatorView.startAnimating()
+        } else {
+            activityIndicatorView.stopAnimating()
+        }
+        navigationItem.rightBarButtonItem?.isEnabled = !isCurrentlyVerifying
+        loginButton.isEnabled = !isCurrentlyVerifying
+        manualConfigButton.isEnabled = !isCurrentlyVerifying
     }
 }
