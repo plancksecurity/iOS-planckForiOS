@@ -23,17 +23,20 @@ extension LoginViewController {
 
     @objc func adjustForKeyboard(notification: NSNotification) {
         scrollViewBottomConstraint.constant = viewNewCenter(notification: notification)
-////        if UIScreen.main.traitCollection.verticalSizeClass == .compact {
-//            buttonsViewCenterYhRConstraint.constant = viewNewCenter(notification: notification)
-////        } else {
 
-//        }
+        guard notification.name == UIResponder.keyboardWillHideNotification,
+            let animationDuration = keyBoardAnimationDuration(notification: notification) else {
+                return
+        }
+        UIView.animate(withDuration: animationDuration) { [weak self] in
+            self?.view.layoutIfNeeded()
+        }
     }
 }
 
 // MARK: - Private
-extension LoginViewController {
 
+extension LoginViewController {
 
     private func viewNewCenter(notification: NSNotification) -> CGFloat {
         guard notification.name == UIResponder.keyboardWillShowNotification,
@@ -43,20 +46,13 @@ extension LoginViewController {
         }
 
         return -keyboardValue.cgRectValue.height
-
-//        if UIScreen.main.traitCollection.verticalSizeClass == .compact {
-//            return heightCompactViewCenter(keyboardValue: keyboardValue)
-//        } else {
-//            return heightRegularViewCenter(keyboardValue: keyboardValue)
-//        }
     }
 
-//    private func heightCompactViewCenter(keyboardValue: NSValue) -> CGFloat {
-//        return 0
-//    }
-//
-//    func heightRegularViewCenter(keyboardValue: NSValue) -> CGFloat {
-//        return -keyboardValue.cgRectValue.height / 2
-//    }
+    private func keyBoardAnimationDuration(notification: NSNotification) -> Double? {
+        guard let duration =
+            notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
+                return nil
+        }
+        return duration
+    }
 }
-
