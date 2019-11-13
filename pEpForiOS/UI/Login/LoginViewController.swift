@@ -28,10 +28,9 @@ class LoginViewController: BaseViewController {
     @IBOutlet var user: UITextField!
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var mainContainerView: UIView!
-    @IBOutlet weak var mainContainerViewCenterYConstraint: NSLayoutConstraint!
-    @IBOutlet weak var stackViewCenterYhCConstraint: NSLayoutConstraint!
-    @IBOutlet weak var buttonsViewCenterYhRConstraint: NSLayoutConstraint!
-
+    @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     @IBOutlet var stackView: UIStackView! //TODO: ALE remove if not used
 
     /// Set in prepare for segue, if the user selected an account with ouath from the menu
@@ -192,20 +191,20 @@ extension LoginViewController: UITextFieldDelegate {
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        stackViewCenterYhCConstraint.constant = stackView.bounds.height / 2 - textField.center.y
-        //        stackViewCenterYConstraint.constant += -(textField.center.y -  mainContainerView.center.y)
-        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
-            [weak self] in
-            self?.view.layoutIfNeeded()
-        })
+//        stackViewCenterYhCConstraint.constant = stackView.bounds.height / 2 - textField.center.y
+//        //        stackViewCenterYConstraint.constant += -(textField.center.y -  mainContainerView.center.y)
+//        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+//            [weak self] in
+//            self?.view.layoutIfNeeded()
+//        })
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        stackViewCenterYhCConstraint.constant = 0
-        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
-            [weak self] in
-            self?.view.layoutIfNeeded()
-        })
+//        stackViewCenterYhCConstraint.constant = 0
+//        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+//            [weak self] in
+//            self?.view.layoutIfNeeded()
+//        })
     }
 }
 
