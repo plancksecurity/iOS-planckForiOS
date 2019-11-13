@@ -82,6 +82,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
+
     deinit {
          NotificationCenter.default.removeObserver(self)
     }
