@@ -263,7 +263,7 @@ extension LoginViewController: AccountVerificationResultDelegate {
 
 extension LoginViewController: LoginViewModelLoginErrorDelegate {
     func handle(loginError: Error) {
-        self.handleLoginError(error: loginError, offerManualSetup: true)
+        handleLoginError(error: loginError, offerManualSetup: true)
     }
 }
 
@@ -271,7 +271,7 @@ extension LoginViewController: LoginViewModelLoginErrorDelegate {
 
 extension LoginViewController: LoginViewModelOAuth2ErrorDelegate {
     func handle(oauth2Error: Error) {
-        self.handleLoginError(error: oauth2Error, offerManualSetup: false)
+        handleLoginError(error: oauth2Error, offerManualSetup: false)
     }
 }
 
@@ -350,17 +350,17 @@ extension LoginViewController {
         if #available(iOS 13, *) {
             Appearance.customiseForLogin(viewController: self)
         } else {
-            self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            self.navigationController?.navigationBar.shadowImage = UIImage()
-            self.navigationController?.navigationBar.isTranslucent = true
-            self.navigationController?.navigationBar.backgroundColor = UIColor.clear
+            navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            navigationController?.navigationBar.shadowImage = UIImage()
+            navigationController?.navigationBar.isTranslucent = true
+            navigationController?.navigationBar.backgroundColor = UIColor.clear
         }
     }
 
     private func handleLoginError(error: Error, offerManualSetup: Bool) {
         Log.shared.error("%@", "\(error)")
-        self.isCurrentlyVerifying = false
+        isCurrentlyVerifying = false
         guard let error = DisplayUserError(withError: error) else {
             // Do nothing. The error type is not suitable to bother the user with.
             return
