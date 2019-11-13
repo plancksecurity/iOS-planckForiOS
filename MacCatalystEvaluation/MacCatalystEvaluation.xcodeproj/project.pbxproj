@@ -24,6 +24,7 @@
 		15889998237C342B00811F9B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1588999B237C342B00811F9B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1588999D237C342B00811F9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		158899A3237C348100811F9B /* MacCatalystEvaluation.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacCatalystEvaluation.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +57,7 @@
 		1588998E237C342800811F9B /* MacCatalystEvaluation */ = {
 			isa = PBXGroup;
 			children = (
+				158899A3237C348100811F9B /* MacCatalystEvaluation.entitlements */,
 				1588998F237C342800811F9B /* AppDelegate.swift */,
 				15889991237C342800811F9B /* SceneDelegate.swift */,
 				15889993237C342800811F9B /* ViewController.swift */,
@@ -284,7 +286,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MacCatalystEvaluation/MacCatalystEvaluation.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				INFOPLIST_FILE = MacCatalystEvaluation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -293,6 +297,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = security.pep.MacCatalystEvaluation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -302,7 +307,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MacCatalystEvaluation/MacCatalystEvaluation.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				INFOPLIST_FILE = MacCatalystEvaluation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -311,6 +318,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = security.pep.MacCatalystEvaluation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
