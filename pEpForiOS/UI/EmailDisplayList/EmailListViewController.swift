@@ -69,6 +69,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
 
+        showNoMessageSelectedIfNeeded()
+
         if !vm.showLoginView {
             updateFilterButtonView()
             vm.startMonitoring() //???: should UI know about startMonitoring?
@@ -80,14 +82,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        guard let isIphone = splitViewController?.isCollapsed else {
-            return
-        }
-        if !isIphone {
-            performSegue(withIdentifier: "showNoMessage", sender: nil)
-        }
-    }
 
     deinit {
          NotificationCenter.default.removeObserver(self)
@@ -247,12 +241,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     private func showNoMessageSelectedIfNeeded() {
-        guard let splitViewController = self.splitViewController else {
-            return
-        }
-        if !splitViewController.isCollapsed {
-            performSegue(withIdentifier: "showNoMessage", sender: nil)
-        }
+        showEmptyDetailViewIfApplicable(
+            message: NSLocalizedString(
+                "Please chose a message",
+                comment: "No messages has been selected for detail view"))
     }
 
     @objc private func settingsChanged() {
@@ -1071,7 +1063,6 @@ extension EmailListViewController: SegueHandlerType {
         case segueShowFilter
         case segueFolderViews
         case segueShowMoveToFolder
-        case showNoMessage
         case segueShowThreadedEmail
         case noSegue
     }
@@ -1182,9 +1173,6 @@ extension EmailListViewController: SegueHandlerType {
             destination.viewModel
                 = model?.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
             destination.appConfig = appConfig
-            break
-        case .showNoMessage:
-            //No initialization needed
             break
         default:
             Log.shared.errorAndCrash("Unhandled segue")
