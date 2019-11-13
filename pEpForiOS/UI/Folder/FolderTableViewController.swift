@@ -23,10 +23,17 @@ class FolderTableViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
+
         if showNext {
             show(folder: UnifiedInbox())
         }
+
         self.navigationController?.setToolbarHidden(false, animated: false)
+
+        showEmptyDetailViewIfApplicable(
+            message: NSLocalizedString(
+                "Please chose a folder",
+                comment: "No folder has been selected yet in the folders VC"))
     }
 
     // MARK: - Setup
@@ -204,35 +211,11 @@ class FolderTableViewController: BaseTableViewController {
 
     // MARK: - Segue
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "newAccountIphone"
-            || segue.identifier == "newAccountIpad"{
-            guard
-                let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? LoginViewController else {
-                    Log.shared.errorAndCrash("Missing VCs")
-                    return
-            }
-            nav.modalPresentationStyle = .fullScreen
-            vc.appConfig = self.appConfig
-            vc.hidesBottomBarWhenPushed = true
-            vc.delegate = self
-
-        } else if segue.identifier == "SettingsSegue" {
-            guard let dvc = segue.destination as? SettingsTableViewController else {
-                Log.shared.errorAndCrash("Error casting DVC")
-                return
-            }
-            dvc.appConfig = self.appConfig
-            dvc.hidesBottomBarWhenPushed = true
-        }
-    }
-
     @IBAction func addAccountTapped(_ sender: Any) {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            performSegue(withIdentifier: "newAccountIpad", sender: self)
+            performSegue(withIdentifier: .newAccountIpad, sender: self)
         } else {
-            performSegue(withIdentifier: "newAccountIphone", sender: self)
+            performSegue(withIdentifier: .newAccountIphone, sender: self)
         }
     }
 
@@ -255,5 +238,41 @@ extension FolderTableViewController: LoginViewControllerDelegate {
         _ loginViewController: LoginViewController) {
         setup()
         showNext = true
+    }
+}
+
+// MARK: - Segue
+
+extension FolderTableViewController: SegueHandlerType {
+    enum SegueIdentifier: String {
+        case newAccountIphone
+        case newAccountIpad
+        case settingsSegue
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let segueId = segueIdentifier(for: segue)
+
+        switch segueId {
+        case .newAccountIphone, .newAccountIpad:
+            guard
+                let nav = segue.destination as? UINavigationController,
+                let vc = nav.rootViewController as? LoginViewController else {
+                    Log.shared.errorAndCrash("Missing VCs")
+                    return
+            }
+            nav.modalPresentationStyle = .fullScreen
+            vc.appConfig = self.appConfig
+            vc.hidesBottomBarWhenPushed = true
+            vc.delegate = self
+
+        case .settingsSegue:
+            guard let dvc = segue.destination as? SettingsTableViewController else {
+                Log.shared.errorAndCrash("Error casting DVC")
+                return
+            }
+            dvc.appConfig = self.appConfig
+            dvc.hidesBottomBarWhenPushed = true
+        }
     }
 }

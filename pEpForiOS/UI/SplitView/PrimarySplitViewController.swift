@@ -33,7 +33,6 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
     func splitViewController(_ splitViewController: UISplitViewController,
                              separateSecondaryFrom primaryViewController: UIViewController)
         -> UIViewController? {
-
             guard let navigationController =
                     splitViewController.viewControllers.first as? UINavigationController,
                 let secondaryNavigationController =
@@ -41,15 +40,17 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
                 secondaryNavigationController.topViewController is EmailViewController /*||
                     secondaryNavigationController.topViewController is ThreadViewController*/ // Message threadding is currently umsupported. The code might be helpful.
                 else {
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let vc = storyboard.instantiateViewController(withIdentifier: "noMessagesViewController")
+                    let storyboard = UIStoryboard(
+                        name: UIStoryboard.noSelectionStoryBoard,
+                        bundle: nil)
+                    let vc = storyboard.instantiateViewController(
+                        withIdentifier: UIStoryboard.nothingSelectedViewController)
                     return vc
             }
             return secondaryNavigationController
     }
 
     func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewController.DisplayMode) {
-
 
         guard let nav = viewControllers.last as? UINavigationController,
             let emailViewController = nav.rootViewController as? EmailViewController else {
