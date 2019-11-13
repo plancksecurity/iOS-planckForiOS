@@ -28,10 +28,6 @@ extension LoginViewController {
 ////        } else {
 
 //        }
-        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
-            [weak self] in
-            self?.view.layoutIfNeeded()
-        })
     }
 }
 
