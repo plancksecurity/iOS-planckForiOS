@@ -79,6 +79,16 @@
             </objects>
             <point key="canvasLocation" x="10635" y="-1077"/>
         </scene>
+        <!--NothingSelected-->
+        <scene sceneID="eeX-Fr-Vs1">
+            <objects>
+                <viewControllerPlaceholder storyboardName="NothingSelected" id="jlA-KV-xmZ" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="C0u-m3-NYA"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nrT-r1-KyC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="10091" y="-423"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="7fi-4c-XJX">
             <objects>
@@ -101,20 +111,12 @@
                 <splitViewController storyboardIdentifier="main.initial.nvc" maximumPrimaryColumnWidth="320" id="N0y-5z-66z" customClass="PrimarySplitViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <connections>
                         <segue destination="vQa-F1-CvY" kind="relationship" relationship="masterViewController" id="LaJ-Ow-wD4"/>
-                        <segue destination="mHw-6L-Bso" kind="relationship" relationship="detailViewController" id="1E7-hz-2AL"/>
+                        <segue destination="jlA-KV-xmZ" kind="relationship" relationship="detailViewController" id="b81-as-g9K"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d4z-SE-fTT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="8334" y="-418"/>
-        </scene>
-        <!--NothingSelected-->
-        <scene sceneID="cPV-MY-jyv">
-            <objects>
-                <viewControllerPlaceholder storyboardName="NothingSelected" id="mHw-6L-Bso" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Qgc-u0-OQQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="9446" y="-706"/>
         </scene>
     </scenes>
     <resources>
