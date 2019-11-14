@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="N0y-5z-66z">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="N0y-5z-66z">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -19,7 +17,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="y1Q-G4-Yvh">
-                            <rect key="frame" x="0.0" y="72" width="375" height="80"/>
+                            <rect key="frame" x="0.0" y="100" width="375" height="80"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NEj-lZ-p6O">
@@ -35,7 +33,6 @@
                                     </state>
                                     <connections>
                                         <action selector="addAccountTapped:" destination="6ra-tc-Aiv" eventType="touchUpInside" id="OYg-F7-CRW"/>
-                                        <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccountIpad" modalPresentationStyle="formSheet" id="aKb-z0-Qyn"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -52,7 +49,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gav-RT-MrD" id="GDF-rs-ueo">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -67,6 +64,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccountIphone" id="W2T-ax-nDz"/>
+                        <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccountIpad" id="VWu-Lk-rKj"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2c-UY-yR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -76,7 +74,9 @@
         <!--AccountCreation-->
         <scene sceneID="rdR-gU-SsC">
             <objects>
-                <viewControllerPlaceholder storyboardName="AccountCreation" id="uKb-Ku-Cng" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="AccountCreation" id="uKb-Ku-Cng" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="HcY-vc-Krh"/>
+                </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7bq-Lz-J44" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="10635" y="-1077"/>
@@ -96,7 +96,7 @@
             <objects>
                 <navigationController id="vQa-F1-CvY" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="9sq-1a-bXm">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -125,6 +125,6 @@
         <image name="button-add" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="aKb-z0-Qyn"/>
+        <segue reference="W2T-ax-nDz"/>
     </inferredMetricsTieBreakers>
 </document>
