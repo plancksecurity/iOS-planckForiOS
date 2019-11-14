@@ -12,18 +12,23 @@ extension LoginViewController {
 
     func configureKeyboardAwareness() {
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(updateScrollViewWithKeyboard),
+                                               selector: #selector(updateScrollViewToHideyboard),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(updateScrollViewWithKeyboard),
+                                               selector: #selector(updateScrollViewToShowKeyboard),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
     }
 
-    @objc func updateScrollViewWithKeyboard(notification: NSNotification) {
-        if notification.name == UIResponder.keyboardWillShowNotification,
-            let textField = firstResponderTextField() {
+    @objc func updateScrollViewToHideyboard(notification: NSNotification) {
+        scrollView.contentInset.bottom = 0
+        scrollView.contentInset.top = 0
+        adjustScrollViewHeight(notification: notification)
+    }
+
+    @objc func updateScrollViewToShowKeyboard(notification: NSNotification) {
+        if let textField = firstResponderTextField() {
             let scrollViewHeight = scrollView.frame.maxY
                 + abs(scrollViewBottomConstraint.constant)
                 - keyBoardHeight(notification: notification)

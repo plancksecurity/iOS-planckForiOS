@@ -210,13 +210,21 @@ extension LoginViewController: UITextFieldDelegate {
 
     func scrollAndMakeVisible(_ textField: UITextField, scrollViewHeight: CGFloat) {
         let textFieldFrames = textField.convert(textField.bounds, to: scrollView)
-        let textFieldDistanceToBottom = scrollViewHeight - (textFieldFrames.maxY - scrollView.contentOffset.y)
-        let textFieldDistanceToTop = textFieldFrames.minY - scrollView.contentOffset.y
+        var newContentOffSet = textFieldFrames.midY - scrollViewHeight / 2
+        let contetOffSetDistanceToSafeArea =
+            scrollView.contentSize.height - newContentOffSet - scrollViewHeight
 
-        if textFieldDistanceToBottom < 50 {
-            scrollUpAndMakeTextFieldVisibleVisible(textFieldDistanceToBottom)
-        } else if textFieldDistanceToTop < 50 {
-            scrollDownAndMakeTextFieldVisibleVisible(textFieldDistanceToTop)
+        //Add padding if can not scroll enough
+        if newContentOffSet < 0 {
+            scrollView.contentInset.top = abs(newContentOffSet)
+        } else if contetOffSetDistanceToSafeArea < 0 {
+            scrollView.contentInset.bottom = abs(contetOffSetDistanceToSafeArea)
+            newContentOffSet = scrollView.contentSize.height
+                - scrollViewHeight
+                + abs(contetOffSetDistanceToSafeArea)
+        }
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.scrollView.contentOffset.y = newContentOffSet
         }
     }
 }
@@ -430,19 +438,5 @@ extension LoginViewController {
         navigationItem.rightBarButtonItem?.isEnabled = !isCurrentlyVerifying
         loginButton.isEnabled = !isCurrentlyVerifying
         manualConfigButton.isEnabled = !isCurrentlyVerifying
-    }
-
-    private func scrollUpAndMakeTextFieldVisibleVisible(_ textFieldDistanceToBottom: CGFloat) {
-        let contentOffSet = scrollView.contentOffset.y
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            self?.scrollView.contentOffset.y = contentOffSet + 50 - textFieldDistanceToBottom
-        }
-    }
-
-    private func scrollDownAndMakeTextFieldVisibleVisible(_ textFieldDistanceToTop: CGFloat) {
-        let contentOffSet = scrollView.contentOffset.y
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            self?.scrollView.contentOffset.y = contentOffSet - 50 + textFieldDistanceToTop
-        }
     }
 }
