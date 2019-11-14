@@ -52,6 +52,7 @@ class LoginViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupViewModel()
         configureView()
         configureAppearance()
@@ -191,12 +192,12 @@ extension LoginViewController: UITextFieldDelegate {
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-//        stackViewCenterYhCConstraint.constant = stackView.bounds.height / 2 - textField.center.y
-//        //        stackViewCenterYConstraint.constant += -(textField.center.y -  mainContainerView.center.y)
-//        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
-//            [weak self] in
-//            self?.view.layoutIfNeeded()
-//        })
+        //If is iOS13+ then this will be trigger in keyboard will appear
+        if !ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 13,
+                                                                          minorVersion: 0,
+                                                                          patchVersion: 0)) {
+            scrollAndMakeVisible(textField, scrollViewHeight: scrollView.frame.maxY)
+        }
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -205,6 +206,18 @@ extension LoginViewController: UITextFieldDelegate {
 //            [weak self] in
 //            self?.view.layoutIfNeeded()
 //        })
+    }
+
+    func scrollAndMakeVisible(_ textField: UITextField, scrollViewHeight: CGFloat) {
+        let textFieldFrames = textField.convert(textField.bounds, to: scrollView)
+        let textFieldDistanceToBottom = scrollViewHeight - (textFieldFrames.maxY - scrollView.contentOffset.y)
+        let textFieldDistanceToTop = textFieldFrames.minY - scrollView.contentOffset.y
+
+        if textFieldDistanceToBottom < 50 {
+            scrollUpAndMakeTextFieldVisibleVisible(textFieldDistanceToBottom)
+        } else if textFieldDistanceToTop < 50 {
+            scrollDownAndMakeTextFieldVisibleVisible(textFieldDistanceToTop)
+        }
     }
 }
 
@@ -417,5 +430,19 @@ extension LoginViewController {
         navigationItem.rightBarButtonItem?.isEnabled = !isCurrentlyVerifying
         loginButton.isEnabled = !isCurrentlyVerifying
         manualConfigButton.isEnabled = !isCurrentlyVerifying
+    }
+
+    private func scrollUpAndMakeTextFieldVisibleVisible(_ textFieldDistanceToBottom: CGFloat) {
+        let contentOffSet = scrollView.contentOffset.y
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.scrollView.contentOffset.y = contentOffSet + 50 - textFieldDistanceToBottom
+        }
+    }
+
+    private func scrollDownAndMakeTextFieldVisibleVisible(_ textFieldDistanceToTop: CGFloat) {
+        let contentOffSet = scrollView.contentOffset.y
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.scrollView.contentOffset.y = contentOffSet - 50 + textFieldDistanceToTop
+        }
     }
 }

@@ -587,6 +587,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
                                                             <action selector="emailChanged:" destination="clh-8B-z2B" eventType="editingChanged" id="lyn-wg-lDp"/>
+                                                            <outlet property="delegate" destination="clh-8B-z2B" id="wfT-nP-T86"/>
                                                         </connections>
                                                     </textField>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="e3d-56-GP8" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS">
@@ -610,6 +611,9 @@
                                                                 <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="clh-8B-z2B" id="wbY-q7-Tw7"/>
+                                                        </connections>
                                                     </textField>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pqA-KX-peU" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS">
                                                         <rect key="frame" x="0.0" y="218" width="188" height="36"/>
@@ -632,6 +636,9 @@
                                                                 <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="clh-8B-z2B" id="3cK-VA-jwZ"/>
+                                                        </connections>
                                                     </textField>
                                                 </subviews>
                                                 <constraints>

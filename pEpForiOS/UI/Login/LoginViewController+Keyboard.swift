@@ -12,25 +12,50 @@ extension LoginViewController {
 
     func configureKeyboardAwareness() {
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(adjustForKeyboard),
+                                               selector: #selector(updateScrollViewWithKeyboard),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(adjustForKeyboard),
+                                               selector: #selector(updateScrollViewWithKeyboard),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
     }
 
-    @objc func adjustForKeyboard(notification: NSNotification) {
-        scrollViewBottomConstraint.constant = viewNewCenter(notification: notification)
+    @objc func updateScrollViewWithKeyboard(notification: NSNotification) {
+        if notification.name == UIResponder.keyboardWillShowNotification,
+            let textField = firstResponderTextField() {
+            let scrollViewHeight = scrollView.frame.maxY
+                + abs(scrollViewBottomConstraint.constant)
+                - keyBoardHeight(notification: notification)
+            scrollAndMakeVisible(textField, scrollViewHeight: scrollViewHeight)
+        }
+
+        adjustScrollViewHeight(notification: notification)
+    }
+
+    private func adjustScrollViewHeight(notification: NSNotification) {
+        scrollViewBottomConstraint.constant = -keyBoardHeight(notification: notification)
 
         guard notification.name == UIResponder.keyboardWillHideNotification,
             let animationDuration = keyBoardAnimationDuration(notification: notification) else {
-                return
+            return
         }
         UIView.animate(withDuration: animationDuration) { [weak self] in
             self?.view.layoutIfNeeded()
         }
+    }
+
+    private func firstResponderTextField() -> UITextField? {
+        if emailAddress.isFirstResponder {
+            return emailAddress
+        }
+        if password.isFirstResponder {
+            return password
+        }
+        if user.isFirstResponder {
+            return user
+        }
+        return nil
     }
 }
 
@@ -38,14 +63,14 @@ extension LoginViewController {
 
 extension LoginViewController {
 
-    private func viewNewCenter(notification: NSNotification) -> CGFloat {
+    private func keyBoardHeight(notification: NSNotification) -> CGFloat {
         guard notification.name == UIResponder.keyboardWillShowNotification,
             let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
                 //Keyboard is hidding, move view to original center
                 return 0
         }
 
-        return -keyboardValue.cgRectValue.height
+        return keyboardValue.cgRectValue.height
     }
 
     private func keyBoardAnimationDuration(notification: NSNotification) -> Double? {
