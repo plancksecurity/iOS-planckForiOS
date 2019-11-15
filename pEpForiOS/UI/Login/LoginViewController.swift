@@ -438,7 +438,6 @@ extension LoginViewController {
         view.addGestureRecognizer(tap)
 
         dismissViewButton.setTitle(NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"), for: .normal)
-        mainContainerView.layoutIfNeeded()
     }
 
     private func updateView() {
