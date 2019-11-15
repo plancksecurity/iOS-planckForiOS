@@ -29,15 +29,16 @@ extension AppSettings {
 // MARK: - AppSettings
 
 /// Signleton representing and managing the App's settings.
-public final class AppSettings {
+public final class AppSettings: NSObject {
 
     // MARK: - Singleton
     
     static public let shared = AppSettings()
 
-    private init() {
+    private override init() {
+        super.init()
         setup()
-        registerForKeySyncDeviceGroupStateChangeNotification()
+//        registerForKeySyncDeviceGroupStateChangeNotification()
     }
 
     deinit {
@@ -210,10 +211,4 @@ extension AppSettings: AppSettingsProtocol {
                                          forKey: AppSettings.keyLastKnowDeviceGroupStateRawValue)
         }
     }
-}
-
-// MARK: - Notifications
-
-extension AppSettings {
-
 }

@@ -25,12 +25,12 @@ extension AppSettings {
 
     @objc
     private func handleDeviceGroupStateChangeNotification(userInfo: [String: Any]) {
-        guard
-            let newState = userInfo[DeviceGroupState.notificationInfoDictKeyDeviceGroupState] as? DeviceGroupState
-            else {
-                Log.shared.errorAndCrash("Missing data")
-                return
-        }
-        AppSettings.shared.lastKnownDeviceGroupState = newState
+//        guard
+//            let newState = userInfo[DeviceGroupState.notificationInfoDictKeyDeviceGroupState] as? DeviceGroupState
+//            else {
+//                Log.shared.errorAndCrash("Missing data")
+//                return
+//        }
+//        AppSettings.shared.lastKnownDeviceGroupState = newState
     }
 }
