@@ -128,6 +128,26 @@ class LoginViewController: BaseViewController {
     @IBAction func emailChanged(_ sender: UITextField) {
         updatePasswordField(email: sender.text)
     }
+
+    func scrollAndMakeVisible(_ textField: UITextField, scrollViewHeight: CGFloat) {
+        let textFieldFrames = textField.convert(textField.bounds, to: scrollView)
+        var newContentOffSet = textFieldFrames.midY - scrollViewHeight / 2
+        let contetOffSetDistanceToSafeArea =
+            scrollView.contentSize.height - newContentOffSet - scrollViewHeight
+
+        //Add padding if can not scroll enough
+        if newContentOffSet < 0 {
+            scrollView.contentInset.top = abs(newContentOffSet)
+        } else if contetOffSetDistanceToSafeArea < 0 {
+            scrollView.contentInset.bottom = abs(contetOffSetDistanceToSafeArea)
+            newContentOffSet = scrollView.contentSize.height
+                - scrollViewHeight
+                + abs(contetOffSetDistanceToSafeArea)
+        }
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.scrollView.contentOffset.y = newContentOffSet
+        }
+    }
 }
 
 // MARK: - View model
@@ -208,24 +228,11 @@ extension LoginViewController: UITextFieldDelegate {
 //        })
     }
 
-    func scrollAndMakeVisible(_ textField: UITextField, scrollViewHeight: CGFloat) {
-        let textFieldFrames = textField.convert(textField.bounds, to: scrollView)
-        var newContentOffSet = textFieldFrames.midY - scrollViewHeight / 2
-        let contetOffSetDistanceToSafeArea =
-            scrollView.contentSize.height - newContentOffSet - scrollViewHeight
-
-        //Add padding if can not scroll enough
-        if newContentOffSet < 0 {
-            scrollView.contentInset.top = abs(newContentOffSet)
-        } else if contetOffSetDistanceToSafeArea < 0 {
-            scrollView.contentInset.bottom = abs(contetOffSetDistanceToSafeArea)
-            newContentOffSet = scrollView.contentSize.height
-                - scrollViewHeight
-                + abs(contetOffSetDistanceToSafeArea)
-        }
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            self?.scrollView.contentOffset.y = newContentOffSet
-        }
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        scrollAndMakeVisible(textField, scrollViewHeight: scrollView.bounds.height)
+        return true
     }
 }
 
