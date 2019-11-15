@@ -26,7 +26,6 @@ class LoginViewController: BaseViewController {
     @IBOutlet var manualConfigButton: UIButton!
     @IBOutlet var loginButton: UIButton!
     @IBOutlet var user: UITextField!
-    @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var mainContainerView: UIView!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -271,6 +270,7 @@ extension LoginViewController: AccountVerificationResultDelegate {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
+            LoadingInterface.removeLoadingInterface()
             switch result {
             case .ok:
                 me.delegate?.loginViewControllerDidCreateNewAccount(me)
@@ -411,7 +411,6 @@ extension LoginViewController {
 
     private func configureView() {
         password.isEnabled = true
-        activityIndicatorView.hidesWhenStopped = true
 
         emailAddress.placeholder = NSLocalizedString("Email", comment: "Email")
         password.placeholder = NSLocalizedString("Password", comment: "password")
@@ -433,9 +432,9 @@ extension LoginViewController {
 
     private func updateView() {
         if isCurrentlyVerifying {
-            activityIndicatorView.startAnimating()
+            LoadingInterface.showLoadingInterface()
         } else {
-            activityIndicatorView.stopAnimating()
+            LoadingInterface.removeLoadingInterface()
         }
 
         navigationController?.navigationBar.isHidden = true
