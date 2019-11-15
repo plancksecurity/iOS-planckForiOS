@@ -30,8 +30,9 @@ class LoginViewController: BaseViewController {
     @IBOutlet weak var mainContainerView: UIView!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollView: UIScrollView!
-    
-    @IBOutlet var stackView: UIStackView! //TODO: ALE remove if not used
+    @IBOutlet weak var dismissViewButton: UIButton!
+
+    @IBOutlet var stackView: UIStackView!
 
     /// Set in prepare for segue, if the user selected an account with ouath from the menu
     var isOauthAccount = false {
@@ -64,8 +65,8 @@ class LoginViewController: BaseViewController {
         updateView()
     }
 
-    @objc func backButton() {
-        self.dismiss(animated: true, completion: nil)
+    @IBAction func dismissButtonAction(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
 
     @objc func dismissKeyboard() {
@@ -421,19 +422,13 @@ extension LoginViewController {
         manualConfigButton.convertToLoginButton(
             placeholder: NSLocalizedString("Manual configuration", comment: "manual"))
 
-        navigationController?.navigationBar.isHidden = !viewModelOrCrash().isThereAnAccount()
-
         // hide extended login fields
         manualConfigButton.isHidden = true
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self, action: #selector(LoginViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
 
-        navigationItem.hidesBackButton = true
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title:NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"),
-            style:.plain, target:self,
-            action:#selector(self.backButton))
+        dismissViewButton.setTitle(NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"), for: .normal)
     }
 
     private func updateView() {
@@ -442,7 +437,12 @@ extension LoginViewController {
         } else {
             activityIndicatorView.stopAnimating()
         }
-        navigationItem.rightBarButtonItem?.isEnabled = !isCurrentlyVerifying
+
+        navigationController?.navigationBar.isHidden = true
+
+        dismissViewButton.isHidden = !viewModelOrCrash().isThereAnAccount()
+        dismissViewButton.isEnabled = !isCurrentlyVerifying
+
         loginButton.isEnabled = !isCurrentlyVerifying
         manualConfigButton.isEnabled = !isCurrentlyVerifying
     }
