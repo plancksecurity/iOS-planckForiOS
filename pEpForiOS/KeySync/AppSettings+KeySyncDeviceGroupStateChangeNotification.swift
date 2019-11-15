@@ -18,19 +18,19 @@ extension AppSettings {
 
     func registerForKeySyncDeviceGroupStateChangeNotification() {
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleDeviceGroupStateChangeNotification(userInfo:)),
+                                               selector: #selector(handleDeviceGroupStateChangeNotification(_:)),
                                                name: Notification.Name.pEpDeviceGroupStateChange,
                                                object: nil)
     }
 
     @objc
-    private func handleDeviceGroupStateChangeNotification(userInfo: [String: Any]) {
-//        guard
-//            let newState = userInfo[DeviceGroupState.notificationInfoDictKeyDeviceGroupState] as? DeviceGroupState
-//            else {
-//                Log.shared.errorAndCrash("Missing data")
-//                return
-//        }
-//        AppSettings.shared.lastKnownDeviceGroupState = newState
+    private func handleDeviceGroupStateChangeNotification(_ notification: Notification) {
+        guard
+            let newState = notification.userInfo?[DeviceGroupState.notificationInfoDictKeyDeviceGroupState] as? DeviceGroupState
+            else {
+                Log.shared.errorAndCrash("Missing data")
+                return
+        }
+        AppSettings.shared.lastKnownDeviceGroupState = newState
     }
 }
