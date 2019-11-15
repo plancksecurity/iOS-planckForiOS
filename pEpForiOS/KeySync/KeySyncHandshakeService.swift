@@ -54,11 +54,6 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
             }
         }
     }
-
-    func showCurrentlyGroupingDevices() {
-        //Ignoring for now. We show the syncing animation right away, when the user press Sync button.
-        //So nothing to do here :-/
-    }
     
     func cancelHandshake() {
         DispatchQueue.main.async { [weak self] in
