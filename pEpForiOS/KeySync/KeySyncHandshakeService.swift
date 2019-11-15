@@ -12,7 +12,7 @@ import PEPObjCAdapterFramework
 class KeySyncHandshakeService {
     weak var presenter: UIViewController?
     
-    private var pEpSyncWizard: PEPPageViewController?
+    private var pEpSyncWizard: KeySyncWizardViewController?
 }
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
@@ -57,7 +57,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
     
     func cancelHandshake() {
         DispatchQueue.main.async { [weak self] in
-            guard let keySyncWizard = self?.presenter?.presentedViewController as? PEPPageViewController else {
+            guard let keySyncWizard = self?.presenter?.presentedViewController as? KeySyncWizardViewController else {
                 return
             }
             keySyncWizard.dismiss()
