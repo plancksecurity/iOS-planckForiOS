@@ -26,8 +26,6 @@ struct KeySyncWizard {
     static func fromStoryboard(meFPR: String,
                                partnerFPR: String,
                                isNewGroup: Bool,
-                               keySyncDeviceGroupService:
-        KeySyncDeviceGroupServiceProtocol = KeySyncDeviceGroupService(),
                                completion: @escaping (KeySyncWizard.Action) -> Void )
         -> PEPPageViewController? {
 
@@ -38,8 +36,7 @@ struct KeySyncWizard {
                                         pageCompletion: completion,
                                         meFPR: meFPR,
                                         partnerFPR: partnerFPR,
-                                        isNewGroup: isNewGroup,
-                                        keySyncDeviceGroupService: keySyncDeviceGroupService)
+                                        isNewGroup: isNewGroup)
             pEpPageViewController.views = pageViews
 
             pEpPageViewController.modalTransitionStyle = .crossDissolve
@@ -57,8 +54,7 @@ extension KeySyncWizard {
                                     pageCompletion: @escaping (KeySyncWizard.Action) -> Void,
                                     meFPR: String,
                                     partnerFPR: String,
-                                    isNewGroup: Bool,
-                                    keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol)
+                                    isNewGroup: Bool)
         -> [UIViewController] {
 
             guard let introView = introView(isNewGroup: isNewGroup,
@@ -71,7 +67,6 @@ extension KeySyncWizard {
                 let animationView = animationView(page: page, pageCompletion: pageCompletion),
                 let completionView = completionView(page: page,
                                                     isNewGroup: isNewGroup,
-                                                    keySyncDeviceGroupService: keySyncDeviceGroupService,
                                                     pageCompletion: pageCompletion) else {
                                                         return []
             }
@@ -176,7 +171,6 @@ extension KeySyncWizard {
 
     static private func completionView(page: PEPPageViewController,
                                        isNewGroup: Bool,
-                                       keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol,
                                        pageCompletion: @escaping (KeySyncWizard.Action) -> Void)
         -> PEPAlertViewController? {
             let completionTitle = alertTitle()
@@ -193,7 +187,7 @@ extension KeySyncWizard {
             let completionLeavelAction = PEPUIAlertAction(title: completionLeavelTitle,
                                                           style: .pEpRed,
                                                           handler: { [weak page] alert in
-                                                            leaveDeviceGroup(keySyncDeviceGroupService)
+                                                            leaveDeviceGroup()
                                                             page?.dismiss()
             })
 
@@ -209,10 +203,9 @@ extension KeySyncWizard {
             return pepAlertViewController
     }
 
-    static private func leaveDeviceGroup(_ keySyncDeviceGroupService:
-        KeySyncDeviceGroupServiceProtocol) {
+    static private func leaveDeviceGroup() {
         do {
-            try keySyncDeviceGroupService.leaveDeviceGroup()
+            try KeySyncDeviceGroupUtil.leaveDeviceGroup()
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)
         }
