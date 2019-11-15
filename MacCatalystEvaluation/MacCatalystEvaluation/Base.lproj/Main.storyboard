@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5TT-bc-L2E">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5TT-bc-L2E" initialMenu="FZs-L7-x2I">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -32,7 +33,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="SKA-ir-MwH">
-                                <rect key="frame" x="0.0" y="88" width="414" height="120"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="180"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MtA-9Y-TfG">
                                         <rect key="frame" x="192" y="0.0" width="30" height="30"/>
@@ -60,6 +61,20 @@
                                         <state key="normal" title="Show Action Sheet"/>
                                         <connections>
                                             <action selector="showActionSheet:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sE2-ss-7Pe"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ZI-Vc-6d6">
+                                        <rect key="frame" x="129" y="120" width="156" height="30"/>
+                                        <state key="normal" title="Write &amp; Read Keychain"/>
+                                        <connections>
+                                            <action selector="writeAndReadKeychainPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4V5-GR-l2l"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gVG-Nh-kjM">
+                                        <rect key="frame" x="146" y="150" width="122" height="30"/>
+                                        <state key="normal" title="ShowMediaPicker"/>
+                                        <connections>
+                                            <action selector="showMediaPicker:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZZI-sS-M8x"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -182,7 +197,7 @@
         <!--Split View Controller-->
         <scene sceneID="5i6-3e-2d0">
             <objects>
-                <splitViewController id="5TT-bc-L2E" sceneMemberID="viewController">
+                <splitViewController maximumPrimaryColumnWidth="800" id="5TT-bc-L2E" sceneMemberID="viewController">
                     <connections>
                         <segue destination="jj6-Vi-so7" kind="relationship" relationship="detailViewController" id="M30-pa-oNr"/>
                         <segue destination="cVu-zP-0lZ" kind="relationship" relationship="masterViewController" id="2S0-9N-et3"/>
@@ -191,6 +206,32 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QUy-Xy-b5l" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-800" y="-900"/>
+        </scene>
+        <!--Main Menu-->
+        <scene sceneID="VSI-zL-gJQ">
+            <objects>
+                <menu isSystemItem="YES" title="Main Menu" identifier="com.apple.menu.root" id="FZs-L7-x2I" sceneMemberID="viewController">
+                    <children>
+                        <menu isSystemItem="YES" title="File" identifier="com.apple.menu.file" id="xln-f0-CXs">
+                            <children>
+                                <menu title="pEp Submenu" id="ihq-pj-ahb">
+                                    <children>
+                                        <command title="pEp do it 1" id="NEu-Ei-eGR"/>
+                                        <command title="pEp do it 2" input="r" id="VHz-BG-cN9">
+                                            <keyModifierFlags key="modifierFlags" command="YES"/>
+                                        </command>
+                                    </children>
+                                </menu>
+                            </children>
+                        </menu>
+                    </children>
+                    <systemMenuChildDeletions>
+                        <menuDeletion anchor="com.apple.menu.format"/>
+                    </systemMenuChildDeletions>
+                </menu>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xVV-8Y-hKS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1669" y="-771"/>
         </scene>
     </scenes>
 </document>
