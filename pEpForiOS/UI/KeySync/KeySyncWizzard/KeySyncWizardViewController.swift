@@ -20,6 +20,8 @@ extension KeySyncWizardViewController {
 final class KeySyncWizardViewController: PEPPageViewControllerBase {
     static let storyboardId = "KeySyncWizardViewController"
 
+    // MARK: - Life Cycle
+
     /// All the `init`s exist soley to be able to set the transitionStyle.
     override init(transitionStyle: UIPageViewController.TransitionStyle,
                   navigationOrientation: UIPageViewController.NavigationOrientation,
@@ -32,6 +34,12 @@ final class KeySyncWizardViewController: PEPPageViewControllerBase {
     /// All the `init`s exist soley to be able to set the transitionStyle.
     required init?(coder aDecoder: NSCoder) {
         self.init()
+    }
+
+    // MARK: -
+
+    var isCurrentlyShowingSuccessfullyGroupedView: Bool {
+        return isLast()
     }
 
     /// init KeySyncWizardViewController, to guide the user with the KeySync proccess.

@@ -13,10 +13,39 @@ class KeySyncHandshakeService {
     weak var presenter: UIViewController?
     
     private var pEpSyncWizard: KeySyncWizardViewController?
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+}
+
+// MARK: - KeySyncDeviceGroupStateChangeNotification
+
+extension KeySyncHandshakeService {
+
+    func registerForKeySyncDeviceGroupStateChangeNotification() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleDeviceGroupStateChangeNotification(_:)),
+                                               name: Notification.Name.pEpDeviceGroupStateChange,
+                                               object: nil)
+    }
+
+    @objc
+    private func handleDeviceGroupStateChangeNotification(_ notification: Notification) {
+        guard let wizzard = pEpSyncWizard else {
+            Log.shared.errorAndCrash("Invalid state")
+            return
+        }
+        guard !wizzard.isCurrentlyShowingSuccessfullyGroupedView else {
+            // We want to dismiss any wizzard view but the SuccessfullyGrouped one.
+            return
+        }
+        wizzard.dismiss()
+    }
 }
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
-    
+
     func showHandshake(me: PEPIdentity,
                        partner: PEPIdentity,
                        isNewGroup: Bool,
@@ -41,20 +70,20 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                 viewController = pEpModal
             }
             self?.pEpSyncWizard = viewController.presentKeySyncWizard(meFPR: meFPR,
-                                                                partnerFPR: partnerFPR,
-                                                                isNewGroup: isNewGroup) { action in
-                                                                    switch action {
-                                                                    case .accept:
-                                                                        completion?(.accepted)
-                                                                    case .cancel:
-                                                                        completion?(.cancel)
-                                                                    case .decline:
-                                                                        completion?(.rejected)
-                                                                    }
+                                                                      partnerFPR: partnerFPR,
+                                                                      isNewGroup: isNewGroup) { action in
+                                                                        switch action {
+                                                                        case .accept:
+                                                                            completion?(.accepted)
+                                                                        case .cancel:
+                                                                            completion?(.cancel)
+                                                                        case .decline:
+                                                                            completion?(.rejected)
+                                                                        }
             }
         }
     }
-    
+
     func cancelHandshake() {
         DispatchQueue.main.async { [weak self] in
             guard let keySyncWizard = self?.presenter?.presentedViewController as? KeySyncWizardViewController else {
@@ -63,7 +92,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
             keySyncWizard.dismiss()
         }
     }
-    
+
     func showSuccessfullyGrouped() {
         guard let pEpSyncWizard = pEpSyncWizard else {
             return
