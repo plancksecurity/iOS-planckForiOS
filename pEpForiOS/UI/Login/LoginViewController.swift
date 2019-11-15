@@ -30,6 +30,8 @@ class LoginViewController: BaseViewController {
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var dismissViewButton: UIButton!
+    @IBOutlet weak var pEpSyncViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var pEpSyncView: UIView!
 
     @IBOutlet var stackView: UIStackView!
 
@@ -400,10 +402,16 @@ extension LoginViewController {
             title: NSLocalizedString(
                 "OK",
                 comment: "UIAlertAction ok after error"),
-            style: .default, handler: {action in
+            style: .default, handler: { [weak self] action in
                 if offerManualSetup {
-                    self.manualConfigButton.isHidden = false
-                    self.offerManualSetup = true
+                    self?.offerManualSetup = true
+                    self?.manualConfigButton.alpha = 0
+                    self?.manualConfigButton.isHidden = false
+                    self?.pEpSyncViewLeadingConstraint.constant = 0
+                    UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+                        self?.manualConfigButton.alpha = 1
+                        self?.mainContainerView.layoutIfNeeded()
+                    })
                 }
         }))
         present(alertView, animated: true, completion: nil)
@@ -423,11 +431,13 @@ extension LoginViewController {
 
         // hide extended login fields
         manualConfigButton.isHidden = true
+        pEpSyncViewLeadingConstraint.constant = stackView.frame.midX - pEpSyncView.bounds.midX
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self, action: #selector(LoginViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
 
         dismissViewButton.setTitle(NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"), for: .normal)
+        mainContainerView.layoutIfNeeded()
     }
 
     private func updateView() {

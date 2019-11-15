@@ -756,14 +756,17 @@
                                                 </variation>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bP7-By-IPD">
-                                                <rect key="frame" x="15" y="8" width="48" height="30"/>
+                                                <rect key="frame" x="15" y="15" width="48" height="30"/>
                                                 <state key="normal" title="Cancel">
                                                     <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="dismissButtonAction:" destination="clh-8B-z2B" eventType="touchUpInside" id="Fp5-45-NHz"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="bP7-By-IPD" firstAttribute="top" secondItem="d4O-yC-tc7" secondAttribute="top" constant="8" id="3kf-5d-Sc4"/>
+                                            <constraint firstItem="bP7-By-IPD" firstAttribute="top" secondItem="d4O-yC-tc7" secondAttribute="top" constant="15" id="3kf-5d-Sc4"/>
                                             <constraint firstItem="gsz-7C-yke" firstAttribute="top" secondItem="8nk-hU-BvN" secondAttribute="bottom" constant="35" id="7aS-8l-hE8"/>
                                             <constraint firstItem="gsz-7C-yke" firstAttribute="leading" secondItem="8nk-hU-BvN" secondAttribute="leading" id="EfY-cM-oX6"/>
                                             <constraint firstItem="8nk-hU-BvN" firstAttribute="trailing" secondItem="gsz-7C-yke" secondAttribute="trailing" id="GmD-Wm-JOd"/>
@@ -847,6 +850,8 @@
                         <outlet property="loginButton" destination="i7a-Xk-Hbw" id="wR5-NL-ngU"/>
                         <outlet property="mainContainerView" destination="d4O-yC-tc7" id="Kg2-jV-XNd"/>
                         <outlet property="manualConfigButton" destination="JT1-ND-6bH" id="1zL-Jx-gfO"/>
+                        <outlet property="pEpSyncView" destination="zg6-3H-SnV" id="Vvp-Si-Beh"/>
+                        <outlet property="pEpSyncViewLeadingConstraint" destination="Hzq-xK-M9c" id="s9X-8H-SGC"/>
                         <outlet property="password" destination="e3d-56-GP8" id="Ab6-1O-YUi"/>
                         <outlet property="scrollView" destination="RXQ-HQ-bsM" id="Jba-T4-Mwi"/>
                         <outlet property="scrollViewBottomConstraint" destination="H9T-wo-ehg" id="QWM-fs-2ko"/>
