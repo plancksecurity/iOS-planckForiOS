@@ -139,7 +139,6 @@ class LoginViewController: BaseViewController {
 
         //Add padding if can not scroll enough
         if newContentOffSet < 0 {
-            newContentOffSet = 0
             scrollView.contentInset.top = abs(newContentOffSet)
         } else if contetOffSetDistanceToSafeArea < 0 {
             scrollView.contentInset.bottom = abs(contetOffSetDistanceToSafeArea)
@@ -148,7 +147,9 @@ class LoginViewController: BaseViewController {
                 + abs(contetOffSetDistanceToSafeArea)
         }
 
-        scrollView.setContentOffset(CGPoint(x: 0, y: newContentOffSet), animated: true)
+        DispatchQueue.main.async { [weak self] in
+            self?.scrollView.setContentOffset(CGPoint(x: 0, y: newContentOffSet), animated: true)
+        }
     }
 }
 

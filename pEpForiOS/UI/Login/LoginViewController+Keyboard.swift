@@ -29,13 +29,7 @@ extension LoginViewController {
 
     @objc func updateScrollViewToShowKeyboard(notification: NSNotification) {
         adjustScrollViewHeight(notification: notification)
-
-        if let textField = firstResponderTextField() {
-            let scrollViewHeight = scrollView.frame.maxY
-                + abs(scrollViewBottomConstraint.constant)
-                - keyBoardHeight(notification: notification)
-            scrollAndMakeVisible(textField, scrollViewHeight: scrollViewHeight)
-        }
+        centerFirstResponder(notification: notification)
     }
 
     private func adjustScrollViewHeight(notification: NSNotification) {
@@ -50,6 +44,14 @@ extension LoginViewController {
                        animations: { [weak self] in
                         self?.view.layoutIfNeeded()
         })
+    }
+
+    private func centerFirstResponder(notification: NSNotification) {
+        guard let textField = firstResponderTextField() else { return }
+        let scrollViewHeight = scrollView.frame.maxY
+            + abs(scrollViewBottomConstraint.constant)
+            - keyBoardHeight(notification: notification)
+        scrollAndMakeVisible(textField, scrollViewHeight: scrollViewHeight)
     }
 
     private func firstResponderTextField() -> UITextField? {
