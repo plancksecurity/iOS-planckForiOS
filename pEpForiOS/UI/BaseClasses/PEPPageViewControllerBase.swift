@@ -30,13 +30,13 @@ class PEPPageViewControllerBase: UIPageViewController {
         super.viewWillAppear(animated)
 
         navigationController?.isToolbarHidden = false
-        if !didLoadValues {
+        if !didLoadValues { //!!!: //BUFF: ugly.
             didLoadValues = true
             dataSource = showDots ? self : nil //nil dataSource will hide dots and disable scrolling
             if !isScrollEnable {
                 disableScrolling()
             }
-            if let firstView = views.first {
+            if let firstView = views.first { //!!!: //BUFF: is views.first == nil a valid cas?
                 setViewControllers([firstView], direction: .forward, animated: true, completion: nil)
             }
         }

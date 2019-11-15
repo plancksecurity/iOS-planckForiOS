@@ -14,6 +14,10 @@ class KeySyncHandshakeService {
     
     private var pEpSyncWizard: KeySyncWizardViewController?
 
+    init() {
+        registerForKeySyncDeviceGroupStateChangeNotification()
+    }
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -33,7 +37,7 @@ extension KeySyncHandshakeService {
     @objc
     private func handleDeviceGroupStateChangeNotification(_ notification: Notification) {
         guard let wizzard = pEpSyncWizard else {
-            Log.shared.errorAndCrash("Invalid state")
+            // This is a valid case. pEpSyncWizard is initiated on demand.
             return
         }
         guard !wizzard.isCurrentlyShowingSuccessfullyGroupedView else {
