@@ -755,44 +755,40 @@
                                                     </mask>
                                                 </variation>
                                             </view>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XXg-HJ-bTc">
-                                                <rect key="frame" x="15" y="8" width="50" height="32"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bP7-By-IPD">
+                                                <rect key="frame" x="15" y="8" width="48" height="30"/>
                                                 <state key="normal" title="Cancel">
-                                                    <color key="titleColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                                    <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                                 </state>
-                                                <connections>
-                                                    <action selector="dismissButtonAction:" destination="clh-8B-z2B" eventType="touchUpInside" id="T27-cU-L2I"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
+                                            <constraint firstItem="bP7-By-IPD" firstAttribute="top" secondItem="d4O-yC-tc7" secondAttribute="top" constant="8" id="3kf-5d-Sc4"/>
                                             <constraint firstItem="gsz-7C-yke" firstAttribute="top" secondItem="8nk-hU-BvN" secondAttribute="bottom" constant="35" id="7aS-8l-hE8"/>
                                             <constraint firstItem="gsz-7C-yke" firstAttribute="leading" secondItem="8nk-hU-BvN" secondAttribute="leading" id="EfY-cM-oX6"/>
                                             <constraint firstItem="8nk-hU-BvN" firstAttribute="trailing" secondItem="gsz-7C-yke" secondAttribute="trailing" id="GmD-Wm-JOd"/>
                                             <constraint firstItem="gsz-7C-yke" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8nk-hU-BvN" secondAttribute="trailing" constant="30" id="Ibq-10-F28"/>
                                             <constraint firstAttribute="trailing" secondItem="gsz-7C-yke" secondAttribute="trailing" constant="20" id="Iwv-Gn-PqD"/>
+                                            <constraint firstItem="bP7-By-IPD" firstAttribute="leading" secondItem="d4O-yC-tc7" secondAttribute="leading" constant="15" id="LgO-cI-GGf"/>
                                             <constraint firstItem="8nk-hU-BvN" firstAttribute="centerY" secondItem="d4O-yC-tc7" secondAttribute="centerY" id="Vnn-gQ-Xpb"/>
                                             <constraint firstItem="8nk-hU-BvN" firstAttribute="centerX" secondItem="d4O-yC-tc7" secondAttribute="centerX" id="a3U-Sj-xtC"/>
                                             <constraint firstItem="8nk-hU-BvN" firstAttribute="centerY" secondItem="d4O-yC-tc7" secondAttribute="centerY" id="bae-fh-xt2"/>
-                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="XXg-HJ-bTc" secondAttribute="trailing" constant="15" id="igG-BO-RpT"/>
                                             <constraint firstItem="gsz-7C-yke" firstAttribute="centerY" secondItem="d4O-yC-tc7" secondAttribute="centerY" id="nuG-ed-xFj"/>
-                                            <constraint firstItem="XXg-HJ-bTc" firstAttribute="leading" secondItem="d4O-yC-tc7" secondAttribute="leading" constant="15" id="tWx-5k-3iV"/>
-                                            <constraint firstItem="XXg-HJ-bTc" firstAttribute="top" secondItem="d4O-yC-tc7" secondAttribute="top" constant="8" id="xN0-PR-bG8"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bP7-By-IPD" secondAttribute="trailing" constant="15" id="uDi-DU-crp"/>
                                             <constraint firstAttribute="bottom" secondItem="gsz-7C-yke" secondAttribute="bottom" constant="24" id="yIl-Qu-3de"/>
                                             <constraint firstItem="8nk-hU-BvN" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="d4O-yC-tc7" secondAttribute="leading" constant="30" id="yhd-W2-zSi"/>
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
+                                                <exclude reference="GmD-Wm-JOd"/>
+                                                <exclude reference="bae-fh-xt2"/>
+                                                <exclude reference="yhd-W2-zSi"/>
+                                                <exclude reference="7aS-8l-hE8"/>
                                                 <exclude reference="EfY-cM-oX6"/>
                                                 <exclude reference="Ibq-10-F28"/>
                                                 <exclude reference="Iwv-Gn-PqD"/>
                                                 <exclude reference="nuG-ed-xFj"/>
                                                 <exclude reference="yIl-Qu-3de"/>
-                                                <exclude reference="7aS-8l-hE8"/>
-                                                <exclude reference="GmD-Wm-JOd"/>
-                                                <exclude reference="bae-fh-xt2"/>
-                                                <exclude reference="yhd-W2-zSi"/>
                                             </mask>
                                         </variation>
                                         <variation key="heightClass=compact">
@@ -804,11 +800,11 @@
                                         </variation>
                                         <variation key="heightClass=regular">
                                             <mask key="constraints">
-                                                <include reference="EfY-cM-oX6"/>
-                                                <include reference="yIl-Qu-3de"/>
                                                 <include reference="GmD-Wm-JOd"/>
                                                 <include reference="bae-fh-xt2"/>
                                                 <include reference="yhd-W2-zSi"/>
+                                                <include reference="EfY-cM-oX6"/>
+                                                <include reference="yIl-Qu-3de"/>
                                             </mask>
                                         </variation>
                                         <variation key="heightClass=regular-widthClass=compact">
@@ -851,7 +847,7 @@
                     <navigationItem key="navigationItem" id="uhT-kK-IP4"/>
                     <connections>
                         <outlet property="activityIndicatorView" destination="dja-Bh-vu3" id="2gM-xR-4Fn"/>
-                        <outlet property="dismissViewButton" destination="XXg-HJ-bTc" id="DlZ-GZ-eFe"/>
+                        <outlet property="dismissViewButton" destination="bP7-By-IPD" id="pwC-XY-sh6"/>
                         <outlet property="emailAddress" destination="Nx2-xq-Km8" id="oo4-kX-rJP"/>
                         <outlet property="loginButton" destination="i7a-Xk-Hbw" id="wR5-NL-ngU"/>
                         <outlet property="mainContainerView" destination="d4O-yC-tc7" id="Kg2-jV-XNd"/>
