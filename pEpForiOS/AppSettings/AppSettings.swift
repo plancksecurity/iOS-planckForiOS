@@ -34,8 +34,14 @@ public final class AppSettings {
     // MARK: - Singleton
     
     static public let shared = AppSettings()
+
     private init() {
         setup()
+        registerForKeySyncDeviceGroupStateChangeNotification()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
