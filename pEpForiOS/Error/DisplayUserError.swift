@@ -217,6 +217,8 @@ struct DisplayUserError: LocalizedError {
         switch error {
         case .invalidConnection:
             return .brokenServerConnectionImap
+        case .invalidAccount:
+            return .internalError
         }
     }
 

@@ -14,7 +14,6 @@ import PEPObjCAdapterFramework
 // MARK: - Keys
 
 extension AppSettings {
-    static private let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
     static private let keyKeySyncEnabled = "keyStartpEpSync"
     static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
     static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
@@ -72,7 +71,6 @@ extension AppSettings {
 
     private func registerDefaults() {
         var defaults = [String: Any]()
-        defaults[AppSettings.keyReinitializePepOnNextStartup] = false //BUFF: ???: obsolete?
         defaults[AppSettings.keyKeySyncEnabled] = true
         defaults[AppSettings.keyUnencryptedSubjectEnabled] = false
         defaults[AppSettings.keyThreadedViewEnabled] = true
@@ -108,16 +106,6 @@ extension AppSettings {
 // MARK: - AppSettingsProtocol
 
 extension AppSettings: AppSettingsProtocol {
-
-    public var shouldReinitializePepOnNextStartup: Bool {
-        get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyReinitializePepOnNextStartup)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue,
-                                         forKey: AppSettings.keyReinitializePepOnNextStartup)
-        }
-    }
 
     public var keySyncEnabled: Bool {
         get {
