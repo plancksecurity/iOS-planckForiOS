@@ -37,7 +37,7 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
         self.account = account
         self.messageModelService = messageModelService
     }
-
+//BUFF: independent of this file: Do we still need messagemodelservice in appconfig? Here is only needed for keysyncOnOff. Better pass KeySyncManagerProtocoll or such
     init(type: SettingType) {
         self.type = type
     }
