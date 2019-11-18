@@ -12,11 +12,44 @@ import PEPObjCAdapterFramework
 class KeySyncHandshakeService {
     weak var presenter: UIViewController?
     
-    private var pEpSyncWizard: PEPPageViewController?
+    private var pEpSyncWizard: KeySyncWizardViewController?
+
+    init() {
+        registerForKeySyncDeviceGroupStateChangeNotification()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+}
+
+// MARK: - KeySyncDeviceGroupStateChangeNotification
+
+extension KeySyncHandshakeService {
+
+    func registerForKeySyncDeviceGroupStateChangeNotification() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleDeviceGroupStateChangeNotification(_:)),
+                                               name: Notification.Name.pEpDeviceGroupStateChange,
+                                               object: nil)
+    }
+
+    @objc
+    private func handleDeviceGroupStateChangeNotification(_ notification: Notification) {
+        guard let wizzard = pEpSyncWizard else {
+            // This is a valid case. pEpSyncWizard is initiated on demand.
+            return
+        }
+        guard !wizzard.isCurrentlyShowingSuccessfullyGroupedView else {
+            // We want to dismiss any wizzard view but the SuccessfullyGrouped one.
+            return
+        }
+        wizzard.dismiss()
+    }
 }
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
-    
+
     func showHandshake(me: PEPIdentity,
                        partner: PEPIdentity,
                        isNewGroup: Bool,
@@ -41,34 +74,29 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                 viewController = pEpModal
             }
             self?.pEpSyncWizard = viewController.presentKeySyncWizard(meFPR: meFPR,
-                                                                partnerFPR: partnerFPR,
-                                                                isNewGroup: isNewGroup) { action in
-                                                                    switch action {
-                                                                    case .accept:
-                                                                        completion?(.accepted)
-                                                                    case .cancel:
-                                                                        completion?(.cancel)
-                                                                    case .decline:
-                                                                        completion?(.rejected)
-                                                                    }
+                                                                      partnerFPR: partnerFPR,
+                                                                      isNewGroup: isNewGroup) { action in
+                                                                        switch action {
+                                                                        case .accept:
+                                                                            completion?(.accepted)
+                                                                        case .cancel:
+                                                                            completion?(.cancel)
+                                                                        case .decline:
+                                                                            completion?(.rejected)
+                                                                        }
             }
         }
     }
 
-    func showCurrentlyGroupingDevices() {
-        //Ignoring for now. We show the syncing animation right away, when the user press Sync button.
-        //So nothing to do here :-/
-    }
-    
     func cancelHandshake() {
         DispatchQueue.main.async { [weak self] in
-            guard let keySyncWizard = self?.presenter?.presentedViewController as? PEPPageViewController else {
+            guard let keySyncWizard = self?.presenter?.presentedViewController as? KeySyncWizardViewController else {
                 return
             }
             keySyncWizard.dismiss()
         }
     }
-    
+
     func showSuccessfullyGrouped() {
         guard let pEpSyncWizard = pEpSyncWizard else {
             return

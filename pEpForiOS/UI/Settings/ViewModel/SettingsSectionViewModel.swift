@@ -23,12 +23,9 @@ final class SettingsSectionViewModel {
     var title: String?
     var footer: String?
     let type: SectionType
-    private let keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol?
     
-    init(type: SectionType, messageModelService: MessageModelServiceProtocol? = nil,
-         keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol? = nil) {
+    init(type: SectionType, messageModelService: MessageModelServiceProtocol? = nil) {
         self.type = type
-        self.keySyncDeviceGroupService = keySyncDeviceGroupService
 
         switch type {
         case .accounts:
@@ -116,8 +113,6 @@ extension SettingsSectionViewModel {
 
     private func generateContactsCells() {
         cells.append(SettingsActionCellViewModel(type: .resetTrust))
-
-         //SettingsCellViewModel(type: .contacts))
     }
 }
 
@@ -125,17 +120,9 @@ extension SettingsSectionViewModel {
 
 extension SettingsSectionViewModel {
 
-    private func isInDeviceGroup() -> Bool {
-        guard let keySyncDeviceGroupService = keySyncDeviceGroupService else {
-            Log.shared.errorAndCrash("%@", SettingsInternalError.nilKeySyncDeviceGroupService.localizedDescription)
-            return false
-        }
-        return keySyncDeviceGroupService.deviceGroupState == .grouped
-    }
-
     private func generateKeySyncCells(_ messageModelService: MessageModelServiceProtocol) {
         cells.append(EnableKeySyncViewModel(messageModelService))
-        if isInDeviceGroup() {
+        if KeySyncDeviceGroupUtil.isInDeviceGroup() {
             cells.append(SettingsActionCellViewModel(type: .leaveKeySyncGroup))
         }
     }
