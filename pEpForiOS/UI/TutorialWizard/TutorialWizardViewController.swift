@@ -8,20 +8,25 @@
 
 import UIKit
 
-final class TutorialWizardViewController: PEPPageViewController {
+final class TutorialWizardViewController: PEPPageViewControllerBase {
+    static let storyboardId = "TutorialWizardViewController"
     private var viewModel = TutorialWizardViewMode()
     private var tutorialImages = [TutorialViewController.TutorialImage]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
+
+        if #available(iOS 13, *) {
+            Appearance.customiseForTutorial(viewController: self)
+        }
     }
 
     static func fromStoryboard(tutorialImages: [TutorialViewController.TutorialImage])
         -> TutorialWizardViewController? {
             let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
             guard let tutorialWizard = storyboard.instantiateViewController(
-                withIdentifier: "TutorialWizardViewController") as?
+                withIdentifier: storyboardId) as?
                 TutorialWizardViewController else {
                     Log.shared.errorAndCrash("Fail to instantiateViewController TutorialWizardViewController")
                     return nil

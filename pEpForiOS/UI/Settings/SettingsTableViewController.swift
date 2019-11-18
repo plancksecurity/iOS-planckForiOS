@@ -42,17 +42,11 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             return
         }
         updateModel()
-    }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        guard let isIphone = splitViewController?.isCollapsed else {
-            return
-        }
-        if !isIphone {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let detailViewController = storyBoard.instantiateViewController(withIdentifier: "noMessagesViewController") as! NoMessagesViewController
-            self.splitViewController?.show(detailViewController, sender: nil)
-        }
+        showEmptyDetailViewIfApplicable(
+            message: NSLocalizedString(
+                "Please chose a setting",
+                comment: "No setting has been selected yet in the settings VC"))
     }
 
     // MARK: - UITableViewDataSource
@@ -215,14 +209,11 @@ extension SettingsTableViewController: SegueHandlerType {
                 else {
                     return
             }
-            destination.appConfig = self.appConfig
+            destination.appConfig = appConfig
             if let path = ipath ,
                 let vm = viewModel[path.section][path.row] as? SettingsCellViewModel,
                 let acc = vm.account  {
-                let vm = AccountSettingsViewModel(
-                    account: acc,
-                    messageModelService: appConfig.messageModelService)
-                destination.viewModel = vm
+                    destination.viewModel = AccountSettingsViewModel(account: acc)
             }
         case .ResetTrustSplitView:
             guard

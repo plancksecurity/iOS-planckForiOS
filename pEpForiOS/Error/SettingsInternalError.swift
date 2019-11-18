@@ -9,5 +9,5 @@
 import Foundation
 
 enum SettingsInternalError: Error {
-    case nilKeySyncDeviceGroupService, nilMessageModelService
+    case nilMessageModelService, nilViewModel
 }

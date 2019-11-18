@@ -11,13 +11,10 @@
 "bgm-ua-A0f.title" = "Posteingang";
 
 /* Class = "UILabel"; text = "This email has been sent as part of a mailing list."; ObjectID = "BjL-CL-0Cu"; */
-"BjL-CL-0Cu.text" = "Diese E-Mail ist von einer Mailing-Liste.";
+"BjL-CL-0Cu.text" = "Diese E-Mail wurde über einen E-Mail-Verteiler gesendet.";
 
 /* Class = "UILabel"; text = "Summary"; ObjectID = "BvI-Zi-zU6"; */
 "BvI-Zi-zU6.text" = "Zusammenfassung";
-
-/* Class = "UILabel"; text = "4"; ObjectID = "DaU-dh-sn5"; Note = "Not user-visible"; */
-"DaU-dh-sn5.text" = "4";
 
 /* Class = "UIViewController"; title = "Move to Account"; ObjectID = "EmS-3d-sKb"; */
 "EmS-3d-sKb.title" = "Zum Konto verschieben";
@@ -29,7 +26,7 @@
 "hnw-Tp-mga.text" = "Sender";
 
 /* Class = "UITableViewController"; title = "Email List"; ObjectID = "kcA-RK-9Xg"; */
-"kcA-RK-9Xg.title" = "E-Mail Liste";
+"kcA-RK-9Xg.title" = "Verteiler";
 
 /* Class = "UILabel"; text = "To: Recipients"; ObjectID = "Mfx-AS-hpP"; */
 "Mfx-AS-hpP.text" = "An: Empfänger";

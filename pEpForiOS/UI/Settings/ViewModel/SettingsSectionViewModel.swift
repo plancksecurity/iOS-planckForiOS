@@ -14,7 +14,6 @@ final class SettingsSectionViewModel {
     public enum SectionType {
         case accounts
         case globalSettings
-        case pgpCompatibilitySettings
         case keySync
         case contacts
         case companyFeatures
@@ -24,12 +23,9 @@ final class SettingsSectionViewModel {
     var title: String?
     var footer: String?
     let type: SectionType
-    private let keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol?
     
-    init(type: SectionType, messageModelService: MessageModelServiceProtocol? = nil,
-         keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol? = nil) {
+    init(type: SectionType, messageModelService: MessageModelServiceProtocol? = nil) {
         self.type = type
-        self.keySyncDeviceGroupService = keySyncDeviceGroupService
 
         switch type {
         case .accounts:
@@ -44,11 +40,6 @@ final class SettingsSectionViewModel {
             title = NSLocalizedString("Global Settings", comment: "Tableview section header")
             footer = NSLocalizedString("Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p.",
                                        comment: "passive mode description")
-        case .pgpCompatibilitySettings:
-            generatePgpCompatibilitySettingsCells()
-            title = NSLocalizedString("PGP Compatibility", comment: "Tableview section header")
-            footer = NSLocalizedString("If enabled, message subjects are also protected.",
-                                       comment: "Tableview section footer")
         case .keySync:
             guard let messageModelService = messageModelService else {
                 Log.shared.errorAndCrash("missing service")
@@ -117,16 +108,11 @@ extension SettingsSectionViewModel {
         self.cells.append(SettingsCellViewModel(type: .trustedServer))
         self.cells.append(SettingsCellViewModel(type: .setOwnKey))
         self.cells.append(PassiveModeViewModel())
-    }
-
-    private func generatePgpCompatibilitySettingsCells() {
         self.cells.append(UnecryptedSubjectViewModel())
     }
 
     private func generateContactsCells() {
         cells.append(SettingsActionCellViewModel(type: .resetTrust))
-
-         //SettingsCellViewModel(type: .contacts))
     }
 }
 
@@ -134,17 +120,9 @@ extension SettingsSectionViewModel {
 
 extension SettingsSectionViewModel {
 
-    private func isInDeviceGroup() -> Bool {
-        guard let keySyncDeviceGroupService = keySyncDeviceGroupService else {
-            Log.shared.errorAndCrash("%@", SettingsInternalError.nilKeySyncDeviceGroupService.localizedDescription)
-            return false
-        }
-        return keySyncDeviceGroupService.deviceGroupState == .grouped
-    }
-
     private func generateKeySyncCells(_ messageModelService: MessageModelServiceProtocol) {
         cells.append(EnableKeySyncViewModel(messageModelService))
-        if isInDeviceGroup() {
+        if KeySyncDeviceGroupUtil.isInDeviceGroup() {
             cells.append(SettingsActionCellViewModel(type: .leaveKeySyncGroup))
         }
     }

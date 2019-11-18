@@ -21,8 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /** The model */
     var messageModelService: MessageModelServiceProtocol?
 
-    var deviceGroupService: KeySyncDeviceGroupService?
-
     /// Error Handler bubble errors up to the UI
     var errorPropagator = ErrorPropagator()
 
@@ -108,12 +106,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setupServices() {
         let keySyncHandshakeService = KeySyncHandshakeService()
-        let deviceGroupService = KeySyncDeviceGroupService()
-        self.deviceGroupService = deviceGroupService
         let theMessageModelService = MessageModelService(errorPropagator: errorPropagator,
-                                                         cnContactsAccessPermissionProvider: AppSettings.shared, //BUFF: make app setting proper singleton
+                                                         cnContactsAccessPermissionProvider: AppSettings.shared,
                                                          keySyncServiceDelegate: keySyncHandshakeService,
-                                                         deviceGroupDelegate: deviceGroupService,
                                                          keySyncEnabled: AppSettings.shared.keySyncEnabled)
         theMessageModelService.delegate = self
         messageModelService = theMessageModelService
