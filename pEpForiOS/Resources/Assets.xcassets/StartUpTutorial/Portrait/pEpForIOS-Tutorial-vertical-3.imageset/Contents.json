@@ -2,52 +2,21 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "pEpForIOS-Tutorial-vertical-3-en-1.pdf",
-      "scale" : "1x"
+      "filename" : "pEpForIOS-Tutorial-vertical-3-en-1.pdf"
     },
     {
-      "locale" : "de",
       "idiom" : "universal",
       "filename" : "pEpForIOS-Tutorial-vertical-3-de.pdf",
-      "scale" : "1x"
+      "locale" : "de"
     },
     {
-      "locale" : "en",
       "idiom" : "universal",
       "filename" : "pEpForIOS-Tutorial-vertical-3-en.pdf",
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x",
-      "locale" : "de"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x",
       "locale" : "en"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x",
-      "locale" : "de"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x",
-      "locale" : "en"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "pEpForIOS-Tutorial-vertical-3-es-1.pdf",
+      "filename" : "pEpForIOS-Tutorial-vertical-3-es.pdf",
       "unassigned" : true,
       "scale" : "1x"
     },
@@ -63,6 +32,7 @@
     "author" : "xcode"
   },
   "properties" : {
+    "preserves-vector-representation" : true,
     "localizable" : true
   }
 }
