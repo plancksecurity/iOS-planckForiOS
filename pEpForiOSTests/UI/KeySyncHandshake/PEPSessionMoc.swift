@@ -143,7 +143,7 @@ class PEPSessionMoc: NSObject, PEPSessionProtocol  {
     func keyReset(_ identity: PEPIdentity, fingerprint: String?) throws {
     }
 
-    func leaveDeviceGroupError() throws {
+    func leaveDeviceGroup() throws {
     }
 
     func enableSync(for identity: PEPIdentity) throws {

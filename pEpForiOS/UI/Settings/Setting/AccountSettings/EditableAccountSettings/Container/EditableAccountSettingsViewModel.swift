@@ -124,10 +124,11 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
 // MARK: - Private
 
 extension EditableAccountSettingsViewModel {
+
     private func validateInputs() throws -> Inputs {
             //Validate all inputs, so far only tableViewModel
             guard let tableViewModel = tableViewModel else {
-                Log.shared.errorAndCrash("No viewModel for EditableAccountSettingsViewController")
+                Log.shared.errorAndCrash("No VM")
                 throw SettingsInternalError.nilViewModel
             }
             return try tableViewModel.validateInputs()

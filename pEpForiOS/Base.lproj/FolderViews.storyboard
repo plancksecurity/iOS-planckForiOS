@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="N0y-5z-66z">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="N0y-5z-66z">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -33,7 +33,7 @@
                                     </state>
                                     <connections>
                                         <action selector="addAccountTapped:" destination="6ra-tc-Aiv" eventType="touchUpInside" id="OYg-F7-CRW"/>
-                                        <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccountIpad" modalPresentationStyle="fullScreen" id="aKb-z0-Qyn"/>
+                                        <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccountIpad" modalPresentationStyle="formSheet" id="aKb-z0-Qyn"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -79,10 +79,10 @@
             </objects>
             <point key="canvasLocation" x="10635" y="-1077"/>
         </scene>
-        <!--Main-->
+        <!--NothingSelected-->
         <scene sceneID="eeX-Fr-Vs1">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" id="jlA-KV-xmZ" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="NothingSelected" id="jlA-KV-xmZ" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="C0u-m3-NYA"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nrT-r1-KyC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -123,6 +123,6 @@
         <image name="button-add" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="W2T-ax-nDz"/>
+        <segue reference="aKb-z0-Qyn"/>
     </inferredMetricsTieBreakers>
 </document>
