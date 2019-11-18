@@ -74,7 +74,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors())
+            XCTAssertFalse(op.hasErrors)
         })
     }
 }
