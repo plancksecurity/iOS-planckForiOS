@@ -432,7 +432,7 @@ extension LoginViewController {
 
         // hide extended login fields
         manualConfigButton.isHidden = true
-        pEpSyncViewLeadingConstraint.constant = stackView.frame.midX - pEpSyncView.bounds.midX
+        pEpSyncViewLeadingConstraint.constant = stackView.bounds.midX - pEpSyncView.bounds.midX
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self, action: #selector(LoginViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
