@@ -28,8 +28,7 @@ extension AppSettings {
 // MARK: - AppSettings
 
 /// Signleton representing and managing the App's settings.
-public final class AppSettings {
-
+public final class AppSettings: PEPSyncStateProvider {
     // MARK: - Singleton
     
     static public let shared = AppSettings()
@@ -42,6 +41,15 @@ public final class AppSettings {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+
+    // MARK: - KeySyncStateProvider
+
+    public var stateChangeHandler: ((Bool) -> Void)?
+
+    public var isPEPSyncEnabled: Bool {
+        return keySyncEnabled
+    }
+
 }
 
 // MARK: - Private
@@ -114,6 +122,7 @@ extension AppSettings: AppSettingsProtocol {
         set {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyKeySyncEnabled)
+            stateChangeHandler?(newValue)
         }
     }
 

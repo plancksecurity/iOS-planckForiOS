@@ -11,7 +11,7 @@ import pEpIOSToolbox
 
 class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     static let storyboardId = "SettingsTableViewController"
-    lazy var viewModel = SettingsViewModel(appConfig.messageModelService)
+    lazy var viewModel = SettingsViewModel()
     var settingSwitchViewModel: SwitchSettingCellViewModelProtocol?
 
     private weak var activityIndicatorView: UIActivityIndicatorView?

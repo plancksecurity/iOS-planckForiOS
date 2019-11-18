@@ -29,13 +29,9 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     var account: Account?
     var status: Bool?
 
-    private var messageModelService: MessageModelServiceProtocol?
-
-    init(account: Account,
-         messageModelService: MessageModelServiceProtocol) {
-        self.type = .account
+    init(account: Account) {
+        type = .account
         self.account = account
-        self.messageModelService = messageModelService
     }
 //BUFF: independent of this file: Do we still need messagemodelservice in appconfig? Here is only needed for keysyncOnOff. Better pass KeySyncManagerProtocoll or such
     init(type: SettingType) {
@@ -98,8 +94,7 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     }
 
     func delete() {
-        guard let acc = account,
-            let messageModelService = messageModelService else {
+        guard let acc = account else {
                 Log.shared.errorAndCrash(message: "Account lost")
                 return
         }
@@ -112,7 +107,6 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
             let account = Account.all().first {
             do {
                 if try !account.isPEPSyncEnabled() {
-                    messageModelService.disableKeySync()
                     AppSettings.shared.keySyncEnabled = false
                 }
             } catch {

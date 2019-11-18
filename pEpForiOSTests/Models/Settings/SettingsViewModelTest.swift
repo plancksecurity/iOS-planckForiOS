@@ -13,7 +13,6 @@ import XCTest
 final class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     var settingsVM : SettingsViewModel!
-    var messageModelServiceMoc: MessageModelServiceMoc!
 
     override class func setUp() {
         super.setUp()
@@ -98,47 +97,12 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
             XCTAssertFalse(cell.type == .leaveKeySyncGroup)
         }
     }
-
-    func testKeySyncEnabledSetTrue() {
-        // GIVEN
-        setupViewModel()
-
-        // WHEN
-        guard let section = keySyncSection() else {
-            XCTFail()
-            return
-        }
-        for cell in section.cells {
-            guard let cell = cell as? EnableKeySyncViewModel else { continue }
-            cell.setSwitch(value: true)
-        }
-
-        // THEN
-        XCTAssertTrue(messageModelServiceMoc.enableKeySyncWasCalled)
-    }
-
-    func testKeySyncEnabledSetFalse() {
-        // GIVEN
-        setupViewModel()
-
-        // WHEN
-        for section in settingsVM.sections {
-            guard section.type == SettingsSectionViewModel.SectionType.keySync else { continue }
-            for cell in section.cells {
-                guard let cell = cell as? EnableKeySyncViewModel else { continue }
-                cell.setSwitch(value: false)
-            }
-        }
-
-        // THEN
-        XCTAssertTrue(messageModelServiceMoc.disableKeySyncWasCalled)
-    }
 }
 
 // MARK: - Private
 extension SettingsViewModelTest {
     private func setupViewModel() {
-        settingsVM = SettingsViewModel(messageModelServiceMoc)
+        settingsVM = SettingsViewModel()
     }
 
     private func keySyncSection() -> SettingsSectionViewModel? {

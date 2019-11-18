@@ -24,16 +24,12 @@ final class SettingsSectionViewModel {
     var footer: String?
     let type: SectionType
     
-    init(type: SectionType, messageModelService: MessageModelServiceProtocol? = nil) {
+    init(type: SectionType) {
         self.type = type
 
         switch type {
         case .accounts:
-            guard let messageModelService = messageModelService else {
-                Log.shared.errorAndCrash("missing service")
-                return
-            }
-            generateAccountCells(messageModelService: messageModelService)
+            generateAccountCells()
             title = NSLocalizedString("Accounts", comment: "Tableview section  header")
         case .globalSettings:
             generateGlobalSettingsCells()
@@ -41,11 +37,7 @@ final class SettingsSectionViewModel {
             footer = NSLocalizedString("Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p.",
                                        comment: "passive mode description")
         case .keySync:
-            guard let messageModelService = messageModelService else {
-                Log.shared.errorAndCrash("missing service")
-                return
-            }
-            generateKeySyncCells(messageModelService)
+            generateKeySyncCells()
             title = NSLocalizedString("p≡p sync", comment: "Tableview section header")
         case .contacts:
             generateContactsCells()
@@ -94,10 +86,9 @@ final class SettingsSectionViewModel {
 
 extension SettingsSectionViewModel {
 
-    private func generateAccountCells(messageModelService: MessageModelServiceProtocol) {
+    private func generateAccountCells() {
         Account.all().forEach { (acc) in
-            self.cells.append(SettingsCellViewModel(account: acc,
-                                                    messageModelService: messageModelService))
+            self.cells.append(SettingsCellViewModel(account: acc))
         }
         cells.append(SettingsActionCellViewModel(type: .resetAllIdentities))
     }
@@ -120,8 +111,8 @@ extension SettingsSectionViewModel {
 
 extension SettingsSectionViewModel {
 
-    private func generateKeySyncCells(_ messageModelService: MessageModelServiceProtocol) {
-        cells.append(EnableKeySyncViewModel(messageModelService))
+    private func generateKeySyncCells() {
+        cells.append(EnableKeySyncViewModel())
         if KeySyncDeviceGroupUtil.isInDeviceGroup() {
             cells.append(SettingsActionCellViewModel(type: .leaveKeySyncGroup))
         }

@@ -19,21 +19,16 @@ protocol SettingsViewModelDelegate: class {
 final class SettingsViewModel {
     weak var delegate: SettingsViewModelDelegate?
     var sections = [SettingsSectionViewModel]()
-    private let messageModelService: MessageModelServiceProtocol //BUFF: must not know MessageModelServcie
 
-    init(_ messageModelService: MessageModelServiceProtocol,
-         delegate: SettingsViewModelDelegate? = nil) {
-        self.messageModelService = messageModelService
+    init(delegate: SettingsViewModelDelegate? = nil) {
         self.delegate = delegate
         generateSections()
     }
 
     private func generateSections() {
-        sections.append(SettingsSectionViewModel(type: .accounts,
-                                                 messageModelService: messageModelService))
+        sections.append(SettingsSectionViewModel(type: .accounts))
         sections.append(SettingsSectionViewModel(type: .globalSettings))
-        sections.append(SettingsSectionViewModel(type: .keySync,
-                                                 messageModelService: messageModelService))
+        sections.append(SettingsSectionViewModel(type: .keySync))
         sections.append(SettingsSectionViewModel(type: .contacts))
         sections.append(SettingsSectionViewModel(type: .companyFeatures))
     }
