@@ -37,14 +37,17 @@ extension KeySyncHandshakeService {
     @objc
     private func handleDeviceGroupStateChangeNotification(_ notification: Notification) {
         guard let wizzard = pEpSyncWizard else {
-            // This is a valid case. pEpSyncWizard is initiated on demand.
+            // This is a valid case. pEpSyncWizard is initiated on demand and we might currently not
+            // display the wizzard.
             return
         }
         guard !wizzard.isCurrentlyShowingSuccessfullyGroupedView else {
             // We want to dismiss any wizzard view but the SuccessfullyGrouped one.
             return
         }
-        wizzard.dismiss()
+        DispatchQueue.main.async {
+            wizzard.dismiss()
+        }
     }
 }
 
