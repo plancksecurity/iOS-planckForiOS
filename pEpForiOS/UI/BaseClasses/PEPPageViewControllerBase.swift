@@ -1,5 +1,5 @@
 //
-//  PEPPageViewController.swift
+//  PEPPageViewControllerBase.swift
 //  pEp
 //
 //  Created by Alejandro Gelos on 22/08/2019.
@@ -8,7 +8,9 @@
 
 import UIKit
 
-class PEPPageViewController: UIPageViewController {
+/// Base class for PageViewControllers in pEp style.
+/// You MUST NOT use this class without subclassing
+class PEPPageViewControllerBase: UIPageViewController {
 
     var pageControlPageIndicatorColor: UIColor?
     var pageControlBackgroundColor: UIColor?
@@ -19,11 +21,8 @@ class PEPPageViewController: UIPageViewController {
 
     var views = [UIViewController]()
 
-    static let storyboardId = "PEPPageViewController"
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
         delegate = self
     }
 
@@ -31,13 +30,13 @@ class PEPPageViewController: UIPageViewController {
         super.viewWillAppear(animated)
 
         navigationController?.isToolbarHidden = false
-        if !didLoadValues {
+        if !didLoadValues { //!!!: //BUFF: ugly.
             didLoadValues = true
             dataSource = showDots ? self : nil //nil dataSource will hide dots and disable scrolling
             if !isScrollEnable {
                 disableScrolling()
             }
-            if let firstView = views.first {
+            if let firstView = views.first { //!!!: //BUFF: is views.first == nil a valid cas?
                 setViewControllers([firstView], direction: .forward, animated: true, completion: nil)
             }
         }
@@ -45,41 +44,7 @@ class PEPPageViewController: UIPageViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
         setUpPageControl()
-    }
-
-    private override init(transitionStyle: UIPageViewController.TransitionStyle,
-                          navigationOrientation: UIPageViewController.NavigationOrientation,
-                          options: [UIPageViewController.OptionsKey : Any]?) {
-        super.init(transitionStyle: transitionStyle,
-                   navigationOrientation: navigationOrientation,
-                   options: options)
-    }
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
-    static func fromStoryboard(showDots: Bool = false,
-                               isScrollingEnable: Bool = false,
-                               pageIndicatorBackground: UIColor? = nil,
-                               pageIndicatorTint: UIColor? = nil,
-                               pageIndicatorCurrent: UIColor? = nil)
-        -> PEPPageViewController? {
-
-            let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
-            guard let pEpPageViewController = storyboard.instantiateViewController(
-                withIdentifier: PEPPageViewController.storyboardId) as? PEPPageViewController else {
-                    Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
-                    return nil
-            }
-            pEpPageViewController.isScrollEnable = isScrollingEnable
-            pEpPageViewController.pageControlTint = pageIndicatorTint
-            pEpPageViewController.pageControlPageIndicatorColor = pageIndicatorCurrent
-            pEpPageViewController.showDots = showDots
-            pEpPageViewController.pageControlBackgroundColor = pageIndicatorBackground
-
-            return pEpPageViewController
     }
 
     func goTo(index: Int) {
@@ -141,7 +106,7 @@ class PEPPageViewController: UIPageViewController {
 
 // MARK: - UIPageViewControllerDataSource
 
-extension PEPPageViewController: UIPageViewControllerDataSource {
+extension PEPPageViewControllerBase: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController,
                             viewControllerBefore viewController: UIViewController)
         -> UIViewController? {
@@ -167,7 +132,7 @@ extension PEPPageViewController: UIPageViewControllerDataSource {
 
 // MARK: - UIPageViewControllerDelegate
 
-extension PEPPageViewController: UIPageViewControllerDelegate {
+extension PEPPageViewControllerBase: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController,
                             didFinishAnimating finished: Bool,
                             previousViewControllers: [UIViewController],
@@ -178,7 +143,8 @@ extension PEPPageViewController: UIPageViewControllerDelegate {
 
 // MARK: - Private
 
-extension PEPPageViewController {
+extension PEPPageViewControllerBase {
+
     private func previousView(of viewController: UIViewController? = nil) -> UIViewController? {
         let currentPossition = currentIndex(of: viewController)
         guard currentPossition > 0 else { return nil }

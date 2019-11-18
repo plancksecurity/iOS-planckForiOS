@@ -113,13 +113,13 @@ extension UIViewController {
     func presentKeySyncWizard(meFPR: String,
                               partnerFPR: String,
                               isNewGroup: Bool,
-                              completion: @escaping (KeySyncWizard.Action) -> Void )
-        -> PEPPageViewController? {
-            guard let pageViewController = KeySyncWizard.fromStoryboard(meFPR: meFPR,
-                                                                        partnerFPR: partnerFPR,
-                                                                        isNewGroup: isNewGroup,
-                                                                        completion: completion) else {
-                                                                            return nil
+                              completion: @escaping (KeySyncWizardViewController.Action) -> Void )
+        -> KeySyncWizardViewController? {
+            guard let pageViewController = KeySyncWizardViewController.fromStoryboard(meFPR: meFPR,
+                                                                                      partnerFPR: partnerFPR,
+                                                                                      isNewGroup: isNewGroup,
+                                                                                      completion: completion) else {
+                                                                                        return nil
             }
             DispatchQueue.main.async { [weak self] in
                 pageViewController.modalPresentationStyle = .overFullScreen
