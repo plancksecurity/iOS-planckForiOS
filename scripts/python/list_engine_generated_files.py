@@ -65,7 +65,7 @@ asnFilesAfter = sorted(cfiles(ASN_DIR_GENERATED))
 syncFiles = sorted(cfiles(SYNC_DIR_GENERATED))
 
 with open(DEST_ASN_LIST, 'w') as asn_file:
-    for asnF in asnFilesAfter:
-        if not (asnF in asnFilesBeforeSet):
-            item = '$(SRCROOT)/../asn.1/' + asnF
+    for asnFile in asnFilesAfter:
+        if not (asnFile in asnFilesBeforeSet):
+            item = '$(SRCROOT)/../asn.1/' + asnFile
             asn_file.write(item + '\n')
