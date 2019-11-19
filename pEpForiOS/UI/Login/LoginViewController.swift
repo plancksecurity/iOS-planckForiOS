@@ -21,19 +21,18 @@ class LoginViewController: BaseViewController {
     var offerManualSetup = false
     weak var delegate: LoginViewControllerDelegate?
 
-    @IBOutlet var emailAddress: UITextField!
-    @IBOutlet var password: UITextField!
-    @IBOutlet var manualConfigButton: UIButton!
-    @IBOutlet var loginButton: UIButton!
-    @IBOutlet var user: UITextField!
-    @IBOutlet weak var mainContainerView: UIView!
-    @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var emailAddress: UITextField!
+    @IBOutlet weak var password: UITextField!
+    @IBOutlet weak var user: UITextField!
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var manualConfigButton: UIButton!
+    @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var pEpSyncView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var dismissViewButton: UIButton!
+    @IBOutlet weak var mainContainerView: UIView!
+    @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var pEpSyncViewLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pEpSyncView: UIView!
-
-    @IBOutlet var stackView: UIStackView!
 
     /// Set in prepare for segue, if the user selected an account with ouath from the menu
     var isOauthAccount = false {
