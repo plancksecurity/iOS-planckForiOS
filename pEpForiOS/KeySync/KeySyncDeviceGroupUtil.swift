@@ -1,5 +1,5 @@
 //
-//  KeySyncDeviceGroupUtil.swift
+//  KeySyncUtil.swift
 //  pEp
 //
 //  Created by Andreas Buff on 08.06.19.
@@ -9,13 +9,17 @@
 import MessageModel
 import PEPObjCAdapterFramework
 
-protocol KeySyncDeviceGroupUtilProtocol: class {
+protocol KeySyncUtilProtocol: class {
     static var deviceGroupState: DeviceGroupState { get }
     static func leaveDeviceGroup() throws
-    static func isInDeviceGroup() -> Bool
+    static var isInDeviceGroup: Bool { get }
+    static var isKeySyncEnabled: Bool { get }
+    static func enableKeySync()
+    static func disableKeySync()
+
 }
 
-class KeySyncDeviceGroupUtil: KeySyncDeviceGroupUtilProtocol {
+class KeySyncUtil: KeySyncUtilProtocol {
 
     /// Pure static API.
     private init() {}
@@ -26,10 +30,23 @@ class KeySyncDeviceGroupUtil: KeySyncDeviceGroupUtilProtocol {
 
     static func leaveDeviceGroup() throws {
         try PEPSession().leaveDeviceGroup()
+        // We do that here to update the UI imediatelly (fake responsivenes)
         AppSettings.shared.lastKnownDeviceGroupState = .sole
     }
 
-    static func isInDeviceGroup() -> Bool {
+    static var isInDeviceGroup: Bool {
         return deviceGroupState == .grouped
+    }
+
+    static var isKeySyncEnabled: Bool {
+        return AppSettings.shared.keySyncEnabled
+    }
+
+    static func enableKeySync() {
+        AppSettings.shared.keySyncEnabled = true
+    }
+
+    static func disableKeySync() {
+        AppSettings.shared.keySyncEnabled = false
     }
 }

@@ -16,7 +16,7 @@ class ActionCellViewModelTest: XCTestCase {
 
     override func setUp() {
         actionCellViewModels = [SettingsActionCellViewModel]()
-        actionCellViewModels?.append(SettingsActionCellViewModel(type: .leaveKeySyncGroup))
+        actionCellViewModels?.append(SettingsActionCellViewModel(type: .keySyncSetting))
     }
 
     override func tearDown() {
@@ -34,13 +34,11 @@ class ActionCellViewModelTest: XCTestCase {
         for actionCellViewModel in actionCellViewModels {
             switch actionCellViewModel.type {
             // THEN
-            case .leaveKeySyncGroup:
+            case .keySyncSetting:
                 XCTAssertEqual(actionCellViewModel.title,
                                NSLocalizedString("Leave Device Group",
                                                  comment: "Settings: Cell (button) title for leaving device group"))
             case .resetAllIdentities, .resetTrust:
-                XCTFail()
-            case .resetTrust:
                 XCTFail()
             }
         }
@@ -57,11 +55,9 @@ class ActionCellViewModelTest: XCTestCase {
         for actionCellViewModel in actionCellViewModels {
             switch actionCellViewModel.type {
             // THEN
-            case .leaveKeySyncGroup:
+            case .keySyncSetting:
                 XCTAssertEqual(actionCellViewModel.titleColor, UIColor.AppleRed)
             case .resetAllIdentities, .resetTrust:
-                XCTFail()
-            case .resetTrust:
                 XCTFail()
             }
         }

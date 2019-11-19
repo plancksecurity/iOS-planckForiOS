@@ -39,22 +39,10 @@ final class SettingsViewModel {
             sections[section].delete(cell: cell)
         }
     }
-
-    func leaveDeviceGroupPressed() -> Error? {
-        do {
-            try KeySyncDeviceGroupUtil.leaveDeviceGroup()
-            removeLeaveDeviceGroupCell()
-        } catch {
-            Log.shared.errorAndCrash("%@", error.localizedDescription)
-            return error
-        }
-        return nil
-    }
-
-    //temporal stub
-    func canBeShown(Message: Message? ) -> Bool {
-        return false
-    }
+//    //temporal stub
+//    func canBeShown(Message: Message? ) -> Bool {
+//        return false
+//    }
 
     func noAccounts() -> Bool {
         return Account.all().count <= 0
@@ -68,7 +56,6 @@ final class SettingsViewModel {
 
     subscript(section: Int) -> SettingsSectionViewModel {
         get {
-            assert(sectionIsValid(section: section), "Section out of range")
             return sections[section]
         }
     }
@@ -97,9 +84,6 @@ final class SettingsViewModel {
 // MARK: - Private
 
 extension SettingsViewModel {
-    private func sectionIsValid(section: Int) -> Bool {
-        return section >= 0 && section < sections.count
-    }
 
     private func removeLeaveDeviceGroupCell() {
         for section in sections {

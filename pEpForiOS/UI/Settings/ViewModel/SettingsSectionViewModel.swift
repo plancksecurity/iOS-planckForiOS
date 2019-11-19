@@ -73,7 +73,7 @@ final class SettingsSectionViewModel {
             guard let actionCell = cell as? SettingsActionCellViewModel else {
                 return false
             }
-            return actionCell.type == .leaveKeySyncGroup
+            return actionCell.type == .keySyncSetting
         }
     }
 
@@ -112,10 +112,7 @@ extension SettingsSectionViewModel {
 extension SettingsSectionViewModel {
 
     private func generateKeySyncCells() {
-        cells.append(EnableKeySyncViewModel())
-        if KeySyncDeviceGroupUtil.isInDeviceGroup() {
-            cells.append(SettingsActionCellViewModel(type: .leaveKeySyncGroup))
-        }
+        cells.append(SettingsActionCellViewModel(type: .keySyncSetting))
     }
 }
 

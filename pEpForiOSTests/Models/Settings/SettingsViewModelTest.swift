@@ -16,7 +16,7 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     override class func setUp() {
         super.setUp()
-        KeySyncDeviceGroupUtilMoc.resetMoc()
+        KeySyncUtilMoc.resetMoc()
     }
 
     func givenThereAreTwoAccounts() {
@@ -29,7 +29,7 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     func testNumberOfSections() {
         setupViewModel()
-        KeySyncDeviceGroupUtilMoc.deviceGroupValueForTest  = .sole
+        KeySyncUtilMoc.deviceGroupValueForTest  = .sole
         XCTAssertEqual(settingsVM.count, sections)
     }
     
@@ -80,22 +80,6 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
         let newDefaultAddress = (settingsVM[secondAccountPosition.0][secondAccountPosition.1] as? SettingsCellViewModel)?.account?.user.address
         XCTAssertEqual(AppSettings.shared.defaultAccount, newDefaultAddress)
 
-    }
-
-    func testLeaveDeviceGroupPressed() {
-        // GIVEN
-        setupViewModel()
-        
-        // WHEN
-        _ = settingsVM.leaveDeviceGroupPressed()
-
-        // THEN
-        XCTAssertTrue(KeySyncDeviceGroupUtilMoc.didCallLeaveDeviceGroup)
-        guard let section = keySyncSection() else { return }
-        for cell in section.cells {
-            guard let cell = cell as? SettingsActionCellViewModel else { continue }
-            XCTAssertFalse(cell.type == .leaveKeySyncGroup)
-        }
     }
 }
 

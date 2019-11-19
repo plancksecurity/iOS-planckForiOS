@@ -212,6 +212,7 @@ class TestUtil {
 
     // MARK: - Sync Loop
 
+    //BUFF: alejandros strange mere lost all changes from IOS-1809 in tests !!!!!
     static public func syncAndWait(numAccountsToSync: Int = 1, testCase: XCTestCase) {
         //BUFF: use send, replication, decrypt
 
