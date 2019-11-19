@@ -14,9 +14,10 @@ SYNC_DIR_GENERATED = join(ENGINE_BASE_DIR, 'sync/generated')
 ASN_DIR_GENERATED = join(ENGINE_BASE_DIR, 'asn.1')
 DES_DIR = join(ENGINE_BASE_DIR, 'build-mac')
 DEST_ASN_LIST = join(DES_DIR, 'generated-files-asn1.txt')
+DEST_SYNC_LIST = join(DES_DIR, 'generated-files-sync.txt')
 
 
-class cd:
+class Pushd:
     """Context manager for changing the current working directory"""
 
     def __init__(self, newPath):
@@ -39,13 +40,13 @@ def cfiles(path):
 
 def clean_engine():
     """Cleans the engine"""
-    with cd(ENGINE_BASE_DIR):
+    with Pushd(ENGINE_BASE_DIR):
         subprocess.run(['gmake', 'clean'], check=True)
 
 
 def generate_sync_files():
     """Generates the engine's sync files"""
-    with cd(ENGINE_BASE_DIR):
+    with Pushd(ENGINE_BASE_DIR):
         commands = [
             ['gmake', '-C', 'sync'],
             ['gmake', '-C', 'asn.1', 'Sync.c']
@@ -56,16 +57,21 @@ def generate_sync_files():
 
 clean_engine()
 
-asnFilesBefore = cfiles(ASN_DIR_GENERATED)
-asnFilesBeforeSet = set(asnFilesBefore)
+asn_files_before = cfiles(ASN_DIR_GENERATED)
+asn_files_before_set = set(asn_files_before)
 
 generate_sync_files()
 
-asnFilesAfter = sorted(cfiles(ASN_DIR_GENERATED))
-syncFiles = sorted(cfiles(SYNC_DIR_GENERATED))
+asn_files_after = sorted(cfiles(ASN_DIR_GENERATED))
+sync_files = sorted(cfiles(SYNC_DIR_GENERATED))
 
-with open(DEST_ASN_LIST, 'w') as asn_file:
-    for asnFile in asnFilesAfter:
-        if not (asnFile in asnFilesBeforeSet):
-            item = '$(SRCROOT)/../asn.1/' + asnFile
-            asn_file.write(item + '\n')
+with open(DEST_ASN_LIST, 'w') as asn_target_file:
+    for asn_file in asn_files_after:
+        if not (asn_file in asn_files_before_set):
+            item = '$(SRCROOT)/../asn.1/' + asn_file
+            asn_target_file.write(item + '\n')
+
+with open(DEST_SYNC_LIST, 'w') as sync_target_file:
+    for sync_file in sync_files:
+        item = '$(SRCROOT)/../src/' + sync_file
+        sync_target_file.write(item + '\n')
