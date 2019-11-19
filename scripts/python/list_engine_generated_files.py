@@ -9,7 +9,9 @@ import subprocess
 from os import listdir, system
 from os.path import isfile, join, splitext
 
+# The engine source directory
 ENGINE_BASE_DIR = '../pEpEngine'
+
 SYNC_DIR_GENERATED = join(ENGINE_BASE_DIR, 'sync/generated')
 ASN_DIR_GENERATED = join(ENGINE_BASE_DIR, 'asn.1')
 DES_DIR = join(ENGINE_BASE_DIR, 'build-mac')
