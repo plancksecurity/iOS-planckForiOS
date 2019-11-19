@@ -22,15 +22,15 @@ DEST_SYNC_LIST = join(DES_DIR, 'generated-files-sync.txt')
 class Pushd:
     """Context manager for changing the current working directory"""
 
-    def __init__(self, newPath):
-        self.newPath = os.path.expanduser(newPath)
+    def __init__(self, new_path):
+        self.new_path = os.path.expanduser(new_path)
 
     def __enter__(self):
-        self.savedPath = os.getcwd()
-        os.chdir(self.newPath)
+        self.saved_path = os.getcwd()
+        os.chdir(self.new_path)
 
     def __exit__(self, etype, value, traceback):
-        os.chdir(self.savedPath)
+        os.chdir(self.saved_path)
 
 
 def cfiles(path):
@@ -59,8 +59,7 @@ def generate_sync_files():
 
 clean_engine()
 
-asn_files_before = cfiles(ASN_DIR_GENERATED)
-asn_files_before_set = set(asn_files_before)
+asn_files_before_set = set(cfiles(ASN_DIR_GENERATED))
 
 generate_sync_files()
 
