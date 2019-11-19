@@ -710,10 +710,10 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 extension EmailListViewController: EmailListViewModelDelegate {
 
     func checkIfSplitNeedsUpdate(indexpath: [IndexPath]) {
-        guard let isIphone = splitViewController?.isCollapsed, let last = lastSelectedIndexPath else {
+        guard let last = lastSelectedIndexPath else {
             return
         }
-        if !isIphone && indexpath.contains(last) {
+        if !onlySplitViewMasterIsShown && indexpath.contains(last) {
             showEmail(forCellAt: last)
         }
     }

@@ -635,7 +635,7 @@ extension EmailViewController: SegueHandlerType {
 
     private func removePEPButtons() {
 
-        let useToolbarItemsDirectly = splitViewController?.displayMode == UISplitViewController.DisplayMode.allVisible || splitViewController?.displayMode == UISplitViewController.DisplayMode.primaryOverlay
+        let useToolbarItemsDirectly = currentSplitViewMode() == .masterAndDetail
 
         var barButtonItems = useToolbarItemsDirectly ?
             toolbarItems ?? [] : navigationItem.rightBarButtonItems ?? []
