@@ -169,7 +169,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 guard let splitViewController = self.splitViewController else {
                     return
                 }
-                if splitViewController.isCollapsed {
+                if onlySplitViewMasterIsShown {
                     performSegue(withIdentifier: .ResetTrust, sender: self)
                 } else {
                     performSegue(withIdentifier: .ResetTrustSplitView , sender: self)
