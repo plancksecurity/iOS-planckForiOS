@@ -6,7 +6,7 @@
 
 import os
 import subprocess
-from os import listdir, system
+
 from os.path import isfile, join, splitext
 
 # The engine source directory
@@ -35,7 +35,7 @@ class Pushd:
 
 def cfiles(path):
     """Returns an array of .c and .h files under the given directory"""
-    return [f for f in listdir(path)
+    return [f for f in os.listdir(path)
             if isfile(join(path, f))
             and splitext(f)[1] in ['.c', '.h']]
 
