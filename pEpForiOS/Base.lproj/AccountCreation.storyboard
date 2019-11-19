@@ -547,7 +547,7 @@
         <!--Login View Controller-->
         <scene sceneID="c7J-uR-yAd">
             <objects>
-                <viewController id="clh-8B-z2B" customClass="LoginViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="clh-8B-z2B" customClass="LoginViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7n3-u6-UKe">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -714,16 +714,16 @@
                                                         <exclude reference="1qp-5Y-gQY"/>
                                                         <exclude reference="5uB-dW-SXj"/>
                                                         <exclude reference="iC4-Yn-8cv"/>
-                                                        <exclude reference="Hzq-xK-M9c"/>
-                                                        <exclude reference="ZbO-0c-3dY"/>
-                                                        <exclude reference="gMU-64-O8f"/>
-                                                        <exclude reference="pyt-nn-P8S"/>
-                                                        <exclude reference="rIl-Z0-FFv"/>
                                                         <exclude reference="UM3-1o-nc6"/>
                                                         <exclude reference="a6a-3J-tBh"/>
                                                         <exclude reference="m83-IL-ein"/>
                                                         <exclude reference="nhb-lJ-cSW"/>
                                                         <exclude reference="wjS-2O-w9c"/>
+                                                        <exclude reference="Hzq-xK-M9c"/>
+                                                        <exclude reference="ZbO-0c-3dY"/>
+                                                        <exclude reference="gMU-64-O8f"/>
+                                                        <exclude reference="pyt-nn-P8S"/>
+                                                        <exclude reference="rIl-Z0-FFv"/>
                                                         <exclude reference="4m8-Sq-LOv"/>
                                                         <exclude reference="JEJ-Cy-LII"/>
                                                         <exclude reference="POP-in-VWm"/>
@@ -735,11 +735,11 @@
                                                     <mask key="constraints">
                                                         <include reference="5uB-dW-SXj"/>
                                                         <include reference="iC4-Yn-8cv"/>
-                                                        <include reference="ZbO-0c-3dY"/>
-                                                        <include reference="pyt-nn-P8S"/>
                                                         <include reference="UM3-1o-nc6"/>
                                                         <include reference="a6a-3J-tBh"/>
                                                         <include reference="m83-IL-ein"/>
+                                                        <include reference="ZbO-0c-3dY"/>
+                                                        <include reference="pyt-nn-P8S"/>
                                                         <include reference="4m8-Sq-LOv"/>
                                                         <include reference="POP-in-VWm"/>
                                                         <include reference="rMC-LK-qvO"/>
@@ -747,11 +747,11 @@
                                                 </variation>
                                                 <variation key="heightClass=regular">
                                                     <mask key="constraints">
+                                                        <include reference="nhb-lJ-cSW"/>
+                                                        <include reference="wjS-2O-w9c"/>
                                                         <include reference="Hzq-xK-M9c"/>
                                                         <include reference="gMU-64-O8f"/>
                                                         <include reference="rIl-Z0-FFv"/>
-                                                        <include reference="nhb-lJ-cSW"/>
-                                                        <include reference="wjS-2O-w9c"/>
                                                         <include reference="JEJ-Cy-LII"/>
                                                         <include reference="V7N-wS-UD5"/>
                                                     </mask>
@@ -843,8 +843,8 @@
                         <viewLayoutGuide key="safeArea" id="jAI-Xy-z2r"/>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="1wc-Lm-dOd"/>
                                 <exclude reference="6Er-vY-8xf"/>
+                                <exclude reference="1wc-Lm-dOd"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
@@ -881,7 +881,7 @@
         <!--Navigation Controller-->
         <scene sceneID="aJL-6s-3px">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="n6h-PU-h88" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" navigationBarHidden="YES" id="n6h-PU-h88" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="xOX-61-BbZ">
                         <autoresizingMask key="autoresizingMask"/>
