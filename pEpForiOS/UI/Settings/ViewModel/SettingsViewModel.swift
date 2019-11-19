@@ -19,13 +19,10 @@ protocol SettingsViewModelDelegate: class {
 final class SettingsViewModel {
     weak var delegate: SettingsViewModelDelegate?
     var sections = [SettingsSectionViewModel]()
-    private let keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol?
-    private let messageModelService: MessageModelServiceProtocol
+    private let messageModelService: MessageModelServiceProtocol //BUFF: must not know MessageModelServcie
 
     init(_ messageModelService: MessageModelServiceProtocol,
-         _ keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol = KeySyncDeviceGroupService(),
          delegate: SettingsViewModelDelegate? = nil) {
-        self.keySyncDeviceGroupService = keySyncDeviceGroupService
         self.messageModelService = messageModelService
         self.delegate = delegate
         generateSections()
@@ -36,8 +33,7 @@ final class SettingsViewModel {
                                                  messageModelService: messageModelService))
         sections.append(SettingsSectionViewModel(type: .globalSettings))
         sections.append(SettingsSectionViewModel(type: .keySync,
-                                                 messageModelService: messageModelService,
-                                                 keySyncDeviceGroupService: keySyncDeviceGroupService))
+                                                 messageModelService: messageModelService))
         sections.append(SettingsSectionViewModel(type: .contacts))
         sections.append(SettingsSectionViewModel(type: .companyFeatures))
     }
@@ -50,12 +46,8 @@ final class SettingsViewModel {
     }
 
     func leaveDeviceGroupPressed() -> Error? {
-        guard let keySyncDeviceGroupService = keySyncDeviceGroupService else {
-            Log.shared.errorAndCrash("keySyncDeviceGroupService is nil in Settings view model")
-            return nil
-        }
         do {
-            try keySyncDeviceGroupService.leaveDeviceGroup()
+            try KeySyncDeviceGroupUtil.leaveDeviceGroup()
             removeLeaveDeviceGroupCell()
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)

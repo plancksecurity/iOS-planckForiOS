@@ -13,8 +13,12 @@ import XCTest
 final class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     var settingsVM : SettingsViewModel!
-    var keySyncDeviceGroupServiceMoc: KeySyncDeviceGroupServiceMoc!
     var messageModelServiceMoc: MessageModelServiceMoc!
+
+    override class func setUp() {
+        super.setUp()
+        KeySyncDeviceGroupUtilMoc.resetMoc()
+    }
 
     func givenThereAreTwoAccounts() {
         _ = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
@@ -26,7 +30,7 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     func testNumberOfSections() {
         setupViewModel()
-        keySyncDeviceGroupServiceMoc.deviceGroupValueForTest  = .sole
+        KeySyncDeviceGroupUtilMoc.deviceGroupValueForTest  = .sole
         XCTAssertEqual(settingsVM.count, sections)
     }
     
@@ -87,7 +91,7 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
         _ = settingsVM.leaveDeviceGroupPressed()
 
         // THEN
-        XCTAssertTrue(keySyncDeviceGroupServiceMoc.didCallLeaveDeviceGroup)
+        XCTAssertTrue(KeySyncDeviceGroupUtilMoc.didCallLeaveDeviceGroup)
         guard let section = keySyncSection() else { return }
         for cell in section.cells {
             guard let cell = cell as? SettingsActionCellViewModel else { continue }
@@ -134,9 +138,7 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
 // MARK: - Private
 extension SettingsViewModelTest {
     private func setupViewModel() {
-        messageModelServiceMoc = MessageModelServiceMoc()
-        keySyncDeviceGroupServiceMoc = KeySyncDeviceGroupServiceMoc()
-        settingsVM = SettingsViewModel(messageModelServiceMoc, keySyncDeviceGroupServiceMoc)
+        settingsVM = SettingsViewModel(messageModelServiceMoc)
     }
 
     private func keySyncSection() -> SettingsSectionViewModel? {

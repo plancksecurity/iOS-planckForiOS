@@ -21,8 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /** The model */
     var messageModelService: MessageModelServiceProtocol?
 
-    var deviceGroupService: KeySyncDeviceGroupService?
-
     /// Error Handler bubble errors up to the UI
     var errorPropagator = ErrorPropagator()
 
@@ -35,12 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     /// Set to true whever the app goes into background, so the main PEPSession gets cleaned up.
     var shouldDestroySession = false
-
-    func applicationDirectory() -> URL? {
-        let fm = FileManager.default
-        let dirs = fm.urls(for: .libraryDirectory, in: .userDomainMask)
-        return dirs.first
-    }
 
     private func setupInitialViewController() -> Bool {
         guard let appConfig = appConfig else {
@@ -64,42 +56,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    /// Tell the model that is is save to start services.
-    private func startServices() {
-        do {
-            try messageModelService?.start_old()
-        } catch {
-            Log.shared.log(error: error)
-        }
-    }
-
-    /// Signals all PEPSession users to stop using a session as soon as possible.
-    /// ReplicationService will assure all local changes triggered by the user are synced to the server
-    /// and call it's delegate (me) after the last sync operation has finished.
-    private func gracefullyShutdownServices() { //BUFF: must go away
-        guard syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid
-            else {
-                Log.shared.error("Will not start background sync, pending %d",
-                                         syncUserActionsAndCleanupbackgroundTaskId.rawValue)
-                return
-        }
-        syncUserActionsAndCleanupbackgroundTaskId =
-            UIApplication.shared.beginBackgroundTask(expirationHandler: { [unowned self] in
-                Log.shared.warn(
-                    "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
-                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
-                // We migh want to call some (yet unexisting) emergency shutdown on
-                // ReplicationService here that brutally shuts down everything.
-                UIApplication.shared.endBackgroundTask(self.syncUserActionsAndCleanupbackgroundTaskId)
-                self.syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
-
-                Log.shared.errorAndCrash(
-                    "syncUserActionsAndCleanupbackgroundTask with ID %d expired",
-                    self.syncUserActionsAndCleanupbackgroundTaskId.rawValue)
-            })
-        messageModelService?.processAllUserActionsAndStop_old() //BUFF: must go away
-    }
-
     func cleanupPEPSessionIfNeeded() {
         if shouldDestroySession {
             PEPSession.cleanup()
@@ -108,14 +64,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setupServices() {
         let keySyncHandshakeService = KeySyncHandshakeService()
-        let deviceGroupService = KeySyncDeviceGroupService()
-        self.deviceGroupService = deviceGroupService
         let theMessageModelService = MessageModelService(errorPropagator: errorPropagator,
-                                                         cnContactsAccessPermissionProvider: AppSettings.shared, //BUFF: make app setting proper singleton
+                                                         cnContactsAccessPermissionProvider: AppSettings.shared,
                                                          keySyncServiceDelegate: keySyncHandshakeService,
-                                                         deviceGroupDelegate: deviceGroupService,
                                                          keySyncEnabled: AppSettings.shared.keySyncEnabled)
-        theMessageModelService.delegate = self
         messageModelService = theMessageModelService
 
         appConfig = AppConfig(errorPropagator: errorPropagator,
@@ -125,13 +77,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = appConfig
-    }
-
-    // Safely restarts all services
-    private func shutdownAndPrepareServicesForRestart() {
-        // We cancel the Network Service to make sure it is idle and ready for a clean restart.
-        // The actual restart of the services happens in ReplicationServiceDelegate callbacks.
-        messageModelService?.cancel_old()
     }
 
     private func askUserForNotificationPermissions() {
@@ -147,9 +92,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
-        Log.shared.info("Library url: %@", String(describing: applicationDirectory()))
-
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them
             // and pretty much don't do anything.
@@ -166,8 +108,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let result = setupInitialViewController()
 
-        try? messageModelService?.start_old()
-
         return result
     }
 
@@ -177,13 +117,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame
     /// rates. Games should use this method to pause the game.
     ///
-    /// - note: this is even called when:
+    /// - note: this is also called when:
     ///         * an alert is shown (e.g. OS asks for CNContact access permissions)
-    ///         * theuser swipes up/down the "ControllCenter"
+    ///         * the user swipes up/down the "ControllCenter"
     func applicationWillResignActive(_ application: UIApplication) {
-        UIApplication.hideStatusBarNetworkActivitySpinner()
-        shutdownAndPrepareServicesForRestart() //BUFF:
-        messageModelService?.finish()
+        // I would love to stop() services here but decided to do nothing.
+        // Background: This is called:
+        //                      * when an alert is shown
+        //                      * user swipes to "Control Center"
+        //                      * before `applicationDidEnterBackground()` is called
+        // I can not think of a way to handle all those cases in one method.
+        // If we come into trouble doing nothing here, let's discuss
     }
 
     /// Use this method to release shared resources, save user data, invalidate timers, and store
@@ -192,18 +136,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// If your application supports background execution, this method is called instead of
     /// applicationWillTerminate: when the user quits.
     func applicationDidEnterBackground(_ application: UIApplication) {
-        UIApplication.hideStatusBarNetworkActivitySpinner()
         Log.shared.info("applicationDidEnterBackground")
         Session.main.commit()
         shouldDestroySession = true
-        gracefullyShutdownServices()
         messageModelService?.finish()
     }
 
     /// Called as part of the transition from the background to the inactive state; here you can
     /// undo many of the changes made on entering the background.
     func applicationWillEnterForeground(_ application: UIApplication) {
-
+        // do nothing (?)
     }
 
     /// Restart any tasks that were paused (or not yet started) while the application was inactive.
@@ -217,9 +159,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
 
-        shouldDestroySession = false
-
-        shutdownAndPrepareServicesForRestart()
+        shouldDestroySession = false //BUFF: rewrite pepsession cleanup
         UserNotificationTool.resetApplicationIconBadgeNumber()
         messageModelService?.start()
     }
@@ -227,13 +167,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
-        // applicationWillTerminate is not called when running backlground tasks. We clean up
-        // anyway, just to be safe.
-        UIApplication.hideStatusBarNetworkActivitySpinner()
+        messageModelService?.stop()
         shouldDestroySession = true
-        // Just in case, last chance to clean up. Should not be necessary though.
         cleanupPEPSessionIfNeeded()
-        messageModelService?.finish()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
@@ -282,43 +218,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 result:UIBackgroundFetchResult) {
         PEPSession.cleanup()
         completionHandler(result)
-    }
-}
-
-// MARK: - ReplicationServiceDelegate
-
-extension AppDelegate: MessageModelServiceDelegate {
-
-    func messageModelServiceDidFinishLastSyncLoop() { //BUFF: must go away
-        // Cleanup sessions.
-        PEPSession.cleanup()
-        if syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid {
-            return
-        }
-        if UIApplication.shared.applicationState != .background {
-            // We got woken up again before syncUserActionsAndCleanupbackgroundTask finished.
-            // No problem, start regular sync loop.
-            startServices()
-        }
-        UIApplication.shared.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
-        syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
-    }
-
-    func messageModelServiceDidCancel() { //BUFF: must go away
-        switch UIApplication.shared.applicationState {
-        case .background:
-            // We have been cancelled because we are entering background.
-            // Quickly sync local changes and clean up.
-            gracefullyShutdownServices()
-        case .inactive:
-            // We re inactive. Keep services paused -> Do nothing
-            break
-        case .active:
-            // We have been cancelled soley to assure a clean restart.
-            startServices()
-        @unknown default:
-            Log.shared.errorAndCrash("Apple, please folow your own advice and use CLOSED_ENUM in Obj-C")
-        }
     }
 }
 
