@@ -39,10 +39,10 @@ final class SettingsViewModel {
             sections[section].delete(cell: cell)
         }
     }
-//    //temporal stub
-//    func canBeShown(Message: Message? ) -> Bool {
-//        return false
-//    }
+    //temporal stub
+    func canBeShown(Message: Message? ) -> Bool {
+        return false
+    }
 
     func noAccounts() -> Bool {
         return Account.all().count <= 0
