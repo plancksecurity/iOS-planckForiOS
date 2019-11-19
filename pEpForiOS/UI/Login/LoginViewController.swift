@@ -33,6 +33,7 @@ class LoginViewController: BaseViewController {
     @IBOutlet weak var mainContainerView: UIView!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var pEpSyncViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
 
     /// Set in prepare for segue, if the user selected an account with ouath from the menu
     var isOauthAccount = false {
@@ -129,6 +130,11 @@ class LoginViewController: BaseViewController {
     @IBAction func emailChanged(_ sender: UITextField) {
         updatePasswordField(email: sender.text)
     }
+
+    @IBAction func pEpSyncStateChanged(_ sender: UISwitch) {
+        loginViewModel?.isAccountPEPSyncEnable = sender.isOn
+    }
+
 
     func scrollAndMakeVisible(_ textField: UITextField, scrollViewHeight: CGFloat) {
         let textFieldFrames = textField.convert(textField.bounds, to: scrollView)
@@ -403,16 +409,11 @@ extension LoginViewController {
                 "OK",
                 comment: "UIAlertAction ok after error"),
             style: .default, handler: { [weak self] action in
-                if offerManualSetup {
-                    self?.offerManualSetup = true
-                    self?.manualConfigButton.alpha = 0
-                    self?.manualConfigButton.isHidden = false
-                    self?.pEpSyncViewLeadingConstraint.constant = 0
-                    UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
-                        self?.manualConfigButton.alpha = 1
-                        self?.mainContainerView.layoutIfNeeded()
-                    })
+                guard let me = self else {
+                    Log.shared.lostMySelf()
+                    return
                 }
+                me.setManualSetupButtonHidden(!offerManualSetup)
         }))
         present(alertView, animated: true, completion: nil)
     }
@@ -430,13 +431,32 @@ extension LoginViewController {
             placeholder: NSLocalizedString("Manual configuration", comment: "manual"))
 
         // hide extended login fields
-        manualConfigButton.isHidden = true
-        pEpSyncViewLeadingConstraint.constant = stackView.bounds.midX - pEpSyncView.bounds.midX
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self, action: #selector(LoginViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
 
         dismissViewButton.setTitle(NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"), for: .normal)
+
+        setManualSetupButtonHidden(true)
+    }
+
+    private func setManualSetupButtonHidden(_ hidden: Bool) {
+        manualConfigButton.isHidden = hidden
+        pEpSyncViewLeadingConstraint.isActive = !hidden// constant = stackView.bounds.midX - pEpSyncView.bounds.midX
+        pEpSyncViewCenterHConstraint.isActive = hidden
+        manualConfigButton.alpha = hidden ? 1 : 0
+
+        UIView.animate(withDuration: 0.25,
+                       delay: 0,
+                       options: .curveEaseInOut,
+                       animations: { [weak self] in
+                        guard let me = self else {
+                            Log.shared.lostMySelf()
+                            return
+                        }
+                        me.manualConfigButton.alpha = 1
+                        me.mainContainerView.layoutIfNeeded()
+        })
     }
 
     private func updateView() {

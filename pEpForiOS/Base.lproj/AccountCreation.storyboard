@@ -660,16 +660,19 @@
                                                         </connections>
                                                     </button>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zg6-3H-SnV" userLabel="Sync View">
-                                                        <rect key="frame" x="0.0" y="94" width="131" height="31"/>
+                                                        <rect key="frame" x="0.0" y="94" width="300" height="31"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="p≡p Sync" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEp-6Y-fcV">
-                                                                <rect key="frame" x="0.0" y="6" width="71" height="19.5"/>
+                                                                <rect key="frame" x="0.0" y="6" width="240" height="19.5"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rz2-cx-OH1">
-                                                                <rect key="frame" x="82" y="0.0" width="51" height="31"/>
+                                                                <rect key="frame" x="251" y="0.0" width="51" height="31"/>
+                                                                <connections>
+                                                                    <action selector="pEpSyncStateChanged:" destination="clh-8B-z2B" eventType="valueChanged" id="287-eu-D4i"/>
+                                                                </connections>
                                                             </switch>
                                                         </subviews>
                                                         <constraints>
@@ -677,12 +680,12 @@
                                                             <constraint firstItem="rz2-cx-OH1" firstAttribute="leading" secondItem="DEp-6Y-fcV" secondAttribute="trailing" constant="11" id="4x3-VC-skH"/>
                                                             <constraint firstItem="DEp-6Y-fcV" firstAttribute="centerY" secondItem="zg6-3H-SnV" secondAttribute="centerY" id="JrF-JW-zzu"/>
                                                             <constraint firstItem="DEp-6Y-fcV" firstAttribute="leading" secondItem="zg6-3H-SnV" secondAttribute="leading" id="YIO-Pa-erZ"/>
+                                                            <constraint firstAttribute="trailing" secondItem="rz2-cx-OH1" secondAttribute="trailing" id="YlE-8c-nai"/>
                                                             <constraint firstAttribute="height" constant="31" id="kFY-zI-Ims"/>
-                                                            <constraint firstAttribute="trailing" secondItem="rz2-cx-OH1" secondAttribute="trailing" id="mQy-s9-yur"/>
                                                         </constraints>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JT1-ND-6bH">
-                                                        <rect key="frame" x="200" y="93" width="100" height="32"/>
+                                                        <rect key="frame" x="295" y="93" width="100" height="32"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                         <state key="normal" title="Manual Setup">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -693,6 +696,7 @@
                                                     <constraint firstAttribute="height" constant="125" id="1qp-5Y-gQY"/>
                                                     <constraint firstAttribute="bottom" secondItem="JT1-ND-6bH" secondAttribute="bottom" id="4m8-Sq-LOv"/>
                                                     <constraint firstAttribute="width" constant="140" id="5uB-dW-SXj"/>
+                                                    <constraint firstItem="zg6-3H-SnV" firstAttribute="centerX" secondItem="gsz-7C-yke" secondAttribute="centerX" id="88a-wW-ARz"/>
                                                     <constraint firstItem="zg6-3H-SnV" firstAttribute="leading" secondItem="gsz-7C-yke" secondAttribute="leading" id="Hzq-xK-M9c"/>
                                                     <constraint firstAttribute="trailing" secondItem="JT1-ND-6bH" secondAttribute="trailing" priority="750" id="JEJ-Cy-LII"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="JT1-ND-6bH" secondAttribute="trailing" id="POP-in-VWm"/>
@@ -714,16 +718,16 @@
                                                         <exclude reference="1qp-5Y-gQY"/>
                                                         <exclude reference="5uB-dW-SXj"/>
                                                         <exclude reference="iC4-Yn-8cv"/>
-                                                        <exclude reference="UM3-1o-nc6"/>
-                                                        <exclude reference="a6a-3J-tBh"/>
-                                                        <exclude reference="m83-IL-ein"/>
-                                                        <exclude reference="nhb-lJ-cSW"/>
-                                                        <exclude reference="wjS-2O-w9c"/>
                                                         <exclude reference="Hzq-xK-M9c"/>
                                                         <exclude reference="ZbO-0c-3dY"/>
                                                         <exclude reference="gMU-64-O8f"/>
                                                         <exclude reference="pyt-nn-P8S"/>
                                                         <exclude reference="rIl-Z0-FFv"/>
+                                                        <exclude reference="UM3-1o-nc6"/>
+                                                        <exclude reference="a6a-3J-tBh"/>
+                                                        <exclude reference="m83-IL-ein"/>
+                                                        <exclude reference="nhb-lJ-cSW"/>
+                                                        <exclude reference="wjS-2O-w9c"/>
                                                         <exclude reference="4m8-Sq-LOv"/>
                                                         <exclude reference="JEJ-Cy-LII"/>
                                                         <exclude reference="POP-in-VWm"/>
@@ -735,11 +739,11 @@
                                                     <mask key="constraints">
                                                         <include reference="5uB-dW-SXj"/>
                                                         <include reference="iC4-Yn-8cv"/>
+                                                        <include reference="ZbO-0c-3dY"/>
+                                                        <include reference="pyt-nn-P8S"/>
                                                         <include reference="UM3-1o-nc6"/>
                                                         <include reference="a6a-3J-tBh"/>
                                                         <include reference="m83-IL-ein"/>
-                                                        <include reference="ZbO-0c-3dY"/>
-                                                        <include reference="pyt-nn-P8S"/>
                                                         <include reference="4m8-Sq-LOv"/>
                                                         <include reference="POP-in-VWm"/>
                                                         <include reference="rMC-LK-qvO"/>
@@ -747,11 +751,11 @@
                                                 </variation>
                                                 <variation key="heightClass=regular">
                                                     <mask key="constraints">
-                                                        <include reference="nhb-lJ-cSW"/>
-                                                        <include reference="wjS-2O-w9c"/>
                                                         <include reference="Hzq-xK-M9c"/>
                                                         <include reference="gMU-64-O8f"/>
                                                         <include reference="rIl-Z0-FFv"/>
+                                                        <include reference="nhb-lJ-cSW"/>
+                                                        <include reference="wjS-2O-w9c"/>
                                                         <include reference="JEJ-Cy-LII"/>
                                                         <include reference="V7N-wS-UD5"/>
                                                     </mask>
@@ -866,6 +870,7 @@
                         <outlet property="mainContainerView" destination="d4O-yC-tc7" id="Kg2-jV-XNd"/>
                         <outlet property="manualConfigButton" destination="JT1-ND-6bH" id="1zL-Jx-gfO"/>
                         <outlet property="pEpSyncView" destination="zg6-3H-SnV" id="Vvp-Si-Beh"/>
+                        <outlet property="pEpSyncViewCenterHConstraint" destination="88a-wW-ARz" id="xP6-mx-jtR"/>
                         <outlet property="pEpSyncViewLeadingConstraint" destination="Hzq-xK-M9c" id="s9X-8H-SGC"/>
                         <outlet property="password" destination="e3d-56-GP8" id="Ab6-1O-YUi"/>
                         <outlet property="scrollView" destination="RXQ-HQ-bsM" id="Jba-T4-Mwi"/>
