@@ -106,7 +106,7 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
         if Account.all().count == 1,
             let account = Account.all().first {
             do {
-                if try !account.isPEPSyncEnabled() {
+                if try !account.isKeySyncEnabled() {
                     AppSettings.shared.keySyncEnabled = false
                 }
             } catch {

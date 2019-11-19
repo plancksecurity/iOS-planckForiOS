@@ -28,7 +28,7 @@ extension AppSettings {
 // MARK: - AppSettings
 
 /// Signleton representing and managing the App's settings.
-public final class AppSettings: PEPSyncStateProvider {
+public final class AppSettings: KeySyncStateProvider {
     // MARK: - Singleton
     
     static public let shared = AppSettings()
@@ -46,7 +46,7 @@ public final class AppSettings: PEPSyncStateProvider {
 
     public var stateChangeHandler: ((Bool) -> Void)?
 
-    public var isPEPSyncEnabled: Bool {
+    public var isKeySyncEnabled: Bool {
         return keySyncEnabled
     }
 
