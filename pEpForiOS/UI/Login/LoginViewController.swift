@@ -442,7 +442,7 @@ extension LoginViewController {
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
         manualConfigButton.isHidden = hidden
-        pEpSyncViewLeadingConstraint.isActive = !hidden// constant = stackView.bounds.midX - pEpSyncView.bounds.midX
+        pEpSyncViewLeadingConstraint.isActive = !hidden
         pEpSyncViewCenterHConstraint.isActive = hidden
         manualConfigButton.alpha = hidden ? 1 : 0
 
@@ -454,7 +454,7 @@ extension LoginViewController {
                             Log.shared.lostMySelf()
                             return
                         }
-                        me.manualConfigButton.alpha = 1
+                        me.manualConfigButton.alpha = hidden ? 0 : 1
                         me.mainContainerView.layoutIfNeeded()
         })
     }
