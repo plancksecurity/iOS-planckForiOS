@@ -19,7 +19,7 @@ class ErrorNotifyHandshakeDelegate: NSObject, PEPNotifyHandshakeDelegate {
         return .unknownError
     }
 
-    func keySyncDisabled() {
+    func engineShutdownKeySync() {
         // ignore
     }
 }
