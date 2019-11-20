@@ -11,15 +11,16 @@ import UIKit
 
 class Appearance {
     public static func pEp(_ color: UIColor = .pEpGreen) {
+        // Still needed for iOS 13 for button bar items.
+        UINavigationBar.appearance().tintColor = color
+
         if #available(iOS 13, *) {
-            // iOS 13 introduced a new appearance API, keeping compatibility with the old way.
-            // Unfortunately, the pre-iOS-13 UINavigationBar.appearance().tintColor
-            // is not respected anymore in all cases.
+            // iOS 13 ignores the navigation bar tint color in some cases,
+            // therefore we use the new appearance API to customise explicitly.
             let normalNavigationBar = UINavigationBar.appearance()
             normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: color)
         } else {
             UINavigationBar.appearance().backgroundColor = .white
-            UINavigationBar.appearance().tintColor = color
             UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: color]
         }
 

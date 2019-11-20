@@ -138,7 +138,7 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
 
         let alertView = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
         let resetTrustThisIdentityAction = UIAlertAction(
-            title: NSLocalizedString("Reset Trust For This Identity", comment: "alert action 1"),
+            title: NSLocalizedString("Reset This Identity", comment: "alert action 1"),
             style: .destructive) { [weak self] action in
                 guard let me = self else {
                     Log.shared.errorAndCrash(message: "lost myself")
