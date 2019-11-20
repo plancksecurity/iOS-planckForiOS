@@ -26,6 +26,7 @@ class LoginViewController: BaseViewController {
     @IBOutlet weak var emailAddress: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var dismissViewButton: UIButton!
+    @IBOutlet weak var loginButtonIPad: UIButton!
     @IBOutlet weak var manualConfigButton: UIButton!
     @IBOutlet weak var pEpSyncView: UIView!
     @IBOutlet weak var mainContainerView: UIView!
@@ -33,6 +34,8 @@ class LoginViewController: BaseViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
+    @IBOutlet weak var loginButtonTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var loginButtonCenterYConstraint: NSLayoutConstraint!
 
     /// Set in prepare for segue, if the user selected an account with ouath from the menu
     var isOauthAccount = false {
@@ -437,6 +440,13 @@ extension LoginViewController {
         dismissViewButton.setTitle(NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"), for: .normal)
 
         setManualSetupButtonHidden(true)
+        updateLoginButton()
+    }
+
+    private func updateLoginButton() {
+        let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+        loginButton.isHidden = isIpad
+        loginButtonIPad.isHidden = !isIpad
     }
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
