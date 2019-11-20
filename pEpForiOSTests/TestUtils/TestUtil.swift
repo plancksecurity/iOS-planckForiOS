@@ -213,7 +213,8 @@ class TestUtil {
     // MARK: - Sync Loop
 
     static public func syncAndWait(numAccountsToSync: Int = 1, testCase: XCTestCase) {
-        //BUFF: use send, replication, decrypt
+        //BUFF: Is implemented in MM TrestUtils. How can we get it here too? Do we need it at all (think yes)
+
 
 //        let replicationService = ReplicationService()
 //        replicationService.sleepTimeInSeconds = 0.1

@@ -30,12 +30,12 @@ final class EditableAccountSettingsTableViewModelTest: CoreDataDrivenTestBase {
     }
 
     override func tearDown() {
-        super.tearDown()
-
         actual = nil
         expected = nil
         viewModel = nil
         viewModel?.delegate = nil
+        
+        super.tearDown()
     }
 
     func testValidateInputsSucceed() {
