@@ -107,7 +107,7 @@ extension SettingsActionCellViewModel {
         }
     }
 
-    func handleKeySyncSettingCellPressed() { //BUFF: change after adapter changes are in
+    func handleKeySyncSettingCellPressed() {
         switch keySyncSettingCellState {
         case .enablekeySync:
             KeySyncUtil.enableKeySync()

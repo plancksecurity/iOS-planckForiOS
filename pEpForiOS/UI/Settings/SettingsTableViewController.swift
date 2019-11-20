@@ -161,6 +161,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                     showAlertBeforeLeavingDeviceGroup(cellViewModel: vm, indexPath: indexPath)
                 } else {
                     handleKeySyncSettingCellPressed(cellViewModel: vm)
+                    tableView.reloadData()
                 }
             case .resetAllIdentities:
                 handleResetAllIdentity()
@@ -307,7 +308,6 @@ extension SettingsTableViewController {
 
     private func handleKeySyncSettingCellPressed(cellViewModel: SettingsActionCellViewModel) {
         cellViewModel.handleKeySyncSettingCellPressed()
-        tableView.reloadData()
     }   
 
     private func showAlertBeforeLeavingDeviceGroup(cellViewModel: SettingsActionCellViewModel,
@@ -322,6 +322,7 @@ extension SettingsTableViewController {
                 return
             }
             me.handleKeySyncSettingCellPressed(cellViewModel: cellViewModel)
+            me.tableView.reloadData()
         }
         showAlert(title, comment, buttonTitle, leavingAction, indexPath)
     }
