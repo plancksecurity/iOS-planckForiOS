@@ -36,6 +36,7 @@ public final class AppSettings: KeySyncStateProvider {
     private init() {
         setup()
         registerForKeySyncDeviceGroupStateChangeNotification()
+        registerForKeySyncDisabledByEngineNotification()
     }
 
     deinit {
