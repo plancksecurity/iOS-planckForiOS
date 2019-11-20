@@ -21,18 +21,17 @@ class LoginViewController: BaseViewController {
     var offerManualSetup = false
     weak var delegate: LoginViewControllerDelegate?
 
-    @IBOutlet weak var emailAddress: UITextField!
-    @IBOutlet weak var password: UITextField!
     @IBOutlet weak var user: UITextField!
+    @IBOutlet weak var password: UITextField!
+    @IBOutlet weak var emailAddress: UITextField!
     @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var manualConfigButton: UIButton!
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var pEpSyncView: UIView!
-    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var dismissViewButton: UIButton!
+    @IBOutlet weak var manualConfigButton: UIButton!
+    @IBOutlet weak var pEpSyncView: UIView!
     @IBOutlet weak var mainContainerView: UIView!
+    @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pEpSyncViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
 
     /// Set in prepare for segue, if the user selected an account with ouath from the menu
@@ -441,9 +440,9 @@ extension LoginViewController {
     }
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
+        guard manualConfigButton.isHidden != hidden else { return }
         manualConfigButton.isHidden = hidden
-        pEpSyncViewLeadingConstraint.isActive = !hidden
-        pEpSyncViewCenterHConstraint.isActive = hidden
+        pEpSyncViewCenterHConstraint.constant = hidden ? 0 : -stackView.bounds.midX/2
         manualConfigButton.alpha = hidden ? 1 : 0
 
         UIView.animate(withDuration: 0.25,

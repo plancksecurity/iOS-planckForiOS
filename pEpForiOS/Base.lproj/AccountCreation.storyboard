@@ -662,7 +662,7 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zg6-3H-SnV" userLabel="Sync View">
                                                         <rect key="frame" x="64.5" y="67" width="131" height="31"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="800" text="p≡p Sync" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEp-6Y-fcV">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="p≡p Sync" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEp-6Y-fcV">
                                                                 <rect key="frame" x="0.0" y="6" width="71" height="19.5"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -697,7 +697,6 @@
                                                     <constraint firstAttribute="bottom" secondItem="JT1-ND-6bH" secondAttribute="bottom" id="4m8-Sq-LOv"/>
                                                     <constraint firstAttribute="width" constant="140" id="5uB-dW-SXj"/>
                                                     <constraint firstItem="zg6-3H-SnV" firstAttribute="centerX" secondItem="gsz-7C-yke" secondAttribute="centerX" id="88a-wW-ARz"/>
-                                                    <constraint firstItem="zg6-3H-SnV" firstAttribute="leading" secondItem="gsz-7C-yke" secondAttribute="leading" id="Hzq-xK-M9c"/>
                                                     <constraint firstAttribute="trailing" secondItem="JT1-ND-6bH" secondAttribute="trailing" priority="750" id="JEJ-Cy-LII"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zg6-3H-SnV" secondAttribute="trailing" constant="5" id="NGP-z6-pbh"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="JT1-ND-6bH" secondAttribute="trailing" constant="5" id="POP-in-VWm"/>
@@ -753,7 +752,6 @@
                                                 <variation key="heightClass=regular">
                                                     <mask key="constraints">
                                                         <include reference="88a-wW-ARz"/>
-                                                        <exclude reference="Hzq-xK-M9c"/>
                                                         <include reference="gMU-64-O8f"/>
                                                         <include reference="rIl-Z0-FFv"/>
                                                         <include reference="nhb-lJ-cSW"/>
@@ -873,7 +871,6 @@
                         <outlet property="manualConfigButton" destination="JT1-ND-6bH" id="1zL-Jx-gfO"/>
                         <outlet property="pEpSyncView" destination="zg6-3H-SnV" id="Vvp-Si-Beh"/>
                         <outlet property="pEpSyncViewCenterHConstraint" destination="88a-wW-ARz" id="xP6-mx-jtR"/>
-                        <outlet property="pEpSyncViewLeadingConstraint" destination="Hzq-xK-M9c" id="s9X-8H-SGC"/>
                         <outlet property="password" destination="e3d-56-GP8" id="Ab6-1O-YUi"/>
                         <outlet property="scrollView" destination="RXQ-HQ-bsM" id="Jba-T4-Mwi"/>
                         <outlet property="scrollViewBottomConstraint" destination="H9T-wo-ehg" id="QWM-fs-2ko"/>
