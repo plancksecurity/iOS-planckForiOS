@@ -18,4 +18,8 @@ class ErrorNotifyHandshakeDelegate: NSObject, PEPNotifyHandshakeDelegate {
                          signal: PEPSyncHandshakeSignal) -> PEPStatus {
         return .unknownError
     }
+
+    func keySyncDisabled() {
+        // ignore
+    }
 }
