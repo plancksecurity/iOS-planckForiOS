@@ -10,10 +10,6 @@ import Foundation
 import PEPObjCAdapterFramework
 
 class PEPSessionMoc: NSObject, PEPSessionProtocol  {
-    func isKeySyncEnabled() -> Bool {
-        return false
-    }
-
     func decryptMessageDict(_ messageDict: NSMutableDictionary, flags: UnsafeMutablePointer<PEPDecryptFlags>?, rating: UnsafeMutablePointer<PEPRating>?, extraKeys: AutoreleasingUnsafeMutablePointer<NSArray?>?, status: UnsafeMutablePointer<PEPStatus>?) throws -> [String : Any] {
         return [:]
     }
