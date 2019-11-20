@@ -129,7 +129,6 @@
 		154918E322BA74D70091B6D6 /* PantomimeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 154918E222BA74D70091B6D6 /* PantomimeFramework.framework */; };
 		154918E422BA74D70091B6D6 /* PantomimeFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 154918E222BA74D70091B6D6 /* PantomimeFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		154D173D2373327C001FDF78 /* CoreDataDrivenTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154D173C2373327C001FDF78 /* CoreDataDrivenTestBase.swift */; };
-		154F0A8220874B3E00C77D72 /* ContentDispositionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */; };
 		155050F01FE82356009CEAD2 /* UserNotificationTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */; };
 		155050F21FE95D8A009CEAD2 /* UserNotificationTool+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155050F11FE95D8A009CEAD2 /* UserNotificationTool+pEp.swift */; };
 		1554755F2137F6F8005A52D0 /* SwipeActionDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1554755E2137F6F8005A52D0 /* SwipeActionDescriptor.swift */; };
@@ -592,7 +591,6 @@
 		154918DF22BA74BA0091B6D6 /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		154918E222BA74D70091B6D6 /* PantomimeFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		154D173C2373327C001FDF78 /* CoreDataDrivenTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataDrivenTestBase.swift; sourceTree = "<group>"; };
-		154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentDispositionTest.swift; sourceTree = "<group>"; };
 		155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationTool.swift; sourceTree = "<group>"; };
 		155050F11FE95D8A009CEAD2 /* UserNotificationTool+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserNotificationTool+pEp.swift"; sourceTree = "<group>"; };
 		1554755E2137F6F8005A52D0 /* SwipeActionDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionDescriptor.swift; sourceTree = "<group>"; };
@@ -1998,7 +1996,6 @@
 				1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */,
 				1541D7F41FC82A4900D52A5D /* URL+MIME.swift */,
 				430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */,
-				154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */,
 				4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */,
 				438BA0F4214F89CC001A4A82 /* MailParsingTests.swift */,
 			);
@@ -3127,7 +3124,6 @@
 				436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */,
 				15D7D997219C374600A1A2B9 /* ComposeViewModelStateTest.swift in Sources */,
 				F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */,
-				154F0A8220874B3E00C77D72 /* ContentDispositionTest.swift in Sources */,
 				B7F4A793212DDFC500507B76 /* EmailListViewModelTest.swift in Sources */,
 				151F71FF202A06760057C74D /* Message+TestUtils.swift in Sources */,
 				49DCCD2821E8ABDF00ABE487 /* ScreenshotTestUtil.swift in Sources */,
