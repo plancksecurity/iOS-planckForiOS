@@ -39,12 +39,10 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
     }
 
     static func wizardImages() -> [TutorialViewController.TutorialImage] {
-        let view_1:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-1", comment: "TutorialWizard image 1")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-1-horizontal", comment: "TutorialWizard image 1 horizontal")))
-        let view_2:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-2", comment: "TutorialWizard image 2")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-2-horizontal", comment: "TutorialWizard image 2 horizontal")))
-        let view_3:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-3", comment: "TutorialWizard image 3")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-3-horizontal", comment: "TutorialWizard image 3 horizontal")))
-        let view_4:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-4", comment: "TutorialWizard image 4")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-4-horizontal", comment: "TutorialWizard image 4 horizontal")))
-        let view_5:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-5", comment: "TutorialWizard image 5")), #imageLiteral(resourceName: NSLocalizedString("pEpForIOS-Tutorial-5-horizontal", comment: "TutorialWizard image 5 horizontal")))
-        return [view_1, view_2, view_3, view_4, view_5]
+        let view_1:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: "pEpForIOS-Tutorial-vertical-1"), #imageLiteral(resourceName: "pEpForIOS-Tutorial-horizontal-1"))
+        let view_2:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: "pEpForIOS-Tutorial-vertical-2"), #imageLiteral(resourceName: "pEpForIOS-Tutorial-horizontal-2"))
+        let view_3:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: "pEpForIOS-Tutorial-vertical-3"), #imageLiteral(resourceName: "pEpForIOS-Tutorial-horizontal-3"))
+        return [view_1, view_2, view_3]
     }
 
     static func presentTutorialWizard(viewController: UIViewController) {
