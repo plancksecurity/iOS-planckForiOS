@@ -23,6 +23,7 @@
 		3790456A223FA52B006DAB3B /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904568223FA52B006DAB3B /* ReachabilityTests.swift */; };
 		37954C6E227C90C10099B8D8 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37954C6D227C90C10099B8D8 /* Log.swift */; };
 		43B873F62386E17D00EEED2C /* Array+Concat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B873F52386E17D00EEED2C /* Array+Concat.swift */; };
+		43B873F82386E2D000EEED2C /* Array+SortingAndSearchingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B873F72386E2D000EEED2C /* Array+SortingAndSearchingTest.swift */; };
 		B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5422005BD400EDCE61 /* Date+Extension.swift */; };
 		B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */; };
 		B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */; };
@@ -80,6 +81,7 @@
 		37904568223FA52B006DAB3B /* ReachabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityTests.swift; sourceTree = "<group>"; };
 		37954C6D227C90C10099B8D8 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		43B873F52386E17D00EEED2C /* Array+Concat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Array+Concat.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/Array+Concat.swift"; sourceTree = "<group>"; };
+		43B873F72386E2D000EEED2C /* Array+SortingAndSearchingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Array+SortingAndSearchingTest.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Foundation/Array+SortingAndSearchingTest.swift"; sourceTree = "<group>"; };
 		B70A3A5422005BD400EDCE61 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 			children = (
 				B7371AA0230175B7007B37A3 /* String+ExtensionsTest.swift */,
 				1522956523044FD000204FD3 /* String+FPRTest.swift */,
+				43B873F72386E2D000EEED2C /* Array+SortingAndSearchingTest.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -469,6 +472,7 @@
 				B7DB7F8422144E4E003968DA /* SortedSetTest.swift in Sources */,
 				37904569223FA52B006DAB3B /* NetworkReachibilityMock.swift in Sources */,
 				378B76552240F93A00D6662C /* TestUtils.swift in Sources */,
+				43B873F82386E2D000EEED2C /* Array+SortingAndSearchingTest.swift in Sources */,
 				B7371AA1230175B7007B37A3 /* String+ExtensionsTest.swift in Sources */,
 				1522956623044FD000204FD3 /* String+FPRTest.swift in Sources */,
 			);
