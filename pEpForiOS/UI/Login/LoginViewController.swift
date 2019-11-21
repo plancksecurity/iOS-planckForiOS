@@ -212,9 +212,10 @@ extension LoginViewController {
 extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
-        case emailAddress:
+        case emailAddress where !password.isHidden:
             password.becomeFirstResponder()
-        case password:
+        case password,
+             emailAddress where password.isHidden:
             user.becomeFirstResponder()
         case user:
             user.resignFirstResponder()
