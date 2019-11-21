@@ -24,7 +24,7 @@ class LoginViewController: BaseViewController {
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var emailAddress: UITextField!
     @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var dismissViewButton: UIButton!
+    @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var loginButtonIPad: UIButton!
     @IBOutlet weak var manualConfigButton: UIButton!
     @IBOutlet weak var mainContainerView: UIView!
@@ -453,6 +453,8 @@ extension LoginViewController {
         }
         setManualSetupButtonHidden(true)
         updateLoginButton()
+
+        dismissButton.isHidden = !viewModelOrCrash().isThereAnAccount()
     }
 
     private func updateLoginButton() {
@@ -489,8 +491,7 @@ extension LoginViewController {
 
         navigationController?.navigationBar.isHidden = true
 
-        dismissViewButton.isHidden = !viewModelOrCrash().isThereAnAccount()
-        dismissViewButton.isEnabled = !isCurrentlyVerifying
+        dismissButton.isEnabled = !isCurrentlyVerifying
 
         loginButton.isEnabled = !isCurrentlyVerifying
         manualConfigButton.isEnabled = !isCurrentlyVerifying
