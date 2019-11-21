@@ -22,7 +22,7 @@ def process(credentials, account_name):
         typ, data = con.search(None, 'ALL')
         for num in data[0].split():
             typ, data = con.fetch(num, '(UID, BODY.PEEK[HEADER.FIELDS (SUBJECT)])')
-            print('Message %s\n%s\n' % (num, data[0][1]))
+            print('Message %s %s' % (num, data[0][1]))
 
 if __name__ == '__main__':
     args = parse_args()
