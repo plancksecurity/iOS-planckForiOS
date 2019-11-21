@@ -100,26 +100,6 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         }
     }
 
-    /// Handle the case of messages getting deleted while being displayed, i.e. by another client.
-    ///
-    /// In the case of a disappearing message, the navigation controller is asked to pop the
-    /// current view controller.
-    ///
-    /// - Parameter: message: The message to check whether it's valid.
-    ///
-    /// - Returns: True if view has been dismissed (as in, not having a valid message),
-    ///   false otherwise.
-    @discardableResult func dismissIfDisappeared(message: Message?) -> Bool {
-        if let msg = message, msg.isDeleted {
-            guard let navC = navigationController, let currentVC = navC.viewControllers.last, currentVC == self else {
-                return false
-            }
-            navC.popViewController(animated: false)
-            return true
-        }
-        return false
-    }
-
     // MARK: - ErrorPropagatorSubscriber
 
     var shouldHandleErrors: Bool = true
