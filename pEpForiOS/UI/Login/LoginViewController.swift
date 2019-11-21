@@ -247,9 +247,12 @@ extension LoginViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-        guard UIDevice.current.userInterfaceIdiom != .pad else { return true }
-
-        scrollAndMakeVisible(textField, scrollViewHeight: scrollView.bounds.height)
+        if UIDevice.current.userInterfaceIdiom != .pad {
+            scrollAndMakeVisible(textField, scrollViewHeight: scrollView.bounds.height)
+        }
+        let isEmptyText = textField.text?.stringByReplacingCharactersInRange(range,
+                                                               withString: string).isEmpty == true
+        updateColors(textField, isEmpty: isEmptyText)
         return true
     }
 }
@@ -493,5 +496,10 @@ extension LoginViewController {
 
         loginButton.isEnabled = !isCurrentlyVerifying
         manualConfigButton.isEnabled = !isCurrentlyVerifying
+    }
+
+    private func updateColors(_ ofTextFfield: UITextField, isEmpty: Bool) {
+        ofTextFfield.backgroundColor = isEmpty ? .clear :  .white
+        ofTextFfield.textColor = isEmpty ? .white : .pEpGreen
     }
 }
