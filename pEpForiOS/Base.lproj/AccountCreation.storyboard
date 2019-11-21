@@ -843,8 +843,8 @@
                                 </userDefinedRuntimeAttributes>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bP7-By-IPD">
-                                <rect key="frame" x="20" y="10" width="48" height="30"/>
-                                <state key="normal" title="Cancel">
+                                <rect key="frame" x="20" y="10" width="30" height="30"/>
+                                <state key="normal" title="X">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -898,7 +898,6 @@
                         <outlet property="loginButtonTopConstraint" destination="nhb-lJ-cSW" id="9AA-Nf-QEY"/>
                         <outlet property="mainContainerView" destination="d4O-yC-tc7" id="Kg2-jV-XNd"/>
                         <outlet property="manualConfigButton" destination="JT1-ND-6bH" id="1zL-Jx-gfO"/>
-                        <outlet property="pEpSyncView" destination="zg6-3H-SnV" id="Vvp-Si-Beh"/>
                         <outlet property="pEpSyncViewCenterHConstraint" destination="88a-wW-ARz" id="xP6-mx-jtR"/>
                         <outlet property="password" destination="e3d-56-GP8" id="Ab6-1O-YUi"/>
                         <outlet property="scrollView" destination="RXQ-HQ-bsM" id="Jba-T4-Mwi"/>

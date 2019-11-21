@@ -17,8 +17,7 @@ protocol LoginViewControllerDelegate: class  {
 
 class LoginViewController: BaseViewController {
     static let minCharUserName = 1
-    var loginViewModel: LoginViewModel?
-    var offerManualSetup = false
+
     weak var delegate: LoginViewControllerDelegate?
 
     @IBOutlet weak var user: UITextField!
@@ -28,7 +27,6 @@ class LoginViewController: BaseViewController {
     @IBOutlet weak var dismissViewButton: UIButton!
     @IBOutlet weak var loginButtonIPad: UIButton!
     @IBOutlet weak var manualConfigButton: UIButton!
-    @IBOutlet weak var pEpSyncView: UIView!
     @IBOutlet weak var mainContainerView: UIView!
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -37,13 +35,14 @@ class LoginViewController: BaseViewController {
     @IBOutlet weak var loginButtonTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var loginButtonCenterYConstraint: NSLayoutConstraint!
 
+    var loginViewModel: LoginViewModel?
+    var offerManualSetup = false
     /// Set in prepare for segue, if the user selected an account with ouath from the menu
     var isOauthAccount = false {
         didSet {
             password.isHidden = isOauthAccount
         }
     }
-
     var isCurrentlyVerifying = false {
         didSet {
             updateView()
@@ -447,8 +446,6 @@ extension LoginViewController {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self, action: #selector(LoginViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
-
-        dismissViewButton.setTitle(NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"), for: .normal)
 
         if UIDevice.current.userInterfaceIdiom == .pad {
             scrollView.isScrollEnabled = false
