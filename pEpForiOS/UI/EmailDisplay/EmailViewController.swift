@@ -333,7 +333,9 @@ class EmailViewController: BaseTableViewController {
 
         let cancelAction = UIAlertAction(
             title: NSLocalizedString("Cancel", comment: "possible private status action"),
-            style: .cancel) { (action) in }
+            style: .cancel) { (action) in
+                self.dismissIfDisappeared(message: self.message)
+        }
         actionSheetController.addAction(cancelAction)
 
         if let splitViewController = splitViewController, !splitViewController.isCollapsed {
