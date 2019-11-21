@@ -579,7 +579,7 @@
                                                                 <color key="value" red="0.7843137255" green="0.95294117649999999" blue="0.85882352939999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </userDefinedRuntimeAttribute>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                                <real key="value" value="1"/>
+                                                                <real key="value" value="2"/>
                                                             </userDefinedRuntimeAttribute>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
                                                                 <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -605,7 +605,7 @@
                                                                 <color key="value" red="0.7843137255" green="0.95294117649999999" blue="0.85882352939999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </userDefinedRuntimeAttribute>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                                <real key="value" value="1"/>
+                                                                <real key="value" value="2"/>
                                                             </userDefinedRuntimeAttribute>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
                                                                 <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -630,7 +630,7 @@
                                                                 <color key="value" red="0.7843137255" green="0.95294117649999999" blue="0.85882352939999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </userDefinedRuntimeAttribute>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                                <real key="value" value="1"/>
+                                                                <real key="value" value="2"/>
                                                             </userDefinedRuntimeAttribute>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
                                                                 <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -796,14 +796,14 @@
                                                 <exclude reference="wIi-CI-cLC"/>
                                             </mask>
                                             <mask key="constraints">
+                                                <exclude reference="GmD-Wm-JOd"/>
+                                                <exclude reference="bae-fh-xt2"/>
+                                                <exclude reference="yhd-W2-zSi"/>
                                                 <exclude reference="7aS-8l-hE8"/>
                                                 <exclude reference="EfY-cM-oX6"/>
                                                 <exclude reference="Ibq-10-F28"/>
                                                 <exclude reference="nuG-ed-xFj"/>
                                                 <exclude reference="PK9-L8-lTp"/>
-                                                <exclude reference="GmD-Wm-JOd"/>
-                                                <exclude reference="bae-fh-xt2"/>
-                                                <exclude reference="yhd-W2-zSi"/>
                                             </mask>
                                         </variation>
                                         <variation key="heightClass=compact">
@@ -814,12 +814,12 @@
                                         </variation>
                                         <variation key="heightClass=regular">
                                             <mask key="constraints">
-                                                <include reference="7aS-8l-hE8"/>
-                                                <include reference="EfY-cM-oX6"/>
-                                                <include reference="PK9-L8-lTp"/>
                                                 <include reference="GmD-Wm-JOd"/>
                                                 <include reference="bae-fh-xt2"/>
                                                 <include reference="yhd-W2-zSi"/>
+                                                <include reference="7aS-8l-hE8"/>
+                                                <include reference="EfY-cM-oX6"/>
+                                                <include reference="PK9-L8-lTp"/>
                                             </mask>
                                         </variation>
                                         <variation key="heightClass=regular-widthClass=regular">
