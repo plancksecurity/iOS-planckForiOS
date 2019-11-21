@@ -158,6 +158,13 @@ class LoginViewController: BaseViewController {
             self?.scrollView.setContentOffset(CGPoint(x: 0, y: newContentOffSet), animated: true)
         }
     }
+
+    func scrollToCenterStackView() {
+        let newContentOffSet = stackView.frame.midY - scrollView.bounds.height / 2
+        DispatchQueue.main.async { [weak self] in
+            self?.scrollView.setContentOffset(CGPoint(x: 0, y: newContentOffSet), animated: true)
+        }
+    }
 }
 
 // MARK: - View model
@@ -220,6 +227,7 @@ extension LoginViewController: UITextFieldDelegate {
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        guard UIDevice.current.userInterfaceIdiom != .pad else { return }
         //If is iOS13+ then this will be trigger in keyboard will appear
         if !ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 13,
                                                                           minorVersion: 0,
@@ -239,6 +247,8 @@ extension LoginViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
+        guard UIDevice.current.userInterfaceIdiom != .pad else { return true }
+
         scrollAndMakeVisible(textField, scrollViewHeight: scrollView.bounds.height)
         return true
     }
@@ -437,6 +447,9 @@ extension LoginViewController {
 
         dismissViewButton.setTitle(NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"), for: .normal)
 
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            scrollView.isScrollEnabled = false
+        }
         setManualSetupButtonHidden(true)
         updateLoginButton()
     }
