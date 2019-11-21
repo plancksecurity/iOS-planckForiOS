@@ -48,25 +48,6 @@ class TestUtil {
     static var initialNumberOfRunningConnections = 0
     static var initialNumberOfServices = 0
 
-    /**
-     Some code for accessing `NSBundle`s from Swift.
-     */
-//    static func showBundles() {
-//        for bundle in Bundle.allBundles {
-//            dumpBundle(bundle)
-//        }
-//
-//        let testBundle = Bundle(for: PEPSessionTest.self)
-//        dumpBundle(testBundle)
-//    }
-
-    /**
-     Print some essential properties of a bundle to the console.
-     */
-//    static func dumpBundle(_ bundle: Bundle) {
-//        print("bundle \(String(describing: bundle.bundleIdentifier)) \(bundle.bundlePath)")
-//    }
-
     //!!!: duplicated MM. Move to toolbox
     static func loadData(fileName: String) -> Data? {
         let testBundle = Bundle(for: self)
@@ -80,63 +61,6 @@ class TestUtil {
         }
         return data
     }
-
-//    static func loadString(fileName: String) -> String? {
-//        if let data = loadData(fileName: fileName) {
-//            guard let content = NSString(data: data, encoding: String.Encoding.ascii.rawValue)
-//                else {
-//                    XCTAssertTrue(
-//                        false, "Could not convert key with file name \(fileName) into data")
-//                    return nil
-//            }
-//            return content as String
-//        }
-//        return nil
-//    }
-
-    /**
-     Import a key with the given file name from our own test bundle.
-     - Parameter session: The pEp session to import the key into.
-     - Parameter fileName: The file name of the key (complete with extension)
-     */
-//    static func importKeyByFileName(_ session: PEPSession = PEPSession(), fileName: String)
-//        throws {
-//            if let content = loadString(fileName: fileName) {
-//                try session.importKey(content as String)
-//            }
-//    }
-
-//    static func setupSomeIdentities(_ session: PEPSession = PEPSession())
-//        -> (identity: PEPIdentity, receiver1: PEPIdentity,
-//        receiver2: PEPIdentity, receiver3: PEPIdentity,
-//        receiver4: PEPIdentity) {
-//            let identity = PEPIdentity(address: "somewhere@overtherainbow.com",
-//                                       userID: CdIdentity.pEpOwnUserID,
-//                                       userName: "Unit Test",
-//                                       isOwn: true)
-//
-//            let receiver1 = PEPIdentity(address: "receiver1@shopsmart.com",
-//                                        userID: UUID().uuidString,
-//                                        userName: "receiver1",
-//                                        isOwn: false)
-//
-//            let receiver2 = PEPIdentity(address: "receiver2@shopsmart.com",
-//                                        userID:  UUID().uuidString,
-//                                        userName: "receiver2",
-//                                        isOwn: false)
-//
-//            let receiver3 = PEPIdentity(address: "receiver3@shopsmart.com",
-//                                        userID:  UUID().uuidString,
-//                                        userName: "receiver3",
-//                                        isOwn: false)
-//
-//            let receiver4 = PEPIdentity(address: "receiver4@shopsmart.com",
-//                                        userID:  UUID().uuidString,
-//                                        userName: "receiver4",
-//                                        isOwn: false)
-//
-//            return (identity, receiver1, receiver2, receiver3, receiver4)
-//    }
 
     /**
      Dumps some diff between two NSDirectories to the console.
@@ -157,38 +81,6 @@ class TestUtil {
             }
         }
     }
-
-//    static func checkForExistanceAndUniqueness(uuids: [MessageID],
-//                                               context: NSManagedObjectContext) {
-//        for uuid in uuids {
-//            if let ms = CdMessage.all(attributes: ["uuid": uuid], in: context) as? [CdMessage] {
-//                var folder: CdFolder? = nil
-//                // check if that message is either unique, or all copies are in different folders
-//                for m in ms {
-//                    if let forig = folder {
-//                        if let f = m.parent {
-//                            XCTAssertNotEqual(forig, f)
-//                            folder = f
-//                        } else {
-//                            XCTFail()
-//                        }
-//                    }
-//                }
-//            } else {
-//                XCTFail("no message with message ID \(uuid)")
-//            }
-//        }
-//    }
-
-//    static func syncData(cdAccount: CdAccount) -> (ImapSyncData, SmtpSendData)? {
-//        guard
-//            let imapCI = cdAccount.imapConnectInfo,
-//            let smtpCI = cdAccount.smtpConnectInfo else {
-//                XCTFail()
-//                return nil
-//        }
-//        return (ImapSyncData(connectInfo: imapCI), SmtpSendData(connectInfo: smtpCI))
-//    }
 
     /**
      Makes the servers for this account unreachable, for tests that expects failure.
@@ -213,144 +105,10 @@ class TestUtil {
     // MARK: - Sync Loop
 
     static public func syncAndWait(numAccountsToSync: Int = 1, testCase: XCTestCase) {
-        //BUFF: use send, replication, decrypt
-
-//        let replicationService = ReplicationService()
-//        replicationService.sleepTimeInSeconds = 0.1
-//
-//        let expAccountsSynced = testCase.expectation(description: "allAccountsSynced")
-//        // A temp variable is necassary, since the replicationServiceUnitTestDelegate is weak
-//        let del = ReplicationServiceObserver(numAccountsToSync: numAccountsToSync,
-//                                             expAccountsSynced: expAccountsSynced,
-//                                             failOnError: true)
-//
-//        replicationService.unitTestDelegate = del
-//        replicationService.delegate = del
-//        replicationService.start(runOnceOnly: true)
-//
-//        let canTakeSomeTimeFactor = 3.0
-//        testCase.wait(for: [expAccountsSynced], timeout: TestUtil.waitTime * canTakeSomeTimeFactor)
-//
-//        // Even we do not repeate the sync loop we have to wait until all background tasks of
-//        // ReplicationService have finished.
-//        TestUtil.cancelReplicationServiceAndWait(replicationService: replicationService,
-//                                                 testCase: testCase)
+        //BUFF: Is implemented in MM TrestUtils. How can we get it here too? Do we need it at all (think yes)
     }
 
     // MARK: - Messages
-
-//    /// Creates outgoing messages
-//    ///
-//    /// - Parameters:
-//    ///   - cdAccount: account to send from. Is ignored if fromIdentity is not nil 
-//    ///   - fromIdentity: identity used as sender
-//    ///   - toIdentity: identity used as recipient
-//    ///   - setSentTimeOffsetForManualOrdering: Add some time difference to date sent tp be
-//    ///                                         recognised by Date().sort. That makes it easier to
-//    ///                                         misuse thoses mails for manual debugging.
-//    //
-//    ///   - testCase: the one to make fail
-//    ///   - numberOfMails: num mails to create
-//    ///   - withAttachments: Whether or not messages should contain attachments
-//    ///   - attachmentsInlined: Whether or not the attachments should be inlined
-//    ///   - encrypt: Whether or not to import a key for the receipient. Is ignored if `toIdentity`
-//    ///              is not nil
-//    ///   - forceUnencrypted: mark mails force unencrypted
-//    ///   - context: context to create messages in. If no context is given, main context is used
-//    /// - Returns: created mails
-//    /// - Throws: error importing key
-//    static func createOutgoingMails(cdAccount: CdAccount,
-//                                    toIdentity: CdIdentity? = nil,
-//                                    setSentTimeOffsetForManualOrdering: Bool = false,
-//                                    testCase: XCTestCase,
-//                                    numberOfMails: Int,
-//                                    withAttachments: Bool = true,
-//                                    attachmentsInlined: Bool = false,
-//                                    encrypt: Bool = true,
-//                                    forceUnencrypted: Bool = false,
-//                                    context: NSManagedObjectContext) throws -> [CdMessage] {
-//        testCase.continueAfterFailure = false
-//
-//        if numberOfMails == 0 {
-//            return []
-//        }
-//
-//        let existingSentFolder = CdFolder.by(folderType: .sent,
-//                                             account: cdAccount,
-//                                             context: context)
-//
-//        if existingSentFolder == nil {
-//            // Make sure folders are synced
-//            syncAndWait(testCase: testCase)
-//        }
-//
-//        guard let outbox = CdFolder.by(folderType: .outbox,
-//                                       account: cdAccount,
-//                                       context: context) else {
-//                                        XCTFail()
-//                                        return []
-//        }
-//
-//        let from = cdAccount.identity
-//
-//        let to: CdIdentity
-//        if let toIdentity = toIdentity {
-//            to = toIdentity
-//        } else {
-//            if encrypt {
-//                let session = PEPSession()
-//                try TestUtil.importKeyByFileName(
-//                    session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
-//            }
-//            let toWithKey = CdIdentity(context: context)
-//            toWithKey.userName = "Unit 001"
-//            toWithKey.address = "unittest.ios.1@peptest.ch"
-//            to = toWithKey
-//        }
-//
-//        // Build emails
-//        var messagesInTheQueue = [CdMessage]()
-//        for i in 1...numberOfMails {
-//            let message = CdMessage(context: context)
-//            message.from = from
-//            message.parent = outbox
-//            message.shortMessage = "Some subject \(i)"
-//            message.longMessage = "Long message \(i)"
-//            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-//            message.pEpProtected = !forceUnencrypted
-//            if setSentTimeOffsetForManualOrdering {
-//                // Add some time difference recognised by Date().sort.
-//                // That makes it easier to misuse thoses mails for manual debugging.
-//                let sentTimeOffset = Double(i) - 1
-//                message.sent = Date().addingTimeInterval(sentTimeOffset)
-//            } else {
-//                message.sent = Date()
-//            }
-//            message.addToTo(to)
-//
-//            // add attachments
-//            if withAttachments {
-//                message.addToAttachments(createCdAttachment(inlined: attachmentsInlined))
-//            }
-//
-//            messagesInTheQueue.append(message)
-//        }
-//        context.saveAndLogErrors() 
-//
-//        if let cdOutgoingMsgs = outbox.messages?.sortedArray(
-//            using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] {
-//            let unsent = cdOutgoingMsgs.filter { $0.uid == 0 }
-//            XCTAssertEqual(unsent.count, numberOfMails)
-//            for m in unsent {
-//                XCTAssertEqual(m.parent?.folderType, FolderType.outbox)
-//                XCTAssertEqual(m.uid, Int32(0))
-//            }
-//        } else {
-//            XCTFail()
-//        }
-//        
-//        return messagesInTheQueue
-//    }
 
     @discardableResult static func createMessages(number: Int,
                                                   engineProccesed: Bool = true,
@@ -412,11 +170,6 @@ class TestUtil {
         return msg
     }
 
-//    static private func createCdAttachment(inlined: Bool = true) -> CdAttachment {
-//        let attachment = createAttachment(inlined: inlined)
-//        return attachment.cdObject
-//    }
-
     static func createAttachments(number: Int) -> [Attachment] {
         var attachments: [Attachment] = []
 
@@ -442,10 +195,9 @@ class TestUtil {
                           contentDisposition: contentDisposition)
     }
 
-    /**
-     Creates one of 3 special messages that form a thread that caused some problems.
-     */
+    /// Creates one of 3 special messages that form a thread that caused some problems.
     static func createSpecialMessage(number: Int, folder: Folder, receiver: Identity) -> Message {
+
         struct Blueprint {
             let uuid: String
             let from: Identity
@@ -504,9 +256,7 @@ class TestUtil {
         return msg
     }
 
-    /**
-     Determines the highest UID of _all_ the messages currently in the DB.
-     */
+    /// Determines the highest UID of _all_ the messages currently in the DB.
     static func highestUid(context: NSManagedObjectContext) -> Int {
         var theHighestUid: Int32 = 0
         if let allCdMessages = CdMessage.all(in: context) as? [CdMessage] {
@@ -525,30 +275,6 @@ class TestUtil {
     static func nextUid(context: NSManagedObjectContext) -> Int {
         return highestUid(context: context) + 1
     }
-
-    // MARK: - FOLDER
-
-//    static func makeFolderInteresting(folderType: FolderType,
-//                                      cdAccount: CdAccount,
-//                                      context: NSManagedObjectContext? = nil) {
-//        let folder = cdFolder(ofType: folderType, in: cdAccount, context: context)
-//        folder.lastLookedAt = Date(timeInterval: -1, since: Date())
-//        guard let context = cdAccount.managedObjectContext else {
-//            pEpForiOS.Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
-//            return
-//        }
-//        context.saveAndLogErrors()
-//    }
-//
-//    static func cdFolder(ofType type: FolderType,
-//                         in cdAccount: CdAccount,
-//                         context: NSManagedObjectContext? = nil) -> CdFolder {
-//        guard let folder = CdFolder.by(folderType: type, account: cdAccount, context: context)
-//            else {
-//                fatalError()
-//        }
-//        return folder
-//    }
 
     // MARK: - SERVER
 
@@ -690,6 +416,7 @@ class TestUtil {
             return (mySelf: mySelf, partner: partner, message: msg)
     }
 
+    //!!!: only used by MessagePantomimeTests & CdMessage_PantomimeTest. Move to MM with those tests
     /**
      Loads the given file by name and parses it into a pantomime message.
      */
