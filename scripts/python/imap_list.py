@@ -19,9 +19,10 @@ def process(credentials, account_name):
     con = connect_account(credentials, account_name)
     status, _ = con.select()
     if status == 'OK':
-        status, data = con.uid('fetch', '1:*', '(FLAGS)')
-        if status == 'OK':
-            pprint(data)
+        typ, data = con.search(None, 'ALL')
+        for num in data[0].split():
+            typ, data = con.fetch(num, '(UID, BODY.PEEK[HEADER.FIELDS (SUBJECT)])')
+            print('Message %s\n%s\n' % (num, data[0][1]))
 
 if __name__ == '__main__':
     args = parse_args()
