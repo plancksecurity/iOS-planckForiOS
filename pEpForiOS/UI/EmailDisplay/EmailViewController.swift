@@ -59,6 +59,11 @@ class EmailViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        if dismissIfMessageDisappeared() {
+            return
+        }
+
         //!!!: this logic (mark for redecrypt) must go to getter of Message.longMessage(formatted)
         // as a side effect. (Do after HTML parser is in toolbox
         // The user may be about to view an yet undecrypted message.
@@ -68,6 +73,24 @@ class EmailViewController: BaseTableViewController {
 
         configureTableRows()
         configureView()
+    }
+
+    /// Handle the case of messages getting deleted while being displayed, i.e. by another client.
+    ///
+    /// In the case of a disappearing message, the navigation controller is asked to pop the
+    /// current view controller.
+    ///
+    /// - Returns: True if view has been dismissed (as in, not having a valid message),
+    ///   false otherwise.
+    private func dismissIfMessageDisappeared() -> Bool {
+        if let msg = message, msg.isDeleted {
+            guard let navC = navigationController, let currentVC = navC.viewControllers.last, currentVC == self else {
+                return false
+            }
+            navC.popViewController(animated: false)
+            return true
+        }
+        return false
     }
 
     //MARK: - Temp fix to Beta
