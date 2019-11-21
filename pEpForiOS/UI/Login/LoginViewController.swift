@@ -164,9 +164,7 @@ class LoginViewController: BaseViewController {
 
 extension LoginViewController {
     func createViewModel() -> LoginViewModel {
-        let theLoginViewModel = LoginViewModel(
-            verifiableAccount: VerifiableAccount(
-                messageModelService: appConfig.messageModelService))
+        let theLoginViewModel = LoginViewModel(verifiableAccount: VerifiableAccount())
         theLoginViewModel.loginViewModelLoginErrorDelegate = self
         theLoginViewModel.loginViewModelOAuth2ErrorDelegate = self
         return theLoginViewModel

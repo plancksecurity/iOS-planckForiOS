@@ -33,4 +33,16 @@ extension AppSettings {
         }
         AppSettings.shared.lastKnownDeviceGroupState = newState
     }
+
+    func registerForKeySyncDisabledByEngineNotification() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleKeySyncDisabledByEngineNotification),
+                                               name: Notification.Name.pEpKeySyncDisabledByEngine,
+                                               object: nil)
+    }
+
+    @objc
+    private func handleKeySyncDisabledByEngineNotification(_ notification: Notification) {
+        AppSettings.shared.keySyncEnabled = false
+    }
 }

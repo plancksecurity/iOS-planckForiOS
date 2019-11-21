@@ -21,15 +21,9 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
 
                 // We have no config. Return something.
                 let errorPropagator = ErrorPropagator()
-                let keySyncHandshakeService = KeySyncHandshakeService()
-                let theMessageModelService = MessageModelService(errorPropagator: errorPropagator,
-                                                                 cnContactsAccessPermissionProvider: AppSettings.shared,
-                                                                 keySyncServiceDelegate: keySyncHandshakeService,
-                                                                 keySyncEnabled: AppSettings.shared.keySyncEnabled)
                 return AppConfig(errorPropagator: errorPropagator,
                                  oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider(),
-                                 keySyncHandshakeService: KeySyncHandshakeService(),
-                                 messageModelService: theMessageModelService)
+                                 keySyncHandshakeService: KeySyncHandshakeService())
             }
             return safeConfig
         }
