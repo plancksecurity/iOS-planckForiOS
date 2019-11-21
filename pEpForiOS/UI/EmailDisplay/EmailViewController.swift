@@ -436,25 +436,19 @@ class EmailViewController: BaseTableViewController {
                     Log.shared.errorAndCrash("Lost MySelf")
                     return
                 }
-                if !(me.message?.isDeleted ?? true) {
-                    me.performSegue(withIdentifier: .segueReplyFrom , sender: self)
-                }
+                me.performSegue(withIdentifier: .segueReplyFrom , sender: self)
             }.withReplyAllOption(forMessage: message) { [weak self] action in
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost MySelf")
                     return
                 }
-                if !(me.message?.isDeleted ?? true) {
-                    me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
-                }
+                me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
             }.withFordwardOption { [weak self] action in
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost MySelf")
                     return
                 }
-                if !(me.message?.isDeleted ?? true) {
-                    me.performSegue(withIdentifier: .segueForward , sender: self)
-                }
+                me.performSegue(withIdentifier: .segueForward , sender: self)
             }.withCancelOption()
             .build()
 

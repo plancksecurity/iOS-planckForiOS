@@ -15,7 +15,7 @@ import MessageModel
  */
 struct ReplyAllPossibleChecker: ReplyAllPossibleCheckerProtocol {
     func isReplyAllPossible(forMessage: Message?) -> Bool {
-        guard let theMessage = forMessage, !theMessage.isDeleted else {
+        guard let theMessage = forMessage else {
             return false
         }
 
