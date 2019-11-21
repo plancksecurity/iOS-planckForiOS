@@ -64,10 +64,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setupServices() {
         let keySyncHandshakeService = KeySyncHandshakeService()
-        let theMessageModelService = MessageModelService(errorPropagator: errorPropagator,
-                                                         cnContactsAccessPermissionProvider: AppSettings.shared,
-                                                         keySyncServiceDelegate: keySyncHandshakeService,
-                                                         keySyncStateProvider: AppSettings.shared)
+        let theMessageModelService =
+            MessageModelService(errorPropagator: errorPropagator,
+                                cnContactsAccessPermissionProvider: AppSettings.shared,
+                                keySyncServiceHandshakeDelegate: keySyncHandshakeService,
+                                keySyncStateProvider: AppSettings.shared)
         messageModelService = theMessageModelService
 
         appConfig = AppConfig(errorPropagator: errorPropagator,
