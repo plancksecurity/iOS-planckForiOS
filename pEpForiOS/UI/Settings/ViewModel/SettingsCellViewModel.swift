@@ -101,7 +101,7 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
         
         let oldAddress = acc.user.address
         acc.delete()
-        acc.session.commit()
+        Session.main.commit()
 
         if Account.all().count == 1,
             let account = Account.all().first {
