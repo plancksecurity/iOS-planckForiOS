@@ -51,11 +51,6 @@ class HandshakeViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        if dismissIfDisappeared(message: message) {
-            return
-        }
-
         updateStatusBadge()
     }
 }

@@ -107,17 +107,14 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
     ///
     /// - Parameter: message: The message to check whether it's valid.
     ///
-    /// - Returns: True if the message is invalid and should not used anymore.
-    ///   In this case, the VC has likely been dismissed.
+    /// - Returns: True if view has been dismissed (as in, not having a valid message),
+    ///   false otherwise.
     @discardableResult func dismissIfDisappeared(message: Message?) -> Bool {
         if let msg = message, msg.isDeleted {
             guard let navC = navigationController, let currentVC = navC.viewControllers.last, currentVC == self else {
                 return false
             }
-            let vc = navC.popViewController(animated: false)
-            if (vc == nil) {
-                currentVC.dismiss(animated: true)
-            }
+            navC.popViewController(animated: false)
             return true
         }
         return false
