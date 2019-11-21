@@ -2,8 +2,8 @@
 //  AccountSettingsViewModelTest.swift
 //  pEpForiOSTests
 //
-//  Created by Borja González de Pablo on 22/10/2018.
-//  Copyright © 2018 p≡p Security S.A. All rights reserved.
+//  Created by Alejandro Gelos on 04/11/2019.
+//  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
 import XCTest
@@ -11,252 +11,186 @@ import PantomimeFramework
 @testable import pEpForiOS
 @testable import MessageModel
 
-class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
+final class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
-    var viewModel: AccountSettingsViewModel!
-    var keySyncServiceHandshakeDelegateMoc: KeySyncServiceHandshakeDelegateMoc!
+    var viewModel: AccountSettingsViewModel?
 
-    public func testEmail() {
-        setUpViewModel()
+    var actual: State?
+    var expected: State?
+    var expectations: TestExpectations?
 
-        let email = viewModel.email
+    override func setUp() {
+        super.setUp()
 
-        XCTAssertEqual(email, account.user.address)
+        viewModel = AccountSettingsViewModel(account: account)
+        viewModel?.delegate = self
+        setDefaultActualState()
     }
 
-    public func testLoginName() {
-        setUpViewModel()
+    override func tearDown() {
+        super.tearDown()
 
-        let loginName = viewModel.loginName
-
-        XCTAssertEqual(loginName, account.imapServer?.credentials.loginName)
+        actual = nil
+        expected = nil
+        viewModel = nil
+        expectations = nil
+        viewModel?.delegate = nil
     }
 
-    public func testName() {
-        setUpViewModel()
-
-        let name = viewModel.name
-
-        XCTAssertEqual(account.user.userName, name)
-    }
-
-    public func testSmptServer() {
-        setUpViewModel()
-
-        let smptServer = viewModel.smtpServer
-
-        XCTAssertEqual(smptServer.address, account.smtpServer?.address)
-        let port =  account.smtpServer?.port
-        XCTAssertNotNil(port)
-        XCTAssertEqual(smptServer.port, "\(String(describing: port!))")
-        XCTAssertEqual(smptServer.transport, account.smtpServer?.transport.asString())
-    }
-
-    public func testImapServer() {
-        setUpViewModel()
-
-        let imapServer = viewModel.imapServer
-
-        XCTAssertEqual(imapServer.address, account.imapServer?.address)
-        let port =  account.imapServer?.port
-        XCTAssertNotNil(port)
-        XCTAssertEqual(imapServer.port, "\(String(describing: port!))")
-        XCTAssertEqual(imapServer.transport, account.imapServer?.transport.asString())
-    }
-
-    func testKeySyncSectionIsShown() {
+    func testPEPSyncSectionIsShown() {
         // GIVEN
         SecretTestData().createWorkingCdAccount(number: 1, context: moc)
-        moc.saveAndLogErrors()
 
-        setUpViewModel(keySyncEnabled: true)
-        let expectedHeader = NSLocalizedString("pEp Sync", comment: "Account settings title Key Sync")
+        updateViewModelState()
+        expected = State(isPEPSyncSectionShown: true)
 
         // WHEN
-        let actualHeader = viewModel[3]
+        //no trigger, no when
 
         //THEN
-        XCTAssertEqual(expectedHeader, actualHeader)
+        assertExpectations()
     }
 
-    func testKeySyncSectionIsNOTShown() {
+    func testPEPSyncSectionIsNOTShown() {
         // GIVEN
-        let expectedHeaderNOTShown = NSLocalizedString("Key Sync", comment: "Account settings title Key Sync")
+        updateViewModelState()
+        expected = State(isPEPSyncSectionShown: false)
 
         // WHEN
-        setUpViewModel(keySyncEnabled: false)
+        //no trigger, no when
 
-        //THEN
-        for i in 0..<viewModel.count {
-            XCTAssertNotEqual(expectedHeaderNOTShown, viewModel[i])
-        }
+        // THEN
+        assertExpectations()
     }
 
-    func testUpdate() {
-        let address = "localhost"
-        let login = "fakelogin"
-        let name = "fakeName"
-        let password = "fakePassword"
-        let portString = "1"
-        let portInt = UInt16(portString)!
+    func testSucceedHandleResetIdentity() {
+        // GIVEN
+        expected = State(didCallShowLoadingView: true, didCallHideLoadingView: true)
+        expectations = TestExpectations(testCase: self, expected: expected)
 
-        setUpViewModel()
+        // WHEN
+        viewModel?.handleResetIdentity()
+        waitForExpectations(timeout: TestUtil.waitTime)
 
-        let server = AccountSettingsViewModel.ServerViewModel(address: address,
-                                                              port: portString,
-                                                              transport: "StartTls")
-
-        let verifyExpectation =
-            expectation(description: AccountVerificationResultDelegateMock.DID_VERIFY_EXPECTATION)
-
-        let delegate = AccountVerificationResultDelegateMock()
-        delegate.expectationDidVerifyCalled = verifyExpectation
-        viewModel.verifiableDelegate = delegate
-
-        viewModel.update(loginName: login,
-                         name: name,
-                         password: password,
-                         imap: server,
-                         smtp: server)
-
-        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-
-        guard let verifier = viewModel.verifiableAccount else {
-            XCTFail()
-            return
-        }
-
-        XCTAssertEqual(verifier.loginName, login)
-        XCTAssertEqual(verifier.password, password)
-        XCTAssertEqual(verifier.serverIMAP, address)
-        XCTAssertEqual(verifier.serverSMTP, address)
-        XCTAssertEqual(verifier.portIMAP, portInt)
-        XCTAssertEqual(verifier.portSMTP, portInt)
-        XCTAssertNil(verifier.accessToken)
+        // THEN
+        assertExpectations()
     }
 
-    public func testSectionIsValid() {
-        setUpViewModel()
-        //Header count in AccountSettingViewModel
-        let headerCount = 3
-        var validSection: Bool!
-        for i in 0..<headerCount {
-            validSection = viewModel.sectionIsValid(section: i)
-            XCTAssertTrue(validSection)
-        }
+    func testpEpSyncEnableSucceed() {
+        // GIVEN
+        expected = State()
 
-        validSection = viewModel.sectionIsValid(section: headerCount)
-        XCTAssertFalse(validSection)
+        // WHEN
+        viewModel?.pEpSync(enable: true)
+
+        // THEN
+        assertExpectations()
     }
 
-//    public func testVerified() {
-//        let address = "localhost"
-//        let login = "fakelogin"
-//        let name = "fakeName"
-//        let password = "fakePassword"
-//        let portString = "1"
-//
-//        setUpViewModel()
-//
-//        let server = AccountSettingsViewModel.ServerViewModel(address: address,
-//                                                              port: portString,
-//                                                              transport: "StartTls")
-//
-//        let verifyExpectation =
-//            expectation(description: AccountVerificationResultDelegateMock.DID_VERIFY_EXPECTATION)
-//
-//        let delegate = AccountVerificationResultDelegateMock()
-//        delegate.expectationDidVerifyCalled = verifyExpectation
-//        viewModel.verifiableDelegate = delegate
-//
-//        viewModel.update(loginName: login,
-//                         name: name,
-//                         password: password,
-//                         imap: server,
-//                         smtp: server)
-//
-//        viewModel.didEndVerification(result: .success(()))
-//
-//        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-//    }
-//
-//    public func testSavePasswordAfterEndVerification() {
-//        // GIVEN
-//        setUpViewModel()
-//        guard let imapPort = account.imapServer?.port,
-//            let smtpPort = account.smtpServer?.port else {
-//                XCTFail()
-//                return
-//        }
-//        let correctPwd = account.imapServer?.credentials.password
-//        let wrongPwd = "Wrong Password"
-//        account.imapServer?.credentials.password = wrongPwd
-//
-//        let savedExpectation = expectation(description: "Did save expectation")
-//        let verifiableAccount = VerifiableAccount(messageModelService: viewModel.messageModelService,
-//                                                  address: account.user.address,
-//                                                  userName: account.user.userName,
-//                                                  loginName: account.imapServer!.credentials.loginName,
-//                                                  password: correctPwd,
-//                                                  serverIMAP: account.imapServer?.address,
-//                                                  portIMAP: imapPort,
-//                                                  transportIMAP: ConnectionTransport.init(transport: account.imapServer!.transport),
-//                                                  serverSMTP: account.smtpServer?.address,
-//                                                  portSMTP: smtpPort,
-//                                                  transportSMTP: ConnectionTransport.init(transport: account.smtpServer!.transport),
-//                                                  automaticallyTrustedImapServer: true)
-//
-//
-//        // WHEN
-//        try? verifiableAccount.save { _ in
-//            savedExpectation.fulfill()
-//        }
-//
-//        // THEN
-//        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-//        let actualPassword = account.imapServer?.credentials.password
-//        XCTAssertEqual(actualPassword, correctPwd)
-//    }
+    func testpEpSyncDisableSucceed() {
+        // GIVEN
+        expected = State()
 
-    private func setUpViewModel(keySyncEnabled: Bool = false) {
+        // WHEN
+        viewModel?.pEpSync(enable: false)
 
-        keySyncServiceHandshakeDelegateMoc = KeySyncServiceHandshakeDelegateMoc()
-        let theMessageModelService = MessageModelService(errorPropagator: ErrorPropagator(),
-                                                         cnContactsAccessPermissionProvider: AppSettings.shared,
-                                                         keySyncServiceDelegate: keySyncServiceHandshakeDelegateMoc,
-                                                         keySyncEnabled: keySyncEnabled)
-
-        viewModel = AccountSettingsViewModel(
-            account: account,
-            messageModelService: theMessageModelService)
+        // THEN
+        assertExpectations()
     }
 }
 
-class AccountVerificationResultDelegateMock: AccountVerificationResultDelegate {
-    static let DID_VERIFY_EXPECTATION = "DID_VERIFY_CALLED"
-    var expectationDidVerifyCalled: XCTestExpectation?
-    var error: Error? = nil
+// MARK: - Private
 
-    func didVerify(result: AccountVerificationResult) {
-        switch result {
-        case .ok:
-            self.error = nil
-        case .noImapConnectData, .noSmtpConnectData:
-            let theError = NSError(
-                domain: #function,
-                code: 777,
-                userInfo: [NSLocalizedDescriptionKey: "SMTP/IMAP ERROR"])
-            self.error = theError
-        case .imapError(let error):
-            self.error = error
-        case .smtpError(let error):
-            self.error = error
-        }
+extension AccountSettingsViewModelTest {
+    private func setDefaultActualState() {
+        actual = State()
+    }
 
-        guard let expectation = expectationDidVerifyCalled else {
+    private func updateViewModelState() {
+        guard let viewModel = viewModel else {
             XCTFail()
             return
         }
-        expectation.fulfill()
+        let pEpSyncHeader = NSLocalizedString("pEp Sync", comment: "Account settings title pEp Sync")
+
+        for i in 0..<viewModel.count {
+            guard viewModel[i] == pEpSyncHeader else { continue }
+            actual?.isPEPSyncSectionShown = true
+        }
+    }
+
+    private func assertExpectations() {
+        guard let expected = expected,
+            let actual = actual else {
+                XCTFail()
+                return
+        }
+
+        XCTAssertEqual(expected.didCallHideLoadingView, actual.didCallHideLoadingView)
+        XCTAssertEqual(expected.didCallShowLoadingView, actual.didCallShowLoadingView)
+        XCTAssertEqual(expected.didCallShowErrorAlert, actual.didCallShowErrorAlert)
+        XCTAssertEqual(expected.didCallUndoPEPSyncToggle, actual.didCallUndoPEPSyncToggle)
+        XCTAssertEqual(expected.isPEPSyncSectionShown, actual.isPEPSyncSectionShown)
+
+        //In case some if missing or added but not checked
+        XCTAssertEqual(expected, actual)
+    }
+}
+
+// MARK: - AccountSettingsViewModelDelegate
+
+extension AccountSettingsViewModelTest: AccountSettingsViewModelDelegate {
+    func showErrorAlert(error: Error) {
+        actual?.didCallShowErrorAlert = true
+        expectations?.showErrorAlertExpectation?.fulfill()
+    }
+
+    func undoPEPSyncToggle() {
+        actual?.didCallUndoPEPSyncToggle = true
+        expectations?.undoPEPSyncToggleExpectation?.fulfill()
+    }
+
+    func showLoadingView() {
+        actual?.didCallShowLoadingView = true
+        expectations?.showLoadingViewExpectation?.fulfill()
+    }
+
+    func hideLoadingView() {
+        actual?.didCallHideLoadingView = true
+        expectations?.hideLoadingViewExpectation?.fulfill()
+    }
+}
+
+// MARK: - Helping Structures
+
+extension AccountSettingsViewModelTest {
+    struct State: Equatable {
+        var isPEPSyncSectionShown: Bool = false
+        var didCallShowErrorAlert: Bool = false
+        var didCallShowLoadingView: Bool = false
+        var didCallHideLoadingView: Bool = false
+        var didCallUndoPEPSyncToggle: Bool = false
+    }
+
+    final class TestExpectations {
+        var showErrorAlertExpectation: XCTestExpectation?
+        var showLoadingViewExpectation: XCTestExpectation?
+        var hideLoadingViewExpectation: XCTestExpectation?
+        var undoPEPSyncToggleExpectation: XCTestExpectation?
+
+        init(testCase: XCTestCase, expected: State?) {
+            if expected?.didCallShowErrorAlert == true {
+                showErrorAlertExpectation = testCase.expectation(description: "showErrorAlert")
+            }
+            if expected?.didCallShowLoadingView == true {
+                showLoadingViewExpectation = testCase.expectation(description: "showLoadingView")
+            }
+            if expected?.didCallHideLoadingView == true {
+                hideLoadingViewExpectation = testCase.expectation(description: "hideLoadingView")
+            }
+            if expected?.didCallUndoPEPSyncToggle == true {
+                undoPEPSyncToggleExpectation = testCase.expectation(description: "undoPEPSyncToggle")
+            }
+        }
     }
 }

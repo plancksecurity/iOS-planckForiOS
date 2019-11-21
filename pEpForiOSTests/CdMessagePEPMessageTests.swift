@@ -9,7 +9,6 @@
 import XCTest
 
 @testable import MessageModel
-@testable import pEpForiOS
 
 class CdMessagePEPMessageTests: CoreDataDrivenTestBase {
     func testCdMessageToPEPMessage() {

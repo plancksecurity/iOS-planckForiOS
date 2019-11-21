@@ -25,4 +25,12 @@ struct Constants {
 
     /// Name of Storyboard that contains SuggestTableViewController.
     static let suggestionsStoryboard = "Reusable"
+
+    /// Name of Storyboard that contains KeySyncWizardViewController.
+    static let keySyncWizardStoryboard = "Reusable"
+
+    struct XibNames {
+        static let loadingInterface = "LoadingInterface"
+    }
 }
+

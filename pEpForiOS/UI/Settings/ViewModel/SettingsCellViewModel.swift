@@ -29,13 +29,9 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     var account: Account?
     var status: Bool?
 
-    private var messageModelService: MessageModelServiceProtocol?
-
-    init(account: Account,
-         messageModelService: MessageModelServiceProtocol) {
-        self.type = .account
+    init(account: Account) {
+        type = .account
         self.account = account
-        self.messageModelService = messageModelService
     }
 
     init(type: SettingType) {
@@ -98,8 +94,7 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     }
 
     func delete() {
-        guard let acc = account,
-            let messageModelService = messageModelService else {
+        guard let acc = account else {
                 Log.shared.errorAndCrash(message: "Account lost")
                 return
         }
@@ -111,8 +106,7 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
         if Account.all().count == 1,
             let account = Account.all().first {
             do {
-                if try !account.isPEPSyncEnabled() {
-                    messageModelService.disableKeySync()
+                if try !account.isKeySyncEnabled() {
                     AppSettings.shared.keySyncEnabled = false
                 }
             } catch {

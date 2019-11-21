@@ -19,25 +19,16 @@ protocol SettingsViewModelDelegate: class {
 final class SettingsViewModel {
     weak var delegate: SettingsViewModelDelegate?
     var sections = [SettingsSectionViewModel]()
-    private let keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol?
-    private let messageModelService: MessageModelServiceProtocol
 
-    init(_ messageModelService: MessageModelServiceProtocol,
-         _ keySyncDeviceGroupService: KeySyncDeviceGroupServiceProtocol = KeySyncDeviceGroupService(),
-         delegate: SettingsViewModelDelegate? = nil) {
-        self.keySyncDeviceGroupService = keySyncDeviceGroupService
-        self.messageModelService = messageModelService
+    init(delegate: SettingsViewModelDelegate? = nil) {
         self.delegate = delegate
         generateSections()
     }
 
     private func generateSections() {
-        sections.append(SettingsSectionViewModel(type: .accounts,
-                                                 messageModelService: messageModelService))
+        sections.append(SettingsSectionViewModel(type: .accounts))
         sections.append(SettingsSectionViewModel(type: .globalSettings))
-        sections.append(SettingsSectionViewModel(type: .keySync,
-                                                 messageModelService: messageModelService,
-                                                 keySyncDeviceGroupService: keySyncDeviceGroupService))
+        sections.append(SettingsSectionViewModel(type: .keySync))
         sections.append(SettingsSectionViewModel(type: .contacts))
         sections.append(SettingsSectionViewModel(type: .companyFeatures))
     }
@@ -48,22 +39,6 @@ final class SettingsViewModel {
             sections[section].delete(cell: cell)
         }
     }
-
-    func leaveDeviceGroupPressed() -> Error? {
-        guard let keySyncDeviceGroupService = keySyncDeviceGroupService else {
-            Log.shared.errorAndCrash("keySyncDeviceGroupService is nil in Settings view model")
-            return nil
-        }
-        do {
-            try keySyncDeviceGroupService.leaveDeviceGroup()
-            removeLeaveDeviceGroupCell()
-        } catch {
-            Log.shared.errorAndCrash("%@", error.localizedDescription)
-            return error
-        }
-        return nil
-    }
-
     //temporal stub
     func canBeShown(Message: Message? ) -> Bool {
         return false
@@ -81,7 +56,6 @@ final class SettingsViewModel {
 
     subscript(section: Int) -> SettingsSectionViewModel {
         get {
-            assert(sectionIsValid(section: section), "Section out of range")
             return sections[section]
         }
     }
@@ -110,9 +84,6 @@ final class SettingsViewModel {
 // MARK: - Private
 
 extension SettingsViewModel {
-    private func sectionIsValid(section: Int) -> Bool {
-        return section >= 0 && section < sections.count
-    }
 
     private func removeLeaveDeviceGroupCell() {
         for section in sections {

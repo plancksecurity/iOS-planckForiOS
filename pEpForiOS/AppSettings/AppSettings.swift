@@ -14,7 +14,6 @@ import PEPObjCAdapterFramework
 // MARK: - Keys
 
 extension AppSettings {
-    static private let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
     static private let keyKeySyncEnabled = "keyStartpEpSync"
     static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
     static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
@@ -29,14 +28,29 @@ extension AppSettings {
 // MARK: - AppSettings
 
 /// Signleton representing and managing the App's settings.
-public final class AppSettings {
-
+public final class AppSettings: KeySyncStateProvider {
     // MARK: - Singleton
     
     static public let shared = AppSettings()
+
     private init() {
         setup()
+        registerForKeySyncDeviceGroupStateChangeNotification()
+        registerForKeySyncDisabledByEngineNotification()
     }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    // MARK: - KeySyncStateProvider
+
+    public var stateChangeHandler: ((Bool) -> Void)?
+
+    public var isKeySyncEnabled: Bool {
+        return keySyncEnabled
+    }
+
 }
 
 // MARK: - Private
@@ -66,7 +80,6 @@ extension AppSettings {
 
     private func registerDefaults() {
         var defaults = [String: Any]()
-        defaults[AppSettings.keyReinitializePepOnNextStartup] = false //BUFF: ???: obsolete?
         defaults[AppSettings.keyKeySyncEnabled] = true
         defaults[AppSettings.keyUnencryptedSubjectEnabled] = false
         defaults[AppSettings.keyThreadedViewEnabled] = true
@@ -103,16 +116,6 @@ extension AppSettings {
 
 extension AppSettings: AppSettingsProtocol {
 
-    public var shouldReinitializePepOnNextStartup: Bool {
-        get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyReinitializePepOnNextStartup)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue,
-                                         forKey: AppSettings.keyReinitializePepOnNextStartup)
-        }
-    }
-
     public var keySyncEnabled: Bool {
         get {
             return AppSettings.userDefaults.bool(forKey: AppSettings.keyKeySyncEnabled)
@@ -120,6 +123,7 @@ extension AppSettings: AppSettingsProtocol {
         set {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyKeySyncEnabled)
+            stateChangeHandler?(newValue)
         }
     }
 
