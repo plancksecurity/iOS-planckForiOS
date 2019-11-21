@@ -43,6 +43,18 @@ protocol ResetTrustViewModelDelegate: class, TableViewUpdate {
     ///   - toIndexPath: destination indexpath of the data
     func resetTrustViewModel(viewModel: ResetTrustViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath)
 
+    /// called when new section must be displayed in the tableview
+    /// - Parameters:
+    ///   - viewModel: viewModel who performs the call
+    ///   - atPosition: position where the section will be inserted
+    func resetTrustViewModel(viewModel: ResetTrustViewModel, didInsertSectionAt position: Int)
+
+    /// called when section must be deleted in the tableview
+    /// - Parameters:
+    ///   - viewModel: viewModel who performs the call
+    ///   - atPosition: position where the section will be deleted
+    func resetTrustViewModel(viewModel: ResetTrustViewModel, didDeleteSectionAt position: Int)
+
     /// called when some new operation will be executed
     /// operation can be: update, delte, move, insert
     /// - Parameter viewModel: viewModel who performs the call
@@ -158,33 +170,35 @@ class ResetTrustViewModel {
 }
 
 extension ResetTrustViewModel: QueryResultsDelegate {
-    func didInsert(indexPath: IndexPath) {
+    func didInserSection(position: Int) {
+        delegate?.resetTrustViewModel(viewModel: self, didInsertSectionAt: position)
+    }
+
+    func didDeleteSection(position: Int) {
+        delegate?.resetTrustViewModel(viewModel: self, didDeleteSectionAt: position)
+    }
+
+    func didInsertCell(indexPath: IndexPath) {
         delegate?.resetTrustViewModel(viewModel: self, didInsertDataAt: [indexPath])
-        //delegate?.reloadData(viewModel: self)
     }
 
-    func didUpdate(indexPath: IndexPath) {
+    func didUpdateCell(indexPath: IndexPath) {
         delegate?.resetTrustViewModel(viewModel: self, didUpdateDataAt: [indexPath])
-        //delegate?.reloadData(viewModel: self)
     }
 
-    func didDelete(indexPath: IndexPath) {
+    func didDeleteCell(indexPath: IndexPath) {
         delegate?.resetTrustViewModel(viewModel: self, didRemoveDataAt: [indexPath])
-        //delegate?.reloadData(viewModel: self)
     }
 
-    func didMove(from: IndexPath, to: IndexPath) {
+    func didMoveCell(from: IndexPath, to: IndexPath) {
         delegate?.resetTrustViewModel(viewModel: self, didMoveData: from, toIndexPath: to)
-        //delegate?.reloadData(viewModel: self)
     }
 
     func willChangeResults() {
         delegate?.willReceiveUpdates(viewModel: self)
-        //delegate?.reloadData(viewModel: self)
     }
 
     func didChangeResults() {
         delegate?.allUpdatesReceived(viewModel: self)
-        //delegate?.reloadData(viewModel: self)
     }
 }
