@@ -176,6 +176,13 @@ extension ComposeTableViewController {
                 title: NSLocalizedString("Cancel", comment: "possible private status action"),
                 style: .cancel) { (action) in }
             alert.addAction(cancelAction)
+            if let sourceView = gestureRecognizer.view {
+                alert.popoverPresentationController?.sourceView = sourceView
+                alert.popoverPresentationController?.sourceRect = CGRect(x: sourceView.bounds.midX,
+                                                                         y: sourceView.bounds.maxY,
+                                                                         width: 0,
+                                                                         height: 0)
+            }
 
             present(alert, animated: true, completion: nil)
         }
