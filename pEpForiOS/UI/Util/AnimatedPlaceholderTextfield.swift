@@ -11,29 +11,35 @@ import UIKit
 @IBDesignable
 class AnimatedPlaceholderTextfield: UITextField {
     private var _placeHolder: String?
+    private var originalTextColor: UIColor?
+    private var originalBackgroundColor: UIColor?
     private var placeHolderLabelCenterY: NSLayoutConstraint?
 
-    public let placeholderLabel = UILabel()
+    let placeholderLabel = UILabel()
 
-    @IBInspectable public var borderColor: UIColor? {
+    @IBInspectable
+    var borderColor: UIColor? {
         didSet {
             layer.borderColor = borderColor?.cgColor
         }
     }
 
-    @IBInspectable public var borderWidth: CGFloat = 0 {
+    @IBInspectable
+    var borderWidth: CGFloat = 0 {
         didSet {
             layer.borderWidth = borderWidth
         }
     }
 
-    @IBInspectable public var placeholderColor: UIColor = .gray {
+    @IBInspectable
+    var placeholderColor: UIColor = .gray {
         didSet {
             updatePlaceholderLabel()
         }
     }
 
-    override public var placeholder: String? {
+    @IBInspectable
+    override var placeholder: String? {
         set {
             _placeHolder = newValue
             updatePlaceholderLabel()
@@ -43,22 +49,30 @@ class AnimatedPlaceholderTextfield: UITextField {
         }
     }
 
+    @IBInspectable
+    var backgroundColorWithText: UIColor? = nil {
+        didSet {
+            updateTextFieldBackgroundColor()
+        }
+    }
+
+    @IBInspectable
+    var textColorWithText: UIColor? = nil {
+        didSet {
+            updateTextFieldTextColor()
+        }
+    }
+
     //Add Placeholder Label
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        originalTextColor = textColor
+        originalBackgroundColor = backgroundColor
+
         updatePlaceholderLabel()
         addPlaceholderLabel()
         addKeyboardObservers()
-    }
-
-    @objc open func textFieldDidBeginEditing() {
-        moveUpPlaceHolderLabel()
-    }
-
-    @objc open func textFieldDidEndEditing() {
-        guard let text = text, text.isEmpty else { return }
-        centerPlaceHolderLabel()
     }
 }
 
@@ -72,6 +86,42 @@ extension AnimatedPlaceholderTextfield {
         NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidBeginEditing),
                                                name: UITextField.textDidBeginEditingNotification,
                                                object: self)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidChangeCharacters),
+                                               name: UITextField.textDidChangeNotification,
+                                               object: self)
+    }
+
+    @objc private func textFieldDidBeginEditing() {
+        moveUpPlaceHolderLabel()
+    }
+
+    @objc private func textFieldDidEndEditing() {
+        guard let text = text, text.isEmpty else { return }
+        centerPlaceHolderLabel()
+    }
+
+    @objc private func textFieldDidChangeCharacters() {
+        updateTextFieldTextColor()
+        updateTextFieldBackgroundColor()
+    }
+
+    private func updateTextFieldBackgroundColor() {
+        guard let newBackgroundColor = backgroundColorWithText,
+            let text = text else {
+                //if not set, then do nothing
+                return
+        }
+        backgroundColor = text.isEmpty ? originalBackgroundColor : newBackgroundColor
+    }
+
+    private func updateTextFieldTextColor() {
+        guard let newTextColor = textColorWithText,
+            let text = text else {
+            //if not set, then do nothing
+            return
+        }
+        textColor = text.isEmpty ? originalTextColor : newTextColor
     }
 
     private func addPlaceholderLabel() {

@@ -529,7 +529,7 @@
         <!--Navigation Controller-->
         <scene sceneID="1zz-5w-MA7">
             <objects>
-                <navigationController storyboardIdentifier="UINavigationController-Efv-29-FEv" automaticallyAdjustsScrollViewInsets="NO" id="Efv-29-FEv" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="UINavigationController-Efv-29-FEv" automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="Efv-29-FEv" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="MoJ-NI-JUE"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZCw-Di-Dfp">
@@ -585,6 +585,9 @@
                                                             <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
                                                                 <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColorWithText">
+                                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
                                                             <action selector="emailChanged:" destination="clh-8B-z2B" eventType="editingChanged" id="lyn-wg-lDp"/>
@@ -611,6 +614,9 @@
                                                             <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
                                                                 <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColorWithText">
+                                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
                                                             <outlet property="delegate" destination="clh-8B-z2B" id="wbY-q7-Tw7"/>
@@ -634,6 +640,9 @@
                                                                 <real key="value" value="2"/>
                                                             </userDefinedRuntimeAttribute>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColorWithText">
                                                                 <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>

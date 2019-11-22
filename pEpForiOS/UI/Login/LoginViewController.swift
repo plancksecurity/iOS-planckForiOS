@@ -20,9 +20,9 @@ class LoginViewController: BaseViewController {
 
     weak var delegate: LoginViewControllerDelegate?
 
-    @IBOutlet weak var user: UITextField!
-    @IBOutlet weak var password: UITextField!
-    @IBOutlet weak var emailAddress: UITextField!
+    @IBOutlet weak var user: AnimatedPlaceholderTextfield!
+    @IBOutlet weak var password: AnimatedPlaceholderTextfield!
+    @IBOutlet weak var emailAddress: AnimatedPlaceholderTextfield!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var loginButtonIPad: UIButton!
@@ -235,26 +235,6 @@ extension LoginViewController: UITextFieldDelegate {
             scrollAndMakeVisible(textField, scrollViewHeight: scrollView.frame.maxY)
         }
     }
-
-    func textFieldDidEndEditing(_ textField: UITextField) {
-//        stackViewCenterYhCConstraint.constant = 0
-//        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
-//            [weak self] in
-//            self?.view.layoutIfNeeded()
-//        })
-    }
-
-    func textField(_ textField: UITextField,
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
-        if UIDevice.current.userInterfaceIdiom != .pad {
-            scrollAndMakeVisible(textField, scrollViewHeight: scrollView.bounds.height)
-        }
-        let isEmptyText = textField.text?.stringByReplacingCharactersInRange(range,
-                                                               withString: string).isEmpty == true
-        updateColors(textField, isEmpty: isEmptyText)
-        return true
-    }
 }
 
 // MARK: - SegueHandlerType
@@ -436,10 +416,6 @@ extension LoginViewController {
     private func configureView() {
         password.isEnabled = true
 
-        emailAddress.placeholder = NSLocalizedString("Email", comment: "Email")
-        password.placeholder = NSLocalizedString("Password", comment: "password")
-        user.placeholder = NSLocalizedString("Name", comment: "username")
-
         loginButton.convertToLoginButton(
             placeholder: NSLocalizedString("Sign In", comment: "Login"))
         manualConfigButton.convertToLoginButton(
@@ -455,8 +431,20 @@ extension LoginViewController {
         }
         setManualSetupButtonHidden(true)
         updateLoginButton()
+        configureAnimatedTextFields()
 
         dismissButton.isHidden = !viewModelOrCrash().isThereAnAccount()
+    }
+
+    private func configureAnimatedTextFields() {
+        user.textColorWithText = .pEpGreen
+        user.placeholder = NSLocalizedString("Name", comment: "username")
+
+        password.textColorWithText = .pEpGreen
+        password.placeholder = NSLocalizedString("Password", comment: "password")
+
+        emailAddress.textColorWithText = .pEpGreen
+        emailAddress.placeholder = NSLocalizedString("Email", comment: "Email")
     }
 
     private func updateLoginButton() {
@@ -497,10 +485,5 @@ extension LoginViewController {
 
         loginButton.isEnabled = !isCurrentlyVerifying
         manualConfigButton.isEnabled = !isCurrentlyVerifying
-    }
-
-    private func updateColors(_ ofTextFfield: UITextField, isEmpty: Bool) {
-        ofTextFfield.backgroundColor = isEmpty ? .clear :  .white
-        ofTextFfield.textColor = isEmpty ? .white : .pEpGreen
     }
 }
