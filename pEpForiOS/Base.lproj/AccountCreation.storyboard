@@ -847,7 +847,7 @@
                                 </userDefinedRuntimeAttributes>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bP7-By-IPD">
-                                <rect key="frame" x="10" y="30" width="44" height="44"/>
+                                <rect key="frame" x="0.0" y="30" width="44" height="44"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="imageEdgeInsets" minX="12" minY="12" maxX="12" maxY="12"/>
                                 <state key="normal" image="close-icon"/>
@@ -865,7 +865,7 @@
                             <constraint firstItem="d4O-yC-tc7" firstAttribute="width" secondItem="7n3-u6-UKe" secondAttribute="width" id="D64-NK-45K"/>
                             <constraint firstItem="RXQ-HQ-bsM" firstAttribute="bottom" secondItem="7n3-u6-UKe" secondAttribute="bottom" id="H9T-wo-ehg"/>
                             <constraint firstItem="jAI-Xy-z2r" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bP7-By-IPD" secondAttribute="trailing" constant="20" id="Iqd-XK-eZF"/>
-                            <constraint firstItem="bP7-By-IPD" firstAttribute="leading" secondItem="jAI-Xy-z2r" secondAttribute="leading" constant="10" id="Qh6-kI-POF"/>
+                            <constraint firstItem="bP7-By-IPD" firstAttribute="leading" secondItem="jAI-Xy-z2r" secondAttribute="leading" id="Qh6-kI-POF"/>
                             <constraint firstAttribute="top" secondItem="qYA-qu-vFE" secondAttribute="top" id="ROq-f2-ftF"/>
                             <constraint firstItem="bP7-By-IPD" firstAttribute="top" secondItem="7n3-u6-UKe" secondAttribute="top" constant="30" id="RYG-kR-5ND"/>
                             <constraint firstItem="d4O-yC-tc7" firstAttribute="height" secondItem="7n3-u6-UKe" secondAttribute="height" id="Rrd-2P-js6"/>
