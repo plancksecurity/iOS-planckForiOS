@@ -72,7 +72,7 @@ final class AccountSettingsViewModel {
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.account = account
 
-        let pEpSyncState = try? account.isPEPSyncEnabled()
+        let pEpSyncState = try? account.isKeySyncEnabled()
         pEpSync = pEpSyncState ?? false
     }
 
@@ -104,7 +104,7 @@ final class AccountSettingsViewModel {
 
     func pEpSync(enable: Bool) {
         do {
-            try account.pEpSync(enable: enable)
+            try account.setKeySyncEnabled(enable: enable)
         } catch {
             delegate?.undoPEPSyncToggle()
             delegate?.showErrorAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
