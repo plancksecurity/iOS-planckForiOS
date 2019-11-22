@@ -94,6 +94,7 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
 extension TutorialWizardViewController {
     private func setUpView() {
         views = tutorialViewControllers()
+        view.backgroundColor = .white
         navigationController?.navigationBar.barTintColor = .pEpGreen
         navigationController?.navigationBar.tintColor = .white
         updateNavButton(lastScreen: false)
