@@ -265,17 +265,19 @@ extension LoginViewController: SegueHandlerType {
         case manualConfigSegue
     }
 
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .manualConfigSegue:
-            if
-                let navVC = segue.destination as? UINavigationController,
-                let vc = navVC.topViewController as? UserInfoTableViewController {
-                vc.appConfig = appConfig
-
-                // Give the next model all that we know.
-                vc.model = viewModelOrCrash().verifiableAccount
+            guard let navVC = segue.destination as? UINavigationController,
+                let vc = navVC.topViewController as? UserInfoTableViewController else {
+                    Log.shared.errorAndCrash("fail to cast to UserInfoTableViewController")
+                    return
             }
+            vc.appConfig = appConfig
+
+            // Give the next model all that we know.
+            vc.model = viewModelOrCrash().verifiableAccount
         default:
             break
         }
