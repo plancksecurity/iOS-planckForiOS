@@ -10,90 +10,68 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, UITextFieldDelegate {
-    @IBOutlet weak var emailValue: UITextField!
-    @IBOutlet weak var usernameValue: UITextField!
-    @IBOutlet weak var passwordValue: UITextField!
-    @IBOutlet weak var nameValue: UITextField!
-
-    @IBOutlet weak var emailTitle: UILabel!
-    @IBOutlet weak var usernameTitle: UILabel!
-    @IBOutlet weak var passwordTitle: UILabel!
-    @IBOutlet weak var nameTitle: UILabel!
-    @IBOutlet weak var cancelBarbutton: UIBarButtonItem!
+class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITextFieldDelegate {
+    @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
     var fields = [UITextField]()
     var responder = 0
     var accounts = [Account]()
-    
-    public var model: VerifiableAccountProtocol?
 
-    let viewWidthAligner = ViewWidthsAligner()
+    //TODO: ALE rename
+    public var model: VerifiableAccountProtocol?
 
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = NSLocalizedString("Account", comment: "Title for manual account setup")
-        handleCancelButtonVisibility()
-        passwordValue.delegate = self
-        UIHelper.variableCellHeightsTableView(tableView)
-        fields = [nameValue, emailValue, usernameValue, passwordValue]
+//        title = NSLocalizedString("Account", comment: "Title for manual account setup")
+//        handleCancelButtonVisibility()
+//        passwordValue.delegate = self
     }
 
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        viewWidthAligner.alignViews([
-            emailTitle,
-            usernameTitle,
-            passwordTitle,
-            nameTitle
-            ], parentView: view)
-    }
-
-    func handleCancelButtonVisibility() {
-        accounts = Account.all()
-        if accounts.isEmpty {
-            self.navigationItem.leftBarButtonItem = nil
-        }
-    }
+//    func handleCancelButtonVisibility() {
+//        accounts = Account.all()
+//        if accounts.isEmpty {
+//            navigationItem.leftBarButtonItem = nil
+//        }
+//    }
 
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.hidesBackButton = Account.all().isEmpty
+
+//        navigationItem.hidesBackButton = Account.all().isEmpty
         updateViewFromInitialModel()
         updateView()
     }
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        firstResponder(!viewModelOrCrash().isValidName)
+//        firstResponder(!viewModelOrCrash().isValidName)
     }
 
     /**
      Puts the model into the view, in case it was set by the invoking view controller.
      */
     func updateViewFromInitialModel() {
-        emailValue.text = viewModelOrCrash().address
-        nameValue.text = viewModelOrCrash().userName
-        passwordValue.text = viewModelOrCrash().password
+//        emailValue.text = viewModelOrCrash().address
+//        nameValue.text = viewModelOrCrash().userName
+//        passwordValue.text = viewModelOrCrash().password
     }
 
     func updateView() {
-        navigationItem.rightBarButtonItem?.isEnabled = viewModelOrCrash().isValidUser
+//        navigationItem.rightBarButtonItem?.isEnabled = viewModelOrCrash().isValidUser
     }
 
     public func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
-        nextResponder(textfield)
-        
-        if viewModelOrCrash().isValidUser {
-            performSegue(withIdentifier: .IMAPSettings , sender: self)
-        }
+//        nextResponder(textfield)
+//
+//        if viewModelOrCrash().isValidUser {
+//            performSegue(withIdentifier: .IMAPSettings , sender: self)
+//        }
         return true
     }
 
     public func textFieldDidEndEditing(_ textField: UITextField) {
-        changedResponder(textField)
+//        changedResponder(textField)
     }
 
     @IBAction func changeEmail(_ sender: UITextField) {
