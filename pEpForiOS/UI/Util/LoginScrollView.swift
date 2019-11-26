@@ -122,7 +122,7 @@ extension LoginScrollView {
                             Log.shared.lostMySelf()
                             return
                         }
-                        me.layoutIfNeeded()
+                        me.superview?.layoutIfNeeded()
         })
     }
 
