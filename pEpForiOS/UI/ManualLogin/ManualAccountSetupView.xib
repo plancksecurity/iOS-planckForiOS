@@ -387,10 +387,10 @@
             <connections>
                 <outlet property="cancelButton" destination="fqe-qx-IQe" id="wi5-7u-1Do"/>
                 <outlet property="cancelLeftButton" destination="tyq-Cq-4dU" id="oYG-tq-QHJ"/>
-                <outlet property="continueRightButton" destination="OIj-9x-l85" id="SD7-9b-lN9"/>
                 <outlet property="firstTextField" destination="fNB-Pm-68I" id="hQo-Kk-1Wf"/>
                 <outlet property="fourthTextField" destination="0te-KR-oYr" id="4yN-J1-SZN"/>
                 <outlet property="nextButton" destination="F0b-8v-1lY" id="lKE-Bb-E0l"/>
+                <outlet property="nextRightButton" destination="OIj-9x-l85" id="SD7-9b-lN9"/>
                 <outlet property="secondTextField" destination="9dO-D4-gja" id="w3s-9l-wIZ"/>
                 <outlet property="thirdTextField" destination="paP-b8-KCw" id="AB4-5M-vfk"/>
                 <outlet property="titleLabel" destination="L3b-r5-OhD" id="mXg-IF-pWR"/>

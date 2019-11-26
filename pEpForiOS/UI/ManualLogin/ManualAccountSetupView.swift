@@ -26,9 +26,8 @@ final class ManualAccountSetupView: UIView {
     @IBOutlet weak var thirdTextField: AnimatedPlaceholderTextfield!
     @IBOutlet weak var fourthTextField: AnimatedPlaceholderTextfield!
 
-    //TODO: ALE  add doc
-    @IBOutlet private weak var cancelLeftButton: UIButton!
-    @IBOutlet private weak var continueRightButton: UIButton!
+    @IBOutlet weak var cancelLeftButton: UIButton!
+    @IBOutlet weak var nextRightButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
 
@@ -99,7 +98,7 @@ extension ManualAccountSetupView {
         let isLandscape = UIApplication.shared.statusBarOrientation.isLandscape
 
         cancelLeftButton?.isHidden = !isLandscape
-        continueRightButton?.isHidden = !isLandscape
+        nextRightButton?.isHidden = !isLandscape
 
         cancelButton?.isHidden = isLandscape
         nextButton?.isHidden = isLandscape

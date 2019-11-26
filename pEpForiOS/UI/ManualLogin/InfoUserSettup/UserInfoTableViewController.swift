@@ -64,6 +64,7 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITex
             return
         }
         setupView.nextButton.isEnabled = viewModelOrCrash().isValidUser
+        setupView.nextRightButton.isEnabled = viewModelOrCrash().isValidUser
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
