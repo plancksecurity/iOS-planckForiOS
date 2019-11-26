@@ -29,7 +29,7 @@ class LoginViewController: BaseViewController {
     @IBOutlet weak var manualConfigButton: UIButton!
     @IBOutlet weak var mainContainerView: UIView!
     @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var scrollView: LoginScrollView!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
     @IBOutlet weak var loginButtonTopConstraint: NSLayoutConstraint!
@@ -59,7 +59,6 @@ class LoginViewController: BaseViewController {
         setupViewModel()
         configureView()
         configureAppearance()
-        configureKeyboardAwareness()
 
         //TODO: ALE BORRAR
         setManualSetupButtonHidden(false)
@@ -139,33 +138,17 @@ class LoginViewController: BaseViewController {
         loginViewModel?.isAccountPEPSyncEnable = sender.isOn
     }
 
-
-    func scrollAndMakeVisible(_ textField: UITextField, scrollViewHeight: CGFloat) {
-        let textFieldFrames = textField.convert(textField.bounds, to: scrollView)
-        var newContentOffSet = textFieldFrames.midY - scrollViewHeight / 2
-        let contetOffSetDistanceToSafeArea =
-            scrollView.contentSize.height - newContentOffSet - scrollViewHeight
-
-        //Add padding if can not scroll enough
-        if newContentOffSet < 0 {
-            scrollView.contentInset.top = abs(newContentOffSet)
-        } else if contetOffSetDistanceToSafeArea < 0 {
-            scrollView.contentInset.bottom = abs(contetOffSetDistanceToSafeArea)
-            newContentOffSet = scrollView.contentSize.height
-                - scrollViewHeight
-                + abs(contetOffSetDistanceToSafeArea)
+    func firstResponderTextField() -> UITextField? {
+        if emailAddress.isFirstResponder {
+            return emailAddress
         }
-
-        DispatchQueue.main.async { [weak self] in
-            self?.scrollView.setContentOffset(CGPoint(x: 0, y: newContentOffSet), animated: true)
+        if password.isFirstResponder {
+            return password
         }
-    }
-
-    func scrollToCenterStackView() {
-        let newContentOffSet = stackView.frame.midY - scrollView.bounds.height / 2
-        DispatchQueue.main.async { [weak self] in
-            self?.scrollView.setContentOffset(CGPoint(x: 0, y: newContentOffSet), animated: true)
+        if user.isFirstResponder {
+            return user
         }
+        return nil
     }
 }
 
@@ -235,7 +218,7 @@ extension LoginViewController: UITextFieldDelegate {
         if !ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 13,
                                                                           minorVersion: 0,
                                                                           patchVersion: 0)) {
-            scrollAndMakeVisible(textField, scrollViewHeight: scrollView.frame.maxY)
+            scrollView.scrollAndMakeVisible(textField, scrollViewHeight: scrollView.frame.maxY)
         }
     }
 }
@@ -349,6 +332,22 @@ extension LoginViewController.LoginError: LocalizedError {
     }
 }
 
+// MARK: - LoginScrollViewDelegate
+
+extension LoginViewController: LoginScrollViewDelegate {
+    var contentView: UIView {
+        get { view }
+    }
+
+    var firstResponder: UIView? {
+        get { firstResponderTextField() }
+    }
+
+    var bottomConstraint: NSLayoutConstraint {
+        get { scrollViewBottomConstraint }
+    }
+}
+
 // MARK: - Private
 
 extension LoginViewController {
@@ -437,6 +436,7 @@ extension LoginViewController {
         configureAnimatedTextFields()
 
         dismissButton.isHidden = !viewModelOrCrash().isThereAnAccount()
+        scrollView.loginScrollViewDelegate = self
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(hideSpecificDeviceButton),

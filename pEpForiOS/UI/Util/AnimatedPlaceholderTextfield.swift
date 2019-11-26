@@ -15,7 +15,7 @@ class AnimatedPlaceholderTextfield: UITextField {
     private var originalBackgroundColor: UIColor?
     private var placeHolderLabelCenterY: NSLayoutConstraint?
 
-    let placeholderLabel = UILabel()
+    private let placeholderLabel = UILabel()
 
     @IBInspectable
     var borderColor: UIColor? {
