@@ -529,11 +529,10 @@
         <!--Navigation Controller-->
         <scene sceneID="1zz-5w-MA7">
             <objects>
-                <navigationController storyboardIdentifier="UINavigationController-Efv-29-FEv" automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="Efv-29-FEv" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="UINavigationController-Efv-29-FEv" automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" navigationBarHidden="YES" id="Efv-29-FEv" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="MoJ-NI-JUE"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZCw-Di-Dfp">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -733,16 +732,16 @@
                                                         <exclude reference="5uB-dW-SXj"/>
                                                         <exclude reference="ffm-RC-hsU"/>
                                                         <exclude reference="iC4-Yn-8cv"/>
-                                                        <exclude reference="UM3-1o-nc6"/>
-                                                        <exclude reference="a6a-3J-tBh"/>
-                                                        <exclude reference="m83-IL-ein"/>
-                                                        <exclude reference="nhb-lJ-cSW"/>
-                                                        <exclude reference="wjS-2O-w9c"/>
                                                         <exclude reference="88a-wW-ARz"/>
                                                         <exclude reference="ZbO-0c-3dY"/>
                                                         <exclude reference="gMU-64-O8f"/>
                                                         <exclude reference="pyt-nn-P8S"/>
                                                         <exclude reference="rIl-Z0-FFv"/>
+                                                        <exclude reference="UM3-1o-nc6"/>
+                                                        <exclude reference="a6a-3J-tBh"/>
+                                                        <exclude reference="m83-IL-ein"/>
+                                                        <exclude reference="nhb-lJ-cSW"/>
+                                                        <exclude reference="wjS-2O-w9c"/>
                                                         <exclude reference="4m8-Sq-LOv"/>
                                                         <exclude reference="JEJ-Cy-LII"/>
                                                         <exclude reference="POP-in-VWm"/>
@@ -754,11 +753,11 @@
                                                     <mask key="constraints">
                                                         <include reference="5uB-dW-SXj"/>
                                                         <include reference="iC4-Yn-8cv"/>
+                                                        <include reference="ZbO-0c-3dY"/>
+                                                        <include reference="pyt-nn-P8S"/>
                                                         <include reference="UM3-1o-nc6"/>
                                                         <include reference="a6a-3J-tBh"/>
                                                         <include reference="m83-IL-ein"/>
-                                                        <include reference="ZbO-0c-3dY"/>
-                                                        <include reference="pyt-nn-P8S"/>
                                                         <include reference="4m8-Sq-LOv"/>
                                                         <include reference="POP-in-VWm"/>
                                                         <include reference="rMC-LK-qvO"/>
@@ -768,11 +767,11 @@
                                                     <mask key="constraints">
                                                         <include reference="1qp-5Y-gQY"/>
                                                         <include reference="ffm-RC-hsU"/>
-                                                        <include reference="nhb-lJ-cSW"/>
-                                                        <include reference="wjS-2O-w9c"/>
                                                         <include reference="88a-wW-ARz"/>
                                                         <include reference="gMU-64-O8f"/>
                                                         <include reference="rIl-Z0-FFv"/>
+                                                        <include reference="nhb-lJ-cSW"/>
+                                                        <include reference="wjS-2O-w9c"/>
                                                         <include reference="JEJ-Cy-LII"/>
                                                         <include reference="V7N-wS-UD5"/>
                                                     </mask>
@@ -856,7 +855,7 @@
                                 </userDefinedRuntimeAttributes>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bP7-By-IPD">
-                                <rect key="frame" x="0.0" y="30" width="44" height="44"/>
+                                <rect key="frame" x="0.0" y="30" width="88" height="88"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="imageEdgeInsets" minX="12" minY="12" maxX="12" maxY="12"/>
                                 <state key="normal" image="close-icon"/>
@@ -907,7 +906,7 @@
                         <outlet property="emailAddress" destination="Nx2-xq-Km8" id="oo4-kX-rJP"/>
                         <outlet property="loginButton" destination="i7a-Xk-Hbw" id="wR5-NL-ngU"/>
                         <outlet property="loginButtonCenterYConstraint" destination="wjS-2O-w9c" id="WZK-ob-7c9"/>
-                        <outlet property="loginButtonIPad" destination="wIi-CI-cLC" id="zSa-ad-e69"/>
+                        <outlet property="loginButtonIPadLandscape" destination="wIi-CI-cLC" id="zSa-ad-e69"/>
                         <outlet property="loginButtonTopConstraint" destination="nhb-lJ-cSW" id="9AA-Nf-QEY"/>
                         <outlet property="mainContainerView" destination="d4O-yC-tc7" id="Kg2-jV-XNd"/>
                         <outlet property="manualConfigButton" destination="JT1-ND-6bH" id="1zL-Jx-gfO"/>
@@ -949,11 +948,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="splashscreen" translatesAutoresizingMaskIntoConstraints="NO" id="hbd-aB-0Fo" userLabel="BackgroungImage">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashscreen" translatesAutoresizingMaskIntoConstraints="NO" id="hbd-aB-0Fo" userLabel="BackgroungImage">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f11-Xi-yU2" customClass="ManualAccountSetupContainerView" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44" width="320" height="524"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -961,11 +960,11 @@
                             <constraint firstItem="hbd-aB-0Fo" firstAttribute="top" secondItem="GwJ-zY-bOh" secondAttribute="top" id="ESl-rV-sqC"/>
                             <constraint firstItem="f11-Xi-yU2" firstAttribute="leading" secondItem="u2B-9N-GzS" secondAttribute="leading" id="Oh7-Iv-4Pf"/>
                             <constraint firstItem="hbd-aB-0Fo" firstAttribute="leading" secondItem="GwJ-zY-bOh" secondAttribute="leading" id="efE-3m-YfW"/>
-                            <constraint firstAttribute="bottom" secondItem="f11-Xi-yU2" secondAttribute="bottom" id="fhO-1X-bHg"/>
+                            <constraint firstItem="u2B-9N-GzS" firstAttribute="bottom" secondItem="f11-Xi-yU2" secondAttribute="bottom" id="fhO-1X-bHg"/>
                             <constraint firstItem="f11-Xi-yU2" firstAttribute="top" secondItem="u2B-9N-GzS" secondAttribute="top" id="gpV-EL-0dO"/>
                             <constraint firstItem="hbd-aB-0Fo" firstAttribute="trailing" secondItem="GwJ-zY-bOh" secondAttribute="trailing" id="gtc-eZ-4G4"/>
-                            <constraint firstAttribute="trailing" secondItem="f11-Xi-yU2" secondAttribute="trailing" id="ltz-x1-0Uy"/>
-                            <constraint firstItem="hbd-aB-0Fo" firstAttribute="bottom" secondItem="u2B-9N-GzS" secondAttribute="bottom" id="rw5-4u-pot"/>
+                            <constraint firstItem="u2B-9N-GzS" firstAttribute="trailing" secondItem="f11-Xi-yU2" secondAttribute="trailing" id="ltz-x1-0Uy"/>
+                            <constraint firstItem="hbd-aB-0Fo" firstAttribute="bottom" secondItem="GwJ-zY-bOh" secondAttribute="bottom" id="rw5-4u-pot"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="u2B-9N-GzS"/>
                     </view>

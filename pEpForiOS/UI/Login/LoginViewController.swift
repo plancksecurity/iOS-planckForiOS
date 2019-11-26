@@ -25,7 +25,7 @@ class LoginViewController: BaseViewController {
     @IBOutlet weak var emailAddress: AnimatedPlaceholderTextfield!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var dismissButton: UIButton!
-    @IBOutlet weak var loginButtonIPad: UIButton!
+    @IBOutlet weak var loginButtonIPadLandscape: UIButton!
     @IBOutlet weak var manualConfigButton: UIButton!
     @IBOutlet weak var mainContainerView: UIView!
     @IBOutlet weak var stackView: UIStackView!
@@ -430,10 +430,15 @@ extension LoginViewController {
             scrollView.isScrollEnabled = false
         }
         setManualSetupButtonHidden(true)
-        updateLoginButton()
+        hideSpecificDeviceButton()
         configureAnimatedTextFields()
 
         dismissButton.isHidden = !viewModelOrCrash().isThereAnAccount()
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(hideSpecificDeviceButton),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
     }
 
     private func configureAnimatedTextFields() {
@@ -447,10 +452,13 @@ extension LoginViewController {
         emailAddress.placeholder = NSLocalizedString("Email", comment: "Email")
     }
 
-    private func updateLoginButton() {
+    @objc private func hideSpecificDeviceButton() {
         let isIpad = UIDevice.current.userInterfaceIdiom == .pad
-        loginButton.isHidden = isIpad
-        loginButtonIPad.isHidden = !isIpad
+        let isLandscape = UIDevice.current.orientation.isLandscape
+        let isIpadLandscape = isIpad && isLandscape
+
+        loginButton.isHidden = isIpadLandscape
+        loginButtonIPadLandscape.isHidden = !isIpadLandscape
     }
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
