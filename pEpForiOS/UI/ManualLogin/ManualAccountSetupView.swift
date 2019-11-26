@@ -11,7 +11,7 @@ import UIKit
 protocol ManualAccountSetupViewDelegate: class {
     func didPressCancelButton()
     func didPressNextButton()
-    
+
     func didChangeFirst(_ textField: UITextField)
     func didChangeSecond(_ textField: UITextField)
     func didChangeThierd(_ textField: UITextField)
@@ -30,7 +30,7 @@ final class ManualAccountSetupView: UIView {
     @IBOutlet private weak var cancelLeftButton: UIButton!
     @IBOutlet private weak var continueRightButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet weak var continueButton: UIButton!
+    @IBOutlet weak var nextButton: UIButton!
 
     weak var delegate: ManualAccountSetupViewDelegate?
 
@@ -64,8 +64,24 @@ final class ManualAccountSetupView: UIView {
     @IBAction func didPressCancel(_ sender: UIButton) {
         delegate?.didPressCancelButton()
     }
+
     @IBAction func didPressNext(_ sender: UIButton) {
         delegate?.didPressNextButton()
+    }
+
+    @IBAction func didChange(_ sender: UITextField) {
+        switch sender {
+        case firstTextField:
+            delegate?.didChangeFirst(sender)
+        case secondTextField:
+            delegate?.didChangeSecond(sender)
+        case thirdTextField:
+            delegate?.didChangeThierd(sender)
+        case fourthTextField:
+            delegate?.didChangeFourth(sender)
+        default:
+            Log.shared.errorAndCrash("didChange should handle all cases in ManualAccountSetupView")
+        }
     }
 }
 
@@ -86,7 +102,7 @@ extension ManualAccountSetupView {
         continueRightButton?.isHidden = !isLandscape
 
         cancelButton?.isHidden = isLandscape
-        continueButton?.isHidden = isLandscape
+        nextButton?.isHidden = isLandscape
     }
 
     private func updateTextFeildsDelegates() {

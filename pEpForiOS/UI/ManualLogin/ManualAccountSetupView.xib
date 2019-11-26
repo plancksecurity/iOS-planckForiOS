@@ -20,21 +20,27 @@
                         <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wep-Xm-sou" userLabel="Container">
                             <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tyq-Cq-4dU">
+                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tyq-Cq-4dU">
                                     <rect key="frame" x="273" y="331" width="53" height="33"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <state key="normal" title="Cancel">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
+                                    <state key="disabled">
+                                        <color key="titleColor" red="0.95866558837166638" green="0.95615552985294527" blue="1" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
                                     <connections>
                                         <action selector="didPressCancel:" destination="iN0-l3-epB" eventType="touchUpInside" id="Sxe-7e-nN9"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OIj-9x-l85">
+                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OIj-9x-l85">
                                     <rect key="frame" x="698" y="331" width="36" height="33"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <state key="normal" title="Next">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <state key="disabled">
+                                        <color key="titleColor" red="0.95866558837166638" green="0.95615552985294527" blue="1" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <connections>
                                         <action selector="didPressNext:" destination="iN0-l3-epB" eventType="touchUpInside" id="wil-3A-l0f"/>
@@ -98,6 +104,9 @@
                                                             <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="didChange:" destination="iN0-l3-epB" eventType="editingChanged" id="h6f-3Z-B5d"/>
+                                                    </connections>
                                                 </textField>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9dO-D4-gja" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="73" width="300" height="36"/>
@@ -123,6 +132,9 @@
                                                             <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="didChange:" destination="iN0-l3-epB" eventType="editingChanged" id="v0J-5o-pq6"/>
+                                                    </connections>
                                                 </textField>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="paP-b8-KCw" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS">
                                                     <rect key="frame" x="0.0" y="146" width="300" height="36"/>
@@ -148,6 +160,9 @@
                                                             <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="didChange:" destination="iN0-l3-epB" eventType="editingChanged" id="Xxu-MU-Zry"/>
+                                                    </connections>
                                                 </textField>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0te-KR-oYr" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS">
                                                     <rect key="frame" x="0.0" y="219" width="300" height="36"/>
@@ -173,6 +188,9 @@
                                                             <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="didChange:" destination="iN0-l3-epB" eventType="editingChanged" id="oBR-Mh-liw"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -196,11 +214,14 @@
                                 <view contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="800" verticalCompressionResistancePriority="800" translatesAutoresizingMaskIntoConstraints="NO" id="ZKp-HP-GpN" userLabel="Buttons View">
                                     <rect key="frame" x="362" y="531.5" width="300" height="125"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fqe-qx-IQe">
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fqe-qx-IQe">
                                             <rect key="frame" x="0.0" y="0.0" width="53" height="33"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <state key="normal" title="Cancel">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <state key="disabled">
+                                                <color key="titleColor" red="0.95866558837166638" green="0.95615552985294527" blue="1" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                             </state>
                                             <connections>
                                                 <action selector="didPressCancel:" destination="iN0-l3-epB" eventType="touchUpInside" id="gyi-vA-qC4"/>
@@ -228,11 +249,14 @@
                                                 <constraint firstAttribute="trailing" secondItem="AMS-vh-eXJ" secondAttribute="trailing" id="pYh-sm-PTZ"/>
                                             </constraints>
                                         </view>
-                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F0b-8v-1lY">
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F0b-8v-1lY">
                                             <rect key="frame" x="264" y="0.0" width="36" height="33"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <state key="normal" title="Next">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <state key="disabled">
+                                                <color key="titleColor" red="0.95866558837166638" green="0.95615552985294527" blue="1" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                             </state>
                                             <connections>
                                                 <action selector="didPressNext:" destination="iN0-l3-epB" eventType="touchUpInside" id="kPG-og-cU5"/>
@@ -363,10 +387,10 @@
             <connections>
                 <outlet property="cancelButton" destination="fqe-qx-IQe" id="wi5-7u-1Do"/>
                 <outlet property="cancelLeftButton" destination="tyq-Cq-4dU" id="oYG-tq-QHJ"/>
-                <outlet property="continueButton" destination="F0b-8v-1lY" id="lKE-Bb-E0l"/>
                 <outlet property="continueRightButton" destination="OIj-9x-l85" id="SD7-9b-lN9"/>
                 <outlet property="firstTextField" destination="fNB-Pm-68I" id="hQo-Kk-1Wf"/>
                 <outlet property="fourthTextField" destination="0te-KR-oYr" id="4yN-J1-SZN"/>
+                <outlet property="nextButton" destination="F0b-8v-1lY" id="lKE-Bb-E0l"/>
                 <outlet property="secondTextField" destination="9dO-D4-gja" id="w3s-9l-wIZ"/>
                 <outlet property="thirdTextField" destination="paP-b8-KCw" id="AB4-5M-vfk"/>
                 <outlet property="titleLabel" destination="L3b-r5-OhD" id="mXg-IF-pWR"/>

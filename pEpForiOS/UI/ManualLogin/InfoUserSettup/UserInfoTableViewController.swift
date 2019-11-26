@@ -25,10 +25,12 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITex
 
         let accountSetupView = manualAccountSetupContainerView.manualAccountSetupView
         accountSetupView?.delegate = self
-        fields = manualSetupViewTextFeilds()
         accountSetupView?.textFieldsDelegate = self
-        accountSetupView?.titleLabel.text = NSLocalizedString("Account",
-                                                       comment: "Title for manual account setup")
+        fields = manualSetupViewTextFeilds()
+
+        accountSetupView?.titleLabel.text = NSLocalizedString("Account", comment: "Title for manual account setup")
+        let nextButtonTittle = NSLocalizedString("Next", comment: "Next button title for manual account setup")
+        accountSetupView?.nextButton.setTitle(nextButtonTittle, for: .normal)
     }
 
     public override func viewWillAppear(_ animated: Bool) {
@@ -61,7 +63,7 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITex
             Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
             return
         }
-        setupView.continueButton.isEnabled = viewModelOrCrash().isValidUser
+        setupView.nextButton.isEnabled = viewModelOrCrash().isValidUser
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
