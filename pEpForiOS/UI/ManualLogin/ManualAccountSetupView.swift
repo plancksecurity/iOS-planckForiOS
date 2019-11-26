@@ -22,11 +22,17 @@ final class ManualAccountSetupView: UIView {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
 
+    var isCancelButtonHidden = false {
+        didSet {
+            hideSpecificDeviceButton()
+        }
+    }
     var textFieldsDelegate: UITextFieldDelegate? {
         didSet {
             updateTextFeildsDelegates()
         }
     }
+
 
     override func awakeFromNib() {
         setUpTextFieldsColor()
@@ -64,11 +70,13 @@ extension ManualAccountSetupView {
     @objc private func hideSpecificDeviceButton() {
         let isLandscape = UIDevice.current.orientation.isLandscape
 
-        cancelLeftButton.isHidden = !isLandscape
-        continueRightButton.isHidden = !isLandscape
+        continueRightButton?.isHidden = !isLandscape
+        continueButton?.isHidden = isLandscape
 
-        cancelButton.isHidden = isLandscape
-        continueButton.isHidden = isLandscape
+        if !isCancelButtonHidden {
+            cancelLeftButton?.isHidden = !isLandscape
+            cancelButton?.isHidden = isLandscape
+        }
     }
 
     private func updateTextFeildsDelegates() {

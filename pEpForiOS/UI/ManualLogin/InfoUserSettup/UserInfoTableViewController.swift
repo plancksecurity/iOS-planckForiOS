@@ -28,21 +28,13 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITex
         accountSetupView?.textFieldsDelegate = self
         accountSetupView?.titleLabel.text = NSLocalizedString("Account",
                                                        comment: "Title for manual account setup")
-
-//        handleCancelButtonVisibility()
+        handleCancelButtonVisibility()
     }
-
-//    func handleCancelButtonVisibility() {
-//        accounts = Account.all()
-//        if accounts.isEmpty {
-//            navigationItem.leftBarButtonItem = nil
-//        }
-//    }
 
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-//        navigationItem.hidesBackButton = Account.all().isEmpty
+        handleCancelButtonVisibility()
         updateViewFromInitialModel()
         updateView()
     }
@@ -168,5 +160,13 @@ extension UserInfoTableViewController {
                 setupView.secondTextField,
                 setupView.thirdTextField,
                 setupView.fourthTextField]
+    }
+
+    private func handleCancelButtonVisibility() {
+        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
+            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+            return
+        }
+        setupView.isCancelButtonHidden = Account.all().isEmpty
     }
 }
