@@ -60,6 +60,9 @@ class LoginViewController: BaseViewController {
         configureView()
         configureAppearance()
         configureKeyboardAwareness()
+
+        //TODO: ALE BORRAR
+        setManualSetupButtonHidden(false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -247,20 +250,20 @@ extension LoginViewController: SegueHandlerType {
 
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        switch segueIdentifier(for: segue) {
-//        case .manualConfigSegue:
-//            guard let navVC = segue.destination as? UINavigationController,
-//                let vc = navVC.topViewController as? UserInfoTableViewController else {
-//                    Log.shared.errorAndCrash("fail to cast to UserInfoTableViewController")
-//                    return
-//            }
-//            vc.appConfig = appConfig
-//
-//            // Give the next model all that we know.
-//            vc.model = viewModelOrCrash().verifiableAccount
-//        default:
-//            break
-//        }
+        switch segueIdentifier(for: segue) {
+        case .manualConfigSegue:
+            guard let navVC = segue.destination as? UINavigationController,
+                let vc = navVC.topViewController as? UserInfoTableViewController else {
+                    Log.shared.errorAndCrash("fail to cast to UserInfoTableViewController")
+                    return
+            }
+            vc.appConfig = appConfig
+
+            // Give the next model all that we know.
+            vc.model = viewModelOrCrash().verifiableAccount
+        default:
+            break
+        }
     }
 }
 

@@ -23,9 +23,10 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITex
     public override func viewDidLoad() {
         super.viewDidLoad()
 
+        manualAccountSetupContainerView.manualAccountSetupView?.textFieldsDelegate = self
+        fields = manualSetupViewTextFeilds()
 //        title = NSLocalizedString("Account", comment: "Title for manual account setup")
 //        handleCancelButtonVisibility()
-//        passwordValue.delegate = self
     }
 
 //    func handleCancelButtonVisibility() {
@@ -45,33 +46,37 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITex
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        firstResponder(!viewModelOrCrash().isValidName)
+        firstResponder(!viewModelOrCrash().isValidName)
     }
 
     /**
      Puts the model into the view, in case it was set by the invoking view controller.
      */
     func updateViewFromInitialModel() {
-//        emailValue.text = viewModelOrCrash().address
-//        nameValue.text = viewModelOrCrash().userName
-//        passwordValue.text = viewModelOrCrash().password
+        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
+            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+            return
+        }
+        setupView.firstTextField.text = viewModelOrCrash().userName
+        setupView.secondTextField.text = viewModelOrCrash().address
+        setupView.thirdTextField.text = viewModelOrCrash().password
     }
 
     func updateView() {
 //        navigationItem.rightBarButtonItem?.isEnabled = viewModelOrCrash().isValidUser
     }
 
-    public func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
-//        nextResponder(textfield)
-//
-//        if viewModelOrCrash().isValidUser {
-//            performSegue(withIdentifier: .IMAPSettings , sender: self)
-//        }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        nextResponder(textField)
+
+        if viewModelOrCrash().isValidUser {
+            performSegue(withIdentifier: .IMAPSettings , sender: self)
+        }
         return true
     }
 
-    public func textFieldDidEndEditing(_ textField: UITextField) {
-//        changedResponder(textField)
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        changedResponder(textField)
     }
 
     @IBAction func changeEmail(_ sender: UITextField) {
@@ -104,6 +109,10 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITex
 
     @IBAction func cancelButtonTapped(_ sender: UIButton) {
         navigationController?.dismiss(animated: true, completion: nil)
+    }
+
+    @IBAction func didTapOnView(_ sender: Any) {
+        view.endEditing(true)
     }
 }
 
@@ -141,5 +150,20 @@ extension UserInfoTableViewController: SegueHandlerType {
         default:
             break
         }
+    }
+}
+
+// MARK: - Private
+
+extension UserInfoTableViewController {
+    private func manualSetupViewTextFeilds() -> [UITextField] {
+        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
+            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+            return []
+        }
+        return [setupView.firstTextField,
+                setupView.secondTextField,
+                setupView.thirdTextField,
+                setupView.fourthTextField]
     }
 }

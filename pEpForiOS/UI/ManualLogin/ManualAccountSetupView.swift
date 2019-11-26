@@ -8,8 +8,7 @@
 
 import UIKit
 
-
-class ManualAccountSetupView: UIView {
+final class ManualAccountSetupView: UIView {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var firstTextField: AnimatedPlaceholderTextfield!
@@ -23,9 +22,16 @@ class ManualAccountSetupView: UIView {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
 
+    var textFieldsDelegate: UITextFieldDelegate? {
+        didSet {
+            updateTextFeildsDelegates()
+        }
+    }
+
     override func awakeFromNib() {
         setUpTextFieldsColor()
         hideSpecificDeviceButton()
+        updateTextFeildsDelegates()
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(hideSpecificDeviceButton),
@@ -63,5 +69,12 @@ extension ManualAccountSetupView {
 
         cancelButton.isHidden = isLandscape
         continueButton.isHidden = isLandscape
+    }
+
+    private func updateTextFeildsDelegates() {
+        firstTextField?.delegate = textFieldsDelegate
+        secondTextField?.delegate = textFieldsDelegate
+        thirdTextField?.delegate = textFieldsDelegate
+        fourthTextField?.delegate = textFieldsDelegate
     }
 }
