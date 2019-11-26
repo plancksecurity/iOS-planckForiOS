@@ -123,7 +123,7 @@ extension ComposeTableViewController {
             }
             let tapGestureRecognizer = UITapGestureRecognizer(
                 target: self,
-                action: #selector(actionHandshakeOrForceUnprotected))
+                action: #selector(actionHandshake))
             view?.addGestureRecognizer(tapGestureRecognizer)
         }
     }
@@ -145,7 +145,7 @@ extension ComposeTableViewController {
 
     /// Shows the handshake menu, if applicable.
     /// - Parameter gestureRecognizer: The gesture recognizer that triggered this
-    @objc func actionHandshakeOrForceUnprotected(gestureRecognizer: UITapGestureRecognizer) {
+    @objc func actionHandshake(gestureRecognizer: UITapGestureRecognizer) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
