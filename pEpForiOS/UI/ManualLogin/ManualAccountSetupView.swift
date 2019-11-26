@@ -22,11 +22,6 @@ final class ManualAccountSetupView: UIView {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
 
-    var isCancelButtonHidden = false {
-        didSet {
-            hideSpecificDeviceButton()
-        }
-    }
     var textFieldsDelegate: UITextFieldDelegate? {
         didSet {
             updateTextFeildsDelegates()
@@ -70,11 +65,11 @@ extension ManualAccountSetupView {
     @objc private func hideSpecificDeviceButton() {
         let isLandscape = UIDevice.current.orientation.isLandscape
 
+        cancelLeftButton?.isHidden = !isLandscape
         continueRightButton?.isHidden = !isLandscape
-        continueButton?.isHidden = isLandscape
 
-        cancelLeftButton?.isHidden = !isLandscape || isCancelButtonHidden
-        cancelButton?.isHidden = isLandscape || isCancelButtonHidden
+        cancelButton?.isHidden = isLandscape
+        continueButton?.isHidden = isLandscape
     }
 
     private func updateTextFeildsDelegates() {
