@@ -136,6 +136,12 @@ extension ComposeTableViewController {
     /// Toggles the protection for this outgoing message (force protected).
     /// - Parameter gestureRecognizer: The gesture recognizer that triggered this
     @objc func actionToggleProtection(gestureRecognizer: UITapGestureRecognizer) {
+        // This is a long press, so react once when we know for sure,
+        // while the user is still pressing.
+        guard gestureRecognizer.state == .began else {
+            return
+        }
+
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
