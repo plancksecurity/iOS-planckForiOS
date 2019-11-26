@@ -457,7 +457,7 @@ extension LoginViewController {
 
     @objc private func hideSpecificDeviceButton() {
         let isIpad = UIDevice.current.userInterfaceIdiom == .pad
-        let isLandscape = UIDevice.current.orientation.isLandscape
+        let isLandscape = UIApplication.shared.statusBarOrientation.isLandscape
         let isIpadLandscape = isIpad && isLandscape
 
         loginButton.isHidden = isIpadLandscape

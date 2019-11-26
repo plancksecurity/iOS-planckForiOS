@@ -96,7 +96,7 @@ extension ManualAccountSetupView {
     }
 
     @objc private func hideSpecificDeviceButton() {
-        let isLandscape = UIDevice.current.orientation.isLandscape
+        let isLandscape = UIApplication.shared.statusBarOrientation.isLandscape
 
         cancelLeftButton?.isHidden = !isLandscape
         continueRightButton?.isHidden = !isLandscape
