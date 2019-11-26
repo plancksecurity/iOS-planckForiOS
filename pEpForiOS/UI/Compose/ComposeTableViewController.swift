@@ -121,10 +121,15 @@ extension ComposeTableViewController {
             if view == nil {
                 view = showNavigationBarPEPLogo(pEpRating: pEpRating)
             }
-            let tapGestureRecognizer = UITapGestureRecognizer(
+            let tapGestureRecognizerHandshake = UITapGestureRecognizer(
                 target: self,
                 action: #selector(actionHandshake))
-            view?.addGestureRecognizer(tapGestureRecognizer)
+            view?.addGestureRecognizer(tapGestureRecognizerHandshake)
+
+            let tapGestureRecognizerToggleProtection = UILongPressGestureRecognizer(
+                target: self,
+                action: #selector(actionToggleProtection))
+            view?.addGestureRecognizer(tapGestureRecognizerToggleProtection)
         }
     }
 
