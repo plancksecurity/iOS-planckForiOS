@@ -128,7 +128,23 @@ extension ComposeTableViewController {
         }
     }
 
-    /// Shows a menu where user can choose to make a handshake, or toggle force unprotected.
+    /// Toggles the protection for this outgoing message (force protected).
+    /// - Parameter gestureRecognizer: The gesture recognizer that triggered this
+    @objc func actionToggleProtection(gestureRecognizer: UITapGestureRecognizer) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        guard vm.state.userCanToggleProtection() else {
+            return
+        }
+
+        let originalValueOfProtection = vm.state.pEpProtection
+        vm.handleUserChangedProtectionStatus(to: !originalValueOfProtection)
+    }
+
+    /// Shows the handshake menu, if applicable.
+    /// - Parameter gestureRecognizer: The gesture recognizer that triggered this
     @objc func actionHandshakeOrForceUnprotected(gestureRecognizer: UITapGestureRecognizer) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
