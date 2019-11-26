@@ -64,25 +64,15 @@ extension UIViewController {
                 return nil
             }
 
-            // iPhone 8: .onlyMaster; iPad: .masterAndDetail
-            let mode = splitViewController?.currentDisplayMode ?? .masterAndDetail
-
-            switch mode {
-            case .onlyMaster:
-                let imgView = UIImageView(image: img)
-                imgView.translatesAutoresizingMaskIntoConstraints = false
-                let ratio = imgView.aspectRatio()
-                imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor,
-                                               multiplier: ratio,
-                                               constant: 0.0).isActive = true
-                imgView.heightAnchor.constraint(equalToConstant: 22).isActive = true
-                return imgView
-            case .onlyDetail, .masterAndDetail:
-                break
-            }
+            let imgView = UIImageView(image: img)
+            imgView.translatesAutoresizingMaskIntoConstraints = false
+            let ratio = imgView.aspectRatio()
+            imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor,
+                                           multiplier: ratio,
+                                           constant: 0.0).isActive = true
+            imgView.heightAnchor.constraint(equalToConstant: 22).isActive = true
+            return imgView
         }
-
-        return nil
     }
 
     func showNavigationBarPEPLogo(pEpRating: PEPRating?) -> UIView? {
