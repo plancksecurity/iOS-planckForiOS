@@ -115,17 +115,26 @@ extension ComposeTableViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
+
         //Not so nice. The view(controller) should not know about state and protection.
         var view = showNavigationBarSecurityBadge(pEpRating: pEpRating, pEpProtection: pEpProtected)
+
+        // Show the logo instead if there is no pEp color
+        if view == nil {
+            view = showNavigationBarPEPLogo(pEpRating: pEpRating)
+        }
+
+        // Handshake on simple touch if possible
         if vm.canDoHandshake() {
-            if view == nil {
-                view = showNavigationBarPEPLogo(pEpRating: pEpRating)
-            }
             let tapGestureRecognizerHandshake = UITapGestureRecognizer(
                 target: self,
                 action: #selector(actionHandshake))
             view?.addGestureRecognizer(tapGestureRecognizerHandshake)
+        }
 
+        // Toggle privacy status on long press for trusted and reliable
+        let pEpColor = pEpRating.pEpColor()
+        if pEpColor == .green || pEpColor == .yellow {
             let tapGestureRecognizerToggleProtection = UILongPressGestureRecognizer(
                 target: self,
                 action: #selector(actionToggleProtection))
