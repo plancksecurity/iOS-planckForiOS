@@ -23,14 +23,15 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITex
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        let accountSetupView = manualAccountSetupContainerView.manualAccountSetupView
-        accountSetupView?.delegate = self
-        accountSetupView?.textFieldsDelegate = self
+        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
+            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+            return
+        }
+        setupView.delegate = self
+        setupView.textFieldsDelegate = self
         fields = manualSetupViewTextFeilds()
 
-        accountSetupView?.titleLabel.text = NSLocalizedString("Account", comment: "Title for manual account setup")
-        let nextButtonTittle = NSLocalizedString("Next", comment: "Next button title for manual account setup")
-        accountSetupView?.nextButton.setTitle(nextButtonTittle, for: .normal)
+        setUpViewLocalizableTexts()
     }
 
     public override func viewWillAppear(_ animated: Bool) {
@@ -180,5 +181,32 @@ extension UserInfoTableViewController {
                 setupView.secondTextField,
                 setupView.thirdTextField,
                 setupView.fourthTextField]
+    }
+
+    private func setUpViewLocalizableTexts() {
+        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
+            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+            return
+        }
+
+        setupView.titleLabel.text = NSLocalizedString("Account", comment: "Title for manual account setup")
+
+        let nextButtonTittle = NSLocalizedString("Next", comment: "Next button title for manual account setup")
+        setupView.nextButton.setTitle(nextButtonTittle, for: .normal)
+
+        let cancelButtonTittle = NSLocalizedString("Cancel", comment: "Cancel button title for manual account setup")
+        setupView.cancelButton.setTitle(cancelButtonTittle, for: .normal)
+
+        let userNamePlaceholder = NSLocalizedString("User Name", comment: "User Name placeholder for manual account setup")
+        setupView.firstTextField.placeholder = userNamePlaceholder
+
+        let emailPlaceholder = NSLocalizedString("E-mail Address", comment: "Email address placeholder for manual account setup")
+        setupView.secondTextField.placeholder = emailPlaceholder
+
+        let passwordPlaceholder = NSLocalizedString("Password", comment: "Password placeholder for manual account setup")
+        setupView.thirdTextField.placeholder = passwordPlaceholder
+
+        let displayNamePlaceholder = NSLocalizedString("Display Name", comment: "Display Name placeholder for manual account setup")
+        setupView.fourthTextField.placeholder = displayNamePlaceholder
     }
 }
