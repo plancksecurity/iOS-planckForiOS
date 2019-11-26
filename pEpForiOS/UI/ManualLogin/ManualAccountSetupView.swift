@@ -73,10 +73,8 @@ extension ManualAccountSetupView {
         continueRightButton?.isHidden = !isLandscape
         continueButton?.isHidden = isLandscape
 
-        if !isCancelButtonHidden {
-            cancelLeftButton?.isHidden = !isLandscape
-            cancelButton?.isHidden = isLandscape
-        }
+        cancelLeftButton?.isHidden = !isLandscape || isCancelButtonHidden
+        cancelButton?.isHidden = isLandscape || isCancelButtonHidden
     }
 
     private func updateTextFeildsDelegates() {
