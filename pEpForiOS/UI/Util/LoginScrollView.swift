@@ -9,7 +9,6 @@
 import UIKit
 
 protocol LoginScrollViewDelegate: class {
-    var contentView: UIView { get }
     var bottomConstraint: NSLayoutConstraint { get }
 
     var firstResponder: UIView? { get }
@@ -37,12 +36,7 @@ class LoginScrollView: UIScrollView {
     func scrollAndMakeVisible(_ view: UIView,
                               scrollViewHeight: CGFloat,
                               animated: Bool = true) {
-        guard let contentView = loginScrollViewDelegate?.contentView else {
-            Log.shared.errorAndCrash("Found nil loginScrollViewDelegate")
-            return
-        }
-
-        let viewFrames = view.convert(view.bounds, to: contentView)
+        let viewFrames = view.convert(view.bounds, to: self)
         var newContentOffSet = viewFrames.midY - scrollViewHeight / 2
         let contetOffSetDistanceToSafeArea =
             contentSize.height - newContentOffSet - scrollViewHeight

@@ -335,10 +335,6 @@ extension LoginViewController.LoginError: LocalizedError {
 // MARK: - LoginScrollViewDelegate
 
 extension LoginViewController: LoginScrollViewDelegate {
-    var contentView: UIView {
-        get { view }
-    }
-
     var firstResponder: UIView? {
         get { firstResponderTextField() }
     }
