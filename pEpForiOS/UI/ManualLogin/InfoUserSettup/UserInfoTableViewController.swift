@@ -23,9 +23,12 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITex
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        manualAccountSetupContainerView.manualAccountSetupView?.textFieldsDelegate = self
+        let accountSetupView = manualAccountSetupContainerView.manualAccountSetupView
         fields = manualSetupViewTextFeilds()
-//        title = NSLocalizedString("Account", comment: "Title for manual account setup")
+        accountSetupView?.textFieldsDelegate = self
+        accountSetupView?.titleLabel.text = NSLocalizedString("Account",
+                                                       comment: "Title for manual account setup")
+
 //        handleCancelButtonVisibility()
     }
 
