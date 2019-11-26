@@ -24,6 +24,7 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITex
         super.viewDidLoad()
 
         let accountSetupView = manualAccountSetupContainerView.manualAccountSetupView
+        accountSetupView?.delegate = self
         fields = manualSetupViewTextFeilds()
         accountSetupView?.textFieldsDelegate = self
         accountSetupView?.titleLabel.text = NSLocalizedString("Account",
@@ -56,7 +57,11 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITex
     }
 
     func updateView() {
-//        navigationItem.rightBarButtonItem?.isEnabled = viewModelOrCrash().isValidUser
+        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
+            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+            return
+        }
+        setupView.continueButton.isEnabled = viewModelOrCrash().isValidUser
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -72,41 +77,55 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITex
         changedResponder(textField)
     }
 
-    @IBAction func changeEmail(_ sender: UITextField) {
-        var vm = viewModelOrCrash()
-        vm.address = sender.text
-        model = vm
-        updateView()
-    }
-
-    @IBAction func changeUsername(_ sender: UITextField) {
-        var vm = viewModelOrCrash()
-        vm.loginName = sender.text
-        model = vm
-        updateView()
-    }
-
-    @IBAction func changePassword(_ sender: UITextField) {
-        var vm = viewModelOrCrash()
-        vm.password = sender.text
-        model = vm
-        updateView()
-    }
-
-    @IBAction func changedName(_ sender: UITextField) {
-        var vm = viewModelOrCrash()
-        vm.userName = sender.text
-        model = vm
-        updateView()
-    }
-
-    @IBAction func cancelButtonTapped(_ sender: UIButton) {
-        navigationController?.dismiss(animated: true, completion: nil)
-    }
-
     @IBAction func didTapOnView(_ sender: Any) {
         view.endEditing(true)
     }
+}
+
+// MARK: - ManualAccountSetupViewDelegate
+
+extension UserInfoTableViewController: ManualAccountSetupViewDelegate {
+    func didChangeFirst(_ textField: UITextField) {
+        var vm = viewModelOrCrash()
+        vm.userName = textField.text
+        model = vm
+        updateView()
+    }
+
+    func didChangeSecond(_ textField: UITextField) {
+        var vm = viewModelOrCrash()
+        vm.address = textField.text
+        model = vm
+        updateView()
+    }
+
+    func didChangeThierd(_ textField: UITextField) {
+        var vm = viewModelOrCrash()
+        vm.password = textField.text
+        model = vm
+        updateView()
+    }
+
+    func didChangeFourth(_ textField: UITextField) {
+        var vm = viewModelOrCrash()
+        vm.loginName = textField.text
+        model = vm
+        updateView()
+    }
+
+    func didPressCancelButton() {
+        navigationController?.dismiss(animated: true, completion: nil)
+    }
+
+    func didPressNextButton() {
+        guard viewModelOrCrash().isValidUser else {
+            Log.shared.errorAndCrash("Next button enable with not ValidUser in ManualAccountSetupView")
+            return
+        }
+        performSegue(withIdentifier: .IMAPSettings , sender: self)
+    }
+
+
 }
 
 // MARK: - Helpers

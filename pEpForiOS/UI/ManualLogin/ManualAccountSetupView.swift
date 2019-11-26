@@ -8,6 +8,16 @@
 
 import UIKit
 
+protocol ManualAccountSetupViewDelegate: class {
+    func didPressCancelButton()
+    func didPressNextButton()
+    
+    func didChangeFirst(_ textField: UITextField)
+    func didChangeSecond(_ textField: UITextField)
+    func didChangeThierd(_ textField: UITextField)
+    func didChangeFourth(_ textField: UITextField)
+}
+
 final class ManualAccountSetupView: UIView {
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -22,12 +32,13 @@ final class ManualAccountSetupView: UIView {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
 
+    weak var delegate: ManualAccountSetupViewDelegate?
+
     var textFieldsDelegate: UITextFieldDelegate? {
         didSet {
             updateTextFeildsDelegates()
         }
     }
-
 
     override func awakeFromNib() {
         setUpTextFieldsColor()
@@ -49,6 +60,12 @@ final class ManualAccountSetupView: UIView {
                 return nil
         }
         return manualSetupView
+    }
+    @IBAction func didPressCancel(_ sender: UIButton) {
+        delegate?.didPressCancelButton()
+    }
+    @IBAction func didPressNext(_ sender: UIButton) {
+        delegate?.didPressNextButton()
     }
 }
 

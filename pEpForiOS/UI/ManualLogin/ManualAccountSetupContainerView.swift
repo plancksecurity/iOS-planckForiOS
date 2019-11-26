@@ -8,9 +8,14 @@
 
 import UIKit
 
+/// Use ONLY in storyboard, other inits are not implemented
 final class ManualAccountSetupContainerView: UIView {
 
     weak var manualAccountSetupView: ManualAccountSetupView?
+
+    private init(){
+        super.init(frame: .zero)
+    }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
