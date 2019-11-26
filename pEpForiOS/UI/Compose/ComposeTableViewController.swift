@@ -150,57 +150,8 @@ extension ComposeTableViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        let theCanHandshake = vm.state.canHandshake()
-        let theCanToggleProtection = vm.state.userCanToggleProtection()
-
-        if theCanHandshake || theCanToggleProtection {
-            let alert = UIAlertController.pEpAlertController()
-
-            if theCanHandshake {
-                let actionReply = UIAlertAction(
-                    title: NSLocalizedString("Handshake",
-                                             comment: "possible privacy status action"),
-                    style: .default) {[weak self] (action) in
-                        self?.performSegue(withIdentifier: .segueHandshake, sender: self)
-                }
-                alert.addAction(actionReply)
-            }
-
-            let tutorialAction = UIAlertAction(
-                title: NSLocalizedString("Tutorial", comment: "show tutorial from compose view"),
-                style: .default) { _ in
-                    TutorialWizardViewController.presentTutorialWizard(viewController: self)
-            }
-            alert.addAction(tutorialAction)
-
-            if theCanToggleProtection {
-                let originalValueOfProtection = vm.state.pEpProtection
-                let title = vm.state.pEpProtection ?
-                    NSLocalizedString("Disable Protection",
-                                      comment: "possible private status action") :
-                    NSLocalizedString("Enable Protection",
-                                      comment: "possible private status action")
-                let actionToggleProtection = UIAlertAction(
-                    title: title,
-                    style: .default) { (action) in
-                        vm.handleUserChangedProtectionStatus(to: !originalValueOfProtection)
-                }
-                alert.addAction(actionToggleProtection)
-            }
-
-            let cancelAction = UIAlertAction(
-                title: NSLocalizedString("Cancel", comment: "possible private status action"),
-                style: .cancel) { (action) in }
-            alert.addAction(cancelAction)
-            if let sourceView = gestureRecognizer.view {
-                alert.popoverPresentationController?.sourceView = sourceView
-                alert.popoverPresentationController?.sourceRect = CGRect(x: sourceView.bounds.midX,
-                                                                         y: sourceView.bounds.maxY,
-                                                                         width: 0,
-                                                                         height: 0)
-            }
-
-            present(alert, animated: true, completion: nil)
+        if (vm.state.canHandshake()) {
+            self.performSegue(withIdentifier: .segueHandshake, sender: self)
         }
     }
 }
