@@ -111,7 +111,7 @@ extension ManualAccountSetupView {
     }
 
     @objc private func hideSpecificDeviceButton() {
-        let isLandscape = UIApplication.shared.statusBarOrientation.isLandscape
+        let isLandscape = self.isLandscape()
 
         cancelLeftButton?.isHidden = !isLandscape
         nextRightButton?.isHidden = !isLandscape
@@ -129,5 +129,13 @@ extension ManualAccountSetupView {
 
     private func textFields() -> [UITextField] {
         return [firstTextField, secondTextField, thirdTextField, fourthTextField]
+    }
+
+    private func isLandscape() -> Bool {
+        if UIDevice.current.orientation.isFlat  {
+            return UIApplication.shared.statusBarOrientation.isLandscape
+        } else {
+            return UIDevice.current.orientation.isLandscape
+        }
     }
 }
