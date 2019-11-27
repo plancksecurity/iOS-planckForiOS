@@ -167,14 +167,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 handleResetAllIdentity()
                 tableView.deselectRow(at: indexPath, animated: true)
             case .resetTrust:
-                guard let splitViewController = self.splitViewController else {
-                    return
-                }
-                if splitViewController.isCollapsed {
-                    performSegue(withIdentifier: .ResetTrust, sender: self)
-                } else {
-                    performSegue(withIdentifier: .ResetTrustSplitView , sender: self)
-                }
+                performSegue(withIdentifier: .ResetTrust, sender: self)
                 break
             }
         default:
