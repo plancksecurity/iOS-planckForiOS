@@ -1,5 +1,5 @@
 //
-//  UserInfoTableViewController.swift
+//  UserInfoViewController.swift
 //  pEpDemo
 //
 //  Created by ana on 12/4/16.
@@ -10,17 +10,16 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-class UserInfoTableViewController: BaseViewController, TextfieldResponder {
+class UserInfoViewController: BaseViewController, TextfieldResponder {
     @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
     var fields = [UITextField]()
     var responder = 0
-    var accounts = [Account]()
 
-    //TODO: ALE rename
-    public var model: VerifiableAccountProtocol?
+    /// - Note: This VC doesn't have a view model yet, so this is used for the model.
+    var model: VerifiableAccountProtocol?
 
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
@@ -29,19 +28,18 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder {
         }
         setupView.delegate = self
         setupView.textFieldsDelegate = self
-        fields = manualSetupViewTextFeilds()
 
+        fields = manualSetupViewTextFeilds()
         setUpViewLocalizableTexts()
     }
 
-    public override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        updateViewFromInitialModel()
         updateView()
     }
 
-    public override func viewDidAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         firstResponder(!viewModelOrCrash().isValidName)
     }
@@ -49,27 +47,21 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder {
     /**
      Puts the model into the view, in case it was set by the invoking view controller.
      */
-    func updateViewFromInitialModel() {
-        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
-            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
-            return
-        }
-        let vm = viewModelOrCrash()
-        
-        setupView.firstTextField.text = vm.userName
-        setupView.secondTextField.text = vm.address
-        setupView.thirdTextField.text = vm.password
-
-        setupView.pEpSyncSwitch.isOn = vm.keySyncEnable
-    }
-
     func updateView() {
         guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
             Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
             return
         }
-        setupView.nextButton.isEnabled = viewModelOrCrash().isValidUser
-        setupView.nextRightButton.isEnabled = viewModelOrCrash().isValidUser
+        let vm = viewModelOrCrash()
+
+        setupView.firstTextField.text = vm.userName
+        setupView.secondTextField.text = vm.address
+        setupView.thirdTextField.text = vm.password
+
+        setupView.pEpSyncSwitch.isOn = vm.keySyncEnable
+
+        setupView.nextButton.isEnabled = vm.isValidUser
+        setupView.nextRightButton.isEnabled = vm.isValidUser
     }
 
     @IBAction func didTapOnView(_ sender: Any) {
@@ -79,7 +71,7 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder {
 
 // MARK: - UITextFieldDelegate
 
-extension UserInfoTableViewController: UITextFieldDelegate {
+extension UserInfoViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         nextResponder(textField)
 
@@ -96,8 +88,8 @@ extension UserInfoTableViewController: UITextFieldDelegate {
 
 // MARK: - ManualAccountSetupViewDelegate
 
-extension UserInfoTableViewController: ManualAccountSetupViewDelegate {
-    func dudChangePEPSyncSwitch(isOn: Bool) {
+extension UserInfoViewController: ManualAccountSetupViewDelegate {
+    func didChangePEPSyncSwitch(isOn: Bool) {
         var vm = viewModelOrCrash()
         vm.keySyncEnable = isOn
     }
@@ -145,7 +137,7 @@ extension UserInfoTableViewController: ManualAccountSetupViewDelegate {
 
 // MARK: - Helpers
 
-extension UserInfoTableViewController {
+extension UserInfoViewController {
     func viewModelOrCrash() -> VerifiableAccountProtocol {
         if let vm = model {
             return vm
@@ -160,16 +152,16 @@ extension UserInfoTableViewController {
 
 // MARK: - Navigation
 
-extension UserInfoTableViewController: SegueHandlerType {
-    public enum SegueIdentifier: String {
+extension UserInfoViewController: SegueHandlerType {
+    enum SegueIdentifier: String {
         case IMAPSettings
         case noSegue
     }
 
-    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .IMAPSettings:
-            if let destination = segue.destination as? IMAPSettingsTableViewController {
+            if let destination = segue.destination as? IMAPSettingsViewController {
                 destination.appConfig = appConfig
                 destination.model = model
             }
@@ -182,7 +174,7 @@ extension UserInfoTableViewController: SegueHandlerType {
 
 // MARK: - Private
 
-extension UserInfoTableViewController {
+extension UserInfoViewController {
     private func manualSetupViewTextFeilds() -> [UITextField] {
         guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
             Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
