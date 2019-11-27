@@ -11,6 +11,7 @@ import UIKit
 protocol ManualAccountSetupViewDelegate: class {
     func didPressCancelButton()
     func didPressNextButton()
+    func dudChangePEPSyncSwitch(isOn: Bool)
 
     func didChangeFirst(_ textField: UITextField)
     func didChangeSecond(_ textField: UITextField)
@@ -30,6 +31,7 @@ final class ManualAccountSetupView: UIView {
     @IBOutlet weak var nextRightButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var pEpSyncSwitch: UISwitch!
 
     @IBOutlet weak var scrollView: LoginScrollView!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
@@ -85,6 +87,10 @@ final class ManualAccountSetupView: UIView {
         default:
             Log.shared.errorAndCrash("didChange should handle all cases in ManualAccountSetupView")
         }
+    }
+
+    @IBAction func didChangePEPSyncSwitch(_ sender: UISwitch) {
+        delegate?.dudChangePEPSyncSwitch(isOn: sender.isOn)
     }
 }
 

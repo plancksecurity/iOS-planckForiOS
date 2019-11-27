@@ -238,6 +238,9 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AMS-vh-eXJ">
                                                     <rect key="frame" x="82" y="0.0" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="didChangePEPSyncSwitch:" destination="iN0-l3-epB" eventType="valueChanged" id="fUt-IP-bC5"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -397,6 +400,7 @@
                 <outlet property="fourthTextField" destination="0te-KR-oYr" id="4yN-J1-SZN"/>
                 <outlet property="nextButton" destination="F0b-8v-1lY" id="lKE-Bb-E0l"/>
                 <outlet property="nextRightButton" destination="OIj-9x-l85" id="SD7-9b-lN9"/>
+                <outlet property="pEpSyncSwitch" destination="AMS-vh-eXJ" id="EDU-bO-sxs"/>
                 <outlet property="scrollView" destination="fYu-PK-Lyk" id="vWQ-of-NIG"/>
                 <outlet property="scrollViewBottomConstraint" destination="sd8-C9-Ifn" id="KqF-G8-QiM"/>
                 <outlet property="secondTextField" destination="9dO-D4-gja" id="w3s-9l-wIZ"/>

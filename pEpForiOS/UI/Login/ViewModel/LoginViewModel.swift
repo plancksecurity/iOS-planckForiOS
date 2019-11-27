@@ -37,7 +37,11 @@ class LoginViewModel {
      Helper model to handle most of the OAuth2 authorization.
      */
     var oauth2Model = OAuth2AuthViewModel()
-    var isAccountPEPSyncEnable = true
+    var isAccountPEPSyncEnable = true {
+        didSet {
+            verifiableAccount.keySyncEnable = isAccountPEPSyncEnable
+        }
+    }
 
     /** If the last login attempt was via OAuth2, this will collect temporary parameters */
     private var lastOAuth2Parameters: OAuth2Parameters?
@@ -113,7 +117,6 @@ class LoginViewModel {
             // as determined previously, or we will defer to pantomime to find out the best method.
             verifiableAccount.authMethod = accessToken != nil ? .saslXoauth2 : nil
 
-            verifiableAccount.keySyncEnable = isAccountPEPSyncEnable
             verifiableAccount.password = password
             verifiableAccount.accessToken = accessToken
             verifiableAccount.serverIMAP = incomingServer.hostname

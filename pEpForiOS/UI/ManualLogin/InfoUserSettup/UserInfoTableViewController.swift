@@ -54,9 +54,13 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder {
             Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
             return
         }
-        setupView.firstTextField.text = viewModelOrCrash().userName
-        setupView.secondTextField.text = viewModelOrCrash().address
-        setupView.thirdTextField.text = viewModelOrCrash().password
+        let vm = viewModelOrCrash()
+        
+        setupView.firstTextField.text = vm.userName
+        setupView.secondTextField.text = vm.address
+        setupView.thirdTextField.text = vm.password
+
+        setupView.pEpSyncSwitch.isOn = vm.keySyncEnable
     }
 
     func updateView() {
@@ -93,6 +97,11 @@ extension UserInfoTableViewController: UITextFieldDelegate {
 // MARK: - ManualAccountSetupViewDelegate
 
 extension UserInfoTableViewController: ManualAccountSetupViewDelegate {
+    func dudChangePEPSyncSwitch(isOn: Bool) {
+        var vm = viewModelOrCrash()
+        vm.keySyncEnable = isOn
+    }
+
     func didChangeFirst(_ textField: UITextField) {
         var vm = viewModelOrCrash()
         vm.userName = textField.text
