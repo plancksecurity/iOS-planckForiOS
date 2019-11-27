@@ -10,7 +10,7 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITextFieldDelegate {
+class UserInfoTableViewController: BaseViewController, TextfieldResponder {
     @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
     var fields = [UITextField]()
@@ -68,6 +68,14 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITex
         setupView.nextRightButton.isEnabled = viewModelOrCrash().isValidUser
     }
 
+    @IBAction func didTapOnView(_ sender: Any) {
+        view.endEditing(true)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension UserInfoTableViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         nextResponder(textField)
 
@@ -77,12 +85,8 @@ class UserInfoTableViewController: BaseViewController, TextfieldResponder, UITex
         return true
     }
 
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         changedResponder(textField)
-    }
-
-    @IBAction func didTapOnView(_ sender: Any) {
-        view.endEditing(true)
     }
 }
 
@@ -128,8 +132,6 @@ extension UserInfoTableViewController: ManualAccountSetupViewDelegate {
         }
         performSegue(withIdentifier: .IMAPSettings , sender: self)
     }
-
-
 }
 
 // MARK: - Helpers

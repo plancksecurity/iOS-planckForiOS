@@ -855,7 +855,7 @@
                                 </userDefinedRuntimeAttributes>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bP7-By-IPD">
-                                <rect key="frame" x="0.0" y="30" width="88" height="88"/>
+                                <rect key="frame" x="0.0" y="30" width="44" height="44"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="imageEdgeInsets" minX="12" minY="12" maxX="12" maxY="12"/>
                                 <state key="normal" image="close-icon"/>
@@ -905,9 +905,7 @@
                         <outlet property="dismissButton" destination="bP7-By-IPD" id="pwC-XY-sh6"/>
                         <outlet property="emailAddress" destination="Nx2-xq-Km8" id="oo4-kX-rJP"/>
                         <outlet property="loginButton" destination="i7a-Xk-Hbw" id="wR5-NL-ngU"/>
-                        <outlet property="loginButtonCenterYConstraint" destination="wjS-2O-w9c" id="WZK-ob-7c9"/>
                         <outlet property="loginButtonIPadLandscape" destination="wIi-CI-cLC" id="zSa-ad-e69"/>
-                        <outlet property="loginButtonTopConstraint" destination="nhb-lJ-cSW" id="9AA-Nf-QEY"/>
                         <outlet property="mainContainerView" destination="d4O-yC-tc7" id="Kg2-jV-XNd"/>
                         <outlet property="manualConfigButton" destination="JT1-ND-6bH" id="1zL-Jx-gfO"/>
                         <outlet property="pEpSyncViewCenterHConstraint" destination="88a-wW-ARz" id="xP6-mx-jtR"/>

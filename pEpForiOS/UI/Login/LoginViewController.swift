@@ -32,8 +32,6 @@ class LoginViewController: BaseViewController {
     @IBOutlet weak var scrollView: LoginScrollView!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
-    @IBOutlet weak var loginButtonTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var loginButtonCenterYConstraint: NSLayoutConstraint!
 
     var loginViewModel: LoginViewModel?
     var offerManualSetup = false

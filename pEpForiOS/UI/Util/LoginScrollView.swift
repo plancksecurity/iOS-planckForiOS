@@ -14,13 +14,9 @@ protocol LoginScrollViewDelegate: class {
     var firstResponder: UIView? { get }
 }
 
-extension LoginScrollViewDelegate {
-    func firstResponder() -> UIView? { return nil }
-}
-
 @IBDesignable
 class LoginScrollView: UIScrollView {
-    @IBInspectable var makeVisibleAutoScroll: Bool = true
+    @IBInspectable var makeVisibleAutoScroll: Bool = false
 
     weak var loginScrollViewDelegate: LoginScrollViewDelegate?
 
