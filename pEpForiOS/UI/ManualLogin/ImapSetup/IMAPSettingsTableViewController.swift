@@ -12,16 +12,16 @@ import pEpIOSToolbox
 import PantomimeFramework
 import MessageModel
 
-extension UIAlertController {
-    func setupActionFromConnectionTransport(_ transport: ConnectionTransport,
-                                            block: @escaping (ConnectionTransport) -> ()) {
-        let action = UIAlertAction(title: transport.localizedString(), style: .default,
-                                   handler: { action in
-            block(transport)
-        })
-        addAction(action)
-    }
-}
+//extension UIAlertController {
+//    func setupActionFromConnectionTransport(_ transport: ConnectionTransport,
+//                                            block: @escaping (ConnectionTransport) -> ()) {
+//        let action = UIAlertAction(title: transport.localizedString(), style: .default,
+//                                   handler: { action in
+//            block(transport)
+//        })
+//        addAction(action)
+//    }
+//}
 
 class IMAPSettingsTableViewController: BaseTableViewController, TextfieldResponder, UITextFieldDelegate {
     @IBOutlet weak var serverValue: UITextField!

@@ -11,12 +11,16 @@ import UIKit
 protocol ManualAccountSetupViewDelegate: class {
     func didPressCancelButton()
     func didPressNextButton()
-    func dudChangePEPSyncSwitch(isOn: Bool)
+    func didChangePEPSyncSwitch(isOn: Bool)
 
     func didChangeFirst(_ textField: UITextField)
     func didChangeSecond(_ textField: UITextField)
     func didChangeThierd(_ textField: UITextField)
     func didChangeFourth(_ textField: UITextField)
+}
+
+extension ManualAccountSetupViewDelegate {
+    func didChangePEPSyncSwitch(isOn: Bool){}
 }
 
 final class ManualAccountSetupView: UIView {
@@ -90,7 +94,7 @@ final class ManualAccountSetupView: UIView {
     }
 
     @IBAction func didChangePEPSyncSwitch(_ sender: UISwitch) {
-        delegate?.dudChangePEPSyncSwitch(isOn: sender.isOn)
+        delegate?.didChangePEPSyncSwitch(isOn: sender.isOn)
     }
 }
 

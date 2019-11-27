@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--User Info Table View Controller-->
+        <!--User Info View Controller-->
         <scene sceneID="hJo-oO-Yib">
             <objects>
-                <tableViewController storyboardIdentifier="UserInfoTableView" id="YcO-Oc-XZx" customClass="UserInfoTableViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="UserInfoTableView" id="YcO-Oc-XZx" customClass="UserInfoViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="static" style="grouped" separatorStyle="default" rowHeight="174" sectionHeaderHeight="18" sectionFooterHeight="18" id="5QC-WL-de6">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -932,10 +932,10 @@
             </objects>
             <point key="canvasLocation" x="5647" y="-396"/>
         </scene>
-        <!--User Info Table View Controller-->
+        <!--User Info View Controller-->
         <scene sceneID="j9A-ew-A6L">
             <objects>
-                <viewController id="QAU-aE-DUt" customClass="UserInfoTableViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="QAU-aE-DUt" customClass="UserInfoViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GwJ-zY-bOh">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -979,21 +979,68 @@
             </objects>
             <point key="canvasLocation" x="7994" y="-396"/>
         </scene>
-        <!--Settings Table View Controller-->
+        <!--IMAPSettingsViewController-->
         <scene sceneID="Ldm-ps-kev">
             <objects>
-                <viewController id="7Js-Hk-oVa" customClass="IMAPSettingsTableViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="7Js-Hk-oVa" userLabel="IMAPSettingsViewController" customClass="IMAPSettingsViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MSx-zK-MfE">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashscreen" translatesAutoresizingMaskIntoConstraints="NO" id="FkF-pn-Lc4" userLabel="BackgroungImage">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n9J-Ja-jGn" customClass="ManualAccountSetupContainerView" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="n9J-Ja-jGn" firstAttribute="trailing" secondItem="4AJ-Ty-l2a" secondAttribute="trailing" id="4hs-fO-DA9"/>
+                            <constraint firstItem="n9J-Ja-jGn" firstAttribute="bottom" secondItem="4AJ-Ty-l2a" secondAttribute="bottom" id="61l-sI-ttV"/>
+                            <constraint firstItem="FkF-pn-Lc4" firstAttribute="trailing" secondItem="MSx-zK-MfE" secondAttribute="trailing" id="AKN-k7-t3e"/>
+                            <constraint firstItem="n9J-Ja-jGn" firstAttribute="leading" secondItem="4AJ-Ty-l2a" secondAttribute="leading" id="Df8-KK-WiR"/>
+                            <constraint firstItem="FkF-pn-Lc4" firstAttribute="top" secondItem="MSx-zK-MfE" secondAttribute="top" id="El3-XO-7ja"/>
+                            <constraint firstItem="FkF-pn-Lc4" firstAttribute="leading" secondItem="MSx-zK-MfE" secondAttribute="leading" id="UdV-yg-t6a"/>
+                            <constraint firstItem="n9J-Ja-jGn" firstAttribute="top" secondItem="4AJ-Ty-l2a" secondAttribute="top" id="Yz9-en-XwC"/>
+                            <constraint firstItem="FkF-pn-Lc4" firstAttribute="bottom" secondItem="MSx-zK-MfE" secondAttribute="bottom" id="Z1u-MP-Ksg"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="4AJ-Ty-l2a"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="uBK-RA-Z6d" appends="YES" id="r0v-hc-VFC"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="VE9-f0-794"/>
+                    <connections>
+                        <outlet property="manualAccountSetupContainerView" destination="n9J-Ja-jGn" id="28M-en-pFW"/>
+                        <segue destination="nT4-iY-7y4" kind="show" identifier="SMTPSettings" id="daN-D6-ADL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aMn-dp-caR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="uBK-RA-Z6d">
+                    <connections>
+                        <action selector="didTapOnView:" destination="7Js-Hk-oVa" id="jJl-8g-b1q"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="8804" y="-396"/>
+            <point key="canvasLocation" x="8759" y="-396"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Cks-fx-drb">
+            <objects>
+                <viewController id="nT4-iY-7y4" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2Us-kU-M1a">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="BDA-LJ-8if"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="JYV-IN-0YI"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="n1O-AW-vvQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="9513" y="-396"/>
         </scene>
     </scenes>
     <resources>

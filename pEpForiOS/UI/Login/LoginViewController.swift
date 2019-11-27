@@ -234,8 +234,8 @@ extension LoginViewController: SegueHandlerType {
         switch segueIdentifier(for: segue) {
         case .manualConfigSegue:
             guard let navVC = segue.destination as? UINavigationController,
-                let vc = navVC.topViewController as? UserInfoTableViewController else {
-                    Log.shared.errorAndCrash("fail to cast to UserInfoTableViewController")
+                let vc = navVC.topViewController as? UserInfoViewController else {
+                    Log.shared.errorAndCrash("fail to cast to UserInfoViewController")
                     return
             }
             vc.appConfig = appConfig
