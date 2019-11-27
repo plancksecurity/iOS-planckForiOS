@@ -221,6 +221,14 @@ extension ResetTrustViewController: ResetTrustViewModelDelegate {
         tableView.moveRow(at: atIndexPath, to: toIndexPath)
     }
 
+    func resetTrustViewModel(viewModel: ResetTrustViewModel, didInsertSectionAt position: Int) {
+        tableView.insertSections([position], with: .automatic)
+    }
+
+    func resetTrustViewModel(viewModel: ResetTrustViewModel, didDeleteSectionAt position: Int) {
+        tableView.deleteSections([position], with: .automatic)
+    }
+
     func updateView() {
         tableView.reloadData()
     }

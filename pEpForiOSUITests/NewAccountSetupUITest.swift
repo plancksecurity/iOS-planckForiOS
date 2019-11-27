@@ -76,7 +76,9 @@ class NewAccountSetupUITest: XCTestCase {
         let account1 = secretTestData().workingAccount1
         newAccountSetup(account: account1)
 
-        switchFromInboxToFoldersView()
+        skipTutorial()
+
+        waitForFolderButton()
         tapAddAccount()
 
         let account2 = secretTestData().workingAccount2
@@ -91,14 +93,16 @@ class NewAccountSetupUITest: XCTestCase {
         let account1 = secretTestData().workingAccount1
         newAccountSetup(account: account1)
 
-        switchFromInboxToFoldersView()
+        skipTutorial()
+
+        waitForFolderButton()
         tapAddAccount()
 
         let account2 = secretTestData().workingAccount2
         newAccountSetup(account: account2)
         waitForever()
 
-        switchFromInboxToFoldersView()
+        waitForFolderButton()
         tapAddAccount()
 
         let account3 = secretTestData().workingAccount3
@@ -355,12 +359,24 @@ class NewAccountSetupUITest: XCTestCase {
         return result
     }
 
+    func skipTutorial() {
+        let theApp = app()
+        let skipButton = theApp.navigationBars.buttons["Skip"]
+
+        guard waitForElementToAppear(skipButton, timeout: 15) == .completed else {
+            XCTFail("'Skip' button missing after setting up account")
+            return
+        }
+
+        skipButton.tap()
+    }
+
     /// Switches from the universal inbox to the folders view.
-    func switchFromInboxToFoldersView() {
+    func waitForFolderButton() {
         let theApp = app()
         let folderButton = theApp.navigationBars["All"].buttons["Folders"]
 
-        guard waitForElementToAppear(folderButton, timeout: 10) == .completed else {
+        guard waitForElementToAppear(folderButton, timeout: 15) == .completed else {
             XCTFail("'Folders' button missing after setting up account")
             return
         }
