@@ -413,9 +413,9 @@ extension LoginViewController {
         password.isEnabled = true
 
         loginButton.convertToLoginButton(
-            placeholder: NSLocalizedString("Sign In", comment: "Login"))
+            placeholder: NSLocalizedString("Log In", comment: "Log in button in Login View"))
         manualConfigButton.convertToLoginButton(
-            placeholder: NSLocalizedString("Manual configuration", comment: "manual"))
+            placeholder: NSLocalizedString("Manual setup", comment: "Manual Setup button in Login View"))
 
         // hide extended login fields
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
@@ -440,13 +440,13 @@ extension LoginViewController {
 
     private func configureAnimatedTextFields() {
         user.textColorWithText = .pEpGreen
-        user.placeholder = NSLocalizedString("Name", comment: "username")
+        user.placeholder = NSLocalizedString("Display Name", comment: "Display Name TextField Placeholder in Login Screen")
 
         password.textColorWithText = .pEpGreen
-        password.placeholder = NSLocalizedString("Password", comment: "password")
+        password.placeholder = NSLocalizedString("Password", comment: "Password TextField Placeholder in Login Screen")
 
         emailAddress.textColorWithText = .pEpGreen
-        emailAddress.placeholder = NSLocalizedString("Email", comment: "Email")
+        emailAddress.placeholder = NSLocalizedString("E-mail Address", comment: "Email TextField Placeholder in Login Screen")
     }
 
     @objc private func hideSpecificDeviceButton() {
