@@ -655,7 +655,7 @@
                                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="fNf-Lj-YY4"/>
                                                 </constraints>
                                             </stackView>
-                                            <view contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="800" verticalCompressionResistancePriority="800" translatesAutoresizingMaskIntoConstraints="NO" id="gsz-7C-yke" userLabel="Buttons View">
+                                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="700" verticalCompressionResistancePriority="700" translatesAutoresizingMaskIntoConstraints="NO" id="gsz-7C-yke" userLabel="Buttons View">
                                                 <rect key="frame" x="234" y="674" width="300" height="125"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i7a-Xk-Hbw">
@@ -705,7 +705,6 @@
                                                     </button>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="125" id="1qp-5Y-gQY"/>
                                                     <constraint firstAttribute="bottom" secondItem="JT1-ND-6bH" secondAttribute="bottom" id="4m8-Sq-LOv"/>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="140" id="5uB-dW-SXj"/>
                                                     <constraint firstItem="zg6-3H-SnV" firstAttribute="centerX" secondItem="gsz-7C-yke" secondAttribute="centerX" id="88a-wW-ARz"/>
@@ -728,7 +727,6 @@
                                                 </constraints>
                                                 <variation key="default">
                                                     <mask key="constraints">
-                                                        <exclude reference="1qp-5Y-gQY"/>
                                                         <exclude reference="5uB-dW-SXj"/>
                                                         <exclude reference="ffm-RC-hsU"/>
                                                         <exclude reference="iC4-Yn-8cv"/>
@@ -765,7 +763,6 @@
                                                 </variation>
                                                 <variation key="heightClass=regular">
                                                     <mask key="constraints">
-                                                        <include reference="1qp-5Y-gQY"/>
                                                         <include reference="ffm-RC-hsU"/>
                                                         <include reference="88a-wW-ARz"/>
                                                         <include reference="gMU-64-O8f"/>
