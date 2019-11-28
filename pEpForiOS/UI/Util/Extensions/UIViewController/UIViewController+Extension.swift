@@ -64,9 +64,10 @@ extension UIViewController {
                 return nil
             }
 
-            // iPhone 8: .onlyMaster; iPad: .masterAndDetail
             let mode = splitViewController?.currentDisplayMode ?? .masterAndDetail
 
+            // Only show the top logo instead of the privacy status if there is not
+            // yet a logo shown.
             switch mode {
             case .onlyMaster:
                 let imgView = UIImageView(image: img)
