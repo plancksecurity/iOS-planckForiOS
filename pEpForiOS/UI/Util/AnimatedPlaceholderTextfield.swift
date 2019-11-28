@@ -49,6 +49,16 @@ class AnimatedPlaceholderTextfield: UITextField {
         }
     }
 
+    override var text: String? {
+        didSet {
+            updateTextFieldTextColor()
+            updateTextFieldBackgroundColor()
+            if text?.isEmpty == false {
+                moveUpPlaceHolderLabel()
+            }
+        }
+    }
+
     @IBInspectable
     var backgroundColorWithText: UIColor? = nil {
         didSet {

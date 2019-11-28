@@ -58,24 +58,6 @@ final class IMAPSettingsViewController: BaseViewController, TextfieldResponder {
         firstResponder(model?.serverIMAP == nil)
     }
 
-    private func updateView() {
-        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
-            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
-            return
-        }
-        let vm = viewModelOrCrash()
-
-        setupView.firstTextField.text = vm.userName
-        setupView.secondTextField.text = vm.serverIMAP
-        setupView.thirdTextField.text = String(vm.portIMAP)
-        setupView.fourthTextField.text = vm.transportIMAP.localizedString()
-
-        setupView.pEpSyncSwitch.isOn = vm.keySyncEnable
-
-        setupView.nextButton.isEnabled = vm.isValidUser
-        setupView.nextRightButton.isEnabled = vm.isValidUser
-    }
-
     @IBAction func didTapOnView(_ sender: Any) {
         view.endEditing(true)
     }
@@ -279,5 +261,23 @@ extension IMAPSettingsViewController {
             style: .cancel) { (action) in}
         alertController.addAction(cancelAction)
         present(alertController, animated: true) {}
+    }
+
+    private func updateView() {
+        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
+            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+            return
+        }
+        let vm = viewModelOrCrash()
+
+        setupView.firstTextField.text = vm.userName
+        setupView.secondTextField.text = vm.serverIMAP
+        setupView.thirdTextField.text = String(vm.portIMAP)
+        setupView.fourthTextField.text = vm.transportIMAP.localizedString()
+
+        setupView.pEpSyncSwitch.isOn = vm.keySyncEnable
+
+        setupView.nextButton.isEnabled = vm.isValidUser
+        setupView.nextRightButton.isEnabled = vm.isValidUser
     }
 }
