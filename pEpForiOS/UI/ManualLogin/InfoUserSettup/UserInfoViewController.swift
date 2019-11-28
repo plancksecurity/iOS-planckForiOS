@@ -31,6 +31,7 @@ class UserInfoViewController: BaseViewController, TextfieldResponder {
 
         fields = manualSetupViewTextFeilds()
         setUpViewLocalizableTexts()
+        setUpTextFieldsInputTraits()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -184,6 +185,18 @@ extension UserInfoViewController {
                 setupView.secondTextField,
                 setupView.thirdTextField,
                 setupView.fourthTextField]
+    }
+
+    private func setUpTextFieldsInputTraits() {
+        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
+            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+            return
+        }
+
+        setupView.secondTextField.textContentType = .emailAddress
+        setupView.secondTextField.keyboardType = .emailAddress
+
+        setupView.thirdTextField.isSecureTextEntry = true
     }
 
     private func setUpViewLocalizableTexts() {

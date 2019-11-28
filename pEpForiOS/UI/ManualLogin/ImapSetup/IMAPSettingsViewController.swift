@@ -32,7 +32,6 @@ final class IMAPSettingsViewController: BaseViewController, TextfieldResponder, 
     /// - Note: This VC doesn't have a view model yet, so this is used for the model.
     var model: VerifiableAccountProtocol?
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -76,33 +75,6 @@ final class IMAPSettingsViewController: BaseViewController, TextfieldResponder, 
         setupView.nextRightButton.isEnabled = vm.isValidUser
     }
 
-    @IBAction func alertWithSecurityValues(_ sender: UIButton) {
-        let alertController = UIAlertController.pEpAlertController(
-            title: NSLocalizedString("Transport protocol",
-                                     comment: "UI alert title for transport protocol"),
-            message: NSLocalizedString("Choose a Security protocol for your accont",
-                                       comment: "UI alert message for transport protocol"),
-            preferredStyle: .actionSheet)
-        let block: (ConnectionTransport) -> () = { transport in
-            self.model?.transportIMAP = transport
-            self.updateView()
-        }
-
-        if let popoverPresentationController = alertController.popoverPresentationController {
-            popoverPresentationController.sourceView = sender
-        }
-
-        alertController.setupActionFromConnectionTransport(.plain, block: block)
-        alertController.setupActionFromConnectionTransport(.TLS, block: block)
-        alertController.setupActionFromConnectionTransport(.startTLS, block: block)
-
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("Cancel", comment: "Cancel for an alert view"),
-            style: .cancel) { (action) in}
-        alertController.addAction(cancelAction)
-        present(alertController, animated: true) {}
-    }
-
     @IBAction func didTapOnView(_ sender: Any) {
         view.endEditing(true)
     }
@@ -119,6 +91,18 @@ extension IMAPSettingsViewController: UITextViewDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         changedResponder(textField)
+    }
+
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
+            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+            return true
+        }
+        if textField == setupView.fourthTextField {
+            alertWithSecurityValues(textField)
+            return false
+        }
+        return true
     }
 }
 
@@ -151,15 +135,18 @@ extension IMAPSettingsViewController: SegueHandlerType {
 
 extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
     func didPressCancelButton() {
-        <#code#>
+        navigationController?.popViewController(animated: true)
     }
 
     func didPressNextButton() {
-        <#code#>
+        //TODO:!!! Ale
     }
 
     func didChangeFirst(_ textField: UITextField) {
-        <#code#>
+        var vm = viewModelOrCrash()
+        vm.userName = textField.text
+        model = vm
+        updateView()
     }
 
     func didChangeSecond(_ textField: UITextField) {
@@ -178,11 +165,25 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
     }
 
     func didChangeFourth(_ textField: UITextField) {
-        <#code#>
+        //TODO: Ale
     }
-
-
 }
+
+// MARK: - Helpers
+
+extension IMAPSettingsViewController {
+    func viewModelOrCrash() -> VerifiableAccountProtocol {
+        if let vm = model {
+            return vm
+        } else {
+            Log.shared.errorAndCrash("No view model")
+            let vm = BaseVerifiableAccount()
+            model = vm
+            return vm
+        }
+    }
+}
+
 
 // MARK: - Private
 
@@ -224,19 +225,31 @@ extension IMAPSettingsViewController {
         let TransportSecurityPlaceholder = NSLocalizedString("TransportSecurity", comment: "TransportSecurity placeholder for manual account IMAP setup")
         setupView.fourthTextField.placeholder = TransportSecurityPlaceholder
     }
-}
 
-// MARK: - Helpers
-
-extension IMAPSettingsViewController {
-    func viewModelOrCrash() -> VerifiableAccountProtocol {
-        if let vm = model {
-            return vm
-        } else {
-            Log.shared.errorAndCrash("No view model")
-            let vm = BaseVerifiableAccount()
-            model = vm
-            return vm
+    private func alertWithSecurityValues(_ sender: UIView) {
+        let alertController = UIAlertController.pEpAlertController(
+            title: NSLocalizedString("Transport protocol",
+                                     comment: "UI alert title for transport protocol"),
+            message: NSLocalizedString("Choose a Security protocol for your accont",
+                                       comment: "UI alert message for transport protocol"),
+            preferredStyle: .actionSheet)
+        let block: (ConnectionTransport) -> () = { transport in
+            self.model?.transportIMAP = transport
+            self.updateView()
         }
+
+        if let popoverPresentationController = alertController.popoverPresentationController {
+            popoverPresentationController.sourceView = sender
+        }
+
+        alertController.setupActionFromConnectionTransport(.plain, block: block)
+        alertController.setupActionFromConnectionTransport(.TLS, block: block)
+        alertController.setupActionFromConnectionTransport(.startTLS, block: block)
+
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("Cancel", comment: "Cancel for an alert view"),
+            style: .cancel) { (action) in}
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true) {}
     }
 }
