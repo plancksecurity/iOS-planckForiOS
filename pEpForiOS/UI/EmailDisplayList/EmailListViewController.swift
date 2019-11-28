@@ -126,14 +126,24 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         title = model?.folderName
         navigationController?.title = title
 
-        let item = UIBarButtonItem.getPEPButton(
-            action: #selector(showSettingsViewController),
-            target: self)
-        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-            target: nil,
-            action: nil)
-        toolbarItems?.append(contentsOf: [flexibleSpace,item])
+        if var theToolBarItems = toolbarItems {
+            let pEpLogog = UIBarButtonItem.getPEPButton(
+                action: #selector(showSettingsViewController),
+                target: self)
+            let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+                target: nil,
+                action: nil)
+
+            if theToolBarItems.isEmpty {
+                theToolBarItems.append(contentsOf: [flexibleSpace,pEpLogog])
+            } else if theToolBarItems.count >= 2 {
+                theToolBarItems.insert(pEpLogog, at: 2)
+                theToolBarItems.insert(flexibleSpace, at: 3)
+            }
+
+            toolbarItems = theToolBarItems
+        }
     }
 
     private func setUpTextFilter() {
