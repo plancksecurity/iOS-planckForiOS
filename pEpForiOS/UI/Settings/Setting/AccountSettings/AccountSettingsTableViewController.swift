@@ -107,8 +107,7 @@ extension AccountSettingsTableViewController {
             editableAccountSettingsViewController.appConfig = appConfig
             if let account = viewModel?.account {
                 editableAccountSettingsViewController.viewModel =
-                    EditableAccountSettingsViewModel(account: account,
-                                                messageModelService: appConfig.messageModelService)
+                    EditableAccountSettingsViewModel(account: account)
             }
         default:
             break

@@ -39,7 +39,6 @@ final class EditableAccountSettingsViewModel {
     /// Holding both the data of the current account in verification,
     /// and also the implementation of the verification.
     var verifiableAccount: VerifiableAccountProtocol?
-    var messageModelService: MessageModelServiceProtocol
     var passwordChanged = false
 
     weak var delegate: EditableAccountSettingsViewModelDelegate?
@@ -53,8 +52,7 @@ final class EditableAccountSettingsViewModel {
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
 
-    init(account: Account, messageModelService: MessageModelServiceProtocol) {
-        self.messageModelService = messageModelService
+    init(account: Account) {
         self.account = account
 
         if isOAuth2 {
@@ -139,8 +137,7 @@ extension EditableAccountSettingsViewModel {
                         password: String? = nil,
                         imap: ServerViewModel,
                         smtp: ServerViewModel) {
-        var theVerifier = verifiableAccount ??
-            VerifiableAccount(messageModelService: messageModelService)
+        var theVerifier = verifiableAccount ?? VerifiableAccount()
         theVerifier.verifiableAccountDelegate = self
         verifiableAccount = theVerifier
 

@@ -23,12 +23,10 @@ final class EditableAccountSettingsViewModelTest: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
 
-        let messageModelSeervice = MessageModelServiceMock()
-        viewModel = EditableAccountSettingsViewModel(account: account,
-                                                     messageModelService: messageModelSeervice)
+        viewModel = EditableAccountSettingsViewModel(account: account)
         talbeViewModel = EditableAccountSettingsTableViewModel(account: account)
         viewModel?.tableViewModel = talbeViewModel
-        let verifiableAccountMock =  VerifiableAccountMock(messageModelService: messageModelSeervice)
+        let verifiableAccountMock =  VerifiableAccountMock()
         verifiableAccountMock.delegate = self
         viewModel?.verifiableAccount = verifiableAccountMock
         viewModel?.delegate = self
@@ -36,8 +34,6 @@ final class EditableAccountSettingsViewModelTest: CoreDataDrivenTestBase {
     }
 
     override func tearDown() {
-        super.tearDown()
-
         actual = nil
         expected = nil
         viewModel = nil
@@ -45,6 +41,7 @@ final class EditableAccountSettingsViewModelTest: CoreDataDrivenTestBase {
         talbeViewModel = nil
         viewModel?.delegate = nil
         viewModel?.verifiableAccount = nil
+        super.tearDown()
     }
 
     func testHandleSaveButtonSucceed() {
@@ -179,18 +176,6 @@ extension EditableAccountSettingsViewModelTest {
                 saveVerifiableAccountExpectation = testCase.expectation(description: "saveVerifiableAccount")
             }
         }
-    }
-
-    final class MessageModelServiceMock: MessageModelServiceProtocol {
-        func start_old() throws {}
-        func processAllUserActionsAndStop_old() {}
-        func cancel_old() {}
-        func checkForNewMails_old(completionHandler: @escaping (Int?) -> ()) {}
-        func enableKeySync() {}
-        func disableKeySync() {}
-        func start() {}
-        func stop() {}
-        func finish() {}
     }
 
     final class VerifiableAccountMock: VerifiableAccount {

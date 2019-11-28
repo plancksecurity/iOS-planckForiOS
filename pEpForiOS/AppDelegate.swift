@@ -64,16 +64,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setupServices() {
         let keySyncHandshakeService = KeySyncHandshakeService()
-        let theMessageModelService = MessageModelService(errorPropagator: errorPropagator,
-                                                         cnContactsAccessPermissionProvider: AppSettings.shared,
-                                                         keySyncServiceDelegate: keySyncHandshakeService,
-                                                         keySyncEnabled: AppSettings.shared.keySyncEnabled)
+        let theMessageModelService =
+            MessageModelService(errorPropagator: errorPropagator,
+                                cnContactsAccessPermissionProvider: AppSettings.shared,
+                                keySyncServiceHandshakeDelegate: keySyncHandshakeService,
+                                keySyncStateProvider: AppSettings.shared)
         messageModelService = theMessageModelService
 
         appConfig = AppConfig(errorPropagator: errorPropagator,
                               oauth2AuthorizationFactory: oauth2Provider,
-                              keySyncHandshakeService: keySyncHandshakeService,
-                              messageModelService: theMessageModelService)
+                              keySyncHandshakeService: keySyncHandshakeService)
 
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = appConfig
@@ -121,13 +121,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ///         * an alert is shown (e.g. OS asks for CNContact access permissions)
     ///         * the user swipes up/down the "ControllCenter"
     func applicationWillResignActive(_ application: UIApplication) {
-        // I would love to stop() services here but decided to do nothing.
-        // Background: This is called:
-        //                      * when an alert is shown
-        //                      * user swipes to "Control Center"
-        //                      * before `applicationDidEnterBackground()` is called
-        // I can not think of a way to handle all those cases in one method.
-        // If we come into trouble doing nothing here, let's discuss
+        UIApplication.hideStatusBarNetworkActivitySpinner()
+        messageModelService?.finish()
     }
 
     /// Use this method to release shared resources, save user data, invalidate timers, and store
@@ -158,8 +153,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Do nothing if unit tests are running
             return
         }
-
-        shouldDestroySession = false //BUFF: rewrite pepsession cleanup
+        shouldDestroySession = false
         UserNotificationTool.resetApplicationIconBadgeNumber()
         messageModelService?.start()
     }

@@ -1,5 +1,5 @@
 //
-//  KeySyncDeviceGroupUtilMoc.swift
+//  KeySyncUtilMoc.swift
 //  pEpForiOSTests
 //
 //  Created by Alejandro Gelos on 18/06/2019.
@@ -10,9 +10,19 @@ import Foundation
 import MessageModel
 @testable import pEpForiOS
 
-class KeySyncDeviceGroupUtilMoc: KeySyncDeviceGroupUtilProtocol {
+class KeySyncUtilMoc: KeySyncUtilProtocol {
     static var didCallLeaveDeviceGroup = false
     static var deviceGroupValueForTest: DeviceGroupState = .grouped
+
+    // MARK: - KeySyncUtilProtocol
+
+    static func enableKeySync() {
+        fatalError("unimplemented stub")
+    }
+
+    static func disableKeySync() {
+        fatalError("unimplemented stub")
+    }
 
     static var deviceGroupState: DeviceGroupState {
         return deviceGroupValueForTest
@@ -22,7 +32,11 @@ class KeySyncDeviceGroupUtilMoc: KeySyncDeviceGroupUtilProtocol {
         didCallLeaveDeviceGroup = true
     }
 
-    static func isInDeviceGroup() -> Bool {
+    static var isKeySyncEnabled: Bool {
+        fatalError("unimplemented stub")
+    }
+
+    static var isInDeviceGroup: Bool {
         fatalError("unimplemented stub")
     }
 

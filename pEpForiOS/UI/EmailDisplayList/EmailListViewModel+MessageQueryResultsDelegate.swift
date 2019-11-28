@@ -10,25 +10,33 @@ import Foundation
 import MessageModel
 
 extension EmailListViewModel : QueryResultsDelegate {
+
+    func didInserSection(position: Int) {
+        //there are no sections in the EmailList
+    }
+
+    func didDeleteSection(position: Int) {
+        //there are no sections in the EmailList
+    }
     
-    func didInsert(indexPath: IndexPath) {
+    func didInsertCell(indexPath: IndexPath) {
         if updatesEnabled {
             emailListViewModelDelegate?.emailListViewModel(viewModel: self, didInsertDataAt: [indexPath])
         }
     }
 
-    func didUpdate(indexPath: IndexPath) {
+    func didUpdateCell(indexPath: IndexPath) {
         if updatesEnabled {
             emailListViewModelDelegate?.emailListViewModel(viewModel: self, didUpdateDataAt: [indexPath])
         }
         emailListViewModelDelegate?.checkIfSplitNeedsUpdate(indexpath: [indexPath])
     }
 
-    func didDelete(indexPath: IndexPath) {
+    func didDeleteCell(indexPath: IndexPath) {
             emailListViewModelDelegate?.emailListViewModel(viewModel: self, didRemoveDataAt: [indexPath])
     }
 
-    func didMove(from: IndexPath, to: IndexPath) {
+    func didMoveCell(from: IndexPath, to: IndexPath) {
         if updatesEnabled {
             emailListViewModelDelegate?.emailListViewModel(viewModel: self, didMoveData: from, toIndexPath: to)
         }

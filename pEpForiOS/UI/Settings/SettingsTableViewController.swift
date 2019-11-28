@@ -11,7 +11,7 @@ import pEpIOSToolbox
 
 class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     static let storyboardId = "SettingsTableViewController"
-    lazy var viewModel = SettingsViewModel(appConfig.messageModelService)
+    lazy var viewModel = SettingsViewModel()
     var settingSwitchViewModel: SwitchSettingCellViewModelProtocol?
 
     private weak var activityIndicatorView: UIActivityIndicatorView?
@@ -37,11 +37,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         navigationController?.setToolbarHidden(true, animated: false)
         viewModel.delegate = self
 
-        if MiscUtil.isUnitTest() { //!!!: must go away. Check if it is needless already and rm.
-            super.viewWillAppear(animated)
-            return
-        }
-        updateModel()
+        tableView.reloadData()
 
         showEmptyDetailViewIfApplicable(
             message: NSLocalizedString(
@@ -158,22 +154,20 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             case .extraKeys:
                 performSegue(withIdentifier: .segueExtraKeys, sender: self)
             }
-        case let vm as SettingsActionCellViewModelProtocol:
+        case let vm as SettingsActionCellViewModel:
             switch vm.type {
-            case .leaveKeySyncGroup:
-                showAlertBeforeLeavingDeviceGroup(indexPath)
+            case .keySyncSetting:
+                if vm.keySyncSettingCellState == .leaveDeviceGroup {
+                    showAlertBeforeLeavingDeviceGroup(cellViewModel: vm, indexPath: indexPath)
+                } else {
+                    handleKeySyncSettingCellPressed(cellViewModel: vm)
+                    tableView.reloadData()
+                }
             case .resetAllIdentities:
                 handleResetAllIdentity()
                 tableView.deselectRow(at: indexPath, animated: true)
             case .resetTrust:
-                guard let splitViewController = self.splitViewController else {
-                    return
-                }
-                if onlySplitViewMasterIsShown {
-                    performSegue(withIdentifier: .ResetTrust, sender: self)
-                } else {
-                    performSegue(withIdentifier: .ResetTrustSplitView , sender: self)
-                }
+                performSegue(withIdentifier: .ResetTrust, sender: self)
                 break
             }
         default:
@@ -248,6 +242,7 @@ extension SettingsTableViewController: SegueHandlerType {
 }
 
 // MARK: - Private
+
 extension SettingsTableViewController {
     private func handleResetAllIdentity() {
         let title = NSLocalizedString("Reset All Identities", comment: "Settings confirm to reset all identity title alert")
@@ -287,12 +282,6 @@ extension SettingsTableViewController {
         }
     }
 
-
-    private func updateModel() { //!!!: looks wrong. Is named updateModel but does not.
-        //reload data in view model
-        tableView.reloadData()
-    }
-
     private func updateUI() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = state.isSynching
     }
@@ -310,7 +299,12 @@ extension SettingsTableViewController {
         }
     }
 
-    private func showAlertBeforeLeavingDeviceGroup(_ indexPath: IndexPath) {
+    private func handleKeySyncSettingCellPressed(cellViewModel: SettingsActionCellViewModel) {
+        cellViewModel.handleKeySyncSettingCellPressed()
+    }   
+
+    private func showAlertBeforeLeavingDeviceGroup(cellViewModel: SettingsActionCellViewModel,
+                                                   indexPath: IndexPath) {
         let title = NSLocalizedString("Are you sure you want to leave your device group?",
                                       comment: "Leave device group confirmation")
         let comment = NSLocalizedString("leaving device group", comment: "Leave device group confirmation comment")
@@ -320,10 +314,8 @@ extension SettingsTableViewController {
                 Log.shared.lostMySelf()
                 return
             }
-            if let error = me.viewModel.leaveDeviceGroupPressed() {
-                Log.shared.errorAndCrash("%@", error.localizedDescription)
-            }
-            me.updateModel()
+            me.handleKeySyncSettingCellPressed(cellViewModel: cellViewModel)
+            me.tableView.reloadData()
         }
         showAlert(title, comment, buttonTitle, leavingAction, indexPath)
     }
@@ -352,7 +344,7 @@ extension SettingsTableViewController {
                            _ confirmButtonTitle: String,
                            _ confirmButtonAction: @escaping ((UIAlertAction)->()),
                            _ indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)?.isSelected = false
+        tableView.cellForRow(at: indexPath)?.isSelected = false //!!!: bad. side effect in showAlert.
         let alertController = UIAlertController.pEpAlertController(
             title: nil,
             message: NSLocalizedString(message, comment: comment), preferredStyle: .actionSheet)
