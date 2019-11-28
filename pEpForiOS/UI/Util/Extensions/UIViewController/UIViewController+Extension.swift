@@ -66,18 +66,7 @@ extension UIViewController {
             // yet a logo shown.
             switch mode {
             case .onlyMaster:
-                guard let img = UIImage(named: "icon-settings") else {
-                    return nil
-                }
-
-                let imgView = UIImageView(image: img)
-                imgView.translatesAutoresizingMaskIntoConstraints = false
-                let ratio = imgView.aspectRatio()
-                imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor,
-                                               multiplier: ratio,
-                                               constant: 0.0).isActive = true
-                imgView.heightAnchor.constraint(equalToConstant: 22).isActive = true
-                return imgView
+                return settingsIconInImageView()
             case .onlyDetail, .masterAndDetail:
                 break
             }
@@ -88,19 +77,7 @@ extension UIViewController {
 
     func showNavigationBarPEPLogo(pEpRating: PEPRating?) -> UIView? {
         if let rating = pEpRating, rating.isNoColor {
-            if let img = UIImage(named: "icon-settings") {
-                let minimumHittestDimension: CGFloat = 44
-                let ImageWidht = self.navigationController!.navigationBar.bounds.height - 10
-                let img2 = img.resized(newWidth: ImageWidht)
-                let badgeView = UIImageView(image: img2)
-                badgeView.contentMode = .center // DON'T stretch the image, leave it at original size
-
-                // try to make the hit area of the icon a minimum of 44x44
-                let desiredHittestDimension: CGFloat = min(
-                    minimumHittestDimension,
-                    navigationController?.navigationBar.frame.size.height ?? minimumHittestDimension)
-                badgeView.bounds.size = CGSize(width: desiredHittestDimension, height: desiredHittestDimension)
-
+            if let badgeView = settingsIconInImageView() {
                 navigationItem.titleView = badgeView
                 badgeView.isUserInteractionEnabled = true
                 return badgeView
@@ -108,6 +85,21 @@ extension UIViewController {
             return nil
         }
         return nil
+    }
+
+    private func settingsIconInImageView() -> UIView? {
+        guard let img = UIImage(named: "icon-settings") else {
+            return nil
+        }
+
+        let imgView = UIImageView(image: img)
+        imgView.translatesAutoresizingMaskIntoConstraints = false
+        let ratio = imgView.aspectRatio()
+        imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor,
+                                       multiplier: ratio,
+                                       constant: 0.0).isActive = true
+        imgView.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        return imgView
     }
 
     @discardableResult
