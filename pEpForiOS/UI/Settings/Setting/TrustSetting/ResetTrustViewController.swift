@@ -174,7 +174,7 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
         }
         alertView.addAction(cancelAction)
 
-        if let splitViewController = splitViewController, !splitViewController.isCollapsed {
+        if onlySplitViewMasterIsShown {
             let cell = tableView.cellForRow(at: indexPath)
             alertView.popoverPresentationController?.sourceView = cell?.contentView
             if let label = cell?.textLabel {
