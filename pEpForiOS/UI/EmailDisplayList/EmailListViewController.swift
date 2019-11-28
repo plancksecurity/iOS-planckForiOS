@@ -692,11 +692,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
-    // MARK: - Observing the detail view
+    // MARK: - Observing the split view controller
 
-    let detailViewObserverKeyPath = #keyPath(UISplitViewController.viewControllers)
+    let splitViewObserverKeyPath = #keyPath(UISplitViewController.viewControllers)
 
-    /// Start observing the detail view.
+    /// Start observing the view controllers in the split view.
     private func watchDetailView() {
         if let spvc = splitViewController {
             func handler(_ spvc: EmailListViewController,
@@ -704,24 +704,25 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
             }
             spvc.addObserver(self,
-                             forKeyPath: detailViewObserverKeyPath,
+                             forKeyPath: splitViewObserverKeyPath,
                              options: [],
                              context: nil)
         }
     }
 
-    /// Stop listening for detail view changes.
+    /// Stop listening for changes in the view controllers in the split view.
     private func unwatchDetailView() {
         if let spvc = splitViewController {
-            spvc.removeObserver(self, forKeyPath: detailViewObserverKeyPath)
+            spvc.removeObserver(self, forKeyPath: splitViewObserverKeyPath)
         }
     }
 
+    /// React to changes to the view controllers of our split view controller.
     override func observeValue(forKeyPath keyPath: String?,
                                of object: Any?,
                                change: [NSKeyValueChangeKey : Any]?,
                                context: UnsafeMutableRawPointer?) {
-        if keyPath != detailViewObserverKeyPath {
+        if keyPath != splitViewObserverKeyPath {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
