@@ -692,6 +692,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
+    // MARK: - Manipulating the (master) bottom toolbar
+
+    /// Shows the pEp logo (leading to the settings) in the master view bottom toolbar,
+    /// or not, depending on `show`.
+    func showLogoInMasterToolbar(show: Bool) {
+    }
+
     // MARK: - Observing the split view controller
 
     /// The key path for observing the view controllers of the split view controller,
@@ -732,8 +739,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if let spvc = splitViewController {
             if spvc.viewControllers.count == 1 {
                 // only master is shown
+                showLogoInMasterToolbar(show: true)
             } else if spvc.viewControllers.count == 2 {
                 // detail is shown
+                showLogoInMasterToolbar(show: false)
             }
         }
     }
