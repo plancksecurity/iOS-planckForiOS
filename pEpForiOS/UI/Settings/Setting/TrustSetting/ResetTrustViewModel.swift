@@ -79,7 +79,8 @@ class ResetTrustViewModel {
 
     init() {
         identityQueryResult = IdentityQueryResults()
-        identityQueryResult.delegate = self
+        identityQueryResult.rowDelegate = self
+        identityQueryResult.sectionDelegate = self
         do {
             try identityQueryResult.startMonitoring()
         } catch  {
@@ -144,7 +145,9 @@ class ResetTrustViewModel {
     // Every time filter or search changes, we have to rest QueryResults
     private func resetQueryResultsAndReload(search: IdentityQueryResultsSearch? = nil) {
         defer { delegate?.reloadData(viewModel: self) }
-        identityQueryResult = IdentityQueryResults(search: search, delegate: self)
+        identityQueryResult = IdentityQueryResults(search: search,
+                                                   rowDelegate: self,
+                                                   sectionDelegate: self)
         do {
             try identityQueryResult.startMonitoring()
         } catch {
@@ -169,28 +172,21 @@ class ResetTrustViewModel {
     }
 }
 
-extension ResetTrustViewModel: QueryResultsDelegate {
-    func didInserSection(position: Int) {
-        delegate?.resetTrustViewModel(viewModel: self, didInsertSectionAt: position)
-    }
+extension ResetTrustViewModel: QueryResultsIndexPathRowDelegate {
 
-    func didDeleteSection(position: Int) {
-        delegate?.resetTrustViewModel(viewModel: self, didDeleteSectionAt: position)
-    }
-
-    func didInsertCell(indexPath: IndexPath) {
+    func didInsertRow(indexPath: IndexPath) {
         delegate?.resetTrustViewModel(viewModel: self, didInsertDataAt: [indexPath])
     }
 
-    func didUpdateCell(indexPath: IndexPath) {
+    func didUpdateRow(indexPath: IndexPath) {
         delegate?.resetTrustViewModel(viewModel: self, didUpdateDataAt: [indexPath])
     }
 
-    func didDeleteCell(indexPath: IndexPath) {
+    func didDeleteRow(indexPath: IndexPath) {
         delegate?.resetTrustViewModel(viewModel: self, didRemoveDataAt: [indexPath])
     }
 
-    func didMoveCell(from: IndexPath, to: IndexPath) {
+    func didMoveRow(from: IndexPath, to: IndexPath) {
         delegate?.resetTrustViewModel(viewModel: self, didMoveData: from, toIndexPath: to)
     }
 
@@ -200,5 +196,15 @@ extension ResetTrustViewModel: QueryResultsDelegate {
 
     func didChangeResults() {
         delegate?.allUpdatesReceived(viewModel: self)
+    }
+}
+
+extension ResetTrustViewModel: QueryResultsIndexPathSectionDelegate {
+    func didInsertSection(position: Int) {
+        delegate?.resetTrustViewModel(viewModel: self, didInsertSectionAt: position)
+    }
+
+    func didDeleteSection(position: Int) {
+        delegate?.resetTrustViewModel(viewModel: self, didDeleteSectionAt: position)
     }
 }
