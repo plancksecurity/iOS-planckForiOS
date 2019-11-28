@@ -200,7 +200,7 @@ extension ResetTrustViewModel: QueryResultsIndexPathRowDelegate {
 }
 
 extension ResetTrustViewModel: QueryResultsIndexPathSectionDelegate {
-    func didInserSection(position: Int) {
+    func didInsertSection(position: Int) {
         delegate?.resetTrustViewModel(viewModel: self, didInsertSectionAt: position)
     }
 
