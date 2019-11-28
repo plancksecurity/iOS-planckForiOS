@@ -705,24 +705,26 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     /// compatible with Objective-C.
     let splitViewObserverKeyPath = #keyPath(UISplitViewController.viewControllers)
 
+    /// With KVO we have to keep our books lest not to remove an observer without
+    /// observing first.
+    var observingSplitViewControllers = false
+
     /// Start observing the view controllers in the split view.
     private func watchDetailView() {
         if let spvc = splitViewController {
-            func handler(_ spvc: EmailListViewController,
-                        value: NSKeyValueObservedChange<[UIViewController]?>) -> Void {
-
-            }
             spvc.addObserver(self,
                              forKeyPath: splitViewObserverKeyPath,
                              options: [],
                              context: nil)
+            observingSplitViewControllers = true
         }
     }
 
     /// Stop listening for changes in the view controllers in the split view.
     private func unwatchDetailView() {
-        if let spvc = splitViewController {
+        if observingSplitViewControllers, let spvc = splitViewController {
             spvc.removeObserver(self, forKeyPath: splitViewObserverKeyPath)
+            observingSplitViewControllers = false
         }
     }
 
