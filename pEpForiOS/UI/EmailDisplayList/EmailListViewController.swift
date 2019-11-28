@@ -124,6 +124,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         tableView.refreshControl = refreshController
 
         title = model?.folderName
+        navigationController?.title = title
+
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
             target: self)
@@ -132,7 +134,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             target: nil,
             action: nil)
         toolbarItems?.append(contentsOf: [flexibleSpace,item])
-        navigationController?.title = title
     }
 
     private func setUpTextFilter() {
