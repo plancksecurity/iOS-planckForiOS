@@ -119,7 +119,7 @@ extension IMAPSettingsViewController: UITextFieldDelegate {
                 return true
             }
             let textFieldText = text.replacingCharacters(in: range, with: string)
-            return UInt16(textFieldText) != nil
+            return UInt16(textFieldText) != nil || textFieldText.isEmpty
         }
         return true
     }
@@ -176,7 +176,7 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
     func didChangeThierd(_ textField: UITextField) {
         guard let text = textField.text,
             let port = UInt16(text) else {
-                Log.shared.errorAndCrash("Fail to get IMAP Port in Manual Setup")
+                //If not UInt16 then do nothing. Example empty string
                 return
         }
         var vm = viewModelOrCrash()
