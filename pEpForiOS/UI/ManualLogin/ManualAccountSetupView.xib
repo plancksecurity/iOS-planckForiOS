@@ -400,7 +400,8 @@
                 <outlet property="fourthTextField" destination="0te-KR-oYr" id="4yN-J1-SZN"/>
                 <outlet property="nextButton" destination="F0b-8v-1lY" id="lKE-Bb-E0l"/>
                 <outlet property="nextRightButton" destination="OIj-9x-l85" id="SD7-9b-lN9"/>
-                <outlet property="pEpSyncSwitch" destination="AMS-vh-eXJ" id="EDU-bO-sxs"/>
+                <outlet property="pEpSyncSwitch" destination="AMS-vh-eXJ" id="lEV-d7-yJy"/>
+                <outlet property="pEpSyncView" destination="l4d-tu-sgw" id="w4t-zO-ZKZ"/>
                 <outlet property="scrollView" destination="fYu-PK-Lyk" id="vWQ-of-NIG"/>
                 <outlet property="scrollViewBottomConstraint" destination="sd8-C9-Ifn" id="KqF-G8-QiM"/>
                 <outlet property="secondTextField" destination="9dO-D4-gja" id="w3s-9l-wIZ"/>

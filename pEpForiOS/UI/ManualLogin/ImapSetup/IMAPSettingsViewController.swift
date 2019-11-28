@@ -42,6 +42,8 @@ final class IMAPSettingsViewController: BaseViewController, TextfieldResponder {
         setupView.delegate = self
         setupView.textFieldsDelegate = self
 
+        setupView.pEpSyncView.isHidden = true
+
         fields = manualSetupViewTextFeilds()
         setUpViewLocalizableTexts()
         setUpTextFieldsInputTraits()
