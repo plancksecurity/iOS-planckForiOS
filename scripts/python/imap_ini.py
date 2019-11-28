@@ -4,16 +4,17 @@
 
 import imaplib
 import configparser
+from pprint import pformat, pprint
 
-# Reads the section of the given name
+
 def ini_section(ini, account_name):
+    """Reads the section of the given name"""
     config = configparser.ConfigParser()
     config.read(ini)
     return config[account_name]
 
-# Creates an IMAP connection to the given account_name in the given
-# INI-file.
 def connect_account(ini, account_name):
+    """Creates an IMAP connection to the given account_name in the given INI file"""
     data = ini_section(ini, account_name)
     hostname = data.get('hostname')
     username = data.get('username')
@@ -28,4 +29,14 @@ def connect_account(ini, account_name):
     else:
         con = imaplib.IMAP4(hostname, port=port)
     con.login(username, password)
+
+    print("Capabilities returned on connect: %s" % pformat(con.capabilities))
+
+    capabilites = "None"
+    (status, data) = con.capability()
+    if status == "OK":
+        capabilites = data[0].decode()
+
+    print("Capabilities returned on CAPABILITY: %s" % pformat(capabilites))
+
     return con
