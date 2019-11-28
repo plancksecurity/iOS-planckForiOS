@@ -23,7 +23,7 @@ extension UIAlertController {
     }
 }
 
-final class IMAPSettingsViewController: BaseViewController, TextfieldResponder, UITextFieldDelegate {
+final class IMAPSettingsViewController: BaseViewController, TextfieldResponder {
     @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
     var fields = [UITextField]()
@@ -44,6 +44,7 @@ final class IMAPSettingsViewController: BaseViewController, TextfieldResponder, 
 
         fields = manualSetupViewTextFeilds()
         setUpViewLocalizableTexts()
+        setUpTextFieldsInputTraits()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -82,7 +83,7 @@ final class IMAPSettingsViewController: BaseViewController, TextfieldResponder, 
 
 // MARK: - UITextViewDelegate
 
-extension IMAPSettingsViewController: UITextViewDelegate {
+extension IMAPSettingsViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
         nextResponder(textfield)
@@ -101,6 +102,24 @@ extension IMAPSettingsViewController: UITextViewDelegate {
         if textField == setupView.fourthTextField {
             alertWithSecurityValues(textField)
             return false
+        }
+        return true
+    }
+
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
+            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+            return true
+        }
+        if textField == setupView.thirdTextField {
+            guard let text = textField.text as NSString? else {
+                Log.shared.errorAndCrash("Fail to downcast from String to NSString")
+                return true
+            }
+            let textFieldText = text.replacingCharacters(in: range, with: string)
+            return UInt16(textFieldText) != nil
         }
         return true
     }
@@ -197,6 +216,15 @@ extension IMAPSettingsViewController {
                 setupView.secondTextField,
                 setupView.thirdTextField,
                 setupView.fourthTextField]
+    }
+
+    private func setUpTextFieldsInputTraits() {
+        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
+            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+            return
+        }
+
+        setupView.thirdTextField.keyboardType = .numberPad
     }
 
     private func setUpViewLocalizableTexts() {
