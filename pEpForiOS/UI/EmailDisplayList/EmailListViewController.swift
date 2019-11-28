@@ -79,9 +79,15 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             //            if vm.checkIfSettingsChanged() {
             //                settingsChanged()
             //            }
+
+            watchDetailView()
         }
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        unwatchDetailView()
+    }
 
     deinit {
          NotificationCenter.default.removeObserver(self)
@@ -683,6 +689,49 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             action.textColor = descriptor.color
             action.font = .systemFont(ofSize: 13)
             action.transitionDelegate = ScaleTransition.default
+        }
+    }
+
+    // MARK: - Observing the detail view
+
+    let detailViewObserverKeyPath = #keyPath(UISplitViewController.viewControllers)
+
+    /// Start observing the detail view.
+    private func watchDetailView() {
+        if let spvc = splitViewController {
+            func handler(_ spvc: EmailListViewController,
+                        value: NSKeyValueObservedChange<[UIViewController]?>) -> Void {
+
+            }
+            spvc.addObserver(self,
+                             forKeyPath: detailViewObserverKeyPath,
+                             options: [],
+                             context: nil)
+        }
+    }
+
+    /// Stop listening for detail view changes.
+    private func unwatchDetailView() {
+        if let spvc = splitViewController {
+            spvc.removeObserver(self, forKeyPath: detailViewObserverKeyPath)
+        }
+    }
+
+    override func observeValue(forKeyPath keyPath: String?,
+                               of object: Any?,
+                               change: [NSKeyValueChangeKey : Any]?,
+                               context: UnsafeMutableRawPointer?) {
+        if keyPath != detailViewObserverKeyPath {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+
+        if let spvc = splitViewController {
+            if spvc.viewControllers.count == 1 {
+                // only master is shown
+            } else if spvc.viewControllers.count == 2 {
+                // detail is shown
+            }
         }
     }
 
