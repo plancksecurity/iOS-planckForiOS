@@ -60,16 +60,16 @@ extension UIViewController {
 
             return badgeView
         } else {
-            guard let img = UIImage(named: "icon-settings") else {
-                return nil
-            }
-
             let mode = splitViewController?.currentDisplayMode ?? .masterAndDetail
 
             // Only show the top logo instead of the privacy status if there is not
             // yet a logo shown.
             switch mode {
             case .onlyMaster:
+                guard let img = UIImage(named: "icon-settings") else {
+                    return nil
+                }
+
                 let imgView = UIImageView(image: img)
                 imgView.translatesAutoresizingMaskIntoConstraints = false
                 let ratio = imgView.aspectRatio()
