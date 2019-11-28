@@ -694,6 +694,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     // MARK: - Observing the split view controller
 
+    /// The key path for observing the view controllers of the split view controller,
+    /// compatible with Objective-C.
     let splitViewObserverKeyPath = #keyPath(UISplitViewController.viewControllers)
 
     /// Start observing the view controllers in the split view.
