@@ -137,7 +137,7 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
     }
 
     func didPressNextButton() {
-        //TODO:!!! Ale
+        performSegue(withIdentifier: .SMTPSettings, sender: self)
     }
 
     func didChangeFirst(_ textField: UITextField) {
@@ -163,7 +163,7 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
     }
 
     func didChangeFourth(_ textField: UITextField) {
-        //TODO: Ale
+        //Do nothing, changes saved in model and textField in the bock of alert
     }
 }
 
@@ -221,7 +221,7 @@ extension IMAPSettingsViewController {
         setupView.fourthTextField.placeholder = TransportSecurityPlaceholder
     }
 
-    private func alertWithSecurityValues(_ sender: UIView) {
+    private func alertWithSecurityValues(_ sender: UITextField) {
         let alertController = UIAlertController.pEpAlertController(
             title: NSLocalizedString("Transport protocol",
                                      comment: "UI alert title for transport protocol"),
@@ -229,8 +229,8 @@ extension IMAPSettingsViewController {
                                        comment: "UI alert message for transport protocol"),
             preferredStyle: .actionSheet)
         let block: (ConnectionTransport) -> () = { transport in
+            sender.text = transport.localizedString()
             self.model?.transportIMAP = transport
-            self.updateView()
         }
 
         if let popoverPresentationController = alertController.popoverPresentationController {
