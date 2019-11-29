@@ -106,7 +106,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
 
     func error(propagator: ErrorPropagator, error: Error) {
         if shouldHandleErrors {
-            if error is SmtpSendError || error is ImapSyncError {
+            if error is SmtpSendError || error is ImapSyncOperationError {
                 smtpOrImapAuthError(error: error)
             } else {
                 UIUtils.show(error: error, inViewController: self)
@@ -132,7 +132,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             case .badResponse(_):
                 break
             }
-        } else if let imapError = error as? ImapSyncError {
+        } else if let imapError = error as? ImapSyncOperationError {
             switch imapError {
             case .authenticationFailed(_, let account):
                 extraInfo = account
