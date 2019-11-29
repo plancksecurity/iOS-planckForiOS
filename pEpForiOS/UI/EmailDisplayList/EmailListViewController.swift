@@ -703,6 +703,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     /// Shows the pEp logo (leading to the settings) in the master view bottom toolbar,
     /// or not, depending on `show`.
     func showLogoInMasterToolbar(show: Bool) {
+        changeToolbarItems(showLogo: show)
     }
 
     // MARK: - Observing the split view controller
