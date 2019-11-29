@@ -74,6 +74,7 @@ extension SMTPSettingsViewController: UITextFieldDelegate {
             return true
         }
         if textField == setupView.fourthTextField {
+            view.endEditing(true)
             alertWithSecurityValues(textField)
             return false
         }
