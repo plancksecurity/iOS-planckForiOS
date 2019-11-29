@@ -177,13 +177,10 @@ extension SMTPSettingsViewController: VerifiableAccountDelegate {
                             Log.shared.errorAndCrash("Lost MySelf")
                             return
                         }
-
                         switch success {
-
                         case true:
                             me.isCurrentlyVerifying = false
                             me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
-
                         case false:
                             me.isCurrentlyVerifying = false
                             UIUtils.show(error: VerifiableAccountValidationError.invalidUserData, inViewController: me)
