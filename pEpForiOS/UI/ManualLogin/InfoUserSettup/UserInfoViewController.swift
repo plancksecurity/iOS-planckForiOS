@@ -97,7 +97,7 @@ extension UserInfoViewController: ManualAccountSetupViewDelegate {
 
     func didChangeFirst(_ textField: UITextField) {
         var vm = viewModelOrCrash()
-        vm.userName = textField.text
+        vm.loginName = textField.text
         model = vm
         updateView()
     }
@@ -118,7 +118,7 @@ extension UserInfoViewController: ManualAccountSetupViewDelegate {
 
     func didChangeFourth(_ textField: UITextField) {
         var vm = viewModelOrCrash()
-        vm.loginName = textField.text
+        vm.userName = textField.text
         model = vm
         updateView()
     }
