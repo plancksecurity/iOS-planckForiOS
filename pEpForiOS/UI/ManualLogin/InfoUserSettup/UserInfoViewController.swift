@@ -55,7 +55,7 @@ class UserInfoViewController: BaseViewController, TextfieldResponder {
         }
         let vm = viewModelOrCrash()
 
-        setupView.firstTextField.text = vm.userName
+        setupView.firstTextField.text = vm.loginName
         setupView.secondTextField.text = vm.address
         setupView.thirdTextField.text = vm.password
 

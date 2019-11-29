@@ -80,7 +80,9 @@ final class ManualAccountSetupView: UIView {
     }
 
     @IBAction func didChange(_ sender: UITextField) {
-        scrollView.scrollAndMakeVisible(sender)
+        if UIDevice.current.userInterfaceIdiom != .pad {
+            scrollView.scrollAndMakeVisible(sender)
+        }
         switch sender {
         case firstTextField:
             delegate?.didChangeFirst(sender)
