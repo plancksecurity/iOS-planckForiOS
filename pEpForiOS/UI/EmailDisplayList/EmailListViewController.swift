@@ -711,7 +711,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     /// Start observing the view controllers in the split view.
     private func watchDetailView() {
-        if let spvc = splitViewController {
+        if !observingSplitViewControllers, let spvc = splitViewController {
             spvc.addObserver(self,
                              forKeyPath: splitViewObserverKeyPath,
                              options: [],
