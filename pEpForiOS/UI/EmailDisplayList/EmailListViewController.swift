@@ -137,7 +137,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     private func changeToolbarItems(showLogo: Bool) {
         if var theToolbarItems = toolbarItems {
-            let pEpLogog = UIBarButtonItem.getPEPButton(
+            let pEpLogo = UIBarButtonItem.getPEPButton(
                 action: #selector(showSettingsViewController),
                 target: self)
             let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
@@ -147,9 +147,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
             if showLogo {
                 if theToolbarItems.isEmpty {
-                    theToolbarItems.append(contentsOf: [flexibleSpace,pEpLogog])
+                    theToolbarItems.append(contentsOf: [flexibleSpace,pEpLogo])
                 } else if theToolbarItems.count >= 2 {
-                    theToolbarItems.insert(pEpLogog, at: 2)
+                    theToolbarItems.insert(pEpLogo, at: 2)
                     theToolbarItems.insert(flexibleSpace, at: 3)
                 }
             }
