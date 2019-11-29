@@ -12,7 +12,7 @@ import pEpIOSToolbox
 import MessageModel
 import PantomimeFramework
 
-final class SMTPSettingsViewController: BaseTableViewController, TextfieldResponder {
+final class SMTPSettingsViewController: BaseViewController, TextfieldResponder {
     @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
     /// - Note: This VC doesn't have a view model yet, so this is used for the model.
@@ -48,6 +48,10 @@ final class SMTPSettingsViewController: BaseTableViewController, TextfieldRespon
         super.viewDidAppear(animated)
 
         firstResponder(model?.serverSMTP == nil)
+    }
+    
+    @IBAction func didTapOnView(_ sender: Any) {
+        view.endEditing(true)
     }
 }
 
