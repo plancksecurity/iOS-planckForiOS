@@ -132,7 +132,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         title = model?.folderName
         navigationController?.title = title
 
-        if var theToolBarItems = toolbarItems {
+        changeToolbarItems(showLogo: true)
+    }
+
+    private func changeToolbarItems(showLogo: Bool) {
+        if var theToolbarItems = toolbarItems {
             let pEpLogog = UIBarButtonItem.getPEPButton(
                 action: #selector(showSettingsViewController),
                 target: self)
@@ -141,14 +145,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 target: nil,
                 action: nil)
 
-            if theToolBarItems.isEmpty {
-                theToolBarItems.append(contentsOf: [flexibleSpace,pEpLogog])
-            } else if theToolBarItems.count >= 2 {
-                theToolBarItems.insert(pEpLogog, at: 2)
-                theToolBarItems.insert(flexibleSpace, at: 3)
+            if showLogo {
+                if theToolbarItems.isEmpty {
+                    theToolbarItems.append(contentsOf: [flexibleSpace,pEpLogog])
+                } else if theToolbarItems.count >= 2 {
+                    theToolbarItems.insert(pEpLogog, at: 2)
+                    theToolbarItems.insert(flexibleSpace, at: 3)
+                }
             }
 
-            toolbarItems = theToolBarItems
+            toolbarItems = theToolbarItems
         }
     }
 
