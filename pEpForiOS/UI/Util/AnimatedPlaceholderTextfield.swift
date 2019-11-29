@@ -174,7 +174,7 @@ extension AnimatedPlaceholderTextfield {
 
     private func doViewAnimation() {
         UIView.animate(withDuration: 0.3) { [weak self] in
-            self?.layoutIfNeeded()
+            self?.superview?.layoutIfNeeded()
         }
     }
 }
