@@ -331,7 +331,9 @@ extension LoginViewController: AccountVerificationResultDelegate {
             switch result {
             case .ok:
                 me.delegate?.loginViewControllerDidCreateNewAccount(me)
-                me.navigationController?.dismiss(animated: true)
+                //we do not want to show email list if tutorial has to be shown
+                let animated = !AppSettings.shared.shouldShowTutorialWizard
+                me.navigationController?.dismiss(animated: animated)
             case .imapError(let err):
                 me.handleLoginError(error: err, offerManualSetup: true)
             case .smtpError(let err):
