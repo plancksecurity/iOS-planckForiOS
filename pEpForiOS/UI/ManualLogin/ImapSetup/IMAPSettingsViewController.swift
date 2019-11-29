@@ -143,7 +143,7 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
 
     func didChangeFirst(_ textField: UITextField) {
         var vm = viewModelOrCrash()
-        vm.userName = textField.text
+        vm.loginName = textField.text
         model = vm
         updateView()
     }
@@ -256,7 +256,7 @@ extension IMAPSettingsViewController {
         }
         let vm = viewModelOrCrash()
 
-        setupView.firstTextField.text = vm.userName
+        setupView.firstTextField.text = vm.loginName
         setupView.secondTextField.text = vm.serverIMAP
         setupView.thirdTextField.text = String(vm.portIMAP)
         setupView.fourthTextField.text = vm.transportIMAP.localizedString()

@@ -121,7 +121,7 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
 
     func didChangeFirst(_ textField: UITextField) {
         var vm = viewModelOrCrash()
-        vm.userName = textField.text
+        vm.loginName = textField.text
         model = vm
         updateView()
     }
@@ -228,7 +228,7 @@ extension SMTPSettingsViewController {
         }
         let vm = viewModelOrCrash()
 
-        setupView.firstTextField.text = vm.userName
+        setupView.firstTextField.text = vm.loginName
         setupView.secondTextField.text = vm.serverSMTP
         setupView.thirdTextField.text = String(vm.portSMTP)
         setupView.fourthTextField.text = vm.transportSMTP.localizedString()
