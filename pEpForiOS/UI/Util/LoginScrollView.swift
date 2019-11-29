@@ -29,11 +29,11 @@ class LoginScrollView: UIScrollView {
         super.scrollRectToVisible(rect, animated: animated)
     }
 
-    func scrollAndMakeVisible(_ view: UIView,
-                              scrollViewHeight: CGFloat,
+    func scrollAndMakeVisible(_ sender: UIView,
                               animated: Bool = true) {
-        let viewFrames = view.convert(view.bounds, to: self)
-        var newContentOffSet = viewFrames.midY - scrollViewHeight / 2
+        let scrollViewHeight = frame.maxY
+        let senderFrames = sender.convert(sender.bounds, to: self)
+        var newContentOffSet = senderFrames.midY - scrollViewHeight / 2
         let contetOffSetDistanceToSafeArea =
             contentSize.height - newContentOffSet - scrollViewHeight
 
@@ -128,19 +128,15 @@ extension LoginScrollView {
             scrollToCenterStackView()
             return
         }
-        guard let bottomConstraint = loginScrollViewDelegate?.bottomConstraint else {
-            Log.shared.errorAndCrash("LoginScrollView delegate is nil")
-            return
-        }
-
-        let scrollViewHeight = frame.maxY
-            + abs(bottomConstraint.constant)
-            - keyBoardHeight(notification: notification)
-        scrollAndMakeVisible(firstResponder, scrollViewHeight: scrollViewHeight)
+        scrollAndMakeVisible(firstResponder)
     }
 
     private func scrollToCenterStackView() {
-        let newContentOffSet = frame.midY - bounds.height / 2
+        guard let superView = superview else {
+            Log.shared.errorAndCrash("Fail to get LoginScrollView superView")
+            return
+        }
+        let newContentOffSet = (superView.bounds.height - bounds.height) / 2
         DispatchQueue.main.async { [weak self] in
             self?.setContentOffset(CGPoint(x: 0, y: newContentOffSet), animated: true)
         }

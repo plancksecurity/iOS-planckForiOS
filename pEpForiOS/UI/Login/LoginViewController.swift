@@ -216,7 +216,7 @@ extension LoginViewController: UITextFieldDelegate {
         if !ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 13,
                                                                           minorVersion: 0,
                                                                           patchVersion: 0)) {
-            scrollView.scrollAndMakeVisible(textField, scrollViewHeight: scrollView.frame.maxY)
+            scrollView.scrollAndMakeVisible(textField)
         }
     }
 }
