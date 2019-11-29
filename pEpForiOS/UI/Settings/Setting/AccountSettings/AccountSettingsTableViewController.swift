@@ -292,10 +292,7 @@ extension AccountSettingsTableViewController {
     }
 
     private func hideBackButtonIfNeeded() {
-        guard let isIphone = splitViewController?.isCollapsed else {
-            return
-        }
-        if !isIphone {
+        if !onlySplitViewMasterIsShown {
             navigationItem.leftBarButtonItem = nil// hidesBackButton = true
         }
     }

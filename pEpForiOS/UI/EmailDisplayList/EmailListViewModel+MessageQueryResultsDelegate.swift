@@ -9,34 +9,26 @@
 import Foundation
 import MessageModel
 
-extension EmailListViewModel : QueryResultsDelegate {
+extension EmailListViewModel : QueryResultsIndexPathRowDelegate {
 
-    func didInserSection(position: Int) {
-        //there are no sections in the EmailList
-    }
-
-    func didDeleteSection(position: Int) {
-        //there are no sections in the EmailList
-    }
-    
-    func didInsertCell(indexPath: IndexPath) {
+    func didInsertRow(indexPath: IndexPath) {
         if updatesEnabled {
             emailListViewModelDelegate?.emailListViewModel(viewModel: self, didInsertDataAt: [indexPath])
         }
     }
 
-    func didUpdateCell(indexPath: IndexPath) {
+    func didUpdateRow(indexPath: IndexPath) {
         if updatesEnabled {
             emailListViewModelDelegate?.emailListViewModel(viewModel: self, didUpdateDataAt: [indexPath])
         }
         emailListViewModelDelegate?.checkIfSplitNeedsUpdate(indexpath: [indexPath])
     }
 
-    func didDeleteCell(indexPath: IndexPath) {
+    func didDeleteRow(indexPath: IndexPath) {
             emailListViewModelDelegate?.emailListViewModel(viewModel: self, didRemoveDataAt: [indexPath])
     }
 
-    func didMoveCell(from: IndexPath, to: IndexPath) {
+    func didMoveRow(from: IndexPath, to: IndexPath) {
         if updatesEnabled {
             emailListViewModelDelegate?.emailListViewModel(viewModel: self, didMoveData: from, toIndexPath: to)
         }
@@ -55,7 +47,4 @@ extension EmailListViewModel : QueryResultsDelegate {
             updatesEnabled = true
         }
     }
-
-
-
 }

@@ -108,7 +108,7 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
             }
         case .failure(let error):
             delegate?.hideLoadingView()
-            if let imapError = error as? ImapSyncError {
+            if let imapError = error as? ImapSyncOperationError {
                 delegate?.showErrorAlert(error: imapError)
             } else if let smtpError = error as? SmtpSendError {
                 delegate?.showErrorAlert(error: smtpError)

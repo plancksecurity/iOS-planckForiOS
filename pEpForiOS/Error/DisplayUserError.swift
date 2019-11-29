@@ -101,7 +101,7 @@ struct DisplayUserError: LocalizedError {
             case .badResponse(_):
                 break
             }
-        } else if let imapError = error as? ImapSyncError {
+        } else if let imapError = error as? ImapSyncOperationError {
             type = DisplayUserError.type(forError: imapError)
             switch imapError {
             case .authenticationFailed(_, let account):
@@ -175,9 +175,9 @@ struct DisplayUserError: LocalizedError {
         }
     }
 
-    // MARK: ImapSyncError
+    // MARK: ImapSyncOperationError
 
-    static private func type(forError error: ImapSyncError) -> ErrorType {
+    static private func type(forError error: ImapSyncOperationError) -> ErrorType {
         switch error {
         case .illegalState:
             return .internalError

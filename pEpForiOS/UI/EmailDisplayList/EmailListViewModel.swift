@@ -108,7 +108,7 @@ class EmailListViewModel {
         messageQueryResults = MessageQueryResults(withFolder: folderToShow,
                                                        filter: nil,
                                                        search: nil)
-        messageQueryResults.delegate = self
+        messageQueryResults.rowDelegate = self
         // Threading feature is currently non-existing. Keep this code, might help later.
 //        self.oldThreadSetting = AppSettings.shared.threadedViewEnabled
     }
@@ -446,7 +446,7 @@ extension EmailListViewModel {
         messageQueryResults = MessageQueryResults(withFolder: folderToShow,
                                                   filter: filter,
                                                   search: search,
-                                                  delegate: self)
+                                                  rowDelegate: self)
         do {
             try messageQueryResults.startMonitoring()
         } catch {

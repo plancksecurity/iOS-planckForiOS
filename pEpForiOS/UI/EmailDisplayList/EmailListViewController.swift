@@ -250,7 +250,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         guard let splitViewController = self.splitViewController else {
             return
         }
-        if splitViewController.isCollapsed {
+        if onlySplitViewMasterIsShown {
             performSegue(withIdentifier: SegueIdentifier.segueShowEmailNotSplitView, sender: self)
         } else {
             performSegue(withIdentifier: SegueIdentifier.segueShowEmailSplitView, sender: self)
@@ -784,10 +784,10 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 extension EmailListViewController: EmailListViewModelDelegate {
 
     func checkIfSplitNeedsUpdate(indexpath: [IndexPath]) {
-        guard let isIphone = splitViewController?.isCollapsed, let last = lastSelectedIndexPath else {
+        guard let last = lastSelectedIndexPath else {
             return
         }
-        if !isIphone && indexpath.contains(last) {
+        if !onlySplitViewMasterIsShown && indexpath.contains(last) {
             showEmail(forCellAt: last)
         }
     }
@@ -908,7 +908,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
 
     func emailListViewModel(viewModel: EmailListViewModel,
                             didChangeSeenStateForDataAt indexPaths: [IndexPath]) {
-        guard let isIphone = splitViewController?.isCollapsed, let vm = model else {
+        guard let vm = model else {
             Log.shared.errorAndCrash("Invalid state")
             return
         }
@@ -917,11 +917,11 @@ extension EmailListViewController: EmailListViewModelDelegate {
 
         // If unread filter is active, /seen state updates require special handling ...
 
-        if !isIphone && unreadFilterActive {
+        if !onlySplitViewMasterIsShown && unreadFilterActive {
             // We do not update the seen status when both spitview views are shown and the list is
             // currently filtered by unread.
             return
-        } else if isIphone && unreadFilterActive {
+        } else if onlySplitViewMasterIsShown && unreadFilterActive {
             vm.informDelegateToReloadData()
         } else {
             //  ... otherwize we forward to update

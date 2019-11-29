@@ -18,7 +18,7 @@ class DisplayUserErrorTest: XCTestCase {
                                            .connectionTerminated(#function),
                                            .connectionTimedOut(#function),
                                            .badResponse(#function)]
-    let imapSyncErrors: [ImapSyncError] = [.illegalState(#function),
+    let imapSyncErrors: [ImapSyncOperationError] = [.illegalState(#function),
                                            .authenticationFailed(#function, "unknown"),
                                            .connectionLost(#function),
                                            .connectionTerminated(#function),
