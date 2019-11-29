@@ -107,7 +107,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
 
         if vm.shouldShowTutorialWizard() {
-            TutorialWizardViewController.presentTutorialWizard(viewController: self)
+            TutorialWizardViewController.presentTutorialWizard(viewController: self, animated: false)
             vm.didShowTutorialWizard()
         }
 

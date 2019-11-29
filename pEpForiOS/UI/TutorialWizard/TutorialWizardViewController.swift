@@ -45,7 +45,7 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
         return [view_1, view_2, view_3]
     }
 
-    static func presentTutorialWizard(viewController: UIViewController) {
+    static func presentTutorialWizard(viewController: UIViewController, animated: Bool = true) {
         let tutrialImages = wizardImages()
         guard let tutorialWizard =
             TutorialWizardViewController.fromStoryboard(tutorialImages: tutrialImages) else {
@@ -62,7 +62,7 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
 
         DispatchQueue.main.async { [weak viewController] in
             navigationController.modalPresentationStyle = .fullScreen
-            viewController?.present(navigationController, animated: true, completion: nil)
+            viewController?.present(navigationController, animated: animated, completion: nil)
         }
     }
 
