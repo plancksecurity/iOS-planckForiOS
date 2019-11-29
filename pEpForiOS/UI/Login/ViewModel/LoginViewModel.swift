@@ -207,7 +207,7 @@ extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
 
 extension LoginViewModel: VerifiableAccountDelegate {
     func informAccountVerificationResultDelegate(error: Error?) {
-        if let imapError = error as? ImapSyncError {
+        if let imapError = error as? ImapSyncOperationError {
             accountVerificationResultDelegate?.didVerify(
                 result: .imapError(imapError))
         } else if let smtpError = error as? SmtpSendError {
