@@ -1026,17 +1026,38 @@
             </objects>
             <point key="canvasLocation" x="8759" y="-396"/>
         </scene>
-        <!--View Controller-->
+        <!--Settings View Controller-->
         <scene sceneID="Cks-fx-drb">
             <objects>
-                <viewController id="nT4-iY-7y4" sceneMemberID="viewController">
+                <viewController id="nT4-iY-7y4" customClass="SMTPSettingsViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2Us-kU-M1a">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashscreen" translatesAutoresizingMaskIntoConstraints="NO" id="dIf-r3-w2y" userLabel="BackgroungImage">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g44-1J-8hx" customClass="ManualAccountSetupContainerView" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="g44-1J-8hx" firstAttribute="bottom" secondItem="BDA-LJ-8if" secondAttribute="bottom" id="AsS-fO-7sh"/>
+                            <constraint firstAttribute="trailing" secondItem="dIf-r3-w2y" secondAttribute="trailing" id="H9c-yJ-Vpw"/>
+                            <constraint firstAttribute="bottom" secondItem="dIf-r3-w2y" secondAttribute="bottom" id="KDx-aX-Vpp"/>
+                            <constraint firstItem="dIf-r3-w2y" firstAttribute="leading" secondItem="2Us-kU-M1a" secondAttribute="leading" id="ZY1-Yx-Lv0"/>
+                            <constraint firstItem="g44-1J-8hx" firstAttribute="leading" secondItem="BDA-LJ-8if" secondAttribute="leading" id="b5N-In-iRX"/>
+                            <constraint firstItem="g44-1J-8hx" firstAttribute="top" secondItem="BDA-LJ-8if" secondAttribute="top" id="c8C-Ss-5qH"/>
+                            <constraint firstItem="dIf-r3-w2y" firstAttribute="top" secondItem="2Us-kU-M1a" secondAttribute="top" id="reY-pe-z5R"/>
+                            <constraint firstItem="g44-1J-8hx" firstAttribute="trailing" secondItem="BDA-LJ-8if" secondAttribute="trailing" id="udU-Zw-KvL"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="BDA-LJ-8if"/>
                     </view>
                     <navigationItem key="navigationItem" id="JYV-IN-0YI"/>
+                    <connections>
+                        <outlet property="manualAccountSetupContainerView" destination="g44-1J-8hx" id="VYr-e5-HWS"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n1O-AW-vvQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

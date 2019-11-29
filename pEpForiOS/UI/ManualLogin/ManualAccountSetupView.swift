@@ -80,6 +80,7 @@ final class ManualAccountSetupView: UIView {
     }
 
     @IBAction func didChange(_ sender: UITextField) {
+        scrollView.scrollAndMakeVisible(sender, scrollViewHeight: scrollView.bounds.maxY)
         switch sender {
         case firstTextField:
             delegate?.didChangeFirst(sender)

@@ -10,8 +10,43 @@ import UIKit
 
 /// Use ONLY in storyboard, other inits are not implemented
 final class ManualAccountSetupContainerView: UIView {
+    /// Set ManualAccountSetupViewDelegate of ManualAccountSetupView.
+    /// Used to handle envet from the ManualAccountSetupView
+    weak var delegate: ManualAccountSetupViewDelegate? {
+        didSet {
+            //Nil case is handle in setupView getter
+            setupView?.delegate = delegate
+        }
+    }
 
-    weak var manualAccountSetupView: ManualAccountSetupView?
+    /// Set TextFields delegate that are in ManualAccountSetupView.
+    weak var textFieldsDelegate: UITextFieldDelegate? {
+        didSet {
+            //Nil case is handle in setupView getter
+            setupView?.textFieldsDelegate = textFieldsDelegate
+        }
+    }
+
+    /// Use this property to hide and show  pEpSync Switch inside ManualAccountSetupView
+    var pEpSyncViewIsHidden = false {
+        didSet {
+            //Nil case is handle in setupView getter
+            setupView?.pEpSyncView.isHidden = pEpSyncViewIsHidden
+        }
+    }
+
+    /// /ManualAccountSetupView hold by the container.
+    /// Should never be nil.  Nil case is handle in setupView getter, crash on debug and return nil in Prod
+    var setupView: ManualAccountSetupView? {
+        get {
+            guard let setupView = _manualAccountSetupView else {
+                Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+                return nil
+            }
+            return setupView
+        }
+    }
+    private weak var _manualAccountSetupView: ManualAccountSetupView?
 
     private init(){
         super.init(frame: .zero)
@@ -26,7 +61,7 @@ final class ManualAccountSetupContainerView: UIView {
         }
 
         addSubview(manualAccountSetupView)
-        self.manualAccountSetupView = manualAccountSetupView
+        _manualAccountSetupView = manualAccountSetupView
 
         manualAccountSetupView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -38,5 +73,17 @@ final class ManualAccountSetupContainerView: UIView {
             layoutMarginsGuide.trailingAnchor).isActive = true
         manualAccountSetupView.layoutMarginsGuide.bottomAnchor.constraint(equalTo:
             layoutMarginsGuide.bottomAnchor).isActive = true
+    }
+
+    /// Return all the textFields subview of this view container. In this case
+    func manualSetupViewTextFeilds() -> [UITextField] {
+        guard let setupView = setupView else {
+            //Error handle in setupView getter
+            return []
+        }
+        return [setupView.firstTextField,
+                setupView.secondTextField,
+                setupView.thirdTextField,
+                setupView.fourthTextField]
     }
 }

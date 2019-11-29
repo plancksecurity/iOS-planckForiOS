@@ -22,14 +22,14 @@ class UserInfoViewController: BaseViewController, TextfieldResponder {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
-            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+        guard let setupView = manualAccountSetupContainerView.setupView else {
+            //If SetupViewError is nil is handle in setupView getter
             return
         }
         setupView.delegate = self
         setupView.textFieldsDelegate = self
 
-        fields = manualSetupViewTextFeilds()
+        fields = manualAccountSetupContainerView.manualSetupViewTextFeilds()
         setUpViewLocalizableTexts()
         setUpTextFieldsInputTraits()
     }
@@ -49,8 +49,8 @@ class UserInfoViewController: BaseViewController, TextfieldResponder {
      Puts the model into the view, in case it was set by the invoking view controller.
      */
     func updateView() {
-        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
-            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+        guard let setupView = manualAccountSetupContainerView.setupView else {
+            //If SetupViewError is nil is handle in setupView getter
             return
         }
         let vm = viewModelOrCrash()
@@ -176,20 +176,9 @@ extension UserInfoViewController: SegueHandlerType {
 // MARK: - Private
 
 extension UserInfoViewController {
-    private func manualSetupViewTextFeilds() -> [UITextField] {
-        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
-            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
-            return []
-        }
-        return [setupView.firstTextField,
-                setupView.secondTextField,
-                setupView.thirdTextField,
-                setupView.fourthTextField]
-    }
-
     private func setUpTextFieldsInputTraits() {
-        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
-            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+        guard let setupView = manualAccountSetupContainerView.setupView else {
+            //If SetupViewError is nil is handle in setupView getter
             return
         }
 
@@ -200,8 +189,8 @@ extension UserInfoViewController {
     }
 
     private func setUpViewLocalizableTexts() {
-        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
-            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+        guard let setupView = manualAccountSetupContainerView.setupView else {
+            //If SetupViewError is nil is handle in setupView getter
             return
         }
 

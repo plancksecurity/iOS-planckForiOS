@@ -35,16 +35,11 @@ final class IMAPSettingsViewController: BaseViewController, TextfieldResponder {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
-            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
-            return
-        }
-        setupView.delegate = self
-        setupView.textFieldsDelegate = self
+        manualAccountSetupContainerView.delegate = self
+        manualAccountSetupContainerView.textFieldsDelegate = self
+        manualAccountSetupContainerView.pEpSyncViewIsHidden = true
 
-        setupView.pEpSyncView.isHidden = true
-
-        fields = manualSetupViewTextFeilds()
+        fields = manualAccountSetupContainerView.manualSetupViewTextFeilds()
         setUpViewLocalizableTexts()
         setUpTextFieldsInputTraits()
     }
@@ -79,8 +74,8 @@ extension IMAPSettingsViewController: UITextFieldDelegate {
     }
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
-            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+        guard let setupView = manualAccountSetupContainerView.setupView else {
+            //Nil case is handle in setupView getter
             return true
         }
         if textField == setupView.fourthTextField {
@@ -93,8 +88,8 @@ extension IMAPSettingsViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
-            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+        guard let setupView = manualAccountSetupContainerView.setupView else {
+            //Error handle in setupView getter
             return true
         }
         if textField == setupView.thirdTextField {
@@ -191,29 +186,17 @@ extension IMAPSettingsViewController {
 // MARK: - Private
 
 extension IMAPSettingsViewController {
-    private func manualSetupViewTextFeilds() -> [UITextField] {
-        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
-            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
-            return []
-        }
-        return [setupView.firstTextField,
-                setupView.secondTextField,
-                setupView.thirdTextField,
-                setupView.fourthTextField]
-    }
-
     private func setUpTextFieldsInputTraits() {
-        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
-            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+        guard let setupView = manualAccountSetupContainerView.setupView else {
+            //If SetupViewError is nil is handle in setupView getter
             return
         }
-
         setupView.thirdTextField.keyboardType = .numberPad
     }
 
     private func setUpViewLocalizableTexts() {
-        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
-            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+        guard let setupView = manualAccountSetupContainerView.setupView else {
+            //If SetupViewError is nil is handle in setupView getter
             return
         }
 
@@ -266,8 +249,8 @@ extension IMAPSettingsViewController {
     }
 
     private func updateView() {
-        guard let setupView = manualAccountSetupContainerView.manualAccountSetupView else {
-            Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+        guard let setupView = manualAccountSetupContainerView.setupView else {
+            //If SetupViewError is nil is handle in setupView getter
             return
         }
         let vm = viewModelOrCrash()
