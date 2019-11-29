@@ -59,7 +59,7 @@ class LoginViewController: BaseViewController {
         configureAppearance()
 
         //TODO: ALE BORRAR
-        setManualSetupButtonHidden(false)
+        setManualSetupButtonHidden(true)
     }
 
     override func viewWillAppear(_ animated: Bool) {
