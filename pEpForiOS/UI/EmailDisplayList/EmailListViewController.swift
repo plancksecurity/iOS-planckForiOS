@@ -43,9 +43,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                                             target: nil,
                                                             action: nil)
 
-    /// With this tag we recognize the pEp button item
-    let pEpButtonItemTag = 7
-
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -672,6 +669,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     // MARK: - Manipulating the (master) bottom toolbar
 
+    /// With this tag we recognize the pEp button item
+    let pEpButtonItemTag = 7
+
+    /// With this tag we recognize our own created flexible space buttons.
+    let flexibleSpaceButtonItemTag = 77
+
     private func createPepBarButtonItem() -> UIBarButtonItem {
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
@@ -681,26 +684,28 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     private func createFlexibleBarButtonItem() -> UIBarButtonItem {
-        return UIBarButtonItem(
+        let item = UIBarButtonItem(
             barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
             target: nil,
             action: nil)
+        item.tag = flexibleSpaceButtonItemTag
+        return item
     }
 
-    private func removeTrailingFlexibleSpace(barButtonItems: [UIBarButtonItem]?) {
-        if var theItems = barButtonItems {
-            while true {
-                if let lastItem = theItems.last {
-                    if lastItem.action == nil {
-                        theItems.removeLast()
-                    } else {
-                        break
-                    }
+    private func trailingFlexibleSpaceRemoved(barButtonItems: [UIBarButtonItem]) -> [UIBarButtonItem] {
+        var theItems = barButtonItems
+        while true {
+            if let lastItem = theItems.last {
+                if lastItem.tag == flexibleSpaceButtonItemTag {
+                    theItems.removeLast()
                 } else {
                     break
                 }
+            } else {
+                break
             }
         }
+        return theItems
     }
 
     /// Shows the pEp logo (leading to the settings) in the master view bottom toolbar,
@@ -711,8 +716,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 let newItems = barItems.map {
                     $0.tag == pEpButtonItemTag ? createPepBarButtonItem() : $0
                 }
-                removeTrailingFlexibleSpace(barButtonItems: newItems)
-                toolbarItems = newItems
+                toolbarItems = trailingFlexibleSpaceRemoved(barButtonItems: newItems)
             } else {
                 toolbarItems = [createPepBarButtonItem()]
             }
@@ -721,8 +725,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 let newItems = barItems.map {
                     $0.tag == pEpButtonItemTag ? createFlexibleBarButtonItem() : $0
                 }
-                removeTrailingFlexibleSpace(barButtonItems: newItems)
-                toolbarItems = newItems
+                toolbarItems = trailingFlexibleSpaceRemoved(barButtonItems: newItems)
             }
         }
     }
