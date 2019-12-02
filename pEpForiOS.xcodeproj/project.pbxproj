@@ -213,7 +213,6 @@
 		371D6420231D17F80036AE62 /* TutorialWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371D641F231D17F80036AE62 /* TutorialWizardViewController.swift */; };
 		3756434E2370810400FB354D /* EditableAccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F272EF237075D9005C51AA /* EditableAccountSettingsViewModelTest.swift */; };
 		375643502371BC4600FB354D /* EditableAccountSettingsTableViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3756434F2371B92200FB354D /* EditableAccountSettingsTableViewModelTest.swift */; };
-		375BA088238BF91000BBFE7C /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375BA087238BF91000BBFE7C /* UserInfoViewController.swift */; };
 		375BA08A238BFC4100BBFE7C /* ManualAccountSetupContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375BA089238BFC4100BBFE7C /* ManualAccountSetupContainerView.swift */; };
 		37816542230EC72C00B967E3 /* PEPAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816541230EC72C00B967E3 /* PEPAlertViewController.swift */; };
 		37816544230EC73900B967E3 /* PEPAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816543230EC73900B967E3 /* PEPAlertViewModel.swift */; };
@@ -371,7 +370,7 @@
 		43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53631CC77F95006AB156 /* EmailListViewCell.swift */; };
 		43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53641CC77F95006AB156 /* EmailListViewController.swift */; };
 		43ED53711CC77F95006AB156 /* IMAPSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53661CC77F95006AB156 /* IMAPSettingsViewController.swift */; };
-		43ED53781CC77F95006AB156 /* SMTPSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536D1CC77F95006AB156 /* SMTPSettingsTableViewController.swift */; };
+		43ED53781CC77F95006AB156 /* SMTPSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536D1CC77F95006AB156 /* SMTPSettingsViewController.swift */; };
 		43ED53791CC77F95006AB156 /* UserInfoTableViewControllerOLD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536E1CC77F95006AB156 /* UserInfoTableViewControllerOLD.swift */; };
 		43F7F07A1F6AD44600BDF151 /* HandshakeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F7F0791F6AD44600BDF151 /* HandshakeTests.swift */; };
 		43F7F07C1F6AD4FD00BDF151 /* HandshakeTests_mail_001.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43F7F07B1F6AD4FD00BDF151 /* HandshakeTests_mail_001.txt */; };
@@ -678,7 +677,6 @@
 		371D641C231D17390036AE62 /* StartUpTutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartUpTutorial.swift; sourceTree = "<group>"; };
 		371D641F231D17F80036AE62 /* TutorialWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialWizardViewController.swift; sourceTree = "<group>"; };
 		3756434F2371B92200FB354D /* EditableAccountSettingsTableViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsTableViewModelTest.swift; sourceTree = "<group>"; };
-		375BA087238BF91000BBFE7C /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		375BA089238BFC4100BBFE7C /* ManualAccountSetupContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualAccountSetupContainerView.swift; sourceTree = "<group>"; };
 		37816541230EC72C00B967E3 /* PEPAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewController.swift; sourceTree = "<group>"; };
 		37816543230EC73900B967E3 /* PEPAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewModel.swift; sourceTree = "<group>"; };
@@ -883,7 +881,7 @@
 		43ED53631CC77F95006AB156 /* EmailListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewCell.swift; sourceTree = "<group>"; };
 		43ED53641CC77F95006AB156 /* EmailListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewController.swift; sourceTree = "<group>"; };
 		43ED53661CC77F95006AB156 /* IMAPSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMAPSettingsViewController.swift; sourceTree = "<group>"; };
-		43ED536D1CC77F95006AB156 /* SMTPSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMTPSettingsTableViewController.swift; sourceTree = "<group>"; };
+		43ED536D1CC77F95006AB156 /* SMTPSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMTPSettingsViewController.swift; sourceTree = "<group>"; };
 		43ED536E1CC77F95006AB156 /* UserInfoTableViewControllerOLD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoTableViewControllerOLD.swift; sourceTree = "<group>"; };
 		43F7F0791F6AD44600BDF151 /* HandshakeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeTests.swift; sourceTree = "<group>"; };
 		43F7F07B1F6AD4FD00BDF151 /* HandshakeTests_mail_001.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HandshakeTests_mail_001.txt; sourceTree = "<group>"; };
@@ -2383,7 +2381,7 @@
 		B70D32AC205BCEFB0094A92A /* SMTPSetup */ = {
 			isa = PBXGroup;
 			children = (
-				43ED536D1CC77F95006AB156 /* SMTPSettingsTableViewController.swift */,
+				43ED536D1CC77F95006AB156 /* SMTPSettingsViewController.swift */,
 			);
 			path = SMTPSetup;
 			sourceTree = "<group>";
@@ -2392,7 +2390,6 @@
 			isa = PBXGroup;
 			children = (
 				43ED536E1CC77F95006AB156 /* UserInfoTableViewControllerOLD.swift */,
-				375BA087238BF91000BBFE7C /* UserInfoViewController.swift */,
 			);
 			path = InfoUserSettup;
 			sourceTree = "<group>";
@@ -2929,7 +2926,6 @@
 				43C322091EA90192005073FB /* PEP+UI.swift in Sources */,
 				002375D620DD185100663961 /* TreadedEmailViewModel+DisplayedMessage.swift in Sources */,
 				431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */,
-				375BA088238BF91000BBFE7C /* UserInfoViewController.swift in Sources */,
 				00AEB2F620DBA7DA00DA185A /* NeedsRefreshDelegate.swift in Sources */,
 				1526597821623637006A78DF /* SuggestTableViewController.swift in Sources */,
 				15874BD22127493E00A3A4A6 /* TrustedServerSettingsViewController.swift in Sources */,
@@ -3083,7 +3079,7 @@
 				B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */,
 				492EF92F20C699D0004EAE14 /* ThreadViewController+TableView.swift in Sources */,
 				43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */,
-				43ED53781CC77F95006AB156 /* SMTPSettingsTableViewController.swift in Sources */,
+				43ED53781CC77F95006AB156 /* SMTPSettingsViewController.swift in Sources */,
 				15874BC22127493E00A3A4A6 /* SettingCellViewModelProtocols.swift in Sources */,
 				15146C91237F07EF00D69495 /* PEPPageViewControllerBase.swift in Sources */,
 			);
