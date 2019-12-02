@@ -686,16 +686,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     /// Shows the pEp logo (leading to the settings) in the master view bottom toolbar,
     /// or not, depending on `show`.
-    func showLogoInMasterToolbar(show: Bool) {
+    private func showLogoInMasterToolbar(show: Bool) {
     }
 
     /// - Returns: The items desired in the toolbar, depending on the current UI state.
-    func currentToolbarItems() -> [UIBarButtonItem] {
+    private func currentToolbarItems() -> [UIBarButtonItem] {
         return []
     }
 
     /// Changes the toolbar based on the current UI state.
-    func installNewToolbar() {
+    private func installNewToolbar() {
         toolbarItems = currentToolbarItems()
     }
 
@@ -703,11 +703,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     /// The key path for observing the view controllers of the split view controller,
     /// compatible with Objective-C.
-    let splitViewObserverKeyPath = #keyPath(UISplitViewController.viewControllers)
+    private let splitViewObserverKeyPath = #keyPath(UISplitViewController.viewControllers)
 
     /// With KVO we have to keep our books lest not to remove an observer without
     /// observing first.
-    var observingSplitViewControllers = false
+    private var observingSplitViewControllers = false
 
     /// Start observing the view controllers in the split view.
     private func watchDetailView() {
