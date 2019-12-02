@@ -10,10 +10,10 @@ import UIKit
 
 // Did not crate a nested class for LoginScrollView, since its not visible from Interface builder
 
-/// Use ONLY in storyboard, other inits are not implemented
+/// Use this component in Storyboard to show a ManualAccountsetupView. Just set this class to a View class and done,
+/// Important: Use ONLY in storyboard, other inits are not implemented
 final class ManualAccountSetupContainerView: UIView {
-    /// Set ManualAccountSetupViewDelegate of ManualAccountSetupView.
-    /// Used to handle envet from the ManualAccountSetupView
+    /// Conform to this delegate to handle envet from the ManualAccountSetupView
     weak var delegate: ManualAccountSetupViewDelegate? {
         didSet {
             //Nil case is handle in setupView getter
@@ -21,7 +21,7 @@ final class ManualAccountSetupContainerView: UIView {
         }
     }
 
-    /// Set TextFields delegate that are in ManualAccountSetupView.
+    /// Conform to this delegate to handle TextFields events inside this view
     weak var textFieldsDelegate: UITextFieldDelegate? {
         didSet {
             //Nil case is handle in setupView getter
@@ -37,7 +37,7 @@ final class ManualAccountSetupContainerView: UIView {
         }
     }
 
-    /// /ManualAccountSetupView hold by the container.
+    /// /ManualAccountSetupView hold by the container view (self).
     /// Should never be nil.  Nil case is handle in setupView getter, crash on debug and return nil in Prod
     var setupView: ManualAccountSetupView? {
         get {
@@ -77,7 +77,7 @@ final class ManualAccountSetupContainerView: UIView {
             layoutMarginsGuide.bottomAnchor).isActive = true
     }
 
-    /// Return all the textFields subview of this view container. In this case
+    /// Return all the textFields inside this view container. In this case
     func manualSetupViewTextFeilds() -> [UITextField] {
         guard let setupView = setupView else {
             //Error handle in setupView getter

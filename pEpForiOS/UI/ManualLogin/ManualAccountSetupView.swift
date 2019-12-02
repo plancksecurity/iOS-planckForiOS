@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// Protocol to handle ManualAccountSetupView events
 protocol ManualAccountSetupViewDelegate: class {
     func didPressCancelButton()
     func didPressNextButton()
@@ -24,6 +25,8 @@ extension ManualAccountSetupViewDelegate {
 }
 
 // Did not crate a nested class for LoginScrollView, since its not visible from Interface builder
+
+/// View used to set uo a manual account, during the login process
 final class ManualAccountSetupView: UIView {
     
     @IBOutlet weak var titleLabel: UILabel!
