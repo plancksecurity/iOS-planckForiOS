@@ -689,9 +689,40 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return item
     }
 
+    private func replaced(barButtonItems: [UIBarButtonItem],
+                          tag: Int,
+                          replacement: UIBarButtonItem) -> [UIBarButtonItem] {
+        return barButtonItems.map() {
+            if $0.tag == tag {
+                return replacement
+            } else {
+                return $0
+            }
+        }
+    }
+
     /// Shows the pEp logo (leading to the settings) in the master view bottom toolbar,
     /// or not, depending on `show`.
     private func showLogoInMasterToolbar(show: Bool) {
+        if show {
+            if let barItems = toolbarItems {
+                toolbarItems = replaced(barButtonItems: barItems,
+                                        tag: pEpButtonItemTag,
+                                        replacement: createPepButton())
+            } else {
+                toolbarItems = [createPepButton()]
+            }
+        } else {
+            if let barItems = toolbarItems {
+                let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
+                    barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+                    target: nil,
+                    action: nil)
+                toolbarItems = replaced(barButtonItems: barItems,
+                                        tag: pEpButtonItemTag,
+                                        replacement: flexibleSpace)
+            }
+        }
     }
 
     // MARK: - Observing the split view controller
