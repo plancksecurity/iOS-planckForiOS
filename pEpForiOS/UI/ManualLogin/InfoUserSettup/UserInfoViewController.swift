@@ -160,6 +160,7 @@ extension UserInfoViewController: SegueHandlerType {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        view.endEditing(true)
         switch segueIdentifier(for: segue) {
         case .IMAPSettings:
             if let destination = segue.destination as? IMAPSettingsViewController {

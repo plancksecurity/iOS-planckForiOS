@@ -58,7 +58,6 @@ class LoginViewController: BaseViewController {
         configureView()
         configureAppearance()
 
-        //TODO: ALE BORRAR
         setManualSetupButtonHidden(true)
     }
 

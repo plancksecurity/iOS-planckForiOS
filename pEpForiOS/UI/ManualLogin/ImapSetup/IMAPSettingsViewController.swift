@@ -115,6 +115,7 @@ extension IMAPSettingsViewController: SegueHandlerType {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        view.endEditing(true)
         switch segueIdentifier(for: segue) {
         case .SMTPSettings:
             if let destination = segue.destination as? SMTPSettingsViewController {
@@ -143,7 +144,7 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
 
     func didChangeFirst(_ textField: UITextField) {
         var vm = viewModelOrCrash()
-        vm.loginName = textField.text
+        vm.loginNameIMAP = textField.text
         model = vm
         updateView()
     }
@@ -257,7 +258,7 @@ extension IMAPSettingsViewController {
         }
         let vm = viewModelOrCrash()
 
-        setupView.firstTextField.text = vm.loginName
+        setupView.firstTextField.text = vm.loginNameIMAP
         setupView.secondTextField.text = vm.serverIMAP
         setupView.thirdTextField.text = String(vm.portIMAP)
         setupView.fourthTextField.text = vm.transportIMAP.localizedString()

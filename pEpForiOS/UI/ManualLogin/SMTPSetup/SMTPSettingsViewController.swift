@@ -121,7 +121,7 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
 
     func didChangeFirst(_ textField: UITextField) {
         var vm = viewModelOrCrash()
-        vm.loginName = textField.text
+        vm.loginNameSMTP = textField.text
         model = vm
         updateView()
     }
@@ -155,6 +155,7 @@ extension SMTPSettingsViewController: SegueHandlerType {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        view.endEditing(true)
         switch segueIdentifier(for: segue) {
         case .backToEmailListSegue:
             // nothing to do, since it's an unwind segue the targets already are configured
@@ -228,7 +229,7 @@ extension SMTPSettingsViewController {
         }
         let vm = viewModelOrCrash()
 
-        setupView.firstTextField.text = vm.loginName
+        setupView.firstTextField.text = vm.loginNameSMTP
         setupView.secondTextField.text = vm.serverSMTP
         setupView.thirdTextField.text = String(vm.portSMTP)
         setupView.fourthTextField.text = vm.transportSMTP.localizedString()

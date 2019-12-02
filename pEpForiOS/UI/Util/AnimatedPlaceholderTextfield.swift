@@ -54,7 +54,13 @@ class AnimatedPlaceholderTextfield: UITextField {
             updateTextFieldTextColor()
             updateTextFieldBackgroundColor()
             if text?.isEmpty == false {
-                moveUpPlaceHolderLabel()
+                DispatchQueue.main.async { [weak self] in
+                    guard let me = self else {
+                        Log.shared.lostMySelf()
+                        return
+                    }
+                    me.moveUpPlaceHolderLabel()
+                }
             }
         }
     }
@@ -103,12 +109,28 @@ extension AnimatedPlaceholderTextfield {
     }
 
     @objc private func textFieldDidBeginEditing() {
-        moveUpPlaceHolderLabel()
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.moveUpPlaceHolderLabel()
+        }
     }
 
     @objc private func textFieldDidEndEditing() {
-        guard let text = text, text.isEmpty else { return }
-        centerPlaceHolderLabel()
+        guard let text = text, text.isEmpty else {
+            //dont not center if text is not empty
+            return
+        }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.centerPlaceHolderLabel()
+        }
     }
 
     @objc private func textFieldDidChangeCharacters() {
