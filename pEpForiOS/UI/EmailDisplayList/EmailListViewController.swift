@@ -687,32 +687,30 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             action: nil)
     }
 
-    private func replaced(barButtonItems: [UIBarButtonItem],
-                          tag: Int,
-                          replacement: () -> UIBarButtonItem) -> [UIBarButtonItem] {
-        return barButtonItems.map() {
-            if $0.tag == tag {
-                return replacement()
-            } else {
-                return $0
-            }
-        }
-    }
-
     /// Shows the pEp logo (leading to the settings) in the master view bottom toolbar,
     /// or not, depending on `show`.
     private func showLogoInMasterToolbar(show: Bool) {
         if show {
             if let barItems = toolbarItems {
-                toolbarItems = replaced(barButtonItems: barItems,
-                                        tag: pEpButtonItemTag) { createPepBarButtonItem() }
+                toolbarItems = barItems.map {
+                    if $0.tag == pEpButtonItemTag {
+                        return createPepBarButtonItem()
+                    } else {
+                        return $0
+                    }
+                }
             } else {
                 toolbarItems = [createPepBarButtonItem()]
             }
         } else {
             if let barItems = toolbarItems {
-                toolbarItems = replaced(barButtonItems: barItems,
-                                        tag: pEpButtonItemTag) { createFlexibleBarButtonItem() }
+                toolbarItems = barItems.map {
+                    if $0.tag == pEpButtonItemTag {
+                        return createFlexibleBarButtonItem()
+                    } else {
+                        return $0
+                    }
+                }
             }
         }
     }
