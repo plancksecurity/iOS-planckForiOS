@@ -291,9 +291,11 @@ extension SMTPSettingsViewController {
 
         let nextButtonTittle = NSLocalizedString("Finish", comment: "Finish button title for manual account SMTP setup")
         setupView.nextButton.setTitle(nextButtonTittle, for: .normal)
+        setupView.nextRightButton.setTitle(nextButtonTittle, for: .normal)
 
         let cancelButtonTittle = NSLocalizedString("Back", comment: "Cancel button title for manual account SMTP setup")
         setupView.cancelButton.setTitle(cancelButtonTittle, for: .normal)
+        setupView.cancelLeftButton.setTitle(cancelButtonTittle, for: .normal)
 
         let userNamePlaceholder = NSLocalizedString("User Name", comment: "User Name placeholder for manual account SMTP setup")
         setupView.firstTextField.placeholder = userNamePlaceholder

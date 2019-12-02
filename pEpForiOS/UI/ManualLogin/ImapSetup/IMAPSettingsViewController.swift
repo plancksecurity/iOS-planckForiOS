@@ -206,9 +206,11 @@ extension IMAPSettingsViewController {
 
         let nextButtonTittle = NSLocalizedString("Next", comment: "Next button title for manual account IMAP setup")
         setupView.nextButton.setTitle(nextButtonTittle, for: .normal)
+        setupView.nextRightButton.setTitle(nextButtonTittle, for: .normal)
 
         let cancelButtonTittle = NSLocalizedString("Back", comment: "Cancel button title for manual account IMAP setup")
         setupView.cancelButton.setTitle(cancelButtonTittle, for: .normal)
+        setupView.cancelLeftButton.setTitle(cancelButtonTittle, for: .normal)
 
         let userNamePlaceholder = NSLocalizedString("User Name", comment: "User Name placeholder for manual account IMAP setup")
         setupView.firstTextField.placeholder = userNamePlaceholder
