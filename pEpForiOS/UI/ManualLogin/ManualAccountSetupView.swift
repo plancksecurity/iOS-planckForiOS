@@ -41,7 +41,8 @@ final class ManualAccountSetupView: UIView {
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var pEpSyncSwitch: UISwitch!
     @IBOutlet weak var pEpSyncView: UIView!
-
+    @IBOutlet weak var pEpSyncViewRight: UIView!
+    
     @IBOutlet weak var scrollView: LoginScrollView!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
 

@@ -34,6 +34,7 @@ final class ManualAccountSetupContainerView: UIView {
         didSet {
             //Nil case is handle in setupView getter
             setupView?.pEpSyncView.isHidden = pEpSyncViewIsHidden
+            setupView?.pEpSyncViewRight.isHidden = pEpSyncViewIsHidden
         }
     }
 
