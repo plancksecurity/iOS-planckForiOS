@@ -135,10 +135,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         title = model?.folderName
         navigationController?.title = title
 
-        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-            target: nil,
-            action: nil)
+        let flexibleSpace = createFlexibleBarButtonItem()
         toolbarItems?.append(contentsOf: [flexibleSpace, createPepButton()])
     }
 
@@ -281,10 +278,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         tempToolbarItems = toolbarItems
 
         // Flexible Space separation between the buttons
-        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-            target: nil,
-            action: nil)
+        let flexibleSpace = createFlexibleBarButtonItem()
 
         var img = UIImage(named: "icon-flagged")
 
@@ -452,10 +446,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
         vm.isFilterEnabled = !vm.isFilterEnabled
         if vm.isFilterEnabled {
-            let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-                target: nil,
-                action: nil)
+            let flexibleSpace = createFlexibleBarButtonItem()
             toolbarItems?.insert(textFilterButton, at: 1)
             toolbarItems?.insert(flexibleSpace, at: 1)
         } else {
@@ -689,6 +680,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return item
     }
 
+    private func createFlexibleBarButtonItem() -> UIBarButtonItem {
+        return UIBarButtonItem(
+        barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+        target: nil,
+        action: nil)
+    }
+
     private func replaced(barButtonItems: [UIBarButtonItem],
                           tag: Int,
                           replacement: () -> UIBarButtonItem) -> [UIBarButtonItem] {
@@ -714,12 +712,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         } else {
             if let barItems = toolbarItems {
                 toolbarItems = replaced(barButtonItems: barItems,
-                                        tag: pEpButtonItemTag) {
-                                            return UIBarButtonItem(
-                                                barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-                                                target: nil,
-                                                action: nil)
-                }
+                                        tag: pEpButtonItemTag) { createFlexibleBarButtonItem() }
             }
         }
     }
