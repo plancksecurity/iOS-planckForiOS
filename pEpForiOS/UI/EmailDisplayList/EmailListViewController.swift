@@ -132,6 +132,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         title = model?.folderName
         navigationController?.title = title
 
+        // save the storyboard (original) toolbar items
+        retrieveStoryboardToolbarItems()
+
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
             target: self)
@@ -684,9 +687,20 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     // MARK: - Manipulating the (master) bottom toolbar
 
+    private var toolbarState = EmailListViewControllerToolbarState()
+
+    /// Saves the toolbar items from storyboard
+    private func retrieveStoryboardToolbarItems() {
+        if let items = toolbarItems {
+            toolbarState.storyboardToolbarItems = items
+        }
+    }
+
     /// Shows the pEp logo (leading to the settings) in the master view bottom toolbar,
     /// or not, depending on `show`.
     private func showLogoInMasterToolbar(show: Bool) {
+        toolbarState.showPepButtonInMaster = show
+        installNewToolbar()
     }
 
     /// - Returns: The items desired in the toolbar, depending on the current UI state.
