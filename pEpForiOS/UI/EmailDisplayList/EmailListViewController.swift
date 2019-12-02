@@ -675,6 +675,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     /// With this tag we recognize our own created flexible space buttons.
     let flexibleSpaceButtonItemTag = 77
 
+    /// Our own factory method for creating pEp bar button items,
+    /// tagged so we recognize them later.
     private func createPepBarButtonItem() -> UIBarButtonItem {
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
@@ -683,6 +685,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return item
     }
 
+    /// Our own factory method for creating flexible space bar button items,
+    /// tagged so we recognize them later.
     private func createFlexibleBarButtonItem() -> UIBarButtonItem {
         let item = UIBarButtonItem(
             barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
@@ -692,6 +696,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return item
     }
 
+    /// - Returns: A new array of `UIBarButtonItem`s with trailing flexible whitespace
+    /// removed (at least the ones created by our own factory method).
+    /// - Parameter barButtonItems: The bar button items to remove from.
     private func trailingFlexibleSpaceRemoved(barButtonItems: [UIBarButtonItem]) -> [UIBarButtonItem] {
         var theItems = barButtonItems
         while true {
