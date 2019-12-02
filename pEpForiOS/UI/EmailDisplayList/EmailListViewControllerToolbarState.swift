@@ -11,8 +11,19 @@ import Foundation
 /// The possible, toolbar-relevant states of the email list view, that is
 /// the states concerning the master toolbar.
 struct EmailListViewControllerToolbarState {
+    private var _storyboardToolbarItems = [UIBarButtonItem]()
+
     /// The (original) toolbar items from storyboard.
-    var storyboardToolbarItems = [UIBarButtonItem]()
+    /// - Note: Only items with a non-nil action are considered to be real items,
+    /// not just flexible space.
+    var storyboardToolbarItems: [UIBarButtonItem] {
+        get {
+            return _storyboardToolbarItems
+        }
+        set {
+            _storyboardToolbarItems = newValue.filter() { $0.action != nil }
+        }
+    }
 
     /// Should the unflag button be shown?
     var showUnflagButton: Bool
