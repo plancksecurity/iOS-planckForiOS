@@ -23,6 +23,7 @@ extension ManualAccountSetupViewDelegate {
     func didChangePEPSyncSwitch(isOn: Bool){}
 }
 
+// Did not crate a nested class for LoginScrollView, since its not visible from Interface builder
 final class ManualAccountSetupView: UIView {
     
     @IBOutlet weak var titleLabel: UILabel!

@@ -8,6 +8,8 @@
 
 import UIKit
 
+// Did not crate a nested class for LoginScrollView, since its not visible from Interface builder
+
 /// Use ONLY in storyboard, other inits are not implemented
 final class ManualAccountSetupContainerView: UIView {
     /// Set ManualAccountSetupViewDelegate of ManualAccountSetupView.
