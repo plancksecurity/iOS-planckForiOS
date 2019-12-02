@@ -40,11 +40,12 @@ extension KeySyncHandshakeService {
             // display the wizzard.
             return
         }
-        guard !wizzard.isCurrentlyShowingSuccessfullyGroupedView else {
-            // We want to dismiss any wizzard view but the SuccessfullyGrouped one.
-            return
-        }
         DispatchQueue.main.async {
+            guard !wizzard.isCurrentlyShowingSuccessfullyGroupedView else {
+                // We want to dismiss any wizzard view but the SuccessfullyGrouped one.
+                return
+            }
+
             wizzard.dismiss()
         }
     }
