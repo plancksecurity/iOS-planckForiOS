@@ -27,6 +27,10 @@ extension ManualAccountSetupViewDelegate {
 // Did not crate a nested class for LoginScrollView, since its not visible from Interface builder
 
 /// View used to set uo a manual account, during the login process
+/// This view use size constraints and size installation.
+/// Right and left naming in the properties, indicate that this property is  placed at the right or left side of the scrollview.
+/// Witch one will be use deppend on device type and device orientation.
+/// Properties without left or right naming, are placed at the bottom of the scrollView. Default iPhone Potrait behaviour
 final class ManualAccountSetupView: UIView {
     
     @IBOutlet weak var titleLabel: UILabel!
