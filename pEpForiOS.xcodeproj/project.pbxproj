@@ -221,7 +221,6 @@
 		37816549231035F000B967E3 /* PEPAlertViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816548231035F000B967E3 /* PEPAlertViewModelTest.swift */; };
 		3791A46122BA77C900A9E534 /* KeySyncServiceHandshakeDelegateMoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3791A46022BA77C900A9E534 /* KeySyncServiceHandshakeDelegateMoc.swift */; };
 		37A710E0233B5AA5001FEAF0 /* UIHelper+PEP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */; };
-		37B1289C238EB28100A1FF6F /* IMAPSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B1289B238EB28100A1FF6F /* IMAPSettingsViewController.swift */; };
 		37B1289E2391182900A1FF6F /* SMTPSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B1289D2391182900A1FF6F /* SMTPSettingsViewController.swift */; };
 		37C3C0E62260C64D003E290C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C3C0E52260C64D003E290C /* Log.swift */; };
 		37F615C92386B14A001AAE48 /* LoginScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F615C82386B14A001AAE48 /* LoginScrollView.swift */; };
@@ -688,7 +687,6 @@
 		37816548231035F000B967E3 /* PEPAlertViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewModelTest.swift; sourceTree = "<group>"; };
 		3791A46022BA77C900A9E534 /* KeySyncServiceHandshakeDelegateMoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncServiceHandshakeDelegateMoc.swift; sourceTree = "<group>"; };
 		37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIHelper+PEP.swift"; sourceTree = "<group>"; };
-		37B1289B238EB28100A1FF6F /* IMAPSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMAPSettingsViewController.swift; sourceTree = "<group>"; };
 		37B1289D2391182900A1FF6F /* SMTPSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTPSettingsViewController.swift; sourceTree = "<group>"; };
 		37C3C0E52260C64D003E290C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		37F272EF237075D9005C51AA /* EditableAccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
@@ -2224,7 +2222,6 @@
 			isa = PBXGroup;
 			children = (
 				43ED53661CC77F95006AB156 /* IMAPSettingsTableViewController.swift */,
-				37B1289B238EB28100A1FF6F /* IMAPSettingsViewController.swift */,
 			);
 			path = ImapSetup;
 			sourceTree = "<group>";
@@ -3066,7 +3063,6 @@
 				43293EFB1EB9DD6700EEE010 /* UIViewController+Extension.swift in Sources */,
 				152A39D521905C3E00D9F8E4 /* SubjectCellViewModel.swift in Sources */,
 				37816542230EC72C00B967E3 /* PEPAlertViewController.swift in Sources */,
-				37B1289C238EB28100A1FF6F /* IMAPSettingsViewController.swift in Sources */,
 				00FD0CE62101F7D700BA0C56 /* ScreenComposerProtocol.swift in Sources */,
 				3705703B22B7C793002E3AAD /* ActionCellViewModel.swift in Sources */,
 				3705096C22DC8C1800CB73D6 /* KeyInputView.swift in Sources */,
