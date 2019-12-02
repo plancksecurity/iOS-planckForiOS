@@ -43,6 +43,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                                             target: nil,
                                                             action: nil)
 
+    /// With this tag we recognize the pEp button item
+    let pEpButtonItemTag = 7
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -135,6 +138,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
             target: self)
+        item.tag = pEpButtonItemTag
+
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
             target: nil,
@@ -339,6 +344,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         let pEp = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
             target: self)
+        pEp.tag = pEpButtonItemTag
+
         toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
                         flexibleSpace, deleteToolbarButton, flexibleSpace,
                         moveToolbarButton, flexibleSpace, pEp] as? [UIBarButtonItem]
