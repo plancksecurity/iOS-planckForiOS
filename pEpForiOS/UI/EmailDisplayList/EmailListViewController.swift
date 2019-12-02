@@ -135,16 +135,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         title = model?.folderName
         navigationController?.title = title
 
-        let item = UIBarButtonItem.getPEPButton(
-            action: #selector(showSettingsViewController),
-            target: self)
-        item.tag = pEpButtonItemTag
-
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
             target: nil,
             action: nil)
-        toolbarItems?.append(contentsOf: [flexibleSpace,item])
+        toolbarItems?.append(contentsOf: [flexibleSpace, createPepButton()])
     }
 
     private func setUpTextFilter() {
@@ -341,14 +336,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         moveToolbarButton?.isEnabled = false
 
-        let pEp = UIBarButtonItem.getPEPButton(
-            action: #selector(showSettingsViewController),
-            target: self)
-        pEp.tag = pEpButtonItemTag
-
         toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
                         flexibleSpace, deleteToolbarButton, flexibleSpace,
-                        moveToolbarButton, flexibleSpace, pEp] as? [UIBarButtonItem]
+                        moveToolbarButton, flexibleSpace, createPepButton()] as? [UIBarButtonItem]
 
 
         //right navigation button to ensure the logic
@@ -690,6 +680,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     // MARK: - Manipulating the (master) bottom toolbar
+
+    private func createPepButton() -> UIBarButtonItem {
+        let item = UIBarButtonItem.getPEPButton(
+            action: #selector(showSettingsViewController),
+            target: self)
+        item.tag = pEpButtonItemTag
+        return item
+    }
 
     /// Shows the pEp logo (leading to the settings) in the master view bottom toolbar,
     /// or not, depending on `show`.
