@@ -236,11 +236,7 @@ extension IMAPSettingsViewController {
 
         if let popoverPresentationController = alertController.popoverPresentationController {
             popoverPresentationController.sourceView = sender
-            let senderSourceRect = CGRect(x: sender.center.x,
-                                    y: sender.center.y,
-                                    width: sender.bounds.width,
-                                    height: sender.bounds.height)
-            popoverPresentationController.sourceRect = senderSourceRect
+            popoverPresentationController.sourceRect = sender.bounds
         }
 
         alertController.setupActionFromConnectionTransport(.plain, block: block)

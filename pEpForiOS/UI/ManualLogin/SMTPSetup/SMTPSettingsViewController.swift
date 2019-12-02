@@ -321,6 +321,7 @@ extension SMTPSettingsViewController {
 
         if let popoverPresentationController = alertController.popoverPresentationController {
             popoverPresentationController.sourceView = sender
+            popoverPresentationController.sourceRect = sender.bounds
         }
 
         alertController.setupActionFromConnectionTransport(.plain, block: block)
