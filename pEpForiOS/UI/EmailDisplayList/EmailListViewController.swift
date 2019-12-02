@@ -682,9 +682,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     private func createFlexibleBarButtonItem() -> UIBarButtonItem {
         return UIBarButtonItem(
-        barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-        target: nil,
-        action: nil)
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+            target: nil,
+            action: nil)
     }
 
     private func replaced(barButtonItems: [UIBarButtonItem],
