@@ -687,22 +687,42 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             action: nil)
     }
 
+    private func removeTrailingFlexibleSpace(barButtonItems: [UIBarButtonItem]?) {
+        if var theItems = barButtonItems {
+            while true {
+                if let lastItem = theItems.last {
+                    if lastItem.action == nil {
+                        theItems.removeLast()
+                    } else {
+                        break
+                    }
+                } else {
+                    break
+                }
+            }
+        }
+    }
+
     /// Shows the pEp logo (leading to the settings) in the master view bottom toolbar,
     /// or not, depending on `show`.
     private func showLogoInMasterToolbar(show: Bool) {
         if show {
             if let barItems = toolbarItems {
-                toolbarItems = barItems.map {
+                let newItems = barItems.map {
                     $0.tag == pEpButtonItemTag ? createPepBarButtonItem() : $0
                 }
+                removeTrailingFlexibleSpace(barButtonItems: newItems)
+                toolbarItems = newItems
             } else {
                 toolbarItems = [createPepBarButtonItem()]
             }
         } else {
             if let barItems = toolbarItems {
-                toolbarItems = barItems.map {
+                let newItems = barItems.map {
                     $0.tag == pEpButtonItemTag ? createFlexibleBarButtonItem() : $0
                 }
+                removeTrailingFlexibleSpace(barButtonItems: newItems)
+                toolbarItems = newItems
             }
         }
     }
