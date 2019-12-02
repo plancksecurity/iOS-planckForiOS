@@ -691,10 +691,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     private func replaced(barButtonItems: [UIBarButtonItem],
                           tag: Int,
-                          replacement: UIBarButtonItem) -> [UIBarButtonItem] {
+                          replacement: () -> UIBarButtonItem) -> [UIBarButtonItem] {
         return barButtonItems.map() {
             if $0.tag == tag {
-                return replacement
+                return replacement()
             } else {
                 return $0
             }
@@ -707,20 +707,19 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if show {
             if let barItems = toolbarItems {
                 toolbarItems = replaced(barButtonItems: barItems,
-                                        tag: pEpButtonItemTag,
-                                        replacement: createPepButton())
+                                        tag: pEpButtonItemTag) { createPepButton() }
             } else {
                 toolbarItems = [createPepButton()]
             }
         } else {
             if let barItems = toolbarItems {
-                let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-                    barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-                    target: nil,
-                    action: nil)
                 toolbarItems = replaced(barButtonItems: barItems,
-                                        tag: pEpButtonItemTag,
-                                        replacement: flexibleSpace)
+                                        tag: pEpButtonItemTag) {
+                                            return UIBarButtonItem(
+                                                barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+                                                target: nil,
+                                                action: nil)
+                }
             }
         }
     }
