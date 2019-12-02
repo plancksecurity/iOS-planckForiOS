@@ -327,9 +327,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         moveToolbarButton?.isEnabled = false
 
-        toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
-                        flexibleSpace, deleteToolbarButton, flexibleSpace,
-                        moveToolbarButton, flexibleSpace, createPepBarButtonItem()] as? [UIBarButtonItem]
+        if var newToolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
+                                  flexibleSpace, deleteToolbarButton, flexibleSpace,
+                                  moveToolbarButton, flexibleSpace] as? [UIBarButtonItem] {
+            if shouldShowPepButtonInMasterToolbar {
+                newToolbarItems.append(createPepBarButtonItem())
+            }
+            toolbarItems = newToolbarItems
+        }
 
 
         //right navigation button to ensure the logic
@@ -675,6 +680,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     /// With this tag we recognize our own created flexible space buttons.
     let flexibleSpaceButtonItemTag = 77
 
+    /// True if the pEp button on the left/master side should be shown.
+    var shouldShowPepButtonInMasterToolbar = true
+
     /// Our own factory method for creating pEp bar button items,
     /// tagged so we recognize them later.
     private func createPepBarButtonItem() -> UIBarButtonItem {
@@ -718,6 +726,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     /// Shows the pEp logo (leading to the settings) in the master view bottom toolbar,
     /// or not, depending on `show`.
     private func showLogoInMasterToolbar(show: Bool) {
+        // persist this state
+        shouldShowPepButtonInMasterToolbar = show
+
         if show {
             if let barItems = toolbarItems {
                 let newItems = barItems.map {
