@@ -689,8 +689,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     func showLogoInMasterToolbar(show: Bool) {
     }
 
+    /// - Returns: The items desired in the toolbar, depending on the current UI state.
+    func currentToolbarItems() -> [UIBarButtonItem] {
+        return []
+    }
+
     /// Changes the toolbar based on the current UI state.
     func installNewToolbar() {
+        toolbarItems = currentToolbarItems()
     }
 
     // MARK: - Observing the split view controller
