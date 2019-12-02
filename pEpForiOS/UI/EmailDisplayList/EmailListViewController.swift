@@ -32,6 +32,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     private var swipeDelete : SwipeAction? = nil
 
+    /// Whenever we show the button in the lower toolbar, this is the reference.
+    /// This way we both track the actual button, and also know whether it's currently
+    /// shown or not.
+    private var pEpLogoButton: UIBarButtonItem?
+
     // MARK: - Outlets
     
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
@@ -135,6 +140,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
             target: self)
+        pEpLogoButton = item
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
             target: nil,
@@ -687,6 +693,44 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     /// Shows the pEp logo (leading to the settings) in the master view bottom toolbar,
     /// or not, depending on `show`.
     func showLogoInMasterToolbar(show: Bool) {
+        if show {
+            // todo
+        } else {
+            if pEpLogoButton == nil {
+                // button currently not shown
+                return
+            }
+            if var items = toolbarItems {
+                // When we found the pEp button's index, this will be it.
+                var indexOfButton: Int?
+
+                for i in 0..<items.count {
+                    if items[i] == pEpLogoButton {
+                        // Found the button, stop the search.
+                        indexOfButton = i
+                        break
+                    }
+                }
+                if let theIndex = indexOfButton {
+                    // pEp button is currently shown
+                    if theIndex > 0 {
+                        // pEp button is not the first item
+                        if theIndex == (items.count - 1) {
+                            // pEp button is the last item, so remove the space before it,
+                            // and the button itself
+                            items.remove(at: theIndex - 1)
+                            items.remove(at: theIndex - 1)
+                        } else {
+                            // pEp button is somewhere in the middle, so remove the
+                            // flexible space before and after as well
+                            items.remove(at: theIndex - 1)
+                            items.remove(at: theIndex - 1)
+                            items.remove(at: theIndex - 1)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // MARK: - Observing the split view controller
