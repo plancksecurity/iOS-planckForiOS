@@ -35,10 +35,11 @@ class LoginViewController: BaseViewController {
 
     var loginViewModel: LoginViewModel?
     var offerManualSetup = false
-    /// Set in prepare for segue, if the user selected an account with ouath from the menu
+    /// Use this property if is an oauth login. This will hide password TextFiled and show the Oauth screen.
     var isOauthAccount = false {
         didSet {
             password.isHidden = isOauthAccount
+            password.isEnabled = !isOauthAccount
         }
     }
     var isCurrentlyVerifying = false {
@@ -409,7 +410,8 @@ extension LoginViewController {
     }
 
     private func configureView() {
-        password.isEnabled = true
+        password.isHidden = isOauthAccount
+        password.isEnabled = !isOauthAccount
 
         loginButton.convertToLoginButton(
             placeholder: NSLocalizedString("Log In", comment: "Log in button in Login View"))
