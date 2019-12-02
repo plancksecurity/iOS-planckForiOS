@@ -693,11 +693,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if show {
             if let barItems = toolbarItems {
                 toolbarItems = barItems.map {
-                    if $0.tag == pEpButtonItemTag {
-                        return createPepBarButtonItem()
-                    } else {
-                        return $0
-                    }
+                    $0.tag == pEpButtonItemTag ? createPepBarButtonItem() : $0
                 }
             } else {
                 toolbarItems = [createPepBarButtonItem()]
@@ -705,11 +701,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         } else {
             if let barItems = toolbarItems {
                 toolbarItems = barItems.map {
-                    if $0.tag == pEpButtonItemTag {
-                        return createFlexibleBarButtonItem()
-                    } else {
-                        return $0
-                    }
+                    $0.tag == pEpButtonItemTag ? createFlexibleBarButtonItem() : $0
                 }
             }
         }
