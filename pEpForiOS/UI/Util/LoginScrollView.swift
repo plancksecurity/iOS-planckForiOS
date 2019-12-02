@@ -9,17 +9,22 @@
 import UIKit
 
 protocol LoginScrollViewDelegate: class {
+    /// Bottom constraint of the scroll view. Used to change the hegiht of the scrollView, modifying the constant
     var bottomConstraint: NSLayoutConstraint { get }
-
+    /// Current  scrollView subViews first responder that will be center
     var firstResponder: UIView? { get }
 }
 
 
 // Did not crate a nested class for LoginScrollView, since its not visible from Interface builder
 @IBDesignable
-class LoginScrollView: UIScrollView {
+/// Use this ScrollView to keep the first responder (typically TextFeilds) centered in the scrollView
+final class LoginScrollView: UIScrollView {
+
+    /// Use this property to enable/disable auto scroll to make visible, the firstResponder when editing or start editing
     @IBInspectable var makeVisibleAutoScroll: Bool = false
 
+    /// Use this delegate to give the scrollView information to be able to center the firstResponder
     weak var loginScrollViewDelegate: LoginScrollViewDelegate?
 
     override func awakeFromNib() {
@@ -31,6 +36,10 @@ class LoginScrollView: UIScrollView {
         super.scrollRectToVisible(rect, animated: animated)
     }
 
+    /// Use this funtion to center a first responder subview of the ScrollView
+    /// - Parameters:
+    ///   - sender: current first responder
+    ///   - animated: enable/disable animating scrolling to center first responder
     func scrollAndMakeVisible(_ sender: UIView,
                               animated: Bool = true) {
         let scrollViewHeight = frame.maxY
