@@ -136,7 +136,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         navigationController?.title = title
 
         let flexibleSpace = createFlexibleBarButtonItem()
-        toolbarItems?.append(contentsOf: [flexibleSpace, createPepButton()])
+        toolbarItems?.append(contentsOf: [flexibleSpace, createPepBarButtonItem()])
     }
 
     private func setUpTextFilter() {
@@ -332,7 +332,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
                         flexibleSpace, deleteToolbarButton, flexibleSpace,
-                        moveToolbarButton, flexibleSpace, createPepButton()] as? [UIBarButtonItem]
+                        moveToolbarButton, flexibleSpace, createPepBarButtonItem()] as? [UIBarButtonItem]
 
 
         //right navigation button to ensure the logic
@@ -672,7 +672,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     // MARK: - Manipulating the (master) bottom toolbar
 
-    private func createPepButton() -> UIBarButtonItem {
+    private func createPepBarButtonItem() -> UIBarButtonItem {
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
             target: self)
@@ -705,9 +705,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if show {
             if let barItems = toolbarItems {
                 toolbarItems = replaced(barButtonItems: barItems,
-                                        tag: pEpButtonItemTag) { createPepButton() }
+                                        tag: pEpButtonItemTag) { createPepBarButtonItem() }
             } else {
-                toolbarItems = [createPepButton()]
+                toolbarItems = [createPepBarButtonItem()]
             }
         } else {
             if let barItems = toolbarItems {
