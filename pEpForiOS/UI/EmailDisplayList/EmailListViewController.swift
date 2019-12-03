@@ -675,17 +675,17 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     // MARK: - Manipulating the (master) bottom toolbar
 
-    /// With this tag we recognize the pEp button item
+    /// With this tag we recognize the pEp button item, for easy removal later.
     let pEpButtonItemTag = 7
 
-    /// With this tag we recognize our own created flexible space buttons.
+    /// With this tag we recognize our own created flexible space buttons, for easy removal later.
     let flexibleSpaceButtonItemTag = 77
 
     /// True if the pEp button on the left/master side should be shown.
     var shouldShowPepButtonInMasterToolbar = true
 
     /// Our own factory method for creating pEp bar button items,
-    /// tagged so we recognize them later.
+    /// tagged so we recognize them later, for easy removal.
     private func createPepBarButtonItem() -> UIBarButtonItem {
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
@@ -695,7 +695,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     /// Our own factory method for creating flexible space bar button items,
-    /// tagged so we recognize them later.
+    /// tagged so we recognize them later, for easy removal.
     private func createFlexibleBarButtonItem() -> UIBarButtonItem {
         let item = UIBarButtonItem(
             barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
