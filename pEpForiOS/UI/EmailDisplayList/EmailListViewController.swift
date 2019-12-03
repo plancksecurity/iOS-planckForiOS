@@ -80,6 +80,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             //                settingsChanged()
             //            }
 
+            checkSplitViewState()
             watchDetailView()
         }
     }
@@ -748,6 +749,28 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
+    /// Tries to deduce from the split view arrangement whether to show the
+    /// master toolbar pEp logo or not.
+    private func checkSplitViewState() {
+        if let spvc = splitViewController {
+            if spvc.viewControllers.count == 1 {
+                // only master is shown
+                showLogoInMasterToolbar(show: true)
+            } else if spvc.viewControllers.count == 2 {
+                // detail is shown, check further
+                var showMasterLogo = true
+                if let vc = spvc.viewControllers[safe: 1] {
+                    if vc is NothingSelectedViewController {
+                        showMasterLogo = true
+                    } else {
+                        showMasterLogo = false
+                    }
+                }
+                showLogoInMasterToolbar(show: showMasterLogo)
+            }
+        }
+    }
+
     // MARK: - Observing the split view controller
 
     /// The key path for observing the view controllers of the split view controller,
@@ -787,15 +810,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
 
-        if let spvc = splitViewController {
-            if spvc.viewControllers.count == 1 {
-                // only master is shown
-                showLogoInMasterToolbar(show: true)
-            } else if spvc.viewControllers.count == 2 {
-                // detail is shown
-                showLogoInMasterToolbar(show: false)
-            }
-        }
+        checkSplitViewState()
     }
 
     // MARK: -
