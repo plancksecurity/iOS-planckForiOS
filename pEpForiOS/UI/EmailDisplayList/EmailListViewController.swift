@@ -731,20 +731,24 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         shouldShowPepButtonInMasterToolbar = show
 
         if show {
-            if let barItems = toolbarItems {
-                let newItems = barItems.map {
-                    $0.tag == pEpButtonItemTag ? createPepBarButtonItem() : $0
+            if var barItems = toolbarItems {
+                if let lastItem = barItems.last, lastItem.tag == pEpButtonItemTag {
+                    // already there
+                    return
+                } else {
+                    barItems.append(contentsOf: [createFlexibleBarButtonItem(),
+                                                 createPepBarButtonItem()])
                 }
-                toolbarItems = trailingFlexibleSpaceRemoved(barButtonItems: newItems)
+                toolbarItems = barItems
             } else {
                 toolbarItems = [createPepBarButtonItem()]
             }
         } else {
-            if let barItems = toolbarItems {
-                let newItems = barItems.map {
-                    $0.tag == pEpButtonItemTag ? createFlexibleBarButtonItem() : $0
+            if var barItems = toolbarItems {
+                if let lastItem = barItems.last, lastItem.tag == pEpButtonItemTag {
+                    barItems.removeLast()
                 }
-                toolbarItems = trailingFlexibleSpaceRemoved(barButtonItems: newItems)
+                toolbarItems = trailingFlexibleSpaceRemoved(barButtonItems: barItems)
             }
         }
     }
