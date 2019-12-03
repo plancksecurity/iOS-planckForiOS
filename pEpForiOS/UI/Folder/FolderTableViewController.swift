@@ -257,14 +257,14 @@ extension FolderTableViewController: SegueHandlerType {
         case .newAccountIphone, .newAccountIpad:
             guard
                 let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? LoginViewController else {
+                let vc = nav.rootViewController as? AccountTypeSelectorViewController else {
                     Log.shared.errorAndCrash("Missing VCs")
                     return
             }
             nav.modalPresentationStyle = .fullScreen
             vc.appConfig = self.appConfig
             vc.hidesBottomBarWhenPushed = true
-            vc.delegate = self
+            //vc.delegate = self
 
         case .settingsSegue:
             guard let dvc = segue.destination as? SettingsTableViewController else {
