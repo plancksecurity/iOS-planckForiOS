@@ -718,15 +718,15 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
-    func reloadData(viewModel: EmailListViewModel) {
+    func reloadData(viewModel: EmailDisplayViewModel) {
         tableView.reloadData()
     }
 
-    func willReceiveUpdates(viewModel: EmailListViewModel) {
+    func willReceiveUpdates(viewModel: EmailDisplayViewModel) {
         tableView.beginUpdates()
     }
 
-    func allUpdatesReceived(viewModel: EmailListViewModel) {
+    func allUpdatesReceived(viewModel: EmailDisplayViewModel) {
         tableView.endUpdates()
     }
 
@@ -802,12 +802,12 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
-    func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath]) {
+    func emailListViewModel(viewModel: EmailDisplayViewModel, didInsertDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = nil
         tableView.insertRows(at: indexPaths, with: .automatic)
     }
 
-    func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPaths: [IndexPath]) {
+    func emailListViewModel(viewModel: EmailDisplayViewModel, didRemoveDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow ?? lastSelectedIndexPath
 
         if let swipeDelete = self.swipeDelete {
@@ -821,18 +821,18 @@ extension EmailListViewController: EmailListViewModelDelegate {
             showNoMessageSelectedIfNeeded()
         }
     }
-    func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
+    func emailListViewModel(viewModel: EmailDisplayViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.reloadRows(at: indexPaths, with: .none)
     }
 
-    func emailListViewModel(viewModel: EmailListViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath) {
+    func emailListViewModel(viewModel: EmailDisplayViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.moveRow(at: atIndexPath, to: toIndexPath)
         moveSelectionIfNeeded(fromIndexPath: atIndexPath, toIndexPath: toIndexPath)
     }
 
-    func emailListViewModel(viewModel: EmailListViewModel,
+    func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didChangeSeenStateForDataAt indexPaths: [IndexPath]) {
         guard let vm = model else {
             Log.shared.errorAndCrash("Invalid state")
