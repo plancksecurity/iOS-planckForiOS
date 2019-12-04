@@ -16,7 +16,9 @@ public enum Provider {
 
 class AccountTypeSelectorViewModel {
 
+    /// list of providers to show
     var providers = [Provider]()
+
     init() {
         providers.append(.GMail)
         providers.append(.Other)
@@ -32,6 +34,8 @@ class AccountTypeSelectorViewModel {
         return providers[index]
     }
 
+    /// returns the text corresponding to the provider
+    /// - Parameter provider: provider to obtain it's text
     func fileNameOrText(provider: Provider) -> String {
         switch provider {
         case .GMail:

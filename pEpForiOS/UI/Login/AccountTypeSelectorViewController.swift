@@ -51,7 +51,6 @@ class AccountTypeSelectorViewController: BaseViewController {
 }
 
 extension AccountTypeSelectorViewController: UICollectionViewDelegate {
-
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         SelectedIndexPath = indexPath
         performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
@@ -59,7 +58,6 @@ extension AccountTypeSelectorViewController: UICollectionViewDelegate {
 }
 
 extension AccountTypeSelectorViewController: UICollectionViewDataSource {
-
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -69,7 +67,8 @@ extension AccountTypeSelectorViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "providerCell", for: indexPath) as? imageCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "providerCell",
+                                                for: indexPath) as? imageCollectionViewCell else {
             return UICollectionViewCell()
         }
         let cellProvider = viewModel[indexPath.row]
@@ -79,16 +78,13 @@ extension AccountTypeSelectorViewController: UICollectionViewDataSource {
         case .Other:
             cell.configure(withText: viewModel.fileNameOrText(provider: cellProvider))
         }
-//        switch cellProvider {
-//        case .Gmail:
-//            cell.configure
-//        }
         return cell
     }
 }
 
 extension AccountTypeSelectorViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        // this forces the collection view to have only 2 colums and all the cells with the same size
         let cellHeight = (view.frame.width*0.67)/2
         return CGSize(width: cellHeight, height: cellHeight)
     }
@@ -117,16 +113,20 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
     }
 }
 
-
+/// Collection view cell class
 public class imageCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet var imageToFill: UIImageView!
 
+    /// adds an image loaded from the file name
+    /// - Parameter fileName: file name to load
     func configure(withFileName fileName: String) {
         let image = UIImage(named: fileName)
         imageToFill.image = image
     }
 
+    /// adds an image created from a text
+    /// - Parameter text: source text
     func configure(withText text: String) {
         let image = text.image(color: UIColor.pEpGreen)
         imageToFill.image = image
