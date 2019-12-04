@@ -45,9 +45,7 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
         firstResponder(!viewModelOrCrash().isValidName)
     }
 
-    /**
-     Puts the model into the view, in case it was set by the invoking view controller.
-     */
+    /// Puts the model into the view, in case it was set by the invoking view controller.
     func updateView() {
         guard let setupView = manualAccountSetupContainerView.setupView else {
             //If SetupViewError is nil is handle in setupView getter
