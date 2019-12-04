@@ -255,7 +255,6 @@ class EmailViewController: BaseTableViewController {
 
             break
         case .allVisible:
-            removePEPButtons()
             var leftBarButtonItems: [UIBarButtonItem] = []
             if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems?.first {
                 leftBarButtonItems.append(unwrappedLeftBarButtonItems)
@@ -673,44 +672,6 @@ extension EmailViewController: SegueHandlerType {
         } else {
             Log.shared.errorAndCrash("Unsupported input")
             return .replyFrom
-        }
-    }
-
-    private func removePEPButtons() {
-
-        let useToolbarItemsDirectly = currentSplitViewMode() == .masterAndDetail
-
-        var barButtonItems = useToolbarItemsDirectly ?
-            toolbarItems ?? [] : navigationItem.rightBarButtonItems ?? []
-
-        if !onlySplitViewMasterIsShown {
-            var itemsToRemove = [UIBarButtonItem]()
-            for item in barButtonItems {
-                if item.tag == BarButtonType.settings.rawValue {
-                    itemsToRemove.append(item)
-                }
-            }
-
-            for itemToRemove in itemsToRemove {
-                var positionToRemove: Int? = nil
-
-                for i in 0..<barButtonItems.count {
-                    if barButtonItems[i] == itemToRemove {
-                        positionToRemove = i
-                        break
-                    }
-                }
-
-                if let thePosition = positionToRemove {
-                    barButtonItems.remove(at: thePosition)
-                }
-            }
-
-            if useToolbarItemsDirectly {
-                toolbarItems = barButtonItems
-            } else {
-                navigationItem.rightBarButtonItems = barButtonItems
-            }
         }
     }
 
