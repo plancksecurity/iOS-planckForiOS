@@ -5,6 +5,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -219,6 +220,53 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aWP-YW-F6w" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4490" y="-8"/>
+        </scene>
+        <!--Email Detail View Controller-->
+        <scene sceneID="RGR-UH-VHw">
+            <objects>
+                <viewController id="fRo-D2-Fjz" customClass="EmailDetailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="JE8-0O-ekz">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="HP3-Sj-MgZ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="xv5-CC-1ep">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="EmailDetailViewCell" id="kIE-Eq-O7W">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="tKR-Vh-qyF">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Bie-ml-VZ0" firstAttribute="trailing" secondItem="HP3-Sj-MgZ" secondAttribute="trailing" id="9mB-JZ-MRy"/>
+                            <constraint firstItem="HP3-Sj-MgZ" firstAttribute="top" secondItem="Bie-ml-VZ0" secondAttribute="top" id="AU6-e6-oDf"/>
+                            <constraint firstItem="Bie-ml-VZ0" firstAttribute="bottom" secondItem="HP3-Sj-MgZ" secondAttribute="bottom" id="Gcc-f9-Fhp"/>
+                            <constraint firstItem="HP3-Sj-MgZ" firstAttribute="leading" secondItem="JE8-0O-ekz" secondAttribute="leading" id="utt-jH-r7F"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Bie-ml-VZ0"/>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="HP3-Sj-MgZ" id="ar9-Hu-K2J"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NqX-Lg-wmy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5339" y="-18"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jm1-97-n5e">
@@ -622,7 +670,7 @@
                 <viewControllerPlaceholder storyboardName="Handshake" id="Dbs-KG-RkX" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vev-AJ-nPB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6101" y="-393"/>
+            <point key="canvasLocation" x="6590" y="-388"/>
         </scene>
         <!--AccountCreation-->
         <scene sceneID="0vj-GL-XbM">
@@ -904,9 +952,9 @@
         <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="d5O-Wk-gjZ"/>
-        <segue reference="JbP-D9-Vpg"/>
+        <segue reference="RTR-We-Kc1"/>
+        <segue reference="mZj-Mg-VzM"/>
         <segue reference="5Kn-pc-9Jc"/>
-        <segue reference="6vv-Jr-8Nm"/>
+        <segue reference="2fD-kL-Bvj"/>
     </inferredMetricsTieBreakers>
 </document>
