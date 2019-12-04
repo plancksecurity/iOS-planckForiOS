@@ -155,7 +155,7 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
         vm.serverIMAP = textField.text
     }
 
-    func didChangeThird176(_ textField: UITextField) {
+    func didChangeThird(_ textField: UITextField) {
         guard let text = textField.text,
             let port = UInt16(text) else {
                 //If not UInt16 then do nothing. Example empty string
