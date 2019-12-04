@@ -71,6 +71,9 @@ class PEPSessionMoc: NSObject, PEPSessionProtocol  {
     func mySelf(_ identity: PEPIdentity) throws {
     }
 
+    func mySelf(_ identity: PEPIdentity, pEpSyncEnabled: Bool) throws {
+    }
+
     func update(_ identity: PEPIdentity) throws {
     }
 
