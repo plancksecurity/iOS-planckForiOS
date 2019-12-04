@@ -76,21 +76,6 @@ class EmailListViewModel {
 
 //    public var screenComposer: ScreenComposerProtocol? //Commented out as the Message Thread feature has to be rewritten
 
-    let sortByDateSentAscending: SortedSet<MessageViewModel>.SortBlock =
-    { (pvMsg1: MessageViewModel, pvMsg2: MessageViewModel) -> ComparisonResult in
-        if pvMsg1.dateSent > pvMsg2.dateSent {
-            return .orderedAscending
-        } else if pvMsg1.dateSent < pvMsg2.dateSent {
-            return .orderedDescending
-        } else if pvMsg1.uid > pvMsg2.uid {
-            return .orderedAscending
-        } else if pvMsg1.uid < pvMsg2.uid {
-            return .orderedDescending
-        } else {
-            return .orderedSame
-        }
-    }
-
     private var selectedItems: Set<IndexPath>?
 
     // Threading feature is currently non-existing. Keep this code, might help later.
