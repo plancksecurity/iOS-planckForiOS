@@ -113,7 +113,13 @@ extension LoginScrollView {
             Log.shared.errorAndCrash("LoginScrollView delegate is nil")
             return
         }
-        bottomConstraint.constant = -keyBoardHeight(notification: notification)
+        var bottomSafeArea: CGFloat = 0
+        if #available(iOS 11.0, *),
+            let window = window {
+            bottomSafeArea = window.safeAreaInsets.bottom
+        }
+    
+        bottomConstraint.constant = -keyBoardHeight(notification: notification) + bottomSafeArea
 
         guard let animationDuration = keyBoardAnimationDuration(notification: notification) else {
             Log.shared.errorAndCrash("Fail to get keyboard animation duration")
