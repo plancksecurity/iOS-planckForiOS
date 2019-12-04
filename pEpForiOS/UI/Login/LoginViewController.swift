@@ -218,6 +218,15 @@ extension LoginViewController: UITextFieldDelegate {
             scrollView.scrollAndMakeVisible(textField)
         }
     }
+
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        if UIDevice.current.userInterfaceIdiom != .pad {
+            scrollView.scrollAndMakeVisible(textField)
+        }
+        return true
+    }
 }
 
 // MARK: - SegueHandlerType
