@@ -111,6 +111,9 @@ class LoginViewController: BaseViewController {
 
         viewModelOrCrash().accountVerificationResultDelegate = self
 
+        // isOauthAccount is use to disable for ever the password field (when loading this view)
+        // isOAuth2Possible is use to hide password field only if isOauthAccount is false and the
+        // user type a possible ouath in the email textfield.
         if viewModelOrCrash().isOAuth2Possible(email: email) || isOauthAccount {
             let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
             viewModelOrCrash().loginWithOAuth2(
