@@ -220,6 +220,9 @@
 		3791A46122BA77C900A9E534 /* KeySyncServiceHandshakeDelegateMoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3791A46022BA77C900A9E534 /* KeySyncServiceHandshakeDelegateMoc.swift */; };
 		37A710E0233B5AA5001FEAF0 /* UIHelper+PEP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */; };
 		37C3C0E62260C64D003E290C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C3C0E52260C64D003E290C /* Log.swift */; };
+		37F162EA2396BD78007802BA /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F162E92396BD78007802BA /* ShareViewController.swift */; };
+		37F162ED2396BD78007802BA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37F162EB2396BD78007802BA /* MainInterface.storyboard */; };
+		37F162F12396BD78007802BA /* pEpShare.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 37F162E72396BD78007802BA /* pEpShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
 		4304FD001EBB8EBB0086DADA /* LanguageListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */; };
 		4307D5DA23575853004569C4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4307D5D823575853004569C4 /* InfoPlist.strings */; };
@@ -436,6 +439,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		37F162EF2396BD78007802BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43980E1B1CBD0BC900A7FC3C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 37F162E62396BD78007802BA;
+			remoteInfo = pEpShare;
+		};
 		43980E3B1CBD0BCA00A7FC3C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43980E1B1CBD0BC900A7FC3C /* Project object */;
@@ -453,6 +463,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		37F162F22396BD78007802BA /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				37F162F12396BD78007802BA /* pEpShare.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		43D213292237BE4B00C060A1 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -682,6 +703,11 @@
 		3791A46022BA77C900A9E534 /* KeySyncServiceHandshakeDelegateMoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncServiceHandshakeDelegateMoc.swift; sourceTree = "<group>"; };
 		37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIHelper+PEP.swift"; sourceTree = "<group>"; };
 		37C3C0E52260C64D003E290C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		37F162E72396BD78007802BA /* pEpShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = pEpShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		37F162E92396BD78007802BA /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		37F162EC2396BD78007802BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		37F162EE2396BD78007802BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		37F162F62396BFB7007802BA /* pEpShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = pEpShare.entitlements; sourceTree = "<group>"; };
 		37F272EF237075D9005C51AA /* EditableAccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
 		4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageListViewController.swift; sourceTree = "<group>"; };
@@ -944,6 +970,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		37F162E42396BD78007802BA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		43980E201CBD0BC900A7FC3C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1727,6 +1760,17 @@
 			path = AccountSettings;
 			sourceTree = "<group>";
 		};
+		37F162E82396BD78007802BA /* pEpShare */ = {
+			isa = PBXGroup;
+			children = (
+				37F162F62396BFB7007802BA /* pEpShare.entitlements */,
+				37F162E92396BD78007802BA /* ShareViewController.swift */,
+				37F162EB2396BD78007802BA /* MainInterface.storyboard */,
+				37F162EE2396BD78007802BA /* Info.plist */,
+			);
+			path = pEpShare;
+			sourceTree = "<group>";
+		};
 		37F272ED237075A8005C51AA /* EditableAccountSettings */ = {
 			isa = PBXGroup;
 			children = (
@@ -1933,6 +1977,7 @@
 				43980E251CBD0BC900A7FC3C /* pEpForiOS */,
 				43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */,
 				43980E481CBD0BCA00A7FC3C /* pEpForiOSUITests */,
+				37F162E82396BD78007802BA /* pEpShare */,
 				43980E241CBD0BC900A7FC3C /* Products */,
 				495560841E7150ED0016579E /* Frameworks */,
 				4339F8C022DE129E00644A8E /* Recovered References */,
@@ -1945,6 +1990,7 @@
 				43980E231CBD0BC900A7FC3C /* pEp.app */,
 				43980E3A1CBD0BCA00A7FC3C /* pEpForiOSTests.xctest */,
 				43980E451CBD0BCA00A7FC3C /* pEpForiOSUITests.xctest */,
+				37F162E72396BD78007802BA /* pEpShare.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2545,6 +2591,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		37F162E62396BD78007802BA /* pEpShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 37F162F52396BD78007802BA /* Build configuration list for PBXNativeTarget "pEpShare" */;
+			buildPhases = (
+				37F162E32396BD78007802BA /* Sources */,
+				37F162E42396BD78007802BA /* Frameworks */,
+				37F162E52396BD78007802BA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = pEpShare;
+			productName = pEpShare;
+			productReference = 37F162E72396BD78007802BA /* pEpShare.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		43980E221CBD0BC900A7FC3C /* pEp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43980E4E1CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "pEp" */;
@@ -2556,10 +2619,12 @@
 				4961BA0D1E7BEA4200920DF8 /* Warnings for TODO++ Script */,
 				151573B41F2091910049BB0B /* Log Time Finished Script */,
 				43D213292237BE4B00C060A1 /* Embed Frameworks */,
+				37F162F22396BD78007802BA /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				37F162F02396BD78007802BA /* PBXTargetDependency */,
 			);
 			name = pEp;
 			productName = pEpForiOS;
@@ -2609,10 +2674,15 @@
 		43980E1B1CBD0BC900A7FC3C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0730;
+				LastSwiftUpdateCheck = 1120;
 				LastUpgradeCheck = 1110;
 				ORGANIZATIONNAME = "p≡p Security S.A.";
 				TargetAttributes = {
+					37F162E62396BD78007802BA = {
+						CreatedOnToolsVersion = 11.2.1;
+						DevelopmentTeam = NQLYU6MGPN;
+						ProvisioningStyle = Automatic;
+					};
 					43980E221CBD0BC900A7FC3C = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = NQLYU6MGPN;
@@ -2664,11 +2734,20 @@
 				43980E221CBD0BC900A7FC3C /* pEp */,
 				43980E391CBD0BCA00A7FC3C /* pEpForiOSTests */,
 				43980E441CBD0BCA00A7FC3C /* pEpForiOSUITests */,
+				37F162E62396BD78007802BA /* pEpShare */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		37F162E52396BD78007802BA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37F162ED2396BD78007802BA /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		43980E211CBD0BC900A7FC3C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2807,6 +2886,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		37F162E32396BD78007802BA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37F162EA2396BD78007802BA /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		43980E1F1CBD0BC900A7FC3C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3184,6 +3271,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		37F162F02396BD78007802BA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 37F162E62396BD78007802BA /* pEpShare */;
+			targetProxy = 37F162EF2396BD78007802BA /* PBXContainerItemProxy */;
+		};
 		43980E3C1CBD0BCA00A7FC3C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 43980E221CBD0BC900A7FC3C /* pEp */;
@@ -3235,6 +3327,14 @@
 				4307D5DF23575853004569C4 /* en */,
 			);
 			name = Reusable.storyboard;
+			sourceTree = "<group>";
+		};
+		37F162EB2396BD78007802BA /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				37F162EC2396BD78007802BA /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 		4307D5D823575853004569C4 /* InfoPlist.strings */ = {
@@ -3304,6 +3404,60 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		37F162F32396BD78007802BA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = pEpShare/pEpShare.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NQLYU6MGPN;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = pEpShare/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = security.pEp.pEpShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		37F162F42396BD78007802BA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = pEpShare/pEpShare.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NQLYU6MGPN;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = pEpShare/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = security.pEp.pEpShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		43980E4C1CBD0BCA00A7FC3C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4388A0E02008AF61008CB98D /* public.xcconfig */;
@@ -3446,6 +3600,7 @@
 		43980E4F1CBD0BCA00A7FC3C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = pEp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -3486,6 +3641,7 @@
 		43980E501CBD0BCA00A7FC3C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = pEp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -3592,6 +3748,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		37F162F52396BD78007802BA /* Build configuration list for PBXNativeTarget "pEpShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				37F162F32396BD78007802BA /* Debug */,
+				37F162F42396BD78007802BA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		43980E1E1CBD0BC900A7FC3C /* Build configuration list for PBXProject "pEpForiOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
