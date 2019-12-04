@@ -224,7 +224,7 @@ extension SMTPSettingsViewController {
 extension SMTPSettingsViewController {
     private func updateView() {
         guard let setupView = manualAccountSetupContainerView.setupView else {
-            //If SetupViewError is nil is handle in setupView getter
+            Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
         let vm = viewModelOrCrash()

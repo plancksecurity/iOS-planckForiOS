@@ -23,7 +23,7 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
         super.viewDidLoad()
 
         guard let setupView = manualAccountSetupContainerView.setupView else {
-            //If SetupViewError is nil is handle in setupView getter
+            Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
         setupView.delegate = self
@@ -48,7 +48,7 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
     /// Puts the model into the view, in case it was set by the invoking view controller.
     func updateView() {
         guard let setupView = manualAccountSetupContainerView.setupView else {
-            //If SetupViewError is nil is handle in setupView getter
+            Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
         let vm = viewModelOrCrash()
@@ -177,7 +177,7 @@ extension UserInfoViewController: SegueHandlerType {
 extension UserInfoViewController {
     private func setUpTextFieldsInputTraits() {
         guard let setupView = manualAccountSetupContainerView.setupView else {
-            //If SetupViewError is nil is handle in setupView getter
+            Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
 
@@ -189,7 +189,7 @@ extension UserInfoViewController {
 
     private func setUpViewLocalizableTexts() {
         guard let setupView = manualAccountSetupContainerView.setupView else {
-            //If SetupViewError is nil is handle in setupView getter
+            Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
 

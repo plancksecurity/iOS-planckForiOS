@@ -43,7 +43,7 @@ final class ManualAccountSetupContainerView: UIView {
     var setupView: ManualAccountSetupView? {
         get {
             guard let setupView = _manualAccountSetupView else {
-                Log.shared.errorAndCrash("Fail to get textFeilds from manualAccountSetupView")
+                Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
                 return nil
             }
             return setupView
