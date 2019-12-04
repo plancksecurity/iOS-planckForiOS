@@ -155,7 +155,7 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
         vm.serverIMAP = textField.text
     }
 
-    func didChangeThird(_ textField: UITextField) {
+    func didChangeThird176(_ textField: UITextField) {
         guard let text = textField.text,
             let port = UInt16(text) else {
                 //If not UInt16 then do nothing. Example empty string
@@ -174,17 +174,15 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
 
 extension IMAPSettingsViewController {
     func viewModelOrCrash() -> VerifiableAccountProtocol {
-        if let vm = model {
-            return vm
-        } else {
+        guard let viewModel = model else {
             Log.shared.errorAndCrash("No view model")
-            let vm = BaseVerifiableAccount()
-            model = vm
-            return vm
+            let viewModel = BaseVerifiableAccount()
+            model = viewModel
+            return viewModel
         }
+        return viewModel
     }
 }
-
 
 // MARK: - Private
 
