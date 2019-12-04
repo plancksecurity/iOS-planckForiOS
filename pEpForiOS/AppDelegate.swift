@@ -120,9 +120,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// - note: this is also called when:
     ///         * an alert is shown (e.g. OS asks for CNContact access permissions)
     ///         * the user swipes up/down the "ControllCenter"
+    ///         * the keyboard is shown the first time on iOS13 and the "you can now swipe instead
+    ///             of typing" view is shown
     func applicationWillResignActive(_ application: UIApplication) {
-        UIApplication.hideStatusBarNetworkActivitySpinner()
-        messageModelService?.finish()
+        // We intentionally do nothing here.
+        // We assume to be kept alive until being informed (by another delegate method) otherwize.
     }
 
     /// Use this method to release shared resources, save user data, invalidate timers, and store
