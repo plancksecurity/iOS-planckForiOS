@@ -7,15 +7,16 @@
 //
 
 import Foundation
+import MessageModel
 
-public enum Providers {
+public enum Provider {
     case GMail
     case Other
 }
 
 class AccountTypeSelectorViewModel {
 
-    var providers = [Providers]()
+    var providers = [Provider]()
     init() {
         providers.append(.GMail)
         providers.append(.Other)
@@ -27,11 +28,20 @@ class AccountTypeSelectorViewModel {
         }
     }
 
-    subscript(index: Int) -> String {
-        //Missing implementation choos if give back the image or some id
-        return ""
+    subscript(index: Int) -> Provider {
+        return providers[index]
     }
 
+    func fileNameOrText(provider: Provider) -> String {
+        switch provider {
+        case .GMail:
+            return "asset-Google"
+        case .Other:
+            return NSLocalizedString("Other", comment: "Other provider key")
+        }
+    }
 
-
+    func isThereAnAccount() -> Bool {
+        return !Account.all().isEmpty
+    }
 }
