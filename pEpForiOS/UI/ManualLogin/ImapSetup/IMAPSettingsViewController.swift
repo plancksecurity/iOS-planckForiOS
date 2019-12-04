@@ -220,7 +220,7 @@ extension IMAPSettingsViewController {
         let portPlaceholder = NSLocalizedString("Port", comment: "Port placeholder for manual account IMAP setup")
         setupView.thirdTextField.placeholder = portPlaceholder
 
-        let TransportSecurityPlaceholder = NSLocalizedString("TransportSecurity", comment: "TransportSecurity placeholder for manual account IMAP setup")
+        let TransportSecurityPlaceholder = NSLocalizedString("Transport Security", comment: "TransportSecurity placeholder for manual account IMAP setup")
         setupView.fourthTextField.placeholder = TransportSecurityPlaceholder
     }
 

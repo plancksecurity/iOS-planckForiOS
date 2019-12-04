@@ -306,7 +306,7 @@ extension SMTPSettingsViewController {
         let portPlaceholder = NSLocalizedString("Port", comment: "Port placeholder for manual account SMTP setup")
         setupView.thirdTextField.placeholder = portPlaceholder
 
-        let TransportSecurityPlaceholder = NSLocalizedString("TransportSecurity", comment: "TransportSecurity placeholder for manual account SMTP setup")
+        let TransportSecurityPlaceholder = NSLocalizedString("Transport Security", comment: "TransportSecurity placeholder for manual account SMTP setup")
         setupView.fourthTextField.placeholder = TransportSecurityPlaceholder
     }
 
