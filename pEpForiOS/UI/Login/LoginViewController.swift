@@ -461,7 +461,7 @@ extension LoginViewController {
     private func setManualSetupButtonHidden(_ hidden: Bool) {
         guard manualConfigButton.isHidden != hidden else { return }
         manualConfigButton.isHidden = hidden
-        pEpSyncViewCenterHConstraint.constant = hidden ? 0 : -stackView.bounds.midX/2
+        pEpSyncViewCenterHConstraint.constant = hidden ? 0 : -stackView.bounds.midX / 2
         manualConfigButton.alpha = hidden ? 1 : 0
 
         UIView.animate(withDuration: 0.25,
