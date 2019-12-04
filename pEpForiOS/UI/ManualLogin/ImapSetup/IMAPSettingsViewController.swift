@@ -94,12 +94,13 @@ extension IMAPSettingsViewController: UITextFieldDelegate {
             return true
         }
         if textField == setupView.thirdTextField {
-            guard let text = textField.text as NSString? else {
-                Log.shared.errorAndCrash("Fail to downcast from String to NSString")
+            guard var text = textField.text,
+                let range = Range(range, in: text) else {
+                Log.shared.errorAndCrash("Fail to get textField text or range")
                 return true
             }
-            let textFieldText = text.replacingCharacters(in: range, with: string)
-            return UInt16(textFieldText) != nil || textFieldText.isEmpty
+            text.replaceSubrange(range, with: string)
+            return UInt16(text) != nil || text.isEmpty
         }
         return true
     }
