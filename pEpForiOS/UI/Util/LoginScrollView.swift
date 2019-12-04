@@ -15,7 +15,6 @@ protocol LoginScrollViewDelegate: class {
     var firstResponder: UIView? { get }
 }
 
-
 // Did not crate a nested class for LoginScrollView, since its not visible from Interface builder
 @IBDesignable
 /// Use this ScrollView to keep the first responder (typically TextFeilds) centered in the scrollView
