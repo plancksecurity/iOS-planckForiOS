@@ -16,7 +16,7 @@ protocol ManualAccountSetupViewDelegate: class {
 
     func didChangeFirst(_ textField: UITextField)
     func didChangeSecond(_ textField: UITextField)
-    func didChangeThierd(_ textField: UITextField)
+    func didChangeThird(_ textField: UITextField)
     func didChangeFourth(_ textField: UITextField)
 }
 
@@ -98,7 +98,7 @@ final class ManualAccountSetupView: UIView {
         case secondTextField:
             delegate?.didChangeSecond(sender)
         case thirdTextField:
-            delegate?.didChangeThierd(sender)
+            delegate?.didChangeThird(sender)
         case fourthTextField:
             delegate?.didChangeFourth(sender)
         default:

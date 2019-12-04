@@ -107,7 +107,7 @@ extension UserInfoViewController: ManualAccountSetupViewDelegate {
         updateView()
     }
 
-    func didChangeThierd(_ textField: UITextField) {
+    func didChangeThird(_ textField: UITextField) {
         var vm = viewModelOrCrash()
         vm.password = textField.text
         model = vm
