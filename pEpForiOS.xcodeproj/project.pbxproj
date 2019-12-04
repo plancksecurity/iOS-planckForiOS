@@ -1528,6 +1528,22 @@
 			path = EmailDetailView;
 			sourceTree = "<group>";
 		};
+		15944A3323980E62006B133B /* EmailView */ = {
+			isa = PBXGroup;
+			children = (
+				431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */,
+				495F607B20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift */,
+				006BE6BB20F4B63C00DDE8C9 /* EmailDetailType.swift */,
+				0069DCFA2110679200846EB1 /* EmailViewController+UIPopoverPresentationControllerDelegate.swift */,
+				1526594E216230B0006A78DF /* Stuff that is named Compose but is used only in EmailView */,
+				B70D32B1205BD3E80094A92A /* CellAndSections */,
+				430D73601E9CBD0600EA6FA9 /* Background */,
+				4323FE871E83E502006785E1 /* Util */,
+				220DCE2D1E0AB544002FE716 /* MessageData.plist */,
+			);
+			path = EmailView;
+			sourceTree = "<group>";
+		};
 		15BA537A20A1F5CA0090F126 /* MoveToFolder */ = {
 			isa = PBXGroup;
 			children = (
@@ -2193,9 +2209,7 @@
 				371D641E231D17A80036AE62 /* TutorialWizard */,
 				15265942216230B0006A78DF /* Compose */,
 				15FE1F741FE122B200CC2D97 /* Credits */,
-				15944A2E2397FF75006B133B /* EmailDetailView */,
 				B70D32B0205BCFBD0094A92A /* EmailDisplay */,
-				43ED53621CC77F95006AB156 /* EmailDisplayList */,
 				B78CF8261E76D70D008C1739 /* Filter */,
 				B71EBBB41E55E43100150177 /* Folder */,
 				432E80FA2191AF5100359879 /* Fonts */,
@@ -2425,15 +2439,9 @@
 		B70D32B0205BCFBD0094A92A /* EmailDisplay */ = {
 			isa = PBXGroup;
 			children = (
-				1526594E216230B0006A78DF /* Stuff that is named Compose but is used only in EmailView */,
-				B70D32B1205BD3E80094A92A /* CellAndSections */,
-				430D73601E9CBD0600EA6FA9 /* Background */,
-				4323FE871E83E502006785E1 /* Util */,
-				220DCE2D1E0AB544002FE716 /* MessageData.plist */,
-				431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */,
-				495F607B20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift */,
-				006BE6BB20F4B63C00DDE8C9 /* EmailDetailType.swift */,
-				0069DCFA2110679200846EB1 /* EmailViewController+UIPopoverPresentationControllerDelegate.swift */,
+				15944A2E2397FF75006B133B /* EmailDetailView */,
+				43ED53621CC77F95006AB156 /* EmailDisplayList */,
+				15944A3323980E62006B133B /* EmailView */,
 			);
 			path = EmailDisplay;
 			sourceTree = "<group>";
