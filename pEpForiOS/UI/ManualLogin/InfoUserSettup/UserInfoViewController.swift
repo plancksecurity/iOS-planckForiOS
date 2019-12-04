@@ -193,7 +193,7 @@ extension UserInfoViewController {
             return
         }
 
-        setupView.titleLabel.text = NSLocalizedString("Account", comment: "Title for manual account setup")
+        setupView.titleLabel.text = NSLocalizedString("ACCOUNT", comment: "Title for manual account setup")
 
         let nextButtonTittle = NSLocalizedString("Next", comment: "Next button title for manual account setup")
         setupView.nextButton.setTitle(nextButtonTittle, for: .normal)
