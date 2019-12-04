@@ -15,7 +15,7 @@ protocol LoginViewControllerDelegate: class  {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController)
 }
 
-class LoginViewController: BaseViewController {
+final class LoginViewController: BaseViewController {
     static let minCharUserName = 1
 
     weak var delegate: LoginViewControllerDelegate?
@@ -227,6 +227,19 @@ extension LoginViewController: UITextFieldDelegate {
         }
         return true
     }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        switch textField {
+        case emailAddress:
+            viewModelOrCrash().verifiableAccount.address = textField.text
+        case password:
+            viewModelOrCrash().verifiableAccount.password = textField.text
+        case user:
+            viewModelOrCrash().verifiableAccount.userName = textField.text
+        default:
+            Log.shared.errorAndCrash("LoginViewController TextField Switch should be exhaustive")
+        }
+    }
 }
 
 // MARK: - SegueHandlerType
@@ -247,7 +260,6 @@ extension LoginViewController: SegueHandlerType {
                     return
             }
             vc.appConfig = appConfig
-
             // Give the next model all that we know.
             vc.model = viewModelOrCrash().verifiableAccount
         default:

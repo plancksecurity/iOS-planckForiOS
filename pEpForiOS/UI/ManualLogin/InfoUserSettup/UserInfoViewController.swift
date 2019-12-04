@@ -56,6 +56,7 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
         setupView.firstTextField.text = vm.loginName
         setupView.secondTextField.text = vm.address
         setupView.thirdTextField.text = vm.password
+        setupView.fourthTextField.text = vm.userName
 
         setupView.pEpSyncSwitch.isOn = vm.keySyncEnable
 
