@@ -8,6 +8,23 @@
 
 import Foundation
 
-class EmailDetailViewModel {
+// 
+class EmailDetailViewModel: EmailDisplayViewModel {
+
+    // MARK: - Life Cycle
+
+//        init(emailListViewModelDelegate: EmailDisplayViewModelDelegate? = nil,
+//             folderToShow: DisplayableFolderProtocol) {
+//            self.emailListViewModelDelegate = emailListViewModelDelegate
+//            self.folderToShow = folderToShow
+//
+//            // We intentionally do *not* start monitoring. Respiosibility is on currently on VC.
+//            messageQueryResults = MessageQueryResults(withFolder: folderToShow,
+//                                                           filter: nil,
+//                                                           search: nil)
+//            messageQueryResults.rowDelegate = self
+//            // Threading feature is currently non-existing. Keep this code, might help later.
+//    //        self.oldThreadSetting = AppSettings.shared.threadedViewEnabled
+//        }
 
 }

@@ -13,36 +13,36 @@ extension EmailDisplayViewModel: QueryResultsIndexPathRowDelegate {
 
     func didInsertRow(indexPath: IndexPath) {
            if updatesEnabled {
-               emailListViewModelDelegate?.emailListViewModel(viewModel: self, didInsertDataAt: [indexPath])
+               delegate?.emailListViewModel(viewModel: self, didInsertDataAt: [indexPath])
            }
        }
 
        func didUpdateRow(indexPath: IndexPath) {
            if updatesEnabled {
-               emailListViewModelDelegate?.emailListViewModel(viewModel: self, didUpdateDataAt: [indexPath])
+               delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: [indexPath])
            }
-           emailListViewModelDelegate?.checkIfSplitNeedsUpdate(indexpath: [indexPath]) //BUFF: hirntot? (read as: obsolete?)
+           delegate?.checkIfSplitNeedsUpdate(indexpath: [indexPath]) //BUFF: hirntot? (read as: obsolete?)
        }
 
        func didDeleteRow(indexPath: IndexPath) {
-               emailListViewModelDelegate?.emailListViewModel(viewModel: self, didRemoveDataAt: [indexPath])
+               delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: [indexPath])
        }
 
        func didMoveRow(from: IndexPath, to: IndexPath) {
            if updatesEnabled {
-               emailListViewModelDelegate?.emailListViewModel(viewModel: self, didMoveData: from, toIndexPath: to)
+               delegate?.emailListViewModel(viewModel: self, didMoveData: from, toIndexPath: to)
            }
        }
 
        func willChangeResults() {
            if updatesEnabled {
-               emailListViewModelDelegate?.willReceiveUpdates(viewModel: self)
+               delegate?.willReceiveUpdates(viewModel: self)
            }
        }
 
        func didChangeResults() {
            if updatesEnabled {
-               emailListViewModelDelegate?.allUpdatesReceived(viewModel: self)
+               delegate?.allUpdatesReceived(viewModel: self)
            } else {
                updatesEnabled = true
            }

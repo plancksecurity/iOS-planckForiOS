@@ -15,7 +15,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     var model: EmailListViewModel? {
         didSet {
-            model?.emailListViewModelDelegate = self
+            model?.delegate = self
         }
     }
 
@@ -114,7 +114,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         ///if we are in setup and the folder is unifiedInbox
         ///we have to reload the unifiedInbox to ensure that all the accounts are present.
         if vm.folderToShow is UnifiedInbox {
-            model = EmailListViewModel(emailListViewModelDelegate: self,
+            model = EmailListViewModel(delegate: self,
                                        folderToShow: UnifiedInbox())
         }
 
@@ -1077,8 +1077,9 @@ extension EmailListViewController: SegueHandlerType {
              .segueEditDraft:
             setupComposeViewController(for: segue)
         case .segueShowEmailSplitView:
-            guard let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? EmailViewController,
+            guard
+                let nav = segue.destination as? UINavigationController,
+                let vc = nav.rootViewController as? EmailViewController, //BUFF:
                 let indexPath = lastSelectedIndexPath,
                 let message = model?.message(representedByRowAt: indexPath) else {
                     Log.shared.errorAndCrash("Segue issue")
@@ -1092,18 +1093,28 @@ extension EmailListViewController: SegueHandlerType {
             vc.messageId = indexPath.row //!!!: that looks wrong
             model?.indexPathShown = indexPath
         case .segueShowEmailNotSplitView:
-            guard let vc = segue.destination as? EmailViewController,
+            guard
+                let nav = segue.destination as? UINavigationController,
+                let vc = nav.rootViewController as? EmailDetailViewController,
                 let indexPath = lastSelectedIndexPath,
                 let message = model?.message(representedByRowAt: indexPath) else {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
             vc.appConfig = appConfig
-            vc.message = message
+            //BUFF: HERE: what's the best way to tell the message to show?
+
+            // pass QRC? + index?
+
+
+
+
+
+//            vc.message = message
             ///This is commented as we "disabled" the feature in the message of
             ///showing next and previous directly from the emailView, that is needed for that feature
             //vc.folderShow = model?.getFolderToShow()
-            vc.messageId = indexPath.row //!!!: that looks wrong
+//            vc.messageId = indexPath.row //!!!: that looks wrong
             model?.indexPathShown = indexPath
 
       //  case .segueShowThreadedEmail:

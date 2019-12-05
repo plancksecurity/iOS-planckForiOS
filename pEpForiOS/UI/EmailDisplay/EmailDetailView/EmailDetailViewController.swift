@@ -8,6 +8,8 @@
 
 import UIKit
 
+// Represents the a list of mails showing one mail with all details in full screen.
+//BUFF: docs!
 class EmailDetailViewController: BaseViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     var viewModel: EmailDetailViewModel?
@@ -16,6 +18,24 @@ class EmailDetailViewController: BaseViewController {
         super.viewDidLoad()
         collectionView.delegate = self
         collectionView.dataSource = self
+    }
+
+    // MARK: - Target & Action
+
+    @IBAction func flagButtonPressed(_ sender: UIBarButtonItem) {
+        fatalError()
+    }
+
+    @IBAction func moveToFolderButtonPressed(_ sender: UIBarButtonItem) {
+        fatalError()
+    }
+
+    @IBAction func destructiveButtonPressed(_ sender: UIBarButtonItem) {
+        fatalError()
+    }
+
+    @IBAction func replyButtonPressed(_ sender: UIBarButtonItem) {
+        fatalError()
     }
 }
 
@@ -31,13 +51,13 @@ extension EmailDetailViewController: UICollectionViewDelegate {
 extension EmailDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        fatalError()
+//        fatalError()
         return 0
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        fatalError()
+//        fatalError()
         return UICollectionViewCell()
     }
 }

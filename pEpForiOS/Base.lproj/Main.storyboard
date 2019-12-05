@@ -9,13 +9,27 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Thread-->
-        <scene sceneID="Xet-dG-Ldx">
+        <!--Navigation Controller-->
+        <scene sceneID="e1W-O0-7gY">
             <objects>
-                <viewControllerPlaceholder storyboardName="Thread" id="eLD-PA-Nmx" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Vtu-PN-QTE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController toolbarHidden="NO" id="tTN-8A-7tU" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="QPh-8P-Ikk"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="o6J-NN-Zae">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="vuK-vG-hkr">
+                        <rect key="frame" x="0.0" y="603" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="fRo-D2-Fjz" kind="relationship" relationship="rootViewController" id="UBr-Ll-cMP"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wYS-Rz-jbd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3382" y="-877"/>
+            <point key="canvasLocation" x="2818" y="-757"/>
         </scene>
         <!--Email List-->
         <scene sceneID="OWw-y9-SIo">
@@ -194,14 +208,13 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueEditDraft" id="fJ0-cY-ZEb"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="d5O-Wk-gjZ"/>
                         <segue destination="lPr-gi-BrG" kind="showDetail" identifier="segueShowEmailSplitView" id="63y-AC-Fyu"/>
-                        <segue destination="eLD-PA-Nmx" kind="showDetail" identifier="segueShowThreadedEmail" id="rUh-Ai-iWA"/>
                         <segue destination="nc4-kR-K9D" kind="show" identifier="segueShowFilter" id="kQS-uu-oHl"/>
-                        <segue destination="3bx-34-vLD" kind="show" identifier="segueShowEmailNotSplitView" id="5Kn-pc-9Jc"/>
+                        <segue destination="tTN-8A-7tU" kind="show" identifier="segueShowEmailNotSplitView" id="7o3-oa-DiX"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4237.6000000000004" y="-895.50224887556226"/>
+            <point key="canvasLocation" x="4223" y="-927"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pH2-0g-XGV">
@@ -226,27 +239,28 @@
             <objects>
                 <viewController id="fRo-D2-Fjz" customClass="EmailDetailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JE8-0O-ekz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="HP3-Sj-MgZ">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="56" width="375" height="542"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="xv5-CC-1ep">
-                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="itemSize" width="375" height="651"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="EmailDetailViewCell" id="kIE-Eq-O7W">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="651"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="tKR-Vh-qyF">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="651"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </collectionViewCellContentView>
+                                        <size key="customSize" width="375" height="651"/>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
@@ -260,13 +274,55 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Bie-ml-VZ0"/>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem image="icon-unflagged" id="eWC-Rq-MJm" userLabel="Flag">
+                            <connections>
+                                <action selector="flagButtonPressed:" destination="fRo-D2-Fjz" id="B8k-7M-BGc"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="jm4-3w-I3N"/>
+                        <barButtonItem image="folders-icon-folder" id="Zlf-LL-yLH" userLabel="Move to Folder">
+                            <connections>
+                                <action selector="moveToFolderButtonPressed:" destination="fRo-D2-Fjz" id="b20-nd-RSu"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="uWS-vB-hh8"/>
+                        <barButtonItem image="folders-icon-trash" id="zPY-ag-aQd" userLabel="destructive item">
+                            <connections>
+                                <action selector="destructiveButtonPressed:" destination="fRo-D2-Fjz" id="UIg-Zz-5bT"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="akv-wk-ycl"/>
+                        <barButtonItem image="reply" id="OL8-wT-4Rt" userLabel="reply item">
+                            <connections>
+                                <action selector="replyButtonPressed:" destination="fRo-D2-Fjz" id="0ah-jt-IS7"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="x3Y-Mc-0bu">
+                        <rightBarButtonItems>
+                            <barButtonItem image="arrow-lft-active" id="4R9-FK-LNX">
+                                <color key="tintColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <action selector="next:" destination="3bx-34-vLD" id="kpq-Vn-Xaq"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="arrow-rgt-active" id="uhj-ab-NtG">
+                                <color key="tintColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <action selector="previous:" destination="3bx-34-vLD" id="JEU-ZG-0Rl"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="HP3-Sj-MgZ" id="ar9-Hu-K2J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NqX-Lg-wmy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5339" y="-18"/>
+            <point key="canvasLocation" x="3007" y="-23"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jm1-97-n5e">
@@ -289,7 +345,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tPk-q9-Yzh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4238" y="-1722"/>
+            <point key="canvasLocation" x="4442" y="-1763"/>
         </scene>
         <!--Filter Table View Controller-->
         <scene sceneID="9dD-N3-Mae">
@@ -324,7 +380,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="emailDetail" title="Show email" id="3bx-34-vLD" customClass="EmailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="mYV-vz-wEb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="591"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -570,7 +626,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Adk-MD-apd" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5327" y="-860"/>
+            <point key="canvasLocation" x="5281" y="-883"/>
         </scene>
         <!--Move to Account-->
         <scene sceneID="Rib-YI-OIO">
@@ -952,9 +1008,8 @@
         <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RTR-We-Kc1"/>
+        <segue reference="d5O-Wk-gjZ"/>
         <segue reference="mZj-Mg-VzM"/>
-        <segue reference="5Kn-pc-9Jc"/>
-        <segue reference="2fD-kL-Bvj"/>
+        <segue reference="Usl-iS-7fo"/>
     </inferredMetricsTieBreakers>
 </document>

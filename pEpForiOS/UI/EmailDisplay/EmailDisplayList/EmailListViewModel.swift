@@ -268,102 +268,176 @@ class EmailListViewModel: EmailDisplayViewModel {
 //            return true
 //        }
 //    }
-//
-//    func shouldShowTutorialWizard() -> Bool {
-//        return AppSettings.shared.shouldShowTutorialWizard
-//    }
-//
-//    func didShowTutorialWizard() {
-//        AppSettings.shared.shouldShowTutorialWizard = false
-//    }
-//
-//    public func getDestructiveActtion(forMessageAt index: Int) -> SwipeActionDescriptor {
-//        let parentFolder = getParentFolder(forMessageAt: index)
-//        let defaultDestructiveAction: SwipeActionDescriptor
-//            = parentFolder.defaultDestructiveActionIsArchive
-//                ? .archive
-//                : .trash
-//
-//        return folderIsOutbox(parentFolder) ? .trash : defaultDestructiveAction
-//    }
-//
-//    public func getFlagAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
-//        let parentFolder = getParentFolder(forMessageAt: index)
-//        if folderIsDraftOrOutbox(parentFolder) {
-//            return nil
-//        } else {
-//            let flagged = messageQueryResults[index].imapFlags.flagged
-//            return flagged ? .unflag : .flag
-//        }
-//    }
-//
-//
-//    public func getMoreAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
-//        let parentFolder = getParentFolder(forMessageAt: index)
-//        if folderIsDraftOrOutbox(parentFolder) {
-//            return nil
-//        } else {
-//           return .more
-//        }
-//    }
-//
-//    public var showLoginView: Bool {
-//        return Account.all().isEmpty
-//    }
-//
+
+    func shouldShowTutorialWizard() -> Bool {
+        return AppSettings.shared.shouldShowTutorialWizard
+    }
+
+    func didShowTutorialWizard() {
+        AppSettings.shared.shouldShowTutorialWizard = false
+    }
+
+    public func getDestructiveActtion(forMessageAt index: Int) -> SwipeActionDescriptor {
+        let parentFolder = getParentFolder(forMessageAt: index)
+        let defaultDestructiveAction: SwipeActionDescriptor
+            = parentFolder.defaultDestructiveActionIsArchive
+                ? .archive
+                : .trash
+
+        return folderIsOutbox(parentFolder) ? .trash : defaultDestructiveAction
+    }
+
+    public func getFlagAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
+        let parentFolder = getParentFolder(forMessageAt: index)
+        if folderIsDraftOrOutbox(parentFolder) {
+            return nil
+        } else {
+            let flagged = messageQueryResults[index].imapFlags.flagged
+            return flagged ? .unflag : .flag
+        }
+    }
+
+
+    public func getMoreAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
+        let parentFolder = getParentFolder(forMessageAt: index)
+        if folderIsDraftOrOutbox(parentFolder) {
+            return nil
+        } else {
+           return .more
+        }
+    }
+
+    public var showLoginView: Bool {
+        return Account.all().isEmpty
+    }
+
     public func unreadFilterEnabled() -> Bool {
         guard let unread = currentFilter.mustBeUnread else {
             return false
         }
         return isFilterEnabled && unread
     }
-//
-//    public func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])
-//        -> MoveToAccountViewModel? {
-//            let messages = messagesToMove(indexPaths: forSelectedMessages)
-//            if let msgs = messages as? [Message] {
-//                return MoveToAccountViewModel(messages: msgs)
-//            }
-//            return nil
-//    }
-//
-//    // MARK: - Fetch Older Messages
-//
-//    /// The number of rows (not yet displayed to the user) before we want to fetch older messages.
-//    /// A balance between good user experience (have data in time,
-//    /// ideally before the user has scrolled to the last row) and memory usage has to be found.
-//    private let numRowsBeforeLastToTriggerFetchOder = 1
-//
-//    /// Figures out whether or not fetching of older messages should be requested.
-//    /// Takes numRowsBeforeLastToTriggerFetchOder into account,
-//    ///
-//    /// - Parameter row: number of displayed tableView row to base computation on
-//    /// - Returns: true if fetch older messages should be requested, false otherwize
-//    private func triggerFetchOlder(lastDisplayedRow row: Int) -> Bool {
-//        return row >= rowCount - numRowsBeforeLastToTriggerFetchOder
-//    }
-//
-//    // Implemented to get informed about the currently visible cells.
-//    // If the user has scrolled down (almost) to the end, we ask for older emails.
-//
-//    /// Get informed about the new visible cells.
-//    /// If the user has scrolled down (almost) to the end, we ask for older emails.
-//    ///
-//    /// - Parameter indexPath: indexpath to check need for fetch older for
-//    public func fetchOlderMessagesIfRequired(forIndexPath indexPath: IndexPath) {
-//        if !triggerFetchOlder(lastDisplayedRow: indexPath.row) {
-//            return
-//        }
-//        folderToShow.fetchOlder(completion: nil)
-//    }
-//
-//    //MARK: - FetchNewMessages
-//
-//    public func fetchNewMessages(completition: (() -> Void)? = nil) {
-//        folderToShow.fetchNewMessages() {
-//            completition?()
-//        }
-//    }
+
+    override func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])
+        -> MoveToAccountViewModel? {
+            let messages = messagesToMove(indexPaths: forSelectedMessages)
+            if let msgs = messages as? [Message] {
+                return MoveToAccountViewModel(messages: msgs)
+            }
+            return nil
+    }
+
+    // MARK: - Fetch Older Messages
+
+    /// The number of rows (not yet displayed to the user) before we want to fetch older messages.
+    /// A balance between good user experience (have data in time,
+    /// ideally before the user has scrolled to the last row) and memory usage has to be found.
+    private let numRowsBeforeLastToTriggerFetchOder = 1
+
+    /// Figures out whether or not fetching of older messages should be requested.
+    /// Takes numRowsBeforeLastToTriggerFetchOder into account,
+    ///
+    /// - Parameter row: number of displayed tableView row to base computation on
+    /// - Returns: true if fetch older messages should be requested, false otherwize
+    private func triggerFetchOlder(lastDisplayedRow row: Int) -> Bool {
+        return row >= rowCount - numRowsBeforeLastToTriggerFetchOder
+    }
+
+    // Implemented to get informed about the currently visible cells.
+    // If the user has scrolled down (almost) to the end, we ask for older emails.
+
+    /// Get informed about the new visible cells.
+    /// If the user has scrolled down (almost) to the end, we ask for older emails.
+    ///
+    /// - Parameter indexPath: indexpath to check need for fetch older for
+    public func fetchOlderMessagesIfRequired(forIndexPath indexPath: IndexPath) {
+        if !triggerFetchOlder(lastDisplayedRow: indexPath.row) {
+            return
+        }
+        folderToShow.fetchOlder(completion: nil)
+    }
+
+    //MARK: - FetchNewMessages
+
+    public func fetchNewMessages(completition: (() -> Void)? = nil) {
+        folderToShow.fetchNewMessages() {
+            completition?()
+        }
+    }
+
+    //multiple message selection handler
+
+       private var unreadMessages = false
+       private var flaggedMessages = false
+
+       public func updatedItems(indexPaths: [IndexPath]) {
+           checkUnreadMessages(indexPaths: indexPaths)
+           checkFlaggedMessages(indexPaths: indexPaths)
+           if indexPaths.count > 0 {
+               delegate?.toolbarIs(enabled: true)
+           } else {
+               delegate?.toolbarIs(enabled: false)
+           }
+       }
+
+       private func checkFlaggedMessages(indexPaths: [IndexPath]) {
+           let flagged = indexPaths.filter { (ip) -> Bool in
+               if let flag = viewModel(for: ip.row)?.isFlagged {
+                   return flag
+               }
+               return false
+           }
+
+           if flagged.count == indexPaths.count {
+               delegate?.showUnflagButton(enabled: true)
+           } else {
+               delegate?.showUnflagButton(enabled: false)
+           }
+       }
+
+       private func checkUnreadMessages(indexPaths: [IndexPath]) { //BUFF: move up?
+           let read = indexPaths.filter { (ip) -> Bool in
+               if let read = viewModel(for: ip.row)?.isSeen {
+                   return read
+               }
+               return false
+           }
+
+           if read.count == indexPaths.count {
+               delegate?.showUnreadButton(enabled: true)
+           } else {
+               delegate?.showUnreadButton(enabled: false)
+           }
+       }
+
+       public func markSelectedAsFlagged(indexPaths: [IndexPath]) {
+           setFlagged(forIndexPath: indexPaths)
+       }
+
+       public func markSelectedAsUnFlagged(indexPaths: [IndexPath]) {
+           unsetFlagged(forIndexPath: indexPaths)
+       }
+
+       public func markSelectedAsRead(indexPaths: [IndexPath]) {
+           markRead(forIndexPath: indexPaths)
+       }
+
+       public func markSelectedAsUnread(indexPaths: [IndexPath]) {
+           markUnread(forIndexPath: indexPaths)
+       }
+
+       public func deleteSelected(indexPaths: [IndexPath]) {
+           let messages = indexPaths.map { messageQueryResults[$0.row] }
+           delete(messages: messages)
+       }
+
+       public func messagesToMove(indexPaths: [IndexPath]) -> [Message?] {
+           var messages : [Message?] = []
+           indexPaths.forEach { (ip) in
+               messages.append(self.message(representedByRowAt: ip))
+           }
+           return messages
+       }
 }
 
 // MARK: - Filter & Search
@@ -420,10 +494,10 @@ extension EmailListViewModel {
         }
     }
 }
-//// MARK: - Private
-//
-//extension EmailListViewModel {
-//
+// MARK: - Private
+
+extension EmailListViewModel {
+
 //    private func setFlaggedValue(forIndexPath indexPath: [IndexPath], newValue flagged: Bool) {
 //        updatesEnabled = false
 //        let messages = indexPath.map { messageQueryResults[$0.row] }
@@ -445,19 +519,7 @@ extension EmailListViewModel {
 //        Message.imapDelete(messages: messages)
 //    }
 //
-//    private func cachedSenderImage(forCellAt indexPath:IndexPath) -> UIImage? {
-//        guard let count = try? messageQueryResults.count(), indexPath.row < count else {
-//            // The model has been updated or it's not ready to use.
-//            return nil
-//        }
-//        let message = messageQueryResults[indexPath.row]
-//        guard let from = message.from else {
-//            return nil
-//        }
-//        return
-//            contactImageTool.cachedIdentityImage(for: IdentityImageTool.IdentityKey(identity: from))
-//    }
-//}
+}
 
 //// MARK: - FolderType Utils
 //
@@ -562,10 +624,45 @@ extension EmailListViewModel {
 //    }
 //}
 
+// MARK: - ComposeViewModel
+
+extension EmailDisplayViewModel {
+
+    func composeViewModelForNewMessage() -> ComposeViewModel {
+        // Determine the sender.
+        var someUser: Identity? = nil
+        if let f = folderToShow as? RealFolderProtocol {
+             someUser = f.account.user
+        } else {
+            let account = Account.defaultAccount()
+            return ComposeViewModel(resultDelegate:self, composeMode: .normal,
+                                    prefilledFrom: account?.user)
+        }
+        let composeVM = ComposeViewModel(resultDelegate: self,
+                                         prefilledFrom: someUser)
+        return composeVM
+    }
+}
+
 // MARK: - FilterViewDelegate
 
 extension EmailListViewModel: FilterViewDelegate {
     public func filterChanged(newFilter: MessageQueryResultsFilter) {
         setNewFilterAndReload(filter: newFilter)
     }
+}
+ //
+
+// MARK: - EmailDetailViewModel
+
+extension EmailListViewModel {
+
+    //BUFF: HERE
+//    func wmailDetailViewModel(withOriginalMessageAt indexPath: IndexPath) -> EmailDetailViewModel {
+//        let message = messageQueryResults[indexPath.row]
+//        let composeVM = ComposeViewModel(resultDelegate: self,
+//                                         composeMode: composeMode,
+//                                         originalMessage: message)
+//        return composeVM
+//    }
 }
