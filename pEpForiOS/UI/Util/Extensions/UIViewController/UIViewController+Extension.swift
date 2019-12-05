@@ -87,7 +87,7 @@ extension UIViewController {
         return nil
     }
 
-    private func settingsIconInImageView() -> UIView? {
+    private func settingsIconInImageView() -> UIImageView? {
         guard let img = UIImage(named: "icon-settings") else {
             return nil
         }
