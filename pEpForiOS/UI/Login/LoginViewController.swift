@@ -33,8 +33,9 @@ final class LoginViewController: BaseViewController {
     @IBOutlet weak var scrollView: LoginScrollView!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
+    @IBOutlet weak var loginButtonConstraint: NSLayoutConstraint!
     @IBOutlet weak var pEpSyncSwitch: UISwitch!
-    
+
     var loginViewModel: LoginViewModel?
     var offerManualSetup = false
     /// Use this property if is an oauth login. This will hide password TextFiled and show the Oauth screen.
@@ -434,6 +435,10 @@ extension LoginViewController {
     private func configureView() {
         password.isHidden = isOauthAccount
         password.isEnabled = !isOauthAccount
+
+        let isThereAnAccount = viewModelOrCrash().isThereAnAccount()
+        loginButtonConstraint.constant =
+            isThereAnAccount ? stackView.bounds.midX - loginButton.bounds.midX : 0
 
         loginButton.convertToLoginButton(
             placeholder: NSLocalizedString("Log In", comment: "Log in button in Login View"))
