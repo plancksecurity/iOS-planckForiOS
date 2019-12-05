@@ -79,9 +79,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             //            if vm.checkIfSettingsChanged() {
             //                settingsChanged()
             //            }
+
+            checkSplitViewState()
+            watchDetailView()
         }
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        unwatchDetailView()
+    }
 
     deinit {
          NotificationCenter.default.removeObserver(self)
@@ -124,15 +131,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         tableView.refreshControl = refreshController
 
         title = model?.folderName
-        let item = UIBarButtonItem.getPEPButton(
-            action: #selector(showSettingsViewController),
-            target: self)
-        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-            target: nil,
-            action: nil)
-        toolbarItems?.append(contentsOf: [flexibleSpace,item])
         navigationController?.title = title
+
+        let flexibleSpace = createFlexibleBarButtonItem()
+        toolbarItems?.append(contentsOf: [flexibleSpace, createPepBarButtonItem()])
     }
 
     private func setUpTextFilter() {
@@ -274,10 +276,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         tempToolbarItems = toolbarItems
 
         // Flexible Space separation between the buttons
-        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-            target: nil,
-            action: nil)
+        let flexibleSpace = createFlexibleBarButtonItem()
 
         var img = UIImage(named: "icon-flagged")
 
@@ -329,12 +328,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         moveToolbarButton?.isEnabled = false
 
-        let pEp = UIBarButtonItem.getPEPButton(
-            action: #selector(showSettingsViewController),
-            target: self)
-        toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
-                        flexibleSpace, deleteToolbarButton, flexibleSpace,
-                        moveToolbarButton, flexibleSpace, pEp] as? [UIBarButtonItem]
+        if var newToolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
+                                  flexibleSpace, deleteToolbarButton, flexibleSpace,
+                                  moveToolbarButton, flexibleSpace] as? [UIBarButtonItem] {
+            if shouldShowPepButtonInMasterToolbar {
+                newToolbarItems.append(createPepBarButtonItem())
+            }
+            toolbarItems = newToolbarItems
+        }
 
 
         //right navigation button to ensure the logic
@@ -448,10 +449,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
         vm.isFilterEnabled = !vm.isFilterEnabled
         if vm.isFilterEnabled {
-            let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-                target: nil,
-                action: nil)
+            let flexibleSpace = createFlexibleBarButtonItem()
             toolbarItems?.insert(textFilterButton, at: 1)
             toolbarItems?.insert(flexibleSpace, at: 1)
         } else {
@@ -673,6 +671,150 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             action.font = .systemFont(ofSize: 13)
             action.transitionDelegate = ScaleTransition.default
         }
+    }
+
+    // MARK: - Manipulating the (master) bottom toolbar
+
+    /// With this tag we recognize the pEp button item, for easy removal later.
+    let pEpButtonItemTag = 7
+
+    /// With this tag we recognize our own created flexible space buttons, for easy removal later.
+    let flexibleSpaceButtonItemTag = 77
+
+    /// True if the pEp button on the left/master side should be shown.
+    var shouldShowPepButtonInMasterToolbar = true
+
+    /// Our own factory method for creating pEp bar button items,
+    /// tagged so we recognize them later, for easy removal.
+    private func createPepBarButtonItem() -> UIBarButtonItem {
+        let item = UIBarButtonItem.getPEPButton(
+            action: #selector(showSettingsViewController),
+            target: self)
+        item.tag = pEpButtonItemTag
+        return item
+    }
+
+    /// Our own factory method for creating flexible space bar button items,
+    /// tagged so we recognize them later, for easy removal.
+    private func createFlexibleBarButtonItem() -> UIBarButtonItem {
+        let item = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+            target: nil,
+            action: nil)
+        item.tag = flexibleSpaceButtonItemTag
+        return item
+    }
+
+    /// - Returns: A new array of `UIBarButtonItem`s with trailing flexible whitespace
+    /// removed (at least the ones created by our own factory method).
+    /// - Parameter barButtonItems: The bar button items to remove from.
+    private func trailingFlexibleSpaceRemoved(barButtonItems: [UIBarButtonItem]) -> [UIBarButtonItem] {
+        var theItems = barButtonItems
+        while true {
+            if let lastItem = theItems.last {
+                if lastItem.tag == flexibleSpaceButtonItemTag {
+                    theItems.removeLast()
+                } else {
+                    break
+                }
+            } else {
+                break
+            }
+        }
+        return theItems
+    }
+
+    /// Shows the pEp logo (leading to the settings) in the master view bottom toolbar,
+    /// or not, depending on `show`.
+    private func showLogoInMasterToolbar(show: Bool) {
+        // persist this state
+        shouldShowPepButtonInMasterToolbar = show
+
+        if show {
+            if var barItems = toolbarItems {
+                if let lastItem = barItems.last, lastItem.tag == pEpButtonItemTag {
+                    // already there
+                    return
+                } else {
+                    barItems.append(contentsOf: [createFlexibleBarButtonItem(),
+                                                 createPepBarButtonItem()])
+                }
+                toolbarItems = barItems
+            } else {
+                toolbarItems = [createPepBarButtonItem()]
+            }
+        } else {
+            if var barItems = toolbarItems {
+                if let lastItem = barItems.last, lastItem.tag == pEpButtonItemTag {
+                    barItems.removeLast()
+                }
+                toolbarItems = trailingFlexibleSpaceRemoved(barButtonItems: barItems)
+            }
+        }
+    }
+
+    /// Tries to deduce from the split view arrangement whether to show the
+    /// master toolbar pEp logo or not.
+    private func checkSplitViewState() {
+        if let spvc = splitViewController {
+            if spvc.viewControllers.count == 1 {
+                // only master is shown
+                showLogoInMasterToolbar(show: true)
+            } else if spvc.viewControllers.count == 2 {
+                // detail is shown, check further
+                var showMasterLogo = true
+                if let vc = spvc.viewControllers[safe: 1] {
+                    if vc is NothingSelectedViewController {
+                        showMasterLogo = true
+                    } else {
+                        showMasterLogo = false
+                    }
+                }
+                showLogoInMasterToolbar(show: showMasterLogo)
+            }
+        }
+    }
+
+    // MARK: - Observing the split view controller
+
+    /// The key path for observing the view controllers of the split view controller,
+    /// compatible with Objective-C.
+    private let splitViewObserverKeyPath = #keyPath(UISplitViewController.viewControllers)
+
+    /// With KVO we have to keep our books lest not to remove an observer without
+    /// observing first.
+    private var observingSplitViewControllers = false
+
+    /// Start observing the view controllers in the split view.
+    private func watchDetailView() {
+        if !observingSplitViewControllers, let spvc = splitViewController {
+            spvc.addObserver(self,
+                             forKeyPath: splitViewObserverKeyPath,
+                             options: [],
+                             context: nil)
+            observingSplitViewControllers = true
+        }
+    }
+
+    /// Stop listening for changes in the view controllers in the split view.
+    private func unwatchDetailView() {
+        if observingSplitViewControllers, let spvc = splitViewController {
+            spvc.removeObserver(self, forKeyPath: splitViewObserverKeyPath)
+            observingSplitViewControllers = false
+        }
+    }
+
+    /// React to changes to the view controllers of our split view controller.
+    override func observeValue(forKeyPath keyPath: String?,
+                               of object: Any?,
+                               change: [NSKeyValueChangeKey : Any]?,
+                               context: UnsafeMutableRawPointer?) {
+        if keyPath != splitViewObserverKeyPath {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+
+        checkSplitViewState()
     }
 
     // MARK: -

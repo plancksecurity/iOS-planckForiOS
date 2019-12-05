@@ -122,7 +122,14 @@ class EmailViewController: BaseTableViewController {
     }
 
     private func showPepRating() {
-        showNavigationBarSecurityBadge(pEpRating: message?.pEpRating())
+        if let ratingView = showNavigationBarSecurityBadge(pEpRating: message?.pEpRating()) {
+            if canShowPrivacyStatus() {
+                let tapGestureRecognizer = UITapGestureRecognizer(
+                    target: self,
+                    action: #selector(showHandshakeView(gestureRecognizer:)))
+                ratingView.addGestureRecognizer(tapGestureRecognizer)
+            }
+        }
     }
 
     private final func loadDatasource(_ file: String) {
@@ -133,19 +140,28 @@ class EmailViewController: BaseTableViewController {
         }
     }
 
+    private func canShowPrivacyStatus() -> Bool {
+        //!!!: EmailView must not know about handshakeCombinations.
+        if let handshakeCombos = message?.handshakeActionCombinations(),
+            !handshakeCombos.isEmpty {
+            return true
+        }
+        return false
+    }
+
     // MARK: - SETUP
 
     private func setupToolbar() {
-        let item = UIBarButtonItem.getPEPButton(
+        let pEpButton = UIBarButtonItem.getPEPButton(
             action: #selector(showPepActions(sender:)),
             target: self)
-        item.tag = BarButtonType.settings.rawValue
+        pEpButton.tag = BarButtonType.settings.rawValue
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
             target: nil,
             action: nil)
         flexibleSpace.tag = BarButtonType.space.rawValue
-        toolbarItems?.append(contentsOf: [flexibleSpace,item])
+        toolbarItems?.append(contentsOf: [flexibleSpace, pEpButton])
         if !(onlySplitViewMasterIsShown) {
             navigationItem.rightBarButtonItems = toolbarItems
         }
@@ -239,7 +255,6 @@ class EmailViewController: BaseTableViewController {
 
             break
         case .allVisible:
-            removePEPButtons()
             var leftBarButtonItems: [UIBarButtonItem] = []
             if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems?.first {
                 leftBarButtonItems.append(unwrappedLeftBarButtonItems)
@@ -346,8 +361,7 @@ class EmailViewController: BaseTableViewController {
     @objc private func showPepActions(sender: UIBarButtonItem) {
         let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
 
-            if let handshakeCombos = message?.handshakeActionCombinations(), //!!!: EmailView must not know about handshakeCombinations.
-            !handshakeCombos.isEmpty, let handshakeAction = showHandshakeViewAction()
+            if canShowPrivacyStatus(), let handshakeAction = showHandshakeViewAction()
             {
                 actionSheetController.addAction(handshakeAction)
         }
@@ -658,44 +672,6 @@ extension EmailViewController: SegueHandlerType {
         } else {
             Log.shared.errorAndCrash("Unsupported input")
             return .replyFrom
-        }
-    }
-
-    private func removePEPButtons() {
-
-        let useToolbarItemsDirectly = currentSplitViewMode() == .masterAndDetail
-
-        var barButtonItems = useToolbarItemsDirectly ?
-            toolbarItems ?? [] : navigationItem.rightBarButtonItems ?? []
-
-        if !onlySplitViewMasterIsShown {
-            var itemsToRemove = [UIBarButtonItem]()
-            for item in barButtonItems {
-                if item.tag == BarButtonType.settings.rawValue {
-                    itemsToRemove.append(item)
-                }
-            }
-
-            for itemToRemove in itemsToRemove {
-                var positionToRemove: Int? = nil
-
-                for i in 0..<barButtonItems.count {
-                    if barButtonItems[i] == itemToRemove {
-                        positionToRemove = i
-                        break
-                    }
-                }
-
-                if let thePosition = positionToRemove {
-                    barButtonItems.remove(at: thePosition)
-                }
-            }
-
-            if useToolbarItemsDirectly {
-                toolbarItems = barButtonItems
-            } else {
-                navigationItem.rightBarButtonItems = barButtonItems
-            }
         }
     }
 
