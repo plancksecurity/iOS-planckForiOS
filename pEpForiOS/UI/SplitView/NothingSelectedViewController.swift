@@ -15,6 +15,8 @@ class NothingSelectedViewController: UIViewController {
     /// - Note: On some devices, the master VC has no chance to decide for this message
     ///   in all circunstances, unless involving more support code,
     ///   so this default should be neutral enough to cover all views that need it.
+    ///   Since not even viewWillAppear is called under all circunstances, make sure
+    ///   the default text for the label in the storyboard is good as well.
     var message: String = NSLocalizedString(
         "Nothing Selected",
         comment: "Default message in detail view when nothing has been selected")

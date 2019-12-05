@@ -14,56 +14,70 @@ extension UIViewController {
         return presentedViewController != nil
     }
 
+    /// Puts the privacy rating or pEp logo into the navigation item or removes it.
+    ///
+    /// When running on layouts _without_ a split view (that is, on smaller iPhones),
+    /// and there is no rating or it's "no color", the pEp logo will be returned instead.
+    /// - Parameter pEpRating: The privacy rating, or nil.
+    /// - Parameter pEpProtection: False if the user decided to "force unprotected",
+    ///   true otherwise.
+    /// - Returns: The view that was put into the navigation item title, or nil,
+    ///   if no view was put there. In that case, the navigation item title view has
+    ///   been nil'ed.
     @discardableResult func showNavigationBarSecurityBadge(pEpRating: PEPRating?,
                                                            pEpProtection: Bool = true) -> UIView? {
-        guard let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) else {
-            // No security badge image should be shown. Make sure to remove previously set img.
-            navigationItem.titleView = nil
-            return nil
+        let titleView = navigationItemTitleView(pEpRating: pEpRating, pEpProtection: pEpProtection)
+        titleView?.isUserInteractionEnabled = true
+        navigationItem.titleView = titleView
+        return titleView
+    }
+
+    private func navigationItemTitleView(pEpRating: PEPRating?,
+                                         pEpProtection: Bool = true) -> UIView? {
+        if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
+            // according to apple's design guidelines ('Hit Targets'):
+            // https://developer.apple.com/design/tips/
+            let minimumHitTestDimension: CGFloat = 44
+
+            let imgView = UIImageView(image: img)
+            imgView.translatesAutoresizingMaskIntoConstraints = false
+            imgView.heightAnchor.constraint(equalTo: imgView.widthAnchor).isActive = true
+
+            let badgeView = UIView()
+            badgeView.translatesAutoresizingMaskIntoConstraints = false
+            badgeView.heightAnchor.constraint(
+                greaterThanOrEqualToConstant: minimumHitTestDimension).isActive = true
+
+            badgeView.addSubview(imgView)
+
+            let imagePadding: CGFloat = 10
+            imgView.centerXAnchor.constraint(equalTo: badgeView.centerXAnchor).isActive = true
+            imgView.centerYAnchor.constraint(equalTo: badgeView.centerYAnchor).isActive = true
+            imgView.heightAnchor.constraint(lessThanOrEqualTo: badgeView.heightAnchor,
+                                            constant: -imagePadding).isActive = true
+            imgView.widthAnchor.constraint(lessThanOrEqualTo: badgeView.widthAnchor,
+                                           constant: -imagePadding).isActive = true
+
+            return badgeView
+        } else {
+            let mode = splitViewController?.currentDisplayMode ?? .masterAndDetail
+
+            // Only show the top logo instead of the privacy status if there is not
+            // yet a logo shown.
+            switch mode {
+            case .onlyMaster:
+                return settingsIconInImageView()
+            case .onlyDetail, .masterAndDetail:
+                break
+            }
         }
-        // according to apple's design guidelines ('Hit Targets'):
-        // https://developer.apple.com/design/tips/
-        let minimumHitTestDimension: CGFloat = 44
 
-        let imgView = UIImageView(image: img)
-        imgView.translatesAutoresizingMaskIntoConstraints = false
-        imgView.heightAnchor.constraint(equalTo: imgView.widthAnchor).isActive = true
-
-        let badgeView = UIView()
-        badgeView.translatesAutoresizingMaskIntoConstraints = false
-        badgeView.heightAnchor.constraint(
-            greaterThanOrEqualToConstant: minimumHitTestDimension).isActive = true
-
-        badgeView.addSubview(imgView)
-
-        let imagePadding: CGFloat = 10
-        imgView.centerXAnchor.constraint(equalTo: badgeView.centerXAnchor).isActive = true
-        imgView.centerYAnchor.constraint(equalTo: badgeView.centerYAnchor).isActive = true
-        imgView.heightAnchor.constraint(lessThanOrEqualTo: badgeView.heightAnchor,
-                                        constant: -imagePadding).isActive = true
-        imgView.widthAnchor.constraint(lessThanOrEqualTo: badgeView.widthAnchor,
-                                       constant: -imagePadding).isActive = true
-
-        navigationItem.titleView = badgeView
-        badgeView.isUserInteractionEnabled = true
-        return badgeView
+        return nil
     }
 
     func showNavigationBarPEPLogo(pEpRating: PEPRating?) -> UIView? {
         if let rating = pEpRating, rating.isNoColor {
-            if let img = UIImage(named: "icon-settings") {
-                let minimumHittestDimension: CGFloat = 44
-                let ImageWidht = self.navigationController!.navigationBar.bounds.height - 10
-                let img2 = img.resized(newWidth: ImageWidht)
-                let badgeView = UIImageView(image: img2)
-                badgeView.contentMode = .center // DON'T stretch the image, leave it at original size
-
-                // try to make the hit area of the icon a minimum of 44x44
-                let desiredHittestDimension: CGFloat = min(
-                    minimumHittestDimension,
-                    navigationController?.navigationBar.frame.size.height ?? minimumHittestDimension)
-                badgeView.bounds.size = CGSize(width: desiredHittestDimension, height: desiredHittestDimension)
-
+            if let badgeView = settingsIconInImageView() {
                 navigationItem.titleView = badgeView
                 badgeView.isUserInteractionEnabled = true
                 return badgeView
@@ -71,6 +85,21 @@ extension UIViewController {
             return nil
         }
         return nil
+    }
+
+    private func settingsIconInImageView() -> UIImageView? {
+        guard let img = UIImage(named: "icon-settings") else {
+            return nil
+        }
+
+        let imgView = UIImageView(image: img)
+        imgView.translatesAutoresizingMaskIntoConstraints = false
+        let ratio = imgView.aspectRatio()
+        imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor,
+                                       multiplier: ratio,
+                                       constant: 0.0).isActive = true
+        imgView.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        return imgView
     }
 
     @discardableResult
