@@ -25,6 +25,7 @@ final class LoginViewController: BaseViewController {
     @IBOutlet weak var emailAddress: AnimatedPlaceholderTextfield!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var dismissButton: UIButton!
+    @IBOutlet weak var dismissButtonLeft: UIButton!
     @IBOutlet weak var loginButtonIPadLandscape: UIButton!
     @IBOutlet weak var manualConfigButton: UIButton!
     @IBOutlet weak var mainContainerView: UIView!
@@ -436,8 +437,14 @@ extension LoginViewController {
 
         loginButton.convertToLoginButton(
             placeholder: NSLocalizedString("Log In", comment: "Log in button in Login View"))
+        loginButtonIPadLandscape.convertToLoginButton(
+            placeholder: NSLocalizedString("Log In", comment: "Log in button in Login View"))
         manualConfigButton.convertToLoginButton(
             placeholder: NSLocalizedString("Manual setup", comment: "Manual Setup button in Login View"))
+        dismissButtonLeft.convertToLoginButton(
+            placeholder: NSLocalizedString("Cancel", comment: "Cancel in button in Login View"))
+        dismissButton.convertToLoginButton(
+            placeholder: NSLocalizedString("Cancel", comment: "Cancel in button in Login View"))
 
         pEpSyncSwitch.onTintColor = .pEpSwitchBackground
 
@@ -453,7 +460,6 @@ extension LoginViewController {
         hideSpecificDeviceButton()
         configureAnimatedTextFields()
 
-        dismissButton.isHidden = !viewModelOrCrash().isThereAnAccount()
         scrollView.loginScrollViewDelegate = self
 
         NotificationCenter.default.addObserver(self,
@@ -475,10 +481,21 @@ extension LoginViewController {
 
     @objc private func hideSpecificDeviceButton() {
         let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+        let isIPhone = UIDevice.current.userInterfaceIdiom == .phone
+        let isIPhoneLandscape = isIPhone && isLandscape()
         let isIpadLandscape = isIpad && isLandscape()
+        let hideCancelButtons = !viewModelOrCrash().isThereAnAccount()
 
         loginButton.isHidden = isIpadLandscape
         loginButtonIPadLandscape.isHidden = !isIpadLandscape
+
+        if hideCancelButtons {
+            dismissButton.isHidden = true
+            dismissButtonLeft.isHidden = true
+        } else {
+            dismissButton.isHidden = isIpadLandscape || isIPhoneLandscape
+            dismissButtonLeft.isHidden = !(isIpadLandscape || isIPhoneLandscape)
+        }
     }
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
@@ -510,6 +527,7 @@ extension LoginViewController {
         navigationController?.navigationBar.isHidden = true
 
         dismissButton.isEnabled = !isCurrentlyVerifying
+        dismissButtonLeft.isEnabled = !isCurrentlyVerifying
 
         loginButton.isEnabled = !isCurrentlyVerifying
         manualConfigButton.isEnabled = !isCurrentlyVerifying
