@@ -100,11 +100,13 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     private func updateView() {
+        var theBackgroundColor = UIColor.white
         if backgroundColorDark {
-            self.backgroundColor = UIColor.pEpLightBackground
-        } else {
-            self.backgroundColor = UIColor.white
+            theBackgroundColor = UIColor.pEpLightBackground
         }
+        self.backgroundColor = theBackgroundColor
+        self.trustButtonsView.backgroundColor = theBackgroundColor
+
         partnerNameLabel.text = viewModel?.partnerName
         updatePrivacyStatus(color: partnerColor)
         updateTrustwords()
