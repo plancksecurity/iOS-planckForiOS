@@ -12,6 +12,8 @@ import UIKit
 
 /// Use this component in Storyboard to show a ManualAccountsetupView. Just set this class to a View class and done,
 /// Important: Use ONLY in storyboard, other inits are not implemented
+/// This container class is needed in order to use the ManualAccountsetupView in interface builder.
+/// This container in the init, will load the xib of the ManualAccountsetupView and add it as a subview
 final class ManualAccountSetupContainerView: UIView {
     /// Conform to this delegate to handle envet from the ManualAccountSetupView
     weak var delegate: ManualAccountSetupViewDelegate? {
@@ -59,7 +61,7 @@ final class ManualAccountSetupContainerView: UIView {
         super.init(coder: coder)
 
         guard let manualAccountSetupView = ManualAccountSetupView.loadViewFromNib() else {
-            //Fail loading view, will show empty view and error handle on loadViewFromNib()
+            Log.shared.errorAndCrash("Fail to load ManualAccountSetupView from xib")
             return
         }
 
