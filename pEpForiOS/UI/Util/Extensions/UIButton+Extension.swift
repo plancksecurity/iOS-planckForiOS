@@ -19,6 +19,9 @@ extension UIButton {
 
         self.backgroundColor = backgroundColor
         setTitleColor(textColor, for: .normal)
+
+        layer.cornerRadius = 10
+        clipsToBounds = true
     }
 
     public func convertToLoginButton(placeholder: String) {
