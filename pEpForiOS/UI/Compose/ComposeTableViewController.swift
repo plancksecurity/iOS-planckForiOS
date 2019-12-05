@@ -115,76 +115,63 @@ extension ComposeTableViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
+
         //Not so nice. The view(controller) should not know about state and protection.
         var view = showNavigationBarSecurityBadge(pEpRating: pEpRating, pEpProtection: pEpProtected)
+
+        // Show the logo instead if there is no pEp color
+        if view == nil {
+            view = showNavigationBarPEPLogo(pEpRating: pEpRating)
+        }
+
+        // Handshake on simple touch if possible
         if vm.canDoHandshake() {
-            if view == nil {
-                view = showNavigationBarPEPLogo(pEpRating: pEpRating)
-            }
-            let tapGestureRecognizer = UITapGestureRecognizer(
+            let tapGestureRecognizerHandshake = UITapGestureRecognizer(
                 target: self,
-                action: #selector(actionHandshakeOrForceUnprotected))
-            view?.addGestureRecognizer(tapGestureRecognizer)
+                action: #selector(actionHandshake))
+            view?.addGestureRecognizer(tapGestureRecognizerHandshake)
+        }
+
+        // Toggle privacy status on long press for trusted and reliable
+        let pEpColor = pEpRating.pEpColor()
+        if pEpColor == .green || pEpColor == .yellow {
+            let tapGestureRecognizerToggleProtection = UILongPressGestureRecognizer(
+                target: self,
+                action: #selector(actionToggleProtection))
+            view?.addGestureRecognizer(tapGestureRecognizerToggleProtection)
         }
     }
 
-    /// Shows a menu where user can choose to make a handshake, or toggle force unprotected.
-    @objc func actionHandshakeOrForceUnprotected(gestureRecognizer: UITapGestureRecognizer) {
+    /// Toggles the protection for this outgoing message (force protected).
+    /// - Parameter gestureRecognizer: The gesture recognizer that triggered this
+    @objc func actionToggleProtection(gestureRecognizer: UITapGestureRecognizer) {
+        // This is a long press, so react once when we know for sure,
+        // while the user is still pressing.
+        guard gestureRecognizer.state == .began else {
+            return
+        }
+
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        let theCanHandshake = vm.state.canHandshake()
-        let theCanToggleProtection = vm.state.userCanToggleProtection()
+        guard vm.state.userCanToggleProtection() else {
+            return
+        }
 
-        if theCanHandshake || theCanToggleProtection {
-            let alert = UIAlertController.pEpAlertController()
+        let originalValueOfProtection = vm.state.pEpProtection
+        vm.handleUserChangedProtectionStatus(to: !originalValueOfProtection)
+    }
 
-            if theCanHandshake {
-                let actionReply = UIAlertAction(
-                    title: NSLocalizedString("Handshake",
-                                             comment: "possible privacy status action"),
-                    style: .default) {[weak self] (action) in
-                        self?.performSegue(withIdentifier: .segueHandshake, sender: self)
-                }
-                alert.addAction(actionReply)
-            }
-
-            let tutorialAction = UIAlertAction(
-                title: NSLocalizedString("Tutorial", comment: "show tutorial from compose view"),
-                style: .default) { _ in
-                    TutorialWizardViewController.presentTutorialWizard(viewController: self)
-            }
-            alert.addAction(tutorialAction)
-
-            if theCanToggleProtection {
-                let originalValueOfProtection = vm.state.pEpProtection
-                let title = vm.state.pEpProtection ?
-                    NSLocalizedString("Disable Protection",
-                                      comment: "possible private status action") :
-                    NSLocalizedString("Enable Protection",
-                                      comment: "possible private status action")
-                let actionToggleProtection = UIAlertAction(
-                    title: title,
-                    style: .default) { (action) in
-                        vm.handleUserChangedProtectionStatus(to: !originalValueOfProtection)
-                }
-                alert.addAction(actionToggleProtection)
-            }
-
-            let cancelAction = UIAlertAction(
-                title: NSLocalizedString("Cancel", comment: "possible private status action"),
-                style: .cancel) { (action) in }
-            alert.addAction(cancelAction)
-            if let sourceView = gestureRecognizer.view {
-                alert.popoverPresentationController?.sourceView = sourceView
-                alert.popoverPresentationController?.sourceRect = CGRect(x: sourceView.bounds.midX,
-                                                                         y: sourceView.bounds.maxY,
-                                                                         width: 0,
-                                                                         height: 0)
-            }
-
-            present(alert, animated: true, completion: nil)
+    /// Shows the handshake menu, if applicable.
+    /// - Parameter gestureRecognizer: The gesture recognizer that triggered this
+    @objc func actionHandshake(gestureRecognizer: UITapGestureRecognizer) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        if (vm.state.canHandshake()) {
+            self.performSegue(withIdentifier: .segueHandshake, sender: self)
         }
     }
 }
