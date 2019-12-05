@@ -32,6 +32,8 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
         fields = manualAccountSetupContainerView.manualSetupViewTextFeilds()
         setUpViewLocalizableTexts()
         setUpTextFieldsInputTraits()
+
+        manualAccountSetupContainerView.setTextFieldsPlaceholderAnimation(enable: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -42,6 +44,8 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        manualAccountSetupContainerView.setTextFieldsPlaceholderAnimation(enable: true)
         firstResponder(!viewModelOrCrash().isValidName)
     }
 
@@ -198,9 +202,11 @@ extension UserInfoViewController {
 
         let nextButtonTittle = NSLocalizedString("Next", comment: "Next button title for manual account setup")
         setupView.nextButton.setTitle(nextButtonTittle, for: .normal)
+        setupView.nextRightButton.setTitle(nextButtonTittle, for: .normal)
 
         let cancelButtonTittle = NSLocalizedString("Cancel", comment: "Cancel button title for manual account setup")
         setupView.cancelButton.setTitle(cancelButtonTittle, for: .normal)
+        setupView.cancelLeftButton.setTitle(cancelButtonTittle, for: .normal)
 
         let userNamePlaceholder = NSLocalizedString("User Name", comment: "User Name placeholder for manual account setup")
         setupView.firstTextField.placeholder = userNamePlaceholder

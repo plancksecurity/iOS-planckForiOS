@@ -91,4 +91,14 @@ final class ManualAccountSetupContainerView: UIView {
                 setupView.thirdTextField,
                 setupView.fourthTextField]
     }
+
+    func setTextFieldsPlaceholderAnimation(enable: Bool) {
+        for textField in manualSetupViewTextFeilds() {
+            guard let animatedTextField = textField as? AnimatedPlaceholderTextfield else {
+                //If it not a AnimatedPlaceholderTextfield, there no animation to enable/disable
+                continue
+            }
+            animatedTextField.isPlaceholderAnimationEnable = enable
+        }
+    }
 }

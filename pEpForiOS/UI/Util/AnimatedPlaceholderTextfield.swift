@@ -54,6 +54,11 @@ class AnimatedPlaceholderTextfield: UITextField {
         }
     }
 
+    @IBInspectable
+    /// Use this property enable or disale placeholder animation.
+    /// If disable, the placeholder will just appear up instead of moving with the animation.
+    var isPlaceholderAnimationEnable: Bool = true
+
     override var text: String? {
         didSet {
             updateTextFieldTextColor()
@@ -192,13 +197,17 @@ extension AnimatedPlaceholderTextfield {
     /// Do animation to move placeHolder label above textfield
     private func moveUpPlaceHolderLabel() {
         placeHolderLabelCenterY?.constant = -placeholderLabel.frame.height / 2 - 10
-        doViewAnimation()
+        if isPlaceholderAnimationEnable {
+            doViewAnimation()
+        }
     }
 
     /// Do animations to move placeholder label back to textfield placeholder origin
     private func centerPlaceHolderLabel() {
         placeHolderLabelCenterY?.constant = 0
-        doViewAnimation()
+        if isPlaceholderAnimationEnable {
+            doViewAnimation()
+        }
     }
 
     private func doViewAnimation() {

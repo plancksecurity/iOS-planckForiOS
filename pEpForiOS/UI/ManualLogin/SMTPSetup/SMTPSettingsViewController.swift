@@ -41,12 +41,14 @@ final class SMTPSettingsViewController: BaseViewController, TextfieldResponder {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        manualAccountSetupContainerView.setTextFieldsPlaceholderAnimation(enable: false)
         updateView()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        manualAccountSetupContainerView.setTextFieldsPlaceholderAnimation(enable: true)
         firstResponder(model?.serverSMTP == nil)
     }
 
