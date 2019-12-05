@@ -32,7 +32,8 @@ final class LoginViewController: BaseViewController {
     @IBOutlet weak var scrollView: LoginScrollView!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
-
+    @IBOutlet weak var pEpSyncSwitch: UISwitch!
+    
     var loginViewModel: LoginViewModel?
     var offerManualSetup = false
     /// Use this property if is an oauth login. This will hide password TextFiled and show the Oauth screen.
@@ -437,6 +438,8 @@ extension LoginViewController {
             placeholder: NSLocalizedString("Log In", comment: "Log in button in Login View"))
         manualConfigButton.convertToLoginButton(
             placeholder: NSLocalizedString("Manual setup", comment: "Manual Setup button in Login View"))
+
+        pEpSyncSwitch.onTintColor = .pEpSwitchBackground
 
         // hide extended login fields
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(

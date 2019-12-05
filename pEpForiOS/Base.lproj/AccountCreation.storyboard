@@ -381,6 +381,7 @@
                         <outlet property="loginButtonIPadLandscape" destination="wIi-CI-cLC" id="zSa-ad-e69"/>
                         <outlet property="mainContainerView" destination="d4O-yC-tc7" id="Kg2-jV-XNd"/>
                         <outlet property="manualConfigButton" destination="JT1-ND-6bH" id="1zL-Jx-gfO"/>
+                        <outlet property="pEpSyncSwitch" destination="rz2-cx-OH1" id="OPI-b9-fgr"/>
                         <outlet property="pEpSyncViewCenterHConstraint" destination="88a-wW-ARz" id="xP6-mx-jtR"/>
                         <outlet property="password" destination="e3d-56-GP8" id="Ab6-1O-YUi"/>
                         <outlet property="scrollView" destination="RXQ-HQ-bsM" id="Jba-T4-Mwi"/>
