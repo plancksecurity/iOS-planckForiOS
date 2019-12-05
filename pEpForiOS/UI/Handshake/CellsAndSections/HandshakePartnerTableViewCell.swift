@@ -34,6 +34,7 @@ protocol HandshakePartnerTableViewCellDelegate: class {
                                 cell: HandshakePartnerTableViewCell,
                                 indexPath: IndexPath,
                                 viewModel: HandshakePartnerTableViewCellViewModel?)
+
     func updateSize()
 }
 
