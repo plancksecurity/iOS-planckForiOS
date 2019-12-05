@@ -80,11 +80,11 @@
                                                     </subviews>
                                                     <edgeInsets key="layoutMargins" top="0.0" left="8" bottom="0.0" right="8"/>
                                                 </stackView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0lc-1T-Z20" userLabel="PrivacyStatusDescriptionStackView">
-                                                    <rect key="frame" x="0.0" y="90" width="335" height="42.5"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0lc-1T-Z20" userLabel="PrivacyStatusDescriptionStackView">
+                                                    <rect key="frame" x="0.0" y="90" width="335" height="31.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" text="Your communication partner is mistrusted." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eaF-0u-kGb" userLabel="PrivacyStatusDescription">
-                                                            <rect key="frame" x="8" y="0.0" width="319" height="42.5"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" ambiguous="YES" text="Your communication partner is mistrusted." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eaF-0u-kGb" userLabel="PrivacyStatusDescription">
+                                                            <rect key="frame" x="8" y="0.0" width="319" height="31.5"/>
                                                             <accessibility key="accessibilityConfiguration" identifier="privacyStatusDescription"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -93,8 +93,8 @@
                                                     </subviews>
                                                     <edgeInsets key="layoutMargins" top="0.0" left="8" bottom="0.0" right="8"/>
                                                 </stackView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="YPS-lz-S3W" userLabel="TrustwordsStackView">
-                                                    <rect key="frame" x="0.0" y="152.5" width="335" height="42.5"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YPS-lz-S3W" userLabel="TrustwordsStackView">
+                                                    <rect key="frame" x="0.0" y="141.5" width="335" height="42.5"/>
                                                     <subviews>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR" userLabel="TrustWordsLabel">
                                                             <rect key="frame" x="8" y="0.0" width="319" height="42.5"/>
@@ -106,11 +106,11 @@
                                                     </subviews>
                                                     <edgeInsets key="layoutMargins" top="0.0" left="8" bottom="0.0" right="8"/>
                                                 </stackView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="O51-e1-VQJ" userLabel="TrustButtonsStackView">
-                                                    <rect key="frame" x="0.0" y="215" width="335" height="42"/>
+                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gRz-Yh-xsS" userLabel="TrustButtonsView">
+                                                    <rect key="frame" x="0.0" y="204" width="335" height="33"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="dbO-2K-SpB" userLabel="WrongButton">
-                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="42"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="dbO-2K-SpB" userLabel="WrongButton">
+                                                            <rect key="frame" x="0.0" y="0.0" width="60" height="33"/>
                                                             <accessibility key="accessibilityConfiguration" label="wrongButton"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <state key="normal" title="Decline"/>
@@ -118,8 +118,8 @@
                                                                 <action selector="wrongAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="UGm-r5-suP"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Jgi-7k-Ymf" userLabel="ConfirmButton">
-                                                            <rect key="frame" x="172.5" y="0.0" width="162.5" height="42"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Jgi-7k-Ymf" userLabel="ConfirmButton">
+                                                            <rect key="frame" x="70" y="0.0" width="65" height="31.5"/>
                                                             <accessibility key="accessibilityConfiguration" label="confirmButton"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <state key="normal" title="Confirm"/>
@@ -128,6 +128,19 @@
                                                             </connections>
                                                         </button>
                                                     </subviews>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                    <constraints>
+                                                        <constraint firstItem="Jgi-7k-Ymf" firstAttribute="width" secondItem="dbO-2K-SpB" secondAttribute="width" multiplier="1.08333" id="3Ip-Cv-2G7"/>
+                                                        <constraint firstItem="dbO-2K-SpB" firstAttribute="top" secondItem="gRz-Yh-xsS" secondAttribute="top" id="9xi-ri-8qb"/>
+                                                        <constraint firstItem="Jgi-7k-Ymf" firstAttribute="firstBaseline" secondItem="dbO-2K-SpB" secondAttribute="firstBaseline" id="Ego-Ew-VfE"/>
+                                                        <constraint firstItem="dbO-2K-SpB" firstAttribute="leading" secondItem="gRz-Yh-xsS" secondAttribute="leading" id="bCM-5s-oWK"/>
+                                                        <constraint firstAttribute="bottom" secondItem="dbO-2K-SpB" secondAttribute="bottom" id="bzR-lb-iIo"/>
+                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Jgi-7k-Ymf" secondAttribute="trailing" constant="10" id="dyG-mT-oxW"/>
+                                                        <constraint firstItem="Jgi-7k-Ymf" firstAttribute="leading" secondItem="dbO-2K-SpB" secondAttribute="trailing" constant="10" id="maE-k7-LXa"/>
+                                                    </constraints>
+                                                </view>
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="O51-e1-VQJ" userLabel="TrustButtonsStackView">
+                                                    <rect key="frame" x="0.0" y="257" width="335" height="0.0"/>
                                                     <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                                 </stackView>
                                             </subviews>

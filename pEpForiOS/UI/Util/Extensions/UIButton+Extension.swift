@@ -22,6 +22,15 @@ extension UIButton {
 
         layer.cornerRadius = 10
         clipsToBounds = true
+
+        let insetPlusHorizontal: CGFloat = 20
+        let insetPlusVertical: CGFloat = 10
+        var insets = contentEdgeInsets
+        insets.left = insets.left + insetPlusHorizontal
+        insets.right = insets.right + insetPlusHorizontal
+        insets.top = insets.top + insetPlusVertical
+        insets.bottom = insets.bottom + insetPlusVertical
+        contentEdgeInsets = insets
     }
 
     public func convertToLoginButton(placeholder: String) {
