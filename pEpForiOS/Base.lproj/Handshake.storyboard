@@ -110,7 +110,7 @@
                                                     <rect key="frame" x="0.0" y="204" width="335" height="33"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="dbO-2K-SpB" userLabel="WrongButton">
-                                                            <rect key="frame" x="0.0" y="0.0" width="60" height="33"/>
+                                                            <rect key="frame" x="5" y="0.0" width="60" height="33"/>
                                                             <accessibility key="accessibilityConfiguration" label="wrongButton"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <state key="normal" title="Decline"/>
@@ -119,7 +119,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Jgi-7k-Ymf" userLabel="ConfirmButton">
-                                                            <rect key="frame" x="70" y="0.0" width="65" height="31.5"/>
+                                                            <rect key="frame" x="75" y="0.0" width="65" height="31.5"/>
                                                             <accessibility key="accessibilityConfiguration" label="confirmButton"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <state key="normal" title="Confirm"/>
@@ -133,7 +133,7 @@
                                                         <constraint firstItem="Jgi-7k-Ymf" firstAttribute="width" secondItem="dbO-2K-SpB" secondAttribute="width" multiplier="1.08333" id="3Ip-Cv-2G7"/>
                                                         <constraint firstItem="dbO-2K-SpB" firstAttribute="top" secondItem="gRz-Yh-xsS" secondAttribute="top" id="9xi-ri-8qb"/>
                                                         <constraint firstItem="Jgi-7k-Ymf" firstAttribute="firstBaseline" secondItem="dbO-2K-SpB" secondAttribute="firstBaseline" id="Ego-Ew-VfE"/>
-                                                        <constraint firstItem="dbO-2K-SpB" firstAttribute="leading" secondItem="gRz-Yh-xsS" secondAttribute="leading" id="bCM-5s-oWK"/>
+                                                        <constraint firstItem="dbO-2K-SpB" firstAttribute="leading" secondItem="gRz-Yh-xsS" secondAttribute="leading" constant="5" id="bCM-5s-oWK"/>
                                                         <constraint firstAttribute="bottom" secondItem="dbO-2K-SpB" secondAttribute="bottom" id="bzR-lb-iIo"/>
                                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Jgi-7k-Ymf" secondAttribute="trailing" constant="10" id="dyG-mT-oxW"/>
                                                         <constraint firstItem="Jgi-7k-Ymf" firstAttribute="leading" secondItem="dbO-2K-SpB" secondAttribute="trailing" constant="10" id="maE-k7-LXa"/>
