@@ -113,7 +113,7 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="162.5" height="42"/>
                                                             <accessibility key="accessibilityConfiguration" label="wrongButton"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                            <state key="normal" title="Wrong Trustwords"/>
+                                                            <state key="normal" title="Decline"/>
                                                             <connections>
                                                                 <action selector="wrongAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="UGm-r5-suP"/>
                                                             </connections>
@@ -122,7 +122,7 @@
                                                             <rect key="frame" x="172.5" y="0.0" width="162.5" height="42"/>
                                                             <accessibility key="accessibilityConfiguration" label="confirmButton"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                            <state key="normal" title="Confirm Trustwords"/>
+                                                            <state key="normal" title="Confirm"/>
                                                             <connections>
                                                                 <action selector="confirmAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="0Ra-lN-sx4"/>
                                                             </connections>

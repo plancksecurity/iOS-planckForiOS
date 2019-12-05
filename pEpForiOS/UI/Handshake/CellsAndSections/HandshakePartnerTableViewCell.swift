@@ -156,31 +156,16 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     private func updateTitle(button: UIButton) {
-        let confirmPGPLong =
-            NSLocalizedString("Confirm Fingerprint",
-                              comment: "Confirm correct fingerprint (PGP, long version)")
-        let mistrustPGPLong =
-            NSLocalizedString("Wrong Fingerprint",
-                              comment: "Incorrect fingerprint (PGP, long version)")
-        let confirmLong =
-            NSLocalizedString("Confirm Trustwords",
-                              comment: "Confirm correct trustwords (pEp, long version)")
-        let mistrustLong =
-            NSLocalizedString("Wrong Trustwords",
-                              comment: "Incorrect trustwords (pEp, long version)")
-
         if button == confirmButton {
-            if !isPartnerPEPUser {
-                button.setTitle(confirmPGPLong, for: .normal)
-            } else {
-                button.setTitle(confirmLong, for: .normal)
-            }
+            button.setTitle(
+                NSLocalizedString("Confirm",
+                                  comment: "Confirm correct trustwords/PGP fingerprint"),
+                for: .normal)
         } else if button == wrongButton {
-            if !isPartnerPEPUser {
-                button.setTitle(mistrustPGPLong, for: .normal)
-            } else {
-                button.setTitle(mistrustLong, for: .normal)
-            }
+            button.setTitle(
+                NSLocalizedString("Decline",
+                                  comment: "Incorrect trustwords/PGP fingerprint"),
+                for: .normal)
         }
     }
 
