@@ -4,7 +4,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -34,7 +33,6 @@
                                     </state>
                                     <connections>
                                         <action selector="addAccountTapped:" destination="6ra-tc-Aiv" eventType="touchUpInside" id="OYg-F7-CRW"/>
-                                        <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccountIpad" modalPresentationStyle="formSheet" id="aKb-z0-Qyn"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -65,12 +63,12 @@
                     <navigationItem key="navigationItem" id="rcC-dN-oTh"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccountIphone" id="W2T-ax-nDz"/>
+                        <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccount" id="kBC-vv-Cfe"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2c-UY-yR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9884" y="-1164.4677661169417"/>
+            <point key="canvasLocation" x="9916" y="-1164"/>
         </scene>
         <!--AccountCreation-->
         <scene sceneID="rdR-gU-SsC">
@@ -78,7 +76,7 @@
                 <viewControllerPlaceholder storyboardName="AccountCreation" id="uKb-Ku-Cng" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7bq-Lz-J44" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10635" y="-1077"/>
+            <point key="canvasLocation" x="10718" y="-1165"/>
         </scene>
         <!--NothingSelected-->
         <scene sceneID="eeX-Fr-Vs1">
@@ -88,80 +86,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nrT-r1-KyC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="11028.799999999999" y="-423.68815592203902"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="IzP-hB-voC">
-            <objects>
-                <viewController id="VT0-ey-zai" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="BX2-rU-KEf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="ugj-KF-wsI"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="aCO-gu-Pqo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="10182" y="755"/>
-        </scene>
-        <!--Root View Controller-->
-        <scene sceneID="mpH-cv-x0j">
-            <objects>
-                <tableViewController clearsSelectionOnViewWillAppear="NO" id="YtC-c7-8un" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="hOn-81-Ggo">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Tje-r1-hZd">
-                                <rect key="frame" x="0.0" y="28" width="375" height="43.5"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Tje-r1-hZd" id="Z2y-ai-fdt">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="YtC-c7-8un" id="1hf-Fa-Jf6"/>
-                            <outlet property="delegate" destination="YtC-c7-8un" id="shu-3R-HlY"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="IUG-Ov-BXA"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2oo-DF-hLs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="11137" y="90"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="fKN-hB-ex6">
-            <objects>
-                <navigationController id="dRr-hg-9eJ" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="jhV-nj-9wo">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="YtC-c7-8un" kind="relationship" relationship="rootViewController" id="dBh-zn-CgD"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6oc-yi-BKZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="10386" y="414"/>
-        </scene>
-        <!--Split View Controller-->
-        <scene sceneID="6QZ-bT-psw">
-            <objects>
-                <splitViewController id="Vum-f5-fVm" sceneMemberID="viewController">
-                    <connections>
-                        <segue destination="dRr-hg-9eJ" kind="relationship" relationship="masterViewController" id="225-G2-W2Z"/>
-                        <segue destination="VT0-ey-zai" kind="relationship" relationship="detailViewController" id="dlT-Hh-198"/>
-                    </connections>
-                </splitViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="irM-hy-hsS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="9220" y="543"/>
+            <point key="canvasLocation" x="9926" y="-75"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="7fi-4c-XJX">
@@ -190,11 +115,12 @@
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d4z-SE-fTT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8334" y="-418"/>
+            <point key="canvasLocation" x="8305" y="-417"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="kBD-Qq-HNw">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i6z-0t-IdA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="TAp-yg-jwP" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="pqy-qU-v21">
@@ -206,15 +132,11 @@
                         <segue destination="jlA-KV-xmZ" kind="relationship" relationship="rootViewController" id="7kR-kn-Fon"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="i6z-0t-IdA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10090.4" y="-423.23838080959524"/>
+            <point key="canvasLocation" x="9094" y="-74"/>
         </scene>
     </scenes>
     <resources>
         <image name="button-add" width="22" height="22"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="W2T-ax-nDz"/>
-    </inferredMetricsTieBreakers>
 </document>

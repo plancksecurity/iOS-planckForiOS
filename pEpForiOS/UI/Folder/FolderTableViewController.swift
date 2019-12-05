@@ -212,11 +212,7 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - Segue
 
     @IBAction func addAccountTapped(_ sender: Any) {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            performSegue(withIdentifier: .newAccountIpad, sender: self)
-        } else {
-            performSegue(withIdentifier: .newAccountIphone, sender: self)
-        }
+        performSegue(withIdentifier: .newAccount, sender: self)
     }
 
     /**
@@ -245,8 +241,7 @@ extension FolderTableViewController: LoginViewControllerDelegate {
 
 extension FolderTableViewController: SegueHandlerType {
     enum SegueIdentifier: String {
-        case newAccountIphone
-        case newAccountIpad
+        case newAccount
         case settingsSegue
     }
 
@@ -254,7 +249,7 @@ extension FolderTableViewController: SegueHandlerType {
         let segueId = segueIdentifier(for: segue)
 
         switch segueId {
-        case .newAccountIphone, .newAccountIpad:
+        case .newAccount:
             guard
                 let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? LoginViewController else {
