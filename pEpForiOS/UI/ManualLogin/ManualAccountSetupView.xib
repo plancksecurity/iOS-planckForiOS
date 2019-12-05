@@ -320,11 +320,13 @@
                             </subviews>
                             <constraints>
                                 <constraint firstItem="OjY-aN-ucH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wep-Xm-sou" secondAttribute="leading" constant="30" id="3jz-tV-gBC"/>
+                                <constraint firstItem="9fb-qy-5Z9" firstAttribute="centerY" secondItem="wep-Xm-sou" secondAttribute="centerY" id="5Rf-a8-0qH"/>
                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ZKp-HP-GpN" secondAttribute="bottom" constant="10" id="Ajf-gz-6yS"/>
                                 <constraint firstItem="ZKp-HP-GpN" firstAttribute="trailing" secondItem="OjY-aN-ucH" secondAttribute="trailing" id="AoN-5y-VNp"/>
                                 <constraint firstItem="pmk-EA-JLq" firstAttribute="leading" secondItem="0te-KR-oYr" secondAttribute="trailing" constant="30" id="Cvm-Rd-7u3"/>
                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="pmk-EA-JLq" secondAttribute="trailing" constant="20" id="Dct-gi-7uS"/>
                                 <constraint firstItem="ZKp-HP-GpN" firstAttribute="leading" secondItem="OjY-aN-ucH" secondAttribute="leading" id="LhS-J2-oV7"/>
+                                <constraint firstItem="OjY-aN-ucH" firstAttribute="centerY" secondItem="wep-Xm-sou" secondAttribute="centerY" id="WQJ-Sm-ij8"/>
                                 <constraint firstItem="ZKp-HP-GpN" firstAttribute="centerY" secondItem="wep-Xm-sou" secondAttribute="centerY" id="YsY-cI-r96"/>
                                 <constraint firstItem="OIj-9x-l85" firstAttribute="leading" secondItem="9dO-D4-gja" secondAttribute="trailing" constant="36" id="eYb-0l-81q"/>
                                 <constraint firstItem="ZKp-HP-GpN" firstAttribute="top" secondItem="OjY-aN-ucH" secondAttribute="bottom" constant="20" id="fQ5-AY-cH2"/>
@@ -333,7 +335,6 @@
                                 <constraint firstItem="pmk-EA-JLq" firstAttribute="centerY" secondItem="0te-KR-oYr" secondAttribute="centerY" id="rr2-nI-yVR"/>
                                 <constraint firstItem="9dO-D4-gja" firstAttribute="leading" secondItem="tyq-Cq-4dU" secondAttribute="trailing" constant="36" id="tgd-Rd-sib"/>
                                 <constraint firstItem="OIj-9x-l85" firstAttribute="centerY" secondItem="9dO-D4-gja" secondAttribute="centerY" id="uNK-fO-3X6"/>
-                                <constraint firstItem="9fb-qy-5Z9" firstAttribute="centerY" secondItem="wep-Xm-sou" secondAttribute="centerY" id="zQi-e4-sWV"/>
                             </constraints>
                             <variation key="default">
                                 <mask key="subviews">
@@ -341,6 +342,8 @@
                                     <exclude reference="ZKp-HP-GpN"/>
                                 </mask>
                                 <mask key="constraints">
+                                    <exclude reference="WQJ-Sm-ij8"/>
+                                    <exclude reference="5Rf-a8-0qH"/>
                                     <exclude reference="Ajf-gz-6yS"/>
                                     <exclude reference="YsY-cI-r96"/>
                                     <exclude reference="fQ5-AY-cH2"/>
@@ -351,6 +354,7 @@
                                     <include reference="pmk-EA-JLq"/>
                                 </mask>
                                 <mask key="constraints">
+                                    <include reference="WQJ-Sm-ij8"/>
                                     <include reference="YsY-cI-r96"/>
                                 </mask>
                             </variation>
@@ -359,6 +363,7 @@
                                     <include reference="ZKp-HP-GpN"/>
                                 </mask>
                                 <mask key="constraints">
+                                    <include reference="5Rf-a8-0qH"/>
                                     <include reference="Ajf-gz-6yS"/>
                                     <include reference="fQ5-AY-cH2"/>
                                 </mask>
