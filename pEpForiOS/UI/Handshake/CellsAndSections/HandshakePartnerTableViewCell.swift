@@ -15,19 +15,23 @@ import PEPObjCAdapterFramework
  That delegate is in control to handle the actual trust changes.
  */
 protocol HandshakePartnerTableViewCellDelegate: class {
-    func confirmTrust(sender: UIButton,  cell: HandshakePartnerTableViewCell,
+    func confirmTrust(sender: UIButton,
+                      cell: HandshakePartnerTableViewCell,
                       indexPath: IndexPath,
                       viewModel: HandshakePartnerTableViewCellViewModel?)
 
-    func denyTrust(sender: UIButton,  cell: HandshakePartnerTableViewCell,
+    func denyTrust(sender: UIButton,
+                   cell: HandshakePartnerTableViewCell,
                    indexPath: IndexPath,
                    viewModel: HandshakePartnerTableViewCellViewModel?)
 
-    func pickLanguage(sender: UIView,  cell: HandshakePartnerTableViewCell,
+    func pickLanguage(sender: UIView,
+                      cell: HandshakePartnerTableViewCell,
                       indexPath: IndexPath,
                       viewModel: HandshakePartnerTableViewCellViewModel?)
 
-    func toggleTrustwordsLength(sender: UIView,  cell: HandshakePartnerTableViewCell,
+    func toggleTrustwordsLength(sender: UIView,
+                                cell: HandshakePartnerTableViewCell,
                                 indexPath: IndexPath,
                                 viewModel: HandshakePartnerTableViewCellViewModel?)
     func updateSize()
