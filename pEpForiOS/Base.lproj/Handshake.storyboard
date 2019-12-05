@@ -32,7 +32,7 @@
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pop-7I-1lF" userLabel="HeaderView">
                                                             <rect key="frame" x="8" y="0.0" width="319" height="70"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="empty-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="rG1-9L-QdA" userLabel="PartnerImage">
+                                                                <imageView contentMode="scaleToFill" image="empty-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="rG1-9L-QdA" userLabel="PartnerImage">
                                                                     <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
                                                                     <accessibility key="accessibilityConfiguration" identifier="partnerImageView"/>
                                                                     <constraints>
@@ -40,7 +40,7 @@
                                                                         <constraint firstAttribute="height" constant="64" id="SeI-tk-oVr"/>
                                                                     </constraints>
                                                                 </imageView>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" text="Hannibal Chew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFh-wv-YAc" userLabel="PartnerNameLabel">
+                                                                <label opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" text="Hannibal Chew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFh-wv-YAc" userLabel="PartnerNameLabel">
                                                                     <rect key="frame" x="78" y="15.5" width="221" height="33.5"/>
                                                                     <accessibility key="accessibilityConfiguration" identifier="partnerNameLabel"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
