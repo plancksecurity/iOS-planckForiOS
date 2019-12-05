@@ -42,8 +42,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var privacyStatusTitle: UILabel!
     @IBOutlet weak var privacyStatusDescription: UILabel!
     @IBOutlet weak var trustWordsLabel: UILabel!
-    @IBOutlet weak var trustMistrustButtonsStackView: UIStackView!
-
+    @IBOutlet weak var trustButtonsView: UIView!
+    
     weak var delegate: HandshakePartnerTableViewCellDelegate?
 
     var indexPath: IndexPath = IndexPath()
@@ -152,7 +152,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     private func updateTrustwordsExpansionVisibility() {
         trustWordsLabel.isHidden = !showTrustwords
-        trustMistrustButtonsStackView.isHidden = !showTrustwords
+        trustButtonsView.isHidden = !showTrustwords
     }
 
     private func updateTitle(button: UIButton) {
