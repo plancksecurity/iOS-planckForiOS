@@ -116,14 +116,23 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
         if isPartnerPEPUser && showTrustwords {
                 install(gestureRecognizer: UITapGestureRecognizer(
-                target: self,
-                action: #selector(toggleTrustwordsLengthAction(_:))),
-                    view: trustWordsLabel)
+                    target: self,
+                    action: #selector(toggleTrustwordsLengthAction(_:))),
+                        view: trustWordsLabel)
         }
 
         updateConfirmDistrustButtonsTitle()
-
         updateAdditionalConstraints()
+
+        install(gestureRecognizer: UITapGestureRecognizer(
+            target: self,
+            action: #selector(showResetButtonAction(_:))),
+                view: partnerImageView)
+
+        install(gestureRecognizer: UITapGestureRecognizer(
+            target: self,
+            action: #selector(showResetButtonAction(_:))),
+                view: partnerNameLabel)
     }
 
     /**
@@ -199,6 +208,11 @@ class HandshakePartnerTableViewCell: UITableViewCell {
                 cell: self,
                 indexPath: indexPath,
                 viewModel: viewModel)
+        }
+    }
+
+    @objc func showResetButtonAction(_ gestureRecognizer: UIGestureRecognizer) {
+        if gestureRecognizer.state == .ended {
         }
     }
 
