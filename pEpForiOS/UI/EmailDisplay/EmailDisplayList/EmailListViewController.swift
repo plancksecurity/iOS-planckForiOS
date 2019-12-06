@@ -10,7 +10,7 @@ import UIKit
 import SwipeCellKit
 import pEpIOSToolbox
 
-class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
+class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDelegate {
     public static let storyboardId = "EmailListViewController"
     public static let storyboardNavigationControllerId = "EmailListNavigationViewController"
     static let FILTER_TITLE_MAX_XAR = 20
@@ -230,7 +230,7 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
 
     // MARK: - Other
 
-    private func showComposeView() {
+    private func showEditDraftComposeView() {
         performSegue(withIdentifier: SegueIdentifier.segueEditDraft, sender: self)
     }
 
@@ -657,7 +657,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                 lastSelectedIndexPath = indexPath
                 tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
                 if model.isEditable(messageAt: indexPath) {
-                    showComposeView()
+                    showEditDraftComposeView()
                 } else {
                     showEmail(forCellAt: indexPath)
                 }

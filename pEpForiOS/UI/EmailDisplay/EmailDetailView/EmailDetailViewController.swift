@@ -10,7 +10,7 @@ import UIKit
 
 // Represents the a list of mails showing one mail with all details in full screen.
 //BUFF: docs!
-class EmailDetailViewController: BaseViewController {
+class EmailDetailViewController: EmailDisplayViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     var viewModel: EmailDetailViewModel?
 
@@ -35,7 +35,7 @@ class EmailDetailViewController: BaseViewController {
     }
 
     @IBAction func replyButtonPressed(_ sender: UIBarButtonItem) {
-//        performSegue(withIdentifier: .segueReply, sender: self) 
+//        performSegue(withIdentifier: .segueReply, sender: self)
     }
 
     //BUFF: from EmailViewController

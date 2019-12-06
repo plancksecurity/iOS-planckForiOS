@@ -34,7 +34,7 @@ protocol EmailDisplayViewModelDelegate: class, TableViewUpdate {
                             didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath)
     func checkIfSplitNeedsUpdate(indexpath: [IndexPath]) //BUFF: obsolete?
     /*
-     //!!!: Some issues here:
+     //!!!: Some issues here: @Xavier
      - bad naming.
      - what is viewModel as the param
      - let's discuss & change!
