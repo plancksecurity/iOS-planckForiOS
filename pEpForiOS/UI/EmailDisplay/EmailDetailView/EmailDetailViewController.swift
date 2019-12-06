@@ -35,8 +35,13 @@ class EmailDetailViewController: BaseViewController {
     }
 
     @IBAction func replyButtonPressed(_ sender: UIBarButtonItem) {
-        fatalError()
+//        performSegue(withIdentifier: .segueReply, sender: self) 
     }
+
+    //BUFF: from EmailViewController
+    
+
+    //
 }
 
 // MARK: - UICollectionViewDelegate

@@ -10,8 +10,13 @@ import UIKit
 import SwipeCellKit
 import pEpIOSToolbox
 
-class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelegate {
+class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
+    public static let storyboardId = "EmailListViewController"
+    public static let storyboardNavigationControllerId = "EmailListNavigationViewController"
     static let FILTER_TITLE_MAX_XAR = 20
+
+    @IBOutlet weak var enableFilterButton: UIBarButtonItem!
+    @IBOutlet weak var tableView: UITableView!
 
     var model: EmailListViewModel? {
         didSet {
@@ -19,7 +24,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
-    public static let storyboardId = "EmailListViewController"
     /// This is used to handle the selection row when it recives an update
     /// and also when swipeCellAction is performed to store from which cell the action is done.
     private var lastSelectedIndexPath: IndexPath?
@@ -32,10 +36,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     private var swipeDelete : SwipeAction? = nil
 
-    // MARK: - Outlets
-    
-    @IBOutlet weak var enableFilterButton: UIBarButtonItem!
-
     private let refreshController = UIRefreshControl()
 
     var textFilterButton: UIBarButtonItem = UIBarButtonItem(title: "",
@@ -47,9 +47,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tableView.allowsMultipleSelectionDuringEditing = true
-        setupSearchBar()
         setup()
     }
 
@@ -75,13 +72,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             updateFilterButtonView()
             vm.startMonitoring() //???: should UI know about startMonitoring?
 
+            tableView.reloadData()
+
             // Threading feature is currently non-existing. Keep this code, might help later.
             //            if vm.checkIfSettingsChanged() {
             //                settingsChanged()
             //            }
         }
     }
-
 
     deinit {
          NotificationCenter.default.removeObserver(self)
@@ -95,6 +93,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     // MARK: - Setup
 
     private func setup() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        // rm seperator lines for empty view/cells
+        tableView.tableFooterView = UIView()
+        tableView.allowsMultipleSelectionDuringEditing = true
+        setupSearchBar()
 
         guard let vm = model else {
             Log.shared.errorAndCrash("No VM")
@@ -147,6 +151,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         textFilterButton.setTitleTextAttributes(attributes, for: UIControl.State.normal)
     }
 
+    // MARK: - Private //BUFF: move, cleanup
+
     // MARK: - Search Bar
 
     private func setupSearchBar() {
@@ -182,7 +188,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         model?.fetchNewMessages() { [weak self] in
             // Loosing self is a valid use case here. We might have been dismissed.
             DispatchQueue.main.async {
-                self?.refreshControl?.endRefreshing()
+                self?.tableView.refreshControl?.endRefreshing()
             }
         }
     }
@@ -230,7 +236,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     /// we have to handle the ipad/iphone segue in a different way. see IOS-1737
     private func showEmail(forCellAt indexPath: IndexPath) {
-        guard let splitViewController = self.splitViewController else {
+        guard let _ = splitViewController else { //BUFF: looks obsolete legathy. Ask Xavier to make sure.
             return
         }
         if onlySplitViewMasterIsShown {
@@ -241,8 +247,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     private func showNoMessageSelectedIfNeeded() {
-        showEmptyDetailViewIfApplicable(
-            message: NSLocalizedString(
+        showEmptyDetailViewIfApplicable(message: NSLocalizedString(
                 "Please chose a message",
                 comment: "No messages has been selected for detail view"))
     }
@@ -493,13 +498,40 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
-    // MARK: - UITableViewDataSource
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    // MARK: - SwipeTableViewCellDelegate
+
+    func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
+        action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
+        action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
+
+        switch buttonStyle {
+        case .backgroundColor:
+            action.backgroundColor = descriptor.color
+        case .circular:
+            action.backgroundColor = .clear
+            action.textColor = descriptor.color
+            action.font = .systemFont(ofSize: 13)
+            action.transitionDelegate = ScaleTransition.default
+        }
+    }
+
+    // MARK: -
+
+    override func didReceiveMemoryWarning() {
+        model?.freeMemory()
+    }
+}
+
+// MARK: - UITableViewDataSource & UITableViewDelegate
+
+extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
+
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return model?.rowCount ?? 0
     }
 
-    override func tableView(_ tableView: UITableView,
+    func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: EmailListViewCell.storyboardId,
@@ -522,8 +554,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         return cell
     }
-
-    // MARK: - UITableViewDelegate
 
     func tableView(_ tableView: UITableView,
                    editActionsForRowAt
@@ -606,14 +636,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return options
     }
 
-    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let cell = cell as? EmailListViewCell else {
             return
         }
         cell.clear()
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.isEditing {
             if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
                 vm.updatedItems(indexPaths: selectedIndexPaths)
@@ -637,7 +667,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if tableView.isEditing, let vm = model {
             if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
                 vm.updatedItems(indexPaths: selectedIndexPaths)
@@ -649,36 +679,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     // Implemented to get informed about the scrolling position.
     // If the user has scrolled down (almost) to the end, we need to get older emails to display.
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
                             forRowAt indexPath: IndexPath) {
         guard let vm = model else {
             Log.shared.errorAndCrash("No model.")
             return
         }
         vm.fetchOlderMessagesIfRequired(forIndexPath: indexPath)
-    }
-
-    // MARK: - SwipeTableViewCellDelegate
-
-    func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
-        action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
-        action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
-
-        switch buttonStyle {
-        case .backgroundColor:
-            action.backgroundColor = descriptor.color
-        case .circular:
-            action.backgroundColor = .clear
-            action.textColor = descriptor.color
-            action.font = .systemFont(ofSize: 13)
-            action.transitionDelegate = ScaleTransition.default
-        }
-    }
-
-    // MARK: -
-
-    override func didReceiveMemoryWarning() {
-        model?.freeMemory()
     }
 }
 

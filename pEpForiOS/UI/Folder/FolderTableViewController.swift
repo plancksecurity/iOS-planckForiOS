@@ -192,11 +192,12 @@ class FolderTableViewController: BaseTableViewController {
     private func show(folder: DisplayableFolderProtocol) {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard
-            let vc = sb.instantiateViewController(
-                withIdentifier: EmailListViewController.storyboardId)
-                as? EmailListViewController else {
-                    Log.shared.errorAndCrash("Problem!")
-                    return
+            let nav = sb.instantiateViewController(
+                withIdentifier: EmailListViewController.storyboardNavigationControllerId) as? UINavigationController,
+            let vc = nav.rootViewController as? EmailListViewController //BUFF:
+            else {
+                Log.shared.errorAndCrash("Problem!")
+                return
         }
         vc.appConfig = appConfig
         let emailListVM = EmailListViewModel(delegate: vc,
