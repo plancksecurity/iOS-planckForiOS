@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
+    //BUFF: All moved to EmailDisplayViewModelDelegate. Will be filled with list specific stuff soon. Stay tuned.
+}
+
 // 
 class EmailDetailViewModel: EmailDisplayViewModel {
 
