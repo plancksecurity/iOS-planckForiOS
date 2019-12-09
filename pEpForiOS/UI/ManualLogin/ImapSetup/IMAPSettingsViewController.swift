@@ -42,6 +42,7 @@ final class IMAPSettingsViewController: BaseViewController, TextfieldResponder {
         fields = manualAccountSetupContainerView.manualSetupViewTextFeilds()
         setUpViewLocalizableTexts()
         setUpTextFieldsInputTraits()
+        setUpContainerView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -271,5 +272,15 @@ extension IMAPSettingsViewController {
 
         setupView.nextButton.isEnabled = vm.isValidUser
         setupView.nextRightButton.isEnabled = vm.isValidUser
+    }
+
+    private func setUpContainerView() {
+        guard let setupView = manualAccountSetupContainerView.setupView else {
+            Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
+            return
+        }
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            setupView.scrollView.isScrollEnabled = false
+        }
     }
 }

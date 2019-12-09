@@ -29,6 +29,10 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
         setupView.delegate = self
         setupView.textFieldsDelegate = self
 
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            setupView.scrollView.isScrollEnabled = false
+        }
+
         fields = manualAccountSetupContainerView.manualSetupViewTextFeilds()
         setUpViewLocalizableTexts()
         setUpTextFieldsInputTraits()

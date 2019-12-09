@@ -36,6 +36,7 @@ final class SMTPSettingsViewController: BaseViewController, TextfieldResponder {
         fields = manualAccountSetupContainerView.manualSetupViewTextFeilds()
         setUpViewLocalizableTexts()
         setUpTextFieldsInputTraits()
+        setUpContainerView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -338,5 +339,15 @@ extension SMTPSettingsViewController {
             style: .cancel) { (action) in}
         alertController.addAction(cancelAction)
         self.present(alertController, animated: true) {}
+    }
+
+    private func setUpContainerView() {
+        guard let setupView = manualAccountSetupContainerView.setupView else {
+            Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
+            return
+        }
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            setupView.scrollView.isScrollEnabled = false
+        }
     }
 }

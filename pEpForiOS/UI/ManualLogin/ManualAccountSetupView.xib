@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_0" orientation="portrait" appearance="light"/>
+    <device id="ipad9_7" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
@@ -11,17 +11,17 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ManualAccountSetupView" customModule="pEpForiOS" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYu-PK-Lyk" userLabel="LoginScrollView" customClass="LoginScrollView" customModule="pEpForiOS" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="576"/>
+                    <rect key="frame" x="0.0" y="0.0" width="1024" height="776"/>
                     <subviews>
                         <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wep-Xm-sou" userLabel="Container">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tyq-Cq-4dU">
-                                    <rect key="frame" x="-59" y="231" width="53" height="33"/>
+                                    <rect key="frame" x="273" y="369.5" width="53" height="33"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <state key="normal" title="Cancel">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -34,7 +34,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OIj-9x-l85">
-                                    <rect key="frame" x="326" y="231" width="36" height="33"/>
+                                    <rect key="frame" x="698" y="369.5" width="36" height="33"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <state key="normal" title="Next">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -69,19 +69,19 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OjY-aN-ucH" userLabel="FieldsAndTitleContainer">
-                                    <rect key="frame" x="30" y="82.5" width="260" height="329"/>
+                                    <rect key="frame" x="362" y="218.5" width="300" height="331.5"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L3b-r5-OhD">
-                                            <rect key="frame" x="111" y="10" width="38" height="24"/>
+                                            <rect key="frame" x="129.5" y="10" width="41.5" height="26.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="37" translatesAutoresizingMaskIntoConstraints="NO" id="9fb-qy-5Z9">
-                                            <rect key="frame" x="0.0" y="74" width="260" height="255"/>
+                                            <rect key="frame" x="0.0" y="76.5" width="300" height="255"/>
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fNB-Pm-68I" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="260" height="36"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="300" height="36"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="email"/>
                                                     <constraints>
@@ -109,7 +109,7 @@
                                                     </connections>
                                                 </textField>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9dO-D4-gja" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="73" width="260" height="36"/>
+                                                    <rect key="frame" x="0.0" y="73" width="300" height="36"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="email"/>
                                                     <constraints>
@@ -137,7 +137,7 @@
                                                     </connections>
                                                 </textField>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="paP-b8-KCw" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS">
-                                                    <rect key="frame" x="0.0" y="146" width="260" height="36"/>
+                                                    <rect key="frame" x="0.0" y="146" width="300" height="36"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="password"/>
                                                     <constraints>
@@ -165,7 +165,7 @@
                                                     </connections>
                                                 </textField>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0te-KR-oYr" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS">
-                                                    <rect key="frame" x="0.0" y="219" width="260" height="36"/>
+                                                    <rect key="frame" x="0.0" y="219" width="300" height="36"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="username"/>
                                                     <constraints>
@@ -212,7 +212,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="700" verticalCompressionResistancePriority="700" translatesAutoresizingMaskIntoConstraints="NO" id="ZKp-HP-GpN" userLabel="Buttons View">
-                                    <rect key="frame" x="30" y="431.5" width="260" height="125"/>
+                                    <rect key="frame" x="362" y="570" width="300" height="125"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fqe-qx-IQe">
                                             <rect key="frame" x="0.0" y="0.0" width="53" height="33"/>
@@ -228,10 +228,10 @@
                                             </connections>
                                         </button>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l4d-tu-sgw" userLabel="Sync View">
-                                            <rect key="frame" x="64.5" y="94" width="131" height="31"/>
+                                            <rect key="frame" x="84.5" y="94" width="131" height="31"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="p≡p Sync" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="48h-ZC-Qrv">
-                                                    <rect key="frame" x="0.0" y="6" width="71" height="19.5"/>
+                                                    <rect key="frame" x="0.0" y="5.5" width="71" height="19.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -253,7 +253,7 @@
                                             </constraints>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F0b-8v-1lY">
-                                            <rect key="frame" x="224" y="0.0" width="36" height="33"/>
+                                            <rect key="frame" x="264" y="0.0" width="36" height="33"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <state key="normal" title="Next">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -335,6 +335,7 @@
                                 <constraint firstItem="pmk-EA-JLq" firstAttribute="centerY" secondItem="0te-KR-oYr" secondAttribute="centerY" id="rr2-nI-yVR"/>
                                 <constraint firstItem="9dO-D4-gja" firstAttribute="leading" secondItem="tyq-Cq-4dU" secondAttribute="trailing" constant="36" id="tgd-Rd-sib"/>
                                 <constraint firstItem="OIj-9x-l85" firstAttribute="centerY" secondItem="9dO-D4-gja" secondAttribute="centerY" id="uNK-fO-3X6"/>
+                                <constraint firstItem="OjY-aN-ucH" firstAttribute="centerY" secondItem="wep-Xm-sou" secondAttribute="centerY" id="w6z-9O-3xW"/>
                             </constraints>
                             <variation key="default">
                                 <mask key="subviews">
@@ -343,6 +344,7 @@
                                 </mask>
                                 <mask key="constraints">
                                     <exclude reference="WQJ-Sm-ij8"/>
+                                    <exclude reference="w6z-9O-3xW"/>
                                     <exclude reference="5Rf-a8-0qH"/>
                                     <exclude reference="Ajf-gz-6yS"/>
                                     <exclude reference="YsY-cI-r96"/>
@@ -363,9 +365,18 @@
                                     <include reference="ZKp-HP-GpN"/>
                                 </mask>
                                 <mask key="constraints">
-                                    <include reference="5Rf-a8-0qH"/>
                                     <include reference="Ajf-gz-6yS"/>
                                     <include reference="fQ5-AY-cH2"/>
+                                </mask>
+                            </variation>
+                            <variation key="heightClass=regular-widthClass=compact">
+                                <mask key="constraints">
+                                    <include reference="5Rf-a8-0qH"/>
+                                </mask>
+                            </variation>
+                            <variation key="heightClass=regular-widthClass=regular">
+                                <mask key="constraints">
+                                    <include reference="w6z-9O-3xW"/>
                                 </mask>
                             </variation>
                         </view>
