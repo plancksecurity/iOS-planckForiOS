@@ -18,25 +18,34 @@ final class ManualAccountSetupContainerView: UIView {
     /// Conform to this delegate to handle envet from the ManualAccountSetupView
     weak var delegate: ManualAccountSetupViewDelegate? {
         didSet {
-            //Nil case is handle in setupView getter
-            setupView?.delegate = delegate
+            guard let setupView = _manualAccountSetupView else {
+                Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
+                return
+            }
+            setupView.delegate = delegate
         }
     }
 
     /// Conform to this delegate to handle TextFields events inside this view
     weak var textFieldsDelegate: UITextFieldDelegate? {
         didSet {
-            //Nil case is handle in setupView getter
-            setupView?.textFieldsDelegate = textFieldsDelegate
+            guard let setupView = _manualAccountSetupView else {
+                Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
+                return
+            }
+            setupView.textFieldsDelegate = textFieldsDelegate
         }
     }
 
     /// Use this property to hide and show  pEpSync Switch inside ManualAccountSetupView
     var pEpSyncViewIsHidden = false {
         didSet {
-            //Nil case is handle in setupView getter
-            setupView?.pEpSyncView.isHidden = pEpSyncViewIsHidden
-            setupView?.pEpSyncViewRight.isHidden = pEpSyncViewIsHidden
+            guard let setupView = _manualAccountSetupView else {
+                Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
+                return
+            }
+            setupView.pEpSyncView.isHidden = pEpSyncViewIsHidden
+            setupView.pEpSyncViewRight.isHidden = pEpSyncViewIsHidden
         }
     }
 
