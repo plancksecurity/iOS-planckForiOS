@@ -18,9 +18,9 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
 
-    var model: EmailListViewModel? {
+    var viewModel: EmailListViewModel? {
         didSet {
-            model?.delegate = self
+            viewModel?.delegate = self
         }
     }
 
@@ -61,7 +61,7 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
 
         setUpTextFilter()
 
-        guard let vm = model else {
+        guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
         }
@@ -100,7 +100,7 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
         tableView.allowsMultipleSelectionDuringEditing = true
         setupSearchBar()
 
-        guard let vm = model else {
+        guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
         }
@@ -118,7 +118,7 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
         ///if we are in setup and the folder is unifiedInbox
         ///we have to reload the unifiedInbox to ensure that all the accounts are present.
         if vm.folderToShow is UnifiedInbox {
-            model = EmailListViewModel(delegate: self,
+            viewModel = EmailListViewModel(delegate: self,
                                        folderToShow: UnifiedInbox())
         }
 
@@ -127,7 +127,7 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
         refreshController.addTarget(self, action: #selector(self.refreshView(_:)), for: .valueChanged)
         tableView.refreshControl = refreshController
 
-        title = model?.folderName
+        title = viewModel?.folderName
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
             target: self)
@@ -185,7 +185,7 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
 
     ///called when the view is scrolled down to
     @objc private func refreshView(_ sender: Any) {
-        model?.fetchNewMessages() { [weak self] in
+        viewModel?.fetchNewMessages() { [weak self] in
             // Loosing self is a valid use case here. We might have been dismissed.
             DispatchQueue.main.async {
                 self?.tableView.refreshControl?.endRefreshing()
@@ -253,7 +253,7 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
     }
 
     @objc private func settingsChanged() {
-        model?.informDelegateToReloadData()
+        viewModel?.informDelegateToReloadData()
         tableView.reloadData()
     }
 
@@ -369,7 +369,7 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
 
     @IBAction func flagToolbar(_ sender:UIBarButtonItem!) {
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            model?.markSelectedAsFlagged(indexPaths: selectedItems)
+            viewModel?.markSelectedAsFlagged(indexPaths: selectedItems)
             selectedItems.forEach { (ip) in
                 if let cell = self.tableView.cellForRow(at: ip) as? EmailListViewCell {
                     cell.isFlagged = true
@@ -381,7 +381,7 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
 
     @IBAction func unflagToolbar(_ sender:UIBarButtonItem!) {
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            model?.markSelectedAsUnFlagged(indexPaths: selectedItems)
+            viewModel?.markSelectedAsUnFlagged(indexPaths: selectedItems)
             selectedItems.forEach { (ip) in
                 if let cell = self.tableView.cellForRow(at: ip) as? EmailListViewCell {
                     cell.isFlagged = false
@@ -398,14 +398,14 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
                     cell.isSeen = true
                 }
             }
-            model?.markSelectedAsRead(indexPaths: selectedItems)
+            viewModel?.markSelectedAsRead(indexPaths: selectedItems)
         }
         cancelToolbar(sender)
     }
 
     @IBAction func unreadToolbar(_ sender:UIBarButtonItem!) {
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            model?.markSelectedAsUnread(indexPaths: selectedItems)
+            viewModel?.markSelectedAsUnread(indexPaths: selectedItems)
             selectedItems.forEach { (ip) in
                 if let cell = self.tableView.cellForRow(at: ip) as? EmailListViewCell {
                     cell.isSeen = false
@@ -421,7 +421,7 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
     }
 
     @IBAction func deleteToolbar(_ sender:UIBarButtonItem!) {
-        if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+        if let vm = viewModel, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
             vm.deleteSelected(indexPaths: selectedIndexPaths)
         }
         cancelToolbar(sender)
@@ -447,7 +447,7 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
     // MARK: - Action Filter Button
     
     @IBAction func filterButtonHasBeenPressed(_ sender: UIBarButtonItem) {
-        guard let vm = model else {
+        guard let vm = viewModel else {
             Log.shared.errorAndCrash("We should have a model here")
             return
         }
@@ -468,7 +468,7 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
     }
 
     private func updateFilterButtonView() {
-        guard let vm = model else {
+        guard let vm = viewModel else {
             Log.shared.errorAndCrash("We should have a model here")
             return
         }
@@ -484,7 +484,7 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
     }
     
     private func updateFilterText() {
-        if let vm = model {
+        if let vm = viewModel {
             var txt = vm.currentFilter.getFilterText()
             if(txt.count > EmailListViewController.FILTER_TITLE_MAX_XAR){
                 let prefix = txt.prefix(ofLength: EmailListViewController.FILTER_TITLE_MAX_XAR)
@@ -518,7 +518,7 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
     // MARK: -
 
     override func didReceiveMemoryWarning() {
-        model?.freeMemory()
+        viewModel?.freeMemory()
     }
 }
 
@@ -528,7 +528,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
 
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return model?.rowCount ?? 0
+        return viewModel?.rowCount ?? 0
     }
 
     func tableView(_ tableView: UITableView,
@@ -539,7 +539,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         if let theCell = cell as? EmailListViewCell {
             theCell.delegate = self
 
-            guard let viewModel = model?.viewModel(for: indexPath.row) else {
+            guard let viewModel = viewModel?.viewModel(for: indexPath.row) else {
                 return cell
             }
             theCell.configure(for: viewModel)
@@ -559,14 +559,14 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                    editActionsForRowAt
         indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        if model == nil {
+        if viewModel == nil {
             return nil
         }
 
         // Create swipe actions, taking the currently displayed folder into account
         var swipeActions = [SwipeAction]()
 
-        guard let model = model else {
+        guard let model = viewModel else {
             Log.shared.errorAndCrash("Should have VM")
             return nil
         }
@@ -645,11 +645,11 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.isEditing {
-            if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+            if let vm = viewModel, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
                 vm.updatedItems(indexPaths: selectedIndexPaths)
             }
         } else {
-            guard let model = model else {
+            guard let model = viewModel else {
                 Log.shared.errorAndCrash("No folder")
                 return
             }
@@ -668,7 +668,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        if tableView.isEditing, let vm = model {
+        if tableView.isEditing, let vm = viewModel {
             if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
                 vm.updatedItems(indexPaths: selectedIndexPaths)
             } else {
@@ -681,7 +681,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
     // If the user has scrolled down (almost) to the end, we need to get older emails to display.
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
                             forRowAt indexPath: IndexPath) {
-        guard let vm = model else {
+        guard let vm = viewModel else {
             Log.shared.errorAndCrash("No model.")
             return
         }
@@ -695,7 +695,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 
     public func updateSearchResults(for searchController: UISearchController) {
         guard
-            let vm = model,
+            let vm = viewModel,
             let searchText = searchController.searchBar.text
             else {
                 return
@@ -704,7 +704,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
-        guard let vm = model else {
+        guard let vm = viewModel else {
             Log.shared.errorAndCrash("No chance to remove filter, sorry.")
             return
         }
@@ -737,38 +737,8 @@ extension EmailListViewController: EmailListViewModelDelegate {
         tableView.endUpdates()
     }
 
-//    func showThreadView(for indexPath: IndexPath) {
-       /* guard let splitViewController = splitViewController else {
-            return
-        }
-
-        let storyboard = UIStoryboard(name: "Thread", bundle: nil)
-        if splitViewController.isCollapsed {
-            guard let message = model?.message(representedByRowAt: indexPath),
-                let folder = folderToShow,
-                let nav = navigationController,
-                let vc: ThreadViewController =
-                storyboard.instantiateViewController(withIdentifier: "threadViewController")
-                    as? ThreadViewController
-                else {
-                    Log.shared.errorAndCrash("Segue issue")
-                    return
-            }
-
-            vc.appConfig = appConfig
-            let viewModel = ThreadedEmailViewModel(tip:message, folder: folder)
-            viewModel.emailDisplayDelegate = model
-            vc.model = viewModel
-            model?.currentDisplayedMessage = viewModel
-            model?.updateThreadListDelegate = viewModel
-            nav.viewControllers[nav.viewControllers.count - 1] = vc
-        } else {
-            showEmail(forCellAt: indexPath)
-        }*/
-//    }
-
     func toolbarIs(enabled: Bool) {
-        if model?.shouldShowToolbarEditButtons() ?? true {
+        if viewModel?.shouldShowToolbarEditButtons() ?? true {
             // Never enable those for outbox
             flagToolbarButton?.isEnabled = enabled
             unflagToolbarButton?.isEnabled = enabled
@@ -841,7 +811,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
 
     func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didChangeSeenStateForDataAt indexPaths: [IndexPath]) {
-        guard let vm = model else {
+        guard let vm = self.viewModel else {
             Log.shared.errorAndCrash("Invalid state")
             return
         }
@@ -920,7 +890,7 @@ extension EmailListViewController {
     }
 
     private func createReadOrUnReadAction(forRowAt indexPath: IndexPath) -> UIAlertAction {
-        let seenState = model?.viewModel(for: indexPath.row)?.isSeen ?? false
+        let seenState = viewModel?.viewModel(for: indexPath.row)?.isSeen ?? false
 
         var title = ""
         if seenState {
@@ -940,9 +910,9 @@ extension EmailListViewController {
             }
             cell.isSeen = !seenState
             if seenState {
-                me.model?.markSelectedAsUnread(indexPaths: [indexPath])
+                me.viewModel?.markSelectedAsUnread(indexPaths: [indexPath])
             } else {
-                me.model?.markSelectedAsRead(indexPaths: [indexPath])
+                me.viewModel?.markSelectedAsRead(indexPaths: [indexPath])
             }
         }
     }
@@ -974,7 +944,7 @@ extension EmailListViewController {
     }
 
     func createReplyAllAction(forRowAt indexPath: IndexPath) ->  UIAlertAction? {
-        if (model?.isReplyAllPossible(forRowAt: indexPath) ?? false) {
+        if (viewModel?.isReplyAllPossible(forRowAt: indexPath) ?? false) {
             let title = NSLocalizedString("Reply All", comment: "EmailList action title")
             return UIAlertAction(title: title, style: .default) {
                 [weak self] action in
@@ -1017,7 +987,7 @@ extension EmailListViewController {
     }
 
     func flagAction(forCellAt indexPath: IndexPath) {
-        guard let row = model?.viewModel(for: indexPath.row) else {
+        guard let row = viewModel?.viewModel(for: indexPath.row) else {
             Log.shared.errorAndCrash("No data for indexPath!")
             return
         }
@@ -1026,16 +996,16 @@ extension EmailListViewController {
             return
         }
         if row.isFlagged {
-            model?.unsetFlagged(forIndexPath: [indexPath])
+            viewModel?.unsetFlagged(forIndexPath: [indexPath])
             cell.isFlagged = false
         } else {
-            model?.setFlagged(forIndexPath: [indexPath])
+            viewModel?.setFlagged(forIndexPath: [indexPath])
             cell.isFlagged = true
         }
     }
 
     func deleteAction(forCellAt indexPath: IndexPath) {
-        model?.delete(forIndexPath: indexPath)
+        viewModel?.delete(forIndexPath: indexPath)
     }
 
     func moreAction(forCellAt indexPath: IndexPath) {
@@ -1088,7 +1058,7 @@ extension EmailListViewController: SegueHandlerType {
                 let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? EmailViewController, //BUFF:
                 let indexPath = lastSelectedIndexPath,
-                let message = model?.message(representedByRowAt: indexPath) else {
+                let message = viewModel?.message(representedByRowAt: indexPath) else {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
@@ -1098,17 +1068,18 @@ extension EmailListViewController: SegueHandlerType {
             ///showing next and previous directly from the emailView, that is needed for that feature
             //vc.folderShow = model?.getFolderToShow()
             vc.messageId = indexPath.row //!!!: that looks wrong
-            model?.indexPathShown = indexPath
+            viewModel?.indexPathShown = indexPath
         case .segueShowEmailNotSplitView:
             guard
                 let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? EmailDetailViewController,
                 let indexPath = lastSelectedIndexPath,
-                let message = model?.message(representedByRowAt: indexPath) else {
+                let message = viewModel?.message(representedByRowAt: indexPath) else {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
             vc.appConfig = appConfig
+            vc.viewModel = viewModel?.emailDetialViewModelForNewMessage(at: indexPath)
             //BUFF: HERE: what's the best way to tell the message to show?
 
             // pass QRC? + index?
@@ -1122,7 +1093,7 @@ extension EmailListViewController: SegueHandlerType {
             ///showing next and previous directly from the emailView, that is needed for that feature
             //vc.folderShow = model?.getFolderToShow()
 //            vc.messageId = indexPath.row //!!!: that looks wrong
-            model?.indexPathShown = indexPath
+            viewModel?.indexPathShown = indexPath
 
       //  case .segueShowThreadedEmail:
         /*    guard let nav = segue.destination as? UINavigationController,
@@ -1146,7 +1117,7 @@ extension EmailListViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("Segue issue")
                 return
             }
-            guard let vm = model else {
+            guard let vm = viewModel else {
                 Log.shared.errorAndCrash("No VM")
                 return
             }
@@ -1189,7 +1160,7 @@ extension EmailListViewController: SegueHandlerType {
             }
 
             destination.viewModel
-                = model?.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
+                = viewModel?.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
             destination.appConfig = appConfig
             break
         default:
@@ -1208,7 +1179,7 @@ extension EmailListViewController: SegueHandlerType {
             let nav = segue.destination as? UINavigationController,
             let composeVc = nav.topViewController as? ComposeTableViewController,
             let composeMode = composeMode(for: segueId),
-            let vm = model else {
+            let vm = viewModel else {
                 Log.shared.errorAndCrash("composeViewController setup issue")
                 return
         }

@@ -23,60 +23,50 @@ import PEPObjCAdapterFramework
 
 // MARK: - EmailDisplayViewModelDelegate
 
-protocol EmailDisplayViewModelDelegate: class, TableViewUpdate {
-    //BUFF: rename delegate methods when working
-    func emailListViewModel(viewModel: EmailDisplayViewModel, didInsertDataAt indexPaths: [IndexPath])
-    func emailListViewModel(viewModel: EmailDisplayViewModel, didUpdateDataAt indexPaths: [IndexPath])
+protocol EmailDisplayViewModelDelegate: class/*, TableViewUpdate*/ {
     func emailListViewModel(viewModel: EmailDisplayViewModel,
-                            didChangeSeenStateForDataAt indexPaths: [IndexPath])
-    func emailListViewModel(viewModel: EmailDisplayViewModel, didRemoveDataAt indexPaths: [IndexPath])
+                            didInsertDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailDisplayViewModel,
-                            didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath)
-    func checkIfSplitNeedsUpdate(indexpath: [IndexPath]) //BUFF: obsolete?
-    /*
-     //!!!: Some issues here: @Xavier
-     - bad naming.
-     - what is viewModel as the param
-     - let's discuss & change!
-     */
+                            didUpdateDataAt indexPaths: [IndexPath])
+
+    func emailListViewModel(viewModel: EmailDisplayViewModel,
+                            didRemoveDataAt indexPaths: [IndexPath])
+    func emailListViewModel(viewModel: EmailDisplayViewModel,
+                            didMoveData atIndexPath: IndexPath,
+                            toIndexPath: IndexPath)
     func willReceiveUpdates(viewModel: EmailDisplayViewModel)
     func allUpdatesReceived(viewModel: EmailDisplayViewModel)
     func reloadData(viewModel: EmailDisplayViewModel)
-
-    func toolbarIs(enabled: Bool)
-    func showUnflagButton(enabled: Bool)
-    func showUnreadButton(enabled: Bool)
 }
 
 // MARK: - EmailDisplayViewModel
 
 /// Base class for MessageQueryResults driven email display view models.
 class EmailDisplayViewModel {
-    let contactImageTool = IdentityImageTool()
+//    let contactImageTool = IdentityImageTool()
     var messageQueryResults: MessageQueryResults
 
     var indexPathShown: IndexPath?
 
-    var lastSearchTerm = ""
-    var updatesEnabled = true
+//    var lastSearchTerm = ""
+//    var updatesEnabled = true
 
-    weak var delegate: EmailDisplayViewModelDelegate? //BUFF: rm var
+//    weak var delegate: EmailDisplayViewModelDelegate? //BUFF: rm var
 
     let folderToShow: DisplayableFolderProtocol
     private var selectedItems: Set<IndexPath>?
 
     // MARK: - Life Cycle
 
-    init(delegate: EmailDisplayViewModelDelegate? = nil,
+    init(messageQueryResults: MessageQueryResults? = nil,
          folderToShow: DisplayableFolderProtocol) {
-        self.delegate = delegate
         self.folderToShow = folderToShow
 
         // We intentionally do *not* start monitoring. Respiosibility is on currently on VC.
-        messageQueryResults = MessageQueryResults(withFolder: folderToShow,
-                                                  filter: nil,
-                                                  search: nil)
-        messageQueryResults.rowDelegate = self
+        self.messageQueryResults = messageQueryResults ?? MessageQueryResults(withFolder: folderToShow,
+                                                                              filter: nil,
+                                                                              search: nil)
+//        self.messageQueryResults.rowDelegate = self
     }
 
     func startMonitoring() {
@@ -148,37 +138,15 @@ class EmailDisplayViewModel {
             fatalError("Must be overridden")
     }
 
-    func setFlagged(forIndexPath indexPath: [IndexPath]) {
-        setFlaggedValue(forIndexPath: indexPath, newValue: true)
-    }
-
-    func unsetFlagged(forIndexPath indexPath: [IndexPath]) {
-        setFlaggedValue(forIndexPath: indexPath, newValue: false)
-    }
-
-    func markRead(forIndexPath indexPath: [IndexPath]) {
-        setSeenValue(forIndexPath: indexPath, newValue: true)
-    }
-
-    func markUnread(forIndexPath indexPath: [IndexPath]) {
-        setSeenValue(forIndexPath: indexPath, newValue: false)
-    }
-
-    func delete(forIndexPath indexPath: IndexPath) {
-        deleteMessages(at: [indexPath])
-    }
-
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
         return messageQueryResults[indexPath.row]
     }
 
-    func freeMemory() {
-        contactImageTool.clearCache()
+
+    func informDelegateToReloadData() {
+        fatalError("Must be overridden")
     }
 
-    public func informDelegateToReloadData() {
-        delegate?.reloadData(viewModel: self)
-    }
 
     public func shouldShowToolbarEditButtons() -> Bool {
         switch folderToShow {
@@ -196,27 +164,7 @@ class EmailDisplayViewModel {
     }
 }
 
-// MARK: - Private
 
-extension EmailDisplayViewModel {
-
-    private func setFlaggedValue(forIndexPath indexPath: [IndexPath], newValue flagged: Bool) {
-        updatesEnabled = false
-        let messages = indexPath.map { messageQueryResults[$0.row] }
-        Message.setFlaggedValue(to: messages, newValue: flagged)
-    }
-
-    private func setSeenValue(forIndexPath indexPath: [IndexPath], newValue seen: Bool) {
-        let messages = indexPath.map { messageQueryResults[$0.row] }
-        Message.setSeenValue(to: messages, newValue: seen)
-    }
-
-    @discardableResult private func deleteMessages(at indexPath: [IndexPath]) -> [Message]? {
-        let messages = indexPath.map { messageQueryResults[$0.row] }
-        delete(messages: messages)
-        return messages
-    }
-}
 
 // MARK: - FolderType Utils
 

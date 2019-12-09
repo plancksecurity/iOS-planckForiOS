@@ -202,7 +202,7 @@ class FolderTableViewController: BaseTableViewController {
         vc.appConfig = appConfig
         let emailListVM = EmailListViewModel(delegate: vc,
                                              folderToShow: folder)
-        vc.model = emailListVM
+        vc.viewModel = emailListVM
         vc.hidesBottomBarWhenPushed = false
 
         let animated =  showNext ? false : true

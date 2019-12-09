@@ -11,22 +11,38 @@ import pEpIOSToolbox
 import MessageModel
 import PEPObjCAdapterFramework
 
-protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
+protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate, TableViewUpdate {
     //BUFF: All moved to EmailDisplayViewModelDelegate. Will be filled with list specific stuff soon. Stay tuned.
+
+
+    func emailListViewModel(viewModel: EmailDisplayViewModel, //BUFF:
+        didChangeSeenStateForDataAt indexPaths: [IndexPath])
+    func checkIfSplitNeedsUpdate(indexpath: [IndexPath]) //BUFF: obsolete?
+    /*
+     //     //!!!: Some issues here: @Xavier
+     //     - bad naming.
+     //     - what is viewModel as the param
+     //     - let's discuss & change!
+     //     */
+
+
+    func toolbarIs(enabled: Bool)
+    func showUnflagButton(enabled: Bool)
+    func showUnreadButton(enabled: Bool)
 }
 
 // MARK: - EmailListViewModel
 
 class EmailListViewModel: EmailDisplayViewModel {
-//    let contactImageTool = IdentityImageTool()
+    let contactImageTool = IdentityImageTool()
 //    var messageQueryResults: MessageQueryResults
 //
 //    var indexPathShown: IndexPath?
 //
-//    var lastSearchTerm = ""
-//    var updatesEnabled = true
+    var lastSearchTerm = ""
+    var updatesEnabled = true
 //
-//    weak var emailListViewModelDelegate: EmailListViewModelDelegate?
+    weak var delegate: EmailListViewModelDelegate?
 //
 //    let folderToShow: DisplayableFolderProtocol
 //
@@ -62,26 +78,19 @@ class EmailListViewModel: EmailDisplayViewModel {
 ////    weak var updateThreadListDelegate: UpdateThreadListDelegate?
 ////    var oldThreadSetting : Bool
 //
-//    // MARK: - Life Cycle
-//
-//    init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
-//         folderToShow: DisplayableFolderProtocol) {
-//        self.emailListViewModelDelegate = emailListViewModelDelegate
-//        self.folderToShow = folderToShow
-//
-//        // We intentionally do *not* start monitoring. Respiosibility is on currently on VC.
-//        messageQueryResults = MessageQueryResults(withFolder: folderToShow,
-//                                                       filter: nil,
-//                                                       search: nil)
-//        messageQueryResults.rowDelegate = self
-//        // Threading feature is currently non-existing. Keep this code, might help later.
-////        self.oldThreadSetting = AppSettings.shared.threadedViewEnabled
-//    }
-//
-//    func startMonitoring() {
-//        do {
-//            try messageQueryResults.startMonitoring()
-//        } catch {
+    //    // MARK: - Life Cycle
+    //
+    init(messageQueryResults: MessageQueryResults? = nil,
+                  delegate: EmailDisplayViewModelDelegate? = nil,
+                  folderToShow: DisplayableFolderProtocol) {
+        super.init(messageQueryResults: messageQueryResults, folderToShow: folderToShow)
+        messageQueryResults?.rowDelegate = self
+    }
+    //
+    //    func startMonitoring() {
+    //        do {
+    //            try messageQueryResults.startMonitoring()
+    //        } catch {
 //            Log.shared.errorAndCrash("MessageQueryResult crash")
 //        }
 //    }
@@ -268,6 +277,10 @@ class EmailListViewModel: EmailDisplayViewModel {
 //            return true
 //        }
 //    }
+
+    override func informDelegateToReloadData() {
+        delegate?.reloadData(viewModel: self)
+    }
 
     func shouldShowTutorialWizard() -> Bool {
         return AppSettings.shared.shouldShowTutorialWizard
@@ -498,27 +511,46 @@ extension EmailListViewModel {
 
 extension EmailListViewModel {
 
-//    private func setFlaggedValue(forIndexPath indexPath: [IndexPath], newValue flagged: Bool) {
-//        updatesEnabled = false
-//        let messages = indexPath.map { messageQueryResults[$0.row] }
-//        Message.setFlaggedValue(to: messages, newValue: flagged)
-//    }
-//
-//    private func setSeenValue(forIndexPath indexPath: [IndexPath], newValue seen: Bool) {
-//        let messages = indexPath.map { messageQueryResults[$0.row] }
-//        Message.setSeenValue(to: messages, newValue: seen)
-//    }
-//
-//    @discardableResult private func deleteMessages(at indexPath: [IndexPath]) -> [Message]? {
-//        let messages = indexPath.map { messageQueryResults[$0.row] }
-//        delete(messages: messages)
-//        return messages
-//    }
-//
-//    private func delete(messages: [Message]) {
-//        Message.imapDelete(messages: messages)
-//    }
-//
+    private func setFlaggedValue(forIndexPath indexPath: [IndexPath], newValue flagged: Bool) {
+        updatesEnabled = false
+        let messages = indexPath.map { messageQueryResults[$0.row] }
+        Message.setFlaggedValue(to: messages, newValue: flagged)
+    }
+
+    private func setSeenValue(forIndexPath indexPath: [IndexPath], newValue seen: Bool) {
+        let messages = indexPath.map { messageQueryResults[$0.row] }
+        Message.setSeenValue(to: messages, newValue: seen)
+    }
+
+    @discardableResult private func deleteMessages(at indexPath: [IndexPath]) -> [Message]? {
+        let messages = indexPath.map { messageQueryResults[$0.row] }
+        delete(messages: messages)
+        return messages
+    }
+    //BUFF: move
+    func setFlagged(forIndexPath indexPath: [IndexPath]) {
+        setFlaggedValue(forIndexPath: indexPath, newValue: true)
+    }
+
+    func unsetFlagged(forIndexPath indexPath: [IndexPath]) {
+        setFlaggedValue(forIndexPath: indexPath, newValue: false)
+    }
+
+    func markRead(forIndexPath indexPath: [IndexPath]) {
+        setSeenValue(forIndexPath: indexPath, newValue: true)
+    }
+
+    func markUnread(forIndexPath indexPath: [IndexPath]) {
+        setSeenValue(forIndexPath: indexPath, newValue: false)
+    }
+
+    func delete(forIndexPath indexPath: IndexPath) {
+        deleteMessages(at: [indexPath])
+    }
+
+    func freeMemory() {
+        contactImageTool.clearCache()
+    }
 }
 
 //// MARK: - FolderType Utils
@@ -642,6 +674,15 @@ extension EmailDisplayViewModel {
                                          prefilledFrom: someUser)
         return composeVM
     }
+
+    func emailDetialViewModelForNewMessage(at indexPath: IndexPath) -> EmailDetailViewModel {
+        let detailQueryResults = messageQueryResults.clone()
+        let createe = EmailDetailViewModel(messageQueryResults: detailQueryResults,
+                                           folderToShow: folderToShow)
+        detailQueryResults.rowDelegate = createe
+
+        return createe
+    }
 }
 
 // MARK: - FilterViewDelegate
@@ -665,4 +706,46 @@ extension EmailListViewModel {
 //                                         originalMessage: message)
 //        return composeVM
 //    }
+}
+
+// MARK: - QueryResultsIndexPathRowDelegate
+
+extension EmailListViewModel: QueryResultsIndexPathRowDelegate {
+
+    func didInsertRow(indexPath: IndexPath) {
+         if updatesEnabled {
+             delegate?.emailListViewModel(viewModel: self, didInsertDataAt: [indexPath])
+         }
+     }
+
+     func didUpdateRow(indexPath: IndexPath) {
+         if updatesEnabled {
+             delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: [indexPath])
+         }
+         delegate?.checkIfSplitNeedsUpdate(indexpath: [indexPath]) //BUFF: hirntot? (read as: obsolete?)
+     }
+
+     func didDeleteRow(indexPath: IndexPath) {
+         delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: [indexPath])
+     }
+
+     func didMoveRow(from: IndexPath, to: IndexPath) {
+         if updatesEnabled {
+             delegate?.emailListViewModel(viewModel: self, didMoveData: from, toIndexPath: to)
+         }
+     }
+
+     func willChangeResults() {
+         if updatesEnabled {
+             delegate?.willReceiveUpdates(viewModel: self)
+         }
+     }
+
+     func didChangeResults() {
+         if updatesEnabled {
+             delegate?.allUpdatesReceived(viewModel: self)
+         } else {
+             updatesEnabled = true
+         }
+     }
 }

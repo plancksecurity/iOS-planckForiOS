@@ -165,7 +165,6 @@
 		15944A30239802D5006B133B /* EmailDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15944A2F239802D5006B133B /* EmailDetailViewController.swift */; };
 		15944A3223980C99006B133B /* EmailDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15944A3123980C99006B133B /* EmailDetailViewModel.swift */; };
 		15944A3523980FEC006B133B /* EmailDisplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15944A3423980FEC006B133B /* EmailDisplayViewModel.swift */; };
-		15944A3723981266006B133B /* EmailDisplayViewModelBase+QueryResultsIndexPathRowDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15944A3623981266006B133B /* EmailDisplayViewModelBase+QueryResultsIndexPathRowDelegate.swift */; };
 		159AB56D23539D67008AB1F3 /* AppSettings+CNContactsAccessPermissionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159AB56C23539D67008AB1F3 /* AppSettings+CNContactsAccessPermissionProvider.swift */; };
 		159E1F1322BD074F007D711F /* PantomimeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 159E1F1222BD074F007D711F /* PantomimeFramework.framework */; };
 		159E1F1522BD0756007D711F /* PEPObjCAdapterFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 159E1F1422BD0756007D711F /* PEPObjCAdapterFramework.framework */; };
@@ -188,6 +187,7 @@
 		15EBE43E20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE43C20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc */; };
 		15EBE44220E5353E00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE44020E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc */; };
 		15EBE44320E5353E00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE44120E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc */; };
+		15F92F15239ABCAE0037317C /* CollectionViewEmailDetailViewModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F92F14239ABCAE0037317C /* CollectionViewEmailDetailViewModelDelegate.swift */; };
 		15FE1F761FE122D900CC2D97 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FE1F751FE122D900CC2D97 /* CreditsViewController.swift */; };
 		220DCE2E1E0AB544002FE716 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE2C1E0AB544002FE716 /* MessageCell.swift */; };
 		220DCE2F1E0AB544002FE716 /* MessageData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 220DCE2D1E0AB544002FE716 /* MessageData.plist */; };
@@ -632,7 +632,6 @@
 		15944A2F239802D5006B133B /* EmailDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailViewController.swift; sourceTree = "<group>"; };
 		15944A3123980C99006B133B /* EmailDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailViewModel.swift; sourceTree = "<group>"; };
 		15944A3423980FEC006B133B /* EmailDisplayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDisplayViewModel.swift; sourceTree = "<group>"; };
-		15944A3623981266006B133B /* EmailDisplayViewModelBase+QueryResultsIndexPathRowDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailDisplayViewModelBase+QueryResultsIndexPathRowDelegate.swift"; sourceTree = "<group>"; };
 		159AB56C23539D67008AB1F3 /* AppSettings+CNContactsAccessPermissionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+CNContactsAccessPermissionProvider.swift"; sourceTree = "<group>"; };
 		159E1F1222BD074F007D711F /* PantomimeFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		159E1F1422BD0756007D711F /* PEPObjCAdapterFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PEPObjCAdapterFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -656,6 +655,7 @@
 		15EBE43C20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc; sourceTree = "<group>"; };
 		15EBE44020E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc; sourceTree = "<group>"; };
 		15EBE44120E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc; sourceTree = "<group>"; };
+		15F92F14239ABCAE0037317C /* CollectionViewEmailDetailViewModelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewEmailDetailViewModelDelegate.swift; sourceTree = "<group>"; };
 		15FE1F751FE122D900CC2D97 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
 		220DCE2C1E0AB544002FE716 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		220DCE2D1E0AB544002FE716 /* MessageData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MessageData.plist; sourceTree = "<group>"; };
@@ -1530,6 +1530,7 @@
 			children = (
 				15944A2F239802D5006B133B /* EmailDetailViewController.swift */,
 				15944A3123980C99006B133B /* EmailDetailViewModel.swift */,
+				15F92F14239ABCAE0037317C /* CollectionViewEmailDetailViewModelDelegate.swift */,
 			);
 			path = EmailDetailView;
 			sourceTree = "<group>";
@@ -2449,7 +2450,6 @@
 				43ED53621CC77F95006AB156 /* EmailDisplayList */,
 				15944A3323980E62006B133B /* EmailView */,
 				15944A3423980FEC006B133B /* EmailDisplayViewModel.swift */,
-				15944A3623981266006B133B /* EmailDisplayViewModelBase+QueryResultsIndexPathRowDelegate.swift */,
 				153E9CD7239A7F19002F2DB9 /* EmailDisplayViewController.swift */,
 			);
 			path = EmailDisplay;
@@ -2854,7 +2854,6 @@
 				43AA825D1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift in Sources */,
 				152A39D821905C3E00D9F8E4 /* BodyCellViewModel.swift in Sources */,
 				B7C7E3142334E7A1009ABFFE /* ResetTrustViewModel.swift in Sources */,
-				15944A3723981266006B133B /* EmailDisplayViewModelBase+QueryResultsIndexPathRowDelegate.swift in Sources */,
 				B792889A2302D3DE00D2C68B /* Array+Extension.swift in Sources */,
 				220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */,
 				1526596F216230B2006A78DF /* ComposeFieldModel.swift in Sources */,
@@ -3020,6 +3019,7 @@
 				15944A3223980C99006B133B /* EmailDetailViewModel.swift in Sources */,
 				B7DB7FC82215C57F003968DA /* UIView+Util.swift in Sources */,
 				495F607C20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift in Sources */,
+				15F92F15239ABCAE0037317C /* CollectionViewEmailDetailViewModelDelegate.swift in Sources */,
 				152A39CC21905C3E00D9F8E4 /* MediaAttachmentPickerProvider.swift in Sources */,
 				4351C2CD1F4441190053381F /* commonmark.c in Sources */,
 				B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */,
