@@ -50,12 +50,8 @@ class EmailDetailViewController: EmailDisplayViewController {
 
     @IBAction func replyButtonPressed(_ sender: UIBarButtonItem) {
 //        performSegue(withIdentifier: .segueReply, sender: self)
+        fatalError()
     }
-
-    //BUFF: from EmailViewController
-    
-
-    //
 }
 
 // MARK: - UICollectionViewDelegate
@@ -70,13 +66,12 @@ extension EmailDetailViewController: UICollectionViewDelegate {
 extension EmailDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-//        fatalError()
-        return 0
+        return viewModel?.rowCount ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        fatalError()
+//        let cell = co //BUFF: HERE
         return UICollectionViewCell()
     }
 }
