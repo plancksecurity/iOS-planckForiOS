@@ -18,7 +18,7 @@ extension FolderType {
     func getIcon() -> UIImage {
         var imageName: String?
         switch self {
-        case .normal:
+        case .normal, .syncFolderMode:
             imageName = "folders-icon-folder"
         case .archive:
             imageName = "folders-icon-archive"
