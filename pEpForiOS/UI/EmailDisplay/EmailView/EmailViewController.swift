@@ -555,7 +555,6 @@ extension EmailViewController {
 
     override func tableView(
         _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        Log.shared.info("cell for %d:%d", indexPath.section, indexPath.row)
         guard
             let row = tableData?.getRow(at: indexPath.row),
             let cell = tableView.dequeueReusableCell(withIdentifier: row.identifier,

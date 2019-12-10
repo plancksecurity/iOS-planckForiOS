@@ -41,55 +41,55 @@ extension CollectionViewEmailDetailViewModelDelegate: EmailDetailViewModelDelega
 
     func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didInsertDataAt indexPaths: [IndexPath]) {
-        let op = BlockOperation { [weak self] in
+        addOperation { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
             me.collectionView?.insertItems(at: indexPaths)
         }
-        operations.append(op)
     }
 
     func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didUpdateDataAt indexPaths: [IndexPath]) {
-        let op = BlockOperation { [weak self] in
+        addOperation { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
             me.collectionView?.reloadItems(at: indexPaths)
         }
-        operations.append(op)
     }
 
     func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didRemoveDataAt indexPaths: [IndexPath]) {
-        let op = BlockOperation { [weak self] in
+        addOperation { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
             me.collectionView?.deleteItems(at: indexPaths)
         }
-        operations.append(op)
     }
 
     func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didMoveData atIndexPath: IndexPath,
                             toIndexPath: IndexPath) {
-        let op = BlockOperation { [weak self] in
+        addOperation { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
             me.collectionView?.moveItem(at: atIndexPath, to: toIndexPath)
         }
-        operations.append(op)
     }
 
     func willReceiveUpdates(viewModel: EmailDisplayViewModel) {
-        operations.removeAll()
+        guard operations.count == 0 else {
+            Log.shared.errorAndCrash("We expect all updates done before `willReceiveUpdates` is called again.")
+            return
+        }
+        // Do nothing
     }
 
     func allUpdatesReceived(viewModel: EmailDisplayViewModel) {
@@ -98,19 +98,38 @@ extension CollectionViewEmailDetailViewModelDelegate: EmailDetailViewModelDelega
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.queue.addOperations(me.operations, waitUntilFinished: true)
-        }
-        let completionBlock: (Bool)-> Void = { [weak self] finished in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
+            let opsToRun = Array(me.operations)
             me.operations.removeAll()
+            me.queue.addOperations(opsToRun, waitUntilFinished: true)
         }
-//        collectionView?.performBatchUpdates(performChangesBlock, completion: completionBlock) //BUFF:
+        collectionView?.performBatchUpdates(performChangesBlock)
     }
 
     func reloadData(viewModel: EmailDisplayViewModel) {
         collectionView?.reloadData()
+    }
+}
+
+// MARK: - Private
+
+extension CollectionViewEmailDetailViewModelDelegate {
+
+    /// Adds a block to operations, assuring that:
+    /// * it runs on the main queue
+    /// * the block is has finished when the operation is fiished
+    private func addOperation(runnignBlock block: @escaping ()->Void) {
+        let op = BlockOperation {
+            let group = DispatchGroup()
+            group.enter()
+            let run = {
+                block()
+                group.leave()
+            }
+            DispatchQueue.main.async {
+                run()
+            }
+            group.wait()
+        }
+        operations.append(op)
     }
 }
