@@ -11,6 +11,7 @@ import UIKit
 // Represents the a list of mails showing one mail with all details in full screen.
 //BUFF: docs!
 class EmailDetailViewController: EmailDisplayViewController {
+    static private let cellId = "EmailDetailViewCell"
     @IBOutlet weak var collectionView: UICollectionView!
     var viewModel: EmailDetailViewModel? {
         didSet {
@@ -71,8 +72,11 @@ extension EmailDetailViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell =
+            collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
+                                                      for: indexPath)
 //        let cell = co //BUFF: HERE
-        return UICollectionViewCell()
+        return cell
     }
 }
 
