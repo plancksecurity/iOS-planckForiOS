@@ -29,10 +29,10 @@ def select_folder(con, name=None):
 def dump_folder(con, name=None):
     status, _ = select_folder(con, name)
     if status == 'OK':
-        typ, data = con.search(None, 'ALL')
+        typ, data = con.search(None, '(HEADER "pEp-auto-consume" "yes")')
         for num in data[0].split():
             typ, data = con.fetch(
-                num, '(UID, BODY.PEEK[HEADER.FIELDS (SUBJECT)])')
+                num, '(UID, BODY.PEEK[HEADER.FIELDS (Message-ID)])')
             pprint(data)
 
 
