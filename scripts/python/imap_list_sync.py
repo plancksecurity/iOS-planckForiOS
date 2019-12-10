@@ -38,7 +38,9 @@ def dump_folder(con, name=None):
 
 def process(credentials, account_name):
     con = connect_account(credentials, account_name)
+    print("INBOX:")
     dump_folder(con)
+    print("INBOX.pEpAutoMessages:")
     dump_folder(con, 'INBOX.pEpAutoMessages')
 
 
