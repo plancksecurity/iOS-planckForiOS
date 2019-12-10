@@ -107,7 +107,7 @@ extension CollectionViewEmailDetailViewModelDelegate: EmailDetailViewModelDelega
             }
             me.operations.removeAll()
         }
-        collectionView?.performBatchUpdates(performChangesBlock, completion: completionBlock)
+//        collectionView?.performBatchUpdates(performChangesBlock, completion: completionBlock) //BUFF:
     }
 
     func reloadData(viewModel: EmailDisplayViewModel) {

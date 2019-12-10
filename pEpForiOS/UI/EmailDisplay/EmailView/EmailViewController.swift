@@ -15,6 +15,8 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 class EmailViewController: BaseTableViewController {
+    static let storyboard = "Main"
+    static let storyboardId = "EmailViewController"
     @IBOutlet var flagButton: UIBarButtonItem!
     @IBOutlet var destructiveButton: UIBarButtonItem!
     @IBOutlet var previousMessage: UIBarButtonItem!

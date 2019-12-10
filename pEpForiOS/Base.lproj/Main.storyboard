@@ -244,7 +244,7 @@
         <!--Email Detail View Controller-->
         <scene sceneID="RGR-UH-VHw">
             <objects>
-                <viewController id="fRo-D2-Fjz" customClass="EmailDetailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EmailDetailViewController" id="fRo-D2-Fjz" customClass="EmailDetailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JE8-0O-ekz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -259,7 +259,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="EmailDetailViewCell" id="kIE-Eq-O7W">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="XIB used - do not instantiate" id="kIE-Eq-O7W">
                                         <rect key="frame" x="0.0" y="-38.5" width="375" height="651"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="tKR-Vh-qyF">
@@ -387,7 +387,7 @@
         <!--Show email-->
         <scene sceneID="fxT-br-VYt">
             <objects>
-                <tableViewController storyboardIdentifier="emailDetail" title="Show email" id="3bx-34-vLD" customClass="EmailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="EmailViewController" title="Show email" id="3bx-34-vLD" customClass="EmailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="mYV-vz-wEb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1025,6 +1025,20 @@
             </objects>
             <point key="canvasLocation" x="2942" y="-2591"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="uNv-ct-qlu">
+            <objects>
+                <viewController id="I4k-3Q-Rnb" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ay0-I6-RMz">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qfz-xa-Hb6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3005" y="393"/>
+        </scene>
     </scenes>
     <resources>
         <image name="arrow-lft-active" width="10" height="18"/>
@@ -1041,8 +1055,8 @@
         <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cRe-YG-393"/>
+        <segue reference="RTR-We-Kc1"/>
         <segue reference="mZj-Mg-VzM"/>
-        <segue reference="2Ml-4S-RYf"/>
+        <segue reference="1zD-EW-3fN"/>
     </inferredMetricsTieBreakers>
 </document>

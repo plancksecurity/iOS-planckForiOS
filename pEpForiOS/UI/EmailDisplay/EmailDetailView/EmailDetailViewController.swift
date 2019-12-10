@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import pEpIOSToolbox
 
 // Represents the a list of mails showing one mail with all details in full screen.
 //BUFF: docs!
 class EmailDetailViewController: EmailDisplayViewController {
+    static private let xibName = "EmailDetailCollectionViewCell"
     static private let cellId = "EmailDetailViewCell"
+    private var emailViewControllers = [EmailViewController]()
     @IBOutlet weak var collectionView: UICollectionView!
     var viewModel: EmailDetailViewModel? {
         didSet {
@@ -22,11 +25,19 @@ class EmailDetailViewController: EmailDisplayViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupCollectionView()
+    }
+
+    //BUFF: move
+    private func setupCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionViewEmailDetailViewModelDelegate =
             CollectionViewEmailDetailViewModelDelegate(collectionView: collectionView)
         viewModel?.delegate = collectionViewEmailDetailViewModelDelegate
+        collectionView.register(UINib(nibName: EmailDetailViewController.xibName, bundle: nil),
+                                forCellWithReuseIdentifier: EmailDetailViewController.cellId)
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -72,10 +83,28 @@ extension EmailDetailViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell =
+        //BUFF: move emilVC setup
+        guard
+            let cell =
             collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
-                                                      for: indexPath)
-//        let cell = co //BUFF: HERE
+                                               for: indexPath) as? EmailDetailCollectionViewCell,
+            let emailViewController = storyboard?.instantiateViewController(withIdentifier: EmailViewController.storyboardId) as? EmailViewController,
+        let vm = viewModel
+            else {
+                Log.shared.errorAndCrash("Error setting up cell")
+                return collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
+                                                          for: indexPath)
+        }
+        emailViewController.appConfig = appConfig
+        //BUFF: HERE: set message to show
+        emailViewController.message = vm.message(representedByRowAt: indexPath)
+
+        emailViewControllers.append(emailViewController)
+        cell.containerView.addSubview(emailViewController.view)
+        emailViewController.view.fullSizeInSuperView()
+
+//        emailViewController.
+        //        let cell = co //BUFF: HERE
         return cell
     }
 }
