@@ -21,7 +21,8 @@ extension EmailListViewModel : QueryResultsIndexPathRowDelegate {
         if updatesEnabled {
             emailListViewModelDelegate?.emailListViewModel(viewModel: self, didUpdateDataAt: [indexPath])
         }
-        emailListViewModelDelegate?.checkIfSplitNeedsUpdate(indexpath: [indexPath])
+        //disable message updated from list to detail
+        //emailListViewModelDelegate?.checkIfSplitNeedsUpdate(indexpath: [indexPath])
     }
 
     func didDeleteRow(indexPath: IndexPath) {
