@@ -192,15 +192,14 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReply" id="I15-Dm-oo1"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueEditDraft" id="fJ0-cY-ZEb"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="d5O-Wk-gjZ"/>
-                        <segue destination="lPr-gi-BrG" kind="showDetail" identifier="segueShowEmailSplitView" id="63y-AC-Fyu"/>
                         <segue destination="eLD-PA-Nmx" kind="showDetail" identifier="segueShowThreadedEmail" id="rUh-Ai-iWA"/>
                         <segue destination="nc4-kR-K9D" kind="show" identifier="segueShowFilter" id="kQS-uu-oHl"/>
-                        <segue destination="3bx-34-vLD" kind="show" identifier="segueShowEmailNotSplitView" id="5Kn-pc-9Jc"/>
+                        <segue destination="3bx-34-vLD" kind="showDetail" identifier="segueShowEmail" id="5Kn-pc-9Jc"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4237.6000000000004" y="-895.50224887556226"/>
+            <point key="canvasLocation" x="2703" y="-1068"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pH2-0g-XGV">
@@ -218,30 +217,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aWP-YW-F6w" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4490" y="-8"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="jm1-97-n5e">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="lPr-gi-BrG" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="z4A-BC-Lg4">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="6WO-dJ-eVW">
-                        <rect key="frame" x="0.0" y="603" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
-                    <connections>
-                        <segue destination="3bx-34-vLD" kind="relationship" relationship="rootViewController" id="ber-OQ-S16"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tPk-q9-Yzh" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4238" y="-1722"/>
+            <point key="canvasLocation" x="3921" y="-147"/>
         </scene>
         <!--Filter Table View Controller-->
         <scene sceneID="9dD-N3-Mae">
@@ -269,7 +245,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RS6-O5-yYy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3806" y="-7"/>
+            <point key="canvasLocation" x="2737" y="-36"/>
         </scene>
         <!--Show email-->
         <scene sceneID="fxT-br-VYt">
@@ -522,7 +498,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Adk-MD-apd" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5327" y="-860"/>
+            <point key="canvasLocation" x="3495" y="-1917"/>
         </scene>
         <!--Move to Account-->
         <scene sceneID="Rib-YI-OIO">
@@ -611,6 +587,7 @@
                             <outlet property="delegate" destination="Vsb-3P-98q" id="36t-5U-9LK"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="qgz-er-jHu"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kgu-MG-u22" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -622,7 +599,7 @@
                 <viewControllerPlaceholder storyboardName="Handshake" id="Dbs-KG-RkX" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vev-AJ-nPB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6101" y="-393"/>
+            <point key="canvasLocation" x="5008" y="-414"/>
         </scene>
         <!--AccountCreation-->
         <scene sceneID="0vj-GL-XbM">
@@ -630,7 +607,7 @@
                 <viewControllerPlaceholder storyboardName="AccountCreation" id="Rly-af-89k" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QLV-3R-1jF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4702" y="-1411"/>
+            <point key="canvasLocation" x="3472" y="-1109"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fa0-aU-9j8">
@@ -886,7 +863,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="te3-X0-7QD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5252" y="833"/>
+            <point key="canvasLocation" x="3921" y="682"/>
         </scene>
     </scenes>
     <resources>
@@ -906,7 +883,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="d5O-Wk-gjZ"/>
         <segue reference="JbP-D9-Vpg"/>
-        <segue reference="5Kn-pc-9Jc"/>
         <segue reference="6vv-Jr-8Nm"/>
     </inferredMetricsTieBreakers>
 </document>
