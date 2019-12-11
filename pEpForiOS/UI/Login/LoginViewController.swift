@@ -16,8 +16,6 @@ protocol LoginViewControllerDelegate: class  {
 }
 
 final class LoginViewController: BaseViewController {
-    static let minCharUserName = 1
-
     weak var delegate: LoginViewControllerDelegate?
 
     @IBOutlet weak var user: AnimatedPlaceholderTextfield!
@@ -96,16 +94,13 @@ final class LoginViewController: BaseViewController {
                              offerManualSetup: false)
             return
         }
-        guard let username = user.text, username != ""  else {
-            handleLoginError(error: LoginViewController.LoginError.missingUsername,
-                             offerManualSetup: false)
-            return
-        }
 
-        guard username.count >= LoginViewController.minCharUserName else {
-            handleLoginError(error: LoginViewController.LoginError.minimumLengthUsername,
-                             offerManualSetup: false)
-            return
+        var userName: String
+        if let _userName = user.text {
+            userName = _userName
+        } else {
+            Log.shared.errorAndCrash("Found nil text in user.text")
+            userName = ""
         }
 
         viewModelOrCrash().accountVerificationResultDelegate = self
@@ -116,7 +111,7 @@ final class LoginViewController: BaseViewController {
         if viewModelOrCrash().isOAuth2Possible(email: email) || isOauthAccount {
             let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
             viewModelOrCrash().loginWithOAuth2(
-                viewController: self, emailAddress: email, userName: username,
+                viewController: self, emailAddress: email, userName: userName,
                 oauth2Authorizer: oauth)
         } else {
             guard let pass = password.text, pass != "" else {
@@ -126,7 +121,7 @@ final class LoginViewController: BaseViewController {
             }
 
             viewModelOrCrash().login(
-                accountName: email, userName: username, password: pass)
+                accountName: email, userName: userName, password: pass)
         }
     }
 

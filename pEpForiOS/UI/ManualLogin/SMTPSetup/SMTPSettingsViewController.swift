@@ -116,7 +116,21 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
             let errorTopic = NSLocalizedString("Empty Field",
                                                comment: "Title of alert: a required field is empty")
             isCurrentlyVerifying =  false
-            informUser(about: error, title: errorTopic)
+
+            var errorMessage = ""
+
+            if let verifiableError = error as? VerifiableAccountValidationError {
+                switch verifiableError {
+                case .invalidUserData:
+                    errorMessage = NSLocalizedString("Some mandatory fields are empty",
+                                                     comment: "Message of alert: a required field is empty")
+                default:
+                    Log.shared.errorAndCrash("Unhandled case in SMTPSettingsViewController")
+                }
+            } else {
+                errorMessage = error.localizedDescription
+            }
+            informUser(about: errorMessage, title: errorTopic)
         }
     }
 
@@ -230,7 +244,9 @@ extension SMTPSettingsViewController {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
-        let vm = viewModelOrCrash()
+        var vm = viewModelOrCrash()
+
+        vm.loginNameSMTP = vm.loginNameSMTP ?? vm.address
 
         setupView.firstTextField.set(text: vm.loginNameSMTP ?? vm.address, animated: animated)
         setupView.secondTextField.set(text: vm.serverSMTP, animated: animated)
@@ -254,15 +270,19 @@ extension SMTPSettingsViewController {
     ///
     /// - Throws: AccountVerificationError
     private func verifyAccount() throws {
+        guard var viewModel = model else {
+            Log.shared.errorAndCrash("No view model in STMP ViewController")
+            return
+        }
         isCurrentlyVerifying =  true
-        model?.verifiableAccountDelegate = self
-        try model?.verify()
+        viewModel.verifiableAccountDelegate = self
+        try viewModel.verify()
     }
 
-    private func informUser(about error: Error, title: String) {
+    private func informUser(about message: String, title: String) {
         let alert = UIAlertController.pEpAlertController(
             title: title,
-            message: error.localizedDescription,
+            message: message,
             preferredStyle: UIAlertController.Style.alert)
         let cancelAction = UIAlertAction(title:
             NSLocalizedString("OK", comment: "OK button for invalid accout settings user input alert"),

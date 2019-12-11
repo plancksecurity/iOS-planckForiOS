@@ -261,7 +261,9 @@ extension IMAPSettingsViewController {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
-        let vm = viewModelOrCrash()
+        var vm = viewModelOrCrash()
+
+        vm.loginNameIMAP = vm.loginNameIMAP ?? vm.address
 
         setupView.firstTextField.set(text: vm.loginNameIMAP ?? vm.address, animated: animated)
         setupView.secondTextField.set(text: vm.serverIMAP, animated: animated)
