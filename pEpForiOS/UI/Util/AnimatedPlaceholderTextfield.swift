@@ -9,8 +9,10 @@
 import UIKit
 
 @IBDesignable
-/// TextField with animated placeholder (moves above TextField), background color and text color.
-/// If textField text is empty placeholde will be center in TextField (as normal). Else placeHolder will move above the TextField
+/// TextField with animated placeholder (moves above TextField).
+/// If textField text is empty and not first responder placeholde will be center in TextField (as normal).
+/// Else placeHolder will move above the TextField.
+/// To set textField text and move placeholder up without animation use set(text: _, animated: _)
 /// Its also possible to configure different text and blackground colors, when TextField text is empty or not.
 class AnimatedPlaceholderTextfield: UITextField {
     private var _placeHolder: String?
@@ -55,6 +57,8 @@ class AnimatedPlaceholderTextfield: UITextField {
         }
     }
 
+    /// Set textField text and move placeholder up animated
+    /// To set text and move placeholder up without animation use set(text: _, animated: _)
     override var text: String? {
         didSet {
             updateTextFieldTextColor()
