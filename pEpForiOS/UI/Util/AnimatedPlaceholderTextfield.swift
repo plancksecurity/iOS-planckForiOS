@@ -61,7 +61,7 @@ class AnimatedPlaceholderTextfield: UITextField {
             updateTextFieldBackgroundColor()
             if text?.isEmpty == false {
                 //Text can be set direcly from this property or with a func to enable or disable
-                // placeholder animation).
+                // placeholder animation.
                 //Keep current isAnimationEnable value in animated, to pass it to the block.
                 //Set isAnimationEnable to default value (true). So next time text is modify
                 // from this property directly, it will be animated.
