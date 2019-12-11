@@ -309,16 +309,14 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="x3Y-Mc-0bu">
                         <rightBarButtonItems>
-                            <barButtonItem image="arrow-lft-active" id="4R9-FK-LNX">
-                                <color key="tintColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <barButtonItem image="arrow-lft-active" id="4R9-FK-LNX" userLabel="next">
                                 <connections>
-                                    <action selector="previousButtonPressed:" destination="fRo-D2-Fjz" id="Vu1-lJ-c1P"/>
+                                    <action selector="nextButtonPressed:" destination="fRo-D2-Fjz" id="nL5-r5-egL"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="arrow-rgt-active" id="uhj-ab-NtG">
-                                <color key="tintColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <barButtonItem image="arrow-rgt-active" id="uhj-ab-NtG" userLabel="previous">
                                 <connections>
-                                    <action selector="nextButtonPressed:" destination="fRo-D2-Fjz" id="fhd-Jn-YpC"/>
+                                    <action selector="previousButtonPressed:" destination="fRo-D2-Fjz" id="K3n-l9-U40"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -326,13 +324,11 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="HP3-Sj-MgZ" id="ar9-Hu-K2J"/>
-                        <outlet property="rightBarButtonitemPrevious" destination="4R9-FK-LNX" id="mdC-g9-opN"/>
-                        <outlet property="rightBarButtonitemnext" destination="uhj-ab-NtG" id="mj1-aN-y30"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NqX-Lg-wmy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3007" y="-23"/>
+            <point key="canvasLocation" x="3004" y="-22"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jm1-97-n5e">
@@ -444,19 +440,19 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnw-Tp-mga">
-                                            <rect key="frame" x="20" y="11" width="331" height="29"/>
+                                            <rect key="frame" x="20" y="11" width="331" height="30"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: Recipients" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mfx-AS-hpP">
-                                            <rect key="frame" x="20" y="44" width="331" height="18"/>
+                                            <rect key="frame" x="20" y="45" width="331" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="separator_pixel_grey" translatesAutoresizingMaskIntoConstraints="NO" id="Gbh-o3-H58">
-                                            <rect key="frame" x="10" y="70" width="355" height="2"/>
+                                            <rect key="frame" x="10" y="71" width="355" height="1"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
@@ -1040,7 +1036,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qfz-xa-Hb6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3005" y="393"/>
+            <point key="canvasLocation" x="3004" y="702"/>
         </scene>
     </scenes>
     <resources>

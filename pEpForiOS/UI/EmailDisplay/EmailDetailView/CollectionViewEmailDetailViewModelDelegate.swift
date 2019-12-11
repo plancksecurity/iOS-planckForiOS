@@ -14,13 +14,7 @@ import MessageModel
 /// - note: FRC does have callbacks for batchUpdate starting from iOS13. Remove this class and use
 ///         the batchupdate delegte methods of FRC directly after iOS12 support is dropped.
 class CollectionViewEmailDetailViewModelDelegate {
-    private var operations: [Operation] = []
-    private let queue: OperationQueue = {
-        let createe = OperationQueue()
-        createe.maxConcurrentOperationCount = 1
-        createe.qualityOfService = .userInteractive
-        return createe
-    }()
+    private var updateTasks: [()->Void] = []
     weak private var collectionView: UICollectionView?
 
     // MARK: - Life Cycle
@@ -30,8 +24,7 @@ class CollectionViewEmailDetailViewModelDelegate {
     }
 
     deinit {
-        operations.forEach { $0.cancel() }
-        operations.removeAll()
+        updateTasks.removeAll()
     }
 }
 
@@ -41,7 +34,7 @@ extension CollectionViewEmailDetailViewModelDelegate: EmailDetailViewModelDelega
 
     func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didInsertDataAt indexPaths: [IndexPath]) {
-        addOperation { [weak self] in
+        addUpdateTask { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
@@ -52,7 +45,7 @@ extension CollectionViewEmailDetailViewModelDelegate: EmailDetailViewModelDelega
 
     func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didUpdateDataAt indexPaths: [IndexPath]) {
-        addOperation { [weak self] in
+        addUpdateTask { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
@@ -63,7 +56,7 @@ extension CollectionViewEmailDetailViewModelDelegate: EmailDetailViewModelDelega
 
     func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didRemoveDataAt indexPaths: [IndexPath]) {
-        addOperation { [weak self] in
+        addUpdateTask { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
@@ -75,7 +68,7 @@ extension CollectionViewEmailDetailViewModelDelegate: EmailDetailViewModelDelega
     func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didMoveData atIndexPath: IndexPath,
                             toIndexPath: IndexPath) {
-        addOperation { [weak self] in
+        addUpdateTask { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
@@ -85,8 +78,8 @@ extension CollectionViewEmailDetailViewModelDelegate: EmailDetailViewModelDelega
     }
 
     func willReceiveUpdates(viewModel: EmailDisplayViewModel) {
-        guard operations.count == 0 else {
-//            Log.shared.errorAndCrash("We expect all updates done before `willReceiveUpdates` is called again.") //BUFF: OK to ignore?
+        guard updateTasks.count == 0 else {
+            Log.shared.errorAndCrash("We expect all updates done before `willReceiveUpdates` is called again.") //BUFF: OK to ignore?
             return
         }
         // Do nothing
@@ -98,19 +91,11 @@ extension CollectionViewEmailDetailViewModelDelegate: EmailDetailViewModelDelega
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            let opsToRun = Array(me.operations)
-//            me.operations.removeAll()
-            me.queue.addOperations(opsToRun, waitUntilFinished: false)
+            let updateTasksToRun = Array(me.updateTasks)
+            me.updateTasks.removeAll()
+            updateTasksToRun.forEach { $0() }
         }
-        let completion: (Bool)->Void = { [weak self] sussess in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.operations.removeAll()
-        }
-        collectionView?.performBatchUpdates(performChangesBlock,
-                                            completion: completion)
+        collectionView?.performBatchUpdates(performChangesBlock)
     }
 
     func reloadData(viewModel: EmailDisplayViewModel) {
@@ -122,15 +107,7 @@ extension CollectionViewEmailDetailViewModelDelegate: EmailDetailViewModelDelega
 
 extension CollectionViewEmailDetailViewModelDelegate {
 
-    /// Adds a block to operations, assuring that:
-    /// * it runs on the main queue
-    /// * the block is has finished when the operation is fiished
-    private func addOperation(runnignBlock block: @escaping ()->Void) {
-        let op = BlockOperation {
-            DispatchQueue.main.sync {
-                block()
-            }
-        }
-        operations.append(op)
+    private func addUpdateTask(_ block: @escaping ()->Void) {
+        updateTasks.append(block)
     }
 }

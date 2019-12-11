@@ -16,8 +16,6 @@ class EmailDetailViewController: EmailDisplayViewController {
     static private let cellId = "EmailDetailViewCell"
     private var emailViewControllers = [EmailViewController]()
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var rightBarButtonitemPrevious: UIBarButtonItem!
-    @IBOutlet weak var rightBarButtonitemnext: UIBarButtonItem!
     var viewModel: EmailDetailViewModel? {
         didSet {
             viewModel?.delegate = collectionViewEmailDetailViewModelDelegate
@@ -68,11 +66,75 @@ class EmailDetailViewController: EmailDisplayViewController {
     }
 
     @IBAction func previousButtonPressed(_ sender: UIBarButtonItem) {
-        fatalError() //BUFF: HERE
+        showPreviousIfAny()
     }
     
     @IBAction func nextButtonPressed(_ sender: UIBarButtonItem) {
-        fatalError() //BUFF: HERE
+        showNextIfAny()
+    }
+
+    //BUFF: move
+    private func showNextIfAny() {
+        guard
+            let indexPathForCurrentlyVisibleCell = indexPathOfCurrentlyVisibleCell,
+            thereIsANextMessageToShow
+            else {
+                // No mail to show
+                return
+        }
+        let nextIndexPath = IndexPath(item: indexPathForCurrentlyVisibleCell.item + 1,
+                                      section: indexPathForCurrentlyVisibleCell.section)
+        scroll(to: nextIndexPath)
+    }
+
+    private func showPreviousIfAny() {
+        guard
+            let indexPathForCurrentlyVisibleCell = indexPathOfCurrentlyVisibleCell,
+            thereIsAPreviousMessageToShow
+            else {
+                // No mail to show
+                return
+        }
+            let nextIndexPath = IndexPath(item: indexPathForCurrentlyVisibleCell.item - 1,
+                                          section: indexPathForCurrentlyVisibleCell.section)
+            scroll(to: nextIndexPath)
+    }
+
+    private var indexPathOfCurrentlyVisibleCell: IndexPath? {
+        let visibleIndexPaths = collectionView.indexPathsForVisibleItems
+        // visibleIndexPaths.count can be 2 while animating from one to onother cell.
+        // If taking the `first` mail leads to unexpected results, change to use `last` instead.
+        return visibleIndexPaths.first
+    }
+
+    private var thereIsANextMessageToShow: Bool {
+        guard let indexPathForCurrentlyVisibleCell = indexPathOfCurrentlyVisibleCell else {
+            // No mail to show
+            return false
+        }
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return false
+        }
+        return (indexPathForCurrentlyVisibleCell.row + 1) < vm.rowCount
+    }
+
+    private var thereIsAPreviousMessageToShow: Bool {
+        guard let indexPathForCurrentlyVisibleCell = indexPathOfCurrentlyVisibleCell else {
+            // No mail to show
+            return false
+        }
+
+        return (indexPathForCurrentlyVisibleCell.row - 1) >= 0
+    }
+
+
+    private func scroll(to indexPath: IndexPath,
+                        at: UICollectionView.ScrollPosition = .centeredHorizontally,
+                        animated: Bool = true) {
+        collectionView.scrollToItem(at: indexPath,
+                                    at: at,
+                                    animated: animated)
     }
 }
 
