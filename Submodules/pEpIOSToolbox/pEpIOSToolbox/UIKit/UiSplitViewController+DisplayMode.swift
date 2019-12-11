@@ -15,9 +15,15 @@ public extension UIViewController {
     ///
     /// - Returns: returns the value of the actual status of the split view controller using SplitViewDisplayMode
     func currentSplitViewMode() -> UISplitViewController.SplitViewDisplayMode {
+
+        if let selfsplit = self as? UISplitViewController {
+            return selfsplit.currentDisplayMode
+        }
+
         guard let splitview = splitViewController else {
             return .onlyMaster
         }
+        
         return splitview.currentDisplayMode
     }
 
