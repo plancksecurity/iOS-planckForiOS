@@ -59,4 +59,18 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
 
         emailViewController.splitViewController(willChangeTo: displayMode)
     }
+
+    func splitViewController(_ splitViewController: UISplitViewController, showDetail vc: UIViewController, sender: Any?) -> Bool {
+        if !onlySplitViewMasterIsShown {
+            //apple docs say detailView will be always in the position 1 of the .viewcontrollers array
+            let detail = 1
+            guard let controller = splitViewController.viewControllers[detail] as? UINavigationController else {
+                return false
+            }
+            controller.popViewController(animated: false)
+            controller.pushViewController(vc, animated: false)
+            return true
+        }
+        return false
+    }
 }
