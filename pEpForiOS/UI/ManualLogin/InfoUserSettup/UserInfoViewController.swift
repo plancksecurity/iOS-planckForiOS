@@ -61,7 +61,7 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
         }
         let vm = viewModelOrCrash()
 
-        setupView.firstTextField.text = vm.loginName
+        setupView.firstTextField.text = vm.loginName ?? vm.address
         setupView.secondTextField.text = vm.address
         setupView.thirdTextField.text = vm.password
         setupView.fourthTextField.text = vm.userName
@@ -189,6 +189,9 @@ extension UserInfoViewController {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
+
+        setupView.firstTextField.textContentType = .emailAddress
+        setupView.firstTextField.keyboardType = .emailAddress
 
         setupView.secondTextField.textContentType = .emailAddress
         setupView.secondTextField.keyboardType = .emailAddress

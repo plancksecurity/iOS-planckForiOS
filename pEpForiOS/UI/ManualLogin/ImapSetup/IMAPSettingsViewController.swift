@@ -263,7 +263,7 @@ extension IMAPSettingsViewController {
         }
         let vm = viewModelOrCrash()
 
-        setupView.firstTextField.text = vm.loginNameIMAP
+        setupView.firstTextField.text = vm.loginNameIMAP ?? vm.address
         setupView.secondTextField.text = vm.serverIMAP
         setupView.thirdTextField.text = String(vm.portIMAP)
         setupView.fourthTextField.text = vm.transportIMAP.localizedString()

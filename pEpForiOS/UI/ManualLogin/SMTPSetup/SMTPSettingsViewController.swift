@@ -232,7 +232,7 @@ extension SMTPSettingsViewController {
         }
         let vm = viewModelOrCrash()
 
-        setupView.firstTextField.text = vm.loginNameSMTP
+        setupView.firstTextField.text = vm.loginNameSMTP ?? vm.address
         setupView.secondTextField.text = vm.serverSMTP
         setupView.thirdTextField.text = String(vm.portSMTP)
         setupView.fourthTextField.text = vm.transportSMTP.localizedString()
