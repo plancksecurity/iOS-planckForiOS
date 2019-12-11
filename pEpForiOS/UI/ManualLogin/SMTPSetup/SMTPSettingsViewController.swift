@@ -42,14 +42,12 @@ final class SMTPSettingsViewController: BaseViewController, TextfieldResponder {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        manualAccountSetupContainerView.setTextFieldsPlaceholderAnimation(enable: false)
-        updateView()
+        updateView(animated: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        manualAccountSetupContainerView.setTextFieldsPlaceholderAnimation(enable: true)
         firstResponder(model?.serverSMTP == nil)
     }
 
@@ -225,17 +223,19 @@ extension SMTPSettingsViewController {
 // MARK: - Private
 
 extension SMTPSettingsViewController {
-    private func updateView() {
+    /// Update view state from view model
+    /// - Parameter animated: this property only apply to  items with animations, list AnimatedPlaceholderTextFields
+    private func updateView(animated: Bool = true) {
         guard let setupView = manualAccountSetupContainerView.setupView else {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
         let vm = viewModelOrCrash()
 
-        setupView.firstTextField.text = vm.loginNameSMTP ?? vm.address
-        setupView.secondTextField.text = vm.serverSMTP
-        setupView.thirdTextField.text = String(vm.portSMTP)
-        setupView.fourthTextField.text = vm.transportSMTP.localizedString()
+        setupView.firstTextField.set(text: vm.loginNameSMTP ?? vm.address, animated: animated)
+        setupView.secondTextField.set(text: vm.serverSMTP, animated: animated)
+        setupView.thirdTextField.set(text: String(vm.portSMTP), animated: animated)
+        setupView.fourthTextField.set(text: vm.transportSMTP.localizedString(), animated: animated)
 
         setupView.pEpSyncSwitch.isOn = vm.keySyncEnable
 

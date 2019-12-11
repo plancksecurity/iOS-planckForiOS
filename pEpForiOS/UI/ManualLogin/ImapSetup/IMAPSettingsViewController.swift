@@ -48,14 +48,12 @@ final class IMAPSettingsViewController: BaseViewController, TextfieldResponder {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        manualAccountSetupContainerView.setTextFieldsPlaceholderAnimation(enable: false)
-        updateView()
+        updateView(animated: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        manualAccountSetupContainerView.setTextFieldsPlaceholderAnimation(enable: true)
         firstResponder(model?.serverIMAP == nil)
     }
 
@@ -256,17 +254,19 @@ extension IMAPSettingsViewController {
         present(alertController, animated: true) {}
     }
 
-    private func updateView() {
+    /// Update view state from view model
+    /// - Parameter animated: this property only apply to  items with animations, list AnimatedPlaceholderTextFields
+    private func updateView(animated: Bool = true) {
         guard let setupView = manualAccountSetupContainerView.setupView else {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
         let vm = viewModelOrCrash()
 
-        setupView.firstTextField.text = vm.loginNameIMAP ?? vm.address
-        setupView.secondTextField.text = vm.serverIMAP
-        setupView.thirdTextField.text = String(vm.portIMAP)
-        setupView.fourthTextField.text = vm.transportIMAP.localizedString()
+        setupView.firstTextField.set(text: vm.loginNameIMAP ?? vm.address, animated: animated)
+        setupView.secondTextField.set(text: vm.serverIMAP, animated: animated)
+        setupView.thirdTextField.set(text: String(vm.portIMAP), animated: animated)
+        setupView.fourthTextField.set(text: vm.transportIMAP.localizedString(), animated: animated)
 
         setupView.pEpSyncSwitch.isOn = vm.keySyncEnable
 

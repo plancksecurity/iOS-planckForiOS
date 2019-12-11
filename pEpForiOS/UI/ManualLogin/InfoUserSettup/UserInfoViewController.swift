@@ -36,35 +36,33 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
         fields = manualAccountSetupContainerView.manualSetupViewTextFeilds()
         setUpViewLocalizableTexts()
         setUpTextFieldsInputTraits()
-
-        manualAccountSetupContainerView.setTextFieldsPlaceholderAnimation(enable: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        updateView()
+        updateView(animated: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        manualAccountSetupContainerView.setTextFieldsPlaceholderAnimation(enable: true)
         firstResponder(!viewModelOrCrash().isValidName)
     }
 
-    /// Puts the model into the view, in case it was set by the invoking view controller.
-    func updateView() {
+    /// Update view state from the view model
+    /// - Parameter animated: this property only apply to  items with animations, list AnimatedPlaceholderTextFields
+    func updateView(animated: Bool = true) {
         guard let setupView = manualAccountSetupContainerView.setupView else {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
         let vm = viewModelOrCrash()
 
-        setupView.firstTextField.text = vm.loginName ?? vm.address
-        setupView.secondTextField.text = vm.address
-        setupView.thirdTextField.text = vm.password
-        setupView.fourthTextField.text = vm.userName
+        setupView.firstTextField.set(text: vm.loginName ?? vm.address, animated: animated)
+        setupView.secondTextField.set(text: vm.address, animated: animated)
+        setupView.thirdTextField.set(text: vm.password, animated: animated)
+        setupView.fourthTextField.set(text: vm.userName, animated: animated)
 
         setupView.pEpSyncSwitch.isOn = vm.keySyncEnable
 

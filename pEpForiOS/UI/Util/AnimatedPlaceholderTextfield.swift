@@ -14,6 +14,7 @@ import UIKit
 /// Its also possible to configure different text and blackground colors, when TextField text is empty or not.
 class AnimatedPlaceholderTextfield: UITextField {
     private var _placeHolder: String?
+    private var isAnimationEnable: Bool = true
     private var originalTextColor: UIColor?
     private var originalBackgroundColor: UIColor?
     private var placeHolderLabelCenterY: NSLayoutConstraint?
@@ -54,22 +55,24 @@ class AnimatedPlaceholderTextfield: UITextField {
         }
     }
 
-    @IBInspectable
-    /// Use this property enable or disale placeholder animation.
-    /// If disable, the placeholder will just appear up instead of moving with the animation.
-    var isPlaceholderAnimationEnable: Bool = true
-
     override var text: String? {
         didSet {
             updateTextFieldTextColor()
             updateTextFieldBackgroundColor()
             if text?.isEmpty == false {
+                //Text can be set direcly from this property or with a func to enable or disable
+                // placeholder animation).
+                //Keep current isAnimationEnable value in animated, to pass it to the block.
+                //Set isAnimationEnable to default value (true). So next time text is modify
+                // from this property directly, it will be animated.
+                let animated = isAnimationEnable
+                isAnimationEnable = true
                 DispatchQueue.main.async { [weak self] in
                     guard let me = self else {
                         Log.shared.lostMySelf()
                         return
                     }
-                    me.moveUpPlaceHolderLabel()
+                    me.moveUpPlaceHolderLabel(animated: animated)
                 }
             }
         }
@@ -101,6 +104,20 @@ class AnimatedPlaceholderTextfield: UITextField {
         updatePlaceholderLabel()
         addPlaceholderLabel()
         addKeyboardObservers()
+    }
+
+    /// Use this function enable or disale placeholder animation.
+    /// If disable, the placeholder will just appear up instead of moving with the animation.
+
+
+    /// Use this function to set textField text with placeholder animation enalbe or disable.
+    /// If disable, texField placeholder will move up at once.
+    /// - Parameters:
+    ///   - text: text to set to the textField text
+    ///   - animated: enable or disable the textField placeholder going up animation.
+    func set(text: String?, animated: Bool = true) {
+        isAnimationEnable = animated
+        self.text = text
     }
 }
 
@@ -195,24 +212,28 @@ extension AnimatedPlaceholderTextfield {
     }
 
     /// Do animation to move placeHolder label above textfield
-    private func moveUpPlaceHolderLabel() {
+    private func moveUpPlaceHolderLabel(animated: Bool = true) {
         placeHolderLabelCenterY?.constant = -placeholderLabel.frame.height / 2 - 10
-        if isPlaceholderAnimationEnable {
+        if animated {
             doViewAnimation()
         }
     }
 
     /// Do animations to move placeholder label back to textfield placeholder origin
-    private func centerPlaceHolderLabel() {
+    private func centerPlaceHolderLabel(animated: Bool = true) {
         placeHolderLabelCenterY?.constant = 0
-        if isPlaceholderAnimationEnable {
+        if animated {
             doViewAnimation()
         }
     }
 
     private func doViewAnimation() {
         UIView.animate(withDuration: 0.3) { [weak self] in
-            self?.superview?.layoutIfNeeded()
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.superview?.layoutIfNeeded()
         }
     }
 }
