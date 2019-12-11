@@ -110,10 +110,6 @@ class AnimatedPlaceholderTextfield: UITextField {
         addKeyboardObservers()
     }
 
-    /// Use this function enable or disale placeholder animation.
-    /// If disable, the placeholder will just appear up instead of moving with the animation.
-
-
     /// Use this function to set textField text with placeholder animation enalbe or disable.
     /// If disable, texField placeholder will move up at once.
     /// - Parameters:
