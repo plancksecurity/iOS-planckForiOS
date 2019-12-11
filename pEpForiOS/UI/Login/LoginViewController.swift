@@ -451,7 +451,7 @@ extension LoginViewController {
         dismissButton.convertToLoginButton(
             placeholder: NSLocalizedString("Cancel", comment: "Cancel in button in Login View"))
 
-        pEpSyncSwitch.onTintColor = .pEpSwitchBackground
+        pEpSyncSwitch.onTintColor = UIColor(hexString: "#58FF75")
 
         // hide extended login fields
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
