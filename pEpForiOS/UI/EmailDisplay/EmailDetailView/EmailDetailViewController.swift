@@ -16,6 +16,8 @@ class EmailDetailViewController: EmailDisplayViewController {
     static private let cellId = "EmailDetailViewCell"
     private var emailViewControllers = [EmailViewController]()
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var rightBarButtonitemPrevious: UIBarButtonItem!
+    @IBOutlet weak var rightBarButtonitemnext: UIBarButtonItem!
     var viewModel: EmailDetailViewModel? {
         didSet {
             viewModel?.delegate = collectionViewEmailDetailViewModelDelegate
@@ -63,6 +65,14 @@ class EmailDetailViewController: EmailDisplayViewController {
     @IBAction func replyButtonPressed(_ sender: UIBarButtonItem) {
 //        performSegue(withIdentifier: .segueReply, sender: self)
         fatalError()
+    }
+
+    @IBAction func previousButtonPressed(_ sender: UIBarButtonItem) {
+        fatalError() //BUFF: HERE
+    }
+    
+    @IBAction func nextButtonPressed(_ sender: UIBarButtonItem) {
+        fatalError() //BUFF: HERE
     }
 }
 

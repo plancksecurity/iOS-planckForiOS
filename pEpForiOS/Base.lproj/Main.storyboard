@@ -312,13 +312,13 @@
                             <barButtonItem image="arrow-lft-active" id="4R9-FK-LNX">
                                 <color key="tintColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
-                                    <action selector="next:" destination="3bx-34-vLD" id="kpq-Vn-Xaq"/>
+                                    <action selector="previousButtonPressed:" destination="fRo-D2-Fjz" id="Vu1-lJ-c1P"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem image="arrow-rgt-active" id="uhj-ab-NtG">
                                 <color key="tintColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
-                                    <action selector="previous:" destination="3bx-34-vLD" id="JEU-ZG-0Rl"/>
+                                    <action selector="nextButtonPressed:" destination="fRo-D2-Fjz" id="fhd-Jn-YpC"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -326,6 +326,8 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="HP3-Sj-MgZ" id="ar9-Hu-K2J"/>
+                        <outlet property="rightBarButtonitemPrevious" destination="4R9-FK-LNX" id="mdC-g9-opN"/>
+                        <outlet property="rightBarButtonitemnext" destination="uhj-ab-NtG" id="mj1-aN-y30"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NqX-Lg-wmy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -442,19 +444,19 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnw-Tp-mga">
-                                            <rect key="frame" x="20" y="11" width="331" height="30"/>
+                                            <rect key="frame" x="20" y="11" width="331" height="29"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: Recipients" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mfx-AS-hpP">
-                                            <rect key="frame" x="20" y="45" width="331" height="18"/>
+                                            <rect key="frame" x="20" y="44" width="331" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="separator_pixel_grey" translatesAutoresizingMaskIntoConstraints="NO" id="Gbh-o3-H58">
-                                            <rect key="frame" x="10" y="71" width="355" height="1"/>
+                                            <rect key="frame" x="10" y="70" width="355" height="2"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
@@ -1033,6 +1035,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="WOr-9z-wQG"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qfz-xa-Hb6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

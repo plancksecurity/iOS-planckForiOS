@@ -66,12 +66,13 @@ class EmailViewController: BaseTableViewController {
             return
         }
 
+        //BUFF: Must be handled (recursive save) !!!
         //!!!: this logic (mark for redecrypt) must go to getter of Message.longMessage(formatted)
         // as a side effect. (Do after HTML parser is in toolbox
         // The user may be about to view an yet undecrypted message.
         // If so, try again to decrypt it.
         message?.markForRetryDecryptIfUndecryptable()
-        Session.main.commit()
+//        Session.main.commit() //BUFF:
 
         configureTableRows()
         configureView()

@@ -86,7 +86,7 @@ extension CollectionViewEmailDetailViewModelDelegate: EmailDetailViewModelDelega
 
     func willReceiveUpdates(viewModel: EmailDisplayViewModel) {
         guard operations.count == 0 else {
-            Log.shared.errorAndCrash("We expect all updates done before `willReceiveUpdates` is called again.")
+//            Log.shared.errorAndCrash("We expect all updates done before `willReceiveUpdates` is called again.") //BUFF: OK to ignore?
             return
         }
         // Do nothing
@@ -99,10 +99,18 @@ extension CollectionViewEmailDetailViewModelDelegate: EmailDetailViewModelDelega
                 return
             }
             let opsToRun = Array(me.operations)
-            me.operations.removeAll()
-            me.queue.addOperations(opsToRun, waitUntilFinished: true)
+//            me.operations.removeAll()
+            me.queue.addOperations(opsToRun, waitUntilFinished: false)
         }
-        collectionView?.performBatchUpdates(performChangesBlock)
+        let completion: (Bool)->Void = { [weak self] sussess in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.operations.removeAll()
+        }
+        collectionView?.performBatchUpdates(performChangesBlock,
+                                            completion: completion)
     }
 
     func reloadData(viewModel: EmailDisplayViewModel) {
@@ -119,16 +127,9 @@ extension CollectionViewEmailDetailViewModelDelegate {
     /// * the block is has finished when the operation is fiished
     private func addOperation(runnignBlock block: @escaping ()->Void) {
         let op = BlockOperation {
-            let group = DispatchGroup()
-            group.enter()
-            let run = {
+            DispatchQueue.main.sync {
                 block()
-                group.leave()
             }
-            DispatchQueue.main.async {
-                run()
-            }
-            group.wait()
         }
         operations.append(op)
     }
