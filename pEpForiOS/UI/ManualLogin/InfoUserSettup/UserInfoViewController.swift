@@ -33,9 +33,13 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
             setupView.scrollView.isScrollEnabled = false
         }
 
+        var vm = viewModelOrCrash()
+        vm.loginName = vm.loginName ?? vm.address
+
         fields = manualAccountSetupContainerView.manualSetupViewTextFeilds()
         setUpViewLocalizableTexts()
         setUpTextFieldsInputTraits()
+        updateAutoFillForNextViews()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -58,8 +62,6 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
             return
         }
         var vm = viewModelOrCrash()
-
-        vm.loginName = vm.loginName ?? vm.address
 
         setupView.firstTextField.set(text: vm.loginName, animated: animated)
         setupView.secondTextField.set(text: vm.address, animated: animated)
@@ -86,7 +88,7 @@ extension UserInfoViewController: UITextFieldDelegate {
             return true
         }
         guard textField != setupView.fourthTextField else {
-            performSegue(withIdentifier: .IMAPSettings , sender: self)
+            handleGoToNextView()
             return true
         }
 
@@ -111,6 +113,7 @@ extension UserInfoViewController: ManualAccountSetupViewDelegate {
         var vm = viewModelOrCrash()
         vm.loginName = textField.text
         model = vm
+        updateAutoFillForNextViews()
         updateView()
     }
 
@@ -140,11 +143,7 @@ extension UserInfoViewController: ManualAccountSetupViewDelegate {
     }
 
     func didPressNextButton() {
-        guard viewModelOrCrash().isValidUser else {
-            Log.shared.errorAndCrash("Next button enable with not ValidUser in ManualAccountSetupView")
-            return
-        }
-        performSegue(withIdentifier: .IMAPSettings , sender: self)
+        handleGoToNextView()
     }
 }
 
@@ -173,6 +172,14 @@ extension UserInfoViewController: SegueHandlerType {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         view.endEditing(true)
+        switch segue.destination {
+        case let iMAPSettingsViewController as IMAPSettingsViewController:
+            iMAPSettingsViewController.appConfig = appConfig
+            iMAPSettingsViewController.model = model
+        default:
+            break
+        }
+
         switch segueIdentifier(for: segue) {
         case .IMAPSettings:
             if let destination = segue.destination as? IMAPSettingsViewController {
@@ -189,6 +196,14 @@ extension UserInfoViewController: SegueHandlerType {
 // MARK: - Private
 
 extension UserInfoViewController {
+    private func handleGoToNextView() {
+        guard viewModelOrCrash().isValidUser else {
+            Log.shared.errorAndCrash("Next button enable with not ValidUser in ManualAccountSetupView")
+            return
+        }
+        performSegue(withIdentifier: .IMAPSettings , sender: self)
+    }
+
     private func setUpTextFieldsInputTraits() {
         guard let setupView = manualAccountSetupContainerView.setupView else {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
@@ -231,5 +246,11 @@ extension UserInfoViewController {
 
         let displayNamePlaceholder = NSLocalizedString("Display Name", comment: "Display Name placeholder for manual account setup")
         setupView.fourthTextField.placeholder = displayNamePlaceholder
+    }
+
+    private func updateAutoFillForNextViews() {
+        var vm = viewModelOrCrash()
+        vm.loginNameIMAP = vm.loginName
+        vm.loginNameSMTP = vm.loginName
     }
 }

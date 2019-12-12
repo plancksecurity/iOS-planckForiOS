@@ -246,9 +246,7 @@ extension SMTPSettingsViewController {
         }
         var vm = viewModelOrCrash()
 
-        vm.loginNameSMTP = vm.loginNameSMTP ?? vm.address
-
-        setupView.firstTextField.set(text: vm.loginNameSMTP ?? vm.address, animated: animated)
+        setupView.firstTextField.set(text: vm.loginNameSMTP, animated: animated)
         setupView.secondTextField.set(text: vm.serverSMTP, animated: animated)
         setupView.thirdTextField.set(text: String(vm.portSMTP), animated: animated)
         setupView.fourthTextField.set(text: vm.transportSMTP.localizedString(), animated: animated)
