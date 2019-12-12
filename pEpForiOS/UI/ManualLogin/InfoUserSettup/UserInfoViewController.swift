@@ -81,11 +81,16 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
 
 extension UserInfoViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        nextResponder(textField)
-
-        if viewModelOrCrash().isValidUser {
-            performSegue(withIdentifier: .IMAPSettings , sender: self)
+        guard let setupView = manualAccountSetupContainerView.setupView else {
+            Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
+            return true
         }
+        guard textField != setupView.fourthTextField else {
+            performSegue(withIdentifier: .IMAPSettings , sender: self)
+            return true
+        }
+
+        nextResponder(textField)
         return true
     }
 
