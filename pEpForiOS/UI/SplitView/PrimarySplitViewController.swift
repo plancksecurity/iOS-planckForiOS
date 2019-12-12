@@ -20,43 +20,46 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
     func splitViewController(_ splitViewController: UISplitViewController,
                              collapseSecondary secondaryViewController:UIViewController,
                              onto primaryViewController:UIViewController) -> Bool {
-        guard let navigationController = secondaryViewController as? UINavigationController,
-            navigationController.rootViewController is EmailViewController /*||
-                navigationController.rootViewController is ThreadViewController*/// Message threadding is currently umsupported. The code might be helpful. 
-            else {
-                return true
-        }
+        /*||
+        navigationController.rootViewController is ThreadViewController*/// Message threadding is currently umsupported. The code might be helpful.
 
-        return false
+        if let navigationController = secondaryViewController as? UINavigationController,
+            let top = navigationController.topViewController, top.collapsedBehavior == .needed,
+            let primaryNavigationController = primaryViewController as? UINavigationController {
+
+            navigationController.popViewController(animated: false)
+            primaryNavigationController.pushViewController(top, animated: false)
+        }
+        return true
     }
 
     func splitViewController(_ splitViewController: UISplitViewController,
                              separateSecondaryFrom primaryViewController: UIViewController)
         -> UIViewController? {
-            guard let navigationController =
-                    splitViewController.viewControllers.first as? UINavigationController,
-                let secondaryNavigationController =
-                    navigationController.topViewController as? UINavigationController,
-                secondaryNavigationController.topViewController is EmailViewController /*||
-                    secondaryNavigationController.topViewController is ThreadViewController*/ // Message threadding is currently umsupported. The code might be helpful.
-                else {
-                    let storyboard = UIStoryboard(
-                        name: UIStoryboard.noSelectionStoryBoard,
-                        bundle: nil)
-                    let vc = storyboard.instantiateViewController(
-                        withIdentifier: UIStoryboard.nothingSelectedViewController)
-                    return vc
+            let navigationController = UINavigationController()
+            guard let primaryView = primaryViewController as? UINavigationController else {
+                Log.shared.errorAndCrash(message: "root view is not nav Controller?")
+                return nil
             }
-            return secondaryNavigationController
+            if let topView = primaryView.topViewController, topView.isKind(of: EmailViewController.self) {
+                primaryView.popViewController(animated: false)
+                navigationController.pushViewController(topView, animated: false)
+            } else {
+                let storyboard = UIStoryboard(
+                    name: UIStoryboard.noSelectionStoryBoard,
+                    bundle: nil)
+                let vc = storyboard.instantiateViewController(
+                    withIdentifier: UIStoryboard.nothingSelectedViewController)
+                navigationController.pushViewController(vc, animated: false)
+            }
+            return navigationController
     }
 
     func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewController.DisplayMode) {
-
         guard let nav = viewControllers.last as? UINavigationController,
             let emailViewController = nav.rootViewController as? EmailViewController else {
                 return
         }
-
         emailViewController.splitViewController(willChangeTo: displayMode)
     }
 
@@ -64,7 +67,7 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
         if !onlySplitViewMasterIsShown {
             //apple docs say detailView will be always in the position 1 of the .viewcontrollers array
             let detail = 1
-            guard let controller = splitViewController.viewControllers[detail] as? UINavigationController else {
+            guard splitViewController.viewControllers.count == 2, let controller = splitViewController.viewControllers[detail] as? UINavigationController else {
                 return false
             }
             controller.popViewController(animated: false)
