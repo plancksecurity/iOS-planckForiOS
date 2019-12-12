@@ -141,4 +141,16 @@ extension UIViewController {
 
         return activityIndicator
     }
+
+    @objc public var collapsedBehavior: CollapsedBehavior {
+        get {
+            return .disposable
+        }
+    }
+
+}
+
+@objc public enum CollapsedBehavior: Int {
+    case disposable = 0
+    case needed = 1
 }
