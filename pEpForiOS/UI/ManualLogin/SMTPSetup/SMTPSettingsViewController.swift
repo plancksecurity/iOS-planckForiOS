@@ -48,7 +48,7 @@ final class SMTPSettingsViewController: BaseViewController, TextfieldResponder {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        firstResponder(model?.serverSMTP == nil)
+        firstResponder(viewModelOrCrash().loginNameSMTP == nil)
     }
 
     @IBAction func didTapOnView(_ sender: Any) {

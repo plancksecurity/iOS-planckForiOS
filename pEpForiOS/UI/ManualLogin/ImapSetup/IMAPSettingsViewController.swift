@@ -54,7 +54,7 @@ final class IMAPSettingsViewController: BaseViewController, TextfieldResponder {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        firstResponder(model?.serverIMAP == nil)
+        firstResponder(viewModelOrCrash().loginNameIMAP == nil)
     }
 
     @IBAction func didTapOnView(_ sender: Any) {
