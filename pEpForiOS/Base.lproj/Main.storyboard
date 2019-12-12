@@ -553,7 +553,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2U7-06-MWe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7180" y="-911"/>
+            <point key="canvasLocation" x="6407" y="-1126"/>
         </scene>
         <!--Move To Folder Table View Controller-->
         <scene sceneID="Ab2-Ge-TMt">
@@ -591,7 +591,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kgu-MG-u22" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7911" y="-910"/>
+            <point key="canvasLocation" x="7138" y="-1127"/>
         </scene>
         <!--Handshake-->
         <scene sceneID="vNc-oF-Keh">
@@ -607,7 +607,7 @@
                 <viewControllerPlaceholder storyboardName="AccountCreation" id="Rly-af-89k" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QLV-3R-1jF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3472" y="-1109"/>
+            <point key="canvasLocation" x="3429" y="-1179"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fa0-aU-9j8">
@@ -625,7 +625,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r5B-yf-15o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6321" y="-909"/>
+            <point key="canvasLocation" x="5665" y="-1125"/>
         </scene>
         <!--ComposeTableViewController-->
         <scene sceneID="6gr-JE-uNa">
