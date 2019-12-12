@@ -324,6 +324,10 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="HP3-Sj-MgZ" id="ar9-Hu-K2J"/>
+                        <outlet property="destructiveButton" destination="zPY-ag-aQd" id="MFb-Va-h9a"/>
+                        <outlet property="flagButton" destination="eWC-Rq-MJm" id="Fha-Mh-JQz"/>
+                        <outlet property="nextButton" destination="4R9-FK-LNX" id="XRa-Kx-g3q"/>
+                        <outlet property="previousButton" destination="uhj-ab-NtG" id="lE3-hB-5GJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NqX-Lg-wmy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

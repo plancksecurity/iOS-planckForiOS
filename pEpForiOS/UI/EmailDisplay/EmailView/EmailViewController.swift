@@ -103,33 +103,33 @@ class EmailViewController: BaseTableViewController {
 
     //MARK: - Temp fix to Beta
 
-    private func hideNextAndPrevious() {
-        //!!!:opacity in storyboard is now at 0% must be changed to enable this buttons again
-        nextMessage.isEnabled = false
-        previousMessage.isEnabled = false
-    }
+//    private func hideNextAndPrevious() {
+//        //!!!:opacity in storyboard is now at 0% must be changed to enable this buttons again
+//        nextMessage.isEnabled = false
+//        previousMessage.isEnabled = false
+//    }
 
     // MARK: - UTIL
+//
+//    private func updateFlaggedStatus() {
+//        changeFlagButtonTo(flagged: message?.imapFlags.flagged ?? false)
+//    }
 
-    private func updateFlaggedStatus() {
-        changeFlagButtonTo(flagged: message?.imapFlags.flagged ?? false)
-    }
-
-    internal func changeFlagButtonTo(flagged: Bool) {
-        if (flagged) {
-            flagButton.image = UIImage(named: "icon-flagged")
-        }
-        else {
-            flagButton.image = UIImage(named: "icon-unflagged")
-        }
-    }
+//    internal func changeFlagButtonTo(flagged: Bool) {
+//        if (flagged) {
+//            flagButton.image = UIImage(named: "icon-flagged")
+    
+//        }
+//        else {
+//            flagButton.image = UIImage(named: "icon-unflagged")
+//        }
+//    }
 
     private func showPepRating() {
         if let ratingView = showNavigationBarSecurityBadge(pEpRating: message?.pEpRating()) {
             if canShowPrivacyStatus() {
-                let tapGestureRecognizer = UITapGestureRecognizer(
-                    target: self,
-                    action: #selector(showHandshakeView(gestureRecognizer:)))
+                let tapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                                  action: #selector(showHandshakeView(gestureRecognizer:)))
                 ratingView.addGestureRecognizer(tapGestureRecognizer)
             }
         }
@@ -155,14 +155,12 @@ class EmailViewController: BaseTableViewController {
     // MARK: - SETUP
 
     private func setupToolbar() {
-        let pEpButton = UIBarButtonItem.getPEPButton(
-            action: #selector(showPepActions(sender:)),
-            target: self)
+        let pEpButton = UIBarButtonItem.getPEPButton(action: #selector(showPepActions(sender:)),
+                                                     target: self)
         pEpButton.tag = BarButtonType.settings.rawValue
-        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-            target: nil,
-            action: nil)
+        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+                                                             target: nil,
+                                                             action: nil)
         flexibleSpace.tag = BarButtonType.space.rawValue
         toolbarItems?.append(contentsOf: [flexibleSpace, pEpButton])
         if !(onlySplitViewMasterIsShown) {
@@ -176,42 +174,42 @@ class EmailViewController: BaseTableViewController {
     }
 
     func configureView() {
-        // Make sure the NavigationBar is shown, even if the previous view has hidden it.
-        navigationController?.setNavigationBarHidden(false, animated: false)
-
-        //ToolBar
-        if splitViewController != nil {
-            if onlySplitViewMasterIsShown {
-                navigationController?.setToolbarHidden(false, animated: false)
-            } else {
-                navigationController?.setToolbarHidden(true, animated: false)
-            }
-        }
-
-        setupDestructiveButtonIcon()
-
-        if messageId <= 0 {
-            previousMessage.isEnabled = false
-        } else {
-            previousMessage.isEnabled = true
-        }
-
-        showPepRating()
-
-        if let internalMessage = message, !internalMessage.imapFlags.seen {
-            internalMessage.markAsSeen()
-        }
-
-        ///TODO: reimplement next-previous
-        //        DispatchQueue.main.async {
-        //
-        //            if let total = self.folderShow?.messageCount(), self.messageId >= total - 1 {
-        //                self.nextMessage.isEnabled = false
-        //            } else {
-        //                self.nextMessage.isEnabled = true
-        //            }
-        //        }
-        updateFlaggedStatus()
+//        // Make sure the NavigationBar is shown, even if the previous view has hidden it.
+////        navigationController?.setNavigationBarHidden(false, animated: false)
+//
+//        //ToolBar
+//        if splitViewController != nil {
+//            if onlySplitViewMasterIsShown {
+//                navigationController?.setToolbarHidden(false, animated: false)
+//            } else {
+//                navigationController?.setToolbarHidden(true, animated: false)
+//            }
+//        }
+//
+//        setupDestructiveButtonIcon()
+//
+//        if messageId <= 0 {
+//            previousMessage.isEnabled = false
+//        } else {
+//            previousMessage.isEnabled = true
+//        }
+//
+//        showPepRating()
+//
+//        if let internalMessage = message, !internalMessage.imapFlags.seen {
+//            internalMessage.markAsSeen()
+//        }
+//
+//        ///TODO: reimplement next-previous
+//        //        DispatchQueue.main.async {
+//        //
+//        //            if let total = self.folderShow?.messageCount(), self.messageId >= total - 1 {
+//        //                self.nextMessage.isEnabled = false
+//        //            } else {
+//        //                self.nextMessage.isEnabled = true
+//        //            }
+//        //        }
+//        updateFlaggedStatus()
     }
 
     private func configureSplitViewBackButton() {
@@ -499,7 +497,7 @@ class EmailViewController: BaseTableViewController {
 
     @IBAction func flagButtonTapped(_ sender: UIBarButtonItem) {
         defer {
-            updateFlaggedStatus()
+//            updateFlaggedStatus()
         }
 
         guard let message = message else {

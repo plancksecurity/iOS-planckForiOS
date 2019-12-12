@@ -12,9 +12,14 @@ import pEpIOSToolbox
 // Represents the a list of mails showing one mail with all details in full screen.
 //BUFF: docs!
 class EmailDetailViewController: EmailDisplayViewController {
+
     static private let xibName = "EmailDetailCollectionViewCell"
     static private let cellId = "EmailDetailViewCell"
     private var emailViewControllers = [EmailViewController]()
+    @IBOutlet weak var nextButton: UIBarButtonItem!
+    @IBOutlet weak var previousButton: UIBarButtonItem!
+    @IBOutlet weak var flagButton: UIBarButtonItem!
+    @IBOutlet weak var destructiveButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
     var viewModel: EmailDetailViewModel? {
         didSet {
@@ -44,6 +49,11 @@ class EmailDetailViewController: EmailDisplayViewController {
         super.viewWillAppear(animated)
         viewModel?.startMonitoring() //???: should UI know about startMonitoring?
         collectionView.reloadData()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        configureView()
     }
 
     // MARK: - Target & Action
@@ -101,10 +111,12 @@ class EmailDetailViewController: EmailDisplayViewController {
     }
 
     private var indexPathOfCurrentlyVisibleCell: IndexPath? {
-        let visibleIndexPaths = collectionView.indexPathsForVisibleItems
-        // visibleIndexPaths.count can be 2 while animating from one to onother cell.
-        // If taking the `first` mail leads to unexpected results, change to use `last` instead.
-        return visibleIndexPaths.first
+        // We are manually computing the currently shown indexPath as
+        // collectionView.indexPathsForVisibleItems oftern contains more then one (i.e. 2) indexpaths.
+        let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        let visibleIndexPath = collectionView.indexPathForItem(at: visiblePoint)
+        return visibleIndexPath
     }
 
     private var thereIsANextMessageToShow: Bool {
@@ -136,6 +148,69 @@ class EmailDetailViewController: EmailDisplayViewController {
                                     at: at,
                                     animated: animated)
     }
+
+    private func configureView() { //BUFF: HERE
+        // Make sure the NavigationBar is shown, even if the previous view has hidden it.
+        navigationController?.setNavigationBarHidden(false, animated: false) //BUFF: rm NC in storyboard?
+        
+        //ToolBar
+        if splitViewController != nil {
+            if onlySplitViewMasterIsShown {
+                navigationController?.setToolbarHidden(false, animated: false)
+            } else {
+                navigationController?.setToolbarHidden(true, animated: false)
+            }
+        }
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        
+        destructiveButton.image = vm.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
+        flagButton.image = vm.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
+        
+        previousButton.isEnabled = thereIsAPreviousMessageToShow //BUFF: to VM
+        nextButton.isEnabled = thereIsANextMessageToShow
+        
+        
+        //        showPepRating()
+        
+        //        if let internalMessage = message, !internalMessage.imapFlags.seen { //BUFF: TODO: mark as seen
+        //            internalMessage.markAsSeen()
+        //        }
+        
+        
+    }
+
+//    private func showPepRating() { //BUFF: get rating from VM
+//        if let ratingView = showNavigationBarSecurityBadge(pEpRating: message?.pEpRating()) {
+//            if canShowPrivacyStatus() {
+//                let tapGestureRecognizer = UITapGestureRecognizer(target: self,
+//                                                                  action: #selector(showHandshakeView(gestureRecognizer:)))
+//                ratingView.addGestureRecognizer(tapGestureRecognizer)
+//            }
+//        }
+//    }
+//
+//    private func canShowPrivacyStatus() -> Bool {
+//        //!!!: EmailView must not know about handshakeCombinations.
+//        if let handshakeCombos = message?.handshakeActionCombinations(),
+//            !handshakeCombos.isEmpty {
+//            return true
+//        }
+//        return false
+//    }
+//
+//    // Sets the destructive bottom bar item accordint to the message (trash/archive)
+//    private func setupDestructiveButtonIcon() { //BUFF: to VM
+//       let shownMessage =  indexPathOfCurrentlyVisibleCell
+//
+//        if msg.parent.defaultDestructiveActionIsArchive {
+//            // Replace the Storyboard set trash icon for providers that use "archive" rather than
+//            // "delete" as default
+//            destructiveButton.image = #imageLiteral(resourceName: "folders-icon-archive")
+//        }
+//    }
 }
 
 // MARK: - UICollectionViewDelegate
@@ -246,4 +321,15 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
 
 
 
+}
+
+extension EmailDetailViewController: UIScrollViewDelegate {
+    // Called after programatically triggered scrollling animation ended.
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        configureView()
+    }
+// Called after scrollling animation  triggered by user ended.
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        configureView()
+    }
 }

@@ -41,8 +41,38 @@ class EmailDetailViewModel: EmailDisplayViewModel {
     }
 
     override func informDelegateToReloadData() {
-           delegate?.reloadData(viewModel: self)
-       }
+        delegate?.reloadData(viewModel: self)
+    }
+
+    //
+    public func destructiveButtonIcon(forMessageAt indexPath: IndexPath?) -> UIImage? {
+        guard
+            let path = indexPath,
+            let msg = message(representedByRowAt: path) else {
+            Log.shared.info("Nothing shown")
+             return nil
+        }
+        if msg.parent.defaultDestructiveActionIsArchive {
+            return #imageLiteral(resourceName: "folders-icon-archive")
+        } else {
+            return #imageLiteral(resourceName: "folders-icon-trash")
+        }
+    }
+
+    public func flagButtonIcon(forMessageAt indexPath: IndexPath?) -> UIImage? {
+        guard
+            let path = indexPath,
+            let msg = message(representedByRowAt: path) else {
+            Log.shared.info("Nothing shown")
+             return nil
+        }
+        if msg.imapFlags.flagged {
+            return #imageLiteral(resourceName: "icon-flagged")
+        } else {
+            return #imageLiteral(resourceName: "icon-unflagged")
+        }
+    }
+    //
 }
 
 // MARK: - QueryResultsIndexPathRowDelegate
