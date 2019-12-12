@@ -28,6 +28,12 @@ class EmailViewController: BaseTableViewController {
     var folderShow: Folder?
     var messageId = 0
 
+    override var collapsedBehavior: CollapsedBehavior {
+        get {
+            return .needed
+        }
+    }
+
     var shouldShowOKButton: Bool = false
 
     private var partnerIdentity: Identity?
