@@ -87,7 +87,8 @@ extension UserInfoViewController: UITextFieldDelegate {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return true
         }
-        guard textField != setupView.fourthTextField else {
+        if textField == setupView.fourthTextField,
+            viewModelOrCrash().isValidUser {
             handleGoToNextView()
             return true
         }
