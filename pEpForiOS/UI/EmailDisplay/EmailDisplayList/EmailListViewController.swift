@@ -1196,23 +1196,7 @@ extension EmailListViewController: SegueHandlerType {
              .segueCompose,
              .segueEditDraft:
             setupComposeViewController(for: segue)
-        case .segueShowEmailSplitView:
-            guard
-                let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? EmailViewController, //BUFF:
-                let indexPath = lastSelectedIndexPath,
-                let message = viewModel?.message(representedByRowAt: indexPath) else {
-                    Log.shared.errorAndCrash("Segue issue")
-                    return
-            }
-            vc.appConfig = appConfig
-            vc.message = message
-            ///This is commented as we "disabled" the feature in the message of
-            ///showing next and previous directly from the emailView, that is needed for that feature
-            //vc.folderShow = model?.getFolderToShow()
-            vc.messageId = indexPath.row //!!!: that looks wrong
-            viewModel?.indexPathShown = indexPath
-        case .segueShowEmailNotSplitView:
+        case .segueShowEmailNotSplitView, .segueShowEmailSplitView:
             guard
                 let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? EmailDetailViewController,
@@ -1222,41 +1206,9 @@ extension EmailListViewController: SegueHandlerType {
             }
             vc.appConfig = appConfig
             vc.viewModel = viewModel?.emailDetialViewModelForNewMessage()
-            vc.firstItemToShow = indexPath //????
-            //BUFF: HERE: what's the best way to tell the message to show?
-
-            // pass QRC? + index?
-
-
-
-
-
-//            vc.message = message
-            ///This is commented as we "disabled" the feature in the message of
-            ///showing next and previous directly from the emailView, that is needed for that feature
-            //vc.folderShow = model?.getFolderToShow()
-//            vc.messageId = indexPath.row //!!!: that looks wrong
-            viewModel?.indexPathShown = indexPath
-
-      //  case .segueShowThreadedEmail:
-        /*    guard let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? ThreadViewController,
-                let indexPath = lastSelectedIndexPath,
-                let folder = folderToShow else {
-                    return
-            }
-            guard let message = model?.message(representedByRowAt: indexPath) else {
-                Log.shared.errorAndCrash("Segue issue")
-                return
-            }
-            vc.appConfig = appConfig
-            let viewModel = ThreadedEmailViewModel(tip:message, folder: folder)
-            viewModel.emailDisplayDelegate = model
-            vc.model = viewModel
-            model?.currentDisplayedMessage = viewModel
-            model?.updateThreadListDelegate = viewModel*/
+            vc.firstItemToShow = indexPath //???? //BUFF:
         case .segueShowFilter:
-            guard let destiny = segue.destination as? FilterTableViewController  else {
+            guard let destiny = segue.destination as? FilterTableViewController else {
                 Log.shared.errorAndCrash("Segue issue")
                 return
             }

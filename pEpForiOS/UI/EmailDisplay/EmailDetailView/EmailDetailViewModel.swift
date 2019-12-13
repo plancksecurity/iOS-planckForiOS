@@ -65,18 +65,43 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         Session.main.commit()
     }
 
+    public func handleDestructiveButtonPress(for indexPath: IndexPath) {
+        guard let message = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No msg")
+            return
+        }
+        Message.imapDelete(messages: [message])
+
+    }
+
     private var pathsForMessagesMarkedForRedecrypt = [IndexPath]()
 
     public func handleEmailShown(forItemAt indexPath: IndexPath) {
+        markForRedecryptionIfNeeded(messageRepresentedby: indexPath)
+        markSeenIfNeeded(messageRepresentedby: indexPath)
+    }
+
+    public func markForRedecryptionIfNeeded(messageRepresentedby indexPath: IndexPath) {
+        // rm previously stored IndexPath for this message.
         pathsForMessagesMarkedForRedecrypt = pathsForMessagesMarkedForRedecrypt.filter { $0 != indexPath }
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
             return
         }
-       /// The user may be about to view an yet undecrypted message.
+        /// The user may be about to view an yet undecrypted message.
         // If so, try again to decrypt it.
         if message.markForRetryDecryptIfUndecryptable() {
             pathsForMessagesMarkedForRedecrypt.append(indexPath)
+        }
+    }
+
+    private func markSeenIfNeeded(messageRepresentedby indexPath: IndexPath) {
+        guard let message = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No msg")
+            return
+        }
+        if !message.imapFlags.seen {
+            message.markAsSeen()
         }
     }
 
@@ -84,8 +109,8 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         guard
             let path = indexPath,
             let msg = message(representedByRowAt: path) else {
-            Log.shared.info("Nothing shown")
-             return nil
+                Log.shared.info("Nothing shown")
+                return nil
         }
         if msg.parent.defaultDestructiveActionIsArchive {
             return #imageLiteral(resourceName: "folders-icon-archive")
@@ -98,8 +123,8 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         guard
             let path = indexPath,
             let msg = message(representedByRowAt: path) else {
-            Log.shared.info("Nothing shown")
-             return nil
+                Log.shared.info("Nothing shown")
+                return nil
         }
         if msg.imapFlags.flagged {
             return #imageLiteral(resourceName: "icon-flagged")

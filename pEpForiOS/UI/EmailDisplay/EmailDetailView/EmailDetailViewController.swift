@@ -22,8 +22,8 @@ class EmailDetailViewController: EmailDisplayViewController {
     /// IndexPath to show on load
     var firstItemToShow: IndexPath?
     lazy private var documentInteractionController = UIDocumentInteractionController()
-    @IBOutlet weak var nextButton: UIBarButtonItem!
-    @IBOutlet weak var previousButton: UIBarButtonItem!
+    @IBOutlet weak var nextButton: UIBarButtonItem?
+    @IBOutlet weak var previousButton: UIBarButtonItem?
     @IBOutlet weak var flagButton: UIBarButtonItem!
     @IBOutlet weak var destructiveButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -78,11 +78,19 @@ class EmailDetailViewController: EmailDisplayViewController {
     }
 
     @IBAction func moveToFolderButtonPressed(_ sender: UIBarButtonItem) {
-        fatalError()
+         performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
     }
 
     @IBAction func destructiveButtonPressed(_ sender: UIBarButtonItem) {
-        fatalError()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        guard let indexPath = indexPathOfCurrentlyVisibleCell else {
+            Log.shared.errorAndCrash("Nothing shown?")
+            return
+        }
+        vm.handleDestructiveButtonPress(for: indexPath)
     }
 
     @IBAction func replyButtonPressed(_ sender: UIBarButtonItem) {
@@ -220,17 +228,10 @@ class EmailDetailViewController: EmailDisplayViewController {
         destructiveButton.image = vm.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
         flagButton.image = vm.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
         
-        previousButton.isEnabled = thereIsAPreviousMessageToShow //BUFF: to VM
-        nextButton.isEnabled = thereIsANextMessageToShow
-        
+        previousButton?.isEnabled = thereIsAPreviousMessageToShow //BUFF: to VM
+        nextButton?.isEnabled = thereIsANextMessageToShow
         
         showPepRating()
-        
-        //        if let internalMessage = message, !internalMessage.imapFlags.seen { //BUFF: TODO: mark as seen
-        //            internalMessage.markAsSeen()
-        //        }
-        
-        
     }
 
     private func showPepRating() {
@@ -239,7 +240,7 @@ class EmailDetailViewController: EmailDisplayViewController {
             return
         }
         guard let indexPath = indexPathOfCurrentlyVisibleCell else {
-            Log.shared.errorAndCrash("Nothing shown?")
+            // List is empty. That is ok. The user might have deleted the last shown message.
             return
         }
         guard let ratingView = showNavigationBarSecurityBadge(pEpRating: vm.pEpRating(forItemAt: indexPath)) else {
@@ -280,8 +281,6 @@ class EmailDetailViewController: EmailDisplayViewController {
 
 extension EmailDetailViewController {
 
-    // MARK: - SETUP
-
     private func setupToolbar() {
         let pEpButton = UIBarButtonItem.getPEPButton(action: #selector(showPepActions(sender:)),
                                                      target: self)
@@ -295,6 +294,10 @@ extension EmailDetailViewController {
             navigationItem.rightBarButtonItems = toolbarItems
         }
 
+    }
+
+    private func releaseUnusedSubViewControllers() {
+        emailViewControllers = emailViewControllers.filter { $0.view.superview != nil }
     }
 
     @objc
@@ -393,16 +396,24 @@ extension EmailDetailViewController {
 // MARK: - UICollectionViewDelegate
 
 extension EmailDetailViewController: UICollectionViewDelegate {
-    internal func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    internal func collectionView(_ collectionView: UICollectionView,
+                                 willDisplay cell: UICollectionViewCell,
+                                 forItemAt indexPath: IndexPath) {
         guard let indexToScrollTo = firstItemToShow else {
             // no indexpath given, do nothing
             return
         }
         collectionView.scrollToItem(at: indexToScrollTo, at: .left, animated: false)
+        firstItemToShow = nil
+        guard
+            let vm = viewModel,
+            let currentlyVisibledIdxPth = indexPathOfCurrentlyVisibleCell else {
+                Log.shared.errorAndCrash("Invalid state")
+                return
+        }
+        vm.handleEmailShown(forItemAt: currentlyVisibledIdxPth)
         configureView()
-        indexToScrollTo = nil
     }
-}
 }
 
 // MARK: - UICollectionViewDataSource
@@ -415,7 +426,6 @@ extension EmailDetailViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        //BUFF: move emilVC setup
         guard
             let cell =
             collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
@@ -427,11 +437,13 @@ extension EmailDetailViewController: UICollectionViewDataSource {
                 return collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
                                                           for: indexPath)
         }
+        releaseUnusedSubViewControllers()
         emailViewController.appConfig = appConfig
         //BUFF: HERE: set message to show
         emailViewController.message = vm.message(representedByRowAt: indexPath)
 
         emailViewControllers.append(emailViewController)
+
         cell.containerView.addSubview(emailViewController.view)
         emailViewController.view.fullSizeInSuperView()
 
@@ -464,6 +476,7 @@ extension EmailDetailViewController: UIScrollViewDelegate {
         vm.handleEmailShown(forItemAt: indexPath)
         configureView()
     }
+
     // Called after scrollling animation  triggered by user ended.
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         guard
@@ -674,6 +687,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
             updateTasksToRun.forEach { $0() }
         }
         collectionView?.performBatchUpdates(performChangesBlock)
+        configureView()
     }
 
     func reloadData(viewModel: EmailDisplayViewModel) {

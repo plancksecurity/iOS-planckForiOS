@@ -46,8 +46,6 @@ class EmailDisplayViewModel {
 //    let contactImageTool = IdentityImageTool()
     var messageQueryResults: MessageQueryResults
 
-    var indexPathShown: IndexPath?
-
 //    var lastSearchTerm = ""
 //    var updatesEnabled = true
 
