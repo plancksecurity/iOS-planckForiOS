@@ -215,8 +215,8 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReply" id="Bs0-pZ-8nY"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueEditDraft" id="VVX-sZ-2dU"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="cRe-YG-393"/>
-                        <segue destination="lPr-gi-BrG" kind="showDetail" identifier="segueShowEmailSplitView" id="H4E-Hc-ApN"/>
                         <segue destination="nc4-kR-K9D" kind="show" identifier="segueShowFilter" id="t4t-3T-ovM"/>
+                        <segue destination="tTN-8A-7tU" kind="showDetail" identifier="segueShowEmailSplitView" id="HHz-at-Ehg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m6c-dF-C80" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -450,19 +450,19 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnw-Tp-mga">
-                                            <rect key="frame" x="20" y="11" width="331" height="30"/>
+                                            <rect key="frame" x="20" y="11" width="331" height="29"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: Recipients" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mfx-AS-hpP">
-                                            <rect key="frame" x="20" y="45" width="331" height="18"/>
+                                            <rect key="frame" x="20" y="44" width="331" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="separator_pixel_grey" translatesAutoresizingMaskIntoConstraints="NO" id="Gbh-o3-H58">
-                                            <rect key="frame" x="10" y="71" width="355" height="1"/>
+                                            <rect key="frame" x="10" y="70" width="355" height="2"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
@@ -1062,8 +1062,9 @@
         <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="g1q-wK-tff"/>
+        <segue reference="cRe-YG-393"/>
         <segue reference="Gcx-48-ZRF"/>
-        <segue reference="0Yg-lj-kVR"/>
+        <segue reference="yAp-Cu-TCw"/>
+        <segue reference="HHz-at-Ehg"/>
     </inferredMetricsTieBreakers>
 </document>
