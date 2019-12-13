@@ -19,6 +19,8 @@ class EmailDetailViewController: EmailDisplayViewController {
     private var emailViewControllers = [EmailViewController]() //BUFF:
     /// Stuff that must be done once only in viewWillAppear
     private var doOnce: (()-> Void)?
+    /// IndexPath to show on load
+    var firstItemToShow: IndexPath?
     lazy private var documentInteractionController = UIDocumentInteractionController()
     @IBOutlet weak var nextButton: UIBarButtonItem!
     @IBOutlet weak var previousButton: UIBarButtonItem!
@@ -59,11 +61,6 @@ class EmailDetailViewController: EmailDisplayViewController {
         super.viewWillAppear(animated)
         doOnce?()
         doOnce = nil
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        configureView()
     }
 
     // MARK: - Target & Action
@@ -396,8 +393,16 @@ extension EmailDetailViewController {
 // MARK: - UICollectionViewDelegate
 
 extension EmailDetailViewController: UICollectionViewDelegate {
-    //
-
+    internal func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let indexToScrollTo = firstItemToShow else {
+            // no indexpath given, do nothing
+            return
+        }
+        collectionView.scrollToItem(at: indexToScrollTo, at: .left, animated: false)
+        configureView()
+        indexToScrollTo = nil
+    }
+}
 }
 
 // MARK: - UICollectionViewDataSource

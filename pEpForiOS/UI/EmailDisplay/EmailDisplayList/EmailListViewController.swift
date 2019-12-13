@@ -1216,13 +1216,13 @@ extension EmailListViewController: SegueHandlerType {
             guard
                 let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? EmailDetailViewController,
-                let indexPath = lastSelectedIndexPath,
-                let message = viewModel?.message(representedByRowAt: indexPath) else {
+                let indexPath = lastSelectedIndexPath else {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
             vc.appConfig = appConfig
-            vc.viewModel = viewModel?.emailDetialViewModelForNewMessage(at: indexPath)
+            vc.viewModel = viewModel?.emailDetialViewModelForNewMessage()
+            vc.firstItemToShow = indexPath //????
             //BUFF: HERE: what's the best way to tell the message to show?
 
             // pass QRC? + index?

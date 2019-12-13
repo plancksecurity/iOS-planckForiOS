@@ -675,7 +675,7 @@ extension EmailDisplayViewModel {
         return composeVM
     }
 
-    func emailDetialViewModelForNewMessage(at indexPath: IndexPath) -> EmailDetailViewModel {
+    func emailDetialViewModelForNewMessage() -> EmailDetailViewModel {
         let detailQueryResults = messageQueryResults.clone()
         let createe = EmailDetailViewModel(messageQueryResults: detailQueryResults,
                                            folderToShow: folderToShow)
