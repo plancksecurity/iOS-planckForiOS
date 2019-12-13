@@ -107,7 +107,11 @@ class LoginViewModel {
             verifiableAccount.verifiableAccountDelegate = self
             verifiableAccount.address = accountName
             verifiableAccount.userName = userName
-            verifiableAccount.loginName = loginName
+
+            //LoginName values are set here, since VerifiableAccount will validate them
+            verifiableAccount.loginName = loginName ?? accountName
+            verifiableAccount.loginNameIMAP = accountName
+            verifiableAccount.loginNameSMTP = accountName
 
             // Note: auth method is never taken from LAS. We either have OAuth2,
             // as determined previously, or we will defer to pantomime to find out the best method.
