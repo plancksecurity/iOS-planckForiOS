@@ -19,6 +19,12 @@ class SettingDefaultAccountTableViewController: BaseTableViewController {
         return Account.all()
     }
 
+    override var collapsedBehavior: CollapsedBehavior {
+        get {
+            return .needed
+        }
+    }
+
     // MARK: - UITableviewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -11,6 +11,12 @@ import pEpIOSToolbox
 
 class TrustedServerSettingsViewController: BaseTableViewController {
     var viewModel = TrustedServerSettingsViewModel()
+
+    override var collapsedBehavior: CollapsedBehavior {
+        get {
+            return .needed
+        }
+    }
 }
 
 // MARK: -  UITableViewDataSource

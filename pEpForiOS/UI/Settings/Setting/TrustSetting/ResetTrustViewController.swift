@@ -17,6 +17,12 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
 
     private let searchController = UISearchController(searchResultsController: nil)
 
+    override var collapsedBehavior: CollapsedBehavior {
+        get {
+            return .needed
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()

@@ -14,6 +14,12 @@ class SetOwnKeyViewController: UIViewController {
     @IBOutlet weak var errorTextField: UILabel!
     @IBOutlet weak var setOwnKeyButton: UIButton!
 
+    override var collapsedBehavior: CollapsedBehavior {
+        get {
+            return .needed
+        }
+    }
+
     // MARK: - View life cycle etc.
 
     override func viewDidLoad() {

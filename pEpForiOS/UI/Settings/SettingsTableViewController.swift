@@ -198,8 +198,8 @@ extension SettingsTableViewController: SegueHandlerType {
         switch segueIdentifier(for: segue) {
         case .segueEditAccount:
             guard
-                let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? AccountSettingsTableViewController
+                //let nav = segue.destination as? UINavigationController,
+                let destination = segue.destination as? AccountSettingsTableViewController
                 else {
                     return
             }

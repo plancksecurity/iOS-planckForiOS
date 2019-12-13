@@ -37,6 +37,12 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     var oauth2ReauthIndexPath: IndexPath?
     var viewModel: AccountSettingsViewModel? = nil
 
+    override var collapsedBehavior: CollapsedBehavior {
+        get {
+            return .needed
+        }
+    }
+
     let oauthViewModel = OAuth2AuthViewModel()
 
     private var resetIdentityIndexPath: IndexPath?

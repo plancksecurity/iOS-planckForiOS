@@ -16,6 +16,12 @@ class ExtraKeysSettingViewController: BaseViewController {
 
     private var viewModel: ExtraKeysSettingViewModel?
 
+    override var collapsedBehavior: CollapsedBehavior {
+        get {
+            return .needed
+        }
+    }
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
