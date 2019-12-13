@@ -133,6 +133,7 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         return true
     }
 
+
     //
 }
 
@@ -146,7 +147,11 @@ extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
 
     func didUpdateRow(indexPath: IndexPath) {
         if pathsForMessagesMarkedForRedecrypt.contains(indexPath) {
-            delegate?.isNotUndecryptableAnyMore(indexPath: indexPath)
+            if let message = message(representedByRowAt: indexPath),
+                !message.pEpRating().isUnDecryptable() {
+                // Previously undecryptable message has successfully been decrypted.
+                delegate?.isNotUndecryptableAnyMore(indexPath: indexPath)
+            }
             pathsForMessagesMarkedForRedecrypt = pathsForMessagesMarkedForRedecrypt.filter { $0 != indexPath }
         }
         delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: [indexPath])
