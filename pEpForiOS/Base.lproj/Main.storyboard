@@ -246,7 +246,7 @@
             <objects>
                 <viewController storyboardIdentifier="EmailDetailViewController" id="fRo-D2-Fjz" customClass="EmailDetailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JE8-0O-ekz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="HP3-Sj-MgZ">
@@ -281,7 +281,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Bie-ml-VZ0"/>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems>
                         <barButtonItem image="icon-unflagged" id="eWC-Rq-MJm" userLabel="Flag">
                             <connections>
@@ -1062,9 +1062,9 @@
         <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cRe-YG-393"/>
+        <segue reference="g1q-wK-tff"/>
         <segue reference="Gcx-48-ZRF"/>
-        <segue reference="yAp-Cu-TCw"/>
+        <segue reference="0Yg-lj-kVR"/>
         <segue reference="HHz-at-Ehg"/>
     </inferredMetricsTieBreakers>
 </document>
