@@ -876,16 +876,16 @@ extension EmailListViewController: EmailListViewModelDelegate {
         tableView.endUpdates()
     }
 
-    func toolbarIs(enabled: Bool) {
+    func setToolbarItemsEnabledState(to newValue: Bool) {
         if viewModel?.shouldShowToolbarEditButtons() ?? true {
             // Never enable those for outbox
-            flagToolbarButton?.isEnabled = enabled
-            unflagToolbarButton?.isEnabled = enabled
-            readToolbarButton?.isEnabled = enabled
-            unreadToolbarButton?.isEnabled = enabled
-            moveToolbarButton?.isEnabled = enabled
+            flagToolbarButton?.isEnabled = newValue
+            unflagToolbarButton?.isEnabled = newValue
+            readToolbarButton?.isEnabled = newValue
+            unreadToolbarButton?.isEnabled = newValue
+            moveToolbarButton?.isEnabled = newValue
         }
-        deleteToolbarButton?.isEnabled = enabled
+        deleteToolbarButton?.isEnabled = newValue
     }
 
     func showUnflagButton(enabled: Bool) {
@@ -918,6 +918,12 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
+    func select(itemAt indexPath: IndexPath) {
+        tableView.selectRow(at: indexPath,
+                            animated: false,
+                            scrollPosition: .none)
+    }
+
     func emailListViewModel(viewModel: EmailDisplayViewModel, didInsertDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = nil
         tableView.insertRows(at: indexPaths, with: .automatic)
@@ -946,29 +952,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.moveRow(at: atIndexPath, to: toIndexPath)
         moveSelectionIfNeeded(fromIndexPath: atIndexPath, toIndexPath: toIndexPath)
-    }
-
-    func emailListViewModel(viewModel: EmailDisplayViewModel,
-                            didChangeSeenStateForDataAt indexPaths: [IndexPath]) {
-        guard let vm = self.viewModel else {
-            Log.shared.errorAndCrash("Invalid state")
-            return
-        }
-
-        let unreadFilterActive = vm.unreadFilterEnabled()
-
-        // If unread filter is active, /seen state updates require special handling ...
-
-        if !onlySplitViewMasterIsShown && unreadFilterActive {
-            // We do not update the seen status when both spitview views are shown and the list is
-            // currently filtered by unread.
-            return
-        } else if onlySplitViewMasterIsShown && unreadFilterActive {
-            vm.informDelegateToReloadData()
-        } else {
-            //  ... otherwize we forward to update
-            emailListViewModel(viewModel: viewModel, didUpdateDataAt: indexPaths)
-        }
     }
 
     func updateView() {
@@ -1205,7 +1188,7 @@ extension EmailListViewController: SegueHandlerType {
                     return
             }
             vc.appConfig = appConfig
-            vc.viewModel = viewModel?.emailDetialViewModelForNewMessage()
+            vc.viewModel = viewModel?.emailDetialViewModel()
             vc.firstItemToShow = indexPath //???? //BUFF:
         case .segueShowFilter:
             guard let destiny = segue.destination as? FilterTableViewController else {
@@ -1316,9 +1299,9 @@ extension EmailListViewController: SegueHandlerType {
 // MARK: - LoginViewControllerDelegate
 
 extension EmailListViewController: LoginViewControllerDelegate {
+    
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController) {
         // Setup model after initial account setup
         setup()
     }
 }
-

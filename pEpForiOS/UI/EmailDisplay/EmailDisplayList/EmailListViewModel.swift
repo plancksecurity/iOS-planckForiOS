@@ -12,23 +12,13 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate, TableViewUpdate {
-    //BUFF: All moved to EmailDisplayViewModelDelegate. Will be filled with list specific stuff soon. Stay tuned.
+    //BUFF: All moved to EmailDisplayViewModelDelegate. Will be filled with list specific stuff soon. Stay tuned!
 
-
-    func emailListViewModel(viewModel: EmailDisplayViewModel, //BUFF:
-        didChangeSeenStateForDataAt indexPaths: [IndexPath])
-    func checkIfSplitNeedsUpdate(indexpath: [IndexPath]) //BUFF: obsolete?
-    /*
-     //     //!!!: Some issues here: @Xavier
-     //     - bad naming.
-     //     - what is viewModel as the param
-     //     - let's discuss & change!
-     //     */
-
-
-    func toolbarIs(enabled: Bool)
+    func setToolbarItemsEnabledState(to newValue: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
+
+    func select(itemAt indexPath: IndexPath)
 }
 
 // MARK: - EmailListViewModel
@@ -165,16 +155,6 @@ class EmailListViewModel: EmailDisplayViewModel {
 //
 //    private var unreadMessages = false
 //    private var flaggedMessages = false
-//
-//    public func updatedItems(indexPaths: [IndexPath]) {
-//        checkUnreadMessages(indexPaths: indexPaths)
-//        checkFlaggedMessages(indexPaths: indexPaths)
-//        if indexPaths.count > 0 {
-//            emailListViewModelDelegate?.toolbarIs(enabled: true)
-//        } else {
-//            emailListViewModelDelegate?.toolbarIs(enabled: false)
-//        }
-//    }
 //
 //    private func checkFlaggedMessages(indexPaths: [IndexPath]) {
 //        let flagged = indexPaths.filter { (ip) -> Bool in
@@ -387,9 +367,9 @@ class EmailListViewModel: EmailDisplayViewModel {
            checkUnreadMessages(indexPaths: indexPaths)
            checkFlaggedMessages(indexPaths: indexPaths)
            if indexPaths.count > 0 {
-               delegate?.toolbarIs(enabled: true)
+               delegate?.setToolbarItemsEnabledState(to: true)
            } else {
-               delegate?.toolbarIs(enabled: false)
+               delegate?.setToolbarItemsEnabledState(to: false)
            }
        }
 
@@ -658,7 +638,7 @@ extension EmailListViewModel {
 
 // MARK: - ComposeViewModel
 
-extension EmailDisplayViewModel {
+extension EmailListViewModel {
 
     func composeViewModelForNewMessage() -> ComposeViewModel {
         // Determine the sender.
@@ -674,15 +654,6 @@ extension EmailDisplayViewModel {
                                          prefilledFrom: someUser)
         return composeVM
     }
-
-    func emailDetialViewModelForNewMessage() -> EmailDetailViewModel {
-        let detailQueryResults = messageQueryResults.clone()
-        let createe = EmailDetailViewModel(messageQueryResults: detailQueryResults,
-                                           folderToShow: folderToShow)
-        detailQueryResults.rowDelegate = createe
-
-        return createe
-    }
 }
 
 // MARK: - FilterViewDelegate
@@ -692,20 +663,20 @@ extension EmailListViewModel: FilterViewDelegate {
         setNewFilterAndReload(filter: newFilter)
     }
 }
- //
 
 // MARK: - EmailDetailViewModel
 
 extension EmailListViewModel {
 
-    //BUFF: HERE
-//    func wmailDetailViewModel(withOriginalMessageAt indexPath: IndexPath) -> EmailDetailViewModel {
-//        let message = messageQueryResults[indexPath.row]
-//        let composeVM = ComposeViewModel(resultDelegate: self,
-//                                         composeMode: composeMode,
-//                                         originalMessage: message)
-//        return composeVM
-//    }
+    func emailDetialViewModel() -> EmailDetailViewModel {
+        let detailQueryResults = messageQueryResults.clone()
+        let createe = EmailDetailViewModel(messageQueryResults: detailQueryResults,
+                                           folderToShow: folderToShow)
+        createe.selectionChangeDelegate = self
+        detailQueryResults.rowDelegate = createe
+
+        return createe
+    }
 }
 
 // MARK: - QueryResultsIndexPathRowDelegate
@@ -722,7 +693,6 @@ extension EmailListViewModel: QueryResultsIndexPathRowDelegate {
          if updatesEnabled {
              delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: [indexPath])
          }
-         delegate?.checkIfSplitNeedsUpdate(indexpath: [indexPath]) //BUFF: hirntot? (read as: obsolete?)
      }
 
      func didDeleteRow(indexPath: IndexPath) {
@@ -758,5 +728,15 @@ extension EmailListViewModel {
         }
         let replyAllChecker = ReplyAllPossibleChecker(messageToReplyTo: message)
         return replyAllChecker.isReplyAllPossible()
+    }
+}
+
+// MARK: - EmailDetailViewModelSelectionChangeDelegate
+
+extension EmailListViewModel: EmailDetailViewModelSelectionChangeDelegate {
+
+    func emailDetailViewModel(emailDetailViewModel: EmailDetailViewModel,
+                              didSelectItemAt indexPath: IndexPath) {
+        delegate?.select(itemAt: indexPath)
     }
 }

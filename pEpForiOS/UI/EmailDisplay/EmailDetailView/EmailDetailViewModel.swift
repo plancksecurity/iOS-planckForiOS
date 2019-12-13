@@ -12,7 +12,7 @@ import PEPObjCAdapterFramework
 protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
     //BUFF: All moved to EmailDisplayViewModelDelegate. Will be filled with list specific stuff soon. Stay tuned.
 
-    /// `emailListViewModel(viewModel:idUpdateDataAt:)` should not reload the cell but update the
+    /// `emailListViewModel(viewModel:didUpdateDataAt:)` should not reload the cell but update the
     /// flags ad such.
     /// There is only one case where the cell has to be reloaded: A mail is shown as undecryptable
     /// and has been decrypted afterwards.
@@ -21,14 +21,16 @@ protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
 }
 
 /// Reports back currently shown email changes
-protocol EmailDetailViewModelDisplayMessageDelegate: EmailDisplayViewModelDelegate {
-    //BUFF: All moved to EmailDisplayViewModelDelegate. Will be filled with list specific stuff soon. Stay tuned.
+protocol EmailDetailViewModelSelectionChangeDelegate: class {
+    func emailDetailViewModel(emailDetailViewModel: EmailDetailViewModel,
+                              didSelectItemAt indexPath: IndexPath)
 }
 
 // 
 class EmailDetailViewModel: EmailDisplayViewModel {
     // Property coll delegate
     weak var delegate: EmailDetailViewModelDelegate?
+    weak var selectionChangeDelegate: EmailDetailViewModelSelectionChangeDelegate?
 
     init(messageQueryResults: MessageQueryResults? = nil,
          delegate: EmailDisplayViewModelDelegate? = nil,
@@ -79,6 +81,8 @@ class EmailDetailViewModel: EmailDisplayViewModel {
     public func handleEmailShown(forItemAt indexPath: IndexPath) {
         markForRedecryptionIfNeeded(messageRepresentedby: indexPath)
         markSeenIfNeeded(messageRepresentedby: indexPath)
+        selectionChangeDelegate?.emailDetailViewModel(emailDetailViewModel: self,
+                                                      didSelectItemAt: indexPath)
     }
 
     public func markForRedecryptionIfNeeded(messageRepresentedby indexPath: IndexPath) {
