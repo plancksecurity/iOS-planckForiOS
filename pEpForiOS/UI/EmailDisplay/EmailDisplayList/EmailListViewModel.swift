@@ -84,7 +84,7 @@ class EmailListViewModel: EmailDisplayViewModel {
                   delegate: EmailDisplayViewModelDelegate? = nil,
                   folderToShow: DisplayableFolderProtocol) {
         super.init(messageQueryResults: messageQueryResults, folderToShow: folderToShow)
-        messageQueryResults?.rowDelegate = self
+        self.messageQueryResults.rowDelegate = self
     }
     //
     //    func startMonitoring() {
