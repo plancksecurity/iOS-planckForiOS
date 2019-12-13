@@ -79,8 +79,44 @@ class EmailDetailViewController: EmailDisplayViewController {
     }
 
     @IBAction func replyButtonPressed(_ sender: UIBarButtonItem) {
-        //        performSegue(withIdentifier: .segueReply, sender: self)
-        fatalError()
+        // The ReplyAllPossibleChecker() should be pushed into the view model
+        // as soon as there is one.
+        guard
+            let vm = viewModel,
+            let indexPath = indexPathOfCurrentlyVisibleCell,
+            let replyAllChecker = vm.replyAllPossibleChecker(forItemAt: indexPath)
+            else {
+                Log.shared.errorAndCrash("Invalid state")
+                return
+        }
+
+        let alert = ReplyAlertCreator(replyAllChecker: replyAllChecker)
+            .withReplyOption { [weak self] action in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost MySelf")
+                    return
+                }
+                me.performSegue(withIdentifier: .segueReplyFrom , sender: self)
+            }.withReplyAllOption() { [weak self] action in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost MySelf")
+                    return
+                }
+                me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
+            }.withFordwardOption { [weak self] action in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost MySelf")
+                    return
+                }
+                me.performSegue(withIdentifier: .segueForward , sender: self)
+            }.withCancelOption()
+            .build()
+
+        if let popoverPresentationController = alert.popoverPresentationController {
+            popoverPresentationController.barButtonItem = sender
+        }
+
+        present(alert, animated: true, completion: nil)
     }
 
     @IBAction func previousButtonPressed(_ sender: UIBarButtonItem) {

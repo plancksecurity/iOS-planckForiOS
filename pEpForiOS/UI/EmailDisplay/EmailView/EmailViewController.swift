@@ -449,35 +449,35 @@ class EmailViewController: BaseTableViewController {
     }
 
     @IBAction func pressReply(_ sender: UIBarButtonItem) {
-        // The ReplyAllPossibleChecker() should be pushed into the view model
-        // as soon as there is one.
-        let alert = ReplyAlertCreator(replyAllChecker: ReplyAllPossibleChecker())
-            .withReplyOption { [weak self] action in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
-                    return
-                }
-                me.performSegue(withIdentifier: .segueReplyFrom , sender: self)
-            }.withReplyAllOption(forMessage: message) { [weak self] action in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
-                    return
-                }
-                me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
-            }.withFordwardOption { [weak self] action in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
-                    return
-                }
-                me.performSegue(withIdentifier: .segueForward , sender: self)
-            }.withCancelOption()
-            .build()
-
-        if let popoverPresentationController = alert.popoverPresentationController {
-            popoverPresentationController.barButtonItem = sender
-        }
-
-        present(alert, animated: true, completion: nil)
+//        // The ReplyAllPossibleChecker() should be pushed into the view model
+//        // as soon as there is one.
+//        let alert = ReplyAlertCreator(replyAllChecker: ReplyAllPossibleChecker())
+//            .withReplyOption { [weak self] action in
+//                guard let me = self else {
+//                    Log.shared.errorAndCrash("Lost MySelf")
+//                    return
+//                }
+//                me.performSegue(withIdentifier: .segueReplyFrom , sender: self)
+//            }.withReplyAllOption(forMessage: message) { [weak self] action in
+//                guard let me = self else {
+//                    Log.shared.errorAndCrash("Lost MySelf")
+//                    return
+//                }
+//                me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
+//            }.withFordwardOption { [weak self] action in
+//                guard let me = self else {
+//                    Log.shared.errorAndCrash("Lost MySelf")
+//                    return
+//                }
+//                me.performSegue(withIdentifier: .segueForward , sender: self)
+//            }.withCancelOption()
+//            .build()
+//
+//        if let popoverPresentationController = alert.popoverPresentationController {
+//            popoverPresentationController.barButtonItem = sender
+//        }
+//
+//        present(alert, animated: true, completion: nil)
     }
 
     @IBAction func flagButtonTapped(_ sender: UIBarButtonItem) {

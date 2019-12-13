@@ -162,6 +162,16 @@ class EmailDisplayViewModel {
     func delete(messages: [Message]) { //BUFF: n pr
         Message.imapDelete(messages: messages)
     }
+
+    //
+    public func replyAllPossibleChecker(forItemAt indexPath: IndexPath) -> ReplyAllPossibleCheckerProtocol? {
+        guard let message = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No msg")
+            return nil
+        }
+        return ReplyAllPossibleChecker(messageToReplyTo: message)
+    }
+    //
 }
 
 
@@ -204,18 +214,6 @@ extension EmailDisplayViewModel {
 
     private func folderIsDraftsOrOutbox(_ parentFolder: Folder?) -> Bool {
         return folderIsDraft(parentFolder) || folderIsOutbox(parentFolder)
-    }
-}
-
-// MARK: - ReplyAllPossibleCheckerProtocol
-
-extension EmailDisplayViewModel: ReplyAllPossibleCheckerProtocol {
-    func isReplyAllPossible(forMessage: Message?) -> Bool {
-        return ReplyAllPossibleChecker().isReplyAllPossible(forMessage: forMessage)
-    }
-
-    func isReplyAllPossible(forRowAt indexPath: IndexPath) -> Bool {
-        return isReplyAllPossible(forMessage: message(representedByRowAt: indexPath))
     }
 }
 

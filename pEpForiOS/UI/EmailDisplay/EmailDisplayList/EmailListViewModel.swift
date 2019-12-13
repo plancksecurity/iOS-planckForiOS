@@ -749,3 +749,14 @@ extension EmailListViewModel: QueryResultsIndexPathRowDelegate {
          }
      }
 }
+
+extension EmailListViewModel {
+    func isReplyAllPossible(forRowAt indexPath: IndexPath) -> Bool {
+        guard let message = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No Message")
+            return false
+        }
+        let replyAllChecker = ReplyAllPossibleChecker(messageToReplyTo: message)
+        return replyAllChecker.isReplyAllPossible()
+    }
+}

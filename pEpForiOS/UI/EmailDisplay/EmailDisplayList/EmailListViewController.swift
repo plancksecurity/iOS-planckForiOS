@@ -47,7 +47,7 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
     var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
     var buttonStyle: ButtonStyle = .backgroundColor
 
-    private var swipeDelete : SwipeAction? = nil
+    private var swipeDelete: SwipeAction? = nil
 
     private let refreshController = UIRefreshControl()
 
@@ -1083,7 +1083,11 @@ extension EmailListViewController {
     }
 
     func createReplyAllAction(forRowAt indexPath: IndexPath) ->  UIAlertAction? {
-        if (viewModel?.isReplyAllPossible(forRowAt: indexPath) ?? false) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return nil
+        }
+        if (vm.isReplyAllPossible(forRowAt: indexPath)) {
             let title = NSLocalizedString("Reply All", comment: "EmailList action title")
             return UIAlertAction(title: title, style: .default) {
                 [weak self] action in
