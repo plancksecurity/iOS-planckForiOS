@@ -23,6 +23,7 @@ class NothingSelectedViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         updateView()
+        navigationController?.isNavigationBarHidden = true
     }
 
     /// Call this if you changed the message.
