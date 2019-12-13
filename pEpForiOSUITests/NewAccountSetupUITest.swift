@@ -311,7 +311,7 @@ class NewAccountSetupUITest: XCTestCase {
             tf.typeText(account.password)
         }
 
-        theApp.buttons["Sign In"].tap()
+        theApp.buttons["Log In"].tap()
     }
 
     func switchToManualConfig() {

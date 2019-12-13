@@ -73,7 +73,9 @@
         <!--AccountCreation-->
         <scene sceneID="rdR-gU-SsC">
             <objects>
-                <viewControllerPlaceholder storyboardName="AccountCreation" id="uKb-Ku-Cng" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="AccountCreation" id="uKb-Ku-Cng" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="HcY-vc-Krh"/>
+                </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7bq-Lz-J44" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="10718" y="-1165"/>
