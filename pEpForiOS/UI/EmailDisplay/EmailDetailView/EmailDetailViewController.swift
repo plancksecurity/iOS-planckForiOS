@@ -17,6 +17,8 @@ class EmailDetailViewController: EmailDisplayViewController {
     static private let cellId = "EmailDetailViewCell"
     private var collectionViewUpdateTasks: [()->Void] = []
     private var emailViewControllers = [EmailViewController]() //BUFF:
+    /// Stuff that must be done once only in viewWillAppear
+    private var doOnce: (()-> Void)?
     lazy private var documentInteractionController = UIDocumentInteractionController()
     @IBOutlet weak var nextButton: UIBarButtonItem!
     @IBOutlet weak var previousButton: UIBarButtonItem!
@@ -33,6 +35,14 @@ class EmailDetailViewController: EmailDisplayViewController {
         super.viewDidLoad()
         setupCollectionView()
         setupToolbar()
+        doOnce = { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.viewModel?.startMonitoring() //???: should UI know about startMonitoring?
+            me.collectionView.reloadData()
+        }
     }
 
     //BUFF: move
@@ -47,8 +57,8 @@ class EmailDetailViewController: EmailDisplayViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel?.startMonitoring() //???: should UI know about startMonitoring?
-        collectionView.reloadData()
+        doOnce?()
+        doOnce = nil
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -516,8 +526,6 @@ extension EmailDetailViewController: SegueHandlerType {
             destination.appConfig = appConfig
             destination.viewModel = viewModel?.moveToAccountViewModel(forMessageRepresentedByItemAt: indexPath)
         case .segueHandshake, .segueHandshakeCollapsed:
-            fatalError()
-
             guard let nv = segue.destination as? UINavigationController,
                 let vc = nv.topViewController as? HandshakeViewController else {
                     Log.shared.errorAndCrash("No DVC?")
