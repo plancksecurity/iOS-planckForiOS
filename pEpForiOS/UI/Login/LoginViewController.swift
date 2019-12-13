@@ -423,11 +423,11 @@ extension LoginViewController {
 
         if let oauthError = error as? OAuth2AuthViewModelError,
             oauthError == .noConfiguration {
-            title = NSLocalizedString("Validation Error",
-                                      comment: "Fail to log in, email does not match account type")
+            title = NSLocalizedString("Invalid Address",
+                                      comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
             switch accountType {
             case .gmail:
-                message = NSLocalizedString("Invalid Google email address",
+                message = NSLocalizedString("Please enter a valid Gmail address.",
                                             comment: "Fail to log in, email does not match account type")
             default:
                 Log.shared.errorAndCrash("Login should not do ouath with other email address")
