@@ -95,12 +95,11 @@ final class LoginViewController: BaseViewController {
             return
         }
 
-        var userName: String
-        if let _userName = user.text {
-            userName = _userName
-        } else {
+        guard let userName = user.text else {
             Log.shared.errorAndCrash("Found nil text in user.text")
-            userName = ""
+            handleLoginError(error: LoginViewController.LoginError.missingUsername,
+                             offerManualSetup: false)
+            return
         }
 
         viewModelOrCrash().accountVerificationResultDelegate = self
@@ -120,8 +119,9 @@ final class LoginViewController: BaseViewController {
                 return
             }
 
-            viewModelOrCrash().login(
-                accountName: email, userName: userName, password: pass)
+            viewModelOrCrash().login(accountName: email,
+                                     userName: userName,
+                                     password: pass)
         }
     }
 
