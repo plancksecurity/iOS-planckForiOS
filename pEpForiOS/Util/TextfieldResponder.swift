@@ -28,11 +28,8 @@ extension TextfieldResponder {
     }
     
     public func nextResponder(_ textfield: UITextField) {
-        textfield.resignFirstResponder()
-        
         responder += 1
         if responder < fields.count && textfield == fields[responder - 1] {
-            textfield.resignFirstResponder()
             fields[responder].becomeFirstResponder()
         } else {
             responder = 0

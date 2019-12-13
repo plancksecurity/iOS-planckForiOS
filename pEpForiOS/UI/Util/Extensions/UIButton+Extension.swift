@@ -34,9 +34,9 @@ extension UIButton {
     }
 
     public func convertToLoginButton(placeholder: String) {
-        self.backgroundColor = UIColor.clear
-        self.tintColor = UIColor.pEpGreen
-        self.setTitle(placeholder, for: .normal)
+        backgroundColor = UIColor.clear
+        tintColor = UIColor.pEpGreen
+        setTitle(placeholder, for: .normal)
     }
 
     /**
