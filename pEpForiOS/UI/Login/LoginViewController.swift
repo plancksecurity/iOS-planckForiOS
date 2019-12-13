@@ -16,6 +16,17 @@ protocol LoginViewControllerDelegate: class  {
 }
 
 final class LoginViewController: BaseViewController {
+    //Remove when account type is mgerge
+    //TODO: Xavia this enum is in Account selector view model, this is just a place holder. Remove it and use yours.
+    enum AccountType {
+        case gmail
+        case other
+
+        var isOauth: Bool {
+            return self != .other
+        }
+    }
+
     weak var delegate: LoginViewControllerDelegate?
 
     @IBOutlet weak var user: AnimatedPlaceholderTextfield!
@@ -37,10 +48,10 @@ final class LoginViewController: BaseViewController {
     var loginViewModel: LoginViewModel?
     var offerManualSetup = false
     /// Use this property if is an oauth login. This will hide password TextFiled and show the Oauth screen.
-    var isOauthAccount = false {
+    var accountType: AccountType = .other {
         didSet {
-            password.isHidden = isOauthAccount
-            password.isEnabled = !isOauthAccount
+            password.isHidden = accountType.isOauth
+            password.isEnabled = !accountType.isOauth
         }
     }
     var isCurrentlyVerifying = false {
@@ -98,7 +109,7 @@ final class LoginViewController: BaseViewController {
         guard let userName = user.text else {
             Log.shared.errorAndCrash("Found nil text in user.text")
             handleLoginError(error: LoginViewController.LoginError.missingUsername,
-                             offerManualSetup: false)
+                             offerManualSetup: true)
             return
         }
 
@@ -107,7 +118,7 @@ final class LoginViewController: BaseViewController {
         // isOauthAccount is use to disable for ever the password field (when loading this view)
         // isOAuth2Possible is use to hide password field only if isOauthAccount is false and the
         // user type a possible ouath in the email textfield.
-        if viewModelOrCrash().isOAuth2Possible(email: email) || isOauthAccount {
+        if viewModelOrCrash().isOAuth2Possible(email: email) || accountType.isOauth {
             let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
             viewModelOrCrash().loginWithOAuth2(
                 viewController: self, emailAddress: email, userName: userName,
@@ -175,7 +186,7 @@ extension LoginViewController {
 
 extension LoginViewController {
     func updatePasswordField(email: String?) {
-        guard !isOauthAccount else { return }
+        guard !accountType.isOauth else { return }
 
         let oauth2Possible = viewModelOrCrash().isOAuth2Possible(email: email)
         password.isEnabled = !oauth2Possible
@@ -406,12 +417,32 @@ extension LoginViewController {
     private func handleLoginError(error: Error, offerManualSetup: Bool) {
         Log.shared.error("%@", "\(error)")
         isCurrentlyVerifying = false
-        guard let error = DisplayUserError(withError: error) else {
-            // Do nothing. The error type is not suitable to bother the user with.
-            return
+
+        var title: String?
+        var message: String?
+
+        if let oauthError = error as? OAuth2AuthViewModelError,
+            oauthError == .noConfiguration {
+            title = NSLocalizedString("Validation Error",
+                                      comment: "Fail to log in, email does not match account type")
+            switch accountType {
+            case .gmail:
+                message = NSLocalizedString("Invalid Google email address",
+                                            comment: "Fail to log in, email does not match account type")
+            default:
+                Log.shared.errorAndCrash("Login should not do ouath with other email address")
+            }
+        } else {
+            guard let error = DisplayUserError(withError: error) else {
+                // Do nothing. The error type is not suitable to bother the user with.
+                return
+            }
+            title = error.title
+            message = error.localizedDescription
         }
-        let alertView = UIAlertController.pEpAlertController(title: error.title,
-                                                             message:error.localizedDescription,
+
+        let alertView = UIAlertController.pEpAlertController(title: title,
+                                                             message: message,
                                                              preferredStyle: .alert)
         alertView.addAction(UIAlertAction(
             title: NSLocalizedString(
@@ -428,8 +459,8 @@ extension LoginViewController {
     }
 
     private func configureView() {
-        password.isHidden = isOauthAccount
-        password.isEnabled = !isOauthAccount
+        password.isHidden = accountType.isOauth
+        password.isEnabled = !accountType.isOauth
 
         let isThereAnAccount = viewModelOrCrash().isThereAnAccount()
         loginButtonConstraint.constant =
