@@ -149,7 +149,7 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     private class func identityForImage(from message: Message) -> Identity {
         switch message.parent.folderType {
-        case .all, .archive, .spam, .trash, .flagged, .inbox, .normal, .syncFolderMode:
+        case .all, .archive, .spam, .trash, .flagged, .inbox, .normal, .pEpSyncFolder:
             return (message.from ?? Identity(address: "unknown@unknown.com"))
         case .drafts, .sent, .outbox:
             return message.to.first ?? Identity(address: "unknown@unknown.com")
