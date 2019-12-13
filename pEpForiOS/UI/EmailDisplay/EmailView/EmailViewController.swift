@@ -30,8 +30,6 @@ class EmailViewController: BaseTableViewController {
     var folderShow: Folder?
     var messageId = 0
 
-    var shouldShowOKButton: Bool = false
-
     private var partnerIdentity: Identity?
     private var tableData: ComposeDataSource?
     lazy private var backgroundQueue = OperationQueue()
@@ -48,10 +46,9 @@ class EmailViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSplitViewBackButton()
-        configureOKButton()
 
         loadDatasource("MessageData")
-        setupToolbar()
+//        setupToolbar()
 
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableView.automaticDimension
@@ -69,9 +66,9 @@ class EmailViewController: BaseTableViewController {
         //BUFF: Must be handled (recursive save) !!!
         //!!!: this logic (mark for redecrypt) must go to getter of Message.longMessage(formatted)
         // as a side effect. (Do after HTML parser is in toolbox
-        // The user may be about to view an yet undecrypted message.
-        // If so, try again to decrypt it.
-        message?.markForRetryDecryptIfUndecryptable()
+//        // The user may be about to view an yet undecrypted message.
+//        // If so, try again to decrypt it.
+//        message?.markForRetryDecryptIfUndecryptable()
 //        Session.main.commit() //BUFF:
 
         configureTableRows()
@@ -152,22 +149,22 @@ class EmailViewController: BaseTableViewController {
         return false
     }
 
-    // MARK: - SETUP
-
-    private func setupToolbar() {
-        let pEpButton = UIBarButtonItem.getPEPButton(action: #selector(showPepActions(sender:)),
-                                                     target: self)
-        pEpButton.tag = BarButtonType.settings.rawValue
-        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-                                                             target: nil,
-                                                             action: nil)
-        flexibleSpace.tag = BarButtonType.space.rawValue
-        toolbarItems?.append(contentsOf: [flexibleSpace, pEpButton])
-        if !(onlySplitViewMasterIsShown) {
-            navigationItem.rightBarButtonItems = toolbarItems
-        }
-
-    }
+//    // MARK: - SETUP
+//
+//    private func setupToolbar() {
+//        let pEpButton = UIBarButtonItem.getPEPButton(action: #selector(showPepActions(sender:)),
+//                                                     target: self)
+//        pEpButton.tag = BarButtonType.settings.rawValue
+//        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+//                                                             target: nil,
+//                                                             action: nil)
+//        flexibleSpace.tag = BarButtonType.space.rawValue
+//        toolbarItems?.append(contentsOf: [flexibleSpace, pEpButton])
+//        if !(onlySplitViewMasterIsShown) {
+//            navigationItem.rightBarButtonItems = toolbarItems
+//        }
+//
+//    }
 
     func configureTableRows() {
         tableData?.filterRows(message: message)
@@ -215,18 +212,6 @@ class EmailViewController: BaseTableViewController {
     private func configureSplitViewBackButton() {
         navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
         navigationItem.leftItemsSupplementBackButton = true
-    }
-
-    private func configureOKButton() {
-        if (shouldShowOKButton) {
-            let okButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: .okButtonPressed)
-            navigationItem.leftBarButtonItems? = [okButton]
-            navigationItem.hidesBackButton = true
-        }
-    }
-
-    @objc internal func okButtonPressed(sender: UIBarButtonItem) {
-        performSegue(withIdentifier: .unwindToThread, sender: self) //!!!: rm, thread does not exist
     }
 
     // Sets the destructive bottom bar item accordint to the message (trash/archive)
@@ -357,89 +342,89 @@ class EmailViewController: BaseTableViewController {
         return result
     }
 
-    // MARK: - IBActions
+//    // MARK: - IBActions
+//
+//    @objc private func showPepActions(sender: UIBarButtonItem) {
+//        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+//
+//            if canShowPrivacyStatus(), let handshakeAction = showHandshakeViewAction()
+//            {
+//                actionSheetController.addAction(handshakeAction)
+//        }
+//        actionSheetController.addAction(tutorialAction())
+//        actionSheetController.addAction(showSettingsAction())
+//
+//        let cancelAction = UIAlertAction(
+//            title: NSLocalizedString("Cancel", comment: "possible private status action"),
+//            style: .cancel) { (action) in }
+//        actionSheetController.addAction(cancelAction)
+//
+//        if splitViewController != nil, !onlySplitViewMasterIsShown {
+//            actionSheetController.popoverPresentationController?.barButtonItem = sender
+//        }
+//        present(actionSheetController, animated: true)
+//    }
+//
+//    private func showSettingsAction() -> UIAlertAction {
+//        let action = UIAlertAction(
+//            title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
+//            style: .default) { [weak self] (action) in
+//                guard let me = self else {
+//                    Log.shared.errorAndCrash(message: "lost myself")
+//                    return
+//                }
+//                me.showSettingsViewController()
+//        }
+//        return action
+//    }
+//
+//    private func tutorialAction() -> UIAlertAction{
+//        return UIAlertAction(
+//            title: NSLocalizedString("Tutorial", comment: "show tutorial from compose view"),
+//            style: .default) { _ in
+//                TutorialWizardViewController.presentTutorialWizard(viewController: self)
+//        }
+//    }
+//
+//    private func showHandshakeViewAction() -> UIAlertAction? {
+//        guard
+//            let handshakeCombos = message?.handshakeActionCombinations(), //!!!: EmailView must not know about handshakeCombinations.
+//            !handshakeCombos.isEmpty
+//            else {
+//                return nil
+//        }
+//        let action = UIAlertAction(
+//            title: NSLocalizedString("Privacy Status", comment: "action sheet title 1"),
+//            style: .default) { [weak self] (action) in
+//                guard let me = self else {
+//                    Log.shared.errorAndCrash(message: "lost myself")
+//                    return
+//                }
+//                me.showHandshakeView()
+//        }
+//
+//        return action
+//    }
+//
+//    @objc private func showHandshakeScreen() {
+//        splitViewController?.preferredDisplayMode = .allVisible
+//        guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
+//            let vc = nav.topViewController else {
+//                return
+//        }
+//        UIUtils.presentSettings(on: vc, appConfig: appConfig)
+//    }
+//
+//    @objc private func showSettingsViewController() {
+//        splitViewController?.preferredDisplayMode = .allVisible
+//        guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
+//            let vc = nav.topViewController else {
+//                return
+//        }
+//        UIUtils.presentSettings(on: vc, appConfig: appConfig)
+//    }
 
-    @objc private func showPepActions(sender: UIBarButtonItem) {
-        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
-
-            if canShowPrivacyStatus(), let handshakeAction = showHandshakeViewAction()
-            {
-                actionSheetController.addAction(handshakeAction)
-        }
-        actionSheetController.addAction(tutorialAction())
-        actionSheetController.addAction(showSettingsAction())
-
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("Cancel", comment: "possible private status action"),
-            style: .cancel) { (action) in }
-        actionSheetController.addAction(cancelAction)
-
-        if splitViewController != nil, !onlySplitViewMasterIsShown {
-            actionSheetController.popoverPresentationController?.barButtonItem = sender
-        }
-        present(actionSheetController, animated: true)
-    }
-
-    private func showSettingsAction() -> UIAlertAction {
-        let action = UIAlertAction(
-            title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
-            style: .default) { [weak self] (action) in
-                guard let me = self else {
-                    Log.shared.errorAndCrash(message: "lost myself")
-                    return
-                }
-                me.showSettingsViewController()
-        }
-        return action
-    }
-
-    private func tutorialAction() -> UIAlertAction{
-        return UIAlertAction(
-            title: NSLocalizedString("Tutorial", comment: "show tutorial from compose view"),
-            style: .default) { _ in
-                TutorialWizardViewController.presentTutorialWizard(viewController: self)
-        }
-    }
-
-    private func showHandshakeViewAction() -> UIAlertAction? {
-        guard
-            let handshakeCombos = message?.handshakeActionCombinations(), //!!!: EmailView must not know about handshakeCombinations.
-            !handshakeCombos.isEmpty
-            else {
-                return nil
-        }
-        let action = UIAlertAction(
-            title: NSLocalizedString("Privacy Status", comment: "action sheet title 1"),
-            style: .default) { [weak self] (action) in
-                guard let me = self else {
-                    Log.shared.errorAndCrash(message: "lost myself")
-                    return
-                }
-                me.showHandshakeView()
-        }
-
-        return action
-    }
-
-    @objc private func showHandshakeScreen() {
-        splitViewController?.preferredDisplayMode = .allVisible
-        guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
-            let vc = nav.topViewController else {
-                return
-        }
-        UIUtils.presentSettings(on: vc, appConfig: appConfig)
-    }
-
-    @objc private func showSettingsViewController() {
-        splitViewController?.preferredDisplayMode = .allVisible
-        guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
-            let vc = nav.topViewController else {
-                return
-        }
-        UIUtils.presentSettings(on: vc, appConfig: appConfig)
-    }
-
-    @IBAction func next(_ sender: Any) {
+    @IBAction func next(_ sender: Any) { //BUFF: rm
         messageId += 1
         if let m = folderShow?.messageAt(index: messageId) {
             message = m
@@ -451,7 +436,7 @@ class EmailViewController: BaseTableViewController {
         configureView()
     }
 
-    @IBAction func previous(_ sender: Any) {
+    @IBAction func previous(_ sender: Any) { //BUFF: rm
         messageId -= 1
         if let m = folderShow?.messageAt(index: messageId) {
             message = m
@@ -605,7 +590,6 @@ extension EmailViewController: SegueHandlerType {
         case segueHandshake
         case segueHandshakeCollapsed
         case segueShowMoveToFolder
-        case unwindToThread
         case noSegue
     }
 
@@ -646,8 +630,8 @@ extension EmailViewController: SegueHandlerType {
                 return
             }
 
-            //as we need a view to be source of the popover and title view is not always present.
-            //we directly use the navigation bar view.
+            // As we need a view to be source of the popover and title view is not always present.
+            // we directly use the navigation bar view.
             nv.popoverPresentationController?.delegate = self
             nv.popoverPresentationController?.sourceView = nv.view
             nv.popoverPresentationController?.sourceRect = CGRect(x: nv.view.bounds.midX,
@@ -657,7 +641,7 @@ extension EmailViewController: SegueHandlerType {
             vc.appConfig = appConfig
             vc.message = message
             break
-        case .noSegue, .unwindToThread:
+        case .noSegue:
             break
         }
     }
@@ -769,11 +753,25 @@ extension EmailViewController: SecureWebViewControllerDelegate {
     }
 }
 
-private extension Selector {
-    static let okButtonPressed = #selector(EmailViewController.okButtonPressed(sender:))
-}
-
 enum BarButtonType: Int {
     case space = 1
     case settings = 2
+}
+
+extension EmailViewController: UIPopoverPresentationControllerDelegate {
+
+    func popoverPresentationController(_ popoverPresentationController: UIPopoverPresentationController, willRepositionPopoverTo rect:
+        UnsafeMutablePointer<CGRect>, in view: AutoreleasingUnsafeMutablePointer<UIView>) {
+
+        guard let titleView = navigationItem.titleView else {
+            return
+        }
+
+        rect.initialize(to: CGRect(x:titleView.bounds.midY,
+                                   y: titleView.bounds.midX,
+                                   width:0,
+                                   height:0))
+        view.pointee = titleView
+
+    }
 }

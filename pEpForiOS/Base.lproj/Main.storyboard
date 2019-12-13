@@ -239,7 +239,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aWP-YW-F6w" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4490" y="-8"/>
+            <point key="canvasLocation" x="4548" y="140"/>
         </scene>
         <!--Email Detail View Controller-->
         <scene sceneID="RGR-UH-VHw">
@@ -328,6 +328,12 @@
                         <outlet property="flagButton" destination="eWC-Rq-MJm" id="Fha-Mh-JQz"/>
                         <outlet property="nextButton" destination="4R9-FK-LNX" id="XRa-Kx-g3q"/>
                         <outlet property="previousButton" destination="uhj-ab-NtG" id="lE3-hB-5GJ"/>
+                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="6by-Pi-xWQ"/>
+                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" id="r2P-Ra-zWf"/>
+                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="0Yg-lj-kVR"/>
+                        <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="g1q-wK-tff"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshake" id="CKh-jT-ski"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshakeCollapsed" id="Gcx-48-ZRF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NqX-Lg-wmy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -384,7 +390,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RS6-O5-yYy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3806" y="-7"/>
+            <point key="canvasLocation" x="1726" y="-789"/>
         </scene>
         <!--Show email-->
         <scene sceneID="fxT-br-VYt">
@@ -629,15 +635,13 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" id="1zD-EW-3fN"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="2fD-kL-Bvj"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" modalPresentationStyle="pageSheet" id="RTR-We-Kc1"/>
-                        <segue destination="Adk-MD-apd" kind="unwind" identifier="unwindToThread" unwindAction="segueUnwindEmailDisplayDoneWithSegue:" id="eRi-pR-kLP"/>
                         <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshake" modalPresentationStyle="automatic" id="mZj-Mg-VzM"/>
                         <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshakeCollapsed" modalPresentationStyle="fullScreen" id="0zl-tV-6Kr"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="Adk-MD-apd" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5204" y="-869"/>
+            <point key="canvasLocation" x="4911" y="-964"/>
         </scene>
         <!--Move to Account-->
         <scene sceneID="Rib-YI-OIO">
@@ -738,7 +742,7 @@
                 <viewControllerPlaceholder storyboardName="Handshake" id="Dbs-KG-RkX" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vev-AJ-nPB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6590" y="-388"/>
+            <point key="canvasLocation" x="5522" y="-470"/>
         </scene>
         <!--AccountCreation-->
         <scene sceneID="0vj-GL-XbM">
@@ -1058,8 +1062,8 @@
         <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RTR-We-Kc1"/>
-        <segue reference="mZj-Mg-VzM"/>
-        <segue reference="1zD-EW-3fN"/>
+        <segue reference="g1q-wK-tff"/>
+        <segue reference="Gcx-48-ZRF"/>
+        <segue reference="0Yg-lj-kVR"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -7,9 +7,17 @@
 //
 
 import MessageModel
+import PEPObjCAdapterFramework
 
 protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
     //BUFF: All moved to EmailDisplayViewModelDelegate. Will be filled with list specific stuff soon. Stay tuned.
+
+    /// `emailListViewModel(viewModel:idUpdateDataAt:)` should not reload the cell but update the
+    /// flags ad such.
+    /// There is only one case where the cell has to be reloaded: A mail is shown as undecryptable
+    /// and has been decrypted afterwards.
+    /// - Parameter indexPath: indexpath of mail to reload
+    func isNotUndecryptableAnyMore(indexPath: IndexPath)
 }
 
 /// Reports back currently shown email changes
@@ -45,6 +53,33 @@ class EmailDetailViewModel: EmailDisplayViewModel {
     }
 
     //
+
+    public func handleFlagButtonPress(for indexPath: IndexPath) {
+        guard let message = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No msg")
+            return
+        }
+        let flags = message.imapFlags
+        flags.flagged = !flags.flagged
+        message.imapFlags = flags
+        Session.main.commit()
+    }
+
+    private var pathsForMessagesMarkedForRedecrypt = [IndexPath]()
+
+    public func handleEmailShown(forItemAt indexPath: IndexPath) {
+        pathsForMessagesMarkedForRedecrypt = pathsForMessagesMarkedForRedecrypt.filter { $0 != indexPath }
+        guard let message = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No msg")
+            return
+        }
+       /// The user may be about to view an yet undecrypted message.
+        // If so, try again to decrypt it.
+        if message.markForRetryDecryptIfUndecryptable() {
+            pathsForMessagesMarkedForRedecrypt.append(indexPath)
+        }
+    }
+
     public func destructiveButtonIcon(forMessageAt indexPath: IndexPath?) -> UIImage? {
         guard
             let path = indexPath,
@@ -72,6 +107,32 @@ class EmailDetailViewModel: EmailDisplayViewModel {
             return #imageLiteral(resourceName: "icon-unflagged")
         }
     }
+
+    public func pEpRating(forItemAt indexPath: IndexPath) -> PEPRating {
+        guard let message = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No msg")
+            return .undefined
+        }
+        return message.pEpRating()
+    }
+
+
+    public func canShowPrivacyStatus(forItemAt indexPath: IndexPath) -> Bool {
+        return isHandshakePossible(forItemAt: indexPath)
+    }
+
+    public func isHandshakePossible(forItemAt indexPath: IndexPath) -> Bool {
+        guard let message = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No msg")
+            return false
+        }
+        let handshakeCombos = message.handshakeActionCombinations()
+        guard !handshakeCombos.isEmpty else {
+            return false
+        }
+        return true
+    }
+
     //
 }
 
@@ -84,6 +145,10 @@ extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
     }
 
     func didUpdateRow(indexPath: IndexPath) {
+        if pathsForMessagesMarkedForRedecrypt.contains(indexPath) {
+            delegate?.isNotUndecryptableAnyMore(indexPath: indexPath)
+            pathsForMessagesMarkedForRedecrypt = pathsForMessagesMarkedForRedecrypt.filter { $0 != indexPath }
+        }
         delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: [indexPath])
     }
 
@@ -101,5 +166,30 @@ extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
 
     func didChangeResults() {
         delegate?.allUpdatesReceived(viewModel: self)
+    }
+}
+
+// MARK: - Destination VM Factory
+
+extension EmailDetailViewModel {
+
+    public func moveToAccountViewModel(forMessageRepresentedByItemAt indexPath: IndexPath) -> MoveToAccountViewModel? {
+        guard let msg = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("Nothing to move?")
+            return nil
+        }
+        return MoveToAccountViewModel(messages: [msg])
+    }
+
+    public func composeViewModel(forMessageRepresentedByItemAt indexPath: IndexPath,
+                                 composeMode: ComposeUtil.ComposeMode) -> ComposeViewModel? {
+        guard let msg = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("Nothing to move?")
+            return nil
+        }
+        return ComposeViewModel(resultDelegate: nil,
+                                composeMode: composeMode,
+                                prefilledTo: nil,
+                                originalMessage: msg)
     }
 }
