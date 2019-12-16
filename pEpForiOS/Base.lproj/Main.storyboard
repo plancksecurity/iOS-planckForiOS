@@ -202,7 +202,11 @@
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Inbox" id="aP4-ia-HTP">
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="4U1-dM-wKT"/>
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="4U1-dM-wKT">
+                            <connections>
+                                <action selector="editButtonPressed:" destination="ldy-GA-D6J" id="Ck9-Xw-mLV"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -340,29 +344,6 @@
             </objects>
             <point key="canvasLocation" x="3004" y="-22"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="jm1-97-n5e">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="lPr-gi-BrG" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="z4A-BC-Lg4">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="6WO-dJ-eVW">
-                        <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
-                    <connections>
-                        <segue destination="3bx-34-vLD" kind="relationship" relationship="rootViewController" id="ber-OQ-S16"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tPk-q9-Yzh" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4647" y="-1844"/>
-        </scene>
         <!--Filter Table View Controller-->
         <scene sceneID="9dD-N3-Mae">
             <objects>
@@ -397,7 +378,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="EmailViewController" title="Show email" id="3bx-34-vLD" customClass="EmailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="mYV-vz-wEb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -450,19 +431,19 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnw-Tp-mga">
-                                            <rect key="frame" x="20" y="11" width="331" height="29"/>
+                                            <rect key="frame" x="20" y="11" width="331" height="30"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: Recipients" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mfx-AS-hpP">
-                                            <rect key="frame" x="20" y="44" width="331" height="18"/>
+                                            <rect key="frame" x="20" y="45" width="331" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="separator_pixel_grey" translatesAutoresizingMaskIntoConstraints="NO" id="Gbh-o3-H58">
-                                            <rect key="frame" x="10" y="70" width="355" height="2"/>
+                                            <rect key="frame" x="10" y="71" width="355" height="1"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
@@ -582,55 +563,9 @@
                         </connections>
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <toolbarItems>
-                        <barButtonItem image="icon-unflagged" id="bej-eI-LgY" userLabel="Flag">
-                            <connections>
-                                <action selector="flagButtonTapped:" destination="3bx-34-vLD" id="bHB-Of-ApR"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="NHr-Sb-8Of"/>
-                        <barButtonItem image="folders-icon-folder" id="a2r-iQ-NVT" userLabel="Move to Folder">
-                            <connections>
-                                <action selector="moveToFolderButtonTapped:" destination="3bx-34-vLD" id="Pfz-xE-sJb"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="pDp-Ex-gb9"/>
-                        <barButtonItem image="folders-icon-trash" id="Swu-yi-LdI">
-                            <connections>
-                                <action selector="deleteButtonTapped:" destination="3bx-34-vLD" id="1i5-fP-wma"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="CmV-4s-3jw"/>
-                        <barButtonItem image="reply" id="qxE-Vd-QoS">
-                            <connections>
-                                <action selector="pressReply:" destination="3bx-34-vLD" id="KDm-Or-31Y"/>
-                            </connections>
-                        </barButtonItem>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" id="PAv-Od-zv3">
-                        <rightBarButtonItems>
-                            <barButtonItem image="arrow-lft-active" id="nCS-Wg-ZJI">
-                                <color key="tintColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <connections>
-                                    <action selector="next:" destination="3bx-34-vLD" id="dke-KM-1xj"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem image="arrow-rgt-active" id="NsK-Ye-A0p">
-                                <color key="tintColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <connections>
-                                    <action selector="previous:" destination="3bx-34-vLD" id="nIJ-v6-9HL"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
-                    </navigationItem>
+                    <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="destructiveButton" destination="Swu-yi-LdI" id="RX6-Nq-DS2"/>
-                        <outlet property="flagButton" destination="bej-eI-LgY" id="Geb-Es-y6z"/>
-                        <outlet property="moveToFolderButton" destination="a2r-iQ-NVT" id="jbS-XR-DJ5"/>
-                        <outlet property="nextMessage" destination="nCS-Wg-ZJI" id="Q0q-LK-Q5C"/>
-                        <outlet property="previousMessage" destination="NsK-Ye-A0p" id="tHt-Ag-IaU"/>
-                        <outlet property="replyButton" destination="qxE-Vd-QoS" id="cwp-Ig-BVT"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="Usl-iS-7fo"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" id="1zD-EW-3fN"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="2fD-kL-Bvj"/>
@@ -641,7 +576,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4911" y="-964"/>
+            <point key="canvasLocation" x="4756" y="-985"/>
         </scene>
         <!--Move to Account-->
         <scene sceneID="Rib-YI-OIO">
@@ -752,7 +687,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QLV-3R-1jF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4701" y="-1383"/>
+            <point key="canvasLocation" x="4834" y="-1476"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fa0-aU-9j8">
@@ -1062,9 +997,9 @@
         <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="g1q-wK-tff"/>
-        <segue reference="Gcx-48-ZRF"/>
-        <segue reference="0Yg-lj-kVR"/>
+        <segue reference="RTR-We-Kc1"/>
+        <segue reference="0zl-tV-6Kr"/>
+        <segue reference="2fD-kL-Bvj"/>
         <segue reference="HHz-at-Ehg"/>
     </inferredMetricsTieBreakers>
 </document>

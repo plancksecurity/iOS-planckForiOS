@@ -106,6 +106,12 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
          NotificationCenter.default.removeObserver(self)
     }
 
+    //BUFF: move
+    @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
+        showEditToolbar()
+        tableView.setEditing(true, animated: true)
+    }
+
     private func showLoginScreen() {
         performSegue(withIdentifier:.segueAddNewAccount, sender: self)
         return
@@ -284,11 +290,11 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
     var deleteToolbarButton: UIBarButtonItem?
     var moveToolbarButton: UIBarButtonItem?
 
-    @IBAction func Edit(_ sender: Any) {
-
-        showEditToolbar()
-        tableView.setEditing(true, animated: true)
-    }
+//    @IBAction func Edit(_ sender: Any) {
+//
+//        showEditToolbar()
+//        tableView.setEditing(true, animated: true)
+//    }
 
     private func showEditToolbar() {
 
@@ -796,7 +802,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
     // MARK: - Observing the split view controller
 
     /// Start observing the view controllers in the split view.
-    private func watchDetailView() {
+    private func watchDetailView() { //BUFF: ?? obsolete?
         if !observingSplitViewControllers, let spvc = splitViewController {
             spvc.addObserver(self,
                              forKeyPath: splitViewObserverKeyPath,
@@ -807,7 +813,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     /// Stop listening for changes in the view controllers in the split view.
-    private func unwatchDetailView() {
+    private func unwatchDetailView() { //BUFF: ?? obsolete?
         if observingSplitViewControllers, let spvc = splitViewController {
             spvc.removeObserver(self, forKeyPath: splitViewObserverKeyPath)
             observingSplitViewControllers = false
