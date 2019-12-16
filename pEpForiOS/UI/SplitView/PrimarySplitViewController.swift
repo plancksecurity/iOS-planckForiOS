@@ -17,12 +17,12 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
         preferredDisplayMode = .allVisible
     }
 
-    func splitViewController(_ splitViewController: UISplitViewController,
+    func splitViewController(_ splitViewController: UISplitViewController, //BUFF: obsolete? (ask xavier)
                              collapseSecondary secondaryViewController:UIViewController,
                              onto primaryViewController:UIViewController) -> Bool {
-        guard let navigationController = secondaryViewController as? UINavigationController,
-            navigationController.rootViewController is EmailViewController /*||
-                navigationController.rootViewController is ThreadViewController*/// Message threadding is currently umsupported. The code might be helpful. 
+        guard
+            let navigationController = secondaryViewController as? UINavigationController,
+            navigationController.rootViewController is EmailViewController
             else {
                 return true
         }
@@ -30,15 +30,15 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
         return false
     }
 
-    func splitViewController(_ splitViewController: UISplitViewController,
+    func splitViewController(_ splitViewController: UISplitViewController, //BUFF: obsolete? (ask xavier)
                              separateSecondaryFrom primaryViewController: UIViewController)
         -> UIViewController? {
-            guard let navigationController =
-                    splitViewController.viewControllers.first as? UINavigationController,
+            guard
+                let navigationController =
+                splitViewController.viewControllers.first as? UINavigationController,
                 let secondaryNavigationController =
-                    navigationController.topViewController as? UINavigationController,
-                secondaryNavigationController.topViewController is EmailViewController /*||
-                    secondaryNavigationController.topViewController is ThreadViewController*/ // Message threadding is currently umsupported. The code might be helpful.
+                navigationController.topViewController as? UINavigationController,
+                secondaryNavigationController.topViewController is EmailViewController
                 else {
                     let storyboard = UIStoryboard(
                         name: UIStoryboard.noSelectionStoryBoard,
@@ -50,13 +50,13 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
             return secondaryNavigationController
     }
 
-    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewController.DisplayMode) {
+    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewController.DisplayMode) { //BUFF: obsolete? (ask xavier)
 
-        guard let nav = viewControllers.last as? UINavigationController,
-            let emailViewController = nav.rootViewController as? EmailViewController else {
-                return
-        }
+//        guard let nav = viewControllers.last as? UINavigationController,
+//            let emailViewController = nav.rootViewController as? EmailViewController else {
+//                return
+//        }
 
-        emailViewController.splitViewController(willChangeTo: displayMode)
+        //        emailViewController.splitViewController(willChangeTo: displayMode) //BUFF:
     }
 }

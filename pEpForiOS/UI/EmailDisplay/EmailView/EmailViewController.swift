@@ -17,20 +17,20 @@ import PEPObjCAdapterFramework
 class EmailViewController: BaseTableViewController {
     static let storyboard = "Main"
     static let storyboardId = "EmailViewController"
-    @IBOutlet var flagButton: UIBarButtonItem!
-    @IBOutlet var destructiveButton: UIBarButtonItem!
-    @IBOutlet var previousMessage: UIBarButtonItem!
-    @IBOutlet var nextMessage: UIBarButtonItem!
-    @IBOutlet var moveToFolderButton: UIBarButtonItem!
-    @IBOutlet var replyButton: UIBarButtonItem!
+//    @IBOutlet var flagButton: UIBarButtonItem!
+//    @IBOutlet var destructiveButton: UIBarButtonItem!
+//    @IBOutlet var previousMessage: UIBarButtonItem!
+//    @IBOutlet var nextMessage: UIBarButtonItem!
+//    @IBOutlet var moveToFolderButton: UIBarButtonItem!
+//    @IBOutlet var replyButton: UIBarButtonItem!
 
-    var barItems: [UIBarButtonItem]?
+//    var barItems: [UIBarButtonItem]?
 
     var message: Message?
-    var folderShow: Folder?
-    var messageId = 0
+//    var folderShow: Folder?
+//    var messageId = 0
 
-    private var partnerIdentity: Identity?
+//    private var partnerIdentity: Identity?
     private var tableData: ComposeDataSource?
     lazy private var backgroundQueue = OperationQueue()
     lazy private var documentInteractionController = UIDocumentInteractionController()
@@ -45,7 +45,7 @@ class EmailViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureSplitViewBackButton()
+//        configureSplitViewBackButton()
 
         loadDatasource("MessageData")
 //        setupToolbar()
@@ -59,9 +59,9 @@ class EmailViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if dismissIfDisappeared(message: message) {
-            return
-        }
+//        if dismissIfDisappeared(message: message) {
+//            return
+//        }
 
         //BUFF: Must be handled (recursive save) !!!
         //!!!: this logic (mark for redecrypt) must go to getter of Message.longMessage(formatted)
@@ -72,31 +72,36 @@ class EmailViewController: BaseTableViewController {
 //        Session.main.commit() //BUFF:
 
         configureTableRows()
-        configureView()
+//        configureView()
     }
 
-    /// Handle the case of messages getting deleted while being displayed, i.e. by another client.
-    ///
-    /// In the case of a disappearing message, the navigation controller is asked to pop the
-    /// current view controller.
-    ///
-    /// - Parameter: message: The message to check whether it's valid.
-    ///
-    /// - Returns: True if the message is invalid and should not used anymore.
-    ///   In this case, the VC has likely been dismissed.
-    @discardableResult func dismissIfDisappeared(message: Message?) -> Bool {
-        if let msg = message, msg.isDeleted {
-            guard let navC = navigationController, let currentVC = navC.viewControllers.last, currentVC == self else {
-                return false
-            }
-            let vc = navC.popViewController(animated: false)
-            if (vc == nil) {
-                currentVC.dismiss(animated: true)
-            }
-            return true
-        }
-        return false
+    private func configureTableRows() {
+        tableData?.filterRows(message: message)
     }
+
+
+//    /// Handle the case of messages getting deleted while being displayed, i.e. by another client.
+//    ///
+//    /// In the case of a disappearing message, the navigation controller is asked to pop the
+//    /// current view controller.
+//    ///
+//    /// - Parameter: message: The message to check whether it's valid.
+//    ///
+//    /// - Returns: True if the message is invalid and should not used anymore.
+//    ///   In this case, the VC has likely been dismissed.
+//    @discardableResult func dismissIfDisappeared(message: Message?) -> Bool {
+//        if let msg = message, msg.isDeleted {
+//            guard let navC = navigationController, let currentVC = navC.viewControllers.last, currentVC == self else {
+//                return false
+//            }
+//            let vc = navC.popViewController(animated: false)
+//            if (vc == nil) {
+//                currentVC.dismiss(animated: true)
+//            }
+//            return true
+//        }
+//        return false
+//    }
 
     //MARK: - Temp fix to Beta
 
@@ -122,15 +127,15 @@ class EmailViewController: BaseTableViewController {
 //        }
 //    }
 
-    private func showPepRating() {
-        if let ratingView = showNavigationBarSecurityBadge(pEpRating: message?.pEpRating()) {
-            if canShowPrivacyStatus() {
-                let tapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                                  action: #selector(showHandshakeView(gestureRecognizer:)))
-                ratingView.addGestureRecognizer(tapGestureRecognizer)
-            }
-        }
-    }
+//    private func showPepRating() {
+//        if let ratingView = showNavigationBarSecurityBadge(pEpRating: message?.pEpRating()) {
+//            if canShowPrivacyStatus() {
+//                let tapGestureRecognizer = UITapGestureRecognizer(target: self,
+//                                                                  action: #selector(showHandshakeView(gestureRecognizer:)))
+//                ratingView.addGestureRecognizer(tapGestureRecognizer)
+//            }
+//        }
+//    }
 
     private final func loadDatasource(_ file: String) {
         if let path = Bundle.main.path(forResource: file, ofType: "plist") {
@@ -140,14 +145,14 @@ class EmailViewController: BaseTableViewController {
         }
     }
 
-    private func canShowPrivacyStatus() -> Bool {
-        //!!!: EmailView must not know about handshakeCombinations.
-        if let handshakeCombos = message?.handshakeActionCombinations(),
-            !handshakeCombos.isEmpty {
-            return true
-        }
-        return false
-    }
+//    private func canShowPrivacyStatus() -> Bool {
+//        //!!!: EmailView must not know about handshakeCombinations.
+//        if let handshakeCombos = message?.handshakeActionCombinations(),
+//            !handshakeCombos.isEmpty {
+//            return true
+//        }
+//        return false
+//    }
 
 //    // MARK: - SETUP
 //
@@ -166,91 +171,87 @@ class EmailViewController: BaseTableViewController {
 //
 //    }
 
-    func configureTableRows() {
-        tableData?.filterRows(message: message)
-    }
+//    func configureView() {
+////        // Make sure the NavigationBar is shown, even if the previous view has hidden it.
+//////        navigationController?.setNavigationBarHidden(false, animated: false)
+////
+////        //ToolBar
+////        if splitViewController != nil {
+////            if onlySplitViewMasterIsShown {
+////                navigationController?.setToolbarHidden(false, animated: false)
+////            } else {
+////                navigationController?.setToolbarHidden(true, animated: false)
+////            }
+////        }
+////
+////        setupDestructiveButtonIcon()
+////
+////        if messageId <= 0 {
+////            previousMessage.isEnabled = false
+////        } else {
+////            previousMessage.isEnabled = true
+////        }
+////
+////        showPepRating()
+////
+////        if let internalMessage = message, !internalMessage.imapFlags.seen {
+////            internalMessage.markAsSeen()
+////        }
+////
+////        ///TODO: reimplement next-previous
+////        //        DispatchQueue.main.async {
+////        //
+////        //            if let total = self.folderShow?.messageCount(), self.messageId >= total - 1 {
+////        //                self.nextMessage.isEnabled = false
+////        //            } else {
+////        //                self.nextMessage.isEnabled = true
+////        //            }
+////        //        }
+////        updateFlaggedStatus()
+//    }
 
-    func configureView() {
-//        // Make sure the NavigationBar is shown, even if the previous view has hidden it.
-////        navigationController?.setNavigationBarHidden(false, animated: false)
-//
-//        //ToolBar
-//        if splitViewController != nil {
-//            if onlySplitViewMasterIsShown {
-//                navigationController?.setToolbarHidden(false, animated: false)
-//            } else {
-//                navigationController?.setToolbarHidden(true, animated: false)
-//            }
-//        }
-//
-//        setupDestructiveButtonIcon()
-//
-//        if messageId <= 0 {
-//            previousMessage.isEnabled = false
-//        } else {
-//            previousMessage.isEnabled = true
-//        }
-//
-//        showPepRating()
-//
-//        if let internalMessage = message, !internalMessage.imapFlags.seen {
-//            internalMessage.markAsSeen()
-//        }
-//
-//        ///TODO: reimplement next-previous
-//        //        DispatchQueue.main.async {
-//        //
-//        //            if let total = self.folderShow?.messageCount(), self.messageId >= total - 1 {
-//        //                self.nextMessage.isEnabled = false
-//        //            } else {
-//        //                self.nextMessage.isEnabled = true
-//        //            }
-//        //        }
-//        updateFlaggedStatus()
-    }
-
-    private func configureSplitViewBackButton() {
-        navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-        navigationItem.leftItemsSupplementBackButton = true
-    }
+//    private func configureSplitViewBackButton() {
+//        navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+//        navigationItem.leftItemsSupplementBackButton = true
+//    }
 
     // Sets the destructive bottom bar item accordint to the message (trash/archive)
-    private func setupDestructiveButtonIcon() {
-        guard let msg = message else {
-            Log.shared.errorAndCrash("No message")
-            return
-        }
+//    private func setupDestructiveButtonIcon() {
+//        guard let msg = message else {
+//            Log.shared.errorAndCrash("No message")
+//            return
+//        }
+//
+//        if msg.parent.defaultDestructiveActionIsArchive {
+//            // Replace the Storyboard set trash icon for providers that use "archive" rather than
+//            // "delete" as default
+//            destructiveButton.image = #imageLiteral(resourceName: "folders-icon-archive")
+//        }
+//    }
 
-        if msg.parent.defaultDestructiveActionIsArchive {
-            // Replace the Storyboard set trash icon for providers that use "archive" rather than
-            // "delete" as default
-            destructiveButton.image = #imageLiteral(resourceName: "folders-icon-archive")
-        }
-    }
-
-    // MARK: - UISplitViewcontrollerDelegate
-
-    func splitViewController(willChangeTo displayMode: UISplitViewController.DisplayMode) {
-        switch displayMode {
-        case .primaryHidden:
-            var leftBarButtonItems: [UIBarButtonItem] = [nextMessage, previousMessage]
-            if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems {
-                leftBarButtonItems.append(contentsOf: unwrappedLeftBarButtonItems)
-            }
-            navigationItem.setLeftBarButtonItems(leftBarButtonItems.reversed(), animated: true)
-
-            break
-        case .allVisible:
-            var leftBarButtonItems: [UIBarButtonItem] = []
-            if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems?.first {
-                leftBarButtonItems.append(unwrappedLeftBarButtonItems)
-            }
-            navigationItem.setLeftBarButtonItems(leftBarButtonItems, animated: true)
-        default:
-            //do nothing
-            break
-        }
-    }
+//    // MARK: - UISplitViewcontrollerDelegate
+//
+//    func splitViewController(willChangeTo displayMode: UISplitViewController.DisplayMode) {
+//        switch displayMode {
+//        case .primaryHidden:
+//            var leftBarButtonItems: [UIBarButtonItem] = [nextMessage, previousMessage]
+//            if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems {
+//                leftBarButtonItems.append(contentsOf: unwrappedLeftBarButtonItems)
+//            }
+//            navigationItem.setLeftBarButtonItems(leftBarButtonItems.reversed(), animated: true)
+//
+//            break
+//        case .allVisible:
+//            var leftBarButtonItems: [UIBarButtonItem] = []
+//            if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems?.first {
+//                leftBarButtonItems.append(unwrappedLeftBarButtonItems)
+//            }
+//            navigationItem.setLeftBarButtonItems(leftBarButtonItems, animated: true)
+//        default:
+//            //do nothing
+//            break
+//        }
+//    }
 
     // MARK: - EMAIL BODY
 
@@ -424,110 +425,110 @@ class EmailViewController: BaseTableViewController {
 //        UIUtils.presentSettings(on: vc, appConfig: appConfig)
 //    }
 
-    @IBAction func next(_ sender: Any) { //BUFF: rm
-        messageId += 1
-        if let m = folderShow?.messageAt(index: messageId) {
-            message = m
-        }
-
-        Log.shared.info("next, will reload table view")
-        configureTableRows()
-        tableView.reloadData()
-        configureView()
-    }
-
-    @IBAction func previous(_ sender: Any) { //BUFF: rm
-        messageId -= 1
-        if let m = folderShow?.messageAt(index: messageId) {
-            message = m
-        }
-
-        Log.shared.info("previous, will reload table view")
-        configureTableRows()
-        tableView.reloadData()
-        configureView()
-    }
-
-    @IBAction func pressReply(_ sender: UIBarButtonItem) {
-//        // The ReplyAllPossibleChecker() should be pushed into the view model
-//        // as soon as there is one.
-//        let alert = ReplyAlertCreator(replyAllChecker: ReplyAllPossibleChecker())
-//            .withReplyOption { [weak self] action in
-//                guard let me = self else {
-//                    Log.shared.errorAndCrash("Lost MySelf")
-//                    return
-//                }
-//                me.performSegue(withIdentifier: .segueReplyFrom , sender: self)
-//            }.withReplyAllOption(forMessage: message) { [weak self] action in
-//                guard let me = self else {
-//                    Log.shared.errorAndCrash("Lost MySelf")
-//                    return
-//                }
-//                me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
-//            }.withFordwardOption { [weak self] action in
-//                guard let me = self else {
-//                    Log.shared.errorAndCrash("Lost MySelf")
-//                    return
-//                }
-//                me.performSegue(withIdentifier: .segueForward , sender: self)
-//            }.withCancelOption()
-//            .build()
-//
-//        if let popoverPresentationController = alert.popoverPresentationController {
-//            popoverPresentationController.barButtonItem = sender
+//    @IBAction func next(_ sender: Any) { //BUFF: rm
+//        messageId += 1
+//        if let m = folderShow?.messageAt(index: messageId) {
+//            message = m
 //        }
 //
-//        present(alert, animated: true, completion: nil)
-    }
+//        Log.shared.info("next, will reload table view")
+//        configureTableRows()
+//        tableView.reloadData()
+////        configureView()
+//    }
 
-    @IBAction func flagButtonTapped(_ sender: UIBarButtonItem) {
-        defer {
-//            updateFlaggedStatus()
-        }
+//    @IBAction func previous(_ sender: Any) { //BUFF: rm
+//        messageId -= 1
+//        if let m = folderShow?.messageAt(index: messageId) {
+//            message = m
+//        }
+//
+//        Log.shared.info("previous, will reload table view")
+//        configureTableRows()
+//        tableView.reloadData()
+////        configureView()
+//    }
 
-        guard let message = message else {
-            return
-        }
+//    @IBAction func pressReply(_ sender: UIBarButtonItem) {
+////        // The ReplyAllPossibleChecker() should be pushed into the view model
+////        // as soon as there is one.
+////        let alert = ReplyAlertCreator(replyAllChecker: ReplyAllPossibleChecker())
+////            .withReplyOption { [weak self] action in
+////                guard let me = self else {
+////                    Log.shared.errorAndCrash("Lost MySelf")
+////                    return
+////                }
+////                me.performSegue(withIdentifier: .segueReplyFrom , sender: self)
+////            }.withReplyAllOption(forMessage: message) { [weak self] action in
+////                guard let me = self else {
+////                    Log.shared.errorAndCrash("Lost MySelf")
+////                    return
+////                }
+////                me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
+////            }.withFordwardOption { [weak self] action in
+////                guard let me = self else {
+////                    Log.shared.errorAndCrash("Lost MySelf")
+////                    return
+////                }
+////                me.performSegue(withIdentifier: .segueForward , sender: self)
+////            }.withCancelOption()
+////            .build()
+////
+////        if let popoverPresentationController = alert.popoverPresentationController {
+////            popoverPresentationController.barButtonItem = sender
+////        }
+////
+////        present(alert, animated: true, completion: nil)
+//    }
 
-        if (message.imapFlags.flagged == true) {
-            let imap = message.imapFlags
-            imap.flagged = false
-            message.imapFlags = imap
-        } else {
-            let imap = message.imapFlags
-            imap.flagged = true
-            message.imapFlags = imap
-        }
-        message.save()
-    }
-
-
-    @IBAction func moveToFolderButtonTapped(_ sender: UIBarButtonItem) {
-        performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
-    }
-
-    @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
-        guard let message = message else {
-            Log.shared.errorAndCrash("No message")
-            return
-        }
-        Message.imapDelete(messages: [message])
-        guard let splitViewController = self.splitViewController else {
-            return
-        }
-        if onlySplitViewMasterIsShown {
-            navigationController?.popViewController(animated: true)
-        }
-    }
-
-    @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer? = nil) {
-        if onlySplitViewMasterIsShown {
-            performSegue(withIdentifier: .segueHandshakeCollapsed, sender: self)
-
-        } else {
-            performSegue(withIdentifier: .segueHandshake, sender: self)
-        }
-    }
+//    @IBAction func flagButtonTapped(_ sender: UIBarButtonItem) {
+//        defer {
+////            updateFlaggedStatus()
+//        }
+//
+//        guard let message = message else {
+//            return
+//        }
+//
+//        if (message.imapFlags.flagged == true) {
+//            let imap = message.imapFlags
+//            imap.flagged = false
+//            message.imapFlags = imap
+//        } else {
+//            let imap = message.imapFlags
+//            imap.flagged = true
+//            message.imapFlags = imap
+//        }
+//        message.save()
+//    }
+//
+//
+//    @IBAction func moveToFolderButtonTapped(_ sender: UIBarButtonItem) {
+//        performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
+//    }
+//
+//    @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
+//        guard let message = message else {
+//            Log.shared.errorAndCrash("No message")
+//            return
+//        }
+//        Message.imapDelete(messages: [message])
+//        guard let splitViewController = self.splitViewController else {
+//            return
+//        }
+//        if onlySplitViewMasterIsShown {
+//            navigationController?.popViewController(animated: true)
+//        }
+//    }
+//
+//    @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer? = nil) {
+//        if onlySplitViewMasterIsShown {
+//            performSegue(withIdentifier: .segueHandshakeCollapsed, sender: self)
+//
+//        } else {
+//            performSegue(withIdentifier: .segueHandshake, sender: self)
+//        }
+//    }
 }
 
 // MARK: - UITableViewDataSource
@@ -556,8 +557,8 @@ extension EmailViewController {
         return cell
     }
 
-    override func tableView(
-        _ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView,
+                            heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard
             let row = tableData?.getRow(at: indexPath.row) else {
                 Log.shared.errorAndCrash("Missing data")
@@ -740,8 +741,6 @@ extension EmailViewController: QLPreviewControllerDataSource {
         }
         return url as QLPreviewItem
     }
-    
-
 }
 
 // MARK: - SecureWebViewControllerDelegate
@@ -753,10 +752,12 @@ extension EmailViewController: SecureWebViewControllerDelegate {
     }
 }
 
-enum BarButtonType: Int {
-    case space = 1
-    case settings = 2
-}
+//enum BarButtonType: Int {
+//    case space = 1
+//    case settings = 2
+//}
+
+// MARK: - UIPopoverPresentationControllerDelegate
 
 extension EmailViewController: UIPopoverPresentationControllerDelegate {
 

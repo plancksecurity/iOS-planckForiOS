@@ -284,16 +284,15 @@ extension EmailDetailViewController {
     private func setupToolbar() {
         let pEpButton = UIBarButtonItem.getPEPButton(action: #selector(showPepActions(sender:)),
                                                      target: self)
-        pEpButton.tag = BarButtonType.settings.rawValue
+//        pEpButton.tag = BarButtonType.settings.rawValue
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
                                                              target: nil,
                                                              action: nil)
-        flexibleSpace.tag = BarButtonType.space.rawValue
+//        flexibleSpace.tag = BarButtonType.space.rawValue
         toolbarItems?.append(contentsOf: [flexibleSpace, pEpButton])
         if !(onlySplitViewMasterIsShown) {
             navigationItem.rightBarButtonItems = toolbarItems
         }
-
     }
 
     private func releaseUnusedSubViewControllers() {
