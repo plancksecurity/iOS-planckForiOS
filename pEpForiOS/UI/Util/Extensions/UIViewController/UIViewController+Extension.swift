@@ -142,6 +142,16 @@ extension UIViewController {
         return activityIndicator
     }
 
+    func hideNavigationBarIfSplitViewShown() {
+        if !onlySplitViewMasterIsShown {
+            navigationController?.setNavigationBarHidden(true, animated: false)
+        }
+    }
+
+    func showNavigationBar() {
+            navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+
     @objc public var collapsedBehavior: CollapsedBehavior {
         get {
             return .disposable
