@@ -10,6 +10,7 @@ import Foundation
 
 extension EmailViewController {
  //BUFF: obsolete? (ask xavier)
+    //Xavier: as spoken I left that commentd out. Remove after new splitview approachis in.
 
 //    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 //        super.traitCollectionDidChange(previousTraitCollection)

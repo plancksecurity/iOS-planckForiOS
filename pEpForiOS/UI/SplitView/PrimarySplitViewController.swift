@@ -9,6 +9,7 @@
 import UIKit
 import pEpIOSToolbox
 
+//BUFF: //XAVIER: implementaion will change to be generic (emilaiVC independent)
 class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
