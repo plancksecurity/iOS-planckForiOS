@@ -631,7 +631,7 @@ extension ComposeViewModel {
     }
 
     func canDoHandshake() -> Bool {
-        return state.canHandshake() || state.userCanToggleProtection()
+        return state.canHandshake()
     }
 }
 
