@@ -14,9 +14,14 @@ import pEpIOSToolbox
 import MessageModel
 import PEPObjCAdapterFramework
 
+protocol EmailViewControllerDelegate: class {
+    func showPdfPreview(forPdfAt url: URL)
+}
+
 class EmailViewController: BaseTableViewController {
     static let storyboard = "Main"
     static let storyboardId = "EmailViewController"
+    weak var delegate: EmailViewControllerDelegate?
 //    @IBOutlet var flagButton: UIBarButtonItem!
 //    @IBOutlet var destructiveButton: UIBarButtonItem!
 //    @IBOutlet var previousMessage: UIBarButtonItem!
@@ -25,6 +30,10 @@ class EmailViewController: BaseTableViewController {
 //    @IBOutlet var replyButton: UIBarButtonItem!
 
 //    var barItems: [UIBarButtonItem]?
+
+    /// PDF preview removes the superview. Use this property to save the superview to re-set it
+    /// after PDF preview s gone again.
+//    var superview: UIView?
 
     var message: Message?
 //    var folderShow: Folder?
@@ -39,7 +48,7 @@ class EmailViewController: BaseTableViewController {
         return UrlClickHandler(actor: self, appConfig: appConfig)
     }()
     
-    private var selectedAttachmentURL: URL?
+//    private var selectedAttachmentURL: URL?
 
     // MARK: - LIFE CYCLE
 
@@ -714,10 +723,7 @@ extension EmailViewController: MessageAttachmentDelegate {
                                                       withGivenMimeType: attachment.mimeType)
         if mimeType == MimeTypeUtils.MimesType.pdf
             && QLPreviewController.canPreview(url as QLPreviewItem) {
-            selectedAttachmentURL = url
-            let previewController = QLPreviewController()
-            previewController.dataSource = self
-            present(previewController, animated: true, completion: nil)
+            delegate?.showPdfPreview(forPdfAt: url)
         } else {
             documentInteractionController.url = url
             let theView = inView ?? cell
@@ -730,19 +736,6 @@ extension EmailViewController: MessageAttachmentDelegate {
     }
 }
 
-extension EmailViewController: QLPreviewControllerDataSource {
-    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        return 1
-    }
-    
-    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        guard let url = selectedAttachmentURL else {
-            fatalError("Could not load URL")
-        }
-        return url as QLPreviewItem
-    }
-}
-
 // MARK: - SecureWebViewControllerDelegate
 
 extension EmailViewController: SecureWebViewControllerDelegate {
@@ -751,11 +744,6 @@ extension EmailViewController: SecureWebViewControllerDelegate {
         tableView.updateSize()
     }
 }
-
-//enum BarButtonType: Int {
-//    case space = 1
-//    case settings = 2
-//}
 
 // MARK: - UIPopoverPresentationControllerDelegate
 
@@ -773,6 +761,5 @@ extension EmailViewController: UIPopoverPresentationControllerDelegate {
                                    width:0,
                                    height:0))
         view.pointee = titleView
-
     }
 }

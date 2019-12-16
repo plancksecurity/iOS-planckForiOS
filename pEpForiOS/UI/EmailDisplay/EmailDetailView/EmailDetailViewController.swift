@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import QuickLook
 import pEpIOSToolbox
 
 // Represents the a list of mails showing one mail with all details in full screen.
@@ -19,14 +20,19 @@ class EmailDetailViewController: EmailDisplayViewController {
     private var emailViewControllers = [EmailViewController]() //BUFF:
     /// Stuff that must be done once only in viewWillAppear
     private var doOnce: (()-> Void)?
-    /// IndexPath to show on load
-    var firstItemToShow: IndexPath?
-    lazy private var documentInteractionController = UIDocumentInteractionController()
+
+    private var pdfPreviewUrl: URL?
+//    lazy private var documentInteractionController = UIDocumentInteractionController() //BUFF: ??. Should stay in EmilView?
+
     @IBOutlet weak var nextButton: UIBarButtonItem?
     @IBOutlet weak var previousButton: UIBarButtonItem?
     @IBOutlet weak var flagButton: UIBarButtonItem!
     @IBOutlet weak var destructiveButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
+
+    /// IndexPath to show on load
+    var firstItemToShow: IndexPath?
+
     var viewModel: EmailDetailViewModel? {
         didSet {
             viewModel?.delegate = self
@@ -47,20 +53,26 @@ class EmailDetailViewController: EmailDisplayViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        doOnce?()
+        doOnce = nil
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // Re-layout cells after device orientaion change
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+
     //BUFF: move
     private func setupCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
         viewModel?.delegate = self
-        collectionView.register(UINib(nibName: EmailDetailViewController.xibName, bundle: nil),
+        collectionView.register(UINib(nibName: EmailDetailViewController.xibName,
+                                      bundle: nil),
                                 forCellWithReuseIdentifier: EmailDetailViewController.cellId)
-
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        doOnce?()
-        doOnce = nil
     }
 
     // MARK: - Target & Action
@@ -440,6 +452,7 @@ extension EmailDetailViewController: UICollectionViewDataSource {
         emailViewController.appConfig = appConfig
         //BUFF: HERE: set message to show
         emailViewController.message = vm.message(representedByRowAt: indexPath)
+        emailViewController.delegate = self
 
         emailViewControllers.append(emailViewController)
 
@@ -481,7 +494,7 @@ extension EmailDetailViewController: UIScrollViewDelegate {
         guard
             let vm = viewModel,
             let indexPath = indexPathOfCurrentlyVisibleCell else {
-                Log.shared.errorAndCrash("Invalid state")
+                // No cells shown any more. Can happen, is valid.
                 return
         }
         vm.handleEmailShown(forItemAt: indexPath)
@@ -570,16 +583,16 @@ extension EmailDetailViewController: SegueHandlerType {
         }
     }
 
-    override func viewWillTransition(to size: CGSize,
-                                     with coordinator: UIViewControllerTransitionCoordinator) {
-        if UI_USER_INTERFACE_IDIOM() == .pad {
-            documentInteractionController.dismissMenu(animated: false)
-        }
-
-        splitViewController?.preferredDisplayMode = .allVisible
-
-        coordinator.animate(alongsideTransition: nil)
-    }
+//    override func viewWillTransition(to size: CGSize,
+//                                     with coordinator: UIViewControllerTransitionCoordinator) {
+////        if UI_USER_INTERFACE_IDIOM() == .pad {
+////            documentInteractionController.dismissMenu(animated: false)
+////        }
+//
+//        splitViewController?.preferredDisplayMode = .allVisible
+//
+//        coordinator.animate(alongsideTransition: nil)
+//    }
 }
 
 // MARK: - UIPopoverPresentationControllerDelegate
@@ -695,5 +708,33 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
 
     private func addUpdateTask(_ block: @escaping ()->Void) {
         collectionViewUpdateTasks.append(block)
+    }
+}
+
+// MARK: - EmailViewControllerDelegate
+
+extension EmailDetailViewController: EmailViewControllerDelegate {
+    func showPdfPreview(forPdfAt url: URL) {
+        pdfPreviewUrl = url
+        let previewController = QLPreviewController()
+        previewController.dataSource = self
+        present(previewController, animated: true, completion: nil)
+    }
+
+}
+
+// MARK: - QLPreviewControllerDataSource
+
+extension EmailDetailViewController: QLPreviewControllerDataSource {
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return 1
+    }
+
+    func previewController(_ controller: QLPreviewController,
+                           previewItemAt index: Int) -> QLPreviewItem {
+        guard let url = pdfPreviewUrl else {
+            fatalError("Could not load URL")
+        }
+        return url as QLPreviewItem
     }
 }
