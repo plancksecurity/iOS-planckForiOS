@@ -54,8 +54,9 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        showNavigationBar()
+        title = NSLocalizedString("Account", comment: "Account view title")
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
-        hideBackButtonIfNeeded()
         //Work around async old stack context merge behaviour
         DispatchQueue.main.async { [weak self] in
             self?.setUpView()
@@ -297,9 +298,9 @@ extension AccountSettingsTableViewController {
         }
     }
 
-    private func hideBackButtonIfNeeded() {
-        if !onlySplitViewMasterIsShown {
-            navigationItem.leftBarButtonItem = nil// hidesBackButton = true
-        }
-    }
+//    private func hideBackButtonIfNeeded() {
+//        if !onlySplitViewMasterIsShown {
+//            navigationItem.leftBarButtonItem = nil// hidesBackButton = true
+//        }
+//    }
 }

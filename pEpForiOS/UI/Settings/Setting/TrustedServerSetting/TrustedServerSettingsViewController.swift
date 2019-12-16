@@ -17,6 +17,10 @@ class TrustedServerSettingsViewController: BaseTableViewController {
             return .needed
         }
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        showNavigationBar()
+    }
 }
 
 // MARK: -  UITableViewDataSource

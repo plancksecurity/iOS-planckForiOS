@@ -24,12 +24,12 @@ class SetOwnKeyViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         convertTopEp(button: setOwnKeyButton)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        showNavigationBar()
         errorTextField.text = nil
     }
 

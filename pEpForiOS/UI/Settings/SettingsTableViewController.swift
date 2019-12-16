@@ -29,6 +29,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         title = NSLocalizedString("Settings", comment: "Settings view title")
         UIHelper.variableCellHeightsTableView(tableView)
         addExtraKeysEditabilityToggleGesture()
+        showNavigationBar()
     }
 
     override func viewWillAppear(_ animated: Bool) {

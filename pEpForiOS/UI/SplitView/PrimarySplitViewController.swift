@@ -20,9 +20,6 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
     func splitViewController(_ splitViewController: UISplitViewController,
                              collapseSecondary secondaryViewController:UIViewController,
                              onto primaryViewController:UIViewController) -> Bool {
-        /*||
-        navigationController.rootViewController is ThreadViewController*/// Message threadding is currently umsupported. The code might be helpful.
-
         if let navigationController = secondaryViewController as? UINavigationController,
             let top = navigationController.topViewController, top.collapsedBehavior == .needed,
             let primaryNavigationController = primaryViewController as? UINavigationController {
@@ -70,8 +67,7 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
             guard splitViewController.viewControllers.count == 2, let controller = splitViewController.viewControllers[detail] as? UINavigationController else {
                 return false
             }
-            controller.popViewController(animated: false)
-            controller.pushViewController(vc, animated: false)
+            controller.viewControllers = [vc]
             return true
         }
         return false

@@ -34,6 +34,7 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
         tableView.delegate = self
         // Hide toolbar
         navigationController?.setToolbarHidden(true, animated: false)
+        showNavigationBar()
         model.delegate = self
         // searchBar configuration
         configureSearchBar()
