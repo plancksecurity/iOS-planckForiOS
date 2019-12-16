@@ -283,18 +283,12 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
 
     private var tempToolbarItems: [UIBarButtonItem]?
     private var editRightButton: UIBarButtonItem?
-    var flagToolbarButton: UIBarButtonItem?
-    var unflagToolbarButton: UIBarButtonItem?
-    var readToolbarButton: UIBarButtonItem?
-    var unreadToolbarButton: UIBarButtonItem?
-    var deleteToolbarButton: UIBarButtonItem?
-    var moveToolbarButton: UIBarButtonItem?
-
-//    @IBAction func Edit(_ sender: Any) {
-//
-//        showEditToolbar()
-//        tableView.setEditing(true, animated: true)
-//    }
+    private var flagToolbarButton: UIBarButtonItem?
+    private var unflagToolbarButton: UIBarButtonItem?
+    private var readToolbarButton: UIBarButtonItem?
+    private var unreadToolbarButton: UIBarButtonItem?
+    private var deleteToolbarButton: UIBarButtonItem?
+    private var moveToolbarButton: UIBarButtonItem?
 
     private func showEditToolbar() {
 
