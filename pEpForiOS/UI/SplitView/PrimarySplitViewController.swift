@@ -9,6 +9,8 @@
 import UIKit
 import pEpIOSToolbox
 
+//rename to pepSplitViewController
+
 class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
