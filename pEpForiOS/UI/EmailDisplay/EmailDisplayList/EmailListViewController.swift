@@ -258,9 +258,6 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
 
     /// we have to handle the ipad/iphone segue in a different way. see IOS-1737
     private func showEmail(forCellAt indexPath: IndexPath) {
-        guard let _ = splitViewController else { //BUFF: looks obsolete legathy. Ask Xavier to make sure.
-            return
-        }
         if onlySplitViewMasterIsShown {
             performSegue(withIdentifier: SegueIdentifier.segueShowEmailNotSplitView, sender: self)
         } else {
