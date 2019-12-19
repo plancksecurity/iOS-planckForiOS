@@ -79,19 +79,12 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
             return
         }
 
-        showNoMessageSelectedIfNeeded()
+        showNoMessageSelected()
 
         if !vm.showLoginView {
             updateFilterButtonView()
             vm.startMonitoring() //???: should UI know about startMonitoring?
-
             tableView.reloadData()
-
-            // Threading feature is currently non-existing. Keep this code, might help later.
-            //            if vm.checkIfSettingsChanged() {
-            //                settingsChanged()
-            //            }
-
             checkSplitViewState()
             watchDetailView()
         }
@@ -265,7 +258,7 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
         }
     }
 
-    private func showNoMessageSelectedIfNeeded() {
+    private func showNoMessageSelected() {
         showEmptyDetailViewIfApplicable(message: NSLocalizedString(
                 "Please chose a message",
                 comment: "No messages has been selected for detail view"))
@@ -935,9 +928,8 @@ extension EmailListViewController: EmailListViewModelDelegate {
         } else {
             tableView.deleteRows(at: indexPaths, with: .automatic)
         }
-        if let lastSelectedIndexPath = lastSelectedIndexPath,
-            indexPaths.contains(lastSelectedIndexPath) {
-            showNoMessageSelectedIfNeeded()
+        if viewModel.rowCount == 0 {
+            showNoMessageSelected()
         }
     }
     func emailListViewModel(viewModel: EmailDisplayViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
@@ -949,12 +941,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.moveRow(at: atIndexPath, to: toIndexPath)
         moveSelectionIfNeeded(fromIndexPath: atIndexPath, toIndexPath: toIndexPath)
-    }
-
-    func updateView() {
-        tableView.dataSource = self
-        tableView.reloadData()
-        showNoMessageSelectedIfNeeded()
     }
 }
 

@@ -11,7 +11,7 @@ import pEpIOSToolbox
 import MessageModel
 import PEPObjCAdapterFramework
 
-protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate, TableViewUpdate {
+protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
     //BUFF: All moved to EmailDisplayViewModelDelegate. Will be filled with list specific stuff soon. Stay tuned!
 
     func setToolbarItemsEnabledState(to newValue: Bool)
