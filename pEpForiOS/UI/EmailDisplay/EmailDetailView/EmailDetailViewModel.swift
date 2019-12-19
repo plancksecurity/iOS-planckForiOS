@@ -75,8 +75,14 @@ class EmailDetailViewModel: EmailDisplayViewModel {
 
     }
 
+    /// Used to figure out whether or not the currently displayed message has been decrypted while
+    /// being shown to the user.
     private var pathsForMessagesMarkedForRedecrypt = [IndexPath]()
+    /// Remember the message the user is viewing
     private var lastShownMessage: Message?
+    /// Whether or not a message has been inserted or removed before the currently shown message.
+    /// Used to figure out if we need to scroll to the currently viewed message after update.
+    private var updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
 
     public func handleEmailShown(forItemAt indexPath: IndexPath) {
         lastShownMessage = message(representedByRowAt: indexPath)
@@ -86,7 +92,7 @@ class EmailDetailViewModel: EmailDisplayViewModel {
                                                       didSelectItemAt: indexPath)
     }
 
-    public func indexPathForCellDisplayedBeforeUpdating() -> IndexPath? {
+    public var indexPathForCellDisplayedBeforeUpdating: IndexPath? {
         guard
             let messageShownBeforeUpdating = lastShownMessage,
             !messageShownBeforeUpdating.isDeleted
@@ -101,6 +107,12 @@ class EmailDetailViewModel: EmailDisplayViewModel {
             }
         }
         return nil
+    }
+
+    /// Scroll to `indexPathForCellDisplayedBeforeUpdating` after the collection has been updated
+    /// (only) if this is true.
+    public var shouldScrollBackToCurrentlyViewdCellAfterUpdate: Bool {
+        return updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage
     }
 
     public func markForRedecryptionIfNeeded(messageRepresentedby indexPath: IndexPath) {
@@ -189,6 +201,7 @@ class EmailDetailViewModel: EmailDisplayViewModel {
 extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
 
     func didInsertRow(indexPath: IndexPath) {
+        handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: indexPath)
         delegate?.emailListViewModel(viewModel: self, didInsertDataAt: [indexPath])
     }
 
@@ -205,6 +218,7 @@ extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
     }
 
     func didDeleteRow(indexPath: IndexPath) {
+        handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: indexPath)
         delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: [indexPath])
     }
 
@@ -213,11 +227,19 @@ extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
     }
 
     func willChangeResults() {
+        updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
         delegate?.willReceiveUpdates(viewModel: self)
     }
 
     func didChangeResults() {
         delegate?.allUpdatesReceived(viewModel: self)
+    }
+
+    private func handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: IndexPath) {
+        if let currentlyShownIndex = indexPathForCellDisplayedBeforeUpdating,
+            insertedIndexPath.row <= currentlyShownIndex.row {
+            updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = true
+        }
     }
 }
 

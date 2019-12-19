@@ -702,13 +702,21 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
             me.collectionViewUpdateTasks.removeAll()
             updateTasksToRun.forEach { $0() }
         }
-        // Dis- and later enable animations while updating to avoid visible glitches while first
-        // updating the colelction and then scroll back to the cell the user is currently viewing.
-        UIView.setAnimationsEnabled(false)
-        collectionView?.performBatchUpdates(performChangesBlock)
-        UIView.setAnimationsEnabled(true)
-        // ... and make sure the the previously shown message is still shown after the update.
-        scrollToCellShownBeforeUpdating()
+        guard let vm = viewModel as? EmailDetailViewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        if vm.shouldScrollBackToCurrentlyViewdCellAfterUpdate {
+            // Dis- and later enable animations while updating to avoid visible glitches while first
+            // updating the colelction and then scroll back to the cell the user is currently viewing.
+            UIView.setAnimationsEnabled(false)
+            collectionView?.performBatchUpdates(performChangesBlock)
+            UIView.setAnimationsEnabled(true)
+            // ... and make sure the the previously shown message is still shown after the update.
+            scrollToCellShownBeforeUpdating()
+        } else {
+            collectionView?.performBatchUpdates(performChangesBlock)
+        }
         configureView()
     }
 
@@ -718,7 +726,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
     private func scrollToCellShownBeforeUpdating() {
         guard
             let vm = viewModel,
-            let indexPath = vm.indexPathForCellDisplayedBeforeUpdating() else {
+            let indexPath = vm.indexPathForCellDisplayedBeforeUpdating else {
                 // The previously shown message might have been deleted.
                 // Do nothing ...
                 return
