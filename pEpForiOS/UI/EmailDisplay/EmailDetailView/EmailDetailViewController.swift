@@ -40,16 +40,7 @@ class EmailDetailViewController: EmailDisplayViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCollectionView()
-        setupToolbar()
-        doOnce = { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.viewModel?.startMonitoring() //???: should UI know about startMonitoring?
-            me.collectionView.reloadData()
-        }
+        setup()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -64,7 +55,25 @@ class EmailDetailViewController: EmailDisplayViewController {
         collectionView.collectionViewLayout.invalidateLayout()
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     //BUFF: move
+    private func setup() {
+        setupCollectionView()
+        registerNotifications()
+        setupToolbar()
+        doOnce = { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.viewModel?.startMonitoring() //???: should UI know about startMonitoring?
+            me.collectionView.reloadData()
+        }
+    }
+
     private func setupCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -72,6 +81,18 @@ class EmailDetailViewController: EmailDisplayViewController {
         collectionView.register(UINib(nibName: EmailDetailViewController.cellXibName,
                                       bundle: nil),
                                 forCellWithReuseIdentifier: EmailDetailViewController.cellId)
+    }
+
+    private func registerNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(EmailDetailViewController.rotated),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
+    }
+
+    @objc
+    private func rotated() {
+        scrollToLastViewedCell()
     }
 
     // MARK: - Target & Action
@@ -713,7 +734,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
             collectionView?.performBatchUpdates(performChangesBlock)
             UIView.setAnimationsEnabled(true)
             // ... and make sure the the previously shown message is still shown after the update.
-            scrollToCellShownBeforeUpdating()
+            scrollToLastViewedCell()
         } else {
             collectionView?.performBatchUpdates(performChangesBlock)
         }
@@ -723,7 +744,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
     //BUFF: move
 
     /// Makes sure the message the user is currently viewing is shown. Use after collection view updates which may modify the visible cell by removing or inserting a mails with row num < currently shown.
-    private func scrollToCellShownBeforeUpdating() {
+    private func scrollToLastViewedCell() {
         guard
             let vm = viewModel,
             let indexPath = vm.indexPathForCellDisplayedBeforeUpdating else {

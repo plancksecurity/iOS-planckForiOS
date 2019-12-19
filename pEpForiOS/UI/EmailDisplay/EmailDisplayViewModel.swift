@@ -135,7 +135,6 @@ class EmailDisplayViewModel {
         fatalError("Must be overridden")
     }
 
-
     public func shouldShowToolbarEditButtons() -> Bool {
         switch folderToShow {
         case is VirtualFolderProtocol:
