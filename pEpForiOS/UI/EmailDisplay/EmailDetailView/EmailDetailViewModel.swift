@@ -10,12 +10,11 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
-    //BUFF: All moved to EmailDisplayViewModelDelegate. Will be filled with list specific stuff soon. Stay tuned.
 
     /// `emailListViewModel(viewModel:didUpdateDataAt:)` should not reload the cell but update the
-    /// flags ad such.
-    /// There is only one case where the cell has to be reloaded: A mail is shown as undecryptable
-    /// and has been decrypted afterwards.
+    /// flags and such.
+    /// This callback is to handle  only one case where the cell has to be reloaded: A mail is
+    /// shown as undecryptable and has been decrypted afterwards.
     /// - Parameter indexPath: indexpath of mail to reload
     func isNotUndecryptableAnyMore(indexPath: IndexPath)
 }
@@ -77,12 +76,31 @@ class EmailDetailViewModel: EmailDisplayViewModel {
     }
 
     private var pathsForMessagesMarkedForRedecrypt = [IndexPath]()
+    private var lastShownMessage: Message?
 
     public func handleEmailShown(forItemAt indexPath: IndexPath) {
+        lastShownMessage = message(representedByRowAt: indexPath)
         markForRedecryptionIfNeeded(messageRepresentedby: indexPath)
         markSeenIfNeeded(messageRepresentedby: indexPath)
         selectionChangeDelegate?.emailDetailViewModel(emailDetailViewModel: self,
                                                       didSelectItemAt: indexPath)
+    }
+
+    public func indexPathForCellDisplayedBeforeUpdating() -> IndexPath? {
+        guard
+            let messageShownBeforeUpdating = lastShownMessage,
+            !messageShownBeforeUpdating.isDeleted
+            else {
+                // Nothing to do
+                return nil
+        }
+        for i in 0..<messageQueryResults.all.count {
+            let testee = messageQueryResults[i]
+            if testee == messageShownBeforeUpdating {
+                return IndexPath(item: i, section: 0)
+            }
+        }
+        return nil
     }
 
     public func markForRedecryptionIfNeeded(messageRepresentedby indexPath: IndexPath) {

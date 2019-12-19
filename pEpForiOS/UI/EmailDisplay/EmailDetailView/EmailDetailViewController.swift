@@ -13,8 +13,7 @@ import pEpIOSToolbox
 // Represents the a list of mails showing one mail with all details in full screen.
 //BUFF: docs!
 class EmailDetailViewController: EmailDisplayViewController {
-
-    static private let xibName = "EmailDetailCollectionViewCell"
+    static private let cellXibName = "EmailDetailCollectionViewCell"
     static private let cellId = "EmailDetailViewCell"
     private var collectionViewUpdateTasks: [()->Void] = []
     private var emailViewControllers = [EmailViewController]() //BUFF:
@@ -22,7 +21,7 @@ class EmailDetailViewController: EmailDisplayViewController {
     private var doOnce: (()-> Void)?
 
     private var pdfPreviewUrl: URL?
-//    lazy private var documentInteractionController = UIDocumentInteractionController() //BUFF: ??. Should stay in EmilView?
+    //    lazy private var documentInteractionController = UIDocumentInteractionController() //BUFF: ??. Should stay in EmilView?
 
     @IBOutlet weak var nextButton: UIBarButtonItem?
     @IBOutlet weak var previousButton: UIBarButtonItem?
@@ -70,7 +69,7 @@ class EmailDetailViewController: EmailDisplayViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         viewModel?.delegate = self
-        collectionView.register(UINib(nibName: EmailDetailViewController.xibName,
+        collectionView.register(UINib(nibName: EmailDetailViewController.cellXibName,
                                       bundle: nil),
                                 forCellWithReuseIdentifier: EmailDetailViewController.cellId)
     }
@@ -90,7 +89,7 @@ class EmailDetailViewController: EmailDisplayViewController {
     }
 
     @IBAction func moveToFolderButtonPressed(_ sender: UIBarButtonItem) {
-         performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
+        performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
     }
 
     @IBAction func destructiveButtonPressed(_ sender: UIBarButtonItem) {
@@ -124,19 +123,19 @@ class EmailDetailViewController: EmailDisplayViewController {
                     return
                 }
                 me.performSegue(withIdentifier: .segueReplyFrom , sender: self)
-            }.withReplyAllOption() { [weak self] action in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
-                    return
-                }
-                me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
-            }.withFordwardOption { [weak self] action in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
-                    return
-                }
-                me.performSegue(withIdentifier: .segueForward , sender: self)
-            }.withCancelOption()
+        }.withReplyAllOption() { [weak self] action in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost MySelf")
+                return
+            }
+            me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
+        }.withFordwardOption { [weak self] action in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost MySelf")
+                return
+            }
+            me.performSegue(withIdentifier: .segueForward , sender: self)
+        }.withCancelOption()
             .build()
 
         if let popoverPresentationController = alert.popoverPresentationController {
@@ -296,11 +295,11 @@ extension EmailDetailViewController {
     private func setupToolbar() {
         let pEpButton = UIBarButtonItem.getPEPButton(action: #selector(showPepActions(sender:)),
                                                      target: self)
-//        pEpButton.tag = BarButtonType.settings.rawValue
+        //        pEpButton.tag = BarButtonType.settings.rawValue
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
                                                              target: nil,
                                                              action: nil)
-//        flexibleSpace.tag = BarButtonType.space.rawValue
+        //        flexibleSpace.tag = BarButtonType.space.rawValue
         toolbarItems?.append(contentsOf: [flexibleSpace, pEpButton])
         if !(onlySplitViewMasterIsShown) {
             navigationItem.rightBarButtonItems = toolbarItems
@@ -407,13 +406,17 @@ extension EmailDetailViewController {
 // MARK: - UICollectionViewDelegate
 
 extension EmailDetailViewController: UICollectionViewDelegate {
-    internal func collectionView(_ collectionView: UICollectionView,
-                                 willDisplay cell: UICollectionViewCell,
-                                 forItemAt indexPath: IndexPath) {
+
+    func collectionView(_ collectionView: UICollectionView,
+                        willDisplay cell: UICollectionViewCell,
+                        forItemAt indexPath: IndexPath) {
+        // Scrooll to show message selected by previous (EmailList) view
         guard let indexToScrollTo = firstItemToShow else {
-            // no indexpath given, do nothing
+            // Is not forst load.
+            // Do nothing
             return
         }
+        // On first load only: Display message selected by user in previous VC
         collectionView.scrollToItem(at: indexToScrollTo, at: .left, animated: false)
         firstItemToShow = nil
         guard
@@ -449,18 +452,15 @@ extension EmailDetailViewController: UICollectionViewDataSource {
                                                           for: indexPath)
         }
         releaseUnusedSubViewControllers()
+        
         emailViewController.appConfig = appConfig
-        //BUFF: HERE: set message to show
-        emailViewController.message = vm.message(representedByRowAt: indexPath)
+        emailViewController.message = vm.message(representedByRowAt: indexPath) //!!!: EmailVC should have a VM which should be created in our VM. This VC should not be aware of `Message`s!
         emailViewController.delegate = self
-
         emailViewControllers.append(emailViewController)
-
         cell.containerView.addSubview(emailViewController.view)
+
         emailViewController.view.fullSizeInSuperView()
 
-        //        emailViewController.
-        //        let cell = co //BUFF: HERE
         return cell
     }
 }
@@ -469,6 +469,7 @@ extension EmailDetailViewController: UICollectionViewDataSource {
 
 extension EmailDetailViewController: UICollectionViewDelegateFlowLayout {
 
+    /// Make cell size == collection view size
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -488,6 +489,7 @@ extension EmailDetailViewController: UIScrollViewDelegate {
         vm.handleEmailShown(forItemAt: indexPath)
         configureView()
     }
+
 
     // Called after scrollling animation  triggered by user ended.
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -583,24 +585,25 @@ extension EmailDetailViewController: SegueHandlerType {
         }
     }
 
-//    override func viewWillTransition(to size: CGSize,
-//                                     with coordinator: UIViewControllerTransitionCoordinator) {
-////        if UI_USER_INTERFACE_IDIOM() == .pad {
-////            documentInteractionController.dismissMenu(animated: false)
-////        }
-//
-//        splitViewController?.preferredDisplayMode = .allVisible
-//
-//        coordinator.animate(alongsideTransition: nil)
-//    }
+    //    override func viewWillTransition(to size: CGSize,
+    //                                     with coordinator: UIViewControllerTransitionCoordinator) {
+    ////        if UI_USER_INTERFACE_IDIOM() == .pad {
+    ////            documentInteractionController.dismissMenu(animated: false)
+    ////        }
+    //
+    //        splitViewController?.preferredDisplayMode = .allVisible
+    //
+    //        coordinator.animate(alongsideTransition: nil)
+    //    }
 }
 
 // MARK: - UIPopoverPresentationControllerDelegate
 
 extension EmailDetailViewController: UIPopoverPresentationControllerDelegate {
 
-    func popoverPresentationController(_ popoverPresentationController: UIPopoverPresentationController, willRepositionPopoverTo rect:
-        UnsafeMutablePointer<CGRect>, in view: AutoreleasingUnsafeMutablePointer<UIView>) {
+    func popoverPresentationController(_ popoverPresentationController: UIPopoverPresentationController,
+                                       willRepositionPopoverTo rect: UnsafeMutablePointer<CGRect>,
+                                       in view: AutoreleasingUnsafeMutablePointer<UIView>) {
 
         guard let titleView = navigationItem.titleView else {
             return
@@ -689,6 +692,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
     }
 
     func allUpdatesReceived(viewModel: EmailDisplayViewModel) {
+        // Perform updates ...
         let performChangesBlock = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -698,8 +702,30 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
             me.collectionViewUpdateTasks.removeAll()
             updateTasksToRun.forEach { $0() }
         }
+        // Dis- and later enable animations while updating to avoid visible glitches while first
+        // updating the colelction and then scroll back to the cell the user is currently viewing.
+        UIView.setAnimationsEnabled(false)
         collectionView?.performBatchUpdates(performChangesBlock)
+        UIView.setAnimationsEnabled(true)
+        // ... and make sure the the previously shown message is still shown after the update.
+        scrollToCellShownBeforeUpdating()
         configureView()
+    }
+
+    //BUFF: move
+
+    /// Makes sure the message the user is currently viewing is shown. Use after collection view updates which may modify the visible cell by removing or inserting a mails with row num < currently shown.
+    private func scrollToCellShownBeforeUpdating() {
+        guard
+            let vm = viewModel,
+            let indexPath = vm.indexPathForCellDisplayedBeforeUpdating() else {
+                // The previously shown message might have been deleted.
+                // Do nothing ...
+                return
+        }
+        collectionView?.scrollToItem(at: indexPath,
+                                     at: .centeredHorizontally,
+                                     animated: false)
     }
 
     func reloadData(viewModel: EmailDisplayViewModel) {
