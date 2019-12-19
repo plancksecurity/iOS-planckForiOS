@@ -14,14 +14,14 @@ Install [MacPorts](https://www.macports.org/) for your
 For building the engine, you need a working python3 environment and all dependencies:
 
 ```
+sudo port install git
+sudo port install mercurial
+
 sudo port install asn1c
 
 sudo port install python38
 sudo port install py38-lxml
 sudo port select --set python3 python38
-
-sudo port install git
-sudo port install mercurial
 
 sudo port install gmake
 sudo port install autoconf
