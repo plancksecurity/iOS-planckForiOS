@@ -204,8 +204,10 @@ class EmailDetailViewController: EmailDisplayViewController {
     private var indexPathOfCurrentlyVisibleCell: IndexPath? {
         // We are manually computing the currently shown indexPath as
         // collectionView.indexPathsForVisibleItems oftern contains more then one (i.e. 2) indexpaths.
-        let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
-        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        let visibleRect = CGRect(origin: collectionView.contentOffset,
+                                 size: collectionView.bounds.size)
+        let visiblePoint = CGPoint(x: visibleRect.midX,
+                                   y: visibleRect.midY)
         let visibleIndexPath = collectionView.indexPathForItem(at: visiblePoint)
         return visibleIndexPath
     }
@@ -739,6 +741,16 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
             collectionView?.performBatchUpdates(performChangesBlock)
         }
         configureView()
+        guard let indexPath = indexPathOfCurrentlyVisibleCell else {
+            // Empty list, is ok.
+            // Do nothing.
+            return
+        }
+        // Must be dispatched to avoid recursive saves
+        // (save -> Queryresults Delegate -> calls us -> save -> ...)
+        DispatchQueue.main.async {
+            vm.handleEmailShown(forItemAt: indexPath)
+        }
     }
 
     //BUFF: move
