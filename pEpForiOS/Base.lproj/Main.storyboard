@@ -278,10 +278,10 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="HP3-Sj-MgZ" secondAttribute="trailing" id="9mB-JZ-MRy"/>
+                            <constraint firstItem="Bie-ml-VZ0" firstAttribute="trailing" secondItem="HP3-Sj-MgZ" secondAttribute="trailing" id="9mB-JZ-MRy"/>
                             <constraint firstItem="HP3-Sj-MgZ" firstAttribute="top" secondItem="Bie-ml-VZ0" secondAttribute="top" id="AU6-e6-oDf"/>
                             <constraint firstItem="Bie-ml-VZ0" firstAttribute="bottom" secondItem="HP3-Sj-MgZ" secondAttribute="bottom" id="Gcc-f9-Fhp"/>
-                            <constraint firstItem="HP3-Sj-MgZ" firstAttribute="leading" secondItem="JE8-0O-ekz" secondAttribute="leading" id="utt-jH-r7F"/>
+                            <constraint firstItem="HP3-Sj-MgZ" firstAttribute="leading" secondItem="Bie-ml-VZ0" secondAttribute="leading" id="utt-jH-r7F"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Bie-ml-VZ0"/>
                     </view>
