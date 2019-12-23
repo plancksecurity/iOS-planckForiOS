@@ -795,6 +795,7 @@
                         <outlet property="imapPortTextfield" destination="ukB-K0-MMG" id="rGA-tC-CYA"/>
                         <outlet property="imapSecurityTextfield" destination="rCJ-UW-Jmn" id="Vz4-6T-rdl"/>
                         <outlet property="imapServerTextfield" destination="LOO-6m-Q5O" id="2JT-EB-GaR"/>
+                        <outlet property="imapUsernameTextField" destination="20d-ES-uKL" id="Jvy-ZU-ny5"/>
                         <outlet property="nameTextfield" destination="RpU-jD-tx7" id="eBg-fx-AAF"/>
                         <outlet property="oauth2ActivityIndicator" destination="tUA-ey-cn7" id="r97-xz-SfT"/>
                         <outlet property="oauth2TableViewCell" destination="Bp7-9N-v9r" id="2w0-dL-3iG"/>
@@ -806,6 +807,7 @@
                         <outlet property="smtpPortTextfield" destination="f4i-WV-eyd" id="SWD-86-mCa"/>
                         <outlet property="smtpSecurityTextfield" destination="JLc-di-cx2" id="sqO-QP-g1u"/>
                         <outlet property="smtpServerTextfield" destination="fSa-9P-hot" id="sQi-AR-vlO"/>
+                        <outlet property="smtpUsernameTextField" destination="GoF-g6-pSr" id="URl-UP-kJm"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Hi-lO-EOj" userLabel="First Responder" sceneMemberID="firstResponder"/>
