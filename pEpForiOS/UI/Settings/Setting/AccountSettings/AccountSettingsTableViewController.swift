@@ -202,15 +202,14 @@ extension AccountSettingsTableViewController {
             imapServerTextfield.text = imapServer.address
             imapPortTextfield.text = String(imapServer.port)
             imapSecurityTextfield.text = imapServer.transport.asString()
-            imapUsernameTextField.text = imapServer.address //this should be the username
-            //viewModel?.account.imapServer?.credentials.loginName
+            imapUsernameTextField.text = imapServer.credentials.loginName
         }
 
         if let smtpServer = viewModel?.account.smtpServer {
             self.smtpServerTextfield.text = smtpServer.address
             self.smtpPortTextfield.text = String(smtpServer.port)
             smtpSecurityTextfield.text = smtpServer.transport.asString()
-            smtpUsernameTextField.text = smtpServer.address //this should be the username
+            smtpUsernameTextField.text = smtpServer.credentials.loginName
         }
     }
 
