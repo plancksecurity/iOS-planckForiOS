@@ -24,19 +24,17 @@ def connect_account(ini, account_name):
     tls = data.get('tls') or 'yes'
     con = None
     theTls = tls.lower()
+
     if theTls == 'yes' or theTls == 'true':
         con = imaplib.IMAP4_SSL(hostname, port=port)
     else:
         con = imaplib.IMAP4(hostname, port=port)
-    con.login(username, password)
 
-    print("Capabilities returned on connect: %s" % pformat(con.capabilities))
+    con.login(username, password)
 
     capabilites = "None"
     (status, data) = con.capability()
     if status == "OK":
         capabilites = data[0].decode()
-
-    print("Capabilities returned on CAPABILITY: %s" % pformat(capabilites))
 
     return con

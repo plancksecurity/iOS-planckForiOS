@@ -88,7 +88,7 @@ extension UIViewController {
     }
 
     private func settingsIconInImageView() -> UIImageView? {
-        guard let img = UIImage(named: "icon-settings") else {
+        guard let img = UIImage(named: "icon-unsecure-top") else {
             return nil
         }
 
