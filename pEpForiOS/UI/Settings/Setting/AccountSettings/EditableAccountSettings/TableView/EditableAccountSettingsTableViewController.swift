@@ -11,16 +11,17 @@ import UIKit
 final class EditableAccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var emailTextfield: UITextField!
-    @IBOutlet weak var usernameTextfield: UITextField!
     @IBOutlet weak var passwordTextfield: UITextField!
 
     @IBOutlet weak var imapServerTextfield: UITextField!
     @IBOutlet weak var imapPortTextfield: UITextField!
     @IBOutlet weak var imapSecurityTextfield: UITextField!
+    @IBOutlet weak var imapUsernameTextfield: UITextField!
 
     @IBOutlet weak var smtpServerTextfield: UITextField!
     @IBOutlet weak var smtpPortTextfield: UITextField!
     @IBOutlet weak var smtpSecurityTextfield: UITextField!
+    @IBOutlet weak var smtpUsernameTextfield: UITextField!
 
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
     @IBOutlet weak var securityPicker: UIPickerView!
@@ -54,8 +55,6 @@ extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
             viewModel?.imapServer?.port = textField.text
         case smtpPortTextfield:
             viewModel?.smtpServer?.port = textField.text
-        case usernameTextfield:
-            viewModel?.loginName = textField.text
         case nameTextfield:
             viewModel?.name = textField.text
         case passwordTextfield:
@@ -64,6 +63,10 @@ extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
             viewModel?.smtpServer?.address = textField.text
         case imapServerTextfield:
             viewModel?.imapServer?.address = textField.text
+        case imapUsernameTextfield:
+            viewModel?.imapUsername = textField.text
+        case smtpUsernameTextfield:
+            viewModel?.smtpUsername = textField.text
         default:
             break
         }
@@ -142,16 +145,18 @@ extension EditableAccountSettingsTableViewController: EditableAccountSettingsTab
         DispatchQueue.main.async { [weak self] in
             self?.nameTextfield.text = self?.viewModel?.name
             self?.emailTextfield.text = self?.viewModel?.email
-            self?.usernameTextfield.text = self?.viewModel?.loginName
+//            self?.usernameTextfield.text = self?.viewModel?.loginName
             self?.passwordTextfield.text = self?.viewModel?.password ?? "JustAPassword"
 
             self?.imapServerTextfield.text = self?.viewModel?.imapServer?.address
             self?.imapPortTextfield.text = self?.viewModel?.imapServer?.port
             self?.imapSecurityTextfield.text = self?.viewModel?.imapServer?.transport
+            self?.imapUsernameTextfield.text = self?.viewModel?.imapUsername
 
             self?.smtpServerTextfield.text = self?.viewModel?.smtpServer?.address
             self?.smtpPortTextfield.text = self?.viewModel?.smtpServer?.port
             self?.smtpSecurityTextfield.text = self?.viewModel?.smtpServer?.transport
+            self?.smtpUsernameTextfield.text = self?.viewModel?.smtpUsername
 
             self?.tableView.reloadData()
         }

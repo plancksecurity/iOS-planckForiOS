@@ -21,7 +21,7 @@ protocol EditableAccountSettingsViewModelDelegate: class {
 final class EditableAccountSettingsViewModel {
     typealias Inputs = (addrImap: String, portImap: String, transImap: String,
     addrSmpt: String, portSmtp: String, transSmtp: String, accountName: String,
-    loginName: String)
+    imapUsername: String, smtpUsername: String)
 
     var account: Account
     var isOAuth2: Bool {
@@ -77,7 +77,7 @@ final class EditableAccountSettingsViewModel {
             let smtp = ServerViewModel(address: validated.addrSmpt,
                                        port: validated.portSmtp,
                                        transport: validated.transSmtp)
-            update(loginName: validated.loginName, name: validated.accountName,
+            update(imapUsername: validated.imapUsername, smtpUsername: validated.smtpUsername, name: validated.accountName,
                    password: password, imap: imap, smtp: smtp)
         } catch {
             delegate?.hideLoadingView()
@@ -132,7 +132,8 @@ extension EditableAccountSettingsViewModel {
             return try tableViewModel.validateInputs()
     }
 
-    private func update(loginName: String,
+    private func update(imapUsername: String,
+                        smtpUsername: String,
                         name: String,
                         password: String? = nil,
                         imap: ServerViewModel,
@@ -143,7 +144,8 @@ extension EditableAccountSettingsViewModel {
 
         theVerifier.address = tableViewModel?.email
         theVerifier.userName = name
-        theVerifier.loginName = loginName
+        theVerifier.loginNameIMAP = imapUsername
+        theVerifier.loginNameSMTP = smtpUsername
 
         if isOAuth2 {
             if self.accessToken == nil {
