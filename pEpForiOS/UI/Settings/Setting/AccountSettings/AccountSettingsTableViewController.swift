@@ -13,7 +13,6 @@ import pEpIOSToolbox
 final class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var emailTextfield: UITextField!
-    @IBOutlet weak var usernameTextfield: UITextField!
     @IBOutlet weak var passwordTextfield: UITextField!
     @IBOutlet weak var resetIdentityLabel: UILabel!
 
@@ -187,7 +186,7 @@ extension AccountSettingsTableViewController {
     private func setUpView() {
         nameTextfield.text = viewModel?.account.user.userName
         emailTextfield.text = viewModel?.account.user.address
-        usernameTextfield.text = viewModel?.account.imapServer?.credentials.loginName
+        //usernameTextfield.text = viewModel?.account.imapServer?.credentials.loginName
         passwordTextfield.text = "JustAPassword"
         resetIdentityLabel.text = NSLocalizedString("Reset This Identity", comment: "Account settings reset this identity")
         resetIdentityLabel.textColor = .pEpRed
