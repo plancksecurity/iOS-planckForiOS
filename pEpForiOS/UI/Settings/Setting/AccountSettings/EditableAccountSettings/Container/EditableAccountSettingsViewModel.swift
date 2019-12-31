@@ -183,6 +183,7 @@ extension EditableAccountSettingsViewModel {
         do {
             try theVerifier.verify()
         } catch {
+            delegate?.hideLoadingView()
             delegate?.showErrorAlert(error: LoginViewController.LoginError.noConnectData)
         }
     }
