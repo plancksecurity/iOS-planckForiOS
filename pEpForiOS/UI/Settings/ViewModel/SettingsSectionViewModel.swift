@@ -113,6 +113,7 @@ extension SettingsSectionViewModel {
 
     private func generateKeySyncCells() {
         cells.append(SettingsActionCellViewModel(type: .keySyncSetting))
+        cells.append(SettingsCellViewModel(type: .accountsToSync))
     }
 }
 

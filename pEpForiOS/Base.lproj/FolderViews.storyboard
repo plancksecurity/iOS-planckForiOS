@@ -33,7 +33,6 @@
                                     </state>
                                     <connections>
                                         <action selector="addAccountTapped:" destination="6ra-tc-Aiv" eventType="touchUpInside" id="OYg-F7-CRW"/>
-                                        <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccountIpad" modalPresentationStyle="formSheet" id="aKb-z0-Qyn"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -65,6 +64,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccountIphone" id="W2T-ax-nDz"/>
+                        <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccountIpad" id="VWu-Lk-rKj"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2c-UY-yR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -74,7 +74,9 @@
         <!--AccountCreation-->
         <scene sceneID="rdR-gU-SsC">
             <objects>
-                <viewControllerPlaceholder storyboardName="AccountCreation" id="uKb-Ku-Cng" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="AccountCreation" id="uKb-Ku-Cng" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="HcY-vc-Krh"/>
+                </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7bq-Lz-J44" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="10635" y="-1077"/>
@@ -123,6 +125,6 @@
         <image name="button-add" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="aKb-z0-Qyn"/>
+        <segue reference="W2T-ax-nDz"/>
     </inferredMetricsTieBreakers>
 </document>

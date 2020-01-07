@@ -153,7 +153,10 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 performSegue(withIdentifier: .segueSetOwnKey, sender: self)
             case .extraKeys:
                 performSegue(withIdentifier: .segueExtraKeys, sender: self)
+            case .accountsToSync:
+                break
             }
+
         case let vm as SettingsActionCellViewModel:
             switch vm.type {
             case .keySyncSetting:
@@ -188,6 +191,7 @@ extension SettingsTableViewController: SegueHandlerType {
         case segueShowSettingTrustedServers
         case segueExtraKeys
         case segueSetOwnKey
+        case seguePerAccountSync
         case noAccounts
         case ResetTrustSplitView
         case ResetTrust
@@ -234,6 +238,11 @@ extension SettingsTableViewController: SegueHandlerType {
             destination.appConfig = self.appConfig
         case .segueSetOwnKey:
             break
+        case .seguePerAccountSync:
+            guard let destination = segue.destination as? UIViewController else {
+                return
+            }
+            
         case .noSegue:
             // does not need preperation
             break
