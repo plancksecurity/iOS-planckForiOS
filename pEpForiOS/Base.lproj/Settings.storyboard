@@ -1317,10 +1317,10 @@
             </objects>
             <point key="canvasLocation" x="510" y="441"/>
         </scene>
-        <!--View Controller-->
+        <!--Per Account Sync View Controller-->
         <scene sceneID="53l-6c-TqX">
             <objects>
-                <viewController id="ubf-gx-0YH" sceneMemberID="viewController">
+                <viewController id="ubf-gx-0YH" customClass="PerAccountSyncViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hhq-PL-Q5g">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1328,6 +1328,33 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nVh-uI-JiE">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountCell" id="aEK-8s-TV6" customClass="PerAccountSyncAccountTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aEK-8s-TV6" id="L50-hP-Nfh">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jxa-Qh-LP1">
+                                                    <rect key="frame" x="309" y="6.5" width="51" height="31"/>
+                                                </switch>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="An3-RK-rIi">
+                                                    <rect key="frame" x="15" y="11.5" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="An3-RK-rIi" firstAttribute="centerY" secondItem="L50-hP-Nfh" secondAttribute="centerY" id="9vO-Cf-uZ8"/>
+                                                <constraint firstItem="Jxa-Qh-LP1" firstAttribute="centerY" secondItem="L50-hP-Nfh" secondAttribute="centerY" id="Mrr-yW-Ieq"/>
+                                                <constraint firstItem="An3-RK-rIi" firstAttribute="leading" secondItem="L50-hP-Nfh" secondAttribute="leadingMargin" id="d1Q-EV-suC"/>
+                                                <constraint firstAttribute="trailing" secondItem="Jxa-Qh-LP1" secondAttribute="trailing" constant="17" id="gsw-Lb-Wij"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -1339,6 +1366,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="E4R-XF-wwh"/>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="nVh-uI-JiE" id="SFZ-9v-cMd"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C8G-kv-oTS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
