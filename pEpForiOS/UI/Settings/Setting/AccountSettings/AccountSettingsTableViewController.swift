@@ -11,19 +11,22 @@ import MessageModel
 import pEpIOSToolbox
 
 final class AccountSettingsTableViewController: BaseTableViewController {
+    //general account fields
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var emailTextfield: UITextField!
-    @IBOutlet weak var usernameTextfield: UITextField!
     @IBOutlet weak var passwordTextfield: UITextField!
     @IBOutlet weak var resetIdentityLabel: UILabel!
-
+    //imap fields
     @IBOutlet weak var imapServerTextfield: UITextField!
     @IBOutlet weak var imapPortTextfield: UITextField!
     @IBOutlet weak var imapSecurityTextfield: UITextField!
-    
+    @IBOutlet weak var imapUsernameTextField: UITextField!
+    //smtp account fields
     @IBOutlet weak var smtpServerTextfield: UITextField!
     @IBOutlet weak var smtpPortTextfield: UITextField!
     @IBOutlet weak var smtpSecurityTextfield: UITextField!
+    @IBOutlet weak var smtpUsernameTextField: UITextField!
+
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
@@ -187,7 +190,6 @@ extension AccountSettingsTableViewController {
     private func setUpView() {
         nameTextfield.text = viewModel?.account.user.userName
         emailTextfield.text = viewModel?.account.user.address
-        usernameTextfield.text = viewModel?.account.imapServer?.credentials.loginName
         passwordTextfield.text = "JustAPassword"
         resetIdentityLabel.text = NSLocalizedString("Reset This Identity", comment: "Account settings reset this identity")
         resetIdentityLabel.textColor = .pEpRed
@@ -200,12 +202,14 @@ extension AccountSettingsTableViewController {
             imapServerTextfield.text = imapServer.address
             imapPortTextfield.text = String(imapServer.port)
             imapSecurityTextfield.text = imapServer.transport.asString()
+            imapUsernameTextField.text = imapServer.credentials.loginName
         }
 
         if let smtpServer = viewModel?.account.smtpServer {
             self.smtpServerTextfield.text = smtpServer.address
             self.smtpPortTextfield.text = String(smtpServer.port)
             smtpSecurityTextfield.text = smtpServer.transport.asString()
+            smtpUsernameTextField.text = smtpServer.credentials.loginName
         }
     }
 
