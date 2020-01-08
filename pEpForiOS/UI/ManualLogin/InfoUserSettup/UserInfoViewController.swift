@@ -52,7 +52,7 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        firstResponder(!viewModelOrCrash().isValidName)
+        firstResponder(!viewModelOrCrash().loginNameIsValid)
     }
 
     /// Update view state from the view model

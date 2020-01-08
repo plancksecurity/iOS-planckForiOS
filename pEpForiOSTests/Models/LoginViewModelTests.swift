@@ -51,7 +51,7 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         var verifiableAccountDelegate: VerifiableAccountDelegate?
 
         var keySyncEnable = false
-        let isValidName = false
+        let loginNameIsValid = false
 
         let isValidUser = false
 
