@@ -91,7 +91,7 @@ final class EditableAccountSettingsTableViewModelTest: CoreDataDrivenTestBase {
     func testValidateInputsLoginNameFail() {
         // GIVEN
         expected = State()
-        viewModel?.loginName = ""
+        //viewModel?.loginName = ""
 
 
         // WHEN
