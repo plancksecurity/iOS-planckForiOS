@@ -14,7 +14,8 @@ class SettingSwitchTableViewCell: UITableViewCell {
     /// Short description shown to the user in front of the switch.
     @IBOutlet weak var switchDescription: UILabel!
 
-    var viewModel : SwitchSettingCellViewModelProtocol?
+    var viewModel: SwitchSettingCellViewModelProtocol?
+    var delegate: SettingsSwitchCellDelegateProtocol?
 
     @IBAction func switchChanged(_ sender: Any) {
         handleSwitchChange()
@@ -26,6 +27,11 @@ class SettingSwitchTableViewCell: UITableViewCell {
     }
 
     func handleSwitchChange() {
+        if let del = delegate, let vm = viewModel {
+            del.performSwitchAction(value: switchItem.isOn, viewModel: vm)
+            return
+        }
+
         if let vm = viewModel {
             vm.setSwitch(value: switchItem.isOn)
         }
@@ -36,4 +42,8 @@ class SettingSwitchTableViewCell: UITableViewCell {
             switchItem.setOn(vm.switchValue(), animated: false)
         }
     }
+}
+
+protocol SettingsSwitchCellDelegateProtocol {
+    func performSwitchAction(value: Bool, viewModel: SwitchSettingCellViewModelProtocol)
 }
