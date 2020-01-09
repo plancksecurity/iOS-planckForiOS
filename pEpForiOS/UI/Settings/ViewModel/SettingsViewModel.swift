@@ -85,14 +85,14 @@ final class SettingsViewModel {
 
 extension SettingsViewModel {
 
-    private func removeLeaveDeviceGroupCell() {
-        for section in sections {
-            guard section.type == .keySync else {
-                continue
-            }
-            section.removeLeaveDeviceGroupCell()
-        }
-    }
+//    private func removeLeaveDeviceGroupCell() {
+//        for section in sections {
+//            guard section.type == .keySync else {
+//                continue
+//            }
+//            section.removeLeaveDeviceGroupCell()
+//        }
+//    }
 }
 
 // MARK: - ExtryKeysEditability

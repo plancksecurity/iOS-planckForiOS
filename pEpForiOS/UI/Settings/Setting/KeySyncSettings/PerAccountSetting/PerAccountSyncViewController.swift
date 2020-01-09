@@ -38,5 +38,4 @@ extension PerAccountSyncViewController: UITableViewDataSource {
         return cell
     }
 
-
 }

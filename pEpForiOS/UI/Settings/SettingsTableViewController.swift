@@ -154,18 +154,18 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             case .extraKeys:
                 performSegue(withIdentifier: .segueExtraKeys, sender: self)
             case .accountsToSync:
-                break
+                performSegue(withIdentifier: .seguePerAccountSync , sender: self)
             }
 
         case let vm as SettingsActionCellViewModel:
             switch vm.type {
-            case .keySyncSetting:
-                if vm.keySyncSettingCellState == .leaveDeviceGroup {
-                    showAlertBeforeLeavingDeviceGroup(cellViewModel: vm, indexPath: indexPath)
-                } else {
-                    handleKeySyncSettingCellPressed(cellViewModel: vm)
-                    tableView.reloadData()
-                }
+//            case .keySyncSetting:
+//                if vm.keySyncSettingCellState == .leaveDeviceGroup {
+//                    showAlertBeforeLeavingDeviceGroup(cellViewModel: vm, indexPath: indexPath)
+//                } else {
+//                    handleKeySyncSettingCellPressed(cellViewModel: vm)
+//                    tableView.reloadData()
+//                }
             case .resetAllIdentities:
                 handleResetAllIdentity()
                 tableView.deselectRow(at: indexPath, animated: true)
@@ -308,26 +308,26 @@ extension SettingsTableViewController {
         }
     }
 
-    private func handleKeySyncSettingCellPressed(cellViewModel: SettingsActionCellViewModel) {
-        cellViewModel.handleKeySyncSettingCellPressed()
-    }   
+//    private func handleKeySyncSettingCellPressed(cellViewModel: SettingsActionCellViewModel) {
+//        cellViewModel.handleKeySyncSettingCellPressed()
+//    }
 
-    private func showAlertBeforeLeavingDeviceGroup(cellViewModel: SettingsActionCellViewModel,
-                                                   indexPath: IndexPath) {
-        let title = NSLocalizedString("Are you sure you want to leave your device group?",
-                                      comment: "Leave device group confirmation")
-        let comment = NSLocalizedString("leaving device group", comment: "Leave device group confirmation comment")
-        let buttonTitle = NSLocalizedString("Leave", comment: "Leave device group button title")
-        let leavingAction: (UIAlertAction)-> () = { [weak self] _ in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            me.handleKeySyncSettingCellPressed(cellViewModel: cellViewModel)
-            me.tableView.reloadData()
-        }
-        showAlert(title, comment, buttonTitle, leavingAction, indexPath)
-    }
+//    private func showAlertBeforeLeavingDeviceGroup(cellViewModel: SettingsActionCellViewModel,
+//                                                   indexPath: IndexPath) {
+//        let title = NSLocalizedString("Are you sure you want to leave your device group?",
+//                                      comment: "Leave device group confirmation")
+//        let comment = NSLocalizedString("leaving device group", comment: "Leave device group confirmation comment")
+//        let buttonTitle = NSLocalizedString("Leave", comment: "Leave device group button title")
+//        let leavingAction: (UIAlertAction)-> () = { [weak self] _ in
+//            guard let me = self else {
+//                Log.shared.lostMySelf()
+//                return
+//            }
+//            me.handleKeySyncSettingCellPressed(cellViewModel: cellViewModel)
+//            me.tableView.reloadData()
+//        }
+//        showAlert(title, comment, buttonTitle, leavingAction, indexPath)
+//    }
 
     private func showAlertBeforeDelete(_ indexPath: IndexPath) {
         let title = NSLocalizedString("Are you sure you want to delete the account?", comment: "Account delete confirmation")

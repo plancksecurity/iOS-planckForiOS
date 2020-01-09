@@ -68,14 +68,14 @@ final class SettingsSectionViewModel {
         }
     }
 
-    func removeLeaveDeviceGroupCell() {
-        cells.removeAll { cell in
-            guard let actionCell = cell as? SettingsActionCellViewModel else {
-                return false
-            }
-            return actionCell.type == .keySyncSetting
-        }
-    }
+//    func removeLeaveDeviceGroupCell() {
+//        cells.removeAll { cell in
+//            guard let actionCell = cell as? SettingsActionCellViewModel else {
+//                return false
+//            }
+//            return actionCell.type == .keySyncSetting
+//        }
+//    }
 
     func cellIsValid(cell: Int) -> Bool {
         return cell >= 0 && cell < cells.count
@@ -112,7 +112,8 @@ extension SettingsSectionViewModel {
 extension SettingsSectionViewModel {
 
     private func generateKeySyncCells() {
-        cells.append(SettingsActionCellViewModel(type: .keySyncSetting))
+        //cells.append(SettingsActionCellViewModel(type: .keySyncSetting))
+        //cells.append(SwitchSettingCellViewModelProtocol())
         cells.append(SettingsCellViewModel(type: .accountsToSync))
     }
 }

@@ -26,4 +26,8 @@ class PerAccountSyncViewModel {
     func syncStatus(index: Int) -> Bool {
         return false
     }
+
+    func updateStatus() {
+
+    }
 }
