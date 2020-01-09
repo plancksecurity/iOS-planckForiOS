@@ -51,7 +51,7 @@ def generate_sync_files():
     with Pushd(ENGINE_BASE_DIR):
         commands = [
             ['gmake', '-C', 'sync'],
-            ['gmake', '-C', 'asn.1', 'Sync.c']
+            ['gmake', '-C', 'asn.1', 'all']
         ]
         for cmd in commands:
             subprocess.run(cmd, check=True)
