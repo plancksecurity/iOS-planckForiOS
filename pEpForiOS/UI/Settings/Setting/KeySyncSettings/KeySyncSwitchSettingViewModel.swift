@@ -17,11 +17,24 @@ struct KeySyncSwitchViewModel: SwitchSettingCellViewModelProtocol  {
     private(set) var title = NSLocalizedString("p≡p Sync", comment: "pep sync title")
 
     func setSwitch(value: Bool) {
-        //missing switch action
+        let grouped = KeySyncUtil.isInDeviceGroup
+        if value {
+            KeySyncUtil.enableKeySync()
+        } else {
+            if grouped {
+                do {
+                    try KeySyncUtil.leaveDeviceGroup()
+                } catch {
+                    Log.shared.errorAndCrash(error: error)
+                }
+            }
+            KeySyncUtil.disableKeySync()
+        }
     }
 
     func switchValue() -> Bool {
-        return AppSettings.shared.passiveMode
+        let keySyncEnabled = KeySyncUtil.isKeySyncEnabled
+        return keySyncEnabled
     }
 }
 
