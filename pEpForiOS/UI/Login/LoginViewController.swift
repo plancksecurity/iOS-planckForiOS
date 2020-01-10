@@ -130,8 +130,8 @@ final class LoginViewController: BaseViewController {
                 return
             }
 
-            viewModelOrCrash().login(accountName: email,
-                                     userName: userName,
+            viewModelOrCrash().login(emailAddress: email,
+                                displayName: userName,
                                      password: pass)
         }
     }
