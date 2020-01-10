@@ -11,7 +11,20 @@ import pEpIOSToolbox
 import MessageModel
 import PEPObjCAdapterFramework
 
-// MARK: - EmailDisplayViewModelDelegate
+protocol EmailDisplayViewModelProtocol {
+    var delegate: EmailDisplayViewModelDelegate? { get set }
+    func informDelegateToReloadData()
+    func startMonitoring()
+    var rowCount: Int { get }
+    //Abstract. Has to be overridden.
+    func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])  -> MoveToAccountViewModel?
+    //!!!: this should be internal (not part of the protocol). VC and Cells MUST not know the model (Message).
+    func message(representedByRowAt indexPath: IndexPath) -> Message?
+
+    func delete(messages: [Message])
+
+    func replyAllPossibleChecker(forItemAt indexPath: IndexPath) -> ReplyAllPossibleCheckerProtocol?
+}
 
 protocol EmailDisplayViewModelDelegate: class/*, TableViewUpdate*/ {
     func emailListViewModel(viewModel: EmailDisplayViewModel,
@@ -26,38 +39,36 @@ protocol EmailDisplayViewModelDelegate: class/*, TableViewUpdate*/ {
                             toIndexPath: IndexPath)
     func willReceiveUpdates(viewModel: EmailDisplayViewModel)
     func allUpdatesReceived(viewModel: EmailDisplayViewModel)
+    
     func reloadData(viewModel: EmailDisplayViewModel)
+
+    func select(itemAt indexPath: IndexPath)
 }
 
 // MARK: - EmailDisplayViewModel
 
 /// Base class for MessageQueryResults driven email display view models.
-class EmailDisplayViewModel {
-//    let contactImageTool = IdentityImageTool()
+class EmailDisplayViewModel: EmailDisplayViewModelProtocol {
     var messageQueryResults: MessageQueryResults
-
-//    var lastSearchTerm = ""
-//    var updatesEnabled = true
-
-//    weak var delegate: EmailDisplayViewModelDelegate? //BUFF: rm var
-
     let folderToShow: DisplayableFolderProtocol
     private var selectedItems: Set<IndexPath>?
 
     // MARK: - Life Cycle
 
-    init(messageQueryResults: MessageQueryResults? = nil,
-         folderToShow: DisplayableFolderProtocol) {
+    init(messageQueryResults: MessageQueryResults? = nil, folderToShow: DisplayableFolderProtocol) {
         self.folderToShow = folderToShow
 
         // We intentionally do *not* start monitoring. Respiosibility is on currently on VC.
         self.messageQueryResults = messageQueryResults ?? MessageQueryResults(withFolder: folderToShow,
                                                                               filter: nil,
                                                                               search: nil)
-//        self.messageQueryResults.rowDelegate = self
     }
 
-    func startMonitoring() {
+    // MARK: - EmailDisplayViewModelProtocol
+
+    public weak var delegate: EmailDisplayViewModelDelegate?
+
+    public func startMonitoring() {
         do {
             try messageQueryResults.startMonitoring()
         } catch {
@@ -65,36 +76,7 @@ class EmailDisplayViewModel {
         }
     }
 
-    var folderName: String {
-        return Folder.localizedName(realName: folderToShow.title)
-    }
-
-    func isEditable(messageAt indexPath: IndexPath) -> Bool {
-        let message = messageQueryResults[indexPath.row]
-        if message.parent.folderType == .drafts {
-            return true
-        } else {
-            return false
-        }
-    }
-
-    func isSelectable(messageAt indexPath: IndexPath) -> Bool {
-        let message = messageQueryResults[indexPath.row]
-        if message.parent.folderType == .outbox {
-            return false
-        } else {
-            return true
-        }
-    }
-
-    // MARK: - Public Data Access & Manipulation
-
-    func viewModel(for index: Int) -> MessageViewModel? {
-        let messageViewModel = MessageViewModel(with: messageQueryResults[index])
-        return messageViewModel
-    }
-
-    var rowCount: Int {
+    public var rowCount: Int {
         if messageQueryResults.filter?.accountsEnabledStates.count == 0 {
             // This is a dirty hack to workaround that we are (inccorectly) showning an
             // EmailListView without having an account.
@@ -103,54 +85,27 @@ class EmailDisplayViewModel {
         do {
             return try messageQueryResults.count()
         } catch {
+            // messageQueryResults has not been started yet. That's OK.
             return 0
         }
     }
 
-    func pEpRatingColorImage(forCellAt indexPath: IndexPath) -> UIImage? {
-        guard let count = try? messageQueryResults.count(), indexPath.row < count else {
-            // The model has been updated.
-            return nil
-        }
-        let message = messageQueryResults[indexPath.row]
-        let color = PEPUtils.pEpColor(pEpRating: message.pEpRating())
-        if color != PEPColor.noColor {
-            return color.statusIconForMessage()
-        } else {
-            return nil
-        }
-    }
-
-    func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])
-        -> MoveToAccountViewModel? {
+    public func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])  -> MoveToAccountViewModel? {
             fatalError("Must be overridden")
     }
 
-    func message(representedByRowAt indexPath: IndexPath) -> Message? {
+    public func message(representedByRowAt indexPath: IndexPath) -> Message? {
         return messageQueryResults[indexPath.row]
     }
 
-
-    func informDelegateToReloadData() {
-        fatalError("Must be overridden")
+    public func informDelegateToReloadData() {
+        delegate?.reloadData(viewModel: self)
     }
 
-    public func shouldShowToolbarEditButtons() -> Bool {
-        switch folderToShow {
-        case is VirtualFolderProtocol:
-            return true
-        case let folder as Folder:
-            return folder.folderType != .outbox && folder.folderType != .drafts
-        default:
-            return true
-        }
-    }
-
-    func delete(messages: [Message]) { //BUFF: n pr
+    public func delete(messages: [Message]) {
         Message.imapDelete(messages: messages)
     }
 
-    //
     public func replyAllPossibleChecker(forItemAt indexPath: IndexPath) -> ReplyAllPossibleCheckerProtocol? {
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
@@ -158,7 +113,6 @@ class EmailDisplayViewModel {
         }
         return ReplyAllPossibleChecker(messageToReplyTo: message)
     }
-    //
 }
 
 

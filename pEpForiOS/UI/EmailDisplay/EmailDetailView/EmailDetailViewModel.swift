@@ -9,26 +9,40 @@
 import MessageModel
 import PEPObjCAdapterFramework
 
+protocol EmailDetailViewModelProtocol: EmailDisplayViewModelProtocol {
+    func replaceMessageQueryResults(with qrc: MessageQueryResults) throws
+    func select(itemAt indexPath: IndexPath)
+
+}
+
 protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
 
     /// `emailListViewModel(viewModel:didUpdateDataAt:)` should not reload the cell but update the
     /// flags and such.
-    /// This callback is to handle  only one case where the cell has to be reloaded: A mail is
-    /// shown as undecryptable and has been decrypted afterwards.
+    /// This callback is to handle the only case where the cell has to be reloaded: A mail is
+    /// shown as undecryptable and has been decrypted while displaying it.
     /// - Parameter indexPath: indexpath of mail to reload
     func isNotUndecryptableAnyMore(indexPath: IndexPath)
 }
 
-/// Reports back currently shown email changes
+/// Reports back currently shown email changes.
 protocol EmailDetailViewModelSelectionChangeDelegate: class {
+    /// Called when the currently shown message changes
     func emailDetailViewModel(emailDetailViewModel: EmailDetailViewModel,
                               didSelectItemAt indexPath: IndexPath)
 }
 
-// 
-class EmailDetailViewModel: EmailDisplayViewModel {
-    // Property coll delegate
-    weak var delegate: EmailDetailViewModelDelegate?
+class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol {
+    /// Used to figure out whether or not the currently displayed message has been decrypted while
+    /// being shown to the user.
+    private var pathsForMessagesMarkedForRedecrypt = [IndexPath]()
+    /// Remember the message the user is viewing
+    private var lastShownMessage: Message?
+    /// Whether or not a message has been inserted or removed before the currently shown message.
+    /// Used to figure out if we need to scroll to the currently viewed message after update.
+    private var updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
+
+//    weak var delegate: EmailDetailViewModelDelegate?
     weak var selectionChangeDelegate: EmailDetailViewModelSelectionChangeDelegate?
 
     init(messageQueryResults: MessageQueryResults? = nil,
@@ -39,18 +53,24 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         self.messageQueryResults.rowDelegate = self
     }
 
-    public func replaceMessageQueryResults(with qrc: MessageQueryResults) {
+    public func replaceMessageQueryResults(with qrc: MessageQueryResults) throws {
         messageQueryResults = qrc
         messageQueryResults.rowDelegate = self
-        do {
-            try messageQueryResults.startMonitoring()
-        } catch {
-            Log.shared.errorAndCrash(error: error)
-        }
+        try messageQueryResults.startMonitoring()
+        reset()
+        delegate?.reloadData(viewModel: self)
     }
 
-    override func informDelegateToReloadData() {
-        delegate?.reloadData(viewModel: self)
+    public func select(itemAt indexPath: IndexPath) {
+        delegate?.select(itemAt: indexPath)
+    }
+
+    //BUFF: move
+    /// Resets bookholding vars 
+    private func reset() {
+        pathsForMessagesMarkedForRedecrypt = [IndexPath]()
+        lastShownMessage = nil
+        updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
     }
 
     //
@@ -71,22 +91,13 @@ class EmailDetailViewModel: EmailDisplayViewModel {
             Log.shared.errorAndCrash("No msg")
             return
         }
-        Message.imapDelete(messages: [message])
+        delete(messages: [message])
 
     }
 
-    /// Used to figure out whether or not the currently displayed message has been decrypted while
-    /// being shown to the user.
-    private var pathsForMessagesMarkedForRedecrypt = [IndexPath]()
-    /// Remember the message the user is viewing
-    private var lastShownMessage: Message?
-    /// Whether or not a message has been inserted or removed before the currently shown message.
-    /// Used to figure out if we need to scroll to the currently viewed message after update.
-    private var updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
-
     public func handleEmailShown(forItemAt indexPath: IndexPath) {
         lastShownMessage = message(representedByRowAt: indexPath)
-        markForRedecryptionIfNeeded(messageRepresentedby: indexPath)
+        markForRedecryptionIfNeeded(messageRepresentedBy: indexPath)
         markSeenIfNeeded(messageRepresentedby: indexPath)
         selectionChangeDelegate?.emailDetailViewModel(emailDetailViewModel: self,
                                                       didSelectItemAt: indexPath)
@@ -115,7 +126,7 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         return updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage
     }
 
-    public func markForRedecryptionIfNeeded(messageRepresentedby indexPath: IndexPath) {
+    public func markForRedecryptionIfNeeded(messageRepresentedBy indexPath: IndexPath) {
         // rm previously stored IndexPath for this message.
         pathsForMessagesMarkedForRedecrypt = pathsForMessagesMarkedForRedecrypt.filter { $0 != indexPath }
         guard let message = message(representedByRowAt: indexPath) else {
@@ -209,8 +220,12 @@ extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
         if pathsForMessagesMarkedForRedecrypt.contains(indexPath) {
             if let message = message(representedByRowAt: indexPath),
                 !message.pEpRating().isUnDecryptable() {
+                guard let delegate = delegate as? EmailDetailViewModelDelegate else {
+                    Log.shared.errorAndCrash("Inbvalid state")
+                    return
+                }
                 // Previously undecryptable message has successfully been decrypted.
-                delegate?.isNotUndecryptableAnyMore(indexPath: indexPath)
+                delegate.isNotUndecryptableAnyMore(indexPath: indexPath)
             }
             pathsForMessagesMarkedForRedecrypt = pathsForMessagesMarkedForRedecrypt.filter { $0 != indexPath }
         }

@@ -253,7 +253,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="HP3-Sj-MgZ">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="HP3-Sj-MgZ">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="LwL-nB-lHm">
@@ -330,8 +330,10 @@
                         <outlet property="collectionView" destination="HP3-Sj-MgZ" id="ar9-Hu-K2J"/>
                         <outlet property="destructiveButton" destination="zPY-ag-aQd" id="MFb-Va-h9a"/>
                         <outlet property="flagButton" destination="eWC-Rq-MJm" id="Fha-Mh-JQz"/>
+                        <outlet property="moveToFolderButton" destination="Zlf-LL-yLH" id="z3R-Zj-R96"/>
                         <outlet property="nextButton" destination="4R9-FK-LNX" id="XRa-Kx-g3q"/>
                         <outlet property="previousButton" destination="uhj-ab-NtG" id="lE3-hB-5GJ"/>
+                        <outlet property="replyButton" destination="OL8-wT-4Rt" id="BiN-bh-B2V"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="6by-Pi-xWQ"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" id="r2P-Ra-zWf"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="0Yg-lj-kVR"/>
@@ -966,21 +968,6 @@
             </objects>
             <point key="canvasLocation" x="2942" y="-2591"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="uNv-ct-qlu">
-            <objects>
-                <viewController id="I4k-3Q-Rnb" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Ay0-I6-RMz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="WOr-9z-wQG"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qfz-xa-Hb6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3004" y="702"/>
-        </scene>
     </scenes>
     <resources>
         <image name="arrow-lft-active" width="10" height="18"/>
@@ -997,9 +984,9 @@
         <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RTR-We-Kc1"/>
-        <segue reference="0zl-tV-6Kr"/>
-        <segue reference="2fD-kL-Bvj"/>
+        <segue reference="g1q-wK-tff"/>
+        <segue reference="Gcx-48-ZRF"/>
+        <segue reference="0Yg-lj-kVR"/>
         <segue reference="HHz-at-Ehg"/>
     </inferredMetricsTieBreakers>
 </document>

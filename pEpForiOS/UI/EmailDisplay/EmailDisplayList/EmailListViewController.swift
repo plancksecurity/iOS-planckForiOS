@@ -11,6 +11,8 @@ import SwipeCellKit
 import pEpIOSToolbox
 
 class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDelegate {
+    /// Stuff that must be done once only in viewWillAppear
+     private var doOnce: (()-> Void)?
     /// With this tag we recognize the pEp button item, for easy removal later.
     private let pEpButtonItemTag = 7
     /// With this tag we recognize our own created flexible space buttons, for easy removal later.
@@ -60,6 +62,26 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        doOnce = { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let vm = me.viewModel else {
+                Log.shared.errorAndCrash("No VM")
+                return
+            }
+
+            me.showNoMessageSelected()
+
+            if !vm.showLoginView {
+                me.updateFilterButtonView()
+                vm.startMonitoring() //???: should UI know about startMonitoring?
+                me.tableView.reloadData()
+                me.checkSplitViewState()
+                me.watchDetailView()
+            }
+        }
         setup()
     }
 
@@ -71,23 +93,25 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
         }
 
         lastSelectedIndexPath = nil
+        doOnce?()
+        doOnce = nil
 
         setUpTextFilter()
 
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-
-        showNoMessageSelected()
-
-        if !vm.showLoginView {
-            updateFilterButtonView()
-            vm.startMonitoring() //???: should UI know about startMonitoring?
-            tableView.reloadData()
-            checkSplitViewState()
-            watchDetailView()
-        }
+//        guard let vm = viewModel else {
+//            Log.shared.errorAndCrash("No VM")
+//            return
+//        }
+//
+//        showNoMessageSelected()
+//
+//        if !vm.showLoginView {
+//            updateFilterButtonView()
+//            vm.startMonitoring() //???: should UI know about startMonitoring?
+//            tableView.reloadData()
+//            checkSplitViewState()
+//            watchDetailView()
+//        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -251,10 +275,18 @@ class EmailListViewController: EmailDisplayViewController, SwipeTableViewCellDel
 
     /// we have to handle the ipad/iphone segue in a different way. see IOS-1737
     private func showEmail(forCellAt indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
         if onlySplitViewMasterIsShown {
             performSegue(withIdentifier: SegueIdentifier.segueShowEmailNotSplitView, sender: self)
         } else {
-            performSegue(withIdentifier: SegueIdentifier.segueShowEmailSplitView, sender: self)
+            if vm.emailDetailViewIsAlreadyShown {
+                vm.handleSelected(itemAt: indexPath)
+            } else {
+                performSegue(withIdentifier: SegueIdentifier.segueShowEmailSplitView, sender: self)
+            }
         }
     }
 
@@ -630,18 +662,25 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.isEditing {
-            if let vm = viewModel, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
-                vm.updatedItems(indexPaths: selectedIndexPaths)
-            }
-        } else {
-            guard let model = viewModel else {
-                Log.shared.errorAndCrash("No folder")
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("No VM")
                 return
             }
-            if model.isSelectable(messageAt: indexPath) {
+            guard let selectedIndexPaths = tableView.indexPathsForSelectedRows else {
+                // Nothing selected ...
+                // ... nothing to do.
+                return
+            }
+            vm.updatedItems(indexPaths: selectedIndexPaths)
+        } else {
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("No VM")
+                return
+            }
+            if vm.isSelectable(messageAt: indexPath) {
                 lastSelectedIndexPath = indexPath
                 tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                if model.isEditable(messageAt: indexPath) {
+                if vm.isEditable(messageAt: indexPath) {
                     showEditDraftComposeView()
                 } else {
                     showEmail(forCellAt: indexPath)

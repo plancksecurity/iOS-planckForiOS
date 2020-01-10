@@ -15,18 +15,22 @@ import pEpIOSToolbox
 class EmailDetailViewController: EmailDisplayViewController {
     static private let cellXibName = "EmailDetailCollectionViewCell"
     static private let cellId = "EmailDetailViewCell"
+    /// Collects all QueryResultsDelegate reported changes to call them in one CollectionView
+    /// batchUpdate.
     private var collectionViewUpdateTasks: [()->Void] = []
-    private var emailViewControllers = [EmailViewController]() //BUFF:
+    /// EmailViewControllers of currently used cells
+    private var emailSubViewControllers = [EmailViewController]()
     /// Stuff that must be done once only in viewWillAppear
     private var doOnce: (()-> Void)?
 
     private var pdfPreviewUrl: URL?
-    //    lazy private var documentInteractionController = UIDocumentInteractionController() //BUFF: ??. Should stay in EmilView?
 
     @IBOutlet weak var nextButton: UIBarButtonItem?
     @IBOutlet weak var previousButton: UIBarButtonItem?
     @IBOutlet weak var flagButton: UIBarButtonItem!
     @IBOutlet weak var destructiveButton: UIBarButtonItem!
+    @IBOutlet weak var replyButton: UIBarButtonItem!
+    @IBOutlet weak var moveToFolderButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
 
     /// IndexPath to show on load
@@ -57,42 +61,6 @@ class EmailDetailViewController: EmailDisplayViewController {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
-    }
-
-    //BUFF: move
-    private func setup() {
-        setupCollectionView()
-        registerNotifications()
-        setupToolbar()
-        doOnce = { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.viewModel?.startMonitoring() //???: should UI know about startMonitoring?
-            me.collectionView.reloadData()
-        }
-    }
-
-    private func setupCollectionView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        viewModel?.delegate = self
-        collectionView.register(UINib(nibName: EmailDetailViewController.cellXibName,
-                                      bundle: nil),
-                                forCellWithReuseIdentifier: EmailDetailViewController.cellId)
-    }
-
-    private func registerNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(EmailDetailViewController.rotated),
-                                               name: UIDevice.orientationDidChangeNotification,
-                                               object: nil)
-    }
-
-    @objc
-    private func rotated() {
-        scrollToLastViewedCell()
     }
 
     // MARK: - Target & Action
@@ -173,8 +141,35 @@ class EmailDetailViewController: EmailDisplayViewController {
     @IBAction func nextButtonPressed(_ sender: UIBarButtonItem) {
         showNextIfAny()
     }
+}
 
-    //BUFF: move
+// MARK: - Private
+
+extension EmailDetailViewController {
+
+    private func setup() {
+        viewModel?.delegate = self
+        setupCollectionView()
+        registerNotifications()
+        setupToolbar()
+        doOnce = { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.viewModel?.startMonitoring()
+            me.collectionView.reloadData()
+        }
+    }
+
+    private func setupCollectionView() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(UINib(nibName: EmailDetailViewController.cellXibName,
+                                      bundle: nil),
+                                forCellWithReuseIdentifier: EmailDetailViewController.cellId)
+    }
+
     private func showNextIfAny() {
         guard
             let indexPathForCurrentlyVisibleCell = indexPathOfCurrentlyVisibleCell,
@@ -201,6 +196,16 @@ class EmailDetailViewController: EmailDisplayViewController {
         scroll(to: nextIndexPath)
     }
 
+    @objc
+    private func showHandshakeView(gestureRecognizer: UITapGestureRecognizer? = nil) {
+        if onlySplitViewMasterIsShown {
+            performSegue(withIdentifier: .segueHandshakeCollapsed, sender: self) //BUFF: HERE: re add seques in storyboard
+
+        } else {
+            performSegue(withIdentifier: .segueHandshake, sender: self)
+        }
+    }
+
     private var indexPathOfCurrentlyVisibleCell: IndexPath? {
         // We are manually computing the currently shown indexPath as
         // collectionView.indexPathsForVisibleItems oftern contains more then one (i.e. 2) indexpaths.
@@ -210,6 +215,22 @@ class EmailDetailViewController: EmailDisplayViewController {
                                    y: visibleRect.midY)
         let visibleIndexPath = collectionView.indexPathForItem(at: visiblePoint)
         return visibleIndexPath
+    }
+
+    /// Makes sure the message the user is currently viewing is still shown after collection view
+    /// updates (which may modify the visible cell by removing or inserting a mails with
+    /// row num < currently shown).
+    private func scrollToLastViewedCell() {
+        guard
+            let vm = viewModel,
+            let indexPath = vm.indexPathForCellDisplayedBeforeUpdating else {
+                // The previously shown message might have been deleted.
+                // Do nothing ...
+                return
+        }
+        collectionView?.scrollToItem(at: indexPath,
+                                     at: .centeredHorizontally,
+                                     animated: false)
     }
 
     private var thereIsANextMessageToShow: Bool {
@@ -233,7 +254,6 @@ class EmailDetailViewController: EmailDisplayViewController {
         return (indexPathForCurrentlyVisibleCell.row - 1) >= 0
     }
 
-
     private func scroll(to indexPath: IndexPath,
                         at: UICollectionView.ScrollPosition = .centeredHorizontally,
                         animated: Bool = true) {
@@ -242,10 +262,10 @@ class EmailDetailViewController: EmailDisplayViewController {
                                     animated: animated)
     }
 
-    private func configureView() { //BUFF: HERE
+    private func configureView() {
         // Make sure the NavigationBar is shown, even if the previous view has hidden it.
         navigationController?.setNavigationBarHidden(false, animated: false) //BUFF: rm NC in storyboard?
-        
+
         //ToolBar
         if splitViewController != nil {
             if onlySplitViewMasterIsShown {
@@ -258,13 +278,13 @@ class EmailDetailViewController: EmailDisplayViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        
+
         destructiveButton.image = vm.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
         flagButton.image = vm.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
-        
-        previousButton?.isEnabled = thereIsAPreviousMessageToShow //BUFF: to VM
+
+        previousButton?.isEnabled = thereIsAPreviousMessageToShow
         nextButton?.isEnabled = thereIsANextMessageToShow
-        
+
         showPepRating()
     }
 
@@ -289,31 +309,17 @@ class EmailDetailViewController: EmailDisplayViewController {
         }
     }
 
-    @objc
-    func showHandshakeView(gestureRecognizer: UITapGestureRecognizer? = nil) {
-        if onlySplitViewMasterIsShown {
-            performSegue(withIdentifier: .segueHandshakeCollapsed, sender: self) //BUFF: HERE: re add seques in storyboard
-
-        } else {
-            performSegue(withIdentifier: .segueHandshake, sender: self)
-        }
+    private func registerNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(EmailDetailViewController.rotated),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
     }
 
-    //    // Sets the destructive bottom bar item accordint to the message (trash/archive)
-    //    private func setupDestructiveButtonIcon() { //BUFF: to VM
-    //       let shownMessage =  indexPathOfCurrentlyVisibleCell
-    //
-    //        if msg.parent.defaultDestructiveActionIsArchive {
-    //            // Replace the Storyboard set trash icon for providers that use "archive" rather than
-    //            // "delete" as default
-    //            destructiveButton.image = #imageLiteral(resourceName: "folders-icon-archive")
-    //        }
-    //    }
-}
-
-// MARK: - Private
-
-extension EmailDetailViewController {
+    @objc
+    private func rotated() {
+        scrollToLastViewedCell()
+    }
 
     private func setupToolbar() {
         let pEpButton = UIBarButtonItem.getPEPButton(action: #selector(showPepActions(sender:)),
@@ -330,7 +336,7 @@ extension EmailDetailViewController {
     }
 
     private func releaseUnusedSubViewControllers() {
-        emailViewControllers = emailViewControllers.filter { $0.view.superview != nil }
+        emailSubViewControllers = emailSubViewControllers.filter { $0.view.superview != nil }
     }
 
     @objc
@@ -479,7 +485,7 @@ extension EmailDetailViewController: UICollectionViewDataSource {
         emailViewController.appConfig = appConfig
         emailViewController.message = vm.message(representedByRowAt: indexPath) //!!!: EmailVC should have a VM which should be created in our VM. This VC should not be aware of `Message`s!
         emailViewController.delegate = self
-        emailViewControllers.append(emailViewController)
+        emailSubViewControllers.append(emailViewController)
         cell.containerView.addSubview(emailViewController.view)
 
         emailViewController.view.fullSizeInSuperView()
@@ -513,7 +519,6 @@ extension EmailDetailViewController: UIScrollViewDelegate {
         configureView()
     }
 
-
     // Called after scrollling animation  triggered by user ended.
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         guard
@@ -530,6 +535,7 @@ extension EmailDetailViewController: UIScrollViewDelegate {
 // MARK: - SegueHandlerType
 
 extension EmailDetailViewController: SegueHandlerType {
+
     enum SegueIdentifier: String {
         case segueReplyFrom
         case segueReplyAllForm
@@ -607,17 +613,6 @@ extension EmailDetailViewController: SegueHandlerType {
             break
         }
     }
-
-    //    override func viewWillTransition(to size: CGSize,
-    //                                     with coordinator: UIViewControllerTransitionCoordinator) {
-    ////        if UI_USER_INTERFACE_IDIOM() == .pad {
-    ////            documentInteractionController.dismissMenu(animated: false)
-    ////        }
-    //
-    //        splitViewController?.preferredDisplayMode = .allVisible
-    //
-    //        coordinator.animate(alongsideTransition: nil)
-    //    }
 }
 
 // MARK: - UIPopoverPresentationControllerDelegate
@@ -641,12 +636,12 @@ extension EmailDetailViewController: UIPopoverPresentationControllerDelegate {
     }
 }
 
-
 // MARK: - EmailDetailViewModelDelegate
 
 /// FetchedResultsController (FRC) (und thus QueryResults and subclasses) delegate methods are
 /// designed for usage with UITableView methods like willUpdate & didupdate. As UICollectionView
-/// does not offer those methods but uses batchUpdate, this class mimics a UITableViews behaviour.
+/// does not offer those methods but uses batchUpdate we are collecting the update tasks and run
+/// them all in one batchUpdate.
 /// - note: FRC does have callbacks for batchUpdate starting from iOS13. Remove this class and use
 ///         the batchupdate delegte methods of FRC directly after iOS12 support is dropped.
 extension EmailDetailViewController: EmailDetailViewModelDelegate {
@@ -753,24 +748,20 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
         }
     }
 
-    //BUFF: move
-
-    /// Makes sure the message the user is currently viewing is shown. Use after collection view updates which may modify the visible cell by removing or inserting a mails with row num < currently shown.
-    private func scrollToLastViewedCell() {
-        guard
-            let vm = viewModel,
-            let indexPath = vm.indexPathForCellDisplayedBeforeUpdating else {
-                // The previously shown message might have been deleted.
-                // Do nothing ...
-                return
-        }
-        collectionView?.scrollToItem(at: indexPath,
-                                     at: .centeredHorizontally,
-                                     animated: false)
-    }
-
     func reloadData(viewModel: EmailDisplayViewModel) {
         collectionView?.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.configureView()
+        }
+    }
+
+    func select(itemAt indexPath: IndexPath) {
+        scroll(to: indexPath, animated: false)
+        configureView()
     }
 
     private func addUpdateTask(_ block: @escaping ()->Void) {
@@ -781,18 +772,19 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
 // MARK: - EmailViewControllerDelegate
 
 extension EmailDetailViewController: EmailViewControllerDelegate {
+
     func showPdfPreview(forPdfAt url: URL) {
         pdfPreviewUrl = url
         let previewController = QLPreviewController()
         previewController.dataSource = self
         present(previewController, animated: true, completion: nil)
     }
-
 }
 
 // MARK: - QLPreviewControllerDataSource
 
 extension EmailDetailViewController: QLPreviewControllerDataSource {
+    
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
         return 1
     }
