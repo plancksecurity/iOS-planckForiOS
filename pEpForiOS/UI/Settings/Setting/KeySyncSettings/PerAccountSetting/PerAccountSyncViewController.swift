@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PerAccountSyncViewController: UIViewController {
+class PerAccountSyncViewController: BaseViewController {
 
     let viewModel = PerAccountSyncViewModel()
 
@@ -18,6 +18,17 @@ class PerAccountSyncViewController: UIViewController {
         super.viewDidLoad()
 
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupTableView()
+    }
+
+    private func setupTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        BaseTableViewController.setupCommonSettings(tableView: tableView)
+    }
 }
 
 extension PerAccountSyncViewController: UITableViewDelegate {
@@ -25,16 +36,22 @@ extension PerAccountSyncViewController: UITableViewDelegate {
 }
 
 extension PerAccountSyncViewController: UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell") else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell") as? PerAccountSyncAccountTableViewCell else {
             Log.shared.errorAndCrash(message: "cell not found")
             return UITableViewCell()
         }
-        
+        cell.accountTitleLabel.text = viewModel[indexPath.row]
+        cell.perAccountSwitch.setOn(viewModel.syncStatus(index: indexPath.row), animated: false)
         return cell
     }
 

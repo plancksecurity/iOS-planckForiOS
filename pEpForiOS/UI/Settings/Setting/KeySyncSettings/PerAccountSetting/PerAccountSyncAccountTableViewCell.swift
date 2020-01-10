@@ -11,7 +11,9 @@ import UIKit
 class PerAccountSyncAccountTableViewCell: UITableViewCell {
 
 
-
+    @IBOutlet weak var accountTitleLabel: UILabel!
+    @IBOutlet weak var perAccountSwitch: UISwitch!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

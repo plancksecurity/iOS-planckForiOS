@@ -1,5 +1,5 @@
 //
-//  KeySyncSwitchSetting.swift
+//  KeySyncSwitchSettingViewModel.swift
 //  pEp
 //
 //  Created by Xavier Algarra on 09/01/2020.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct KeySyncSwitchViewModel: SwitchSettingCellViewModelProtocol  {
+struct KeySyncSwitchSettingViewModel: SwitchSettingCellViewModelProtocol  {
 
     // MARK: - SwitchSettingCellViewModelProtocol
 

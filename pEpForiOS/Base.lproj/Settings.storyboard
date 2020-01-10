@@ -1416,6 +1416,10 @@
                                                 <constraint firstAttribute="trailing" secondItem="Jxa-Qh-LP1" secondAttribute="trailing" constant="17" id="gsw-Lb-Wij"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="accountTitleLabel" destination="An3-RK-rIi" id="WPa-ce-6CT"/>
+                                            <outlet property="perAccountSwitch" destination="Jxa-Qh-LP1" id="TW3-ao-n0b"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>

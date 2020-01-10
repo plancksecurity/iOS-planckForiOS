@@ -218,7 +218,8 @@ extension SettingsTableViewController: SegueHandlerType {
              .segueAddNewAccount,
              .sequeShowCredits,
              .ResetTrust,
-             .segueExtraKeys:
+             .segueExtraKeys,
+             .seguePerAccountSync:
             guard let destination = segue.destination as? BaseViewController else {
                 return
             }
@@ -231,11 +232,6 @@ extension SettingsTableViewController: SegueHandlerType {
             destination.appConfig = self.appConfig
         case .segueSetOwnKey:
             break
-        case .seguePerAccountSync:
-            guard let destination = segue.destination as? UIViewController else {
-                return
-            }
-            
         case .noSegue:
             // does not need preperation
             break
@@ -394,30 +390,30 @@ extension SettingsTableViewController: SettingsViewModelDelegate {
     }
 }
 
-extension SettingsTableViewController: SettingsSwitchCellDelegateProtocol {
-    func performSwitchAction(value: Bool, viewModel: SwitchSettingCellViewModelProtocol) {
-        if let vm = viewModel as? KeySyncSwitchViewModel {
-            showAlertBeforeLeavingDeviceGroup(cellViewModel: vm)
-        }
-    }
-
-    private func showAlertBeforeLeavingDeviceGroup(cellViewModel: SwitchSettingCellViewModelProtocol) {
-        let title = NSLocalizedString("Are you sure you want to leave your device group?",
-                                      comment: "Leave device group confirmation")
-        let comment = NSLocalizedString("leaving device group", comment: "Leave device group confirmation comment")
-        let buttonTitle = NSLocalizedString("Leave", comment: "Leave device group button title")
-        let leavingAction: (UIAlertAction)-> () = { [weak self] _ in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            //me.handleKeySyncSettingCellPressed(cellViewModel: cellViewModel)
-            //me.tableView.reloadData()
-        }
-        //showAlert(title, comment, buttonTitle, leavingAction, indexPath)
-    }
-}
-
+//extension SettingsTableViewController {
+//    func performSwitchAction(value: Bool, viewModel: SwitchSettingCellViewModelProtocol) {
+//        if let vm = viewModel as? KeySyncSwitchViewModel {
+//            showAlertBeforeLeavingDeviceGroup(cellViewModel: vm)
+//        }
+//    }
+//
+//    private func showAlertBeforeLeavingDeviceGroup(cellViewModel: SwitchSettingCellViewModelProtocol) {
+//        let title = NSLocalizedString("Are you sure you want to leave your device group?",
+//                                      comment: "Leave device group confirmation")
+//        let comment = NSLocalizedString("leaving device group", comment: "Leave device group confirmation comment")
+//        let buttonTitle = NSLocalizedString("Leave", comment: "Leave device group button title")
+//        let leavingAction: (UIAlertAction)-> () = { [weak self] _ in
+//            guard let me = self else {
+//                Log.shared.lostMySelf()
+//                return
+//            }
+//            //me.handleKeySyncSettingCellPressed(cellViewModel: cellViewModel)
+//            //me.tableView.reloadData()
+//        }
+//        //showAlert(title, comment, buttonTitle, leavingAction, indexPath)
+//    }
+//}
+//
 //            case .keySyncSetting:
 //                if vm.keySyncSettingCellState == .leaveDeviceGroup {
 //                    showAlertBeforeLeavingDeviceGroup(cellViewModel: vm, indexPath: indexPath)
@@ -429,5 +425,5 @@ extension SettingsTableViewController: SettingsSwitchCellDelegateProtocol {
 //    private func handleKeySyncSettingCellPressed(cellViewModel: SettingsActionCellViewModel) {
 //        cellViewModel.handleKeySyncSettingCellPressed()
 //    }
-
-
+//
+//

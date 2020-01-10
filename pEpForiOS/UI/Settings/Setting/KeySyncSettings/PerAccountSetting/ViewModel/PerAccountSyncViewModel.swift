@@ -24,10 +24,20 @@ class PerAccountSyncViewModel {
     }
 
     func syncStatus(index: Int) -> Bool {
+        do {
+            return try accounts[index].isKeySyncEnabled()
+        } catch {
+            Log.shared.errorAndCrash(error: error)
+        }
         return false
     }
 
-    func updateStatus() {
+    func updateKeySyncStatus(inAccount index: Int, to value: Bool) {
+        do {
+            try accounts[index].setKeySyncEnabled(enable: value)
+        } catch {
+            Log.shared.errorAndCrash(error: error)
+        }
 
     }
 }

@@ -27,7 +27,11 @@ class SettingSwitchTableViewCell: UITableViewCell {
 
     func handleSwitchChange() {
         if let vm = viewModel {
-            vm.setSwitch(value: switchItem.isOn)
+            if vm is KeySyncSwitchSettingViewModel {
+                showKeySyncAlert()
+            } else {
+                vm.setSwitch(value: switchItem.isOn)
+            }
         }
     }
 
@@ -35,5 +39,10 @@ class SettingSwitchTableViewCell: UITableViewCell {
         if let vm = viewModel {
             switchItem.setOn(vm.switchValue(), animated: false)
         }
+    }
+
+    func showKeySyncAlert() {
+        //temp stub i have to show the alert here now only perform switch action
+        viewModel?.setSwitch(value: switchItem.isOn)
     }
 }
