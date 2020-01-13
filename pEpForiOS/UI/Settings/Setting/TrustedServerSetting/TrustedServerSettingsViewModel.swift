@@ -38,6 +38,19 @@ struct TrustedServerSettingsViewModel {
         account.imapServer?.manuallyTrusted = !newValue
         account.save()
     }
+
+    func handleStoreSecurely(_ address: String, storeSecurely: Bool) {
+        guard let account = Account.Fetch.accountAllowedToManuallyTrust(fromAddress: address) else {
+            Log.shared.errorAndCrash("Address should be allowed")
+            return
+        }
+
+
+    }
+
+//    var shouldShowWaringnBeforeTrusting: Bool {
+//
+//    }
 }
 
 // MARK: - Private
