@@ -14,7 +14,6 @@ import PEPObjCAdapterFramework
 
 class ComposeViewModelTest: CoreDataDrivenTestBase {
     private var testDelegate: TestDelegate?
-    private var testResultDelegate: TestResultDelegate?
     var vm: ComposeViewModel?
     var outbox: Folder? {
         return account.firstFolder(ofType: .outbox)
@@ -28,8 +27,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     override func setUp() {
         super.setUp()
-        vm = ComposeViewModel(resultDelegate: nil,
-                              composeMode: nil,
+        vm = ComposeViewModel(composeMode: nil,
                               prefilledTo: nil,
                               originalMessage: nil)
         assureOutboxExists()
@@ -60,24 +58,10 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     // MARK: - init
 
-    func testInit_resultDelegateSet() {
-        let resultDelegate = TestResultDelegate()
-        let vm = ComposeViewModel(resultDelegate: resultDelegate,
-                                  composeMode: nil,
-                                  prefilledTo: nil,
-                                  originalMessage: nil)
-        guard let testee = vm.resultDelegate else {
-            XCTFail()
-            return
-        }
-        XCTAssertTrue(testee === resultDelegate)
-    }
-
 
     func testInit_stateSetupCorrectly() {
         let mode = ComposeUtil.ComposeMode.replyAll
-        let vm = ComposeViewModel(resultDelegate: nil,
-                                  composeMode: mode,
+        let vm = ComposeViewModel(composeMode: mode,
                                   prefilledTo: nil,
                                   originalMessage: nil)
         guard
@@ -644,56 +628,6 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 //        XCTAssertEqual(testeeDrafted.shortMessage, testSubject)
 //        waitForExpectations(timeout: UnitTestUtils.waitTime)
 //    }
-    func testHandleCancelActionTrigered() {
-        // GIVEN
-        assert(originalMessage: nil,
-               contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        //do handshake
-        let storyboard = UIStoryboard(name: "Handshake", bundle: nil)
-        guard let handshakeViewController = storyboard.instantiateViewController(withIdentifier:
-            "HandshakeViewControllerID") as? HandshakeViewController else {
-                XCTFail()
-                return
-        }
-        vm?.setup(handshakeViewController: handshakeViewController)
-        let handShakeMessage = handshakeViewController.message
-        var handShakeMessageUID: Int?
-        var handshakeMessageFolderName: String?
-        handShakeMessage?.session.performAndWait {
-            handShakeMessageUID = handShakeMessage?.uid
-            handshakeMessageFolderName = handShakeMessage?.parent.name
-        }
-        guard let safeHandShakeMessageUID = handShakeMessageUID,
-            let safeHandshakeMessageFolderName = handshakeMessageFolderName else {
-                XCTFail()
-                return
-        }
-
-        // WHEN
-        vm?.handleDeleteActionTriggered()
-
-        // THEN
-        let notSavedMessage = Message.by(uid: safeHandShakeMessageUID,
-                                         folderName: safeHandshakeMessageFolderName,
-                                         accountAddress: account.user.address,
-                                         context: moc)
-        XCTAssertNil(notSavedMessage)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
 
     //!!!: crash
 //    func testHandleSaveActionTriggered_origOutbox() {
@@ -761,27 +695,6 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 //            " must be deleted.")
 //        waitForExpectations(timeout: UnitTestUtils.waitTime)
 //    }
-
-    func testHandleDeleteActionTriggered_normal() {
-        assert(originalMessage: nil,
-               contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        vm?.handleDeleteActionTriggered()
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
 
     //!!!: crashes randomly due to the known issue (composeviewModel is running stuff in background (e.g.calculatePepRating() , maybe more) which we are not waiting for. to fix: extract calculatePepRating() to a dependency and mock it or wait for it to be called.
 
@@ -1543,8 +1456,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                 expectBccWrapperSectionExists: Bool = true,
                                 expectAccountSectionExists: Bool = false,
                                 expectAttachmentSectionExists: Bool = false) {
-        let vm = ComposeViewModel(resultDelegate: nil,
-                                  composeMode: .normal,
+        let vm = ComposeViewModel(composeMode: .normal,
                                   prefilledTo: nil,
                                   originalMessage: originalMessage)
         let testee = vm.sections
@@ -1706,81 +1618,13 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                          expDocumentAttachmentPickerDonePickerCalled:
                 expDocumentAttachmentPickerDonePickerCalled)
 
-        // TestResultDelegate
-
-        var expDidComposeNewMailCalled: XCTestExpectation? = nil
-        if let exp = didComposeNewMailMustBeCalled {
-            expDidComposeNewMailCalled =
-                expectation(description: "expDidComposeNewMailCalled")
-            expDidComposeNewMailCalled?.isInverted = !exp
-        }
-
-        var expDidModifyMessageCalled: XCTestExpectation? = nil
-        if let exp = didModifyMessageMustBeCalled {
-            expDidModifyMessageCalled =
-                expectation(description: "expDidModifyMessageCalled")
-            expDidModifyMessageCalled?.isInverted = !exp
-        }
-
-        var expDidDeleteMessageCalled: XCTestExpectation? = nil
-        if let exp = didDeleteMessageMustBeCalled {
-            expDidDeleteMessageCalled =
-                expectation(description: "expDidDeleteMessageCalled")
-            expDidDeleteMessageCalled?.isInverted = !exp
-            expDidDeleteMessageCalled?.assertForOverFulfill = false
-        }
-
-        testResultDelegate =
-            TestResultDelegate(expDidComposeNewMailCalled: expDidComposeNewMailCalled,
-                               expDidModifyMessageCalled: expDidModifyMessageCalled,
-                               expDidDeleteMessageCalled: expDidDeleteMessageCalled)
-        vm = ComposeViewModel(resultDelegate: testResultDelegate,
-                              composeMode: composeMode,
+        vm = ComposeViewModel(composeMode: composeMode,
                               prefilledTo: prefilledTo,
                               originalMessage: originalMessage)
         vm?.delegate = testDelegate
         // Set _after_ the delegate is set because at this point we are not interested in callbacks
         // triggered by setting the delegate.
         testDelegate?.expColorBatchNeedsUpdateCalled = expColorBatchNeedsUpdateCalled
-    }
-
-    private class TestResultDelegate: ComposeViewModelResultDelegate {
-        let expDidComposeNewMailCalled: XCTestExpectation?
-        let expDidModifyMessageCalled: XCTestExpectation?
-        let expDidDeleteMessageCalled: XCTestExpectation?
-
-        init(expDidComposeNewMailCalled: XCTestExpectation? = nil,
-             expDidModifyMessageCalled: XCTestExpectation? = nil,
-             expDidDeleteMessageCalled: XCTestExpectation? = nil) {
-            self.expDidComposeNewMailCalled = expDidComposeNewMailCalled
-            self.expDidModifyMessageCalled = expDidModifyMessageCalled
-            self.expDidDeleteMessageCalled = expDidDeleteMessageCalled
-
-        }
-
-        func composeViewModelDidComposeNewMail(message: Message) {
-            guard let exp = expDidComposeNewMailCalled else {
-                // We ignore called or not
-                return
-            }
-            exp.fulfill()
-        }
-
-        func composeViewModelDidModifyMessage(message: Message) {
-            guard let exp = expDidModifyMessageCalled else {
-                // We ignore called or not
-                return
-            }
-            exp.fulfill()
-        }
-
-        func composeViewModelDidDeleteMessage(message: Message) {
-            guard let exp = expDidDeleteMessageCalled else {
-                // We ignore called or not
-                return
-            }
-            exp.fulfill()
-        }
     }
 
     private class TestDelegate:  ComposeViewModelDelegate {

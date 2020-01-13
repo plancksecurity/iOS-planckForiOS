@@ -13,15 +13,54 @@ import PEPObjCAdapterFramework
 
 protocol EmailListViewModelProtocol: EmailDisplayViewModelProtocol {
     var folderName: String { get }
+    var folderToShow: DisplayableFolderProtocol { get }
+
+    var isFilterEnabled: Bool { get set }
+    var currentFilter: MessageQueryResultsFilter { get }
+
     func isEditable(messageAt indexPath: IndexPath) -> Bool
     func isSelectable(messageAt indexPath: IndexPath) -> Bool
     func viewModel(for index: Int) -> MessageViewModel?
-    func shouldShowToolbarEditButtons() -> Bool
+    var shouldShowToolbarEditButtons: Bool { get }
+
+    /// Used for UI fine tuning: Do not instatiate a EmailDetailVC if there is one already to avoid
+    /// minor gliches while longer HTML body is loaded.
+    var emailDetailViewIsAlreadyShown: Bool { get }
+
+    // Forwards selection to EmailDetailView. Can be used to avoid re-instantiating of
+    // EmailDetailView on every selection. Not sure if this is a good idea, smells like
+    // needless optimization. Remove if it causes trouble. In this case also remove
+    //`emailDetailViewIsAlreadyShown` and it's usage.
+    func handleSelected(itemAt indexPath: IndexPath)
+
+    var shouldShowTutorialWizard: Bool { get }
+
+    func didShowTutorialWizard()
+
+    func getDestructiveAction(forMessageAt index: Int) -> SwipeActionDescriptor
+
+    func getFlagAction(forMessageAt index: Int) -> SwipeActionDescriptor?
+
+    func getMoreAction(forMessageAt index: Int) -> SwipeActionDescriptor?
+
+    var showLoginView: Bool { get }
+
+    var unreadFilterEnabled: Bool { get }
+
+    func isReplyAllPossible(forRowAt indexPath: IndexPath) -> Bool
+
+    func markAsFlagged(indexPaths: [IndexPath])
+    func markAsUnFlagged(indexPaths: [IndexPath])
+    func markAsRead(indexPaths: [IndexPath])
+    func markAsUnread(indexPaths: [IndexPath])
+    func deleteSelected(indexPaths: [IndexPath])
+    func messagesToMove(indexPaths: [IndexPath]) -> [Message?]
+    func delete(forIndexPath indexPath: IndexPath)
+
+    func freeMemory()
 }
 
 protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
-    //BUFF: All moved to EmailDisplayViewModelDelegate. Will be filled with list specific stuff soon. Stay tuned!
-
     func setToolbarItemsEnabledState(to newValue: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
@@ -31,27 +70,23 @@ protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
 
 class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
     private var emailDetailViewModel: EmailDetailViewModel?
-    let contactImageTool = IdentityImageTool()
-    //    var messageQueryResults: MessageQueryResults
-    //
-    //    var indexPathShown: IndexPath?
-    //
-    var lastSearchTerm = ""
-    var updatesEnabled = true
-    //
-    //    weak var delegate: EmailListViewModelDelegate?
-    //
-    //    let folderToShow: DisplayableFolderProtocol
-    //
-    // MARK: - Filter
+    private let contactImageTool = IdentityImageTool()
 
-    public var isFilterEnabled = false {
-        didSet {
-            if oldValue != isFilterEnabled {
-                handleFilterEnabledStateChange()
-            }
-        }
+    private var lastSearchTerm = ""
+    private var updatesEnabled = true
+
+    // MARK: - Life Cycle
+
+    init(delegate: EmailListViewModelDelegate? = nil, folderToShow: DisplayableFolderProtocol) {
+        self.folderToShow = folderToShow
+        let messageQueryResults = MessageQueryResults(withFolder: folderToShow,
+                                                      filter: nil,
+                                                      search: nil)
+        super.init(delegate: delegate, messageQueryResults: messageQueryResults)
+        self.messageQueryResults.rowDelegate = self
     }
+
+    // MARK: - EmailListViewModelProtocol
 
     private var _currentFilter: MessageQueryResultsFilter?
     public private(set) var currentFilter: MessageQueryResultsFilter {
@@ -67,30 +102,21 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         }
     }
 
-    ////    public var screenComposer: ScreenComposerProtocol? //Commented out as the Message Thread feature has to be rewritten
-    //
-    //    private var selectedItems: Set<IndexPath>?
-    //
-    //    // Threading feature is currently non-existing. Keep this code, might help later.
-    ////    weak var updateThreadListDelegate: UpdateThreadListDelegate?
-    ////    var oldThreadSetting : Bool
-    //
-    //    // MARK: - Life Cycle
-    //
-    init(messageQueryResults: MessageQueryResults? = nil,
-         delegate: EmailDisplayViewModelDelegate? = nil,
-         folderToShow: DisplayableFolderProtocol) {
-        super.init(messageQueryResults: messageQueryResults, folderToShow: folderToShow)
-        self.messageQueryResults.rowDelegate = self
+    public var isFilterEnabled = false {
+        didSet {
+            if oldValue != isFilterEnabled {
+                handleFilterEnabledStateChange()
+            }
+        }
     }
 
-    // MARK: - EmailListViewModelProtocol
+    public let folderToShow: DisplayableFolderProtocol
 
-    var folderName: String {
+    public var folderName: String {
         return Folder.localizedName(realName: folderToShow.title)
     }
 
-    func isEditable(messageAt indexPath: IndexPath) -> Bool {
+    public func isEditable(messageAt indexPath: IndexPath) -> Bool {
         let message = messageQueryResults[indexPath.row]
         if message.parent.folderType == .drafts {
             return true
@@ -99,7 +125,7 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         }
     }
 
-    func isSelectable(messageAt indexPath: IndexPath) -> Bool {
+    public func isSelectable(messageAt indexPath: IndexPath) -> Bool {
         let message = messageQueryResults[indexPath.row]
         if message.parent.folderType == .outbox {
             return false
@@ -108,12 +134,12 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         }
     }
 
-    func viewModel(for index: Int) -> MessageViewModel? {
+    public func viewModel(for index: Int) -> MessageViewModel? {
         let messageViewModel = MessageViewModel(with: messageQueryResults[index])
         return messageViewModel
     }
 
-    func shouldShowToolbarEditButtons() -> Bool {
+    public var shouldShowToolbarEditButtons: Bool {
         switch folderToShow {
         case is VirtualFolderProtocol:
             return true
@@ -124,9 +150,6 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         }
     }
 
-    //BUFF: move ^^?
-
-    //BUFF: move
     public var emailDetailViewIsAlreadyShown: Bool {
         return emailDetailViewModel != nil
     }
@@ -139,15 +162,15 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         emailDetailViewModel?.select(itemAt: indexPath)
     }
 
-    public func shouldShowTutorialWizard() -> Bool {
+    public var shouldShowTutorialWizard: Bool {
         return AppSettings.shared.shouldShowTutorialWizard
     }
 
-    func didShowTutorialWizard() {
+    public func didShowTutorialWizard() {
         AppSettings.shared.shouldShowTutorialWizard = false
     }
 
-    public func getDestructiveActtion(forMessageAt index: Int) -> SwipeActionDescriptor {
+    public func getDestructiveAction(forMessageAt index: Int) -> SwipeActionDescriptor {
         let parentFolder = getParentFolder(forMessageAt: index)
         let defaultDestructiveAction: SwipeActionDescriptor
             = parentFolder.defaultDestructiveActionIsArchive
@@ -159,18 +182,16 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
 
     public func getFlagAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
         let parentFolder = getParentFolder(forMessageAt: index)
-        if folderIsDraftOrOutbox(parentFolder) {
+        if folderIsDraftsOrOutbox(parentFolder) {
             return nil
         } else {
             let flagged = messageQueryResults[index].imapFlags.flagged
             return flagged ? .unflag : .flag
         }
     }
-
-
     public func getMoreAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
         let parentFolder = getParentFolder(forMessageAt: index)
-        if folderIsDraftOrOutbox(parentFolder) {
+        if folderIsDraftsOrOutbox(parentFolder) {
             return nil
         } else {
             return .more
@@ -181,12 +202,61 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         return Account.all().isEmpty
     }
 
-    public func unreadFilterEnabled() -> Bool {
+    public var unreadFilterEnabled: Bool {
         guard let unread = currentFilter.mustBeUnread else {
             return false
         }
         return isFilterEnabled && unread
     }
+
+    public func isReplyAllPossible(forRowAt indexPath: IndexPath) -> Bool {
+        guard
+            let replyAllPossible = replyAllPossibleChecker(forItemAt: indexPath)?.isReplyAllPossible()
+            else {
+                Log.shared.errorAndCrash("Invalid state")
+                return false
+        }
+        return replyAllPossible
+    }
+
+    public func markAsFlagged(indexPaths: [IndexPath]) {
+        setFlaggedValue(forIndexPath: indexPaths, newValue: true)
+    }
+
+    public func markAsUnFlagged(indexPaths: [IndexPath]) {
+        setFlaggedValue(forIndexPath: indexPaths, newValue: false)
+    }
+
+    public func markAsRead(indexPaths: [IndexPath]) {
+        setSeenValue(forIndexPath: indexPaths, newValue: true)
+    }
+
+    public func markAsUnread(indexPaths: [IndexPath]) {
+        setSeenValue(forIndexPath: indexPaths, newValue: false)
+    }
+
+    public func deleteSelected(indexPaths: [IndexPath]) {
+        let messages = indexPaths.map { messageQueryResults[$0.row] }
+        delete(messages: messages)
+    }
+
+    public func messagesToMove(indexPaths: [IndexPath]) -> [Message?] {
+        var messages : [Message?] = []
+        indexPaths.forEach { (ip) in
+            messages.append(self.message(representedByRowAt: ip))
+        }
+        return messages
+    }
+
+    func delete(forIndexPath indexPath: IndexPath) {
+        deleteMessages(at: [indexPath])
+    }
+
+    func freeMemory() {
+        contactImageTool.clearCache()
+    }
+    
+    // MARK: - EmailDisplayViewModelDelegate Overrides
 
     override func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])
         -> MoveToAccountViewModel? {
@@ -291,35 +361,6 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
             delegate.showUnreadButton(enabled: false)
         }
     }
-
-    public func markSelectedAsFlagged(indexPaths: [IndexPath]) {
-        setFlagged(forIndexPath: indexPaths)
-    }
-
-    public func markSelectedAsUnFlagged(indexPaths: [IndexPath]) {
-        unsetFlagged(forIndexPath: indexPaths)
-    }
-
-    public func markSelectedAsRead(indexPaths: [IndexPath]) {
-        markRead(forIndexPath: indexPaths)
-    }
-
-    public func markSelectedAsUnread(indexPaths: [IndexPath]) {
-        markUnread(forIndexPath: indexPaths)
-    }
-
-    public func deleteSelected(indexPaths: [IndexPath]) {
-        let messages = indexPaths.map { messageQueryResults[$0.row] }
-        delete(messages: messages)
-    }
-
-    public func messagesToMove(indexPaths: [IndexPath]) -> [Message?] {
-        var messages : [Message?] = []
-        indexPaths.forEach { (ip) in
-            messages.append(self.message(representedByRowAt: ip))
-        }
-        return messages
-    }
 }
 
 // MARK: - Filter & Search
@@ -377,6 +418,7 @@ extension EmailListViewModel {
         }
     }
 }
+
 // MARK: - Private
 
 extension EmailListViewModel {
@@ -397,30 +439,6 @@ extension EmailListViewModel {
         delete(messages: messages)
         return messages
     }
-    //BUFF: move
-    func setFlagged(forIndexPath indexPath: [IndexPath]) {
-        setFlaggedValue(forIndexPath: indexPath, newValue: true)
-    }
-
-    func unsetFlagged(forIndexPath indexPath: [IndexPath]) {
-        setFlaggedValue(forIndexPath: indexPath, newValue: false)
-    }
-
-    func markRead(forIndexPath indexPath: [IndexPath]) {
-        setSeenValue(forIndexPath: indexPath, newValue: true)
-    }
-
-    func markUnread(forIndexPath indexPath: [IndexPath]) {
-        setSeenValue(forIndexPath: indexPath, newValue: false)
-    }
-
-    func delete(forIndexPath indexPath: IndexPath) {
-        deleteMessages(at: [indexPath])
-    }
-
-    func freeMemory() {
-        contactImageTool.clearCache()
-    }
 }
 
 // MARK: - ComposeViewModel
@@ -434,11 +452,10 @@ extension EmailListViewModel {
             someUser = f.account.user
         } else {
             let account = Account.defaultAccount()
-            return ComposeViewModel(resultDelegate:self, composeMode: .normal,
+            return ComposeViewModel(composeMode: .normal,
                                     prefilledFrom: account?.user)
         }
-        let composeVM = ComposeViewModel(resultDelegate: self,
-                                         prefilledFrom: someUser)
+        let composeVM = ComposeViewModel(prefilledFrom: someUser)
         return composeVM
     }
 }
@@ -451,14 +468,11 @@ extension EmailListViewModel: FilterViewDelegate {
     }
 }
 
-//
-
 extension EmailListViewModel {
 
     func emailDetialViewModel() -> EmailDetailViewModel {
         let detailQueryResults = messageQueryResults.clone()
-        let createe = EmailDetailViewModel(messageQueryResults: detailQueryResults,
-                                           folderToShow: folderToShow)
+        let createe = EmailDetailViewModel(messageQueryResults: detailQueryResults)
         createe.selectionChangeDelegate = self
         detailQueryResults.rowDelegate = createe
         emailDetailViewModel = createe
@@ -467,7 +481,7 @@ extension EmailListViewModel {
     }
 }
 
-// MARK: - QueryResultsIndexPathRowDelegate //BUFF: make MessageQueryResultsIndexPathRowDelegate
+// MARK: - QueryResultsIndexPathRowDelegate
 
 extension EmailListViewModel: QueryResultsIndexPathRowDelegate {
 
@@ -505,19 +519,6 @@ extension EmailListViewModel: QueryResultsIndexPathRowDelegate {
         } else {
             updatesEnabled = true
         }
-    }
-}
-
-extension EmailListViewModel {
-
-    func isReplyAllPossible(forRowAt indexPath: IndexPath) -> Bool {
-        guard
-            let replyAllPossible = replyAllPossibleChecker(forItemAt: indexPath)?.isReplyAllPossible()
-            else {
-                Log.shared.errorAndCrash("Invalid state")
-                return false
-        }
-        return replyAllPossible
     }
 }
 

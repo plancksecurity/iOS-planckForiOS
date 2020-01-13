@@ -9,7 +9,7 @@
 import UIKit
 import pEpIOSToolbox
 
-//BUFF: //XAVIER: implementaion will change to be generic (emilaiVC independent)
+//!!!: //XAVIER: implementaion will change to be generic (emilaiVC independent)
 class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,15 +49,5 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
                     return vc
             }
             return secondaryNavigationController
-    }
-
-    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewController.DisplayMode) { //BUFF: obsolete? (ask xavier)
-
-//        guard let nav = viewControllers.last as? UINavigationController,
-//            let emailViewController = nav.rootViewController as? EmailViewController else {
-//                return
-//        }
-
-        //        emailViewController.splitViewController(willChangeTo: displayMode) //BUFF:
     }
 }

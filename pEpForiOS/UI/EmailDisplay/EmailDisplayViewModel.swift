@@ -13,9 +13,11 @@ import PEPObjCAdapterFramework
 
 protocol EmailDisplayViewModelProtocol {
     var delegate: EmailDisplayViewModelDelegate? { get set }
-    func informDelegateToReloadData()
-    func startMonitoring()
+    var messageQueryResults: MessageQueryResults { get }
     var rowCount: Int { get }
+    func startMonitoring()
+
+    func informDelegateToReloadData()
     //Abstract. Has to be overridden.
     func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])  -> MoveToAccountViewModel?
     //!!!: this should be internal (not part of the protocol). VC and Cells MUST not know the model (Message).
@@ -26,12 +28,11 @@ protocol EmailDisplayViewModelProtocol {
     func replyAllPossibleChecker(forItemAt indexPath: IndexPath) -> ReplyAllPossibleCheckerProtocol?
 }
 
-protocol EmailDisplayViewModelDelegate: class/*, TableViewUpdate*/ {
+protocol EmailDisplayViewModelDelegate: class {
     func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didInsertDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didUpdateDataAt indexPaths: [IndexPath])
-
     func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didRemoveDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailDisplayViewModel,
@@ -49,22 +50,18 @@ protocol EmailDisplayViewModelDelegate: class/*, TableViewUpdate*/ {
 
 /// Base class for MessageQueryResults driven email display view models.
 class EmailDisplayViewModel: EmailDisplayViewModelProtocol {
-    var messageQueryResults: MessageQueryResults
-    let folderToShow: DisplayableFolderProtocol
-    private var selectedItems: Set<IndexPath>?
 
     // MARK: - Life Cycle
 
-    init(messageQueryResults: MessageQueryResults? = nil, folderToShow: DisplayableFolderProtocol) {
-        self.folderToShow = folderToShow
-
+    init(delegate: EmailDisplayViewModelDelegate? = nil, messageQueryResults: MessageQueryResults) {
+        self.delegate = delegate
         // We intentionally do *not* start monitoring. Respiosibility is on currently on VC.
-        self.messageQueryResults = messageQueryResults ?? MessageQueryResults(withFolder: folderToShow,
-                                                                              filter: nil,
-                                                                              search: nil)
+        self.messageQueryResults = messageQueryResults
     }
 
     // MARK: - EmailDisplayViewModelProtocol
+
+    var messageQueryResults: MessageQueryResults
 
     public weak var delegate: EmailDisplayViewModelDelegate?
 
@@ -91,7 +88,7 @@ class EmailDisplayViewModel: EmailDisplayViewModelProtocol {
     }
 
     public func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])  -> MoveToAccountViewModel? {
-            fatalError("Must be overridden")
+        fatalError("Must be overridden")
     }
 
     public func message(representedByRowAt indexPath: IndexPath) -> Message? {
@@ -115,8 +112,6 @@ class EmailDisplayViewModel: EmailDisplayViewModelProtocol {
     }
 }
 
-
-
 // MARK: - FolderType Utils
 
 extension EmailDisplayViewModel {
@@ -131,10 +126,6 @@ extension EmailDisplayViewModel {
             return false
         }
         return folderIsOutbox(folder)
-    }
-
-    func folderIsDraftOrOutbox(_ parentFoldder: Folder) -> Bool {
-        return folderIsDraft(parentFoldder) || folderIsOutbox(parentFoldder)
     }
 
     private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
@@ -153,42 +144,20 @@ extension EmailDisplayViewModel {
         return folderIsDraft(folder)
     }
 
-    private func folderIsDraftsOrOutbox(_ parentFolder: Folder?) -> Bool {
+    func folderIsDraftsOrOutbox(_ parentFolder: Folder?) -> Bool {
         return folderIsDraft(parentFolder) || folderIsOutbox(parentFolder)
     }
 }
 
-// MARK: - ComposeViewModel
+// MARK: - ViewModel Factory
 
 extension EmailDisplayViewModel {
+
     func composeViewModel(withOriginalMessageAt indexPath: IndexPath,
                           composeMode: ComposeUtil.ComposeMode? = nil) -> ComposeViewModel {
         let message = messageQueryResults[indexPath.row]
-        let composeVM = ComposeViewModel(resultDelegate: self,
-                                         composeMode: composeMode,
+        let composeVM = ComposeViewModel(composeMode: composeMode,
                                          originalMessage: message)
         return composeVM
-    }
-}
-
-// MARK: - ComposeViewModelResultDelegate
-
-extension EmailDisplayViewModel: ComposeViewModelResultDelegate {
-    func composeViewModelDidComposeNewMail(message: Message) {
-        if folderIsDraftsOrOutbox(message.parent){
-            informDelegateToReloadData()
-        }
-    }
-
-    func composeViewModelDidDeleteMessage(message: Message) { //BUFF: That should be handled by QRC, no?
-        if folderIsDraftOrOutbox(message.parent) {
-            informDelegateToReloadData()
-        }
-    }
-
-    func composeViewModelDidModifyMessage(message: Message) { //BUFF: That should be handled by QRC, no?
-        if folderIsDraft(message.parent){
-            informDelegateToReloadData()
-        }
     }
 }

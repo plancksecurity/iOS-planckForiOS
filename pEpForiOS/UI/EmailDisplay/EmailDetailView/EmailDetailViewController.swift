@@ -12,7 +12,7 @@ import pEpIOSToolbox
 
 // Represents the a list of mails showing one mail with all details in full screen.
 //BUFF: docs!
-class EmailDetailViewController: EmailDisplayViewController {
+class EmailDetailViewController: BaseViewController {
     static private let cellXibName = "EmailDetailCollectionViewCell"
     static private let cellId = "EmailDetailViewCell"
     /// Collects all QueryResultsDelegate reported changes to call them in one CollectionView
@@ -199,7 +199,7 @@ extension EmailDetailViewController {
     @objc
     private func showHandshakeView(gestureRecognizer: UITapGestureRecognizer? = nil) {
         if onlySplitViewMasterIsShown {
-            performSegue(withIdentifier: .segueHandshakeCollapsed, sender: self) //BUFF: HERE: re add seques in storyboard
+            performSegue(withIdentifier: .segueHandshakeCollapsed, sender: self)
 
         } else {
             performSegue(withIdentifier: .segueHandshake, sender: self)
@@ -439,9 +439,9 @@ extension EmailDetailViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         willDisplay cell: UICollectionViewCell,
                         forItemAt indexPath: IndexPath) {
-        // Scrooll to show message selected by previous (EmailList) view
+        // Scroll to show message selected by previous (EmailList) view
         guard let indexToScrollTo = firstItemToShow else {
-            // Is not forst load.
+            // Is not first load.
             // Do nothing
             return
         }
@@ -585,7 +585,7 @@ extension EmailDetailViewController: SegueHandlerType {
                     break
             }
             destination.appConfig = appConfig
-            destination.viewModel = viewModel?.moveToAccountViewModel(forMessageRepresentedByItemAt: indexPath)
+            destination.viewModel = viewModel?.getMoveToFolderViewModel(forMessageRepresentedByItemAt: indexPath)
         case .segueHandshake, .segueHandshakeCollapsed:
             guard let nv = segue.destination as? UINavigationController,
                 let vc = nv.topViewController as? HandshakeViewController else {
@@ -784,7 +784,7 @@ extension EmailDetailViewController: EmailViewControllerDelegate {
 // MARK: - QLPreviewControllerDataSource
 
 extension EmailDetailViewController: QLPreviewControllerDataSource {
-    
+
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
         return 1
     }

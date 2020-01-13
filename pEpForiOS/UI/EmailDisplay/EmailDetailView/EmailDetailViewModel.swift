@@ -45,11 +45,8 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
 //    weak var delegate: EmailDetailViewModelDelegate?
     weak var selectionChangeDelegate: EmailDetailViewModelSelectionChangeDelegate?
 
-    init(messageQueryResults: MessageQueryResults? = nil,
-         delegate: EmailDisplayViewModelDelegate? = nil,
-         folderToShow: DisplayableFolderProtocol) {
-        super.init(messageQueryResults: messageQueryResults,
-                   folderToShow: folderToShow)
+    init(messageQueryResults: MessageQueryResults, delegate: EmailDisplayViewModelDelegate? = nil) {
+        super.init(messageQueryResults: messageQueryResults)
         self.messageQueryResults.rowDelegate = self
     }
 
@@ -64,16 +61,6 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
     public func select(itemAt indexPath: IndexPath) {
         delegate?.select(itemAt: indexPath)
     }
-
-    //BUFF: move
-    /// Resets bookholding vars 
-    private func reset() {
-        pathsForMessagesMarkedForRedecrypt = [IndexPath]()
-        lastShownMessage = nil
-        updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
-    }
-
-    //
 
     public func handleFlagButtonPress(for indexPath: IndexPath) {
         guard let message = message(representedByRowAt: indexPath) else {
@@ -92,7 +79,6 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
             return
         }
         delete(messages: [message])
-
     }
 
     public func handleEmailShown(forItemAt indexPath: IndexPath) {
@@ -207,6 +193,18 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
     //
 }
 
+// MARK: - Private
+
+extension EmailDetailViewModel {
+
+    /// Resets bookholding vars
+    private func reset() {
+        pathsForMessagesMarkedForRedecrypt = [IndexPath]()
+        lastShownMessage = nil
+        updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
+    }
+}
+
 // MARK: - QueryResultsIndexPathRowDelegate
 
 extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
@@ -262,7 +260,7 @@ extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
 
 extension EmailDetailViewModel {
 
-    public func moveToAccountViewModel(forMessageRepresentedByItemAt indexPath: IndexPath) -> MoveToAccountViewModel? {
+    public func getMoveToFolderViewModel(forMessageRepresentedByItemAt indexPath: IndexPath) -> MoveToAccountViewModel? {
         guard let msg = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("Nothing to move?")
             return nil
@@ -276,8 +274,7 @@ extension EmailDetailViewModel {
             Log.shared.errorAndCrash("Nothing to move?")
             return nil
         }
-        return ComposeViewModel(resultDelegate: nil,
-                                composeMode: composeMode,
+        return ComposeViewModel(composeMode: composeMode,
                                 prefilledTo: nil,
                                 originalMessage: msg)
     }
