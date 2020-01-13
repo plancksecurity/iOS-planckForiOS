@@ -184,7 +184,8 @@ class TestDataBase {
         func populate(verifiableAccount: inout VerifiableAccountProtocol) {
             verifiableAccount.userName = accountName
             verifiableAccount.address = idAddress
-            verifiableAccount.loginName = imapLoginName
+            verifiableAccount.loginNameIMAP = imapLoginName
+            verifiableAccount.loginNameSMTP = smtpLoginName
             verifiableAccount.accessToken = nil
             verifiableAccount.password = password
 
