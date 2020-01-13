@@ -38,7 +38,11 @@ struct TrustedServerSettingsViewModel {
         account.imapServer?.manuallyTrusted = !newValue
         account.save()
     }
+}
 
+// MARK: - Private
+
+extension TrustedServerSettingsViewModel {
     mutating private func reset() {
         let accounts = Account.Fetch.allAccountsAllowedToManuallyTrust()
         var createes = [Row]()
