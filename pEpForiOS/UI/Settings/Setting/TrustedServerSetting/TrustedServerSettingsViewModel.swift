@@ -10,6 +10,10 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
+protocol TrustedServerSettingsViewModelDelegate: class {
+    func showAlertBeforeStoringSecurely(forAccountWith address: String)
+}
+
 struct TrustedServerSettingsViewModel {
     struct Row: Equatable {
         let address: String
@@ -17,6 +21,7 @@ struct TrustedServerSettingsViewModel {
     }
 
     private(set) var rows = [Row]()
+    weak var delegate: TrustedServerSettingsViewModelDelegate?
 
     init() {
         reset()
@@ -27,10 +32,29 @@ struct TrustedServerSettingsViewModel {
             Log.shared.errorAndCrash("Address should be allowed")
             return
         }
+        setStoreSecurely(forAccount: account, toValue: newValue)
+    }
 
+    mutating func handleStoreSecurely(forAccountWith address: String, toValue newValue: Bool) {
+        guard let account = Account.Fetch.accountAllowedToManuallyTrust(fromAddress: address) else {
+            Log.shared.errorAndCrash("Address should be allowed")
+            return
+        }
+        if  shouldShowWaringnBeforeChangingTrustState(forAccount: account, newValue: newValue) {
+            delegate?.showAlertBeforeStoringSecurely(forAccountWith: address)
+        } else {
+            setStoreSecurely(forAccount: account, toValue: newValue)
+        }
+    }
+}
+
+// MARK: - Private
+
+extension TrustedServerSettingsViewModel {
+    mutating private func setStoreSecurely(forAccount account: Account, toValue newValue: Bool) {
         for i in 0..<rows.count {
             let row = rows[i]
-            if row.address == address {
+            if row.address == account.user.address {
                 rows[i] = Row(address: row.address, storeMessagesSecurely: newValue)
                 break
             }
@@ -39,23 +63,11 @@ struct TrustedServerSettingsViewModel {
         account.save()
     }
 
-    func handleStoreSecurely(_ address: String, storeSecurely: Bool) {
-        guard let account = Account.Fetch.accountAllowedToManuallyTrust(fromAddress: address) else {
-            Log.shared.errorAndCrash("Address should be allowed")
-            return
-        }
-
-
+    private func shouldShowWaringnBeforeChangingTrustState(forAccount account: Account,
+                                                           newValue: Bool) -> Bool {
+        return  newValue && account.shouldShowWaringnBeforeTrusting
     }
 
-//    var shouldShowWaringnBeforeTrusting: Bool {
-//
-//    }
-}
-
-// MARK: - Private
-
-extension TrustedServerSettingsViewModel {
     mutating private func reset() {
         let accounts = Account.Fetch.allAccountsAllowedToManuallyTrust()
         var createes = [Row]()
