@@ -17,7 +17,7 @@ struct KeySyncSwitchSettingViewModel: SwitchSettingCellViewModelProtocol  {
     private(set) var title = NSLocalizedString("p≡p Sync", comment: "pep sync title")
 
     func setSwitch(value: Bool) {
-        let grouped = KeySyncUtil.isInDeviceGroup
+        let grouped = isGrouped()
         if value {
             KeySyncUtil.enableKeySync()
         } else {
@@ -35,6 +35,10 @@ struct KeySyncSwitchSettingViewModel: SwitchSettingCellViewModelProtocol  {
     func switchValue() -> Bool {
         let keySyncEnabled = KeySyncUtil.isKeySyncEnabled
         return keySyncEnabled
+    }
+
+    func isGrouped() -> Bool {
+        return KeySyncUtil.isInDeviceGroup
     }
 }
 
