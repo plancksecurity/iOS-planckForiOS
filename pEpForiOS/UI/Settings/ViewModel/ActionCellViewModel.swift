@@ -13,7 +13,6 @@ extension SettingsActionCellViewModel {
     enum ActionCellType {
         case keySyncSetting
         case resetAllIdentities
-        case resetTrust
     }
 }
 
@@ -49,9 +48,6 @@ final class SettingsActionCellViewModel: SettingsActionCellViewModelProtocol {
             case .resetAllIdentities:
                 return NSLocalizedString("Reset All Identities",
                                          comment: "Settings: Cell (button) title for reset all identities")
-            case .resetTrust:
-                return NSLocalizedString("Reset", comment:
-                    "Settings: cell (button) title to view the trust contacts option")
             }
         }
     }
