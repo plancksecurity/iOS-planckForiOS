@@ -10,37 +10,56 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 protocol EmailDetailViewModelProtocol: EmailDisplayViewModelProtocol {
+
+    /// Replaces and uses the currently used message query with the given one. The displayed
+    /// messages get updated automatically.
+    /// - Parameter qrc: messages to display to the user
     func replaceMessageQueryResults(with qrc: MessageQueryResults) throws
+    /// You can call this to show a specific, user selected message instead of instanziating a
+    /// new EmailDetailView.
+    /// - Parameter indexPath: indexPath to select
     func select(itemAt indexPath: IndexPath)
+
+    /// Action handling
+    /// - Parameter indexPath: indexPath of cell the flag button has been pressed for
     func handleFlagButtonPress(for indexPath: IndexPath)
-
+    /// Action handling
+    /// - Parameter indexPath: indexPath of cell the destructive button has been pressed for
     func handleDestructiveButtonPress(for indexPath: IndexPath)
-
+    /// Must be called whenever a new message has been displayed.
+    /// - Parameter indexPath: indexPath of the cell that has been displayed
     func handleEmailShown(forItemAt indexPath: IndexPath)
 
+    /// The indexpath of the last displayerd message.
+    /// Used to scroll to after the data soure has been updated.
+    /// Returns `nil` in case the previously shown message is not contained in the query results
+    /// any more after updating the data source.
     var indexPathForCellDisplayedBeforeUpdating: IndexPath? { get }
 
     /// Scroll to `indexPathForCellDisplayedBeforeUpdating` after the collection has been updated
     /// (only) if this is true.
     var shouldScrollBackToCurrentlyViewdCellAfterUpdate: Bool { get }
 
-    func markForRedecryptionIfNeeded(messageRepresentedBy indexPath: IndexPath)
-
+    /// - Parameter indexPath: indexPath of the cell to show the destructive button for.
+    /// - returns: The icon to use for the destruktive button (delete, archive, ...)
     func destructiveButtonIcon(forMessageAt indexPath: IndexPath?) -> UIImage?
 
+    /// - Parameter indexPath: indexPath of the cell to show the flagged state button for.
+    /// - returns: The icon to use for the flagging button of cell at indexPath
     func flagButtonIcon(forMessageAt indexPath: IndexPath?) -> UIImage?
 
+    /// - Parameter indexPath: indexPath of the cell to show the pEp rating for.
+    /// - returns: pEp rating for cell at given indexPath
     func pEpRating(forItemAt indexPath: IndexPath) -> PEPRating
 
-    func canShowPrivacyStatus(forItemAt indexPath: IndexPath) -> Bool
+    /// - Parameter indexPath: indexPath of the cell to compute result for.
+    /// - returns:  Whether or not to show privacy icon for cell at given indexPath
+    func shouldShowPrivacyStatus(forItemAt indexPath: IndexPath) -> Bool
 
-    func isHandshakePossible(forItemAt indexPath: IndexPath) -> Bool
-
-    /// Destination VM Factory - Move To Folder
+    /// Destination VM Factory - Move To Folder VM
+    /// - Parameter indexPath: indexPath of the cell to show "moveToFolder" view for.
+    /// - returns:  MoveToAccountViewModel configured for message represented by the given indexPath
     func getMoveToFolderViewModel(forMessageRepresentedByItemAt indexPath: IndexPath) -> MoveToAccountViewModel?
-    /// Destination VM Factory - Compose
-    func composeViewModel(forMessageRepresentedByItemAt indexPath: IndexPath,
-                          composeMode: ComposeUtil.ComposeMode) -> ComposeViewModel?
 }
 
 protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
@@ -72,7 +91,8 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
 
     weak var selectionChangeDelegate: EmailDetailViewModelSelectionChangeDelegate?
 
-    init(messageQueryResults: MessageQueryResults, delegate: EmailDisplayViewModelDelegate? = nil) {
+    init(messageQueryResults: MessageQueryResults,
+         delegate: EmailDisplayViewModelDelegate? = nil) {
         super.init(messageQueryResults: messageQueryResults)
         self.messageQueryResults.rowDelegate = self
     }
@@ -139,20 +159,6 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
         return updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage
     }
 
-    public func markForRedecryptionIfNeeded(messageRepresentedBy indexPath: IndexPath) {
-        // rm previously stored IndexPath for this message.
-        pathsForMessagesMarkedForRedecrypt = pathsForMessagesMarkedForRedecrypt.filter { $0 != indexPath }
-        guard let message = message(representedByRowAt: indexPath) else {
-            Log.shared.errorAndCrash("No msg")
-            return
-        }
-        /// The user may be about to view an yet undecrypted message.
-        // If so, try again to decrypt it.
-        if message.markForRetryDecryptIfUndecryptable() {
-            pathsForMessagesMarkedForRedecrypt.append(indexPath)
-        }
-    }
-
     public func destructiveButtonIcon(forMessageAt indexPath: IndexPath?) -> UIImage? {
         guard
             let path = indexPath,
@@ -190,11 +196,7 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
     }
 
 
-    public func canShowPrivacyStatus(forItemAt indexPath: IndexPath) -> Bool {
-        return isHandshakePossible(forItemAt: indexPath)
-    }
-
-    public func isHandshakePossible(forItemAt indexPath: IndexPath) -> Bool {
+    public func shouldShowPrivacyStatus(forItemAt indexPath: IndexPath) -> Bool {
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
             return false
@@ -212,17 +214,6 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
             return nil
         }
         return MoveToAccountViewModel(messages: [msg])
-    }
-
-    public func composeViewModel(forMessageRepresentedByItemAt indexPath: IndexPath,
-                                 composeMode: ComposeUtil.ComposeMode) -> ComposeViewModel? {
-        guard let msg = message(representedByRowAt: indexPath) else {
-            Log.shared.errorAndCrash("Nothing to move?")
-            return nil
-        }
-        return ComposeViewModel(composeMode: composeMode,
-                                prefilledTo: nil,
-                                originalMessage: msg)
     }
 }
 
@@ -245,6 +236,32 @@ extension EmailDetailViewModel {
         if !message.imapFlags.seen {
             message.markAsSeen()
         }
+    }
+
+    private func markForRedecryptionIfNeeded(messageRepresentedBy indexPath: IndexPath) {
+        // rm previously stored IndexPath for this message.
+        pathsForMessagesMarkedForRedecrypt = pathsForMessagesMarkedForRedecrypt.filter { $0 != indexPath }
+        guard let message = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No msg")
+            return
+        }
+        /// The user may be about to view an yet undecrypted message.
+        // If so, try again to decrypt it.
+        if message.markForRetryDecryptIfUndecryptable() {
+            pathsForMessagesMarkedForRedecrypt.append(indexPath)
+        }
+    }
+
+    private func isHandshakePossible(forItemAt indexPath: IndexPath) -> Bool {
+        guard let message = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No msg")
+            return false
+        }
+        let handshakeCombos = message.handshakeActionCombinations()
+        guard !handshakeCombos.isEmpty else {
+            return false
+        }
+        return true
     }
 }
 

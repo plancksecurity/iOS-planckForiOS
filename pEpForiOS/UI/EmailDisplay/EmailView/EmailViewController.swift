@@ -240,8 +240,8 @@ extension EmailViewController: SegueHandlerType {
 
             guard let nv = segue.destination as? UINavigationController,
                 let vc = nv.topViewController as? HandshakeViewController else {
-                Log.shared.errorAndCrash("No DVC?")
-                break
+                    Log.shared.errorAndCrash("No DVC?")
+                    break
             }
 
             guard let message = message else {
@@ -314,10 +314,10 @@ extension EmailViewController: MessageAttachmentDelegate {
                     return
                 }
                 me.didCreateLocally(attachment: safeAttachment,
-                                       url: url,
-                                       cell: cell,
-                                       location: location,
-                                       inView: inView)
+                                    url: url,
+                                    cell: cell,
+                                    location: location,
+                                    inView: inView)
             }
         }
         backgroundQueue.addOperation(attachmentOp)

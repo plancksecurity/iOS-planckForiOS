@@ -18,9 +18,18 @@ protocol EmailListViewModelProtocol: EmailDisplayViewModelProtocol {
     var isFilterEnabled: Bool { get set }
     var currentFilter: MessageQueryResultsFilter { get }
 
+    /// - Parameter indexPath: indexPath to check editability for.
+    /// - returns: Whether or not to show compose view rather then the email for message represented by row at given `indexPath`.
     func isEditable(messageAt indexPath: IndexPath) -> Bool
+
+    /// - Parameter indexPath: indexPath to check selectability for.
+    /// - returns: Whether or not the message represented by row at given `indexPath` is selecdtable in the current state.
     func isSelectable(messageAt indexPath: IndexPath) -> Bool
+    /// - Parameter indexPath: indexPath to get viewModel for
+    /// - returns: ViewModel to configure Cell with
     func viewModel(for index: Int) -> MessageViewModel?
+
+    /// Whether or not mails in the current folder are editable
     var shouldShowToolbarEditButtons: Bool { get }
 
     /// Used for UI fine tuning: Do not instatiate a EmailDetailVC if there is one already to avoid
@@ -33,50 +42,66 @@ protocol EmailListViewModelProtocol: EmailDisplayViewModelProtocol {
     //`emailDetailViewIsAlreadyShown` and it's usage.
     func handleSelected(itemAt indexPath: IndexPath)
 
+    /// Whether or not to show the Tutorial
     var shouldShowTutorialWizard: Bool { get }
-
+    /// Call when the tutorial has been displayed to the user
     func didShowTutorialWizard()
 
+    /// - returns: action to trigger if user clicks destructive button
     func getDestructiveAction(forMessageAt index: Int) -> SwipeActionDescriptor
-
+    /// - returns: action to trigger if user clicks "flag" button
     func getFlagAction(forMessageAt index: Int) -> SwipeActionDescriptor?
-
+    /// - returns: action to trigger if user clicks "more" button
     func getMoreAction(forMessageAt index: Int) -> SwipeActionDescriptor?
 
+    /// Whether or not to show LoginView
     var showLoginView: Bool { get }
-
-    var unreadFilterEnabled: Bool { get }
 
     func isReplyAllPossible(forRowAt indexPath: IndexPath) -> Bool
 
+    /// Marks the message represented by the given `indexPaths` as flagged.
+    /// - Parameter indexPath: indexPaths of messages to set flagged.
     func markAsFlagged(indexPaths: [IndexPath])
+    /// Marks the message represented by the given `indexPaths` as not-flagged.
+    /// - Parameter indexPath: indexPaths of messages to unsset flag flag for.
     func markAsUnFlagged(indexPaths: [IndexPath])
+    /// Marks the message represented by the given `indexPaths` as seen.
+    /// - Parameter indexPath: indexPaths of messages to set seen.
     func markAsRead(indexPaths: [IndexPath])
+    /// Marks the message represented by the given `indexPaths` as not-seen.
+    /// - Parameter indexPath: indexPaths of messages to unsset seen flag for.
     func markAsUnread(indexPaths: [IndexPath])
-    func deleteSelected(indexPaths: [IndexPath])
-    func messagesToMove(indexPaths: [IndexPath]) -> [Message?]
+    /// Handles destructive button click for messages represented by given `indexPaths`.
+    /// - Parameter indexPath: indexPathsdo handle destruktive action for
+    func handleUserClickedDestruktiveButton(forRowsAt indexPaths: [IndexPath])
+
     func delete(forIndexPath indexPath: IndexPath)
 
+    /// Call in case of out-of-memory alert
     func freeMemory()
 
-    // Implemented to get informed about the currently visible cells.
-    // If the user has scrolled down (almost) to the end, we ask for older emails.
-
-    /// Get informed about the new visible cells.
-    /// If the user has scrolled down (almost) to the end, we ask for older emails.
-    ///
-    /// - Parameter indexPath: indexpath to check need for fetch older for
+    // If the user has scrolled down (almost) to the end, we fetch older emails.
+    /// - Parameter indexPath: indexpath to pontetionally fetch older messages for
     func fetchOlderMessagesIfRequired(forIndexPath indexPath: IndexPath)
     func fetchNewMessages(completition: (() -> Void)?)
 
-    func updatedItems(indexPaths: [IndexPath])
+    /// Handles changes of the selected messages in edit mode.
+    /// Updates toolbar buttons (maybe more)  accoring to selection.
+    func handleEditModeSelectionChange(selectedIndexPaths: [IndexPath])
 
-    func setSearch(forSearchText txt: String)
+    /// Call whenever the term to search for changes.
+    /// - Parameter newSearchTerm: updated search term
+    func handleSearchTermChange(newSearchTerm: String)
 
-    func removeSearch()
+    /// Handles dissapearance of a SearchController
+    func handleSearchControllerDidDisappear()
 
-    /// Destination View Controller VM Factory
+    /// Destination View Controller's VM Factory
+    /// - returns:  ComposeViewModel  with default configuration (for a new email).
     func composeViewModelForNewMessage() -> ComposeViewModel
+
+    /// Destination VM Factory - EmailDetail VM
+    /// - returns:  EmailDetailViewModel with default configuration.
     func emailDetialViewModel() -> EmailDetailViewModelProtocol
 }
 
@@ -222,13 +247,6 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         return Account.all().isEmpty
     }
 
-    public var unreadFilterEnabled: Bool {
-        guard let unread = currentFilter.mustBeUnread else {
-            return false
-        }
-        return isFilterEnabled && unread
-    }
-
     public func isReplyAllPossible(forRowAt indexPath: IndexPath) -> Bool {
         guard
             let replyAllPossible = replyAllPossibleChecker(forItemAt: indexPath)?.isReplyAllPossible()
@@ -255,12 +273,12 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         setSeenValue(forIndexPath: indexPaths, newValue: false)
     }
 
-    public func deleteSelected(indexPaths: [IndexPath]) {
+    public func handleUserClickedDestruktiveButton(forRowsAt indexPaths: [IndexPath]) {
         let messages = indexPaths.map { messageQueryResults[$0.row] }
         delete(messages: messages)
     }
 
-    public func messagesToMove(indexPaths: [IndexPath]) -> [Message?] {
+    private func messages(representedBy indexPaths: [IndexPath]) -> [Message?] {
         var messages : [Message?] = []
         indexPaths.forEach { (ip) in
             messages.append(self.message(representedByRowAt: ip))
@@ -280,8 +298,7 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
 
     override func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])
         -> MoveToAccountViewModel? {
-            let messages = messagesToMove(indexPaths: forSelectedMessages)
-            if let msgs = messages as? [Message] {
+            if let msgs = messages(representedBy: forSelectedMessages) as? [Message] {
                 return MoveToAccountViewModel(messages: msgs)
             }
             return nil
@@ -330,14 +347,14 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
     private var unreadMessages = false
     private var flaggedMessages = false
 
-    public func updatedItems(indexPaths: [IndexPath]) {
-        checkUnreadMessages(indexPaths: indexPaths)
-        checkFlaggedMessages(indexPaths: indexPaths)
+    public func handleEditModeSelectionChange(selectedIndexPaths: [IndexPath]) {
+        checkUnreadMessages(indexPaths: selectedIndexPaths)
+        checkFlaggedMessages(indexPaths: selectedIndexPaths)
         guard let delegate = delegate as? EmailListViewModelDelegate else {
             Log.shared.errorAndCrash("No delegate")
             return
         }
-        if indexPaths.count > 0 {
+        if selectedIndexPaths.count > 0 {
             delegate.setToolbarItemsEnabledState(to: true)
         } else {
             delegate.setToolbarItemsEnabledState(to: false)
@@ -387,18 +404,18 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
 
 extension EmailListViewModel {
 
-    public func setSearch(forSearchText txt: String) {
-        if txt == lastSearchTerm {
+    public func handleSearchTermChange(newSearchTerm: String) {
+        if newSearchTerm == lastSearchTerm {
             // Happens e.g. when initially setting the cursor in search bar.
             return
         }
-        lastSearchTerm = txt
+        lastSearchTerm = newSearchTerm
 
-        let search = txt == "" ? nil : MessageQueryResultsSearch(searchTerm: lastSearchTerm)
+        let search = newSearchTerm == "" ? nil : MessageQueryResultsSearch(searchTerm: lastSearchTerm)
         setNewSearchAndReload(search: search)
     }
 
-    public func removeSearch() {
+    public func handleSearchControllerDidDisappear() {
         setNewSearchAndReload(search: nil)
     }
 

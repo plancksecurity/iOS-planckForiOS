@@ -273,11 +273,6 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
         return
     }
 
-    @objc private func settingsChanged() {
-        viewModel?.informDelegateToReloadData()
-        tableView.reloadData()
-    }
-
     // MARK: - Action Edit Button
 
     private var tempToolbarItems: [UIBarButtonItem]?
@@ -372,9 +367,9 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
     }
 
     @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
-           showEditToolbar()
-           tableView.setEditing(true, animated: true)
-       }
+        showEditToolbar()
+        tableView.setEditing(true, animated: true)
+    }
 
     @IBAction func showFilterOptions(_ sender: UIBarButtonItem!) {
         performSegue(withIdentifier: .segueShowFilter, sender: self)
@@ -440,8 +435,9 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
     }
 
     @IBAction func deleteToolbar(_ sender:UIBarButtonItem!) {
-        if let vm = viewModel, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
-            vm.deleteSelected(indexPaths: selectedIndexPaths)
+        if let vm = viewModel,
+            let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+            vm.handleUserClickedDestruktiveButton(forRowsAt: selectedIndexPaths)
         }
         cancelToolbar(sender)
     }
@@ -525,7 +521,6 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
 
 extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
 
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel?.rowCount ?? 0
     }
@@ -555,8 +550,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView,
-                   editActionsForRowAt
-        indexPath: IndexPath,
+                   editActionsForRowAt indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         if viewModel == nil {
             return nil
@@ -653,7 +647,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                 // ... nothing to do.
                 return
             }
-            vm.updatedItems(indexPaths: selectedIndexPaths)
+            vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)
         } else {
             guard let vm = viewModel else {
                 Log.shared.errorAndCrash("No VM")
@@ -676,9 +670,9 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if tableView.isEditing, let vm = viewModel {
             if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
-                vm.updatedItems(indexPaths: selectedIndexPaths)
+                vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)
             } else {
-                vm.updatedItems(indexPaths: [])
+                vm.handleEditModeSelectionChange(selectedIndexPaths: [])
             }
         }
     }
@@ -852,7 +846,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
             else {
                 return
         }
-        vm.setSearch(forSearchText: searchText)
+        vm.handleSearchTermChange(newSearchTerm: searchText)
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
@@ -860,7 +854,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
             Log.shared.errorAndCrash("No chance to remove filter, sorry.")
             return
         }
-        vm.removeSearch()
+        vm.handleSearchControllerDidDisappear()
     }
 }
 
@@ -1277,7 +1271,7 @@ extension EmailListViewController: SegueHandlerType {
                 return
             }
 
-            composeVc.viewModel = vm.composeViewModel(withOriginalMessageAt: indexPath,
+            composeVc.viewModel = vm.composeViewModel(forMessageRepresentedByItemAt: indexPath,
                                                       composeMode: composeMode)
         } else {
             composeVc.viewModel = vm.composeViewModelForNewMessage()

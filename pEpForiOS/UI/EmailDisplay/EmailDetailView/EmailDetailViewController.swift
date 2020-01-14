@@ -11,7 +11,6 @@ import QuickLook
 import pEpIOSToolbox
 
 // Represents the a list of mails showing one mail with all details in full screen.
-//BUFF: docs!
 class EmailDetailViewController: BaseViewController {
     static private let cellXibName = "EmailDetailCollectionViewCell"
     static private let cellId = "EmailDetailViewCell"
@@ -264,7 +263,7 @@ extension EmailDetailViewController {
 
     private func configureView() {
         // Make sure the NavigationBar is shown, even if the previous view has hidden it.
-        navigationController?.setNavigationBarHidden(false, animated: false) //BUFF: rm NC in storyboard?
+        navigationController?.setNavigationBarHidden(false, animated: false) //BUFF: //XAVIER: rm NC in storyboard after new SplitView handling approach is in.
 
         //ToolBar
         if splitViewController != nil {
@@ -302,7 +301,7 @@ extension EmailDetailViewController {
             return
         }
 
-        if vm.canShowPrivacyStatus(forItemAt: indexPath) {
+        if vm.shouldShowPrivacyStatus(forItemAt: indexPath) {
             let tapGestureRecognizer = UITapGestureRecognizer(target: self,
                                                               action: #selector(showHandshakeView(gestureRecognizer:)))
             ratingView.addGestureRecognizer(tapGestureRecognizer)
@@ -352,7 +351,8 @@ extension EmailDetailViewController {
 
         let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
 
-        if vm.canShowPrivacyStatus(forItemAt:indexPath), let handshakeAction = showHandshakeViewAction() {
+        if vm.shouldShowPrivacyStatus(forItemAt:indexPath),
+            let handshakeAction = showHandshakeViewAction() {
             actionSheetController.addAction(handshakeAction)
         }
         actionSheetController.addAction(tutorialAction())
@@ -391,13 +391,6 @@ extension EmailDetailViewController {
     }
 
     private func showHandshakeViewAction() -> UIAlertAction? {
-        guard
-            let vm = viewModel,
-            let indexPath = indexPathOfCurrentlyVisibleCell,
-            vm.isHandshakePossible(forItemAt: indexPath)
-            else {
-                return nil
-        }
         let action = UIAlertAction(title: NSLocalizedString("Privacy Status",
                                                             comment: "action sheet title 1"),
                                    style: .default) { [weak self] (action) in

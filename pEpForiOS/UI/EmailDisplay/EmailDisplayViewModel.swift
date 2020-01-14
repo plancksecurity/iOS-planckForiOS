@@ -11,24 +11,38 @@ import pEpIOSToolbox
 import MessageModel
 import PEPObjCAdapterFramework
 
+/// Base class for MessageQueryResults driven email display view models.
 protocol EmailDisplayViewModelProtocol: class {
+
+    /// The *V*iew in our MVC
     var delegate: EmailDisplayViewModelDelegate? { get set }
+    /// Message query to display messages for
     var messageQueryResults: MessageQueryResults { get }
+    /// Number of messages
     var rowCount: Int { get }
+    /// Starts monitoring the given database query.
     func startMonitoring()
 
-    func informDelegateToReloadData()
     //Abstract. Has to be overridden.
     func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])  -> MoveToAccountViewModel?
+
     //!!!: this should be internal (not part of the protocol). VC and Cells MUST not know the model (Message).
+    /// - Parameter indexPath: indexPath of the cell to get the message it represents for.
+    /// - returns:  `nil` if `indexPath` is out of the current queryResults bounds, otherwize the
+    ///             Message represented by the given `indexPath`?.
     func message(representedByRowAt indexPath: IndexPath) -> Message?
 
-    func delete(messages: [Message])
-
+    /// - Parameter indexPath: indexPath of message to configure ReplyAllPossibleChecker with
+    /// - returns: `ReplyAllPossibleChecker` configured for message represented by
+    ///             given `indexPath`.
     func replyAllPossibleChecker(forItemAt indexPath: IndexPath) -> ReplyAllPossibleCheckerProtocol?
 
-    func composeViewModel(withOriginalMessageAt indexPath: IndexPath,
-                          composeMode: ComposeUtil.ComposeMode?) -> ComposeViewModel
+    /// Destination VM Factory - Compose VM
+    /// - Parameter indexPath: indexPath of the cell to show ComposeView view for.
+    /// - returns:  ComposeViewModel configured for given compose mode for message represented by
+    ///             the given indexPath
+    func composeViewModel(forMessageRepresentedByItemAt indexPath: IndexPath,
+                          composeMode: ComposeUtil.ComposeMode) -> ComposeViewModel?
 }
 
 protocol EmailDisplayViewModelDelegate: class {
@@ -51,7 +65,6 @@ protocol EmailDisplayViewModelDelegate: class {
 
 // MARK: - EmailDisplayViewModel
 
-/// Base class for MessageQueryResults driven email display view models.
 class EmailDisplayViewModel: EmailDisplayViewModelProtocol {
 
     // MARK: - Life Cycle
@@ -98,20 +111,22 @@ class EmailDisplayViewModel: EmailDisplayViewModelProtocol {
         return messageQueryResults[indexPath.row]
     }
 
-    public func informDelegateToReloadData() {
-        delegate?.reloadData(viewModel: self)
-    }
-
-    public func delete(messages: [Message]) {
-        Message.imapDelete(messages: messages)
-    }
-
     public func replyAllPossibleChecker(forItemAt indexPath: IndexPath) -> ReplyAllPossibleCheckerProtocol? {
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
             return nil
         }
         return ReplyAllPossibleChecker(messageToReplyTo: message)
+    }
+
+    // MARK: - Stuff that should be visible for subclasses only
+
+    func informDelegateToReloadData() {
+        delegate?.reloadData(viewModel: self)
+    }
+
+    func delete(messages: [Message]) {
+        Message.imapDelete(messages: messages)
     }
 }
 
@@ -156,11 +171,14 @@ extension EmailDisplayViewModel {
 
 extension EmailDisplayViewModel {
 
-    func composeViewModel(withOriginalMessageAt indexPath: IndexPath,
-                          composeMode: ComposeUtil.ComposeMode? = nil) -> ComposeViewModel {
-        let message = messageQueryResults[indexPath.row]
-        let composeVM = ComposeViewModel(composeMode: composeMode,
-                                         originalMessage: message)
-        return composeVM
+    func composeViewModel(forMessageRepresentedByItemAt indexPath: IndexPath,
+                          composeMode: ComposeUtil.ComposeMode) -> ComposeViewModel? {
+        guard let msg = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No Message")
+            return nil
+        }
+        return ComposeViewModel(composeMode: composeMode,
+                                prefilledTo: nil,
+                                originalMessage: msg)
     }
 }
