@@ -103,7 +103,7 @@ extension SettingsSectionViewModel {
     }
 
     private func generateContactsCells() {
-        cells.append(SettingsActionCellViewModel(type: .resetTrust))
+        cells.append(SettingsCellViewModel(type: .resetTrust))
     }
 }
 
