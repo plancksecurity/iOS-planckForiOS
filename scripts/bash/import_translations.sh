@@ -2,9 +2,21 @@
 
 translationdir=../pEp-Translate/
 
-mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
+# Imports translations
+# Param 1: The project (pEpForiOS.xcodeproj or MessageModel/MessageModel.xcodeproj)
+# Param 2: The source directory ($translationdir or $translationdir/MessageModel)
+function import() {
+    mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
-cp $translationdir/*.xliff $mytmpdir
-sed -i '' 's/<target\/>//' $mytmpdir/*.xliff
+    cp $2/*.xliff $mytmpdir
+    sed -i '' 's/<target\/>//' $mytmpdir/*.xliff
 
-rm -fr $mytmpdir
+    for filename in $mytmpdir/*.xliff; do
+        xcodebuild -importLocalizations -verbose -project $1 -localizationPath $filename
+    done
+
+    rm -fr $mytmpdir
+}
+
+import pEpForiOS.xcodeproj $translationdir
+import MessageModel/MessageModel.xcodeproj $translationdir/MessageModel
