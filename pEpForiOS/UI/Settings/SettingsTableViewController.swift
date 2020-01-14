@@ -79,6 +79,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 return dequeuedCell
             }
             cell.textLabel?.text = vm.title
+            cell.textLabel?.textColor = vm.titleColor
             cell.detailTextLabel?.text = vm.detail
             cell.delegate = self
             return cell
@@ -153,6 +154,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 performSegue(withIdentifier: .segueSetOwnKey, sender: self)
             case .extraKeys:
                 performSegue(withIdentifier: .segueExtraKeys, sender: self)
+            case .resetTrust:
+                performSegue(withIdentifier: .ResetTrust, sender: self)
             }
         case let vm as SettingsActionCellViewModel:
             switch vm.type {
@@ -166,9 +169,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             case .resetAllIdentities:
                 handleResetAllIdentity()
                 tableView.deselectRow(at: indexPath, animated: true)
-            case .resetTrust:
-                performSegue(withIdentifier: .ResetTrust, sender: self)
-                break
             }
         default:
             // SwitchSettingCellViewModelProtocol will drop here, but nothing to do when selected
