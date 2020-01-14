@@ -20,3 +20,7 @@ function import() {
 
 import pEpForiOS.xcodeproj $translationdir
 import MessageModel/MessageModel.xcodeproj $translationdir/MessageModel
+
+echo
+echo ! Verify the changes in pEpForiOS and MessageModel and commit !
+echo

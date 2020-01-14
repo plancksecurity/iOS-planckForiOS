@@ -25,5 +25,5 @@ cp "$mmdir/$lang.xcloc/Localized Contents/$lang.xliff" $translationdir/MessageMo
 rm -fr $mytmpdir
 
 echo
-echo ! Commit your changes in $translationdir and push !
+echo ! Verify the changes in $translationdir, and then commit and push !
 echo
