@@ -28,7 +28,7 @@ final class SettingsActionCellViewModel: SettingsActionCellViewModelProtocol {
 
     var title: String {
         get {
-            switch type {
+            switch type { 
             case .resetAllIdentities:
                 return NSLocalizedString("Reset All Identities",
                                          comment: "Settings: Cell (button) title for reset all identities")
