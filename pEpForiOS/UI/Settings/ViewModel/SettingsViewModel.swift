@@ -85,14 +85,25 @@ final class SettingsViewModel {
 
 extension SettingsViewModel {
 
-//    private func removeLeaveDeviceGroupCell() {
-//        for section in sections {
-//            guard section.type == .keySync else {
-//                continue
-//            }
-//            section.removeLeaveDeviceGroupCell()
-//        }
-//    }
+    func isGrouped() -> Bool {
+        return KeySyncUtil.isInDeviceGroup
+    }
+
+    func PEPSyncUpdate(to value: Bool) {
+        let grouped = isGrouped()
+        if value {
+            KeySyncUtil.enableKeySync()
+        } else {
+            if grouped {
+                do {
+                    try KeySyncUtil.leaveDeviceGroup()
+                } catch {
+                    Log.shared.errorAndCrash(error: error)
+                }
+            }
+            KeySyncUtil.disableKeySync()
+        }
+    }
 }
 
 // MARK: - ExtryKeysEditability

@@ -92,7 +92,12 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 Log.shared.errorAndCrash("Invalid state.")
                 return dequeuedCell
             }
-            cell.viewModel = vm
+            if var keysSyncswitchViewModel = vm as? KeySyncSwitchSettingViewModel {
+                keysSyncswitchViewModel.delegate = self
+                cell.viewModel = keysSyncswitchViewModel
+            } else {
+                cell.viewModel = vm
+            }
             cell.setUpView()
             return cell
         default:
@@ -390,40 +395,38 @@ extension SettingsTableViewController: SettingsViewModelDelegate {
     }
 }
 
-//extension SettingsTableViewController {
-//    func performSwitchAction(value: Bool, viewModel: SwitchSettingCellViewModelProtocol) {
-//        if let vm = viewModel as? KeySyncSwitchViewModel {
-//            showAlertBeforeLeavingDeviceGroup(cellViewModel: vm)
-//        }
-//    }
-//
-//    private func showAlertBeforeLeavingDeviceGroup(cellViewModel: SwitchSettingCellViewModelProtocol) {
-//        let title = NSLocalizedString("Are you sure you want to leave your device group?",
-//                                      comment: "Leave device group confirmation")
-//        let comment = NSLocalizedString("leaving device group", comment: "Leave device group confirmation comment")
-//        let buttonTitle = NSLocalizedString("Leave", comment: "Leave device group button title")
-//        let leavingAction: (UIAlertAction)-> () = { [weak self] _ in
-//            guard let me = self else {
-//                Log.shared.lostMySelf()
-//                return
-//            }
-//            //me.handleKeySyncSettingCellPressed(cellViewModel: cellViewModel)
-//            //me.tableView.reloadData()
-//        }
-//        //showAlert(title, comment, buttonTitle, leavingAction, indexPath)
-//    }
-//}
-//
-//            case .keySyncSetting:
-//                if vm.keySyncSettingCellState == .leaveDeviceGroup {
-//                    showAlertBeforeLeavingDeviceGroup(cellViewModel: vm, indexPath: indexPath)
-//                } else {
-//                    handleKeySyncSettingCellPressed(cellViewModel: vm)
-//                    tableView.reloadData()
-//                }
+extension SettingsTableViewController: keySyncActionsProtocol {
 
-//    private func handleKeySyncSettingCellPressed(cellViewModel: SettingsActionCellViewModel) {
-//        cellViewModel.handleKeySyncSettingCellPressed()
-//    }
-//
-//
+    func updateSyncStatus(to value: Bool) {
+        if viewModel.isGrouped() {
+            let title = NSLocalizedString("Disable pEp Sync",
+                                          comment: "Leave device group confirmation")
+            let comment = NSLocalizedString("if you disable pEps sybc, your device group will be dissolved. are you sure you want to disabre pep Sync?",
+                                            comment: "Leave device group confirmation comment")
+
+            let alert = UIAlertController.pEpAlertController(title: title,
+                                                             message: comment, preferredStyle: .alert)
+            let cancelAction = alert.action(NSLocalizedString("Cancel",
+                                                              comment: "keysync alert leave device group cancel"),
+                                            .cancel) { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "lost myself")
+                    return
+                }
+                me.tableView.reloadData()
+            }
+            let disableAction = alert.action("Disable", .default) { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "lost myself")
+                    return
+                }
+                me.viewModel.PEPSyncUpdate(to: value)
+            }
+            alert.addAction(cancelAction)
+            alert.addAction(disableAction)
+            present(alert, animated: true)
+        } else {
+            viewModel.PEPSyncUpdate(to: value)
+        }
+    }
+}
