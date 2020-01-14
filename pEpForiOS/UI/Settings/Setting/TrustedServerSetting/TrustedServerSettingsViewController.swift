@@ -11,6 +11,12 @@ import pEpIOSToolbox
 
 class TrustedServerSettingsViewController: BaseTableViewController {
     var viewModel = TrustedServerSettingsViewModel()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        viewModel.delegate = self
+    }
 }
 
 // MARK: -  UITableViewDataSource
@@ -57,32 +63,32 @@ extension TrustedServerSettingsViewController {
 extension TrustedServerSettingsViewController: TrustedServerSettingCellDelegate {
     func trustedServerSettingCell(sender: TrustedServerSettingCell,
                                   didChangeSwitchValue newValue: Bool) {
-        guard let address = sender.address.text else {
-            Log.shared.errorAndCrash("No address.")
+        guard let indexPath = tableView.indexPath(for: sender) else {
+            Log.shared.errorAndCrash("Invalid indexPath for this TrustedServerSettingCell")
             return
         }
-        viewModel.handleStoreSecurely(forAccountWith: address, toValue: newValue)
+        viewModel.handleStoreSecurely(forIndexPath: indexPath, toValue: newValue)
     }
 }
 
 // MARK: - TrustedServerSettingsViewModelDelegate
 
 extension TrustedServerSettingsViewController: TrustedServerSettingsViewModelDelegate {
-    func showAlertBeforeStoringSecurely(forAccountWith address: String) {
-        guard let storingSecurelyAlert = storingSecurelyAlert(forAccountWith: address) else {
+    func showAlertBeforeStoringSecurely(forIndexPath indexPath: IndexPath) {
+        guard let storingSecurelyAlert = storingSecurelyAlert(forIndexPath: indexPath) else {
             Log.shared.errorAndCrash("Fail to init storingSecurely pEpAlert")
             //If fail to init the alert, we just skip the alert and store it securely
-            viewModel.setStoreSecurely(forAccountWith: address, toValue: true)
+            viewModel.setStoreSecurely(forIndexPath: indexPath, toValue: true)
             return
         }
-        prese
+        present(storingSecurelyAlert, animated: true)
     }
 }
 
 // MARK: - Private
 
 extension TrustedServerSettingsViewController {
-    private func storingSecurelyAlert(forAccountWith address: String) -> PEPAlertViewController? {
+    private func storingSecurelyAlert(forIndexPath indexPath: IndexPath) -> PEPAlertViewController? {
         let title = NSLocalizedString("Security Alert",
                                       comment: "Alert title before trusting an account")
         let message = NSLocalizedString("This is a public cloud account. Your data will be exposed. Are you sure you want to configure this as trusted?",
@@ -93,25 +99,32 @@ extension TrustedServerSettingsViewController {
         let cancelActionTitle = NSLocalizedString("Cancel",
                                                   comment: "Alert cancel button title before trusting an account")
         let cancelAction = PEPUIAlertAction(title: cancelActionTitle,
-                                                 style: .pEpBlue,
-                                                 handler: { [weak self] _ in
-                                                    guard let me = self else {
-                                                        Log.shared.lostMySelf()
-                                                        return
-                                                    }
-                                                    me.viewModel.setStoreSecurely(forAccountWith: address, toValue: true)
+                                            style: .pEpBlue,
+                                            handler: { [weak self] _ in
+                                                guard let me = self else {
+                                                    Log.shared.lostMySelf()
+                                                    return
+                                                }
+                                                guard let trustCell = me.tableView.cellForRow(at: indexPath) as? TrustedServerSettingCell else {
+                                                    Log.shared.errorAndCrash("Fail to get TrustedServerSettingCell")
+                                                    return
+                                                }
+                                                trustCell.onOfSwitch.setOn(false, animated: true)
+                                                pepAlert?.dissmiss()
         })
 
         let trustActionTitle = NSLocalizedString("Trust",
-                                                   comment: "Alert trust button title before trusting an account")
+                                                 comment: "Alert trust button title before trusting an account")
         let trustAction = PEPUIAlertAction(title: trustActionTitle,
-                                                   style: .pEpRed,
-                                                   handler: { [weak self] _ in
-                                                    guard let me = self else {
-                                                        Log.shared.lostMySelf()
-                                                        return
-                                                    }
-                                                    me.viewModel.setStoreSecurely(forAccountWith: address, toValue: true)
+                                           style: .pEpRed,
+                                           handler: { [weak self] _ in
+                                            guard let me = self else {
+                                                Log.shared.lostMySelf()
+                                                pepAlert?.dissmiss()
+                                                return
+                                            }
+                                            pepAlert?.dissmiss()
+                                            me.viewModel.setStoreSecurely(forIndexPath: indexPath, toValue: true)
         })
         pepAlert?.add(action: cancelAction)
         pepAlert?.add(action: trustAction)
