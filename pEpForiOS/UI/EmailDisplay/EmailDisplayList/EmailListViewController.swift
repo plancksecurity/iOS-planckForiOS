@@ -76,7 +76,7 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
 
             if !vm.showLoginView {
                 me.updateFilterButtonView()
-                vm.startMonitoring() //???: should UI know about startMonitoring?
+                vm.startMonitoring() //!!!: UI should not know about startMonitoring?
                 me.tableView.reloadData()
                 me.checkSplitViewState()
                 me.watchDetailView()

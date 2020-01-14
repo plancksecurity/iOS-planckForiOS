@@ -11,7 +11,7 @@ import pEpIOSToolbox
 import MessageModel
 import PEPObjCAdapterFramework
 
-protocol EmailDisplayViewModelProtocol {
+protocol EmailDisplayViewModelProtocol: class {
     var delegate: EmailDisplayViewModelDelegate? { get set }
     var messageQueryResults: MessageQueryResults { get }
     var rowCount: Int { get }
@@ -26,6 +26,9 @@ protocol EmailDisplayViewModelProtocol {
     func delete(messages: [Message])
 
     func replyAllPossibleChecker(forItemAt indexPath: IndexPath) -> ReplyAllPossibleCheckerProtocol?
+
+    func composeViewModel(withOriginalMessageAt indexPath: IndexPath,
+                          composeMode: ComposeUtil.ComposeMode?) -> ComposeViewModel
 }
 
 protocol EmailDisplayViewModelDelegate: class {

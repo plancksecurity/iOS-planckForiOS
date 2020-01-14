@@ -194,7 +194,7 @@ class FolderTableViewController: BaseTableViewController {
         guard
             let nav = sb.instantiateViewController(
                 withIdentifier: EmailListViewController.storyboardNavigationControllerId) as? UINavigationController,
-            let vc = nav.rootViewController as? EmailListViewController //BUFF:
+            let vc = nav.rootViewController as? EmailListViewController
             else {
                 Log.shared.errorAndCrash("Problem!")
                 return

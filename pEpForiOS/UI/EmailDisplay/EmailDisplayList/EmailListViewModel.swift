@@ -58,6 +58,26 @@ protocol EmailListViewModelProtocol: EmailDisplayViewModelProtocol {
     func delete(forIndexPath indexPath: IndexPath)
 
     func freeMemory()
+
+    // Implemented to get informed about the currently visible cells.
+    // If the user has scrolled down (almost) to the end, we ask for older emails.
+
+    /// Get informed about the new visible cells.
+    /// If the user has scrolled down (almost) to the end, we ask for older emails.
+    ///
+    /// - Parameter indexPath: indexpath to check need for fetch older for
+    func fetchOlderMessagesIfRequired(forIndexPath indexPath: IndexPath)
+    func fetchNewMessages(completition: (() -> Void)?)
+
+    func updatedItems(indexPaths: [IndexPath])
+
+    func setSearch(forSearchText txt: String)
+
+    func removeSearch()
+
+    /// Destination View Controller VM Factory
+    func composeViewModelForNewMessage() -> ComposeViewModel
+    func emailDetialViewModel() -> EmailDetailViewModelProtocol
 }
 
 protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
@@ -69,7 +89,7 @@ protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
 // MARK: - EmailListViewModel
 
 class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
-    private var emailDetailViewModel: EmailDetailViewModel?
+    private var emailDetailViewModel: EmailDetailViewModelProtocol?
     private let contactImageTool = IdentityImageTool()
 
     private var lastSearchTerm = ""
@@ -255,7 +275,7 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
     func freeMemory() {
         contactImageTool.clearCache()
     }
-    
+
     // MARK: - EmailDisplayViewModelDelegate Overrides
 
     override func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])
@@ -297,7 +317,7 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         folderToShow.fetchOlder(completion: nil)
     }
 
-    //MARK: - FetchNewMessages
+    // MARK: - FetchNewMessages
 
     public func fetchNewMessages(completition: (() -> Void)? = nil) {
         folderToShow.fetchNewMessages() {
@@ -305,7 +325,7 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         }
     }
 
-    //multiple message selection handler
+    // MARK: - multiple message selection handler
 
     private var unreadMessages = false
     private var flaggedMessages = false
@@ -367,14 +387,6 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
 
 extension EmailListViewModel {
 
-    private func handleFilterEnabledStateChange() {
-        if isFilterEnabled {
-            setNewFilterAndReload(filter: currentFilter)
-        } else {
-            setNewFilterAndReload(filter: nil)
-        }
-    }
-
     public func setSearch(forSearchText txt: String) {
         if txt == lastSearchTerm {
             // Happens e.g. when initially setting the cursor in search bar.
@@ -388,6 +400,14 @@ extension EmailListViewModel {
 
     public func removeSearch() {
         setNewSearchAndReload(search: nil)
+    }
+
+    private func handleFilterEnabledStateChange() {
+        if isFilterEnabled {
+            setNewFilterAndReload(filter: currentFilter)
+        } else {
+            setNewFilterAndReload(filter: nil)
+        }
     }
 
     private func setNewSearchAndReload(search: MessageQueryResultsSearch?) {
@@ -441,7 +461,7 @@ extension EmailListViewModel {
     }
 }
 
-// MARK: - ComposeViewModel
+// MARK: - Destination View Controller VM-Factory
 
 extension EmailListViewModel {
 
@@ -458,19 +478,8 @@ extension EmailListViewModel {
         let composeVM = ComposeViewModel(prefilledFrom: someUser)
         return composeVM
     }
-}
 
-// MARK: - FilterViewDelegate
-
-extension EmailListViewModel: FilterViewDelegate {
-    public func filterChanged(newFilter: MessageQueryResultsFilter) {
-        setNewFilterAndReload(filter: newFilter)
-    }
-}
-
-extension EmailListViewModel {
-
-    func emailDetialViewModel() -> EmailDetailViewModel {
+    func emailDetialViewModel() -> EmailDetailViewModelProtocol {
         let detailQueryResults = messageQueryResults.clone()
         let createe = EmailDetailViewModel(messageQueryResults: detailQueryResults)
         createe.selectionChangeDelegate = self
@@ -478,6 +487,15 @@ extension EmailListViewModel {
         emailDetailViewModel = createe
 
         return createe
+    }
+}
+
+// MARK: - FilterViewDelegate
+
+extension EmailListViewModel: FilterViewDelegate {
+
+    func filterChanged(newFilter: MessageQueryResultsFilter) {
+        setNewFilterAndReload(filter: newFilter)
     }
 }
 
@@ -526,7 +544,7 @@ extension EmailListViewModel: QueryResultsIndexPathRowDelegate {
 
 extension EmailListViewModel: EmailDetailViewModelSelectionChangeDelegate {
 
-    func emailDetailViewModel(emailDetailViewModel: EmailDetailViewModel,
+    func emailDetailViewModel(emailDetailViewModel: EmailDetailViewModelProtocol,
                               didSelectItemAt indexPath: IndexPath) {
         delegate?.select(itemAt: indexPath)
     }

@@ -12,7 +12,35 @@ import PEPObjCAdapterFramework
 protocol EmailDetailViewModelProtocol: EmailDisplayViewModelProtocol {
     func replaceMessageQueryResults(with qrc: MessageQueryResults) throws
     func select(itemAt indexPath: IndexPath)
+    func handleFlagButtonPress(for indexPath: IndexPath)
 
+    func handleDestructiveButtonPress(for indexPath: IndexPath)
+
+    func handleEmailShown(forItemAt indexPath: IndexPath)
+
+    var indexPathForCellDisplayedBeforeUpdating: IndexPath? { get }
+
+    /// Scroll to `indexPathForCellDisplayedBeforeUpdating` after the collection has been updated
+    /// (only) if this is true.
+    var shouldScrollBackToCurrentlyViewdCellAfterUpdate: Bool { get }
+
+    func markForRedecryptionIfNeeded(messageRepresentedBy indexPath: IndexPath)
+
+    func destructiveButtonIcon(forMessageAt indexPath: IndexPath?) -> UIImage?
+
+    func flagButtonIcon(forMessageAt indexPath: IndexPath?) -> UIImage?
+
+    func pEpRating(forItemAt indexPath: IndexPath) -> PEPRating
+
+    func canShowPrivacyStatus(forItemAt indexPath: IndexPath) -> Bool
+
+    func isHandshakePossible(forItemAt indexPath: IndexPath) -> Bool
+
+    /// Destination VM Factory - Move To Folder
+    func getMoveToFolderViewModel(forMessageRepresentedByItemAt indexPath: IndexPath) -> MoveToAccountViewModel?
+    /// Destination VM Factory - Compose
+    func composeViewModel(forMessageRepresentedByItemAt indexPath: IndexPath,
+                          composeMode: ComposeUtil.ComposeMode) -> ComposeViewModel?
 }
 
 protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
@@ -28,7 +56,7 @@ protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
 /// Reports back currently shown email changes.
 protocol EmailDetailViewModelSelectionChangeDelegate: class {
     /// Called when the currently shown message changes
-    func emailDetailViewModel(emailDetailViewModel: EmailDetailViewModel,
+    func emailDetailViewModel(emailDetailViewModel: EmailDetailViewModelProtocol,
                               didSelectItemAt indexPath: IndexPath)
 }
 
@@ -42,13 +70,14 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
     /// Used to figure out if we need to scroll to the currently viewed message after update.
     private var updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
 
-//    weak var delegate: EmailDetailViewModelDelegate?
     weak var selectionChangeDelegate: EmailDetailViewModelSelectionChangeDelegate?
 
     init(messageQueryResults: MessageQueryResults, delegate: EmailDisplayViewModelDelegate? = nil) {
         super.init(messageQueryResults: messageQueryResults)
         self.messageQueryResults.rowDelegate = self
     }
+
+    // MARK: - EmailDetailViewModelProtocol
 
     public func replaceMessageQueryResults(with qrc: MessageQueryResults) throws {
         messageQueryResults = qrc
@@ -105,9 +134,7 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
         }
         return nil
     }
-
-    /// Scroll to `indexPathForCellDisplayedBeforeUpdating` after the collection has been updated
-    /// (only) if this is true.
+    
     public var shouldScrollBackToCurrentlyViewdCellAfterUpdate: Bool {
         return updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage
     }
@@ -123,16 +150,6 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
         // If so, try again to decrypt it.
         if message.markForRetryDecryptIfUndecryptable() {
             pathsForMessagesMarkedForRedecrypt.append(indexPath)
-        }
-    }
-
-    private func markSeenIfNeeded(messageRepresentedby indexPath: IndexPath) {
-        guard let message = message(representedByRowAt: indexPath) else {
-            Log.shared.errorAndCrash("No msg")
-            return
-        }
-        if !message.imapFlags.seen {
-            message.markAsSeen()
         }
     }
 
@@ -189,8 +206,24 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
         return true
     }
 
+    public func getMoveToFolderViewModel(forMessageRepresentedByItemAt indexPath: IndexPath) -> MoveToAccountViewModel? {
+        guard let msg = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("Nothing to move?")
+            return nil
+        }
+        return MoveToAccountViewModel(messages: [msg])
+    }
 
-    //
+    public func composeViewModel(forMessageRepresentedByItemAt indexPath: IndexPath,
+                                 composeMode: ComposeUtil.ComposeMode) -> ComposeViewModel? {
+        guard let msg = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("Nothing to move?")
+            return nil
+        }
+        return ComposeViewModel(composeMode: composeMode,
+                                prefilledTo: nil,
+                                originalMessage: msg)
+    }
 }
 
 // MARK: - Private
@@ -202,6 +235,16 @@ extension EmailDetailViewModel {
         pathsForMessagesMarkedForRedecrypt = [IndexPath]()
         lastShownMessage = nil
         updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
+    }
+
+    private func markSeenIfNeeded(messageRepresentedby indexPath: IndexPath) {
+        guard let message = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No msg")
+            return
+        }
+        if !message.imapFlags.seen {
+            message.markAsSeen()
+        }
     }
 }
 
@@ -253,29 +296,5 @@ extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
             insertedIndexPath.row <= currentlyShownIndex.row {
             updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = true
         }
-    }
-}
-
-// MARK: - Destination VM Factory
-
-extension EmailDetailViewModel {
-
-    public func getMoveToFolderViewModel(forMessageRepresentedByItemAt indexPath: IndexPath) -> MoveToAccountViewModel? {
-        guard let msg = message(representedByRowAt: indexPath) else {
-            Log.shared.errorAndCrash("Nothing to move?")
-            return nil
-        }
-        return MoveToAccountViewModel(messages: [msg])
-    }
-
-    public func composeViewModel(forMessageRepresentedByItemAt indexPath: IndexPath,
-                                 composeMode: ComposeUtil.ComposeMode) -> ComposeViewModel? {
-        guard let msg = message(representedByRowAt: indexPath) else {
-            Log.shared.errorAndCrash("Nothing to move?")
-            return nil
-        }
-        return ComposeViewModel(composeMode: composeMode,
-                                prefilledTo: nil,
-                                originalMessage: msg)
     }
 }
