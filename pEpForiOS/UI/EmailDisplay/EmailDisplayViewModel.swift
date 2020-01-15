@@ -12,6 +12,8 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 /// Base class for MessageQueryResults driven email display view models.
+/// All ViewModels that are showing messages that are fetched and monitored by MessageQueryResults
+/// should subclass from this.
 protocol EmailDisplayViewModelProtocol: class {
 
     /// The *V*iew in our MVC
