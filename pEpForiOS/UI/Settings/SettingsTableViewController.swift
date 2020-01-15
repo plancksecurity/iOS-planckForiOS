@@ -347,7 +347,8 @@ extension SettingsTableViewController {
         tableView.cellForRow(at: indexPath)?.isSelected = false //!!!: bad. side effect in showAlert.
         let alertController = UIAlertController.pEpAlertController(
             title: nil,
-            message: NSLocalizedString(message, comment: comment), preferredStyle: .actionSheet)
+            message: message,
+            preferredStyle: .actionSheet)
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel title button")
         let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { _ in }
