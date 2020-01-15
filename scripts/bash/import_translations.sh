@@ -13,7 +13,7 @@ function import() {
     sed -i '' 's/<target\/>//' $mytmpdir/*.xliff
 
     for filename in $mytmpdir/*.xliff; do
-        xcodebuild -importLocalizations -verbose -project $1 -localizationPath $filename
+        xcodebuild -importLocalizations -project $1 -localizationPath $filename
     done
 
     rm -fr $mytmpdir
@@ -25,7 +25,7 @@ function import() {
 function import_in_place() {
     for filename in $2/*.xliff; do
         sed -i '' 's/<target\/>//' $filename
-        xcodebuild -importLocalizations -verbose -project $1 -localizationPath $filename
+        xcodebuild -importLocalizations -project $1 -localizationPath $filename
     done
 }
 
