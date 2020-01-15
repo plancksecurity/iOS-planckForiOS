@@ -14,7 +14,7 @@ mkdir $mmdir
 for lang in $languages
 do
   xcodebuild -exportLocalizations -project pEpForiOS.xcodeproj -exportLanguage $lang -localizationPath $appdir
-
+ 
   cp "$appdir/$lang.xcloc/Localized Contents/$lang.xliff" $translationdir
   
   xcodebuild -exportLocalizations -project ../MessageModel/MessageModel/MessageModel.xcodeproj -exportLanguage $lang -localizationPath $mmdir
