@@ -19,6 +19,7 @@ extension SettingsCellViewModel {
         case setOwnKey
         case extraKeys
         case accountsToSync
+        case resetTrust
     }
 }
 
@@ -81,14 +82,26 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
             case .accountsToSync:
                 return NSLocalizedString("Select accounts to sync",
                                          comment: "Settings: Cell (button) title to view accounts to sync")
+            case .resetTrust:
+                return NSLocalizedString("Reset", comment:
+                    "Settings: cell (button) title to view the trust contacts option")
             }
+        }
+    }
+
+    var titleColor: UIColor? {
+        switch type {
+        case .resetTrust:
+            return .pEpRed
+        default:
+            return nil
         }
     }
 
     var value : String? {
         get {
             switch type {
-            case .account, .credits, .trustedServer, .setOwnKey, .extraKeys, .accountsToSync:
+            case .account, .credits, .trustedServer, .setOwnKey, .extraKeys, .accountsToSync, .resetTrust:
                 // Have no value.
                 return nil
             case .defaultAccount:
