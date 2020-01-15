@@ -959,6 +959,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
             showNoMessageSelected()
         }
     }
+
     func emailListViewModel(viewModel: EmailDisplayViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.reloadRows(at: indexPaths, with: .none)
