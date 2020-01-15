@@ -75,8 +75,8 @@ extension TrustedServerSettingsViewModel {
 
     mutating private func updateRowData(forIndexPath indexPath: IndexPath,
                                               toValue newValue: Bool) {
-        var row = rows[indexPath.row]
-        row = Row(address: row.address, storeMessagesSecurely: newValue)
+        let row = rows[indexPath.row]
+        rows[indexPath.row] = Row(address: row.address, storeMessagesSecurely: newValue)
     }
 
     private func shouldShowWaringnBeforeChangingTrustState(forAccount account: Account,
