@@ -111,6 +111,7 @@ class SecureWebViewController: UIViewController {
         let prefs = WKPreferences()
         prefs.javaScriptEnabled = false
         config.preferences = prefs
+        config.dataDetectorTypes = [.link, .address, .calendarEvent, .phoneNumber, .trackingNumber]
         // This handler provides local content for cid: URLs
         CidHandler.setup(config: config)
         webView = WKWebView(frame: .zero, configuration: config)
