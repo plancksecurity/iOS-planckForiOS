@@ -307,7 +307,6 @@ extension SettingsTableViewController {
                                                    indexPath: IndexPath) {
         let title = NSLocalizedString("Are you sure you want to leave your device group?",
                                       comment: "Leave device group confirmation")
-        let comment = NSLocalizedString("leaving device group", comment: "Leave device group confirmation comment")
         let buttonTitle = NSLocalizedString("Leave", comment: "Leave device group button title")
         let leavingAction: (UIAlertAction)-> () = { [weak self] _ in
             guard let me = self else {
@@ -317,12 +316,11 @@ extension SettingsTableViewController {
             me.handleKeySyncSettingCellPressed(cellViewModel: cellViewModel)
             me.tableView.reloadData()
         }
-        showAlert(title, comment, buttonTitle, leavingAction, indexPath)
+        showAlert(title, buttonTitle, leavingAction, indexPath)
     }
 
     private func showAlertBeforeDelete(_ indexPath: IndexPath) {
         let title = NSLocalizedString("Are you sure you want to delete the account?", comment: "Account delete confirmation")
-        let comment = NSLocalizedString("delete account message", comment: "Account delete confirmation comment")
         let buttonTitle = NSLocalizedString("Delete", comment: "Delete account button title")
         let deleteAction: (UIAlertAction) -> () = { [weak self] _ in
             guard let me = self else {
@@ -337,10 +335,10 @@ extension SettingsTableViewController {
             me.tableView.deleteRows(at: [indexPath], with: .fade)
             me.tableView.endUpdates()
         }
-        showAlert(title, comment, buttonTitle, deleteAction, indexPath)
+        showAlert(title, buttonTitle, deleteAction, indexPath)
     }
 
-    private func showAlert(_ message: String,_ comment: String,
+    private func showAlert(_ message: String,
                            _ confirmButtonTitle: String,
                            _ confirmButtonAction: @escaping ((UIAlertAction)->()),
                            _ indexPath: IndexPath) {
