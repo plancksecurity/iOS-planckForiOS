@@ -15,10 +15,10 @@ for lang in $languages
 do
   # Use -verbose to see more errors/warnings.
   xcodebuild -exportLocalizations -project pEpForiOS.xcodeproj -exportLanguage $lang -localizationPath $appdir
-  
+
   cp "$appdir/$lang.xcloc/Localized Contents/$lang.xliff" $translationdir
     xcodebuild -exportLocalizations -project ../MessageModel/MessageModel/MesssageModel.xcodeproj -exportLanguage $lang -localizationPath $mmdir
-  
+
 cp "$mmdir/$lang.xcloc/Localized Contents/$lang.xliff" $translationdir/MessageModel
  done
 
