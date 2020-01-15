@@ -21,6 +21,14 @@ protocol SettingsRowProtocol {
 
 final class SettingsViewModelV2 {
 
+    public enum SectionType {
+        case accounts
+        case globalSettings
+        case keySync
+        case contacts
+        case companyFeatures
+    }
+
     /// Struct that represents a section in settingsTableViewController
     struct Section {
         /// Title of the section
@@ -31,11 +39,11 @@ final class SettingsViewModelV2 {
         var rows: [SettingsRowProtocol]
 
 
-//        init(type: SectionType) {
-//            title = sectionTitles(type: type)
-//            footer = sectionFooter(type: type)
-//            rows = generateRows(type: type)
-//        }
+        init(type: SectionType) {
+            title = Section. sectionTitles(type: type)
+            footer = sectionFooter(type: type)
+            rows = generateRows(type: type)
+        }
     }
 
     /// Struct that is used to perform an action. represents a ActionRow in settingsTableViewController
@@ -43,7 +51,7 @@ final class SettingsViewModelV2 {
         var title: String
         var isDangerous: Bool = false
         /// Block that will be executed when action cell is pressed
-        var action: ()
+        var action: (() -> Void)
     }
 
     /// Struct that is used to perform a show detail action. represents a NavicationRow in SettingsTableViewController
@@ -67,11 +75,22 @@ final class SettingsViewModelV2 {
     /// Items to be displayed in a SettingsTableViewController
     private (set) var items = [Section]()
 
+    var count: Int {
+        get {
+            return items.count
+        }
+    }
+
+    subscript (index: Int) -> Section {
+        return items[index]
+    }
+
     init() {
         generateSections()
     }
 
     private func generateSections() {
+    }
 
         //items.append(Section(type: .accounts))
 
@@ -81,33 +100,31 @@ final class SettingsViewModelV2 {
 //                             rows: generateRows(type: .accounts)))
 
 
-        //Section(title: <#T##String#>, footer: <#T##String#>, rows: <#T##[SettingsRowProtocol]#>)
+        //Section(title: T##String, footer: T##String, rows: T##[SettingsRowProtocol])
 //        items.append(Section())//(SettingsSectionViewModel(type: .accounts))
 //        items.append(SettingsSectionViewModel(type: .globalSettings))
 //        items.append(SettingsSectionViewModel(type: .keySync))
 //        items.append(SettingsSectionViewModel(type: .contacts))
 //        items.append(SettingsSectionViewModel(type: .companyFeatures))
-    }
 
     private func generateRows(type: SectionType) -> [SettingsRowProtocol] {
         var rows = [SettingsRowProtocol]()
         Account.all().forEach { (acc) in
-            let accountRow = ActionRow(title: acc.user.address, isDangerous: false, action: delete(account: acc))
-            //self.cells.append(SettingsCellViewModel(account: acc))
+            let accountRow = ActionRow(title: acc.user.address,
+                                       isDangerous: false, action: { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "Lost myself")
+                    return
+                }
+                me.delete(account: acc)
+            })
+            rows.append(accountRow)
         }
-        
         return rows
     }
 
-    public enum SectionType {
-        case accounts
-        case globalSettings
-        case keySync
-        case contacts
-        case companyFeatures
-    }
 
-    private func sectionTitles(type: SectionType) -> String {
+    class func sectionTitles(type: SectionType) -> String {
         switch type {
         case .accounts:
             return NSLocalizedString("Accounts", comment: "Tableview section  header")
@@ -122,7 +139,7 @@ final class SettingsViewModelV2 {
         }
     }
 
-    private func sectionFooter(type: SectionType) -> String? {
+    func sectionFooter(type: SectionType) -> String? {
         switch type {
         case .accounts, .keySync, .companyFeatures:
             return nil
@@ -133,18 +150,6 @@ final class SettingsViewModelV2 {
             return NSLocalizedString("Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.",
                                        comment: "TableView Contacts section footer")
         }
-    }
-
-
-
-    var count: Int {
-        get {
-            return items.count
-        }
-    }
-
-    subscript (index: Int) -> Section {
-        return items[index]
     }
 
     func delete(account: Account) {
