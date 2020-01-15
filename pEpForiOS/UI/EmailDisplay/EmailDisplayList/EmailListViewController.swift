@@ -76,7 +76,7 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
 
             if !vm.showLoginView {
                 me.updateFilterButtonView()
-                vm.startMonitoring() //!!!: UI should not know about startMonitoring?
+                vm.startMonitoring() //!!!: UI should not know about startMonitoring
                 me.tableView.reloadData()
                 me.checkSplitViewState()
                 me.watchDetailView()
@@ -929,6 +929,16 @@ extension EmailListViewController: EmailListViewModelDelegate {
         tableView.selectRow(at: indexPath,
                             animated: false,
                             scrollPosition: .none)
+        // Make sure the newly selected cell is visible.
+        guard
+            let visibleIndexPaths = tableView.indexPathsForVisibleRows,
+            !visibleIndexPaths.contains(indexPath)
+            else {
+                // Selected cell is visible ...
+                // ... Nothing to do.
+                return
+        }
+        tableView.scrollToRow(at: indexPath, at: .none, animated: true)
     }
 
     func emailListViewModel(viewModel: EmailDisplayViewModel, didInsertDataAt indexPaths: [IndexPath]) {
