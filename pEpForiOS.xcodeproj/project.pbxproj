@@ -414,6 +414,7 @@
 		B74F81021EB0E20000519FCC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F81011EB0E20000519FCC /* LoginViewModel.swift */; };
 		B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */; };
 		B76CF8B320D2739B002429A8 /* MoveToFolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */; };
+		B770926923CF4E7200C659CB /* SettingsViewModelV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770926823CF4E7200C659CB /* SettingsViewModelV2.swift */; };
 		B776A47B223962B50047A41D /* EmailListViewModel+MessageQueryResultsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B776A47A223962B50047A41D /* EmailListViewModel+MessageQueryResultsDelegate.swift */; };
 		B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78309C61EAA09040051A2E0 /* AccountCreation.storyboard */; };
 		B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF8241E76D706008C1739 /* FilterTableViewController.swift */; };
@@ -928,6 +929,7 @@
 		B74F81011EB0E20000519FCC /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModel.swift; sourceTree = "<group>"; };
 		B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderViewModel.swift; sourceTree = "<group>"; };
+		B770926823CF4E7200C659CB /* SettingsViewModelV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelV2.swift; sourceTree = "<group>"; };
 		B776A47A223962B50047A41D /* EmailListViewModel+MessageQueryResultsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailListViewModel+MessageQueryResultsDelegate.swift"; sourceTree = "<group>"; };
 		B78309C71EAA09040051A2E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/AccountCreation.storyboard; sourceTree = "<group>"; };
 		B78CF8241E76D706008C1739 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterTableViewController.swift; path = Filter/FilterTableViewController.swift; sourceTree = "<group>"; };
@@ -2188,6 +2190,7 @@
 		43ED53611CC77F95006AB156 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				B770926723CF4E4800C659CB /* SettingsV2 */,
 				B706C0EF1EA8C378006B2F6C /* StoryboardFiles */,
 				15146C8F237F030A00D69495 /* BaseClasses */,
 				37816540230EC66F00B967E3 /* PEPAlert */,
@@ -2519,6 +2522,14 @@
 				B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B770926723CF4E4800C659CB /* SettingsV2 */ = {
+			isa = PBXGroup;
+			children = (
+				B770926823CF4E7200C659CB /* SettingsViewModelV2.swift */,
+			);
+			path = SettingsV2;
 			sourceTree = "<group>";
 		};
 		B78CF8261E76D70D008C1739 /* Filter */ = {
@@ -2877,6 +2888,7 @@
 				438D5A711EA77CFC001A37E1 /* HandshakeViewController.swift in Sources */,
 				B7DB7FDA221ADDAF003968DA /* UIBarButtonItem+Extension.swift in Sources */,
 				15874BC62127493E00A3A4A6 /* SettingsTableViewController.swift in Sources */,
+				B770926923CF4E7200C659CB /* SettingsViewModelV2.swift in Sources */,
 				002375D320DCDC7300663961 /* FullMessageCell+SecureWebViewControllerDelegate.swift in Sources */,
 				4351C2C91F4441190053381F /* buffer.c in Sources */,
 				152A39C621905C3E00D9F8E4 /* ComposeViewModelState.swift in Sources */,
