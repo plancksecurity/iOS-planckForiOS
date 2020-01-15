@@ -102,3 +102,47 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
         }
     }
 }
+
+// MARK: - Stuff copy & pasted from BaseTableViewController.
+
+extension BaseViewController {
+
+    /// If applicable, shows the "empty selection" view controller in the details view.
+    /// - Parameter message: The message to show in the view.
+    func showEmptyDetailViewIfApplicable(message: String) {
+        guard let spvc = splitViewController else {
+            return
+        }
+
+        /// Inner function for doing the actual work.
+        func showEmptyDetail() {
+            let detailIndex = 1 // The index of the detail view controller
+
+            if let emptyVC = spvc.viewControllers[safe: detailIndex] as? NothingSelectedViewController {
+                emptyVC.message = message
+                emptyVC.updateView()
+            } else {
+                let storyboard: UIStoryboard = UIStoryboard(
+                    name: UIStoryboard.noSelectionStoryBoard,
+                    bundle: nil)
+                guard let detailVC = storyboard.instantiateViewController(
+                    withIdentifier: UIStoryboard.nothingSelectedViewController) as? NothingSelectedViewController else {
+                        return
+                }
+                detailVC.message = message
+                spvc.showDetailViewController(detailVC, sender: self)
+            }
+        }
+
+        switch spvc.currentDisplayMode {
+        case .masterAndDetail:
+            showEmptyDetail()
+        case .onlyDetail:
+            // nothing to do
+            break
+        case .onlyMaster:
+            // nothing to do
+            break
+        }
+    }
+}

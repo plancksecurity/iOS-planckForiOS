@@ -229,10 +229,6 @@ extension ResetTrustViewController: ResetTrustViewModelDelegate {
         tableView.deleteSections([position], with: .automatic)
     }
 
-    func updateView() {
-        tableView.reloadData()
-    }
-
     func reloadData(viewModel: ResetTrustViewModel) {
         tableView.reloadData()
     }
