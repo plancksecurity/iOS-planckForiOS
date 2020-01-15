@@ -172,7 +172,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         XCTAssertTrue(edited)
     }
 
-    func testEdited_dirty_changedCcs() { //HERE:
+    func testEdited_dirty_changedCcs() {
         //!!!:
         print("DEBUG: test start")
         testee?.ccRecipients = [someone]

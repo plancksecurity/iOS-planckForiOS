@@ -11,9 +11,10 @@
 //import Foundation
 //import pEpIOSToolbox
 //
-//protocol ThreadedEmailViewModelDelegate: class, TableViewUpdate {
+//protocol ThreadedEmailViewModelDelegate: class {
 //    func emailViewModel(viewModel: ThreadedEmailViewModel, didInsertDataAt index: Int)
 //    func emailViewModel(viewModel: ThreadedEmailViewModel, didUpdateDataAt index: Int)
 //    func emailViewModel(viewModel: ThreadedEmailViewModel, didRemoveDataAt index: Int)
 //    func emailViewModeldidChangeFlag(viewModel: ThreadedEmailViewModel)
+//    func updateView()
 //}

@@ -12,7 +12,7 @@ import PEPObjCAdapterFramework
 
 
 /// delegate protocol to inform about incoming changes in the tableview
-protocol ResetTrustViewModelDelegate: class, TableViewUpdate {
+protocol ResetTrustViewModelDelegate: class {
 
     /// called when new data will be introduced
     ///

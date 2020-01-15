@@ -304,7 +304,6 @@ extension SettingsTableViewController {
 
     private func showAlertBeforeDelete(_ indexPath: IndexPath) {
         let title = NSLocalizedString("Are you sure you want to delete the account?", comment: "Account delete confirmation")
-        let comment = NSLocalizedString("delete account message", comment: "Account delete confirmation comment")
         let buttonTitle = NSLocalizedString("Delete", comment: "Delete account button title")
         let deleteAction: (UIAlertAction) -> () = { [weak self] _ in
             guard let me = self else {
@@ -319,17 +318,18 @@ extension SettingsTableViewController {
             me.tableView.deleteRows(at: [indexPath], with: .fade)
             me.tableView.endUpdates()
         }
-        showAlert(title, comment, buttonTitle, deleteAction, indexPath)
+        showAlert(title, buttonTitle, deleteAction, indexPath)
     }
 
-    private func showAlert(_ message: String,_ comment: String,
+    private func showAlert(_ message: String,
                            _ confirmButtonTitle: String,
                            _ confirmButtonAction: @escaping ((UIAlertAction)->()),
                            _ indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.isSelected = false //!!!: bad. side effect in showAlert.
         let alertController = UIAlertController.pEpAlertController(
             title: nil,
-            message: NSLocalizedString(message, comment: comment), preferredStyle: .actionSheet)
+            message: message,
+            preferredStyle: .actionSheet)
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel title button")
         let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { _ in }
