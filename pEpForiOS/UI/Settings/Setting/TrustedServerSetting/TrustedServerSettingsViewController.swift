@@ -67,7 +67,7 @@ extension TrustedServerSettingsViewController: TrustedServerSettingCellDelegate 
             Log.shared.errorAndCrash("Invalid indexPath for this TrustedServerSettingCell")
             return
         }
-        viewModel.handleStoreSecurely(forIndexPath: indexPath, toValue: newValue)
+        viewModel.handleStoreSecurely(indexPath: indexPath, toValue: newValue)
     }
 }
 
@@ -78,7 +78,7 @@ extension TrustedServerSettingsViewController: TrustedServerSettingsViewModelDel
         guard let storingSecurelyAlert = storingSecurelyAlert(forIndexPath: indexPath) else {
             Log.shared.errorAndCrash("Fail to init storingSecurely pEpAlert")
             //If fail to init the alert, we just skip the alert and store it securely
-            viewModel.setStoreSecurely(forIndexPath: indexPath, toValue: true)
+            viewModel.setStoreSecurely(indexPath: indexPath, toValue: true)
             return
         }
         present(storingSecurelyAlert, animated: true)
@@ -124,7 +124,7 @@ extension TrustedServerSettingsViewController {
                                                 return
                                             }
                                             pepAlert?.dissmiss()
-                                            me.viewModel.setStoreSecurely(forIndexPath: indexPath, toValue: true)
+                                            me.viewModel.setStoreSecurely(indexPath: indexPath, toValue: true)
         })
         pepAlert?.add(action: cancelAction)
         pepAlert?.add(action: trustAction)

@@ -18,12 +18,12 @@ class TrustedServerSettingsViewModelTest: CoreDataDrivenTestBase {
         let account = cdAccount.account()
         setUpViewModel()
 
-        guard let indexPath = indexPath(forAccount: account) else {
+        guard let indexPath = indexPath(account: account) else {
             XCTFail("Fail to get account indexPath")
             return
         }
 
-        viewModel.setStoreSecurely(forIndexPath: indexPath, toValue: false)
+        viewModel.setStoreSecurely(andexPath: indexPath, toValue: false)
         guard let isTrusted =
             Account.Fetch.accountAllowedToManuallyTrust(fromAddress: account.user.address)?
             .imapServer?.manuallyTrusted else {
@@ -32,7 +32,7 @@ class TrustedServerSettingsViewModelTest: CoreDataDrivenTestBase {
         }
         XCTAssertTrue(isTrusted)
 
-        viewModel.setStoreSecurely(forIndexPath: indexPath, toValue: true)
+        viewModel.setStoreSecurely(indexPath: indexPath, toValue: true)
         guard let isTrustedAfterChange =
             Account.Fetch.accountAllowedToManuallyTrust(
                 fromAddress: account.user.address)?.imapServer?.manuallyTrusted else {
@@ -50,7 +50,7 @@ extension TrustedServerSettingsViewModelTest {
         viewModel = TrustedServerSettingsViewModel()
     }
 
-    private func indexPath(forAccount account: Account) -> IndexPath? {
+    private func indexPath(account: Account) -> IndexPath? {
         for (index, row) in viewModel.rows.enumerated() {
             if row.address == account.user.address {
                 return IndexPath(row: index, section: 0)

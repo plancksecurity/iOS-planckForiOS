@@ -27,17 +27,17 @@ struct TrustedServerSettingsViewModel {
         reset()
     }
 
-    /// /// Handle setting an account securely. Will not show any alert to confirm the acction
+    /// Handle setting an account securely. Will not show any alert to confirm the acction
     /// - Parameters:
     ///   - indexPath: indexPath of the cell that trigger the action
     ///   - newValue: new value of the Switch of the cell that trigger the action
-    mutating func setStoreSecurely(forIndexPath indexPath: IndexPath, toValue newValue: Bool) {
+    mutating func setStoreSecurely(indexPath: IndexPath, toValue newValue: Bool) {
         guard let account = account(fromIndexPath: indexPath) else {
-            Log.shared.errorAndCrash("Address should be allowed")
+            Log.shared.errorAndCrash("No address found")
             return
         }
 
-        updateRowData(forIndexPath: indexPath, toValue: newValue)
+        updateRowData(indexPath: indexPath, toValue: newValue)
         setStoreSecurely(forAccount: account, toValue: newValue)
     }
 
@@ -45,16 +45,16 @@ struct TrustedServerSettingsViewModel {
     /// - Parameters:
     ///   - indexPath: indexPath of the cell that trigger the action
     ///   - newValue: new value of the Switch of the cell that trigger the action
-    mutating func handleStoreSecurely(forIndexPath indexPath: IndexPath, toValue newValue: Bool) {
+    mutating func handleStoreSecurely(indexPath: IndexPath, toValue newValue: Bool) {
         guard let account = account(fromIndexPath: indexPath) else {
-            Log.shared.errorAndCrash("Address should be allowed")
+            Log.shared.errorAndCrash("No address found")
             return
         }
 
         if  shouldShowWaringnBeforeChangingTrustState(forAccount: account, newValue: newValue) {
             delegate?.showAlertBeforeStoringSecurely(forIndexPath: indexPath)
         } else {
-            updateRowData(forIndexPath: indexPath, toValue: newValue)
+            updateRowData(indexPath: indexPath, toValue: newValue)
             setStoreSecurely(forAccount: account, toValue: newValue)
         }
     }
@@ -73,8 +73,7 @@ extension TrustedServerSettingsViewModel {
         account.save()
     }
 
-    mutating private func updateRowData(forIndexPath indexPath: IndexPath,
-                                              toValue newValue: Bool) {
+    mutating private func updateRowData(indexPath: IndexPath, toValue newValue: Bool) {
         let row = rows[indexPath.row]
         rows[indexPath.row] = Row(address: row.address, storeMessagesSecurely: newValue)
     }
