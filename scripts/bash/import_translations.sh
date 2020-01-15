@@ -33,6 +33,6 @@ import_in_place pEpForiOS.xcodeproj $translationdir
 import_in_place MessageModel/MessageModel.xcodeproj $translationdir/MessageModel
 
 echo
-echo ! Beware of changes in $translationdir. Veryfy !
+echo ! Beware of changes in $translationdir. Verify !
 echo ! Verify the changes in pEpForiOS and MessageModel and commit !
 echo
