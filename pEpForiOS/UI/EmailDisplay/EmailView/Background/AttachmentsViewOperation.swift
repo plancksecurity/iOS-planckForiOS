@@ -17,33 +17,16 @@ class AttachmentsViewOperation: Operation {
         case docAttachment(Attachment)
     }
 
-//    private let session: Session
     private let mimeTypes: MimeTypeUtils?
     private var message: Message
 
     ///The resulting attachments view will appear here.
     var attachmentContainers = [AttachmentContainer]()
 
-//    /**
-//     The number of attachments.
-//     */
-//    private var attachmentsCount = 0
-
     init(mimeTypes: MimeTypeUtils?, message: Message) {
-//        self.session = message.session
-
         self.message = message
         self.mimeTypes = mimeTypes
         super.init()
-
-//        session.performAndWait { [weak self] in
-//            guard let me = self else {
-//                Log.shared.errorAndCrash("Lost myself")
-//                return
-//            }
-//
-//            me.attachmentsCount = me.message.viewableAttachments().count
-//        }
     }
 
     override func main() {
