@@ -17,7 +17,7 @@ do
 
   cp "$appdir/$lang.xcloc/Localized Contents/$lang.xliff" $translationdir
   
-  xcodebuild -exportLocalizations -project ../MessageModel/MessageModel/MesssageModel.xcodeproj -exportLanguage $lang -localizationPath $mmdir
+  xcodebuild -exportLocalizations -project ../MessageModel/MessageModel/MessageModel.xcodeproj -exportLanguage $lang -localizationPath $mmdir
 
   cp "$mmdir/$lang.xcloc/Localized Contents/$lang.xliff" $translationdir/MessageModel
  done
