@@ -2,7 +2,8 @@
 
 translationdir=../pEp-Translate/
 
-# Imports translations
+# Imports translations, using a temporary directory in order to not change
+# original files.
 # Param 1: The project (pEpForiOS.xcodeproj or MessageModel/MessageModel.xcodeproj)
 # Param 2: The source directory ($translationdir or $translationdir/MessageModel)
 function import() {
