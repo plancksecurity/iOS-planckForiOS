@@ -85,12 +85,23 @@ final class SettingsViewModel {
 
 extension SettingsViewModel {
 
-    private func removeLeaveDeviceGroupCell() {
-        for section in sections {
-            guard section.type == .keySync else {
-                continue
+    func isGrouped() -> Bool {
+        return KeySyncUtil.isInDeviceGroup
+    }
+
+    func PEPSyncUpdate(to value: Bool) {
+        let grouped = isGrouped()
+        if value {
+            KeySyncUtil.enableKeySync()
+        } else {
+            if grouped {
+                do {
+                    try KeySyncUtil.leaveDeviceGroup()
+                } catch {
+                    Log.shared.errorAndCrash(error: error)
+                }
             }
-            section.removeLeaveDeviceGroupCell()
+            KeySyncUtil.disableKeySync()
         }
     }
 }

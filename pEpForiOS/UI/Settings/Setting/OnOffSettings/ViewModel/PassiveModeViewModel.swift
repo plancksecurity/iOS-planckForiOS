@@ -8,9 +8,6 @@
 
 import Foundation
 
-import Foundation
-
-
 struct PassiveModeViewModel: SwitchSettingCellViewModelProtocol  {
 
     // MARK: - SwitchSettingCellViewModelProtocol
