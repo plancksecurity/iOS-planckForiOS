@@ -23,7 +23,7 @@ class TrustedServerSettingsViewModelTest: CoreDataDrivenTestBase {
             return
         }
 
-        viewModel.setStoreSecurely(andexPath: indexPath, toValue: false)
+        viewModel.setStoreSecurely(indexPath: indexPath, toValue: false)
         guard let isTrusted =
             Account.Fetch.accountAllowedToManuallyTrust(fromAddress: account.user.address)?
             .imapServer?.manuallyTrusted else {
