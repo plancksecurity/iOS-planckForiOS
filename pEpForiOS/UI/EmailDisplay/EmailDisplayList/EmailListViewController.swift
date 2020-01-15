@@ -264,7 +264,7 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
 
     private func showNoMessageSelected() {
         showEmptyDetailViewIfApplicable(message: NSLocalizedString(
-            "Please chose a message",
+            "Please choose a message",
             comment: "No messages has been selected for detail view"))
     }
 
