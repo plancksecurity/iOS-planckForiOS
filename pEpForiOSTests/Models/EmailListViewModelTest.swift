@@ -270,15 +270,6 @@
 //        XCTAssertEqual(emailListVM.rowCount, 2)
 //    }
 //
-//    // Threading feature is currently non-existing. Keep this code, might help later.
-//    //    //thread view nos is totaly disabled that means always false
-//    //    func testCheckIfSettingsChanged() {
-//    //        setupViewModel()
-//    //        emailListVM.startMonitoring()
-//    //        XCTAssertFalse(AppSettings.shared.threadedViewEnabled)
-//    //        AppSettings.shared.threadedViewEnabled = true
-//    //        XCTAssertFalse(emailListVM.checkIfSettingsChanged())
-//    //    }
 //
 //    // MARK: - cell for row
 //    /*
@@ -579,7 +570,6 @@
 //    var excpectationDidInsertDataAtCalled: XCTestExpectation?
 //    var expectationDidUpdateDataAtCalled: XCTestExpectation?
 //    var expectationDidRemoveDataAtCalled: XCTestExpectation?
-//    var expetationDidChangeSeenStateForDataAt: XCTestExpectation?
 //
 //    init(expectationUpdateView: XCTestExpectation? = nil,
 //         expectationDidInsertDataAt: XCTestExpectation? = nil,
@@ -623,11 +613,6 @@
 //    }
 //
 //    func emailListViewModel(viewModel: EmailListViewModel,
-//                            didChangeSeenStateForDataAt indexPaths: [IndexPath]) {
-//        XCTFail("Currently unused in tests. Should not be called")
-//    }
-//
-//    func emailListViewModel(viewModel: EmailListViewModel,
 //                            didRemoveDataAt indexPaths: [IndexPath]) {
 //        if let expectationDidRemoveDataAtCalled = expectationDidRemoveDataAtCalled {
 //            expectationDidRemoveDataAtCalled.fulfill()
@@ -656,10 +641,6 @@
 //    }
 //
 //    func showUnreadButton(enabled: Bool) {
-//        XCTFail()
-//    }
-//
-//    func checkIfSplitNeedsUpdate(indexpath: [IndexPath]) {
 //        XCTFail()
 //    }
 //

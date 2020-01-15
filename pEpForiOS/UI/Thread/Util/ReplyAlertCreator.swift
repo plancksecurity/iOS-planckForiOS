@@ -7,7 +7,6 @@
 //
 
 import Foundation
-
 import MessageModel
 
 struct ReplyAlertCreator {
@@ -22,38 +21,38 @@ struct ReplyAlertCreator {
 
     public func withReplyOption(
         handler: @escaping (UIAlertAction) -> Swift.Void) -> ReplyAlertCreator {
-        let alertActionReply = UIAlertAction(
-            title: NSLocalizedString("Reply", comment: "Message actions"),
-            style: .default, handler: handler)
+        let alertActionReply = UIAlertAction(title: NSLocalizedString("Reply",
+                                                                      comment: "Message actions"),
+                                             style: .default,
+                                             handler: handler)
         alert.addAction(alertActionReply)
         return self
     }
 
-    public func withReplyAllOption(
-        forMessage: Message?,
-        handler: @escaping (UIAlertAction) -> Swift.Void) -> ReplyAlertCreator {
-        if replyAllChecker.isReplyAllPossible(forMessage: forMessage) {
-            let alertActionReplyAll = UIAlertAction(
-                title: NSLocalizedString("Reply All", comment: "Message actions"),
-                style: .default, handler: handler)
+    public func withReplyAllOption(handler: @escaping (UIAlertAction) -> Swift.Void) -> ReplyAlertCreator {
+        if replyAllChecker.isReplyAllPossible() {
+            let alertActionReplyAll = UIAlertAction(title: NSLocalizedString("Reply All",
+                                                                             comment: "Message actions"),
+                                                    style: .default,
+                                                    handler: handler)
             alert.addAction(alertActionReplyAll)
         }
         return self
     }
 
-    public func withFordwardOption(
-        handler: @escaping (UIAlertAction) -> Swift.Void) -> ReplyAlertCreator {
-        let alertActionForward = UIAlertAction(
-            title: NSLocalizedString("Forward", comment: "Message actions"),
-            style: .default, handler: handler)
+    public func withFordwardOption(handler: @escaping (UIAlertAction) -> Swift.Void) -> ReplyAlertCreator {
+        let alertActionForward = UIAlertAction(title: NSLocalizedString("Forward",
+                                                                        comment: "Message actions"),
+                                               style: .default,
+                                               handler: handler)
         alert.addAction(alertActionForward)
         return self
     }
 
     public func withCancelOption() -> ReplyAlertCreator {
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("Cancel", comment: "Message actions"),
-            style: .cancel) { (action) in }
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel",
+                                                                  comment: "Message actions"),
+                                         style: .cancel) { (action) in }
         alert.addAction(cancelAction)
         return self
     }

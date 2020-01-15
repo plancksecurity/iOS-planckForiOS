@@ -71,7 +71,6 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                                            composeMode: mode)
         let expectedTo: [Identity] = [someone]
         assertTesteeForExpectedValues(composeMode: mode,
-                                      isDraftsOrOutbox: false,
                                       isDrafts: false,
                                       isOutbox: false,
                                       pEpProtection: true,
@@ -93,7 +92,6 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                                            composeMode: mode)
         let expectedTo = [Identity]()
         assertTesteeForExpectedValues(composeMode: mode,
-                                      isDraftsOrOutbox: false,
                                       isDrafts: false,
                                       isOutbox: false,
                                       pEpProtection: true,
@@ -115,7 +113,6 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                                            composeMode: mode)
         let expectedTo = [Identity]()
         assertTesteeForExpectedValues(composeMode: mode,
-                                      isDraftsOrOutbox: false,
                                       isDrafts: false,
                                       isOutbox: false,
                                       pEpProtection: true,
@@ -135,7 +132,6 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         testee = ComposeViewModel.InitData(prefilledFromSender:someone)
         let expectedFrom = someone
         assertTesteeForExpectedValues(composeMode: mode,
-                                      isDraftsOrOutbox: false,
                                       isDrafts: false,
                                       isOutbox: false,
                                       pEpProtection: true,
@@ -160,7 +156,6 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         let expectedTo = [Identity]()
         assertTesteeForExpectedValues(composeMode: mode,
                                       originalMessage: originalMessage,
-                                      isDraftsOrOutbox: false,
                                       isDrafts: false,
                                       isOutbox: false,
                                       pEpProtection: true,
@@ -184,7 +179,6 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         let expectedTo = [Identity]()
         assertTesteeForExpectedValues(composeMode: mode,
                                       originalMessage: originalMessage,
-                                      isDraftsOrOutbox: false,
                                       isDrafts: false,
                                       isOutbox: false,
                                       pEpProtection: true,
@@ -466,8 +460,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
             }
             expectedIsDraftsOrOutbox = expectedIsDrafts || expectedIsOutbox
         }
-        assertTesteeForExpectedValues(isDraftsOrOutbox: expectedIsDraftsOrOutbox,
-                                      isDrafts: expectedIsDrafts,
+        assertTesteeForExpectedValues(isDrafts: expectedIsDrafts,
                                       isOutbox: expectedIsOutbox)
     }
 
@@ -496,7 +489,6 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                                            originalMessage: originalMessage)
         assertTesteeForExpectedValues(composeMode: mode,
                                       originalMessage: originalMessage,
-                                      isDraftsOrOutbox: nil,
                                       isDrafts: nil,
                                       isOutbox: nil,
                                       pEpProtection: true,
@@ -514,7 +506,6 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
     /// Asserts the testee for the given values. Optional arguments set to `nil` are ignored.
     private func assertTesteeForExpectedValues( composeMode: ComposeUtil.ComposeMode? = nil,
                                                 originalMessage: Message? = nil,
-                                                isDraftsOrOutbox: Bool? = nil,
                                                 isDrafts: Bool? = nil,
                                                 isOutbox: Bool? = nil,
                                                 pEpProtection: Bool? = nil,
@@ -536,9 +527,6 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         }
         if let exp = originalMessage {
             XCTAssertEqual(testee.originalMessage, exp)
-        }
-        if let exp = isDraftsOrOutbox {
-            XCTAssertEqual(testee.isDraftsOrOutbox, exp)
         }
         if let exp = isDrafts {
             XCTAssertEqual(testee.isDrafts, exp)

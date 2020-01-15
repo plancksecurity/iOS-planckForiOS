@@ -27,7 +27,3 @@ extension UITableView {
         }
     }
 }
-
-public protocol TableViewUpdate {
-    func updateView()
-}
