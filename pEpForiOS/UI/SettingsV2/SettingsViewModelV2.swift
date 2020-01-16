@@ -11,9 +11,13 @@ import MessageModel
 import pEpIOSToolbox
 
 
-//protocol SettingsViewControllerDelegate: class {
-//    func changePepSync(to: Bool)
-//}
+///Delegate protocol to communicate to the SettingsTableViewController some special actions.
+protocol SettingsViewControllerDelegate: class {
+    /// shows an alert to the user to inform that will leave the group
+    func showpEpSyncLeaveGroupAlert()
+    /// Shows an alert to the user to inform that all identities will be reseted
+    func showResetIdentitiesAlert()
+}
 
 /// Protocol that represents the basic data in a row.
 protocol SettingsRowProtocol {
@@ -29,7 +33,7 @@ final class SettingsViewModelV2 {
     typealias SwitchBlock = ((Bool) -> Void)
     typealias ActionBlock = (() -> Void)
 
-//    weak var settingsDelegate : SettingsViewControllerDelegate?
+    weak var settingsDelegate : SettingsViewControllerDelegate?
     /// Struct that represents a section in settingsTableViewController
     struct Section {
         /// Title of the section
@@ -76,7 +80,8 @@ final class SettingsViewModelV2 {
         }
     }
 
-    ///Access method to get the sections
+    /// Access method to get the sections
+    /// - Parameter indexPath: IndexPath of the requested section
     func section(for indexPath: IndexPath) -> Section {
         return items[indexPath.section]
     }
@@ -289,9 +294,8 @@ final class SettingsViewModelV2 {
         AppSettings.shared.unencryptedSubjectEnabled = !value
     }
 
-    //TODO: implement me!
     func tooglePepSync(to value: Bool) {
-//        settingsDelegate?.changePepSync(to: value)
+
     }
 
     func delete(account: Account) {
@@ -321,19 +325,3 @@ final class SettingsViewModelV2 {
         }
     }
 }
-
-
-//items.append(Section(type: .accounts))
-
-//
-//        items.append(Section(title: sectionTitles(type: .accounts),
-//                             footer: sectionFooter(type: .accounts),
-//                             rows: generateRows(type: .accounts)))
-
-
-//Section(title: T##String, footer: T##String, rows: T##[SettingsRowProtocol])
-//        items.append(Section())//(SettingsSectionViewModel(type: .accounts))
-//        items.append(SettingsSectionViewModel(type: .globalSettings))
-//        items.append(SettingsSectionViewModel(type: .keySync))
-//        items.append(SettingsSectionViewModel(type: .contacts))
-//        items.append(SettingsSectionViewModel(type: .companyFeatures))

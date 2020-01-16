@@ -77,7 +77,6 @@ extension SettingsViewModelV2Test {
         if settingsVM == nil {
             settingsVM = SettingsViewModelV2()
         }
-
     }
 }
 
