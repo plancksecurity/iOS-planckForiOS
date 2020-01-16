@@ -26,6 +26,9 @@ protocol SettingsRowProtocol {
 /// View Model for SettingsTableViewController
 final class SettingsViewModelV2 {
 
+    typealias SwitchBlock = ((Bool) -> Void)
+    typealias ActionBlock = (() -> Void)
+
 //    weak var settingsDelegate : SettingsViewControllerDelegate?
     /// Struct that represents a section in settingsTableViewController
     struct Section {
@@ -42,7 +45,7 @@ final class SettingsViewModelV2 {
         var title: String
         var isDangerous: Bool = false
         /// Block that will be executed when action cell is pressed
-        var action: (() -> Void)
+        var action: ActionBlock
     }
 
     /// Struct that is used to perform a show detail action. represents a NavicationRow in SettingsTableViewController
@@ -60,7 +63,7 @@ final class SettingsViewModelV2 {
         /// Value of the switch
         var isOn: Bool
         /// action to be executed when switch toggle
-        var action: ((Bool) -> Void)
+        var action: SwitchBlock
     }
 
     /// Items to be displayed in a SettingsTableViewController
@@ -149,68 +152,41 @@ final class SettingsViewModelV2 {
                 })
                 rows.append(accountRow)
             }
-
-            if let resetAccountsRowTitle = rowTitle(type: .resetAccounts) {
-                let resetAccountsRow = ActionRow(title: resetAccountsRowTitle,
-                                                 isDangerous: true,
-                                                 action: {})
-                rows.append(resetAccountsRow)
-            }
-
-            return rows
-
+            rows.append(generateActionRow(type: .resetAccounts, isDangerous: true){})
         case .globalSettings:
             rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
             rows.append(generateNavigationRow(type: .credits, isDangerous: false))
             rows.append(generateNavigationRow(type: .trustedServer, isDangerous: false))
             rows.append(generateNavigationRow(type: .setOwnKey, isDangerous: false))
-
-            if let rowTitle = rowTitle(type: .passiveMode) {
-                let globalSettingsRow = SwitchRow(title: rowTitle, isDangerous: false, isOn: false) { [weak self] (value) in
-                    guard let me = self else {
-                        Log.shared.errorAndCrash(message: "Lost myself")
-                        return
-                    }
-                    me.tooglePassiveMode(to: value)
+            rows.append(generateSwitchRow(type: .passiveMode, isDangerous: false, isOn: false) { [weak self] (value) in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "Lost myself")
+                    return
                 }
-                rows.append(globalSettingsRow)
-            }
-
-            if let rowTitle = rowTitle(type: .protectMessageSubject) {
-                let globalSettingsRow = SwitchRow(title: rowTitle, isDangerous: false, isOn: false) { [weak self] (value) in
-                    guard let me = self else {
-                        Log.shared.errorAndCrash(message: "Lost myself")
-                        return
-                    }
-                    me.toogleProtectMessageSubject(to: value)
+                me.tooglePassiveMode(to: value)
+            })
+            rows.append(generateSwitchRow(type: .protectMessageSubject, isDangerous: false, isOn: false) { [weak self] (value) in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "Lost myself")
+                    return
                 }
-                rows.append(globalSettingsRow)
-            }
-
-            return rows
-
+                me.toogleProtectMessageSubject(to: value)
+            })
         case .pEpSync:
-
-            if let rowTitle = rowTitle(type: .pEpSync) {
-                let pepSyncRow = SwitchRow(title: rowTitle, isDangerous: false, isOn: false) { [weak self] (value) in
-                    guard let me = self else {
-                        Log.shared.errorAndCrash(message: "Lost myself")
-                        return
-                    }
-                    me.tooglePepSync(to: value)
+            rows.append(generateSwitchRow(type: .pEpSync, isDangerous: false, isOn: false) { [weak self] (value) in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "Lost myself")
+                    return
                 }
-                rows.append(pepSyncRow)
-            }
-
+                me.tooglePepSync(to: value)
+            })
             rows.append(generateNavigationRow(type: .accountsToSync, isDangerous: false))
-            return rows
         case .contacts:
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
-            return rows
         case .companyFeatures:
             rows.append(generateNavigationRow(type: .extraKeys, isDangerous: false))
-            return rows
         }
+        return rows
     }
 
     private func generateNavigationRow(type: RowType, isDangerous: Bool) -> NavigationRow {
@@ -219,6 +195,24 @@ final class SettingsViewModelV2 {
             return NavigationRow(title: "")
         }
         return NavigationRow(title:rowTitle, subtitle: nil, isDangerous: isDangerous)
+    }
+
+    private func generateSwitchRow(type: RowType, isDangerous: Bool, isOn: Bool,
+                                   action: @escaping SwitchBlock) -> SwitchRow {
+        guard let rowTitle = rowTitle(type: type) else {
+            Log.shared.errorAndCrash(message: "Row title not found")
+            return SwitchRow(title: "", isDangerous: true, isOn: true, action: action)
+        }
+        return SwitchRow(title: rowTitle, isDangerous: isDangerous, isOn: isOn, action: action)
+    }
+
+    private func generateActionRow(type: RowType, isDangerous: Bool,
+                                   action: @escaping ActionBlock) -> ActionRow {
+        guard let rowTitle = rowTitle(type: type) else {
+            Log.shared.errorAndCrash(message: "Row title not found")
+            return ActionRow(title: "", action: action)
+        }
+        return ActionRow(title: rowTitle, isDangerous: isDangerous, action: action)
     }
 
     private func sectionTitles(type: SectionType) -> String {
