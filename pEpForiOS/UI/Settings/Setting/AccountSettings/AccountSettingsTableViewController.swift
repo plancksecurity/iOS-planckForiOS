@@ -16,6 +16,7 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var emailTextfield: UITextField!
     @IBOutlet weak var passwordTextfield: UITextField!
     @IBOutlet weak var resetIdentityLabel: UILabel!
+    @IBOutlet weak var switchKeySync: UISwitch!
     //imap fields
     @IBOutlet weak var imapServerTextfield: UITextField!
     @IBOutlet weak var imapPortTextfield: UITextField!
@@ -30,7 +31,6 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var pEpSyncToggle: UISwitch!
     @IBOutlet weak var resetIdentityCell: UITableViewCell!
 
     /**
@@ -59,9 +59,11 @@ final class AccountSettingsTableViewController: BaseTableViewController {
         }
     }
 
-    @IBAction func didPressPEPSyncToggle(_ sender: UISwitch) {
+    @IBAction func switchPEPSyncToggle(_ sender: UISwitch) {
         viewModel?.pEpSync(enable: sender.isOn)
     }
+
+
 }
 
 // MARK: - UITableViewDataSource
@@ -143,7 +145,7 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
                 Log.shared.lostMySelf()
                 return
             }
-            me.pEpSyncToggle.setOn(!me.pEpSyncToggle.isOn, animated: true)
+            me.switchKeySync.setOn(!me.switchKeySync.isOn, animated: true)
         }
     }
 
@@ -195,7 +197,7 @@ extension AccountSettingsTableViewController {
         resetIdentityLabel.textColor = .pEpRed
 
         if let viewModel = viewModel {
-            pEpSyncToggle.isOn = viewModel.pEpSync
+            switchKeySync.isOn = viewModel.pEpSync
         }
 
         if let imapServer = viewModel?.account.imapServer {
