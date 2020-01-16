@@ -10,6 +10,11 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
+
+//protocol SettingsViewControllerDelegate: class {
+//    func changePepSync(to: Bool)
+//}
+
 /// Protocol that represents the basic data in a row.
 protocol SettingsRowProtocol {
     /// Title of the row.
@@ -21,6 +26,7 @@ protocol SettingsRowProtocol {
 /// View Model for SettingsTableViewController
 final class SettingsViewModelV2 {
 
+//    weak var settingsDelegate : SettingsViewControllerDelegate?
     /// Struct that represents a section in settingsTableViewController
     struct Section {
         /// Title of the section
@@ -154,31 +160,10 @@ final class SettingsViewModelV2 {
             return rows
 
         case .globalSettings:
-
-            if let rowTitle = rowTitle(type: .defaultAccount) {
-                let globalSettingsRow = NavigationRow(title:rowTitle,
-                                                      subtitle: nil, isDangerous: false)
-                rows.append(globalSettingsRow)
-            }
-
-            if let rowTitle = rowTitle(type: .credits) {
-                let globalSettingsRow = NavigationRow(title:rowTitle,
-                                                      subtitle: nil, isDangerous: false)
-                rows.append(globalSettingsRow)
-            }
-
-            if let rowTitle = rowTitle(type: .trustedServer) {
-                let globalSettingsRow = NavigationRow(title:rowTitle,
-                                                      subtitle: nil, isDangerous: false)
-                rows.append(globalSettingsRow)
-            }
-
-
-            if let rowTitle = rowTitle(type: .setOwnKey) {
-                let globalSettingsRow = NavigationRow(title:rowTitle,
-                                                      subtitle: nil, isDangerous: false)
-                rows.append(globalSettingsRow)
-            }
+            rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
+            rows.append(generateNavigationRow(type: .credits, isDangerous: false))
+            rows.append(generateNavigationRow(type: .trustedServer, isDangerous: false))
+            rows.append(generateNavigationRow(type: .setOwnKey, isDangerous: false))
 
             if let rowTitle = rowTitle(type: .passiveMode) {
                 let globalSettingsRow = SwitchRow(title: rowTitle, isDangerous: false, isOn: false) { [weak self] (value) in
@@ -217,30 +202,23 @@ final class SettingsViewModelV2 {
                 rows.append(pepSyncRow)
             }
 
-            if let rowTitle = rowTitle(type: .accountsToSync) {
-                let pepSyncRow = NavigationRow(title:rowTitle,
-                                                      subtitle: nil, isDangerous: false)
-                rows.append(pepSyncRow)
-            }
-
+            rows.append(generateNavigationRow(type: .accountsToSync, isDangerous: false))
             return rows
-
         case .contacts:
-            if let rowTitle = rowTitle(type: .resetTrust) {
-                let contactsRow = NavigationRow(title:rowTitle,
-                                                      subtitle: nil, isDangerous: true)
-                rows.append(contactsRow)
-            }
+            rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
             return rows
-
         case .companyFeatures:
-            if let rowTitle = rowTitle(type: .extraKeys) {
-                let companyFeaturesRow = NavigationRow(title:rowTitle,
-                                                        subtitle: nil, isDangerous: true)
-                rows.append(companyFeaturesRow)
-            }
+            rows.append(generateNavigationRow(type: .extraKeys, isDangerous: false))
             return rows
         }
+    }
+
+    private func generateNavigationRow(type: RowType, isDangerous: Bool) -> NavigationRow {
+        guard let rowTitle = rowTitle(type: type) else {
+            Log.shared.errorAndCrash(message: "Row title not found")
+            return NavigationRow(title: "")
+        }
+        return NavigationRow(title:rowTitle, subtitle: nil, isDangerous: isDangerous)
     }
 
     private func sectionTitles(type: SectionType) -> String {
@@ -319,7 +297,7 @@ final class SettingsViewModelV2 {
 
     //TODO: implement me!
     func tooglePepSync(to value: Bool) {
-
+//        settingsDelegate?.changePepSync(to: value)
     }
 
     func delete(account: Account) {
