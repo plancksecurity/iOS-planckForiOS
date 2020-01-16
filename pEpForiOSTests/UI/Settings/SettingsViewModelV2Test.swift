@@ -17,7 +17,6 @@ class SettingsViewModelV2Test: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
         setupViewModel()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
     //Number of sections corresponding to SettingsViewModelV2.SectionType count
@@ -27,9 +26,48 @@ class SettingsViewModelV2Test: CoreDataDrivenTestBase {
         XCTAssertEqual(settingsVM.count, sections)
     }
 
-    func testNumberOfRowsInSection1() {
+    func testNumberOfRowsForSectionInFirstPosition() {
         let numberOfAccounts = Account.all().count
-        XCTAssertEqual(settingsVM[0].rows?.count, numberOfAccounts)
+
+        ///Position of the first section
+        let indexPath = IndexPath(row: 0, section: 0)
+
+        /// The number of rows in this section corresponds to the number of accounts plus one row for resetting all.
+        let numberOfRows = numberOfAccounts + 1
+
+        XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
+    }
+
+    func testNumberOfRowsForSectionInSecondPosition() {
+        ///Position of the second section
+        let indexPath = IndexPath(row: 0, section: 1)
+        let numberOfRows = 6
+
+        XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
+    }
+
+    func testNumberOfRowsForSectionInThirdPosition() {
+        ///Position of the third section
+        let indexPath = IndexPath(row: 0, section: 2)
+        let numberOfRows = 2
+
+        XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
+    }
+
+    func testNumberOfRowsForSectionInFourthPosition() {
+        ///Position of the fourth section
+        let indexPath = IndexPath(row: 0, section: 3)
+        let numberOfRows = 1
+
+        XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
+    }
+
+    func testNumberOfRowsForSectionInFivePosition() {
+        ///Position of the five section
+        let indexPath = IndexPath(row: 0, section: 4)
+        let numberOfRows = 1
+
+        XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
     }
 }
 
