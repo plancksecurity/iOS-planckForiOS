@@ -595,7 +595,6 @@ extension ComposeTableViewController {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
-            vm.handleDeleteActionTriggered()
             me.dismiss()
         }
         return action
