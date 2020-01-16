@@ -74,13 +74,12 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
 
             me.showNoMessageSelected()
 
-            if !vm.showLoginView {
-                me.updateFilterButtonView()
-                vm.startMonitoring() //!!!: UI should not know about startMonitoring
-                me.tableView.reloadData()
-                me.checkSplitViewState()
-                me.watchDetailView()
-            }
+            me.updateFilterButtonView()
+            vm.startMonitoring() //!!!: UI should not know about startMonitoring
+            me.tableView.reloadData()
+            me.checkSplitViewState()
+            me.watchDetailView()
+            me.doOnce = nil
         }
         setup()
     }
@@ -93,8 +92,15 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
         }
 
         lastSelectedIndexPath = nil
-        doOnce?()
-        doOnce = nil
+
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM.")
+            return
+        }
+
+        if !vm.showLoginView {
+            doOnce?()
+        }
 
         setUpTextFilter()
     }
