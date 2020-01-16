@@ -54,7 +54,7 @@ struct UIUtils {
         let okButtonTitle = NSLocalizedString("OK", comment: "General alert positive button")
         let confirmAlertAction = PEPUIAlertAction(
             title: okButtonTitle,
-            style: .pEpBlue,
+            style: .pEpGreen,
             handler: { _ in
                 pEpAlert.dismiss(animated: true, completion: nil)
         })
