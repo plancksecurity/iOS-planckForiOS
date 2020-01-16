@@ -10,7 +10,6 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-
 /// Protocol that represents the basic data in a row.
 protocol SettingsRowProtocol {
     /// Title of the row.
@@ -19,15 +18,8 @@ protocol SettingsRowProtocol {
     var isDangerous: Bool { get set }
 }
 
+/// View Model for SettingsTableViewController
 final class SettingsViewModelV2 {
-
-    public enum SectionType {
-        case accounts
-        case globalSettings
-        case keySync
-        case contacts
-        case companyFeatures
-    }
 
     /// Struct that represents a section in settingsTableViewController
     struct Section {
@@ -36,14 +28,7 @@ final class SettingsViewModelV2 {
         /// footer of the section
         var footer: String?
         /// list of rows in the section
-        var rows: [SettingsRowProtocol]
-
-
-        init(type: SectionType) {
-            title = Section. sectionTitles(type: type)
-            footer = sectionFooter(type: type)
-            rows = generateRows(type: type)
-        }
+        var rows: [SettingsRowProtocol]?
     }
 
     /// Struct that is used to perform an action. represents a ActionRow in settingsTableViewController
@@ -73,58 +58,69 @@ final class SettingsViewModelV2 {
     }
 
     /// Items to be displayed in a SettingsTableViewController
-    private (set) var items = [Section]()
+    private (set) var items: [Section] = [Section]()
 
+    /// Number of elements in items
     var count: Int {
         get {
             return items.count
         }
     }
 
+    ///Access method to get the sections
     subscript (index: Int) -> Section {
         return items[index]
     }
 
+    /// Constructor for SettingsViewModel
     init() {
+        setup()
+    }
+
+    // MARK: - Private
+
+    private enum SectionType {
+        case accounts
+        case globalSettings
+        case keySync
+        case contacts
+        case companyFeatures
+    }
+
+    private func setup() {
         generateSections()
     }
 
     private func generateSections() {
+        let section = Section(title: sectionTitles(type: .accounts),
+                              footer: sectionFooter(type: .accounts),
+                              rows: generateRows(type: .accounts))
+        items.append(section)
     }
-
-        //items.append(Section(type: .accounts))
-
-//
-//        items.append(Section(title: sectionTitles(type: .accounts),
-//                             footer: sectionFooter(type: .accounts),
-//                             rows: generateRows(type: .accounts)))
-
-
-        //Section(title: T##String, footer: T##String, rows: T##[SettingsRowProtocol])
-//        items.append(Section())//(SettingsSectionViewModel(type: .accounts))
-//        items.append(SettingsSectionViewModel(type: .globalSettings))
-//        items.append(SettingsSectionViewModel(type: .keySync))
-//        items.append(SettingsSectionViewModel(type: .contacts))
-//        items.append(SettingsSectionViewModel(type: .companyFeatures))
 
     private func generateRows(type: SectionType) -> [SettingsRowProtocol] {
         var rows = [SettingsRowProtocol]()
-        Account.all().forEach { (acc) in
-            let accountRow = ActionRow(title: acc.user.address,
-                                       isDangerous: false, action: { [weak self] in
-                guard let me = self else {
-                    Log.shared.errorAndCrash(message: "Lost myself")
-                    return
-                }
-                me.delete(account: acc)
-            })
-            rows.append(accountRow)
+        switch type {
+        case .accounts:
+            Account.all().forEach { (acc) in
+                let accountRow = ActionRow(title: acc.user.address,
+                                           isDangerous: false, action: { [weak self] in
+                    guard let me = self else {
+                        Log.shared.errorAndCrash(message: "Lost myself")
+                        return
+                    }
+                    me.delete(account: acc)
+                })
+                rows.append(accountRow)
+            }
+            return rows
+        default:
+            return rows
         }
-        return rows
+
     }
 
-
-    class func sectionTitles(type: SectionType) -> String {
+    private func sectionTitles(type: SectionType) -> String {
         switch type {
         case .accounts:
             return NSLocalizedString("Accounts", comment: "Tableview section  header")
@@ -139,7 +135,7 @@ final class SettingsViewModelV2 {
         }
     }
 
-    func sectionFooter(type: SectionType) -> String? {
+    private func sectionFooter(type: SectionType) -> String? {
         switch type {
         case .accounts, .keySync, .companyFeatures:
             return nil
@@ -179,3 +175,19 @@ final class SettingsViewModelV2 {
         }
     }
 }
+
+
+        //items.append(Section(type: .accounts))
+
+//
+//        items.append(Section(title: sectionTitles(type: .accounts),
+//                             footer: sectionFooter(type: .accounts),
+//                             rows: generateRows(type: .accounts)))
+
+
+        //Section(title: T##String, footer: T##String, rows: T##[SettingsRowProtocol])
+//        items.append(Section())//(SettingsSectionViewModel(type: .accounts))
+//        items.append(SettingsSectionViewModel(type: .globalSettings))
+//        items.append(SettingsSectionViewModel(type: .keySync))
+//        items.append(SettingsSectionViewModel(type: .contacts))
+//        items.append(SettingsSectionViewModel(type: .companyFeatures))
