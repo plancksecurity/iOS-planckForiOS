@@ -92,10 +92,25 @@ final class SettingsViewModelV2 {
     }
 
     private func generateSections() {
-        let section = Section(title: sectionTitles(type: .accounts),
-                              footer: sectionFooter(type: .accounts),
-                              rows: generateRows(type: .accounts))
-        items.append(section)
+        items.append(Section(title: sectionTitles(type: .accounts),
+        footer: sectionFooter(type: .accounts),
+        rows: generateRows(type: .accounts)))
+
+        items.append(Section(title: sectionTitles(type: .globalSettings),
+        footer: sectionFooter(type: .globalSettings),
+        rows: generateRows(type: .globalSettings)))
+
+        items.append(Section(title: sectionTitles(type: .keySync),
+        footer: sectionFooter(type: .keySync),
+        rows: generateRows(type: .keySync)))
+
+        items.append(Section(title: sectionTitles(type: .contacts),
+        footer: sectionFooter(type: .contacts),
+        rows: generateRows(type: .contacts)))
+
+        items.append(Section(title: sectionTitles(type: .companyFeatures),
+        footer: sectionFooter(type: .companyFeatures),
+        rows: generateRows(type: .companyFeatures)))
     }
 
     private func generateRows(type: SectionType) -> [SettingsRowProtocol] {
