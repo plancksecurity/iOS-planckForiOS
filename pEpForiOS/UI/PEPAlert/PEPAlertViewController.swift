@@ -45,6 +45,15 @@ final class PEPAlertViewController: UIViewController {
         setUp(actions: action)
     }
 
+    /// Simulates a native alert with extra customization
+    /// - Parameters:
+    ///   - title: alert title
+    ///   - message: alert message
+    ///   - paintPEPInTitle: pEp keywords in alert title, will be in pEp green color. The rest of the alert title will be setted text color
+    ///   - image: Array of images to display  in the alert. Below the message and above the buttons.
+    ///   Nil or empty array to show no image. Array with one image to show just one image.
+    ///   Array of images will show one at a time and continue swaping them forever..
+    ///   - viewModel: alert view model of the viewController.
     static func fromStoryboard(title: String? = nil,
                      message: String? = nil,
                      paintPEPInTitle: Bool = false,
