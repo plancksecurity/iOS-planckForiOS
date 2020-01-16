@@ -43,14 +43,24 @@ struct UIUtils {
                 return
             #endif
         }
-        let alertView = UIAlertController.pEpAlertController(title: title,
-                                                             message: message,
-                                                             preferredStyle: .alert)
-        alertView.addAction(UIAlertAction(title: NSLocalizedString("OK", comment:
-            "General alert positive button"),
-                                          style: .default,
-                                          handler: nil))
-        vc.present(alertView, animated: true, completion: nil)
+
+        guard let pEpAlert = PEPAlertViewController.fromStoryboard(
+            title: title,
+            message: message,
+            paintPEPInTitle: true) else {
+                Log.shared.errorAndCrash("Fail to init pEpAlertViewController")
+                return
+        }
+        let okButtonTitle = NSLocalizedString("OK", comment: "General alert positive button")
+        let confirmAlertAction = PEPUIAlertAction(
+            title: okButtonTitle,
+            style: .pEpBlue,
+            handler: { _ in
+                pEpAlert.dismiss(animated: true, completion: nil)
+        })
+        pEpAlert.add(action: confirmAlertAction)
+
+        vc.present(pEpAlert, animated: true)
     }
 
     // MARK: - Compose View
