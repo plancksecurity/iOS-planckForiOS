@@ -926,6 +926,12 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
 
     func select(itemAt indexPath: IndexPath) {
+        guard !onlySplitViewMasterIsShown else {
+            // We want to follow EmailDetailViewSelection only if it is shown at the same time (if
+            // master/EmailList_and_ detail/EmailDetail views are both currently shown).
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
+        }
         tableView.selectRow(at: indexPath,
                             animated: false,
                             scrollPosition: .none)
