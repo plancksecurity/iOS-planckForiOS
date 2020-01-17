@@ -62,7 +62,6 @@ final class SettingsViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testDeleteAccountWithMoreThanOneAccountUpdatesDefaultAccount() {
-
         givenThereAreTwoAccounts()
         setupViewModel()
 

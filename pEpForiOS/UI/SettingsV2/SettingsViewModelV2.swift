@@ -30,7 +30,7 @@ protocol SettingsRowProtocol {
 final class SettingsViewModelV2 {
 
     typealias SwitchBlock = ((Bool) -> Void)
-    typealias ActionBlock = (() -> Void)
+    typealias ActionBlock = ((IndexPath) -> Void)
 
     weak var settingsDelegate : SettingsViewControllerDelegate?
     /// Struct that represents a section in settingsTableViewController
@@ -156,16 +156,22 @@ final class SettingsViewModelV2 {
         case .accounts:
             Account.all().forEach { (acc) in
                 let accountRow = ActionRow(title: acc.user.address,
-                                           isDangerous: false, action: { [weak self] in
+                                           isDangerous: false) { [weak self] (indexPath) in
                                             guard let me = self else {
                                                 Log.shared.errorAndCrash(message: "Lost myself")
                                                 return
                                             }
+                                            //Delete the account
                                             me.delete(account: acc)
-                })
+
+                                            //Delete the item from the view model
+                                            me.items[indexPath.section].rows.remove(at: indexPath.row)
+
+                                            //TODO: we should notify the deletion to the table view.
+                }
                 rows.append(accountRow)
             }
-            rows.append(generateActionRow(type: .resetAccounts, isDangerous: true){})
+            rows.append(generateActionRow(type: .resetAccounts, isDangerous: true){_ in })
         case .globalSettings:
             rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
             rows.append(generateNavigationRow(type: .credits, isDangerous: false))
@@ -356,8 +362,7 @@ final class SettingsViewModelV2 {
         let oldAddress = account.user.address
         account.delete()
         Session.main.commit()
-        if Account.all().count == 1,
-            let account = Account.all().first {
+        if Account.all().count == 1, let account = Account.all().first {
             do {
                 if try !account.isKeySyncEnabled() {
                     AppSettings.shared.keySyncEnabled = false
@@ -367,7 +372,8 @@ final class SettingsViewModelV2 {
             }
         }
 
-        if AppSettings.shared.defaultAccount == oldAddress {
+        if AppSettings.shared.defaultAccount == nil ||
+            AppSettings.shared.defaultAccount == oldAddress {
             let newDefaultAccount = Account.all().first
             guard let newDefaultAddress = newDefaultAccount?.user.address else {
                 return
