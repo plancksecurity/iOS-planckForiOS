@@ -10,7 +10,6 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-
 ///Delegate protocol to communicate to the SettingsTableViewController some special actions.
 protocol SettingsViewControllerDelegate: class {
     /// shows an alert to the user to inform that will leave the group
@@ -46,7 +45,9 @@ final class SettingsViewModelV2 {
 
     /// Struct that is used to perform an action. represents a ActionRow in settingsTableViewController
     struct ActionRow: SettingsRowProtocol {
+        /// Title of the action row
         var title: String
+        /// Indicates if the action to be performed is dangerous.
         var isDangerous: Bool = false
         /// Block that will be executed when action cell is pressed
         var action: ActionBlock
@@ -57,6 +58,7 @@ final class SettingsViewModelV2 {
         var title: String
         /// subtitle for a navigation row
         var subtitle: String?
+        /// Indicates if the action to be performed is dangerous.
         var isDangerous: Bool = false
     }
 
@@ -116,10 +118,13 @@ final class SettingsViewModelV2 {
         case extraKeys
     }
 
+    /// This method sets up the settings view.
+    /// Only this method should be called from the constructor.
     private func setup() {
         generateSections()
     }
 
+    /// This method generates all the sections for the settings view.
     private func generateSections() {
         items.append(Section(title: sectionTitles(type: .accounts),
                              footer: sectionFooter(type: .accounts),
@@ -142,6 +147,9 @@ final class SettingsViewModelV2 {
                              rows: generateRows(type: .companyFeatures)))
     }
 
+    /// This method generates all the rows for the section type passed
+    /// - Parameter type: The type of the section to generate the rows.
+    /// - Returns: An array with the settings rows. Every setting row must conform the SettingsRowProtocol.
     private func generateRows(type: SectionType) -> [SettingsRowProtocol] {
         var rows = [SettingsRowProtocol]()
         switch type {
@@ -168,14 +176,14 @@ final class SettingsViewModelV2 {
                     Log.shared.errorAndCrash(message: "Lost myself")
                     return
                 }
-                me.tooglePassiveMode(to: value)
+                me.setPassiveMode(to: value)
             })
             rows.append(generateSwitchRow(type: .protectMessageSubject, isDangerous: false, isOn: false) { [weak self] (value) in
                 guard let me = self else {
                     Log.shared.errorAndCrash(message: "Lost myself")
                     return
                 }
-                me.toogleProtectMessageSubject(to: value)
+                me.setProtectMessageSubject(to: value)
             })
         case .pEpSync:
             rows.append(generateSwitchRow(type: .pEpSync, isDangerous: false, isOn: false) { [weak self] (value) in
@@ -183,7 +191,7 @@ final class SettingsViewModelV2 {
                     Log.shared.errorAndCrash(message: "Lost myself")
                     return
                 }
-                me.tooglePepSync(to: value)
+                me.setPepSync(to: value)
             })
             rows.append(generateNavigationRow(type: .accountsToSync, isDangerous: false))
         case .contacts:
@@ -194,14 +202,25 @@ final class SettingsViewModelV2 {
         return rows
     }
 
+    /// This method generates a Navigation Row
+    /// - Parameters:
+    ///   - type: The type of row to generate
+    ///   - isDangerous: If the action that performs this row is dangerous.
     private func generateNavigationRow(type: RowType, isDangerous: Bool) -> NavigationRow {
         guard let rowTitle = rowTitle(type: type) else {
             Log.shared.errorAndCrash(message: "Row title not found")
             return NavigationRow(title: "")
         }
-        return NavigationRow(title:rowTitle, subtitle: nil, isDangerous: isDangerous)
+        let subtile = rowSubtitle(type: type)
+        return NavigationRow(title:rowTitle, subtitle: subtile, isDangerous: isDangerous)
     }
 
+    /// This method generates a Switch Row
+    /// - Parameters:
+    ///   - type: The type of row that needs to  generate
+    ///   - isDangerous: If the action that performs this row is dangerous.
+    ///   - isOn: The default status of the switch
+    ///   - action: The action to be performed.
     private func generateSwitchRow(type: RowType, isDangerous: Bool, isOn: Bool,
                                    action: @escaping SwitchBlock) -> SwitchRow {
         guard let rowTitle = rowTitle(type: type) else {
@@ -211,6 +230,11 @@ final class SettingsViewModelV2 {
         return SwitchRow(title: rowTitle, isDangerous: isDangerous, isOn: isOn, action: action)
     }
 
+    /// This method generates the action row.
+    /// - Parameters:
+    ///   - type: The type of row that needs to generate
+    ///   - isDangerous: If the action that performs this row is dangerous. (E. g. Reset identities)
+    ///   - action: The action to be performed
     private func generateActionRow(type: RowType, isDangerous: Bool,
                                    action: @escaping ActionBlock) -> ActionRow {
         guard let rowTitle = rowTitle(type: type) else {
@@ -220,6 +244,9 @@ final class SettingsViewModelV2 {
         return ActionRow(title: rowTitle, isDangerous: isDangerous, action: action)
     }
 
+    /// This method return the corresponding title for each section.
+    /// - Parameter type: The section type to choose the proper title.
+    /// - Returns: The title for the requested section.
     private func sectionTitles(type: SectionType) -> String {
         switch type {
         case .accounts:
@@ -235,6 +262,9 @@ final class SettingsViewModelV2 {
         }
     }
 
+    /// Thie method provides the title for the footer of each section.
+    /// - Parameter type: The section type to get the proper title
+    /// - Returns: The title of the footer. If the section is an account, a pepSync or the company features, it will be nil because there is no footer.
     private func sectionFooter(type: SectionType) -> String? {
         switch type {
         case .accounts, .pEpSync, .companyFeatures:
@@ -249,6 +279,8 @@ final class SettingsViewModelV2 {
     }
 
     /// Thie method provides the title for each cell, regarding its type.
+    /// - Parameter type: The row type to get the proper title
+    /// - Returns: The title of the row. If it's an account row, it will be nil and the name of the account should be used.
     private func rowTitle(type : RowType) -> String? {
         switch type {
         case .account:
@@ -286,24 +318,44 @@ final class SettingsViewModelV2 {
         }
     }
 
-    func tooglePassiveMode(to value: Bool) {
+    /// Thie method provides the subtitle if needed.
+    /// - Parameter type: The row type to get the proper title
+    /// - Returns: The subtitle of the row.
+    private func rowSubtitle(type : RowType) -> String? {
+        switch type {
+        case .defaultAccount:
+            return AppSettings.shared.defaultAccount
+        case .account, .accountsToSync, .credits, .extraKeys, .passiveMode, .pEpSync,
+             .protectMessageSubject, .resetAccounts, .resetTrust, .setOwnKey, .trustedServer:
+            return nil
+        }
+    }
+
+    ///This method sets the passive mode status according to the parameter value
+    /// - Parameter value: The new value of the passive mode status
+    private func setPassiveMode(to value: Bool) {
         AppSettings.shared.passiveMode = value
     }
 
-    func toogleProtectMessageSubject(to value: Bool) {
+    ///This method sets the Protect Message Subject status according to the parameter value
+    /// - Parameter value: The new value of the Protect Message Subject status
+    private func setProtectMessageSubject(to value: Bool) {
         AppSettings.shared.unencryptedSubjectEnabled = !value
     }
 
-    func tooglePepSync(to value: Bool) {
-
+    ///This method sets the pEp Sync status according to the parameter value
+    /// - Parameter value: The new value of the pEp Sync status
+    private func setPepSync(to value: Bool) {
+        //TODO: implement me!
     }
 
-    func delete(account: Account) {
-
+    ///This method deletes the account passed by parameter.
+    /// It also updates the default account if necessary.
+    /// - Parameter account: The account to be deleted
+    private func delete(account: Account) {
         let oldAddress = account.user.address
         account.delete()
         Session.main.commit()
-
         if Account.all().count == 1,
             let account = Account.all().first {
             do {
