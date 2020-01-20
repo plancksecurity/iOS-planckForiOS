@@ -74,13 +74,12 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
 
             me.showNoMessageSelected()
 
-            if !vm.showLoginView {
-                me.updateFilterButtonView()
-                vm.startMonitoring() //!!!: UI should not know about startMonitoring
-                me.tableView.reloadData()
-                me.checkSplitViewState()
-                me.watchDetailView()
-            }
+            me.updateFilterButtonView()
+            vm.startMonitoring() //!!!: UI should not know about startMonitoring
+            me.tableView.reloadData()
+            me.checkSplitViewState()
+            me.watchDetailView()
+            me.doOnce = nil
         }
         setup()
     }
@@ -93,8 +92,15 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
         }
 
         lastSelectedIndexPath = nil
-        doOnce?()
-        doOnce = nil
+
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM.")
+            return
+        }
+
+        if !vm.showLoginView {
+            doOnce?()
+        }
 
         setUpTextFilter()
     }
@@ -926,6 +932,12 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
 
     func select(itemAt indexPath: IndexPath) {
+        guard !onlySplitViewMasterIsShown else {
+            // We want to follow EmailDetailViewSelection only if it is shown at the same time (if
+            // master/EmailList_and_ detail/EmailDetail views are both currently shown).
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
+        }
         tableView.selectRow(at: indexPath,
                             animated: false,
                             scrollPosition: .none)
