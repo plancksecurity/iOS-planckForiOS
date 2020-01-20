@@ -35,7 +35,7 @@ class EmailDetailViewController: BaseViewController {
     /// IndexPath to show on load
     var firstItemToShow: IndexPath?
 
-    var viewModel: EmailDetailViewModelProtocol? {
+    var viewModel: EmailDetailViewModel? {
         didSet {
             viewModel?.delegate = self
         }
