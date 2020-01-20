@@ -7,6 +7,7 @@
 //
 
 import UIKit
+
 import SwipeCellKit
 import pEpIOSToolbox
 
@@ -148,7 +149,7 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
 
         ///the refresh controller is configured and added to the tableview
         refreshController.tintColor = UIColor.pEpGreen
-        refreshController.addTarget(self, action: #selector(self.refreshView(_:)), for: .valueChanged)
+        refreshController.addTarget(self, action: #selector(refreshView(_:)), for: .valueChanged) //BUFF: .primaryActionTriggered?
         tableView.refreshControl = refreshController
 
         title = viewModel?.folderName
@@ -972,12 +973,15 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
-    func emailListViewModel(viewModel: EmailDisplayViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
+    func emailListViewModel(viewModel: EmailDisplayViewModel,
+                            didUpdateDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.reloadRows(at: indexPaths, with: .none)
     }
 
-    func emailListViewModel(viewModel: EmailDisplayViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath) {
+    func emailListViewModel(viewModel: EmailDisplayViewModel,
+                            didMoveData atIndexPath: IndexPath,
+                            toIndexPath: IndexPath) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.moveRow(at: atIndexPath, to: toIndexPath)
         moveSelectionIfNeeded(fromIndexPath: atIndexPath, toIndexPath: toIndexPath)
