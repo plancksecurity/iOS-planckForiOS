@@ -11,42 +11,6 @@ import pEpIOSToolbox
 import MessageModel
 import PEPObjCAdapterFramework
 
-/// Base class for MessageQueryResults driven email display view models.
-/// All ViewModels that are showing messages that are fetched and monitored by MessageQueryResults
-/// should subclass from this.
-protocol EmailDisplayViewModelProtocol: class {
-
-    /// The *V*iew in our MVC
-    var delegate: EmailDisplayViewModelDelegate? { get set }
-    /// Message query to display messages for
-    var messageQueryResults: MessageQueryResults { get }
-    /// Number of messages
-    var rowCount: Int { get }
-    /// Starts monitoring the given database query.
-    func startMonitoring()
-
-    //Abstract. Has to be overridden.
-    func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])  -> MoveToAccountViewModel?
-
-    //!!!: this should be internal (not part of the protocol). VC and Cells MUST not know the model (Message).
-    /// - Parameter indexPath: indexPath of the cell to get the message it represents for.
-    /// - returns:  `nil` if `indexPath` is out of the current queryResults bounds, otherwize the
-    ///             Message represented by the given `indexPath`?.
-    func message(representedByRowAt indexPath: IndexPath) -> Message?
-
-    /// - Parameter indexPath: indexPath of message to configure ReplyAllPossibleChecker with
-    /// - returns: `ReplyAllPossibleChecker` configured for message represented by
-    ///             given `indexPath`.
-    func replyAllPossibleChecker(forItemAt indexPath: IndexPath) -> ReplyAllPossibleCheckerProtocol?
-
-    /// Destination VM Factory - Compose VM
-    /// - Parameter indexPath: indexPath of the cell to show ComposeView view for.
-    /// - returns:  ComposeViewModel configured for given compose mode for message represented by
-    ///             the given indexPath
-    func composeViewModel(forMessageRepresentedByItemAt indexPath: IndexPath,
-                          composeMode: ComposeUtil.ComposeMode) -> ComposeViewModel?
-}
-
 protocol EmailDisplayViewModelDelegate: class {
     func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didInsertDataAt indexPaths: [IndexPath])
@@ -65,9 +29,10 @@ protocol EmailDisplayViewModelDelegate: class {
     func select(itemAt indexPath: IndexPath)
 }
 
-// MARK: - EmailDisplayViewModel
-
-class EmailDisplayViewModel: EmailDisplayViewModelProtocol {
+/// Base class for MessageQueryResults driven email display view models.
+/// All ViewModels that are showing messages that are fetched and monitored by MessageQueryResults
+/// should subclass from this.
+class EmailDisplayViewModel {
 
     // MARK: - Life Cycle
 
@@ -77,12 +42,13 @@ class EmailDisplayViewModel: EmailDisplayViewModelProtocol {
         self.messageQueryResults = messageQueryResults
     }
 
-    // MARK: - EmailDisplayViewModelProtocol
-
+    /// Message query to display messages for
     var messageQueryResults: MessageQueryResults
 
+    /// The *V*iew in our MVC
     public weak var delegate: EmailDisplayViewModelDelegate?
 
+    /// Starts monitoring the given database query.
     public func startMonitoring() {
         do {
             try messageQueryResults.startMonitoring()
@@ -91,6 +57,7 @@ class EmailDisplayViewModel: EmailDisplayViewModelProtocol {
         }
     }
 
+    /// Number of messages
     public var rowCount: Int {
         if messageQueryResults.filter?.accountsEnabledStates.count == 0 {
             // This is a dirty hack to workaround that we are (inccorectly) showning an
@@ -105,14 +72,22 @@ class EmailDisplayViewModel: EmailDisplayViewModelProtocol {
         }
     }
 
+    //Abstract. Has to be overridden.
     public func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])  -> MoveToAccountViewModel? {
         fatalError("Must be overridden")
     }
 
+    //!!!: this should be internal (not part of the protocol). VC and Cells MUST not know the model (Message).
+    /// - Parameter indexPath: indexPath of the cell to get the message it represents for.
+    /// - returns:  `nil` if `indexPath` is out of the current queryResults bounds, otherwize the
+    ///             Message represented by the given `indexPath`?.
     public func message(representedByRowAt indexPath: IndexPath) -> Message? {
         return messageQueryResults[indexPath.row]
     }
 
+    /// - Parameter indexPath: indexPath of message to configure ReplyAllPossibleChecker with
+    /// - returns: `ReplyAllPossibleChecker` configured for message represented by
+    ///             given `indexPath`.
     public func replyAllPossibleChecker(forItemAt indexPath: IndexPath) -> ReplyAllPossibleCheckerProtocol? {
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
@@ -173,6 +148,10 @@ extension EmailDisplayViewModel {
 
 extension EmailDisplayViewModel {
 
+    /// Destination VM Factory - Compose VM
+    /// - Parameter indexPath: indexPath of the cell to show ComposeView view for.
+    /// - returns:  ComposeViewModel configured for given compose mode for message represented by
+    ///             the given indexPath
     func composeViewModel(forMessageRepresentedByItemAt indexPath: IndexPath,
                           composeMode: ComposeUtil.ComposeMode) -> ComposeViewModel? {
         guard let msg = message(representedByRowAt: indexPath) else {

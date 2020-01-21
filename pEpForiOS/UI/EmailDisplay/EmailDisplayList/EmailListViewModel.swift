@@ -11,99 +11,6 @@ import pEpIOSToolbox
 import MessageModel
 import PEPObjCAdapterFramework
 
-protocol EmailListViewModelProtocol: EmailDisplayViewModelProtocol {
-    var folderName: String { get }
-    var folderToShow: DisplayableFolderProtocol { get }
-
-    var isFilterEnabled: Bool { get set }
-    var currentFilter: MessageQueryResultsFilter { get }
-
-    /// - Parameter indexPath: indexPath to check editability for.
-    /// - returns: Whether or not to show compose view rather then the email for message represented by row at given `indexPath`.
-    func isEditable(messageAt indexPath: IndexPath) -> Bool
-
-    /// - Parameter indexPath: indexPath to check selectability for.
-    /// - returns: Whether or not the message represented by row at given `indexPath` is selecdtable in the current state.
-    func isSelectable(messageAt indexPath: IndexPath) -> Bool
-    /// - Parameter indexPath: indexPath to get viewModel for
-    /// - returns: ViewModel to configure Cell with
-    func viewModel(for index: Int) -> MessageViewModel?
-
-    /// Whether or not mails in the current folder are editable
-    var shouldShowToolbarEditButtons: Bool { get }
-
-    /// Used for UI fine tuning: Do not instatiate a EmailDetailVC if there is one already to avoid
-    /// minor gliches while longer HTML body is loaded.
-    var emailDetailViewIsAlreadyShown: Bool { get }
-
-    // Forwards selection to EmailDetailView. Can be used to avoid re-instantiating of
-    // EmailDetailView on every selection. Not sure if this is a good idea, smells like
-    // needless optimization. Remove if it causes trouble. In this case also remove
-    //`emailDetailViewIsAlreadyShown` and it's usage.
-    func handleSelected(itemAt indexPath: IndexPath)
-
-    /// Whether or not to show the Tutorial
-    var shouldShowTutorialWizard: Bool { get }
-    /// Call when the tutorial has been displayed to the user
-    func didShowTutorialWizard()
-
-    /// - returns: action to trigger if user clicks destructive button
-    func getDestructiveAction(forMessageAt index: Int) -> SwipeActionDescriptor
-    /// - returns: action to trigger if user clicks "flag" button
-    func getFlagAction(forMessageAt index: Int) -> SwipeActionDescriptor?
-    /// - returns: action to trigger if user clicks "more" button
-    func getMoreAction(forMessageAt index: Int) -> SwipeActionDescriptor?
-
-    /// Whether or not to show LoginView
-    var showLoginView: Bool { get }
-
-    func isReplyAllPossible(forRowAt indexPath: IndexPath) -> Bool
-
-    /// Marks the message represented by the given `indexPaths` as flagged.
-    /// - Parameter indexPath: indexPaths of messages to set flagged.
-    func markAsFlagged(indexPaths: [IndexPath])
-    /// Marks the message represented by the given `indexPaths` as not-flagged.
-    /// - Parameter indexPath: indexPaths of messages to unsset flag flag for.
-    func markAsUnFlagged(indexPaths: [IndexPath])
-    /// Marks the message represented by the given `indexPaths` as seen.
-    /// - Parameter indexPath: indexPaths of messages to set seen.
-    func markAsRead(indexPaths: [IndexPath])
-    /// Marks the message represented by the given `indexPaths` as not-seen.
-    /// - Parameter indexPath: indexPaths of messages to unsset seen flag for.
-    func markAsUnread(indexPaths: [IndexPath])
-    /// Handles destructive button click for messages represented by given `indexPaths`.
-    /// - Parameter indexPath: indexPathsdo handle destruktive action for
-    func handleUserClickedDestruktiveButton(forRowsAt indexPaths: [IndexPath])
-
-    func delete(forIndexPath indexPath: IndexPath)
-
-    /// Call in case of out-of-memory alert
-    func freeMemory()
-
-    // If the user has scrolled down (almost) to the end, we fetch older emails.
-    /// - Parameter indexPath: indexpath to pontetionally fetch older messages for
-    func fetchOlderMessagesIfRequired(forIndexPath indexPath: IndexPath)
-    func fetchNewMessages(completition: (() -> Void)?)
-
-    /// Handles changes of the selected messages in edit mode.
-    /// Updates toolbar buttons (maybe more)  accoring to selection.
-    func handleEditModeSelectionChange(selectedIndexPaths: [IndexPath])
-
-    /// Call whenever the term to search for changes.
-    /// - Parameter newSearchTerm: updated search term
-    func handleSearchTermChange(newSearchTerm: String)
-
-    /// Handles dissapearance of a SearchController
-    func handleSearchControllerDidDisappear()
-
-    /// Destination View Controller's VM Factory
-    /// - returns:  ComposeViewModel  with default configuration (for a new email).
-    func composeViewModelForNewMessage() -> ComposeViewModel
-
-    /// Destination VM Factory - EmailDetail VM
-    /// - returns:  EmailDetailViewModel with default configuration.
-    func emailDetialViewModel() -> EmailDetailViewModelProtocol
-}
 
 protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
     func setToolbarItemsEnabledState(to newValue: Bool)
@@ -113,8 +20,8 @@ protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
 
 // MARK: - EmailListViewModel
 
-class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
-    private var emailDetailViewModel: EmailDetailViewModelProtocol?
+class EmailListViewModel: EmailDisplayViewModel {
+    private var emailDetailViewModel: EmailDetailViewModel?
     private let contactImageTool = IdentityImageTool()
 
     private var lastSearchTerm = ""
@@ -161,6 +68,9 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         return Folder.localizedName(realName: folderToShow.title)
     }
 
+    /// - Parameter indexPath: indexPath to check editability for.
+    /// - returns:  Whether or not to show compose view rather then the email for message
+    ///             represented by row at given `indexPath`.
     public func isEditable(messageAt indexPath: IndexPath) -> Bool {
         let message = messageQueryResults[indexPath.row]
         if message.parent.folderType == .drafts {
@@ -179,11 +89,14 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         }
     }
 
+    /// - Parameter indexPath: indexPath to get viewModel for
+    /// - returns: ViewModel to configure Cell with
     public func viewModel(for index: Int) -> MessageViewModel? {
         let messageViewModel = MessageViewModel(with: messageQueryResults[index])
         return messageViewModel
     }
 
+    /// Whether or not mails in the current folder are editable
     public var shouldShowToolbarEditButtons: Bool {
         switch folderToShow {
         case is VirtualFolderProtocol:
@@ -195,6 +108,8 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         }
     }
 
+    /// Used for UI fine tuning: Do not instatiate a EmailDetailVC if there is one already to avoid
+    /// minor gliches while longer HTML body is loaded.
     public var emailDetailViewIsAlreadyShown: Bool {
         return emailDetailViewModel != nil
     }
@@ -207,14 +122,17 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         emailDetailViewModel?.select(itemAt: indexPath)
     }
 
+    /// Whether or not to show the Tutorial
     public var shouldShowTutorialWizard: Bool {
         return AppSettings.shared.shouldShowTutorialWizard
     }
 
+    /// Call when the tutorial has been displayed to the user
     public func didShowTutorialWizard() {
         AppSettings.shared.shouldShowTutorialWizard = false
     }
 
+    /// - returns: action to trigger if user clicks destructive button
     public func getDestructiveAction(forMessageAt index: Int) -> SwipeActionDescriptor {
         let parentFolder = getParentFolder(forMessageAt: index)
         let defaultDestructiveAction: SwipeActionDescriptor
@@ -225,6 +143,7 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         return folderIsOutbox(parentFolder) ? .trash : defaultDestructiveAction
     }
 
+    /// - returns: action to trigger if user clicks "flag" button
     public func getFlagAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
         let parentFolder = getParentFolder(forMessageAt: index)
         if folderIsDraftsOrOutbox(parentFolder) {
@@ -234,6 +153,8 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
             return flagged ? .unflag : .flag
         }
     }
+
+    /// - returns: action to trigger if user clicks "more" button
     public func getMoreAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
         let parentFolder = getParentFolder(forMessageAt: index)
         if folderIsDraftsOrOutbox(parentFolder) {
@@ -243,6 +164,7 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         }
     }
 
+    /// Whether or not to show LoginView
     public var showLoginView: Bool {
         return Account.all().isEmpty
     }
@@ -257,22 +179,32 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         return replyAllPossible
     }
 
+    /// Marks the message represented by the given `indexPaths` as flagged.
+    /// - Parameter indexPath: indexPaths of messages to set flagged.
     public func markAsFlagged(indexPaths: [IndexPath]) {
         setFlaggedValue(forIndexPath: indexPaths, newValue: true)
     }
 
+    /// Marks the message represented by the given `indexPaths` as not-flagged.
+    /// - Parameter indexPath: indexPaths of messages to unsset flag flag for.
     public func markAsUnFlagged(indexPaths: [IndexPath]) {
         setFlaggedValue(forIndexPath: indexPaths, newValue: false)
     }
 
+    /// Marks the message represented by the given `indexPaths` as seen.
+    /// - Parameter indexPath: indexPaths of messages to set seen.
     public func markAsRead(indexPaths: [IndexPath]) {
         setSeenValue(forIndexPath: indexPaths, newValue: true)
     }
 
+    /// Marks the message represented by the given `indexPaths` as not-seen.
+    /// - Parameter indexPath: indexPaths of messages to unsset seen flag for.
     public func markAsUnread(indexPaths: [IndexPath]) {
         setSeenValue(forIndexPath: indexPaths, newValue: false)
     }
 
+    /// Handles destructive button click for messages represented by given `indexPaths`.
+    /// - Parameter indexPath: indexPathsdo handle destruktive action for
     public func handleUserClickedDestruktiveButton(forRowsAt indexPaths: [IndexPath]) {
         let messages = indexPaths.map { messageQueryResults[$0.row] }
         delete(messages: messages)
@@ -290,6 +222,7 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         deleteMessages(at: [indexPath])
     }
 
+     /// Call in case of out-of-memory alert
     func freeMemory() {
         contactImageTool.clearCache()
     }
@@ -320,13 +253,8 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
         return row >= rowCount - numRowsBeforeLastToTriggerFetchOder
     }
 
-    // Implemented to get informed about the currently visible cells.
-    // If the user has scrolled down (almost) to the end, we ask for older emails.
-
-    /// Get informed about the new visible cells.
-    /// If the user has scrolled down (almost) to the end, we ask for older emails.
-    ///
-    /// - Parameter indexPath: indexpath to check need for fetch older for
+    // When the user has scrolled down (almost) to the end, we fetch older emails.
+    /// - Parameter indexPath: indexpath to pontetionally fetch older messages for
     public func fetchOlderMessagesIfRequired(forIndexPath indexPath: IndexPath) {
         if !triggerFetchOlder(lastDisplayedRow: indexPath.row) {
             return
@@ -347,6 +275,9 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
     private var unreadMessages = false
     private var flaggedMessages = false
 
+
+    /// Handles changes of the selected messages in edit mode.
+    /// Updates toolbar buttons (maybe more)  accoring to selection.
     public func handleEditModeSelectionChange(selectedIndexPaths: [IndexPath]) {
         checkUnreadMessages(indexPaths: selectedIndexPaths)
         checkFlaggedMessages(indexPaths: selectedIndexPaths)
@@ -404,6 +335,8 @@ class EmailListViewModel: EmailDisplayViewModel, EmailListViewModelProtocol {
 
 extension EmailListViewModel {
 
+    /// Call whenever the term to search for changes.
+    /// - Parameter newSearchTerm: updated search term
     public func handleSearchTermChange(newSearchTerm: String) {
         if newSearchTerm == lastSearchTerm {
             // Happens e.g. when initially setting the cursor in search bar.
@@ -415,6 +348,7 @@ extension EmailListViewModel {
         setNewSearchAndReload(search: search)
     }
 
+    /// Handles dissapearance of a SearchController
     public func handleSearchControllerDidDisappear() {
         setNewSearchAndReload(search: nil)
     }
@@ -482,7 +416,9 @@ extension EmailListViewModel {
 
 extension EmailListViewModel {
 
-    func composeViewModelForNewMessage() -> ComposeViewModel {
+    /// Destination View Controller's VM Factory
+    /// - returns:  ComposeViewModel  with default configuration (for a new email).
+    public func composeViewModelForNewMessage() -> ComposeViewModel {
         // Determine the sender.
         var someUser: Identity? = nil
         if let f = folderToShow as? RealFolderProtocol {
@@ -496,7 +432,9 @@ extension EmailListViewModel {
         return composeVM
     }
 
-    func emailDetialViewModel() -> EmailDetailViewModelProtocol {
+    /// Destination VM Factory - EmailDetail VM
+    /// - returns:  EmailDetailViewModel with default configuration.
+    public func emailDetialViewModel() -> EmailDetailViewModel {
         let detailQueryResults = messageQueryResults.clone()
         let createe = EmailDetailViewModel(messageQueryResults: detailQueryResults)
         createe.selectionChangeDelegate = self
@@ -561,7 +499,7 @@ extension EmailListViewModel: QueryResultsIndexPathRowDelegate {
 
 extension EmailListViewModel: EmailDetailViewModelSelectionChangeDelegate {
 
-    func emailDetailViewModel(emailDetailViewModel: EmailDetailViewModelProtocol,
+    func emailDetailViewModel(emailDetailViewModel: EmailDetailViewModel,
                               didSelectItemAt indexPath: IndexPath) {
         delegate?.select(itemAt: indexPath)
     }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -39,6 +39,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3lK-2h-0QQ" userLabel="WORKAROUND:_Empty_Dummy_View_With_Zero_Height_To_Workaround_Tableview_Refreshcontrol_Issues">
+                                <rect key="frame" x="0.0" y="44" width="375" height="0.0"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" id="Bca-V9-EEW"/>
+                                </constraints>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1Oj-l2-jRA">
                                 <rect key="frame" x="0.0" y="44" width="375" height="574"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -181,9 +188,12 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="1Oj-l2-jRA" firstAttribute="top" secondItem="gL5-KI-75G" secondAttribute="top" id="4Or-xd-tQ2"/>
+                            <constraint firstItem="1Oj-l2-jRA" firstAttribute="top" secondItem="3lK-2h-0QQ" secondAttribute="top" id="4Or-xd-tQ2"/>
                             <constraint firstItem="gL5-KI-75G" firstAttribute="trailing" secondItem="1Oj-l2-jRA" secondAttribute="trailing" id="7Aa-HN-69F"/>
                             <constraint firstItem="gL5-KI-75G" firstAttribute="bottom" secondItem="1Oj-l2-jRA" secondAttribute="bottom" id="BVY-Ij-lOg"/>
+                            <constraint firstItem="3lK-2h-0QQ" firstAttribute="leading" secondItem="gL5-KI-75G" secondAttribute="leading" id="C01-mm-7mp"/>
+                            <constraint firstItem="3lK-2h-0QQ" firstAttribute="top" secondItem="gL5-KI-75G" secondAttribute="top" id="NIK-Th-hLa"/>
+                            <constraint firstItem="gL5-KI-75G" firstAttribute="trailing" secondItem="3lK-2h-0QQ" secondAttribute="trailing" id="RYM-1Y-2wJ"/>
                             <constraint firstItem="1Oj-l2-jRA" firstAttribute="leading" secondItem="gL5-KI-75G" secondAttribute="leading" id="jIi-mK-9Wc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gL5-KI-75G"/>
@@ -984,9 +994,9 @@
         <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="g1q-wK-tff"/>
+        <segue reference="cRe-YG-393"/>
         <segue reference="Gcx-48-ZRF"/>
-        <segue reference="0Yg-lj-kVR"/>
+        <segue reference="yAp-Cu-TCw"/>
         <segue reference="HHz-at-Ehg"/>
     </inferredMetricsTieBreakers>
 </document>

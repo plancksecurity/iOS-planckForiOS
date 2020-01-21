@@ -7,6 +7,7 @@
 //
 
 import UIKit
+
 import SwipeCellKit
 import pEpIOSToolbox
 
@@ -74,13 +75,12 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
 
             me.showNoMessageSelected()
 
-            if !vm.showLoginView {
-                me.updateFilterButtonView()
-                vm.startMonitoring() //!!!: UI should not know about startMonitoring
-                me.tableView.reloadData()
-                me.checkSplitViewState()
-                me.watchDetailView()
-            }
+            me.updateFilterButtonView()
+            vm.startMonitoring() //!!!: UI should not know about startMonitoring
+            me.tableView.reloadData()
+            me.checkSplitViewState()
+            me.watchDetailView()
+            me.doOnce = nil
         }
         setup()
     }
@@ -93,8 +93,15 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
         }
 
         lastSelectedIndexPath = nil
-        doOnce?()
-        doOnce = nil
+
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM.")
+            return
+        }
+
+        if !vm.showLoginView {
+            doOnce?()
+        }
 
         setUpTextFilter()
     }
@@ -142,7 +149,7 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
 
         ///the refresh controller is configured and added to the tableview
         refreshController.tintColor = UIColor.pEpGreen
-        refreshController.addTarget(self, action: #selector(self.refreshView(_:)), for: .valueChanged)
+        refreshController.addTarget(self, action: #selector(refreshView(_:)), for: .valueChanged) //BUFF: .primaryActionTriggered?
         tableView.refreshControl = refreshController
 
         title = viewModel?.folderName
@@ -926,6 +933,12 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
 
     func select(itemAt indexPath: IndexPath) {
+        guard !onlySplitViewMasterIsShown else {
+            // We want to follow EmailDetailViewSelection only if it is shown at the same time (if
+            // master/EmailList_and_ detail/EmailDetail views are both currently shown).
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
+        }
         tableView.selectRow(at: indexPath,
                             animated: false,
                             scrollPosition: .none)
@@ -960,12 +973,15 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
-    func emailListViewModel(viewModel: EmailDisplayViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
+    func emailListViewModel(viewModel: EmailDisplayViewModel,
+                            didUpdateDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.reloadRows(at: indexPaths, with: .none)
     }
 
-    func emailListViewModel(viewModel: EmailDisplayViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath) {
+    func emailListViewModel(viewModel: EmailDisplayViewModel,
+                            didMoveData atIndexPath: IndexPath,
+                            toIndexPath: IndexPath) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.moveRow(at: atIndexPath, to: toIndexPath)
         moveSelectionIfNeeded(fromIndexPath: atIndexPath, toIndexPath: toIndexPath)

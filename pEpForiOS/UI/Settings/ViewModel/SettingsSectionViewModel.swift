@@ -31,6 +31,8 @@ final class SettingsSectionViewModel {
         case .accounts:
             generateAccountCells()
             title = NSLocalizedString("Accounts", comment: "Tableview section  header")
+            footer =  NSLocalizedString("Performs a reset of the privacy settings of your accounts.",
+                                        comment: "Explanation for Key Reset (for ALL accounts")
         case .globalSettings:
             generateGlobalSettingsCells()
             title = NSLocalizedString("Global Settings", comment: "Tableview section header")
@@ -38,7 +40,7 @@ final class SettingsSectionViewModel {
                                        comment: "passive mode description")
         case .keySync:
             generateKeySyncCells()
-            title = NSLocalizedString("p≡p sync", comment: "Tableview section header")
+            title = NSLocalizedString("Sync", comment: "Tableview section header")
         case .contacts:
             generateContactsCells()
             title = NSLocalizedString("Contacts", comment: "TableView section header")
@@ -89,8 +91,8 @@ extension SettingsSectionViewModel {
         self.cells.append(SettingsCellViewModel(type: .credits))
         self.cells.append(SettingsCellViewModel(type: .trustedServer))
         self.cells.append(SettingsCellViewModel(type: .setOwnKey))
-        self.cells.append(PassiveModeViewModel())
         self.cells.append(UnecryptedSubjectViewModel())
+        self.cells.append(PassiveModeViewModel())
     }
 
     private func generateContactsCells() {

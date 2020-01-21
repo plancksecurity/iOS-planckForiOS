@@ -139,21 +139,11 @@ final class EditableAccountSettingsTableViewModel {
                 addrSmpt: addrSmpt, portSmtp: portSmtp, transSmtp: transSmtp, accountName: name,
                 imapUsername: imapUsername, smtpUsername: smtpUsername)
     }
-
-    func footerFor(section: Int) -> String {
-        if section < footers.count {
-            return footers[section]
-        }
-        return ""
-    }
 }
 
 // MARK: - Private
 
 extension EditableAccountSettingsTableViewModel {
-    private var footers: [String] {
-        return [NSLocalizedString("Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.", comment: "Footer for Account settings section 1")]
-    }
 
     private func sectionIsValid(section: Int) -> Bool {
         return section >= 0 && section < headers.count
