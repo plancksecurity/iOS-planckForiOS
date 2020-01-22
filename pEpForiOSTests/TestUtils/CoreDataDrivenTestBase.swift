@@ -60,10 +60,9 @@ open class CoreDataDrivenTestBase: XCTestCase {
         let expMailsFetched = expectation(description: "expMailsFetched")
 
         let opLogin = LoginImapOperation(parentName: parentName,
-                                         imapSyncData: imapSyncData,
-                                         emailConnectInfo: imapConnectInfo)
+                                         imapSyncData: imapSyncData)
         let op = FetchMessagesInImapFolderOperation(parentName: parentName, imapSyncData: imapSyncData,
-                                        folderName: PantomimeImapApi.defaultImapInboxName)
+                                                    folderName: PantomimeImapApi.defaultImapInboxName)
         op.addDependency(opLogin)
         op.completionBlock = {
             op.completionBlock = nil
