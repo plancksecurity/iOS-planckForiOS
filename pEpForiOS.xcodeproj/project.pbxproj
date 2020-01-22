@@ -204,6 +204,8 @@
 		3705703B22B7C793002E3AAD /* ActionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705703A22B7C793002E3AAD /* ActionCellViewModel.swift */; };
 		3705703F22B8E3B9002E3AAD /* ActionCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705703E22B8E3B9002E3AAD /* ActionCellViewModelTest.swift */; };
 		3705704122B8EB27002E3AAD /* KeySyncDeviceGroupUtilMoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705704022B8EB27002E3AAD /* KeySyncDeviceGroupUtilMoc.swift */; };
+		3706B34C23D7343F002BB1B9 /* PEPLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3706B32523D61175002BB1B9 /* PEPLogger.framework */; };
+		3706B34D23D7343F002BB1B9 /* PEPLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3706B32523D61175002BB1B9 /* PEPLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		37156E44234CD47C00845A28 /* EditableAccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E43234CD47C00845A28 /* EditableAccountSettingsViewController.swift */; };
 		37156E46234CD49F00845A28 /* EditableAccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E45234CD49F00845A28 /* EditableAccountSettingsViewModel.swift */; };
 		37156E48234CDD4A00845A28 /* EditableAccountSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E47234CDD4A00845A28 /* EditableAccountSettingsTableViewController.swift */; };
@@ -469,6 +471,7 @@
 				154918E122BA74BA0091B6D6 /* AppAuth.framework in Embed Frameworks */,
 				154918D122BA74230091B6D6 /* ldns_xcode.framework in Embed Frameworks */,
 				154918DE22BA74A90091B6D6 /* PEPObjCAdapterFramework.framework in Embed Frameworks */,
+				3706B34D23D7343F002BB1B9 /* PEPLogger.framework in Embed Frameworks */,
 				154918DB22BA74800091B6D6 /* MessageModel.framework in Embed Frameworks */,
 				154918D522BA74670091B6D6 /* pEpIOSToolbox.framework in Embed Frameworks */,
 				154918D822BA74700091B6D6 /* SwipeCellKit.framework in Embed Frameworks */,
@@ -673,6 +676,7 @@
 		3705703A22B7C793002E3AAD /* ActionCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCellViewModel.swift; sourceTree = "<group>"; };
 		3705703E22B8E3B9002E3AAD /* ActionCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCellViewModelTest.swift; sourceTree = "<group>"; };
 		3705704022B8EB27002E3AAD /* KeySyncDeviceGroupUtilMoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncDeviceGroupUtilMoc.swift; sourceTree = "<group>"; };
+		3706B32523D61175002BB1B9 /* PEPLogger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PEPLogger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		37156E43234CD47C00845A28 /* EditableAccountSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewController.swift; sourceTree = "<group>"; };
 		37156E45234CD49F00845A28 /* EditableAccountSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		37156E47234CDD4A00845A28 /* EditableAccountSettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -960,6 +964,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3706B34C23D7343F002BB1B9 /* PEPLogger.framework in Frameworks */,
 				154918E322BA74D70091B6D6 /* PantomimeFramework.framework in Frameworks */,
 				154918E022BA74BA0091B6D6 /* AppAuth.framework in Frameworks */,
 				154918D022BA74230091B6D6 /* ldns_xcode.framework in Frameworks */,
@@ -2309,6 +2314,7 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3706B32523D61175002BB1B9 /* PEPLogger.framework */,
 				159E1F1422BD0756007D711F /* PEPObjCAdapterFramework.framework */,
 				159E1F1222BD074F007D711F /* PantomimeFramework.framework */,
 				1549184422B933AA0091B6D6 /* AppleiOSSDK */,
