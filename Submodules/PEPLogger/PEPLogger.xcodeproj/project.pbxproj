@@ -11,6 +11,7 @@
 		3706B31823D0C0B4002BB1B9 /* PEPLoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706B31723D0C0B4002BB1B9 /* PEPLoggerTests.swift */; };
 		3706B31A23D0C0B4002BB1B9 /* PEPLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 3706B30C23D0C0B4002BB1B9 /* PEPLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3706B32423D2132F002BB1B9 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706B32323D2132F002BB1B9 /* Logger.swift */; };
+		37B173FE23D8A06100680CA0 /* LConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 37B173FD23D8A06100680CA0 /* LConstants.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +32,7 @@
 		3706B31723D0C0B4002BB1B9 /* PEPLoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPLoggerTests.swift; sourceTree = "<group>"; };
 		3706B31923D0C0B4002BB1B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3706B32323D2132F002BB1B9 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		37B173FD23D8A06100680CA0 /* LConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LConstants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 				3706B30C23D0C0B4002BB1B9 /* PEPLogger.h */,
 				3706B30D23D0C0B4002BB1B9 /* Info.plist */,
 				3706B32323D2132F002BB1B9 /* Logger.swift */,
+				37B173FD23D8A06100680CA0 /* LConstants.h */,
 			);
 			path = PEPLogger;
 			sourceTree = "<group>";
@@ -97,6 +100,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3706B31A23D0C0B4002BB1B9 /* PEPLogger.h in Headers */,
+				37B173FE23D8A06100680CA0 /* LConstants.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
