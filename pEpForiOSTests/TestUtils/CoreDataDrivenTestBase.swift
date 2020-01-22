@@ -61,7 +61,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
 
         guard let opLogin = LoginImapOperation(parentName: parentName,
                                                imapSyncData: imapSyncData,
-                                               cdAccount: cdAccount) else {
+                                               emailConnectInfo: imapConnectInfo) else {
                                                 XCTFail()
                                                 return
         }
