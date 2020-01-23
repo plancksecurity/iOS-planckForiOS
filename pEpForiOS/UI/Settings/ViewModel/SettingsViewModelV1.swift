@@ -16,7 +16,7 @@ protocol SettingsViewModelDelegate: class {
     func hideLoadingView()
 }
 
-final class SettingsViewModel {
+final class SettingsViewModelV1 {
     weak var delegate: SettingsViewModelDelegate?
     var sections = [SettingsSectionViewModel]()
 
@@ -83,7 +83,7 @@ final class SettingsViewModel {
 
 // MARK: - Private
 
-extension SettingsViewModel {
+extension SettingsViewModelV1 {
 
     func isGrouped() -> Bool {
         return KeySyncUtil.isInDeviceGroup

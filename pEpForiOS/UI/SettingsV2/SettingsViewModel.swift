@@ -43,7 +43,6 @@ final class SettingsViewModel {
     typealias ActionBlock = ((IndexPath) -> Void)
     typealias AlertActionBlock = ((UIAlertAction) -> ())
 
-    weak var settingsDelegate : SettingsViewControllerDelegate?
     /// Struct that represents a section in settingsTableViewController
     struct Section {
         /// Title of the section
@@ -112,12 +111,6 @@ final class SettingsViewModel {
     func section(for sectionNumber: Int) -> Section {
         return items[sectionNumber]
     }
-    
-    
-    func deleteRow(at indexPath : IndexPath) {
-        var mutableRows = section(for: indexPath.section).rows[indexPath.row]
-        //TODO implement me!
-    }
 
     /// Returns the cell identifier based on the index path.
     /// There are 3 cells. SettingsCell, SettingsActionCell, SwitchOptionCell.
@@ -125,12 +118,12 @@ final class SettingsViewModel {
     func cellIdentifier(for indexPath: IndexPath) -> String {
         let row = section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
-        case .account:
+        case .account, .defaultAccount, .setOwnKey, .credits, .extraKeys, .trustedServer:
             return "SettingsCell"
-        case .resetAccounts, .credits, .trustedServer, .setOwnKey, .accountsToSync, .resetTrust, .extraKeys, .defaultAccount, .pEpSync:
+        case .resetAccounts, .accountsToSync, .resetTrust, .pEpSync:
             return "SettingsActionCell"
         case .passiveMode, .protectMessageSubject:
-            return "SwitchOptionCell"
+            return "switchOptionCell"
         }
     }
 
@@ -242,8 +235,6 @@ final class SettingsViewModel {
 
                                             //Delete the item from the view model
                                             me.items[indexPath.section].rows.remove(at: indexPath.row)
-
-                                            //TODO: we should notify the deletion to the table view.
                 }
                 rows.append(accountRow)
             }
@@ -275,7 +266,8 @@ final class SettingsViewModel {
                 }
                 me.setPepSync(to: value)
             })
-            rows.append(generateNavigationRow(type: .accountsToSync, isDangerous: false))
+            //TODO: WTF? 
+            // rows.append(generateNavigationRow(type: .accountsToSync, isDangerous: false))
         case .contacts:
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
         case .companyFeatures:
@@ -370,33 +362,25 @@ final class SettingsViewModel {
         case .resetAccounts:
             return NSLocalizedString("Reset All Identities", comment: "Settings: Cell (button) title for reset all identities")
         case .credits:
-            return NSLocalizedString(
-                "Credits",
-                comment: "Settings: Cell (button) title to view app credits")
+            return NSLocalizedString("Credits", comment: "Settings: Cell (button) title to view app credits")
         case .defaultAccount:
-            return NSLocalizedString("Default Account", comment:
-                "Settings: Cell (button) title to view default account setting")
+            return NSLocalizedString("Default Account", comment: "Settings: Cell (button) title to view default account setting")
         case .trustedServer:
-            return NSLocalizedString("Store Messages Securely",
-                                     comment:
-                "Settings: Cell (button) title to view default account setting")
+            return NSLocalizedString("Store Messages Securely", comment: "Settings: Cell (button) title to view default account setting")
         case .setOwnKey:
-            return NSLocalizedString("Set Own Key",
-                                     comment:
-                "Settings: Cell (button) title for entering fingerprints that are made own keys")
+            return NSLocalizedString("Set Own Key", comment: "Settings: Cell (button) title for entering fingerprints that are made own keys")
         case .extraKeys:
-            return NSLocalizedString("Extra Keys",
-                                     comment:
-                "Settings: Cell (button) title to view Extra Keys setting")
+            return NSLocalizedString("Extra Keys", comment: "Settings: Cell (button) title to view Extra Keys setting")
         case .accountsToSync:
-            return NSLocalizedString("Select accounts to sync",
-                                     comment: "Settings: Cell (button) title to view accounts to sync")
+            return NSLocalizedString("Select accounts to sync", comment: "Settings: Cell (button) title to view accounts to sync")
         case .resetTrust:
-            return NSLocalizedString("Reset", comment:
-                "Settings: cell (button) title to view the trust contacts option")
-
-        default:
-            return ""
+            return NSLocalizedString("Reset", comment: "Settings: cell (button) title to view the trust contacts option")
+        case .passiveMode:
+            return NSLocalizedString("Enable passive mode", comment: "Passive mode title")
+        case .protectMessageSubject:
+            return NSLocalizedString("Protect Message Subject", comment: "title for subject protection")
+        case .pEpSync:
+            return NSLocalizedString("Enable p≡p Sync", comment: "settings, enable thread view or not")
         }
     }
 
@@ -425,10 +409,11 @@ final class SettingsViewModel {
         AppSettings.shared.unencryptedSubjectEnabled = !value
     }
 
-    ///This method sets the pEp Sync status according to the parameter value
+    /////TODO: implement me!
+    /// This method sets the pEp Sync status according to the parameter value
     /// - Parameter value: The new value of the pEp Sync status
     private func setPepSync(to value: Bool) {
-        //TODO: implement me!
+        
     }
 
     ///This method deletes the account passed by parameter.
@@ -499,14 +484,12 @@ final class SettingsViewModel {
         return Account.all().count <= 0
     }
     
-    
     /// Wrapper method to know if the device is in a group.
     /// Returns: True if it is in a group.
     func isGrouped() -> Bool {
         return KeySyncUtil.isInDeviceGroup
     }
 
-    //TODO: Is this correct?
     func pEpSyncSection() -> Int? {
         return SectionType.pEpSync.index
     }
@@ -520,6 +503,22 @@ final class SettingsViewModel {
         default:
             return nil
         }
+    }
+    
+    /// Returns the account setted at the the row of the provided indexPath
+    /// - Parameter indexPath: The index path to get the account
+    func account(at indexPath : IndexPath) -> Account? {
+        let accounts = Account.all()
+        if accounts.count > indexPath.row {
+            return accounts[indexPath.row]
+        }
+        return nil
+    }
+    
+    /// Deletes the row at the passed index Path
+    /// - Parameter indexPath: The index Path to
+    func deleteRowAt(_ indexPath: IndexPath) {
+        
     }
 }
 

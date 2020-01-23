@@ -68,9 +68,7 @@ final class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
                 }
                 return acc.user.address
             case .trustedServer:
-                return NSLocalizedString("Store Messages Securely",
-                                         comment:
-                    "Settings: Cell (button) title to view default account setting")
+                return NSLocalizedString("Store Messages Securely", comment: "Settings: Cell (button) title to view default account setting")
             case .setOwnKey:
                 return NSLocalizedString("Set Own Key",
                                          comment:

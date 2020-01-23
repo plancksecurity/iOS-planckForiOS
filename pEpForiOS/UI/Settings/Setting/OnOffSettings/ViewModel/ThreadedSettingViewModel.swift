@@ -16,8 +16,7 @@
 //
 //    var cellIdentifier = "switchOptionCell"
 //
-//    private(set) var title = NSLocalizedString("Thread Messages",
-//                                           comment: "settings, enable thread view or not")
+//    private(set) var title = NSLocalizedString("Thread Messages", comment: "settings, enable thread view or not")
 //
 //    func setSwitch(value: Bool) {
 //        // For now, do nothing, just persist this.
