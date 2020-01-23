@@ -23,6 +23,7 @@ import Foundation
 ///
 /// From  Objective-C: #import "PEPLogger/PEPLogger.h"
 /// Use the macros in LConstats.h. Macros will call Logger.Swift functons with the correct literals values.
+/// PEPLoger macros were created as a solution to have functions with default literals values in Objective-C (#file, #line and #function).
 /// Example: LOG_DEBUG_WITH_MESSAGE(@"Some debuging information");
 /// Example 2: LOG_ERROR_AND_CRASH_WITH_ERROR(error); //where error is an NSError
 ///

@@ -12,6 +12,9 @@
 
 #endif /* LConstants_h */
 
+/**
+PEPLoger macros were created as a solution to have functions with default literals values in Objective-C (#file, #line and #function).
+ */
 
 /**
 Debug-level messages are intended to be use in a development environment and not in shipping software.
