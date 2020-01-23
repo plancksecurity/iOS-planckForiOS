@@ -47,7 +47,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
     }
 
     override open func tearDown() {
-        imapSyncData?.sync?.close()
+        imapSyncData?.sync.close()
         Stack.shared.reset()
         PEPSession.cleanup()
         XCTAssertTrue(PEPUtils.pEpClean())
@@ -61,7 +61,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
 
         let opLogin = LoginImapOperation(parentName: parentName, imapSyncData: imapSyncData)
         let op = FetchMessagesInImapFolderOperation(parentName: parentName,
-                                                    imapSyncData: imapSyncData,
+                                                    imapConnection: imapSyncData.sync,
                                                     folderName: PantomimeImapApi.defaultImapInboxName)
         op.addDependency(opLogin)
         op.completionBlock = {
