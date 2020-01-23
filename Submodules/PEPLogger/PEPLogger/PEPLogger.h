@@ -15,4 +15,4 @@ FOUNDATION_EXPORT double PEPLoggerVersionNumber;
 FOUNDATION_EXPORT const unsigned char PEPLoggerVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <PEPLogger/PublicHeader.h>
-
+#import <PEPLogger/LConstants.h>

@@ -11,7 +11,7 @@
 		3706B31823D0C0B4002BB1B9 /* PEPLoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706B31723D0C0B4002BB1B9 /* PEPLoggerTests.swift */; };
 		3706B31A23D0C0B4002BB1B9 /* PEPLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 3706B30C23D0C0B4002BB1B9 /* PEPLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3706B32423D2132F002BB1B9 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706B32323D2132F002BB1B9 /* Logger.swift */; };
-		37B173FE23D8A06100680CA0 /* LConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 37B173FD23D8A06100680CA0 /* LConstants.h */; };
+		37B173FE23D8A06100680CA0 /* LConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 37B173FD23D8A06100680CA0 /* LConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
