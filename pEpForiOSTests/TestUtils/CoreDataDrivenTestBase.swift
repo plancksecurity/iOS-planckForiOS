@@ -59,7 +59,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
     func fetchMessages(parentName: String) {
         let expMailsFetched = expectation(description: "expMailsFetched")
 
-        let opLogin = LoginImapOperation(parentName: parentName, imapSyncData: imapSyncData)
+        let opLogin = LoginImapOperation(parentName: parentName, imapConnection: imapSyncData.sync)
         let op = FetchMessagesInImapFolderOperation(parentName: parentName,
                                                     imapConnection: imapSyncData.sync,
                                                     folderName: PantomimeImapApi.defaultImapInboxName)
