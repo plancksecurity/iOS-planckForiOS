@@ -12,7 +12,7 @@ import XCTest
 
 class SettingsViewModelV2Test: CoreDataDrivenTestBase {
 
-    var settingsVM : SettingsViewModelV2!
+    var settingsVM : SettingsViewModel!
 
     func givenThereAreTwoAccounts() {
         _ = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
@@ -96,6 +96,47 @@ class SettingsViewModelV2Test: CoreDataDrivenTestBase {
         XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
     }
 
+    func testSwitchBehaviorOnPassiveModeRow() {
+        setupViewModel()
+        let globalSettingsSectionIndex = 1
+        let protectRowIndexInSection = 4
+        let indexPath = IndexPath(row: 0, section: globalSettingsSectionIndex)
+        let globalSettingsSection = settingsVM.section(for: indexPath)
+        if let passiveModeRow = globalSettingsSection.rows[protectRowIndexInSection] as? SettingsViewModel.ActionRow,
+            let action = passiveModeRow.action {
+            let previousValue = AppSettings.shared.passiveMode
+            action()
+            let newPassiveMode = AppSettings.shared.passiveMode
+            XCTAssert(previousValue != newPassiveMode)
+        }
+    }
+    
+    func testSwitchBehaviorOnProtectMessageSubject() {
+        setupViewModel()
+        let globalSettingsSectionIndex = 1
+        let protectRowIndexInSection = 5
+        let indexPath = IndexPath(row: 0, section: globalSettingsSectionIndex)
+        let globalSettingsSection = settingsVM.section(for: indexPath)
+        if let passiveModeRow = globalSettingsSection.rows[protectRowIndexInSection] as? SettingsViewModel.ActionRow,
+            let action = passiveModeRow.action {
+            let previousValue = AppSettings.shared.unencryptedSubjectEnabled
+            action()
+            let newPassiveMode = AppSettings.shared.unencryptedSubjectEnabled
+            XCTAssert(previousValue != newPassiveMode)
+        }
+    }
+    
+    func testSwitchBehaviorOnPepSync () {
+        
+        
+        
+    }
+    
+    func testSwitch(at indexRow : Int) {
+
+    }
+    
+    
     ////---------
     func testDeleteAccountWithOnlyOneAccount() {
         setupViewModel()
@@ -103,8 +144,9 @@ class SettingsViewModelV2Test: CoreDataDrivenTestBase {
         let firstSection = settingsVM.section(for: firstIndexPath)
         let cellsBefore = firstSection.rows.count
         let firstSectionRows = firstSection.rows
-        if let row = firstSectionRows.first as? SettingsViewModelV2.ActionRow {
-            row.action(firstIndexPath)
+        if let row = firstSectionRows.first as? SettingsViewModel.ActionRow,
+            let action = row.action {
+            action()
         }
 
         let cellsAfter = settingsVM.section(for: firstIndexPath).rows.count
@@ -124,9 +166,9 @@ class SettingsViewModelV2Test: CoreDataDrivenTestBase {
 
         let accountSectionIP = IndexPath(row: 0, section: 0)
         if let firstAccountRow = settingsVM.section(for: accountSectionIP)
-            .rows.first as? SettingsViewModelV2.ActionRow,
+            .rows.first as? SettingsViewModel.ActionRow,
             let secondAccountRow = settingsVM.section(for: accountSectionIP)
-            .rows[1] as? SettingsViewModelV2.ActionRow {
+            .rows[1] as? SettingsViewModel.ActionRow {
 
             //Test first account is setted
             AppSettings.shared.defaultAccount = firstAccountRow.title
@@ -135,8 +177,9 @@ class SettingsViewModelV2Test: CoreDataDrivenTestBase {
             //Delete default account
             let firstSection = settingsVM.section(for: accountSectionIP)
             let firstSectionRows = firstSection.rows
-            if let row = firstSectionRows.first as? SettingsViewModelV2.ActionRow {
-                row.action(accountSectionIP)
+            if let row = firstSectionRows.first as? SettingsViewModel.ActionRow,
+                let action = row.action {
+                action()
             }
 
             //Test the first account (that was deleted) is not the default account anymore
@@ -155,7 +198,7 @@ class SettingsViewModelV2Test: CoreDataDrivenTestBase {
 extension SettingsViewModelV2Test {
     private func setupViewModel() {
         if settingsVM == nil {
-            settingsVM = SettingsViewModelV2()
+            settingsVM = SettingsViewModel()
         }
     }
 }
