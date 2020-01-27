@@ -1,5 +1,5 @@
 //
-//  SettingsViewModelV2Test.swift
+//  SettingsViewModelTest.swift
 //  pEpForiOSTests
 //
 //  Created by Xavier Algarra on 16/01/2020.
@@ -10,7 +10,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class SettingsViewModelV2Test: CoreDataDrivenTestBase {
+class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     var settingsVM : SettingsViewModel!
 
@@ -195,7 +195,7 @@ class SettingsViewModelV2Test: CoreDataDrivenTestBase {
 }
 
 // MARK: - Private
-extension SettingsViewModelV2Test {
+extension SettingsViewModelTest {
     private func setupViewModel() {
         if settingsVM == nil {
             settingsVM = SettingsViewModel()

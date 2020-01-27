@@ -129,8 +129,7 @@ final class SettingsViewModel {
         let row = section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
         case .account, .defaultAccount, .setOwnKey, .credits, .extraKeys, .trustedServer,
-             .accountsToSync, .resetTrust
-             :
+             .accountsToSync, .resetTrust:
             return "SettingsCell"
         case .resetAccounts:
             return "SettingsActionCell"

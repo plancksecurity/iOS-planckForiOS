@@ -30,6 +30,15 @@ SettingsViewControllerDelegate {
         addExtraKeysEditabilityToggleGesture()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setToolbarHidden(true, animated: false)
+        showEmptyDetailViewIfApplicable(
+            message: NSLocalizedString(
+                "Please choose a setting",
+                comment: "No setting has been selected yet in the settings VC"))
+    }
+    
     /// MARK: Extra Keys
     /// Adds easter egg gesture to [en|dis]able the editability of extra keys
     private func addExtraKeysEditabilityToggleGesture() {
@@ -85,7 +94,7 @@ SettingsViewControllerDelegate {
                         Log.shared.errorAndCrash(message: "There is no action for an action row")
                         return
                 }
-
+                
                 me.showAlertBeforeDelete(indexPath: indexPath, action: action)
             }
             return (orientation == .right ? [deleteAction] : nil)
@@ -97,16 +106,16 @@ SettingsViewControllerDelegate {
         let identifier = segueIdentifier(for: indexPath)
         switch identifier {
         case .passiveMode, .pEpSync, .protectMessageSubject:
-        return //Must not perform any segue.
+            return
         case .resetAccounts:
             
             guard let row = viewModel.section(for: indexPath).rows[indexPath.row] as? SettingsViewModel.ActionRow, let action = row.action,
-            let alert = getResetAllIdentityAlertController(action: action) else {
-                return
+                let alert = getResetAllIdentityAlertController(action: action) else {
+                    return
             }
             
             present(alert, animated: true)
-            tableView.deselectRow(at: indexPath, animated: true)
+//            tableView.deselectRow(at: indexPath, animated: true)
         default:
             performSegue(withIdentifier: identifier.rawValue, sender: indexPath)
         }
@@ -352,7 +361,7 @@ extension SettingsTableViewController {
 
 extension SettingsTableViewController {
     
-   private func getResetAllIdentityAlertController(action: @escaping SettingsViewModel.ActionBlock) -> PEPAlertViewController? {
+    private func getResetAllIdentityAlertController(action: @escaping SettingsViewModel.ActionBlock) -> PEPAlertViewController? {
         let title = NSLocalizedString("Reset All Identities", comment: "Settings confirm to reset all identity title alert")
         let message = NSLocalizedString("This action will reset all your identities. \n Are you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
         
@@ -377,7 +386,7 @@ extension SettingsTableViewController {
             action()
             pepAlertViewController.dissmiss()
         }
-            
+        
         pepAlertViewController.add(action: resetAction)
         
         pepAlertViewController.modalPresentationStyle = .overFullScreen
@@ -405,7 +414,7 @@ extension SettingsTableViewController {
         let title = NSLocalizedString("Disable p≡p Sync", comment: "Leave device group confirmation")
         let comment = NSLocalizedString("If you disable p≡p Sync, your device group will be dissolved. Are you sure you want to disable disable p≡p Sync?",
                                         comment: "Leave device group confirmation comment")
-
+        
         let alert = PEPAlertViewController.fromStoryboard(title: title, message: comment, paintPEPInTitle: true)
         let cancelAction = PEPUIAlertAction(title: NSLocalizedString("Cancel", comment: "keysync alert leave device group cancel"),
                                             style: .pEpGreen) { [weak self] _ in
@@ -417,17 +426,17 @@ extension SettingsTableViewController {
                                                 me.tableView.reloadData()
                                                 alert?.dissmiss()
         }
-
+        
         alert?.add(action: cancelAction)
         
         let disableAction = PEPUIAlertAction(title: NSLocalizedString("Disable", comment: "keysync alert leave device group disable"),
                                              style: .pEpRed) { [weak self] _ in
                                                 guard let me = self else {
-                                                     Log.shared.errorAndCrash(message: "lost myself")
-                                                     return
-                                                 }
+                                                    Log.shared.errorAndCrash(message: "lost myself")
+                                                    return
+                                                }
                                                 action(newValue)
-                                             }
+        }
         alert?.add(action: disableAction)
         return alert
     }

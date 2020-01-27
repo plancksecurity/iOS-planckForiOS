@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		000D3C2F20D12BFD006B11B2 /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000D3C2E20D12BFD006B11B2 /* MessageViewModel.swift */; };
-		00172F432163AC110079B189 /* SettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00172F422163AC110079B189 /* SettingsViewModelTest.swift */; };
-		00172F462163C2EE0079B189 /* SettingsSectionViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00172F452163C2EE0079B189 /* SettingsSectionViewModelTest.swift */; };
 		0017CD1D2162614400F62F13 /* MoveToFolderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0017CD1C2162614400F62F13 /* MoveToFolderCellViewModelTests.swift */; };
 		00227E6A21635DED000D9BDB /* FilterViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00227E6921635DED000D9BDB /* FilterViewModelTest.swift */; };
 		002375D320DCDC7300663961 /* FullMessageCell+SecureWebViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002375D220DCDC7300663961 /* FullMessageCell+SecureWebViewControllerDelegate.swift */; };
@@ -22,8 +20,6 @@
 		0033C08320D7F41600224E61 /* ThreadedEmailViewModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0033C08220D7F41600224E61 /* ThreadedEmailViewModelDelegate.swift */; };
 		0038494A20D25576008000EA /* ProfilePictureComposerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0038494920D25576008000EA /* ProfilePictureComposerProtocol.swift */; };
 		0038494C20D2587F008000EA /* PepPictureComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0038494B20D2587F008000EA /* PepPictureComposer.swift */; };
-		004422CA2179ECD600BDF6DF /* PassiveModeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004422C92179ECD600BDF6DF /* PassiveModeViewModelTest.swift */; };
-		004422D9217A25AD00BDF6DF /* UnencryptedSubjectViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004422D8217A25AD00BDF6DF /* UnencryptedSubjectViewModelTest.swift */; };
 		005A21FB20CAA5F50082D19F /* ThreadedEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005A21FA20CAA5F50082D19F /* ThreadedEmailViewModel.swift */; };
 		006BE6BC20F4B63C00DDE8C9 /* EmailDetailType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006BE6BB20F4B63C00DDE8C9 /* EmailDetailType.swift */; };
 		00A12CAE20D3D9AC00B82BE3 /* FullMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A12CAD20D3D9AC00B82BE3 /* FullMessageCell.swift */; };
@@ -202,7 +198,6 @@
 		3705096A22D4D83B00CB73D6 /* PEPSessionMoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705096922D4D83B00CB73D6 /* PEPSessionMoc.swift */; };
 		3705096C22DC8C1800CB73D6 /* KeyInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705096B22DC8C1800CB73D6 /* KeyInputView.swift */; };
 		3705703B22B7C793002E3AAD /* ActionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705703A22B7C793002E3AAD /* ActionCellViewModel.swift */; };
-		3705703F22B8E3B9002E3AAD /* ActionCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705703E22B8E3B9002E3AAD /* ActionCellViewModelTest.swift */; };
 		3705704122B8EB27002E3AAD /* KeySyncDeviceGroupUtilMoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705704022B8EB27002E3AAD /* KeySyncDeviceGroupUtilMoc.swift */; };
 		37156E44234CD47C00845A28 /* EditableAccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E43234CD47C00845A28 /* EditableAccountSettingsViewController.swift */; };
 		37156E46234CD49F00845A28 /* EditableAccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E45234CD49F00845A28 /* EditableAccountSettingsViewModel.swift */; };
@@ -416,7 +411,7 @@
 		B72AC87623C494FE009B90B5 /* PerAccountSyncViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72AC87523C494FE009B90B5 /* PerAccountSyncViewModel.swift */; };
 		B72AC87823C4A12A009B90B5 /* PerAccountSyncAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72AC87723C4A12A009B90B5 /* PerAccountSyncAccountTableViewCell.swift */; };
 		B72E192423C7617B00CBC841 /* KeySyncSwitchSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72E192323C7617B00CBC841 /* KeySyncSwitchSettingViewModel.swift */; };
-		B73123CA23D07739009EDC62 /* SettingsViewModelV2Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73123C923D07739009EDC62 /* SettingsViewModelV2Test.swift */; };
+		B73123CA23D07739009EDC62 /* SettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73123C923D07739009EDC62 /* SettingsViewModelTest.swift */; };
 		B74F81021EB0E20000519FCC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F81011EB0E20000519FCC /* LoginViewModel.swift */; };
 		B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */; };
 		B76CF8B320D2739B002429A8 /* MoveToFolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */; };
@@ -485,8 +480,6 @@
 
 /* Begin PBXFileReference section */
 		000D3C2E20D12BFD006B11B2 /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
-		00172F422163AC110079B189 /* SettingsViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTest.swift; sourceTree = "<group>"; };
-		00172F452163C2EE0079B189 /* SettingsSectionViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSectionViewModelTest.swift; sourceTree = "<group>"; };
 		0017CD1C2162614400F62F13 /* MoveToFolderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderCellViewModelTests.swift; sourceTree = "<group>"; };
 		00227E6921635DED000D9BDB /* FilterViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModelTest.swift; sourceTree = "<group>"; };
 		002375D220DCDC7300663961 /* FullMessageCell+SecureWebViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FullMessageCell+SecureWebViewControllerDelegate.swift"; sourceTree = "<group>"; };
@@ -498,8 +491,6 @@
 		0033C08220D7F41600224E61 /* ThreadedEmailViewModelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadedEmailViewModelDelegate.swift; sourceTree = "<group>"; };
 		0038494920D25576008000EA /* ProfilePictureComposerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureComposerProtocol.swift; sourceTree = "<group>"; };
 		0038494B20D2587F008000EA /* PepPictureComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PepPictureComposer.swift; sourceTree = "<group>"; };
-		004422C92179ECD600BDF6DF /* PassiveModeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassiveModeViewModelTest.swift; sourceTree = "<group>"; };
-		004422D8217A25AD00BDF6DF /* UnencryptedSubjectViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnencryptedSubjectViewModelTest.swift; sourceTree = "<group>"; };
 		005A21FA20CAA5F50082D19F /* ThreadedEmailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadedEmailViewModel.swift; sourceTree = "<group>"; };
 		006BE6BB20F4B63C00DDE8C9 /* EmailDetailType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailType.swift; sourceTree = "<group>"; };
 		00A12CAD20D3D9AC00B82BE3 /* FullMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullMessageCell.swift; sourceTree = "<group>"; };
@@ -676,7 +667,6 @@
 		3705096922D4D83B00CB73D6 /* PEPSessionMoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPSessionMoc.swift; sourceTree = "<group>"; };
 		3705096B22DC8C1800CB73D6 /* KeyInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyInputView.swift; sourceTree = "<group>"; };
 		3705703A22B7C793002E3AAD /* ActionCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCellViewModel.swift; sourceTree = "<group>"; };
-		3705703E22B8E3B9002E3AAD /* ActionCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCellViewModelTest.swift; sourceTree = "<group>"; };
 		3705704022B8EB27002E3AAD /* KeySyncDeviceGroupUtilMoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncDeviceGroupUtilMoc.swift; sourceTree = "<group>"; };
 		37156E43234CD47C00845A28 /* EditableAccountSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewController.swift; sourceTree = "<group>"; };
 		37156E45234CD49F00845A28 /* EditableAccountSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -935,7 +925,7 @@
 		B72AC87523C494FE009B90B5 /* PerAccountSyncViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerAccountSyncViewModel.swift; sourceTree = "<group>"; };
 		B72AC87723C4A12A009B90B5 /* PerAccountSyncAccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerAccountSyncAccountTableViewCell.swift; sourceTree = "<group>"; };
 		B72E192323C7617B00CBC841 /* KeySyncSwitchSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncSwitchSettingViewModel.swift; sourceTree = "<group>"; };
-		B73123C923D07739009EDC62 /* SettingsViewModelV2Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelV2Test.swift; sourceTree = "<group>"; };
+		B73123C923D07739009EDC62 /* SettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTest.swift; sourceTree = "<group>"; };
 		B74F81011EB0E20000519FCC /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModel.swift; sourceTree = "<group>"; };
 		B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderViewModel.swift; sourceTree = "<group>"; };
@@ -1004,13 +994,8 @@
 		00172F442163C2D60079B189 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				00172F422163AC110079B189 /* SettingsViewModelTest.swift */,
-				00172F452163C2EE0079B189 /* SettingsSectionViewModelTest.swift */,
-				004422C92179ECD600BDF6DF /* PassiveModeViewModelTest.swift */,
-				004422D8217A25AD00BDF6DF /* UnencryptedSubjectViewModelTest.swift */,
 				00262055217DCCB200DDAFB5 /* TrustedServerSettingsViewModelTest.swift */,
 				3705704022B8EB27002E3AAD /* KeySyncDeviceGroupUtilMoc.swift */,
-				3705703E22B8E3B9002E3AAD /* ActionCellViewModelTest.swift */,
 				3791A46022BA77C900A9E534 /* KeySyncServiceHandshakeDelegateMoc.swift */,
 			);
 			path = Settings;
@@ -1516,7 +1501,7 @@
 			isa = PBXGroup;
 			children = (
 				158A6E2C230D53C0006A9ECE /* Setting */,
-				B73123C923D07739009EDC62 /* SettingsViewModelV2Test.swift */,
+				B73123C923D07739009EDC62 /* SettingsViewModelTest.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -3165,7 +3150,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				438D253C1D4B9E7500BFF7AA /* MimeTests.swift in Sources */,
-				004422CA2179ECD600BDF6DF /* PassiveModeViewModelTest.swift in Sources */,
 				1555361B207796CE00CDDAFA /* CWInternetAddress+TestUtils.swift in Sources */,
 				15A536902155136800CF6204 /* PEPUtilTest.swift in Sources */,
 				4918EBFC1E783C70006207FC /* CdMessage+PantomimeTest.swift in Sources */,
@@ -3181,7 +3165,6 @@
 				F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */,
 				15A763D11F72D68000670313 /* KeyChainTest.swift in Sources */,
 				436981C022830AF60006FA2D /* SecretTestData.swift in Sources */,
-				3705703F22B8E3B9002E3AAD /* ActionCellViewModelTest.swift in Sources */,
 				43EC75B32164E97800048CFE /* DecryptionUtil.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
 				431C2B171F387C4100D87FFD /* LoginViewModelTests.swift in Sources */,
@@ -3192,7 +3175,7 @@
 				1541D7F01FC81ED900D52A5D /* URL+ExtensionsTest.swift in Sources */,
 				00262056217DCCB200DDAFB5 /* TrustedServerSettingsViewModelTest.swift in Sources */,
 				15BA536E20A095410090F126 /* UnifiedInboxTest.swift in Sources */,
-				B73123CA23D07739009EDC62 /* SettingsViewModelV2Test.swift in Sources */,
+				B73123CA23D07739009EDC62 /* SettingsViewModelTest.swift in Sources */,
 				15D7D990219AD38B00A1A2B9 /* MediaAttachmentPickerProviderViewModelTest.swift in Sources */,
 				15410D222199D83200BBF65F /* AccountCellViewModelTest.swift in Sources */,
 				3705704122B8EB27002E3AAD /* KeySyncDeviceGroupUtilMoc.swift in Sources */,
@@ -3213,8 +3196,6 @@
 				43D3379021A3F32500E40114 /* ImapUtil.swift in Sources */,
 				15D7D995219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift in Sources */,
 				1541D7F51FC82A4900D52A5D /* URL+MIME.swift in Sources */,
-				00172F462163C2EE0079B189 /* SettingsSectionViewModelTest.swift in Sources */,
-				00172F432163AC110079B189 /* SettingsViewModelTest.swift in Sources */,
 				158A6E2F230D53E3006A9ECE /* ExtraKeysSettingViewModelTest.swift in Sources */,
 				438281831E891B7E00087343 /* DateTests.swift in Sources */,
 				151F71FB202A06760057C74D /* MockBackgrounder.swift in Sources */,
@@ -3240,7 +3221,6 @@
 				43257C861F50659200DDC7F0 /* StringHTMLExtensionTests.swift in Sources */,
 				43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */,
 				375643502371BC4600FB354D /* EditableAccountSettingsTableViewModelTest.swift in Sources */,
-				004422D9217A25AD00BDF6DF /* UnencryptedSubjectViewModelTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
