@@ -11,55 +11,54 @@
 //
 //@testable import pEpForiOS
 //
-//class ActionCellViewModelTest: XCTestCase {
-//    var actionCellViewModels: [SettingsActionCellViewModel]?
-//
-//    override func setUp() {
-//        actionCellViewModels = [SettingsActionCellViewModel]()
-//        actionCellViewModels?.append(SettingsActionCellViewModel(type: .keySyncSetting))
-//    }
-//
-//    override func tearDown() {
-//        actionCellViewModels = nil
-//    }
-//
-//    func testTitleText() {
-//        // GIVEN
-//        guard let actionCellViewModels = actionCellViewModels else {
-//            XCTFail()
-//            return
-//        }
-//
-//        // WHEN
-//        for actionCellViewModel in actionCellViewModels {
-//            switch actionCellViewModel.type {
-//            // THEN
-//            case .keySyncSetting:
-//                XCTAssertEqual(actionCellViewModel.title,
-//                               NSLocalizedString("Leave Device Group",
-//                                                 comment: "Settings: Cell (button) title for leaving device group"))
-//            case .resetAllIdentities:
-//                XCTFail()
-//            }
-//        }
-//    }
-//
-//    func testTitleColor() {
-//        // GIVEN
-//        guard let actionCellViewModels = actionCellViewModels else {
-//            XCTFail()
-//            return
-//        }
-//
-//        // WHEN
-//        for actionCellViewModel in actionCellViewModels {
-//            switch actionCellViewModel.type {
-//            // THEN
-//            case .keySyncSetting:
-//                XCTAssertEqual(actionCellViewModel.titleColor, UIColor.AppleRed)
-//            case .resetAllIdentities:
-//                XCTFail()
-//            }
-//        }
-//    }
-//}
+
+import XCTest
+import PEPObjCAdapterFramework
+
+@testable import pEpForiOS
+
+class ActionCellViewModelTest: XCTestCase {
+    var actionCellViewModels: [SettingsActionCellViewModel]?
+
+    override func setUp() {
+        actionCellViewModels = [SettingsActionCellViewModel]()
+    }
+
+    override func tearDown() {
+        actionCellViewModels = nil
+    }
+
+    func testTitleText() {
+        // GIVEN
+        guard let actionCellViewModels = actionCellViewModels else {
+            XCTFail()
+            return
+        }
+
+        // WHEN
+        for actionCellViewModel in actionCellViewModels {
+            switch actionCellViewModel.type {
+            // THEN
+            case .resetAllIdentities:
+                XCTFail()
+            }
+        }
+    }
+
+    func testTitleColor() {
+        // GIVEN
+        guard let actionCellViewModels = actionCellViewModels else {
+            XCTFail()
+            return
+        }
+
+        // WHEN
+        for actionCellViewModel in actionCellViewModels {
+            switch actionCellViewModel.type {
+            // THEN
+            case .resetAllIdentities:
+                XCTFail()
+            }
+        }
+    }
+}

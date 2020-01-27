@@ -43,7 +43,7 @@ class SettingsTableViewControllerV1: BaseTableViewController, SwipeTableViewCell
 
         showEmptyDetailViewIfApplicable(
             message: NSLocalizedString(
-                "Please chose a setting",
+                "Please choose a setting",
                 comment: "No setting has been selected yet in the settings VC"))
     }
 
@@ -353,7 +353,6 @@ extension SettingsTableViewController {
 
     private func showAlertBeforeDelete(_ indexPath: IndexPath) {
         let title = NSLocalizedString("Are you sure you want to delete the account?", comment: "Account delete confirmation")
-        let comment = NSLocalizedString("delete account message", comment: "Account delete confirmation comment")
         let buttonTitle = NSLocalizedString("Delete", comment: "Delete account button title")
         let deleteAction: (UIAlertAction) -> () = { [weak self] _ in
             guard let me = self else {
@@ -368,17 +367,18 @@ extension SettingsTableViewController {
             me.tableView.deleteRows(at: [indexPath], with: .fade)
             me.tableView.endUpdates()
         }
-        showAlert(title, comment, buttonTitle, deleteAction, indexPath)
+        showAlert(title, buttonTitle, deleteAction, indexPath)
     }
 
-    private func showAlert(_ message: String,_ comment: String,
+    private func showAlert(_ message: String,
                            _ confirmButtonTitle: String,
                            _ confirmButtonAction: @escaping ((UIAlertAction)->()),
                            _ indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.isSelected = false //!!!: bad. side effect in showAlert.
         let alertController = UIAlertController.pEpAlertController(
             title: nil,
-            message: NSLocalizedString(message, comment: comment), preferredStyle: .actionSheet)
+            message: message,
+            preferredStyle: .actionSheet)
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel title button")
         let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { _ in }
@@ -447,10 +447,10 @@ extension SettingsTableViewController: SettingsViewModelDelegate {
 extension SettingsTableViewController: keySyncActionsProtocol {
 
     func updateSyncStatus(to value: Bool) {
-        if viewModelv2.isGrouped() {
-            let title = NSLocalizedString("Disable pEp Sync",
+        if viewModel.isGrouped {
+            let title = NSLocalizedString("Disable p≡p Sync",
                                           comment: "Leave device group confirmation")
-            let comment = NSLocalizedString("if you disable pEps sybc, your device group will be dissolved. are you sure you want to disabre pep Sync?",
+            let comment = NSLocalizedString("If you disable p≡p Sync, your device group will be dissolved. Are you sure you want to disable disable p≡p Sync?",
                                             comment: "Leave device group confirmation comment")
 
             let alert = UIAlertController.pEpAlertController(title: title,
@@ -469,13 +469,13 @@ extension SettingsTableViewController: keySyncActionsProtocol {
                     Log.shared.errorAndCrash(message: "lost myself")
                     return
                 }
-                me.viewModelv2.PEPSyncUpdate(to: value)
+                me.viewModel.pEpSyncUpdate(to: value)
             }
             alert.addAction(cancelAction)
             alert.addAction(disableAction)
             present(alert, animated: true)
         } else {
-            viewModelv2.PEPSyncUpdate(to: value)
+            viewModel.pEpSyncUpdate(to: value)
         }
     }
 }

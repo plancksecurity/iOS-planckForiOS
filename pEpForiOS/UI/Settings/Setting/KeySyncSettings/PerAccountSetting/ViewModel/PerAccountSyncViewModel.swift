@@ -15,7 +15,7 @@ class PerAccountSyncViewModel {
 
     subscript(index: Int) -> String {
         get {
-            return self.accounts[index].user.userNameOrAddress
+            return self.accounts[index].user.address
         }
     }
 

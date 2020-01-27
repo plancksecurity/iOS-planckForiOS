@@ -16,22 +16,22 @@ protocol SettingsViewModelDelegate: class {
     func hideLoadingView()
 }
 
-final class SettingsViewModelV1 {
+final class SettingsViewModel {
+    private(set) var sections = [SettingsSectionViewModel]()
     weak var delegate: SettingsViewModelDelegate?
-    var sections = [SettingsSectionViewModel]()
+    var isGrouped: Bool {
+        return KeySyncUtil.isInDeviceGroup
+    }
+
+
+    // MARK: - Life Cycle
 
     init(delegate: SettingsViewModelDelegate? = nil) {
         self.delegate = delegate
         generateSections()
     }
 
-    private func generateSections() {
-        sections.append(SettingsSectionViewModel(type: .accounts))
-        sections.append(SettingsSectionViewModel(type: .globalSettings))
-        sections.append(SettingsSectionViewModel(type: .keySync))
-        sections.append(SettingsSectionViewModel(type: .contacts))
-        sections.append(SettingsSectionViewModel(type: .companyFeatures))
-    }
+    // MARK: - 
 
     func delete(section: Int, cell: Int) {
         let accountsSection = 0
@@ -79,22 +79,12 @@ final class SettingsViewModelV1 {
             }
         }
     }
-}
 
-// MARK: - Private
-
-extension SettingsViewModelV1 {
-
-    func isGrouped() -> Bool {
-        return KeySyncUtil.isInDeviceGroup
-    }
-
-    func PEPSyncUpdate(to value: Bool) {
-        let grouped = isGrouped()
+    func pEpSyncUpdate(to value: Bool) {
         if value {
             KeySyncUtil.enableKeySync()
         } else {
-            if grouped {
+            if isGrouped {
                 do {
                     try KeySyncUtil.leaveDeviceGroup()
                 } catch {
@@ -104,6 +94,19 @@ extension SettingsViewModelV1 {
             KeySyncUtil.disableKeySync()
         }
     }
+}
+
+// MARK: - Private
+
+extension SettingsViewModel {
+
+    private func generateSections() {
+           sections.append(SettingsSectionViewModel(type: .accounts))
+           sections.append(SettingsSectionViewModel(type: .globalSettings))
+           sections.append(SettingsSectionViewModel(type: .keySync))
+           sections.append(SettingsSectionViewModel(type: .contacts))
+           sections.append(SettingsSectionViewModel(type: .companyFeatures))
+       }
 }
 
 // MARK: - ExtryKeysEditability
