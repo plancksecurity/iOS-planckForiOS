@@ -41,7 +41,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
         showEmptyDetailViewIfApplicable(
             message: NSLocalizedString(
-                "Please chose a setting",
+                "Please choose a setting",
                 comment: "No setting has been selected yet in the settings VC"))
     }
 
