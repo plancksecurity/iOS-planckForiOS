@@ -114,10 +114,10 @@ class SettingsViewModelV2Test: CoreDataDrivenTestBase {
     func testSwitchBehaviorOnProtectMessageSubject() {
         setupViewModel()
         let globalSettingsSectionIndex = 1
-        let protectRowIndexInSection = 5
+        let protectRowIndex = 5
         let indexPath = IndexPath(row: 0, section: globalSettingsSectionIndex)
         let globalSettingsSection = settingsVM.section(for: indexPath)
-        if let passiveModeRow = globalSettingsSection.rows[protectRowIndexInSection] as? SettingsViewModel.ActionRow,
+        if let passiveModeRow = globalSettingsSection.rows[protectRowIndex] as? SettingsViewModel.ActionRow,
             let action = passiveModeRow.action {
             let previousValue = AppSettings.shared.unencryptedSubjectEnabled
             action()
@@ -127,17 +127,20 @@ class SettingsViewModelV2Test: CoreDataDrivenTestBase {
     }
     
     func testSwitchBehaviorOnPepSync () {
-        
-        
-        
+        setupViewModel()
+        let PEPsyncSectionIndex = 1
+        let enablePEPSyncRowIndex = 0
+        let indexPath = IndexPath(row: 0, section: PEPsyncSectionIndex)
+        let globalSettingsSection = settingsVM.section(for: indexPath)
+        if let PEPSyncEnableRow =
+            globalSettingsSection.rows[enablePEPSyncRowIndex] as? SettingsViewModel.SwitchRow {
+            let previousValue = KeySyncUtil.isKeySyncEnabled
+            PEPSyncEnableRow.action(!previousValue)
+            let newPEPSyncStatus = KeySyncUtil.isKeySyncEnabled
+            XCTAssert(previousValue != newPEPSyncStatus)
+        }
     }
     
-    func testSwitch(at indexRow : Int) {
-
-    }
-    
-    
-    ////---------
     func testDeleteAccountWithOnlyOneAccount() {
         setupViewModel()
         let firstIndexPath = IndexPath(row: 0, section: 0)
@@ -148,7 +151,6 @@ class SettingsViewModelV2Test: CoreDataDrivenTestBase {
             let action = row.action {
             action()
         }
-
         let cellsAfter = settingsVM.section(for: firstIndexPath).rows.count
         XCTAssertEqual(cellsBefore, cellsAfter + 1)
     }
@@ -156,14 +158,12 @@ class SettingsViewModelV2Test: CoreDataDrivenTestBase {
     func testDeleteAccountWithMoreThanOneAccount() {
         givenThereAreTwoAccounts()
         setupViewModel()
-
         testDeleteAccountWithOnlyOneAccount()
     }
 
     func testDeleteAccountWithMoreThanOneAccountUpdatesDefaultAccount() {
         givenThereAreTwoAccounts()
         setupViewModel()
-
         let accountSectionIP = IndexPath(row: 0, section: 0)
         if let firstAccountRow = settingsVM.section(for: accountSectionIP)
             .rows.first as? SettingsViewModel.ActionRow,
