@@ -9,7 +9,6 @@
 import Foundation
 import MessageModel
 import pEpIOSToolbox
-import SwipeCellKit
 
 ///Delegate protocol to communicate to the SettingsTableViewController some special actions.
 protocol SettingsViewControllerDelegate: class {
@@ -40,8 +39,9 @@ final class SettingsViewModel {
 
     weak var delegate : SettingsViewControllerDelegate?
     typealias SwitchBlock = ((Bool) -> Void)
-    typealias ActionBlock = ((IndexPath) -> Void)
-    typealias AlertActionBlock = ((UIAlertAction) -> ())
+    //typealias ActionBlock = ((IndexPath) -> Void)
+    typealias ActionBlock = (() -> Void)
+    typealias AlertActionBlock = (() -> ())
 
     /// Struct that represents a section in settingsTableViewController
     struct Section {
@@ -54,7 +54,7 @@ final class SettingsViewModel {
     }
 
     /// Struct that is used to perform an action. represents a ActionRow in settingsTableViewController
-    struct ActionRow: SettingsRowProtocol {
+    struct ActionRow: SettingsRowProtocol, Equatable {
         /// The type of the row.
         var identifier: SettingsViewModel.Row
         /// Title of the action row
@@ -62,7 +62,12 @@ final class SettingsViewModel {
         /// Indicates if the action to be performed is dangerous.
         var isDangerous: Bool = false
         /// Block that will be executed when action cell is pressed
-        var action: ActionBlock
+        var action: ActionBlock?
+        
+        static func == (lhs: SettingsViewModel.ActionRow, rhs: SettingsViewModel.ActionRow) -> Bool {
+            //TODO: get a proper id
+            return lhs.title == rhs.title
+        }
     }
 
     /// Struct that is used to perform a show detail action. represents a NavicationRow in SettingsTableViewController
@@ -224,34 +229,40 @@ final class SettingsViewModel {
         switch type {
         case .accounts:
             Account.all().forEach { (acc) in
-                let accountRow = ActionRow(identifier: .account, title: acc.user.address,
-                                           isDangerous: false) { [weak self] (indexPath) in
+                var accountRow = ActionRow(identifier: .account, title: acc.user.address,
+                                           isDangerous: false)
+                accountRow.action = { [weak self] in
                                             guard let me = self else {
                                                 Log.shared.errorAndCrash(message: "Lost myself")
                                                 return
                                             }
                                             //Delete the account
                                             me.delete(account: acc)
-
-                                            //Delete the item from the view model
-                                            me.items[indexPath.section].rows.remove(at: indexPath.row)
-                }
+                                            me.items[0].rows = me.items[0].rows.filter {$0.title != accountRow.title }
+                                    }
                 rows.append(accountRow)
             }
-            rows.append(generateActionRow(type: .resetAccounts, isDangerous: true){_ in })
+            rows.append(generateActionRow(type: .resetAccounts, isDangerous: true) { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "Lost myself")
+                    return
+                }
+
+                me.handleResetAllIdentities()
+            })
         case .globalSettings:
             rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
             rows.append(generateNavigationRow(type: .credits, isDangerous: false))
             rows.append(generateNavigationRow(type: .trustedServer, isDangerous: false))
             rows.append(generateNavigationRow(type: .setOwnKey, isDangerous: false))
-            rows.append(generateSwitchRow(type: .passiveMode, isDangerous: false, isOn: false) { [weak self] (value) in
+            rows.append(generateSwitchRow(type: .passiveMode, isDangerous: false, isOn: passiveModeStatus) { [weak self] (value) in
                 guard let me = self else {
                     Log.shared.errorAndCrash(message: "Lost myself")
                     return
                 }
                 me.setPassiveMode(to: value)
             })
-            rows.append(generateSwitchRow(type: .protectMessageSubject, isDangerous: false, isOn: false) { [weak self] (value) in
+            rows.append(generateSwitchRow(type: .protectMessageSubject, isDangerous: false, isOn: protectedMessageStatus) { [weak self] (value) in
                 guard let me = self else {
                     Log.shared.errorAndCrash(message: "Lost myself")
                     return
@@ -402,11 +413,23 @@ final class SettingsViewModel {
     private func setPassiveMode(to value: Bool) {
         AppSettings.shared.passiveMode = value
     }
+    
+    private var passiveModeStatus: Bool {
+        get {
+            AppSettings.shared.passiveMode
+        }
+    }
 
     ///This method sets the Protect Message Subject status according to the parameter value
     /// - Parameter value: The new value of the Protect Message Subject status
     private func setProtectMessageSubject(to value: Bool) {
         AppSettings.shared.unencryptedSubjectEnabled = !value
+    }
+    
+    private var protectedMessageStatus: Bool {
+        get {
+            AppSettings.shared.unencryptedSubjectEnabled
+        }
     }
 
     /////TODO: implement me!
@@ -518,7 +541,7 @@ final class SettingsViewModel {
     /// Deletes the row at the passed index Path
     /// - Parameter indexPath: The index Path to
     func deleteRowAt(_ indexPath: IndexPath) {
-        
+        items[indexPath.section].rows.remove(at: indexPath.row)
     }
 }
 
