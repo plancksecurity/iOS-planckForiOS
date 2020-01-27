@@ -283,8 +283,7 @@ final class SettingsViewModel {
                 }
                 me.setPepSync(to: value)
             })
-            //TODO: WTF? 
-            // rows.append(generateNavigationRow(type: .accountsToSync, isDangerous: false))
+            rows.append(generateNavigationRow(type: .accountsToSync, isDangerous: false))
         case .contacts:
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
         case .companyFeatures:
