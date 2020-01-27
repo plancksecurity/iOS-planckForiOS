@@ -44,13 +44,18 @@ final class SettingsViewModel {
     typealias AlertActionBlock = (() -> ())
 
     /// Struct that represents a section in settingsTableViewController
-    struct Section {
+    struct Section: Equatable {
         /// Title of the section
         var title: String
         /// footer of the section
         var footer: String?
         /// list of rows in the section
         var rows: [SettingsRowProtocol]
+    
+        static func == (lhs: SettingsViewModel.Section, rhs: SettingsViewModel.Section) -> Bool {
+// !!!:            missing row equal
+            return (lhs.title == rhs.title && lhs.footer == rhs.footer)
+        }
     }
 
     /// Struct that is used to perform an action. represents a ActionRow in settingsTableViewController
@@ -65,8 +70,8 @@ final class SettingsViewModel {
         var action: ActionBlock?
         
         static func == (lhs: SettingsViewModel.ActionRow, rhs: SettingsViewModel.ActionRow) -> Bool {
-            //TODO: get a proper id
-            return lhs.title == rhs.title
+// !!!:           missing row action
+            return lhs.title == rhs.title && lhs.identifier == rhs.identifier && lhs.isDangerous == rhs.isDangerous
         }
     }
 
@@ -238,7 +243,8 @@ final class SettingsViewModel {
                                             }
                                             //Delete the account
                                             me.delete(account: acc)
-                                            me.items[0].rows = me.items[0].rows.filter {$0.title != accountRow.title }
+//                    !!!: remove 0 and use type of SectionType to find and remove the row
+                    me.items[0].rows = me.items[0].rows.filter {$0.title != accountRow.title }
                                     }
                 rows.append(accountRow)
             }
@@ -467,7 +473,7 @@ final class SettingsViewModel {
         }
     }
     
-    /// MARK - COPY - PASTED FROM SETTINGS VIEW MODEL 1!
+    //!!!: - COPY - PASTED FROM SETTINGS VIEW MODEL 1!
     ///REVIEW THIS , if it's okey, write documentation.
     func PEPSyncUpdate(to value: Bool) {
         let grouped = KeySyncUtil.isInDeviceGroup

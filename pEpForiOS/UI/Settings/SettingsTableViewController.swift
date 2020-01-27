@@ -344,7 +344,7 @@ extension SettingsTableViewController {
 
 extension SettingsTableViewController {
     
-    func getResetAllIdentityAlertController(action: @escaping SettingsViewModel.ActionBlock) -> PEPAlertViewController? {
+   private func getResetAllIdentityAlertController(action: @escaping SettingsViewModel.ActionBlock) -> PEPAlertViewController? {
         let title = NSLocalizedString("Reset All Identities", comment: "Settings confirm to reset all identity title alert")
         let message = NSLocalizedString("This action will reset all your identities. \n Are you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
         
@@ -377,13 +377,13 @@ extension SettingsTableViewController {
         return pepAlertViewController
     }
     
-    func getBeforeDeleteAlert(deleteCallback : @escaping SettingsViewModel.AlertActionBlock) -> UIAlertController {
+    private func getBeforeDeleteAlert(deleteCallback : @escaping SettingsViewModel.AlertActionBlock) -> UIAlertController {
         let title = NSLocalizedString("Are you sure you want to delete the account?", comment: "Account delete confirmation")
         let comment = NSLocalizedString("delete account message", comment: "Account delete confirmation comment")
         let deleteButtonTitle = NSLocalizedString("Delete", comment: "Delete account button title")
         let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel title button")
         
-        let alert = UIAlertController(title: title, message: comment, preferredStyle: .actionSheet)
+        let alert = UIAlertController.pEpAlertController(title: title, message: comment, preferredStyle: .actionSheet)
         let deleteAction = UIAlertAction(title: deleteButtonTitle, style: .destructive) { _ in
             deleteCallback()
         }
