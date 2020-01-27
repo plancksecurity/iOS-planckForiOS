@@ -36,7 +36,7 @@ public class Logger: NSObject {
     public var mode: Mode = .normal
 
     /// Log content
-    /// Note: getting the string is expensive i/o task. Do call in main thread.
+    /// Note: This is an expensive (I/O) task. Do not call on the main queue!.
     public var log: String {
         return ""
     }

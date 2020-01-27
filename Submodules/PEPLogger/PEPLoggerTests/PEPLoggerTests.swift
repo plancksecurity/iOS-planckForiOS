@@ -9,19 +9,32 @@
 import XCTest
 @testable import PEPLogger
 
-class PEPLoggerTests: XCTestCase {
+final class LoggerTest: XCTestCase {
+
+    var actual: State?
+    var expected: State?
 
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        super.setUp()
+
+        setDefaultActualState()
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        actual = nil
+        expected = nil
+
+        super.tearDown()
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    /// Test shared as a Singleton
+    func testShared() {
+        XCTAssertNotNil(Logger.shared)
+        XCTAssertTrue(Logger.shared === Logger.shared)
+    }
+
+    func testMode() {
+        
     }
 
     func testPerformanceExample() {
@@ -30,5 +43,21 @@ class PEPLoggerTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
+}
 
+// MARK: - Helping Structures
+
+extension LoggerTest {
+    /// State of the logger.
+    struct State: Equatable {
+        var log: String = ""
+        var mode: Logger.Mode = .normal
+    }
+}
+
+// MARK: - Private
+
+extension LoggerTest {
+private func setDefaultActualState() {
+    actual = State()
 }
