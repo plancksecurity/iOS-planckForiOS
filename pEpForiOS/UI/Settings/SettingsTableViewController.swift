@@ -10,15 +10,17 @@ import UIKit
 import SwipeCellKit
 import pEpIOSToolbox
 
-class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate, SettingsViewControllerDelegate {
+protocol SwitchCellDelegate: class {
+    func didChange(to newValue: Bool, from cell: SettingSwitchTableViewCell)
+}
+
+class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate,
+SettingsViewControllerDelegate {
     
     static let storyboardId = "SettingsTableViewController"
     private weak var activityIndicatorView: UIActivityIndicatorView?
     
     lazy var viewModel = SettingsViewModel()
-    
-    //TODO: get this instance
-    var settingSwitchViewModel: SwitchSettingCellViewModelProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -149,8 +151,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         }
         cell.textLabel?.text = row.title
         cell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
-        //TODO: generate the delegate to communicate cell and table
-        cell.viewModel = settingSwitchViewModel
+        cell.delegate = self
         cell.selectionStyle = .none
         cell.setUpView()
         return cell
@@ -168,7 +169,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         switch row.identifier {
         case .account:
             return prepareSwipeTableViewCell(dequeuedCell, for: row)
-        case .resetAccounts, .accountsToSync, .resetTrust, .pEpSync:
+        case .resetAccounts, .accountsToSync, .resetTrust:
             return prepareActionCell(dequeuedCell, for: row)
         case .defaultAccount, .setOwnKey, .credits, .trustedServer, .extraKeys:
             guard let row = row as? SettingsViewModel.NavigationRow else {
@@ -179,7 +180,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             dequeuedCell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
             dequeuedCell.detailTextLabel?.text = row.subtitle
             return dequeuedCell
-        case .passiveMode, .protectMessageSubject:
+        case .passiveMode, .protectMessageSubject, .pEpSync:
             guard let row = row as? SettingsViewModel.SwitchRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -377,7 +378,7 @@ extension SettingsTableViewController {
         return pepAlertViewController
     }
     
-    private func getBeforeDeleteAlert(deleteCallback : @escaping SettingsViewModel.AlertActionBlock) -> UIAlertController {
+    private func getBeforeDeleteAlert(deleteCallback: @escaping SettingsViewModel.AlertActionBlock) -> UIAlertController {
         let title = NSLocalizedString("Are you sure you want to delete the account?", comment: "Account delete confirmation")
         let comment = NSLocalizedString("delete account message", comment: "Account delete confirmation comment")
         let deleteButtonTitle = NSLocalizedString("Delete", comment: "Delete account button title")
@@ -391,5 +392,65 @@ extension SettingsTableViewController {
         let cancelAction = UIAlertAction(title: cancelButtonTitle, style: .cancel)
         alert.addAction(cancelAction)
         return alert
+    }
+    
+    func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
+        let title = NSLocalizedString("Disable p≡p Sync", comment: "Leave device group confirmation")
+        let comment = NSLocalizedString("If you disable p≡p Sync, your device group will be dissolved. Are you sure you want to disable disable p≡p Sync?",
+                                        comment: "Leave device group confirmation comment")
+
+        let alert = PEPAlertViewController.fromStoryboard(title: title, message: comment, paintPEPInTitle: true)
+        let cancelAction = PEPUIAlertAction(title: NSLocalizedString("Cancel", comment: "keysync alert leave device group cancel"),
+                                            style: .pEpGreen) { [weak self] _ in
+                                                guard let me = self else {
+                                                    Log.shared.errorAndCrash(message: "lost myself")
+                                                    return
+                                                }
+
+                                                //Switch status needs to be reversed
+                                                me.tableView.reloadData()
+        }
+
+        alert?.add(action: cancelAction)
+        
+        let disableAction = PEPUIAlertAction(title: NSLocalizedString("Disable", comment: "keysync alert leave device group disable"),
+                                             style: .pEpRed) { [weak self] _ in
+                                                guard let me = self else {
+                                                     Log.shared.errorAndCrash(message: "lost myself")
+                                                     return
+                                                 }
+                                                
+                                                action(newValue)
+                                                 //me.viewModel.pEpSyncUpdate(to: value)
+                                             }
+        alert?.add(action: disableAction)
+        return alert
+    }
+}
+
+extension SettingsTableViewController: SwitchCellDelegate {
+    func didChange(to newValue: Bool, from cell: SettingSwitchTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            Log.shared.error("The switch cell can't be found")
+            return
+        }
+        let section = viewModel.section(for: indexPath) as SettingsViewModel.Section
+        guard let row = section.rows[indexPath.row] as? SettingsViewModel.SwitchRow else {
+            Log.shared.error("lost row")
+            return
+        }
+        if row.identifier == SettingsViewModel.Row.pEpSync {
+            if viewModel.isGrouped() {
+                guard let alertToShow = showpEpSyncLeaveGroupAlert(action: row.action, newValue: newValue) else {
+                    Log.shared.error("alert lost")
+                    return
+                }
+                present(alertToShow, animated: true)
+            } else {
+                row.action(newValue)
+            }
+        } else {
+            row.action(newValue)
+        }
     }
 }

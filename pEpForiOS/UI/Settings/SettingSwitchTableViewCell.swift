@@ -15,11 +15,10 @@ class SettingSwitchTableViewCell: UITableViewCell {
     @IBOutlet weak var switchDescription: UILabel!
 
     var viewModel: SwitchSettingCellViewModelProtocol?
+    weak var delegate: SwitchCellDelegate?
 
     @IBAction func switchChanged(_ sender: Any) {
-        if let vm = viewModel {
-            vm.setSwitch(value: switchItem.isOn)
-        }
+        delegate?.didChange(to: switchItem.isOn, from: self)
     }
 
     func setUpView() {

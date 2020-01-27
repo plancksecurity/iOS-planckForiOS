@@ -130,9 +130,9 @@ final class SettingsViewModel {
         switch row.identifier {
         case .account, .defaultAccount, .setOwnKey, .credits, .extraKeys, .trustedServer:
             return "SettingsCell"
-        case .resetAccounts, .accountsToSync, .resetTrust, .pEpSync:
+        case .resetAccounts, .accountsToSync, .resetTrust:
             return "SettingsActionCell"
-        case .passiveMode, .protectMessageSubject:
+        case .passiveMode, .protectMessageSubject, .pEpSync:
             return "switchOptionCell"
         }
     }
@@ -276,12 +276,12 @@ final class SettingsViewModel {
                 me.setProtectMessageSubject(to: value)
             })
         case .pEpSync:
-            rows.append(generateSwitchRow(type: .pEpSync, isDangerous: false, isOn: false) { [weak self] (value) in
+            rows.append(generateSwitchRow(type: .pEpSync, isDangerous: false, isOn: KeySyncStatus) { [weak self] (value) in
                 guard let me = self else {
                     Log.shared.errorAndCrash(message: "Lost myself")
                     return
                 }
-                me.setPepSync(to: value)
+                me.PEPSyncUpdate(to: value)
             })
             rows.append(generateNavigationRow(type: .accountsToSync, isDangerous: false))
         case .contacts:
@@ -437,12 +437,32 @@ final class SettingsViewModel {
         }
     }
 
-    /////TODO: implement me!
     /// This method sets the pEp Sync status according to the parameter value
     /// - Parameter value: The new value of the pEp Sync status
-    private func setPepSync(to value: Bool) {
-        
+    private func PEPSyncUpdate(to value: Bool) {
+        let grouped = KeySyncUtil.isInDeviceGroup
+        if value {
+            KeySyncUtil.enableKeySync()
+        } else {
+            if grouped {
+                do {
+                    try KeySyncUtil.leaveDeviceGroup()
+                } catch {
+                    Log.shared.errorAndCrash(error: error)
+                }
+            }
+            KeySyncUtil.disableKeySync()
+        }
     }
+    
+    
+    private var KeySyncStatus: Bool {
+        get {
+            AppSettings.shared.isKeySyncEnabled
+        }
+    }
+    
+    
 
     ///This method deletes the account passed by parameter.
     /// It also updates the default account if necessary.
@@ -469,24 +489,6 @@ final class SettingsViewModel {
                 //no more accounts, no default account
             }
             AppSettings.shared.defaultAccount = newDefaultAddress
-        }
-    }
-    
-    //!!!: - COPY - PASTED FROM SETTINGS VIEW MODEL 1!
-    ///REVIEW THIS , if it's okey, write documentation.
-    func PEPSyncUpdate(to value: Bool) {
-        let grouped = KeySyncUtil.isInDeviceGroup
-        if value {
-            KeySyncUtil.enableKeySync()
-        } else {
-            if grouped {
-                do {
-                    try KeySyncUtil.leaveDeviceGroup()
-                } catch {
-                    Log.shared.errorAndCrash(error: error)
-                }
-            }
-            KeySyncUtil.disableKeySync()
         }
     }
     
