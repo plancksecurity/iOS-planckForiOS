@@ -149,11 +149,11 @@ SettingsViewControllerDelegate {
             Log.shared.errorAndCrash("Invalid state.")
             return SettingSwitchTableViewCell()
         }
-        cell.textLabel?.text = row.title
-        cell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
+        cell.switchDescription.text = row.title
+        cell.switchDescription.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
         cell.delegate = self
         cell.selectionStyle = .none
-        cell.setUpView()
+        cell.switchItem.setOn(row.isOn, animated: true)
         return cell
     }
     
@@ -409,6 +409,7 @@ extension SettingsTableViewController {
 
                                                 //Switch status needs to be reversed
                                                 me.tableView.reloadData()
+                                                alert?.dissmiss()
         }
 
         alert?.add(action: cancelAction)

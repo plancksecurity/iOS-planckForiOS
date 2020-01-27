@@ -428,7 +428,7 @@ final class SettingsViewModel {
     ///This method sets the Protect Message Subject status according to the parameter value
     /// - Parameter value: The new value of the Protect Message Subject status
     private func setProtectMessageSubject(to value: Bool) {
-        AppSettings.shared.unencryptedSubjectEnabled = !value
+        AppSettings.shared.unencryptedSubjectEnabled = value
     }
     
     private var protectedMessageStatus: Bool {

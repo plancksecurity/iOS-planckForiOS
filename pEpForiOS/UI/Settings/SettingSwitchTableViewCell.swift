@@ -14,21 +14,9 @@ class SettingSwitchTableViewCell: UITableViewCell {
     /// Short description shown to the user in front of the switch.
     @IBOutlet weak var switchDescription: UILabel!
 
-    var viewModel: SwitchSettingCellViewModelProtocol?
     weak var delegate: SwitchCellDelegate?
 
     @IBAction func switchChanged(_ sender: Any) {
         delegate?.didChange(to: switchItem.isOn, from: self)
-    }
-
-    func setUpView() {
-        self.switchDescription.text = viewModel?.title
-        setSwitchValue()
-    }
-
-    func setSwitchValue() {
-        if let vm = viewModel {
-            switchItem.setOn(vm.switchValue(), animated: false)
-        }
     }
 }
