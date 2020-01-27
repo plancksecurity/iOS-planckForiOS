@@ -137,6 +137,7 @@ SettingsViewControllerDelegate {
     private func prepareActionCell(_ dequeuedCell: UITableViewCell, for row: SettingsRowProtocol) -> UITableViewCell {
         dequeuedCell.textLabel?.text = row.title
         dequeuedCell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
+        dequeuedCell.detailTextLabel?.text = nil
         return dequeuedCell
     }
     
@@ -215,6 +216,12 @@ SettingsViewControllerDelegate {
             me.tableView.endUpdates()
             me.checkAccounts()
         })
+        if let popoverPresentationController = alertController.popoverPresentationController {
+            let cellFrame = tableView.rectForRow(at: indexPath)
+            let sourceRect = view.convert(cellFrame, from: tableView)
+            popoverPresentationController.sourceRect = sourceRect
+            popoverPresentationController.sourceView = view
+        }
         present(alertController, animated: true)
     }
     
@@ -406,7 +413,6 @@ extension SettingsTableViewController {
                                                     Log.shared.errorAndCrash(message: "lost myself")
                                                     return
                                                 }
-
                                                 //Switch status needs to be reversed
                                                 me.tableView.reloadData()
                                                 alert?.dissmiss()
@@ -420,9 +426,7 @@ extension SettingsTableViewController {
                                                      Log.shared.errorAndCrash(message: "lost myself")
                                                      return
                                                  }
-                                                
                                                 action(newValue)
-                                                 //me.viewModel.pEpSyncUpdate(to: value)
                                              }
         alert?.add(action: disableAction)
         return alert

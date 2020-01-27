@@ -128,9 +128,11 @@ final class SettingsViewModel {
     func cellIdentifier(for indexPath: IndexPath) -> String {
         let row = section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
-        case .account, .defaultAccount, .setOwnKey, .credits, .extraKeys, .trustedServer:
+        case .account, .defaultAccount, .setOwnKey, .credits, .extraKeys, .trustedServer,
+             .accountsToSync, .resetTrust
+             :
             return "SettingsCell"
-        case .resetAccounts, .accountsToSync, .resetTrust:
+        case .resetAccounts:
             return "SettingsActionCell"
         case .passiveMode, .protectMessageSubject, .pEpSync:
             return "switchOptionCell"
