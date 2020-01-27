@@ -23,7 +23,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
 
     public var imapConnectInfo: EmailConnectInfo!
     public var smtpConnectInfo: EmailConnectInfo!
-    public var imapSyncData: ImapSyncData!
+    public var imapConnection: PantomimeImapApi!
 
     var session: PEPSession {
         return PEPSession()
@@ -40,14 +40,14 @@ open class CoreDataDrivenTestBase: XCTestCase {
 
         imapConnectInfo = cdAccount.imapConnectInfo
         smtpConnectInfo = cdAccount.smtpConnectInfo
-        imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
+        imapConnection = PantomimeImapApi(emailConnectInfo: imapConnectInfo)
 
         XCTAssertNotNil(imapConnectInfo)
         XCTAssertNotNil(smtpConnectInfo)
     }
 
     override open func tearDown() {
-        imapSyncData?.sync.close()
+        imapConnection.close()
         Stack.shared.reset()
         PEPSession.cleanup()
         XCTAssertTrue(PEPUtils.pEpClean())
@@ -59,9 +59,9 @@ open class CoreDataDrivenTestBase: XCTestCase {
     func fetchMessages(parentName: String) {
         let expMailsFetched = expectation(description: "expMailsFetched")
 
-        let opLogin = LoginImapOperation(parentName: parentName, imapConnection: imapSyncData.sync)
+        let opLogin = LoginImapOperation(parentName: parentName, imapConnection: imapConnection)
         let op = FetchMessagesInImapFolderOperation(parentName: parentName,
-                                                    imapConnection: imapSyncData.sync,
+                                                    imapConnection: imapConnection,
                                                     folderName: PantomimeImapApi.defaultImapInboxName)
         op.addDependency(opLogin)
         op.completionBlock = {
