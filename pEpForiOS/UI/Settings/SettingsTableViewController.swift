@@ -11,18 +11,18 @@ import SwipeCellKit
 import pEpIOSToolbox
 
 class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate, SettingsViewControllerDelegate {
-        
+    
     static let storyboardId = "SettingsTableViewController"
     private weak var activityIndicatorView: UIActivityIndicatorView?
-
-    lazy var viewModelv2 = SettingsViewModel()
+    
+    lazy var viewModel = SettingsViewModel()
     
     //TODO: get this instance
     var settingSwitchViewModel: SwitchSettingCellViewModelProtocol?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModelv2.delegate = self
+        viewModel.delegate = self
         title = NSLocalizedString("Settings", comment: "Settings view title")
         UIHelper.variableCellHeightsTableView(tableView)
         addExtraKeysEditabilityToggleGesture()
@@ -39,25 +39,25 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     
     /// [en|dis]able the editability of extra keys
     @objc private func extraKeysEditabilityToggleGestureTriggered() {
-        viewModelv2.handleExtraKeysEditabilityGestureTriggered()
+        viewModel.handleExtraKeysEditabilityGestureTriggered()
     }
     
     // MARK: - UITableViewDataSource
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModelv2.section(for: section).rows.count
+        return viewModel.section(for: section).rows.count
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModelv2.count
+        return viewModel.count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return viewModelv2.section(for: section).title
+        return viewModel.section(for: section).title
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return viewModelv2.section(for: section).footer
+        return viewModel.section(for: section).footer
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -77,7 +77,14 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                     Log.shared.lostMySelf()
                     return
                 }
-                me.showAlertBeforeDelete(indexPath)
+                
+                guard let row = me.viewModel.section(for: indexPath).rows[indexPath.row] as? SettingsViewModel.ActionRow,
+                    let action = row.action else {
+                        Log.shared.errorAndCrash(message: "There is no action for an action row")
+                        return
+                }
+
+                me.showAlertBeforeDelete(indexPath: indexPath, action: action)
             }
             return (orientation == .right ? [deleteAction] : nil)
         }
@@ -90,7 +97,13 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         case .passiveMode, .pEpSync, .protectMessageSubject:
         return //Must not perform any segue.
         case .resetAccounts:
-            handleResetAllIdentity()
+            
+            guard let row = viewModel.section(for: indexPath).rows[indexPath.row] as? SettingsViewModel.ActionRow, let action = row.action,
+            let alert = getResetAllIdentityAlertController(action: action) else {
+                return
+            }
+            
+            present(alert, animated: true)
             tableView.deselectRow(at: indexPath, animated: true)
         default:
             performSegue(withIdentifier: identifier.rawValue, sender: indexPath)
@@ -98,7 +111,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     }
     
     /// MARK: - Private.
-
+    
     /// Prepares and returns the swipe tableview cell, with the corresponding color and title.
     /// - Parameters:
     ///   - dequeuedCell: the cell to configure
@@ -109,7 +122,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             return SwipeTableViewCell()
         }
         cell.textLabel?.text = row.title
-        cell.textLabel?.textColor = viewModelv2.titleColor(rowIdentifier: row.identifier)
+        cell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
         cell.detailTextLabel?.text = nil
         cell.delegate = self
         return cell
@@ -121,7 +134,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     ///   - row: the row with the information to configure the cell
     private func prepareActionCell(_ dequeuedCell: UITableViewCell, for row: SettingsRowProtocol) -> UITableViewCell {
         dequeuedCell.textLabel?.text = row.title
-        dequeuedCell.textLabel?.textColor = viewModelv2.titleColor(rowIdentifier: row.identifier)
+        dequeuedCell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
         return dequeuedCell
     }
     
@@ -135,7 +148,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             return SettingSwitchTableViewCell()
         }
         cell.textLabel?.text = row.title
-        cell.textLabel?.textColor = viewModelv2.titleColor(rowIdentifier: row.identifier)
+        cell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
+        //TODO: generate the delegate to communicate cell and table
         cell.viewModel = settingSwitchViewModel
         cell.selectionStyle = .none
         cell.setUpView()
@@ -147,10 +161,10 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     ///   - tableView: The table view to dequeue the cell
     ///   - indexPath: The indexPath to identify the cell. 55
     private func dequeueCell(for tableView: UITableView, for indexPath: IndexPath) -> UITableViewCell {
-        let cellId = viewModelv2.cellIdentifier(for: indexPath)
+        let cellId = viewModel.cellIdentifier(for: indexPath)
         let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         
-        let row : SettingsRowProtocol = viewModelv2.section(for: indexPath.section).rows[indexPath.row]
+        let row : SettingsRowProtocol = viewModel.section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
         case .account:
             return prepareSwipeTableViewCell(dequeuedCell, for: row)
@@ -162,7 +176,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 return UITableViewCell()
             }
             dequeuedCell.textLabel?.text = row.title
-            dequeuedCell.textLabel?.textColor = viewModelv2.titleColor(rowIdentifier: row.identifier)
+            dequeuedCell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
             dequeuedCell.detailTextLabel?.text = row.subtitle
             return dequeuedCell
         case .passiveMode, .protectMessageSubject:
@@ -175,8 +189,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     }
     
     /// Presents an alert controller if the user taps the reset all identity cell.
-    private func handleResetAllIdentity() {
-        if let pepAlertViewController = viewModelv2.getResetAllIdentityAlertController() {
+    private func handleResetAllIdentity(action : @escaping SettingsViewModel.ActionBlock) {
+        if let pepAlertViewController = getResetAllIdentityAlertController(action: action) {
             DispatchQueue.main.async { [weak self] in
                 self?.present(pepAlertViewController, animated: true)
             }
@@ -185,47 +199,29 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     
     /// Shows the alert controller before deleting an account
     /// - Parameter indexPath: The index to delete the row in case of acceptance.
-    private func showAlertBeforeDelete(_ indexPath: IndexPath) {
-        let alertController = viewModelv2.getBeforeDeleteAlert { [weak self] action in
+    private func showAlertBeforeDelete(indexPath : IndexPath, action : @escaping SettingsViewModel.ActionBlock) {
+        let alertController = getBeforeDeleteAlert(deleteCallback: { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
             }
-
-            //This should never happened
-            if me.viewModelv2.noAccounts() {
-                me.performSegue(withIdentifier: "noAccounts", sender: nil)
-                return
-            }
-
-            //FIXME: this crashes.
+            action()
             me.tableView.beginUpdates()
-//            if let pEpSyncSection = me.viewModelv2.pEpSyncSection() {
-//                me.tableView.reloadSections([pEpSyncSection], with: UITableView.RowAnimation.none)
-//            }
+            //            if let pEpSyncSection = me.viewModelv2.pEpSyncSection() {
+            //                me.tableView.reloadSections([pEpSyncSection], with: UITableView.RowAnimation.none)
+            //            }
             me.tableView.deleteRows(at: [indexPath], with: .fade)
             me.tableView.endUpdates()
-        }
-        
-        if alertController != nil {
-            present(alertController!, animated: true)
-        }
+            me.checkAccounts()
+        })
+        present(alertController, animated: true)
     }
     
-    
-        private func deleteRowAt(_ indexPath: IndexPath) {
-            self.viewModelv2.deleteRowAt(indexPath)
-    //
-    //        if let position =  navigationController?.viewControllers.count, let previousVc = navigationController?.viewControllers[position - 1] as? EmailViewController {
-    //            if viewModel.canBeShown(Message: previousVc.message) {
-    //                navigationController?.viewControllers.remove(at: position-1)
-    //            }
-    //        }
-            if self.viewModelv2.noAccounts() {
-                self.performSegue(withIdentifier: "noAccounts", sender: nil)
-            }
+    private func checkAccounts() {
+        if viewModel.noAccounts() {
+            performSegue(withIdentifier: "noAccounts", sender: nil)
         }
-
+    }
 }
 
 extension SettingsTableViewController {
@@ -248,7 +244,7 @@ extension SettingsTableViewController {
                 Log.shared.lostMySelf()
                 return
             }
-
+            
             me.activityIndicatorView?.removeFromSuperview()
         }
     }
@@ -257,7 +253,7 @@ extension SettingsTableViewController {
         let title = NSLocalizedString("Extra Keys Editable", comment: "Extra Keys Editable")
         UIUtils.showAlertWithOnlyPositiveButton(title:title, message: newValue, inViewController: self)
     }
-        
+    
     func showpEpSyncLeaveGroupAlert() {
         
     }
@@ -275,7 +271,7 @@ extension SettingsTableViewController {
     /// - Parameter indexPath: The index Path of the cell to get the segue identifier.
     /// - Returns: The segue identifier. If there is no segue to perform, it returns `noSegue`
     func segueIdentifier(for indexPath : IndexPath) -> SettingsViewModel.SegueIdentifier {
-        let row : SettingsRowProtocol = viewModelv2.section(for: indexPath.section).rows[indexPath.row]
+        let row : SettingsRowProtocol = viewModel.section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
         case .account:
             return SettingsViewModel.SegueIdentifier.segueEditAccount
@@ -313,18 +309,18 @@ extension SettingsTableViewController {
                 let destination = nav.topViewController as? AccountSettingsTableViewController,
                 let indexPath = sender as? IndexPath else { return }
             destination.appConfig = appConfig
-            guard let account = viewModelv2.account(at: indexPath) else { return }
+            guard let account = viewModel.account(at: indexPath) else { return }
             destination.viewModel = AccountSettingsViewModel(account: account)
         case .segueShowSettingDefaultAccount,
              .segueShowSettingTrustedServers:
             guard let destination = segue.destination as? BaseTableViewController else { return }
             destination.appConfig = self.appConfig
         case .noAccounts,
-            .segueAddNewAccount,
-            .sequeShowCredits,
-            .ResetTrust,
-            .segueExtraKeys,
-            .seguePerAccountSync:
+             .segueAddNewAccount,
+             .sequeShowCredits,
+             .ResetTrust,
+             .segueExtraKeys,
+             .seguePerAccountSync:
             guard let destination = segue.destination as? BaseViewController else { return }
             destination.appConfig = self.appConfig
         case .none:
@@ -341,14 +337,14 @@ extension SettingsTableViewController {
             break
         }
     }
-
+    
 }
 
 /// MARK: - Alert Controllers
 
-extension SettingsViewModel {
+extension SettingsTableViewController {
     
-    func getResetAllIdentityAlertController() -> PEPAlertViewController? {
+    func getResetAllIdentityAlertController(action: @escaping SettingsViewModel.ActionBlock) -> PEPAlertViewController? {
         let title = NSLocalizedString("Reset All Identities", comment: "Settings confirm to reset all identity title alert")
         let message = NSLocalizedString("This action will reset all your identities. \n Are you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
         
@@ -367,17 +363,13 @@ extension SettingsViewModel {
         pepAlertViewController.add(action: cancelAction)
         
         let resetTitle = NSLocalizedString("Reset All", comment: "Reset account identity button title")
-        let resetAction = PEPUIAlertAction(title: resetTitle,
-                                           style: .pEpRed,
-                                           handler: { [weak self] _ in
-                                            
-                                            guard let strongSelf = self else {
-                                                Log.shared.lostMySelf()
-                                                return
-                                            }
-                                            pepAlertViewController.dismiss(animated: true, completion: nil)
-                                            strongSelf.handleResetAllIdentities()
-        })
+        
+        
+        let resetAction = PEPUIAlertAction(title: resetTitle, style: .pEpRed) { _ in
+            action()
+            pepAlertViewController.dissmiss()
+        }
+            
         pepAlertViewController.add(action: resetAction)
         
         pepAlertViewController.modalPresentationStyle = .overFullScreen
@@ -385,19 +377,19 @@ extension SettingsViewModel {
         return pepAlertViewController
     }
     
-    func getBeforeDeleteAlert(deleteCallback : @escaping AlertActionBlock) -> UIAlertController? {
+    func getBeforeDeleteAlert(deleteCallback : @escaping SettingsViewModel.AlertActionBlock) -> UIAlertController {
         let title = NSLocalizedString("Are you sure you want to delete the account?", comment: "Account delete confirmation")
         let comment = NSLocalizedString("delete account message", comment: "Account delete confirmation comment")
-        let buttonTitle = NSLocalizedString("Delete", comment: "Delete account button title")
+        let deleteButtonTitle = NSLocalizedString("Delete", comment: "Delete account button title")
+        let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel title button")
         
-        let message = NSLocalizedString(title, comment: comment)
-        let alertController = UIAlertController.pEpAlertController(title: nil, message:message, preferredStyle: .actionSheet)
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel title button")
-        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { _ in }
-        alertController.addAction(cancelAction)
-        
-        let destroyAction = UIAlertAction(title: buttonTitle, style: .destructive, handler: deleteCallback)
-        alertController.addAction(destroyAction)
-        return alertController
+        let alert = UIAlertController(title: title, message: comment, preferredStyle: .actionSheet)
+        let deleteAction = UIAlertAction(title: deleteButtonTitle, style: .destructive) { _ in
+            deleteCallback()
+        }
+        alert.addAction(deleteAction)
+        let cancelAction = UIAlertAction(title: cancelButtonTitle, style: .cancel)
+        alert.addAction(cancelAction)
+        return alert
     }
 }
