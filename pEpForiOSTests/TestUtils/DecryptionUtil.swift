@@ -25,7 +25,7 @@ class DecryptionUtil {
         cdOwnAccount.identity?.address = ownEmailAddress
 
         let cdInbox = CdFolder(context: context)
-        cdInbox.name = PantomimeImapApi.defaultImapInboxName
+        cdInbox.name = ImapConnection.defaultImapInboxName
         cdInbox.account = cdOwnAccount
         context.saveAndLogErrors()
 

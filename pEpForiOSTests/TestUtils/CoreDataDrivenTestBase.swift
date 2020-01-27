@@ -23,7 +23,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
 
     public var imapConnectInfo: EmailConnectInfo!
     public var smtpConnectInfo: EmailConnectInfo!
-    public var imapConnection: PantomimeImapApi!
+    public var imapConnection: ImapConnection!
 
     var session: PEPSession {
         return PEPSession()
@@ -40,7 +40,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
 
         imapConnectInfo = cdAccount.imapConnectInfo
         smtpConnectInfo = cdAccount.smtpConnectInfo
-        imapConnection = PantomimeImapApi(emailConnectInfo: imapConnectInfo)
+        imapConnection = ImapConnection(emailConnectInfo: imapConnectInfo)
 
         XCTAssertNotNil(imapConnectInfo)
         XCTAssertNotNil(smtpConnectInfo)
@@ -62,7 +62,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
         let opLogin = LoginImapOperation(parentName: parentName, imapConnection: imapConnection)
         let op = FetchMessagesInImapFolderOperation(parentName: parentName,
                                                     imapConnection: imapConnection,
-                                                    folderName: PantomimeImapApi.defaultImapInboxName)
+                                                    folderName: ImapConnection.defaultImapInboxName)
         op.addDependency(opLogin)
         op.completionBlock = {
             op.completionBlock = nil

@@ -24,7 +24,7 @@ class HandshakeTests: CoreDataDrivenTestBase {
         cdAccount.identity?.address = "iostest002@peptest.ch"
 
         let cdInbox = CdFolder(context: moc)
-        cdInbox.name = PantomimeImapApi.defaultImapInboxName
+        cdInbox.name = ImapConnection.defaultImapInboxName
         cdInbox.account = cdAccount
         moc.saveAndLogErrors()
 
