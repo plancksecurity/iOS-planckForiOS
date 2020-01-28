@@ -64,7 +64,7 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
         }
         var vm = viewModelOrCrash()
 
-        setupView.firstTextField.set(text: vm.address, animated: animated)
+        setupView.firstTextField.set(text: vm.loginNameIMAP, animated: animated)
         setupView.secondTextField.set(text: vm.address, animated: animated)
         setupView.thirdTextField.set(text: vm.password, animated: animated)
         setupView.fourthTextField.set(text: vm.userName, animated: animated)

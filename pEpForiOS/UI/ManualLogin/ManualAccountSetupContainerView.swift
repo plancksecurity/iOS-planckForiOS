@@ -8,7 +8,7 @@
 
 import UIKit
 
-// Did not crate a nested class for LoginScrollView, since its not visible from Interface builder
+// Did not create a nested class for LoginScrollView, since its not visible from Interface builder
 
 /// Use this component in Storyboard to show a ManualAccountsetupView. Just set this class to a View class and done,
 /// Important: Use ONLY in storyboard, other inits are not implemented
