@@ -68,7 +68,7 @@ class Appearance {
 
         appearance.configureWithOpaqueBackground()
         
-        //TODO: set the proper font. --MB
+        //TODO: set the proper font. --MB !!!
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: color, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 20)]
         appearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes
         appearance.backButtonAppearance.normal.titleTextAttributes = titleTextAttributes
@@ -76,9 +76,9 @@ class Appearance {
         appearance.largeTitleTextAttributes = titleTextAttributes
         appearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
 
-        //TODO: change this asset: chevron-left-original. --MB
-        //TODO: change next / prev icons in Main.storyboard, EmailDetailViewController
-        //TODO: change font size of the subject title on MessageSubjectCell on  Main.storyboard. --MB.
+        //TODO: change this asset: chevron-left-original. --MB !!!
+        //TODO: change next / prev icons in Main.storyboard, EmailDetailViewController !!!
+        //TODO: change font size of the subject title on MessageSubjectCell on  Main.storyboard. --MB. !!!
         let chevronLeftImg = UIImage(named: "chevron-left-original")
         appearance.setBackIndicatorImage(chevronLeftImg, transitionMaskImage: chevronLeftImg)
 
