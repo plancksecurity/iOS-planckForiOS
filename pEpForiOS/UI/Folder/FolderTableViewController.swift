@@ -32,7 +32,7 @@ class FolderTableViewController: BaseTableViewController {
 
         showEmptyDetailViewIfApplicable(
             message: NSLocalizedString(
-                "Please chose a folder",
+                "Please choose a folder",
                 comment: "No folder has been selected yet in the folders VC"))
     }
 

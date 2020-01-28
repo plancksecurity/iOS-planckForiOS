@@ -9,59 +9,6 @@
 import MessageModel
 import PEPObjCAdapterFramework
 
-protocol EmailDetailViewModelProtocol: EmailDisplayViewModelProtocol {
-
-    /// Replaces and uses the currently used message query with the given one. The displayed
-    /// messages get updated automatically.
-    /// - Parameter qrc: messages to display to the user
-    func replaceMessageQueryResults(with qrc: MessageQueryResults) throws
-    /// You can call this to show a specific, user selected message instead of instanziating a
-    /// new EmailDetailView.
-    /// - Parameter indexPath: indexPath to select
-    func select(itemAt indexPath: IndexPath)
-
-    /// Action handling
-    /// - Parameter indexPath: indexPath of cell the flag button has been pressed for
-    func handleFlagButtonPress(for indexPath: IndexPath)
-    /// Action handling
-    /// - Parameter indexPath: indexPath of cell the destructive button has been pressed for
-    func handleDestructiveButtonPress(for indexPath: IndexPath)
-    /// Must be called whenever a new message has been displayed.
-    /// - Parameter indexPath: indexPath of the cell that has been displayed
-    func handleEmailShown(forItemAt indexPath: IndexPath)
-
-    /// The indexpath of the last displayerd message.
-    /// Used to scroll to after the data soure has been updated.
-    /// Returns `nil` in case the previously shown message is not contained in the query results
-    /// any more after updating the data source.
-    var indexPathForCellDisplayedBeforeUpdating: IndexPath? { get }
-
-    /// Scroll to `indexPathForCellDisplayedBeforeUpdating` after the collection has been updated
-    /// (only) if this is true.
-    var shouldScrollBackToCurrentlyViewdCellAfterUpdate: Bool { get }
-
-    /// - Parameter indexPath: indexPath of the cell to show the destructive button for.
-    /// - returns: The icon to use for the destruktive button (delete, archive, ...)
-    func destructiveButtonIcon(forMessageAt indexPath: IndexPath?) -> UIImage?
-
-    /// - Parameter indexPath: indexPath of the cell to show the flagged state button for.
-    /// - returns: The icon to use for the flagging button of cell at indexPath
-    func flagButtonIcon(forMessageAt indexPath: IndexPath?) -> UIImage?
-
-    /// - Parameter indexPath: indexPath of the cell to show the pEp rating for.
-    /// - returns: pEp rating for cell at given indexPath
-    func pEpRating(forItemAt indexPath: IndexPath) -> PEPRating
-
-    /// - Parameter indexPath: indexPath of the cell to compute result for.
-    /// - returns:  Whether or not to show privacy icon for cell at given indexPath
-    func shouldShowPrivacyStatus(forItemAt indexPath: IndexPath) -> Bool
-
-    /// Destination VM Factory - Move To Folder VM
-    /// - Parameter indexPath: indexPath of the cell to show "moveToFolder" view for.
-    /// - returns:  MoveToAccountViewModel configured for message represented by the given indexPath
-    func getMoveToFolderViewModel(forMessageRepresentedByItemAt indexPath: IndexPath) -> MoveToAccountViewModel?
-}
-
 protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
 
     /// `emailListViewModel(viewModel:didUpdateDataAt:)` should not reload the cell but update the
@@ -75,11 +22,11 @@ protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
 /// Reports back currently shown email changes.
 protocol EmailDetailViewModelSelectionChangeDelegate: class {
     /// Called when the currently shown message changes
-    func emailDetailViewModel(emailDetailViewModel: EmailDetailViewModelProtocol,
+    func emailDetailViewModel(emailDetailViewModel: EmailDetailViewModel,
                               didSelectItemAt indexPath: IndexPath)
 }
 
-class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol {
+class EmailDetailViewModel: EmailDisplayViewModel {
     /// Used to figure out whether or not the currently displayed message has been decrypted while
     /// being shown to the user.
     private var pathsForMessagesMarkedForRedecrypt = [IndexPath]()
@@ -97,8 +44,9 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
         self.messageQueryResults.rowDelegate = self
     }
 
-    // MARK: - EmailDetailViewModelProtocol
-
+    /// Replaces and uses the currently used message query with the given one. The displayed
+    /// messages get updated automatically.
+    /// - Parameter qrc: messages to display to the user
     public func replaceMessageQueryResults(with qrc: MessageQueryResults) throws {
         messageQueryResults = qrc
         messageQueryResults.rowDelegate = self
@@ -107,10 +55,15 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
         delegate?.reloadData(viewModel: self)
     }
 
+    /// You can call this to show a specific, user selected message instead of instanziating a
+    /// new EmailDetailView.
+    /// - Parameter indexPath: indexPath to select
     public func select(itemAt indexPath: IndexPath) {
         delegate?.select(itemAt: indexPath)
     }
 
+    /// Action handling
+    /// - Parameter indexPath: indexPath of cell the flag button has been pressed for
     public func handleFlagButtonPress(for indexPath: IndexPath) {
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
@@ -122,6 +75,8 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
         Session.main.commit()
     }
 
+    /// Action handling
+    /// - Parameter indexPath: indexPath of cell the destructive button has been pressed for
     public func handleDestructiveButtonPress(for indexPath: IndexPath) {
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
@@ -130,6 +85,8 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
         delete(messages: [message])
     }
 
+    /// Must be called whenever a new message has been displayed.
+    /// - Parameter indexPath: indexPath of the cell that has been displayed
     public func handleEmailShown(forItemAt indexPath: IndexPath) {
         lastShownMessage = message(representedByRowAt: indexPath)
         markForRedecryptionIfNeeded(messageRepresentedBy: indexPath)
@@ -138,6 +95,10 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
                                                       didSelectItemAt: indexPath)
     }
 
+    /// The indexpath of the last displayerd message.
+    /// Used to scroll to after the data soure has been updated.
+    /// Returns `nil` in case the previously shown message is not contained in the query results
+    /// any more after updating the data source.
     public var indexPathForCellDisplayedBeforeUpdating: IndexPath? {
         guard
             let messageShownBeforeUpdating = lastShownMessage,
@@ -154,11 +115,15 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
         }
         return nil
     }
-    
+
+    /// Scroll to `indexPathForCellDisplayedBeforeUpdating` after the collection has been updated
+    /// (only) if this is true.
     public var shouldScrollBackToCurrentlyViewdCellAfterUpdate: Bool {
         return updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage
     }
 
+    /// - Parameter indexPath: indexPath of the cell to show the destructive button for.
+    /// - returns: The icon to use for the destruktive button (delete, archive, ...)
     public func destructiveButtonIcon(forMessageAt indexPath: IndexPath?) -> UIImage? {
         guard
             let path = indexPath,
@@ -173,6 +138,8 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
         }
     }
 
+    /// - Parameter indexPath: indexPath of the cell to show the flagged state button for.
+    /// - returns: The icon to use for the flagging button of cell at indexPath
     public func flagButtonIcon(forMessageAt indexPath: IndexPath?) -> UIImage? {
         guard
             let path = indexPath,
@@ -187,6 +154,8 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
         }
     }
 
+    /// - Parameter indexPath: indexPath of the cell to show the pEp rating for.
+    /// - returns: pEp rating for cell at given indexPath
     public func pEpRating(forItemAt indexPath: IndexPath) -> PEPRating {
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
@@ -195,7 +164,8 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
         return message.pEpRating()
     }
 
-
+    /// - Parameter indexPath: indexPath of the cell to compute result for.
+    /// - returns:  Whether or not to show privacy icon for cell at given indexPath
     public func shouldShowPrivacyStatus(forItemAt indexPath: IndexPath) -> Bool {
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
@@ -208,6 +178,9 @@ class EmailDetailViewModel: EmailDisplayViewModel, EmailDetailViewModelProtocol 
         return true
     }
 
+    /// Destination VM Factory - Move To Folder VM
+    /// - Parameter indexPath: indexPath of the cell to show "moveToFolder" view for.
+    /// - returns:  MoveToAccountViewModel configured for message represented by the given indexPath
     public func getMoveToFolderViewModel(forMessageRepresentedByItemAt indexPath: IndexPath) -> MoveToAccountViewModel? {
         guard let msg = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("Nothing to move?")
@@ -245,7 +218,7 @@ extension EmailDetailViewModel {
             Log.shared.errorAndCrash("No msg")
             return
         }
-        /// The user may be about to view an yet undecrypted message.
+        // The user may be about to view an yet undecrypted message.
         // If so, try again to decrypt it.
         if message.markForRetryDecryptIfUndecryptable() {
             pathsForMessagesMarkedForRedecrypt.append(indexPath)

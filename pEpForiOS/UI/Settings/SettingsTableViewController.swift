@@ -41,7 +41,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
         showEmptyDetailViewIfApplicable(
             message: NSLocalizedString(
-                "Please chose a setting",
+                "Please choose a setting",
                 comment: "No setting has been selected yet in the settings VC"))
     }
 
@@ -398,10 +398,10 @@ extension SettingsTableViewController: SettingsViewModelDelegate {
 extension SettingsTableViewController: keySyncActionsProtocol {
 
     func updateSyncStatus(to value: Bool) {
-        if viewModel.isGrouped() {
-            let title = NSLocalizedString("Disable pEp Sync",
+        if viewModel.isGrouped {
+            let title = NSLocalizedString("Disable p≡p Sync",
                                           comment: "Leave device group confirmation")
-            let comment = NSLocalizedString("if you disable pEps sybc, your device group will be dissolved. are you sure you want to disabre pep Sync?",
+            let comment = NSLocalizedString("If you disable p≡p Sync, your device group will be dissolved. Are you sure you want to disable disable p≡p Sync?",
                                             comment: "Leave device group confirmation comment")
 
             let alert = UIAlertController.pEpAlertController(title: title,
@@ -420,13 +420,13 @@ extension SettingsTableViewController: keySyncActionsProtocol {
                     Log.shared.errorAndCrash(message: "lost myself")
                     return
                 }
-                me.viewModel.PEPSyncUpdate(to: value)
+                me.viewModel.pEpSyncUpdate(to: value)
             }
             alert.addAction(cancelAction)
             alert.addAction(disableAction)
             present(alert, animated: true)
         } else {
-            viewModel.PEPSyncUpdate(to: value)
+            viewModel.pEpSyncUpdate(to: value)
         }
     }
 }

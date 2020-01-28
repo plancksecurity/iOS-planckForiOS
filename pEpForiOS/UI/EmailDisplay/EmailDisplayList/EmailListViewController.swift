@@ -7,6 +7,7 @@
 //
 
 import UIKit
+
 import SwipeCellKit
 import pEpIOSToolbox
 
@@ -43,7 +44,7 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
     /// and also when swipeCellAction is performed to store from which cell the action is done.
     private var lastSelectedIndexPath: IndexPath?
 
-    let searchController = UISearchController(searchResultsController: nil)
+    private let searchController = UISearchController(searchResultsController: nil)
 
     //swipe acctions types
     var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
@@ -74,13 +75,13 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
 
             me.showNoMessageSelected()
 
-            if !vm.showLoginView {
-                me.updateFilterButtonView()
-                vm.startMonitoring() //!!!: UI should not know about startMonitoring
-                me.tableView.reloadData()
-                me.checkSplitViewState()
-                me.watchDetailView()
-            }
+            me.updateFilterButtonView()
+            vm.startMonitoring() //!!!: UI should not know about startMonitoring
+            me.tableView.reloadData()
+
+            me.checkSplitViewState()
+            me.watchDetailView()
+            me.doOnce = nil
         }
         setup()
     }
@@ -93,8 +94,15 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
         }
 
         lastSelectedIndexPath = nil
-        doOnce?()
-        doOnce = nil
+
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM.")
+            return
+        }
+
+        if !vm.showLoginView {
+            doOnce?()
+        }
 
         setUpTextFilter()
     }
@@ -139,17 +147,26 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
             viewModel = EmailListViewModel(delegate: self,
                                            folderToShow: UnifiedInbox())
         }
-
-        ///the refresh controller is configured and added to the tableview
-        refreshController.tintColor = UIColor.pEpGreen
-        refreshController.addTarget(self, action: #selector(self.refreshView(_:)), for: .valueChanged)
-        tableView.refreshControl = refreshController
+        setupRefreshControl()
 
         title = viewModel?.folderName
         navigationController?.title = title
 
         let flexibleSpace = createFlexibleBarButtonItem()
         toolbarItems?.append(contentsOf: [flexibleSpace, createPepBarButtonItem()])
+    }
+
+    private func setupRefreshControl() {
+        refreshController.tintColor = UIColor.pEpGreen
+        refreshController.addTarget(self, action: #selector(refreshView(_:)), for: .valueChanged)
+        // Apples default UIRefreshControl implementation is buggy when using a UITableView in a
+        // UIViewController (instead of a UITableViewController). The UI freaks out while
+        // refreshing and after refreshing the UI is messed (refreshControl and search bar above
+        // first tableView cell. Adding the refreshControl as subview of UITableView works around
+        // this issue without changing the NavigationBar's "show/hide SearchField when scrolling"
+        // behaviour. Do NOT use the intended (`tableView.refreshControl`) way to set the refresh
+        // controll up! = refreshController
+         tableView.addSubview(refreshController)
     }
 
     private func setUpTextFilter() {
@@ -194,12 +211,18 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
         }
     }
 
-    ///called when the view is scrolled down to
+    /// Called on pull-to-refresh triggered
     @objc private func refreshView(_ sender: Any) {
-        viewModel?.fetchNewMessages() { [weak self] in
+        viewModel?.fetchNewMessages() {[weak self] in
+            guard let me = self else {
+                // Loosing self is a valid case here. The view might have been dismissed.
+                return
+            }
             // Loosing self is a valid use case here. We might have been dismissed.
             DispatchQueue.main.async {
-                self?.tableView.refreshControl?.endRefreshing()
+                // We intentionally do NOT use me.tableView.refreshControl?.endRefreshing() here.
+                // See comments in `setupRefreshControl` for details.
+                me.refreshController.endRefreshing()
             }
         }
     }
@@ -926,6 +949,12 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
 
     func select(itemAt indexPath: IndexPath) {
+        guard !onlySplitViewMasterIsShown else {
+            // We want to follow EmailDetailViewSelection only if it is shown at the same time (if
+            // master/EmailList_and_ detail/EmailDetail views are both currently shown).
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
+        }
         tableView.selectRow(at: indexPath,
                             animated: false,
                             scrollPosition: .none)
@@ -960,12 +989,15 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
-    func emailListViewModel(viewModel: EmailDisplayViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
+    func emailListViewModel(viewModel: EmailDisplayViewModel,
+                            didUpdateDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.reloadRows(at: indexPaths, with: .none)
     }
 
-    func emailListViewModel(viewModel: EmailDisplayViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath) {
+    func emailListViewModel(viewModel: EmailDisplayViewModel,
+                            didMoveData atIndexPath: IndexPath,
+                            toIndexPath: IndexPath) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.moveRow(at: atIndexPath, to: toIndexPath)
         moveSelectionIfNeeded(fromIndexPath: atIndexPath, toIndexPath: toIndexPath)

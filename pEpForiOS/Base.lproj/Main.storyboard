@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -181,9 +181,9 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="1Oj-l2-jRA" firstAttribute="top" secondItem="gL5-KI-75G" secondAttribute="top" id="4Or-xd-tQ2"/>
                             <constraint firstItem="gL5-KI-75G" firstAttribute="trailing" secondItem="1Oj-l2-jRA" secondAttribute="trailing" id="7Aa-HN-69F"/>
                             <constraint firstItem="gL5-KI-75G" firstAttribute="bottom" secondItem="1Oj-l2-jRA" secondAttribute="bottom" id="BVY-Ij-lOg"/>
+                            <constraint firstItem="1Oj-l2-jRA" firstAttribute="top" secondItem="gL5-KI-75G" secondAttribute="top" id="daB-yH-vL8"/>
                             <constraint firstItem="1Oj-l2-jRA" firstAttribute="leading" secondItem="gL5-KI-75G" secondAttribute="leading" id="jIi-mK-9Wc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gL5-KI-75G"/>
@@ -513,7 +513,7 @@
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                            <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES" shipmentTrackingNumber="YES"/>
+                                            <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES" shipmentTrackingNumber="YES" flightNumber="YES"/>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="rect" keyPath="textContainerInset">
                                                     <rect key="value" x="0.0" y="0.0" width="0.0" height="0.0"/>
@@ -984,9 +984,9 @@
         <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="g1q-wK-tff"/>
-        <segue reference="Gcx-48-ZRF"/>
-        <segue reference="0Yg-lj-kVR"/>
+        <segue reference="RTR-We-Kc1"/>
+        <segue reference="0zl-tV-6Kr"/>
+        <segue reference="1zD-EW-3fN"/>
         <segue reference="HHz-at-Ehg"/>
     </inferredMetricsTieBreakers>
 </document>
