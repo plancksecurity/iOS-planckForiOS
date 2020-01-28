@@ -43,6 +43,7 @@ class EmailDetailViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setup()
     }
 
@@ -147,6 +148,7 @@ class EmailDetailViewController: BaseViewController {
 extension EmailDetailViewController {
 
     private func setup() {
+
         viewModel?.delegate = self
         setupCollectionView()
         registerNotifications()
