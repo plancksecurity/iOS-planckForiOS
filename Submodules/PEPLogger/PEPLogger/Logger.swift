@@ -28,7 +28,8 @@ public class Logger: NSObject {
     private override init(){}
 
     /// Types of logging modes.
-    @objc public enum Mode: Int {
+    @objc
+    public enum Mode: Int {
         case normal, verbose
     }
 
