@@ -39,7 +39,6 @@ final class SettingsViewModel {
 
     weak var delegate : SettingsViewControllerDelegate?
     typealias SwitchBlock = ((Bool) -> Void)
-    //typealias ActionBlock = ((IndexPath) -> Void)
     typealias ActionBlock = (() -> Void)
     typealias AlertActionBlock = (() -> ())
 
@@ -51,15 +50,16 @@ final class SettingsViewModel {
         var footer: String?
         /// list of rows in the section
         var rows: [SettingsRowProtocol]
+        /// type of the section
+        var type: SectionType
     
         static func == (lhs: SettingsViewModel.Section, rhs: SettingsViewModel.Section) -> Bool {
-// !!!:            missing row equal
             return (lhs.title == rhs.title && lhs.footer == rhs.footer)
         }
     }
 
     /// Struct that is used to perform an action. represents a ActionRow in settingsTableViewController
-    struct ActionRow: SettingsRowProtocol, Equatable {
+    struct ActionRow: SettingsRowProtocol {
         /// The type of the row.
         var identifier: SettingsViewModel.Row
         /// Title of the action row
@@ -68,13 +68,8 @@ final class SettingsViewModel {
         var isDangerous: Bool = false
         /// Block that will be executed when action cell is pressed
         var action: ActionBlock?
-        
-        static func == (lhs: SettingsViewModel.ActionRow, rhs: SettingsViewModel.ActionRow) -> Bool {
-// !!!:           missing row action
-            return lhs.title == rhs.title && lhs.identifier == rhs.identifier && lhs.isDangerous == rhs.isDangerous
-        }
     }
-
+    
     /// Struct that is used to perform a show detail action. represents a NavicationRow in SettingsTableViewController
     struct NavigationRow: SettingsRowProtocol {
         /// The type of the row.
@@ -208,23 +203,28 @@ final class SettingsViewModel {
     private func generateSections() {
         items.append(Section(title: sectionTitles(type: .accounts),
                              footer: sectionFooter(type: .accounts),
-                             rows: generateRows(type: .accounts)))
+                             rows: generateRows(type: .accounts),
+                             type: .accounts))
 
         items.append(Section(title: sectionTitles(type: .globalSettings),
                              footer: sectionFooter(type: .globalSettings),
-                             rows: generateRows(type: .globalSettings)))
+                             rows: generateRows(type: .globalSettings),
+                             type: .globalSettings))
 
         items.append(Section(title: sectionTitles(type: .pEpSync),
                              footer: sectionFooter(type: .pEpSync),
-                             rows: generateRows(type: .pEpSync)))
+                             rows: generateRows(type: .pEpSync),
+                             type: .pEpSync))
 
         items.append(Section(title: sectionTitles(type: .contacts),
                              footer: sectionFooter(type: .contacts),
-                             rows: generateRows(type: .contacts)))
+                             rows: generateRows(type: .contacts),
+                             type: .contacts))
 
         items.append(Section(title: sectionTitles(type: .companyFeatures),
                              footer: sectionFooter(type: .companyFeatures),
-                             rows: generateRows(type: .companyFeatures)))
+                             rows: generateRows(type: .companyFeatures),
+                             type: .companyFeatures))
     }
 
     /// This method generates all the rows for the section type passed
@@ -238,15 +238,21 @@ final class SettingsViewModel {
                 var accountRow = ActionRow(identifier: .account, title: acc.user.address,
                                            isDangerous: false)
                 accountRow.action = { [weak self] in
-                                            guard let me = self else {
-                                                Log.shared.errorAndCrash(message: "Lost myself")
-                                                return
-                                            }
-                                            //Delete the account
-                                            me.delete(account: acc)
-//                    !!!: remove 0 and use type of SectionType to find and remove the row
-                    me.items[0].rows = me.items[0].rows.filter {$0.title != accountRow.title }
-                                    }
+                    guard let me = self else {
+                        Log.shared.errorAndCrash(message: "Lost myself")
+                        return
+                    }
+                    me.delete(account: acc)
+                    
+                    guard let section = me.items.first(where: { (section) -> Bool in
+                        return section.type == type
+                    }), let index = me.items.firstIndex(of: section) else {
+                        Log.shared.error("section lost")
+                        return
+                    }
+                    
+                    me.items[index].rows = section.rows.filter { $0.title != accountRow.title }
+                }
                 rows.append(accountRow)
             }
             rows.append(generateActionRow(type: .resetAccounts, isDangerous: true) { [weak self] in
@@ -262,7 +268,8 @@ final class SettingsViewModel {
             rows.append(generateNavigationRow(type: .credits, isDangerous: false))
             rows.append(generateNavigationRow(type: .trustedServer, isDangerous: false))
             rows.append(generateNavigationRow(type: .setOwnKey, isDangerous: false))
-            rows.append(generateSwitchRow(type: .passiveMode, isDangerous: false, isOn: passiveModeStatus) { [weak self] (value) in
+            rows.append(generateSwitchRow(type: .passiveMode, isDangerous: false,
+                                          isOn: passiveModeStatus) { [weak self] (value) in
                 guard let me = self else {
                     Log.shared.errorAndCrash(message: "Lost myself")
                     return
