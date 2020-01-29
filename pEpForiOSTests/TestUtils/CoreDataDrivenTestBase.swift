@@ -40,7 +40,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
 
         imapConnectInfo = cdAccount.imapConnectInfo
         smtpConnectInfo = cdAccount.smtpConnectInfo
-        imapConnection = ImapConnection(emailConnectInfo: imapConnectInfo)
+        imapConnection = ImapConnection(connectInfo: imapConnectInfo)
 
         XCTAssertNotNil(imapConnectInfo)
         XCTAssertNotNil(smtpConnectInfo)
