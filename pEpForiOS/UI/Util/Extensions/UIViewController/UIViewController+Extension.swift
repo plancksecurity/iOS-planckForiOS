@@ -41,7 +41,8 @@ extension UIViewController {
 
             let imgView = UIImageView(image: img)
             imgView.translatesAutoresizingMaskIntoConstraints = false
-            imgView.heightAnchor.constraint(equalTo: imgView.widthAnchor).isActive = true
+            let aspectRatio = imgView.aspectRatio()
+            imgView.heightAnchor.constraint(equalTo: imgView.widthAnchor, multiplier: 1.0/aspectRatio).isActive = true
 
             let badgeView = UIView()
             badgeView.translatesAutoresizingMaskIntoConstraints = false
@@ -55,6 +56,8 @@ extension UIViewController {
             imgView.centerYAnchor.constraint(equalTo: badgeView.centerYAnchor).isActive = true
             imgView.heightAnchor.constraint(lessThanOrEqualTo: badgeView.heightAnchor,
                                             constant: -imagePadding).isActive = true
+            imgView.heightAnchor.constraint(greaterThanOrEqualToConstant: 55).isActive = true
+
             imgView.widthAnchor.constraint(lessThanOrEqualTo: badgeView.widthAnchor,
                                            constant: -imagePadding).isActive = true
 

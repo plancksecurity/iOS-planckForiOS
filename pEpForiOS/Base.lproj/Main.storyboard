@@ -115,7 +115,7 @@
                                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="translatesAutoresizingMaskIntoConstraints" value="NO"/>
                                                                     </userDefinedRuntimeAttributes>
                                                                 </imageView>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" image="pEp-status-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="gja-fY-c60">
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" image="pEp-status-yellow_white-border" translatesAutoresizingMaskIntoConstraints="NO" id="gja-fY-c60">
                                                                     <rect key="frame" x="15" y="15" width="20" height="20"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -978,7 +978,7 @@
         <image name="folders-icon-folder" width="25" height="25"/>
         <image name="folders-icon-trash" width="25" height="25"/>
         <image name="icon-unflagged" width="33" height="64"/>
-        <image name="pEp-status-yellow" width="50" height="44"/>
+        <image name="pEp-status-yellow_white-border" width="21" height="21"/>
         <image name="reply" width="33" height="64"/>
         <image name="separator_pixel_grey" width="1" height="1"/>
         <image name="unread-icon" width="25" height="25"/>
