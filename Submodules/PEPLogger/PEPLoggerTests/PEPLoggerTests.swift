@@ -9,28 +9,24 @@
 import XCTest
 @testable import PEPLogger
 
+/// Use logMessageTester and logErrorTester to test all loggs.
 /// For DEBUG only.
 final class LoggerTest: XCTestCase {
+    // Unique message is generated on each call
+    private var message: String {
+        let currentDate = Date()
+        return "Test message to log " + LoggerTest.dateFormater.string(from: currentDate)
+    }
 
-    private var actual: State?
-    private var expected: State?
+    // All errors have the same date in description. But different date from previous builds
+    private let error = TestError.testError
 
-    //Message to test log
-    private let messageToLog = "Test message to log"
-    //Error to test log
-    private let errorToLog = TestError.testError
+    static private let dateFormater = DateFormatter()
 
     override func setUp() {
         super.setUp()
-
-        setDefaultActualState()
-    }
-
-    override func tearDown() {
-        actual = nil
-        expected = nil
-
-        super.tearDown()
+        Logger.shared.mode = .normal //default mode
+        LoggerTest.dateFormater.dateFormat = "y-MM-dd H:m:ss.SSSS"
     }
 
     /// Singleton test
@@ -57,32 +53,72 @@ final class LoggerTest: XCTestCase {
         XCTAssertNotEqual(Logger.shared.mode, initialValue)
     }
 
-    /// <#Description#>
-    func testdebug(){
+    func testLog() {
         // GIVEN
-        Logger.shared.mode = .normal
-        guard let errorDescription = errorToLog.errorDescription else {
-            XCTFail()
-            return
-        }
+        let oldLog = Logger.shared.log
+
 
         // WHEN
-        Logger.shared.debug(message: messageToLog)
-        Logger.shared.debug(error: errorToLog)
+        Logger.shared.error(error: error)
+        Logger.shared.error(message: message)
+        let newLog = Logger.shared.log
 
         // THEN
-        let log = Logger.shared.log
-        XCTAssertTrue(log.contains(messageToLog))
-        XCTAssertTrue(log.contains(#function))
-        XCTAssertTrue(log.contains(#file))
+        XCTAssertNotEqual(oldLog, newLog)
+        XCTAssertTrue(newLog.contains(oldLog))
+        XCTAssertFalse(oldLog.contains(newLog))
 
-        XCTAssertTrue(log.contains(errorDescription))
+        XCTAssertFalse(oldLog.contains(message))
+
+        XCTAssertTrue(newLog.contains(message))
     }
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testMessageDebug(){
+        logMessageTester(level: .debug, message: message)
+    }
+
+    func testErrorDebug() {
+        logErrorTester(level: .debug, error: error)
+    }
+
+    func testMessageInfo() {
+        logMessageTester(level: .info, message: message)
+    }
+
+    func testErrorInfo() {
+        logErrorTester(level: .info, error: error)
+    }
+
+    func testMessageWarn() {
+        logMessageTester(level: .warn, message: message)
+    }
+
+    func testErrorWarn() {
+        logErrorTester(level: .warn, error: error)
+    }
+
+    func testMessageError() {
+        logMessageTester(level: .error, message: message)
+    }
+
+    func testError() {
+        logErrorTester(level: .error, error: error)
+    }
+
+    func testErrorMessageAndCrash() {
+        logMessageTester(level: .errorAndCrash, message: message)
+    }
+
+    func testErrorAndCrash() {
+        logErrorTester(level: .errorAndCrash, error: error)
+    }
+
+    func testLogPerformance() {
+        for _ in 0 ..< 500 {
+            Logger.shared.error(message: message)
+        }
+        measure {
+            _ = Logger.shared.log
         }
     }
 }
@@ -90,20 +126,25 @@ final class LoggerTest: XCTestCase {
 // MARK: - Helping Structures
 
 extension LoggerTest {
-    /// State of the logger.
-    private struct State: Equatable {
-        var log: String = ""
-        var mode: Logger.Mode = .normal
+    enum LoggingLevel: String {
+        case debug = "pEp[DEBUG]"
+        case info = "pEp[INFO]"
+        case warn = "pEp[WARN]"
+        case error = "pEp[ERROR]"
+        case errorAndCrash = "pEp[ERRORandCRASH]"
     }
 
     /// Error to test log
     private enum TestError: Error, LocalizedError {
         case testError
 
+        static private let currentDate = Date()
+
         var errorDescription: String? {
             switch self {
             case .testError:
-                return "Test error description to log"
+                //Current date added to description to discern from older logs
+                return "Test error description to log " + dateFormater.string(from: LoggerTest.TestError.currentDate)
             }
         }
     }
@@ -112,7 +153,65 @@ extension LoggerTest {
 // MARK: - Private
 
 extension LoggerTest {
-    private func setDefaultActualState() {
-        actual = State()
+    private func logMessageTester(level: LoggingLevel, message: String) {
+        // GIVEN
+        var line: Int?
+
+        // WHEN
+        switch level {
+        case .debug:
+            Logger.shared.debug(message: message); line = #line //To test log line
+        case .info:
+            Logger.shared.info(message: message); line = #line //To test log line
+        case .warn:
+            Logger.shared.warn(message: message); line = #line //To test log line
+        case .error:
+            Logger.shared.error(message: message); line = #line //To test log line
+        case .errorAndCrash:
+            Logger.shared.errorAndCrash(message: message); line = #line //To test log line
+        }
+
+        // THEN
+        let log = Logger.shared.log
+        XCTAssertTrue(log.contains("\(level.rawValue) \(message) (\(#file):\(calledLine(line)) - \(#function))"))
+    }
+
+    private func logErrorTester(level: LoggingLevel, error: Error) {
+        // GIVEN
+        var line: Int? //To test logged line
+
+        // WHEN
+        switch level {
+        case .debug:
+            Logger.shared.debug(error: error); line = #line
+        case .info:
+            Logger.shared.info(error: error); line = #line
+        case .warn:
+            Logger.shared.warn(error: error); line = #line
+        case .error:
+            Logger.shared.error(error: error); line = #line
+        case .errorAndCrash:
+            Logger.shared.errorAndCrash(error: error); line = #line
+        }
+
+        // THEN
+        let log = Logger.shared.log
+        XCTAssertTrue(log.contains("\(level.rawValue) \(error.localizedDescription) (\(#file):\(calledLine(line)) - \(#function))"))
+    }
+
+    private var errorDescription: String {
+        guard let errorDescription = error.errorDescription else {
+            XCTFail()
+            return "" // no errorDescription, test failed
+        }
+        return errorDescription
+    }
+
+    func calledLine(_ line: Int?) -> Int {
+        guard let line = line else {
+            XCTFail()
+            return -1 // no line, test failed
+        }
+        return line
     }
 }
