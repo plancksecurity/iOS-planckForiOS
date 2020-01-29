@@ -57,7 +57,6 @@ final class LoggerTest: XCTestCase {
         // GIVEN
         let oldLog = Logger.shared.log
 
-
         // WHEN
         Logger.shared.error(error: error)
         Logger.shared.error(message: message)
@@ -126,14 +125,6 @@ final class LoggerTest: XCTestCase {
 // MARK: - Helping Structures
 
 extension LoggerTest {
-    enum LoggingLevel: String {
-        case debug = "pEp[DEBUG]"
-        case info = "pEp[INFO]"
-        case warn = "pEp[WARN]"
-        case error = "pEp[ERROR]"
-        case errorAndCrash = "pEp[ERRORandCRASH]"
-    }
-
     /// Error to test log
     private enum TestError: Error, LocalizedError {
         case testError
@@ -143,7 +134,6 @@ extension LoggerTest {
         var errorDescription: String? {
             switch self {
             case .testError:
-                //Current date added to description to discern from older logs
                 return "Test error description to log " + dateFormater.string(from: LoggerTest.TestError.currentDate)
             }
         }
@@ -153,7 +143,7 @@ extension LoggerTest {
 // MARK: - Private
 
 extension LoggerTest {
-    private func logMessageTester(level: LoggingLevel, message: String) {
+    private func logMessageTester(level: Logger.Level, message: String) {
         // GIVEN
         var line: Int?
 
@@ -176,7 +166,7 @@ extension LoggerTest {
         XCTAssertTrue(log.contains("\(level.rawValue) \(message) (\(#file):\(calledLine(line)) - \(#function))"))
     }
 
-    private func logErrorTester(level: LoggingLevel, error: Error) {
+    private func logErrorTester(level: Logger.Level, error: Error) {
         // GIVEN
         var line: Int? //To test logged line
 
