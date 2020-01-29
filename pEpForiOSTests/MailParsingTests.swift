@@ -25,7 +25,7 @@ class MailParsingTests: CoreDataDrivenTestBase {
         cdMyAccount.identity?.address = "iostest002@peptest.ch"
 
         let cdInbox = CdFolder(context: moc)
-        cdInbox.name = ImapConnection.defaultImapInboxName
+        cdInbox.name = ImapConnection.defaultInboxName
         cdInbox.account = cdMyAccount
         moc.saveAndLogErrors()
 

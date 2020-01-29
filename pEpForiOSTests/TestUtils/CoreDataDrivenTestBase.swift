@@ -62,7 +62,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
         let opLogin = LoginImapOperation(parentName: parentName, imapConnection: imapConnection)
         let op = FetchMessagesInImapFolderOperation(parentName: parentName,
                                                     imapConnection: imapConnection,
-                                                    folderName: ImapConnection.defaultImapInboxName)
+                                                    folderName: ImapConnection.defaultInboxName)
         op.addDependency(opLogin)
         op.completionBlock = {
             op.completionBlock = nil

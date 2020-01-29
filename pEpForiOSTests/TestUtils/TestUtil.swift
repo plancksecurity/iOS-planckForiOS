@@ -355,7 +355,7 @@ class TestUtil {
             cdMyAccount.identity = cdMySelfIdentity
 
             let cdInbox = CdFolder(context: context)
-            cdInbox.name = ImapConnection.defaultImapInboxName
+            cdInbox.name = ImapConnection.defaultInboxName
             cdInbox.account = cdMyAccount
 
             guard let pantFrom = pantomimeMail.from() else {
@@ -434,7 +434,7 @@ class TestUtil {
 
         let pantomimeMail = CWIMAPMessage(data: msgTxtData, charset: "UTF-8")
         pantomimeMail?.setUID(5) // some random UID out of nowhere
-        pantomimeMail?.setFolder(CWIMAPFolder(name: ImapConnection.defaultImapInboxName))
+        pantomimeMail?.setFolder(CWIMAPFolder(name: ImapConnection.defaultInboxName))
 
         return pantomimeMail
     }
