@@ -20,7 +20,7 @@ SettingsViewControllerDelegate {
     static let storyboardId = "SettingsTableViewController"
     private weak var activityIndicatorView: UIActivityIndicatorView?
     
-    lazy var viewModel = SettingsViewModel()
+    lazy var viewModel = SettingsViewModel(delegate: self)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,7 +115,7 @@ SettingsViewControllerDelegate {
             }
             
             present(alert, animated: true)
-//            tableView.deselectRow(at: indexPath, animated: true)
+            tableView.deselectRow(at: indexPath, animated: true)
         default:
             performSegue(withIdentifier: identifier.rawValue, sender: indexPath)
         }
@@ -218,9 +218,6 @@ SettingsViewControllerDelegate {
             }
             action()
             me.tableView.beginUpdates()
-            //            if let pEpSyncSection = me.viewModelv2.pEpSyncSection() {
-            //                me.tableView.reloadSections([pEpSyncSection], with: UITableView.RowAnimation.none)
-            //            }
             me.tableView.deleteRows(at: [indexPath], with: .fade)
             me.tableView.endUpdates()
             me.checkAccounts()
@@ -269,14 +266,6 @@ extension SettingsTableViewController {
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
         let title = NSLocalizedString("Extra Keys Editable", comment: "Extra Keys Editable")
         UIUtils.showAlertWithOnlyPositiveButton(title:title, message: newValue, inViewController: self)
-    }
-    
-    func showpEpSyncLeaveGroupAlert() {
-        
-    }
-    
-    func showResetIdentitiesAlert() {
-        
     }
 }
 
@@ -349,8 +338,6 @@ extension SettingsTableViewController {
              .protectMessageSubject,
              .pEpSync,
              .resetAccounts:
-            // TOD: add log for this.
-            // let message = "No configuration to apply before segue \(segueIdentifier)";
             break
         }
     }

@@ -12,10 +12,6 @@ import pEpIOSToolbox
 
 ///Delegate protocol to communicate to the SettingsTableViewController some special actions.
 protocol SettingsViewControllerDelegate: class {
-    /// shows an alert to the user to inform that will leave the group
-    func showpEpSyncLeaveGroupAlert()
-    /// Shows an alert to the user to inform that all identities will be reseted
-    func showResetIdentitiesAlert()
     /// Shows the loading
     func showLoadingView()
     /// Hides the loading
@@ -134,7 +130,8 @@ final class SettingsViewModel {
     }
 
     /// Constructor for SettingsViewModel
-    init() {
+    init(delegate: SettingsViewControllerDelegate) {
+        self.delegate = delegate
         setup()
     }
 
