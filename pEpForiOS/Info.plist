@@ -72,6 +72,7 @@
 	<array>
 		<string>UniversLTStd.otf</string>
 		<string>UniversLTStd-Bold.otf</string>
+		<string>SFUIText-Regular.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
