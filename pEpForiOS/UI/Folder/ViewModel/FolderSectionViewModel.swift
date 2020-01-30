@@ -48,10 +48,8 @@ public class FolderSectionViewModel {
     private func calculateChildFolder(root folder: Folder, level: Int) {
         let sorted = folder.subFolders().sorted()
         for subFolder in sorted {
-            if subFolder.folderType != .pEpSync { // Don't show the sync folder
-                items.append(FolderCellViewModel(folder: subFolder, level: level))
-                calculateChildFolder(root: subFolder, level: level + 1)
-            }
+            items.append(FolderCellViewModel(folder: subFolder, level: level))
+            calculateChildFolder(root: subFolder, level: level + 1)
         }
     }
 
@@ -101,4 +99,3 @@ public class FolderSectionViewModel {
         return self.items.count
     }
 }
-
