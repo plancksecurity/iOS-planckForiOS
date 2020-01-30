@@ -96,96 +96,93 @@ final class SettingsViewModel {
         self.delegate = delegate
         setup()
     }
+    
+    /// Wrapper method to know if there is no accounts associated.
+    /// Returns: True if there are no accounts.
+    public func noAccounts() -> Bool {
+        return Account.all().count <= 0
+    }
+    
+    /// Wrapper method to know if the device is in a group.
+    /// Returns: True if it is in a group.
+    public func isGrouped() -> Bool {
+        return KeySyncUtil.isInDeviceGroup
+    }
+
+    /// Returns the color of the title for the row passed. Red if the action is dangerous, nil otherwise.
+    /// - Parameter rowIdentifier: The identifier of the row type.
+    public func titleColor(rowIdentifier: Row) -> UIColor? {
+        switch rowIdentifier {
+        case .resetAccounts, .resetTrust:
+            return .pEpRed
+        default:
+            return nil
+        }
+    }
+    
+    /// Returns the account setted at the the row of the provided indexPath
+    /// - Parameter indexPath: The index path to get the account
+    public func account(at indexPath : IndexPath) -> Account? {
+        let accounts = Account.all()
+        if accounts.count > indexPath.row {
+            return accounts[indexPath.row]
+        }
+        return nil
+    }
+    
+    /// Deletes the row at the passed index Path
+    /// - Parameter indexPath: The index Path to
+    public func deleteRowAt(_ indexPath: IndexPath) {
+        items[indexPath.section].rows.remove(at: indexPath.row)
+    }
+    
+    /// Handle the tap gesture triggered on the ExtraKeys cell.
+    public func handleExtraKeysEditabilityGestureTriggered() {
+        let newValue = !AppSettings.shared.extraKeysEditable
+        AppSettings.shared.extraKeysEditable = newValue
+        
+        delegate?.showExtraKeyEditabilityStateChangeAlert(newValue: newValue ? "ON" : "OFF")
+    }
+}
 
     // MARK: - Private
-    
-    /// Identifies the section in the table view.
-    enum SectionType : CaseIterable {
-        case accounts
-        case globalSettings
-        case pEpSync
-        case contacts
-        case companyFeatures
-    }
 
-    //Identifies visually the type of row.
-    enum RowType {
-        case action
-        case swipe
-        case navigation
-        case all
-    }
+extension SettingsViewModel {
     
-    //Identifies semantically the type of row.
-    enum Row {
-        case account
-        case resetAccounts
-        case defaultAccount
-        case credits
-        case trustedServer
-        case setOwnKey
-        case passiveMode
-        case protectMessageSubject
-        case pEpSync
-        case accountsToSync
-        case resetTrust
-        case extraKeys
-    }
-    
-    /// Identifier of the segues.
-    enum SegueIdentifier: String {
-        case segueAddNewAccount
-        case segueEditAccount
-        case segueShowSettingDefaultAccount
-        case sequeShowCredits
-        case segueShowSettingTrustedServers
-        case segueExtraKeys
-        case segueSetOwnKey
-        case seguePerAccountSync
-        case noAccounts
-        case ResetTrustSplitView
-        case ResetTrust
-        case noSegue
-        case passiveMode
-        case protectMessageSubject
-        case pEpSync
-        case resetAccounts
-    }
-
     /// This method sets up the settings view.
     /// Only this method should be called from the constructor.
     private func setup() {
         generateSections()
     }
-
+    
     /// This method generates all the sections for the settings view.
     private func generateSections() {
         items.append(Section(title: sectionTitles(type: .accounts),
                              footer: sectionFooter(type: .accounts),
                              rows: generateRows(type: .accounts),
                              type: .accounts))
-
+        
         items.append(Section(title: sectionTitles(type: .globalSettings),
                              footer: sectionFooter(type: .globalSettings),
                              rows: generateRows(type: .globalSettings),
                              type: .globalSettings))
-
+        
         items.append(Section(title: sectionTitles(type: .pEpSync),
                              footer: sectionFooter(type: .pEpSync),
                              rows: generateRows(type: .pEpSync),
                              type: .pEpSync))
-
+        
         items.append(Section(title: sectionTitles(type: .contacts),
                              footer: sectionFooter(type: .contacts),
                              rows: generateRows(type: .contacts),
                              type: .contacts))
-
+        
         items.append(Section(title: sectionTitles(type: .companyFeatures),
                              footer: sectionFooter(type: .companyFeatures),
                              rows: generateRows(type: .companyFeatures),
                              type: .companyFeatures))
     }
-
+    
     /// This method generates all the rows for the section type passed
     /// - Parameter type: The type of the section to generate the rows.
     /// - Returns: An array with the settings rows. Every setting row must conform the SettingsRowProtocol.
@@ -219,7 +216,7 @@ final class SettingsViewModel {
                     Log.shared.errorAndCrash(message: "Lost myself")
                     return
                 }
-
+                
                 me.handleResetAllIdentities()
             })
         case .globalSettings:
@@ -229,11 +226,11 @@ final class SettingsViewModel {
             rows.append(generateNavigationRow(type: .setOwnKey, isDangerous: false))
             rows.append(generateSwitchRow(type: .passiveMode, isDangerous: false,
                                           isOn: passiveModeStatus) { [weak self] (value) in
-                guard let me = self else {
-                    Log.shared.errorAndCrash(message: "Lost myself")
-                    return
-                }
-                me.setPassiveMode(to: value)
+                                            guard let me = self else {
+                                                Log.shared.errorAndCrash(message: "Lost myself")
+                                                return
+                                            }
+                                            me.setPassiveMode(to: value)
             })
             rows.append(generateSwitchRow(type: .protectMessageSubject, isDangerous: false, isOn: protectedMessageStatus) { [weak self] (value) in
                 guard let me = self else {
@@ -258,7 +255,7 @@ final class SettingsViewModel {
         }
         return rows
     }
-
+    
     /// This method generates a Navigation Row
     /// - Parameters:
     ///   - type: The type of row to generate
@@ -271,7 +268,7 @@ final class SettingsViewModel {
         let subtile = rowSubtitle(type: type)
         return NavigationRow(identifier: type, title:rowTitle, subtitle: subtile, isDangerous: isDangerous)
     }
-
+    
     /// This method generates a Switch Row
     /// - Parameters:
     ///   - type: The type of row that needs to  generate
@@ -286,7 +283,7 @@ final class SettingsViewModel {
         }
         return SwitchRow(identifier: type, title: rowTitle, isDangerous: isDangerous, isOn: isOn, action: action)
     }
-
+    
     /// This method generates the action row.
     /// - Parameters:
     ///   - type: The type of row that needs to generate
@@ -300,7 +297,7 @@ final class SettingsViewModel {
         }
         return ActionRow(identifier: type, title: rowTitle, isDangerous: isDangerous, action: action)
     }
-
+    
     /// This method return the corresponding title for each section.
     /// - Parameter type: The section type to choose the proper title.
     /// - Returns: The title for the requested section.
@@ -318,7 +315,7 @@ final class SettingsViewModel {
             return NSLocalizedString("Enterprise Features", comment: "Tableview section header")
         }
     }
-
+    
     /// Thie method provides the title for the footer of each section.
     /// - Parameter type: The section type to get the proper title
     /// - Returns: The title of the footer. If the section is an account, a pepSync or the company features, it will be nil because there is no footer.
@@ -334,7 +331,7 @@ final class SettingsViewModel {
                                      comment: "TableView Contacts section footer")
         }
     }
-
+    
     /// Thie method provides the title for each cell, regarding its type.
     /// - Parameter type: The row type to get the proper title
     /// - Returns: The title of the row. If it's an account row, it will be nil and the name of the account should be used.
@@ -366,7 +363,7 @@ final class SettingsViewModel {
             return NSLocalizedString("Enable p≡p Sync", comment: "settings, enable thread view or not")
         }
     }
-
+    
     /// Thie method provides the subtitle if needed.
     /// - Parameter type: The row type to get the proper title
     /// - Returns: The subtitle of the row.
@@ -379,7 +376,7 @@ final class SettingsViewModel {
             return nil
         }
     }
-
+    
     ///This method sets the passive mode status according to the parameter value
     /// - Parameter value: The new value of the passive mode status
     private func setPassiveMode(to value: Bool) {
@@ -391,7 +388,7 @@ final class SettingsViewModel {
             AppSettings.shared.passiveMode
         }
     }
-
+    
     ///This method sets the Protect Message Subject status according to the parameter value
     /// - Parameter value: The new value of the Protect Message Subject status
     private func setProtectMessageSubject(to value: Bool) {
@@ -403,7 +400,7 @@ final class SettingsViewModel {
             AppSettings.shared.unencryptedSubjectEnabled
         }
     }
-
+    
     /// This method sets the pEp Sync status according to the parameter value
     /// - Parameter value: The new value of the pEp Sync status
     private func PEPSyncUpdate(to value: Bool) {
@@ -422,15 +419,12 @@ final class SettingsViewModel {
         }
     }
     
-    
     private var KeySyncStatus: Bool {
         get {
             AppSettings.shared.isKeySyncEnabled
         }
     }
     
-    
-
     ///This method deletes the account passed by parameter.
     /// It also updates the default account if necessary.
     /// - Parameter account: The account to be deleted
@@ -447,7 +441,7 @@ final class SettingsViewModel {
                 Log.shared.errorAndCrash("Fail to get account pEpSync state")
             }
         }
-
+        
         if AppSettings.shared.defaultAccount == nil ||
             AppSettings.shared.defaultAccount == oldAddress {
             let newDefaultAccount = Account.all().first
@@ -460,7 +454,7 @@ final class SettingsViewModel {
     }
     
     /// Handle method to respond to the reset all identities button.
-   private func handleResetAllIdentities() {
+    private func handleResetAllIdentities() {
         delegate?.showLoadingView()
         Account.resetAllOwnKeys() { [weak self] result in
             switch result {
@@ -474,59 +468,47 @@ final class SettingsViewModel {
             }
         }
     }
-    
-    /// Wrapper method to know if there is no accounts associated.
-    /// Returns: True if there are no accounts.
-    public func noAccounts() -> Bool {
-        return Account.all().count <= 0
-    }
-    
-    /// Wrapper method to know if the device is in a group.
-    /// Returns: True if it is in a group.
-    public func isGrouped() -> Bool {
-        return KeySyncUtil.isInDeviceGroup
-    }
+}
 
-    public func pEpSyncSection() -> Int? {
-        return SectionType.pEpSync.index
+/// Mark: - public enums
+
+extension SettingsViewModel {
+    /// Identifies the section in the table view.
+    public enum SectionType {
+        case accounts
+        case globalSettings
+        case pEpSync
+        case contacts
+        case companyFeatures
     }
     
-    /// Returns the color of the title for the row passed. Red if the action is dangerous, nil otherwise.
-    /// - Parameter rowIdentifier: The identifier of the row type.
-    public func titleColor(rowIdentifier: Row) -> UIColor? {
-        switch rowIdentifier {
-        case .resetAccounts, .resetTrust:
-            return .pEpRed
-        default:
-            return nil
-        }
-    }
-    
-    /// Returns the account setted at the the row of the provided indexPath
-    /// - Parameter indexPath: The index path to get the account
-    public func account(at indexPath : IndexPath) -> Account? {
-        let accounts = Account.all()
-        if accounts.count > indexPath.row {
-            return accounts[indexPath.row]
-        }
-        return nil
-    }
-    
-    /// Deletes the row at the passed index Path
-    /// - Parameter indexPath: The index Path to
-    public func deleteRowAt(_ indexPath: IndexPath) {
-        items[indexPath.section].rows.remove(at: indexPath.row)
+    //Identifies semantically the type of row.
+    public enum Row {
+        case account
+        case resetAccounts
+        case defaultAccount
+        case credits
+        case trustedServer
+        case setOwnKey
+        case passiveMode
+        case protectMessageSubject
+        case pEpSync
+        case accountsToSync
+        case resetTrust
+        case extraKeys
     }
 }
 
+/// Mark: - private enums
+
 extension SettingsViewModel {
     
-    /// Handle the tap gesture triggered on the ExtraKeys cell.
-    public func handleExtraKeysEditabilityGestureTriggered() {
-        let newValue = !AppSettings.shared.extraKeysEditable
-        AppSettings.shared.extraKeysEditable = newValue
-        
-        delegate?.showExtraKeyEditabilityStateChangeAlert(newValue: newValue ? "ON" : "OFF")
+    //Identifies visually the type of row.
+    private enum RowType {
+        case action
+        case swipe
+        case navigation
+        case all
     }
 }
 

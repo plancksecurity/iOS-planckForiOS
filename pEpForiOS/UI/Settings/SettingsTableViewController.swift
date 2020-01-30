@@ -11,7 +11,7 @@ import SwipeCellKit
 import pEpIOSToolbox
 
 protocol SwitchCellDelegate: class {
-    func didChange(to newValue: Bool, from cell: SettingSwitchTableViewCell)
+    func switchSettingCell(_ sender: SettingSwitchTableViewCell, didChangeSwitchStateTo newValue: Bool)
 }
 
 class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate,
@@ -273,43 +273,63 @@ extension SettingsTableViewController {
 
 extension SettingsTableViewController {
     
+    /// Identifier of the segues.
+    enum SegueIdentifier: String {
+        case segueAddNewAccount
+        case segueEditAccount
+        case segueShowSettingDefaultAccount
+        case sequeShowCredits
+        case segueShowSettingTrustedServers
+        case segueExtraKeys
+        case segueSetOwnKey
+        case seguePerAccountSync
+        case noAccounts
+        case ResetTrustSplitView
+        case ResetTrust
+        case noSegue
+        case passiveMode
+        case protectMessageSubject
+        case pEpSync
+        case resetAccounts
+    }
+    
     /// Provides the segue identifier for the cell in the passed index path
     /// - Parameter indexPath: The index Path of the cell to get the segue identifier.
     /// - Returns: The segue identifier. If there is no segue to perform, it returns `noSegue`
-    func segueIdentifier(for indexPath : IndexPath) -> SettingsViewModel.SegueIdentifier {
+    func segueIdentifier(for indexPath : IndexPath) -> SegueIdentifier {
         let row : SettingsRowProtocol = viewModel.section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
         case .account:
-            return SettingsViewModel.SegueIdentifier.segueEditAccount
+            return .segueEditAccount
         case .defaultAccount:
-            return SettingsViewModel.SegueIdentifier.segueShowSettingDefaultAccount
+            return .segueShowSettingDefaultAccount
         case .credits:
-            return SettingsViewModel.SegueIdentifier.sequeShowCredits
+            return .sequeShowCredits
         case .trustedServer:
-            return SettingsViewModel.SegueIdentifier.segueShowSettingTrustedServers
+            return .segueShowSettingTrustedServers
         case .setOwnKey:
-            return SettingsViewModel.SegueIdentifier.segueSetOwnKey
+            return .segueSetOwnKey
         case .accountsToSync:
-            return SettingsViewModel.SegueIdentifier.seguePerAccountSync
+            return .seguePerAccountSync
         case .resetTrust:
-            return SettingsViewModel.SegueIdentifier.ResetTrust
+            return .ResetTrust
         case .extraKeys:
-            return SettingsViewModel.SegueIdentifier.segueExtraKeys
+            return .segueExtraKeys
         case .passiveMode:
-            return SettingsViewModel.SegueIdentifier.passiveMode
+            return .passiveMode
         case .protectMessageSubject:
-            return SettingsViewModel.SegueIdentifier.protectMessageSubject
+            return .protectMessageSubject
         case .pEpSync:
-            return SettingsViewModel.SegueIdentifier.pEpSync
+            return .pEpSync
         case .resetAccounts:
-            return SettingsViewModel.SegueIdentifier.resetAccounts
+            return .resetAccounts
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let segueIdentifier = segue.identifier else { return }
         
-        switch SettingsViewModel.SegueIdentifier(rawValue: segueIdentifier) {
+        switch SegueIdentifier(rawValue: segueIdentifier) {
         case .segueEditAccount:
             guard let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? AccountSettingsTableViewController,
@@ -416,12 +436,9 @@ extension SettingsTableViewController {
         
         alert?.add(action: cancelAction)
         
-        let disableAction = PEPUIAlertAction(title: NSLocalizedString("Disable", comment: "keysync alert leave device group disable"),
-                                             style: .pEpRed) { [weak self] _ in
-                                                guard let me = self else {
-                                                    Log.shared.errorAndCrash(message: "lost myself")
-                                                    return
-                                                }
+        let disableAction = PEPUIAlertAction(title: NSLocalizedString("Disable",
+                                                                      comment: "keysync alert leave device group disable"),
+                                             style: .pEpRed) { _ in
                                                 action(newValue)
         }
         alert?.add(action: disableAction)
@@ -430,8 +447,9 @@ extension SettingsTableViewController {
 }
 
 extension SettingsTableViewController: SwitchCellDelegate {
-    func didChange(to newValue: Bool, from cell: SettingSwitchTableViewCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else {
+    func switchSettingCell(_ sender: SettingSwitchTableViewCell,
+                           didChangeSwitchStateTo newValue: Bool) {
+        guard let indexPath = tableView.indexPath(for: sender) else {
             Log.shared.error("The switch cell can't be found")
             return
         }
@@ -442,9 +460,10 @@ extension SettingsTableViewController: SwitchCellDelegate {
         }
         if row.identifier == SettingsViewModel.Row.pEpSync {
             if viewModel.isGrouped() {
-                guard let alertToShow = showpEpSyncLeaveGroupAlert(action: row.action, newValue: newValue) else {
-                    Log.shared.error("alert lost")
-                    return
+                guard let alertToShow = showpEpSyncLeaveGroupAlert(action: row.action,
+                                                                   newValue: newValue) else {
+                                                                    Log.shared.error("alert lost")
+                                                                    return
                 }
                 present(alertToShow, animated: true)
             } else {

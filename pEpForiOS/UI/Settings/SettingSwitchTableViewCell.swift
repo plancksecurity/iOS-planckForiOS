@@ -17,6 +17,6 @@ class SettingSwitchTableViewCell: UITableViewCell {
     weak var delegate: SwitchCellDelegate?
 
     @IBAction func switchChanged(_ sender: Any) {
-        delegate?.didChange(to: switchItem.isOn, from: self)
+        delegate?.switchSettingCell(self, didChangeSwitchStateTo: switchItem.isOn)
     }
 }
