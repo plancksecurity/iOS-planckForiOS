@@ -84,6 +84,7 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
             me.doOnce = nil
         }
         setup()
+        setUpTextFilter()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -104,7 +105,7 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
             doOnce?()
         }
 
-        setUpTextFilter()
+        updateFilterText()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
