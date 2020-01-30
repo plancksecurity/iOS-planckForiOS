@@ -175,11 +175,12 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
         textFilterButton.action = #selector(showFilterOptions(_:))
         textFilterButton.target = self
 
-        let fontSize:CGFloat = 10;
-        let font:UIFont = UIFont.boldSystemFont(ofSize: fontSize);
-        let attributes = [NSAttributedString.Key.font: font];
+        let fontSize:CGFloat = 10
+        let font:UIFont = UIFont.boldSystemFont(ofSize: fontSize)
+        let attributes = [NSAttributedString.Key.font: font]
 
         textFilterButton.setTitleTextAttributes(attributes, for: UIControl.State.normal)
+        textFilterButton.setTitleTextAttributes(attributes, for: UIControl.State.selected)
     }
 
     // MARK: - Search Bar
