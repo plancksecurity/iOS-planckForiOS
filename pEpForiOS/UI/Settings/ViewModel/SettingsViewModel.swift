@@ -11,7 +11,7 @@ import MessageModel
 import pEpIOSToolbox
 
 ///Delegate protocol to communicate to the SettingsTableViewController some special actions.
-protocol SettingsViewControllerDelegate: class {
+protocol SettingsViewModelDelegate: class {
     /// Shows the loading
     func showLoadingView()
     /// Hides the loading
@@ -33,7 +33,7 @@ protocol SettingsRowProtocol {
 /// View Model for SettingsTableViewController
 final class SettingsViewModel {
 
-    weak var delegate : SettingsViewControllerDelegate?
+    weak var delegate : SettingsViewModelDelegate?
     typealias SwitchBlock = ((Bool) -> Void)
     typealias ActionBlock = (() -> Void)
     typealias AlertActionBlock = (() -> ())
@@ -54,49 +54,11 @@ final class SettingsViewModel {
         }
     }
 
-    /// Struct that is used to perform an action. represents a ActionRow in settingsTableViewController
-    struct ActionRow: SettingsRowProtocol {
-        /// The type of the row.
-        var identifier: SettingsViewModel.Row
-        /// Title of the action row
-        var title: String
-        /// Indicates if the action to be performed is dangerous.
-        var isDangerous: Bool = false
-        /// Block that will be executed when action cell is pressed
-        var action: ActionBlock?
-    }
-    
-    /// Struct that is used to perform a show detail action. represents a NavicationRow in SettingsTableViewController
-    struct NavigationRow: SettingsRowProtocol {
-        /// The type of the row.
-        var identifier: SettingsViewModel.Row
-        /// Title of the action row
-        var title: String
-        /// subtitle for a navigation row
-        var subtitle: String?
-        /// Indicates if the action to be performed is dangerous.
-        var isDangerous: Bool = false
-    }
-
-    /// Struct that is used to show and interact with a switch. represents a SwitchRow in settingsTableViewController
-    struct SwitchRow: SettingsRowProtocol {
-        //The row type
-        var identifier: SettingsViewModel.Row
-        //The title of the swith row
-        var title: String
-        //Indicates if the action to be performed is dangerous
-        var isDangerous: Bool
-        /// Value of the switch
-        var isOn: Bool
-        /// action to be executed when switch toggle
-        var action: SwitchBlock
-    }
-
     /// Items to be displayed in a SettingsTableViewController
     private (set) var items: [Section] = [Section]()
 
     /// Number of elements in items
-    var count: Int {
+    public var count: Int {
         get {
             return items.count
         }
@@ -104,19 +66,19 @@ final class SettingsViewModel {
 
     /// Access method to get the sections
     /// - Parameter indexPath: IndexPath of the requested section
-    func section(for indexPath: IndexPath) -> Section {
+    public func section(for indexPath: IndexPath) -> Section {
         return items[indexPath.section]
     }
 
     ///Access method to get the sections
-    func section(for sectionNumber: Int) -> Section {
+    public func section(for sectionNumber: Int) -> Section {
         return items[sectionNumber]
     }
 
     /// Returns the cell identifier based on the index path.
     /// There are 3 cells. SettingsCell, SettingsActionCell, SwitchOptionCell.
     /// - Parameter indexPath: indexPath of the Cell.
-    func cellIdentifier(for indexPath: IndexPath) -> String {
+    public func cellIdentifier(for indexPath: IndexPath) -> String {
         let row = section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
         case .account, .defaultAccount, .setOwnKey, .credits, .extraKeys, .trustedServer,
@@ -130,7 +92,7 @@ final class SettingsViewModel {
     }
 
     /// Constructor for SettingsViewModel
-    init(delegate: SettingsViewControllerDelegate) {
+    public init(delegate: SettingsViewModelDelegate) {
         self.delegate = delegate
         setup()
     }
@@ -498,7 +460,7 @@ final class SettingsViewModel {
     }
     
     /// Handle method to respond to the reset all identities button.
-    func handleResetAllIdentities() {
+   private func handleResetAllIdentities() {
         delegate?.showLoadingView()
         Account.resetAllOwnKeys() { [weak self] result in
             switch result {
@@ -515,23 +477,23 @@ final class SettingsViewModel {
     
     /// Wrapper method to know if there is no accounts associated.
     /// Returns: True if there are no accounts.
-    func noAccounts() -> Bool {
+    public func noAccounts() -> Bool {
         return Account.all().count <= 0
     }
     
     /// Wrapper method to know if the device is in a group.
     /// Returns: True if it is in a group.
-    func isGrouped() -> Bool {
+    public func isGrouped() -> Bool {
         return KeySyncUtil.isInDeviceGroup
     }
 
-    func pEpSyncSection() -> Int? {
+    public func pEpSyncSection() -> Int? {
         return SectionType.pEpSync.index
     }
     
     /// Returns the color of the title for the row passed. Red if the action is dangerous, nil otherwise.
     /// - Parameter rowIdentifier: The identifier of the row type.
-    func titleColor(rowIdentifier: Row) -> UIColor? {
+    public func titleColor(rowIdentifier: Row) -> UIColor? {
         switch rowIdentifier {
         case .resetAccounts, .resetTrust:
             return .pEpRed
@@ -542,7 +504,7 @@ final class SettingsViewModel {
     
     /// Returns the account setted at the the row of the provided indexPath
     /// - Parameter indexPath: The index path to get the account
-    func account(at indexPath : IndexPath) -> Account? {
+    public func account(at indexPath : IndexPath) -> Account? {
         let accounts = Account.all()
         if accounts.count > indexPath.row {
             return accounts[indexPath.row]
@@ -552,7 +514,7 @@ final class SettingsViewModel {
     
     /// Deletes the row at the passed index Path
     /// - Parameter indexPath: The index Path to
-    func deleteRowAt(_ indexPath: IndexPath) {
+    public func deleteRowAt(_ indexPath: IndexPath) {
         items[indexPath.section].rows.remove(at: indexPath.row)
     }
 }
@@ -560,10 +522,53 @@ final class SettingsViewModel {
 extension SettingsViewModel {
     
     /// Handle the tap gesture triggered on the ExtraKeys cell.
-    func handleExtraKeysEditabilityGestureTriggered() {
+    public func handleExtraKeysEditabilityGestureTriggered() {
         let newValue = !AppSettings.shared.extraKeysEditable
         AppSettings.shared.extraKeysEditable = newValue
         
         delegate?.showExtraKeyEditabilityStateChangeAlert(newValue: newValue ? "ON" : "OFF")
+    }
+}
+
+/// Mark: - public structs to use SettingsViewModel.
+
+extension SettingsViewModel {
+    
+    /// Struct that is used to perform an action. represents a ActionRow in settingsTableViewController
+    struct ActionRow: SettingsRowProtocol {
+        /// The type of the row.
+        var identifier: SettingsViewModel.Row
+        /// Title of the action row
+        var title: String
+        /// Indicates if the action to be performed is dangerous.
+        var isDangerous: Bool = false
+        /// Block that will be executed when action cell is pressed
+        var action: ActionBlock?
+    }
+    
+    /// Struct that is used to perform a show detail action. represents a NavicationRow in SettingsTableViewController
+    struct NavigationRow: SettingsRowProtocol {
+        /// The type of the row.
+        var identifier: SettingsViewModel.Row
+        /// Title of the action row
+        var title: String
+        /// subtitle for a navigation row
+        var subtitle: String?
+        /// Indicates if the action to be performed is dangerous.
+        var isDangerous: Bool = false
+    }
+    
+    /// Struct that is used to show and interact with a switch. represents a SwitchRow in settingsTableViewController
+    struct SwitchRow: SettingsRowProtocol {
+        //The row type
+        var identifier: SettingsViewModel.Row
+        //The title of the swith row
+        var title: String
+        //Indicates if the action to be performed is dangerous
+        var isDangerous: Bool
+        /// Value of the switch
+        var isOn: Bool
+        /// action to be executed when switch toggle
+        var action: SwitchBlock
     }
 }

@@ -15,7 +15,7 @@ protocol SwitchCellDelegate: class {
 }
 
 class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate,
-SettingsViewControllerDelegate {
+SettingsViewModelDelegate {
     
     static let storyboardId = "SettingsTableViewController"
     private weak var activityIndicatorView: UIActivityIndicatorView?
