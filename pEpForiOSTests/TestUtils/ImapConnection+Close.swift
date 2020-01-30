@@ -12,7 +12,8 @@ import Foundation
 
 extension ImapConnection {
     func close() {
-        state.currentFolder = nil
+        // TODO
+        //state.currentFolder = nil
         imapStore.close()
         imapStore.setDelegate(nil)
     }
