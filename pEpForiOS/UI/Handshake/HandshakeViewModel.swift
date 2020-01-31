@@ -12,7 +12,6 @@ import PEPObjCAdapterFramework
 
 /// Handshake View Mode Delegate
 protocol HandshakeViewModelDelegate {
-    
     /// Delegate method to notify that shake's action has been performed
     func didEndShakeMotion()
     
@@ -33,25 +32,6 @@ protocol HandshakeViewModelDelegate {
     func didChangeProtectionStatus(to status : HandshakeViewModel.ProtectionStatus)
 }
 
-/// Protocol for a handshake row
-/// It includes all data needed to display a handshake row.
-protocol HandshakeRowProtocol {
-    /// Indicates the handshake partner's name
-    var name: String { get }
-    /// The current language
-    var currentLanguage: String { get }
-    /// The privacy status in between the current user and the partner
-    var privacyStatus: String? { get }
-    /// Indicates if the trustwords are long
-    var longTrustwords: Bool { get }
-    /// The row description
-    var description : String  { get }
-    /// The item trustwords
-    var trustwords : String? { get }
-    /// The row image
-    var image : UIImage { get }
-}
-
 /// View Model to handle the handshake views.
 final class HandshakeViewModel {
     
@@ -64,7 +44,14 @@ final class HandshakeViewModel {
     private var identities : [Identity]
 
     /// The item that represents the handshake partner
-    private struct HandshakeRow: HandshakeRowProtocol {
+    struct Row {
+        
+        /// Indicates the handshake partner's name
+        var name: String {
+            get {
+                return identity.address
+            }
+        }
         /// The row image
         var image: UIImage {
             get {
@@ -89,12 +76,6 @@ final class HandshakeViewModel {
                 return ""
             }
         }
-        /// Indicates the handshake partner's name
-        var name: String {
-            get {
-                return identity.address
-            }
-        }
         /// The current language
         var currentLanguage: String {
             get {
@@ -106,24 +87,17 @@ final class HandshakeViewModel {
         /// The privacy status in between the current user and the partner
         var privacyStatus: String?
         /// The identity of the user to do the handshake
-        private var identity: Identity
+        fileprivate var identity: Identity
     }
     
     /// Items to be displayed in the View Controller
-    private (set) var rows: [HandshakeRowProtocol] = [HandshakeRow]()
+    private (set) var rows: [Row] = [Row]()
 
     /// Constructor
     /// - Parameters:
     ///   - identities: The identities to handshake
     public init(identities : [Identity]) {
         self.identities = identities
-    }
-
-    ///MARK - Providers
-
-    ///Access method to get the rows
-    public func row(for index: Int) -> HandshakeRowProtocol {
-        return rows[index]
     }
 
     ///MARK - Actions
@@ -188,7 +162,7 @@ final class HandshakeViewModel {
         identities.forEach { (identity) in
             //TODO: fix up identityImageTool
             let identityImageTool = IdentityImageTool()
-            let item = HandshakeRow(longTrustwords: true, privacyStatus: nil, identity: identity)
+            let item = Row(longTrustwords: true, privacyStatus: nil, identity: identity)
             rows.append(item)
         }
     }
@@ -200,7 +174,7 @@ final class HandshakeViewModel {
     ///   - identitySelf: The ´identity´ of the current user
     ///   - identityPartner: The ´identity´ of the user to get the handshake
     /// - Returns: The trustwords to make the handshake
-    private func determineTrustwords(item: HandshakeRow,
+    private func determineTrustwords(item: Row,
                                      identitySelf: PEPIdentity,
                                      identityPartner: PEPIdentity) -> String? {
         do {
@@ -224,13 +198,8 @@ final class HandshakeViewModel {
     /// Returns the trustwords for the item.
     /// - Parameter item: The handshake partner item
     private func trustwords(for indexPath: IndexPath) -> String? {
-        guard let handshakeItem = rows[indexPath.row] as? HandshakeRow else {
-            Log.shared.errorAndCrash(message: "Item not found")
-            return nil
-        }
-        
+        let handshakeItem = rows[indexPath.row]
         let partner = handshakeItem.identity.pEpIdentity()
-        
         return determineTrustwords(item: handshakeItem,
                                    identitySelf: selfIdentity,
                                    identityPartner: partner)
