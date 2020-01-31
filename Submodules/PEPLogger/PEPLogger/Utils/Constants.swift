@@ -9,5 +9,21 @@
 import Foundation
 
 struct Constants {
+    // Max log file size
+    let maxFileSize: UInt64 = 2048
 
+    enum LoggingError: Error, LocalizedError {
+        case nilFileURL, nilDataFromString
+
+        var errorDescription: String? {
+            switch self {
+            case .nilFileURL:
+                return "Fail to get file URL"
+            case .nilDataFromString :
+                return "Fail to conver String to Data"
+            }
+        }
+    }
+
+    
 }

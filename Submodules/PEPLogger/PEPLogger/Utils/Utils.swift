@@ -11,23 +11,45 @@ import Foundation
 struct Utils {
     /// Crash in DEBUG only
     /// - Parameter message: crash information
-    static func debugCrash(_ message: String) {
+    static func debugCrash(_ message: String?) {
         #if DEBUG
+        let message = message ?? "Unknown error."
         fatalError("pEpLogger: \(message)")
         #endif
     }
 
-    // New text to log
+    /// Print in console
+    /// - Parameter message: text to print
+    static func debug(_ message: String?) {
+        #if DEBUG
+        let message = message ?? "Unknown debug."
+        print("pEpLogger: \(message)")
+        #endif
+    }
+
+    /// Generate a new log entry
+    /// - Parameters:
+    ///   - level: logger level
+    ///   - file: name of the class
+    ///   - line: line of the class
+    ///   - function: name of the funtion
+    ///   - message: a message to log
     static func newLogEntry(level: Logger.Level,
                             file: String,
                             line: String,
                             function: String,
                             message: String) -> String {
 
-        return "\(level.rawValue) \(message) (\(file):\(line) - \(function))"
+        return "\n\(level.rawValue) \(message) (\(file):\(line) - \(function))"
     }
 
-    // New data to log
+    /// Generate a new log entry
+    /// - Parameters:
+    ///   - level: logger level
+    ///   - file: name of the class
+    ///   - line: line of the class
+    ///   - function: name of the funtion
+    ///   - message: a message to log
     static func newLogDataEntry(level: Logger.Level,
                                 file: String,
                                 line: String,

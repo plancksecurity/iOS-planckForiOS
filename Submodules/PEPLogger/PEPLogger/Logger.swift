@@ -43,7 +43,7 @@ public class Logger: NSObject {
     }
 
     private let appGroup = "group.security.pep.pep4ios"
-    private let containerFolderName = "PEPLogger2"
+    private let containerFolderName = "PEPLogger"
     private let fileName = "Log"
     private let fileExtension = "txt"
 
@@ -177,7 +177,7 @@ public class Logger: NSObject {
     ///   function where the method was called.
     ///   - message: a message to log.
     public func errorAndCrash(file: String = #file, line: Int = #line, function: String = #function, message: String) {
-        log(level: .errorAndCrash, file: file, line: String(line), function: function, message: message)
+        try! log(level: .errorAndCrash, file: file, line: String(line), function: function, message: message)
     }
 
     /// Always logs. And crash only if build for DEBUG.
@@ -197,42 +197,44 @@ public class Logger: NSObject {
 // MARK: - Private
 
 extension Logger {
-    private func log(level: Level, file: String, line: String, function: String, message: String) {
+    private func log(level: Level,
+                     file: String,
+                     line: String,
+                     function: String,
+                     message: String) throws {
+
         guard let fileURL = fileURL else {
-            debugCrash("Fail to get file URL")
-            return
+            let error = Constants.LoggingError.nilFileURL
+            Utils.debugCrash(error.errorDescription)
+            throw error
         }
+        let data = Utils.newLogDataEntry(level: level,
+                                         file: file,
+                                         line: line,
+                                         function: function,
+                                         message: message)
 
-        let data = newData(level: level,
-                             file: file,
-                             line: line,
-                             function: function,
-                             message: message)
-
-//        if fileURL.isFileURL {
-            createFile(with: data)
-//        } else {
-            do {
-                let fileHandler = try FileHandle(forWritingTo: fileURL)
-                fileHandler.seekToEndOfFile()
-                fileHandler.write(data)
-                fileHandler.closeFile()
-            }
-            catch {
-                debugCrash("Fail to write to file URL absoluteString")
-                return
-            }
-//        }
+        do {
+            // add new entry to log
+            let fileHandler = try FileHandle(forWritingTo: fileURL)
+            fileHandler.seekToEndOfFile()
+            fileHandler.write(data)
+            fileHandler.closeFile()
+        } catch {
+            Utils.debug(error.localizedDescription)
+            try createFile(with: data)
+        }
     }
 
     /// Crash in DEGUB if fails
     /// - Parameters:
     ///   - data: data to write
-    private func createFile(with data: Data) {
+    private func createFile(with data: Data) throws {
         guard let fileFolderURL = fileFolderURL,
             let fileURL = fileURL else {
-                debugCrash("Fail to get fileURL")
-                return
+                let error = Constants.LoggingError.nilFileURL
+                Utils.debugCrash(error.errorDescription)
+                throw error
         }
         // Create folder if it does not exist
         do {
@@ -243,13 +245,7 @@ extension Logger {
         }
 
         // Override or create log file
-        do {
-            try data.write(to: fileURL)
-        }
-        catch {
-            debugCrash(error.localizedDescription)
-            return
-        }
+        try data.write(to: fileURL)
     }
 }
 

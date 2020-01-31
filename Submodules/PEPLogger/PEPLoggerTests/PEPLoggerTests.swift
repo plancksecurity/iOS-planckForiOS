@@ -104,14 +104,6 @@ final class LoggerTest: XCTestCase {
         logErrorTester(level: .error, error: error)
     }
 
-    func testErrorMessageAndCrash() {
-        logMessageTester(level: .errorAndCrash, message: message)
-    }
-
-    func testErrorAndCrash() {
-        logErrorTester(level: .errorAndCrash, error: error)
-    }
-
     func testLogPerformance() {
         for _ in 0 ..< 500 {
             Logger.shared.error(message: message)
