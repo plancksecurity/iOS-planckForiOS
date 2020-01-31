@@ -29,14 +29,14 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     func testNumberOfRowsForSectionInFirstPositionWith1Account() {
         setupViewModel()
-
+        
+        let numberOfStaticCellInAccountsSection = 1
         let numberOfAccounts = Account.all().count
-
         ///Position of the first section
         let indexPath = IndexPath(row: 0, section: 0)
 
         /// The number of rows in this section corresponds to the number of accounts plus one row for resetting all.
-        let numberOfRows = numberOfAccounts + 1
+        let numberOfRows = numberOfAccounts + numberOfStaticCellInAccountsSection
 
         XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
     }
@@ -45,53 +45,13 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
         givenThereAreTwoAccounts()
         setupViewModel()
         
+        let numberOfStaticCellInAccountsSection = 1
         let numberOfAccounts = Account.all().count
-
         ///Position of the first section
         let indexPath = IndexPath(row: 0, section: 0)
 
         /// The number of rows in this section corresponds to the number of accounts plus one row for resetting all.
-        let numberOfRows = numberOfAccounts + 1
-
-        XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
-    }
-
-    func testNumberOfRowsForSectionInSecondPosition() {
-        setupViewModel()
-
-        ///Position of the second section
-        let indexPath = IndexPath(row: 0, section: 1)
-        let numberOfRows = 6
-
-        XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
-    }
-
-    func testNumberOfRowsForSectionInThirdPosition() {
-        setupViewModel()
-
-        ///Position of the third section
-        let indexPath = IndexPath(row: 0, section: 2)
-        let numberOfRows = 2
-
-        XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
-    }
-
-    func testNumberOfRowsForSectionInFourthPosition() {
-        setupViewModel()
-
-        ///Position of the fourth section
-        let indexPath = IndexPath(row: 0, section: 3)
-        let numberOfRows = 1
-
-        XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
-    }
-
-    func testNumberOfRowsForSectionInFivePosition() {
-        setupViewModel()
-
-        ///Position of the five section
-        let indexPath = IndexPath(row: 0, section: 4)
-        let numberOfRows = 1
+        let numberOfRows = numberOfAccounts + numberOfStaticCellInAccountsSection
 
         XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
     }
@@ -108,6 +68,8 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
             action()
             let newPassiveMode = AppSettings.shared.passiveMode
             XCTAssert(previousValue != newPassiveMode)
+        } else {
+            XCTFail()
         }
     }
     
@@ -198,7 +160,7 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
 extension SettingsViewModelTest {
     private func setupViewModel() {
         if settingsVM == nil {
-            settingsVM = SettingsViewModel()
+            //settingsVM = SettingsViewModel(delegate: <#SettingsViewModelDelegate#>)
         }
     }
 }
