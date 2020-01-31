@@ -43,15 +43,17 @@ public class Logger: NSObject {
     }
 
     private let appGroup = "group.security.pep.pep4ios"
-    private let containerFolderName = "PEPLogger"
-    private let fileName = "Log.txt"
+    private let containerFolderName = "PEPLogger2"
+    private let fileName = "Log"
+    private let fileExtension = "txt"
 
     private var fileFolderURL: URL? {
         let appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)
-        return appGroupURL?.appendingPathComponent(containerFolderName)
+        return appGroupURL?.appendingPathComponent(containerFolderName, isDirectory: true)
     }
     private var fileURL: URL? {
-        return fileFolderURL?.appendingPathComponent(fileName)
+        let resultURL = fileFolderURL?.appendingPathComponent(fileName, isDirectory: false)
+        return resultURL?.appendingPathExtension(fileExtension)
     }
 
     /// Logs only when build for DEBUG.
@@ -196,118 +198,59 @@ public class Logger: NSObject {
 
 extension Logger {
     private func log(level: Level, file: String, line: String, function: String, message: String) {
-        guard let filePath = fileURL?.absoluteString else {
-            debugCrash("Fail to get file URL absoluteString")
+        guard let fileURL = fileURL else {
+            debugCrash("Fail to get file URL")
             return
         }
 
-        let data = dataToLog(level: level,
+        let data = newData(level: level,
                              file: file,
                              line: line,
                              function: function,
                              message: message)
 
-        if !FileManager.default.fileExists(atPath: filePath) {
-            createFile(atPath: filePath, data: data)
-        } else {
-            guard let fileHandler = FileHandle(forWritingAtPath: filePath) else {
+//        if fileURL.isFileURL {
+            createFile(with: data)
+//        } else {
+            do {
+                let fileHandler = try FileHandle(forWritingTo: fileURL)
+                fileHandler.seekToEndOfFile()
+                fileHandler.write(data)
+                fileHandler.closeFile()
+            }
+            catch {
                 debugCrash("Fail to write to file URL absoluteString")
                 return
             }
-            fileHandler.seekToEndOfFile()
-            fileHandler.write(data)
-            fileHandler.closeFile()
-        }
+//        }
     }
-
-    private func textToLog(level: Level,
-                           file: String,
-                           line: String,
-                           function: String,
-                           message: String) -> String {
-
-        return "\(level.rawValue) \(message) (\(file):\(line) - \(function))"
-    }
-
-    private func dataToLog(level: Level,
-                           file: String,
-                           line: String,
-                           function: String,
-                           message: String) -> Data {
-
-        let text = textToLog(level: level,
-                             file: file,
-                             line: line,
-                             function: function,
-                             message: message)
-        guard let data = text.data(using: .utf8) else {
-            debugCrash("Fail to conver String to Data")
-            return Data()
-        }
-        return data
-    }
-
 
     /// Crash in DEGUB if fails
     /// - Parameters:
-    ///   - atPath: file path
     ///   - data: data to write
-    private func createFile(atPath: String, data: Data) {
-        guard let fileFolderPath = fileFolderURL?.absoluteString else {
-            debugCrash("Fail to get fileFolderPath")
-            return
+    private func createFile(with data: Data) {
+        guard let fileFolderURL = fileFolderURL,
+            let fileURL = fileURL else {
+                debugCrash("Fail to get fileURL")
+                return
         }
+        // Create folder if it does not exist
         do {
-            try FileManager.default.createDirectory(atPath: fileFolderPath,
-                                                    withIntermediateDirectories: true)
+            try FileManager.default.createDirectory(at: fileFolderURL, withIntermediateDirectories: false)
+        } catch {
+            print(error.localizedDescription)
+            // Folder could exist, continue to create file
+        }
+
+        // Override or create log file
+        do {
+            try data.write(to: fileURL)
         }
         catch {
             debugCrash(error.localizedDescription)
             return
         }
-        if FileManager.default.createFile(atPath: atPath, contents: data) {
-            return
-        } else {
-            debugCrash("Fail to create log file")
-            return
-        }
     }
-
-
-    /// Crash in DEBUG only
-    /// - Parameter message: crash information
-    private func debugCrash(_ message: String) {
-        #if DEBUG
-        fatalError("pEpLogger: \(message)")
-        #endif
-    }
-
-
-    //            guard let fileURL = fileURL else {
-    //                #if DEBUG
-    //                fatalError("PEPLogger: Fail to get fileURL")
-    //                #endif
-    //                return
-    //            }
-    //            do {
-    //                try textToLog.write(to: fileURL, atomically: true, encoding: .utf8)
-    //            }
-    //            catch {
-    //                #if DEBUG
-    //                fatalError("PEPLogger: Fail to create log file")
-    //                #endif
-    //            }
-    //        }
-
-    //        "pEp[DEBUG] \(message) (\(file):\(line) - \(function))".write(to: <#T##URL#>, atomically: <#T##Bool#>, encoding: <#T##String.Encoding#>)
-
-
-    private func log(level: Level, error: Error) {
-
-    }
-
-
-
 }
 
 // MARK: - Helping Structures
