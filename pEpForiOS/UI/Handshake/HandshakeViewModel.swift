@@ -34,12 +34,15 @@ protocol HandshakeViewModelDelegate: class {
     /// Delegate method to notify when the user selects a language
     /// - Parameter indexPath: The indexPath of the row where the user changes the language
     func didSelectLanguage(forRowAt indexPath: IndexPath)
+
+    /// Delegate method to notify when the user toogle the protection
+    /// - Parameter indexPath: The indexPath of the row where the user toogles the protection
+    func didToogleProtection(forRowAt indexPath: IndexPath)
 }
 
 /// View Model to handle the handshake views.
 final class HandshakeViewModel {
-    
-    var selfIdentity : Identity!
+    var selfIdentity : Identity
     var handshakeUtil : HandshakeUtilProtocol?
     weak var handshakeViewModelDelegate : HandshakeViewModelDelegate?
 
@@ -101,9 +104,11 @@ final class HandshakeViewModel {
     /// Constructor
     /// - Parameters:
     ///   - identities: The identities to handshake
-    public init(identities : [Identity], selfIdentity : Identity) {
+    public init(identities : [Identity], selfIdentity : Identity,
+                delegate : HandshakeViewModelDelegate) {
         self.identities = identities
         self.selfIdentity = selfIdentity
+        self.handshakeViewModelDelegate =  delegate
         generateRows()
     }
 
@@ -123,19 +128,35 @@ final class HandshakeViewModel {
     /// Confirm the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to confirm the handshake
     public func handleConfirmHandshakePressed(at indexPath: IndexPath) {
-        
+        let row = rows[indexPath.row]
+        do {
+            try handshakeUtil?.confirmTrust(for: row.identity)
+            handshakeViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
+        } catch {
+            Log.shared.error("Can't reset Trust")
+        }
+
     }
     
     /// Reset the handshake
     /// The privacy status will be unsecure.
     /// - Parameter indexPath: The indexPath of the item to get the user to reset the handshake
     public func handleResetPressed(at indexPath: IndexPath) {
-        
+        let row = rows[indexPath.row]
+        do {
+            try handshakeUtil?.resetTrust(for: row.identity)
+            handshakeViewModelDelegate?.didResetHandshake(forRowAt: indexPath)
+        } catch {
+            Log.shared.error("Can't reset Trust")
+        }
     }
     
     /// Returns the list of languages available for that row.
     public func handleChangeLanguagePressed() -> [String] {
-        return [String]()
+        guard let list = try? handshakeUtil?.languagesList() else {
+            return [String]()
+        }
+        return list
     }
     
     /// Updates the selected language for that row.
@@ -148,8 +169,8 @@ final class HandshakeViewModel {
     }
     
     /// Toogle PeP protection status
-    public func handleToggleProtectionPressed() {
-        
+    public func handleToggleProtectionPressed(forRowAt indexPath: IndexPath) {
+        handshakeViewModelDelegate?.didToogleProtection(forRowAt: indexPath)
     }
     
     public func getImageName(forRowAt indexPath: IndexPath) -> String? {
@@ -165,7 +186,7 @@ final class HandshakeViewModel {
     /// Method that reverts the last action performed by the user
     /// After the execution of this method there won't be any action to un-do.
     public func shakeMotionDidEnd() {
-        
+        handshakeViewModelDelegate?.didEndShakeMotion()
     }
 
     ///MARK: - Private
