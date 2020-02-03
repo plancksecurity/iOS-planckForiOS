@@ -8,6 +8,11 @@
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFUIText-Regular.ttf">
+            <string>SFUIText-Regular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Navigation Controller-->
         <scene sceneID="e1W-O0-7gY">
@@ -313,12 +318,12 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="x3Y-Mc-0bu">
                         <rightBarButtonItems>
-                            <barButtonItem image="arrow-lft-active" id="4R9-FK-LNX" userLabel="next">
+                            <barButtonItem image="chevron-icon-right" id="4R9-FK-LNX" userLabel="next">
                                 <connections>
                                     <action selector="nextButtonPressed:" destination="fRo-D2-Fjz" id="nL5-r5-egL"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="arrow-rgt-active" id="uhj-ab-NtG" userLabel="previous">
+                            <barButtonItem image="chevron-icon-left" id="uhj-ab-NtG" userLabel="previous">
                                 <connections>
                                     <action selector="previousButtonPressed:" destination="fRo-D2-Fjz" id="K3n-l9-U40"/>
                                 </connections>
@@ -433,25 +438,25 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnw-Tp-mga">
-                                            <rect key="frame" x="20" y="11" width="331" height="29"/>
-                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                            <rect key="frame" x="20" y="11" width="331" height="33"/>
+                                            <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: Recipients" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mfx-AS-hpP">
-                                            <rect key="frame" x="20" y="44" width="331" height="18"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <nil key="textColor"/>
+                                            <rect key="frame" x="20" y="50" width="331" height="16"/>
+                                            <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
+                                            <color key="textColor" red="0.5490196078431373" green="0.5490196078431373" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Mfx-AS-hpP" firstAttribute="top" secondItem="hnw-Tp-mga" secondAttribute="bottom" constant="4" id="0eV-GZ-phc"/>
+                                        <constraint firstItem="Mfx-AS-hpP" firstAttribute="top" secondItem="hnw-Tp-mga" secondAttribute="bottom" constant="6" id="0eV-GZ-phc"/>
                                         <constraint firstItem="Mfx-AS-hpP" firstAttribute="leading" secondItem="hnw-Tp-mga" secondAttribute="leading" id="6iY-Wa-jvo"/>
                                         <constraint firstAttribute="topMargin" secondItem="hnw-Tp-mga" secondAttribute="top" id="BpX-2f-9Cg"/>
                                         <constraint firstItem="Mfx-AS-hpP" firstAttribute="trailing" secondItem="hnw-Tp-mga" secondAttribute="trailing" id="bRK-0S-gkk"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="hnw-Tp-mga" secondAttribute="trailing" constant="8" id="oUv-TY-bIw"/>
-                                        <constraint firstAttribute="bottom" secondItem="Mfx-AS-hpP" secondAttribute="bottom" constant="10" id="wTj-1x-Ezw"/>
+                                        <constraint firstAttribute="bottom" secondItem="Mfx-AS-hpP" secondAttribute="bottom" constant="6" id="wTj-1x-Ezw"/>
                                         <constraint firstItem="hnw-Tp-mga" firstAttribute="leading" secondItem="dlZ-8o-1iE" secondAttribute="leading" constant="20" symbolic="YES" id="yzu-p3-Qxp"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -460,27 +465,27 @@
                                     <outlet property="valueLabel" destination="Mfx-AS-hpP" id="nfi-pV-1zO"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderSubjectCell" rowHeight="72" id="w8o-Py-AVt" customClass="MessageSubjectCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="194" width="375" height="72"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderSubjectCell" rowHeight="66" id="w8o-Py-AVt" customClass="MessageSubjectCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="194" width="375" height="66"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w8o-Py-AVt" id="0wZ-Iy-bZj">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="66"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Swb-L2-8yp">
-                                            <rect key="frame" x="20" y="35" width="331" height="18"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Subject" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xrz-WN-2Dg">
-                                            <rect key="frame" x="20" y="11" width="331" height="20"/>
-                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                            <rect key="frame" x="20" y="11" width="331" height="14"/>
+                                            <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Swb-L2-8yp">
+                                            <rect key="frame" x="20" y="31" width="331" height="20"/>
+                                            <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
+                                            <color key="textColor" red="0.5490196078431373" green="0.5490196078431373" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="separator_pixel_grey" translatesAutoresizingMaskIntoConstraints="NO" id="xaV-Jp-iQp">
-                                            <rect key="frame" x="20" y="71" width="355" height="1"/>
+                                            <rect key="frame" x="20" y="65" width="355" height="1"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="cxK-z5-rBH"/>
                                             </constraints>
@@ -493,8 +498,9 @@
                                         <constraint firstItem="xaV-Jp-iQp" firstAttribute="leading" secondItem="xrz-WN-2Dg" secondAttribute="leading" id="Xgu-3F-4P6"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="xrz-WN-2Dg" secondAttribute="trailing" constant="8" id="Xkh-hJ-63Q"/>
                                         <constraint firstAttribute="bottom" secondItem="xaV-Jp-iQp" secondAttribute="bottom" id="bJ6-th-thh"/>
+                                        <constraint firstItem="xaV-Jp-iQp" firstAttribute="top" secondItem="Swb-L2-8yp" secondAttribute="bottom" constant="14" id="nuS-Pm-B0K"/>
                                         <constraint firstItem="Swb-L2-8yp" firstAttribute="leading" secondItem="xrz-WN-2Dg" secondAttribute="leading" id="osb-VP-QxT"/>
-                                        <constraint firstItem="Swb-L2-8yp" firstAttribute="top" secondItem="xrz-WN-2Dg" secondAttribute="bottom" constant="4" id="uf5-XW-uD5"/>
+                                        <constraint firstItem="Swb-L2-8yp" firstAttribute="top" secondItem="xrz-WN-2Dg" secondAttribute="bottom" constant="6" id="uf5-XW-uD5"/>
                                         <constraint firstAttribute="topMargin" secondItem="xrz-WN-2Dg" secondAttribute="top" id="wfg-Nu-Ws1"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -507,7 +513,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderBodyCell" rowHeight="200" id="emX-Ao-r5Q" customClass="MessageContentCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="266" width="375" height="200"/>
+                                <rect key="frame" x="0.0" y="260" width="375" height="200"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="emX-Ao-r5Q" id="Tft-DN-iZy">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
@@ -516,7 +522,7 @@
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="T6H-kH-E19">
                                             <rect key="frame" x="20" y="0.0" width="335" height="200"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES" shipmentTrackingNumber="YES" flightNumber="YES"/>
                                             <userDefinedRuntimeAttributes>
@@ -532,7 +538,7 @@
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="T6H-kH-E19" secondAttribute="trailing" constant="20" symbolic="YES" id="2xL-qT-ef6"/>
                                         <constraint firstAttribute="bottom" secondItem="T6H-kH-E19" secondAttribute="bottom" id="Gw3-ct-5tN"/>
-                                        <constraint firstItem="T6H-kH-E19" firstAttribute="leading" secondItem="Tft-DN-iZy" secondAttribute="leading" constant="20" symbolic="YES" id="NC0-HE-04X"/>
+                                        <constraint firstItem="T6H-kH-E19" firstAttribute="leading" secondItem="Tft-DN-iZy" secondAttribute="leading" constant="20" id="NC0-HE-04X"/>
                                         <constraint firstItem="T6H-kH-E19" firstAttribute="top" secondItem="Tft-DN-iZy" secondAttribute="top" id="YdU-CJ-7xa"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -541,7 +547,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="attachmentsCell" id="wEk-G8-zwU" customClass="MessageAttachmentsCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="466" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="460" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wEk-G8-zwU" id="W8L-Sa-ksv">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -975,9 +981,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow-lft-active" width="10" height="18"/>
-        <image name="arrow-rgt-active" width="10" height="18"/>
         <image name="attachment-list-icon" width="14" height="15"/>
+        <image name="chevron-icon-left" width="28" height="44"/>
+        <image name="chevron-icon-right" width="28" height="44"/>
         <image name="compose" width="33" height="64"/>
         <image name="empty-avatar" width="150" height="150"/>
         <image name="folders-icon-folder" width="25" height="25"/>
@@ -991,7 +997,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="RTR-We-Kc1"/>
         <segue reference="0zl-tV-6Kr"/>
-        <segue reference="1zD-EW-3fN"/>
+        <segue reference="2fD-kL-Bvj"/>
         <segue reference="HHz-at-Ehg"/>
     </inferredMetricsTieBreakers>
 </document>
