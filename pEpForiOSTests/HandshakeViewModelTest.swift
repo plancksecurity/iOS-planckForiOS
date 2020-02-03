@@ -11,6 +11,7 @@ import CoreData
 @testable import MessageModel
 @testable import pEpForiOS
 
+
 class HandshakeViewModelTest: CoreDataDrivenTestBase {
 
     var handshakeViewModel : HandshakeViewModel?
@@ -36,26 +37,31 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testNumberOfRows() {
-//        setupViewModel()
-//        guard let numberOfRows = handshakeViewModel?.rows.count else {
-//            XCTFail()
-//            return
-//        }
-//        XCTAssertEqual(numberOfRows, numberOfRowsToGenerate)
+        setupViewModel()
+        guard let numberOfRows = handshakeViewModel?.rows.count else {
+            XCTFail("The handshakeViewModel can't be nil")
+            return
+        }
+        XCTAssertEqual(numberOfRows, numberOfRowsToGenerate)
     }
 
     //
     func testHandleRejectHandshakePressed() {
-//        setupViewModel()
-//        let firstItemPosition = IndexPath(item: 0, section: 0)
-//        handshakeViewModel?.handleRejectHandshakePressed(at: firstItemPosition)
-//
-//        guard let rows = handshakeViewModel?.rows else {
-//            XCTFail()
-//            return
-//        }
-//
-//        XCTAssertEqual("", rows[0].privacyStatus)
+        setupViewModel()
+        let firstItemPosition = IndexPath(item: 0, section: 0)
+        handshakeViewModel?.handleRejectHandshakePressed(at: firstItemPosition)
+
+        guard let _ = handshakeViewModel?.rows else {
+            XCTFail("The handshakeViewModel can't be nil")
+            return
+        }
+        
+        guard let firstRow = handshakeViewModel?.rows[0] else {
+            XCTFail("The first row must exist")
+            return
+        }
+
+        XCTAssertEqual("", firstRow.privacyStatus)
     }
     
     //
@@ -119,5 +125,39 @@ extension HandshakeViewModelTest {
         if handshakeViewModel == nil {
             handshakeViewModel = HandshakeViewModel(identities:identities)
         }
+    }
+}
+
+///MARK: - Mock Util Classes
+
+class HandShakeUtilRejectsSuccessfully : HandShakeUtilProtocol {
+    static func getTrustwords(for: Identity, language: String, long: Bool) throws -> String? {
+        XCTFail("This mock MUST not implement this method")
+        return nil }
+    static func confirmTrust(for: Identity) throws {
+        XCTFail("This mock MUST not implement this method")
+    }
+    static func resetTrust(for: Identity) throws {
+        XCTFail("This mock MUST not implement this method")
+    }
+    
+    static func denyTrust(for: Identity) throws {
+         
+    }
+}
+
+class HandShakeUtilRejectsThrows : HandShakeUtilProtocol {
+    static func getTrustwords(for: Identity, language: String, long: Bool) throws -> String? {
+        XCTFail("This mock MUST not implement this method")
+        return nil }
+    static func confirmTrust(for: Identity) throws {
+        XCTFail("This mock MUST not implement this method")
+    }
+    static func resetTrust(for: Identity) throws {
+        XCTFail("This mock MUST not implement this method")
+    }
+    
+    static func denyTrust(for: Identity) throws {
+
     }
 }

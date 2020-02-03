@@ -35,6 +35,7 @@ protocol HandshakeViewModelDelegate {
 /// View Model to handle the handshake views.
 final class HandshakeViewModel {
     
+    
     enum ProtectionStatus {
         case enabled
         case disabled
@@ -98,6 +99,7 @@ final class HandshakeViewModel {
     ///   - identities: The identities to handshake
     public init(identities : [Identity]) {
         self.identities = identities
+        generateRows()
     }
 
     ///MARK - Actions
