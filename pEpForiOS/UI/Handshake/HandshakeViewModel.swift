@@ -39,7 +39,8 @@ protocol HandshakeViewModelDelegate: class {
 /// View Model to handle the handshake views.
 final class HandshakeViewModel {
     
-    var handshakeUtil : HandShakeUtilProtocol?
+    var selfIdentity : Identity!
+    var handshakeUtil : HandshakeUtilProtocol?
     weak var handshakeViewModelDelegate : HandshakeViewModelDelegate?
 
     enum ProtectionStatus {
@@ -100,8 +101,9 @@ final class HandshakeViewModel {
     /// Constructor
     /// - Parameters:
     ///   - identities: The identities to handshake
-    public init(identities : [Identity]) {
+    public init(identities : [Identity], selfIdentity : Identity) {
         self.identities = identities
+        self.selfIdentity = selfIdentity
         generateRows()
     }
 
@@ -116,7 +118,6 @@ final class HandshakeViewModel {
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)
         }
-
     }
     
     /// Confirm the handshake
@@ -187,9 +188,10 @@ final class HandshakeViewModel {
     private func trustwords(for indexPath: IndexPath, long : Bool = false) -> String? {
         let handshakeItem = rows[indexPath.row]
         do {
-            return try handshakeUtil?.getTrustwords(for: handshakeItem.identity,
-            language: handshakeItem.currentLanguage,
-            long: long)
+            return try handshakeUtil?.getTrustwords(forSelf: selfIdentity,
+                                                    and: handshakeItem.identity,
+                                                    language: handshakeItem.currentLanguage,
+                                                    long: long)
         } catch {
             Log.shared.error("Can't get trustwords")
             return nil

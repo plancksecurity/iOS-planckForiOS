@@ -14,13 +14,14 @@ import CoreData
 
 class HandshakeViewModelTest: CoreDataDrivenTestBase {
 
+    var selfIdentity : Identity?
     var handshakeViewModel : HandshakeViewModel?
     let numberOfRowsToGenerate = 1
     var identities = [Identity]()
     
     override func setUp() {
         super.setUp()
-        
+       
         for index in 0..<numberOfRowsToGenerate {
             let identity = SecretTestData().createWorkingCdIdentity(number: index,
                                                                     isMyself: false,
@@ -49,7 +50,7 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
     func testHandleRejectHandshakePressed() {
         setupViewModel()
         let firstItemPosition = IndexPath(item: 0, section: 0)
-        handshakeViewModel?.handshakeUtil = HandShakeUtilMock()
+        handshakeViewModel?.handshakeUtil = HandshakeUtilMock()
         handshakeViewModel?.handleRejectHandshakePressed(at: firstItemPosition)
 
         guard let _ = handshakeViewModel?.rows else {
@@ -131,10 +132,10 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
         let expectation = XCTestExpectation(description: "Get Trustwords Expectation")
         setupViewModel()
         let firstItemPosition = IndexPath(item: 0, section: 0)
-        let mock = HandShakeUtilMock(getTrustwordsExpectation: expectation)
+        let mock = HandshakeUtilMock(getTrustwordsExpectation: expectation)
         handshakeViewModel?.handshakeUtil = mock
         let trustwords = handshakeViewModel?.generateTrustwords(indexPath: firstItemPosition)
-        XCTAssertEqual(trustwords, HandShakeUtilMock.someTrustWords)
+        XCTAssertEqual(trustwords, HandshakeUtilMock.someTrustWords)
         let identity = identities[0]
         XCTAssertEqual(identity, mock.identity)
     }
@@ -142,16 +143,21 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
 
 extension HandshakeViewModelTest {
     private func setupViewModel() {
+        let identity = SecretTestData().createWorkingCdIdentity(number: 2,
+                                                                isMyself: true,
+                                                                context: moc)
+        let selfIdentity = Identity(cdObject: identity, context: moc)
+
         if handshakeViewModel == nil {
-            handshakeViewModel = HandshakeViewModel(identities:identities)
+            handshakeViewModel = HandshakeViewModel(identities:identities,
+                                                    selfIdentity: selfIdentity)
         }
     }
 }
 
 ///MARK: - Mock Util Classes
 
-class HandShakeUtilMock : HandShakeUtilProtocol {
-    
+class HandshakeUtilMock : HandshakeUtilProtocol {
     var getTrustwordsExpectation : XCTestExpectation?
     static let someTrustWords = "Dog"
     var identity : Identity?
@@ -160,10 +166,10 @@ class HandShakeUtilMock : HandShakeUtilProtocol {
         self.getTrustwordsExpectation = getTrustwordsExpectation
     }
     
-    func getTrustwords(for identity: Identity, language: String, long: Bool) throws -> String? {
+    func getTrustwords(forSelf: Identity, and: Identity, language: String, long: Bool) throws -> String? {
         getTrustwordsExpectation?.fulfill()
-        self.identity = identity
-        return HandShakeUtilMock.someTrustWords
+        self.identity = and
+        return HandshakeUtilMock.someTrustWords
     }
     
     func confirmTrust(for: Identity) throws {
