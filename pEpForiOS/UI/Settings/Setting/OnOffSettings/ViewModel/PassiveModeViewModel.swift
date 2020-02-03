@@ -20,7 +20,7 @@ struct PassiveModeViewModel: SwitchSettingCellViewModelProtocol  {
         AppSettings.shared.passiveMode = value
     }
 
-    func switchValue() -> Bool {
+    var switchValue: Bool {
         return AppSettings.shared.passiveMode
     }
 }

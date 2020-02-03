@@ -19,10 +19,9 @@ protocol SettingsViewModelDelegate: class {
 final class SettingsViewModel {
     private(set) var sections = [SettingsSectionViewModel]()
     weak var delegate: SettingsViewModelDelegate?
-    var isGrouped: Bool {
+    public var isGrouped: Bool {
         return KeySyncUtil.isInDeviceGroup
     }
-
 
     // MARK: - Life Cycle
 
@@ -84,13 +83,6 @@ final class SettingsViewModel {
         if value {
             KeySyncUtil.enableKeySync()
         } else {
-            if isGrouped { //BUFF: move to keySyncUtil
-                do {
-                    try KeySyncUtil.leaveDeviceGroup()
-                } catch {
-                    Log.shared.errorAndCrash(error: error)
-                }
-            }
             KeySyncUtil.disableKeySync()
         }
     }
