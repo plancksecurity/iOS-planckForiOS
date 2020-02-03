@@ -29,7 +29,6 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
         }
 
         moc.saveAndLogErrors()
-
     }
 
     override func tearDown() {
