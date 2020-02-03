@@ -11,7 +11,7 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 /// Handshake View Mode Delegate
-protocol HandshakeViewModelDelegate {
+protocol HandshakeViewModelDelegate: class {
     /// Delegate method to notify that shake's action has been performed
     func didEndShakeMotion()
     
@@ -30,12 +30,18 @@ protocol HandshakeViewModelDelegate {
     /// Delegate method to notify when the protection status has changed
     /// - Parameter status: enabled or disabled
     func didChangeProtectionStatus(to status : HandshakeViewModel.ProtectionStatus)
+    
+    /// Delegate method to notify when the user selects a language
+    /// - Parameter indexPath: The indexPath of the row where the user changes the language
+    func didSelectLanguage(forRowAt indexPath: IndexPath)
 }
 
 /// View Model to handle the handshake views.
 final class HandshakeViewModel {
     
-    
+    var handshakeUtil : HandShakeUtilProtocol?
+    weak var handshakeViewModelDelegate : HandshakeViewModelDelegate?
+
     enum ProtectionStatus {
         case enabled
         case disabled
@@ -52,6 +58,7 @@ final class HandshakeViewModel {
             get {
                 return identity.address
             }
+            
         }
         /// The row image
         var image: UIImage {
@@ -78,11 +85,7 @@ final class HandshakeViewModel {
             }
         }
         /// The current language
-        var currentLanguage: String {
-            get {
-                return identity.language ?? "en"
-            }
-        }
+        var currentLanguage: String
         /// Indicates if the trustwords are long
         var longTrustwords: Bool = false
         /// The privacy status in between the current user and the partner
@@ -107,6 +110,12 @@ final class HandshakeViewModel {
     /// Reject the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to reject the handshake
     public func handleRejectHandshakePressed(at indexPath: IndexPath) {
+        let row = rows[indexPath.row]
+        do {
+            try handshakeUtil?.denyTrust(for: row.identity)
+        } catch {
+            Log.shared.errorAndCrash("%@", error.localizedDescription)
+        }
 
     }
     
@@ -133,7 +142,8 @@ final class HandshakeViewModel {
     ///   - indexPath: The index path of the row
     ///   - language: The chosen language
     public func didSelectLanguage(forRowAt indexPath: IndexPath, language: String) {
-        
+        rows[indexPath.row].currentLanguage = language
+        handshakeViewModelDelegate?.didSelectLanguage(forRowAt: indexPath)
     }
     
     /// Toogle PeP protection status
@@ -147,8 +157,8 @@ final class HandshakeViewModel {
     
     /// Generate the trustwords
     /// - Parameter long: Indicates if the trustwords MUST be long.
-    public func generateTrustwords(long : Bool) -> String? {
-        return nil
+    public func generateTrustwords(indexPath: IndexPath, long : Bool = false) -> String? {
+        return trustwords(for: indexPath)
     }
     
     /// Method that reverts the last action performed by the user
@@ -161,49 +171,28 @@ final class HandshakeViewModel {
 
     /// Method that generates the rows to be used by the VC
     private func generateRows() {
-        identities.forEach { (identity) in
-            //TODO: fix up identityImageTool
-            let identityImageTool = IdentityImageTool()
-            let item = Row(longTrustwords: true, privacyStatus: nil, identity: identity)
-            rows.append(item)
-        }
-    }
-    
-    /// This method determines and returns the trustwords, when possible.
-    ///
-    /// - Parameters:
-    ///   - item: The handshake partner item
-    ///   - identitySelf: The ´identity´ of the current user
-    ///   - identityPartner: The ´identity´ of the user to get the handshake
-    /// - Returns: The trustwords to make the handshake
-    private func determineTrustwords(item: Row,
-                                     identitySelf: PEPIdentity,
-                                     identityPartner: PEPIdentity) -> String? {
-        do {
-            return try PEPSession().getTrustwordsIdentity1(identitySelf,
-                                                           identity2: identityPartner,
-                                                           language: item.currentLanguage,
-                                                           full: item.longTrustwords)
-        } catch {
-            Log.shared.error("%@", "\(error)")
-            return nil
-        }
-    }
         
-    private var selfIdentity : PEPIdentity {
-        get {
-            //TODO: GET self identity
-            return PEPIdentity()
+        identities.forEach { (identity) in
+            let status = String.pEpRatingTranslation(pEpRating: identity.pEpRating())
+            let item = Row(currentLanguage: identity.language ?? "en",
+                           longTrustwords: false,
+                           privacyStatus:status.title,
+                           identity: identity)
+            rows.append(item)
         }
     }
     
     /// Returns the trustwords for the item.
     /// - Parameter item: The handshake partner item
-    private func trustwords(for indexPath: IndexPath) -> String? {
+    private func trustwords(for indexPath: IndexPath, long : Bool = false) -> String? {
         let handshakeItem = rows[indexPath.row]
-        let partner = handshakeItem.identity.pEpIdentity()
-        return determineTrustwords(item: handshakeItem,
-                                   identitySelf: selfIdentity,
-                                   identityPartner: partner)
+        do {
+            return try handshakeUtil?.getTrustwords(for: handshakeItem.identity,
+            language: handshakeItem.currentLanguage,
+            long: long)
+        } catch {
+            Log.shared.error("Can't get trustwords")
+            return nil
+        }
     }
 }
