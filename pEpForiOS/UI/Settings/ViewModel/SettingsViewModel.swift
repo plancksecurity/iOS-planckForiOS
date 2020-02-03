@@ -84,7 +84,7 @@ final class SettingsViewModel {
         if value {
             KeySyncUtil.enableKeySync()
         } else {
-            if isGrouped {
+            if isGrouped { //BUFF: move to keySyncUtil
                 do {
                     try KeySyncUtil.leaveDeviceGroup()
                 } catch {
