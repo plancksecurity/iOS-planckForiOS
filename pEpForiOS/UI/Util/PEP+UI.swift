@@ -90,36 +90,3 @@ extension PEPRating {
         return color.statusIconForMessage()
     }
 }
-
-extension UIFont {
-    //First approach
-    private static func customFont(name: String, size: CGFloat) -> UIFont {
-        let font = UIFont(name: name, size: size)
-        return font ?? UIFont.systemFont(ofSize: size)
-    }
-    
-    static func mainFont(ofSize size: CGFloat) -> UIFont {
-        return customFont(name: "SFUIText-Regular", size: size)
-    }
-    
-    //From Zeplin
-    class var loginButton1: UIFont {
-      return UIFont.systemFont(ofSize: 24.0, weight: .light)
-    }
-
-    class var loginFieldText: UIFont {
-      return UIFont.systemFont(ofSize: 24.0, weight: .light)
-    }
-
-    class var textStyle2: UIFont {
-      return UIFont(name: "UniversLTStd", size: 18.0)!
-    }
-
-    class var textStyle: UIFont {
-      return UIFont.systemFont(ofSize: 18.0, weight: .light)
-    }
-
-    class var textStyle3: UIFont {
-      return UIFont.systemFont(ofSize: 17.0, weight: .regular)
-    }
-}
