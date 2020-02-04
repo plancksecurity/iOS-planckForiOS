@@ -199,23 +199,23 @@ class HandshakeUtilMock: HandshakeUtilProtocol {
         return HandshakeUtilMock.languages
     }
     
-    func getTrustwords(forSelf: Identity, and: Identity, language: String, long: Bool) throws -> String? {
+    func getTrustwords(for forSelf: Identity, and: Identity, language: String, long: Bool) -> String? {
         getTrustwordsExpectation?.fulfill()
         self.identity = and
         return HandshakeUtilMock.someTrustWords
     }
     
-    func confirmTrust(for identity: Identity) throws {
+    func confirmTrust(for identity: Identity) {
         confirmExpectation?.fulfill()
         self.identity = identity
     }
     
-    func denyTrust(for identity: Identity) throws {
+    func denyTrust(for identity: Identity) {
         denyExpectation?.fulfill()
         self.identity = identity
     }
     
-    func resetTrust(for identity: Identity) throws {
+    func resetTrust(for identity: Identity) {
         resetExpectation?.fulfill()
         self.identity = identity
     }

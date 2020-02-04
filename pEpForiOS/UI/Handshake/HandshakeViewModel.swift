@@ -42,11 +42,6 @@ protocol HandshakeViewModelDelegate: class {
 
 /// View Model to handle the handshake views.
 final class HandshakeViewModel {
-
-    ///// Map Identidad-FingerPrint de la última acción únicamente por cada row.
-    ///// LastAction - . 
-    ///// Hacer reverse action.
-
     var selfIdentity : Identity
     var handshakeUtil : HandshakeUtilProtocol
     weak var handshakeViewModelDelegate : HandshakeViewModelDelegate?
@@ -127,25 +122,16 @@ final class HandshakeViewModel {
     /// - Parameter indexPath: The indexPath of the item to get the user to reject the handshake
     public func handleRejectHandshakePressed(at indexPath: IndexPath) {
         let row = rows[indexPath.row]
-        do {
-            handshakeViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
-            try handshakeUtil.denyTrust(for: row.identity)
-        } catch {
-            Log.shared.errorAndCrash("%@", error.localizedDescription)
-        }
+        handshakeViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
+        handshakeUtil.denyTrust(for: row.identity)
     }
     
     /// Confirm the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to confirm the handshake
     public func handleConfirmHandshakePressed(at indexPath: IndexPath) {
         let row = rows[indexPath.row]
-        do {
-            try handshakeUtil.confirmTrust(for: row.identity)
-            handshakeViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
-        } catch {
-            Log.shared.error("Can't reset Trust")
-        }
-
+        handshakeUtil.confirmTrust(for: row.identity)
+        handshakeViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
     }
     
     /// Reset the handshake
@@ -153,17 +139,13 @@ final class HandshakeViewModel {
     /// - Parameter indexPath: The indexPath of the item to get the user to reset the handshake
     public func handleResetPressed(at indexPath: IndexPath) {
         let row = rows[indexPath.row]
-        do {
-            try handshakeUtil.resetTrust(for: row.identity)
-            handshakeViewModelDelegate?.didResetHandshake(forRowAt: indexPath)
-        } catch {
-            Log.shared.error("Can't reset Trust")
-        }
+        handshakeUtil.resetTrust(for: row.identity, fingerprints: nil)
+        handshakeViewModelDelegate?.didResetHandshake(forRowAt: indexPath)
     }
     
     /// Returns the list of languages available for that row.
     public func handleChangeLanguagePressed() -> [String] {
-        guard let list = try? handshakeUtil.languagesList() else {
+        guard let list = handshakeUtil.languagesList() else {
             return [String]()
         }
         return list
@@ -182,11 +164,7 @@ final class HandshakeViewModel {
     public func handleToggleProtectionPressed(forRowAt indexPath: IndexPath) {
         handshakeViewModelDelegate?.didToogleProtection(forRowAt: indexPath)
     }
-    
-    public func getImageName(forRowAt indexPath: IndexPath) -> String? {
-        return nil
-    }
-    
+
     /// Generate the trustwords
     /// - Parameter long: Indicates if the trustwords MUST be long.
     public func generateTrustwords(indexPath: IndexPath, long : Bool = false) -> String? {
@@ -219,7 +197,7 @@ final class HandshakeViewModel {
     private func trustwords(for indexPath: IndexPath, long : Bool = false) -> String? {
         let handshakeItem = rows[indexPath.row]
         do {
-            return try handshakeUtil.getTrustwords(forSelf: selfIdentity,
+            return try handshakeUtil.getTrustwords(for: selfIdentity,
                                                    and: handshakeItem.identity,
                                                    language: handshakeItem.currentLanguage,
                                                    long: long)
