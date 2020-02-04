@@ -120,7 +120,7 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: TestUtil.waitTime)
     }
     
-    func testUndoOnShakeMotion() {
+    func testUndoConfirmOnShakeMotion() {
         setupViewModel()
         
         let firstItemPosition = IndexPath(item: 0, section: 0)
@@ -142,6 +142,29 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
         ///Verify reset has been called only once.
         waitForExpectations(timeout: TestUtil.waitTime)
     }
+    
+    func testUndoRejectOnShakeMotion() {
+           setupViewModel()
+           
+           let firstItemPosition = IndexPath(item: 0, section: 0)
+           let didShake = expectation(description: "didShake")
+           let didReset = expectation(description: "didReset")
+           let didDeny = expectation(description: "didDeny")
+           let mockDelegate = MockHandshakeViewModelHandler(didEndShakeMotionExpectation: didShake,
+                                                            didResetHandshakeExpectation: didReset,
+                                                            didDenyHandshakeExpectation: didDeny)
+
+           handshakeViewModel?.handshakeViewModelDelegate = mockDelegate
+           
+           //Reject handshake
+           handshakeViewModel?.handleRejectHandshakePressed(at: firstItemPosition)
+           
+           //Gesture for undo
+           handshakeViewModel?.shakeMotionDidEnd()
+
+           ///Verify reset has been called only once.
+           waitForExpectations(timeout: TestUtil.waitTime)
+       }
     
     /// Test get trustwords is being called.
     func testGetTrustwords() {
