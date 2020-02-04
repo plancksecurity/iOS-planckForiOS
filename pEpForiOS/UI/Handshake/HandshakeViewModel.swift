@@ -43,6 +43,10 @@ protocol HandshakeViewModelDelegate: class {
 /// View Model to handle the handshake views.
 final class HandshakeViewModel {
 
+    ///// Map Identidad-FingerPrint de la última acción únicamente por cada row.
+    ///// LastAction - . 
+    ///// Hacer reverse action.
+
     var selfIdentity : Identity
     var handshakeUtil : HandshakeUtilProtocol
     weak var handshakeViewModelDelegate : HandshakeViewModelDelegate?
@@ -95,6 +99,7 @@ final class HandshakeViewModel {
         var longTrustwords: Bool = false
         /// The privacy status in between the current user and the partner
         var privacyStatus: String?
+        
         /// The identity of the user to do the handshake
         fileprivate var identity: Identity
     }
