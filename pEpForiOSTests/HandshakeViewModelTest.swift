@@ -171,7 +171,6 @@ extension HandshakeViewModelTest {
 ///MARK: - Mock Util Classes
 
 class HandshakeUtilMock: HandshakeUtilProtocol {
-
     var getTrustwordsExpectation: XCTestExpectation?
     var resetExpectation: XCTestExpectation?
     var confirmExpectation: XCTestExpectation?
@@ -194,30 +193,30 @@ class HandshakeUtilMock: HandshakeUtilProtocol {
         self.languagesExpectation = languagesExpectation
     }
 
-    func languagesList() throws -> [String] {
+    func languagesList() -> [String]? {
         languagesExpectation?.fulfill()
         return HandshakeUtilMock.languages
     }
     
     func getTrustwords(for forSelf: Identity, and: Identity, language: String, long: Bool) -> String? {
         getTrustwordsExpectation?.fulfill()
-        self.identity = and
         return HandshakeUtilMock.someTrustWords
     }
     
     func confirmTrust(for identity: Identity) {
         confirmExpectation?.fulfill()
-        self.identity = identity
     }
     
     func denyTrust(for identity: Identity) {
         denyExpectation?.fulfill()
-        self.identity = identity
     }
     
-    func resetTrust(for identity: Identity) {
+    func resetTrust(for partnerIdentity: Identity, fingerprints: String?) {
         resetExpectation?.fulfill()
-        self.identity = identity
+    }
+    
+    func getFingerprints(for Identity: Identity) -> String? {
+        return nil
     }
 }
 
