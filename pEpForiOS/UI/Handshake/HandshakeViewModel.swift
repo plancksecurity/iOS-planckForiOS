@@ -42,8 +42,9 @@ protocol HandshakeViewModelDelegate: class {
 
 /// View Model to handle the handshake views.
 final class HandshakeViewModel {
+
     var selfIdentity : Identity
-    var handshakeUtil : HandshakeUtilProtocol?
+    var handshakeUtil : HandshakeUtilProtocol
     weak var handshakeViewModelDelegate : HandshakeViewModelDelegate?
 
     enum ProtectionStatus {
@@ -105,10 +106,11 @@ final class HandshakeViewModel {
     /// - Parameters:
     ///   - identities: The identities to handshake
     public init(identities : [Identity], selfIdentity : Identity,
-                delegate : HandshakeViewModelDelegate) {
+                delegate : HandshakeViewModelDelegate, handshakeUtil : HandshakeUtilProtocol) {
         self.identities = identities
         self.selfIdentity = selfIdentity
         self.handshakeViewModelDelegate =  delegate
+        self.handshakeUtil = handshakeUtil
         generateRows()
     }
 
@@ -119,7 +121,7 @@ final class HandshakeViewModel {
     public func handleRejectHandshakePressed(at indexPath: IndexPath) {
         let row = rows[indexPath.row]
         do {
-            try handshakeUtil?.denyTrust(for: row.identity)
+            try handshakeUtil.denyTrust(for: row.identity)
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)
         }
@@ -130,7 +132,7 @@ final class HandshakeViewModel {
     public func handleConfirmHandshakePressed(at indexPath: IndexPath) {
         let row = rows[indexPath.row]
         do {
-            try handshakeUtil?.confirmTrust(for: row.identity)
+            try handshakeUtil.confirmTrust(for: row.identity)
             handshakeViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
         } catch {
             Log.shared.error("Can't reset Trust")
@@ -144,7 +146,7 @@ final class HandshakeViewModel {
     public func handleResetPressed(at indexPath: IndexPath) {
         let row = rows[indexPath.row]
         do {
-            try handshakeUtil?.resetTrust(for: row.identity)
+            try handshakeUtil.resetTrust(for: row.identity)
             handshakeViewModelDelegate?.didResetHandshake(forRowAt: indexPath)
         } catch {
             Log.shared.error("Can't reset Trust")
@@ -153,7 +155,7 @@ final class HandshakeViewModel {
     
     /// Returns the list of languages available for that row.
     public func handleChangeLanguagePressed() -> [String] {
-        guard let list = try? handshakeUtil?.languagesList() else {
+        guard let list = try? handshakeUtil.languagesList() else {
             return [String]()
         }
         return list
