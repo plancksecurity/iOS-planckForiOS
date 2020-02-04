@@ -105,8 +105,10 @@ final class HandshakeViewModel {
     /// Constructor
     /// - Parameters:
     ///   - identities: The identities to handshake
-    public init(identities : [Identity], selfIdentity : Identity,
-                delegate : HandshakeViewModelDelegate, handshakeUtil : HandshakeUtilProtocol) {
+    public init(identities : [Identity],
+                selfIdentity : Identity,
+                delegate : HandshakeViewModelDelegate,
+                handshakeUtil: HandshakeUtilProtocol) {
         self.identities = identities
         self.selfIdentity = selfIdentity
         self.handshakeViewModelDelegate =  delegate
@@ -121,6 +123,7 @@ final class HandshakeViewModel {
     public func handleRejectHandshakePressed(at indexPath: IndexPath) {
         let row = rows[indexPath.row]
         do {
+            handshakeViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
             try handshakeUtil.denyTrust(for: row.identity)
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)
@@ -195,10 +198,10 @@ final class HandshakeViewModel {
 
     /// Method that generates the rows to be used by the VC
     private func generateRows() {
-        
+        let defaultLanguage = "en"
         identities.forEach { (identity) in
             let status = String.pEpRatingTranslation(pEpRating: identity.pEpRating())
-            let item = Row(currentLanguage: identity.language ?? "en",
+            let item = Row(currentLanguage: identity.language ?? defaultLanguage,
                            longTrustwords: false,
                            privacyStatus:status.title,
                            identity: identity)
@@ -211,10 +214,10 @@ final class HandshakeViewModel {
     private func trustwords(for indexPath: IndexPath, long : Bool = false) -> String? {
         let handshakeItem = rows[indexPath.row]
         do {
-            return try handshakeUtil?.getTrustwords(forSelf: selfIdentity,
-                                                    and: handshakeItem.identity,
-                                                    language: handshakeItem.currentLanguage,
-                                                    long: long)
+            return try handshakeUtil.getTrustwords(forSelf: selfIdentity,
+                                                   and: handshakeItem.identity,
+                                                   language: handshakeItem.currentLanguage,
+                                                   long: long)
         } catch {
             Log.shared.error("Can't get trustwords")
             return nil

@@ -33,7 +33,11 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
         moc.saveAndLogErrors()
     }
 
-    
+    override func tearDown() {
+        super.tearDown()
+        handshakeViewModel = nil
+    }
+
     /// Test the number of generated rows is equal to the number of rows to generate
     func testNumberOfRows() {
         setupViewModel()
@@ -44,8 +48,7 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(numberOfRows, numberOfRowsToGenerate)
     }
     
-    //Change mock
-    
+    //Test Reject Handshake Pressed
     func testHandleRejectHandshakePressed() {
         setupViewModel()
         let didDenyExpectation = expectation(description: "didDenyExpectation")
@@ -85,16 +88,18 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
         handshakeViewModel?.handleResetPressed(at: firstItemPosition)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
+
+    //Test Change Language Pressed
+    func testHandleChangeLanguagePressed() {
+        setupViewModel()
+        let languagesExpectation = expectation(description: "languages")
+        handshakeViewModel?.handshakeUtil = HandshakeUtilMock(languagesExpectation: languagesExpectation)
+        let languages = handshakeViewModel?.handleChangeLanguagePressed()
+        XCTAssertEqual(HandshakeUtilMock.languages, languages)
+        waitForExpectations(timeout: TestUtil.waitTime)
+    }
     
-//
-//    func testHandleChangeLanguagePressed() {
-//        setupViewModel()
-//        handshakeViewModel?.handshakeUtil = HandshakeUtilMock()
-//        let languages = handshakeViewModel?.handleChangeLanguagePressed()
-//        XCTAssertEqual(handshakeViewModel?.handshakeUtil?.languagesList(), languages)
-//    }
-    
-    //
+    //Test Toogle Protection Pressed
     func testHandleToggleProtectionPressed() {
         setupViewModel()
         let toogleProtection = expectation(description: "toogle protection")
@@ -105,10 +110,9 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: TestUtil.waitTime)
     }
     
-    //
+    //Test Shake Motion
     func testShakeMotionDidEnd() {
         setupViewModel()
-
         let didShake = expectation(description: "didShake")
         let mockDelegate = MockHandshakeViewModelHandler(didEndShakeMotionExpectation: didShake)
         handshakeViewModel?.handshakeViewModelDelegate = mockDelegate
@@ -125,11 +129,12 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
         handshakeViewModel?.handshakeUtil = mock
         let trustwords = handshakeViewModel?.generateTrustwords(indexPath: firstItemPosition)
         XCTAssertEqual(trustwords, HandshakeUtilMock.someTrustWords)
-        let identity = identities[0]
+        let identity = identities[firstItemPosition.row]
         XCTAssertEqual(identity, mock.identity)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
     
+    //Test the Select language is being called
     func testDidSelectLanguage() {
         setupViewModel()
         let didSelectLanguageExp = expectation(description: "didSelectLanguageExp")
@@ -146,15 +151,19 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
 
 extension HandshakeViewModelTest {
     private func setupViewModel() {
-        let identity = SecretTestData().createWorkingCdIdentity(number: 2,
-                                                                isMyself: true,
-                                                                context: moc)
-        let selfIdentity = Identity(cdObject: identity, context: moc)
+        //Avoid collision with others identity numbers.
+        let selfNumber = numberOfRowsToGenerate + 1
         
+        let cdIdentity: CdIdentity = SecretTestData().createWorkingCdIdentity(number:selfNumber,
+                                                                              isMyself: true,
+                                                                              context: moc)
+        let selfIdentity = Identity(cdObject: cdIdentity, context: moc)
+        let mockedUtil = HandshakeUtilMock()
         if handshakeViewModel == nil {
             handshakeViewModel = HandshakeViewModel(identities:identities,
                                                     selfIdentity: selfIdentity,
-                                                    delegate: delegate)
+                                                    delegate: delegate,
+                                                    handshakeUtil:mockedUtil)
         }
     }
 }
@@ -162,15 +171,13 @@ extension HandshakeViewModelTest {
 ///MARK: - Mock Util Classes
 
 class HandshakeUtilMock: HandshakeUtilProtocol {
-    
-    
-    
-    //Make booleans like resetMustBeCalled
-    
+
     var getTrustwordsExpectation: XCTestExpectation?
     var resetExpectation: XCTestExpectation?
     var confirmExpectation: XCTestExpectation?
     var denyExpectation: XCTestExpectation?
+    var languagesExpectation: XCTestExpectation?
+    
     static let someTrustWords = "Dog"
     static let languages = ["en", "ca", "es"]
     var identity : Identity?
@@ -178,14 +185,17 @@ class HandshakeUtilMock: HandshakeUtilProtocol {
     init(getTrustwordsExpectation: XCTestExpectation? = nil,
          resetExpectation: XCTestExpectation? = nil,
          confirmExpectation: XCTestExpectation? = nil,
-         denyExpectation: XCTestExpectation? = nil) {
+         denyExpectation: XCTestExpectation? = nil,
+         languagesExpectation: XCTestExpectation? = nil){
         self.getTrustwordsExpectation = getTrustwordsExpectation
         self.resetExpectation = resetExpectation
         self.confirmExpectation = confirmExpectation
         self.denyExpectation = denyExpectation
+        self.languagesExpectation = languagesExpectation
     }
 
     func languagesList() throws -> [String] {
+        languagesExpectation?.fulfill()
         return HandshakeUtilMock.languages
     }
     
