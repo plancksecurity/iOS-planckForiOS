@@ -120,6 +120,29 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: TestUtil.waitTime)
     }
     
+    func testUndoOnShakeMotion() {
+        setupViewModel()
+        
+        let firstItemPosition = IndexPath(item: 0, section: 0)
+        let didShake = expectation(description: "didShake")
+        let didReset = expectation(description: "didReset")
+        let didConfirm = expectation(description: "didConfirm")
+        let mockDelegate = MockHandshakeViewModelHandler(didEndShakeMotionExpectation: didShake,
+                                                         didResetHandshakeExpectation: didReset,
+                                                         didConfirmHandshakeExpectation: didConfirm)
+
+        handshakeViewModel?.handshakeViewModelDelegate = mockDelegate
+        
+        //Confirm handshake
+        handshakeViewModel?.handleConfirmHandshakePressed(at: firstItemPosition)
+        
+        //Gesture for undo
+        handshakeViewModel?.shakeMotionDidEnd()
+
+        ///Verify reset has been called only once.
+        waitForExpectations(timeout: TestUtil.waitTime)
+    }
+    
     /// Test get trustwords is being called.
     func testGetTrustwords() {
         let getTWExp = expectation(description: "Get Trustwords Expectation")
@@ -246,30 +269,58 @@ class MockHandshakeViewModelHandler : HandshakeViewModelDelegate {
     }
 
     func didEndShakeMotion() {
-        didEndShakeMotionExpectation?.fulfill()
+        if let expectation = didEndShakeMotionExpectation {
+            expectation.fulfill()
+        } else {
+            XCTFail()
+        }
     }
     
     func didResetHandshake(forRowAt indexPath: IndexPath) {
-        didResetHandshakeExpectation?.fulfill()
+        if let expectation = didResetHandshakeExpectation {
+            expectation.fulfill()
+        } else {
+            XCTFail()
+        }
     }
     
     func didConfirmHandshake(forRowAt indexPath: IndexPath) {
-        didConfirmHandshakeExpectation?.fulfill()
+        if let expectation = didConfirmHandshakeExpectation {
+            expectation.fulfill()
+        } else {
+            XCTFail()
+        }
     }
     
     func didRejectHandshake(forRowAt indexPath: IndexPath) {
-        didDenyHandshakeExpectation?.fulfill()
+        if let expectation = didDenyHandshakeExpectation {
+            expectation.fulfill()
+        } else {
+            XCTFail()
+        }
     }
     
     func didChangeProtectionStatus(to status: HandshakeViewModel.ProtectionStatus) {
-        didChangeProtectionStatusExpectation?.fulfill()
+        if let expectation = didChangeProtectionStatusExpectation {
+            expectation.fulfill()
+        } else {
+            XCTFail()
+        }
     }
     
     func didSelectLanguage(forRowAt indexPath: IndexPath) {
-        didSelectLanguageExpectation?.fulfill()
+        if let expectation = didSelectLanguageExpectation {
+            expectation.fulfill()
+        } else {
+            XCTFail()
+        }
     }
     
     func didToogleProtection(forRowAt indexPath: IndexPath) {
-        didChangeProtectionStatusExpectation?.fulfill()
+        if let expectation = didChangeProtectionStatusExpectation {
+            expectation.fulfill()
+        } else {
+            XCTFail()
+        }
     }
 }

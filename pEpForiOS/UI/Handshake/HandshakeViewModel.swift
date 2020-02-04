@@ -45,6 +45,7 @@ final class HandshakeViewModel {
     var selfIdentity : Identity
     var handshakeUtil : HandshakeUtilProtocol
     weak var handshakeViewModelDelegate : HandshakeViewModelDelegate?
+    private let undoManager = UndoManager()
 
     enum ProtectionStatus {
         case enabled
@@ -121,6 +122,7 @@ final class HandshakeViewModel {
     /// Reject the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to reject the handshake
     public func handleRejectHandshakePressed(at indexPath: IndexPath) {
+        registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         handshakeViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
         handshakeUtil.denyTrust(for: row.identity)
@@ -129,15 +131,16 @@ final class HandshakeViewModel {
     /// Confirm the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to confirm the handshake
     public func handleConfirmHandshakePressed(at indexPath: IndexPath) {
+        registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         handshakeUtil.confirmTrust(for: row.identity)
         handshakeViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
     }
-    
+
     /// Reset the handshake
     /// The privacy status will be unsecure.
     /// - Parameter indexPath: The indexPath of the item to get the user to reset the handshake
-    public func handleResetPressed(at indexPath: IndexPath) {
+    @objc public func handleResetPressed(at indexPath: IndexPath) {
         let row = rows[indexPath.row]
         handshakeUtil.resetTrust(for: row.identity, fingerprints: nil)
         handshakeViewModelDelegate?.didResetHandshake(forRowAt: indexPath)
@@ -174,6 +177,7 @@ final class HandshakeViewModel {
     /// Method that reverts the last action performed by the user
     /// After the execution of this method there won't be any action to un-do.
     public func shakeMotionDidEnd() {
+        undoManager.undo()
         handshakeViewModelDelegate?.didEndShakeMotion()
     }
 
@@ -191,7 +195,16 @@ final class HandshakeViewModel {
             rows.append(item)
         }
     }
-    
+
+    /// Register the action to be undo
+    /// - Parameter indexPath: The indexPath of the row which the action to undo.
+    private func registerUndoAction(at indexPath: IndexPath) {
+        undoManager.registerUndo(withTarget: self,
+                                 selector: #selector(handleResetPressed),
+                                 object: indexPath)
+
+    }
+
     /// Returns the trustwords for the item.
     /// - Parameter item: The handshake partner item
     private func trustwords(for indexPath: IndexPath, long : Bool = false) -> String? {
