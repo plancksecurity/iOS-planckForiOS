@@ -125,12 +125,12 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
         let getTWExp = expectation(description: "Get Trustwords Expectation")
         setupViewModel()
         let firstItemPosition = IndexPath(item: 0, section: 0)
-        let mock = HandshakeUtilMock(getTrustwordsExpectation: getTWExp)
-        handshakeViewModel?.handshakeUtil = mock
+        let handshakeMock = HandshakeUtilMock(getTrustwordsExpectation: getTWExp)
+        handshakeViewModel?.handshakeUtil = handshakeMock
         let trustwords = handshakeViewModel?.generateTrustwords(indexPath: firstItemPosition)
         XCTAssertEqual(trustwords, HandshakeUtilMock.someTrustWords)
         let identity = identities[firstItemPosition.row]
-        XCTAssertEqual(identity, mock.identity)
+        XCTAssertEqual(identity, handshakeMock.identity)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
     
@@ -199,6 +199,7 @@ class HandshakeUtilMock: HandshakeUtilProtocol {
     }
     
     func getTrustwords(for forSelf: Identity, and: Identity, language: String, long: Bool) -> String? {
+        self.identity = and
         getTrustwordsExpectation?.fulfill()
         return HandshakeUtilMock.someTrustWords
     }
