@@ -14,7 +14,9 @@ open class MessageSenderCell: MessageCell {
     public override func updateCell(model: ComposeFieldModel, message: Message) {
         super.updateCell(model: model, message: message)
         titleLabel?.text = message.from?.displayString
-        let attributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15.0),
+        titleLabel?.font = UIFont.pepFootnote
+        
+        let attributes = [NSAttributedString.Key.font: UIFont.pepFootnote,
                           NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         var temp: [String] = []
         message.allRecipients.forEach { (recepient) in

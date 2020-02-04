@@ -23,7 +23,7 @@ extension NSAttributedString {
             let attachString = NSAttributedString(attachment: textAttachment)
             attrText.replaceCharacters(in: selectedRange, with: attachString)
             attrText.addAttribute(NSAttributedString.Key.font,
-                                  value: UIFont.pEpInput,
+                                  value: UIFont.pepBody,
                                   range: NSRange(location: 0, length: attrText.length))
             return (NSAttributedString(attributedString: attrText), textAttachment)
     }

@@ -115,7 +115,7 @@ extension NSAttributedString {
             }
 
             new.addAttribute(NSAttributedString.Key.font,
-                             value: UIFont.pEpInput,
+                             value: UIFont.pepBody,
                              range: NSRange(location: 0, length: new.length)
             )
             new.addAttribute(NSAttributedString.Key.baselineOffset,
