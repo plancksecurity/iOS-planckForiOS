@@ -173,7 +173,7 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
         let firstItemPosition = IndexPath(item: 0, section: 0)
         let handshakeMock = HandshakeUtilMock(getTrustwordsExpectation: getTWExp)
         handshakeViewModel?.handshakeUtil = handshakeMock
-        let trustwords = handshakeViewModel?.generateTrustwords(indexPath: firstItemPosition)
+        let trustwords = handshakeViewModel?.generateTrustwords(forRowAt: firstItemPosition)
         XCTAssertEqual(trustwords, HandshakeUtilMock.someTrustWords)
         let identity = identities[firstItemPosition.row]
         XCTAssertEqual(identity, handshakeMock.identity)
