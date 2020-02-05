@@ -68,9 +68,12 @@ class Appearance {
 
         appearance.configureWithOpaqueBackground()
 
-        let font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        let font = UIFont.pepFont(style: .headline, type: .medium)
+        
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: color,
-                                                                   .font: font]
+                                                                   .font: font,
+                                                                   .baselineOffset: -2
+        ]
         appearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes
         appearance.backButtonAppearance.normal.titleTextAttributes = titleTextAttributes
         appearance.titleTextAttributes = titleTextAttributes

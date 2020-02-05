@@ -14,9 +14,11 @@ open class MessageSenderCell: MessageCell {
     public override func updateCell(model: ComposeFieldModel, message: Message) {
         super.updateCell(model: model, message: message)
         titleLabel?.text = message.from?.displayString
-        titleLabel?.font = UIFont.pepFootnote
         
-        let attributes = [NSAttributedString.Key.font: UIFont.pepFootnote,
+        let font = UIFont.pepFont(style: .footnote, type: .semibold)
+        titleLabel?.font = font
+
+        let attributes = [NSAttributedString.Key.font: font,
                           NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         var temp: [String] = []
         message.allRecipients.forEach { (recepient) in
@@ -24,6 +26,6 @@ open class MessageSenderCell: MessageCell {
             temp.append(recepient)
         }
         let toDestinataries = NSLocalizedString("To:", comment: "Compose field title") + temp.joined(separator: ", ")
-        valueLabel?.attributedText = NSAttributedString(string: toDestinataries, attributes: attributes)
+        valueLabel?.attributedText = NSAttributedString(string: toDestinataries, attributes: attributes as [NSAttributedString.Key : Any])
     }
 }

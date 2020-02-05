@@ -73,6 +73,8 @@
 		<string>UniversLTStd.otf</string>
 		<string>UniversLTStd-Bold.otf</string>
 		<string>SFUIText-Regular.ttf</string>
+		<string>SFUIText-Medium.ttf</string>
+		<string>SFUIText-Semibold.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
