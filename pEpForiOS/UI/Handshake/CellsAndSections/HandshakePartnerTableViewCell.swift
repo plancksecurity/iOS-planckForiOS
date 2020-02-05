@@ -39,6 +39,7 @@ protocol HandshakePartnerTableViewCellDelegate: class {
 }
 
 class HandshakePartnerTableViewCell: UITableViewCell {
+    @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var wrongButton: UIButton!
     @IBOutlet weak var partnerImageView: UIImageView!
@@ -88,6 +89,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         updateConfirmDistrustButtonsTitle()
         wrongButton.pEpIfyForTrust(backgroundColor: UIColor.pEpRed, textColor: .white)
         confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)
+        resetButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGrayBackgroundReset, textColor: .white)
         addMultilineButtonConstraints(button: wrongButton)
         addMultilineButtonConstraints(button: confirmButton)
     }
@@ -152,11 +154,12 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         view.addGestureRecognizer(gestureRecognizer)
     }
 
-    func updateTrustwords() {
+    func updateTrustwords() {        
         let showElipsis = isPartnerPEPUser && !trustwordsFull
         if showElipsis,
             let trustwords = viewModel?.trustwords {
-            trustWordsLabel.text = "\(trustwords) …"
+            let spacedTrustwords = trustwords.replacingOccurrences(of: " ", with: "   ")
+            trustWordsLabel.text = "\(spacedTrustwords) …"
         } else {
             trustWordsLabel.text = viewModel?.trustwords
         }

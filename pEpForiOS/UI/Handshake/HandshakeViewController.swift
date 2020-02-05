@@ -47,8 +47,10 @@ class HandshakeViewController: BaseTableViewController {
         tableView.estimatedRowHeight = 200.0
         tableView.rowHeight = UITableView.automaticDimension
 
-        self.navigationItem.rightBarButtonItems = [languageButton()]
+//        self.navigationItem.rightBarButtonItems = [languageButton()]
+        self.navigationItem.rightBarButtonItems = [optionsButton()]
 
+        
         let leftItem = UIBarButtonItem(customView: backButton())
         self.navigationItem.leftBarButtonItem = leftItem
         navigationController?.navigationBar.isTranslucent = false
@@ -175,6 +177,16 @@ extension HandshakeViewController {
                          action: #selector(self.languageSelectedAction(_:)),
                          for: .touchUpInside)
         addLanguageButtonView(parentView: button)
+        return UIBarButtonItem(customView: button)
+    }
+    
+    private func optionsButton() -> UIBarButtonItem {
+        let button = UIButton(type: .custom)
+        button.addTarget(self,
+                         action: #selector(self.languageSelectedAction(_:)),
+                         for: .touchUpInside)
+        let text = NSLocalizedString("Remove", comment: "Remove")
+        button.setTitle(text, for: .normal)
         return UIBarButtonItem(customView: button)
     }
 
