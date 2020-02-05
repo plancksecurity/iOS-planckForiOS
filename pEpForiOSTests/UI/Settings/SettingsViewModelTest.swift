@@ -178,11 +178,14 @@ extension SettingsViewModelTest {
 class SettingsViewModelDelegateMock: SettingsViewModelDelegate {
     
     func showLoadingView() {
+        XCTFail()
     }
     
     func hideLoadingView() {
+        XCTFail()
     }
     
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
+        XCTFail()
     }
 }
