@@ -72,7 +72,7 @@ class Appearance {
         
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: color,
                                                                    .font: font,
-                                                                   .baselineOffset: -2
+                                                                   .baselineOffset: 2
         ]
         appearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes
         appearance.backButtonAppearance.normal.titleTextAttributes = titleTextAttributes
@@ -80,7 +80,10 @@ class Appearance {
         appearance.largeTitleTextAttributes = titleTextAttributes
         appearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
 
-        let chevronLeftImg = UIImage(named: "chevron-icon-left")
+        
+        
+        let chevronLeftImg = UIImage(named: "chevron-icon-left")?
+            .resizeImage(targetSize: CGSize(width: 15, height: 25))
         appearance.setBackIndicatorImage(chevronLeftImg, transitionMaskImage: chevronLeftImg)
 
         return appearance
