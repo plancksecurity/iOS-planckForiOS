@@ -23,13 +23,14 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
     let sections = 5
 
     func testNumberOfSections() {
-        setupViewModel()
+        let delegateMock = SettingsViewModelDelegateMock()
+        setupViewModel(delegate: delegateMock)
         XCTAssertEqual(settingsVM.count, sections)
     }
 
     func testNumberOfRowsForSectionInFirstPositionWith1Account() {
-        setupViewModel()
-        
+        let delegateMock = SettingsViewModelDelegateMock()
+        setupViewModel(delegate: delegateMock)
         let numberOfStaticCellInAccountsSection = 1
         let numberOfAccounts = Account.all().count
         ///Position of the first section
@@ -43,8 +44,8 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     func testNumberOfRowsForSectionInFirstPositionWithMoreThan1Account() {
         givenThereAreTwoAccounts()
-        setupViewModel()
-        
+        let delegateMock = SettingsViewModelDelegateMock()
+        setupViewModel(delegate: delegateMock)
         let numberOfStaticCellInAccountsSection = 1
         let numberOfAccounts = Account.all().count
         ///Position of the first section
@@ -57,15 +58,16 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testSwitchBehaviorOnPassiveModeRow() {
-        setupViewModel()
+        let delegateMock = SettingsViewModelDelegateMock()
+        setupViewModel(delegate: delegateMock)
         let globalSettingsSectionIndex = 1
         let protectRowIndexInSection = 4
         let indexPath = IndexPath(row: 0, section: globalSettingsSectionIndex)
         let globalSettingsSection = settingsVM.section(for: indexPath)
-        if let passiveModeRow = globalSettingsSection.rows[protectRowIndexInSection] as? SettingsViewModel.ActionRow,
-            let action = passiveModeRow.action {
+        if let passiveModeRow = globalSettingsSection.rows[protectRowIndexInSection] as? SettingsViewModel.SwitchRow {
+            let action = passiveModeRow.action
             let previousValue = AppSettings.shared.passiveMode
-            action()
+            action(!previousValue)
             let newPassiveMode = AppSettings.shared.passiveMode
             XCTAssert(previousValue != newPassiveMode)
         } else {
@@ -74,7 +76,8 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
     }
     
     func testSwitchBehaviorOnProtectMessageSubject() {
-        setupViewModel()
+        let delegateMock = SettingsViewModelDelegateMock()
+        setupViewModel(delegate: delegateMock)
         let globalSettingsSectionIndex = 1
         let protectRowIndex = 5
         let indexPath = IndexPath(row: 0, section: globalSettingsSectionIndex)
@@ -89,7 +92,8 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
     }
     
     func testSwitchBehaviorOnPepSync () {
-        setupViewModel()
+        let delegateMock = SettingsViewModelDelegateMock()
+        setupViewModel(delegate: delegateMock)
         let PEPsyncSectionIndex = 1
         let enablePEPSyncRowIndex = 0
         let indexPath = IndexPath(row: 0, section: PEPsyncSectionIndex)
@@ -104,7 +108,8 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
     }
     
     func testDeleteAccountWithOnlyOneAccount() {
-        setupViewModel()
+        let delegateMock = SettingsViewModelDelegateMock()
+        setupViewModel(delegate: delegateMock)
         let firstIndexPath = IndexPath(row: 0, section: 0)
         let firstSection = settingsVM.section(for: firstIndexPath)
         let cellsBefore = firstSection.rows.count
@@ -119,13 +124,15 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     func testDeleteAccountWithMoreThanOneAccount() {
         givenThereAreTwoAccounts()
-        setupViewModel()
+        let delegateMock = SettingsViewModelDelegateMock()
+        setupViewModel(delegate: delegateMock)
         testDeleteAccountWithOnlyOneAccount()
     }
 
     func testDeleteAccountWithMoreThanOneAccountUpdatesDefaultAccount() {
         givenThereAreTwoAccounts()
-        setupViewModel()
+        let delegateMock = SettingsViewModelDelegateMock()
+        setupViewModel(delegate: delegateMock)
         let accountSectionIP = IndexPath(row: 0, section: 0)
         if let firstAccountRow = settingsVM.section(for: accountSectionIP)
             .rows.first as? SettingsViewModel.ActionRow,
@@ -157,10 +164,25 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
 }
 
 // MARK: - Private
+
 extension SettingsViewModelTest {
-    private func setupViewModel() {
+    private func setupViewModel(delegate: SettingsViewModelDelegate) {
         if settingsVM == nil {
-            //settingsVM = SettingsViewModel(delegate: <#SettingsViewModelDelegate#>)
+            settingsVM = SettingsViewModel(delegate: delegate)
         }
+    }
+}
+
+// MARK: - delegate mocks
+
+class SettingsViewModelDelegateMock: SettingsViewModelDelegate {
+    
+    func showLoadingView() {
+    }
+    
+    func hideLoadingView() {
+    }
+    
+    func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
     }
 }

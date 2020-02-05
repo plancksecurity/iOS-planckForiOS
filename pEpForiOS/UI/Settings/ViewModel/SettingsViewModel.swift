@@ -482,7 +482,7 @@ extension SettingsViewModel {
         case companyFeatures
     }
     
-    //Identifies semantically the type of row.
+    /// Identifies semantically the type of row.
     public enum Row {
         case account
         case resetAccounts
