@@ -170,7 +170,7 @@ final class HandshakeViewModel {
 
     /// Generate the trustwords
     /// - Parameter long: Indicates if the trustwords MUST be long.
-    public func generateTrustwords(indexPath: IndexPath, long : Bool = false) -> String? {
+    public func generateTrustwords(forRowAt indexPath: IndexPath, long : Bool = false) -> String? {
         return trustwords(for: indexPath)
     }
     
