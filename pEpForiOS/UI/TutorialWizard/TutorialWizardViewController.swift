@@ -42,7 +42,8 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
         let view_1:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: "pEpForIOS-Tutorial-vertical-1"), #imageLiteral(resourceName: "pEpForIOS-Tutorial-horizontal-1"))
         let view_2:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: "pEpForIOS-Tutorial-vertical-2"), #imageLiteral(resourceName: "pEpForIOS-Tutorial-horizontal-2"))
         let view_3:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: "pEpForIOS-Tutorial-vertical-3"), #imageLiteral(resourceName: "pEpForIOS-Tutorial-horizontal-3"))
-        return [view_1, view_2, view_3]
+        let view_4:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: "pEpForIOS-Tutorial-vertical-4"), #imageLiteral(resourceName: "pEpForIOS-Tutorial-horizontal-4"))
+        return [view_1, view_2, view_3, view_4]
     }
 
     static func presentTutorialWizard(viewController: UIViewController) {
