@@ -11,7 +11,7 @@
         <scene sceneID="IVD-QH-CTl">
             <objects>
                 <tableViewController storyboardIdentifier="HandshakeViewControllerID" id="Jbh-LP-Jl1" customClass="HandshakeViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="297" sectionHeaderHeight="28" sectionFooterHeight="28" id="oZy-Mt-k2w" userLabel="HandshakeTableView">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="297" sectionHeaderHeight="28" sectionFooterHeight="28" id="oZy-Mt-k2w" userLabel="HandshakeTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -47,7 +47,7 @@
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" text="Privacy Status: Mistrusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5RJ-Gx-qBT" userLabel="PrivacyStatusLabel">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" text="Mistrusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5RJ-Gx-qBT" userLabel="PrivacyStatusLabel">
                                                                     <rect key="frame" x="78" y="57" width="221" height="18"/>
                                                                     <accessibility key="accessibilityConfiguration" identifier="privacyStatusTitle"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
@@ -94,13 +94,13 @@
                                                     <edgeInsets key="layoutMargins" top="0.0" left="8" bottom="0.0" right="8"/>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" distribution="fillProportionally" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="YPS-lz-S3W" userLabel="TrustwordsStackView">
-                                                    <rect key="frame" x="0.0" y="152.5" width="335" height="42.5"/>
+                                                    <rect key="frame" x="0.0" y="152.5" width="335" height="45"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oHb-H9-PNk">
-                                                            <rect key="frame" x="8" y="0.0" width="335" height="42.5"/>
+                                                            <rect key="frame" x="8" y="0.0" width="335" height="45"/>
                                                             <subviews>
                                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR" userLabel="TrustWordsLabel">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="225.5" height="42.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="225.5" height="45"/>
                                                                     <accessibility key="accessibilityConfiguration" label="trustWordsLabel"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                     <nil key="textColor"/>
@@ -129,10 +129,10 @@
                                                     <edgeInsets key="layoutMargins" top="0.0" left="8" bottom="0.0" right="8"/>
                                                 </stackView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gRz-Yh-xsS" userLabel="TrustButtonsView">
-                                                    <rect key="frame" x="0.0" y="215" width="335" height="36.5"/>
+                                                    <rect key="frame" x="0.0" y="217.5" width="335" height="50"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="dbO-2K-SpB" userLabel="WrongButton">
-                                                            <rect key="frame" x="5" y="0.0" width="60" height="36.5"/>
+                                                            <rect key="frame" x="5" y="0.0" width="60" height="50"/>
                                                             <accessibility key="accessibilityConfiguration" label="wrongButton"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <state key="normal" title="Decline"/>
@@ -141,7 +141,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Jgi-7k-Ymf" userLabel="ConfirmButton">
-                                                            <rect key="frame" x="75" y="2" width="65" height="33"/>
+                                                            <rect key="frame" x="75" y="8.5" width="65" height="33"/>
                                                             <accessibility key="accessibilityConfiguration" label="confirmButton"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <state key="normal" title="Confirm"/>
@@ -162,16 +162,16 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UNj-9e-eiX" userLabel="ResetContainer">
-                                                    <rect key="frame" x="0.0" y="271.5" width="335" height="58.5"/>
+                                                    <rect key="frame" x="0.0" y="287.5" width="335" height="42.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset all pEp data for this comunication partner:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L03-Re-fn4" userLabel="Reset Label">
-                                                            <rect key="frame" x="0.0" y="8" width="199.5" height="42.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="199.5" height="42.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ekO-aK-vFP">
-                                                            <rect key="frame" x="207.5" y="13.5" width="54" height="32"/>
+                                                            <rect key="frame" x="207.5" y="5.5" width="54" height="32"/>
                                                             <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
@@ -183,11 +183,11 @@
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                     <constraints>
                                                         <constraint firstItem="L03-Re-fn4" firstAttribute="leading" secondItem="UNj-9e-eiX" secondAttribute="leading" id="3Ch-7r-I1a"/>
-                                                        <constraint firstAttribute="bottom" secondItem="L03-Re-fn4" secondAttribute="bottom" constant="8" id="7fe-zD-5fZ"/>
+                                                        <constraint firstItem="L03-Re-fn4" firstAttribute="centerY" secondItem="UNj-9e-eiX" secondAttribute="centerY" id="3lF-bs-hBM"/>
+                                                        <constraint firstAttribute="bottom" secondItem="L03-Re-fn4" secondAttribute="bottom" id="7fe-zD-5fZ"/>
                                                         <constraint firstItem="ekO-aK-vFP" firstAttribute="leading" secondItem="L03-Re-fn4" secondAttribute="trailing" constant="8" id="VUi-Wn-eJv"/>
                                                         <constraint firstItem="ekO-aK-vFP" firstAttribute="centerY" secondItem="UNj-9e-eiX" secondAttribute="centerY" id="Xt1-q4-Kqi"/>
                                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ekO-aK-vFP" secondAttribute="trailing" constant="8" id="qam-G7-eu8"/>
-                                                        <constraint firstItem="L03-Re-fn4" firstAttribute="top" relation="greaterThanOrEqual" secondItem="UNj-9e-eiX" secondAttribute="top" constant="8" id="yqI-CS-vGg"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>

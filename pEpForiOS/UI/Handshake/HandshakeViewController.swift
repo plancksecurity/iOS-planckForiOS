@@ -136,57 +136,14 @@ extension HandshakeViewController {
         return UIModalPresentationStyle.none
     }
 
-    /// Creates an overlay view of the globe and adds it to the given view in such a way
-    /// that it will cover as much space as possible while not exceeding the parent view
-    /// and maintaining aspect ratio.
-    ///
-    /// - Parameter parentView: The view (which is probably a button) to overlay.
-    /// - Returns: The newly created overlay view that has been added to the given view.
-    @discardableResult private func addLanguageButtonView(parentView: UIView) -> UIView {
-        let totalHeightGap: CGFloat = 16 // Combined max gap to parent, top and bottom
-        let img = UIImage(named: "pEpForiOS-icon-languagechange")
-
-        let imgView = UIImageView(image: img)
-        parentView.addSubview(imgView)
-
-        // Turn off automatically created constraints that come into the way.
-        imgView.translatesAutoresizingMaskIntoConstraints = false
-
-        // aspect ratio
-        imgView.heightAnchor.constraint(equalTo: imgView.widthAnchor).isActive = true
-
-        // center in parent
-        imgView.centerYAnchor.constraint(equalTo: parentView.centerYAnchor).isActive = true
-
-        // glue to the right/trailing
-        imgView.trailingAnchor.constraint(lessThanOrEqualTo: parentView.trailingAnchor).isActive = true
-
-        // leave some space on top and bottom
-        imgView.heightAnchor.constraint(lessThanOrEqualTo: parentView.heightAnchor,
-                                        constant: -totalHeightGap).isActive = true
-
-        return imgView
-    }
-
-    /// Creates a bar button item for invoking the trustwords language list.
-    ///
-    /// - Returns: UIBarButtonItem suitable for adding to the navigation bar.
-    private func languageButton() -> UIBarButtonItem {
-        let button = UIButton(type: .custom)
-        button.addTarget(self,
-                         action: #selector(self.languageSelectedAction(_:)),
-                         for: .touchUpInside)
-        addLanguageButtonView(parentView: button)
-        return UIBarButtonItem(customView: button)
-    }
-    
     private func optionsButton() -> UIBarButtonItem {
         let button = UIButton(type: .custom)
         button.addTarget(self,
                          action: #selector(self.languageSelectedAction(_:)),
                          for: .touchUpInside)
-        let text = NSLocalizedString("Remove", comment: "Remove")
+        let text = NSLocalizedString("Options", comment: "Options")
         button.setTitle(text, for: .normal)
+        button.setTitleColor(UIColor.pEpGreen, for: .normal)
         return UIBarButtonItem(customView: button)
     }
 

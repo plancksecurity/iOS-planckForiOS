@@ -161,7 +161,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             let spacedTrustwords = trustwords.replacingOccurrences(of: " ", with: "   ")
             trustWordsLabel.text = "\(spacedTrustwords) …"
         } else {
-            trustWordsLabel.text = viewModel?.trustwords
+            trustWordsLabel.text = viewModel?.trustwords?.replacingOccurrences(of: " ", with: "   ")
         }
     }
 
@@ -202,9 +202,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             pEpStatusImageView.image = color.statusIconForMessage()
         }
 
-        let privacyStatus = NSLocalizedString("Privacy Status",
-                                              comment: "Privacy status title part in handshake list")
-        privacyStatusTitle.text = "\(privacyStatus): \(color.privacyStatusTitle)"
+        privacyStatusTitle.text = "\(color.privacyStatusTitle)"
     }
 
     // MARK: - Gestures
