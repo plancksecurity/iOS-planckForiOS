@@ -48,7 +48,6 @@ extension UIViewController {
             badgeView.translatesAutoresizingMaskIntoConstraints = false
             badgeView.heightAnchor.constraint(
                 greaterThanOrEqualToConstant: minimumHitTestDimension).isActive = true
-
             badgeView.addSubview(imgView)
 
             let imagePadding: CGFloat = 10
@@ -62,31 +61,8 @@ extension UIViewController {
                                            constant: -imagePadding).isActive = true
 
             return badgeView
-        } else {
-            let mode = splitViewController?.currentDisplayMode ?? .masterAndDetail
-
-            // Only show the top logo instead of the privacy status if there is not
-            // yet a logo shown.
-            switch mode {
-            case .onlyMaster:
-                return settingsIconInImageView()
-            case .onlyDetail, .masterAndDetail:
-                break
-            }
         }
 
-        return nil
-    }
-
-    func showNavigationBarPEPLogo(pEpRating: PEPRating?) -> UIView? {
-        if let rating = pEpRating, rating.isNoColor {
-            if let badgeView = settingsIconInImageView() {
-                navigationItem.titleView = badgeView
-                badgeView.isUserInteractionEnabled = true
-                return badgeView
-            }
-            return nil
-        }
         return nil
     }
 

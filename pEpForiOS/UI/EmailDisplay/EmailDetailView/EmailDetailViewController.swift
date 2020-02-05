@@ -29,6 +29,7 @@ class EmailDetailViewController: BaseViewController {
     @IBOutlet weak var flagButton: UIBarButtonItem!
     @IBOutlet weak var destructiveButton: UIBarButtonItem!
     @IBOutlet weak var replyButton: UIBarButtonItem!
+    @IBOutlet weak var pEpIconSettingsButton: UIBarButtonItem!
     @IBOutlet weak var moveToFolderButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
 
@@ -133,6 +134,10 @@ class EmailDetailViewController: BaseViewController {
         present(alert, animated: true, completion: nil)
     }
 
+    @IBAction func pEpIconSettingsButtonPressed(_ sender: UIBarButtonItem) {
+        showSettingsViewController()
+    }
+
     @IBAction func previousButtonPressed(_ sender: UIBarButtonItem) {
         showPreviousIfAny()
     }
@@ -150,7 +155,6 @@ extension EmailDetailViewController {
         viewModel?.delegate = self
         setupCollectionView()
         registerNotifications()
-        setupToolbar()
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -318,12 +322,6 @@ extension EmailDetailViewController {
     @objc
     private func rotated() {
         scrollToLastViewedCell()
-    }
-
-    private func setupToolbar() {
-        if !(onlySplitViewMasterIsShown) {
-            navigationItem.rightBarButtonItems = toolbarItems
-        }
     }
 
     private func releaseUnusedSubViewControllers() {

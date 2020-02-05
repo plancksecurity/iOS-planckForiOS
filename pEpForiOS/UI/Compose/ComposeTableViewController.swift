@@ -116,14 +116,6 @@ extension ComposeTableViewController {
             return
         }
 
-        //Not so nice. The view(controller) should not know about state and protection.
-        var view = showNavigationBarSecurityBadge(pEpRating: pEpRating, pEpProtection: pEpProtected)
-
-        // Show the logo instead if there is no pEp color
-        if view == nil {
-            view = showNavigationBarPEPLogo(pEpRating: pEpRating)
-        }
-
         // Handshake on simple touch if possible
         if vm.canDoHandshake() {
             let tapGestureRecognizerHandshake = UITapGestureRecognizer(

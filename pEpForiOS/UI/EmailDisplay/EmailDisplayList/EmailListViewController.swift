@@ -78,8 +78,6 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
             me.updateFilterButtonView()
             vm.startMonitoring() //!!!: UI should not know about startMonitoring
             me.tableView.reloadData()
-
-            me.checkSplitViewState()
             me.watchDetailView()
             me.doOnce = nil
         }
@@ -770,57 +768,6 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         return theItems
     }
 
-    /// Shows the pEp logo (leading to the settings) in the master view bottom toolbar,
-    /// or not, depending on `show`.
-    private func showLogoInMasterToolbar(show: Bool) {
-        // persist this state
-        shouldShowPepButtonInMasterToolbar = show
-
-        if show {
-            if var barItems = toolbarItems {
-                if let lastItem = barItems.last, lastItem.tag == pEpButtonItemTag {
-                    // already there
-                    return
-                } else {
-                    barItems.append(contentsOf: [createFlexibleBarButtonItem(),
-                                                 createPepBarButtonItem()])
-                }
-                toolbarItems = barItems
-            } else {
-                toolbarItems = [createPepBarButtonItem()]
-            }
-        } else {
-            if var barItems = toolbarItems {
-                if let lastItem = barItems.last, lastItem.tag == pEpButtonItemTag {
-                    barItems.removeLast()
-                }
-                toolbarItems = trailingFlexibleSpaceRemoved(barButtonItems: barItems)
-            }
-        }
-    }
-
-    /// Tries to deduce from the split view arrangement whether to show the
-    /// master toolbar pEp logo or not.
-    private func checkSplitViewState() {
-        if let spvc = splitViewController {
-            if spvc.viewControllers.count == 1 {
-                // only master is shown
-                showLogoInMasterToolbar(show: true)
-            } else if spvc.viewControllers.count == 2 {
-                // detail is shown, check further
-                var showMasterLogo = true
-                if let vc = spvc.viewControllers[safe: 1] {
-                    if vc is NothingSelectedViewController {
-                        showMasterLogo = true
-                    } else {
-                        showMasterLogo = false
-                    }
-                }
-                showLogoInMasterToolbar(show: showMasterLogo)
-            }
-        }
-    }
-
     // MARK: - Observing the split view controller
 
     //???: Hard to undestand. What is the observeer used for? Out of 3 devs, zero understood.
@@ -853,8 +800,6 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
-
-        checkSplitViewState()
     }
 }
 
