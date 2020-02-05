@@ -10,23 +10,24 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 protocol KeySyncUtilProtocol: class {
-    static var deviceGroupState: DeviceGroupState { get }
     static func leaveDeviceGroup() throws
     static var isInDeviceGroup: Bool { get }
     static var isKeySyncEnabled: Bool { get }
     static func enableKeySync()
     static func disableKeySync()
-
 }
 
-class KeySyncUtil: KeySyncUtilProtocol {
+class KeySyncUtil {
 
     /// Pure static API.
     private init() {}
 
-    static var deviceGroupState: DeviceGroupState {
+    static private var deviceGroupState: DeviceGroupState {
         return AppSettings.shared.lastKnownDeviceGroupState
     }
+}
+
+extension KeySyncUtil: KeySyncUtilProtocol {
 
     static func leaveDeviceGroup() throws {
         try PEPSession().leaveDeviceGroup()
@@ -47,6 +48,13 @@ class KeySyncUtil: KeySyncUtilProtocol {
     }
 
     static func disableKeySync() {
+        if isInDeviceGroup {
+            do {
+                try leaveDeviceGroup()
+            } catch {
+                Log.shared.errorAndCrash(error: error)
+            }
+        }
         AppSettings.shared.keySyncEnabled = false
     }
 }
