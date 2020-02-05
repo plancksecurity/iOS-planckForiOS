@@ -12,21 +12,21 @@ struct KeySyncSwitchSettingViewModel: SwitchSettingCellViewModelProtocol  {
 
     // MARK: - SwitchSettingCellViewModelProtocol
 
-    var cellIdentifier = "switchOptionCell"
+    let cellIdentifier = "switchOptionCell"
     var delegate: keySyncActionsProtocol?
 
-    var title = NSLocalizedString("p≡p Sync", comment: "pep sync title")
+    private(set) var title = NSLocalizedString("p≡p Sync", comment: "pep sync title")
 
     func setSwitch(value: Bool) {
         delegate?.updateSyncStatus(to: value)
     }
 
-    func switchValue() -> Bool {
+    var switchValue: Bool {
         let keySyncEnabled = KeySyncUtil.isKeySyncEnabled
         return keySyncEnabled
     }
 
-    func isGrouped() -> Bool {
+    var isGrouped: Bool {
         return KeySyncUtil.isInDeviceGroup
     }
 }
@@ -34,4 +34,3 @@ struct KeySyncSwitchSettingViewModel: SwitchSettingCellViewModelProtocol  {
 protocol keySyncActionsProtocol {
     func updateSyncStatus(to: Bool)
 }
-
