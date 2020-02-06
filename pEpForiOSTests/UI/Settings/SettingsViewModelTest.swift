@@ -15,8 +15,11 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
     var settingsVM : SettingsViewModel!
 
     func givenThereAreTwoAccounts() {
-        _ = SecretTestData().createWorkingCdAccount(number: 1, context: moc)
-        moc.saveAndLogErrors()
+        guard let account = SecretTestData().createWorkingAccount() else {
+            XCTFail()
+            return
+        }
+        account.save()
     }
 
     //Number of sections corresponding to SettingsViewModelV2.SectionType count
