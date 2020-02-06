@@ -66,21 +66,6 @@ extension UIViewController {
         return nil
     }
 
-    private func settingsIconInImageView() -> UIImageView? {
-        guard let img = UIImage(named: "icon-unsecure-top") else {
-            return nil
-        }
-
-        let imgView = UIImageView(image: img)
-        imgView.translatesAutoresizingMaskIntoConstraints = false
-        let ratio = imgView.aspectRatio()
-        imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor,
-                                       multiplier: ratio,
-                                       constant: 0.0).isActive = true
-        imgView.heightAnchor.constraint(equalToConstant: 22).isActive = true
-        return imgView
-    }
-
     @discardableResult
     func presentKeySyncWizard(meFPR: String,
                               partnerFPR: String,

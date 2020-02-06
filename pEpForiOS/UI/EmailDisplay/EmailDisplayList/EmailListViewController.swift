@@ -14,8 +14,6 @@ import pEpIOSToolbox
 class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
     /// Stuff that must be done once only in viewWillAppear
     private var doOnce: (()-> Void)?
-    /// With this tag we recognize the pEp button item, for easy removal later.
-    private let pEpButtonItemTag = 7
     /// With this tag we recognize our own created flexible space buttons, for easy removal later.
     private let flexibleSpaceButtonItemTag = 77
     /// True if the pEp button on the left/master side should be shown.
@@ -726,7 +724,6 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
             target: self)
-        item.tag = pEpButtonItemTag
         return item
     }
 

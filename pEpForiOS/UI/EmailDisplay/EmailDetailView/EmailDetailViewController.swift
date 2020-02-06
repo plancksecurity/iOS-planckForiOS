@@ -155,6 +155,7 @@ extension EmailDetailViewController {
         viewModel?.delegate = self
         setupCollectionView()
         registerNotifications()
+        setupToolbar()
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -324,6 +325,13 @@ extension EmailDetailViewController {
         // Works around a UI glitch: When !onlySplitViewMasterIsShown, the colletionView scroll
         // position is inbetween two cells after orientation change.
         scrollToLastViewedCell()
+    }
+
+    private func setupToolbar() {
+        if !onlySplitViewMasterIsShown {
+            toolbarItems?.removeAll(where: {$0 == pEpIconSettingsButton })
+            navigationItem.rightBarButtonItems = toolbarItems
+        }
     }
 
     // Removes all EmailViewController that are not connected to a cell any more.

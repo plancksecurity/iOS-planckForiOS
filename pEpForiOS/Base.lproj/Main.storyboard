@@ -116,7 +116,7 @@
                                                                     </userDefinedRuntimeAttributes>
                                                                 </imageView>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" image="pEp-status-yellow_white-border" translatesAutoresizingMaskIntoConstraints="NO" id="gja-fY-c60">
-                                                                    <rect key="frame" x="15" y="15" width="20" height="20"/>
+                                                                    <rect key="frame" x="37" y="37" width="18" height="18"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                     <userDefinedRuntimeAttributes>
@@ -994,7 +994,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="g1q-wK-tff"/>
         <segue reference="CKh-jT-ski"/>
-        <segue reference="0Yg-lj-kVR"/>
+        <segue reference="r2P-Ra-zWf"/>
         <segue reference="HHz-at-Ehg"/>
     </inferredMetricsTieBreakers>
 </document>

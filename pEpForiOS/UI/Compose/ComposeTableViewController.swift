@@ -239,6 +239,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
 
     func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool) {
         setupPepColorView(for: rating, pEpProtected: protectionEnabled)
+        showNavigationBarSecurityBadge(pEpRating: rating, pEpProtection: protectionEnabled)
     }
 
     func showMediaAttachmentPicker() {
