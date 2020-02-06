@@ -581,7 +581,7 @@ extension EmailDetailViewController: SegueHandlerType {
             destination.viewModel = viewModel?.getMoveToFolderViewModel(forMessageRepresentedByItemAt: indexPath)
         case .segueHandshake, .segueHandshakeCollapsed:
             guard let nv = segue.destination as? UINavigationController,
-                let vc = nv.topViewController as? HandshakeViewController else {
+                let vc = nv.topViewController as? HandshakeViewControllerV2 else {
                     Log.shared.errorAndCrash("No DVC?")
                     break
             }
@@ -600,7 +600,7 @@ extension EmailDetailViewController: SegueHandlerType {
                                                                   width: 0,
                                                                   height: 0)
             vc.appConfig = appConfig
-            vc.message = message
+//            vc.message = message
             break
         case .noSegue:
             break
