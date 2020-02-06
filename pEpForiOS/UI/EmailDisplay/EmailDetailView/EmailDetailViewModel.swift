@@ -55,13 +55,6 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         delegate?.reloadData(viewModel: self)
     }
 
-    /// You can call this to show a specific, user selected message instead of instanziating a
-    /// new EmailDetailView.
-    /// - Parameter indexPath: indexPath to select
-    public func select(itemAt indexPath: IndexPath) {
-        delegate?.select(itemAt: indexPath)
-    }
-
     /// Action handling
     /// - Parameter indexPath: indexPath of cell the flag button has been pressed for
     public func handleFlagButtonPress(for indexPath: IndexPath) {
@@ -206,9 +199,7 @@ extension EmailDetailViewModel {
             Log.shared.errorAndCrash("No msg")
             return
         }
-        if !message.imapFlags.seen {
-            message.markAsSeen()
-        }
+        message.markAsSeen()
     }
 
     private func markForRedecryptionIfNeeded(messageRepresentedBy indexPath: IndexPath) {

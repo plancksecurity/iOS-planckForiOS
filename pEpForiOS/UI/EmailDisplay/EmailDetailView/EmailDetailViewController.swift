@@ -267,7 +267,7 @@ extension EmailDetailViewController {
 
     private func configureView() {
         // Make sure the NavigationBar is shown, even if the previous view has hidden it.
-        navigationController?.setNavigationBarHidden(false, animated: false) //BUFF: //XAVIER: rm NC in storyboard after new SplitView handling approach is in.
+        navigationController?.setNavigationBarHidden(false, animated: false) //XAVIER: rm NC in storyboard after new SplitView handling approach is in.
 
         //ToolBar
         if splitViewController != nil {
@@ -321,9 +321,12 @@ extension EmailDetailViewController {
 
     @objc
     private func rotated() {
+        // Works around a UI glitch: When !onlySplitViewMasterIsShown, the colletionView scroll
+        // position is inbetween two cells after orientation change.
         scrollToLastViewedCell()
     }
 
+    // Removes all EmailViewController that are not connected to a cell any more.
     private func releaseUnusedSubViewControllers() {
         emailSubViewControllers = emailSubViewControllers.filter { $0.view.superview != nil }
     }
@@ -413,6 +416,22 @@ extension EmailDetailViewController {
         }
         UIUtils.presentSettings(on: vc, appConfig: appConfig)
     }
+
+    private func setupEmailViewController(forRowAt indexPath: IndexPath) -> EmailViewController? {
+        guard
+            let vm = viewModel,
+            let createe = storyboard?.instantiateViewController(withIdentifier: EmailViewController.storyboardId) as? EmailViewController
+            else {
+                Log.shared.errorAndCrash("No V[M|C]")
+                return nil
+        }
+        createe.appConfig = appConfig
+        createe.message = vm.message(representedByRowAt: indexPath) //!!!: EmailVC should have a VM which should be created in our VM. This VC should not be aware of `Message`s!
+        createe.delegate = self
+        emailSubViewControllers.append(createe)
+
+        return createe
+    }
 }
 
 // MARK: - UICollectionViewDelegate
@@ -452,26 +471,19 @@ extension EmailDetailViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        releaseUnusedSubViewControllers()
+
         guard
             let cell =
             collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
                                                for: indexPath) as? EmailDetailCollectionViewCell,
-            let emailViewController = storyboard?.instantiateViewController(withIdentifier: EmailViewController.storyboardId) as? EmailViewController,
-            let vm = viewModel
+            let emailViewController = setupEmailViewController(forRowAt: indexPath)
             else {
                 Log.shared.errorAndCrash("Error setting up cell")
                 return collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
                                                           for: indexPath)
         }
-        releaseUnusedSubViewControllers()
-        
-        emailViewController.appConfig = appConfig
-        emailViewController.message = vm.message(representedByRowAt: indexPath) //!!!: EmailVC should have a VM which should be created in our VM. This VC should not be aware of `Message`s!
-        emailViewController.delegate = self
-        emailSubViewControllers.append(emailViewController)
-        cell.containerView.addSubview(emailViewController.view)
-
-        emailViewController.view.fullSizeInSuperView()
+        cell.setContainedView(containedView: emailViewController.view)
 
         return cell
     }
