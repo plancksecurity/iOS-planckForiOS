@@ -30,6 +30,12 @@ class HandshakeViewControllerV2: BaseViewController {
     @IBAction private func optionsButtonPressed(_ sender: UIBarButtonItem) {
         presentToogleProtectionActionSheet()
     }
+    
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            viewModel?.shakeMotionDidEnd()
+        }
+    }
 }
 
 /// MARK: - UITableViewDelegate
@@ -106,7 +112,7 @@ extension HandshakeViewControllerV2: HandshakeViewModelDelegate {
     }
     
     func didEndShakeMotion() {
-        
+        handshakeTableView.reloadData()
     }
     
     func didResetHandshake(forRowAt indexPath: IndexPath) {

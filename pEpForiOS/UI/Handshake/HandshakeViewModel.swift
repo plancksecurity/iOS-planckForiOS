@@ -31,6 +31,8 @@ protocol HandshakeViewModelDelegate: class {
     /// - Parameter indexPath: The indexPath of the row where the user changes the language
     func didSelectLanguage(forRowAt indexPath: IndexPath)
     
+    /// Delegate method to notify when the user choose to show more trustwords
+    /// - Parameter indexPath: The indexPath of the row where the user changes the language
     func didToogleLongTrustwords(forRowAt indexPath: IndexPath)
 }
 
@@ -163,8 +165,10 @@ final class HandshakeViewModel {
     /// Method that reverts the last action performed by the user
     /// After the execution of this method there won't be any action to un-do.
     public func shakeMotionDidEnd() {
-        undoManager.undo()
-        handshakeViewModelDelegate?.didEndShakeMotion()
+        if (undoManager.canRedo) {
+            undoManager.undo()
+            handshakeViewModelDelegate?.didEndShakeMotion()
+        }
     }
 
     ///MARK: - Private
