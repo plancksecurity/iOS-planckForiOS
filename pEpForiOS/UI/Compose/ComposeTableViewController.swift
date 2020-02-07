@@ -132,30 +132,49 @@ extension ComposeTableViewController {
         if pEpColor == .green || pEpColor == .yellow {
             let tapGestureRecognizerToggleProtection = UILongPressGestureRecognizer(
                 target: self,
-                action: #selector(actionToggleProtection))
+                action: #selector(showPepActions))
             pEpRatingView?.addGestureRecognizer(tapGestureRecognizerToggleProtection)
         }
     }
 
-    /// Toggles the protection for this outgoing message (force protected).
-    /// - Parameter gestureRecognizer: The gesture recognizer that triggered this
-    @objc func actionToggleProtection(gestureRecognizer: UITapGestureRecognizer) {
-        // This is a long press, so react once when we know for sure,
-        // while the user is still pressing.
-        guard gestureRecognizer.state == .began else {
-            return
-        }
+    @objc
+    private func showPepActions(sender: UIBarButtonItem) {
 
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        guard vm.state.userCanToggleProtection() else {
-            return
-        }
 
-        let originalValueOfProtection = vm.state.pEpProtection
-        vm.handleUserChangedProtectionStatus(to: !originalValueOfProtection)
+        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+        actionSheetController.addAction(changeSecureStatusAction(pEpProtected: vm.state.pEpProtection))
+        actionSheetController.addAction(disableAlertAction())
+
+        if splitViewController != nil, !onlySplitViewMasterIsShown {
+            actionSheetController.popoverPresentationController?.barButtonItem = sender
+        }
+        present(actionSheetController, animated: true)
+    }
+
+    private func changeSecureStatusAction(pEpProtected: Bool) -> UIAlertAction {
+        let disable = NSLocalizedString("Disable Protection", comment: "action sheet title")
+        let enable = NSLocalizedString("Enable Protection", comment: "action sheet title")
+
+        let action = UIAlertAction(title: pEpProtected ? disable : enable ,
+                                   style: .default) { [weak self] (action) in
+                                    guard let me = self, let vm = me.viewModel else {
+                                        Log.shared.errorAndCrash(message: "lost myself")
+                                        return
+                                    }
+                                    let originalValueOfProtection = vm.state.pEpProtection
+                                    vm.handleUserChangedProtectionStatus(to: !originalValueOfProtection)
+        }
+        return action
+    }
+
+    private func disableAlertAction() -> UIAlertAction {
+        return UIAlertAction(
+            title: NSLocalizedString("Cancel", comment: "possible private status action"),
+            style: .cancel) { (action) in }
     }
 
     /// Shows the handshake menu, if applicable.
