@@ -89,7 +89,6 @@ class IdentityImageTool {
         return cache.image
     }
 
-
     func identityImage(for identityKey: IdentityKey,
                        imageSize: CGSize = CGSize.defaultAvatarSize,
                        textColor: UIColor = UIColor.white,

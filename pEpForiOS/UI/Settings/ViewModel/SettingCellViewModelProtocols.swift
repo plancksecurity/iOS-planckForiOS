@@ -18,7 +18,7 @@ protocol SwitchSettingCellViewModelProtocol: SettingCellViewModelProtocol {
     func setSwitch(value: Bool)
 
     /// - Returns: Current value of the switch
-    func switchValue() -> Bool
+    var switchValue: Bool { get }
 }
 
 /// Rather complex settings cell that offers more than a simple ON/OFF switch only
