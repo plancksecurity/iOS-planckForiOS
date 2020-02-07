@@ -517,7 +517,7 @@ extension SettingsViewModel {
 extension SettingsViewModel {
     
     /// Struct that is used to perform an action. represents a ActionRow in settingsTableViewController
-    struct ActionRow: SettingsRowProtocol {
+    public struct ActionRow: SettingsRowProtocol {
         /// The type of the row.
         var identifier: SettingsViewModel.Row
         /// Title of the action row
@@ -529,7 +529,7 @@ extension SettingsViewModel {
     }
     
     /// Struct that is used to perform a show detail action. represents a NavicationRow in SettingsTableViewController
-    struct NavigationRow: SettingsRowProtocol {
+    public struct NavigationRow: SettingsRowProtocol {
         /// The type of the row.
         var identifier: SettingsViewModel.Row
         /// Title of the action row
@@ -541,7 +541,7 @@ extension SettingsViewModel {
     }
     
     /// Struct that is used to show and interact with a switch. represents a SwitchRow in settingsTableViewController
-    struct SwitchRow: SettingsRowProtocol {
+    public struct SwitchRow: SettingsRowProtocol {
         //The row type
         var identifier: SettingsViewModel.Row
         //The title of the swith row

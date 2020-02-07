@@ -10,10 +10,6 @@ import UIKit
 import SwipeCellKit
 import pEpIOSToolbox
 
-protocol SwitchCellDelegate: class {
-    func switchSettingCell(_ sender: SettingSwitchTableViewCell, didChangeSwitchStateTo newValue: Bool)
-}
-
 class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate,
 SettingsViewModelDelegate {
     
