@@ -13,6 +13,7 @@ class AccountTypeSelectorViewController: BaseViewController {
     let viewModel = AccountTypeSelectorViewModel()
 
     var SelectedIndexPath: IndexPath?
+    var loginDelegate: LoginViewControllerDelegate?
 
     @IBOutlet var collectionView: UICollectionView!
 
@@ -68,14 +69,14 @@ extension AccountTypeSelectorViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "providerCell",
-                                                for: indexPath) as? imageCollectionViewCell else {
+                                                for: indexPath) as? AccountTypeSelectorCollectionViewCell else {
             return UICollectionViewCell()
         }
         let cellProvider = viewModel[indexPath.row]
         switch cellProvider {
-        case .GMail:
+        case .gmail:
             cell.configure(withFileName: viewModel.fileNameOrText(provider: cellProvider))
-        case .Other:
+        case .other:
             cell.configure(withText: viewModel.fileNameOrText(provider: cellProvider))
         }
         return cell
@@ -101,34 +102,9 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
             if let vc = segue.destination as? LoginViewController,
                 let selected = SelectedIndexPath {
                 vc.appConfig = appConfig
-                //loginView is not ready for this yet
-//                switch viewModel[selected.row] {
-//                case .GMail:
-//                    vc.provider = true
-//                case .Other:
-//                    vc.provider = false
-//                }
+                vc.accountType = viewModel[selected.row]
+                vc.delegate = loginDelegate
             }
         }
-    }
-}
-
-/// Collection view cell class
-public class imageCollectionViewCell: UICollectionViewCell {
-
-    @IBOutlet var imageToFill: UIImageView!
-
-    /// adds an image loaded from the file name
-    /// - Parameter fileName: file name to load
-    func configure(withFileName fileName: String) {
-        let image = UIImage(named: fileName)
-        imageToFill.image = image
-    }
-
-    /// adds an image created from a text
-    /// - Parameter text: source text
-    func configure(withText text: String) {
-        let image = text.image(color: UIColor.pEpGreen)
-        imageToFill.image = image
     }
 }

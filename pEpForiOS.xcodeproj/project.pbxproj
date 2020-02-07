@@ -409,13 +409,14 @@
 		B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */; };
 		B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */; };
 		B722EC7A1E5C879000A2B9D5 /* FolderUiProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC791E5C879000A2B9D5 /* FolderUiProtocols.swift */; };
-		B72C7BAA2395182F0013B12E /* AccountTypeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72C7BA92395182F0013B12E /* AccountTypeSelectorViewController.swift */; };
-		B72C7BAC2395198D0013B12E /* AccountTypeSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72C7BAB2395198D0013B12E /* AccountTypeSelectorViewModel.swift */; };
 		B72AC87423C494D2009B90B5 /* PerAccountSyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72AC87323C494D2009B90B5 /* PerAccountSyncViewController.swift */; };
 		B72AC87623C494FE009B90B5 /* PerAccountSyncViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72AC87523C494FE009B90B5 /* PerAccountSyncViewModel.swift */; };
 		B72AC87823C4A12A009B90B5 /* PerAccountSyncAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72AC87723C4A12A009B90B5 /* PerAccountSyncAccountTableViewCell.swift */; };
+		B72C7BAA2395182F0013B12E /* AccountTypeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72C7BA92395182F0013B12E /* AccountTypeSelectorViewController.swift */; };
+		B72C7BAC2395198D0013B12E /* AccountTypeSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72C7BAB2395198D0013B12E /* AccountTypeSelectorViewModel.swift */; };
 		B72E192423C7617B00CBC841 /* KeySyncSwitchSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72E192323C7617B00CBC841 /* KeySyncSwitchSettingViewModel.swift */; };
 		B74F81021EB0E20000519FCC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F81011EB0E20000519FCC /* LoginViewModel.swift */; };
+		B756E57523ED99FA0007D535 /* AccountTypeSelectorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B756E57423ED99FA0007D535 /* AccountTypeSelectorCollectionViewCell.swift */; };
 		B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */; };
 		B76CF8B320D2739B002429A8 /* MoveToFolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */; };
 		B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78309C61EAA09040051A2E0 /* AccountCreation.storyboard */; };
@@ -925,13 +926,14 @@
 		B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderCellViewModel.swift; path = Folder/ViewModel/FolderCellViewModel.swift; sourceTree = "<group>"; };
 		B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderSectionViewModel.swift; path = Folder/ViewModel/FolderSectionViewModel.swift; sourceTree = "<group>"; };
 		B722EC791E5C879000A2B9D5 /* FolderUiProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderUiProtocols.swift; sourceTree = "<group>"; };
-		B72C7BA92395182F0013B12E /* AccountTypeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorViewController.swift; sourceTree = "<group>"; };
-		B72C7BAB2395198D0013B12E /* AccountTypeSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorViewModel.swift; sourceTree = "<group>"; };
 		B72AC87323C494D2009B90B5 /* PerAccountSyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerAccountSyncViewController.swift; sourceTree = "<group>"; };
 		B72AC87523C494FE009B90B5 /* PerAccountSyncViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerAccountSyncViewModel.swift; sourceTree = "<group>"; };
 		B72AC87723C4A12A009B90B5 /* PerAccountSyncAccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerAccountSyncAccountTableViewCell.swift; sourceTree = "<group>"; };
+		B72C7BA92395182F0013B12E /* AccountTypeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorViewController.swift; sourceTree = "<group>"; };
+		B72C7BAB2395198D0013B12E /* AccountTypeSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorViewModel.swift; sourceTree = "<group>"; };
 		B72E192323C7617B00CBC841 /* KeySyncSwitchSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncSwitchSettingViewModel.swift; sourceTree = "<group>"; };
 		B74F81011EB0E20000519FCC /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		B756E57423ED99FA0007D535 /* AccountTypeSelectorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorCollectionViewCell.swift; sourceTree = "<group>"; };
 		B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModel.swift; sourceTree = "<group>"; };
 		B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderViewModel.swift; sourceTree = "<group>"; };
 		B78309C71EAA09040051A2E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/AccountCreation.storyboard; sourceTree = "<group>"; };
@@ -2400,6 +2402,7 @@
 				B70D32AB205BCCDD0094A92A /* ViewModel */,
 				49D3BECB20F8F7330043E05D /* LoginViewController.swift */,
 				B72C7BA92395182F0013B12E /* AccountTypeSelectorViewController.swift */,
+				B756E57423ED99FA0007D535 /* AccountTypeSelectorCollectionViewCell.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -2925,6 +2928,7 @@
 				15874BCD2127493E00A3A4A6 /* AccountSettingsError.swift in Sources */,
 				15147EF7237EBE2A003989FE /* AppSettings+KeySyncDeviceGroupStateChangeNotification.swift in Sources */,
 				15D4399A216E697700EB3933 /* AccountPickerView.swift in Sources */,
+				B756E57523ED99FA0007D535 /* AccountTypeSelectorCollectionViewCell.swift in Sources */,
 				37A710E0233B5AA5001FEAF0 /* UIHelper+PEP.swift in Sources */,
 				15265962216230B1006A78DF /* ContactCell.swift in Sources */,
 				43425EDF1FE3E052004A2728 /* OAuth2ProviderFactory.swift in Sources */,

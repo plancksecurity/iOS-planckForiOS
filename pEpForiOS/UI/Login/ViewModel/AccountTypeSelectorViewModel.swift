@@ -9,19 +9,22 @@
 import Foundation
 import MessageModel
 
-public enum Provider {
-    case GMail
-    case Other
+public enum AccountTypeProvider {
+    case gmail
+    case other
+    var isOauth: Bool {
+        return self != .other
+    }
 }
 
 class AccountTypeSelectorViewModel {
 
     /// list of providers to show
-    var providers = [Provider]()
+    var providers = [AccountTypeProvider]()
 
     init() {
-        providers.append(.GMail)
-        providers.append(.Other)
+        providers.append(.gmail)
+        providers.append(.other)
     }
 
     var count: Int {
@@ -30,17 +33,17 @@ class AccountTypeSelectorViewModel {
         }
     }
 
-    subscript(index: Int) -> Provider {
+    subscript(index: Int) -> AccountTypeProvider {
         return providers[index]
     }
 
     /// returns the text corresponding to the provider
     /// - Parameter provider: provider to obtain it's text
-    func fileNameOrText(provider: Provider) -> String {
+    func fileNameOrText(provider: AccountTypeProvider) -> String {
         switch provider {
-        case .GMail:
+        case .gmail:
             return "asset-Google"
-        case .Other:
+        case .other:
             return NSLocalizedString("Other", comment: "Other provider key")
         }
     }
