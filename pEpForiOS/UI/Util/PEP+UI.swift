@@ -33,7 +33,7 @@ extension PEPColor {
             if enabled {
                 return UIImage(named: "pEp-status-msg-green")
             } else {
-                return UIImage(named: "pEp-status-msg-disabled-secure")
+                return UIImage(named: "pEp-status-msg-disabled-trusted")
             }
         }
     }
