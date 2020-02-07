@@ -270,18 +270,10 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
 
     /// we have to handle the ipad/iphone segue in a different way. see IOS-1737
     private func showEmail(forCellAt indexPath: IndexPath) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
         if onlySplitViewMasterIsShown {
             performSegue(withIdentifier: SegueIdentifier.segueShowEmailNotSplitView, sender: self)
         } else {
-            if vm.emailDetailViewIsAlreadyShown {
-                vm.handleSelected(itemAt: indexPath)
-            } else {
-                performSegue(withIdentifier: SegueIdentifier.segueShowEmailSplitView, sender: self)
-            }
+            performSegue(withIdentifier: SegueIdentifier.segueShowEmailSplitView, sender: self)
         }
     }
 
@@ -955,19 +947,35 @@ extension EmailListViewController: EmailListViewModelDelegate {
             tableView.deselectRow(at: indexPath, animated: true)
             return
         }
-        tableView.selectRow(at: indexPath,
-                            animated: false,
-                            scrollPosition: .none)
-        // Make sure the newly selected cell is visible.
-        guard
-            let visibleIndexPaths = tableView.indexPathsForVisibleRows,
-            !visibleIndexPaths.contains(indexPath)
-            else {
-                // Selected cell is visible ...
-                // ... Nothing to do.
-                return
+
+        let cell = tableView.cellForRow(at: indexPath)
+        guard !(cell?.isSelected ?? false) else {
+            // the cell is already selected. Nothing to do
+            return
         }
-        tableView.scrollToRow(at: indexPath, at: .none, animated: true)
+
+        // Select the cell shown in DetailView and scroll to it (nicely animated) in case it is
+        // currently not visible.
+        guard let visibleIndexPaths = tableView.indexPathsForVisibleRows else {
+            Log.shared.errorAndCrash("No visible rows")
+            return
+        }
+        //        let visibleIndexPaths = tableView.indexPathsForVisibleRows
+        let cellIsAlreadyVisible = visibleIndexPaths.contains(indexPath)
+        let scrollPosition: UITableView.ScrollPosition
+        if cellIsAlreadyVisible {
+            scrollPosition = .none
+        } else {
+            if let lastIndex = visibleIndexPaths.last {
+                let cellIsBelowVisibleRect = indexPath.row > lastIndex.row
+                scrollPosition = cellIsBelowVisibleRect ? .bottom : .top
+            } else {
+                scrollPosition = .top
+            }
+        }
+        tableView.selectRow(at: indexPath,
+                            animated: cellIsAlreadyVisible ? false : true,
+                            scrollPosition: scrollPosition)
     }
 
     func emailListViewModel(viewModel: EmailDisplayViewModel, didInsertDataAt indexPaths: [IndexPath]) {
@@ -993,6 +1001,18 @@ extension EmailListViewController: EmailListViewModelDelegate {
                             didUpdateDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.reloadRows(at: indexPaths, with: .none)
+        // In case the cell was selected before reloading, set it selected after reloading too.
+        guard let lastSelectedIndexPath = lastSelectedIndexPath, // Nothing selected, nothing to do.
+            indexPaths.contains(lastSelectedIndexPath) else { // the reloaded cell(s) where not selected
+            return
+        }
+        indexPaths.forEach {
+            if $0 == lastSelectedIndexPath {
+                let cell = tableView.cellForRow(at: $0)
+                cell?.isSelected = true
+            }
+        }
+
     }
 
     func emailListViewModel(viewModel: EmailDisplayViewModel,
