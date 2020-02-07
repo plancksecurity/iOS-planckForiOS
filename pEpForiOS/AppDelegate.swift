@@ -64,12 +64,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setupServices() {
         let keySyncHandshakeService = KeySyncHandshakeService()
-        let theMessageModelService =
-            MessageModelService(errorPropagator: errorPropagator,
-                                cnContactsAccessPermissionProvider: AppSettings.shared,
-                                keySyncServiceHandshakeDelegate: keySyncHandshakeService,
-                                keySyncStateProvider: AppSettings.shared)
-        messageModelService = theMessageModelService
+        messageModelService = MessageModelService(errorPropagator: errorPropagator,
+                                                  cnContactsAccessPermissionProvider: AppSettings.shared,
+                                                  keySyncServiceHandshakeDelegate: keySyncHandshakeService,
+                                                  keySyncStateProvider: AppSettings.shared)
 
         appConfig = AppConfig(errorPropagator: errorPropagator,
                               oauth2AuthorizationFactory: oauth2Provider,
@@ -120,9 +118,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// - note: this is also called when:
     ///         * an alert is shown (e.g. OS asks for CNContact access permissions)
     ///         * the user swipes up/down the "ControllCenter"
+    ///         * the keyboard is shown the first time on iOS13 and the "you can now swipe instead
+    ///             of typing" view is shown
     func applicationWillResignActive(_ application: UIApplication) {
-        UIApplication.hideStatusBarNetworkActivitySpinner()
-        messageModelService?.finish()
+        // We intentionally do nothing here.
+        // We assume to be kept alive until being informed (by another delegate method) otherwize.
     }
 
     /// Use this method to release shared resources, save user data, invalidate timers, and store
@@ -158,7 +158,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         messageModelService?.start()
     }
 
-    /// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    /// Called when the application is about to terminate. Save data if appropriate. See also
+    /// applicationDidEnterBackground:.
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
         messageModelService?.stop()

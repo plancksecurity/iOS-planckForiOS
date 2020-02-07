@@ -10,43 +10,40 @@ import Foundation
 
 import MessageModel
 
-/**
- Determines if a reply-all is possible, or even desirable for a given message.
- */
+/// Determines if a reply-all is possible, or even desirable for a given message.
 struct ReplyAllPossibleChecker: ReplyAllPossibleCheckerProtocol {
-    func isReplyAllPossible(forMessage: Message?) -> Bool {
-        guard let theMessage = forMessage else {
-            return false
-        }
+    private let message: Message
+    init(messageToReplyTo: Message) {
+        self.message = messageToReplyTo
+    }
 
+    func isReplyAllPossible() -> Bool {
         var uniqueReplyRecipients = Set<Identity>()
 
-        for recips in [theMessage.to, theMessage.cc, theMessage.bcc] {
+        for recips in [message.to, message.cc, message.bcc] {
             uniqueReplyRecipients.formUnion(recips)
         }
 
-        if theMessage.parent.folderType == .inbox {
+        if message.parent.folderType == .inbox {
             // remove the message's account's user for the check
-            if let receivingId = forMessage?.parent.account.user {
-                uniqueReplyRecipients.remove(receivingId)
-            }
+            let receivingId = message.parent.account.user
+            uniqueReplyRecipients.remove(receivingId)
 
-            if let theFrom = theMessage.from {
+            if let theFrom = message.from {
                 uniqueReplyRecipients.insert(theFrom)
             }
 
             return uniqueReplyRecipients.count > 1
-        } else if theMessage.parent.folderType == .sent {
+        } else if message.parent.folderType == .sent {
             // Assume that from is ourselves, and therefore all recipients
             // are eligible except our own account
 
             // remove the message's account's user for the check
-            if let receivingId = forMessage?.parent.account.user {
-                uniqueReplyRecipients.remove(receivingId)
-            }
+            let receivingId = message.parent.account.user
+            uniqueReplyRecipients.remove(receivingId)
 
             return uniqueReplyRecipients.count > 1
-        } else if theMessage.parent.folderType == .drafts {
+        } else if message.parent.folderType == .drafts {
             return false
         }
 

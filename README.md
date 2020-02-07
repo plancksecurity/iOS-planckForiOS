@@ -14,23 +14,23 @@ Install [MacPorts](https://www.macports.org/) for your
 For building the engine, you need a working python3 environment and all dependencies:
 
 ```
-sudo port install asn1c
-
-sudo port install python27
-sudo port install python38
-sudo port install py38-lxml
-sudo port select --set python python27
-sudo port select --set python3 python38
-
+sudo port install git
 sudo port install mercurial
 
+sudo port install asn1c
+
+sudo port install python38
+sudo port install py38-lxml
+sudo port select --set python3 python38
+
+sudo port install gmake
 sudo port install autoconf
 sudo port install libtool
 sudo port install automake
 
-sudo port install gmake
-
 sudo port install wget
+
+sudo port install capnproto
 
 curl https://sh.rustup.rs -sSf | sh
 

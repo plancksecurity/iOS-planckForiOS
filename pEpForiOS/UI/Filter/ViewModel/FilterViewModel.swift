@@ -176,8 +176,9 @@ extension FilterViewModel {
                 return NSLocalizedString("INCLUDE:",
                                          comment: "title for the include section")
             case .other:
-                return NSLocalizedString("OTHER:",  //!!!: I have invented this title (no one existed in code). Please set it to what it was before refactoring, or what design specifies
-                    comment: "title for the attachment section")            }
+                //!!!: I have invented this title (no one existed in code). Please set it to what it was before refactoring, or what design specifies
+                return NSLocalizedString("OTHER:",
+                                         comment: "title for the attachment section")            }
         }
     }
 

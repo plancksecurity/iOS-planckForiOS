@@ -41,7 +41,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
         showEmptyDetailViewIfApplicable(
             message: NSLocalizedString(
-                "Please chose a setting",
+                "Please choose a setting",
                 comment: "No setting has been selected yet in the settings VC"))
     }
 
@@ -79,6 +79,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 return dequeuedCell
             }
             cell.textLabel?.text = vm.title
+            cell.textLabel?.textColor = vm.titleColor
             cell.detailTextLabel?.text = vm.detail
             cell.delegate = self
             return cell
@@ -92,7 +93,12 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 Log.shared.errorAndCrash("Invalid state.")
                 return dequeuedCell
             }
-            cell.viewModel = vm
+            if var keysSyncswitchViewModel = vm as? KeySyncSwitchSettingViewModel {
+                keysSyncswitchViewModel.delegate = self
+                cell.viewModel = keysSyncswitchViewModel
+            } else {
+                cell.viewModel = vm
+            }
             cell.setUpView()
             return cell
         default:
@@ -153,22 +159,17 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 performSegue(withIdentifier: .segueSetOwnKey, sender: self)
             case .extraKeys:
                 performSegue(withIdentifier: .segueExtraKeys, sender: self)
+            case .accountsToSync:
+                performSegue(withIdentifier: .seguePerAccountSync , sender: self)
+            case .resetTrust:
+                performSegue(withIdentifier: .ResetTrust, sender: self)
             }
+
         case let vm as SettingsActionCellViewModel:
             switch vm.type {
-            case .keySyncSetting:
-                if vm.keySyncSettingCellState == .leaveDeviceGroup {
-                    showAlertBeforeLeavingDeviceGroup(cellViewModel: vm, indexPath: indexPath)
-                } else {
-                    handleKeySyncSettingCellPressed(cellViewModel: vm)
-                    tableView.reloadData()
-                }
             case .resetAllIdentities:
                 handleResetAllIdentity()
                 tableView.deselectRow(at: indexPath, animated: true)
-            case .resetTrust:
-                performSegue(withIdentifier: .ResetTrust, sender: self)
-                break
             }
         default:
             // SwitchSettingCellViewModelProtocol will drop here, but nothing to do when selected
@@ -188,6 +189,7 @@ extension SettingsTableViewController: SegueHandlerType {
         case segueShowSettingTrustedServers
         case segueExtraKeys
         case segueSetOwnKey
+        case seguePerAccountSync
         case noAccounts
         case ResetTrustSplitView
         case ResetTrust
@@ -221,7 +223,8 @@ extension SettingsTableViewController: SegueHandlerType {
              .segueAddNewAccount,
              .sequeShowCredits,
              .ResetTrust,
-             .segueExtraKeys:
+             .segueExtraKeys,
+             .seguePerAccountSync:
             guard let destination = segue.destination as? BaseViewController else {
                 return
             }
@@ -299,30 +302,8 @@ extension SettingsTableViewController {
         }
     }
 
-    private func handleKeySyncSettingCellPressed(cellViewModel: SettingsActionCellViewModel) {
-        cellViewModel.handleKeySyncSettingCellPressed()
-    }   
-
-    private func showAlertBeforeLeavingDeviceGroup(cellViewModel: SettingsActionCellViewModel,
-                                                   indexPath: IndexPath) {
-        let title = NSLocalizedString("Are you sure you want to leave your device group?",
-                                      comment: "Leave device group confirmation")
-        let comment = NSLocalizedString("leaving device group", comment: "Leave device group confirmation comment")
-        let buttonTitle = NSLocalizedString("Leave", comment: "Leave device group button title")
-        let leavingAction: (UIAlertAction)-> () = { [weak self] _ in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            me.handleKeySyncSettingCellPressed(cellViewModel: cellViewModel)
-            me.tableView.reloadData()
-        }
-        showAlert(title, comment, buttonTitle, leavingAction, indexPath)
-    }
-
     private func showAlertBeforeDelete(_ indexPath: IndexPath) {
         let title = NSLocalizedString("Are you sure you want to delete the account?", comment: "Account delete confirmation")
-        let comment = NSLocalizedString("delete account message", comment: "Account delete confirmation comment")
         let buttonTitle = NSLocalizedString("Delete", comment: "Delete account button title")
         let deleteAction: (UIAlertAction) -> () = { [weak self] _ in
             guard let me = self else {
@@ -337,17 +318,18 @@ extension SettingsTableViewController {
             me.tableView.deleteRows(at: [indexPath], with: .fade)
             me.tableView.endUpdates()
         }
-        showAlert(title, comment, buttonTitle, deleteAction, indexPath)
+        showAlert(title, buttonTitle, deleteAction, indexPath)
     }
 
-    private func showAlert(_ message: String,_ comment: String,
+    private func showAlert(_ message: String,
                            _ confirmButtonTitle: String,
                            _ confirmButtonAction: @escaping ((UIAlertAction)->()),
                            _ indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.isSelected = false //!!!: bad. side effect in showAlert.
         let alertController = UIAlertController.pEpAlertController(
             title: nil,
-            message: NSLocalizedString(message, comment: comment), preferredStyle: .actionSheet)
+            message: message,
+            preferredStyle: .actionSheet)
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel title button")
         let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { _ in }
@@ -410,5 +392,41 @@ extension SettingsTableViewController: SettingsViewModelDelegate {
         UIUtils.showAlertWithOnlyPositiveButton(title: "Extra Keys Editable",
                                                 message: newValue,
                                                 inViewController: self)
+    }
+}
+
+extension SettingsTableViewController: keySyncActionsProtocol {
+
+    func updateSyncStatus(to value: Bool) {
+        if viewModel.isGrouped {
+            let title = NSLocalizedString("Disable p≡p Sync",
+                                          comment: "Leave device group confirmation")
+            let comment = NSLocalizedString("If you disable p≡p Sync, your device group will be dissolved. Are you sure you want to disable disable p≡p Sync?",
+                                            comment: "Leave device group confirmation comment")
+
+            let alert = UIAlertController.pEpAlertController(title: title,
+                                                             message: comment, preferredStyle: .alert)
+            let cancelAction = alert.action(NSLocalizedString("Cancel",
+                                                              comment: "keysync alert leave device group cancel"),
+                                            .cancel) { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "lost myself")
+                    return
+                }
+                me.tableView.reloadData()
+            }
+            let disableAction = alert.action("Disable", .default) { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "lost myself")
+                    return
+                }
+                me.viewModel.pEpSyncUpdate(to: value)
+            }
+            alert.addAction(cancelAction)
+            alert.addAction(disableAction)
+            present(alert, animated: true)
+        } else {
+            viewModel.pEpSyncUpdate(to: value)
+        }
     }
 }

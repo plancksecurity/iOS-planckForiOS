@@ -17,21 +17,20 @@ protocol SettingsViewModelDelegate: class {
 }
 
 final class SettingsViewModel {
+    private(set) var sections = [SettingsSectionViewModel]()
     weak var delegate: SettingsViewModelDelegate?
-    var sections = [SettingsSectionViewModel]()
+    public var isGrouped: Bool {
+        return KeySyncUtil.isInDeviceGroup
+    }
+
+    // MARK: - Life Cycle
 
     init(delegate: SettingsViewModelDelegate? = nil) {
         self.delegate = delegate
         generateSections()
     }
 
-    private func generateSections() {
-        sections.append(SettingsSectionViewModel(type: .accounts))
-        sections.append(SettingsSectionViewModel(type: .globalSettings))
-        sections.append(SettingsSectionViewModel(type: .keySync))
-        sections.append(SettingsSectionViewModel(type: .contacts))
-        sections.append(SettingsSectionViewModel(type: .companyFeatures))
-    }
+    // MARK: - 
 
     func delete(section: Int, cell: Int) {
         let accountsSection = 0
@@ -79,20 +78,27 @@ final class SettingsViewModel {
             }
         }
     }
+
+    func pEpSyncUpdate(to value: Bool) {
+        if value {
+            KeySyncUtil.enableKeySync()
+        } else {
+            KeySyncUtil.disableKeySync()
+        }
+    }
 }
 
 // MARK: - Private
 
 extension SettingsViewModel {
 
-    private func removeLeaveDeviceGroupCell() {
-        for section in sections {
-            guard section.type == .keySync else {
-                continue
-            }
-            section.removeLeaveDeviceGroupCell()
-        }
-    }
+    private func generateSections() {
+           sections.append(SettingsSectionViewModel(type: .accounts))
+           sections.append(SettingsSectionViewModel(type: .globalSettings))
+           sections.append(SettingsSectionViewModel(type: .keySync))
+           sections.append(SettingsSectionViewModel(type: .contacts))
+           sections.append(SettingsSectionViewModel(type: .companyFeatures))
+       }
 }
 
 // MARK: - ExtryKeysEditability

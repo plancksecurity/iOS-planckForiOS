@@ -158,33 +158,13 @@ class TestDataBase {
             return ident
         }
 
-        func basicConnectInfo(emailProtocol: EmailProtocol) -> BasicConnectInfo {
-            return BasicConnectInfo(
-                accountEmailAddress: idAddress,
-                loginName: imapLoginName ?? idAddress,
-                loginPassword: password,
-                accessToken: nil,
-                networkAddress: imapServerAddress,
-                networkPort: imapServerPort,
-                connectionTransport: ConnectionTransport(transport: imapServerTransport),
-                authMethod: nil,
-                emailProtocol: emailProtocol)
-        }
-
-        func basicConnectInfoIMAP() -> BasicConnectInfo {
-            return basicConnectInfo(emailProtocol: .imap)
-        }
-
-        func basicConnectInfoSMTP() -> BasicConnectInfo {
-            return basicConnectInfo(emailProtocol: .smtp)
-        }
-
         /// Transfers the account data into a `VerifiableAccountProtocol`
         /// that you then can verify the acconut data with.
         func populate(verifiableAccount: inout VerifiableAccountProtocol) {
             verifiableAccount.userName = accountName
             verifiableAccount.address = idAddress
-            verifiableAccount.loginName = imapLoginName
+            verifiableAccount.loginNameIMAP = imapLoginName
+            verifiableAccount.loginNameSMTP = smtpLoginName
             verifiableAccount.accessToken = nil
             verifiableAccount.password = password
 
@@ -284,20 +264,6 @@ class TestDataBase {
         // The identity of an account is mySelf by definion.
         result.identity?.userID = CdIdentity.pEpOwnUserID
         return result
-    }
-
-    /**
-     - Returns: A valid `BasicConnectInfo` for IMAP.
-     */
-    func createVerifiableBasicConnectInfoIMAP(number: Int = 0) -> BasicConnectInfo {
-        return createVerifiableAccountSettings(number: number).basicConnectInfoIMAP()
-    }
-
-    /**
-     - Returns: A valid `BasicConnectInfo` for SMTP.
-     */
-    func createVerifiableBasicConnectInfoSMTP(number: Int = 0) -> BasicConnectInfo {
-        return createVerifiableAccountSettings(number: number).basicConnectInfoSMTP()
     }
 
     /**

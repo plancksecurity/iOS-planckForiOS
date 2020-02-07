@@ -17,7 +17,7 @@ protocol EditableAccountSettingsTableViewModelDelegate: class {
 final class EditableAccountSettingsTableViewModel {
     typealias TableInputs = (addrImap: String, portImap: String, transImap: String,
         addrSmpt: String, portSmtp: String, transSmtp: String, accountName: String,
-        loginName: String)
+        imapUsername: String, smtpUsername: String)
 
     let securityViewModelvm = SecurityViewModel()
 
@@ -34,7 +34,8 @@ final class EditableAccountSettingsTableViewModel {
     var passwordChanged = false
     var name: String?
     var email: String
-    var loginName: String?
+    var imapUsername: String?
+    var smtpUsername: String?
     var imapServer: EditableAccountSettingsViewModel.ServerViewModel?
     var smtpServer: EditableAccountSettingsViewModel.ServerViewModel?
     var headers: [String] = [NSLocalizedString("Account", comment: "Account settings"),
@@ -52,7 +53,8 @@ final class EditableAccountSettingsTableViewModel {
         // We are using a copy of the data here.
         // The outside world must not know changed settings until they have been verified.
         email = account.user.address
-        loginName = account.imapServer?.credentials.loginName
+        imapUsername = account.imapServer?.credentials.loginName
+        smtpUsername = account.smtpServer?.credentials.loginName
         name = account.user.userName
 
         if let server = account.imapServer {
@@ -121,31 +123,27 @@ final class EditableAccountSettingsTableViewModel {
             throw AccountSettingsUserInputError.invalidInputAccountName(localizedMessage: msg)
         }
 
-        guard let loginName = loginName, !loginName.isEmpty else {
-            let msg = NSLocalizedString("Username must not be empty.",
+        guard let imapUsername = imapUsername, !imapUsername.isEmpty else {
+            let msg = NSLocalizedString("Imap username must not be empty.",
+                                        comment: "Empty username message")
+            throw AccountSettingsUserInputError.invalidInputUserName(localizedMessage: msg)
+        }
+
+        guard let smtpUsername = smtpUsername, !smtpUsername.isEmpty else {
+            let msg = NSLocalizedString("Smtp username must not be empty.",
                                         comment: "Empty username message")
             throw AccountSettingsUserInputError.invalidInputUserName(localizedMessage: msg)
         }
 
         return (addrImap: addrImap, portImap: portImap, transImap: transImap,
                 addrSmpt: addrSmpt, portSmtp: portSmtp, transSmtp: transSmtp, accountName: name,
-                loginName: loginName)
-    }
-
-    func footerFor(section: Int) -> String {
-        if section < footers.count {
-            return footers[section]
-        }
-        return ""
+                imapUsername: imapUsername, smtpUsername: smtpUsername)
     }
 }
 
 // MARK: - Private
 
 extension EditableAccountSettingsTableViewModel {
-    private var footers: [String] {
-        return [NSLocalizedString("Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.", comment: "Footer for Account settings section 1")]
-    }
 
     private func sectionIsValid(section: Int) -> Bool {
         return section >= 0 && section < headers.count

@@ -21,6 +21,10 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
 
 class LoginViewModelTests: CoreDataDrivenTestBase {
     class TestVerifiableAccount: VerifiableAccountProtocol {
+        var loginNameIMAP: String?
+
+        var loginNameSMTP: String?
+
 
         let accountSettings: TestDataBase.AccountSettings
         let expLookedUp: XCTestExpectation
@@ -47,7 +51,7 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         var verifiableAccountDelegate: VerifiableAccountDelegate?
 
         var keySyncEnable = false
-        let isValidName = false
+        let loginNameIsValid = false
 
         let isValidUser = false
 
@@ -113,9 +117,8 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         let vm = LoginViewModel(verifiableAccount: verifiableAccount)
         let errorHandler = ErrorHandler()
         vm.loginViewModelLoginErrorDelegate = errorHandler
-        vm.login(accountName: accountSettings.idAddress,
-                 userName: "User Name",
-                 loginName: nil,
+        vm.login(emailAddress: accountSettings.idAddress,
+                 displayName: "User Name",
                  password: passw)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in

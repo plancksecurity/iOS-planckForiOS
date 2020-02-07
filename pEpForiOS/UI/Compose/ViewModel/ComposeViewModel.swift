@@ -10,18 +10,6 @@ import MessageModel
 import pEpIOSToolbox
 import PEPObjCAdapterFramework
 
-/// Informs the one that triggered the segued to here.
-protocol ComposeViewModelResultDelegate: class {
-    /// Called after a valid mail has been composed and saved for sending.
-    func composeViewModelDidComposeNewMail(message: Message)
-    /// Called after saving a modified version of the original message.
-    /// (E.g. after editing a drafted message)
-    func composeViewModelDidModifyMessage(message: Message)
-    /// Called after permanentaly deleting the original message.
-    /// (E.g. saving an edited oubox mail to drafts. It's permanentaly deleted from outbox.)
-    func composeViewModelDidDeleteMessage(message: Message)
-}
-
 protocol ComposeViewModelDelegate: class {
 
     /// Called when the user changes the content of a row.
@@ -60,7 +48,6 @@ protocol ComposeViewModelDelegate: class {
 }
 
 class ComposeViewModel {
-    weak var resultDelegate: ComposeViewModelResultDelegate?
     weak var delegate: ComposeViewModelDelegate? {
         didSet {
             delegate?.colorBatchNeedsUpdate(for: state.rating,
@@ -88,12 +75,10 @@ class ComposeViewModel {
     /// would thus crash if anone commits the main session.
     private let session = Session()
 
-    init(resultDelegate: ComposeViewModelResultDelegate? = nil,
-         composeMode: ComposeUtil.ComposeMode? = nil,
+    init(composeMode: ComposeUtil.ComposeMode? = nil,
          prefilledTo: Identity? = nil,
          prefilledFrom: Identity? = nil,
          originalMessage: Message? = nil) {
-        self.resultDelegate = resultDelegate
         let initData = InitData(withPrefilledToRecipient: prefilledTo,
                                 prefilledFromSender: prefilledFrom,
                                 orForOriginalMessage: originalMessage,
@@ -149,13 +134,12 @@ class ComposeViewModel {
             Log.shared.errorAndCrash("No data")
             return
         }
-        if data.isDraftsOrOutbox {
+        if data.isDrafts {
             // From user perspective, we have edited a drafted message and will send it.
             // Technically we are creating and sending a new message (msg), thus we have to
             // delete the original, previously drafted one.
             deleteOriginalMessage()
         }
-        resultDelegate?.composeViewModelDidComposeNewMail(message: msg)
     }
 
     public func isAttachmentSection(indexPath: IndexPath) -> Bool {
@@ -184,7 +168,6 @@ class ComposeViewModel {
         // mailboxes, that show all flagged messages.
         om.imapFlags.draft = false
         om.imapMarkDeleted()
-        resultDelegate?.composeViewModelDidDeleteMessage(message: om)
     }
 
     private func setup() {
@@ -554,38 +537,16 @@ extension ComposeViewModel {
         return NSLocalizedString("Cancel", comment: "compose email cancel")
     }
 
-    public func handleDeleteActionTriggered() {
-        guard let data = state.initData else {
-            Log.shared.errorAndCrash("No data")
-            return
-        }
-
-        if data.isOutbox {
-            data.originalMessage?.delete()
-            if let message = data.originalMessage {
-                resultDelegate?.composeViewModelDidDeleteMessage(message: message)
-            }
-        }
-    }
-
     public func handleSaveActionTriggered() {
         guard let data = state.initData else {
             Log.shared.errorAndCrash("No data")
             return
         }
-        if data.isDraftsOrOutbox {
+        if data.isDrafts {
             // We are in drafts folder and, from user perespective, are editing a drafted mail.
             // Technically we have to create a new one and delete the original message, as the
-            // mail is already synced with the IMAP server and thus we must not modify it.
+            // mail is already synced with the IMAP server and thus we must/can not modify it.
             deleteOriginalMessage()
-
-            if data.isOutbox {
-                // Message will be saved (moved from user perspective) to drafts, but we are in
-                // outbox folder.
-                if let message = data.originalMessage {
-                    resultDelegate?.composeViewModelDidDeleteMessage(message: message)
-                }
-            }
         }
 
         guard let msg = ComposeUtil.messageToSend(withDataFrom: state) else {
@@ -601,13 +562,6 @@ extension ComposeViewModel {
         msg.imapFlags.draft = true
         msg.sent = Date()
         Message.saveForAppend(msg: msg)
-        if data.isDrafts {
-            // We save a modified version of a drafted message. The UI might want to updtate
-            // its model.
-            if let message = data.originalMessage {
-                resultDelegate?.composeViewModelDidModifyMessage(message: message)
-            }
-        }
     }
 }
 
@@ -631,7 +585,7 @@ extension ComposeViewModel {
     }
 
     func canDoHandshake() -> Bool {
-        return state.canHandshake() || state.userCanToggleProtection()
+        return state.canHandshake()
     }
 }
 

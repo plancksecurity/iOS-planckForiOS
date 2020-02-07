@@ -22,26 +22,25 @@ class LoginViewModel {
         let userName: String
     }
 
-    /// Holding both the data of the current account in verification,
-    /// and also the implementation of the verification.
-    var verifiableAccount: VerifiableAccountProtocol
-
-    /** If the last login attempt was via OAuth2, this will collect temporary parameters */
-    private var lastOAuth2Parameters: OAuth2Parameters?
-
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
     weak var loginViewModelLoginErrorDelegate: LoginViewModelLoginErrorDelegate?
     weak var loginViewModelOAuth2ErrorDelegate: LoginViewModelOAuth2ErrorDelegate?
 
-    /**
-     An OAuth2 process lives longer than the method call, so this object needs to survive.
-     */
+    /// Holding both the data of the current account in verification,
+    /// and also the implementation of the verification.
+    var verifiableAccount: VerifiableAccountProtocol
+    /// An OAuth2 process lives longer than the method call, so this object needs to survive.
     var currentOauth2Authorizer: OAuth2AuthorizationProtocol?
-
-    /**
-     Helper model to handle most of the OAuth2 authorization.
-     */
+    /// Helper model to handle most of the OAuth2 authorization.
     var oauth2Model = OAuth2AuthViewModel()
+    var isAccountPEPSyncEnable = true {
+        didSet {
+            verifiableAccount.keySyncEnable = isAccountPEPSyncEnable
+        }
+    }
+
+    /// If the last login attempt was via OAuth2, this will collect temporary parameters
+    private var lastOAuth2Parameters: OAuth2Parameters?
 
     let qualifyServerService = QualifyServerIsLocalService()
 
@@ -71,16 +70,16 @@ class LoginViewModel {
                               viewController: viewController)
     }
 
-    /**
-     Tries to "login", that is, retrieve account data, with the given parameters.
-     - parameter accountName: The email of this account
-     - parameter password: The password for the account
-     - parameter loginName: The optional login name for this account, if different from the email
-     - parameter userName: The chosen name of the user, or nick
-     */
-    func login(accountName: String, userName: String, loginName: String? = nil,
+    /// Tries to "login", that is, retrieve account data, with the given parameters.
+    /// - Parameters:
+    ///   - emailAddres: The email of this account
+    ///   - displayName: The chosen name of the user, or nick
+    ///   - loginName: The optional login name for this account, if different from the email
+    ///   - password: The password for the account
+    ///   - accessToken: The access token for this account
+    func login(emailAddress: String, displayName: String, loginName: String? = nil,
                password: String? = nil, accessToken: OAuth2AccessTokenProtocol? = nil) {
-        let acSettings = AccountSettings(accountName: accountName, provider: nil,
+        let acSettings = AccountSettings(accountName: emailAddress, provider: nil,
                                          flags: AS_FLAG_USE_ANY, credentials: nil)
         acSettings.lookupCompletion() { [weak self] settings in
             GCD.onMain() {
@@ -106,9 +105,12 @@ class LoginViewModel {
                 accountSettingsTransport: outgoingServer.transport, smtpPort: outgoingServer.port)
 
             verifiableAccount.verifiableAccountDelegate = self
-            verifiableAccount.address = accountName
-            verifiableAccount.userName = userName
-            verifiableAccount.loginName = loginName
+            verifiableAccount.address = emailAddress
+            verifiableAccount.userName = displayName
+
+            let login = loginName ?? emailAddress
+            verifiableAccount.loginNameIMAP = login
+            verifiableAccount.loginNameSMTP = login
 
             // Note: auth method is never taken from LAS. We either have OAuth2,
             // as determined previously, or we will defer to pantomime to find out the best method.
@@ -151,11 +153,9 @@ class LoginViewModel {
         }
     }
 
-    /**
-     Is an account with this email address typically an OAuth2 account?
-     Only uses fast local lookups.
-     - Returns true, if this is an OAuth2 email address, true otherwise.
-     */
+    /// Is an account with this email address typically an OAuth2 account?
+    /// Only uses fast local lookups.
+    /// - Parameter email: Returns true, if this is an OAuth2 email address, true otherwise.
     func isOAuth2Possible(email: String?) -> Bool {
         return AccountSettings.quickLookUp(emailAddress: email)?.supportsOAuth2 ?? false
     }
@@ -174,8 +174,8 @@ extension LoginViewModel: OAuth2AuthViewModelDelegate {
                         oauth2Error: OAuth2AuthViewModelError.noParametersForVerification)
                     return
                 }
-                login(accountName: oauth2Params.emailAddress,
-                      userName: oauth2Params.userName,
+                login(emailAddress: oauth2Params.emailAddress,
+                      displayName: oauth2Params.userName,
                       accessToken: token)
             } else {
                 loginViewModelOAuth2ErrorDelegate?.handle(

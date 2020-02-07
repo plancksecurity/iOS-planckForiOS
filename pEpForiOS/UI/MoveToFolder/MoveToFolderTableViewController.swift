@@ -14,11 +14,6 @@ class MoveToFolderTableViewController: BaseTableViewController {
     let storyboardId = "MoveToFolderViewController"
     private let cellId = "FolderCell"
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-    }
-
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -29,7 +24,8 @@ class MoveToFolderTableViewController: BaseTableViewController {
     }
 
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView,
+                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         if let vm = viewModel?[indexPath.row] {
             cell.textLabel?.text = vm.title

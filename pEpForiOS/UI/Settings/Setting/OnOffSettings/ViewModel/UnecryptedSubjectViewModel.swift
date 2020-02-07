@@ -20,7 +20,7 @@ struct UnecryptedSubjectViewModel: SwitchSettingCellViewModelProtocol  {
         AppSettings.shared.unencryptedSubjectEnabled = !value
     }
 
-    func switchValue() -> Bool {
+    var switchValue: Bool {
         return !AppSettings.shared.unencryptedSubjectEnabled
     }
 }

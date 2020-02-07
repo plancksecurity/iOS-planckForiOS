@@ -17,29 +17,38 @@ class PEPPageViewControllerBase: UIPageViewController {
     var pageControlTint: UIColor?
     var showDots = false
     var isScrollEnable = false
-    var didLoadValues = false
+    /// Stuff to do exactly once in viewWillAppear
+    private var doOnce: (()->())?
 
     var views = [UIViewController]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
+        doOnce = { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.dataSource = me.showDots ? self : nil //nil dataSource will hide dots and disable scrolling
+            if !me.isScrollEnable {
+                me.disableScrolling()
+            }
+            if let firstView = me.views.first { //!!!: //BUFF: is views.first == nil a valid case?
+                me.setViewControllers([firstView],
+                                      direction: .forward,
+                                      animated: true,
+                                      completion: nil)
+            }
+            me.doOnce = nil
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         navigationController?.isToolbarHidden = false
-        if !didLoadValues { //!!!: //BUFF: ugly.
-            didLoadValues = true
-            dataSource = showDots ? self : nil //nil dataSource will hide dots and disable scrolling
-            if !isScrollEnable {
-                disableScrolling()
-            }
-            if let firstView = views.first { //!!!: //BUFF: is views.first == nil a valid cas?
-                setViewControllers([firstView], direction: .forward, animated: true, completion: nil)
-            }
-        }
+        doOnce?()
     }
 
     override func viewDidLayoutSubviews() {

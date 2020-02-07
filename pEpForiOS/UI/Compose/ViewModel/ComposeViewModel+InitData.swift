@@ -40,11 +40,6 @@ extension ComposeViewModel {
 
         public let composeMode: ComposeUtil.ComposeMode
 
-        /// Whether or not the original message is in Drafts or Outbox
-        var isDraftsOrOutbox: Bool {
-            return isDrafts || isOutbox
-        }
-
         /// Whether or not the original message is in Drafts folder
         var isDrafts: Bool {
             if let om = originalMessage {
@@ -137,7 +132,7 @@ extension ComposeViewModel {
             case .forward:
                 subject = ReplyUtil.forwardSubject(message: originalMessage)
             case .normal:
-                if isDraftsOrOutbox {
+                if isDrafts {
                     subject = originalMessage.shortMessage ?? " "
                 }
                 // .normal is intentionally ignored here for other folder types
@@ -157,7 +152,7 @@ extension ComposeViewModel {
             case .forward:
                 setBodyPotetionallyTakingOverAttachments()
             case .normal:
-                if isDraftsOrOutbox {
+                if isDrafts {
                     setBodyPotetionallyTakingOverAttachments()
                 }
                 // do nothing.
@@ -176,14 +171,14 @@ extension ComposeViewModel {
             bodyHtml = text
         }
 
-        /// Is sutable for isDraftsOrOutbox || composeMode == .forward only.
+        /// Is sutable for isDrafts || composeMode == .forward only.
         mutating private func setBodyPotetionallyTakingOverAttachments() {
             guard let msg = originalMessage else {
                 Log.shared.errorAndCrash("Inconsitant state")
                 return
             }
 
-            guard isDraftsOrOutbox || composeMode == .forward else {
+            guard isDrafts || composeMode == .forward else {
                 Log.shared.errorAndCrash("Unsupported mode or message")
                 return
             }
