@@ -139,8 +139,7 @@ extension ComposeTableViewController {
 
     @objc
     private func showPepActions(sender: UIBarButtonItem) {
-
-        guard let vm = viewModel else {
+        guard let vm = viewModel, let titleView = navigationItem.titleView else {
             Log.shared.errorAndCrash("No VM")
             return
         }
@@ -148,10 +147,9 @@ extension ComposeTableViewController {
         let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
         actionSheetController.addAction(changeSecureStatusAction(pEpProtected: vm.state.pEpProtection))
         actionSheetController.addAction(disableAlertAction())
+        actionSheetController.popoverPresentationController?.sourceView = titleView
+        actionSheetController.popoverPresentationController?.sourceRect = titleView.bounds
 
-        if splitViewController != nil, !onlySplitViewMasterIsShown {
-            actionSheetController.popoverPresentationController?.barButtonItem = sender
-        }
         present(actionSheetController, animated: true)
     }
 
