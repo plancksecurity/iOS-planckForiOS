@@ -116,12 +116,15 @@ extension ComposeTableViewController {
             return
         }
 
+        //Not so nice. The view(controller) should not know about state and protection.
+        let pEpRatingView = showNavigationBarSecurityBadge(pEpRating: pEpRating, pEpProtection: pEpProtected)
+
         // Handshake on simple touch if possible
         if vm.canDoHandshake() {
             let tapGestureRecognizerHandshake = UITapGestureRecognizer(
                 target: self,
                 action: #selector(actionHandshake))
-            view?.addGestureRecognizer(tapGestureRecognizerHandshake)
+            pEpRatingView?.addGestureRecognizer(tapGestureRecognizerHandshake)
         }
 
         // Toggle privacy status on long press for trusted and reliable
@@ -130,7 +133,7 @@ extension ComposeTableViewController {
             let tapGestureRecognizerToggleProtection = UILongPressGestureRecognizer(
                 target: self,
                 action: #selector(actionToggleProtection))
-            view?.addGestureRecognizer(tapGestureRecognizerToggleProtection)
+            pEpRatingView?.addGestureRecognizer(tapGestureRecognizerToggleProtection)
         }
     }
 
@@ -239,7 +242,6 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
 
     func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool) {
         setupPepColorView(for: rating, pEpProtected: protectionEnabled)
-        showNavigationBarSecurityBadge(pEpRating: rating, pEpProtection: protectionEnabled)
     }
 
     func showMediaAttachmentPicker() {
