@@ -109,11 +109,12 @@ extension KeySyncWizardViewController {
                 let trustWordsView = trustWordsView(meFPR: meFPR,
                                                     partnerFPR: partnerFPR,
                                                     pageCompletion: pageCompletion),
-                let animationView = animationView(pageCompletion: pageCompletion),
+                let animationView = animationView(isNewGroup: isNewGroup, pageCompletion: pageCompletion),
                 let completionView = completionView(isNewGroup: isNewGroup,
                                                     pageCompletion: pageCompletion) else {
                                                         return []
             }
+
 
             return [introView, trustWordsView, animationView, completionView]
     }
@@ -122,13 +123,14 @@ extension KeySyncWizardViewController {
                            pageCompletion: @escaping (Action) -> Void)
         -> PEPAlertViewController? {
 
-            let keySyncIntroTitle = alertTitle()
+            let keySyncIntroTitle = completeTitle()
             let keySyncIntroMessage = introMessage(isNewGroup: isNewGroup)
+            let keySyncIntroImage = isNewGroup ? #imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device") : #imageLiteral(resourceName: "pEpForiOS-icon-sync-3rd-device")
 
             guard let introView = PEPAlertViewController.fromStoryboard(title: keySyncIntroTitle,
                                                                         message: keySyncIntroMessage,
                                                                         paintPEPInTitle: true,
-                                                                        image: [#imageLiteral(resourceName: "pEpForiOS-icon-device-detected")]) else {
+                                                                        image: [keySyncIntroImage]) else {
                                                                             return nil
             }
 
@@ -149,6 +151,7 @@ extension KeySyncWizardViewController {
                                                     self?.goToNextView()
             })
 
+
             introView.add(action: introNotNowAction)
             introView.add(action: introNextAction)
 
@@ -165,16 +168,22 @@ extension KeySyncWizardViewController {
                 return nil
         }
         handShakeViewController.completionHandler { [weak self] action in
+
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+
             switch action {
             case .accept:
                 pageCompletion(.accept)
-                self?.goToNextView()
+                me.goToNextView()
             case .cancel:
                 pageCompletion(.cancel)
-                self?.dismiss()
+                me.dismiss()
             case .decline:
                 pageCompletion(.decline)
-                self?.dismiss()
+                me.dismiss()
             }
         }
 
@@ -183,58 +192,63 @@ extension KeySyncWizardViewController {
         return handShakeViewController
     }
 
-    private func animationView(pageCompletion: @escaping (Action) -> Void)
+    private func animationView(isNewGroup: Bool, pageCompletion: @escaping (Action) -> Void)
         -> PEPAlertViewController? {
-            let animatioTitle = alertTitle()
-            let animatioMessage = NSLocalizedString("Please give us a moment while we sync your devices. This can take up to a minute.",
-                                                    comment: "keySyncWizard animation view message")
+
+            let message = NSLocalizedString("Please give us a moment while we sync your devices. This can take a minute or more.",
+                                            comment: "keySyncWizard animation view message while we sync your devices")
+
+            let animationTitle = completeTitle()
+            let animationMessage = message
 
             let pepAlertViewController =
-                PEPAlertViewController.fromStoryboard(title: animatioTitle,
-                                                      message: animatioMessage,
+                PEPAlertViewController.fromStoryboard(title: animationTitle,
+                                                      message: animationMessage,
                                                       paintPEPInTitle: true,
                                                       image: [#imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-1"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2"), #imageLiteral(resourceName: "pEpForiOS-icon-device-group"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2")])
 
-            let animatioCanceButtonlTitle = NSLocalizedString("Cancel",
+            let animationCanceButtonlTitle = NSLocalizedString("Cancel",
                                                               comment: "keySyncWizard animation view cancel button title")
-            let animatioCancelAction = PEPUIAlertAction(title: animatioCanceButtonlTitle,
+            let animationCancelAction = PEPUIAlertAction(title: animationCanceButtonlTitle,
                                                         style: .pEpBlue,
                                                         handler: { [weak self] alert in
                                                             pageCompletion(.cancel)
                                                             self?.dismiss()
             })
-            pepAlertViewController?.add(action: animatioCancelAction)
+            pepAlertViewController?.add(action: animationCancelAction)
             return pepAlertViewController
     }
 
     private func completionView(isNewGroup: Bool,
                                 pageCompletion: @escaping (Action) -> Void) -> PEPAlertViewController? {
-        let completionTitle = alertTitle()
+
+        let completionTitle = completeTitle()
         let completionMessage = completeMessage(isNewGroup: isNewGroup)
+        let completionImage = completeImage(isNewGroup: isNewGroup)
 
         let pepAlertViewController =
             PEPAlertViewController.fromStoryboard(title: completionTitle,
                                                   message: completionMessage,
                                                   paintPEPInTitle: true,
-                                                  image: [#imageLiteral(resourceName: "pEpForiOS-icon-device-group")])
+                                                  image: [completionImage])
 
-        let completionLeavelTitle = NSLocalizedString("Leave",
+        let completionLeaveTitle = NSLocalizedString("Leave",
                                                       comment: "keySyncWizard completion view leave button title")
-        let completionLeavelAction = PEPUIAlertAction(title: completionLeavelTitle,
+        let completionLeaveAction = PEPUIAlertAction(title: completionLeaveTitle,
                                                       style: .pEpRed,
                                                       handler: { [weak self] alert in
                                                         self?.leaveDeviceGroup()
                                                         self?.dismiss()
         })
 
-        let completionOKlTitle = NSLocalizedString("OK",
+        let completionOKTitle = NSLocalizedString("OK",
                                                    comment: "keySyncWizard completion view OK button title")
-        let completionOKlAction = PEPUIAlertAction(title: completionOKlTitle,
+        let completionOKlAction = PEPUIAlertAction(title: completionOKTitle,
                                                    style: .pEpBlue,
                                                    handler: { [weak self] alert in
                                                     self?.dismiss()
         })
-        pepAlertViewController?.add(action: completionLeavelAction)
+        pepAlertViewController?.add(action: completionLeaveAction)
         pepAlertViewController?.add(action: completionOKlAction)
         return pepAlertViewController
     }
@@ -249,23 +263,28 @@ extension KeySyncWizardViewController {
 
     private func introMessage(isNewGroup: Bool) -> String {
         if isNewGroup {
-            return NSLocalizedString("A second device is detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?",
-                                     comment: "KeySyncWizard introduction message")
+            return NSLocalizedString("A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?",
+                                     comment: "KeySyncWizard introduction message ")
         } else {
-            return NSLocalizedString("Another device is detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?",
+            return NSLocalizedString("Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?",
                                      comment: "KeySyncWizard introduction message")
         }
+    }
+
+    private func completeTitle() -> String {
+        return NSLocalizedString("p≡p Sync",
+                                 comment: "keySyncWizard animation view title")
     }
 
     private func completeMessage(isNewGroup: Bool) -> String {
         if isNewGroup {
-            return "We successfully created a device group. All your privacy is now synchronized."
+            return NSLocalizedString("We successfully created a device group. All your privacy is now synchronized.", comment: "KeySyncWizard complete message - two devices")
         } else {
-            return "The device is now member of your device group. All your privacy is now synchronized."
+            return NSLocalizedString("The device is now member of your device group. All your privacy is now synchronized.", comment: "KeySyncWizard complete message - more than two devices")
         }
     }
 
-    private func alertTitle() -> String {
-        return NSLocalizedString("p≡p Sync", comment: "keySyncWizard animation view title")
+    private func completeImage(isNewGroup: Bool) -> UIImage {
+        return isNewGroup ? #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2") : #imageLiteral(resourceName: "pEpForiOS-icon-device-group")
     }
 }

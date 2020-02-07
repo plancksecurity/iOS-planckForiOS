@@ -40,7 +40,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
     @IBOutlet weak var message: UILabel! {
         didSet {
-            message.text = NSLocalizedString("A second device is detected. \nPlease confirm the Trustwords on both devices to sync all your privacy. Shall we synchronize?", comment: "keySync handshake alert message")
+            message.text = NSLocalizedString("Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?", comment: "keySync handshake alert message")
         }
     }
 

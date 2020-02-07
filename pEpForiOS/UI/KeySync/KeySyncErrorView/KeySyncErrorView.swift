@@ -56,9 +56,10 @@ extension KeySyncErrorView {
 
     static private func errorView(completion: ((KeySyncErrorAlertAction) -> ())?)
         -> PEPAlertViewController? {
-            let errorTitle = NSLocalizedString("p≡p Sync", comment: "keySyncWizard animation view title")
+            let errorTitle = NSLocalizedString("p≡p Sync",
+                                               comment: "keySyncWizard animation view title")
             let errorMessage = NSLocalizedString("Something went wrong with syncing the devices. Please try again.",
-                                                 comment: "keySyncWizard error view message")
+                                                 comment: "keySyncWizard error view message when syncing devices")
 
             let pepAlertViewController =
                 PEPAlertViewController.fromStoryboard(title: errorTitle,
@@ -67,7 +68,7 @@ extension KeySyncErrorView {
                                                       image: [#imageLiteral(resourceName: "pEpForiOS-icon-device-detected")])
 
             let errorNotNowTitle = NSLocalizedString("Not now",
-                                                     comment: "keySyncWizard error view NotNow button title")
+                                                     comment: "keySyncWizard error view Not Now button title")
             let errorNotNowAction = PEPUIAlertAction(title: errorNotNowTitle,
                                                      style: .pEpGray,
                                                      handler: { alert in

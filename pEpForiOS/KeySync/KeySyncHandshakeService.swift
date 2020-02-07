@@ -52,7 +52,6 @@ extension KeySyncHandshakeService {
 }
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
-
     func showHandshake(me: PEPIdentity,
                        partner: PEPIdentity,
                        isNewGroup: Bool,
@@ -121,7 +120,8 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
             }
 
             self?.pEpSyncWizard?.dismiss(animated: true, completion: {
-                KeySyncErrorView.presentKeySyncError(viewController: presentingViewController, error: error) {
+                KeySyncErrorView.presentKeySyncError(viewController: presentingViewController,
+                                                     error: error) {
                     action in
                     switch action {
                     case .tryAgain:
