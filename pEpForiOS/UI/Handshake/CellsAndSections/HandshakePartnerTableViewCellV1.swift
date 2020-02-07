@@ -154,14 +154,17 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         view.addGestureRecognizer(gestureRecognizer)
     }
 
-    func updateTrustwords() {        
+    func updateTrustwords() {
+        let oneSpace = " "
+        let threeSpaces = "   "
         let showElipsis = isPartnerPEPUser && !trustwordsFull
-        if showElipsis,
-            let trustwords = viewModel?.trustwords {
-            let spacedTrustwords = trustwords.replacingOccurrences(of: " ", with: "   ")
+        if showElipsis, let trustwords = viewModel?.trustwords {
+            let spacedTrustwords = trustwords.replacingOccurrences(of: oneSpace,
+                                                                   with: threeSpaces)
             trustWordsLabel.text = "\(spacedTrustwords) …"
         } else {
-            trustWordsLabel.text = viewModel?.trustwords?.replacingOccurrences(of: " ", with: "   ")
+            trustWordsLabel.text = viewModel?.trustwords?.replacingOccurrences(of: oneSpace,
+                                                                               with: threeSpaces)
         }
     }
 

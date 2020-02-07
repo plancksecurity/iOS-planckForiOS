@@ -27,6 +27,9 @@ protocol EmailDetailViewModelSelectionChangeDelegate: class {
 }
 
 class EmailDetailViewModel: EmailDisplayViewModel {
+    
+    weak var handshakeViewModelDelegate: HandshakeViewModelDelegate?
+    
     /// Used to figure out whether or not the currently displayed message has been decrypted while
     /// being shown to the user.
     private var pathsForMessagesMarkedForRedecrypt = [IndexPath]()
@@ -42,6 +45,19 @@ class EmailDetailViewModel: EmailDisplayViewModel {
          delegate: EmailDisplayViewModelDelegate? = nil) {
         super.init(messageQueryResults: messageQueryResults)
         self.messageQueryResults.rowDelegate = self
+    }
+    
+    
+    /// HanshakeViewModel getter
+    var hanshakeViewModel: HandshakeViewModel? {
+        get {
+            guard let message = lastShownMessage else {
+                Log.shared.error("Message not found")
+                return nil
+            }
+
+            return HandshakeViewModel(message: message)
+        }
     }
 
     /// Replaces and uses the currently used message query with the given one. The displayed

@@ -61,4 +61,17 @@ extension UIButton {
 
         layer.mask = maskLayer
     }
+    
+    static func backButton(with text: String) -> UIButton {
+        let img2 = UIImage(named: "arrow-rgt-active")
+        let tintedimage = img2?.withRenderingMode(.alwaysTemplate)
+        let buttonLeft = UIButton(type: UIButton.ButtonType.custom)
+        buttonLeft.setImage(tintedimage, for: .normal)
+        buttonLeft.imageView?.contentMode = .scaleToFill
+        buttonLeft.imageView?.tintColor = UIColor.pEpGreen
+        buttonLeft.setTitle(text, for: .normal)
+        buttonLeft.tintColor = UIColor.pEpGreen
+        buttonLeft.setTitleColor(UIColor.pEpGreen, for: .normal)
+        return buttonLeft
+    }
 }

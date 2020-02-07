@@ -586,10 +586,7 @@ extension EmailDetailViewController: SegueHandlerType {
                     break
             }
 
-            guard let message = vm.message(representedByRowAt: indexPath) else {
-                Log.shared.errorAndCrash("No message")
-                return
-            }
+            nv.modalPresentationStyle = .fullScreen
 
             //as we need a view to be source of the popover and title view is not always present.
             //we directly use the navigation bar view.
@@ -599,8 +596,10 @@ extension EmailDetailViewController: SegueHandlerType {
                                                                   y: nv.view.bounds.midY,
                                                                   width: 0,
                                                                   height: 0)
+            
             vc.appConfig = appConfig
-//            vc.message = message
+            vc.viewModel = viewModel?.hanshakeViewModel
+
             break
         case .noSegue:
             break

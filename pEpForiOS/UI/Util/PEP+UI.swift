@@ -19,9 +19,9 @@ extension PEPColor {
     /// - Returns: icon suitable for indicating the pEp rating of a message
     func statusIconForMessage(enabled: Bool = true) -> UIImage? {
         switch self {
-        case PEPColor.noColor:
+        case .noColor:
             return nil
-        case PEPColor.red:
+        case .red:
             return UIImage(named: "pEp-status-red")
         case .yellow:
             if enabled {

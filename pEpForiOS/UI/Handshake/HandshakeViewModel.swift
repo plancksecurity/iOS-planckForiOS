@@ -26,34 +26,25 @@ protocol HandshakeViewModelDelegate: class {
     /// Delegate method to notify the handshake has been rejected
     /// - Parameter indexPath: The indexPath of the row where the handshake was rejected
     func didRejectHandshake(forRowAt indexPath: IndexPath)
-
-    /// Delegate method to notify when the protection status has changed
-    /// - Parameter status: enabled or disabled
-    func didChangeProtectionStatus(to status : HandshakeViewModel.ProtectionStatus)
     
     /// Delegate method to notify when the user selects a language
     /// - Parameter indexPath: The indexPath of the row where the user changes the language
     func didSelectLanguage(forRowAt indexPath: IndexPath)
-
-    /// Delegate method to notify when the user toogle the protection
-    /// - Parameter indexPath: The indexPath of the row where the user toogles the protection
-    func didToogleProtection(forRowAt indexPath: IndexPath)
+    
+    func didToogleLongTrustwords(forRowAt indexPath: IndexPath)
 }
 
 /// View Model to handle the handshake views.
 final class HandshakeViewModel {
-    var selfIdentity : Identity
-    var handshakeUtil : HandshakeUtilProtocol
-    weak var handshakeViewModelDelegate : HandshakeViewModelDelegate?
-    private let undoManager = UndoManager()
-
-    enum ProtectionStatus {
-        case enabled
-        case disabled
+    public weak var handshakeViewModelDelegate : HandshakeViewModelDelegate?
+    public var pEpProtected : Bool {
+        get {
+            return message.pEpProtected
+        }
     }
-    
-    /// The identities to handshake
-    private var identities : [Identity]
+    private var message : Message
+    private var handshakeUtil : HandshakeUtilProtocol?
+    private let undoManager = UndoManager()
 
     /// The item that represents the handshake partner
     struct Row {
@@ -61,43 +52,26 @@ final class HandshakeViewModel {
         /// Indicates the handshake partner's name
         var name: String {
             get {
-                return identity.address
-            }
-            
-        }
-        /// The row image
-        var image: UIImage {
-            get {
-                return UIImage()
+                let name = handshakeCombination.partnerIdentity.userName
+                let address = handshakeCombination.partnerIdentity.address
+                return name ?? address
             }
         }
+
         /// The description for the row
-        var description: String {
-            get {
-                return NSLocalizedString("", comment: "")
-            }
-        }
+        var description: String
         /// The privacy status name
-        var privacyStatusName: String {
-            get {
-                return NSLocalizedString("", comment: "")
-            }
-        }
-        /// The trustwords to do the handshake
-        var trustwords: String? {
-            get {
-                return ""
-            }
-        }
+        var privacyStatusName: String
+        /// The privacy status image
+        var privacyStatusImage: UIImage?
         /// The current language
         var currentLanguage: String
         /// Indicates if the trustwords are long
         var longTrustwords: Bool = false
         /// The privacy status in between the current user and the partner
         var privacyStatus: String?
-        
         /// The identity of the user to do the handshake
-        fileprivate var identity: Identity
+        fileprivate var handshakeCombination: HandshakeCombination
     }
     
     /// Items to be displayed in the View Controller
@@ -106,13 +80,8 @@ final class HandshakeViewModel {
     /// Constructor
     /// - Parameters:
     ///   - identities: The identities to handshake
-    public init(identities : [Identity],
-                selfIdentity : Identity,
-                delegate : HandshakeViewModelDelegate,
-                handshakeUtil: HandshakeUtilProtocol) {
-        self.identities = identities
-        self.selfIdentity = selfIdentity
-        self.handshakeViewModelDelegate =  delegate
+    public init(message : Message, handshakeUtil: HandshakeUtilProtocol? = HandshakeUtil()) {
+        self.message = message
         self.handshakeUtil = handshakeUtil
         generateRows()
     }
@@ -124,8 +93,8 @@ final class HandshakeViewModel {
     public func handleRejectHandshakePressed(at indexPath: IndexPath) {
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
+        handshakeUtil?.denyTrust(for: row.handshakeCombination.partnerIdentity)
         handshakeViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
-        handshakeUtil.denyTrust(for: row.identity)
     }
     
     /// Confirm the handshake
@@ -133,7 +102,7 @@ final class HandshakeViewModel {
     public func handleConfirmHandshakePressed(at indexPath: IndexPath) {
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
-        handshakeUtil.confirmTrust(for: row.identity)
+        handshakeUtil?.confirmTrust(for: row.handshakeCombination.partnerIdentity)
         handshakeViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
     }
 
@@ -142,13 +111,13 @@ final class HandshakeViewModel {
     /// - Parameter indexPath: The indexPath of the item to get the user to reset the handshake
     @objc public func handleResetPressed(at indexPath: IndexPath) {
         let row = rows[indexPath.row]
-        handshakeUtil.resetTrust(for: row.identity, fingerprints: nil)
+        handshakeUtil?.resetTrust(for: row.handshakeCombination.partnerIdentity, fingerprints: nil)
         handshakeViewModelDelegate?.didResetHandshake(forRowAt: indexPath)
     }
     
     /// Returns the list of languages available for that row.
     public func handleChangeLanguagePressed() -> [String] {
-        guard let list = handshakeUtil.languagesList() else {
+        guard let list = handshakeUtil?.languagesList() else {
             return [String]()
         }
         return list
@@ -164,14 +133,31 @@ final class HandshakeViewModel {
     }
     
     /// Toogle PeP protection status
-    public func handleToggleProtectionPressed(forRowAt indexPath: IndexPath) {
-        handshakeViewModelDelegate?.didToogleProtection(forRowAt: indexPath)
+    public func handleToggleProtectionPressed() {
+        message.pEpProtected.toggle()
+    }
+    
+    /// Toogle PeP protection status
+    public func handleToggleLongTrustwords(forRowAt indexPath: IndexPath) {
+        rows[indexPath.row].longTrustwords.toggle()
+        handshakeViewModelDelegate?.didToogleLongTrustwords(forRowAt: indexPath)
     }
 
     /// Generate the trustwords
     /// - Parameter long: Indicates if the trustwords MUST be long.
     public func generateTrustwords(forRowAt indexPath: IndexPath, long : Bool = false) -> String? {
-        return trustwords(for: indexPath)
+        let handshakeItem = rows[indexPath.row]
+        do {
+            let selfIdentity = handshakeItem.handshakeCombination.ownIdentity
+            let partnerIdentity = handshakeItem.handshakeCombination.partnerIdentity
+            return try handshakeUtil?.getTrustwords(for: selfIdentity,
+                                                   and: partnerIdentity,
+                                                   language: handshakeItem.currentLanguage,
+                                                   long: long)
+        } catch {
+            Log.shared.error("Can't get trustwords")
+            return nil
+        }
     }
     
     /// Method that reverts the last action performed by the user
@@ -186,13 +172,21 @@ final class HandshakeViewModel {
     /// Method that generates the rows to be used by the VC
     private func generateRows() {
         let defaultLanguage = "en"
-        identities.forEach { (identity) in
-            let status = String.pEpRatingTranslation(pEpRating: identity.pEpRating())
-            let item = Row(currentLanguage: identity.language ?? defaultLanguage,
-                           longTrustwords: false,
-                           privacyStatus:status.title,
-                           identity: identity)
-            rows.append(item)
+        message.handshakeActionCombinations().forEach { (combination) in
+            let status = String.pEpRatingTranslation(pEpRating: combination.partnerIdentity.pEpRating())
+            let language = combination.partnerIdentity.language ?? defaultLanguage
+            let privacyStatusImage = message.pEpColor().statusIconForMessage(enabled: pEpProtected)
+            let privacyStatusTitle = message.pEpColor().privacyStatusTitle
+            let privacyStatusDescription = message.pEpColor().privacyStatusDescription
+            
+            let row = Row(description: privacyStatusDescription,
+                          privacyStatusName: privacyStatusTitle,
+                          privacyStatusImage: privacyStatusImage,
+                          currentLanguage: language,
+                          longTrustwords: false,
+                          privacyStatus:status.title,
+                          handshakeCombination: combination)
+            rows.append(row)
         }
     }
 
@@ -202,21 +196,38 @@ final class HandshakeViewModel {
         undoManager.registerUndo(withTarget: self,
                                  selector: #selector(handleResetPressed),
                                  object: indexPath)
-
     }
+}
 
-    /// Returns the trustwords for the item.
-    /// - Parameter item: The handshake partner item
-    private func trustwords(for indexPath: IndexPath, long : Bool = false) -> String? {
+/// Image Extension
+extension HandshakeViewModel {
+    
+    /// Method that returns the user image for the current indexPath throught the callback
+    /// - Parameters:
+    ///   - indexPath: The index path to get the user image
+    ///   - complete: The callback with the image
+    public func getImage(forRowAt indexPath: IndexPath, complete: @escaping (UIImage?) -> ()) {
+        
+        //Check if it's cached, use it if so.
         let handshakeItem = rows[indexPath.row]
-        do {
-            return try handshakeUtil.getTrustwords(for: selfIdentity,
-                                                   and: handshakeItem.identity,
-                                                   language: handshakeItem.currentLanguage,
-                                                   long: long)
-        } catch {
-            Log.shared.error("Can't get trustwords")
-            return nil
+        let partnerIdentity = handshakeItem.handshakeCombination.partnerIdentity
+        let contactImageTool = IdentityImageTool()
+        let key = IdentityImageTool.IdentityKey(identity: partnerIdentity)
+        if let cachedContactImage = contactImageTool.cachedIdentityImage(for: key) {
+            complete(cachedContactImage)
+            return
+        }
+        
+        //If can't find the image in the cache, creates it from the session.
+        let session = Session()
+        let safePartnerIdentity = partnerIdentity.safeForSession(session)
+        DispatchQueue.global(qos: .userInteractive).async {
+            session.performAndWait {
+                if let contactImage = contactImageTool.identityImage(for:
+                    IdentityImageTool.IdentityKey(identity: safePartnerIdentity)) {
+                    complete(contactImage)
+                }
+            }
         }
     }
 }

@@ -325,7 +325,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="ZyM-PO-eQ8" kind="presentation" identifier="segueHandshakeCollapsed" modalTransitionStyle="flipHorizontal" id="tgf-YO-hgX"/>
+                        <segue destination="ZyM-PO-eQ8" kind="relationship" relationship="rootViewController" id="4KY-2x-1Mb"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RUc-NB-W2N" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -337,14 +337,14 @@
             <objects>
                 <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="ZyM-PO-eQ8" customClass="HandshakeViewControllerV2" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aVx-QE-VZP">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="crl-YO-ia8">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="yMU-X4-4om">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="HandshakeEmptyHeaderTableViewCell" id="yMU-X4-4om">
                                         <rect key="frame" x="0.0" y="28" width="375" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yMU-X4-4om" id="jkE-w4-XJN">
@@ -352,7 +352,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="handshakePartnerCell" rowHeight="370" id="dBo-wY-3Nn" userLabel="HandshakePartnerCell" customClass="HandshakePartnerTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="HandshakeTableViewCell" rowHeight="370" id="dBo-wY-3Nn" userLabel="HandshakePartnerCell" customClass="HandshakeTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="71.5" width="375" height="370"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dBo-wY-3Nn" id="PBy-V2-1ZV" userLabel="HandshakeContentView">
@@ -390,7 +390,7 @@
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TCB-Zy-Xsu">
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="pEp-status-yellow_white-border" translatesAutoresizingMaskIntoConstraints="NO" id="TCB-Zy-Xsu">
                                                                             <rect key="frame" x="48" y="46" width="24" height="24"/>
                                                                             <accessibility key="accessibilityConfiguration" identifier="pEpStatusImageView"/>
                                                                             <constraints>
@@ -432,23 +432,26 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" distribution="fillProportionally" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="RT3-1U-A8N" userLabel="TrustwordsStackView">
                                                             <rect key="frame" x="0.0" y="152.5" width="335" height="45"/>
                                                             <subviews>
-                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qnu-G6-wXn">
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qnu-G6-wXn" userLabel="Container">
                                                                     <rect key="frame" x="8" y="0.0" width="335" height="45"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0uK-Ys-aO5" userLabel="TrustWordsLabel">
+                                                                        <label opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0uK-Ys-aO5" userLabel="TrustWordsLabel">
                                                                             <rect key="frame" x="0.0" y="0.0" width="225.5" height="45"/>
                                                                             <accessibility key="accessibilityConfiguration" label="trustWordsLabel"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GVU-Lg-dr3">
+                                                                        <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GVU-Lg-dr3" userLabel="LanguageButton">
                                                                             <rect key="frame" x="295" y="0.0" width="30" height="30"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="30" id="Gt7-FK-rhF"/>
                                                                                 <constraint firstAttribute="width" constant="30" id="rJ7-vJ-zLb"/>
                                                                             </constraints>
                                                                             <state key="normal" image="pEpForiOS-icon-languagechange"/>
+                                                                            <connections>
+                                                                                <action selector="languageButtonPressed" destination="dBo-wY-3Nn" eventType="touchUpInside" id="GQR-Ha-cFo"/>
+                                                                            </connections>
                                                                         </button>
                                                                     </subviews>
                                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -467,13 +470,13 @@
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a6h-q0-Slk" userLabel="TrustButtonsView">
                                                             <rect key="frame" x="0.0" y="217.5" width="335" height="50"/>
                                                             <subviews>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="sVr-xT-f8t" userLabel="WrongButton">
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="sVr-xT-f8t" userLabel="DeclineButton">
                                                                     <rect key="frame" x="5" y="0.0" width="60" height="50"/>
                                                                     <accessibility key="accessibilityConfiguration" label="wrongButton"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                     <state key="normal" title="Decline"/>
                                                                     <connections>
-                                                                        <action selector="wrongAction:" destination="dBo-wY-3Nn" eventType="touchUpInside" id="ylJ-wg-tG9"/>
+                                                                        <action selector="declineButtonPressed" destination="dBo-wY-3Nn" eventType="touchUpInside" id="hNN-EW-hOH"/>
                                                                     </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Q7n-8c-O25" userLabel="ConfirmButton">
@@ -482,7 +485,7 @@
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                     <state key="normal" title="Confirm"/>
                                                                     <connections>
-                                                                        <action selector="confirmAction:" destination="dBo-wY-3Nn" eventType="touchUpInside" id="i2R-kZ-4Ss"/>
+                                                                        <action selector="confirmButtonPressed" destination="dBo-wY-3Nn" eventType="touchUpInside" id="f1l-oD-NWn"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
@@ -514,6 +517,9 @@
                                                                     <state key="normal" title="Reset">
                                                                         <color key="titleColor" systemColor="tertiarySystemBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     </state>
+                                                                    <connections>
+                                                                        <action selector="resetButtonPressed" destination="dBo-wY-3Nn" eventType="touchUpInside" id="pNr-S1-gDa"/>
+                                                                    </connections>
                                                                 </button>
                                                             </subviews>
                                                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -543,16 +549,16 @@
                                         </tableViewCellContentView>
                                         <accessibility key="accessibilityConfiguration" identifier="handshakePartnerCell"/>
                                         <connections>
-                                            <outlet property="confirmButton" destination="Q7n-8c-O25" id="CUJ-Dt-SsJ"/>
-                                            <outlet property="pEpStatusImageView" destination="TCB-Zy-Xsu" id="MPw-QU-XfJ"/>
-                                            <outlet property="partnerImageView" destination="fkC-wD-aZH" id="PEQ-Zm-gNi"/>
-                                            <outlet property="partnerNameLabel" destination="S81-yN-lUE" id="xQx-bf-Qmd"/>
-                                            <outlet property="privacyStatusDescription" destination="HIb-Ji-yfV" id="sfM-d2-wVl"/>
-                                            <outlet property="privacyStatusTitle" destination="XAP-1X-nYK" id="9aH-og-Blo"/>
-                                            <outlet property="resetButton" destination="6bf-Gd-X5g" id="E1p-8j-M78"/>
-                                            <outlet property="trustButtonsView" destination="a6h-q0-Slk" id="Q4V-oO-Gm3"/>
-                                            <outlet property="trustWordsLabel" destination="0uK-Ys-aO5" id="trP-OI-PQ0"/>
-                                            <outlet property="wrongButton" destination="sVr-xT-f8t" id="uF7-QZ-mLR"/>
+                                            <outlet property="confirmButton" destination="Q7n-8c-O25" id="XVl-UD-xLe"/>
+                                            <outlet property="declineButton" destination="sVr-xT-f8t" id="kEN-Gx-MJe"/>
+                                            <outlet property="descriptionLabel" destination="HIb-Ji-yfV" id="QOi-nq-RYb"/>
+                                            <outlet property="partnerImageView" destination="fkC-wD-aZH" id="fXi-ur-9Jy"/>
+                                            <outlet property="partnerNameLabel" destination="S81-yN-lUE" id="ftj-ek-eH4"/>
+                                            <outlet property="privacyStatusImageView" destination="TCB-Zy-Xsu" id="WDV-7E-Vny"/>
+                                            <outlet property="privacyStatusLabel" destination="XAP-1X-nYK" id="2lD-PB-AIf"/>
+                                            <outlet property="resetButton" destination="6bf-Gd-X5g" id="rC8-2x-arf"/>
+                                            <outlet property="resetLabel" destination="K85-bq-q6Q" id="q5o-dY-NEp"/>
+                                            <outlet property="trustwordsLabel" destination="0uK-Ys-aO5" id="1fc-if-aZN"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -571,7 +577,18 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Cc9-zb-MFC"/>
                     </view>
-                    <navigationItem key="navigationItem" id="YKE-S1-jhy"/>
+                    <navigationItem key="navigationItem" id="YKE-S1-jhy">
+                        <barButtonItem key="rightBarButtonItem" title="Options" id="zNZ-mq-ElZ">
+                            <color key="tintColor" red="0.01176470588" green="0.66666666669999997" blue="0.29411764709999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="optionsButtonPressed:" destination="ZyM-PO-eQ8" id="YSo-gR-Ke1"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="handshakeTableView" destination="crl-YO-ia8" id="hiU-eM-DW8"/>
+                        <outlet property="optionsButton" destination="zNZ-mq-ElZ" id="7QS-uE-KOy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OAD-MK-tHj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -751,6 +768,7 @@
     </scenes>
     <resources>
         <image name="empty-avatar" width="150" height="150"/>
+        <image name="pEp-status-yellow_white-border" width="24" height="21"/>
         <image name="pEpForiOS-icon-languagechange" width="100" height="100"/>
     </resources>
 </document>

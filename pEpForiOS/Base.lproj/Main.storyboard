@@ -984,9 +984,9 @@
         <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RTR-We-Kc1"/>
-        <segue reference="0zl-tV-6Kr"/>
-        <segue reference="1zD-EW-3fN"/>
+        <segue reference="g1q-wK-tff"/>
+        <segue reference="CKh-jT-ski"/>
+        <segue reference="0Yg-lj-kVR"/>
         <segue reference="HHz-at-Ehg"/>
     </inferredMetricsTieBreakers>
 </document>
