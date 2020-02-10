@@ -558,9 +558,9 @@
                                             <outlet property="privacyStatusLabel" destination="XAP-1X-nYK" id="2lD-PB-AIf"/>
                                             <outlet property="resetButton" destination="6bf-Gd-X5g" id="rC8-2x-arf"/>
                                             <outlet property="resetLabel" destination="K85-bq-q6Q" id="q5o-dY-NEp"/>
-                                            <outlet property="trustwordsButtonsContainer" destination="a6h-q0-Slk" id="eBR-X5-QFG"/>
+                                            <outlet property="trustwordsButtonsContainer" destination="a6h-q0-Slk" id="fpV-97-yJS"/>
                                             <outlet property="trustwordsLabel" destination="0uK-Ys-aO5" id="1fc-if-aZN"/>
-                                            <outlet property="trustwordsStackView" destination="RT3-1U-A8N" id="PKp-XY-D2O"/>
+                                            <outlet property="trustwordsStackView" destination="RT3-1U-A8N" id="cGC-qb-NLe"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="HandshakeTableViewCell_Detailed" rowHeight="370" id="rJy-jc-TFR" userLabel="HandshakeIpadCell" customClass="HandshakeTableViewCell" customModule="pEpForiOS" customModuleProvider="target">

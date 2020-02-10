@@ -77,8 +77,7 @@ extension HandshakeViewControllerV2 : UITableViewDataSource  {
                     cell.partnerImageView.image = image
                 }
             })
-            //TODO: fix this. 
-            //cell.privacyStatusImageView.image = row.privacyStatusImage
+            cell.privacyStatusImageView.image = row.privacyStatusImage
             cell.partnerNameLabel.text = row.name
             cell.privacyStatusLabel.text = row.privacyStatusName
             cell.descriptionLabel.text = row.description
@@ -86,6 +85,8 @@ extension HandshakeViewControllerV2 : UITableViewDataSource  {
             ///That means that's the only case must display the trustwords
             if row.color == .yellow {
                 setTrustwords(for: cell, at: indexPath, longMode: row.longTrustwords)
+                cell.trustwordsStackView.isHidden = false
+                cell.trustwordsButtonsContainer.isHidden = false
             } else {
                 cell.trustwordsStackView.isHidden = true
                 cell.trustwordsButtonsContainer.isHidden = true
@@ -140,19 +141,19 @@ extension HandshakeViewControllerV2: HandshakeViewModelDelegate {
     }
     
     func didResetHandshake(forRowAt indexPath: IndexPath) {
-        handshakeTableView?.reloadRows(at: [indexPath], with: .none)
+        handshakeTableView.reloadData()
     }
     
     func didConfirmHandshake(forRowAt indexPath: IndexPath) {
-        handshakeTableView?.reloadRows(at: [indexPath], with: .none)
+        handshakeTableView.reloadData()
     }
     
     func didRejectHandshake(forRowAt indexPath: IndexPath) {
-        handshakeTableView?.reloadRows(at: [indexPath], with: .none)
+        handshakeTableView.reloadData()
     }
     
     func didSelectLanguage(forRowAt indexPath: IndexPath) {
-        handshakeTableView?.reloadRows(at: [indexPath], with: .none)
+        handshakeTableView.reloadData()
     }
 }
 

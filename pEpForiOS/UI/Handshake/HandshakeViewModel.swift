@@ -44,13 +44,17 @@ final class HandshakeViewModel {
             return message.pEpProtected
         }
     }
-    private var message : Message
+    
+    var message: Message
+    private var session: Session {
+        return message.session
+    }
+
     private var handshakeUtil : HandshakeUtilProtocol?
     private let undoManager = UndoManager()
-
+    
     /// The item that represents the handshake partner
     struct Row {
-        
         /// Indicates the handshake partner's name
         var name: String {
             get {
@@ -59,13 +63,26 @@ final class HandshakeViewModel {
                 return name ?? address
             }
         }
-
         /// The description for the row
-        var description: String
+        var description: String {
+            get {
+                return color.privacyStatusDescription
+            }
+        }
         /// The privacy status name
-        var privacyStatusName: String
+        var privacyStatusName: String {
+            get {
+                let rating = handshakeCombination.partnerIdentity.pEpRating()
+                let translations = String.pEpRatingTranslation(pEpRating: rating)
+                return translations.title
+            }
+        }
         /// The privacy status image
-        var privacyStatusImage: UIImage?
+        var privacyStatusImage: UIImage? {
+            get {
+                return color.statusIconForMessage(enabled: true, withText: false)
+            }
+        }
         /// The current language
         var currentLanguage: String
         /// Indicates if the trustwords are long
@@ -73,7 +90,11 @@ final class HandshakeViewModel {
         /// The privacy status in between the current user and the partner
         var privacyStatus: String?
         /// Status indicator
-        var color : PEPColor
+        var color : PEPColor {
+            get {
+                return handshakeCombination.partnerIdentity.pEpColor()
+            }
+        }
         /// The identity of the user to do the handshake
         fileprivate var handshakeCombination: HandshakeCombination
     }
@@ -99,6 +120,7 @@ final class HandshakeViewModel {
         let row = rows[indexPath.row]
         handshakeUtil?.denyTrust(for: row.handshakeCombination.partnerIdentity)
         handshakeViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
+        reevaluateAndUpdate()
     }
     
     /// Confirm the handshake
@@ -108,6 +130,7 @@ final class HandshakeViewModel {
         let row = rows[indexPath.row]
         handshakeUtil?.confirmTrust(for: row.handshakeCombination.partnerIdentity)
         handshakeViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
+        reevaluateAndUpdate()
     }
 
     /// Reset the handshake
@@ -117,6 +140,7 @@ final class HandshakeViewModel {
         let row = rows[indexPath.row]
         handshakeUtil?.resetTrust(for: row.handshakeCombination.partnerIdentity, fingerprints: nil)
         handshakeViewModelDelegate?.didResetHandshake(forRowAt: indexPath)
+        reevaluateAndUpdate()
     }
     
     /// Returns the list of languages available for that row.
@@ -167,7 +191,7 @@ final class HandshakeViewModel {
     /// Method that reverts the last action performed by the user
     /// After the execution of this method there won't be any action to un-do.
     public func shakeMotionDidEnd() {
-        if (undoManager.canRedo) {
+        if (undoManager.canUndo) {
             undoManager.undo()
             handshakeViewModelDelegate?.didEndShakeMotion()
         }
@@ -175,25 +199,23 @@ final class HandshakeViewModel {
 
     ///MARK: - Private
 
+    private func reevaluateAndUpdate() {
+        session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.error("Lost myself - The message will not be reevaluated")
+                return
+            }
+            RatingReEvaluator.reevaluate(message: me.message)
+        }
+    }
+    
     /// Method that generates the rows to be used by the VC
     private func generateRows() {
-        let defaultLanguage = "en"
         message.handshakeActionCombinations().forEach { (combination) in
-            let rating = combination.partnerIdentity.pEpRating()
-            
-            let status = String.pEpRatingTranslation(pEpRating: rating)
-            let language = combination.partnerIdentity.language ?? defaultLanguage
-            let privacyStatusImage = message.pEpColor().statusIconForMessage(enabled: pEpProtected)
-            let privacyStatusTitle = message.pEpColor().privacyStatusTitle
-            let privacyStatusDescription = message.pEpColor().privacyStatusDescription
-            
-            let row = Row(description: privacyStatusDescription,
-                          privacyStatusName: privacyStatusTitle,
-                          privacyStatusImage: privacyStatusImage,
-                          currentLanguage: language,
+            //default language is english
+            let language = combination.partnerIdentity.language ?? "en"
+            let row = Row(currentLanguage: language,
                           longTrustwords: false,
-                          privacyStatus:status.title,
-                          color: rating.pEpColor(),
                           handshakeCombination: combination)
             rows.append(row)
         }
