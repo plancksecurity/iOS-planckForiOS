@@ -33,6 +33,7 @@ extension UIColor {
     public static var pEpGreyText = UIColor(hexString: pEpGreyTextHex)
     public static var pEpGreyBackground = UIColor(hexString: pEpGreyBackgroundHex)
     public static var pEpBlue = UIColor(hexString: pEpBlueHex)
+    public static var pEpDarkGrey = UIColor.black
 
     public static let AppleRed =
                 UIColor(red: 255/255.0, green: 59/255, blue: 48/255.0, alpha: 1.0)

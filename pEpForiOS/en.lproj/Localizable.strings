@@ -21,7 +21,7 @@
 "A non-empty username is required" = "Username is required";
 
 /* keySync handshake alert message - two devices */
-"Please make sure you have both devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on both devices?" = "Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?";
+"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?";
 
 /* keySync handshake alert message - more than two devices */
 "Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?";

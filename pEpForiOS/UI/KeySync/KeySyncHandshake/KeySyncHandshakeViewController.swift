@@ -43,7 +43,6 @@ final class KeySyncHandshakeViewController: UIViewController {
             message.text = viewModel.getMessage()
         }
     }
-
     @IBOutlet weak var accept: UIButton! {
         didSet {
             accept.setTitleColor(.pEpGreen, for: .normal)
@@ -81,6 +80,11 @@ final class KeySyncHandshakeViewController: UIViewController {
         super.viewDidLoad()
         viewModel.delegate = self
         viewModel.fingerPrints(meFPR: meFPR, partnerFPR: partnerFPR, isNewGroup: isNewGroup)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        message.text = viewModel.getMessage()
     }
 
     func finderPrints(meFPR: String, partnerFPR: String, isNewGroup: Bool) {

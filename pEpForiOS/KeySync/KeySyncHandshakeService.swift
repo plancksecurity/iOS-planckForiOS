@@ -124,7 +124,8 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
             // This is a small workaround because we have no information
             // about newGroup from MessageModel.
             // More information about this: func notifyHandshake() .timeout in KeySyncService+PEPNotify...
-            let isNewGroup = AppSettings.shared.lastKnownDeviceGroupState == .sole
+            let isNewGroup = KeySyncUtil.isInDeviceGroup
+
             self?.pEpSyncWizard?.dismiss(animated: true, completion: {
                 KeySyncErrorView.presentKeySyncError(viewController: presentingViewController,
                                                      isNewGroup: isNewGroup,

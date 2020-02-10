@@ -22,7 +22,7 @@ final class KeySyncHandshakeViewModel {
 
     private struct Localized {
         struct message {
-            static let twoDevices = NSLocalizedString("Please make sure you have both devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on both devices?",
+            static let twoDevices = NSLocalizedString("Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?",
                                                comment: "keySync handshake alert message for two devices in group")
             static let moreThanTwoDevices = NSLocalizedString("Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?",
                                                        comment: "keySync handshake alert message for more than two devices in group")
