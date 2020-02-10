@@ -80,7 +80,11 @@ final class HandshakeViewModel {
         /// The privacy status image
         var privacyStatusImage: UIImage? {
             get {
-                return color.statusIconForMessage(enabled: true, withText: false)
+                if forceRed {
+                    return PEPColor.red.statusIconForMessage(enabled: true, withText: false)
+                } else {
+                    return color.statusIconForMessage(enabled: true, withText: false)
+                }
             }
         }
         /// The current language
@@ -95,6 +99,7 @@ final class HandshakeViewModel {
                 return handshakeCombination.partnerIdentity.pEpColor()
             }
         }
+        fileprivate var forceRed: Bool = false
         /// The identity of the user to do the handshake
         fileprivate var handshakeCombination: HandshakeCombination
         
@@ -121,9 +126,9 @@ final class HandshakeViewModel {
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         handshakeUtil?.denyTrust(for: row.handshakeCombination.partnerIdentity)
-        
         handshakeViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
         reevaluateAndUpdate()
+        
     }
     
     /// Confirm the handshake
