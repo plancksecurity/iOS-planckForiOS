@@ -119,11 +119,12 @@ final class HandshakeViewModel {
     /// - Parameter indexPath: The indexPath of the item to get the user to reject the handshake
     public func handleRejectHandshakePressed(at indexPath: IndexPath) {
         registerUndoAction(at: indexPath)
-        let row = rows[indexPath.row]
-        handshakeUtil?.denyTrust(for: row.handshakeCombination.partnerIdentity)
-        
-        handshakeViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
+        let identity : Identity = rows[indexPath.row].handshakeCombination.partnerIdentity
+        let fingerprints = handshakeUtil?.getFingerprints(for: identity)
+        rows[indexPath.row].fingerprint = fingerprints
+        handshakeUtil?.denyTrust(for: identity)
         reevaluateAndUpdate()
+        handshakeViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
     }
     
     /// Confirm the handshake
@@ -132,14 +133,16 @@ final class HandshakeViewModel {
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         handshakeUtil?.confirmTrust(for: row.handshakeCombination.partnerIdentity)
-        handshakeViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
         reevaluateAndUpdate()
+        handshakeViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
+        
     }
     
     @objc public func handleUndo(forRowAt indexPath: IndexPath) {
         let row = rows[indexPath.row]
         handshakeUtil?.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,
-                                            fingerprints: "")
+                                            fingerprints: row.fingerprint)
+        reevaluateAndUpdate()
     }
 
     /// Handles the undo
@@ -147,8 +150,9 @@ final class HandshakeViewModel {
     public func handleResetPressed(forRowAt indexPath: IndexPath) {
         let row = rows[indexPath.row]
         handshakeUtil?.resetTrust(for: row.handshakeCombination.partnerIdentity)
-        handshakeViewModelDelegate?.didResetHandshake(forRowAt: indexPath)
         reevaluateAndUpdate()
+        handshakeViewModelDelegate?.didResetHandshake(forRowAt: indexPath)
+        
     }
     
     /// Returns the list of languages available for that row.

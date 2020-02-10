@@ -53,7 +53,7 @@ final class HandshakeTableViewCell: UITableViewCell {
     // MARK: - Actions
     
     @IBAction private func languageButtonPressed() {
-        delegate?.declineButtonPressed(on: self)
+        delegate?.languageButtonPressed(on: self)
     }
     
     @IBAction private func declineButtonPressed() {
