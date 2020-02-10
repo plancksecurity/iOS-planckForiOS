@@ -8,9 +8,15 @@
 
 import UIKit
 
+/// View Controller to handle the HandshakeView.
+/// Notice that there are different cells depending on if it's iPhone or iPad (on storyboard).
+/// So, please, don't forget to modify both if necesary.
+/// Only vary the layout, the functionality is the same. 
 class HandshakeViewControllerV2: BaseViewController {
         
-    private let cellIdentifier = "HandshakeTableViewCell"
+    private let iphoneCellIdentifier = "HandshakeTableViewCell_Iphone"
+    private let ipadCellIdentifier = "HandshakeTableViewCell_Ipad"
+
     @IBOutlet private weak var handshakeTableView: UITableView!
     @IBOutlet private weak var optionsButton: UIBarButtonItem!
     
@@ -38,11 +44,6 @@ class HandshakeViewControllerV2: BaseViewController {
     }
 }
 
-/// MARK: - UITableViewDelegate
-extension HandshakeViewControllerV2 : UITableViewDelegate  {
-    
-}
-
 /// MARK: - UITableViewDataSource
 extension HandshakeViewControllerV2 : UITableViewDataSource  {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -55,7 +56,10 @@ extension HandshakeViewControllerV2 : UITableViewDataSource  {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+        
+        let identifier = UIDevice.current.userInterfaceIdiom == .phone ? iphoneCellIdentifier : ipadCellIdentifier
+
+        if let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
             as? HandshakeTableViewCell, let row = viewModel?.rows[indexPath.row] {
             viewModel?.getImage(forRowAt: indexPath, complete: { (image) in
                 DispatchQueue.main.async {

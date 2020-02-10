@@ -352,9 +352,8 @@ extension EmailDetailViewController {
 
         let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
 
-        if vm.shouldShowPrivacyStatus(forItemAt:indexPath),
-            let handshakeAction = showHandshakeViewAction() {
-            actionSheetController.addAction(handshakeAction)
+        if vm.shouldShowPrivacyStatus(forItemAt:indexPath) {
+            actionSheetController.addAction(showHandshakeViewAction())
         }
         actionSheetController.addAction(tutorialAction())
         actionSheetController.addAction(showSettingsAction())
@@ -391,7 +390,7 @@ extension EmailDetailViewController {
         }
     }
 
-    private func showHandshakeViewAction() -> UIAlertAction? {
+    private func showHandshakeViewAction() -> UIAlertAction {
         let action = UIAlertAction(title: NSLocalizedString("Privacy Status",
                                                             comment: "action sheet title 1"),
                                    style: .default) { [weak self] (action) in
@@ -591,8 +590,9 @@ extension EmailDetailViewController: SegueHandlerType {
             destination.viewModel = viewModel?.getMoveToFolderViewModel(forMessageRepresentedByItemAt: indexPath)
         case .segueHandshake, .segueHandshakeCollapsed:
             guard let nv = segue.destination as? UINavigationController,
-                let vc = nv.topViewController as? HandshakeViewControllerV2 else {
-                    Log.shared.errorAndCrash("No DVC?")
+                let vc = nv.topViewController as? HandshakeViewControllerV2 ,
+                let handshakeViewModel = viewModel?.hanshakeViewModel else {
+                    Log.shared.errorAndCrash("No DVC, No handshakeViewModel?")
                     break
             }
 
@@ -608,7 +608,7 @@ extension EmailDetailViewController: SegueHandlerType {
                                                                   height: 0)
             
             vc.appConfig = appConfig
-            vc.viewModel = viewModel?.hanshakeViewModel
+            vc.viewModel = handshakeViewModel
 
             break
         case .noSegue:
