@@ -80,7 +80,11 @@ final class HandshakeViewModel {
         /// The privacy status image
         var privacyStatusImage: UIImage? {
             get {
-                return color.statusIconForMessage(enabled: true, withText: false)
+                if forceRed {
+                    return PEPColor.red.statusIconForMessage(enabled: true, withText: false)
+                } else {
+                    return color.statusIconForMessage(enabled: true, withText: false)
+                }
             }
         }
         /// The current language
@@ -95,6 +99,7 @@ final class HandshakeViewModel {
                 return handshakeCombination.partnerIdentity.pEpColor()
             }
         }
+        fileprivate var forceRed: Bool = false
         /// The identity of the user to do the handshake
         fileprivate var handshakeCombination: HandshakeCombination
         
@@ -122,9 +127,11 @@ final class HandshakeViewModel {
         let identity : Identity = rows[indexPath.row].handshakeCombination.partnerIdentity
         let fingerprints = handshakeUtil?.getFingerprints(for: identity)
         rows[indexPath.row].fingerprint = fingerprints
+        rows[indexPath.row].forceRed = true
         handshakeUtil?.denyTrust(for: identity)
         reevaluateAndUpdate()
         handshakeViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
+        
     }
     
     /// Confirm the handshake
@@ -132,6 +139,7 @@ final class HandshakeViewModel {
     public func handleConfirmHandshakePressed(at indexPath: IndexPath) {
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
+        rows[indexPath.row].forceRed = false
         handshakeUtil?.confirmTrust(for: row.handshakeCombination.partnerIdentity)
         reevaluateAndUpdate()
         handshakeViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
@@ -140,6 +148,7 @@ final class HandshakeViewModel {
     
     @objc public func handleUndo(forRowAt indexPath: IndexPath) {
         let row = rows[indexPath.row]
+        rows[indexPath.row].forceRed = false
         handshakeUtil?.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,
                                             fingerprints: row.fingerprint)
         reevaluateAndUpdate()
@@ -149,6 +158,7 @@ final class HandshakeViewModel {
     /// - Parameter indexPath: The indexPath of the item to get the user to undo last action.
     public func handleResetPressed(forRowAt indexPath: IndexPath) {
         let row = rows[indexPath.row]
+        rows[indexPath.row].forceRed = false
         handshakeUtil?.resetTrust(for: row.handshakeCombination.partnerIdentity)
         reevaluateAndUpdate()
         handshakeViewModelDelegate?.didResetHandshake(forRowAt: indexPath)
