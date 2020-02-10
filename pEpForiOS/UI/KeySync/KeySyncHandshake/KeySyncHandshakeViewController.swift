@@ -40,7 +40,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
     @IBOutlet weak var message: UILabel! {
         didSet {
-            message.text = NSLocalizedString("Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?", comment: "keySync handshake alert message")
+            message.text = viewModel.getMessage()
         }
     }
 
@@ -75,16 +75,18 @@ final class KeySyncHandshakeViewController: UIViewController {
     private var pickerLanguages = [String]()
     private var meFPR: String?
     private var partnerFPR: String?
+    private var isNewGroup = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
-        viewModel.fingerPrints(meFPR: meFPR, partnerFPR: partnerFPR)
+        viewModel.fingerPrints(meFPR: meFPR, partnerFPR: partnerFPR, isNewGroup: isNewGroup)
     }
 
-    func finderPrints(meFPR: String, partnerFPR: String) {
+    func finderPrints(meFPR: String, partnerFPR: String, isNewGroup: Bool) {
         self.meFPR = meFPR
         self.partnerFPR = partnerFPR
+        self.isNewGroup = isNewGroup
     }
 
     @IBAction func didPress(_ sender: UIButton) {

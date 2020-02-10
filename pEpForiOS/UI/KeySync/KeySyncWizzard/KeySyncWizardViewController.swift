@@ -107,7 +107,7 @@ extension KeySyncWizardViewController {
             guard let introView = introView(isNewGroup: isNewGroup,
                                             pageCompletion: pageCompletion),
                 let trustWordsView = trustWordsView(meFPR: meFPR,
-                                                    partnerFPR: partnerFPR,
+                                                    partnerFPR: partnerFPR, isNewGroup: isNewGroup,
                                                     pageCompletion: pageCompletion),
                 let animationView = animationView(isNewGroup: isNewGroup, pageCompletion: pageCompletion),
                 let completionView = completionView(isNewGroup: isNewGroup,
@@ -137,7 +137,7 @@ extension KeySyncWizardViewController {
             let notNowButtonTitle = NSLocalizedString("Not Now",
                                                       comment: "keySyncWizard intro view Not Now button title")
             let introNotNowAction = PEPUIAlertAction(title: notNowButtonTitle,
-                                                     style: .pEpGray,
+                                                     style: .pEpGreyButtonLines,
                                                      handler: { [weak self] alert in
                                                         pageCompletion(.cancel)
                                                         self?.dismiss()
@@ -146,7 +146,7 @@ extension KeySyncWizardViewController {
             let nextButtonTitle = NSLocalizedString("Next",
                                                     comment: "keySyncWizard intro view Next button title")
             let introNextAction = PEPUIAlertAction(title: nextButtonTitle,
-                                                   style: .pEpBlue,
+                                                   style: .pEpGray,
                                                    handler: { [weak self] alert in
                                                     self?.goToNextView()
             })
@@ -160,6 +160,7 @@ extension KeySyncWizardViewController {
 
     private func trustWordsView(meFPR: String,
                                 partnerFPR: String,
+                                isNewGroup: Bool,
                                 pageCompletion: @escaping (Action) -> Void) -> KeySyncHandshakeViewController? {
         let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
         guard let handShakeViewController = storyboard.instantiateViewController(
@@ -187,7 +188,9 @@ extension KeySyncWizardViewController {
             }
         }
 
-        handShakeViewController.finderPrints(meFPR: meFPR, partnerFPR: partnerFPR)
+        handShakeViewController.finderPrints(meFPR: meFPR,
+                                             partnerFPR: partnerFPR,
+                                             isNewGroup: isNewGroup)
 
         return handShakeViewController
     }
@@ -210,7 +213,7 @@ extension KeySyncWizardViewController {
             let animationCanceButtonlTitle = NSLocalizedString("Cancel",
                                                               comment: "keySyncWizard animation view cancel button title")
             let animationCancelAction = PEPUIAlertAction(title: animationCanceButtonlTitle,
-                                                        style: .pEpBlue,
+                                                        style: .pEpGray,
                                                         handler: { [weak self] alert in
                                                             pageCompletion(.cancel)
                                                             self?.dismiss()
@@ -244,7 +247,7 @@ extension KeySyncWizardViewController {
         let completionOKTitle = NSLocalizedString("OK",
                                                    comment: "keySyncWizard completion view OK button title")
         let completionOKlAction = PEPUIAlertAction(title: completionOKTitle,
-                                                   style: .pEpBlue,
+                                                   style: .pEpGray,
                                                    handler: { [weak self] alert in
                                                     self?.dismiss()
         })

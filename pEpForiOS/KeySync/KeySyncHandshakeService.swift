@@ -110,7 +110,9 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
     }
 
     // We must dismiss pEpSyncWizard before presenting pEpSyncWizard error view.
-    func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
+    func showError(error: Error?,
+                   completion: ((KeySyncErrorResponse) -> ())? = nil) {
+
         DispatchQueue.main.async { [weak self] in
             guard let presentingViewController = self?.pEpSyncWizard?.presentingViewController else {
                 //presentingViewController is nil then, pEpSyncWizard failed to be shown.
@@ -119,8 +121,13 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
                 return
             }
 
+            // This is a small workaround because we have no information
+            // about newGroup from MessageModel.
+            // More information about this: func notifyHandshake() .timeout in KeySyncService+PEPNotify...
+            let isNewGroup = AppSettings.shared.lastKnownDeviceGroupState == .sole
             self?.pEpSyncWizard?.dismiss(animated: true, completion: {
                 KeySyncErrorView.presentKeySyncError(viewController: presentingViewController,
+                                                     isNewGroup: isNewGroup,
                                                      error: error) {
                     action in
                     switch action {

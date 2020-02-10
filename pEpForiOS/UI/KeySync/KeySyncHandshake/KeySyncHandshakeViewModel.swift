@@ -20,6 +20,15 @@ final class KeySyncHandshakeViewModel {
         case cancel, decline, accept, changeLanguage
     }
 
+    private struct Localized {
+        struct message {
+            static let twoDevices = NSLocalizedString("Please make sure you have both devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on both devices?",
+                                               comment: "keySync handshake alert message for two devices in group")
+            static let moreThanTwoDevices = NSLocalizedString("Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?",
+                                                       comment: "keySync handshake alert message for more than two devices in group")
+        }
+    }
+
     var completionHandler: ((KeySyncHandshakeViewController.Action) -> Void)? //!!!: A viewModel must not know the Controller
 
     weak var delegate: KeySyncHandshakeViewModelDelegate?
@@ -27,6 +36,7 @@ final class KeySyncHandshakeViewModel {
     private var languageCode = Locale.current.languageCode
     private var meFPR: String?
     private var partnerFPR: String?
+    private var isNewGroup = true
     private let pEpSession: PEPSessionProtocol
     private var _languages = [PEPLanguage]()
     private var languages: [PEPLanguage] {
@@ -64,15 +74,22 @@ final class KeySyncHandshakeViewModel {
         }
     }
 
-    func fingerPrints(meFPR: String?, partnerFPR: String?) {
+    func fingerPrints(meFPR: String?, partnerFPR: String?, isNewGroup: Bool) {
         self.meFPR = meFPR
         self.partnerFPR = partnerFPR
+        self.isNewGroup = isNewGroup
         delegate?.change(handshakeWordsTo: trustWords())
     }
 
     func didLongPressWords() {
         fullTrustWords = !fullTrustWords
         delegate?.change(handshakeWordsTo: trustWords())
+    }
+
+    func getMessage() -> String {
+        return isNewGroup
+            ? Localized.message.twoDevices
+            : Localized.message.moreThanTwoDevices
     }
 }
 
