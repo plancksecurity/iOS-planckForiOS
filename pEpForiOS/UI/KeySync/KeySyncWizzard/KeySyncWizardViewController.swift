@@ -110,7 +110,8 @@ extension KeySyncWizardViewController {
                                                     partnerFPR: partnerFPR,
                                                     isNewGroup: isNewGroup,
                                                     pageCompletion: pageCompletion),
-                let animationView = animationView(isNewGroup: isNewGroup, pageCompletion: pageCompletion),
+                let animationView = animationView(isNewGroup: isNewGroup,
+                                                  pageCompletion: pageCompletion),
                 let completionView = completionView(isNewGroup: isNewGroup,
                                                     pageCompletion: pageCompletion) else {
                                                         return []

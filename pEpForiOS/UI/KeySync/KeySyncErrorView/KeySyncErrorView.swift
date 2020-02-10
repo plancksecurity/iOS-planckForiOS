@@ -20,7 +20,8 @@ struct KeySyncErrorView {
                                     isNewGroup: Bool,
                                     error: Error?,
                                     completion: ((KeySyncErrorResponse) -> ())?) {
-        guard let keySyncErrorView = KeySyncErrorView.errorView(isNewGroup: isNewGroup, completion: {
+        guard let keySyncErrorView = KeySyncErrorView.errorView(isNewGroup: isNewGroup,
+                                                                completion: {
             action in
             switch action {
             case .tryAgain:

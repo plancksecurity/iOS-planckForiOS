@@ -79,7 +79,9 @@ final class KeySyncHandshakeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
-        viewModel.fingerPrints(meFPR: meFPR, partnerFPR: partnerFPR, isNewGroup: isNewGroup)
+        viewModel.fingerPrints(meFPR: meFPR,
+                               partnerFPR: partnerFPR,
+                               isNewGroup: isNewGroup)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -87,7 +89,9 @@ final class KeySyncHandshakeViewController: UIViewController {
         message.text = viewModel.getMessage()
     }
 
-    func finderPrints(meFPR: String, partnerFPR: String, isNewGroup: Bool) {
+    func finderPrints(meFPR: String,
+                      partnerFPR: String,
+                      isNewGroup: Bool) {
         self.meFPR = meFPR
         self.partnerFPR = partnerFPR
         self.isNewGroup = isNewGroup

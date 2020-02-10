@@ -74,7 +74,9 @@ final class KeySyncHandshakeViewModel {
         }
     }
 
-    func fingerPrints(meFPR: String?, partnerFPR: String?, isNewGroup: Bool) {
+    func fingerPrints(meFPR: String?,
+                      partnerFPR: String?,
+                      isNewGroup: Bool) {
         self.meFPR = meFPR
         self.partnerFPR = partnerFPR
         self.isNewGroup = isNewGroup
