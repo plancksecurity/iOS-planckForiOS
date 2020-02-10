@@ -34,6 +34,9 @@ final class HandshakeTableViewCell: UITableViewCell {
     @IBOutlet private weak var confirmButton: UIButton!
     @IBOutlet private weak var resetButton: UIButton!
     
+    //Hide these views in case pepColor is not yellow.
+    @IBOutlet weak var trustwordsStackView: UIStackView!
+    @IBOutlet weak var trustwordsButtonsContainer: UIView!
     weak var delegate : HandshakeTableViewCellDelegate?
 
     override func awakeFromNib() {

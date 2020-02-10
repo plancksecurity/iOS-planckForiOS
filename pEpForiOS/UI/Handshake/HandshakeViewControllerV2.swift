@@ -77,11 +77,20 @@ extension HandshakeViewControllerV2 : UITableViewDataSource  {
                     cell.partnerImageView.image = image
                 }
             })
+            //TODO: fix this. 
             //cell.privacyStatusImageView.image = row.privacyStatusImage
             cell.partnerNameLabel.text = row.name
             cell.privacyStatusLabel.text = row.privacyStatusName
             cell.descriptionLabel.text = row.description
-            setTrustwords(for: cell, at: indexPath, longMode: row.longTrustwords)
+            ///Yellow means secure but not trusted.
+            ///That means that's the only case must display the trustwords
+            if row.color == .yellow {
+                setTrustwords(for: cell, at: indexPath, longMode: row.longTrustwords)
+            } else {
+                cell.trustwordsStackView.isHidden = true
+                cell.trustwordsButtonsContainer.isHidden = true
+            }
+
             cell.delegate = self
             return cell
         }

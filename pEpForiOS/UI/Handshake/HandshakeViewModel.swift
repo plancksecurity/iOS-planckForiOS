@@ -72,6 +72,8 @@ final class HandshakeViewModel {
         var longTrustwords: Bool = false
         /// The privacy status in between the current user and the partner
         var privacyStatus: String?
+        /// Status indicator
+        var color : PEPColor
         /// The identity of the user to do the handshake
         fileprivate var handshakeCombination: HandshakeCombination
     }
@@ -177,7 +179,9 @@ final class HandshakeViewModel {
     private func generateRows() {
         let defaultLanguage = "en"
         message.handshakeActionCombinations().forEach { (combination) in
-            let status = String.pEpRatingTranslation(pEpRating: combination.partnerIdentity.pEpRating())
+            let rating = combination.partnerIdentity.pEpRating()
+            
+            let status = String.pEpRatingTranslation(pEpRating: rating)
             let language = combination.partnerIdentity.language ?? defaultLanguage
             let privacyStatusImage = message.pEpColor().statusIconForMessage(enabled: pEpProtected)
             let privacyStatusTitle = message.pEpColor().privacyStatusTitle
@@ -189,6 +193,7 @@ final class HandshakeViewModel {
                           currentLanguage: language,
                           longTrustwords: false,
                           privacyStatus:status.title,
+                          color: rating.pEpColor(),
                           handshakeCombination: combination)
             rows.append(row)
         }
