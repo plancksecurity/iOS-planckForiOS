@@ -29,6 +29,7 @@ class EmailDetailViewController: BaseViewController {
     @IBOutlet weak var flagButton: UIBarButtonItem!
     @IBOutlet weak var destructiveButton: UIBarButtonItem!
     @IBOutlet weak var replyButton: UIBarButtonItem!
+    @IBOutlet weak var pEpIconSettingsButton: UIBarButtonItem!
     @IBOutlet weak var moveToFolderButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
 
@@ -131,6 +132,10 @@ class EmailDetailViewController: BaseViewController {
         }
 
         present(alert, animated: true, completion: nil)
+    }
+
+    @IBAction func pEpIconSettingsButtonPressed(_ sender: UIBarButtonItem) {
+        showSettingsViewController()
     }
 
     @IBAction func previousButtonPressed(_ sender: UIBarButtonItem) {
@@ -323,13 +328,8 @@ extension EmailDetailViewController {
     }
 
     private func setupToolbar() {
-        let pEpButton = UIBarButtonItem.getPEPButton(action: #selector(showPepActions(sender:)),
-                                                     target: self)
-        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-                                                             target: nil,
-                                                             action: nil)
-        toolbarItems?.append(contentsOf: [flexibleSpace, pEpButton])
-        if !(onlySplitViewMasterIsShown) {
+        if !onlySplitViewMasterIsShown {
+            toolbarItems?.removeAll(where: { $0 == pEpIconSettingsButton })
             navigationItem.rightBarButtonItems = toolbarItems
         }
     }
