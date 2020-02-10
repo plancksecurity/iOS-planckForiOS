@@ -97,6 +97,8 @@ final class HandshakeViewModel {
         }
         /// The identity of the user to do the handshake
         fileprivate var handshakeCombination: HandshakeCombination
+        
+        fileprivate var fingerprint: String?
     }
     
     /// Items to be displayed in the View Controller
@@ -119,6 +121,7 @@ final class HandshakeViewModel {
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         handshakeUtil?.denyTrust(for: row.handshakeCombination.partnerIdentity)
+        
         handshakeViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
         reevaluateAndUpdate()
     }
@@ -132,13 +135,18 @@ final class HandshakeViewModel {
         handshakeViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
         reevaluateAndUpdate()
     }
-
-    /// Reset the handshake
-    /// The privacy status will be unsecure.
-    /// - Parameter indexPath: The indexPath of the item to get the user to reset the handshake
-    @objc public func handleResetPressed(at indexPath: IndexPath) {
+    
+    @objc public func handleUndo(forRowAt indexPath: IndexPath) {
         let row = rows[indexPath.row]
-        handshakeUtil?.resetTrust(for: row.handshakeCombination.partnerIdentity, fingerprints: nil)
+        handshakeUtil?.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,
+                                            fingerprints: "")
+    }
+
+    /// Handles the undo
+    /// - Parameter indexPath: The indexPath of the item to get the user to undo last action.
+    public func handleResetPressed(forRowAt indexPath: IndexPath) {
+        let row = rows[indexPath.row]
+        handshakeUtil?.resetTrust(for: row.handshakeCombination.partnerIdentity)
         handshakeViewModelDelegate?.didResetHandshake(forRowAt: indexPath)
         reevaluateAndUpdate()
     }
@@ -225,7 +233,7 @@ final class HandshakeViewModel {
     /// - Parameter indexPath: The indexPath of the row which the action to undo.
     private func registerUndoAction(at indexPath: IndexPath) {
         undoManager.registerUndo(withTarget: self,
-                                 selector: #selector(handleResetPressed),
+                                 selector: #selector(handleUndo(forRowAt:)),
                                  object: indexPath)
     }
 }

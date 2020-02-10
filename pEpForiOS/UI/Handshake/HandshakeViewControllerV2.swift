@@ -216,7 +216,7 @@ extension HandshakeViewControllerV2: HandshakeTableViewCellDelegate {
     
     func resetButtonPressed(on cell: HandshakeTableViewCell) {
         if let indexPath = handshakeTableView.indexPath(for: cell) {
-            viewModel?.handleResetPressed(at: indexPath)
+            viewModel?.handleResetPressed(forRowAt: indexPath)
         }
     }
     
