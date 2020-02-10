@@ -352,7 +352,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="HandshakeTableViewCell_Iphone" rowHeight="370" id="dBo-wY-3Nn" userLabel="HandshakeIphoneCell" customClass="HandshakeTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="HandshakeTableViewCell_OnlyMaster" rowHeight="370" id="dBo-wY-3Nn" userLabel="HandshakeIphoneCell" customClass="HandshakeTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="71.5" width="834" height="370"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dBo-wY-3Nn" id="PBy-V2-1ZV" userLabel="HandshakeContentView">
@@ -561,7 +561,7 @@
                                             <outlet property="trustwordsLabel" destination="0uK-Ys-aO5" id="1fc-if-aZN"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="HandshakeTableViewCell_Ipad" rowHeight="370" id="rJy-jc-TFR" userLabel="HandshakeIpadCell" customClass="HandshakeTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="HandshakeTableViewCell_Detailed" rowHeight="370" id="rJy-jc-TFR" userLabel="HandshakeIpadCell" customClass="HandshakeTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="441.5" width="834" height="370"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rJy-jc-TFR" id="IGB-g2-b9y" userLabel="HandshakeContentView">

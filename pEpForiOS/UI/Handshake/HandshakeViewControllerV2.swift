@@ -14,8 +14,8 @@ import UIKit
 /// Only vary the layout, the functionality is the same. 
 class HandshakeViewControllerV2: BaseViewController {
         
-    private let iphoneCellIdentifier = "HandshakeTableViewCell_Iphone"
-    private let ipadCellIdentifier = "HandshakeTableViewCell_Ipad"
+    private let onlyMasterCellIdentifier = "HandshakeTableViewCell_OnlyMaster"
+    private let masterAndDetailCellIdentifier = "HandshakeTableViewCell_Detailed"
 
     @IBOutlet private weak var handshakeTableView: UITableView!
     @IBOutlet private weak var optionsButton: UIBarButtonItem!
@@ -56,8 +56,19 @@ extension HandshakeViewControllerV2 : UITableViewDataSource  {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let identifier = UIDevice.current.userInterfaceIdiom == .phone ? iphoneCellIdentifier : ipadCellIdentifier
+        let identifier : String
+        let mode = splitViewController?.currentDisplayMode ?? .onlyDetail
+
+        // Only show the top logo instead of the privacy status if there is not
+        // yet a logo shown.
+        switch mode {
+        case .onlyMaster, .onlyDetail:
+            identifier = onlyMasterCellIdentifier
+            break
+        case .masterAndDetail:
+             identifier = masterAndDetailCellIdentifier
+            break
+        }
 
         if let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
             as? HandshakeTableViewCell, let row = viewModel?.rows[indexPath.row] {
@@ -66,7 +77,7 @@ extension HandshakeViewControllerV2 : UITableViewDataSource  {
                     cell.partnerImageView.image = image
                 }
             })
-            cell.privacyStatusImageView.image = row.privacyStatusImage
+            //cell.privacyStatusImageView.image = row.privacyStatusImage
             cell.partnerNameLabel.text = row.name
             cell.privacyStatusLabel.text = row.privacyStatusName
             cell.descriptionLabel.text = row.description
@@ -155,6 +166,7 @@ extension HandshakeViewControllerV2 {
     }
 }
 
+/// MARK: - Set trustwords
 extension HandshakeViewControllerV2 {
     
     /// Generates and sets the trustwords to the cell
@@ -172,6 +184,7 @@ extension HandshakeViewControllerV2 {
     }
 }
 
+/// MARK: - HandshakeTableViewCellDelegate
 extension HandshakeViewControllerV2: HandshakeTableViewCellDelegate {
     func languageButtonPressed(on cell: HandshakeTableViewCell) {
         if let indexPath = handshakeTableView.indexPath(for: cell) {
