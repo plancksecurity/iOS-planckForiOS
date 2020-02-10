@@ -29,7 +29,7 @@ class SettingSwitchTableViewCell: UITableViewCell {
 
     func setSwitchValue() {
         if let vm = viewModel {
-            switchItem.setOn(vm.switchValue(), animated: false)
+            switchItem.setOn(vm.switchValue, animated: false)
         }
     }
 }

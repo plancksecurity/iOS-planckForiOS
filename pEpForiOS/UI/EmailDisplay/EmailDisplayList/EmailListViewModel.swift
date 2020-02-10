@@ -16,6 +16,7 @@ protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
     func setToolbarItemsEnabledState(to newValue: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
+    func select(itemAt indexPath: IndexPath)
 }
 
 // MARK: - EmailListViewModel
@@ -106,20 +107,6 @@ class EmailListViewModel: EmailDisplayViewModel {
         default:
             return true
         }
-    }
-
-    /// Used for UI fine tuning: Do not instatiate a EmailDetailVC if there is one already to avoid
-    /// minor gliches while longer HTML body is loaded.
-    public var emailDetailViewIsAlreadyShown: Bool {
-        return emailDetailViewModel != nil
-    }
-
-    // Forwards selection to EmailDetailView. Can be used to avoid re-instantiating of
-    // EmailDetailView on every selection. Not sure if this is a good idea, smells like
-    // needless optimization. Remove if it causes trouble. In this case also remove
-    //`emailDetailViewIsAlreadyShown` and it's usage.
-    public func handleSelected(itemAt indexPath: IndexPath) {
-        emailDetailViewModel?.select(itemAt: indexPath)
     }
 
     /// Whether or not to show the Tutorial
@@ -500,6 +487,10 @@ extension EmailListViewModel: EmailDetailViewModelSelectionChangeDelegate {
 
     func emailDetailViewModel(emailDetailViewModel: EmailDetailViewModel,
                               didSelectItemAt indexPath: IndexPath) {
-        delegate?.select(itemAt: indexPath)
+        guard let del = delegate as? EmailListViewModelDelegate else {
+            Log.shared.errorAndCrash("Wrong Delegate")
+            return
+        }
+        del.select(itemAt: indexPath)
     }
 }

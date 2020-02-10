@@ -29,6 +29,7 @@ class EmailDetailViewController: BaseViewController {
     @IBOutlet weak var flagButton: UIBarButtonItem!
     @IBOutlet weak var destructiveButton: UIBarButtonItem!
     @IBOutlet weak var replyButton: UIBarButtonItem!
+    @IBOutlet weak var pEpIconSettingsButton: UIBarButtonItem!
     @IBOutlet weak var moveToFolderButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
 
@@ -131,6 +132,10 @@ class EmailDetailViewController: BaseViewController {
         }
 
         present(alert, animated: true, completion: nil)
+    }
+
+    @IBAction func pEpIconSettingsButtonPressed(_ sender: UIBarButtonItem) {
+        showSettingsViewController()
     }
 
     @IBAction func previousButtonPressed(_ sender: UIBarButtonItem) {
@@ -263,7 +268,7 @@ extension EmailDetailViewController {
 
     private func configureView() {
         // Make sure the NavigationBar is shown, even if the previous view has hidden it.
-        navigationController?.setNavigationBarHidden(false, animated: false) //BUFF: //XAVIER: rm NC in storyboard after new SplitView handling approach is in.
+        navigationController?.setNavigationBarHidden(false, animated: false) //XAVIER: rm NC in storyboard after new SplitView handling approach is in.
 
         //ToolBar
         if splitViewController != nil {
@@ -317,77 +322,21 @@ extension EmailDetailViewController {
 
     @objc
     private func rotated() {
+        // Works around a UI glitch: When !onlySplitViewMasterIsShown, the colletionView scroll
+        // position is inbetween two cells after orientation change.
         scrollToLastViewedCell()
     }
 
     private func setupToolbar() {
-        let pEpButton = UIBarButtonItem.getPEPButton(action: #selector(showPepActions(sender:)),
-                                                     target: self)
-        //        pEpButton.tag = BarButtonType.settings.rawValue
-        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-                                                             target: nil,
-                                                             action: nil)
-        //        flexibleSpace.tag = BarButtonType.space.rawValue
-        toolbarItems?.append(contentsOf: [flexibleSpace, pEpButton])
-        if !(onlySplitViewMasterIsShown) {
+        if !onlySplitViewMasterIsShown {
+            toolbarItems?.removeAll(where: { $0 == pEpIconSettingsButton })
             navigationItem.rightBarButtonItems = toolbarItems
         }
     }
 
+    // Removes all EmailViewController that are not connected to a cell any more.
     private func releaseUnusedSubViewControllers() {
         emailSubViewControllers = emailSubViewControllers.filter { $0.view.superview != nil }
-    }
-
-    @objc
-    private func showPepActions(sender: UIBarButtonItem) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-        guard let indexPath = indexPathOfCurrentlyVisibleCell else {
-            Log.shared.errorAndCrash("Nothing shown?")
-            return
-        }
-
-        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
-
-        if vm.shouldShowPrivacyStatus(forItemAt:indexPath),
-            let handshakeAction = showHandshakeViewAction() {
-            actionSheetController.addAction(handshakeAction)
-        }
-        actionSheetController.addAction(tutorialAction())
-        actionSheetController.addAction(showSettingsAction())
-
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("Cancel", comment: "possible private status action"),
-            style: .cancel) { (action) in }
-        actionSheetController.addAction(cancelAction)
-
-        if splitViewController != nil, !onlySplitViewMasterIsShown {
-            actionSheetController.popoverPresentationController?.barButtonItem = sender
-        }
-        present(actionSheetController, animated: true)
-    }
-
-    private func showSettingsAction() -> UIAlertAction {
-        let action = UIAlertAction(
-            title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
-            style: .default) { [weak self] (action) in
-                guard let me = self else {
-                    Log.shared.errorAndCrash(message: "lost myself")
-                    return
-                }
-                me.showSettingsViewController()
-        }
-        return action
-    }
-
-    private func tutorialAction() -> UIAlertAction{
-        return UIAlertAction(
-            title: NSLocalizedString("Tutorial", comment: "show tutorial from compose view"),
-            style: .default) { _ in
-                TutorialWizardViewController.presentTutorialWizard(viewController: self)
-        }
     }
 
     private func showHandshakeViewAction() -> UIAlertAction? {
@@ -422,6 +371,22 @@ extension EmailDetailViewController {
                 return
         }
         UIUtils.presentSettings(on: vc, appConfig: appConfig)
+    }
+
+    private func setupEmailViewController(forRowAt indexPath: IndexPath) -> EmailViewController? {
+        guard
+            let vm = viewModel,
+            let createe = storyboard?.instantiateViewController(withIdentifier: EmailViewController.storyboardId) as? EmailViewController
+            else {
+                Log.shared.errorAndCrash("No V[M|C]")
+                return nil
+        }
+        createe.appConfig = appConfig
+        createe.message = vm.message(representedByRowAt: indexPath) //!!!: EmailVC should have a VM which should be created in our VM. This VC should not be aware of `Message`s!
+        createe.delegate = self
+        emailSubViewControllers.append(createe)
+
+        return createe
     }
 }
 
@@ -462,26 +427,19 @@ extension EmailDetailViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        releaseUnusedSubViewControllers()
+
         guard
             let cell =
             collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
                                                for: indexPath) as? EmailDetailCollectionViewCell,
-            let emailViewController = storyboard?.instantiateViewController(withIdentifier: EmailViewController.storyboardId) as? EmailViewController,
-            let vm = viewModel
+            let emailViewController = setupEmailViewController(forRowAt: indexPath)
             else {
                 Log.shared.errorAndCrash("Error setting up cell")
                 return collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
                                                           for: indexPath)
         }
-        releaseUnusedSubViewControllers()
-        
-        emailViewController.appConfig = appConfig
-        emailViewController.message = vm.message(representedByRowAt: indexPath) //!!!: EmailVC should have a VM which should be created in our VM. This VC should not be aware of `Message`s!
-        emailViewController.delegate = self
-        emailSubViewControllers.append(emailViewController)
-        cell.containerView.addSubview(emailViewController.view)
-
-        emailViewController.view.fullSizeInSuperView()
+        cell.setContainedView(containedView: emailViewController.view)
 
         return cell
     }

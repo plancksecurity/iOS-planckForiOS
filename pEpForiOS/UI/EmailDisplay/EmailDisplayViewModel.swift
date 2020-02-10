@@ -25,8 +25,6 @@ protocol EmailDisplayViewModelDelegate: class {
     func allUpdatesReceived(viewModel: EmailDisplayViewModel)
     
     func reloadData(viewModel: EmailDisplayViewModel)
-
-    func select(itemAt indexPath: IndexPath)
 }
 
 /// Base class for MessageQueryResults driven email display view models.
