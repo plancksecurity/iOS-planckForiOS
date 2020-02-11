@@ -113,7 +113,7 @@ extension NSAttributedString {
                 let attachString = NSAttributedString(attachment: at)
                 new.append(attachString)
             }
-            let pepFont = UIFont.pepFont(style: .body, type: .regular)
+            let pepFont = UIFont.pepFont(style: .body, weight: .regular)
 
             new.addAttribute(NSAttributedString.Key.font,
                              value: pepFont,

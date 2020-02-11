@@ -15,7 +15,7 @@ open class MessageSenderCell: MessageCell {
         super.updateCell(model: model, message: message)
         titleLabel?.text = message.from?.displayString
         
-        let font = UIFont.pepFont(style: .footnote, type: .semibold)
+        let font = UIFont.pepFont(style: .footnote, weight: .semibold)
         titleLabel?.font = font
 
         let attributes = [NSAttributedString.Key.font: font,

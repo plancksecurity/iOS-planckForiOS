@@ -9,11 +9,11 @@
 import Foundation
 import UIKit
 
-/// UIFont extension
-/// It has static vars that use text styles like body or callout.
+/// UIFont extension that provides fonts based on weight and style.
 /// As it is based on the system fonts, it allows to take advantage of Dynamic Type.
 /// System fonts automatically react to accessibility features like bold text and larger type.
-/// To add a new font, include the font files, add it on Info.plist, and add access methods here.
+/// To add a new font, include the font file, add it on Info.plist and add the case here.
+/// Usage example: let font = UIFont.pepFont(style: .body, weight: .regular)
 extension UIFont {
 
     private static let medium = "SFUIText-Medium"
@@ -23,10 +23,10 @@ extension UIFont {
     /// Retrieves the font for the provided style and type
     /// - Parameters:
     ///   - style: The style of the font.
-    ///   - type: The type of the font.
-    public static func pepFont(style : TextStyle, type : UIFont.Weight) -> UIFont {
+    ///   - weight: The weight of the font.
+    public static func pepFont(style : TextStyle, weight : UIFont.Weight) -> UIFont {
         let name: String
-        switch type {
+        switch weight {
         case .medium:
             name = medium
         case .regular:
@@ -38,7 +38,7 @@ extension UIFont {
         }
         
         guard let font = UIFont(name: name, size: preferredFontSize(for: style)) else {
-            return UIFont.systemFont(ofSize: preferredFontSize(for: style), weight: type)
+            return UIFont.systemFont(ofSize: preferredFontSize(for: style), weight: weight)
         }
         return font
     }
@@ -47,5 +47,3 @@ extension UIFont {
         return UIFont.preferredFont(forTextStyle: textStyle).pointSize
     }
 }
-
-

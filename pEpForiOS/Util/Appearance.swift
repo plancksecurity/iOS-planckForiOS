@@ -68,7 +68,7 @@ class Appearance {
 
         appearance.configureWithOpaqueBackground()
 
-        let font = UIFont.pepFont(style: .headline, type: .medium)
+        let font = UIFont.pepFont(style: .headline, weight: .medium)
         
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: color,
                                                                    .font: font,
