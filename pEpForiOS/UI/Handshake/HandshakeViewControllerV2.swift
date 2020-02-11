@@ -281,7 +281,7 @@ extension HandshakeViewControllerV2 {
                 cell.trustwordsStackView.isHidden = true
                 cell.trustwordsButtonsContainer.isHidden = true
             }
-        } else {
+        } else if identifier == masterAndDetailCellIdentifier {
             if row.color == .yellow {
                 setTrustwords(for: cell, at: indexPath, longMode: row.longTrustwords)
                 cell.trustwordsLabel.isHidden = false
