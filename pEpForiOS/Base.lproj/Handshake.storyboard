@@ -552,6 +552,7 @@
                                             <outlet property="confirmButton" destination="Q7n-8c-O25" id="XVl-UD-xLe"/>
                                             <outlet property="declineButton" destination="sVr-xT-f8t" id="kEN-Gx-MJe"/>
                                             <outlet property="descriptionLabel" destination="HIb-Ji-yfV" id="QOi-nq-RYb"/>
+                                            <outlet property="languageButton" destination="GVU-Lg-dr3" id="wEP-mh-aUS"/>
                                             <outlet property="partnerImageView" destination="fkC-wD-aZH" id="fXi-ur-9Jy"/>
                                             <outlet property="partnerNameLabel" destination="S81-yN-lUE" id="ftj-ek-eH4"/>
                                             <outlet property="privacyStatusImageView" destination="TCB-Zy-Xsu" id="WDV-7E-Vny"/>
@@ -783,6 +784,7 @@
                                             <outlet property="confirmButton" destination="cAK-ZW-JLu" id="meU-Ps-T7g"/>
                                             <outlet property="declineButton" destination="cLm-E4-Lx2" id="08w-Tm-53k"/>
                                             <outlet property="descriptionLabel" destination="5xj-yI-46H" id="gDF-Hj-eSJ"/>
+                                            <outlet property="languageButton" destination="oRh-LC-ph7" id="ATk-Hb-9hf"/>
                                             <outlet property="partnerImageView" destination="aEs-Xs-T69" id="0Tb-a3-vma"/>
                                             <outlet property="partnerNameLabel" destination="eOu-ky-MME" id="Q5T-eA-4DV"/>
                                             <outlet property="privacyStatusImageView" destination="Ncx-4B-mS4" id="snr-3u-rpo"/>
@@ -821,7 +823,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="handshakeTableView" destination="crl-YO-ia8" id="hiU-eM-DW8"/>
-                        <outlet property="optionsButton" destination="zNZ-mq-ElZ" id="7QS-uE-KOy"/>
+                        <outlet property="optionsButton" destination="zNZ-mq-ElZ" id="J6G-jk-mG0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OAD-MK-tHj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

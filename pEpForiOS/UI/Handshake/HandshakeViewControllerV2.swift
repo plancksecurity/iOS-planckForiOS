@@ -62,10 +62,10 @@ extension HandshakeViewControllerV2 : UITableViewDataSource  {
         // Only show the top logo instead of the privacy status if there is not
         // yet a logo shown.
         switch mode {
-        case .onlyMaster:
+        case .onlyMaster, .onlyDetail:
             identifier = onlyMasterCellIdentifier
             break
-        case .masterAndDetail, .onlyDetail:
+        case .masterAndDetail:
              identifier = masterAndDetailCellIdentifier
             break
         }
@@ -100,11 +100,11 @@ extension HandshakeViewControllerV2 : UITableViewDataSource  {
     }
 }
 
-/// MARK: - Toogle Protection
+/// MARK: - UIAlertControllers
 extension HandshakeViewControllerV2 {
     
     /// This should only be used if the flow comes from the Compose View.
-    func presentToogleProtectionActionSheet() {
+    private func presentToogleProtectionActionSheet() {
         guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("View Model must not be nil")
             return
@@ -126,7 +126,49 @@ extension HandshakeViewControllerV2 {
             alertController.dismiss(animated: true, completion: nil)
         }
         alertController.addAction(cancelAction)
+        
+        /// A broken contraint comes up, it's a known issue in iOS.
+        /// https://github.com/lionheart/openradar-mirror/issues/21120
+        if let buttonView = optionsButton.value(forKey: "view") as? UIView {
+            alertController.popoverPresentationController?.sourceView = buttonView
+            alertController.popoverPresentationController?.sourceRect = buttonView.bounds
+        }
+
         present(alertController, animated: true, completion: nil)
+    }
+    
+    private func showLanguagesList(for cell: HandshakeTableViewCell) {
+        if let indexPath = handshakeTableView.indexPath(for: cell) {
+            let alertController = UIAlertController.pEpAlertController(title: nil,
+                                                                       message: nil,
+                                                                       preferredStyle: .actionSheet)
+            guard let languages = viewModel?.getLanguages() else {
+                Log.shared.error("Languages not found")
+                return
+            }
+
+            for language in languages {
+                let action =   UIAlertAction(title: language.name,
+                                             style: .default) { [weak self] (action) in
+                                                guard let me = self else {
+                                                    Log.shared.error("Lost myself")
+                                                    return
+                                                }
+
+                                                me.viewModel?.didSelectLanguage(forRowAt: indexPath,
+                                                                                language: language.code)
+                }
+                alertController.addAction(action)
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                alertController.dismiss(animated: true, completion: nil)
+            }
+            alertController.addAction(cancelAction)
+            
+            alertController.popoverPresentationController?.sourceView = cell.languageButton
+            alertController.popoverPresentationController?.sourceRect = cell.languageButton.bounds
+            present(alertController, animated: true, completion: nil)
+        }
     }
 }
 
@@ -197,9 +239,7 @@ extension HandshakeViewControllerV2 {
 /// MARK: - HandshakeTableViewCellDelegate
 extension HandshakeViewControllerV2: HandshakeTableViewCellDelegate {
     func languageButtonPressed(on cell: HandshakeTableViewCell) {
-        if let indexPath = handshakeTableView.indexPath(for: cell) {
-            //TODO: Show languages list?
-        }
+        showLanguagesList(for: cell)
     }
     
     func declineButtonPressed(on cell: HandshakeTableViewCell) {
@@ -224,35 +264,5 @@ extension HandshakeViewControllerV2: HandshakeTableViewCellDelegate {
         if let indexPath = handshakeTableView.indexPath(for: cell) {
             viewModel?.handleToggleLongTrustwords(forRowAt: indexPath)
         }
-    }
-    
-    private func showLanguagesList(fromRowAt indexPath : IndexPath) {
-        guard let languages = viewModel?.getLanguages() else {
-            Log.shared.error("Languages not found")
-            return
-        }
-        
-        let alertController = UIAlertController.pEpAlertController(title: nil,
-                                                                   message: nil,
-                                                                   preferredStyle: .actionSheet)
-
-        for language in languages {
-            let action = UIAlertAction(title: language.name, style: .default) {
-                [weak self] (action) in
-                guard let me = self else {
-                    Log.shared.error("Lost myself")
-                    return }
-                
-                me.viewModel?.didSelectLanguage(forRowAt: indexPath, language: language.code)
-            }
-            alertController.addAction(action)
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
-            alertController.dismiss(animated: true, completion: nil)
-        }
-
-        alertController.addAction(cancelAction)
-        alertController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        present(alertController, animated: true, completion: nil)
     }
 }

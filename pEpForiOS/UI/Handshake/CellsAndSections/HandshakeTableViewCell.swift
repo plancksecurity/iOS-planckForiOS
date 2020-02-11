@@ -27,7 +27,8 @@ final class HandshakeTableViewCell: UITableViewCell {
     @IBOutlet weak var privacyStatusLabel: UILabel!
     @IBOutlet weak var trustwordsLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
-
+    @IBOutlet weak var languageButton: UIButton!
+    
     //Only for i18n and layout
     @IBOutlet private weak var resetLabel: UILabel!
     @IBOutlet private weak var declineButton: UIButton!
