@@ -27,26 +27,22 @@ class HandshakeViewControllerV2: BaseViewController {
         setLeftBarButton()
         optionsButton.title = NSLocalizedString("Options", comment: "Options")
         viewModel.handshakeViewModelDelegate = self
-        
-        
     }
+
     @IBAction private func optionsButtonPressed(_ sender: UIBarButtonItem) {
         presentToogleProtectionActionSheet()
     }
+
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         if motion == .motionShake {
             viewModel?.shakeMotionDidEnd()
         }
     }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         handshakeTableView.reloadData()
     }
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        handshakeTableView.estimatedRowHeight = 370
-//        handshakeTableView.rowHeight = UITableView.automaticDimension
-//    }
 }
 
 /// MARK: - UITableViewDataSource
