@@ -194,7 +194,7 @@ final class HandshakeViewModel {
     }
     
     public func getLanguages() -> [PEPLanguage]? {
-        var languages: [PEPLanguage]
+        var languages: [PEPLanguage]?
         do {
             languages = try PEPSession().languageList()
         } catch let err as NSError {
@@ -202,7 +202,6 @@ final class HandshakeViewModel {
         }
 
         return languages
-        
     }
 
     /// Generate the trustwords

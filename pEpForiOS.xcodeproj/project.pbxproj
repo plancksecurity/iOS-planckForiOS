@@ -1823,6 +1823,7 @@
 		432E80FA2191AF5100359879 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				5B87D79223F2C57F009DACAA /* SF */,
 				432E80FB2191AF5100359879 /* UniversLTStd.otf */,
 				432E80FC2191AF5100359879 /* UniversLTStd-Bold.otf */,
 			);
@@ -2363,6 +2364,16 @@
 			path = Transitions;
 			sourceTree = "<group>";
 		};
+		5B87D79223F2C57F009DACAA /* SF */ = {
+			isa = PBXGroup;
+			children = (
+				5B87D77C23F2C56D009DACAA /* SFUIText-Medium.ttf */,
+				5B87D77D23F2C56D009DACAA /* SFUIText-Regular.ttf */,
+				5B87D78123F2C56E009DACAA /* SFUIText-Semibold.ttf */,
+			);
+			path = SF;
+			sourceTree = "<group>";
+		};
 		B706C0EF1EA8C378006B2F6C /* StoryboardFiles */ = {
 			isa = PBXGroup;
 			children = (
@@ -2738,10 +2749,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B87D78823F2C56E009DACAA /* SFUIText-Medium.ttf in Resources */,
 				491B656220CFE0FD00C2ADDA /* Thread.storyboard in Resources */,
 				1526596C216230B1006A78DF /* ComposeData.plist in Resources */,
 				43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */,
 				155F2D9E20530798001B4B1C /* Reusable.storyboard in Resources */,
+				5B87D78D23F2C56E009DACAA /* SFUIText-Semibold.ttf in Resources */,
 				220DCE2F1E0AB544002FE716 /* MessageData.plist in Resources */,
 				432E80FE2191AF5100359879 /* UniversLTStd-Bold.otf in Resources */,
 				4307D5DA23575853004569C4 /* InfoPlist.strings in Resources */,
@@ -2751,6 +2764,7 @@
 				B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */,
 				37156E50234DD3FB00845A28 /* LoadingInterface.xib in Resources */,
 				433404CB2379789600E785F1 /* NothingSelected.storyboard in Resources */,
+				5B87D78923F2C56E009DACAA /* SFUIText-Regular.ttf in Resources */,
 				43C98AC3219C275E006418B0 /* Localizable.strings in Resources */,
 				3AD0E0A123E4659F006FFED3 /* Assets.xcassets in Resources */,
 				151DE7E11FC5D3FA00CDC273 /* Handshake.storyboard in Resources */,
