@@ -42,11 +42,11 @@ class HandshakeViewControllerV2: BaseViewController {
         super.viewWillTransition(to: size, with: coordinator)
         handshakeTableView.reloadData()
     }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        handshakeTableView.estimatedRowHeight = 370
-        handshakeTableView.rowHeight = UITableView.automaticDimension
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        handshakeTableView.estimatedRowHeight = 370
+//        handshakeTableView.rowHeight = UITableView.automaticDimension
+//    }
 }
 
 /// MARK: - UITableViewDataSource
@@ -84,11 +84,11 @@ extension HandshakeViewControllerV2 : UITableViewDataSource  {
             ///That means that's the only case must display the trustwords
             if row.color == .yellow {
                 setTrustwords(for: cell, at: indexPath, longMode: row.longTrustwords)
-                cell.trustwordsStackView.isHidden = false
-                cell.trustwordsButtonsContainer.isHidden = false
+//                cell.trustwordsStackView.isHidden = false
+//                cell.trustwordsButtonsContainer.isHidden = false
             } else {
-                cell.trustwordsStackView.isHidden = true
-                cell.trustwordsButtonsContainer.isHidden = true
+//                cell.trustwordsStackView.isHidden = true
+//                cell.trustwordsButtonsContainer.isHidden = true
             }
 
             cell.delegate = self
