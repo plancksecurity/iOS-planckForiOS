@@ -193,8 +193,7 @@ extension AppSettings: AppSettingsProtocol {
             return AppSettings.userDefaults.string(forKey: AppSettings.keyDefaultAccountAddress)
         }
         set {
-            AppSettings.userDefaults.set(newValue,
-                                         forKey: AppSettings.keyDefaultAccountAddress)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyDefaultAccountAddress)
         }
     }
 
