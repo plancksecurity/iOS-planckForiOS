@@ -9,9 +9,6 @@
 import UIKit
 
 /// View Controller to handle the HandshakeView.
-/// Notice that there are different cells depending on if it's iPhone or iPad (on storyboard).
-/// So, please, don't forget to modify both if necesary.
-/// Only vary the layout, the functionality is the same. 
 class HandshakeViewControllerV2: BaseViewController {
         
     private let onlyMasterCellIdentifier = "HandshakeTableViewCell_OnlyMaster"
@@ -36,11 +33,19 @@ class HandshakeViewControllerV2: BaseViewController {
     @IBAction private func optionsButtonPressed(_ sender: UIBarButtonItem) {
         presentToogleProtectionActionSheet()
     }
-    
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         if motion == .motionShake {
             viewModel?.shakeMotionDidEnd()
         }
+    }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        handshakeTableView.reloadData()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        handshakeTableView.estimatedRowHeight = 370
+        handshakeTableView.rowHeight = UITableView.automaticDimension
     }
 }
 
@@ -56,19 +61,13 @@ extension HandshakeViewControllerV2 : UITableViewDataSource  {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let identifier : String
-        let mode = splitViewController?.currentDisplayMode ?? .onlyDetail
-
-        // Only show the top logo instead of the privacy status if there is not
-        // yet a logo shown.
-        switch mode {
-        case .onlyMaster, .onlyDetail:
-            identifier = onlyMasterCellIdentifier
-            break
-        case .masterAndDetail:
-             identifier = masterAndDetailCellIdentifier
-            break
-        }
+        //Cualquier plus:
+        //Iphone portrait
+        //Iphone landscape:
+        //iPad
+        
+        let identifier = UIDevice.current.orientation.isPortrait ?
+            onlyMasterCellIdentifier :  masterAndDetailCellIdentifier
 
         if let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
             as? HandshakeTableViewCell, let row = viewModel?.rows[indexPath.row] {
@@ -137,38 +136,52 @@ extension HandshakeViewControllerV2 {
         present(alertController, animated: true, completion: nil)
     }
     
+    /// Shows an action sheet with languages when the user taps the language button from a cell
+    /// - Parameter cell: The cell of the language button tapped.
     private func showLanguagesList(for cell: HandshakeTableViewCell) {
-        if let indexPath = handshakeTableView.indexPath(for: cell) {
-            let alertController = UIAlertController.pEpAlertController(title: nil,
-                                                                       message: nil,
-                                                                       preferredStyle: .actionSheet)
-            guard let languages = viewModel?.getLanguages() else {
-                Log.shared.error("Languages not found")
-                return
-            }
-
-            for language in languages {
-                let action =   UIAlertAction(title: language.name,
-                                             style: .default) { [weak self] (action) in
-                                                guard let me = self else {
-                                                    Log.shared.error("Lost myself")
-                                                    return
-                                                }
-
-                                                me.viewModel?.didSelectLanguage(forRowAt: indexPath,
-                                                                                language: language.code)
-                }
-                alertController.addAction(action)
-            }
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                alertController.dismiss(animated: true, completion: nil)
-            }
-            alertController.addAction(cancelAction)
-            
-            alertController.popoverPresentationController?.sourceView = cell.languageButton
-            alertController.popoverPresentationController?.sourceRect = cell.languageButton.bounds
-            present(alertController, animated: true, completion: nil)
+        guard let indexPath = handshakeTableView.indexPath(for: cell) else {
+            Log.shared.error("IndexPath not found")
+            return
         }
+        
+        let alertController = UIAlertController.pEpAlertController(title: nil,
+                                                                   message: nil,
+                                                                   preferredStyle: .actionSheet)
+        guard let languages = viewModel?.handleChangeLanguagePressed() else {
+            Log.shared.error("Languages not found")
+            return
+        }
+        
+        //For every language a row in the action sheet.
+        for language in languages {
+            guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)
+                else {
+                    Log.shared.debug("Language name not found")
+                    break
+            }
+            let action = UIAlertAction(title: languageName, style: .default) { [weak self] (action) in
+                guard let me = self else {
+                    Log.shared.error("Lost myself")
+                    return
+                }
+                
+                me.viewModel?.didSelectLanguage(forRowAt: indexPath,
+                                                language: language)
+            }
+            alertController.addAction(action)
+        }
+        
+        //For the cancel button another action.
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            alertController.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(cancelAction)
+        
+        //Ipad behavior.
+        alertController.popoverPresentationController?.sourceView = cell.languageButton
+        alertController.popoverPresentationController?.sourceRect = cell.languageButton.bounds
+        
+        present(alertController, animated: true, completion: nil)
     }
 }
 

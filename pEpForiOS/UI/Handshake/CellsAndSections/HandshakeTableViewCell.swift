@@ -10,10 +10,21 @@ import UIKit
 
 /// Delegate to notify the events in the cell.
 protocol HandshakeTableViewCellDelegate: class {
+    
+    /// Delegate method to notify the language button has been pressed.
+    /// - Parameter cell: The cell where the language button has been pressed
     func languageButtonPressed(on cell: HandshakeTableViewCell)
+    /// Delegate method to notify the decline button has been pressed.
+    /// - Parameter cell: The cell where the decline button has been pressed
     func declineButtonPressed(on cell: HandshakeTableViewCell)
+    /// Delegate method to notify the confirm button has been pressed.
+    /// - Parameter cell: The cell where the confirm button has been pressed
     func confirmButtonPressed(on cell: HandshakeTableViewCell)
+    /// Delegate method to notify the reset button has been pressed.
+    /// - Parameter cell: The cell where the reset button has been pressed
     func resetButtonPressed(on cell: HandshakeTableViewCell)
+    /// Delegate method to notify the trustwords label has been pressed.
+    /// - Parameter cell: The cell where the trustwords label has been pressed
     func trustwordsLabelPressed(on cell : HandshakeTableViewCell)
 }
 

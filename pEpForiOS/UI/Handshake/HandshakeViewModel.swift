@@ -146,6 +146,8 @@ final class HandshakeViewModel {
         
     }
     
+    /// Handles the undo action. If possible will undo the last undoable action performed
+    /// - Parameter indexPath: The index path of the row from where the last action has been performed.
     @objc public func handleUndo(forRowAt indexPath: IndexPath) {
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
@@ -191,17 +193,6 @@ final class HandshakeViewModel {
     public func handleToggleLongTrustwords(forRowAt indexPath: IndexPath) {
         rows[indexPath.row].longTrustwords.toggle()
         handshakeViewModelDelegate?.didToogleLongTrustwords(forRowAt: indexPath)
-    }
-    
-    public func getLanguages() -> [PEPLanguage]? {
-        var languages: [PEPLanguage]?
-        do {
-            languages = try PEPSession().languageList()
-        } catch let err as NSError {
-            Log.shared.error("%@", "\(err)")
-        }
-
-        return languages
     }
 
     /// Generate the trustwords
