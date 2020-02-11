@@ -399,6 +399,9 @@
 		49DCCD2621E8ABD300ABE487 /* nojavascript.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 49DCCD1F21E75BE300ABE487 /* nojavascript.pdf */; };
 		49DCCD2721E8ABD600ABE487 /* javascript.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 49079D9821E3867900D15A0D /* javascript.pdf */; };
 		49DCCD2821E8ABDF00ABE487 /* ScreenshotTestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F689921E6600500A10C63 /* ScreenshotTestUtil.swift */; };
+		5B87D78823F2C56E009DACAA /* SFUIText-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B87D77C23F2C56D009DACAA /* SFUIText-Medium.ttf */; };
+		5B87D78923F2C56E009DACAA /* SFUIText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B87D77D23F2C56D009DACAA /* SFUIText-Regular.ttf */; };
+		5B87D78D23F2C56E009DACAA /* SFUIText-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B87D78123F2C56E009DACAA /* SFUIText-Semibold.ttf */; };
 		8B69E3991E30F80E0022959E /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69E3981E30F80E0022959E /* Appearance.swift */; };
 		A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
@@ -914,6 +917,9 @@
 		49C34AF520E4F649009D11CC /* CellDetailTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellDetailTransition.swift; sourceTree = "<group>"; };
 		49D3BECB20F8F7330043E05D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		49DCCD1F21E75BE300ABE487 /* nojavascript.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = nojavascript.pdf; sourceTree = "<group>"; };
+		5B87D77C23F2C56D009DACAA /* SFUIText-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFUIText-Medium.ttf"; sourceTree = "<group>"; };
+		5B87D77D23F2C56D009DACAA /* SFUIText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFUIText-Regular.ttf"; sourceTree = "<group>"; };
+		5B87D78123F2C56E009DACAA /* SFUIText-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFUIText-Semibold.ttf"; sourceTree = "<group>"; };
 		8B69E3981E30F80E0022959E /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B70A3A62220065F500EDCE61 /* String+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+pEp.swift"; sourceTree = "<group>"; };
@@ -1813,6 +1819,7 @@
 		432E80FA2191AF5100359879 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				5B87D79223F2C57F009DACAA /* SF */,
 				432E80FB2191AF5100359879 /* UniversLTStd.otf */,
 				432E80FC2191AF5100359879 /* UniversLTStd-Bold.otf */,
 			);
@@ -2349,6 +2356,16 @@
 			path = Transitions;
 			sourceTree = "<group>";
 		};
+		5B87D79223F2C57F009DACAA /* SF */ = {
+			isa = PBXGroup;
+			children = (
+				5B87D77C23F2C56D009DACAA /* SFUIText-Medium.ttf */,
+				5B87D77D23F2C56D009DACAA /* SFUIText-Regular.ttf */,
+				5B87D78123F2C56E009DACAA /* SFUIText-Semibold.ttf */,
+			);
+			path = SF;
+			sourceTree = "<group>";
+		};
 		B706C0EF1EA8C378006B2F6C /* StoryboardFiles */ = {
 			isa = PBXGroup;
 			children = (
@@ -2723,10 +2740,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B87D78823F2C56E009DACAA /* SFUIText-Medium.ttf in Resources */,
 				491B656220CFE0FD00C2ADDA /* Thread.storyboard in Resources */,
 				1526596C216230B1006A78DF /* ComposeData.plist in Resources */,
 				43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */,
 				155F2D9E20530798001B4B1C /* Reusable.storyboard in Resources */,
+				5B87D78D23F2C56E009DACAA /* SFUIText-Semibold.ttf in Resources */,
 				220DCE2F1E0AB544002FE716 /* MessageData.plist in Resources */,
 				432E80FE2191AF5100359879 /* UniversLTStd-Bold.otf in Resources */,
 				4307D5DA23575853004569C4 /* InfoPlist.strings in Resources */,
@@ -2736,6 +2755,7 @@
 				B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */,
 				37156E50234DD3FB00845A28 /* LoadingInterface.xib in Resources */,
 				433404CB2379789600E785F1 /* NothingSelected.storyboard in Resources */,
+				5B87D78923F2C56E009DACAA /* SFUIText-Regular.ttf in Resources */,
 				43C98AC3219C275E006418B0 /* Localizable.strings in Resources */,
 				3AD0E0A123E4659F006FFED3 /* Assets.xcassets in Resources */,
 				151DE7E11FC5D3FA00CDC273 /* Handshake.storyboard in Resources */,
