@@ -38,7 +38,8 @@ final class HandshakeTableViewCell: UITableViewCell {
     @IBOutlet weak var trustwordsStackView: UIStackView!
     @IBOutlet weak var trustwordsButtonsContainer: UIView!
     weak var delegate : HandshakeTableViewCellDelegate?
-
+    @IBOutlet weak var rightSideStackView: UIStackView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()

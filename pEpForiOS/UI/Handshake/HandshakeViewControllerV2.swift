@@ -62,10 +62,10 @@ extension HandshakeViewControllerV2 : UITableViewDataSource  {
         // Only show the top logo instead of the privacy status if there is not
         // yet a logo shown.
         switch mode {
-        case .onlyMaster, .onlyDetail:
+        case .onlyMaster:
             identifier = onlyMasterCellIdentifier
             break
-        case .masterAndDetail:
+        case .masterAndDetail, .onlyDetail:
              identifier = masterAndDetailCellIdentifier
             break
         }
