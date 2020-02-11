@@ -17,7 +17,7 @@ extension RecipientTextViewModel {
 
         init(recipient: Identity,
              font:  UIFont = UIFont.pEpInput,
-             textColor: UIColor = .pEpGreen,
+             textColor: UIColor = .pEpDarkText,
              maxWidth: CGFloat = 0.0) {
             self.recipient = recipient
             self.font = font
