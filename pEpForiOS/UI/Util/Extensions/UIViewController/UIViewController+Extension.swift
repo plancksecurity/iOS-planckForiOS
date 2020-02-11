@@ -41,13 +41,13 @@ extension UIViewController {
 
             let imgView = UIImageView(image: img)
             imgView.translatesAutoresizingMaskIntoConstraints = false
-            imgView.heightAnchor.constraint(equalTo: imgView.widthAnchor).isActive = true
+            let aspectRatio = imgView.aspectRatio()
+            imgView.heightAnchor.constraint(equalTo: imgView.widthAnchor, multiplier: 1.0/aspectRatio).isActive = true
 
             let badgeView = UIView()
             badgeView.translatesAutoresizingMaskIntoConstraints = false
             badgeView.heightAnchor.constraint(
                 greaterThanOrEqualToConstant: minimumHitTestDimension).isActive = true
-
             badgeView.addSubview(imgView)
 
             let imagePadding: CGFloat = 10
@@ -55,51 +55,15 @@ extension UIViewController {
             imgView.centerYAnchor.constraint(equalTo: badgeView.centerYAnchor).isActive = true
             imgView.heightAnchor.constraint(lessThanOrEqualTo: badgeView.heightAnchor,
                                             constant: -imagePadding).isActive = true
+            imgView.heightAnchor.constraint(greaterThanOrEqualToConstant: 55).isActive = true
+
             imgView.widthAnchor.constraint(lessThanOrEqualTo: badgeView.widthAnchor,
                                            constant: -imagePadding).isActive = true
 
             return badgeView
-        } else {
-            let mode = splitViewController?.currentDisplayMode ?? .masterAndDetail
-
-            // Only show the top logo instead of the privacy status if there is not
-            // yet a logo shown.
-            switch mode {
-            case .onlyMaster:
-                return settingsIconInImageView()
-            case .onlyDetail, .masterAndDetail:
-                break
-            }
         }
 
         return nil
-    }
-
-    func showNavigationBarPEPLogo(pEpRating: PEPRating?) -> UIView? {
-        if let rating = pEpRating, rating.isNoColor {
-            if let badgeView = settingsIconInImageView() {
-                navigationItem.titleView = badgeView
-                badgeView.isUserInteractionEnabled = true
-                return badgeView
-            }
-            return nil
-        }
-        return nil
-    }
-
-    private func settingsIconInImageView() -> UIImageView? {
-        guard let img = UIImage(named: "icon-unsecure-top") else {
-            return nil
-        }
-
-        let imgView = UIImageView(image: img)
-        imgView.translatesAutoresizingMaskIntoConstraints = false
-        let ratio = imgView.aspectRatio()
-        imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor,
-                                       multiplier: ratio,
-                                       constant: 0.0).isActive = true
-        imgView.heightAnchor.constraint(equalToConstant: 22).isActive = true
-        return imgView
     }
 
     @discardableResult

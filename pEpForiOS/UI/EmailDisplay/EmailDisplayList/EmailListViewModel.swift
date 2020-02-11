@@ -435,7 +435,6 @@ extension EmailListViewModel {
 // MARK: - FilterViewDelegate
 
 extension EmailListViewModel: FilterViewDelegate {
-
     func filterChanged(newFilter: MessageQueryResultsFilter) {
         setNewFilterAndReload(filter: newFilter)
     }

@@ -214,6 +214,7 @@
 		37F615CC238BE51F001AAE48 /* ManualAccountSetupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37F615CB238BE51F001AAE48 /* ManualAccountSetupView.xib */; };
 		37F615CF238BE584001AAE48 /* ManualAccountSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F615CE238BE584001AAE48 /* ManualAccountSetupView.swift */; };
 		37FFA7FA234B3C27004229BE /* AnimatedPlaceholderTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */; };
+		3AD0E0A123E4659F006FFED3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0E0A023E4659F006FFED3 /* Assets.xcassets */; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
 		4304FD001EBB8EBB0086DADA /* LanguageListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */; };
 		4307D5DA23575853004569C4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4307D5D823575853004569C4 /* InfoPlist.strings */; };
@@ -316,7 +317,6 @@
 		4395CDF020AAD0D7003FC5F1 /* icon_001.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4395CDEF20AAD0D6003FC5F1 /* icon_001.gif */; };
 		43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E261CBD0BC900A7FC3C /* AppDelegate.swift */; };
 		43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E2A1CBD0BC900A7FC3C /* Main.storyboard */; };
-		43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43980E301CBD0BCA00A7FC3C /* Assets.xcassets */; };
 		43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */; };
 		43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF91CBD415700A7FC3C /* AppConfig.swift */; };
 		43985D0A2044296D0080FA9A /* OAuth2AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43985D092044296D0080FA9A /* OAuth2AuthViewModel.swift */; };
@@ -386,6 +386,9 @@
 		49DCCD2721E8ABD600ABE487 /* javascript.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 49079D9821E3867900D15A0D /* javascript.pdf */; };
 		49DCCD2821E8ABDF00ABE487 /* ScreenshotTestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F689921E6600500A10C63 /* ScreenshotTestUtil.swift */; };
 		5B3C13BF23D8AF2E00FC0A53 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */; };
+		5B87D78823F2C56E009DACAA /* SFUIText-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B87D77C23F2C56D009DACAA /* SFUIText-Medium.ttf */; };
+		5B87D78923F2C56E009DACAA /* SFUIText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B87D77D23F2C56D009DACAA /* SFUIText-Regular.ttf */; };
+		5B87D78D23F2C56E009DACAA /* SFUIText-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B87D78123F2C56E009DACAA /* SFUIText-Semibold.ttf */; };
 		8B69E3991E30F80E0022959E /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69E3981E30F80E0022959E /* Appearance.swift */; };
 		A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
@@ -671,6 +674,7 @@
 		37F615CB238BE51F001AAE48 /* ManualAccountSetupView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ManualAccountSetupView.xib; sourceTree = "<group>"; };
 		37F615CE238BE584001AAE48 /* ManualAccountSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualAccountSetupView.swift; sourceTree = "<group>"; };
 		37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedPlaceholderTextfield.swift; sourceTree = "<group>"; };
+		3AD0E0A023E4659F006FFED3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
 		4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageListViewController.swift; sourceTree = "<group>"; };
 		4307D5D923575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -807,7 +811,6 @@
 		43980E231CBD0BC900A7FC3C /* pEp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pEp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E261CBD0BC900A7FC3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43980E2B1CBD0BC900A7FC3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		43980E301CBD0BCA00A7FC3C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43980E331CBD0BCA00A7FC3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43980E351CBD0BCA00A7FC3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43980E3A1CBD0BCA00A7FC3C /* pEpForiOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pEpForiOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -889,6 +892,9 @@
 		49D3BECB20F8F7330043E05D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		49DCCD1F21E75BE300ABE487 /* nojavascript.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = nojavascript.pdf; sourceTree = "<group>"; };
 		5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		5B87D77C23F2C56D009DACAA /* SFUIText-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFUIText-Medium.ttf"; sourceTree = "<group>"; };
+		5B87D77D23F2C56D009DACAA /* SFUIText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFUIText-Regular.ttf"; sourceTree = "<group>"; };
+		5B87D78123F2C56E009DACAA /* SFUIText-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFUIText-Semibold.ttf"; sourceTree = "<group>"; };
 		8B69E3981E30F80E0022959E /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B70A3A62220065F500EDCE61 /* String+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+pEp.swift"; sourceTree = "<group>"; };
@@ -1298,7 +1304,7 @@
 			isa = PBXGroup;
 			children = (
 				1543B6A322AACD69002B59AB /* secret.xcconfig */,
-				43980E301CBD0BCA00A7FC3C /* Assets.xcassets */,
+				3AD0E0A023E4659F006FFED3 /* Assets.xcassets */,
 				4388A0E02008AF61008CB98D /* public.xcconfig */,
 			);
 			path = Resources;
@@ -1762,6 +1768,7 @@
 		432E80FA2191AF5100359879 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				5B87D79223F2C57F009DACAA /* SF */,
 				432E80FB2191AF5100359879 /* UniversLTStd.otf */,
 				432E80FC2191AF5100359879 /* UniversLTStd-Bold.otf */,
 			);
@@ -2298,6 +2305,16 @@
 			path = Transitions;
 			sourceTree = "<group>";
 		};
+		5B87D79223F2C57F009DACAA /* SF */ = {
+			isa = PBXGroup;
+			children = (
+				5B87D77C23F2C56D009DACAA /* SFUIText-Medium.ttf */,
+				5B87D77D23F2C56D009DACAA /* SFUIText-Regular.ttf */,
+				5B87D78123F2C56E009DACAA /* SFUIText-Semibold.ttf */,
+			);
+			path = SF;
+			sourceTree = "<group>";
+		};
 		B706C0EF1EA8C378006B2F6C /* StoryboardFiles */ = {
 			isa = PBXGroup;
 			children = (
@@ -2671,13 +2688,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B87D78823F2C56E009DACAA /* SFUIText-Medium.ttf in Resources */,
 				491B656220CFE0FD00C2ADDA /* Thread.storyboard in Resources */,
 				1526596C216230B1006A78DF /* ComposeData.plist in Resources */,
 				43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */,
 				155F2D9E20530798001B4B1C /* Reusable.storyboard in Resources */,
+				5B87D78D23F2C56E009DACAA /* SFUIText-Semibold.ttf in Resources */,
 				220DCE2F1E0AB544002FE716 /* MessageData.plist in Resources */,
 				432E80FE2191AF5100359879 /* UniversLTStd-Bold.otf in Resources */,
-				43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */,
 				4307D5DA23575853004569C4 /* InfoPlist.strings in Resources */,
 				37F615CC238BE51F001AAE48 /* ManualAccountSetupView.xib in Resources */,
 				151DE7E41FC5D41600CDC273 /* FolderViews.storyboard in Resources */,
@@ -2685,7 +2703,9 @@
 				B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */,
 				37156E50234DD3FB00845A28 /* LoadingInterface.xib in Resources */,
 				433404CB2379789600E785F1 /* NothingSelected.storyboard in Resources */,
+				5B87D78923F2C56E009DACAA /* SFUIText-Regular.ttf in Resources */,
 				43C98AC3219C275E006418B0 /* Localizable.strings in Resources */,
+				3AD0E0A123E4659F006FFED3 /* Assets.xcassets in Resources */,
 				151DE7E11FC5D3FA00CDC273 /* Handshake.storyboard in Resources */,
 				43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */,
 				432E80FD2191AF5100359879 /* UniversLTStd.otf in Resources */,
