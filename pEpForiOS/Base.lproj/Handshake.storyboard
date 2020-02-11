@@ -631,9 +631,9 @@
                                                                             <rect key="frame" x="0.0" y="85" width="320" height="245"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset all pEp data for this comunication partner:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aT5-52-Wck" userLabel="Reset Label">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="199.5" height="245"/>
+                                                                                    <rect key="frame" x="0.0" y="101.5" width="199.5" height="42.5"/>
                                                                                     <constraints>
-                                                                                        <constraint firstAttribute="width" constant="199.5" id="Ds5-Kk-1yZ"/>
+                                                                                        <constraint firstAttribute="width" constant="199.5" id="5i8-Wc-EzC"/>
                                                                                     </constraints>
                                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                     <nil key="textColor"/>
@@ -662,19 +662,19 @@
                                                                                 <constraint firstItem="kDe-b5-usQ" firstAttribute="leading" secondItem="aT5-52-Wck" secondAttribute="trailing" constant="30" id="Kvd-nQ-RgK"/>
                                                                                 <constraint firstItem="aT5-52-Wck" firstAttribute="centerY" secondItem="Zgr-j1-iGp" secondAttribute="centerY" id="aqR-eD-6Gr"/>
                                                                                 <constraint firstItem="kDe-b5-usQ" firstAttribute="centerY" secondItem="Zgr-j1-iGp" secondAttribute="centerY" id="qUD-zq-oEI"/>
-                                                                                <constraint firstAttribute="bottom" secondItem="aT5-52-Wck" secondAttribute="bottom" id="tmz-ht-Fej"/>
+                                                                                <constraint firstItem="aT5-52-Wck" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Zgr-j1-iGp" secondAttribute="top" constant="16" id="v4u-g5-gqD"/>
                                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="zaK-Io-qrg"/>
                                                                             </constraints>
                                                                         </view>
                                                                     </subviews>
                                                                 </stackView>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="fnZ-If-bfg" userLabel="Right Side Stack View">
-                                                                    <rect key="frame" x="358" y="0.0" width="618" height="297"/>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="fnZ-If-bfg" userLabel="Right Side Stack View">
+                                                                    <rect key="frame" x="358" y="0.0" width="618" height="267"/>
                                                                     <subviews>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yin-G4-Q1S">
                                                                             <rect key="frame" x="0.0" y="0.0" width="618" height="111.5"/>
                                                                             <subviews>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5xj-yI-46H" userLabel="PrivacyStatusDescription">
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5xj-yI-46H" userLabel="PrivacyStatusDescription">
                                                                                     <rect key="frame" x="0.0" y="24" width="598" height="42.5"/>
                                                                                     <accessibility key="accessibilityConfiguration" identifier="privacyStatusDescription"/>
                                                                                     <string key="text">In order to make communication Secure &amp; Trusted, you will have to compare the Trustwords bellow with your communication partner.</string>
@@ -685,15 +685,14 @@
                                                                             </subviews>
                                                                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                                             <constraints>
-                                                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="110" id="3RM-jA-Dty"/>
+                                                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="5xj-yI-46H" secondAttribute="bottom" constant="8" id="D3f-p6-3Sr"/>
                                                                                 <constraint firstAttribute="trailing" secondItem="5xj-yI-46H" secondAttribute="trailing" constant="20" id="hTp-95-tkD"/>
-                                                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="5xj-yI-46H" secondAttribute="bottom" constant="20" id="ig5-Sk-3ke"/>
                                                                                 <constraint firstItem="5xj-yI-46H" firstAttribute="leading" secondItem="Yin-G4-Q1S" secondAttribute="leading" id="jRY-eZ-N5W"/>
                                                                                 <constraint firstItem="5xj-yI-46H" firstAttribute="top" secondItem="Yin-G4-Q1S" secondAttribute="top" constant="24" id="xT1-Ay-lwP"/>
                                                                             </constraints>
                                                                         </view>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="ogF-8S-052" userLabel="TrustwordsStackView">
-                                                                            <rect key="frame" x="0.0" y="141.5" width="618" height="60.5"/>
+                                                                            <rect key="frame" x="0.0" y="126.5" width="618" height="60.5"/>
                                                                             <subviews>
                                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2bK-WH-M8k" userLabel="Container">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="618" height="60.5"/>
@@ -730,10 +729,10 @@
                                                                             </subviews>
                                                                         </stackView>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jya-Dg-aPU" userLabel="TrustButtonsContainer">
-                                                                            <rect key="frame" x="0.0" y="232" width="618" height="65"/>
+                                                                            <rect key="frame" x="0.0" y="202" width="618" height="65"/>
                                                                             <subviews>
                                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="cAK-ZW-JLu" userLabel="ConfirmButton">
-                                                                                    <rect key="frame" x="70" y="13" width="65" height="38.5"/>
+                                                                                    <rect key="frame" x="70" y="13" width="65" height="33"/>
                                                                                     <accessibility key="accessibilityConfiguration" label="confirmButton"/>
                                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                                     <state key="normal" title="Confirm"/>
@@ -742,7 +741,7 @@
                                                                                     </connections>
                                                                                 </button>
                                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="cLm-E4-Lx2" userLabel="DeclineButton">
-                                                                                    <rect key="frame" x="0.0" y="13" width="60" height="38.5"/>
+                                                                                    <rect key="frame" x="0.0" y="13" width="60" height="33"/>
                                                                                     <accessibility key="accessibilityConfiguration" label="wrongButton"/>
                                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                                     <state key="normal" title="Decline"/>
@@ -753,9 +752,8 @@
                                                                             </subviews>
                                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <constraints>
-                                                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="65" id="0c3-ed-jVl"/>
                                                                                 <constraint firstItem="cLm-E4-Lx2" firstAttribute="height" secondItem="cAK-ZW-JLu" secondAttribute="height" id="7Hd-yY-QCI"/>
-                                                                                <constraint firstAttribute="bottom" secondItem="cAK-ZW-JLu" secondAttribute="bottom" constant="13.5" id="AZC-iA-1ea"/>
+                                                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="cAK-ZW-JLu" secondAttribute="bottom" constant="8" id="AZC-iA-1ea"/>
                                                                                 <constraint firstItem="cLm-E4-Lx2" firstAttribute="bottom" secondItem="cAK-ZW-JLu" secondAttribute="bottom" id="EV4-Lb-6Vs"/>
                                                                                 <constraint firstItem="cLm-E4-Lx2" firstAttribute="centerY" secondItem="cAK-ZW-JLu" secondAttribute="centerY" id="K3Q-Vj-Rfn"/>
                                                                                 <constraint firstItem="cAK-ZW-JLu" firstAttribute="leading" secondItem="cLm-E4-Lx2" secondAttribute="trailing" constant="10" id="LjO-B8-ubg"/>
