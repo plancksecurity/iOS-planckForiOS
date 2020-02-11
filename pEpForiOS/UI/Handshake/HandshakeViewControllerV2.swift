@@ -59,13 +59,9 @@ extension HandshakeViewControllerV2 : UITableViewDataSource  {
         
         return numberOfRows
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //Cualquier plus:
-        //Iphone portrait
-        //Iphone landscape:
-        //iPad
-        
+
         let identifier = UIDevice.current.orientation.isPortrait ?
             onlyMasterCellIdentifier :  masterAndDetailCellIdentifier
 
@@ -80,17 +76,7 @@ extension HandshakeViewControllerV2 : UITableViewDataSource  {
             cell.partnerNameLabel.text = row.name
             cell.privacyStatusLabel.text = row.privacyStatusName
             cell.descriptionLabel.text = row.description
-            ///Yellow means secure but not trusted.
-            ///That means that's the only case must display the trustwords
-            if row.color == .yellow {
-                setTrustwords(for: cell, at: indexPath, longMode: row.longTrustwords)
-//                cell.trustwordsStackView.isHidden = false
-//                cell.trustwordsButtonsContainer.isHidden = false
-            } else {
-//                cell.trustwordsStackView.isHidden = true
-//                cell.trustwordsButtonsContainer.isHidden = true
-            }
-
+            configureTrustwords(identifier, row, cell, indexPath)
             cell.delegate = self
             return cell
         }
@@ -276,6 +262,36 @@ extension HandshakeViewControllerV2: HandshakeTableViewCellDelegate {
     func trustwordsLabelPressed(on cell: HandshakeTableViewCell) {
         if let indexPath = handshakeTableView.indexPath(for: cell) {
             viewModel?.handleToggleLongTrustwords(forRowAt: indexPath)
+        }
+    }
+}
+
+
+extension HandshakeViewControllerV2 {
+    private func configureTrustwords(_ identifier: String, _ row: HandshakeViewModel.Row, _ cell: HandshakeTableViewCell, _ indexPath: IndexPath) {
+        ///Yellow means secure but not trusted.
+        ///That means that's the only case must display the trustwords
+        
+        if identifier == onlyMasterCellIdentifier {
+            if row.color == .yellow {
+                setTrustwords(for: cell, at: indexPath, longMode: row.longTrustwords)
+                cell.trustwordsStackView.isHidden = false
+                cell.trustwordsButtonsContainer.isHidden = false
+            } else {
+                cell.trustwordsStackView.isHidden = true
+                cell.trustwordsButtonsContainer.isHidden = true
+            }
+        } else {
+            if row.color == .yellow {
+                setTrustwords(for: cell, at: indexPath, longMode: row.longTrustwords)
+                cell.trustwordsLabel.isHidden = false
+                cell.confirmButton.isHidden = false
+                cell.declineButton.isHidden = false
+            } else {
+                cell.trustwordsLabel.isHidden = true
+                cell.confirmButton.isHidden = true
+                cell.declineButton.isHidden = true
+            }
         }
     }
 }

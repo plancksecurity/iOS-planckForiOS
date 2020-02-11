@@ -42,13 +42,16 @@ final class HandshakeTableViewCell: UITableViewCell {
     
     //Only for i18n and layout
     @IBOutlet private weak var resetLabel: UILabel!
-    @IBOutlet private weak var declineButton: UIButton!
-    @IBOutlet private weak var confirmButton: UIButton!
+    @IBOutlet weak var declineButton: UIButton!
+    @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet private weak var resetButton: UIButton!
     
     //Hide these views in case pepColor is not yellow.
     @IBOutlet weak var trustwordsStackView: UIStackView!
     @IBOutlet weak var trustwordsButtonsContainer: UIView!
+    
+    
+    
     weak var delegate : HandshakeTableViewCellDelegate?
     @IBOutlet weak var rightSideStackView: UIStackView!
     

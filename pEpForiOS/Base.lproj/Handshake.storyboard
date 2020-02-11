@@ -752,8 +752,8 @@
                                         </tableViewCellContentView>
                                         <accessibility key="accessibilityConfiguration" identifier="handshakePartnerCell"/>
                                         <connections>
-                                            <outlet property="confirmButton" destination="cAK-ZW-JLu" id="meU-Ps-T7g"/>
-                                            <outlet property="declineButton" destination="cLm-E4-Lx2" id="08w-Tm-53k"/>
+                                            <outlet property="confirmButton" destination="cAK-ZW-JLu" id="4uk-Mu-lKD"/>
+                                            <outlet property="declineButton" destination="cLm-E4-Lx2" id="ghP-Od-OBl"/>
                                             <outlet property="descriptionLabel" destination="5xj-yI-46H" id="gDF-Hj-eSJ"/>
                                             <outlet property="languageButton" destination="oRh-LC-ph7" id="ATk-Hb-9hf"/>
                                             <outlet property="partnerImageView" destination="aEs-Xs-T69" id="0Tb-a3-vma"/>
@@ -762,7 +762,7 @@
                                             <outlet property="privacyStatusLabel" destination="Gxz-4i-XBu" id="ubj-hB-k0W"/>
                                             <outlet property="resetButton" destination="kDe-b5-usQ" id="V2w-gc-c9l"/>
                                             <outlet property="resetLabel" destination="aT5-52-Wck" id="6R6-Uw-Ceu"/>
-                                            <outlet property="trustwordsLabel" destination="82G-iU-EVg" id="txp-Dc-25I"/>
+                                            <outlet property="trustwordsLabel" destination="82G-iU-EVg" id="2ag-2R-Bel"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
