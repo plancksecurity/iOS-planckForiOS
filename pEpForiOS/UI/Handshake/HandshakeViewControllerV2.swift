@@ -225,4 +225,34 @@ extension HandshakeViewControllerV2: HandshakeTableViewCellDelegate {
             viewModel?.handleToggleLongTrustwords(forRowAt: indexPath)
         }
     }
+    
+    private func showLanguagesList(fromRowAt indexPath : IndexPath) {
+        guard let languages = viewModel?.getLanguages() else {
+            Log.shared.error("Languages not found")
+            return
+        }
+        
+        let alertController = UIAlertController.pEpAlertController(title: nil,
+                                                                   message: nil,
+                                                                   preferredStyle: .actionSheet)
+
+        for language in languages {
+            let action = UIAlertAction(title: language.name, style: .default) {
+                [weak self] (action) in
+                guard let me = self else {
+                    Log.shared.error("Lost myself")
+                    return }
+                
+                me.viewModel?.didSelectLanguage(forRowAt: indexPath, language: language.code)
+            }
+            alertController.addAction(action)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            alertController.dismiss(animated: true, completion: nil)
+        }
+
+        alertController.addAction(cancelAction)
+        alertController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(alertController, animated: true, completion: nil)
+    }
 }

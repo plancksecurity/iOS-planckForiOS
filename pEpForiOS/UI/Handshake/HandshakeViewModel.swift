@@ -192,6 +192,18 @@ final class HandshakeViewModel {
         rows[indexPath.row].longTrustwords.toggle()
         handshakeViewModelDelegate?.didToogleLongTrustwords(forRowAt: indexPath)
     }
+    
+    public func getLanguages() -> [PEPLanguage]? {
+        var languages: [PEPLanguage]
+        do {
+            languages = try PEPSession().languageList()
+        } catch let err as NSError {
+            Log.shared.error("%@", "\(err)")
+        }
+
+        return languages
+        
+    }
 
     /// Generate the trustwords
     /// - Parameter long: Indicates if the trustwords MUST be long.
