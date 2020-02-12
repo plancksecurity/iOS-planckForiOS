@@ -298,6 +298,16 @@ class TestDataBase {
     /**
      - Returns: A valid `Account`.
      */
+    func createWorkingAccount(number: Int = 0, session: Session? = Session.main) -> Account? {
+        guard let nonOptionalSession = session else {
+            Log.shared.errorAndCrash(message: "session was nil")
+            return nil
+        }
+        return createWorkingAccountSettings(number: number).account(context: nonOptionalSession.moc)
+    }
+    /**
+     - Returns: A valid `Account`.
+     */
     func createVerifiableAccount(number: Int = 0, context: NSManagedObjectContext) -> Account {
         return createVerifiableAccountSettings(number: number).account(context: context)
     }
