@@ -139,7 +139,7 @@ extension KeySyncWizardViewController {
             let notNowButtonTitle = NSLocalizedString("Not Now",
                                                       comment: "keySyncWizard intro view Not Now button title")
             let introNotNowAction = PEPUIAlertAction(title: notNowButtonTitle,
-                                                     style: .pEpGreyButtonLines,
+                                                     style: .pEpGreyText,
                                                      handler: { [weak self] alert in
                                                         pageCompletion(.cancel)
                                                         self?.dismiss()
@@ -205,12 +205,15 @@ extension KeySyncWizardViewController {
 
             let animationTitle = completeTitle()
             let animationMessage = message
+            let animationImages = isNewGroup
+                ? [#imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device-syncing"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device-synced")]
+                : [#imageLiteral(resourceName: "pEpForiOS-icon-sync-3rd-device-syncing"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-3rd-device-synced")]
 
             let pepAlertViewController =
                 PEPAlertViewController.fromStoryboard(title: animationTitle,
                                                       message: animationMessage,
                                                       paintPEPInTitle: true,
-                                                      image: [#imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-1"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2"), #imageLiteral(resourceName: "pEpForiOS-icon-device-group"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2")])
+                                                      image: animationImages)
 
             let animationCanceButtonlTitle = NSLocalizedString("Cancel",
                                                               comment: "keySyncWizard animation view cancel button title")
