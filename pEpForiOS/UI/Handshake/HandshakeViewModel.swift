@@ -233,7 +233,7 @@ final class HandshakeViewModel {
     
     /// Method that generates the rows to be used by the VC
     private func generateRows() {
-        message.handshakeActionCombinations().forEach { (combination) in
+        handshakeUtil?.handshakeCombinations(message: message).forEach { (combination) in
             //default language is english
             let language = combination.partnerIdentity.language ?? "en"
             let row = Row(currentLanguage: language,
