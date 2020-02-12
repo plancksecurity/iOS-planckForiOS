@@ -117,8 +117,9 @@ class TestDataBase {
             let id = CdIdentity(context: context)
             id.address = idAddress
             id.userName = idUserName
+
             if isMyself {
-                id.userID = UUID().uuidString
+                id.userID = CdIdentity.pEpOwnUserID
             } else {
                 id.userID = UUID().uuidString
             }
