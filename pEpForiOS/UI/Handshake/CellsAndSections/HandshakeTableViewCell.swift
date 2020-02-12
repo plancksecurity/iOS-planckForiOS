@@ -1,5 +1,5 @@
 //
-//  HandshakePartnerTableViewCellV2.swift
+//  HandshakePartnerTableViewCell.swift
 //  pEp
 //
 //  Created by Martin Brude on 07/02/2020.
@@ -41,16 +41,14 @@ final class HandshakeTableViewCell: UITableViewCell {
     @IBOutlet weak var languageButton: UIButton!
     
     //Only for i18n and layout
-    @IBOutlet private weak var resetLabel: UILabel!
+    @IBOutlet weak var resetLabel: UILabel!
     @IBOutlet weak var declineButton: UIButton!
     @IBOutlet weak var confirmButton: UIButton!
-    @IBOutlet private weak var resetButton: UIButton!
+    @IBOutlet weak var resetButton: UIButton!
     
     //Hide these views in case pepColor is not yellow.
     @IBOutlet weak var trustwordsStackView: UIStackView!
     @IBOutlet weak var trustwordsButtonsContainer: UIView!
-    
-    
     
     weak var delegate : HandshakeTableViewCellDelegate?
     @IBOutlet weak var rightSideStackView: UIStackView!

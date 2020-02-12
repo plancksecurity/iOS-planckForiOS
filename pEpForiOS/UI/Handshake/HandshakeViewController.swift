@@ -1,384 +1,293 @@
 //
 //  HandshakeViewController.swift
-//  pEpForiOS
+//  pEp
 //
-//  Created by Dirk Zimmermann on 19.04.17.
-//  Copyright © 2017 p≡p Security S.A. All rights reserved.
+//  Created by Martin Brude on 05/02/2020.
+//  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
 import UIKit
 
-import pEpIOSToolbox
-import MessageModel
-import PEPObjCAdapterFramework
+/// View Controller to handle the HandshakeView.
+class HandshakeViewController: BaseViewController {
+        
+    private let onlyMasterCellIdentifier = "HandshakeTableViewCell_OnlyMaster"
+    private let masterAndDetailCellIdentifier = "HandshakeTableViewCell_Detailed"
 
-/// READ!!!
-/// Only set session, if the message was create on a private session. Else leave it nil.
-/// Or i will just crash or maybe deadlock you :)
-class HandshakeViewController: BaseTableViewController {
-    private var backTitle: String?
-    private var currentLanguageCode = Locale.current.languageCode ?? "en"
-    private let identityViewModelCache = NSCache<Identity, HandshakePartnerTableViewCellViewModel>()
-
-    private var indexPathRequestingLanguage: IndexPath?
-
-    var message: Message? {
-        didSet {
-            handshakePartnerTableViewCellViewModel = handshakePartnerTableViewCellViewModels()
-        }
-    }
-
-    private var session: Session? {
-        return message?.session
-    }
-    var handshakePartnerTableViewCellViewModel = [HandshakePartnerTableViewCellViewModel]()
-
-    /// Our own undo manager
-    private let undoTrustOrMistrustManager = UndoManager()
-
-    /// This is used for versions before 13.
-    private var orientationChangeObserver: NSObjectProtocol?
-
-    // MARK: - Life Cycle
-
+    @IBOutlet weak var handshakeTableView: UITableView!
+    @IBOutlet weak var optionsButton: UIBarButtonItem!
+    
+    var viewModel : HandshakeViewModel?
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tableView.estimatedRowHeight = 200.0
-        tableView.rowHeight = UITableView.automaticDimension
-
-//        self.navigationItem.rightBarButtonItems = [languageButton()]
-        self.navigationItem.rightBarButtonItems = [optionsButton()]
-
-        
-        let leftItem = UIBarButtonItem(customView: backButton())
-        self.navigationItem.leftBarButtonItem = leftItem
-        navigationController?.navigationBar.isTranslucent = false
+        guard let viewModel = viewModel else {
+            Log.shared.errorAndCrash("The viewModel must not be nil")
+            return
+        }
+        setLeftBarButton()
+        optionsButton.title = NSLocalizedString("Options", comment: "Options")
+        viewModel.handshakeViewModelDelegate = self
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        updateStatusBadge()
+    @IBAction private func optionsButtonPressed(_ sender: UIBarButtonItem) {
+        presentToogleProtectionActionSheet()
+    }
 
-        if #available(iOS 13.0, *) {
-            // nothing to do, layout on iOS 13 is fine
-        } else {
-            // resize the table on orientation change
-            orientationChangeObserver = NotificationCenter.default.addObserver(
-                forName: UIDevice.orientationDidChangeNotification,
-                object: nil,
-                queue: OperationQueue.main) { [weak self] notification in
-                    self?.tableView.updateSize()
-            }
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            viewModel?.shakeMotionDidEnd()
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        // if the observer exists (iOS versions < 13), then remove it
-        if let observer = orientationChangeObserver {
-            NotificationCenter.default.removeObserver(observer)
-        }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        handshakeTableView.reloadData()
     }
 }
 
-// MARK: - Target & Action
+/// MARK: - UITableViewDataSource
+extension HandshakeViewController : UITableViewDataSource  {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let numberOfRows = viewModel?.rows.count else {
+            Log.shared.error("The viewModel must not be nil")
+            return 0
+        }
+        
+        return numberOfRows
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
+        let identifier = UIDevice.current.orientation.isPortrait ?
+            onlyMasterCellIdentifier :  masterAndDetailCellIdentifier
+
+        if let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+            as? HandshakeTableViewCell, let row = viewModel?.rows[indexPath.row] {
+            viewModel?.getImage(forRowAt: indexPath, complete: { (image) in
+                DispatchQueue.main.async {
+                    cell.partnerImageView.image = image
+                }
+            })
+            cell.privacyStatusImageView.image = row.privacyStatusImage
+            cell.partnerNameLabel.text = row.name
+            cell.privacyStatusLabel.text = row.privacyStatusName
+            cell.descriptionLabel.text = row.description
+            configureTrustwords(identifier, row, cell, indexPath)
+            cell.delegate = self
+            return cell
+        }
+        Log.shared.error("The HandshakeTableViewCell couldn't be dequeued or the row is nil")
+        return UITableViewCell()
+    }
+}
+
+/// MARK: - UIAlertControllers
 extension HandshakeViewController {
-    @IBAction
-    private func languageSelectedAction(_ sender: Any) {
-        var languages: [PEPLanguage] = []
-        do {
-            languages = try PEPSession().languageList()
-        } catch let err as NSError {
-            Log.shared.error("%@", "\(err)")
-            languages = []
+    
+    /// This should only be used if the flow comes from the Compose View.
+    private func presentToogleProtectionActionSheet() {
+        guard let viewModel = viewModel else {
+            Log.shared.errorAndCrash("View Model must not be nil")
+            return
+        }
+         
+        let alertController = UIAlertController.pEpAlertController(title: nil, message: nil,
+                                                                   preferredStyle: .actionSheet)
+        
+        let enable = NSLocalizedString("Enable Protection", comment: "Enable Protection")
+        let disable = NSLocalizedString("Disable Protection", comment: "Disable Protection")
+        let toogleProtectionTitle = viewModel.pEpProtected  ? enable : disable
+        let action = UIAlertAction(title: toogleProtectionTitle, style: .default) {_ in
+            viewModel.handleToggleProtectionPressed()
+        }
+        alertController.addAction(action)
+        
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel")
+        let cancelAction = UIAlertAction(title:cancelTitle , style: .cancel) { _ in
+            alertController.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(cancelAction)
+        
+        /// A broken contraint comes up, it's a known issue in iOS.
+        /// https://github.com/lionheart/openradar-mirror/issues/21120
+        if let buttonView = optionsButton.value(forKey: "view") as? UIView {
+            alertController.popoverPresentationController?.sourceView = buttonView
+            alertController.popoverPresentationController?.sourceRect = buttonView.bounds
         }
 
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    /// Shows an action sheet with languages when the user taps the language button from a cell
+    /// - Parameter cell: The cell of the language button tapped.
+    private func showLanguagesList(for cell: HandshakeTableViewCell) {
+        guard let indexPath = handshakeTableView.indexPath(for: cell) else {
+            Log.shared.error("IndexPath not found")
+            return
+        }
+        
         let alertController = UIAlertController.pEpAlertController(title: nil,
                                                                    message: nil,
                                                                    preferredStyle: .actionSheet)
-
+        guard let languages = viewModel?.handleChangeLanguagePressed() else {
+            Log.shared.error("Languages not found")
+            return
+        }
+        
+        //For every language a row in the action sheet.
         for language in languages {
-            let action =   UIAlertAction(title: language.name, style: .default) {_ in
-                self.currentLanguageCode = language.code
-                self.tableView.reloadData()
+            guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)
+                else {
+                    Log.shared.debug("Language name not found")
+                    break
+            }
+            let action = UIAlertAction(title: languageName, style: .default) { [weak self] (action) in
+                guard let me = self else {
+                    Log.shared.error("Lost myself")
+                    return
+                }
+                
+                me.viewModel?.didSelectLanguage(forRowAt: indexPath,
+                                                language: language)
             }
             alertController.addAction(action)
         }
+        
+        //For the cancel button another action.
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
             alertController.dismiss(animated: true, completion: nil)
         }
-
         alertController.addAction(cancelAction)
-        alertController.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+        
+        //Ipad behavior.
+        alertController.popoverPresentationController?.sourceView = cell.languageButton
+        alertController.popoverPresentationController?.sourceRect = cell.languageButton.bounds
+        
         present(alertController, animated: true, completion: nil)
     }
 }
 
-// MARK: - Private
-
-extension HandshakeViewController {
-
-    private func updateStatusBadge() {
-        showNavigationBarSecurityBadge(pEpRating: message?.pEpRating())
+/// MARK: - Handshake ViewModel Delegate
+extension HandshakeViewController: HandshakeViewModelDelegate {
+    func didToogleLongTrustwords(forRowAt indexPath: IndexPath) {
+        handshakeTableView.reloadData()
     }
-
-    // MARK: - UI & Layout
-
-    @objc
-    private func back(sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
+    
+    func didEndShakeMotion() {
+        handshakeTableView.reloadData()
     }
-
-    private func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return UIModalPresentationStyle.none
+    
+    func didResetHandshake(forRowAt indexPath: IndexPath) {
+        handshakeTableView.reloadData()
     }
-
-    private func optionsButton() -> UIBarButtonItem {
-        let button = UIButton(type: .custom)
-        button.addTarget(self,
-                         action: #selector(self.languageSelectedAction(_:)),
-                         for: .touchUpInside)
-        let text = NSLocalizedString("Options", comment: "Options")
-        button.setTitle(text, for: .normal)
-        button.setTitleColor(UIColor.pEpGreen, for: .normal)
-        return UIBarButtonItem(customView: button)
+    
+    func didConfirmHandshake(forRowAt indexPath: IndexPath) {
+        handshakeTableView.reloadData()
     }
-
-    private func backButton() -> UIButton {
-        let img2 = UIImage(named: "arrow-rgt-active")
-        let tintedimage = img2?.withRenderingMode(.alwaysTemplate)
-        let buttonLeft = UIButton(type: UIButton.ButtonType.custom)
-        buttonLeft.setImage(tintedimage, for: .normal)
-        buttonLeft.imageView?.contentMode = .scaleToFill
-        buttonLeft.imageView?.tintColor = UIColor.pEpGreen
-        buttonLeft.setTitle(" Message", for: .normal)
-        buttonLeft.addTarget(self, action: #selector(self.back(sender:)), for: .touchUpInside)
-        buttonLeft.tintColor = UIColor.pEpGreen
-        buttonLeft.setTitleColor(UIColor.pEpGreen, for: .normal)
-        return buttonLeft
+    
+    func didRejectHandshake(forRowAt indexPath: IndexPath) {
+        handshakeTableView.reloadData()
     }
-
-    private func  handshakePartnerTableViewCellViewModels() -> [HandshakePartnerTableViewCellViewModel] {
-        var result = [HandshakePartnerTableViewCellViewModel]()
-        guard let message = message else {
-            Log.shared.errorAndCrash("Fail to init handshakePartnerTableViewCellViewModel, since message is nil")
-            return []
-        }
-        let handShakeCombinations = message.handshakeActionCombinations()
-        for handshakeCombi in handShakeCombinations {
-            guard let cellViewModel = createViewModel(partnerIdentity: handshakeCombi.partnerIdentity,
-                                                      selfIdentity: handshakeCombi.ownIdentity) else {
-                                                        Log.shared.errorAndCrash("Fail to init handshakePartnerTableViewCellViewModel")
-                                                        continue
-            }
-            result.append(cellViewModel)
-        }
-        return result
-    }
-
-    /// Adjusts the background color of the given view model depending on its position in the list,
-    /// and the color of the previous one.
-    private func adjustBackgroundColor(viewModel: HandshakePartnerTableViewCellViewModel,
-                                       indexPath: IndexPath) {
-        // dark background on all odd rows
-        viewModel.backgroundColorDark = indexPath.row % 2 == 1
-    }
-
-    override func viewDidLayoutSubviews() {
-        popoverPresentationController?.sourceView = navigationItem.titleView
+    
+    func didSelectLanguage(forRowAt indexPath: IndexPath) {
+        handshakeTableView.reloadData()
     }
 }
 
-// MARK: - UITableViewDataSource
-
+/// MARK: - Back button
 extension HandshakeViewController {
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return  handshakePartnerTableViewCellViewModel.count
+    
+    /// Helper method to create and set the back button in the navigation bar.
+    private func setLeftBarButton() {
+        let title = NSLocalizedString(" Messages", comment: "")
+        let button = UIButton.backButton(with: title)
+        let action = #selector(backButtonPressed)
+        button.addTarget(self, action:action, for: .touchUpInside)
+        let leftItem = UIBarButtonItem(customView: button)
+        navigationItem.leftBarButtonItem = leftItem
+        navigationController?.navigationBar.isTranslucent = false
     }
 
-    override func tableView(_ tableView: UITableView,
-                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(
-            withIdentifier: "handshakePartnerCell",
-            for: indexPath) as? HandshakePartnerTableViewCell {
-            cell.delegate = self
-
-            let viewModel = handshakePartnerTableViewCellViewModel[indexPath.row]
-            adjustBackgroundColor(viewModel: viewModel, indexPath: indexPath)
-            viewModel.trustwordsLanguage = currentLanguageCode
-            cell.viewModel = viewModel
-            cell.indexPath = indexPath
-
-            return cell
-        }
-
-        return UITableViewCell()
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+    @objc private func backButtonPressed() {
+        dismiss(animated: true, completion: nil)
     }
 }
 
-// MARK: - Data
+/// MARK: - Set trustwords
+extension HandshakeViewController {
+    
+    /// Generates and sets the trustwords to the cell
+    /// - Parameters:
+    ///   - cell: The cell where the trustwords would be setted
+    ///   - indexPath: The indexPath of the row to generate the trustwords.
+    ///   - longMode: Indicates if the trustwords have to be long.
+    private func setTrustwords(for cell: HandshakeTableViewCell, at indexPath: IndexPath, longMode: Bool) {
+        let trustwords = viewModel?.generateTrustwords(forRowAt: indexPath, long: longMode)
+        let oneSpace = " "
+        let threeSpaces = "   "
+        if let spacedTrustwords = trustwords?.replacingOccurrences(of: oneSpace, with: threeSpaces) {
+            cell.trustwordsLabel.text = longMode ? spacedTrustwords : "\(spacedTrustwords)…"
+        }
+    }
+}
+
+/// MARK: - HandshakeTableViewCellDelegate
+extension HandshakeViewController: HandshakeTableViewCellDelegate {
+    func languageButtonPressed(on cell: HandshakeTableViewCell) {
+        showLanguagesList(for: cell)
+    }
+    
+    func declineButtonPressed(on cell: HandshakeTableViewCell) {
+        if let indexPath = handshakeTableView.indexPath(for: cell) {
+            viewModel?.handleRejectHandshakePressed(at: indexPath)
+        }
+    }
+    
+    func confirmButtonPressed(on cell: HandshakeTableViewCell) {
+        if let indexPath = handshakeTableView.indexPath(for: cell) {
+            viewModel?.handleConfirmHandshakePressed(at: indexPath)
+        }
+    }
+    
+    func resetButtonPressed(on cell: HandshakeTableViewCell) {
+        if let indexPath = handshakeTableView.indexPath(for: cell) {
+            viewModel?.handleResetPressed(forRowAt: indexPath)
+        }
+    }
+    
+    func trustwordsLabelPressed(on cell: HandshakeTableViewCell) {
+        if let indexPath = handshakeTableView.indexPath(for: cell) {
+            viewModel?.handleToggleLongTrustwords(forRowAt: indexPath)
+        }
+    }
+}
+
 
 extension HandshakeViewController {
-
-    ///Returns: A cached view model for the given `partnerIdentity` or a newly created one.
-    private func createViewModel(partnerIdentity: Identity,
-                                 selfIdentity: Identity) -> HandshakePartnerTableViewCellViewModel? {
-        if let vm = identityViewModelCache.object(forKey: partnerIdentity) {
-            return vm
-        } else {
-            var vm: HandshakePartnerTableViewCellViewModel?
-            if let session = session {
-                session.performAndWait {
-                    vm = HandshakePartnerTableViewCellViewModel(ownIdentity: selfIdentity,
-                                                                partner: partnerIdentity)
-                }
+    private func configureTrustwords(_ identifier: String, _ row: HandshakeViewModel.Row, _ cell: HandshakeTableViewCell, _ indexPath: IndexPath) {
+        ///Yellow means secure but not trusted.
+        ///That means that's the only case must display the trustwords
+        
+        if identifier == onlyMasterCellIdentifier {
+            if row.color == .yellow {
+                setTrustwords(for: cell, at: indexPath, longMode: row.longTrustwords)
+                cell.trustwordsStackView.isHidden = false
+                cell.trustwordsButtonsContainer.isHidden = false
             } else {
-                vm = HandshakePartnerTableViewCellViewModel(ownIdentity: selfIdentity,
-                                                            partner: partnerIdentity)
+                cell.trustwordsStackView.isHidden = true
+                cell.trustwordsButtonsContainer.isHidden = true
             }
-            guard let safeVM = vm else {
-                Log.shared.errorAndCrash("Fail to init HandshakePartnerTableViewCellViewModel")
-                return nil
+        } else if identifier == masterAndDetailCellIdentifier {
+            if row.color == .yellow {
+                setTrustwords(for: cell, at: indexPath, longMode: row.longTrustwords)
+                cell.trustwordsLabel.isHidden = false
+                cell.confirmButton.isHidden = false
+                cell.declineButton.isHidden = false
+            } else {
+                cell.trustwordsLabel.isHidden = true
+                cell.confirmButton.isHidden = true
+                cell.declineButton.isHidden = true
             }
-            identityViewModelCache.setObject(safeVM, forKey: partnerIdentity)
-            return safeVM
         }
-    }
-}
-
-// MARK: - HandshakePartnerTableViewCellDelegate
-
-extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
-    func updateSize() {
-        tableView.updateSize()
-    }
-
-    func invokeTrustAction(cell: HandshakePartnerTableViewCell,
-                           indexPath: IndexPath,
-                           viewModel: HandshakePartnerTableViewCellViewModel?,
-                           undoSelector: Selector,
-                           action: (HandshakePartnerTableViewCellViewModel) -> ()) {
-        guard let vm = viewModel else {
-            return
-        }
-
-        // set undo action
-        let undoInfo = UndoInfoContainer(indexPath: indexPath, viewModel: vm)
-        undoTrustOrMistrustManager.registerUndo(withTarget: self,
-                                                selector: undoSelector,
-                                                object: undoInfo)
-
-        action(vm)
-
-        reevaluateAndUpdate(indexPath: indexPath)
-    }
-
-    func reevaluateAndUpdate(indexPath: IndexPath) {
-        tableView.reloadRows(at: [indexPath], with: .automatic)
-
-        guard let msg = message else {
-            Log.shared.errorAndCrash("No message")
-            return
-        }
-        session?.performAndWait {
-            RatingReEvaluator.reevaluate(message: msg)
-        }
-        updateStatusBadge()
-    }
-
-    func confirmTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
-                      indexPath: IndexPath,
-                      viewModel: HandshakePartnerTableViewCellViewModel?) {
-        invokeTrustAction(cell: cell,
-                          indexPath: indexPath,
-                          viewModel: viewModel,
-                          undoSelector: #selector(undoTrust(_:))) { vm in
-                            vm.confirmTrust()
-        }
-    }
-
-    func denyTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
-                   indexPath: IndexPath,
-                   viewModel: HandshakePartnerTableViewCellViewModel?) {
-        invokeTrustAction(cell: cell,
-                          indexPath: indexPath,
-                          viewModel: viewModel,
-                          undoSelector: #selector(undoMistrust(_:))) { vm in
-                            vm.denyTrust()
-        }
-    }
-
-    func pickLanguage(sender: UIView, cell: HandshakePartnerTableViewCell,
-                      indexPath: IndexPath, viewModel: HandshakePartnerTableViewCellViewModel?) {
-        indexPathRequestingLanguage = indexPath
-        self.performSegue(withIdentifier: .showLanguagesSegue, sender: cell)
-    }
-
-    func toggleTrustwordsLength(sender: UIView, cell: HandshakePartnerTableViewCell,
-                                indexPath: IndexPath,
-                                viewModel: HandshakePartnerTableViewCellViewModel?) {
-        viewModel?.toggleTrustwordsLength()
-        cell.updateTrustwords()
-        tableView.updateSize()
-    }
-}
-
-// MARK: - Segue
-
-extension HandshakeViewController: SegueHandlerType {
-    enum SegueIdentifier: String {
-        case showLanguagesSegue
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segueIdentifier(for: segue) {
-        case .showLanguagesSegue:
-            let navVC = segue.destination as? UINavigationController
-            if let destination = navVC?.viewControllers.first as? LanguageListViewController ??
-                segue.destination as? LanguageListViewController {
-                destination.appConfig = appConfig
-                prepare(destination: destination)
-            }
-            break
-        }
-    }
-
-    func prepare(destination: LanguageListViewController) {
-        do {
-            destination.languages = try PEPSession().languageList()
-        } catch let err as NSError {
-            Log.shared.error("%@", "\(err)")
-            destination.languages = []
-        }
-    }
-}
-
-// MARK: - Undo
-
-extension HandshakeViewController {
-    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-        if motion == .motionShake {
-            undoTrustOrMistrustManager.undo()
-        } else {
-            super.motionEnded(motion, with: event)
-        }
-    }
-
-    @objc func undoTrust(_ undoInfo: UndoInfoContainer) {
-        undoInfo.viewModel.resetOrUndoTrustOrMistrust()
-        reevaluateAndUpdate(indexPath: undoInfo.indexPath)
-    }
-
-    @objc func undoMistrust(_ undoInfo: UndoInfoContainer) {
-        undoInfo.viewModel.resetOrUndoTrustOrMistrust()
-        reevaluateAndUpdate(indexPath: undoInfo.indexPath)
     }
 }

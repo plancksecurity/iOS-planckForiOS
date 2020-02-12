@@ -590,7 +590,7 @@ extension EmailDetailViewController: SegueHandlerType {
             destination.viewModel = viewModel?.getMoveToFolderViewModel(forMessageRepresentedByItemAt: indexPath)
         case .segueHandshake, .segueHandshakeCollapsed:
             guard let nv = segue.destination as? UINavigationController,
-                let vc = nv.topViewController as? HandshakeViewControllerV2 ,
+                let vc = nv.topViewController as? HandshakeViewController ,
                 let handshakeViewModel = viewModel?.hanshakeViewModel else {
                     Log.shared.errorAndCrash("No DVC, No handshakeViewModel?")
                     break

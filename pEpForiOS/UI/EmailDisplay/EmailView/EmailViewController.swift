@@ -258,7 +258,7 @@ extension EmailViewController: SegueHandlerType {
                                                                   width: 0,
                                                                   height: 0)
             vc.appConfig = appConfig
-            vc.message = message
+            vc.viewModel?.message = message
             break
         case .noSegue:
             break

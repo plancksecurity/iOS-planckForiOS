@@ -580,7 +580,7 @@ extension ComposeViewModel {
                 Log.shared.errorAndCrash("No message")
                 return
             }
-            handshakeViewController.message = msg
+            handshakeViewController.viewModel?.message = msg
         }
     }
 

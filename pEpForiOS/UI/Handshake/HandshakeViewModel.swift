@@ -143,7 +143,6 @@ final class HandshakeViewModel {
         handshakeUtil?.confirmTrust(for: row.handshakeCombination.partnerIdentity)
         reevaluateAndUpdate()
         handshakeViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
-        
     }
     
     /// Handles the undo action. If possible will undo the last undoable action performed
@@ -164,7 +163,6 @@ final class HandshakeViewModel {
         handshakeUtil?.resetTrust(for: row.handshakeCombination.partnerIdentity)
         reevaluateAndUpdate()
         handshakeViewModelDelegate?.didResetHandshake(forRowAt: indexPath)
-        
     }
     
     /// Returns the list of languages available for that row.
