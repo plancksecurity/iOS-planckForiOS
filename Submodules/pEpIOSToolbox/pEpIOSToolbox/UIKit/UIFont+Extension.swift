@@ -16,7 +16,7 @@ import UIKit
 /// Usage example: let font = UIFont.pepFont(style: .body, weight: .regular)
 extension UIFont {
 
-    private static let medium = "q"
+    private static let medium = "SFUIText-Medium"
     private static let regular = "SFUIText-Regular"
     private static let semibold = "SFUIText-Semibold"
 

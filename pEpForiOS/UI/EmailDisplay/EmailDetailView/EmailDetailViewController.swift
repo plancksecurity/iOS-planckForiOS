@@ -336,6 +336,14 @@ extension EmailDetailViewController {
     }
 
     private func setupToolbar() {
+        let size = CGSize(width: 15, height: 25)
+        nextButton?.image = nextButton?.image?.resizeImage(targetSize: size)
+        previousButton?.image = previousButton?.image?.resizeImage(targetSize: size)
+        
+        let sizeForSplitView = CGSize(width: 25, height: 15)
+        nextButtonForSplitView?.image = nextButtonForSplitView?.image?.resizeImage(targetSize: sizeForSplitView)
+        prevButtonForSplitView?.image = prevButtonForSplitView?.image?.resizeImage(targetSize: sizeForSplitView)
+
         if !onlySplitViewMasterIsShown {
             toolbarItems?.removeAll(where: { $0 == pEpIconSettingsButton })
             navigationItem.rightBarButtonItems = toolbarItems
