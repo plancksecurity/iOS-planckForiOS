@@ -66,12 +66,12 @@ extension UIImage {
             return nil
         }
     }
-    
-    
 
+    /// Method that resize the image that invokes and returns a new one.
+    /// - Parameter targetSize: The desired size of the image.
     public func resizeImage(targetSize: CGSize) -> UIImage? {
 
-        let widthRatio  = targetSize.width  / size.width
+        let widthRatio  = targetSize.width  / size.widthm
         let heightRatio = targetSize.height / size.height
 
         // Figure out what our orientation is, and use that to form the rectangle
@@ -93,8 +93,6 @@ extension UIImage {
 
         return newImage
     }
-
-
 }
 
 
