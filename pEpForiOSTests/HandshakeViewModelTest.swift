@@ -202,7 +202,12 @@ extension HandshakeViewModelTest {
         let cdIdentity: CdIdentity = SecretTestData().createWorkingCdIdentity(number:selfNumber,
                                                                               isMyself: true,
                                                                               context: moc)
+        
         let selfIdentity = Identity(cdObject: cdIdentity, context: moc)
+        selfIdentity.fingerprint = "fingerprints"
+        selfIdentity.save()
+        moc.saveAndLogErrors()
+
         let mockedUtil = HandshakeUtilMock()
         if handshakeViewModel == nil {
             let account1 = SecretTestData().createWorkingAccount(context: moc)
@@ -212,7 +217,9 @@ extension HandshakeViewModelTest {
                 XCTFail()
                 return
             }
+
             let message = TestUtil.createMessage(inFolder: folder1, from:from, tos: [selfIdentity])
+            
             handshakeViewModel = HandshakeViewModel(message: message, handshakeUtil: mockedUtil)
 //            handshakeViewModel = HandshakeViewModel(identities:identities,
 //                                                    selfIdentity: selfIdentity,
@@ -225,19 +232,13 @@ extension HandshakeViewModelTest {
 ///MARK: - Mock Util Classes
 
 class HandshakeUtilMock: HandshakeUtilProtocol {
-    func undoMisstrustOrTrust(for partnerIdentity: Identity, fingerprints: String?) {
-        
-    }
-    
-    func resetTrust(for partnerIdentity: Identity?) {
-        
-    }
     
     var getTrustwordsExpectation: XCTestExpectation?
     var resetExpectation: XCTestExpectation?
     var confirmExpectation: XCTestExpectation?
     var denyExpectation: XCTestExpectation?
     var languagesExpectation: XCTestExpectation?
+    var undoExpectation: XCTestExpectation?
     
     static let someTrustWords = "Dog"
     static let languages = ["en", "ca", "es"]
@@ -247,12 +248,14 @@ class HandshakeUtilMock: HandshakeUtilProtocol {
          resetExpectation: XCTestExpectation? = nil,
          confirmExpectation: XCTestExpectation? = nil,
          denyExpectation: XCTestExpectation? = nil,
-         languagesExpectation: XCTestExpectation? = nil){
+         languagesExpectation: XCTestExpectation? = nil,
+         undoExpectation: XCTestExpectation? = nil){
         self.getTrustwordsExpectation = getTrustwordsExpectation
         self.resetExpectation = resetExpectation
         self.confirmExpectation = confirmExpectation
         self.denyExpectation = denyExpectation
         self.languagesExpectation = languagesExpectation
+        self.undoExpectation = undoExpectation
     }
 
     func languagesList() -> [String]? {
@@ -280,6 +283,14 @@ class HandshakeUtilMock: HandshakeUtilProtocol {
     
     func getFingerprints(for Identity: Identity) -> String? {
         return nil
+    }
+
+    func undoMisstrustOrTrust(for partnerIdentity: Identity, fingerprints: String?) {
+        undoExpectation?.fulfill()
+    }
+    
+    func resetTrust(for partnerIdentity: Identity?) {
+        resetExpectation?.fulfill()
     }
 }
 
