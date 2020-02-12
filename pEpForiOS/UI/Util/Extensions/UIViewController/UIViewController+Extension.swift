@@ -51,11 +51,12 @@ extension UIViewController {
             badgeView.addSubview(imgView)
 
             let imagePadding: CGFloat = 10
+            let imgViewHeight = minimumHitTestDimension - imagePadding
             imgView.centerXAnchor.constraint(equalTo: badgeView.centerXAnchor).isActive = true
             imgView.centerYAnchor.constraint(equalTo: badgeView.centerYAnchor).isActive = true
             imgView.heightAnchor.constraint(lessThanOrEqualTo: badgeView.heightAnchor,
                                             constant: -imagePadding).isActive = true
-            imgView.heightAnchor.constraint(greaterThanOrEqualToConstant: 55).isActive = true
+            imgView.heightAnchor.constraint(greaterThanOrEqualToConstant: imgViewHeight).isActive = true
 
             imgView.widthAnchor.constraint(lessThanOrEqualTo: badgeView.widthAnchor,
                                            constant: -imagePadding).isActive = true
