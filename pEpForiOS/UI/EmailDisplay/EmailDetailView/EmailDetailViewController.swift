@@ -29,6 +29,7 @@ class EmailDetailViewController: BaseViewController {
     @IBOutlet weak var flagButton: UIBarButtonItem!
     @IBOutlet weak var destructiveButton: UIBarButtonItem!
     @IBOutlet weak var replyButton: UIBarButtonItem!
+    @IBOutlet weak var pEpIconSettingsButton: UIBarButtonItem!
     @IBOutlet weak var moveToFolderButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
 
@@ -131,6 +132,10 @@ class EmailDetailViewController: BaseViewController {
         }
 
         present(alert, animated: true, completion: nil)
+    }
+
+    @IBAction func pEpIconSettingsButtonPressed(_ sender: UIBarButtonItem) {
+        showSettingsViewController()
     }
 
     @IBAction func previousButtonPressed(_ sender: UIBarButtonItem) {
@@ -324,13 +329,8 @@ extension EmailDetailViewController {
     }
 
     private func setupToolbar() {
-        let pEpButton = UIBarButtonItem.getPEPButton(action: #selector(showPepActions(sender:)),
-                                                     target: self)
-        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-                                                             target: nil,
-                                                             action: nil)
-        toolbarItems?.append(contentsOf: [flexibleSpace, pEpButton])
-        if !(onlySplitViewMasterIsShown) {
+        if !onlySplitViewMasterIsShown {
+            toolbarItems?.removeAll(where: { $0 == pEpIconSettingsButton })
             navigationItem.rightBarButtonItems = toolbarItems
         }
     }
@@ -338,58 +338,6 @@ extension EmailDetailViewController {
     // Removes all EmailViewController that are not connected to a cell any more.
     private func releaseUnusedSubViewControllers() {
         emailSubViewControllers = emailSubViewControllers.filter { $0.view.superview != nil }
-    }
-
-    @objc
-    private func showPepActions(sender: UIBarButtonItem) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-        guard let indexPath = indexPathOfCurrentlyVisibleCell else {
-            Log.shared.errorAndCrash("Nothing shown?")
-            return
-        }
-
-        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
-
-        if vm.shouldShowPrivacyStatus(forItemAt:indexPath),
-            let handshakeAction = showHandshakeViewAction() {
-            actionSheetController.addAction(handshakeAction)
-        }
-        actionSheetController.addAction(tutorialAction())
-        actionSheetController.addAction(showSettingsAction())
-
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("Cancel", comment: "possible private status action"),
-            style: .cancel) { (action) in }
-        actionSheetController.addAction(cancelAction)
-
-        if splitViewController != nil, !onlySplitViewMasterIsShown {
-            actionSheetController.popoverPresentationController?.barButtonItem = sender
-        }
-        present(actionSheetController, animated: true)
-    }
-
-    private func showSettingsAction() -> UIAlertAction {
-        let action = UIAlertAction(
-            title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
-            style: .default) { [weak self] (action) in
-                guard let me = self else {
-                    Log.shared.errorAndCrash(message: "lost myself")
-                    return
-                }
-                me.showSettingsViewController()
-        }
-        return action
-    }
-
-    private func tutorialAction() -> UIAlertAction{
-        return UIAlertAction(
-            title: NSLocalizedString("Tutorial", comment: "show tutorial from compose view"),
-            style: .default) { _ in
-                TutorialWizardViewController.presentTutorialWizard(viewController: self)
-        }
     }
 
     private func showHandshakeViewAction() -> UIAlertAction? {
