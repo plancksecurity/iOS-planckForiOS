@@ -26,6 +26,10 @@ class EmailDetailViewController: BaseViewController {
 
     @IBOutlet weak var nextButton: UIBarButtonItem?
     @IBOutlet weak var previousButton: UIBarButtonItem?
+    
+    @IBOutlet weak var nextButtonForSplitView: UIBarButtonItem?
+    @IBOutlet weak var prevButtonForSplitView: UIBarButtonItem?
+    
     @IBOutlet weak var flagButton: UIBarButtonItem!
     @IBOutlet weak var destructiveButton: UIBarButtonItem!
     @IBOutlet weak var replyButton: UIBarButtonItem!
@@ -289,6 +293,9 @@ extension EmailDetailViewController {
 
         previousButton?.isEnabled = thereIsAPreviousMessageToShow
         nextButton?.isEnabled = thereIsANextMessageToShow
+        prevButtonForSplitView?.isEnabled = thereIsAPreviousMessageToShow
+        nextButtonForSplitView?.isEnabled = thereIsANextMessageToShow
+        
 
         showPepRating()
     }
@@ -328,13 +335,27 @@ extension EmailDetailViewController {
         scrollToLastViewedCell()
     }
 
+    private func barButtonItem(with imageName: String, selector: Selector) -> UIBarButtonItem {
+        let image = UIImage(named: imageName)?
+            .resizeImage(targetSize: CGSize(width: 25, height: 14))
+        
+        let button = UIButton(type: .custom)
+        button.setImage(image, for: .normal)
+        button.imageView?.contentMode = .scaleToFill
+        button.addTarget(self, action: selector, for: .touchUpInside)
+        let barButtonItem = UIBarButtonItem(customView: button)
+        return barButtonItem
+    }
+
     private func setupToolbar() {
         if !onlySplitViewMasterIsShown {
             toolbarItems?.removeAll(where: { $0 == pEpIconSettingsButton })
             navigationItem.rightBarButtonItems = toolbarItems
+        } else {
+            navigationItem.leftBarButtonItems = []
         }
     }
-
+    
     // Removes all EmailViewController that are not connected to a cell any more.
     private func releaseUnusedSubViewControllers() {
         emailSubViewControllers = emailSubViewControllers.filter { $0.view.superview != nil }
@@ -350,7 +371,6 @@ extension EmailDetailViewController {
                                     }
                                     me.showHandshakeView()
         }
-
         return action
     }
 

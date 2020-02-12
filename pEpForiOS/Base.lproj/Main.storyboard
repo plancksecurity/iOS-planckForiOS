@@ -323,6 +323,18 @@
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="x3Y-Mc-0bu">
+                        <leftBarButtonItems>
+                            <barButtonItem image="chevron-icon-down" id="Lee-9l-s9y" userLabel="next">
+                                <connections>
+                                    <action selector="nextButtonPressed:" destination="fRo-D2-Fjz" id="2j3-S3-wMK"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="chevron-icon-up" id="icA-8s-JIg" userLabel="previous">
+                                <connections>
+                                    <action selector="previousButtonPressed:" destination="fRo-D2-Fjz" id="T7l-k1-fbw"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
                         <rightBarButtonItems>
                             <barButtonItem image="chevron-icon-right" id="4R9-FK-LNX" userLabel="next">
                                 <connections>
@@ -343,7 +355,9 @@
                         <outlet property="flagButton" destination="eWC-Rq-MJm" id="Fha-Mh-JQz"/>
                         <outlet property="moveToFolderButton" destination="Zlf-LL-yLH" id="z3R-Zj-R96"/>
                         <outlet property="nextButton" destination="4R9-FK-LNX" id="XRa-Kx-g3q"/>
+                        <outlet property="nextButtonForSplitView" destination="Lee-9l-s9y" id="g3T-kw-5TD"/>
                         <outlet property="pEpIconSettingsButton" destination="7lp-Wv-GHA" id="dUJ-XB-ke6"/>
+                        <outlet property="prevButtonForSplitView" destination="icA-8s-JIg" id="BoN-JL-bhN"/>
                         <outlet property="previousButton" destination="uhj-ab-NtG" id="lE3-hB-5GJ"/>
                         <outlet property="replyButton" destination="OL8-wT-4Rt" id="BiN-bh-B2V"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="6by-Pi-xWQ"/>
@@ -989,8 +1003,10 @@
     </scenes>
     <resources>
         <image name="attachment-list-icon" width="14" height="15"/>
+        <image name="chevron-icon-down" width="18" height="10"/>
         <image name="chevron-icon-left" width="10" height="18"/>
         <image name="chevron-icon-right" width="10" height="18"/>
+        <image name="chevron-icon-up" width="18" height="10"/>
         <image name="compose" width="33" height="64"/>
         <image name="empty-avatar" width="150" height="150"/>
         <image name="pEp-status-yellow_white-border" width="21" height="21"/>
@@ -1003,9 +1019,9 @@
         <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="g1q-wK-tff"/>
-        <segue reference="CKh-jT-ski"/>
-        <segue reference="r2P-Ra-zWf"/>
+        <segue reference="RTR-We-Kc1"/>
+        <segue reference="mZj-Mg-VzM"/>
+        <segue reference="Usl-iS-7fo"/>
         <segue reference="HHz-at-Ehg"/>
     </inferredMetricsTieBreakers>
 </document>
