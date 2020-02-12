@@ -335,18 +335,6 @@ extension EmailDetailViewController {
         scrollToLastViewedCell()
     }
 
-    private func barButtonItem(with imageName: String, selector: Selector) -> UIBarButtonItem {
-        let image = UIImage(named: imageName)?
-            .resizeImage(targetSize: CGSize(width: 25, height: 14))
-        
-        let button = UIButton(type: .custom)
-        button.setImage(image, for: .normal)
-        button.imageView?.contentMode = .scaleToFill
-        button.addTarget(self, action: selector, for: .touchUpInside)
-        let barButtonItem = UIBarButtonItem(customView: button)
-        return barButtonItem
-    }
-
     private func setupToolbar() {
         if !onlySplitViewMasterIsShown {
             toolbarItems?.removeAll(where: { $0 == pEpIconSettingsButton })
