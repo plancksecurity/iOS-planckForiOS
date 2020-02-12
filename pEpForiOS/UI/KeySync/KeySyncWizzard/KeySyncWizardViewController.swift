@@ -293,6 +293,6 @@ extension KeySyncWizardViewController {
     }
 
     private func completeImage(isNewGroup: Bool) -> UIImage {
-        return isNewGroup ? #imageLiteral(resourceName: "pEpForiOS-icon-sync-animation-2") : #imageLiteral(resourceName: "pEpForiOS-icon-device-group")
+        return isNewGroup ? #imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device-synced") : #imageLiteral(resourceName:   "pEpForiOS-icon-sync-3rd-device-synced")
     }
 }
