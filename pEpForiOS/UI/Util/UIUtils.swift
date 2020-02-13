@@ -104,8 +104,7 @@ struct UIUtils {
             to.save()
             prefilledTo = to
         }
-        let composeVM = ComposeViewModel(resultDelegate: nil,
-                                         composeMode: .normal,
+        let composeVM = ComposeViewModel(composeMode: .normal,
                                          prefilledTo: prefilledTo,
                                          originalMessage: nil)
         composeVc.viewModel = composeVM

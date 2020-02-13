@@ -43,10 +43,10 @@
             </objects>
             <point key="canvasLocation" x="5420" y="-1649.3253373313344"/>
         </scene>
-        <!--emailDetail-->
+        <!--EmailViewController-->
         <scene sceneID="ac7-WH-duf">
             <objects>
-                <viewControllerPlaceholder storyboardIdentifier="emailDetail" storyboardName="Main" referencedIdentifier="emailDetail" id="gnv-QF-y1k" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardIdentifier="emailDetail" storyboardName="Main" referencedIdentifier="EmailViewController" id="gnv-QF-y1k" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VO2-Y8-sUZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5327" y="-860"/>

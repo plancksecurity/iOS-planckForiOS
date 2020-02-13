@@ -99,4 +99,3 @@ public class FolderSectionViewModel {
         return self.items.count
     }
 }
-

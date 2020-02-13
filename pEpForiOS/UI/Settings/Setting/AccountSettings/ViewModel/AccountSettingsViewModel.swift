@@ -35,17 +35,14 @@ final class AccountSettingsViewModel {
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
     private var headers: [String] {
-        var tempHeader = [NSLocalizedString("Account", comment: "Account settings"),
+        let tempHeader = [NSLocalizedString("Account", comment: "Account settings"),
                           NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
                           NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP")]
-        if AppSettings.shared.keySyncEnabled, Account.all().count > 1 {
-            tempHeader.append(NSLocalizedString("pEp Sync", comment: "Account settings title pEp Sync"))
-        }
         return tempHeader
     }
     private var footers: [String] {
-        return [NSLocalizedString("Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.",
-                                  comment: "Footer for Account settings section 1")]
+        return [NSLocalizedString("Performs a reset of the privacy settings of your account.",
+                                  comment: "Explanation for Key Reset (of one account")]
     }
 
     private enum AccountSettingsError: Error, LocalizedError {

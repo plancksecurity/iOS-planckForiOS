@@ -105,7 +105,7 @@ class TestUtil {
     // MARK: - Sync Loop
 
     static public func syncAndWait(numAccountsToSync: Int = 1, testCase: XCTestCase) {
-        //BUFF: Is implemented in MM TrestUtils. How can we get it here too? Do we need it at all (think yes)
+        //BUFF: Is implemented in MM TestUtils. How can we get it here too? Do we need it at all (think yes)
     }
 
     // MARK: - Messages
@@ -295,7 +295,7 @@ class TestUtil {
 
     // MARK: - ERROR
 
-    class TestErrorContainer: ErrorContainerProtocol { //BUFF: rm. AFAICS the implementation is copy & pasted from ErrorContainer.
+    class TestErrorContainer: ErrorContainerProtocol { //!!!: rm. AFAICS the implementation is copy & pasted from ErrorContainer. If so, why not use ErrorContainer?
         var error: Error?
 
         func addError(_ error: Error) {
@@ -355,7 +355,7 @@ class TestUtil {
             cdMyAccount.identity = cdMySelfIdentity
 
             let cdInbox = CdFolder(context: context)
-            cdInbox.name = PantomimeImapApi.defaultImapInboxName
+            cdInbox.name = ImapConnection.defaultInboxName
             cdInbox.account = cdMyAccount
 
             guard let pantFrom = pantomimeMail.from() else {
@@ -434,7 +434,7 @@ class TestUtil {
 
         let pantomimeMail = CWIMAPMessage(data: msgTxtData, charset: "UTF-8")
         pantomimeMail?.setUID(5) // some random UID out of nowhere
-        pantomimeMail?.setFolder(CWIMAPFolder(name: PantomimeImapApi.defaultImapInboxName))
+        pantomimeMail?.setFolder(CWIMAPFolder(name: ImapConnection.defaultInboxName))
 
         return pantomimeMail
     }

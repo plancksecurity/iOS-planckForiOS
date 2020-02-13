@@ -158,33 +158,13 @@ class TestDataBase {
             return ident
         }
 
-        func basicConnectInfo(emailProtocol: EmailProtocol) -> BasicConnectInfo {
-            return BasicConnectInfo(
-                accountEmailAddress: idAddress,
-                loginName: imapLoginName ?? idAddress,
-                loginPassword: password,
-                accessToken: nil,
-                networkAddress: imapServerAddress,
-                networkPort: imapServerPort,
-                connectionTransport: ConnectionTransport(transport: imapServerTransport),
-                authMethod: nil,
-                emailProtocol: emailProtocol)
-        }
-
-        func basicConnectInfoIMAP() -> BasicConnectInfo {
-            return basicConnectInfo(emailProtocol: .imap)
-        }
-
-        func basicConnectInfoSMTP() -> BasicConnectInfo {
-            return basicConnectInfo(emailProtocol: .smtp)
-        }
-
         /// Transfers the account data into a `VerifiableAccountProtocol`
         /// that you then can verify the acconut data with.
         func populate(verifiableAccount: inout VerifiableAccountProtocol) {
             verifiableAccount.userName = accountName
             verifiableAccount.address = idAddress
-            verifiableAccount.loginName = imapLoginName
+            verifiableAccount.loginNameIMAP = imapLoginName
+            verifiableAccount.loginNameSMTP = smtpLoginName
             verifiableAccount.accessToken = nil
             verifiableAccount.password = password
 
@@ -287,20 +267,6 @@ class TestDataBase {
     }
 
     /**
-     - Returns: A valid `BasicConnectInfo` for IMAP.
-     */
-    func createVerifiableBasicConnectInfoIMAP(number: Int = 0) -> BasicConnectInfo {
-        return createVerifiableAccountSettings(number: number).basicConnectInfoIMAP()
-    }
-
-    /**
-     - Returns: A valid `BasicConnectInfo` for SMTP.
-     */
-    func createVerifiableBasicConnectInfoSMTP(number: Int = 0) -> BasicConnectInfo {
-        return createVerifiableAccountSettings(number: number).basicConnectInfoSMTP()
-    }
-
-    /**
      - Returns: A valid `CdIdentity` without parent account.
      */
     func createWorkingCdIdentity(number: Int = 0,
@@ -329,6 +295,16 @@ class TestDataBase {
         return createWorkingAccountSettings(number: number).account(context: context)
     }
 
+    /**
+     - Returns: A valid `Account`.
+     */
+    func createWorkingAccount(number: Int = 0, session: Session? = Session.main) -> Account? {
+        guard let nonOptionalSession = session else {
+            Log.shared.errorAndCrash(message: "session was nil")
+            return nil
+        }
+        return createWorkingAccountSettings(number: number).account(context: nonOptionalSession.moc)
+    }
     /**
      - Returns: A valid `Account`.
      */

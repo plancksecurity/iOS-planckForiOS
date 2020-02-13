@@ -64,12 +64,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setupServices() {
         let keySyncHandshakeService = KeySyncHandshakeService()
-        let theMessageModelService =
-            MessageModelService(errorPropagator: errorPropagator,
-                                cnContactsAccessPermissionProvider: AppSettings.shared,
-                                keySyncServiceHandshakeDelegate: keySyncHandshakeService,
-                                keySyncStateProvider: AppSettings.shared)
-        messageModelService = theMessageModelService
+        messageModelService = MessageModelService(errorPropagator: errorPropagator,
+                                                  cnContactsAccessPermissionProvider: AppSettings.shared,
+                                                  keySyncServiceHandshakeDelegate: keySyncHandshakeService,
+                                                  keySyncStateProvider: AppSettings.shared)
 
         appConfig = AppConfig(errorPropagator: errorPropagator,
                               oauth2AuthorizationFactory: oauth2Provider,
@@ -160,7 +158,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         messageModelService?.start()
     }
 
-    /// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    /// Called when the application is about to terminate. Save data if appropriate. See also
+    /// applicationDidEnterBackground:.
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
         messageModelService?.stop()

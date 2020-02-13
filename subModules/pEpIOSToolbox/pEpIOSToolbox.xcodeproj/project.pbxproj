@@ -12,6 +12,7 @@
 		1522956623044FD000204FD3 /* String+FPRTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1522956523044FD000204FD3 /* String+FPRTest.swift */; };
 		154660EA233A7359008D2137 /* NSAttributedString+AttributeCleanup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154660E9233A7359008D2137 /* NSAttributedString+AttributeCleanup.swift */; };
 		154944CF229A97AA00CC6431 /* SelfReferencingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154944CE229A97AA00CC6431 /* SelfReferencingOperation.swift */; };
+		155528C423A797E4008486DF /* UIView+Autolayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155528C323A797DC008486DF /* UIView+Autolayout.swift */; };
 		370DB3CF22804A3600BC929A /* NSSecureCoding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */; };
 		378B76552240F93A00D6662C /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378B76542240F93A00D6662C /* TestUtils.swift */; };
 		37903EE422FD667700E0AB39 /* String+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37903EE322FD667700E0AB39 /* String+pEp.swift */; };
@@ -22,6 +23,7 @@
 		37904569223FA52B006DAB3B /* NetworkReachibilityMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904567223FA52B006DAB3B /* NetworkReachibilityMock.swift */; };
 		3790456A223FA52B006DAB3B /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904568223FA52B006DAB3B /* ReachabilityTests.swift */; };
 		37954C6E227C90C10099B8D8 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37954C6D227C90C10099B8D8 /* Log.swift */; };
+		5B87D79423F2C5CE009DACAA /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */; };
 		B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5422005BD400EDCE61 /* Date+Extension.swift */; };
 		B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */; };
 		B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */; };
@@ -68,6 +70,7 @@
 		1522956523044FD000204FD3 /* String+FPRTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "String+FPRTest.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Foundation/String+FPRTest.swift"; sourceTree = "<group>"; };
 		154660E9233A7359008D2137 /* NSAttributedString+AttributeCleanup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSAttributedString+AttributeCleanup.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/NSAttributedString+AttributeCleanup.swift"; sourceTree = "<group>"; };
 		154944CE229A97AA00CC6431 /* SelfReferencingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelfReferencingOperation.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Other/SelfReferencingOperation.swift; sourceTree = "<group>"; };
+		155528C323A797DC008486DF /* UIView+Autolayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+Autolayout.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/UIKit/UIView+Autolayout.swift"; sourceTree = "<group>"; };
 		370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSecureCoding+Extension.swift"; sourceTree = "<group>"; };
 		378B76542240F93A00D6662C /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TestUtils.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/TestUtils/TestUtils.swift; sourceTree = "<group>"; };
 		37903EE322FD667700E0AB39 /* String+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "String+pEp.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/String+pEp.swift"; sourceTree = "<group>"; };
@@ -78,6 +81,7 @@
 		37904567223FA52B006DAB3B /* NetworkReachibilityMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachibilityMock.swift; sourceTree = "<group>"; };
 		37904568223FA52B006DAB3B /* ReachabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityTests.swift; sourceTree = "<group>"; };
 		37954C6D227C90C10099B8D8 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A5422005BD400EDCE61 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
@@ -217,6 +221,8 @@
 		B70A3A5322005B9600EDCE61 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */,
+				155528C323A797DC008486DF /* UIView+Autolayout.swift */,
 				1505C5142316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift */,
 				B7465DE22211C890008A1708 /* CGImageSource+Extension.swift */,
 				B7465DE62211E969008A1708 /* CGRect+Util.swift */,
@@ -438,7 +444,9 @@
 				B7911EC221F8694100D7F66F /* UIColor+Extension.swift in Sources */,
 				B753907E2212D6B500B1FCF9 /* CGSize+Extension.swift in Sources */,
 				B7DB7F522213120B003968DA /* SortedSet.swift in Sources */,
+				5B87D79423F2C5CE009DACAA /* UIFont+Extension.swift in Sources */,
 				37903EE422FD667700E0AB39 /* String+pEp.swift in Sources */,
+				155528C423A797E4008486DF /* UIView+Autolayout.swift in Sources */,
 				B7911EC621F88AF800D7F66F /* UIImage+Extension.swift in Sources */,
 				B70A3A77220091D400EDCE61 /* Logger.swift in Sources */,
 				B7A46C56220DA5EB0027CCB5 /* Substring+Email.swift in Sources */,

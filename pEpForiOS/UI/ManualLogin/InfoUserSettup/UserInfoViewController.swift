@@ -34,7 +34,8 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
         }
 
         var vm = viewModelOrCrash()
-        vm.loginName = vm.loginName ?? vm.address
+        vm.loginNameSMTP = vm.loginNameSMTP ?? vm.address
+        vm.loginNameIMAP = vm.loginNameIMAP ?? vm.address
 
         fields = manualAccountSetupContainerView.manualSetupViewTextFeilds()
         setUpViewLocalizableTexts()
@@ -51,7 +52,7 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        firstResponder(!viewModelOrCrash().isValidName)
+        firstResponder(!viewModelOrCrash().loginNameIsValid)
     }
 
     /// Update view state from the view model
@@ -63,7 +64,7 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
         }
         var vm = viewModelOrCrash()
 
-        setupView.firstTextField.set(text: vm.loginName, animated: animated)
+        setupView.firstTextField.set(text: vm.loginNameIMAP, animated: animated)
         setupView.secondTextField.set(text: vm.address, animated: animated)
         setupView.thirdTextField.set(text: vm.password, animated: animated)
         setupView.fourthTextField.set(text: vm.userName, animated: animated)
@@ -112,7 +113,8 @@ extension UserInfoViewController: ManualAccountSetupViewDelegate {
 
     func didChangeFirst(_ textField: UITextField) {
         var vm = viewModelOrCrash()
-        vm.loginName = textField.text
+        vm.loginNameIMAP = textField.text
+        vm.loginNameSMTP = textField.text
         model = vm
         updateAutoFillForNextViews()
         updateView()
@@ -251,7 +253,7 @@ extension UserInfoViewController {
 
     private func updateAutoFillForNextViews() {
         var vm = viewModelOrCrash()
-        vm.loginNameIMAP = vm.loginName
-        vm.loginNameSMTP = vm.loginName
+        vm.loginNameIMAP = vm.loginNameIMAP
+        vm.loginNameSMTP = vm.loginNameSMTP
     }
 }
