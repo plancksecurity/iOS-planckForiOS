@@ -50,11 +50,12 @@ class EmailDetailViewController: BaseViewController {
         super.viewDidLoad()
         setup()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         doOnce?()
         doOnce = nil
+        setupToolbar()
     }
 
     override func viewWillLayoutSubviews() {
@@ -165,7 +166,7 @@ extension EmailDetailViewController {
         viewModel?.delegate = self
         setupCollectionView()
         registerNotifications()
-        setupToolbar()
+//        setupToolbar()
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -303,6 +304,7 @@ extension EmailDetailViewController {
         
 
         showPepRating()
+        setupToolbar()
     }
 
     private func showPepRating() {
@@ -805,8 +807,8 @@ extension EmailDetailViewController {
                                                             action: #selector(moveToFolderButtonPressed(_:)))
 
             //Flag
-            let image = UIImage(named: "pEpForiOS-icon-unflagged")
-            let tintedimage = image?.withRenderingMode(.alwaysTemplate)
+            let flagImage = viewModel?.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
+            let tintedimage = flagImage?.withRenderingMode(.alwaysTemplate)
             let flagFrame = CGRect(x: 0, y: 0, width: 14, height: 24)
             let flagButton = UIButton(frame: flagFrame)
             flagButton.setBackgroundImage(tintedimage, for: .normal)
@@ -815,7 +817,7 @@ extension EmailDetailViewController {
             let flagBarButtonItem = UIBarButtonItem(customView: flagButton)
 
             //Delete
-            let deleteImage = UIImage(named: "pEpForiOS-icon-delete")
+            let deleteImage = viewModel?.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
             let deleteButtonBarButtonItem = UIBarButtonItem(image: deleteImage,
                                                             style: .plain,
                                                             target: self,
