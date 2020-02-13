@@ -62,14 +62,18 @@ class EmailDetailViewController: BaseViewController {
         // Re-layout cells after device orientaion change
         collectionView.collectionViewLayout.invalidateLayout()
     }
-
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        setupToolbar()
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Target & Action
 
-    @IBAction func flagButtonPressed(_ sender: UIBarButtonItem) {
+    @objc @IBAction func flagButtonPressed(_ sender: UIBarButtonItem) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
@@ -78,6 +82,7 @@ class EmailDetailViewController: BaseViewController {
             Log.shared.errorAndCrash("Nothing shown?")
             return
         }
+        
         vm.handleFlagButtonPress(for: indexPath)
     }
 
@@ -333,23 +338,6 @@ extension EmailDetailViewController {
         // Works around a UI glitch: When !onlySplitViewMasterIsShown, the colletionView scroll
         // position is inbetween two cells after orientation change.
         scrollToLastViewedCell()
-    }
-
-    private func setupToolbar() {
-        let size = CGSize(width: 15, height: 25)
-        nextButton?.image = nextButton?.image?.resizeImage(targetSize: size)
-        previousButton?.image = previousButton?.image?.resizeImage(targetSize: size)
-        
-        let sizeForSplitView = CGSize(width: 25, height: 15)
-        nextButtonForSplitView?.image = nextButtonForSplitView?.image?.resizeImage(targetSize: sizeForSplitView)
-        prevButtonForSplitView?.image = prevButtonForSplitView?.image?.resizeImage(targetSize: sizeForSplitView)
-
-        if !onlySplitViewMasterIsShown {
-            toolbarItems?.removeAll(where: { $0 == pEpIconSettingsButton })
-            navigationItem.rightBarButtonItems = toolbarItems
-        } else {
-            navigationItem.leftBarButtonItems = []
-        }
     }
     
     // Removes all EmailViewController that are not connected to a cell any more.
@@ -763,5 +751,86 @@ extension EmailDetailViewController: QLPreviewControllerDataSource {
             fatalError("Could not load URL")
         }
         return url as QLPreviewItem
+    }
+}
+
+// MARK: - Setup Toolbar
+
+extension EmailDetailViewController {
+    private func setupToolbar() {
+        let size = CGSize(width: 15, height: 25)
+        nextButton?.image = nextButton?.image?.resizeImage(targetSize: size)
+        previousButton?.image = previousButton?.image?.resizeImage(targetSize: size)
+
+        if !onlySplitViewMasterIsShown {
+            let nextPrevButtonSize = CGRect(x: 0, y: 0, width: 27, height: 15)
+
+            //Down
+            let downButton = UIButton(frame: nextPrevButtonSize)
+            let downImage = UIImage(named: "chevron-icon-down")
+            downButton.setBackgroundImage(downImage, for: .normal)
+
+            //Up
+            let upButton = UIButton(frame: nextPrevButtonSize)
+            let upImage =  UIImage(named: "chevron-icon-up")
+            upButton.setBackgroundImage(upImage, for: .normal)
+
+            //Spacer
+            let defaultSpacerWidth: CGFloat = 14.0
+            let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+            spacer.width = defaultSpacerWidth
+
+            let downBarButtonItem = UIBarButtonItem(customView: downButton)
+            let upBarButtonItem = UIBarButtonItem(customView: upButton)
+            navigationItem.leftBarButtonItems = [downBarButtonItem, spacer, upBarButtonItem]
+            
+            let midSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+            midSpacer.width = UIDevice.current.orientation.isPortrait ? 19 : 38
+
+            let largeSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+            largeSpacer.width = UIDevice.current.orientation.isPortrait ? 22 : 44
+
+            //Reply
+            let replyImage = UIImage(named: "pEpForiOS-icon-reply")
+            let replyBarButtonItem = UIBarButtonItem(image: replyImage,
+                                                     style: .plain,
+                                                     target: self,
+                                                     action: #selector(replyButtonPressed(_:)))
+
+            //Folder
+            let folderImage = UIImage(named: "pEpForiOS-icon-movetofolder")
+            let folderButtonBarButtonItem = UIBarButtonItem(image: folderImage,
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(moveToFolderButtonPressed(_:)))
+
+            //Flag
+            let image = UIImage(named: "pEpForiOS-icon-unflagged")
+            let tintedimage = image?.withRenderingMode(.alwaysTemplate)
+            let flagFrame = CGRect(x: 0, y: 0, width: 14, height: 24)
+            let flagButton = UIButton(frame: flagFrame)
+            flagButton.setBackgroundImage(tintedimage, for: .normal)
+            flagButton.imageView?.tintColor = UIColor.pEpGreen
+            flagButton.addTarget(self, action: #selector(flagButtonPressed(_:)), for: .touchUpInside)
+            let flagBarButtonItem = UIBarButtonItem(customView: flagButton)
+
+            //Delete
+            let deleteImage = UIImage(named: "pEpForiOS-icon-delete")
+            let deleteButtonBarButtonItem = UIBarButtonItem(image: deleteImage,
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(destructiveButtonPressed(_:)))
+
+            
+            navigationItem.rightBarButtonItems = [replyBarButtonItem,
+                                                  midSpacer,
+                                                  folderButtonBarButtonItem,
+                                                  midSpacer,
+                                                  flagBarButtonItem,
+                                                  largeSpacer,
+                                                  deleteButtonBarButtonItem]
+        } else {
+            navigationItem.leftBarButtonItems = []
+        }
     }
 }
