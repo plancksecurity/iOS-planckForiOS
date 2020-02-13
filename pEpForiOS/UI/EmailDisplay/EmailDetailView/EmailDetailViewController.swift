@@ -778,7 +778,7 @@ extension EmailDetailViewController {
             upButton.setBackgroundImage(upImage, for: .normal)
 
             //Spacer
-            let defaultSpacerWidth: CGFloat = 14.0
+            let defaultSpacerWidth: CGFloat = 8.0
             let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
             spacer.width = defaultSpacerWidth
 
@@ -787,10 +787,10 @@ extension EmailDetailViewController {
             navigationItem.leftBarButtonItems = [downBarButtonItem, spacer, upBarButtonItem]
             
             let midSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-            midSpacer.width = UIDevice.current.orientation.isPortrait ? 19 : 38
+            midSpacer.width = UIDevice.current.orientation.isPortrait ? 9 : 18
 
             let largeSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-            largeSpacer.width = UIDevice.current.orientation.isPortrait ? 22 : 44
+            largeSpacer.width = UIDevice.current.orientation.isPortrait ? 11 : 22
 
             //Reply
             let replyImage = UIImage(named: "pEpForiOS-icon-reply")
@@ -829,7 +829,7 @@ extension EmailDetailViewController {
                                                   folderButtonBarButtonItem,
                                                   midSpacer,
                                                   flagBarButtonItem,
-                                                  largeSpacer,
+                                                  midSpacer,
                                                   deleteButtonBarButtonItem]
         } else {
             navigationItem.leftBarButtonItems = []
