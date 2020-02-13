@@ -19,6 +19,7 @@ extension KeySyncWizardViewController {
 
 final class KeySyncWizardViewController: PEPPageViewControllerBase {
     static let storyboardId = "KeySyncWizardViewController"
+    private(set) var isNewGroup = true
 
     // MARK: - Life Cycle
 
@@ -93,6 +94,7 @@ extension KeySyncWizardViewController {
                        meFPR: String,
                        partnerFPR: String,
                        isNewGroup: Bool) {
+        self.isNewGroup = isNewGroup
         self.views = wizardViews(pageCompletion: pageCompletion,
                                  meFPR: meFPR,
                                  partnerFPR: partnerFPR,
@@ -148,7 +150,7 @@ extension KeySyncWizardViewController {
             let nextButtonTitle = NSLocalizedString("Next",
                                                     comment: "keySyncWizard intro view Next button title")
             let introNextAction = PEPUIAlertAction(title: nextButtonTitle,
-                                                   style: .pEpDarkGrey,
+                                                   style: .pEpTextDark,
                                                    handler: { [weak self] alert in
                                                     self?.goToNextView()
             })
@@ -190,9 +192,9 @@ extension KeySyncWizardViewController {
             }
         }
 
-        handShakeViewController.finderPrints(meFPR: meFPR,
-                                             partnerFPR: partnerFPR,
-                                             isNewGroup: isNewGroup)
+        handShakeViewController.setFingerPrints(meFPR: meFPR,
+                                                partnerFPR: partnerFPR,
+                                                isNewGroup: isNewGroup)
 
         return handShakeViewController
     }
@@ -218,7 +220,7 @@ extension KeySyncWizardViewController {
             let animationCanceButtonlTitle = NSLocalizedString("Cancel",
                                                               comment: "keySyncWizard animation view cancel button title")
             let animationCancelAction = PEPUIAlertAction(title: animationCanceButtonlTitle,
-                                                        style: .pEpDarkGrey,
+                                                        style: .pEpTextDark,
                                                         handler: { [weak self] alert in
                                                             pageCompletion(.cancel)
                                                             self?.dismiss()
@@ -243,7 +245,7 @@ extension KeySyncWizardViewController {
         let completionLeaveTitle = NSLocalizedString("Leave",
                                                       comment: "keySyncWizard completion view leave button title")
         let completionLeaveAction = PEPUIAlertAction(title: completionLeaveTitle,
-                                                      style: .pEpRed,
+                                                      style: .pEpGreyText,
                                                       handler: { [weak self] alert in
                                                         self?.leaveDeviceGroup()
                                                         self?.dismiss()
@@ -252,7 +254,7 @@ extension KeySyncWizardViewController {
         let completionOKTitle = NSLocalizedString("OK",
                                                    comment: "keySyncWizard completion view OK button title")
         let completionOKlAction = PEPUIAlertAction(title: completionOKTitle,
-                                                   style: .pEpDarkGrey,
+                                                   style: .pEpTextDark,
                                                    handler: { [weak self] alert in
                                                     self?.dismiss()
         })

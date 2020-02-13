@@ -80,13 +80,13 @@ extension KeySyncErrorView {
 
         let errorTryAaginTitle = NSLocalizedString("Try Again",
                                                    comment: "keySyncWizard error view Try Again button title")
-        let errorTryAaginAction = PEPUIAlertAction(title: errorTryAaginTitle,
-                                                   style: .pEpDarkGrey,
+        let errorTryAgainAction = PEPUIAlertAction(title: errorTryAaginTitle,
+                                                   style: .pEpTextDark,
                                                    handler: { alert in
                                                     completion?(.tryAgain)
         })
         pepAlertViewController?.add(action: errorNotNowAction)
-        pepAlertViewController?.add(action: errorTryAaginAction)
+        pepAlertViewController?.add(action: errorTryAgainAction)
 
         pepAlertViewController?.modalPresentationStyle = .overFullScreen
         pepAlertViewController?.modalTransitionStyle = .crossDissolve

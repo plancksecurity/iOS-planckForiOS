@@ -21,7 +21,7 @@ final class KeySyncHandshakeViewModel {
     }
 
     private struct Localized {
-        struct message {
+        struct Message {
             static let twoDevices = NSLocalizedString("Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?",
                                                comment: "keySync handshake alert message for two devices in group")
             static let moreThanTwoDevices = NSLocalizedString("Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?",
@@ -74,9 +74,9 @@ final class KeySyncHandshakeViewModel {
         }
     }
 
-    func fingerPrints(meFPR: String?,
-                      partnerFPR: String?,
-                      isNewGroup: Bool) {
+    func setFingerPrints(meFPR: String?,
+                         partnerFPR: String?,
+                         isNewGroup: Bool) {
         self.meFPR = meFPR
         self.partnerFPR = partnerFPR
         self.isNewGroup = isNewGroup
@@ -90,8 +90,8 @@ final class KeySyncHandshakeViewModel {
 
     func getMessage() -> String {
         return isNewGroup
-            ? Localized.message.twoDevices
-            : Localized.message.moreThanTwoDevices
+            ? Localized.Message.twoDevices
+            : Localized.Message.moreThanTwoDevices
     }
 }
 
