@@ -14,13 +14,18 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
 
     static let storyboardId = "KeySyncHandshakeViewController"
-    
+
+    @IBOutlet weak var keySyncWordsContainer: UIView! {
+        didSet {
+            keySyncWordsContainer.backgroundColor = .white
+            keySyncWordsContainer.layer.borderColor = UIColor.pEpGreyLines.cgColor
+            keySyncWordsContainer.layer.cornerRadius = 3
+            keySyncWordsContainer.layer.borderWidth = 1
+        }
+    }
     @IBOutlet weak var keySyncWords: UILabel! {
         didSet {
-            keySyncWords.backgroundColor = .pEpLightBackground
-            keySyncWords.layer.borderColor = UIColor.pEpGreyLines.cgColor
-            keySyncWords.layer.cornerRadius = 3
-            keySyncWords.layer.borderWidth = 1
+            keySyncWords.backgroundColor = .white
         }
     }
     @IBOutlet weak var contentView: KeyInputView! {
@@ -45,20 +50,23 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
     @IBOutlet weak var accept: UIButton! {
         didSet {
+            setFont(button: accept)
             accept.setTitleColor(.pEpGreen, for: .normal)
-            accept.setTitle(NSLocalizedString("Sync", comment: "accept hand shake sync button"), for: .normal)
+            accept.setTitle(NSLocalizedString("Confirm", comment: "accept hand shake confirm button"), for: .normal)
             accept.backgroundColor = .pEpGreyBackground
         }
     }
     @IBOutlet weak var decline: UIButton! {
         didSet {
+            setFont(button: decline)
             decline.setTitleColor(.pEpRed, for: .normal)
-            decline.setTitle(NSLocalizedString("Decline", comment: "decline button"), for: .normal)
+            decline.setTitle(NSLocalizedString("Reject", comment: "reject hand shake button"), for: .normal)
             decline.backgroundColor = .pEpGreyBackground
         }
     }
     @IBOutlet weak var cancel: UIButton! {
         didSet {
+            setFont(button: cancel)
             cancel.setTitleColor(.pEpGreyText, for: .normal)
             cancel.setTitle(NSLocalizedString("Not Now", comment: "not now button"), for: .normal)
             cancel.backgroundColor = .pEpGreyBackground
@@ -95,6 +103,10 @@ final class KeySyncHandshakeViewController: UIViewController {
         self.meFPR = meFPR
         self.partnerFPR = partnerFPR
         self.isNewGroup = isNewGroup
+    }
+
+    private func setFont(button: UIButton) {
+        button.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
     }
 
     @IBAction func didPress(_ sender: UIButton) {

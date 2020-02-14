@@ -68,7 +68,8 @@ extension KeySyncErrorView {
             PEPAlertViewController.fromStoryboard(title: errorTitle,
                                                   message: errorMessage,
                                                   paintPEPInTitle: true,
-                                                  image: [errorImage])
+                                                  image: [errorImage],
+                                                  viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard))
 
         let errorNotNowTitle = NSLocalizedString("Not now",
                                                  comment: "keySyncWizard error view Not Now button title")

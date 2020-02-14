@@ -131,11 +131,13 @@ extension KeySyncWizardViewController {
             let keySyncIntroMessage = introMessage(isNewGroup: isNewGroup)
             let keySyncIntroImage = isNewGroup ? #imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device") : #imageLiteral(resourceName: "pEpForiOS-icon-sync-3rd-device")
 
-            guard let introView = PEPAlertViewController.fromStoryboard(title: keySyncIntroTitle,
-                                                                        message: keySyncIntroMessage,
-                                                                        paintPEPInTitle: true,
-                                                                        image: [keySyncIntroImage]) else {
-                                                                            return nil
+            guard let introView =
+                PEPAlertViewController.fromStoryboard(title: keySyncIntroTitle,
+                                                      message: keySyncIntroMessage,
+                                                      paintPEPInTitle: true,
+                                                      image: [keySyncIntroImage],
+                                                      viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard)) else {
+                                                        return nil
             }
 
             let notNowButtonTitle = NSLocalizedString("Not Now",
@@ -215,7 +217,8 @@ extension KeySyncWizardViewController {
                 PEPAlertViewController.fromStoryboard(title: animationTitle,
                                                       message: animationMessage,
                                                       paintPEPInTitle: true,
-                                                      image: animationImages)
+                                                      image: animationImages,
+                                                      viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard))
 
             let animationCanceButtonlTitle = NSLocalizedString("Cancel",
                                                               comment: "keySyncWizard animation view cancel button title")
@@ -240,7 +243,8 @@ extension KeySyncWizardViewController {
             PEPAlertViewController.fromStoryboard(title: completionTitle,
                                                   message: completionMessage,
                                                   paintPEPInTitle: true,
-                                                  image: [completionImage])
+                                                  image: [completionImage],
+                                                  viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard))
 
         let completionLeaveTitle = NSLocalizedString("Leave",
                                                       comment: "keySyncWizard completion view leave button title")

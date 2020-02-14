@@ -148,9 +148,6 @@
 /* Settings: Cell (button) title to view app credits */
 "Credits" = "Credits";
 
-/* decline button */
-"Decline" = "Decline";
-
 /* Default Account Setting Section Title
    Settings: Cell (button) title to view default account setting */
 "Default Account" = "Default Account";
@@ -550,7 +547,10 @@
 "Subject:" = "Subject:";
 
 /* accept hand shake sync button */
-"Sync" = "Sync";
+"Confirm" = "Confirm";
+
+/* decline hand shake sync button */
+"Reject" = "Reject";
 
 /* error message for .accountExistence */
 "The account already exists" = "This account already exists";

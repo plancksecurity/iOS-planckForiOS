@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -110,10 +110,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fiE-pm-mWd" customClass="KeyInputView" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="57.5" y="125" width="260" height="417.5"/>
+                                <rect key="frame" x="57.5" y="117" width="260" height="433.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="YMa-Kc-JoR">
-                                        <rect key="frame" x="0.0" y="10" width="260" height="407.5"/>
+                                        <rect key="frame" x="0.0" y="10" width="260" height="423.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="htI-ge-ZQj">
                                                 <rect key="frame" x="12" y="0.0" width="236" height="30"/>
@@ -152,19 +152,33 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="GC3-wG-GHD">
-                                                <rect key="frame" x="12" y="67" width="236" height="284.5"/>
-                                                <gestureRecognizers/>
-                                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                                <connections>
-                                                    <outletCollection property="gestureRecognizers" destination="qFT-Cr-cyd" appends="YES" id="Qd8-tn-R83"/>
-                                                </connections>
-                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lPc-Pm-3dz">
+                                                <rect key="frame" x="12" y="67" width="236" height="300.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="GC3-wG-GHD">
+                                                        <rect key="frame" x="8" y="8" width="220" height="284.5"/>
+                                                        <gestureRecognizers/>
+                                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <connections>
+                                                            <outletCollection property="gestureRecognizers" destination="qFT-Cr-cyd" appends="YES" id="Qd8-tn-R83"/>
+                                                        </connections>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="GC3-wG-GHD" firstAttribute="leading" secondItem="lPc-Pm-3dz" secondAttribute="leading" constant="8" id="Df7-Tf-iiZ"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="128" id="VE1-uB-34b"/>
+                                                    <constraint firstItem="GC3-wG-GHD" firstAttribute="top" secondItem="lPc-Pm-3dz" secondAttribute="top" constant="8" id="XDu-Po-47T"/>
+                                                    <constraint firstAttribute="bottom" secondItem="GC3-wG-GHD" secondAttribute="bottom" priority="250" constant="8" id="dpM-fe-GgO"/>
+                                                    <constraint firstAttribute="trailing" secondItem="GC3-wG-GHD" secondAttribute="trailing" constant="8" id="sxa-vo-oqu"/>
+                                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="GC3-wG-GHD" secondAttribute="bottom" constant="8" id="vCe-ba-CGM"/>
+                                                </constraints>
+                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FhS-sc-rLm">
-                                                <rect key="frame" x="0.0" y="361.5" width="260" height="46"/>
+                                                <rect key="frame" x="0.0" y="377.5" width="260" height="46"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="H3i-qp-hfc">
                                                         <rect key="frame" x="0.0" y="1" width="260" height="45"/>
@@ -210,12 +224,12 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="htI-ge-ZQj" firstAttribute="leading" secondItem="YMa-Kc-JoR" secondAttribute="leading" constant="12" id="BcI-Ei-xIk"/>
-                                            <constraint firstAttribute="trailing" secondItem="GC3-wG-GHD" secondAttribute="trailing" constant="12" id="Lxa-Jg-VAB"/>
-                                            <constraint firstItem="GC3-wG-GHD" firstAttribute="leading" secondItem="YMa-Kc-JoR" secondAttribute="leading" constant="12" id="QeN-14-1s4"/>
+                                            <constraint firstAttribute="trailing" secondItem="lPc-Pm-3dz" secondAttribute="trailing" constant="12" id="QiI-pB-L6V"/>
                                             <constraint firstAttribute="trailing" secondItem="rPi-Px-Pyp" secondAttribute="trailing" constant="12" id="Te7-kU-Xea"/>
                                             <constraint firstAttribute="trailing" secondItem="FhS-sc-rLm" secondAttribute="trailing" id="UK3-Z6-QHQ"/>
                                             <constraint firstAttribute="trailing" secondItem="htI-ge-ZQj" secondAttribute="trailing" constant="12" id="Uu6-LM-wji"/>
                                             <constraint firstItem="FhS-sc-rLm" firstAttribute="leading" secondItem="YMa-Kc-JoR" secondAttribute="leading" id="fIH-2B-tWq"/>
+                                            <constraint firstItem="lPc-Pm-3dz" firstAttribute="leading" secondItem="YMa-Kc-JoR" secondAttribute="leading" constant="12" id="s8f-K5-SxR"/>
                                             <constraint firstItem="rPi-Px-Pyp" firstAttribute="leading" secondItem="YMa-Kc-JoR" secondAttribute="leading" constant="12" id="w6P-ue-dqy"/>
                                         </constraints>
                                     </stackView>
@@ -252,6 +266,7 @@
                         <outlet property="contentView" destination="fiE-pm-mWd" id="eNm-5G-7Xa"/>
                         <outlet property="decline" destination="Rgh-E1-f1w" id="h3F-j9-O5m"/>
                         <outlet property="keySyncWords" destination="GC3-wG-GHD" id="D6t-PC-XAb"/>
+                        <outlet property="keySyncWordsContainer" destination="lPc-Pm-3dz" id="oJ2-0n-RPA"/>
                         <outlet property="message" destination="rPi-Px-Pyp" id="Pyb-o1-Nmp"/>
                     </connections>
                 </viewController>
@@ -355,7 +370,7 @@
                                             <constraint firstItem="nKL-6F-zBf" firstAttribute="leading" secondItem="USV-ch-gmd" secondAttribute="leading" constant="12" id="cfA-sx-mMG"/>
                                             <constraint firstItem="KYt-Qv-FPp" firstAttribute="leading" secondItem="USV-ch-gmd" secondAttribute="leading" constant="12" id="oxG-8s-X7z"/>
                                             <constraint firstAttribute="trailing" secondItem="66h-xV-F9x" secondAttribute="trailing" id="u49-Op-qNm"/>
-                                            <constraint firstItem="tFF-uc-upe" firstAttribute="leading" secondItem="USV-ch-gmd" secondAttribute="leading" constant="45" id="yyv-7b-8MQ"/>
+                                            <constraint firstItem="tFF-uc-upe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="USV-ch-gmd" secondAttribute="leading" constant="45" id="yyv-7b-8MQ"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
@@ -385,9 +400,11 @@
                     </view>
                     <connections>
                         <outlet property="alertImageView" destination="tFF-uc-upe" id="eBz-ke-eZc"/>
+                        <outlet property="alertImageViewHeightConstraint" destination="8dS-9f-COB" id="XCB-Lf-Idg"/>
                         <outlet property="alertMessage" destination="KYt-Qv-FPp" id="oQ3-k3-gkW"/>
                         <outlet property="alertTitle" destination="kNd-Jx-X9l" id="eVk-uI-1Ci"/>
-                        <outlet property="butonsStackView" destination="8Bk-30-sb6" id="dhe-o3-OCn"/>
+                        <outlet property="alertTitleTopViewHeightConstraint" destination="4EI-3w-tJx" id="DUD-0J-pcX"/>
+                        <outlet property="buttonsStackView" destination="8Bk-30-sb6" id="dhe-o3-OCn"/>
                         <outlet property="buttonsView" destination="66h-xV-F9x" id="EGD-4m-7KG"/>
                     </connections>
                 </viewController>
