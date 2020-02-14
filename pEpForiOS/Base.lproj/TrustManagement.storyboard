@@ -114,14 +114,14 @@
                                                             <rect key="frame" x="0.0" y="90" width="728" height="20.5"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" text="Your communication partner is mistrusted." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HIb-Ji-yfV" userLabel="PrivacyStatusDescription">
-                                                                    <rect key="frame" x="8" y="0.0" width="712" height="20.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="720" height="20.5"/>
                                                                     <accessibility key="accessibilityConfiguration" identifier="privacyStatusDescription"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                             </subviews>
-                                                            <edgeInsets key="layoutMargins" top="0.0" left="8" bottom="0.0" right="8"/>
+                                                            <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="8"/>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="RT3-1U-A8N" userLabel="TrustwordsStackView">
                                                             <rect key="frame" x="0.0" y="130.5" width="728" height="50"/>
@@ -497,8 +497,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="TrustManagementTableView" destination="crl-YO-ia8" id="hiU-eM-DW8"/>
                         <outlet property="optionsButton" destination="zNZ-mq-ElZ" id="J6G-jk-mG0"/>
-                        <outlet property="trustManagementTableView" destination="crl-YO-ia8" id="hiU-eM-DW8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OAD-MK-tHj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
