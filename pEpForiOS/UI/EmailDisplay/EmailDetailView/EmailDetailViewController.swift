@@ -185,7 +185,7 @@ extension EmailDetailViewController {
                                 forCellWithReuseIdentifier: EmailDetailViewController.cellId)
     }
 
-    private func showNextIfAny() {
+    @objc private func showNextIfAny() {
         guard
             let indexPathForCurrentlyVisibleCell = indexPathOfCurrentlyVisibleCell,
             thereIsANextMessageToShow
@@ -198,7 +198,7 @@ extension EmailDetailViewController {
         scroll(to: nextIndexPath)
     }
 
-    private func showPreviousIfAny() {
+    @objc private func showPreviousIfAny() {
         guard
             let indexPathForCurrentlyVisibleCell = indexPathOfCurrentlyVisibleCell,
             thereIsAPreviousMessageToShow
@@ -771,11 +771,13 @@ extension EmailDetailViewController {
             let downButton = UIButton(frame: nextPrevButtonSize)
             let downImage = UIImage(named: "chevron-icon-down")
             downButton.setBackgroundImage(downImage, for: .normal)
+            downButton.addTarget(self, action: #selector(showNextIfAny), for: .touchUpInside)
 
             //Up
             let upButton = UIButton(frame: nextPrevButtonSize)
             let upImage =  UIImage(named: "chevron-icon-up")
             upButton.setBackgroundImage(upImage, for: .normal)
+            upButton.addTarget(self, action: #selector(showPreviousIfAny), for: .touchUpInside)
 
             //Spacer
             let defaultSpacerWidth: CGFloat = 8.0
