@@ -8,18 +8,19 @@
 
 import XCTest
 @testable import pEpForiOS
-@testable import MessageModel
+import MessageModel
 
 class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     var settingsVM : SettingsViewModel!
 
     func givenThereAreTwoAccounts() {
-        guard let account = SecretTestData().createWorkingAccount() else {
+        guard let account = SecretTestData().createWorkingAccount(number: 1) else {
             XCTFail()
             return
         }
         account.save()
+        
     }
 
     //Number of sections corresponding to SettingsViewModelV2.SectionType count
