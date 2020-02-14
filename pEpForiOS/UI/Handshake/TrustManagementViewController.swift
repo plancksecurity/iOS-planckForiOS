@@ -16,16 +16,24 @@ class TrustManagementViewController: BaseViewController {
 
     @IBOutlet weak var trustManagementTableView: UITableView!
     @IBOutlet weak var optionsButton: UIBarButtonItem!
-    
+    var shouldShowOptionsButton: Bool = false
+
     var viewModel : TrustManagementViewModel?
     override func viewDidLoad() {
         super.viewDidLoad()
+
         guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("The viewModel must not be nil")
             return
         }
         setLeftBarButton()
-        optionsButton.title = NSLocalizedString("Options", comment: "Options")
+
+        if (!shouldShowOptionsButton) {
+            navigationItem.rightBarButtonItems?.removeAll(where: {$0 == optionsButton})
+        } else {
+            optionsButton.title = NSLocalizedString("Options", comment: "Options")
+        }
+
         viewModel.trustManagementViewModelDelegate = self
     }
 
@@ -264,10 +272,19 @@ extension TrustManagementViewController: TrustManagementTableViewCellDelegate {
 
 
 extension TrustManagementViewController {
+    
+    /// This method configures the layout for the provided cell.
+    /// We use 2 different cells: one for the split view the other for iphone portrait view.
+    /// The layout is different, so different UI structures are used.
+    /// 
+    /// - Parameters:
+    ///   - identifier: As we handle two different cells, the identifier is required in order to set the layout properly.
+    ///   - row: The row to get information to configure the cell.
+    ///   - cell: The cell to be configured.
+    ///   - indexPath: The indexPath of the row, to get the trustwords.
     private func configureTrustwords(_ identifier: String, _ row: TrustManagementViewModel.Row, _ cell: TrustManagementTableViewCell, _ indexPath: IndexPath) {
         ///Yellow means secure but not trusted.
         ///That means that's the only case must display the trustwords
-        
         if identifier == onlyMasterCellIdentifier {
             if row.color == .yellow {
                 setTrustwords(for: cell, at: indexPath, longMode: row.longTrustwords)

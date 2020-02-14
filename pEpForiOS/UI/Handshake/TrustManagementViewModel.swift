@@ -10,6 +10,8 @@ import Foundation
 import MessageModel
 import PEPObjCAdapterFramework
 
+typealias CompletionBlock = () -> ()
+
 /// Handshake View Mode Delegate
 protocol TrustManagementViewModelDelegate: class {
     /// Delegate method to notify that shake's action has been performed
@@ -129,9 +131,13 @@ final class TrustManagementViewModel {
         rows[indexPath.row].fingerprint = fingerprints
         rows[indexPath.row].forceRed = true
         handshakeUtil?.denyTrust(for: identity)
-        reevaluateAndUpdate()
-        trustManagementViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
-        
+        reevaluateAndUpdate { [weak self] in
+            guard let me = self else {
+                Log.shared.error("Lost myself")
+                return
+            }
+            me.trustManagementViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
+        }
     }
     
     /// Confirm the handshake
@@ -168,6 +174,7 @@ final class TrustManagementViewModel {
     /// Returns the list of languages available for that row.
     public func handleChangeLanguagePressed() -> [String] {
         guard let list = handshakeUtil?.languagesList() else {
+            Log.shared.error("The list of languages could be retrieved.")
             return [String]()
         }
         return list
@@ -221,13 +228,13 @@ final class TrustManagementViewModel {
 
     ///MARK: - Private
 
-    private func reevaluateAndUpdate() {
+    private func reevaluateAndUpdate(_ callback :  CompletionBlock? = nil) {
         session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.error("Lost myself - The message will not be reevaluated")
                 return
             }
-            RatingReEvaluator.reevaluate(message: me.message)
+            RatingReEvaluator.reevaluate(message: me.message, callback: callback)
         }
     }
     

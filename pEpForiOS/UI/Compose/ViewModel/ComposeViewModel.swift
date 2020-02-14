@@ -672,7 +672,21 @@ extension ComposeViewModel {
     func canDoHandshake() -> Bool {
         return state.canHandshake()
     }
+    
+    func someMethod(block: @escaping (Message) -> ()) {
+        let session = Session()
+        let safeState = state.makeSafe(forSession: session)
+        session.performAndWait {
+            guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
+                Log.shared.errorAndCrash("No message")
+                return
+            }
+
+            block(msg)
+        }
+    }
 }
+
 
 // MARK: - Cell-ViewModel Delegates
 

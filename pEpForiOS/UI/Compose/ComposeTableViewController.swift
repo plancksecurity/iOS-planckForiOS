@@ -322,8 +322,12 @@ extension ComposeTableViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("No vm")
                 return
             }
+
             destination.appConfig = appConfig
-            vm.setup(handshakeViewController: destination)
+            destination.shouldShowOptionsButton = true
+            vm.someMethod { (message) in
+                destination.viewModel = TrustManagementViewModel(message: message)
+            }
         }
     }
 }
