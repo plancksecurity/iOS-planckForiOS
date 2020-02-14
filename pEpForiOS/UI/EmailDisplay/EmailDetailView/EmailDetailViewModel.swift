@@ -180,7 +180,7 @@ class EmailDetailViewModel: EmailDisplayViewModel {
             Log.shared.errorAndCrash("No msg")
             return false
         }
-        let handshakeCombos = HandshakeUtil().handshakeCombinations(message: message)
+        let handshakeCombos = TrustManagementUtil().handshakeCombinations(message: message)
         guard !handshakeCombos.isEmpty else {
             return false
         }
@@ -237,7 +237,7 @@ extension EmailDetailViewModel {
             Log.shared.errorAndCrash("No msg")
             return false
         }
-        let handshakeCombos = HandshakeUtil().handshakeCombinations(message: message)
+        let handshakeCombos = TrustManagementUtil().handshakeCombinations(message: message)
         guard !handshakeCombos.isEmpty else {
             return false
         }

@@ -112,7 +112,7 @@ final class TrustManagementViewModel {
     /// Constructor
     /// - Parameters:
     ///   - identities: The identities to handshake
-    public init(message : Message, handshakeUtil: TrustManagementUtilProtocol? = HandshakeUtil()) {
+    public init(message : Message, handshakeUtil: TrustManagementUtilProtocol? = TrustManagementUtil()) {
         self.message = message
         self.handshakeUtil = handshakeUtil
         generateRows()

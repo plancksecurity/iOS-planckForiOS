@@ -245,7 +245,7 @@ extension ComposeViewModel.ComposeViewModelState {
             allIdenties.append(from)
             allIdenties.append(contentsOf: ccRecipients)
             allIdenties.append(contentsOf: bccRecipients)
-            return HandshakeUtil().handshakeCombinations(identities: allIdenties)
+            return TrustManagementUtil().handshakeCombinations(identities: allIdenties)
         } else {
             return []
         }
