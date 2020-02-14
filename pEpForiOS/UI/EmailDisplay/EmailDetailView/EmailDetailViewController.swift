@@ -789,10 +789,10 @@ extension EmailDetailViewController {
             navigationItem.leftBarButtonItems = [downBarButtonItem, spacer, upBarButtonItem]
             
             let midSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-            midSpacer.width = UIDevice.current.orientation.isPortrait ? 9 : 18
-
+            midSpacer.width = 18
+            
             let largeSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-            largeSpacer.width = UIDevice.current.orientation.isPortrait ? 11 : 22
+            largeSpacer.width = 22
 
             //Reply
             let replyImage = UIImage(named: "pEpForiOS-icon-reply")
