@@ -8,14 +8,14 @@
 
 import XCTest
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     var settingsVM : SettingsViewModel!
 
     func givenThereAreTwoAccounts() {
-        guard let account = SecretTestData().createWorkingAccount(number: 1) else {
+        guard let account = SecretTestData().createWorkingAccount() else {
             XCTFail()
             return
         }
