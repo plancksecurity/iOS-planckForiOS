@@ -82,7 +82,7 @@ final class SettingsViewModel {
         let row = section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
         case .account, .defaultAccount, .setOwnKey, .credits, .extraKeys, .trustedServer,
-             .accountsToSync, .resetTrust:
+             .resetTrust:
             return "SettingsCell"
         case .resetAccounts:
             return "SettingsActionCell"
@@ -244,12 +244,11 @@ extension SettingsViewModel {
         case .pEpSync:
             rows.append(generateSwitchRow(type: .pEpSync, isDangerous: false, isOn: KeySyncStatus) { [weak self] (value) in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(message: "Lost myself")
+                    Log.shared.lostMySelf()
                     return
                 }
                 me.PEPSyncUpdate(to: value)
             })
-            rows.append(generateNavigationRow(type: .accountsToSync, isDangerous: false))
         case .contacts:
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
         case .companyFeatures:
@@ -359,9 +358,6 @@ extension SettingsViewModel {
         case .extraKeys:
             return NSLocalizedString("Extra Keys",
                                      comment: "Settings: Cell (button) title to view Extra Keys setting")
-        case .accountsToSync:
-            return NSLocalizedString("Select accounts to sync",
-                                     comment: "Settings: Cell (button) title to view accounts to sync")
         case .resetTrust:
             return NSLocalizedString("Reset",
                                      comment: "Settings: cell (button) title to view the trust contacts option")
@@ -378,7 +374,7 @@ extension SettingsViewModel {
                                      comment: "setting row title: Unsecure reply warning")
         }
     }
-    
+
     /// Thie method provides the subtitle if needed.
     /// - Parameter type: The row type to get the proper title
     /// - Returns: The subtitle of the row.
@@ -386,7 +382,7 @@ extension SettingsViewModel {
         switch type {
         case .defaultAccount:
             return AppSettings.shared.defaultAccount
-        case .account, .accountsToSync, .credits, .extraKeys, .passiveMode, .pEpSync,
+        case .account, .credits, .extraKeys, .passiveMode, .pEpSync,
              .protectMessageSubject, .resetAccounts, .resetTrust, .setOwnKey, .trustedServer,
              .unsecureReplyWarningEnabled:
             return nil
@@ -486,7 +482,6 @@ extension SettingsViewModel {
         case protectMessageSubject
         case unsecureReplyWarningEnabled
         case pEpSync
-        case accountsToSync
         case resetTrust
         case extraKeys
     }

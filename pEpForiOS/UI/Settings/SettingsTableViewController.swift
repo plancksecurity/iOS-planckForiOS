@@ -108,7 +108,7 @@ extension SettingsTableViewController {
         switch row.identifier {
         case .account:
             return prepareSwipeTableViewCell(dequeuedCell, for: row)
-        case .resetAccounts, .accountsToSync, .resetTrust:
+        case .resetAccounts, .resetTrust:
             return prepareActionCell(dequeuedCell, for: row)
         case .defaultAccount, .setOwnKey, .credits, .trustedServer, .extraKeys:
             guard let row = row as? SettingsViewModel.NavigationRow else {
@@ -287,7 +287,6 @@ extension SettingsTableViewController {
         case segueShowSettingTrustedServers
         case segueExtraKeys
         case segueSetOwnKey
-        case seguePerAccountSync
         case noAccounts
         case ResetTrustSplitView
         case ResetTrust
@@ -315,8 +314,6 @@ extension SettingsTableViewController {
             return .segueShowSettingTrustedServers
         case .setOwnKey:
             return .segueSetOwnKey
-        case .accountsToSync:
-            return .seguePerAccountSync
         case .resetTrust:
             return .ResetTrust
         case .extraKeys:
@@ -353,8 +350,7 @@ extension SettingsTableViewController {
              .segueAddNewAccount,
              .sequeShowCredits,
              .ResetTrust,
-             .segueExtraKeys,
-             .seguePerAccountSync:
+             .segueExtraKeys:
             guard let destination = segue.destination as? BaseViewController else { return }
             destination.appConfig = self.appConfig
         case .none:
