@@ -20,7 +20,6 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
             return
         }
         account.save()
-        
     }
 
     //Number of sections corresponding to SettingsViewModelV2.SectionType count
