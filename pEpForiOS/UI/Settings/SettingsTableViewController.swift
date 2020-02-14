@@ -455,7 +455,7 @@ extension SettingsTableViewController {
     }
 }
 
-// MARK: - Switch Cell Delegate
+// MARK: - SwitchCellDelegate
 
 extension SettingsTableViewController: SwitchCellDelegate {
     func switchSettingCell(_ sender: SettingSwitchTableViewCell,
