@@ -441,7 +441,7 @@ extension SettingsTableViewController {
                                                                       comment: "keysync alert leave device group disable"),
                                              style: .pEpRed) { _ in
                                                 action(newValue)
-                                                alert?.dissmiss()
+                                                alert?.dismiss()
         }
         alert?.add(action: disableAction)
         return alert
