@@ -570,7 +570,7 @@ extension ComposeViewModel {
 extension ComposeViewModel {
     // There is no view model for HandshakeViewController yet, thus we are setting up the VC itself
     // as a workaround to avoid letting the VC know MessageModel
-    func setup(handshakeViewController: HandshakeViewController) {
+    func setup(handshakeViewController: TrustManagementViewController) {
         // We MUST use an independent Session here. We do not want the outer world to see it nor to
         //save somthinng from the state (Attachments, Identitie, ...) when saving the MainSession.
         let session = Session()

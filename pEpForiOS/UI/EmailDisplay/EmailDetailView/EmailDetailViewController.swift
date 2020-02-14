@@ -201,12 +201,12 @@ extension EmailDetailViewController {
     }
 
     @objc
-    private func showHandshakeView(gestureRecognizer: UITapGestureRecognizer? = nil) {
+    private func showTrustManagementView(gestureRecognizer: UITapGestureRecognizer? = nil) {
         if onlySplitViewMasterIsShown {
-            performSegue(withIdentifier: .segueHandshakeCollapsed, sender: self)
+            performSegue(withIdentifier: .segueTrustManagementCollapsed, sender: self)
 
         } else {
-            performSegue(withIdentifier: .segueHandshake, sender: self)
+            performSegue(withIdentifier: .segueTrustManagement, sender: self)
         }
     }
 
@@ -308,7 +308,7 @@ extension EmailDetailViewController {
 
         if vm.shouldShowPrivacyStatus(forItemAt: indexPath) {
             let tapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                              action: #selector(showHandshakeView(gestureRecognizer:)))
+                                                              action: #selector(showTrustManagementView(gestureRecognizer:)))
             ratingView.addGestureRecognizer(tapGestureRecognizer)
         }
     }
@@ -398,7 +398,7 @@ extension EmailDetailViewController {
                                         Log.shared.errorAndCrash(message: "lost myself")
                                         return
                                     }
-                                    me.showHandshakeView()
+                                    me.showTrustManagementView()
         }
 
         return action
@@ -542,8 +542,8 @@ extension EmailDetailViewController: SegueHandlerType {
         case segueReplyFrom
         case segueReplyAllForm
         case segueForward
-        case segueHandshake
-        case segueHandshakeCollapsed
+        case segueTrustManagement
+        case segueTrustManagementCollapsed
         case segueShowMoveToFolder
         case noSegue
     }
@@ -588,11 +588,11 @@ extension EmailDetailViewController: SegueHandlerType {
             }
             destination.appConfig = appConfig
             destination.viewModel = viewModel?.getMoveToFolderViewModel(forMessageRepresentedByItemAt: indexPath)
-        case .segueHandshake, .segueHandshakeCollapsed:
+        case .segueTrustManagement, .segueTrustManagementCollapsed:
             guard let nv = segue.destination as? UINavigationController,
-                let vc = nv.topViewController as? HandshakeViewController ,
-                let handshakeViewModel = viewModel?.hanshakeViewModel else {
-                    Log.shared.errorAndCrash("No DVC, No handshakeViewModel?")
+                let vc = nv.topViewController as? TrustManagementViewController ,
+                let trustManagementViewModel = viewModel?.hanshakeViewModel else {
+                    Log.shared.errorAndCrash("No DVC, No trustManagementViewModel?")
                     break
             }
 
@@ -608,7 +608,7 @@ extension EmailDetailViewController: SegueHandlerType {
                                                                   height: 0)
             
             vc.appConfig = appConfig
-            vc.viewModel = handshakeViewModel
+            vc.viewModel = trustManagementViewModel
 
             break
         case .noSegue:

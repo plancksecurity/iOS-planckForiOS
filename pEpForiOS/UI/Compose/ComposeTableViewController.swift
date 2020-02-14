@@ -186,7 +186,7 @@ extension ComposeTableViewController {
             return
         }
         if (vm.state.canHandshake()) {
-            self.performSegue(withIdentifier: .segueHandshake, sender: self)
+            self.performSegue(withIdentifier: .segueTrustManagement, sender: self)
         }
     }
 }
@@ -292,15 +292,15 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
 extension ComposeTableViewController: SegueHandlerType {
 
     enum SegueIdentifier: String {
-        case segueHandshake
+        case segueTrustManagement
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
-        case .segueHandshake:
+        case .segueTrustManagement:
             guard
                 let nc = segue.destination as? UINavigationController,
-                let destination = nc.rootViewController as? HandshakeViewController else {
+                let destination = nc.rootViewController as? TrustManagementViewController else {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }

@@ -9,27 +9,27 @@
 import UIKit
 
 /// Delegate to notify the events in the cell.
-protocol HandshakeTableViewCellDelegate: class {
+protocol TrustManagementTableViewCellDelegate: class {
     
     /// Delegate method to notify the language button has been pressed.
     /// - Parameter cell: The cell where the language button has been pressed
-    func languageButtonPressed(on cell: HandshakeTableViewCell)
+    func languageButtonPressed(on cell: TrustManagementTableViewCell)
     /// Delegate method to notify the decline button has been pressed.
     /// - Parameter cell: The cell where the decline button has been pressed
-    func declineButtonPressed(on cell: HandshakeTableViewCell)
+    func declineButtonPressed(on cell: TrustManagementTableViewCell)
     /// Delegate method to notify the confirm button has been pressed.
     /// - Parameter cell: The cell where the confirm button has been pressed
-    func confirmButtonPressed(on cell: HandshakeTableViewCell)
+    func confirmButtonPressed(on cell: TrustManagementTableViewCell)
     /// Delegate method to notify the reset button has been pressed.
     /// - Parameter cell: The cell where the reset button has been pressed
-    func resetButtonPressed(on cell: HandshakeTableViewCell)
+    func resetButtonPressed(on cell: TrustManagementTableViewCell)
     /// Delegate method to notify the trustwords label has been pressed.
     /// - Parameter cell: The cell where the trustwords label has been pressed
-    func trustwordsLabelPressed(on cell : HandshakeTableViewCell)
+    func trustwordsLabelPressed(on cell : TrustManagementTableViewCell)
 }
 
 /// UITableViewCell for handshake screen
-final class HandshakeTableViewCell: UITableViewCell {
+final class TrustManagementTableViewCell: UITableViewCell {
 
     //Content
     @IBOutlet weak var partnerImageView: UIImageView!
@@ -50,7 +50,7 @@ final class HandshakeTableViewCell: UITableViewCell {
     @IBOutlet weak var trustwordsStackView: UIStackView!
     @IBOutlet weak var trustwordsButtonsContainer: UIView!
     
-    weak var delegate : HandshakeTableViewCellDelegate?
+    weak var delegate : TrustManagementTableViewCellDelegate?
     @IBOutlet weak var rightSideStackView: UIStackView!
     
     override func awakeFromNib() {

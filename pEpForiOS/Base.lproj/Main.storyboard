@@ -345,8 +345,8 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" id="r2P-Ra-zWf"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="0Yg-lj-kVR"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="g1q-wK-tff"/>
-                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshake" id="CKh-jT-ski"/>
-                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshakeCollapsed" id="Gcx-48-ZRF"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueTrustManagement" id="CKh-jT-ski"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueTrustManagementCollapsed" id="Gcx-48-ZRF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NqX-Lg-wmy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -579,8 +579,8 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" id="1zD-EW-3fN"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="2fD-kL-Bvj"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" modalPresentationStyle="pageSheet" id="RTR-We-Kc1"/>
-                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshake" modalPresentationStyle="automatic" id="mZj-Mg-VzM"/>
-                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshakeCollapsed" modalPresentationStyle="fullScreen" id="0zl-tV-6Kr"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueTrustManagement" modalPresentationStyle="automatic" id="mZj-Mg-VzM"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueTrustManagementCollapsed" modalPresentationStyle="fullScreen" id="0zl-tV-6Kr"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -680,10 +680,10 @@
             </objects>
             <point key="canvasLocation" x="7911" y="-910"/>
         </scene>
-        <!--Handshake-->
+        <!--TrustManagement-->
         <scene sceneID="vNc-oF-Keh">
             <objects>
-                <viewControllerPlaceholder storyboardName="Handshake" id="Dbs-KG-RkX" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="TrustManagement" id="Dbs-KG-RkX" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vev-AJ-nPB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5522" y="-470"/>
@@ -947,7 +947,7 @@
                     <size key="freeformSize" width="375" height="800"/>
                     <connections>
                         <outlet property="sendButton" destination="yQg-rY-YPK" id="lhg-qw-PDF"/>
-                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshake" modalPresentationStyle="fullScreen" id="JbP-D9-Vpg"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueTrustManagement" modalPresentationStyle="fullScreen" id="JbP-D9-Vpg"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="te3-X0-7QD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -993,7 +993,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="g1q-wK-tff"/>
-        <segue reference="CKh-jT-ski"/>
+        <segue reference="Gcx-48-ZRF"/>
         <segue reference="0Yg-lj-kVR"/>
         <segue reference="HHz-at-Ehg"/>
     </inferredMetricsTieBreakers>

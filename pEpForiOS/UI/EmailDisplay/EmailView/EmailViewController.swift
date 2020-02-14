@@ -207,8 +207,8 @@ extension EmailViewController: SegueHandlerType {
         case segueReplyFrom
         case segueReplyAllForm
         case segueForward
-        case segueHandshake
-        case segueHandshakeCollapsed
+        case segueTrustManagement
+        case segueTrustManagementCollapsed
         case segueShowMoveToFolder
         case noSegue
     }
@@ -236,10 +236,10 @@ extension EmailViewController: SegueHandlerType {
             if let msg = message {
                 destination.viewModel = MoveToAccountViewModel(messages: [msg])
             }
-        case .segueHandshake, .segueHandshakeCollapsed:
+        case .segueTrustManagement, .segueTrustManagementCollapsed:
 
             guard let nv = segue.destination as? UINavigationController,
-                let vc = nv.topViewController as? HandshakeViewController else {
+                let vc = nv.topViewController as? TrustManagementViewController else {
                     Log.shared.errorAndCrash("No DVC?")
                     break
             }

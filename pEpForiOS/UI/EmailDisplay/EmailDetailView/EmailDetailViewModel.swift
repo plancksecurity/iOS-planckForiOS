@@ -28,7 +28,7 @@ protocol EmailDetailViewModelSelectionChangeDelegate: class {
 
 class EmailDetailViewModel: EmailDisplayViewModel {
     
-    weak var handshakeViewModelDelegate: HandshakeViewModelDelegate?
+    weak var trustManagementViewModelDelegate: TrustManagementViewModelDelegate?
     
     /// Used to figure out whether or not the currently displayed message has been decrypted while
     /// being shown to the user.
@@ -49,14 +49,14 @@ class EmailDetailViewModel: EmailDisplayViewModel {
     
     
     /// HanshakeViewModel getter
-    var hanshakeViewModel: HandshakeViewModel? {
+    var hanshakeViewModel: TrustManagementViewModel? {
         get {
             guard let message = lastShownMessage else {
                 Log.shared.error("Message not found")
                 return nil
             }
 
-            return HandshakeViewModel(message: message)
+            return TrustManagementViewModel(message: message)
         }
     }
 
