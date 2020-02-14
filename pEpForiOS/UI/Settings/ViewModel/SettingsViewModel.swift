@@ -86,7 +86,7 @@ final class SettingsViewModel {
             return "SettingsCell"
         case .resetAccounts:
             return "SettingsActionCell"
-        case .passiveMode, .protectMessageSubject, .pEpSync:
+        case .passiveMode, .protectMessageSubject, .pEpSync, .unsecureReplyWarningEnabled:
             return "switchOptionCell"
         }
     }
@@ -224,20 +224,22 @@ extension SettingsViewModel {
             rows.append(generateNavigationRow(type: .credits, isDangerous: false))
             rows.append(generateNavigationRow(type: .trustedServer, isDangerous: false))
             rows.append(generateNavigationRow(type: .setOwnKey, isDangerous: false))
-            rows.append(generateSwitchRow(type: .passiveMode, isDangerous: false,
-                                          isOn: passiveModeStatus) { [weak self] (value) in
-                                            guard let me = self else {
-                                                Log.shared.errorAndCrash(message: "Lost myself")
-                                                return
-                                            }
-                                            me.setPassiveMode(to: value)
+            rows.append(generateSwitchRow(type: .passiveMode,
+                                          isDangerous: false,
+                                          isOn: AppSettings.shared.passiveMode) { (value) in
+                                            AppSettings.shared.passiveMode = value
             })
-            rows.append(generateSwitchRow(type: .protectMessageSubject, isDangerous: false, isOn: protectedMessageStatus) { [weak self] (value) in
-                guard let me = self else {
-                    Log.shared.errorAndCrash(message: "Lost myself")
-                    return
-                }
-                me.setProtectMessageSubject(to: value)
+            rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
+                                          isDangerous: false,
+                                          isOn: AppSettings.shared.unsecureReplyWarningEnabled) {
+                                            (value) in
+                                            AppSettings.shared.unsecureReplyWarningEnabled = value
+            })
+            rows.append(generateSwitchRow(type: .protectMessageSubject,
+                                          isDangerous: false,
+                                          isOn: !AppSettings.shared.unencryptedSubjectEnabled) {
+                                            (value) in
+                                            AppSettings.shared.unencryptedSubjectEnabled = !value
             })
         case .pEpSync:
             rows.append(generateSwitchRow(type: .pEpSync, isDangerous: false, isOn: KeySyncStatus) { [weak self] (value) in
@@ -340,27 +342,40 @@ extension SettingsViewModel {
         case .account:
             return nil
         case .resetAccounts:
-            return NSLocalizedString("Reset All Identities", comment: "Settings: Cell (button) title for reset all identities")
+            return NSLocalizedString("Reset All Identities",
+                                     comment: "Settings: Cell (button) title for reset all identities")
         case .credits:
-            return NSLocalizedString("Credits", comment: "Settings: Cell (button) title to view app credits")
+            return NSLocalizedString("Credits",
+                                     comment: "Settings: Cell (button) title to view app credits")
         case .defaultAccount:
-            return NSLocalizedString("Default Account", comment: "Settings: Cell (button) title to view default account setting")
+            return NSLocalizedString("Default Account",
+                                     comment: "Settings: Cell (button) title to view default account setting")
         case .trustedServer:
-            return NSLocalizedString("Store Messages Securely", comment: "Settings: Cell (button) title to view default account setting")
+            return NSLocalizedString("Store Messages Securely",
+                                     comment: "Settings: Cell (button) title to view default account setting")
         case .setOwnKey:
-            return NSLocalizedString("Set Own Key", comment: "Settings: Cell (button) title for entering fingerprints that are made own keys")
+            return NSLocalizedString("Set Own Key",
+                                     comment: "Settings: Cell (button) title for entering fingerprints that are made own keys")
         case .extraKeys:
-            return NSLocalizedString("Extra Keys", comment: "Settings: Cell (button) title to view Extra Keys setting")
+            return NSLocalizedString("Extra Keys",
+                                     comment: "Settings: Cell (button) title to view Extra Keys setting")
         case .accountsToSync:
-            return NSLocalizedString("Select accounts to sync", comment: "Settings: Cell (button) title to view accounts to sync")
+            return NSLocalizedString("Select accounts to sync",
+                                     comment: "Settings: Cell (button) title to view accounts to sync")
         case .resetTrust:
-            return NSLocalizedString("Reset", comment: "Settings: cell (button) title to view the trust contacts option")
+            return NSLocalizedString("Reset",
+                                     comment: "Settings: cell (button) title to view the trust contacts option")
         case .passiveMode:
-            return NSLocalizedString("Enable passive mode", comment: "Passive mode title")
+            return NSLocalizedString("Enable passive mode",
+                                     comment: "Passive mode title")
         case .protectMessageSubject:
-            return NSLocalizedString("Protect Message Subject", comment: "title for subject protection")
+            return NSLocalizedString("Protect Message Subject",
+                                     comment: "title for subject protection")
         case .pEpSync:
-            return NSLocalizedString("Enable p≡p Sync", comment: "settings, enable thread view or not")
+        return NSLocalizedString("Enable p≡p Sync", comment: "settings, enable thread view or not")
+            case .unsecureReplyWarningEnabled:
+            return NSLocalizedString("Unsecure reply warning",
+                                     comment: "setting row title: Unsecure reply warning")
         }
     }
     
@@ -372,35 +387,12 @@ extension SettingsViewModel {
         case .defaultAccount:
             return AppSettings.shared.defaultAccount
         case .account, .accountsToSync, .credits, .extraKeys, .passiveMode, .pEpSync,
-             .protectMessageSubject, .resetAccounts, .resetTrust, .setOwnKey, .trustedServer:
+             .protectMessageSubject, .resetAccounts, .resetTrust, .setOwnKey, .trustedServer,
+             .unsecureReplyWarningEnabled:
             return nil
         }
     }
-    
-    ///This method sets the passive mode status according to the parameter value
-    /// - Parameter value: The new value of the passive mode status
-    private func setPassiveMode(to value: Bool) {
-        AppSettings.shared.passiveMode = value
-    }
-    
-    private var passiveModeStatus: Bool {
-        get {
-            AppSettings.shared.passiveMode
-        }
-    }
-    
-    ///This method sets the Protect Message Subject status according to the parameter value
-    /// - Parameter value: The new value of the Protect Message Subject status
-    private func setProtectMessageSubject(to value: Bool) {
-        AppSettings.shared.unencryptedSubjectEnabled = value
-    }
-    
-    private var protectedMessageStatus: Bool {
-        get {
-            AppSettings.shared.unencryptedSubjectEnabled
-        }
-    }
-    
+
     /// This method sets the pEp Sync status according to the parameter value
     /// - Parameter value: The new value of the pEp Sync status
     private func PEPSyncUpdate(to value: Bool) {
@@ -438,7 +430,7 @@ extension SettingsViewModel {
                     AppSettings.shared.keySyncEnabled = false
                 }
             } catch {
-                Log.shared.errorAndCrash("Fail to get account pEpSync state")
+                Log.shared.error("Fail to get account pEpSync state")
             }
         }
         
@@ -492,6 +484,7 @@ extension SettingsViewModel {
         case setOwnKey
         case passiveMode
         case protectMessageSubject
+        case unsecureReplyWarningEnabled
         case pEpSync
         case accountsToSync
         case resetTrust

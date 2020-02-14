@@ -97,13 +97,8 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
-    func dismiss() {
-        dismiss(animated: true, completion: nil)
-    }
-
     @IBAction func send() {
         viewModel?.handleUserClickedSendButton()
-        dismiss()
     }
 }
 
@@ -284,6 +279,25 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
 
     func documentAttachmentPickerDone() {
         self.setPreviousFocusAfterPicker()
+    }
+
+    func showTwoButtonAlert(withTitle title: String,
+                            message: String,
+                            cancelButtonText: String,
+                            positiveButtonText: String,
+                            cancelButtonAction: @escaping () -> Void,
+                            positiveButtonAction: @escaping () -> Void) {
+        UIUtils.showTwoButtonAlert(withTitle: title,
+                                   message: message,
+                                   cancelButtonText: cancelButtonText,
+                                   positiveButtonText: positiveButtonText,
+                                   cancelButtonAction: cancelButtonAction,
+                                   positiveButtonAction: positiveButtonAction,
+                                   inViewController: self)
+    }
+
+   func dismiss() {
+        dismiss(animated: true, completion: nil)
     }
 }
 

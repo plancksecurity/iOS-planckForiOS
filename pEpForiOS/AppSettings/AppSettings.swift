@@ -23,12 +23,14 @@ extension AppSettings {
     static private let keyExtraKeysEditable = "keyExtraKeysEditable"
     static private let keyShouldShowTutorialWizard = "keyShouldShowTutorialWizard"
     static private let keyUserHasBeenAskedForContactAccessPermissions = "keyUserHasBeenAskedForContactAccessPermissions"
+    static private let keyUnsecureReplyWarningEnabled = "keyUnsecureReplyWarningEnabled"
 }
 
 // MARK: - AppSettings
 
 /// Signleton representing and managing the App's settings.
 public final class AppSettings: KeySyncStateProvider {
+
     // MARK: - Singleton
     
     static public let shared = AppSettings()
@@ -50,7 +52,6 @@ public final class AppSettings: KeySyncStateProvider {
     public var isKeySyncEnabled: Bool {
         return keySyncEnabled
     }
-
 }
 
 // MARK: - Private
@@ -88,6 +89,7 @@ extension AppSettings {
         defaults[AppSettings.keyExtraKeysEditable] = false
         defaults[AppSettings.keyShouldShowTutorialWizard] = true
         defaults[AppSettings.keyUserHasBeenAskedForContactAccessPermissions] = false
+        defaults[AppSettings.keyUnsecureReplyWarningEnabled] = false
 
         AppSettings.userDefaults.register(defaults: defaults)
     }
@@ -205,6 +207,16 @@ extension AppSettings: AppSettingsProtocol {
         set {
             AppSettings.userDefaults.set(newValue.rawValue,
                                          forKey: AppSettings.keyLastKnowDeviceGroupStateRawValue)
+        }
+    }
+
+    public var unsecureReplyWarningEnabled: Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyUnsecureReplyWarningEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue,
+                                         forKey: AppSettings.keyUnsecureReplyWarningEnabled)
         }
     }
 }

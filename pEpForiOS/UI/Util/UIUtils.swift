@@ -53,6 +53,30 @@ struct UIUtils {
         vc.present(alertView, animated: true, completion: nil)
     }
 
+    static func showTwoButtonAlert(withTitle title: String,
+                                   message: String,
+                                   cancelButtonText: String = NSLocalizedString("Cancel",
+                                                                                comment: "Default cancel button text"),
+                                   positiveButtonText: String = NSLocalizedString("OK",
+                                                                                  comment: "Default positive button text"),
+                                   cancelButtonAction: @escaping ()->Void,
+                                   positiveButtonAction: @escaping () -> Void,
+                                   inViewController vc: UIViewController) {
+        let alertView = UIAlertController.pEpAlertController(title: title,
+                                                             message: message,
+                                                             preferredStyle: .alert)
+        alertView.addAction(UIAlertAction(title: positiveButtonText,
+                                          style: .default) { (alertAction) in
+                                            positiveButtonAction()
+        })
+        alertView.addAction(UIAlertAction(title: cancelButtonText,
+                                          style: .cancel) { (alertAction) in
+                                            cancelButtonAction()
+        })
+
+        vc.present(alertView, animated: true, completion: nil)
+    }
+
     // MARK: - Compose View
 
     /// Modally presents a "Compose New Mail" view.
