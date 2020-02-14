@@ -1,5 +1,5 @@
 //
-//  HandshakeViewModel.swift
+//  TrustManagementViewModelTest.swift
 //  pEpForiOSTests
 //
 //  Created by Martin Brude on 31/01/2020.
@@ -11,16 +11,16 @@ import CoreData
 @testable import MessageModel
 @testable import pEpForiOS
 
-class HandshakeViewModelTest: CoreDataDrivenTestBase {
+class TrustManagementViewModelTest: CoreDataDrivenTestBase {
     var selfIdentity : Identity?
-    var handshakeViewModel : HandshakeViewModel?
+    var trustManagementViewModel : TrustManagementViewModel?
     let numberOfRowsToGenerate = 1
     var identities = [Identity]()
-    let delegate = MockHandshakeViewModelHandler()
+    let delegate = MockTrustManagementViewModelHandler()
     
     override func setUp() {
         super.setUp()
-        
+        identities = [Identity]()
         // Generate rows to test the handshake feature
         for index in 0..<numberOfRowsToGenerate {
             let identity = SecretTestData().createWorkingCdIdentity(number: index,
@@ -35,14 +35,14 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
     
     override func tearDown() {
         super.tearDown()
-        handshakeViewModel = nil
+        trustManagementViewModel = nil
     }
     
     /// Test the number of generated rows is equal to the number of rows to generate
     func testNumberOfRows() {
         setupViewModel()
-        guard let numberOfRows = handshakeViewModel?.rows.count else {
-            XCTFail("The handshakeViewModel can't be nil")
+        guard let numberOfRows = trustManagementViewModel?.rows.count else {
+            XCTFail("The trustManagementViewModel can't be nil")
             return
         }
         XCTAssertEqual(numberOfRows, numberOfRowsToGenerate)
@@ -52,14 +52,14 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
     func testHandleRejectHandshakePressed() {
         let didDenyExpectation = expectation(description: "didDenyExpectation")
         let denyExpectation = expectation(description: "denyExpectation")
-        let util = HandshakeUtilMock(denyExpectation: denyExpectation)
-        let mockDelegate = MockHandshakeViewModelHandler(didDenyHandshakeExpectation: didDenyExpectation)
+        let util = TrustManagementUtilMock(denyExpectation: denyExpectation)
+        let mockDelegate = MockTrustManagementViewModelHandler(didDenyHandshakeExpectation: didDenyExpectation)
         
         setupViewModel(util: util)
-        handshakeViewModel?.handshakeViewModelDelegate = mockDelegate
+        trustManagementViewModel?.trustManagementViewModelDelegate = mockDelegate
         
         let firstItemPosition = IndexPath(item: 0, section: 0)
-        handshakeViewModel?.handleRejectHandshakePressed(at: firstItemPosition)
+        trustManagementViewModel?.handleRejectHandshakePressed(at: firstItemPosition)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
     
@@ -67,46 +67,46 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
     func testHandleConfirmHandshakePressed() {
         let confirmExpectation = expectation(description: "confirm")
         let didConfirmExpectation = expectation(description: "didConfirm")
-        let mockDelegate = MockHandshakeViewModelHandler(didConfirmHandshakeExpectation: didConfirmExpectation)
-        let util = HandshakeUtilMock(confirmExpectation: confirmExpectation)
+        let mockDelegate = MockTrustManagementViewModelHandler(didConfirmHandshakeExpectation: didConfirmExpectation)
+        let util = TrustManagementUtilMock(confirmExpectation: confirmExpectation)
         setupViewModel(util: util)
-        handshakeViewModel?.handshakeViewModelDelegate = mockDelegate
+        trustManagementViewModel?.trustManagementViewModelDelegate = mockDelegate
         
         let firstItemPosition = IndexPath(item: 0, section: 0)
-        handshakeViewModel?.handleConfirmHandshakePressed(at: firstItemPosition)
+        trustManagementViewModel?.handleConfirmHandshakePressed(at: firstItemPosition)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
     
-    // Test handshake reset: utils and delegate methods must be called.
+    // Test trustManagementViewModel reset: utils and delegate methods must be called.
     func testHandleResetPressed() {
         let didResetExpectation = expectation(description: "didReset")
         let resetExpectation = expectation(description: "reset")
-        let mockDelegate = MockHandshakeViewModelHandler(didResetHandshakeExpectation: didResetExpectation)
+        let mockDelegate = MockTrustManagementViewModelHandler(didResetHandshakeExpectation: didResetExpectation)
         let firstItemPosition = IndexPath(item: 0, section: 0)
         
-        setupViewModel(util: HandshakeUtilMock(resetExpectation: resetExpectation))
-        handshakeViewModel?.handshakeViewModelDelegate = mockDelegate
-        handshakeViewModel?.handleResetPressed(forRowAt: firstItemPosition)
+        setupViewModel(util: TrustManagementUtilMock(resetExpectation: resetExpectation))
+        trustManagementViewModel?.trustManagementViewModelDelegate = mockDelegate
+        trustManagementViewModel?.handleResetPressed(forRowAt: firstItemPosition)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
     
     //Test Change Language Pressed
     func testHandleChangeLanguagePressed() {
         let languagesExpectation = expectation(description: "languages")
-        setupViewModel(util: HandshakeUtilMock(languagesExpectation: languagesExpectation))
-        let languages = handshakeViewModel?.handleChangeLanguagePressed()
-        XCTAssertEqual(HandshakeUtilMock.languages, languages)
+        setupViewModel(util: TrustManagementUtilMock(languagesExpectation: languagesExpectation))
+        let languages = trustManagementViewModel?.handleChangeLanguagePressed()
+        XCTAssertEqual(TrustManagementUtilMock.languages, languages)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
     
     //Test Toogle Protection Pressed
     func testHandleToggleProtectionPressed() {
-        let mockDelegate = MockHandshakeViewModelHandler()
+        let mockDelegate = MockTrustManagementViewModelHandler()
         setupViewModel()
-        handshakeViewModel?.handshakeViewModelDelegate = mockDelegate
-        let before = handshakeViewModel?.message.pEpProtected
-        handshakeViewModel?.handleToggleProtectionPressed()
-        let after = handshakeViewModel?.message.pEpProtected
+        trustManagementViewModel?.trustManagementViewModelDelegate = mockDelegate
+        let before = trustManagementViewModel?.message.pEpProtected
+        trustManagementViewModel?.handleToggleProtectionPressed()
+        let after = trustManagementViewModel?.message.pEpProtected
         XCTAssertTrue(before != after)
     }
     
@@ -115,15 +115,15 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
         let firstItemPosition = IndexPath(item: 0, section: 0)
         let didEndShakeMotionExpectation = expectation(description: "didShake")
         let didConfirmExpectation = expectation(description: "didConfirm")
-        let mockDelegate = MockHandshakeViewModelHandler(didEndShakeMotionExpectation: didEndShakeMotionExpectation,
+        let mockDelegate = MockTrustManagementViewModelHandler(didEndShakeMotionExpectation: didEndShakeMotionExpectation,
                                                          didConfirmHandshakeExpectation: didConfirmExpectation)
         
         setupViewModel()
-        handshakeViewModel?.handshakeViewModelDelegate = mockDelegate
+        trustManagementViewModel?.trustManagementViewModelDelegate = mockDelegate
         
-        handshakeViewModel?.handleConfirmHandshakePressed(at: firstItemPosition)
+        trustManagementViewModel?.handleConfirmHandshakePressed(at: firstItemPosition)
         
-        handshakeViewModel?.shakeMotionDidEnd()
+        trustManagementViewModel?.shakeMotionDidEnd()
         waitForExpectations(timeout: TestUtil.waitTime)
     }
     
@@ -131,17 +131,17 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
         let firstItemPosition = IndexPath(item: 0, section: 0)
         let didShake = expectation(description: "didShake")
         let didDeny = expectation(description: "didDeny")
-        let mockDelegate = MockHandshakeViewModelHandler(didEndShakeMotionExpectation: didShake,
+        let mockDelegate = MockTrustManagementViewModelHandler(didEndShakeMotionExpectation: didShake,
                                                          didDenyHandshakeExpectation: didDeny)
         
         setupViewModel()
-        handshakeViewModel?.handshakeViewModelDelegate = mockDelegate
+        trustManagementViewModel?.trustManagementViewModelDelegate = mockDelegate
         
         //Reject handshake
-        handshakeViewModel?.handleRejectHandshakePressed(at: firstItemPosition)
+        trustManagementViewModel?.handleRejectHandshakePressed(at: firstItemPosition)
         
         //Gesture for undo
-        handshakeViewModel?.shakeMotionDidEnd()
+        trustManagementViewModel?.shakeMotionDidEnd()
         
         ///Verify reset has been called only once.
         waitForExpectations(timeout: TestUtil.waitTime)
@@ -151,11 +151,11 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
     func testGetTrustwords() {
         let getTWExp = expectation(description: "Get Trustwords Expectation")
         let firstItemPosition = IndexPath(item: 0, section: 0)
-        let handshakeMock = HandshakeUtilMock(getTrustwordsExpectation: getTWExp)
+        let handshakeMock = TrustManagementUtilMock(getTrustwordsExpectation: getTWExp)
         setupViewModel(util: handshakeMock)
         
-        let trustwords = handshakeViewModel?.generateTrustwords(forRowAt: firstItemPosition)
-        XCTAssertEqual(trustwords, HandshakeUtilMock.someTrustWords)
+        let trustwords = trustManagementViewModel?.generateTrustwords(forRowAt: firstItemPosition)
+        XCTAssertEqual(trustwords, TrustManagementUtilMock.someTrustWords)
         let identity = identities[firstItemPosition.row]
         XCTAssertEqual(identity, handshakeMock.identity)
         waitForExpectations(timeout: TestUtil.waitTime)
@@ -165,13 +165,13 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
     func testDidSelectLanguage() {
         setupViewModel()
         let didSelectLanguageExp = expectation(description: "didSelectLanguageExp")
-        let mockDelegate = MockHandshakeViewModelHandler(didSelectLanguageExpectation: didSelectLanguageExp)
-        handshakeViewModel?.handshakeViewModelDelegate = mockDelegate
+        let mockDelegate = MockTrustManagementViewModelHandler(didSelectLanguageExpectation: didSelectLanguageExp)
+        trustManagementViewModel?.trustManagementViewModelDelegate = mockDelegate
         let catalan = "ca"
         let firstItemPosition = IndexPath(item: 0, section: 0)
-        XCTAssertNotEqual(catalan, handshakeViewModel?.rows[firstItemPosition.row].currentLanguage)
-        handshakeViewModel?.didSelectLanguage(forRowAt: firstItemPosition, language: catalan)
-        XCTAssertEqual(catalan, handshakeViewModel?.rows[firstItemPosition.row].currentLanguage)
+        XCTAssertNotEqual(catalan, trustManagementViewModel?.rows[firstItemPosition.row].currentLanguage)
+        trustManagementViewModel?.didSelectLanguage(forRowAt: firstItemPosition, language: catalan)
+        XCTAssertEqual(catalan, trustManagementViewModel?.rows[firstItemPosition.row].currentLanguage)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
     
@@ -179,17 +179,17 @@ class HandshakeViewModelTest: CoreDataDrivenTestBase {
         let firstItemPosition = IndexPath(item: 0, section: 0)
 
         let didToogleLongTrustwordsExpectation = expectation(description: "didToogleLongTrustwords")
-        let mockDelegate = MockHandshakeViewModelHandler(didToogleLongTrustwordsExpectation: didToogleLongTrustwordsExpectation)
+        let mockDelegate = MockTrustManagementViewModelHandler(didToogleLongTrustwordsExpectation: didToogleLongTrustwordsExpectation)
         setupViewModel()
 
-        handshakeViewModel?.handshakeViewModelDelegate = mockDelegate
-        handshakeViewModel?.handleToggleLongTrustwords(forRowAt: firstItemPosition)
+        trustManagementViewModel?.trustManagementViewModelDelegate = mockDelegate
+        trustManagementViewModel?.handleToggleLongTrustwords(forRowAt: firstItemPosition)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
 }
 
-extension HandshakeViewModelTest {
-    private func setupViewModel(util : HandshakeUtilProtocol? = nil) {
+extension TrustManagementViewModelTest {
+    private func setupViewModel(util : TrustManagementUtilProtocol? = nil) {
         //Avoid collision with others identity numbers.
         let selfNumber = numberOfRowsToGenerate + 1
         
@@ -202,7 +202,7 @@ extension HandshakeViewModelTest {
         selfIdentity.save()
         moc.saveAndLogErrors()
         
-        if handshakeViewModel == nil {
+        if trustManagementViewModel == nil {
             let account1 = SecretTestData().createWorkingAccount(context: moc)
             account1.save()
             let folder1 = Folder(name: "inbox", parent: nil, account: account1, folderType: .inbox)
@@ -212,14 +212,14 @@ extension HandshakeViewModelTest {
             }
             
             let message = TestUtil.createMessage(inFolder: folder1, from:from, tos: [selfIdentity])
-            handshakeViewModel = HandshakeViewModel(message: message, handshakeUtil: util ?? HandshakeUtilMock())
+            trustManagementViewModel = TrustManagementViewModel(message: message, handshakeUtil: util ?? TrustManagementUtilMock())
         }
     }
 }
 
 ///MARK: - Mock Util Classes
 
-class HandshakeUtilMock: HandshakeUtilProtocol {
+class TrustManagementUtilMock: TrustManagementUtilProtocol {
     func handshakeCombinations(message: Message) -> [HandshakeCombination] {
         
         if let own = message.allIdentities.filter({$0.isMySelf == true}).first,
@@ -263,13 +263,13 @@ class HandshakeUtilMock: HandshakeUtilProtocol {
     
     func languagesList() -> [String]? {
         languagesExpectation?.fulfill()
-        return HandshakeUtilMock.languages
+        return TrustManagementUtilMock.languages
     }
     
     func getTrustwords(for forSelf: Identity, and: Identity, language: String, long: Bool) -> String? {
         self.identity = and
         getTrustwordsExpectation?.fulfill()
-        return HandshakeUtilMock.someTrustWords
+        return TrustManagementUtilMock.someTrustWords
     }
     
     func confirmTrust(for identity: Identity) {
@@ -298,7 +298,7 @@ class HandshakeUtilMock: HandshakeUtilProtocol {
 }
 
 /// Use this mock class to verify the calls on the delegate are being performed
-class MockHandshakeViewModelHandler : HandshakeViewModelDelegate {
+class MockTrustManagementViewModelHandler : TrustManagementViewModelDelegate {
     
     var didEndShakeMotionExpectation: XCTestExpectation?
     var didResetHandshakeExpectation: XCTestExpectation?

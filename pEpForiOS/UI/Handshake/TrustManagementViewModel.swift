@@ -11,7 +11,7 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 /// Handshake View Mode Delegate
-protocol HandshakeViewModelDelegate: class {
+protocol TrustManagementViewModelDelegate: class {
     /// Delegate method to notify that shake's action has been performed
     func didEndShakeMotion()
     
@@ -37,8 +37,8 @@ protocol HandshakeViewModelDelegate: class {
 }
 
 /// View Model to handle the handshake views.
-final class HandshakeViewModel {
-    public weak var handshakeViewModelDelegate : HandshakeViewModelDelegate?
+final class TrustManagementViewModel {
+    public weak var trustManagementViewModelDelegate : TrustManagementViewModelDelegate?
     public var pEpProtected : Bool {
         get {
             return message.pEpProtected
@@ -50,7 +50,7 @@ final class HandshakeViewModel {
         return message.session
     }
 
-    private var handshakeUtil : HandshakeUtilProtocol?
+    private var handshakeUtil : TrustManagementUtilProtocol?
     private let undoManager = UndoManager()
     
     /// The item that represents the handshake partner
@@ -112,7 +112,7 @@ final class HandshakeViewModel {
     /// Constructor
     /// - Parameters:
     ///   - identities: The identities to handshake
-    public init(message : Message, handshakeUtil: HandshakeUtilProtocol? = HandshakeUtil()) {
+    public init(message : Message, handshakeUtil: TrustManagementUtilProtocol? = HandshakeUtil()) {
         self.message = message
         self.handshakeUtil = handshakeUtil
         generateRows()
@@ -130,7 +130,7 @@ final class HandshakeViewModel {
         rows[indexPath.row].forceRed = true
         handshakeUtil?.denyTrust(for: identity)
         reevaluateAndUpdate()
-        handshakeViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
+        trustManagementViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
         
     }
     
@@ -142,7 +142,7 @@ final class HandshakeViewModel {
         rows[indexPath.row].forceRed = false
         handshakeUtil?.confirmTrust(for: row.handshakeCombination.partnerIdentity)
         reevaluateAndUpdate()
-        handshakeViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
+        trustManagementViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
     }
     
     /// Handles the undo action. If possible will undo the last undoable action performed
@@ -162,7 +162,7 @@ final class HandshakeViewModel {
         rows[indexPath.row].forceRed = false
         handshakeUtil?.resetTrust(for: row.handshakeCombination.partnerIdentity)
         reevaluateAndUpdate()
-        handshakeViewModelDelegate?.didResetHandshake(forRowAt: indexPath)
+        trustManagementViewModelDelegate?.didResetHandshake(forRowAt: indexPath)
     }
     
     /// Returns the list of languages available for that row.
@@ -179,7 +179,7 @@ final class HandshakeViewModel {
     ///   - language: The chosen language
     public func didSelectLanguage(forRowAt indexPath: IndexPath, language: String) {
         rows[indexPath.row].currentLanguage = language
-        handshakeViewModelDelegate?.didSelectLanguage(forRowAt: indexPath)
+        trustManagementViewModelDelegate?.didSelectLanguage(forRowAt: indexPath)
     }
     
     /// Toogle PeP protection status
@@ -190,7 +190,7 @@ final class HandshakeViewModel {
     /// Toogle PeP protection status
     public func handleToggleLongTrustwords(forRowAt indexPath: IndexPath) {
         rows[indexPath.row].longTrustwords.toggle()
-        handshakeViewModelDelegate?.didToogleLongTrustwords(forRowAt: indexPath)
+        trustManagementViewModelDelegate?.didToogleLongTrustwords(forRowAt: indexPath)
     }
 
     /// Generate the trustwords
@@ -215,7 +215,7 @@ final class HandshakeViewModel {
     public func shakeMotionDidEnd() {
         if (undoManager.canUndo) {
             undoManager.undo()
-            handshakeViewModelDelegate?.didEndShakeMotion()
+            trustManagementViewModelDelegate?.didEndShakeMotion()
         }
     }
 
@@ -253,7 +253,7 @@ final class HandshakeViewModel {
 }
 
 /// Image Extension
-extension HandshakeViewModel {
+extension TrustManagementViewModel {
     
     /// Method that returns the user image for the current indexPath throught the callback
     /// - Parameters:

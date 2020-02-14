@@ -1,5 +1,5 @@
 //
-//  HandshakeViewController.swift
+//  TrustManagementViewController.swift
 //  pEp
 //
 //  Created by Martin Brude on 05/02/2020.
@@ -9,15 +9,15 @@
 import UIKit
 
 /// View Controller to handle the HandshakeView.
-class HandshakeViewController: BaseViewController {
+class TrustManagementViewController: BaseViewController {
         
-    private let onlyMasterCellIdentifier = "HandshakeTableViewCell_OnlyMaster"
-    private let masterAndDetailCellIdentifier = "HandshakeTableViewCell_Detailed"
+    private let onlyMasterCellIdentifier = "TrustManagementTableViewCell_OnlyMaster"
+    private let masterAndDetailCellIdentifier = "TrustManagementTableViewCell_Detailed"
 
-    @IBOutlet weak var handshakeTableView: UITableView!
+    @IBOutlet weak var trustManagementTableView: UITableView!
     @IBOutlet weak var optionsButton: UIBarButtonItem!
     
-    var viewModel : HandshakeViewModel?
+    var viewModel : TrustManagementViewModel?
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let viewModel = viewModel else {
@@ -26,7 +26,7 @@ class HandshakeViewController: BaseViewController {
         }
         setLeftBarButton()
         optionsButton.title = NSLocalizedString("Options", comment: "Options")
-        viewModel.handshakeViewModelDelegate = self
+        viewModel.trustManagementViewModelDelegate = self
     }
 
     @IBAction private func optionsButtonPressed(_ sender: UIBarButtonItem) {
@@ -41,12 +41,12 @@ class HandshakeViewController: BaseViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        handshakeTableView.reloadData()
+        trustManagementTableView.reloadData()
     }
 }
 
 /// MARK: - UITableViewDataSource
-extension HandshakeViewController : UITableViewDataSource  {
+extension TrustManagementViewController : UITableViewDataSource  {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let numberOfRows = viewModel?.rows.count else {
             Log.shared.error("The viewModel must not be nil")
@@ -62,7 +62,7 @@ extension HandshakeViewController : UITableViewDataSource  {
             onlyMasterCellIdentifier :  masterAndDetailCellIdentifier
 
         if let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-            as? HandshakeTableViewCell, let row = viewModel?.rows[indexPath.row] {
+            as? TrustManagementTableViewCell, let row = viewModel?.rows[indexPath.row] {
             viewModel?.getImage(forRowAt: indexPath, complete: { (image) in
                 DispatchQueue.main.async {
                     cell.partnerImageView.image = image
@@ -76,13 +76,13 @@ extension HandshakeViewController : UITableViewDataSource  {
             cell.delegate = self
             return cell
         }
-        Log.shared.error("The HandshakeTableViewCell couldn't be dequeued or the row is nil")
+        Log.shared.error("The TrustManagementTableViewCell couldn't be dequeued or the row is nil")
         return UITableViewCell()
     }
 }
 
 /// MARK: - UIAlertControllers
-extension HandshakeViewController {
+extension TrustManagementViewController {
     
     /// This should only be used if the flow comes from the Compose View.
     private func presentToogleProtectionActionSheet() {
@@ -120,8 +120,8 @@ extension HandshakeViewController {
     
     /// Shows an action sheet with languages when the user taps the language button from a cell
     /// - Parameter cell: The cell of the language button tapped.
-    private func showLanguagesList(for cell: HandshakeTableViewCell) {
-        guard let indexPath = handshakeTableView.indexPath(for: cell) else {
+    private func showLanguagesList(for cell: TrustManagementTableViewCell) {
+        guard let indexPath = trustManagementTableView.indexPath(for: cell) else {
             Log.shared.error("IndexPath not found")
             return
         }
@@ -168,34 +168,34 @@ extension HandshakeViewController {
 }
 
 /// MARK: - Handshake ViewModel Delegate
-extension HandshakeViewController: HandshakeViewModelDelegate {
+extension TrustManagementViewController: TrustManagementViewModelDelegate {
     func didToogleLongTrustwords(forRowAt indexPath: IndexPath) {
-        handshakeTableView.reloadData()
+        trustManagementTableView.reloadData()
     }
     
     func didEndShakeMotion() {
-        handshakeTableView.reloadData()
+        trustManagementTableView.reloadData()
     }
     
     func didResetHandshake(forRowAt indexPath: IndexPath) {
-        handshakeTableView.reloadData()
+        trustManagementTableView.reloadData()
     }
     
     func didConfirmHandshake(forRowAt indexPath: IndexPath) {
-        handshakeTableView.reloadData()
+        trustManagementTableView.reloadData()
     }
     
     func didRejectHandshake(forRowAt indexPath: IndexPath) {
-        handshakeTableView.reloadData()
+        trustManagementTableView.reloadData()
     }
     
     func didSelectLanguage(forRowAt indexPath: IndexPath) {
-        handshakeTableView.reloadData()
+        trustManagementTableView.reloadData()
     }
 }
 
 /// MARK: - Back button
-extension HandshakeViewController {
+extension TrustManagementViewController {
     
     /// Helper method to create and set the back button in the navigation bar.
     private func setLeftBarButton() {
@@ -214,14 +214,14 @@ extension HandshakeViewController {
 }
 
 /// MARK: - Set trustwords
-extension HandshakeViewController {
+extension TrustManagementViewController {
     
     /// Generates and sets the trustwords to the cell
     /// - Parameters:
     ///   - cell: The cell where the trustwords would be setted
     ///   - indexPath: The indexPath of the row to generate the trustwords.
     ///   - longMode: Indicates if the trustwords have to be long.
-    private func setTrustwords(for cell: HandshakeTableViewCell, at indexPath: IndexPath, longMode: Bool) {
+    private func setTrustwords(for cell: TrustManagementTableViewCell, at indexPath: IndexPath, longMode: Bool) {
         let trustwords = viewModel?.generateTrustwords(forRowAt: indexPath, long: longMode)
         let oneSpace = " "
         let threeSpaces = "   "
@@ -231,40 +231,40 @@ extension HandshakeViewController {
     }
 }
 
-/// MARK: - HandshakeTableViewCellDelegate
-extension HandshakeViewController: HandshakeTableViewCellDelegate {
-    func languageButtonPressed(on cell: HandshakeTableViewCell) {
+/// MARK: - TrustManagementTableViewCellDelegate
+extension TrustManagementViewController: TrustManagementTableViewCellDelegate {
+    func languageButtonPressed(on cell: TrustManagementTableViewCell) {
         showLanguagesList(for: cell)
     }
     
-    func declineButtonPressed(on cell: HandshakeTableViewCell) {
-        if let indexPath = handshakeTableView.indexPath(for: cell) {
+    func declineButtonPressed(on cell: TrustManagementTableViewCell) {
+        if let indexPath = trustManagementTableView.indexPath(for: cell) {
             viewModel?.handleRejectHandshakePressed(at: indexPath)
         }
     }
     
-    func confirmButtonPressed(on cell: HandshakeTableViewCell) {
-        if let indexPath = handshakeTableView.indexPath(for: cell) {
+    func confirmButtonPressed(on cell: TrustManagementTableViewCell) {
+        if let indexPath = trustManagementTableView.indexPath(for: cell) {
             viewModel?.handleConfirmHandshakePressed(at: indexPath)
         }
     }
     
-    func resetButtonPressed(on cell: HandshakeTableViewCell) {
-        if let indexPath = handshakeTableView.indexPath(for: cell) {
+    func resetButtonPressed(on cell: TrustManagementTableViewCell) {
+        if let indexPath = trustManagementTableView.indexPath(for: cell) {
             viewModel?.handleResetPressed(forRowAt: indexPath)
         }
     }
     
-    func trustwordsLabelPressed(on cell: HandshakeTableViewCell) {
-        if let indexPath = handshakeTableView.indexPath(for: cell) {
+    func trustwordsLabelPressed(on cell: TrustManagementTableViewCell) {
+        if let indexPath = trustManagementTableView.indexPath(for: cell) {
             viewModel?.handleToggleLongTrustwords(forRowAt: indexPath)
         }
     }
 }
 
 
-extension HandshakeViewController {
-    private func configureTrustwords(_ identifier: String, _ row: HandshakeViewModel.Row, _ cell: HandshakeTableViewCell, _ indexPath: IndexPath) {
+extension TrustManagementViewController {
+    private func configureTrustwords(_ identifier: String, _ row: TrustManagementViewModel.Row, _ cell: TrustManagementTableViewCell, _ indexPath: IndexPath) {
         ///Yellow means secure but not trusted.
         ///That means that's the only case must display the trustwords
         

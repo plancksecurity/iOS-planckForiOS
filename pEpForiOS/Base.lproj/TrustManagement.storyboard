@@ -11,7 +11,7 @@
         <!--Navigation Controller-->
         <scene sceneID="LdW-n0-VeJ">
             <objects>
-                <navigationController storyboardIdentifier="HandshakeViewControllerID" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PZt-VJ-X5t" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="TrustManagementViewControllerID" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PZt-VJ-X5t" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="0Ex-jP-6bo">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
@@ -26,10 +26,10 @@
             </objects>
             <point key="canvasLocation" x="6878" y="338"/>
         </scene>
-        <!--Handshake View Controller-->
+        <!--Trust Management View Controller-->
         <scene sceneID="ZpB-Nc-cY3">
             <objects>
-                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="ZyM-PO-eQ8" customClass="HandshakeViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="ZyM-PO-eQ8" customClass="TrustManagementViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aVx-QE-VZP">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -38,7 +38,7 @@
                                 <rect key="frame" x="0.0" y="50" width="768" height="974"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="HandshakeEmptyHeaderTableViewCell" id="yMU-X4-4om">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TrustManagementEmptyHeaderTableViewCell" id="yMU-X4-4om">
                                         <rect key="frame" x="0.0" y="28" width="768" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yMU-X4-4om" id="jkE-w4-XJN">
@@ -46,10 +46,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="HandshakeTableViewCell_OnlyMaster" rowHeight="370" id="dBo-wY-3Nn" userLabel="HandshakeCell" customClass="HandshakeTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TrustManagementTableViewCell_OnlyMaster" rowHeight="370" id="dBo-wY-3Nn" userLabel="TrustManagementCell" customClass="TrustManagementTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="768" height="370"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dBo-wY-3Nn" id="PBy-V2-1ZV" userLabel="HandshakeContentView">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dBo-wY-3Nn" id="PBy-V2-1ZV" userLabel="TrustManagementContentView">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="370"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
@@ -254,7 +254,7 @@
                                                 <constraint firstItem="KMP-lx-Npd" firstAttribute="top" secondItem="PBy-V2-1ZV" secondAttribute="top" priority="999" constant="20" symbolic="YES" id="aD5-dg-Gnz"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <accessibility key="accessibilityConfiguration" identifier="handshakePartnerCell"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="trustManagementPartnerCell"/>
                                         <connections>
                                             <outlet property="confirmButton" destination="Q7n-8c-O25" id="XVl-UD-xLe"/>
                                             <outlet property="declineButton" destination="sVr-xT-f8t" id="kEN-Gx-MJe"/>
@@ -271,10 +271,10 @@
                                             <outlet property="trustwordsStackView" destination="RT3-1U-A8N" id="cGC-qb-NLe"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="HandshakeTableViewCell_Detailed" rowHeight="370" id="rJy-jc-TFR" userLabel="HandshakeWideCell" customClass="HandshakeTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TrustManagementTableViewCell_Detailed" rowHeight="370" id="rJy-jc-TFR" userLabel="TrustManagementWideCell" customClass="TrustManagementTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="442" width="768" height="370"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rJy-jc-TFR" id="IGB-g2-b9y" userLabel="HandshakeContentView">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rJy-jc-TFR" id="IGB-g2-b9y" userLabel="TrustManagementContentView">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="370"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
@@ -457,7 +457,7 @@
                                                 <constraint firstItem="C8m-ac-x3C" firstAttribute="centerX" secondItem="IGB-g2-b9y" secondAttribute="centerX" id="xoC-3C-u52"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <accessibility key="accessibilityConfiguration" identifier="handshakePartnerCell"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="trustManagementPartnerCell"/>
                                         <connections>
                                             <outlet property="confirmButton" destination="cAK-ZW-JLu" id="4uk-Mu-lKD"/>
                                             <outlet property="declineButton" destination="cLm-E4-Lx2" id="ghP-Od-OBl"/>
@@ -497,8 +497,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="handshakeTableView" destination="crl-YO-ia8" id="hiU-eM-DW8"/>
                         <outlet property="optionsButton" destination="zNZ-mq-ElZ" id="J6G-jk-mG0"/>
+                        <outlet property="trustManagementTableView" destination="crl-YO-ia8" id="hiU-eM-DW8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OAD-MK-tHj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
