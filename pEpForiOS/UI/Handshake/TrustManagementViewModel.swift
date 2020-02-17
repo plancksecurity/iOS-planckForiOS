@@ -126,18 +126,14 @@ final class TrustManagementViewModel {
     /// - Parameter indexPath: The indexPath of the item to get the user to reject the handshake
     public func handleRejectHandshakePressed(at indexPath: IndexPath) {
         registerUndoAction(at: indexPath)
-        let identity : Identity = rows[indexPath.row].handshakeCombination.partnerIdentity
+        let row = rows[indexPath.row]
+        let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
         let fingerprints = handshakeUtil?.getFingerprints(for: identity)
         rows[indexPath.row].fingerprint = fingerprints
         rows[indexPath.row].forceRed = true
         handshakeUtil?.denyTrust(for: identity)
-        reevaluateAndUpdate { [weak self] in
-            guard let me = self else {
-                Log.shared.error("Lost myself")
-                return
-            }
-            me.trustManagementViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
-        }
+        reevaluateAndUpdate()
+        trustManagementViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
     }
     
     /// Confirm the handshake
@@ -146,7 +142,8 @@ final class TrustManagementViewModel {
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
-        handshakeUtil?.confirmTrust(for: row.handshakeCombination.partnerIdentity)
+        let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
+        handshakeUtil?.confirmTrust(for: identity)
         reevaluateAndUpdate()
         trustManagementViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
     }
@@ -240,13 +237,15 @@ final class TrustManagementViewModel {
     
     /// Method that generates the rows to be used by the VC
     private func generateRows() {
-        handshakeUtil?.handshakeCombinations(message: message).forEach { (combination) in
-            //default language is english
-            let language = combination.partnerIdentity.language ?? "en"
-            let row = Row(currentLanguage: language,
-                          longTrustwords: false,
-                          handshakeCombination: combination)
-            rows.append(row)
+        if let combinations = handshakeUtil?.handshakeCombinations(message: message) {
+            combinations.forEach { (combination) in
+                //default language is english
+                let language = combination.partnerIdentity.language ?? "en"
+                let row = Row(currentLanguage: language,
+                              longTrustwords: false,
+                              handshakeCombination: combination)
+                rows.append(row)
+            }
         }
     }
 
@@ -269,7 +268,7 @@ extension TrustManagementViewModel {
     public func getImage(forRowAt indexPath: IndexPath, complete: @escaping (UIImage?) -> ()) {
         
         //Check if it's cached, use it if so.
-        let handshakeItem = rows[indexPath.row]
+        let handshakeItem : Row = rows[indexPath.row]
         let partnerIdentity = handshakeItem.handshakeCombination.partnerIdentity
         let contactImageTool = IdentityImageTool()
         let key = IdentityImageTool.IdentityKey(identity: partnerIdentity)

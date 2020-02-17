@@ -325,9 +325,12 @@ extension ComposeTableViewController: SegueHandlerType {
 
             destination.appConfig = appConfig
             destination.shouldShowOptionsButton = true
-            vm.someMethod { (message) in
-                destination.viewModel = TrustManagementViewModel(message: message)
+            guard let message = vm.message else {
+                Log.shared.error("Message not found")
+                return
             }
+            let messageSafe = message.safeForSession(Session.main)
+            destination.viewModel = TrustManagementViewModel(message: messageSafe)
         }
     }
 }
