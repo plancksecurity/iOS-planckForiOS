@@ -11,7 +11,7 @@ import UIKit
 extension UITextView {
     /// Sets pEp default custom font with respecting TextStyle - Dynamic Fonts
     public func pEpSetFontFace() {
-        guard let fontFace = self.font,
+        guard let fontFace = font,
             let textStyle = fontFace.fontDescriptor.object(forKey: UIFontDescriptor.AttributeName.textStyle) as? String else {
                 Log.shared.error("Missing UIFont.TextStyle")
                 return
