@@ -327,8 +327,7 @@ extension SettingsTableViewController {
         
         switch SegueIdentifier(rawValue: segueIdentifier) {
         case .segueEditAccount:
-            guard let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? AccountSettingsTableViewController,
+            guard let destination = segue.destination as? AccountSettingsTableViewController,
                 let indexPath = sender as? IndexPath else { return }
             destination.appConfig = appConfig
             guard let account = viewModel.account(at: indexPath) else { return }

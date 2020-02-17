@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="cPx-YX-3ty">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="cPx-YX-3ty">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -118,7 +118,6 @@
                         <barButtonItem systemItem="compose" id="eLo-P1-6VE"/>
                     </toolbarItems>
                     <connections>
-                        <segue destination="9z2-yI-qGJ" kind="showDetail" identifier="segueEditAccount" id="WKY-VX-I5i"/>
                         <segue destination="9LH-QE-79O" kind="showDetail" identifier="sequeShowCredits" id="H2d-0I-oCO"/>
                         <segue destination="1at-88-jou" kind="unwind" identifier="noAccounts" unwindAction="segueUnwindLastAccountDeletedWithSegue:" id="dbj-Gx-Exo"/>
                         <segue destination="pQb-5p-QId" kind="showDetail" identifier="segueShowSettingDefaultAccount" id="qiY-7g-nll"/>
@@ -127,6 +126,7 @@
                         <segue destination="4fP-ku-UtU" kind="showDetail" identifier="segueExtraKeys" id="DPP-UI-qfC"/>
                         <segue destination="tfJ-nw-QBg" kind="showDetail" identifier="ResetTrust" id="sr5-ig-b4W"/>
                         <segue destination="ubf-gx-0YH" kind="showDetail" identifier="seguePerAccountSync" id="PVg-TR-Zzb"/>
+                        <segue destination="Eri-pJ-T3J" kind="showDetail" identifier="segueEditAccount" id="Flj-eg-anX"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -802,7 +802,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Hi-lO-EOj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1327" y="442"/>
+            <point key="canvasLocation" x="-1306" y="-391"/>
         </scene>
         <!--Trusted Server Settings View Controller-->
         <scene sceneID="ayN-a1-vAb">
@@ -894,24 +894,6 @@
             </objects>
             <point key="canvasLocation" x="-388" y="-391"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="uMt-7B-UA8">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9z2-yI-qGJ" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Djr-bU-nlg">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Eri-pJ-T3J" kind="relationship" relationship="rootViewController" id="rIu-wq-ddQ"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="GlG-Ym-lHb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1327" y="-389"/>
-        </scene>
         <!--Editable Account Settings View Controller-->
         <scene sceneID="GDI-yq-B0C">
             <objects>
@@ -954,7 +936,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VYD-1J-s8m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-388" y="441"/>
+            <point key="canvasLocation" x="-1306" y="385"/>
         </scene>
         <!--Editable Account Settings Table View Controller-->
         <scene sceneID="9s9-Il-XHa">
@@ -1367,7 +1349,7 @@
                     </connections>
                 </pickerView>
             </objects>
-            <point key="canvasLocation" x="510" y="441"/>
+            <point key="canvasLocation" x="-388" y="343"/>
         </scene>
         <!--Per Account Sync View Controller-->
         <scene sceneID="53l-6c-TqX">

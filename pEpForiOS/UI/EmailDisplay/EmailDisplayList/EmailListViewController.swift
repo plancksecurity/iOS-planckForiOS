@@ -268,11 +268,7 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
 
     /// we have to handle the ipad/iphone segue in a different way. see IOS-1737
     private func showEmail(forCellAt indexPath: IndexPath) {
-        if onlySplitViewMasterIsShown {
-            performSegue(withIdentifier: SegueIdentifier.segueShowEmailNotSplitView, sender: self)
-        } else {
-            performSegue(withIdentifier: SegueIdentifier.segueShowEmailSplitView, sender: self)
-        }
+        performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
     }
 
     private func showNoMessageSelected() {
@@ -1163,8 +1159,7 @@ extension EmailListViewController: SegueHandlerType {
     
     enum SegueIdentifier: String {
         case segueAddNewAccount
-        case segueShowEmailSplitView
-        case segueShowEmailNotSplitView
+        case segueShowEmail
         case segueCompose
         case segueReply
         case segueReplyAll
@@ -1186,10 +1181,9 @@ extension EmailListViewController: SegueHandlerType {
              .segueCompose,
              .segueEditDraft:
             setupComposeViewController(for: segue)
-        case .segueShowEmailNotSplitView, .segueShowEmailSplitView:
+        case .segueShowEmail:
             guard
-                let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? EmailDetailViewController,
+                let vc = segue.destination as? EmailDetailViewController,
                 let indexPath = lastSelectedIndexPath else {
                     Log.shared.errorAndCrash("Segue issue")
                     return
