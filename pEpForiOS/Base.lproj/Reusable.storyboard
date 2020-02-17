@@ -265,9 +265,9 @@
                         <outlet property="cancel" destination="emU-WV-Kap" id="DjI-VP-c4R"/>
                         <outlet property="contentView" destination="fiE-pm-mWd" id="eNm-5G-7Xa"/>
                         <outlet property="decline" destination="Rgh-E1-f1w" id="h3F-j9-O5m"/>
-                        <outlet property="keySyncWords" destination="GC3-wG-GHD" id="D6t-PC-XAb"/>
-                        <outlet property="keySyncWordsContainer" destination="lPc-Pm-3dz" id="oJ2-0n-RPA"/>
                         <outlet property="message" destination="rPi-Px-Pyp" id="Pyb-o1-Nmp"/>
+                        <outlet property="trustwordsLabel" destination="GC3-wG-GHD" id="D6t-PC-XAb"/>
+                        <outlet property="trustwordsView" destination="lPc-Pm-3dz" id="oJ2-0n-RPA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rVu-Ti-LbX" userLabel="First Responder" sceneMemberID="firstResponder"/>
