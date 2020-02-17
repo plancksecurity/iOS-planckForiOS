@@ -35,6 +35,12 @@ class EmailDetailViewController: BaseViewController {
 
     /// IndexPath to show on load
     var firstItemToShow: IndexPath?
+    
+    override var collapsedBehavior: CollapsedBehavior {
+        get {
+            return .needed
+        }
+    }
 
     var viewModel: EmailDetailViewModel? {
         didSet {

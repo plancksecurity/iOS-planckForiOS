@@ -122,7 +122,6 @@ extension UIViewController {
             return .disposable
         }
     }
-
 }
 
 @objc public enum CollapsedBehavior: Int {
