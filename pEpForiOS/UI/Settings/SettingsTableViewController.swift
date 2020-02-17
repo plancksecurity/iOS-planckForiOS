@@ -20,7 +20,8 @@ final class SettingsTableViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
-        title = NSLocalizedString("Settings", comment: "Settings view title")
+        title = NSLocalizedString("Settings",
+                                  comment: "Settings view title")
         UIHelper.variableCellHeightsTableView(tableView)
         addExtraKeysEditabilityToggleGesture()
     }
@@ -28,10 +29,8 @@ final class SettingsTableViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setToolbarHidden(true, animated: false)
-        showEmptyDetailViewIfApplicable(
-            message: NSLocalizedString(
-                "Please choose a setting",
-                comment: "No setting has been selected yet in the settings VC"))
+        showEmptyDetailViewIfApplicable(message: NSLocalizedString("Please choose a setting",
+                                                                   comment: "No setting has been selected yet in the settings VC"))
     }
 
     // MARK: - Extra Keys
@@ -302,7 +301,8 @@ extension SettingsTableViewController {
     /// - Parameter indexPath: The index Path of the cell to get the segue identifier.
     /// - Returns: The segue identifier. If there is no segue to perform, it returns `noSegue`
     func segueIdentifier(for indexPath : IndexPath) -> SegueIdentifier {
-        let row : SettingsRowProtocol = viewModel.section(for: indexPath.section).rows[indexPath.row]
+        let row: SettingsRowProtocol = viewModel.section(for: indexPath.section).rows[indexPath.row]
+        print("DEV: row.identifier \(row.identifier)")
         switch row.identifier {
         case .account:
             return .segueEditAccount
@@ -338,9 +338,12 @@ extension SettingsTableViewController {
         case .segueEditAccount:
             guard let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? AccountSettingsTableViewController,
-                let indexPath = sender as? IndexPath else { return }
+                let indexPath = sender as? IndexPath,
+                let account = viewModel.account(at: indexPath) else {
+                    Log.shared.error("SegueIdentifier: segueEditAccount - Early quit! Requirements not met.")
+                    return
+            }
             destination.appConfig = appConfig
-            guard let account = viewModel.account(at: indexPath) else { return }
             destination.viewModel = AccountSettingsViewModel(account: account)
         case .segueShowSettingDefaultAccount,
              .segueShowSettingTrustedServers:
@@ -465,6 +468,7 @@ extension SettingsTableViewController: SwitchCellDelegate {
             Log.shared.error("lost row")
             return
         }
+
         if row.identifier == SettingsViewModel.Row.pEpSync {
             if viewModel.isGrouped() {
                 guard let alertToShow = showpEpSyncLeaveGroupAlert(action: row.action,

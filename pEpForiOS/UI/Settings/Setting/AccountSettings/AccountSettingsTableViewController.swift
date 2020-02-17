@@ -11,6 +11,9 @@ import MessageModel
 import pEpIOSToolbox
 
 final class AccountSettingsTableViewController: BaseTableViewController {
+
+// MARK: - IBOutlets
+
     //general account fields
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var emailTextfield: UITextField!
@@ -33,6 +36,9 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var resetIdentityCell: UITableViewCell!
 
+// MARK: - Variables
+
+    let oauthViewModel = OAuth2AuthViewModel()
     /**
      When dealing with an OAuth2 account, this is the index path of the cell that
      should trigger the reauthorization.
@@ -40,9 +46,9 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     var oauth2ReauthIndexPath: IndexPath?
     var viewModel: AccountSettingsViewModel? = nil
 
-    let oauthViewModel = OAuth2AuthViewModel()
-
     private var resetIdentityIndexPath: IndexPath?
+
+// MARK: - Activity
 
      override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,14 +61,19 @@ final class AccountSettingsTableViewController: BaseTableViewController {
         hideBackButtonIfNeeded()
         //Work around async old stack context merge behaviour
         DispatchQueue.main.async { [weak self] in
-            self?.setUpView()
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.setUpView()
         }
     }
+
+// MARK: - IBActions
 
     @IBAction func switchPEPSyncToggle(_ sender: UISwitch) {
         viewModel?.pEpSync(enable: sender.isOn)
     }
-
 
 }
 
@@ -72,7 +83,7 @@ extension AccountSettingsTableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel?.count ?? 0
     }
-    
+
     override func tableView(
         _ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return viewModel?[section]
@@ -190,10 +201,13 @@ extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
 
 extension AccountSettingsTableViewController {
     private func setUpView() {
+        title = NSLocalizedString("Account",
+                                  comment: "Account settings")
         nameTextfield.text = viewModel?.account.user.userName
         emailTextfield.text = viewModel?.account.user.address
         passwordTextfield.text = "JustAPassword"
-        resetIdentityLabel.text = NSLocalizedString("Reset This Identity", comment: "Account settings reset this identity")
+        resetIdentityLabel.text = NSLocalizedString("Reset This Identity",
+                                                    comment: "Account settings reset this identity")
         resetIdentityLabel.textColor = .pEpRed
 
         if let viewModel = viewModel {
@@ -266,7 +280,8 @@ extension AccountSettingsTableViewController {
                                                     return
         }
 
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
+        let cancelTitle = NSLocalizedString("Cancel",
+                                            comment: "Cancel reset account identity button title")
         let cancelAction = PEPUIAlertAction(title: cancelTitle,
                                             style: .pEpGray,
                                             handler: { _ in
@@ -275,7 +290,8 @@ extension AccountSettingsTableViewController {
         })
         pepAlertViewController.add(action: cancelAction)
 
-        let resetTitle = NSLocalizedString("Reset", comment: "Reset account identity button title")
+        let resetTitle = NSLocalizedString("Reset",
+                                           comment: "Reset account identity button title")
         let resetAction = PEPUIAlertAction(title: resetTitle,
                                            style: .pEpRed,
                                            handler: { [weak self] _ in

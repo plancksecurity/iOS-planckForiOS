@@ -67,12 +67,16 @@ class Appearance {
         let appearance = UINavigationBarAppearance()
 
         appearance.configureWithOpaqueBackground()
-        let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: color]
-        appearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes
-        appearance.backButtonAppearance.normal.titleTextAttributes = titleTextAttributes
-        appearance.titleTextAttributes = titleTextAttributes
-        appearance.largeTitleTextAttributes = titleTextAttributes
-        appearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
+        let defaultpEpTextAttributes: [NSAttributedString.Key : Any] =
+            [.foregroundColor: color]
+        let titlepEpTextAttributes: [NSAttributedString.Key : Any] =
+            [.foregroundColor: UIColor.black,
+             .font: UIFont.pepFont(style: .body, weight: .semibold)]
+        appearance.buttonAppearance.normal.titleTextAttributes = defaultpEpTextAttributes
+        appearance.backButtonAppearance.normal.titleTextAttributes = defaultpEpTextAttributes
+        appearance.titleTextAttributes = titlepEpTextAttributes
+        appearance.largeTitleTextAttributes = defaultpEpTextAttributes
+        appearance.doneButtonAppearance.normal.titleTextAttributes = defaultpEpTextAttributes
 
         let chevronLeftImg = UIImage(named: "chevron-left-original")
         appearance.setBackIndicatorImage(chevronLeftImg, transitionMaskImage: chevronLeftImg)
