@@ -68,14 +68,20 @@ final class TrustManagementViewModel {
         /// The description for the row
         var description: String {
             get {
+                if forceRed {
+                    return PEPColor.red.privacyStatusDescription
+                }
                 return color.privacyStatusDescription
             }
         }
         /// The privacy status name
         var privacyStatusName: String {
             get {
+                if (forceRed) {
+                    return String.trustIdentityTranslation(pEpRating: .underAttack).title
+                }
                 let rating = handshakeCombination.partnerIdentity.pEpRating()
-                let translations = String.pEpRatingTranslation(pEpRating: rating)
+                let translations = String.trustIdentityTranslation(pEpRating: rating)
                 return translations.title
             }
         }

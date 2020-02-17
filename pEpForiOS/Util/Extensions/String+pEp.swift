@@ -17,6 +17,47 @@ public struct PEPStatusText {
 }
 
 extension String {
+    
+    struct TrustManagementText {
+        static let red = PEPStatusText(rating: .mistrust,
+                                       title: NSLocalizedString("Mistrusted", comment: "Privacy status title"),
+                                       explanation: NSLocalizedString("This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the p≡p data.", comment: "Privacy status title"),
+                                       suggestion: NSLocalizedString("", comment: ""))
+
+        static let yellow = PEPStatusText(rating: .reliable,
+                                          title: NSLocalizedString("Secure", comment: "Privacy status title"),
+                                          explanation: NSLocalizedString("In order to make the communication with this communication partner Secure & Trusted, you will have to compare the Trustwords below with this communication partner and ensure they match yours.", comment: "Privacy status explanation"),
+                                          suggestion: NSLocalizedString("", comment: ""))
+        
+        static let green = PEPStatusText(rating: .trusted,
+                                         title: NSLocalizedString("Secure & Trusted", comment: "Privacy status title"),
+                                         explanation: NSLocalizedString("This contact is completely trusted. All communication will be the maximum level of privacy.", comment: "Privacy status explanation"),
+                                         suggestion: NSLocalizedString("", comment: ""))
+
+        static let noColor = PEPStatusText(rating: .undefined,
+                                         title: NSLocalizedString("", comment: ""),
+                                         explanation: NSLocalizedString("", comment: ""),
+                                         suggestion: NSLocalizedString("", comment: ""))
+    }
+    
+    /**
+     All privacy status strings for the trust management.
+     */
+    static let trustIdentityTranslation: [PEPRating: PEPStatusText] =
+        [.underAttack: TrustManagementText.red,
+         .b0rken: TrustManagementText.red,
+         .mistrust: TrustManagementText.red,
+         .reliable: TrustManagementText.yellow,
+         .unencrypted: TrustManagementText.noColor,
+         .haveNoKey: TrustManagementText.noColor,
+         .cannotDecrypt: TrustManagementText.noColor,
+         .unreliable: TrustManagementText.noColor,
+         .unencryptedForSome: TrustManagementText.noColor,
+         .fullyAnonymous: TrustManagementText.green,
+         .trustedAndAnonymized: TrustManagementText.green,
+         .trusted: TrustManagementText.green,
+         .undefined: undefinedPEPMessageRating()]
+
     /**
      All privacy status strings, i18n ready.
      */
@@ -169,6 +210,29 @@ extension String {
         } else {
             return defResult
         }
+    }
+    
+    
+    public static func trustIdentityTranslation(pEpRating: PEPRating?) -> PEPStatusText {
+        let defaultRestult = undefinedPEPTrustIdentityRating()
+        if let rating = pEpRating {
+            return trustIdentityTranslation[rating] ??
+                trustIdentityTranslation[.undefined] ?? defaultRestult
+        } else {
+            return defaultRestult
+        }
+    }
+    
+    /// Default Status Text, for undefined identity's pEpRating.
+    private static func undefinedPEPTrustIdentityRating() -> PEPStatusText {
+        let explanation = NSLocalizedString("Unknown.", comment: "Privacy status explanation")
+        let title = NSLocalizedString("Unknown", comment: "Privacy status title")
+        let suggestion = NSLocalizedString("Unknown.", comment: "Privacy status suggestion")
+        return PEPStatusText(
+            rating: .undefined,
+            title: title,
+            explanation: explanation,
+            suggestion: suggestion)
     }
 
     public static func pEpTitle(pEpRating: PEPRating?) -> String {
