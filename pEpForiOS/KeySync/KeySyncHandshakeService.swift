@@ -52,7 +52,6 @@ extension KeySyncHandshakeService {
 }
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
-
     func showHandshake(me: PEPIdentity,
                        partner: PEPIdentity,
                        isNewGroup: Bool,
@@ -111,17 +110,27 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeDelegate {
     }
 
     // We must dismiss pEpSyncWizard before presenting pEpSyncWizard error view.
-    func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
+    func showError(error: Error?,
+                   completion: ((KeySyncErrorResponse) -> ())? = nil) {
+
         DispatchQueue.main.async { [weak self] in
-            guard let presentingViewController = self?.pEpSyncWizard?.presentingViewController else {
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            guard let presentingViewController = me.pEpSyncWizard?.presentingViewController else {
                 //presentingViewController is nil then, pEpSyncWizard failed to be shown.
                 //So we call tryAgain to engine, to give it a another try to show pEpSyncWizard.
                 completion?(.tryAgain)
                 return
             }
 
-            self?.pEpSyncWizard?.dismiss(animated: true, completion: {
-                KeySyncErrorView.presentKeySyncError(viewController: presentingViewController, error: error) {
+            let isNewGroup = me.pEpSyncWizard?.isNewGroup ?? true
+
+            me.pEpSyncWizard?.dismiss(animated: true, completion: {
+                KeySyncErrorView.presentKeySyncError(viewController: presentingViewController,
+                                                     isNewGroup: isNewGroup,
+                                                     error: error) {
                     action in
                     switch action {
                     case .tryAgain:

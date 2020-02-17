@@ -103,9 +103,6 @@
 /* Settings: Cell (button) title to view app credits */
 "Credits" = "Mitwirkung";
 
-/* decline button */
-"Decline" = "Ablehnen";
-
 /* Default Account Setting Section Title
    Settings: Cell (button) title to view default account setting */
 "Default Account" = "Standard-Konto";
@@ -449,9 +446,6 @@
 
 /* Compose field title */
 "Subject:" = "Betreff:";
-
-/* accept hand shake sync button */
-"Sync" = "Synchronisierung";
 
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "Die Nachricht konnte nicht versandt werden. Bitte versuchen Sie es später noch einmal.";

@@ -410,7 +410,7 @@ extension SettingsViewModel {
                     AppSettings.shared.keySyncEnabled = false
                 }
             } catch {
-                Log.shared.error("Fail to get account pEpSync state")
+                Log.shared.errorAndCrash("Fail to get account pEpSync state")
             }
         }
 
