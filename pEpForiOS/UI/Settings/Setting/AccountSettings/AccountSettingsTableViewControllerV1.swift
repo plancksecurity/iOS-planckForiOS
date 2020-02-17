@@ -10,7 +10,7 @@ import UIKit
 import MessageModel
 import pEpIOSToolbox
 
-final class AccountSettingsTableViewController: BaseTableViewController {
+final class AccountSettingsTableViewControllerV1: BaseTableViewController {
 
 // MARK: - IBOutlets
 
@@ -24,12 +24,10 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var imapServerTextfield: UITextField!
     @IBOutlet weak var imapPortTextfield: UITextField!
     @IBOutlet weak var imapSecurityTextfield: UITextField!
-    @IBOutlet weak var imapUsernameTextField: UITextField!
     //smtp account fields
     @IBOutlet weak var smtpServerTextfield: UITextField!
     @IBOutlet weak var smtpPortTextfield: UITextField!
     @IBOutlet weak var smtpSecurityTextfield: UITextField!
-    @IBOutlet weak var smtpUsernameTextField: UITextField!
 
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
@@ -37,14 +35,13 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var resetIdentityCell: UITableViewCell!
 
 // MARK: - Variables
-
     let oauthViewModel = OAuth2AuthViewModel()
     /**
      When dealing with an OAuth2 account, this is the index path of the cell that
      should trigger the reauthorization.
      */
     var oauth2ReauthIndexPath: IndexPath?
-    var viewModel: AccountSettingsViewModel? = nil
+    var viewModel: AccountSettingsViewModelV1? = nil
 
     private var resetIdentityIndexPath: IndexPath?
 
@@ -52,7 +49,10 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
      override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.register(pEpHeaderView.self, forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
         viewModel?.delegate = self
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -79,19 +79,35 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
 // MARK: - UITableViewDataSource
 
-extension AccountSettingsTableViewController {
+extension AccountSettingsTableViewControllerV1 {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel?.count ?? 0
     }
 
-    override func tableView(
-        _ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return viewModel?[section]
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: pEpHeaderView.reuseIdentifier) as? pEpHeaderView else {
+            return UIView()
+        }
+
+        headerView.title = viewModel?[section] ?? ""
+        return headerView
+
+//        let pEpHeaderView = UIView.init(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
+//        pEpHeaderView.backgroundColor = .groupTableViewBackground
+//        let titleForHeaderInSection = UILabel(frame: CGRect(x: 16, y: 20, width: 100, height: 50))
+//        titleForHeaderInSection.text = viewModel?[section]
+//        pEpHeaderView.addSubview(titleForHeaderInSection)
+//        return pEpHeaderView
     }
 
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return viewModel?.footerFor(section: section)
-    }
+//    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        return CGFloat(100)
+//    }
+
+//    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return viewModel?[section]
+//    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let origCount = super.tableView(tableView, numberOfRowsInSection: section)
@@ -133,7 +149,7 @@ extension AccountSettingsTableViewController {
 
 // MARK: - UITextFieldDelegate
 
-extension AccountSettingsTableViewController: UITextFieldDelegate {
+extension AccountSettingsTableViewControllerV1: UITextFieldDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath {
         case oauth2ReauthIndexPath:
@@ -149,7 +165,7 @@ extension AccountSettingsTableViewController: UITextFieldDelegate {
 
 // MARK: - AccountSettingsViewModelDelegate
 
-extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
+extension AccountSettingsTableViewControllerV1: AccountSettingsViewModelDelegate {
     func undoPEPSyncToggle() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
@@ -180,7 +196,7 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
 
 // MARK: - OAuth2AuthViewModelDelegate
 
-extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
+extension AccountSettingsTableViewControllerV1: OAuth2AuthViewModelDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         oauth2ActivityIndicator.stopAnimating()
         shouldHandleErrors = true
@@ -199,15 +215,15 @@ extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
 
 // MARK: - Private
 
-extension AccountSettingsTableViewController {
+extension AccountSettingsTableViewControllerV1 {
     private func setUpView() {
         title = NSLocalizedString("Account",
                                   comment: "Account settings")
         nameTextfield.text = viewModel?.account.user.userName
         emailTextfield.text = viewModel?.account.user.address
         passwordTextfield.text = "JustAPassword"
-        resetIdentityLabel.text = NSLocalizedString("Reset This Identity",
-                                                    comment: "Account settings reset this identity")
+        resetIdentityLabel.text = NSLocalizedString("Reset",
+                                                    comment: "Account settings reset identity")
         resetIdentityLabel.textColor = .pEpRed
 
         if let viewModel = viewModel {
@@ -218,14 +234,12 @@ extension AccountSettingsTableViewController {
             imapServerTextfield.text = imapServer.address
             imapPortTextfield.text = String(imapServer.port)
             imapSecurityTextfield.text = imapServer.transport.asString()
-            imapUsernameTextField.text = imapServer.credentials.loginName
         }
 
         if let smtpServer = viewModel?.account.smtpServer {
             self.smtpServerTextfield.text = smtpServer.address
             self.smtpPortTextfield.text = String(smtpServer.port)
             smtpSecurityTextfield.text = smtpServer.transport.asString()
-            smtpUsernameTextField.text = smtpServer.credentials.loginName
         }
     }
 
@@ -238,9 +252,8 @@ extension AccountSettingsTableViewController {
             preferredStyle: .alert)
 
         let cancelAction = UIAlertAction(
-            title: NSLocalizedString(
-                "OK",
-                comment: "OK button for invalid accout settings user input alert"),
+            title: NSLocalizedString("OK",
+                                     comment: "OK button for invalid accout settings user input alert"),
             style: .cancel, handler: nil)
 
         alert.addAction(cancelAction)
@@ -311,6 +324,35 @@ extension AccountSettingsTableViewController {
         DispatchQueue.main.async { [weak self] in
             self?.present(pepAlertViewController, animated: true)
         }
+    }
+
+    private func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
+        let title = NSLocalizedString("Disable p≡p Sync", comment: "Leave device group confirmation")
+        let comment = NSLocalizedString("If you disable p≡p Sync, your device group will be dissolved. Are you sure you want to disable disable p≡p Sync?",
+                                        comment: "Leave device group confirmation comment")
+
+        let alert = PEPAlertViewController.fromStoryboard(title: title, message: comment, paintPEPInTitle: true)
+        let cancelAction = PEPUIAlertAction(title: NSLocalizedString("Cancel", comment: "keysync alert leave device group cancel"),
+                                            style: .pEpGreen) { [weak self] _ in
+                                                guard let me = self else {
+                                                    Log.shared.errorAndCrash(message: "lost myself")
+                                                    return
+                                                }
+                                                //Switch status needs to be reversed
+                                                me.tableView.reloadData()
+                                                alert?.dismiss()
+        }
+
+        alert?.add(action: cancelAction)
+
+        let disableAction = PEPUIAlertAction(title: NSLocalizedString("Disable",
+                                                                      comment: "keysync alert leave device group disable"),
+                                             style: .pEpRed) { _ in
+                                                action(newValue)
+                                                alert?.dismiss()
+        }
+        alert?.add(action: disableAction)
+        return alert
     }
 
     private func hideBackButtonIfNeeded() {

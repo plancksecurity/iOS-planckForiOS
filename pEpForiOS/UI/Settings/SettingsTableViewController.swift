@@ -302,7 +302,6 @@ extension SettingsTableViewController {
     /// - Returns: The segue identifier. If there is no segue to perform, it returns `noSegue`
     func segueIdentifier(for indexPath : IndexPath) -> SegueIdentifier {
         let row: SettingsRowProtocol = viewModel.section(for: indexPath.section).rows[indexPath.row]
-        print("DEV: row.identifier \(row.identifier)")
         switch row.identifier {
         case .account:
             return .segueEditAccount
@@ -337,14 +336,14 @@ extension SettingsTableViewController {
         switch SegueIdentifier(rawValue: segueIdentifier) {
         case .segueEditAccount:
             guard let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? AccountSettingsTableViewController,
+                let destination = nav.topViewController as? AccountSettingsTableViewControllerV1,
                 let indexPath = sender as? IndexPath,
                 let account = viewModel.account(at: indexPath) else {
                     Log.shared.error("SegueIdentifier: segueEditAccount - Early quit! Requirements not met.")
                     return
             }
             destination.appConfig = appConfig
-            destination.viewModel = AccountSettingsViewModel(account: account)
+            destination.viewModel = AccountSettingsViewModelV1(account: account)
         case .segueShowSettingDefaultAccount,
              .segueShowSettingTrustedServers:
             guard let destination = segue.destination as? BaseTableViewController else { return }
@@ -430,10 +429,11 @@ extension SettingsTableViewController {
                                         comment: "Leave device group confirmation comment")
 
         let alert = PEPAlertViewController.fromStoryboard(title: title, message: comment, paintPEPInTitle: true)
-        let cancelAction = PEPUIAlertAction(title: NSLocalizedString("Cancel", comment: "keysync alert leave device group cancel"),
+        let cancelAction = PEPUIAlertAction(title: NSLocalizedString("Cancel",
+                                                                     comment: "keysync alert leave device group cancel"),
                                             style: .pEpGreen) { [weak self] _ in
                                                 guard let me = self else {
-                                                    Log.shared.errorAndCrash(message: "lost myself")
+                                                    Log.shared.lostMySelf()
                                                     return
                                                 }
                                                 //Switch status needs to be reversed

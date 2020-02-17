@@ -17,7 +17,7 @@ protocol AccountSettingsViewModelDelegate: class {
     func hideLoadingView()
 }
 
-final class AccountSettingsViewModel {
+final class AccountSettingsViewModelV1 {
     let isOAuth2: Bool
 
     var account: Account
@@ -39,10 +39,6 @@ final class AccountSettingsViewModel {
                           NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
                           NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP")]
         return tempHeader
-    }
-    private var footers: [String] {
-        return [NSLocalizedString("Performs a reset of the privacy settings of your account.",
-                                  comment: "Explanation for Key Reset (of one account")]
     }
 
     private enum AccountSettingsError: Error, LocalizedError {
@@ -92,13 +88,6 @@ final class AccountSettingsViewModel {
         }
     }
 
-    func footerFor(section: Int) -> String {
-        guard section < footers.count else {
-            return ""
-        }
-        return footers[section]
-    }
-
     func pEpSync(enable: Bool) {
         do {
             try account.setKeySyncEnabled(enable: enable)
@@ -114,7 +103,7 @@ final class AccountSettingsViewModel {
 }
 
 // MARK: - Private
-extension AccountSettingsViewModel {
+extension AccountSettingsViewModelV1 {
     private func sectionIsValid(section: Int) -> Bool {
         return section >= 0 && section < headers.count
     }
