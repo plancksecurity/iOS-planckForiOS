@@ -9,8 +9,6 @@
 import UIKit
 import pEpIOSToolbox
 
-//rename to pepSplitViewController
-
 class PEPSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +16,7 @@ class PEPSplitViewController: UISplitViewController, UISplitViewControllerDelega
         self.delegate = self
         preferredDisplayMode = .allVisible
     }
-    
+
     func splitViewController(_ splitViewController: UISplitViewController,
                              collapseSecondary secondaryViewController:UIViewController,
                              onto primaryViewController:UIViewController) -> Bool {
@@ -31,7 +29,7 @@ class PEPSplitViewController: UISplitViewController, UISplitViewControllerDelega
         }
         return true
     }
-    
+
     func splitViewController(_ splitViewController: UISplitViewController,
                              separateSecondaryFrom primaryViewController: UIViewController)
         -> UIViewController? {
@@ -67,6 +65,3 @@ class PEPSplitViewController: UISplitViewController, UISplitViewControllerDelega
         return false
     }
 }
-
-
-//topView.isKind(of: EmailDetailViewController.self)

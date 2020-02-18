@@ -323,7 +323,6 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="0Yg-lj-kVR"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="g1q-wK-tff"/>
                         <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshake" id="CKh-jT-ski"/>
-                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshakeCollapsed" id="Gcx-48-ZRF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NqX-Lg-wmy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -950,6 +949,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="cRe-YG-393"/>
         <segue reference="CKh-jT-ski"/>
-        <segue reference="2Ml-4S-RYf"/>
+        <segue reference="6by-Pi-xWQ"/>
     </inferredMetricsTieBreakers>
 </document>

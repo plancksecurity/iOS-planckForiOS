@@ -214,12 +214,7 @@ extension EmailDetailViewController {
 
     @objc
     private func showHandshakeView(gestureRecognizer: UITapGestureRecognizer? = nil) {
-        if onlySplitViewMasterIsShown {
-            performSegue(withIdentifier: .segueHandshakeCollapsed, sender: self)
-
-        } else {
             performSegue(withIdentifier: .segueHandshake, sender: self)
-        }
     }
 
     private var indexPathOfCurrentlyVisibleCell: IndexPath? {
@@ -279,15 +274,14 @@ extension EmailDetailViewController {
     }
 
     private func configureView() {
-        // Make sure the NavigationBar is shown, even if the previous view has hidden it.
-        navigationController?.setNavigationBarHidden(false, animated: false) //XAVIER: rm NC in storyboard after new SplitView handling approach is in.
-
         //ToolBar
         if splitViewController != nil {
             if onlySplitViewMasterIsShown {
                 navigationController?.setToolbarHidden(false, animated: false)
             } else {
+                // Make sure the NavigationBar is shown, even if the previous view has hidden it.
                 navigationController?.setToolbarHidden(true, animated: false)
+                navigationController?.setNavigationBarHidden(false, animated: false)
             }
         }
         guard let vm = viewModel else {
@@ -504,7 +498,6 @@ extension EmailDetailViewController: SegueHandlerType {
         case segueReplyAllForm
         case segueForward
         case segueHandshake
-        case segueHandshakeCollapsed
         case segueShowMoveToFolder
         case noSegue
     }
@@ -549,7 +542,7 @@ extension EmailDetailViewController: SegueHandlerType {
             }
             destination.appConfig = appConfig
             destination.viewModel = viewModel?.getMoveToFolderViewModel(forMessageRepresentedByItemAt: indexPath)
-        case .segueHandshake, .segueHandshakeCollapsed:
+        case .segueHandshake:
             guard let nv = segue.destination as? UINavigationController,
                 let vc = nv.topViewController as? HandshakeViewController else {
                     Log.shared.errorAndCrash("No DVC?")
