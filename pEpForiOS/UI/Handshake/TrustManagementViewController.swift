@@ -15,10 +15,9 @@ protocol PreviousViewControllerDelegate: class {
 /// View Controller to handle the HandshakeView.
 class TrustManagementViewController: BaseViewController {
         
-    private let resetCellIdentifier = "TrustManagementResetCellIdentifier"
     private let onlyMasterCellIdentifier = "TrustManagementTableViewCell_OnlyMaster"
     private let masterAndDetailCellIdentifier = "TrustManagementTableViewCell_Detailed"
-
+    private let resetCellIdentifier = "TrustManagementTableViewResetCell"
 
     weak var previousViewControllerDelegate : PreviousViewControllerDelegate?
     

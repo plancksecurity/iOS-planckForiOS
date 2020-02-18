@@ -21,7 +21,7 @@ final class TrustManagementResetTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
            //Reset Button
-//           resetButton.pEpIfyForTrust(backgroundColor: .pEpGrayBackgroundReset, textColor: .white)
+           resetButton.pEpIfyForTrust(backgroundColor: .pEpGrayBackgroundReset, textColor: .white)
         
            //Reset label
            resetLabel.text = NSLocalizedString("Reset all pEp data for this comunication partner:",
