@@ -71,7 +71,7 @@ class Appearance {
             [.foregroundColor: color]
         let titlepEpTextAttributes: [NSAttributedString.Key : Any] =
             [.foregroundColor: UIColor.black,
-             .font: UIFont.pepFont(style: .body, weight: .semibold)]
+             .font: UIFont.pepFont(style: .body, weight: .regular)]
         appearance.buttonAppearance.normal.titleTextAttributes = defaultpEpTextAttributes
         appearance.backButtonAppearance.normal.titleTextAttributes = defaultpEpTextAttributes
         appearance.titleTextAttributes = titlepEpTextAttributes

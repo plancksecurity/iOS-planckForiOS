@@ -35,12 +35,22 @@ final class pEpHeaderView: UITableViewHeaderFooterView {
         super.init(reuseIdentifier: reuseIdentifier)
         setUp()
     }
+}
 
+// MARK: - Private
+
+extension pEpHeaderView {
     private func setUp() {
         contentView.addSubview(titleLabel)
+        setFont(titleLabel: titleLabel)
+        setConstraints(titleLabel: titleLabel)
+    }
+    private func setFont(titleLabel: UILabel) {
         titleLabel.textColor = .pEpGreyText
+        titleLabel.font = .pepFont(style: .subheadline, weight: .regular)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-
+    }
+    private func setConstraints(titleLabel: UILabel) {
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo:
                    contentView.layoutMarginsGuide.leadingAnchor),

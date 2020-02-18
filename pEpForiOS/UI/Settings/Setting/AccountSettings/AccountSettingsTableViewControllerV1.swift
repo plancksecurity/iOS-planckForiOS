@@ -90,24 +90,9 @@ extension AccountSettingsTableViewControllerV1 {
             return UIView()
         }
 
-        headerView.title = viewModel?[section] ?? ""
+        headerView.title = viewModel?[section].uppercased() ?? ""
         return headerView
-
-//        let pEpHeaderView = UIView.init(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
-//        pEpHeaderView.backgroundColor = .groupTableViewBackground
-//        let titleForHeaderInSection = UILabel(frame: CGRect(x: 16, y: 20, width: 100, height: 50))
-//        titleForHeaderInSection.text = viewModel?[section]
-//        pEpHeaderView.addSubview(titleForHeaderInSection)
-//        return pEpHeaderView
     }
-
-//    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return CGFloat(100)
-//    }
-
-//    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return viewModel?[section]
-//    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let origCount = super.tableView(tableView, numberOfRowsInSection: section)
@@ -216,9 +201,14 @@ extension AccountSettingsTableViewControllerV1: OAuth2AuthViewModelDelegate {
 // MARK: - Private
 
 extension AccountSettingsTableViewControllerV1 {
+
+    private struct Localized {
+        static let navigationTitle = NSLocalizedString("Account",
+                                                       comment: "Account settings")
+    }
+
     private func setUpView() {
-        title = NSLocalizedString("Account",
-                                  comment: "Account settings")
+        title = Localized.navigationTitle
         nameTextfield.text = viewModel?.account.user.userName
         emailTextfield.text = viewModel?.account.user.address
         passwordTextfield.text = "JustAPassword"
