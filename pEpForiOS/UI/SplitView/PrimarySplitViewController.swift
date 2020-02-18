@@ -40,7 +40,7 @@ class PEPSplitViewController: UISplitViewController, UISplitViewControllerDelega
                 Log.shared.errorAndCrash(message: "root view is not nav Controller?")
                 return nil
             }
-            if let topView = primaryView.topViewController, topView.isKind(of: EmailDetailViewController.self) {
+            if let topView = primaryView.topViewController, topView.separatedBehavior == .detail {
                 primaryView.popViewController(animated: false)
                 navigationController.pushViewController(topView, animated: false)
             } else {
@@ -67,3 +67,6 @@ class PEPSplitViewController: UISplitViewController, UISplitViewControllerDelega
         return false
     }
 }
+
+
+//topView.isKind(of: EmailDetailViewController.self)

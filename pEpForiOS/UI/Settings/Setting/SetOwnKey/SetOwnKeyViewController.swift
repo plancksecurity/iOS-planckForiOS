@@ -19,6 +19,12 @@ class SetOwnKeyViewController: UIViewController {
             return .needed
         }
     }
+    
+    override var separatedBehavior: SeparatedBehavior{
+        get {
+            return .detail
+        }
+    }
 
     // MARK: - View life cycle etc.
 

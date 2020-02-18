@@ -21,6 +21,12 @@ class ExtraKeysSettingViewController: BaseViewController {
             return .needed
         }
     }
+    
+    override var separatedBehavior: SeparatedBehavior {
+        get {
+            return .detail
+        }
+    }
 
     // MARK: - Life Cycle
 

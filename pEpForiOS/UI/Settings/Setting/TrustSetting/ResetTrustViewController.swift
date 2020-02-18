@@ -22,6 +22,12 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
             return .needed
         }
     }
+    
+    override var separatedBehavior: SeparatedBehavior {
+        get {
+            return .detail
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

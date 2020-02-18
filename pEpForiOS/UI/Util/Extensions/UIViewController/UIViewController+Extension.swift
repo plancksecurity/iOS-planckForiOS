@@ -122,9 +122,20 @@ extension UIViewController {
             return .disposable
         }
     }
+    
+    @objc public var separatedBehavior: SeparatedBehavior {
+        get {
+            return .master
+        }
+    }
 }
 
 @objc public enum CollapsedBehavior: Int {
     case disposable = 0
     case needed = 1
+}
+
+@objc public enum SeparatedBehavior: Int {
+    case master = 0
+    case detail = 1
 }

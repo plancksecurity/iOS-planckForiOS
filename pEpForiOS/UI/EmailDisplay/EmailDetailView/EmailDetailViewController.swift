@@ -41,7 +41,13 @@ class EmailDetailViewController: BaseViewController {
             return .needed
         }
     }
-
+    
+    override var separatedBehavior: SeparatedBehavior {
+        get {
+            return .detail
+        }
+    }
+    
     var viewModel: EmailDetailViewModel? {
         didSet {
             viewModel?.delegate = self

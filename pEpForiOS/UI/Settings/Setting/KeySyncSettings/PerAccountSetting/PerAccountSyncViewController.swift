@@ -13,6 +13,18 @@ class PerAccountSyncViewController: BaseViewController {
     let viewModel = PerAccountSyncViewModel()
 
     @IBOutlet weak var tableView: UITableView!
+    
+    override var collapsedBehavior: CollapsedBehavior {
+        get {
+            return .needed
+        }
+    }
+    
+    override var separatedBehavior: SeparatedBehavior{
+        get {
+            return .detail
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

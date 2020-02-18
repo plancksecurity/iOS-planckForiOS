@@ -18,12 +18,6 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
     private let flexibleSpaceButtonItemTag = 77
     /// True if the pEp button on the left/master side should be shown.
     private var shouldShowPepButtonInMasterToolbar = true
-    /// The key path for observing the view controllers of the split view controller,
-    /// compatible with Objective-C.
-    private let splitViewObserverKeyPath = #keyPath(UISplitViewController.viewControllers)
-    /// With KVO we have to keep our books lest not to remove an observer without
-    /// observing first.
-    private var observingSplitViewControllers = false
 
     public static let storyboardId = "EmailListViewController"
     public static let storyboardNavigationControllerId = "EmailListNavigationViewController"
@@ -76,7 +70,6 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
             me.updateFilterButtonView()
             vm.startMonitoring() //!!!: UI should not know about startMonitoring
             me.tableView.reloadData()
-            me.watchDetailView()
             me.doOnce = nil
         }
         setup()
@@ -106,7 +99,6 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        unwatchDetailView()
     }
 
     deinit {
@@ -753,40 +745,6 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             }
         }
         return theItems
-    }
-
-    // MARK: - Observing the split view controller
-
-    //???: Hard to undestand. What is the observeer used for? Out of 3 devs, zero understood.
-
-    /// Start observing the view controllers in the split view.
-    private func watchDetailView() {
-        if !observingSplitViewControllers, let spvc = splitViewController {
-            spvc.addObserver(self,
-                             forKeyPath: splitViewObserverKeyPath,
-                             options: [],
-                             context: nil)
-            observingSplitViewControllers = true
-        }
-    }
-
-    /// Stop listening for changes in the view controllers in the split view.
-    private func unwatchDetailView() {
-        if observingSplitViewControllers, let spvc = splitViewController {
-            spvc.removeObserver(self, forKeyPath: splitViewObserverKeyPath)
-            observingSplitViewControllers = false
-        }
-    }
-
-    /// React to changes to the view controllers of our split view controller.
-    override func observeValue(forKeyPath keyPath: String?,
-                               of object: Any?,
-                               change: [NSKeyValueChangeKey : Any]?,
-                               context: UnsafeMutableRawPointer?) {
-        if keyPath != splitViewObserverKeyPath {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-            return
-        }
     }
 }
 

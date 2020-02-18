@@ -30,6 +30,12 @@ class SettingDefaultAccountTableViewController: BaseTableViewController {
             return .needed
         }
     }
+    
+    override var separatedBehavior: SeparatedBehavior {
+        get {
+            return .detail
+        }
+    }
 
     // MARK: - UITableviewDataSource
 

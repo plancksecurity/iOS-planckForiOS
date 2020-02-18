@@ -17,6 +17,12 @@ class TrustedServerSettingsViewController: BaseTableViewController {
             return .needed
         }
     }
+    
+    override var separatedBehavior: SeparatedBehavior {
+        get {
+            return .detail
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
