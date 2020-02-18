@@ -202,7 +202,7 @@ extension EmailViewController: MessageContentCellDelegate {
 
 // MARK: - SegueHandlerType
 
-extension EmailViewController: SegueHandlerType {
+extension EmailViewController: SegueHandlerType { //BUFF: obsolete?
     enum SegueIdentifier: String {
         case segueReplyFrom
         case segueReplyAllForm
