@@ -8,12 +8,20 @@
 
 import UIKit
 
+protocol PreviousViewControllerDelegate: class {
+    func viewWillDismiss(viewModel : TrustManagementViewModel)
+}
+
 /// View Controller to handle the HandshakeView.
 class TrustManagementViewController: BaseViewController {
         
+    private let resetCellIdentifier = "TrustManagementResetCellIdentifier"
     private let onlyMasterCellIdentifier = "TrustManagementTableViewCell_OnlyMaster"
     private let masterAndDetailCellIdentifier = "TrustManagementTableViewCell_Detailed"
 
+
+    weak var previousViewControllerDelegate : PreviousViewControllerDelegate?
+    
     @IBOutlet weak var trustManagementTableView: UITableView!
     @IBOutlet weak var optionsButton: UIBarButtonItem!
     var shouldShowOptionsButton: Bool = false
@@ -51,6 +59,15 @@ class TrustManagementViewController: BaseViewController {
         super.viewWillTransition(to: size, with: coordinator)
         trustManagementTableView.reloadData()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        guard let viewModel = viewModel else {
+            Log.shared.error("ViewModel not found")
+            return
+        }
+        previousViewControllerDelegate?.viewWillDismiss(viewModel: viewModel)
+    }
 }
 
 /// MARK: - UITableViewDataSource
@@ -65,10 +82,28 @@ extension TrustManagementViewController : UITableViewDataSource  {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        guard let row = viewModel?.rows[indexPath.row] else {
+            Log.shared.error("The row couldn't be dequeued")
+            return UITableViewCell()
+        }
+        
+        /// Cell for reset
+        if row.color == .noColor, let cell = tableView.dequeueReusableCell(withIdentifier: resetCellIdentifier,
+                                                     for: indexPath) as? TrustManagementResetTableViewCell {
+            cell.delegate = self
+            cell.partnerNameLabel.text = row.name
+            viewModel?.getImage(forRowAt: indexPath, complete: { (image) in
+                DispatchQueue.main.async {
+                    cell.partnerImageView.image = image
+                }
+            })
+            return cell
+        }
+ 
+        /// Cell ´no-noColor´ context
         let identifier = UIDevice.current.orientation.isPortrait ?
             onlyMasterCellIdentifier :  masterAndDetailCellIdentifier
-
+        
         if let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
             as? TrustManagementTableViewCell, let row = viewModel?.rows[indexPath.row] {
             viewModel?.getImage(forRowAt: indexPath, complete: { (image) in
@@ -80,7 +115,9 @@ extension TrustManagementViewController : UITableViewDataSource  {
             cell.partnerNameLabel.text = row.name
             cell.privacyStatusLabel.text = row.privacyStatusName
             cell.descriptionLabel.text = row.description
+            
             configureTrustwords(identifier, row, cell, indexPath)
+
             cell.delegate = self
             return cell
         }
@@ -240,7 +277,8 @@ extension TrustManagementViewController {
 }
 
 /// MARK: - TrustManagementTableViewCellDelegate
-extension TrustManagementViewController: TrustManagementTableViewCellDelegate {
+extension TrustManagementViewController: TrustManagementTableViewCellDelegate,
+TrustManagementResetTableViewCellDelegate {
     func languageButtonPressed(on cell: TrustManagementTableViewCell) {
         showLanguagesList(for: cell)
     }
@@ -257,7 +295,7 @@ extension TrustManagementViewController: TrustManagementTableViewCellDelegate {
         }
     }
     
-    func resetButtonPressed(on cell: TrustManagementTableViewCell) {
+    func resetButtonPressed(on cell: UITableViewCell) {
         if let indexPath = trustManagementTableView.indexPath(for: cell) {
             viewModel?.handleResetPressed(forRowAt: indexPath)
         }
@@ -300,7 +338,9 @@ extension TrustManagementViewController {
                 cell.trustwordsLabel.isHidden = false
                 cell.confirmButton.isHidden = false
                 cell.declineButton.isHidden = false
+                cell.languageButton.isHidden = false
             } else {
+                cell.languageButton.isHidden = true
                 cell.trustwordsLabel.isHidden = true
                 cell.confirmButton.isHidden = true
                 cell.declineButton.isHidden = true

@@ -104,6 +104,9 @@ final class TrustManagementViewModel {
         /// Status indicator
         var color : PEPColor {
             get {
+                if forceRed {
+                    return PEPColor.red
+                }
                 return handshakeCombination.partnerIdentity.pEpColor()
             }
         }

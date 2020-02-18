@@ -331,7 +331,15 @@ extension ComposeTableViewController: SegueHandlerType {
             }
             let messageSafe = message.safeForSession(Session.main)
             destination.viewModel = TrustManagementViewModel(message: messageSafe)
+            destination.previousViewControllerDelegate = self
         }
+    }
+}
+
+// MARK: - Reload
+extension ComposeTableViewController: PreviousViewControllerDelegate {
+    func viewWillDismiss(viewModel : TrustManagementViewModel) {
+        setupPepColorView(for: viewModel.message.pEpRating(), pEpProtected: viewModel.pEpProtected)
     }
 }
 

@@ -18,28 +18,26 @@ public struct PEPStatusText {
 
 extension String {
     
+    /// Struct that provides the texts to the trust management view according to the colors.
     struct TrustManagementText {
         static let red = PEPStatusText(rating: .mistrust,
                                        title: NSLocalizedString("Mistrusted", comment: "Privacy status title"),
                                        explanation: NSLocalizedString("This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the p≡p data.", comment: "Privacy status title"),
                                        suggestion: NSLocalizedString("", comment: ""))
-
         static let yellow = PEPStatusText(rating: .reliable,
                                           title: NSLocalizedString("Secure", comment: "Privacy status title"),
                                           explanation: NSLocalizedString("In order to make the communication with this communication partner Secure & Trusted, you will have to compare the Trustwords below with this communication partner and ensure they match yours.", comment: "Privacy status explanation"),
                                           suggestion: NSLocalizedString("", comment: ""))
-        
         static let green = PEPStatusText(rating: .trusted,
                                          title: NSLocalizedString("Secure & Trusted", comment: "Privacy status title"),
                                          explanation: NSLocalizedString("This contact is completely trusted. All communication will be the maximum level of privacy.", comment: "Privacy status explanation"),
                                          suggestion: NSLocalizedString("", comment: ""))
-
         static let noColor = PEPStatusText(rating: .undefined,
                                          title: NSLocalizedString("", comment: ""),
                                          explanation: NSLocalizedString("", comment: ""),
                                          suggestion: NSLocalizedString("", comment: ""))
     }
-    
+
     /**
      All privacy status strings for the trust management.
      */
