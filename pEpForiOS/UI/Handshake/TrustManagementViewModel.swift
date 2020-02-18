@@ -10,8 +10,6 @@ import Foundation
 import MessageModel
 import PEPObjCAdapterFramework
 
-typealias CompletionBlock = () -> ()
-
 /// Handshake View Mode Delegate
 protocol TrustManagementViewModelDelegate: class {
     /// Delegate method to notify that shake's action has been performed
