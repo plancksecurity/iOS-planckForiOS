@@ -9,6 +9,7 @@
 import UIKit
 
 final class EditableAccountSettingsTableViewController: BaseTableViewController {
+
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var emailTextfield: UITextField!
     @IBOutlet weak var passwordTextfield: UITextField!
@@ -101,7 +102,6 @@ extension EditableAccountSettingsTableViewController: UIPickerViewDataSource {
 
 extension EditableAccountSettingsTableViewController: UIPickerViewDelegate {
 
-
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int,
                     forComponent component: Int) -> String? {
 
@@ -128,9 +128,14 @@ extension EditableAccountSettingsTableViewController {
         return viewModel?.count ?? 0
     }
 
-    override func tableView(
-        _ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return viewModel?[section]
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: pEpHeaderView.reuseIdentifier) as? pEpHeaderView else {
+            return UIView()
+        }
+
+        headerView.title = viewModel?[section].uppercased() ?? ""
+        return headerView
     }
 }
 
@@ -161,7 +166,11 @@ extension EditableAccountSettingsTableViewController: EditableAccountSettingsTab
 // MARK: - Private
 
 extension EditableAccountSettingsTableViewController {
+
     private func setUpView() {
+        tableView.register(pEpHeaderView.self,
+                           forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
+        tableView.delegate = self
         smtpSecurityTextfield.inputView = securityPicker
         imapSecurityTextfield.inputView = securityPicker
     }

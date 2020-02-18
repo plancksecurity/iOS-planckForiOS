@@ -54,8 +54,8 @@ extension pEpHeaderView {
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo:
                    contentView.layoutMarginsGuide.leadingAnchor),
-            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.topAnchor, constant: Constant.Margin.top),
-            titleLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor, constant: -Constant.Margin.bottom)
+            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: Constant.Margin.top),
+            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -Constant.Margin.bottom)
         ])
     }
 }
