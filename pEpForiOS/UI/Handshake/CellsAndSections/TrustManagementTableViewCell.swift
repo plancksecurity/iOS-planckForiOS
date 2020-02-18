@@ -8,30 +8,6 @@
 
 import UIKit
 
-/// Delegate to notify the events in the cell.
-protocol TrustManagementResetTableViewCellDelegate: class {
-    /// Delegate method to notify the reset button has been pressed.
-    /// - Parameter cell: The cell where the reset button has been pressed
-    func resetButtonPressed(on cell: UITableViewCell)
-}
-
-/// Delegate to notify the events in the cell.
-protocol TrustManagementTableViewCellDelegate: class {
-    
-    /// Delegate method to notify the language button has been pressed.
-    /// - Parameter cell: The cell where the language button has been pressed
-    func languageButtonPressed(on cell: TrustManagementTableViewCell)
-    /// Delegate method to notify the decline button has been pressed.
-    /// - Parameter cell: The cell where the decline button has been pressed
-    func declineButtonPressed(on cell: TrustManagementTableViewCell)
-    /// Delegate method to notify the confirm button has been pressed.
-    /// - Parameter cell: The cell where the confirm button has been pressed
-    func confirmButtonPressed(on cell: TrustManagementTableViewCell)
-    /// Delegate method to notify the trustwords label has been pressed.
-    /// - Parameter cell: The cell where the trustwords label has been pressed
-    func trustwordsLabelPressed(on cell : TrustManagementTableViewCell)
-}
-
 /// UITableViewCell for handshake screen
 final class TrustManagementTableViewCell: UITableViewCell {
  
@@ -54,7 +30,7 @@ final class TrustManagementTableViewCell: UITableViewCell {
     @IBOutlet weak var trustwordsStackView: UIStackView!
     @IBOutlet weak var trustwordsButtonsContainer: UIView!
     
-    weak var delegate : (TrustManagementTableViewCellDelegate & TrustManagementResetTableViewCellDelegate)?
+    weak var delegate : TrustManagementTableViewCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()

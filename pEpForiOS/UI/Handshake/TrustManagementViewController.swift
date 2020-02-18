@@ -24,8 +24,8 @@ class TrustManagementViewController: BaseViewController {
     @IBOutlet weak var trustManagementTableView: UITableView!
     @IBOutlet weak var optionsButton: UIBarButtonItem!
     var shouldShowOptionsButton: Bool = false
-
     var viewModel : TrustManagementViewModel?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,7 +40,6 @@ class TrustManagementViewController: BaseViewController {
         } else {
             optionsButton.title = NSLocalizedString("Options", comment: "Options")
         }
-
         viewModel.trustManagementViewModelDelegate = self
     }
 
@@ -76,7 +75,6 @@ extension TrustManagementViewController : UITableViewDataSource  {
             Log.shared.error("The viewModel must not be nil")
             return 0
         }
-        
         return numberOfRows
     }
     
@@ -114,9 +112,7 @@ extension TrustManagementViewController : UITableViewDataSource  {
             cell.partnerNameLabel.text = row.name
             cell.privacyStatusLabel.text = row.privacyStatusName
             cell.descriptionLabel.text = row.description
-            
             configureTrustwords(identifier, row, cell, indexPath)
-
             cell.delegate = self
             return cell
         }
@@ -134,10 +130,8 @@ extension TrustManagementViewController {
             Log.shared.errorAndCrash("View Model must not be nil")
             return
         }
-         
         let alertController = UIAlertController.pEpAlertController(title: nil, message: nil,
                                                                    preferredStyle: .actionSheet)
-        
         let enable = NSLocalizedString("Enable Protection", comment: "Enable Protection")
         let disable = NSLocalizedString("Disable Protection", comment: "Disable Protection")
         let toogleProtectionTitle = viewModel.pEpProtected  ? enable : disable
@@ -145,7 +139,6 @@ extension TrustManagementViewController {
             viewModel.handleToggleProtectionPressed()
         }
         alertController.addAction(action)
-        
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel")
         let cancelAction = UIAlertAction(title:cancelTitle , style: .cancel) { _ in
             alertController.dismiss(animated: true, completion: nil)
@@ -158,7 +151,6 @@ extension TrustManagementViewController {
             alertController.popoverPresentationController?.sourceView = buttonView
             alertController.popoverPresentationController?.sourceRect = buttonView.bounds
         }
-
         present(alertController, animated: true, completion: nil)
     }
     
@@ -169,7 +161,6 @@ extension TrustManagementViewController {
             Log.shared.error("IndexPath not found")
             return
         }
-        
         let alertController = UIAlertController.pEpAlertController(title: nil,
                                                                    message: nil,
                                                                    preferredStyle: .actionSheet)
@@ -177,7 +168,6 @@ extension TrustManagementViewController {
             Log.shared.error("Languages not found")
             return
         }
-        
         //For every language a row in the action sheet.
         for language in languages {
             guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)
@@ -190,7 +180,6 @@ extension TrustManagementViewController {
                     Log.shared.error("Lost myself")
                     return
                 }
-                
                 me.viewModel?.didSelectLanguage(forRowAt: indexPath,
                                                 language: language)
             }
@@ -202,38 +191,37 @@ extension TrustManagementViewController {
             alertController.dismiss(animated: true, completion: nil)
         }
         alertController.addAction(cancelAction)
-        
+
         //Ipad behavior.
         alertController.popoverPresentationController?.sourceView = cell.languageButton
         alertController.popoverPresentationController?.sourceRect = cell.languageButton.bounds
-        
         present(alertController, animated: true, completion: nil)
     }
 }
 
 /// MARK: - Handshake ViewModel Delegate
 extension TrustManagementViewController: TrustManagementViewModelDelegate {
-    func didToogleLongTrustwords(forRowAt indexPath: IndexPath) {
+    public func didToogleLongTrustwords(forRowAt indexPath: IndexPath) {
         trustManagementTableView.reloadData()
     }
     
-    func didEndShakeMotion() {
+    public func didEndShakeMotion() {
         trustManagementTableView.reloadData()
     }
     
-    func didResetHandshake(forRowAt indexPath: IndexPath) {
+    public func didResetHandshake(forRowAt indexPath: IndexPath) {
         trustManagementTableView.reloadData()
     }
     
-    func didConfirmHandshake(forRowAt indexPath: IndexPath) {
+    public func didConfirmHandshake(forRowAt indexPath: IndexPath) {
         trustManagementTableView.reloadData()
     }
     
-    func didRejectHandshake(forRowAt indexPath: IndexPath) {
+    public func didRejectHandshake(forRowAt indexPath: IndexPath) {
         trustManagementTableView.reloadData()
     }
     
-    func didSelectLanguage(forRowAt indexPath: IndexPath) {
+    public func didSelectLanguage(forRowAt indexPath: IndexPath) {
         trustManagementTableView.reloadData()
     }
 }
@@ -306,7 +294,6 @@ TrustManagementResetTableViewCellDelegate {
         }
     }
 }
-
 
 extension TrustManagementViewController {
     

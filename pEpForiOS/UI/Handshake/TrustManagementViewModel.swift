@@ -234,13 +234,13 @@ final class TrustManagementViewModel {
 
     ///MARK: - Private
 
-    private func reevaluateAndUpdate(_ callback :  CompletionBlock? = nil) {
+    private func reevaluateAndUpdate() {
         session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.error("Lost myself - The message will not be reevaluated")
                 return
             }
-            RatingReEvaluator.reevaluate(message: me.message, callback: callback)
+            RatingReEvaluator.reevaluate(message: me.message)
         }
     }
     

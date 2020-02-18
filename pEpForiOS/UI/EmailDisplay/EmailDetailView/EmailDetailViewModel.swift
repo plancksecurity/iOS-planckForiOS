@@ -47,7 +47,6 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         self.messageQueryResults.rowDelegate = self
     }
     
-    
     /// HanshakeViewModel getter
     var hanshakeViewModel: TrustManagementViewModel? {
         get {
@@ -55,7 +54,6 @@ class EmailDetailViewModel: EmailDisplayViewModel {
                 Log.shared.error("Message not found")
                 return nil
             }
-
             return TrustManagementViewModel(message: message)
         }
     }
