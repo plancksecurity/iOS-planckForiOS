@@ -24,10 +24,12 @@ final class AccountSettingsTableViewControllerV1: BaseTableViewController {
     @IBOutlet weak var imapServerTextfield: UITextField!
     @IBOutlet weak var imapPortTextfield: UITextField!
     @IBOutlet weak var imapSecurityTextfield: UITextField!
+    @IBOutlet weak var imapUsernameTextField: UITextField!
     //smtp account fields
     @IBOutlet weak var smtpServerTextfield: UITextField!
     @IBOutlet weak var smtpPortTextfield: UITextField!
     @IBOutlet weak var smtpSecurityTextfield: UITextField!
+    @IBOutlet weak var smtpUsernameTextField: UITextField!
 
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
@@ -50,7 +52,8 @@ final class AccountSettingsTableViewControllerV1: BaseTableViewController {
      override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.register(pEpHeaderView.self, forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
+        tableView.register(pEpHeaderView.self,
+                           forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
         viewModel?.delegate = self
 
     }
@@ -224,12 +227,14 @@ extension AccountSettingsTableViewControllerV1 {
             imapServerTextfield.text = imapServer.address
             imapPortTextfield.text = String(imapServer.port)
             imapSecurityTextfield.text = imapServer.transport.asString()
+            imapUsernameTextField.text = imapServer.credentials.loginName
         }
 
         if let smtpServer = viewModel?.account.smtpServer {
             self.smtpServerTextfield.text = smtpServer.address
             self.smtpPortTextfield.text = String(smtpServer.port)
             smtpSecurityTextfield.text = smtpServer.transport.asString()
+            smtpUsernameTextField.text = smtpServer.credentials.loginName
         }
     }
 

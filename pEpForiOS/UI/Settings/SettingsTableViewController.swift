@@ -19,9 +19,8 @@ final class SettingsTableViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUp()
         viewModel.delegate = self
-        title = NSLocalizedString("Settings",
-                                  comment: "Settings view title")
         UIHelper.variableCellHeightsTableView(tableView)
         addExtraKeysEditabilityToggleGesture()
     }
@@ -51,6 +50,15 @@ final class SettingsTableViewController: BaseTableViewController {
 // MARK: - Private
 
 extension SettingsTableViewController {
+    private struct Localized {
+        static let navigationTitle = NSLocalizedString("Settings",
+        comment: "Settings view title")
+    }
+    private func setUp() {
+        title = Localized.navigationTitle
+        tableView.register(pEpHeaderView.self,
+                           forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
+    }
     /// Prepares and returns the swipe tableview cell, with the corresponding color and title.
     /// - Parameters:
     ///   - dequeuedCell: the cell to configure
@@ -178,8 +186,14 @@ extension SettingsTableViewController {
         return viewModel.count
     }
 
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return viewModel.section(for: section).title
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: pEpHeaderView.reuseIdentifier) as? pEpHeaderView else {
+            return UIView()
+        }
+
+        headerView.title = viewModel.section(for: section).title.uppercased()
+        return headerView
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {

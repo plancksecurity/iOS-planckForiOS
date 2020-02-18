@@ -306,8 +306,11 @@ extension SettingsViewModel {
     /// - Returns: The title of the footer. If the section is an account, a pepSync or the company features, it will be nil because there is no footer.
     private func sectionFooter(type: SectionType) -> String? {
         switch type {
-        case .accounts, .pEpSync, .companyFeatures:
+        case .pEpSync, .companyFeatures:
             return nil
+        case .accounts:
+            return NSLocalizedString("Performs a reset of the privacy settings of your account(s)",
+                                     comment: "Settings accounts section, footer below Reset All cell")
         case .globalSettings:
             return NSLocalizedString("Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p.",
                                      comment: "passive mode description")
@@ -325,7 +328,7 @@ extension SettingsViewModel {
         case .account:
             return nil
         case .resetAccounts:
-            return NSLocalizedString("Reset All Identities",
+            return NSLocalizedString("Reset All",
                                      comment: "Settings: Cell (button) title for reset all identities")
         case .credits:
             return NSLocalizedString("Credits",
