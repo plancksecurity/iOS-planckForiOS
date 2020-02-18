@@ -24,7 +24,8 @@ extension UIFont {
     /// - Parameters:
     ///   - style: The style of the font.
     ///   - weight: The weight of the font.
-    public static func pepFont(style : TextStyle, weight : UIFont.Weight) -> UIFont {
+    public static func pepFont(style: TextStyle,
+                               weight: UIFont.Weight) -> UIFont {
         let name: String
         switch weight {
         case .medium:
@@ -37,13 +38,27 @@ extension UIFont {
             name = regular
         }
         
-        guard let font = UIFont(name: name, size: preferredFontSize(for: style)) else {
-            return UIFont.systemFont(ofSize: preferredFontSize(for: style), weight: weight)
+        guard let font = UIFont(name: name,
+                                size: preferredFontSize(for: style)) else {
+                                    Log.shared.info("Missing custom font. System default font for specified style is used now.")
+                                    return UIFont.systemFont(ofSize: preferredFontSize(for: style), weight: weight)
         }
         return font
     }
+
+    /// Return font - custom typeface from given system default font (Dynamic Font Sizes - Accessibility)
+    /// - Parameter systemDynamicFont: system font with specified Text Style
+    public static func pEpPreferredFontTypeFace(systemDynamicFont: UIFont) -> UIFont {
+        guard let textStyle = systemDynamicFont.fontDescriptor.object(forKey: UIFontDescriptor.AttributeName.textStyle) as? String else {
+                Log.shared.error("Missing UIFont.TextStyle")
+                return systemDynamicFont
+        }
+
+        return UIFont.pepFont(style: UIFont.TextStyle.init(rawValue: textStyle),
+                              weight: .regular)
+    }
     
-    private static func preferredFontSize(for textStyle : TextStyle) -> CGFloat {
+    private static func preferredFontSize(for textStyle: TextStyle) -> CGFloat {
         return UIFont.preferredFont(forTextStyle: textStyle).pointSize
     }
 }

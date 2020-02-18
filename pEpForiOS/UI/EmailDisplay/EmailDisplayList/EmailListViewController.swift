@@ -953,7 +953,6 @@ extension EmailListViewController {
             let cellFrame = tableView.rectForRow(at: indexPath)
             let sourceRect = view.convert(cellFrame, from: tableView)
             popoverPresentationController.sourceRect = sourceRect
-
         }
         present(alertControler, animated: true, completion: nil)
     }

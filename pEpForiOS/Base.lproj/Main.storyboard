@@ -709,18 +709,18 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XHB-or-DzF">
-                                            <rect key="frame" x="20" y="0.0" width="355" height="58"/>
+                                            <rect key="frame" x="20" y="6" width="355" height="46"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="To:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bd2-Nr-sTF">
-                                                    <rect key="frame" x="0.0" y="8" width="22" height="19.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <rect key="frame" x="0.0" y="8" width="18.5" height="16"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4nS-8y-LLg" userLabel="RecipientTextView" customClass="RecipientTextView" customModule="pEpForiOS" customModuleProvider="target">
-                                                    <rect key="frame" x="22" y="23" width="333" height="35"/>
+                                                    <rect key="frame" x="18.5" y="20.5" width="336.5" height="25.5"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                                     <attributedString key="userComments">
                                                         <fragment content="Not user-visible"/>
@@ -734,9 +734,9 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="XHB-or-DzF" secondAttribute="bottom" id="D9E-jX-RMa"/>
+                                        <constraint firstAttribute="bottom" secondItem="XHB-or-DzF" secondAttribute="bottom" constant="6" id="D9E-jX-RMa"/>
                                         <constraint firstItem="XHB-or-DzF" firstAttribute="leading" secondItem="hxy-pu-b9D" secondAttribute="leading" constant="20" symbolic="YES" id="TNf-Fc-ApB"/>
-                                        <constraint firstItem="XHB-or-DzF" firstAttribute="top" secondItem="hxy-pu-b9D" secondAttribute="top" id="nUt-Hq-D0G"/>
+                                        <constraint firstItem="XHB-or-DzF" firstAttribute="top" secondItem="hxy-pu-b9D" secondAttribute="top" constant="6" id="nUt-Hq-D0G"/>
                                         <constraint firstAttribute="trailing" secondItem="XHB-or-DzF" secondAttribute="trailing" id="ngL-Rg-CuY"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -745,7 +745,7 @@
                                     <outlet property="title" destination="Bd2-Nr-sTF" id="3Df-Pu-hFO"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="WrappedCell" rowHeight="58" id="QY1-za-ty2" userLabel="WrappedCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="WrappedCell" rowHeight="58" id="QY1-za-ty2" userLabel="WrappedCell" customClass="WrappedCell" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="86" width="375" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="top" tableViewCell="QY1-za-ty2" id="xXE-7I-TSL">
@@ -753,16 +753,16 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eor-Hd-1l7">
-                                            <rect key="frame" x="20" y="0.0" width="355" height="58"/>
+                                            <rect key="frame" x="20" y="6" width="355" height="46"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Cc/Bcc:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QgY-uq-4qZ">
-                                                    <rect key="frame" x="0.0" y="8" width="355" height="19.5"/>
+                                                    <rect key="frame" x="0.0" y="8" width="355" height="16"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
                                                         <bool key="isElement" value="YES"/>
                                                     </accessibility>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -774,11 +774,14 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Eor-Hd-1l7" firstAttribute="leading" secondItem="xXE-7I-TSL" secondAttribute="leading" constant="20" symbolic="YES" id="BOP-NR-yiU"/>
-                                        <constraint firstAttribute="bottom" secondItem="Eor-Hd-1l7" secondAttribute="bottom" id="Fhy-2y-kqj"/>
+                                        <constraint firstAttribute="bottom" secondItem="Eor-Hd-1l7" secondAttribute="bottom" constant="6" id="Fhy-2y-kqj"/>
                                         <constraint firstAttribute="trailing" secondItem="Eor-Hd-1l7" secondAttribute="trailing" id="ZpO-uE-V87"/>
-                                        <constraint firstItem="Eor-Hd-1l7" firstAttribute="top" secondItem="xXE-7I-TSL" secondAttribute="top" id="cxb-t2-SXn"/>
+                                        <constraint firstItem="Eor-Hd-1l7" firstAttribute="top" secondItem="xXE-7I-TSL" secondAttribute="top" constant="6" id="cxb-t2-SXn"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="ccBccLabel" destination="QgY-uq-4qZ" id="b1a-9Y-GDl"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SubjectCell" rowHeight="58" id="mAI-2I-ayV" customClass="SubjectCell" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="144" width="375" height="58"/>
@@ -788,18 +791,18 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XSz-Mv-3Ch">
-                                            <rect key="frame" x="20" y="0.0" width="355" height="58"/>
+                                            <rect key="frame" x="20" y="6" width="355" height="46"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Subject:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NTc-GH-Ell">
-                                                    <rect key="frame" x="0.0" y="8" width="60" height="19.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <rect key="frame" x="0.0" y="8" width="50" height="16"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ee-yP-4gA">
-                                                    <rect key="frame" x="60" y="23" width="295" height="35"/>
+                                                    <rect key="frame" x="50" y="20.5" width="305" height="25.5"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
                                                     <attributedString key="userComments">
                                                         <fragment content="Not user-visible"/>
@@ -813,13 +816,14 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="XSz-Mv-3Ch" secondAttribute="bottom" id="Q13-QV-ppg"/>
+                                        <constraint firstAttribute="bottom" secondItem="XSz-Mv-3Ch" secondAttribute="bottom" constant="6" id="Q13-QV-ppg"/>
                                         <constraint firstItem="XSz-Mv-3Ch" firstAttribute="leading" secondItem="ZEp-Hs-KCU" secondAttribute="leading" constant="20" symbolic="YES" id="T8J-8k-FVe"/>
                                         <constraint firstAttribute="trailing" secondItem="XSz-Mv-3Ch" secondAttribute="trailing" id="kid-0r-nbJ"/>
-                                        <constraint firstItem="XSz-Mv-3Ch" firstAttribute="top" secondItem="ZEp-Hs-KCU" secondAttribute="top" id="zjW-KW-HGu"/>
+                                        <constraint firstItem="XSz-Mv-3Ch" firstAttribute="top" secondItem="ZEp-Hs-KCU" secondAttribute="top" constant="6" id="zjW-KW-HGu"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="subjectLabel" destination="NTc-GH-Ell" id="GC0-p0-Yu1"/>
                                     <outlet property="textView" destination="3ee-yP-4gA" id="P3K-f9-Kng"/>
                                 </connections>
                             </tableViewCell>

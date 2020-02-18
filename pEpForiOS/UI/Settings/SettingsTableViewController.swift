@@ -16,7 +16,7 @@ SettingsViewModelDelegate {
     static let storyboardId = "SettingsTableViewController"
     private weak var activityIndicatorView: UIActivityIndicatorView?
     
-    lazy var viewModel = SettingsViewModel(delegate: self)
+    private lazy var viewModel = SettingsViewModel(delegate: self)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -186,7 +186,7 @@ SettingsViewModelDelegate {
             dequeuedCell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
             dequeuedCell.detailTextLabel?.text = row.subtitle
             return dequeuedCell
-        case .passiveMode, .protectMessageSubject, .pEpSync:
+        case .passiveMode, .protectMessageSubject, .pEpSync, .unsecureReplyWarningEnabled:
             guard let row = row as? SettingsViewModel.SwitchRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -287,6 +287,7 @@ extension SettingsTableViewController {
         case protectMessageSubject
         case pEpSync
         case resetAccounts
+        case unsecureReplyWarningEnabled
     }
     
     /// Provides the segue identifier for the cell in the passed index path
@@ -319,6 +320,8 @@ extension SettingsTableViewController {
             return .pEpSync
         case .resetAccounts:
             return .resetAccounts
+        case .unsecureReplyWarningEnabled:
+            return .unsecureReplyWarningEnabled
         }
     }
     
@@ -352,7 +355,9 @@ extension SettingsTableViewController {
              .passiveMode,
              .protectMessageSubject,
              .pEpSync,
-             .resetAccounts:
+             .resetAccounts,
+             .unsecureReplyWarningEnabled:
+            // It's all rows that never segue sanywhere (e.g. SwitchRow).
             break
         }
     }
@@ -386,7 +391,7 @@ extension SettingsTableViewController {
         
         let resetAction = PEPUIAlertAction(title: resetTitle, style: .pEpRed) { _ in
             action()
-            pepAlertViewController.dissmiss()
+            pepAlertViewController.dismiss()
         }
         
         pepAlertViewController.add(action: resetAction)
@@ -426,7 +431,7 @@ extension SettingsTableViewController {
                                                 }
                                                 //Switch status needs to be reversed
                                                 me.tableView.reloadData()
-                                                alert?.dissmiss()
+                                                alert?.dismiss()
         }
         
         alert?.add(action: cancelAction)
@@ -435,6 +440,7 @@ extension SettingsTableViewController {
                                                                       comment: "keysync alert leave device group disable"),
                                              style: .pEpRed) { _ in
                                                 action(newValue)
+                                                alert?.dismiss()
         }
         alert?.add(action: disableAction)
         return alert

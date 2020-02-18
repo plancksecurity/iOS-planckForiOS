@@ -122,7 +122,7 @@ extension TrustedServerSettingsViewController {
                                                     return
                                                 }
                                                 trustCell.onOfSwitch.setOn(false, animated: true)
-                                                pepAlert?.dissmiss()
+                                                pepAlert?.dismiss()
         })
 
         let trustActionTitle = NSLocalizedString("Trust",
@@ -132,10 +132,10 @@ extension TrustedServerSettingsViewController {
                                            handler: { [weak self] _ in
                                             guard let me = self else {
                                                 Log.shared.lostMySelf()
-                                                pepAlert?.dissmiss()
+                                                pepAlert?.dismiss()
                                                 return
                                             }
-                                            pepAlert?.dissmiss()
+                                            pepAlert?.dismiss()
                                             me.viewModel.setStoreSecurely(indexPath: indexPath, toValue: true)
         })
         pepAlert?.add(action: cancelAction)
