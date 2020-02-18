@@ -1771,7 +1771,6 @@
 				5B87D79223F2C57F009DACAA /* SF */,
 				432E80FB2191AF5100359879 /* UniversLTStd.otf */,
 				432E80FC2191AF5100359879 /* UniversLTStd-Bold.otf */,
-				5BC14AE823EAC287005F0AF3 /* SF */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -2701,7 +2700,6 @@
 				37F615CC238BE51F001AAE48 /* ManualAccountSetupView.xib in Resources */,
 				151DE7E41FC5D41600CDC273 /* FolderViews.storyboard in Resources */,
 				152A39D221905C3E00D9F8E4 /* AttachmentCell.xib in Resources */,
-				5BC14ADD23EAC276005F0AF3 /* SFUIText-Semibold.ttf in Resources */,
 				B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */,
 				37156E50234DD3FB00845A28 /* LoadingInterface.xib in Resources */,
 				433404CB2379789600E785F1 /* NothingSelected.storyboard in Resources */,
@@ -2713,7 +2711,6 @@
 				432E80FD2191AF5100359879 /* UniversLTStd.otf in Resources */,
 				15D3D48C239FC14700F2EBFB /* EmailDetailCollectionViewCell.xib in Resources */,
 				151DE7DE1FC5D3E200CDC273 /* Settings.storyboard in Resources */,
-				5BC14AE023EAC276005F0AF3 /* SFUIText-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
