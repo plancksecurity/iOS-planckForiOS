@@ -21,7 +21,6 @@ class EmailDetailViewController: BaseViewController {
     private var emailSubViewControllers = [EmailViewController]()
     /// Stuff that must be done once only in viewWillAppear
     private var doOnce: (()-> Void)?
-
     private var pdfPreviewUrl: URL?
 
     @IBOutlet weak var nextButton: UIBarButtonItem?
