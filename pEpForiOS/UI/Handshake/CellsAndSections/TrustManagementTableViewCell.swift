@@ -9,6 +9,13 @@
 import UIKit
 
 /// Delegate to notify the events in the cell.
+protocol TrustManagementResetTableViewCellDelegate: class {
+    /// Delegate method to notify the reset button has been pressed.
+    /// - Parameter cell: The cell where the reset button has been pressed
+    func resetButtonPressed(on cell: UITableViewCell)
+}
+
+/// Delegate to notify the events in the cell.
 protocol TrustManagementTableViewCellDelegate: class {
     
     /// Delegate method to notify the language button has been pressed.
@@ -20,9 +27,6 @@ protocol TrustManagementTableViewCellDelegate: class {
     /// Delegate method to notify the confirm button has been pressed.
     /// - Parameter cell: The cell where the confirm button has been pressed
     func confirmButtonPressed(on cell: TrustManagementTableViewCell)
-    /// Delegate method to notify the reset button has been pressed.
-    /// - Parameter cell: The cell where the reset button has been pressed
-    func resetButtonPressed(on cell: TrustManagementTableViewCell)
     /// Delegate method to notify the trustwords label has been pressed.
     /// - Parameter cell: The cell where the trustwords label has been pressed
     func trustwordsLabelPressed(on cell : TrustManagementTableViewCell)
@@ -30,7 +34,7 @@ protocol TrustManagementTableViewCellDelegate: class {
 
 /// UITableViewCell for handshake screen
 final class TrustManagementTableViewCell: UITableViewCell {
-
+ 
     //Content
     @IBOutlet weak var partnerImageView: UIImageView!
     @IBOutlet weak var privacyStatusImageView: UIImageView!
@@ -50,8 +54,7 @@ final class TrustManagementTableViewCell: UITableViewCell {
     @IBOutlet weak var trustwordsStackView: UIStackView!
     @IBOutlet weak var trustwordsButtonsContainer: UIView!
     
-    weak var delegate : TrustManagementTableViewCellDelegate?
-    @IBOutlet weak var rightSideStackView: UIStackView!
+    weak var delegate : (TrustManagementTableViewCellDelegate & TrustManagementResetTableViewCellDelegate)?
     
     override func awakeFromNib() {
         super.awakeFromNib()
