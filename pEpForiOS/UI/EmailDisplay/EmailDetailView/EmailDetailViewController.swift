@@ -769,15 +769,19 @@ extension EmailDetailViewController {
 
             //Down
             let downButton = UIButton(frame: nextPrevButtonSize)
-            let downImage = UIImage(named: "chevron-icon-down")
+            let downImage = UIImage(named: "chevron-icon-down")?.withRenderingMode(.alwaysTemplate)
             downButton.setBackgroundImage(downImage, for: .normal)
+            downButton.tintColor = thereIsANextMessageToShow ? UIColor.pEpGreen : UIColor.pEpGray
             downButton.addTarget(self, action: #selector(showNextIfAny), for: .touchUpInside)
-
+            
             //Up
             let upButton = UIButton(frame: nextPrevButtonSize)
-            let upImage =  UIImage(named: "chevron-icon-up")
+            let upImage = UIImage(named: "chevron-icon-up")?.withRenderingMode(.alwaysTemplate)
             upButton.setBackgroundImage(upImage, for: .normal)
+            upButton.tintColor = thereIsAPreviousMessageToShow ? UIColor.pEpGreen : UIColor.pEpGray
+
             upButton.addTarget(self, action: #selector(showPreviousIfAny), for: .touchUpInside)
+            upButton.isEnabled = thereIsAPreviousMessageToShow
 
             //Spacer
             let defaultSpacerWidth: CGFloat = 8.0
@@ -786,6 +790,10 @@ extension EmailDetailViewController {
 
             let downBarButtonItem = UIBarButtonItem(customView: downButton)
             let upBarButtonItem = UIBarButtonItem(customView: upButton)
+            
+            downBarButtonItem.isEnabled = thereIsANextMessageToShow
+            upBarButtonItem.isEnabled = thereIsAPreviousMessageToShow
+            
             navigationItem.leftBarButtonItems = [downBarButtonItem, spacer, upBarButtonItem]
             
             let midSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
