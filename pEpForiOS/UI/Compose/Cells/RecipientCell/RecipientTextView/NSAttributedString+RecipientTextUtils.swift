@@ -25,8 +25,8 @@ extension NSAttributedString {
             let pepFont = UIFont.pepFont(style: .body, weight: .regular)
 
             attrText.addAttribute(NSAttributedString.Key.font,
-                                  value: pepFont,
-                                  range: NSRange(location: 0, length: attrText.length))
+                                 value: pepFont,
+                                 range: NSRange(location: 0, length: attrText.length))
             return (NSAttributedString(attributedString: attrText), textAttachment)
     }
 }

@@ -113,11 +113,12 @@ extension NSAttributedString {
                 let attachString = NSAttributedString(attachment: at)
                 new.append(attachString)
             }
-            let pepFont = UIFont.pepFont(style: .body, weight: .regular)
+            let pepFont = UIFont.pepFont(style: .footnote, weight: .regular)
 
             new.addAttribute(NSAttributedString.Key.font,
                              value: pepFont,
-                             range: NSRange(location: 0, length: new.length)
+                             range: NSRange(location: 0,
+                                            length: new.length)
             )
             new.addAttribute(NSAttributedString.Key.baselineOffset,
                              value: 3.0,

@@ -392,7 +392,7 @@ extension SettingsTableViewController {
         
         let resetAction = PEPUIAlertAction(title: resetTitle, style: .pEpRed) { _ in
             action()
-            pepAlertViewController.dissmiss()
+            pepAlertViewController.dismiss()
         }
         
         pepAlertViewController.add(action: resetAction)
@@ -432,7 +432,7 @@ extension SettingsTableViewController {
                                                 }
                                                 //Switch status needs to be reversed
                                                 me.tableView.reloadData()
-                                                alert?.dissmiss()
+                                                alert?.dismiss()
         }
         
         alert?.add(action: cancelAction)
@@ -441,6 +441,7 @@ extension SettingsTableViewController {
                                                                       comment: "keysync alert leave device group disable"),
                                              style: .pEpRed) { _ in
                                                 action(newValue)
+                                                alert?.dismiss()
         }
         alert?.add(action: disableAction)
         return alert

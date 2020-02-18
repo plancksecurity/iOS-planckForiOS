@@ -17,12 +17,15 @@ extension RecipientTextViewModel {
 
         init(recipient: Identity,
              font:  UIFont = UIFont.pepFont(style: .body, weight: .regular),
-             textColor: UIColor = .pEpGreen,
+             textColor: UIColor = .pEpDarkText,
              maxWidth: CGFloat = 0.0) {
             self.recipient = recipient
             self.font = font
             super.init(data: nil, ofType: nil)
-            setupRecipientImage(for: recipient, font: font, textColor: textColor, maxWidth: maxWidth)
+            setupRecipientImage(for: recipient,
+                                font: font,
+                                textColor: textColor,
+                                maxWidth: maxWidth)
         }
 
         required init?(coder aDecoder: NSCoder) {
@@ -44,7 +47,7 @@ extension RecipientTextViewModel {
 
         private func setupRecipientImage(for recipient: Identity,
                                          font:  UIFont,
-                                         textColor: UIColor = .pEpGreen,
+                                         textColor: UIColor = .pEpDarkText,
                                          maxWidth: CGFloat = 0.0) {
             let text = recipient.address
             let attributes = [
