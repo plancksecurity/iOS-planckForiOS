@@ -214,6 +214,7 @@
 		37F615CC238BE51F001AAE48 /* ManualAccountSetupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37F615CB238BE51F001AAE48 /* ManualAccountSetupView.xib */; };
 		37F615CF238BE584001AAE48 /* ManualAccountSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F615CE238BE584001AAE48 /* ManualAccountSetupView.swift */; };
 		37FFA7FA234B3C27004229BE /* AnimatedPlaceholderTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */; };
+		3A0CBAAD23F5909C00AE200C /* WrappedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */; };
 		3AD0E0A123E4659F006FFED3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0E0A023E4659F006FFED3 /* Assets.xcassets */; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
 		4307D5DA23575853004569C4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4307D5D823575853004569C4 /* InfoPlist.strings */; };
@@ -672,6 +673,7 @@
 		37F615CB238BE51F001AAE48 /* ManualAccountSetupView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ManualAccountSetupView.xib; sourceTree = "<group>"; };
 		37F615CE238BE584001AAE48 /* ManualAccountSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualAccountSetupView.swift; sourceTree = "<group>"; };
 		37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedPlaceholderTextfield.swift; sourceTree = "<group>"; };
+		3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedCell.swift; sourceTree = "<group>"; };
 		3AD0E0A023E4659F006FFED3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
 		4307D5D923575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1237,6 +1239,7 @@
 		152A39B821905C3D00D9F8E4 /* WrappedBccCell */ = {
 			isa = PBXGroup;
 			children = (
+				3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */,
 				152A39B921905C3D00D9F8E4 /* WrappedBccViewModel.swift */,
 			);
 			path = WrappedBccCell;
@@ -2814,6 +2817,7 @@
 				1526596F216230B2006A78DF /* ComposeFieldModel.swift in Sources */,
 				492EF92D20C6957D004EAE14 /* ThreadViewController.swift in Sources */,
 				5BC14AF023EB19B5005F0AF3 /* TrustManagementViewController.swift in Sources */,
+				3A0CBAAD23F5909C00AE200C /* WrappedCell.swift in Sources */,
 				43257C821F50179800DDC7F0 /* BasicSaxParser.swift in Sources */,
 				150DF6D02052A13700A9DCF7 /* SecureWebViewController.swift in Sources */,
 				375BA08A238BFC4100BBFE7C /* ManualAccountSetupContainerView.swift in Sources */,
@@ -3448,7 +3452,7 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.910;
+				MARKETING_VERSION = 1.1;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "-DDEBUG_LOGGING -D DEBUG $(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pEp;
@@ -3487,7 +3491,7 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.910;
+				MARKETING_VERSION = 1.1;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pEp;
 				PRODUCT_MODULE_NAME = pEpForiOS;
