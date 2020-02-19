@@ -25,7 +25,7 @@ SettingsViewModelDelegate {
         UIHelper.variableCellHeightsTableView(tableView)
         addExtraKeysEditabilityToggleGesture()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setToolbarHidden(true, animated: false)
@@ -34,7 +34,7 @@ SettingsViewModelDelegate {
                 "Please choose a setting",
                 comment: "No setting has been selected yet in the settings VC"))
     }
-    
+
     /// MARK: Extra Keys
     /// Adds easter egg gesture to [en|dis]able the editability of extra keys
     private func addExtraKeysEditabilityToggleGesture() {
@@ -43,38 +43,38 @@ SettingsViewModelDelegate {
         gestureRecogniser.numberOfTouchesRequired = 3
         tableView.addGestureRecognizer(gestureRecogniser)
     }
-    
+
     /// [en|dis]able the editability of extra keys
     @objc private func extraKeysEditabilityToggleGestureTriggered() {
         viewModel.handleExtraKeysEditabilityGestureTriggered()
     }
-    
+
     // MARK: - UITableViewDataSource
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.section(for: section).rows.count
     }
-    
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.count
     }
-    
+
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return viewModel.section(for: section).title
     }
-    
+
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return viewModel.section(for: section).footer
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return dequeueCell(for: tableView, for: indexPath)
     }
-    
+
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return indexPath.section == 0 ? true : false
     }
-    
+
     /// SwipeTableViewCellDelegate
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         if indexPath.section == 0 {
@@ -97,7 +97,7 @@ SettingsViewModelDelegate {
         }
         return nil
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let identifier = segueIdentifier(for: indexPath)
         switch identifier {
@@ -116,9 +116,9 @@ SettingsViewModelDelegate {
             performSegue(withIdentifier: identifier.rawValue, sender: indexPath)
         }
     }
-    
+
     /// MARK: - Private.
-    
+
     /// Prepares and returns the swipe tableview cell, with the corresponding color and title.
     /// - Parameters:
     ///   - dequeuedCell: the cell to configure
@@ -145,7 +145,7 @@ SettingsViewModelDelegate {
         dequeuedCell.detailTextLabel?.text = nil
         return dequeuedCell
     }
-    
+
     /// Prepares and returns the switch tableview cell, with the corresponding color and title.
     /// - Parameters:
     ///   - dequeuedCell: the cell to configure
@@ -162,7 +162,7 @@ SettingsViewModelDelegate {
         cell.switchItem.setOn(row.isOn, animated: true)
         return cell
     }
-    
+
     /// Method to get the cell of the table view configured.
     /// - Parameters:
     ///   - tableView: The table view to dequeue the cell
@@ -170,7 +170,7 @@ SettingsViewModelDelegate {
     private func dequeueCell(for tableView: UITableView, for indexPath: IndexPath) -> UITableViewCell {
         let cellId = viewModel.cellIdentifier(for: indexPath)
         let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        
+
         let row : SettingsRowProtocol = viewModel.section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
         case .account:
@@ -194,7 +194,7 @@ SettingsViewModelDelegate {
             return prepareSwitchTableViewCell(dequeuedCell, for: row)
         }
     }
-    
+
     /// Presents an alert controller if the user taps the reset all identity cell.
     private func handleResetAllIdentity(action : @escaping SettingsViewModel.ActionBlock) {
         if let pepAlertViewController = getResetAllIdentityAlertController(action: action) {
@@ -203,7 +203,7 @@ SettingsViewModelDelegate {
             }
         }
     }
-    
+
     /// Shows the alert controller before deleting an account
     /// - Parameter indexPath: The index to delete the row in case of acceptance.
     private func showAlertBeforeDelete(indexPath : IndexPath, action : @escaping SettingsViewModel.ActionBlock) {
@@ -226,7 +226,7 @@ SettingsViewModelDelegate {
         }
         present(alertController, animated: true)
     }
-    
+
     private func checkAccounts() {
         if viewModel.noAccounts() {
             performSegue(withIdentifier: "noAccounts", sender: nil)
@@ -235,7 +235,7 @@ SettingsViewModelDelegate {
 }
 
 extension SettingsTableViewController {
-    
+
     /// Displays a loading view
     func showLoadingView() {
         DispatchQueue.main.async { [weak self] in
@@ -246,7 +246,7 @@ extension SettingsTableViewController {
             me.activityIndicatorView = me.showActivityIndicator()
         }
     }
-    
+
     /// Removes the loading view
     func hideLoadingView() {
         DispatchQueue.main.async { [weak self] in
@@ -258,7 +258,7 @@ extension SettingsTableViewController {
             me.activityIndicatorView?.removeFromSuperview()
         }
     }
-    
+
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
         let title = NSLocalizedString("Extra Keys Editable", comment: "Extra Keys Editable")
         UIUtils.showAlertWithOnlyPositiveButton(title:title, message: newValue, inViewController: self)
@@ -268,7 +268,7 @@ extension SettingsTableViewController {
 /// MARK: - Segue identifier
 
 extension SettingsTableViewController {
-    
+
     /// Identifier of the segues.
     enum SegueIdentifier: String {
         case segueAddNewAccount
@@ -289,7 +289,7 @@ extension SettingsTableViewController {
         case resetAccounts
         case unsecureReplyWarningEnabled
     }
-    
+
     /// Provides the segue identifier for the cell in the passed index path
     /// - Parameter indexPath: The index Path of the cell to get the segue identifier.
     /// - Returns: The segue identifier. If there is no segue to perform, it returns `noSegue`
@@ -324,7 +324,7 @@ extension SettingsTableViewController {
             return .unsecureReplyWarningEnabled
         }
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let segueIdentifier = segue.identifier else { return }
         
@@ -362,7 +362,6 @@ extension SettingsTableViewController {
             break
         }
     }
-    
 }
 
 /// MARK: - Alert Controllers
@@ -386,22 +385,21 @@ extension SettingsTableViewController {
                                                                                completion: nil)
         }
         pepAlertViewController.add(action: cancelAction)
-        
+
         let resetTitle = NSLocalizedString("Reset All", comment: "Reset account identity button title")
-        
-        
+
         let resetAction = PEPUIAlertAction(title: resetTitle, style: .pEpRed) { _ in
             action()
             pepAlertViewController.dismiss()
         }
-        
+
         pepAlertViewController.add(action: resetAction)
         
         pepAlertViewController.modalPresentationStyle = .overFullScreen
         pepAlertViewController.modalTransitionStyle = .crossDissolve
         return pepAlertViewController
     }
-    
+
     private func getBeforeDeleteAlert(deleteCallback: @escaping SettingsViewModel.AlertActionBlock) -> UIAlertController {
         let title = NSLocalizedString("Are you sure you want to delete the account?", comment: "Account delete confirmation")
         let comment = NSLocalizedString("delete account message", comment: "Account delete confirmation comment")
@@ -417,12 +415,12 @@ extension SettingsTableViewController {
         alert.addAction(cancelAction)
         return alert
     }
-    
+
     func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
         let title = NSLocalizedString("Disable p≡p Sync", comment: "Leave device group confirmation")
         let comment = NSLocalizedString("If you disable p≡p Sync, your device group will be dissolved. Are you sure you want to disable disable p≡p Sync?",
                                         comment: "Leave device group confirmation comment")
-        
+
         let alert = PEPAlertViewController.fromStoryboard(title: title, message: comment, paintPEPInTitle: true)
         let cancelAction = PEPUIAlertAction(title: NSLocalizedString("Cancel", comment: "keysync alert leave device group cancel"),
                                             style: .pEpGreen) { [weak self] _ in
@@ -434,7 +432,7 @@ extension SettingsTableViewController {
                                                 me.tableView.reloadData()
                                                 alert?.dismiss()
         }
-        
+
         alert?.add(action: cancelAction)
         
         let disableAction = PEPUIAlertAction(title: NSLocalizedString("Disable",
