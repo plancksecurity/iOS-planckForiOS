@@ -12,13 +12,12 @@ import pEpIOSToolbox
 
 protocol AccountSettingsViewModelDelegate: class {
     func showErrorAlert(error: Error)
-    func pEpSyncToggleUpdated(isOn: Bool)
     func undoPEPSyncToggle()
     func showLoadingView()
     func hideLoadingView()
 }
 
-final class AccountSettingsViewModelV1 {
+final class AccountSettingsViewModel {
     let isOAuth2: Bool
 
     var account: Account
@@ -92,7 +91,6 @@ final class AccountSettingsViewModelV1 {
     func pEpSync(enable: Bool) {
         do {
             try account.setKeySyncEnabled(enable: enable)
-            delegate?.pEpSyncToggleUpdated(isOn: enable)
         } catch {
             delegate?.undoPEPSyncToggle()
             delegate?.showErrorAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
@@ -112,7 +110,7 @@ final class AccountSettingsViewModelV1 {
 
 // MARK: - Private
 
-extension AccountSettingsViewModelV1 {
+extension AccountSettingsViewModel {
     private func sectionIsValid(section: Int) -> Bool {
         return section >= 0 && section < headers.count
     }

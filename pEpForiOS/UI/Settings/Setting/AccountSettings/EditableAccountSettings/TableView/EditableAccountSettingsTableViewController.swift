@@ -129,11 +129,9 @@ extension EditableAccountSettingsTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: pEpHeaderView.reuseIdentifier) as? pEpHeaderView else {
             return UIView()
         }
-
         headerView.title = viewModel?[section].uppercased() ?? ""
         return headerView
     }

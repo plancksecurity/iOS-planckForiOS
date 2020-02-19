@@ -10,7 +10,7 @@ import UIKit
 import MessageModel
 import pEpIOSToolbox
 
-final class AccountSettingsTableViewControllerV1: BaseTableViewController {
+final class AccountSettingsTableViewController: BaseTableViewController {
 
 // MARK: - IBOutlets
 
@@ -45,7 +45,7 @@ final class AccountSettingsTableViewControllerV1: BaseTableViewController {
      should trigger the reauthorization.
      */
     var oauth2ReauthIndexPath: IndexPath?
-    var viewModel: AccountSettingsViewModelV1? = nil
+    var viewModel: AccountSettingsViewModel? = nil
 
     private var resetIdentityIndexPath: IndexPath?
 
@@ -84,7 +84,7 @@ final class AccountSettingsTableViewControllerV1: BaseTableViewController {
 
 // MARK: - UITableViewDataSource
 
-extension AccountSettingsTableViewControllerV1 {
+extension AccountSettingsTableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel?.count ?? 0
     }
@@ -164,7 +164,7 @@ extension AccountSettingsTableViewControllerV1 {
 
 // MARK: - UITextFieldDelegate
 
-extension AccountSettingsTableViewControllerV1: UITextFieldDelegate {
+extension AccountSettingsTableViewController: UITextFieldDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath {
         case oauth2ReauthIndexPath:
@@ -180,7 +180,7 @@ extension AccountSettingsTableViewControllerV1: UITextFieldDelegate {
 
 // MARK: - AccountSettingsViewModelDelegate
 
-extension AccountSettingsTableViewControllerV1: AccountSettingsViewModelDelegate {
+extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
 
     func pEpSyncToggleUpdated(isOn: Bool) {
         DispatchQueue.main.async { [weak self] in
@@ -222,7 +222,7 @@ extension AccountSettingsTableViewControllerV1: AccountSettingsViewModelDelegate
 
 // MARK: - OAuth2AuthViewModelDelegate
 
-extension AccountSettingsTableViewControllerV1: OAuth2AuthViewModelDelegate {
+extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         oauth2ActivityIndicator.stopAnimating()
         shouldHandleErrors = true
@@ -241,7 +241,7 @@ extension AccountSettingsTableViewControllerV1: OAuth2AuthViewModelDelegate {
 
 // MARK: - Private
 
-extension AccountSettingsTableViewControllerV1 {
+extension AccountSettingsTableViewController {
 
     private struct Localized {
         static let navigationTitle = NSLocalizedString("Account",

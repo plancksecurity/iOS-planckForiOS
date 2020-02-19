@@ -13,7 +13,7 @@ import PantomimeFramework
 
 final class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
-    var viewModel: AccountSettingsViewModelV1?
+    var viewModel: AccountSettingsViewModel?
 
     var actual: State?
     var expected: State?
@@ -22,7 +22,7 @@ final class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
 
-        viewModel = AccountSettingsViewModelV1(account: account)
+        viewModel = AccountSettingsViewModel(account: account)
         viewModel?.delegate = self
         setDefaultActualState()
     }

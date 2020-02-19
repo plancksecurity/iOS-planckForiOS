@@ -32,7 +32,7 @@ final class SettingsTableViewController: BaseTableViewController {
                                                                    comment: "No setting has been selected yet in the settings VC"))
     }
 
-    // MARK: - Extra Keys
+// MARK: - Extra Keys
     /// Adds easter egg gesture to [en|dis]able the editability of extra keys
     private func addExtraKeysEditabilityToggleGesture() {
         let gestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(extraKeysEditabilityToggleGestureTriggered))
@@ -350,14 +350,14 @@ extension SettingsTableViewController {
         switch SegueIdentifier(rawValue: segueIdentifier) {
         case .segueEditAccount:
             guard let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? AccountSettingsTableViewControllerV1,
+                let destination = nav.topViewController as? AccountSettingsTableViewController,
                 let indexPath = sender as? IndexPath,
                 let account = viewModel.account(at: indexPath) else {
                     Log.shared.error("SegueIdentifier: segueEditAccount - Early quit! Requirements not met.")
                     return
             }
             destination.appConfig = appConfig
-            destination.viewModel = AccountSettingsViewModelV1(account: account)
+            destination.viewModel = AccountSettingsViewModel(account: account)
         case .segueShowSettingDefaultAccount,
              .segueShowSettingTrustedServers:
             guard let destination = segue.destination as? BaseTableViewController else { return }
