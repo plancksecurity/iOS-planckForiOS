@@ -191,13 +191,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    func application(_ app: UIApplication, open url: URL,
-                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        // Unclear if this is needed, presumabley doesn't get invoked for OAuth2 because
-        // SFSafariViewController is involved there.
-        return oauth2Provider.processAuthorizationRedirect(url: url)
-    }
-
     func application(_ application: UIApplication, continue userActivity: NSUserActivity,
                      restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb,
