@@ -6,6 +6,21 @@
 	<string>en_US</string>
 	<key>CFBundleDisplayName</key>
 	<string>p≡p</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array>
+				<string>pEpForiOS-icon</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>Client Certificates</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>security.pep.pEp12</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -103,6 +118,30 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Client Certificate</string>
+			<key>UTTypeIconFiles</key>
+			<array>
+				<string>pEpForiOS-icon</string>
+			</array>
+			<key>UTTypeIdentifier</key>
+			<string>security.pep.pEp12</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>pEp12</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 	<key>security.pEp.apps.pEpForiOS.oauth2</key>
 	<string>Verify OAuth2 authorization requests</string>
 </dict>
