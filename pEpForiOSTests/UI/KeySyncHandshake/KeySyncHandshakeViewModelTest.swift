@@ -20,7 +20,7 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
         super.setUp()
 
         keySyncHandshakeVM = KeySyncHandshakeViewModel(pEpSession: PEPSessionMoc())
-        //keySyncHandshakeVM?.fingerPrints(meFPR: "", partnerFPR: "")
+        keySyncHandshakeVM?.setFingerPrints(meFPR: "", partnerFPR: "", isNewGroup: true)
         keySyncHandshakeVM?.delegate = self
 
         setDefaultActualState()
