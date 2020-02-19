@@ -223,7 +223,7 @@ extension EmailViewController: MessageAttachmentDelegate {
     func didTap(cell: MessageCell, attachment: Attachment, location: CGPoint, inView: UIView?) {
         let busyState = inView?.displayAsBusy()
         let attachmentOp = AttachmentToLocalURLOperation(attachment: attachment)
-        attachmentOp.completionBlock = { [weak self] in
+        attachmentOp.completionBlock = { [weak self, weak attachmentOp] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
@@ -236,7 +236,7 @@ extension EmailViewController: MessageAttachmentDelegate {
                         inView?.stopDisplayingAsBusy(viewBusyState: bState)
                     }
                 }
-                guard let url = attachmentOp.fileURL else { //!!!: looks suspicously like retain cycle. attachmentOp <-> completionBlock
+                guard let url = attachmentOp?.fileURL else {
                     return
                 }
                 me.didCreateLocally(attachment: safeAttachment,
