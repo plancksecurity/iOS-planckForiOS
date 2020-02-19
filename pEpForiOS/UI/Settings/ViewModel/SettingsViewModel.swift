@@ -208,11 +208,6 @@ extension SettingsViewModel {
             rows.append(generateNavigationRow(type: .credits, isDangerous: false))
             rows.append(generateNavigationRow(type: .trustedServer, isDangerous: false))
             rows.append(generateNavigationRow(type: .setOwnKey, isDangerous: false))
-            rows.append(generateSwitchRow(type: .passiveMode,
-                                          isDangerous: false,
-                                          isOn: AppSettings.shared.passiveMode) { (value) in
-                                            AppSettings.shared.passiveMode = value
-            })
             rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
                                           isDangerous: false,
                                           isOn: AppSettings.shared.unsecureReplyWarningEnabled) {
@@ -224,6 +219,11 @@ extension SettingsViewModel {
                                           isOn: !AppSettings.shared.unencryptedSubjectEnabled) {
                                             (value) in
                                             AppSettings.shared.unencryptedSubjectEnabled = !value
+            })
+            rows.append(generateSwitchRow(type: .passiveMode,
+                                          isDangerous: false,
+                                          isOn: AppSettings.shared.passiveMode) { (value) in
+                                            AppSettings.shared.passiveMode = value
             })
         case .pEpSync:
             rows.append(generateSwitchRow(type: .pEpSync, isDangerous: false, isOn: KeySyncStatus) { [weak self] (value) in
@@ -289,15 +289,20 @@ extension SettingsViewModel {
     private func sectionTitles(type: SectionType) -> String {
         switch type {
         case .accounts:
-            return NSLocalizedString("Accounts", comment: "Tableview section  header")
+            return NSLocalizedString("Accounts",
+                                     comment: "Tableview section  header: Accounts")
         case .globalSettings:
-            return NSLocalizedString("Global Settings", comment: "Tableview section header")
+            return NSLocalizedString("Global Settings",
+                                     comment: "Tableview section header: Global Settings")
         case .pEpSync:
-            return NSLocalizedString("p≡p sync", comment: "Tableview section header")
+            return NSLocalizedString("Sync",
+                                     comment: "Tableview section header: (p≡p) Sync")
         case .contacts:
-            return NSLocalizedString("Contacts", comment: "TableView section header")
+            return NSLocalizedString("Contacts",
+                                     comment: "TableView section header: Contacts")
         case .companyFeatures:
-            return NSLocalizedString("Enterprise Features", comment: "Tableview section header")
+            return NSLocalizedString("Enterprise Features",
+                                     comment: "Tableview section header: Enterprise Features")
         }
     }
 
@@ -349,14 +354,15 @@ extension SettingsViewModel {
             return NSLocalizedString("Reset",
                                      comment: "Settings: cell (button) title to view the trust contacts option")
         case .passiveMode:
-            return NSLocalizedString("Enable passive mode",
+            return NSLocalizedString("Passive mode",
                                      comment: "Passive mode title")
         case .protectMessageSubject:
             return NSLocalizedString("Protect Message Subject",
                                      comment: "title for subject protection")
         case .pEpSync:
-        return NSLocalizedString("Enable p≡p Sync", comment: "settings, enable thread view or not")
-            case .unsecureReplyWarningEnabled:
+            return NSLocalizedString("p≡p Sync",
+                                     comment: "Settings: enable/disable p≡p Sync feature")
+        case .unsecureReplyWarningEnabled:
             return NSLocalizedString("Unsecure reply warning",
                                      comment: "setting row title: Unsecure reply warning")
         }

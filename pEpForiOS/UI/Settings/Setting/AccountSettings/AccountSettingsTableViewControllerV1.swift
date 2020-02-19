@@ -19,7 +19,8 @@ final class AccountSettingsTableViewControllerV1: BaseTableViewController {
     @IBOutlet weak var emailTextfield: UITextField!
     @IBOutlet weak var passwordTextfield: UITextField!
     @IBOutlet weak var resetIdentityLabel: UILabel!
-    @IBOutlet weak var switchKeySync: UISwitch!
+    @IBOutlet weak var keySyncLabel: UILabel!
+    @IBOutlet weak var keySyncSwitch: UISwitch!
     //imap fields
     @IBOutlet weak var imapServerTextfield: UITextField!
     @IBOutlet weak var imapPortTextfield: UITextField!
@@ -35,6 +36,7 @@ final class AccountSettingsTableViewControllerV1: BaseTableViewController {
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var resetIdentityCell: UITableViewCell!
+    @IBOutlet weak var switchKeySyncCell: UITableViewCell!
 
 // MARK: - Variables
     let oauthViewModel = OAuth2AuthViewModel()
@@ -109,6 +111,12 @@ extension AccountSettingsTableViewControllerV1 {
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        if cell == switchKeySyncCell {
+            setUpKeySyncCell(cell: cell,
+                                   isOn: viewModel?.pEpSync ?? false,
+                                   isEnabled: !(viewModel?.isGrouped() ?? false))
+        }
+
         if (viewModel?.isOAuth2 ?? false) && cell == passwordTableViewCell {
             oauth2ReauthIndexPath = indexPath
             return oauth2TableViewCell
@@ -133,6 +141,25 @@ extension AccountSettingsTableViewControllerV1 {
             break
         }
     }
+
+    /// Set up key sync cell
+    /// - Parameters:
+    ///   - cell: UITableViewCell
+    ///   - isOn: keySyncSwitch status
+    ///   - isEnabled: keySyncSwitch (disabled when device is in group)
+    private func setUpKeySyncCell(cell: UITableViewCell,
+                                        isOn: Bool,
+                                        isEnabled: Bool) {
+        cell.isUserInteractionEnabled = isEnabled
+        keySyncLabel.textColor = isEnabled
+            ? .pEpTextDark
+            : .gray
+        keySyncSwitch.isOn = isOn
+        keySyncSwitch.onTintColor = isEnabled
+            ? .pEpGreen
+            : .pEpGreyBackground
+        keySyncSwitch.isEnabled = isEnabled
+    }
 }
 
 // MARK: - UITextFieldDelegate
@@ -154,13 +181,24 @@ extension AccountSettingsTableViewControllerV1: UITextFieldDelegate {
 // MARK: - AccountSettingsViewModelDelegate
 
 extension AccountSettingsTableViewControllerV1: AccountSettingsViewModelDelegate {
+
+    func pEpSyncToggleUpdated(isOn: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.keySyncSwitch.setOn(isOn, animated: true)
+        }
+    }
+
     func undoPEPSyncToggle() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
             }
-            me.switchKeySync.setOn(!me.switchKeySync.isOn, animated: true)
+            me.keySyncSwitch.setOn(!me.keySyncSwitch.isOn, animated: true)
         }
     }
 
@@ -220,7 +258,7 @@ extension AccountSettingsTableViewControllerV1 {
         resetIdentityLabel.textColor = .pEpRed
 
         if let viewModel = viewModel {
-            switchKeySync.isOn = viewModel.pEpSync
+            keySyncSwitch.isOn = viewModel.pEpSync
         }
 
         if let imapServer = viewModel?.account.imapServer {
