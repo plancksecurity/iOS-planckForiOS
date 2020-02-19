@@ -12,28 +12,9 @@ import PEPObjCAdapterFramework
 
 /// Handshake View Mode Delegate
 protocol TrustManagementViewModelDelegate: class {
-    /// Delegate method to notify that shake's action has been performed
-    func didEndShakeMotion()
-    
-    /// Delegate method to notify the handshake has been reseted
-    /// - Parameter indexPath: The indexPath of the row where the handshake was reseted
-    func didResetHandshake(forRowAt indexPath: IndexPath)
-    
-    /// Delegate method to notify the handshake has been confirmed
-    /// - Parameter indexPath: The indexPath of the row where the handshake was confirmed
-    func didConfirmHandshake(forRowAt indexPath: IndexPath)
 
-    /// Delegate method to notify the handshake has been rejected
-    /// - Parameter indexPath: The indexPath of the row where the handshake was rejected
-    func didRejectHandshake(forRowAt indexPath: IndexPath)
-    
-    /// Delegate method to notify when the user selects a language
-    /// - Parameter indexPath: The indexPath of the row where the user changes the language
-    func didSelectLanguage(forRowAt indexPath: IndexPath)
-    
-    /// Delegate method to notify when the user choose to show more trustwords
-    /// - Parameter indexPath: The indexPath of the row where the user changes the language
-    func didToogleLongTrustwords(forRowAt indexPath: IndexPath)
+    /// Delegate method to notify that an action ends and the view must be reloaded.
+    func reload()
 }
 
 /// View Model to handle the handshake views.
@@ -44,8 +25,9 @@ final class TrustManagementViewModel {
             return message.pEpProtected
         }
     }
-    
+
     var message: Message
+    
     private var session: Session {
         return message.session
     }
@@ -57,41 +39,32 @@ final class TrustManagementViewModel {
     struct Row {
         /// Indicates the handshake partner's name
         var name: String {
-            get {
-                let name = handshakeCombination.partnerIdentity.userName
-                let address = handshakeCombination.partnerIdentity.address
-                return name ?? address
-            }
+            let name = handshakeCombination.partnerIdentity.userName
+            let address = handshakeCombination.partnerIdentity.address
+            return name ?? address
         }
         /// The description for the row
         var description: String {
-            get {
-                if forceRed {
-                    return PEPColor.red.privacyStatusDescription
-                }
-                return color.privacyStatusDescription
+            if forceRed {
+                return PEPColor.red.privacyStatusDescription
             }
+            return color.privacyStatusDescription
         }
         /// The privacy status name
         var privacyStatusName: String {
-            get {
-                if (forceRed) {
-                    return String.trustIdentityTranslation(pEpRating: .underAttack).title
-                }
-                let rating = handshakeCombination.partnerIdentity.pEpRating()
-                let translations = String.trustIdentityTranslation(pEpRating: rating)
-                return translations.title
+            if (forceRed) {
+                return String.trustIdentityTranslation(pEpRating: .underAttack).title
             }
+            let rating = handshakeCombination.partnerIdentity.pEpRating()
+            let translations = String.trustIdentityTranslation(pEpRating: rating)
+            return translations.title
         }
         /// The privacy status image
         var privacyStatusImage: UIImage? {
-            get {
-                if forceRed {
-                    return PEPColor.red.statusIconForMessage(enabled: true, withText: false)
-                } else {
-                    return color.statusIconForMessage(enabled: true, withText: false)
-                }
+            if forceRed {
+                return PEPColor.red.statusIconForMessage(enabled: true, withText: false)
             }
+            return color.statusIconForMessage(enabled: true, withText: false)
         }
         /// The current language
         var currentLanguage: String
@@ -101,16 +74,14 @@ final class TrustManagementViewModel {
         var privacyStatus: String?
         /// Status indicator
         var color : PEPColor {
-            get {
-                if forceRed {
-                    return PEPColor.red
-                }
-                return handshakeCombination.partnerIdentity.pEpColor()
+            if forceRed {
+                return PEPColor.red
             }
+            return handshakeCombination.partnerIdentity.pEpColor()
         }
         fileprivate var forceRed: Bool = false
         /// The identity of the user to do the handshake
-        fileprivate var handshakeCombination: HandshakeCombination
+        fileprivate var handshakeCombination: TrustManagementUtil.HandshakeCombination
         
         fileprivate var fingerprint: String?
     }
@@ -120,7 +91,8 @@ final class TrustManagementViewModel {
 
     /// Constructor
     /// - Parameters:
-    ///   - identities: The identities to handshake
+    ///   - message: The message to manage the trust
+    ///   - handshakeUtil: The tool to interact with the engine. It provides a default instance. The parameter is used for testing purposes.
     public init(message : Message, handshakeUtil: TrustManagementUtilProtocol? = TrustManagementUtil()) {
         self.message = message
         self.handshakeUtil = handshakeUtil
@@ -140,7 +112,7 @@ final class TrustManagementViewModel {
         rows[indexPath.row].forceRed = true
         handshakeUtil?.denyTrust(for: identity)
         reevaluateAndUpdate()
-        trustManagementViewModelDelegate?.didRejectHandshake(forRowAt: indexPath)
+        trustManagementViewModelDelegate?.reload()
     }
     
     /// Confirm the handshake
@@ -152,7 +124,7 @@ final class TrustManagementViewModel {
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
         handshakeUtil?.confirmTrust(for: identity)
         reevaluateAndUpdate()
-        trustManagementViewModelDelegate?.didConfirmHandshake(forRowAt: indexPath)
+        trustManagementViewModelDelegate?.reload()
     }
     
     /// Handles the undo action. If possible will undo the last undoable action performed
@@ -172,10 +144,11 @@ final class TrustManagementViewModel {
         rows[indexPath.row].forceRed = false
         handshakeUtil?.resetTrust(for: row.handshakeCombination.partnerIdentity)
         reevaluateAndUpdate()
-        trustManagementViewModelDelegate?.didResetHandshake(forRowAt: indexPath)
+        trustManagementViewModelDelegate?.reload()
     }
-    
-    /// Returns the list of languages available for that row.
+
+    /// Method that returns the list of the available languages
+    /// - returns: the list of languages available.
     public func handleChangeLanguagePressed() -> [String] {
         guard let list = handshakeUtil?.languagesList() else {
             Log.shared.error("The list of languages could be retrieved.")
@@ -190,22 +163,26 @@ final class TrustManagementViewModel {
     ///   - language: The chosen language
     public func didSelectLanguage(forRowAt indexPath: IndexPath, language: String) {
         rows[indexPath.row].currentLanguage = language
-        trustManagementViewModelDelegate?.didSelectLanguage(forRowAt: indexPath)
+        trustManagementViewModelDelegate?.reload()
     }
     
-    /// Toogle PeP protection status
+    /// Toogle pEp protection status
     public func handleToggleProtectionPressed() {
         message.pEpProtected.toggle()
     }
     
-    /// Toogle PeP protection status
+    /// Method that makes the trustwords long or short (more or less trustwords in fact).
+    /// - Parameter indexPath: The indexPath to get the row to toogle the status (long/short)
     public func handleToggleLongTrustwords(forRowAt indexPath: IndexPath) {
         rows[indexPath.row].longTrustwords.toggle()
-        trustManagementViewModelDelegate?.didToogleLongTrustwords(forRowAt: indexPath)
+        trustManagementViewModelDelegate?.reload()
     }
 
     /// Generate the trustwords
-    /// - Parameter long: Indicates if the trustwords MUST be long.
+    /// - Parameters:
+    ///   - indexPath: The indexPath of the row to toogle the status (long/short)
+    ///   - long: Indicates if the trustwords MUST be long (more words)
+    /// - returns: The string with the generated trustwords.
     public func generateTrustwords(forRowAt indexPath: IndexPath, long : Bool = false) -> String? {
         let handshakeItem = rows[indexPath.row]
         do {
@@ -226,7 +203,7 @@ final class TrustManagementViewModel {
     public func shakeMotionDidEnd() {
         if (undoManager.canUndo) {
             undoManager.undo()
-            trustManagementViewModelDelegate?.didEndShakeMotion()
+            trustManagementViewModelDelegate?.reload()
         }
     }
 
@@ -265,7 +242,8 @@ final class TrustManagementViewModel {
     }
 }
 
-/// Image Extension
+/// MARK: - Image 
+
 extension TrustManagementViewModel {
     
     /// Method that returns the user image for the current indexPath throught the callback

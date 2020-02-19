@@ -8,7 +8,7 @@
 
 import UIKit
 
-/// UITableViewCell for handshake screen
+/// UITableViewCell for trust management screen
 final class TrustManagementTableViewCell: UITableViewCell {
  
     //Content

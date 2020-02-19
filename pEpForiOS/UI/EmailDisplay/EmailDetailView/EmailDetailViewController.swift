@@ -591,7 +591,7 @@ extension EmailDetailViewController: SegueHandlerType {
         case .segueTrustManagement, .segueTrustManagementCollapsed:
             guard let nv = segue.destination as? UINavigationController,
                 let vc = nv.topViewController as? TrustManagementViewController ,
-                let trustManagementViewModel = viewModel?.hanshakeViewModel else {
+                let trustManagementViewModel = viewModel?.trustManagementViewModel else {
                     Log.shared.errorAndCrash("No DVC, No trustManagementViewModel?")
                     break
             }

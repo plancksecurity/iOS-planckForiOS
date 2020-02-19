@@ -8,18 +8,12 @@
 
 import UIKit
 
-protocol PreviousViewControllerDelegate: class {
-    func viewWillDismiss(viewModel : TrustManagementViewModel)
-}
-
 /// View Controller to handle the HandshakeView.
 class TrustManagementViewController: BaseViewController {
         
     private let onlyMasterCellIdentifier = "TrustManagementTableViewCell_OnlyMaster"
     private let masterAndDetailCellIdentifier = "TrustManagementTableViewCell_Detailed"
     private let resetCellIdentifier = "TrustManagementTableViewResetCell"
-
-    weak var previousViewControllerDelegate : PreviousViewControllerDelegate?
     
     @IBOutlet weak var trustManagementTableView: UITableView!
     @IBOutlet weak var optionsButton: UIBarButtonItem!
@@ -43,10 +37,6 @@ class TrustManagementViewController: BaseViewController {
         viewModel.trustManagementViewModelDelegate = self
     }
 
-    @IBAction private func optionsButtonPressed(_ sender: UIBarButtonItem) {
-        presentToogleProtectionActionSheet()
-    }
-
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         if motion == .motionShake {
             viewModel?.shakeMotionDidEnd()
@@ -57,18 +47,14 @@ class TrustManagementViewController: BaseViewController {
         super.viewWillTransition(to: size, with: coordinator)
         trustManagementTableView.reloadData()
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        guard let viewModel = viewModel else {
-            Log.shared.error("ViewModel not found")
-            return
-        }
-        previousViewControllerDelegate?.viewWillDismiss(viewModel: viewModel)
+
+    @IBAction private func optionsButtonPressed(_ sender: UIBarButtonItem) {
+        presentToogleProtectionActionSheet()
     }
 }
 
 /// MARK: - UITableViewDataSource
+
 extension TrustManagementViewController : UITableViewDataSource  {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let numberOfRows = viewModel?.rows.count else {
@@ -100,28 +86,28 @@ extension TrustManagementViewController : UITableViewDataSource  {
         /// Cell ´no-noColor´ context
         let identifier = UIDevice.current.orientation.isPortrait ?
             onlyMasterCellIdentifier :  masterAndDetailCellIdentifier
-        
-        if let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-            as? TrustManagementTableViewCell, let row = viewModel?.rows[indexPath.row] {
-            viewModel?.getImage(forRowAt: indexPath, complete: { (image) in
-                DispatchQueue.main.async {
-                    cell.partnerImageView.image = image
-                }
-            })
-            cell.privacyStatusImageView.image = row.privacyStatusImage
-            cell.partnerNameLabel.text = row.name
-            cell.privacyStatusLabel.text = row.privacyStatusName
-            cell.descriptionLabel.text = row.description
-            configureTrustwords(identifier, row, cell, indexPath)
-            cell.delegate = self
-            return cell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+            as? TrustManagementTableViewCell else {
+                Log.shared.error("The TrustManagementTableViewCell couldn't be dequeued")
+                return UITableViewCell()
         }
-        Log.shared.error("The TrustManagementTableViewCell couldn't be dequeued or the row is nil")
-        return UITableViewCell()
+        viewModel?.getImage(forRowAt: indexPath, complete: { (image) in
+            DispatchQueue.main.async {
+                cell.partnerImageView.image = image
+            }
+        })
+        cell.privacyStatusImageView.image = row.privacyStatusImage
+        cell.partnerNameLabel.text = row.name
+        cell.privacyStatusLabel.text = row.privacyStatusName
+        cell.descriptionLabel.text = row.description
+        configureTrustwords(identifier, row, cell, indexPath)
+        cell.delegate = self
+        return cell
     }
 }
 
 /// MARK: - UIAlertControllers
+
 extension TrustManagementViewController {
     
     /// This should only be used if the flow comes from the Compose View.
@@ -200,7 +186,11 @@ extension TrustManagementViewController {
 }
 
 /// MARK: - Handshake ViewModel Delegate
+
 extension TrustManagementViewController: TrustManagementViewModelDelegate {
+    public func reload() {
+        trustManagementTableView.reloadData()
+    }
     public func didToogleLongTrustwords(forRowAt indexPath: IndexPath) {
         trustManagementTableView.reloadData()
     }
@@ -227,6 +217,7 @@ extension TrustManagementViewController: TrustManagementViewModelDelegate {
 }
 
 /// MARK: - Back button
+
 extension TrustManagementViewController {
     
     /// Helper method to create and set the back button in the navigation bar.
@@ -246,6 +237,7 @@ extension TrustManagementViewController {
 }
 
 /// MARK: - Set trustwords
+
 extension TrustManagementViewController {
     
     /// Generates and sets the trustwords to the cell
@@ -264,6 +256,7 @@ extension TrustManagementViewController {
 }
 
 /// MARK: - TrustManagementTableViewCellDelegate
+
 extension TrustManagementViewController: TrustManagementTableViewCellDelegate,
 TrustManagementResetTableViewCellDelegate {
     func languageButtonPressed(on cell: TrustManagementTableViewCell) {
@@ -294,6 +287,8 @@ TrustManagementResetTableViewCellDelegate {
         }
     }
 }
+
+/// MARK: - Cell configuration
 
 extension TrustManagementViewController {
     

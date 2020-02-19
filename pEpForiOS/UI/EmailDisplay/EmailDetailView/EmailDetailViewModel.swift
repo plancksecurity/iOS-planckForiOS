@@ -47,8 +47,8 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         self.messageQueryResults.rowDelegate = self
     }
     
-    /// HanshakeViewModel getter
-    var hanshakeViewModel: TrustManagementViewModel? {
+    /// TrustManagementViewModel getter
+    var trustManagementViewModel: TrustManagementViewModel? {
         get {
             guard let message = lastShownMessage else {
                 Log.shared.error("Message not found")

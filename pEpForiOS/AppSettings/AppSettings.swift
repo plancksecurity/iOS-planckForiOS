@@ -1,5 +1,5 @@
 //
-//  DefaultAppSettings.swift
+//  AppSettings.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 27.08.18.
