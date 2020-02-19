@@ -438,14 +438,18 @@ extension SettingsTableViewController {
     }
 
     func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
-        let title = NSLocalizedString("Disable p≡p Sync", comment: "Leave device group confirmation")
-        let comment = NSLocalizedString("If you disable p≡p Sync, your device group will be dissolved. Are you sure you want to disable disable p≡p Sync?",
-                                        comment: "Leave device group confirmation comment")
+        let title = NSLocalizedString("Disable p≡p Sync",
+                                      comment: "Leave device group confirmation")
+        let comment = NSLocalizedString("If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?",
+                                        comment: "Alert: Leave device group confirmation comment")
 
-        let alert = PEPAlertViewController.fromStoryboard(title: title, message: comment, paintPEPInTitle: true)
+        let alert = PEPAlertViewController.fromStoryboard(title: title,
+                                                          message: comment,
+                                                          paintPEPInTitle: false,
+                                                          viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard))
         let cancelAction = PEPUIAlertAction(title: NSLocalizedString("Cancel",
                                                                      comment: "keysync alert leave device group cancel"),
-                                            style: .pEpGreen) { [weak self] _ in
+                                            style: .pEpDarkText) { [weak self] _ in
                                                 guard let me = self else {
                                                     Log.shared.lostMySelf()
                                                     return
@@ -459,7 +463,7 @@ extension SettingsTableViewController {
 
         let disableAction = PEPUIAlertAction(title: NSLocalizedString("Disable",
                                                                       comment: "keysync alert leave device group disable"),
-                                             style: .pEpRed) { _ in
+                                             style: .pEpDarkText) { _ in
                                                 action(newValue)
                                                 alert?.dismiss()
         }
