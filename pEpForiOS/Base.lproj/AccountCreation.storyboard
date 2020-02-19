@@ -171,9 +171,6 @@
                                                             </label>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rz2-cx-OH1">
                                                                 <rect key="frame" x="82" y="0.0" width="51" height="31"/>
-                                                                <connections>
-                                                                    <action selector="pEpSyncStateChanged:" destination="clh-8B-z2B" eventType="valueChanged" id="287-eu-D4i"/>
-                                                                </connections>
                                                             </switch>
                                                         </subviews>
                                                         <constraints>
