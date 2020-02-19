@@ -53,6 +53,11 @@ class ComposeTableViewController: BaseTableViewController {
         super.viewWillAppear(animated)
         setupRecipientSuggestionsTableViewController()
         viewModel?.handleDidReAppear()
+        
+        if let tvm = viewModel?.trustManagementViewModel(), let protectionStatus = viewModel?.state.pEpProtection {
+            colorBatchNeedsUpdate(for:tvm.message.pEpRating() , protectionEnabled: protectionStatus)
+        }
+        
     }
 
     // MARK: - Setup & Configuration

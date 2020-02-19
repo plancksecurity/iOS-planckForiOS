@@ -107,7 +107,7 @@ extension TrustManagementViewController : UITableViewDataSource  {
         cell.partnerNameLabel.text = row.name
         cell.privacyStatusLabel.text = row.privacyStatusName
         cell.descriptionLabel.text = row.description
-        configureTrustwords(identifier, row, cell, indexPath)
+//        configureTrustwords(identifier, row, cell, indexPath)
         cell.delegate = self
         return cell
     }
@@ -127,7 +127,7 @@ extension TrustManagementViewController {
                                                                    preferredStyle: .actionSheet)
         let enable = NSLocalizedString("Enable Protection", comment: "Enable Protection")
         let disable = NSLocalizedString("Disable Protection", comment: "Disable Protection")
-        let toogleProtectionTitle = viewModel.pEpProtected  ? enable : disable
+        let toogleProtectionTitle = viewModel.pEpProtected  ? disable : enable
         let action = UIAlertAction(title: toogleProtectionTitle, style: .default) {_ in
             viewModel.handleToggleProtectionPressed()
         }
