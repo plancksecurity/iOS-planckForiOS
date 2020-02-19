@@ -204,20 +204,40 @@ final class TrustManagementViewModel {
         trustManagementViewModelDelegate?.didToogleLongTrustwords(forRowAt: indexPath)
     }
 
+    public typealias TrustWords = String
     /// Generate the trustwords
     /// - Parameter long: Indicates if the trustwords MUST be long.
-    public func generateTrustwords(forRowAt indexPath: IndexPath, long : Bool = false) -> String? {
-        let handshakeItem = rows[indexPath.row]
-        do {
-            let selfIdentity = handshakeItem.handshakeCombination.ownIdentity
-            let partnerIdentity = handshakeItem.handshakeCombination.partnerIdentity
-            return try handshakeUtil?.getTrustwords(for: selfIdentity,
-                                                   and: partnerIdentity,
-                                                   language: handshakeItem.currentLanguage,
-                                                   long: long)
-        } catch {
-            Log.shared.error("Can't get trustwords")
-            return nil
+    public func generateTrustwords(forRowAt indexPath: IndexPath,
+                                   long : Bool = false,
+                                   completion: @escaping (TrustWords)->Void) {
+
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            let complete: (TrustWords)->Void = { trustwords in
+                DispatchQueue.main.async {
+                    completion(trustwords)
+                }
+            }
+            let handshakeItem = me.rows[indexPath.row]
+            handshakeItem.handshakeCombination.ownIdentity.session.performAndWait {
+
+                let selfIdentity = handshakeItem.handshakeCombination.ownIdentity
+                let partnerIdentity = handshakeItem.handshakeCombination.partnerIdentity
+                guard let trustwords = try? me.handshakeUtil?.getTrustwords(for: selfIdentity,
+                                                                         and: partnerIdentity,
+                                                                         language: handshakeItem.currentLanguage,
+                                                                         long: long)
+                    else {
+                        Log.shared.errorAndCrash("No Trustwords")
+                        complete("Error")
+                        return
+                }
+                complete(trustwords)
+
+            }
         }
     }
     
