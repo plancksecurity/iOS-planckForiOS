@@ -71,8 +71,9 @@ extension TrustManagementViewController : UITableViewDataSource  {
         }
         
         /// Cell for reset
-        if row.color == .noColor, let cell = tableView.dequeueReusableCell(withIdentifier: resetCellIdentifier,
-                                                     for: indexPath) as? TrustManagementResetTableViewCell {
+        if row.color == .noColor,
+            let cell = tableView.dequeueReusableCell(withIdentifier: resetCellIdentifier, for: indexPath)
+                as? TrustManagementResetTableViewCell {
             cell.delegate = self
             cell.partnerNameLabel.text = row.name
             viewModel?.getImage(forRowAt: indexPath, complete: { (image) in
@@ -82,10 +83,16 @@ extension TrustManagementViewController : UITableViewDataSource  {
             })
             return cell
         }
- 
+         
         /// Cell ´no-noColor´ context
-        let identifier = UIDevice.current.orientation.isPortrait ?
-            onlyMasterCellIdentifier :  masterAndDetailCellIdentifier
+        let identifier : String
+        if UIDevice.current.orientation.isLandscape ||
+            UIDevice.current.userInterfaceIdiom == .pad {
+            identifier = masterAndDetailCellIdentifier
+        } else {
+            identifier = onlyMasterCellIdentifier
+        }
+
         guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
             as? TrustManagementTableViewCell else {
                 Log.shared.error("The TrustManagementTableViewCell couldn't be dequeued")
@@ -189,29 +196,6 @@ extension TrustManagementViewController {
 
 extension TrustManagementViewController: TrustManagementViewModelDelegate {
     public func reload() {
-        trustManagementTableView.reloadData()
-    }
-    public func didToogleLongTrustwords(forRowAt indexPath: IndexPath) {
-        trustManagementTableView.reloadData()
-    }
-    
-    public func didEndShakeMotion() {
-        trustManagementTableView.reloadData()
-    }
-    
-    public func didResetHandshake(forRowAt indexPath: IndexPath) {
-        trustManagementTableView.reloadData()
-    }
-    
-    public func didConfirmHandshake(forRowAt indexPath: IndexPath) {
-        trustManagementTableView.reloadData()
-    }
-    
-    public func didRejectHandshake(forRowAt indexPath: IndexPath) {
-        trustManagementTableView.reloadData()
-    }
-    
-    public func didSelectLanguage(forRowAt indexPath: IndexPath) {
         trustManagementTableView.reloadData()
     }
 }
