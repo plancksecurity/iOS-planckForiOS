@@ -229,11 +229,17 @@ extension TrustManagementViewController {
     ///   - cell: The cell where the trustwords would be setted
     ///   - indexPath: The indexPath of the row to generate the trustwords.
     ///   - longMode: Indicates if the trustwords have to be long.
-    private func setTrustwords(for cell: TrustManagementTableViewCell, at indexPath: IndexPath, longMode: Bool) {
-        let trustwords = viewModel?.generateTrustwords(forRowAt: indexPath, long: longMode)
-        let oneSpace = " "
-        let threeSpaces = "   "
-        if let spacedTrustwords = trustwords?.replacingOccurrences(of: oneSpace, with: threeSpaces) {
+    private func setTrustwords(for cell: TrustManagementTableViewCell,
+                               at indexPath: IndexPath,
+                               longMode: Bool) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        vm.generateTrustwords(forRowAt: indexPath, long: longMode) { trustwords in
+            let oneSpace = " "
+            let threeSpaces = "   "
+            let spacedTrustwords = trustwords.replacingOccurrences(of: oneSpace, with: threeSpaces)
             cell.trustwordsLabel.text = longMode ? spacedTrustwords : "\(spacedTrustwords)…"
         }
     }

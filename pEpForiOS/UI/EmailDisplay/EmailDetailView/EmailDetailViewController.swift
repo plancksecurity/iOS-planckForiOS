@@ -353,7 +353,7 @@ extension EmailDetailViewController {
         let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
 
         if vm.shouldShowPrivacyStatus(forItemAt:indexPath) {
-            actionSheetController.addAction(showHandshakeViewAction())
+            actionSheetController.addAction(showTrustManagementViewAction())
         }
         actionSheetController.addAction(tutorialAction())
         actionSheetController.addAction(showSettingsAction())
@@ -390,9 +390,8 @@ extension EmailDetailViewController {
         }
     }
 
-    private func showHandshakeViewAction() -> UIAlertAction {
-        let action = UIAlertAction(title: NSLocalizedString("Privacy Status",
-                                                            comment: "action sheet title 1"),
+    private func showTrustManagementViewAction() -> UIAlertAction {
+        let action = UIAlertAction(title: NSLocalizedString("Privacy Status", comment: "action sheet title 1"),
                                    style: .default) { [weak self] (action) in
                                     guard let me = self else {
                                         Log.shared.errorAndCrash(message: "lost myself")
@@ -400,7 +399,7 @@ extension EmailDetailViewController {
                                     }
                                     me.showTrustManagementView()
         }
-
+        
         return action
     }
 

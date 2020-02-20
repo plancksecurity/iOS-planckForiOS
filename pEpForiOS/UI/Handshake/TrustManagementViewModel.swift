@@ -127,7 +127,9 @@ final class TrustManagementViewModel {
         trustManagementViewModelDelegate?.reload()
     }
     
-    /// Handles the undo action. If possible will undo the last undoable action performed
+    /// Handles the undo action.
+    /// That means that the trust will be reseted.
+    /// So it is not important what action in concrete was performed.
     /// - Parameter indexPath: The index path of the row from where the last action has been performed.
     @objc public func handleUndo(forRowAt indexPath: IndexPath) {
         let row = rows[indexPath.row]
@@ -137,7 +139,7 @@ final class TrustManagementViewModel {
         reevaluateAndUpdate()
     }
 
-    /// Handles the undo
+    /// Handles the redey action
     /// - Parameter indexPath: The indexPath of the item to get the user to undo last action.
     public func handleResetPressed(forRowAt indexPath: IndexPath) {
         let row = rows[indexPath.row]
@@ -178,29 +180,52 @@ final class TrustManagementViewModel {
         trustManagementViewModelDelegate?.reload()
     }
 
+    public typealias TrustWords = String
     /// Generate the trustwords
     /// - Parameters:
     ///   - indexPath: The indexPath of the row to toogle the status (long/short)
     ///   - long: Indicates if the trustwords MUST be long (more words)
     /// - returns: The string with the generated trustwords.
-    public func generateTrustwords(forRowAt indexPath: IndexPath, long : Bool = false) -> String? {
-        let handshakeItem = rows[indexPath.row]
-        do {
-            let selfIdentity = handshakeItem.handshakeCombination.ownIdentity
-            let partnerIdentity = handshakeItem.handshakeCombination.partnerIdentity
-            return try handshakeUtil?.getTrustwords(for: selfIdentity,
-                                                   and: partnerIdentity,
-                                                   language: handshakeItem.currentLanguage,
-                                                   long: long)
-        } catch {
-            Log.shared.error("Can't get trustwords")
-            return nil
+    public func generateTrustwords(forRowAt indexPath: IndexPath,
+                                   long : Bool = false,
+                                   completion: @escaping (TrustWords)->Void) {
+
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            let complete: (TrustWords)->Void = { trustwords in
+                DispatchQueue.main.async {
+                    completion(trustwords)
+                }
+            }
+            let handshakeItem = me.rows[indexPath.row]
+            handshakeItem.handshakeCombination.ownIdentity.session.performAndWait {
+
+                let selfIdentity = handshakeItem.handshakeCombination.ownIdentity
+                let partnerIdentity = handshakeItem.handshakeCombination.partnerIdentity
+                guard let trustwords = try? me.handshakeUtil?.getTrustwords(for: selfIdentity,
+                                                                         and: partnerIdentity,
+                                                                         language: handshakeItem.currentLanguage,
+                                                                         long: long)
+                    else {
+                        Log.shared.errorAndCrash("No Trustwords")
+                        complete("Error")
+                        return
+                }
+                complete(trustwords)
+
+            }
         }
     }
     
     /// Method that reverts the last action performed by the user
     /// After the execution of this method there won't be any action to un-do.
     public func shakeMotionDidEnd() {
+
+        /// Evaluate it the undo manager can undo means if it has something registerd to undo.
+        /// If so, undo it and reload the view.
         if (undoManager.canUndo) {
             undoManager.undo()
             trustManagementViewModelDelegate?.reload()
@@ -233,7 +258,9 @@ final class TrustManagementViewModel {
         }
     }
 
-    /// Register the action to be undo
+    /// Register the action to be undone
+    /// Is not important determine what action in concret must be undone.
+    /// The trust management util -and thus, the engine- will take care of that.
     /// - Parameter indexPath: The indexPath of the row which the action to undo.
     private func registerUndoAction(at indexPath: IndexPath) {
         undoManager.registerUndo(withTarget: self,
