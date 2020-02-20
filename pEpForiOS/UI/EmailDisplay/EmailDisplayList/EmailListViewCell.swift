@@ -101,13 +101,6 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
         if let constr = fakeRatingImageToContactImageHorizontal {
             constr.isActive = false
         }
-
-        ratingImage.centerXAnchor.constraint(
-            equalTo: contactImageView.rightAnchor).isActive = true
-        ratingImage.centerYAnchor.constraint(
-            equalTo: contactImageView.bottomAnchor, constant: -4).isActive = true
-        ratingImage.widthAnchor.constraint(equalToConstant: 16).isActive = true
-        ratingImage.heightAnchor.constraint(equalToConstant: 16).isActive = true
     }
 
     public func configure(for viewModel: MessageViewModel) {
