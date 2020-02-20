@@ -101,9 +101,7 @@ final class AccountSettingsViewModel {
         self.accessToken = accessToken
     }
 
-    /// Wrapper method to know if the device is in a group.
-    /// Returns: True if it is in a group.
-    func isGrouped() -> Bool {
+    func isPEPSyncSwitchGreyedOut() -> Bool {
         return KeySyncUtil.isInDeviceGroup
     }
 }

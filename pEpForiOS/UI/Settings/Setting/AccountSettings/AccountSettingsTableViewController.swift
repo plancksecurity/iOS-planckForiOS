@@ -49,7 +49,7 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
     private var resetIdentityIndexPath: IndexPath?
 
-// MARK: - Activity
+// MARK: - Life Cycle
 
      override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,7 +114,7 @@ extension AccountSettingsTableViewController {
         if cell == switchKeySyncCell {
             setUpKeySyncCell(cell: cell,
                                    isOn: viewModel?.pEpSync ?? false,
-                                   isEnabled: !(viewModel?.isGrouped() ?? false))
+                                   isGreyedOut: !(viewModel?.isPEPSyncSwitchGreyedOut() ?? false))
         }
 
         if (viewModel?.isOAuth2 ?? false) && cell == passwordTableViewCell {
@@ -132,11 +132,12 @@ extension AccountSettingsTableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.destination {
         case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
-            editableAccountSettingsViewController.appConfig = appConfig
-            if let account = viewModel?.account {
-                editableAccountSettingsViewController.viewModel =
-                    EditableAccountSettingsViewModel(account: account)
+            guard let account = viewModel?.account else {
+                Log.shared.errorAndCrash("No VM")
+                return
             }
+            editableAccountSettingsViewController.appConfig = appConfig
+            editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account)
         default:
             break
         }
@@ -146,19 +147,19 @@ extension AccountSettingsTableViewController {
     /// - Parameters:
     ///   - cell: UITableViewCell
     ///   - isOn: keySyncSwitch status
-    ///   - isEnabled: keySyncSwitch (disabled when device is in group)
+    ///   - isGreyedOut: keySyncSwitch (if true - user can't interact with this cell)
     private func setUpKeySyncCell(cell: UITableViewCell,
                                         isOn: Bool,
-                                        isEnabled: Bool) {
-        cell.isUserInteractionEnabled = isEnabled
-        keySyncLabel.textColor = isEnabled
+                                        isGreyedOut: Bool) {
+        cell.isUserInteractionEnabled = isGreyedOut
+        keySyncLabel.textColor = isGreyedOut
             ? .pEpTextDark
             : .gray
         keySyncSwitch.isOn = isOn
-        keySyncSwitch.onTintColor = isEnabled
+        keySyncSwitch.onTintColor = isGreyedOut
             ? .pEpGreen
             : .pEpGreyBackground
-        keySyncSwitch.isEnabled = isEnabled
+        keySyncSwitch.isEnabled = isGreyedOut
     }
 }
 
@@ -181,17 +182,6 @@ extension AccountSettingsTableViewController: UITextFieldDelegate {
 // MARK: - AccountSettingsViewModelDelegate
 
 extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
-
-    func pEpSyncToggleUpdated(isOn: Bool) {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            me.keySyncSwitch.setOn(isOn, animated: true)
-        }
-    }
-
     func undoPEPSyncToggle() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
