@@ -21,7 +21,7 @@ class Appearance {
             normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: color)
         } else {
             UINavigationBar.appearance().backgroundColor = .white
-            UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: color]
+            UINavigationBar.appearance().titleTextAttributes = titleTextAttributes()
         }
 
         UIToolbar.appearance().backgroundColor = color
@@ -59,6 +59,13 @@ class Appearance {
         view.tintColor = color
     }
 
+    /// Return custom pEp titleTextAttributes
+    private static func titleTextAttributes() -> [NSAttributedString.Key : Any] {
+        return [.foregroundColor: UIColor.black,
+                .font: UIFont.pepFont(style: .body,
+                                      weight: .regular)]
+    }
+
     // MARK: - iOS 13
 
     /// Default appearance for navigation bars (iOS 13 and upwards).
@@ -69,12 +76,9 @@ class Appearance {
         appearance.configureWithOpaqueBackground()
         let defaultpEpTextAttributes: [NSAttributedString.Key : Any] =
             [.foregroundColor: color]
-        let titlepEpTextAttributes: [NSAttributedString.Key : Any] =
-            [.foregroundColor: UIColor.black,
-             .font: UIFont.pepFont(style: .body, weight: .regular)]
         appearance.buttonAppearance.normal.titleTextAttributes = defaultpEpTextAttributes
         appearance.backButtonAppearance.normal.titleTextAttributes = defaultpEpTextAttributes
-        appearance.titleTextAttributes = titlepEpTextAttributes
+        appearance.titleTextAttributes = titleTextAttributes()
         appearance.largeTitleTextAttributes = defaultpEpTextAttributes
         appearance.doneButtonAppearance.normal.titleTextAttributes = defaultpEpTextAttributes
 

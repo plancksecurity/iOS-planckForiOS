@@ -359,35 +359,6 @@ extension AccountSettingsTableViewController {
         }
     }
 
-    private func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
-        let title = NSLocalizedString("Disable p≡p Sync", comment: "Leave device group confirmation")
-        let comment = NSLocalizedString("If you disable p≡p Sync, your device group will be dissolved. Are you sure you want to disable disable p≡p Sync?",
-                                        comment: "Leave device group confirmation comment")
-
-        let alert = PEPAlertViewController.fromStoryboard(title: title, message: comment, paintPEPInTitle: true)
-        let cancelAction = PEPUIAlertAction(title: NSLocalizedString("Cancel", comment: "keysync alert leave device group cancel"),
-                                            style: .pEpGreen) { [weak self] _ in
-                                                guard let me = self else {
-                                                    Log.shared.errorAndCrash(message: "lost myself")
-                                                    return
-                                                }
-                                                //Switch status needs to be reversed
-                                                me.tableView.reloadData()
-                                                alert?.dismiss()
-        }
-
-        alert?.add(action: cancelAction)
-
-        let disableAction = PEPUIAlertAction(title: NSLocalizedString("Disable",
-                                                                      comment: "keysync alert leave device group disable"),
-                                             style: .pEpRed) { _ in
-                                                action(newValue)
-                                                alert?.dismiss()
-        }
-        alert?.add(action: disableAction)
-        return alert
-    }
-
     private func hideBackButtonIfNeeded() {
         if !onlySplitViewMasterIsShown {
             navigationItem.leftBarButtonItem = nil// hidesBackButton = true

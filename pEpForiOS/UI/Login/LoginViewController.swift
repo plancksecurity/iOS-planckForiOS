@@ -83,13 +83,11 @@ final class LoginViewController: BaseViewController {
         view.endEditing(true)
     }
 
-    // MARK: - IBAction
+// MARK: - IBAction
 
     @IBAction func logIn(_ sender: Any) {
         dismissKeyboard()
         isCurrentlyVerifying = true
-
-        setpEpKeySyncState(enabled: pEpSyncSwitch.isOn)
 
         guard let email = emailAddress.text?.trimmed(), email != "" else {
             handleLoginError(error: LoginViewController.LoginError.missingEmail,
@@ -140,6 +138,10 @@ final class LoginViewController: BaseViewController {
 
     @IBAction func emailChanged(_ sender: UITextField) {
         updatePasswordField(email: sender.text)
+    }
+
+    @IBAction func pEpSyncStateChanged(_ sender: UISwitch) {
+        loginViewModel?.isAccountPEPSyncEnable = sender.isOn
     }
 
     func firstResponderTextField() -> UITextField? {
@@ -372,12 +374,6 @@ extension LoginViewController: LoginScrollViewDelegate {
 // MARK: - Private
 
 extension LoginViewController {
-    private func setpEpKeySyncState(enabled: Bool) {
-        loginViewModel?.isAccountPEPSyncEnable = pEpSyncSwitch.isOn
-        if enabled {
-            KeySyncUtil.enableKeySync()
-        }
-    }
     private func hidePasswordTextField() {
         UIView.animate(withDuration: 0.2,
                        delay: 0,
