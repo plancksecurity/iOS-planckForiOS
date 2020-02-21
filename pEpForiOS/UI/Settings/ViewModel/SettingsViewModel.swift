@@ -226,7 +226,7 @@ extension SettingsViewModel {
                                             AppSettings.shared.passiveMode = value
             })
         case .pEpSync:
-            rows.append(generateSwitchRow(type: .pEpSync, isDangerous: false, isOn: KeySyncStatus) { [weak self] (value) in
+            rows.append(generateSwitchRow(type: .pEpSync, isDangerous: false, isOn: keySyncStatus) { [weak self] (value) in
                 guard let me = self else {
                     Log.shared.lostMySelf()
                     return
@@ -400,7 +400,7 @@ extension SettingsViewModel {
         }
     }
 
-    private var KeySyncStatus: Bool {
+    private var keySyncStatus: Bool {
         get {
             AppSettings.shared.isKeySyncEnabled
         }

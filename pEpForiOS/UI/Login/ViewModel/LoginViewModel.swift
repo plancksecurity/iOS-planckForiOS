@@ -99,6 +99,9 @@ class LoginViewModel {
                     // AccountSettingsError() already handled the error
                     return
             }
+
+            setpEpSyncFeatureEnabledOnlyWhenpEpSyncForAccountIsEnabled(verifiableAccount: verifiableAccount)
+
             let imapTransport = ConnectionTransport(
                 accountSettingsTransport: incomingServer.transport, imapPort: incomingServer.port)
             let smtpTransport = ConnectionTransport(
@@ -158,6 +161,21 @@ class LoginViewModel {
     /// - Parameter email: Returns true, if this is an OAuth2 email address, true otherwise.
     func isOAuth2Possible(email: String?) -> Bool {
         return AccountSettings.quickLookUp(emailAddress: email)?.supportsOAuth2 ?? false
+    }
+}
+
+// MARK: - Private
+
+extension LoginViewModel {
+    /// This method turn on the pEp Sync (global feature) status
+    ///  only if it not enabled. This must happened before login to account.
+    ///  Because this account can be second account and first can
+    ///  turned on pEp Sync (global feature) we cannot turn off pEp Sync (global feature)
+    ///  in that case.
+    private func setpEpSyncFeatureEnabledOnlyWhenpEpSyncForAccountIsEnabled(verifiableAccount: VerifiableAccountProtocol) {
+        if verifiableAccount.keySyncEnable {
+            KeySyncUtil.enableKeySync()
+        }
     }
 }
 

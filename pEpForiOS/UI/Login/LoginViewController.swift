@@ -43,7 +43,7 @@ final class LoginViewController: BaseViewController {
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
     @IBOutlet weak var loginButtonConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pEpSyncSwitch: UISwitch!
+    @IBOutlet weak var pEpSyncFeatureSwitch: UISwitch!
 
     var loginViewModel: LoginViewModel?
     var offerManualSetup = false
@@ -477,7 +477,7 @@ extension LoginViewController {
         dismissButton.convertToLoginButton(
             placeholder: NSLocalizedString("Cancel", comment: "Cancel in button in Login View"))
 
-        pEpSyncSwitch.onTintColor = UIColor(hexString: "#58FF75")
+        pEpSyncFeatureSwitch.onTintColor = UIColor(hexString: "#58FF75")
 
         // hide extended login fields
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(

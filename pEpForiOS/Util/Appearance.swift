@@ -60,7 +60,7 @@ class Appearance {
     }
 
     /// Return custom pEp titleTextAttributes
-    private static func titleTextAttributes() -> [NSAttributedString.Key : Any] {
+    static private func titleTextAttributes() -> [NSAttributedString.Key : Any] {
         return [.foregroundColor: UIColor.black,
                 .font: UIFont.pepFont(style: .body,
                                       weight: .regular)]
