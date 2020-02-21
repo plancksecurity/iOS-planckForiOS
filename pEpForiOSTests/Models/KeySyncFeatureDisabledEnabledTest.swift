@@ -29,62 +29,31 @@ class KeySyncFeatureDisabledEnabledTest: XCTestCase {
     }
 
     func testKeySyncDisabledGlobalPepSync() {
+
         let expLookedUp = expectation(description: "expLookedUp")
         verifiableAccount = TestVerifiableAccount(accountSettings: accountSettings, expLookedUp: expLookedUp)
         guard let passw = accountSettings.password else {
             XCTFail("expecting password for account")
             return
         }
-        KeySyncUtil.disableKeySync()
 
+        // pEpSync is turned off in Settings
+        KeySyncUtil.disableKeySync()
+        // user turn off pEpSync (default state) -> Login Screen
         verifiableAccount.keySyncEnable = false
 
-        let vmLogin = LoginViewModel(verifiableAccount: verifiableAccount)
+        let sut = LoginViewModel(verifiableAccount: verifiableAccount)
         let errorHandler = ErrorHandler()
-        vmLogin.loginViewModelLoginErrorDelegate = errorHandler
-        vmLogin.login(emailAddress: accountSettings.idAddress,
+        sut.loginViewModelLoginErrorDelegate = errorHandler
+        sut.login(emailAddress: accountSettings.idAddress,
                       displayName: "User Name",
                       password: passw)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
 
-            let vmSettings = SettingsViewModel(delegate: SettingsViewModelDelegateMock())
-            let pEpSyncSectionData = vmSettings.items.filter { $0.type == .pEpSync }
-            let pEpSyncRowData = pEpSyncSectionData.first?.rows.filter { $0.identifier == .pEpSync }.first
-            let pEpSyncSwitchRow = pEpSyncRowData as? SettingsViewModel.SwitchRow
-
-            guard let pEpSyncSwitchRowEnabled = pEpSyncSwitchRow?.isOn else {
-                XCTFail()
-                return
-            }
-
-            XCTAssertNil(error, "Account verification failed!")
-            XCTAssertFalse(pEpSyncSwitchRowEnabled, "pEpSyncSwitch should be switch off!")
-        })
-    }
-
-    func testKeySyncEnabledGlobalPepSync() {
-        let expLookedUp = expectation(description: "expLookedUp")
-        verifiableAccount = TestVerifiableAccount(accountSettings: accountSettings, expLookedUp: expLookedUp)
-        guard let passw = accountSettings.password else {
-            XCTFail("expecting password for account")
-            return
-        }
-
-        KeySyncUtil.disableKeySync()
-        verifiableAccount.keySyncEnable = true
-
-        let vmLogin = LoginViewModel(verifiableAccount: verifiableAccount)
-        let errorHandler = ErrorHandler()
-        vmLogin.loginViewModelLoginErrorDelegate = errorHandler
-        vmLogin.login(emailAddress: accountSettings.idAddress,
-                      displayName: "User Name",
-                      password: passw)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-
-            let vmSettings = SettingsViewModel(delegate: SettingsViewModelDelegateMock())
-            let pEpSyncSectionData = vmSettings.items
+            // expectation: pEpSync feature is turned off in Settings
+            let settingsVM = SettingsViewModel(delegate: SettingsViewModelDelegateMock())
+            let pEpSyncSectionData = settingsVM.items
                 .filter { $0.type == .pEpSync }
             let pEpSyncRowData = pEpSyncSectionData.first?.rows
                 .filter { $0.identifier == .pEpSync }.first
@@ -96,7 +65,48 @@ class KeySyncFeatureDisabledEnabledTest: XCTestCase {
             }
 
             XCTAssertNil(error, "Account verification failed!")
-            XCTAssertTrue(pEpSyncSwitchRowEnabled, "pEpSyncSwitch should be switched off!")
+            XCTAssertFalse(pEpSyncSwitchRowEnabled, "pEpSyncSwitch should be switched off!")
+        })
+    }
+
+    func testKeySyncEnabledGlobalPepSync() {
+
+        let expLookedUp = expectation(description: "expLookedUp")
+        verifiableAccount = TestVerifiableAccount(accountSettings: accountSettings, expLookedUp: expLookedUp)
+        guard let passw = accountSettings.password else {
+            XCTFail("expecting password for account")
+            return
+        }
+
+        // pEpSync is turned off in Settings
+        KeySyncUtil.disableKeySync()
+        // user turn on pEpSync (default state) -> Login Screen
+        verifiableAccount.keySyncEnable = true
+
+        let vmLogin = LoginViewModel(verifiableAccount: verifiableAccount)
+        let errorHandler = ErrorHandler()
+        vmLogin.loginViewModelLoginErrorDelegate = errorHandler
+        vmLogin.login(emailAddress: accountSettings.idAddress,
+                      displayName: "User Name",
+                      password: passw)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+
+            // expectation: pEpSync feature is turned on in Settings
+            let vmSettings = SettingsViewModel(delegate: SettingsViewModelDelegateMock())
+            let pEpSyncSectionData = vmSettings.items
+                .filter { $0.type == .pEpSync }
+            let pEpSyncRowData = pEpSyncSectionData.first?.rows
+                .filter { $0.identifier == .pEpSync }.first
+            let pEpSyncSwitchRow = pEpSyncRowData as? SettingsViewModel.SwitchRow
+
+            guard let pEpSyncSwitchRowEnabled = pEpSyncSwitchRow?.isOn else {
+                XCTFail("unable to find pEpSyncSwitchRow.isOn!")
+                return
+            }
+
+            XCTAssertNil(error, "Account verification failed!")
+            XCTAssertTrue(pEpSyncSwitchRowEnabled, "pEpSyncSwitch should be switched on!")
         })
     }
 
