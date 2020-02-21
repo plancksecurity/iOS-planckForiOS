@@ -9,7 +9,7 @@ libetpan: c76daba0153eed0003d6990a5adadba8d561b8fa
 pEp-Translate: 957ac52736473c99d7be712eafa455df649beddf
 pEpEngine: dddd95125ced
 pEpObjCAdapter: 33119ff061e5
-pEp_for_iOS: 1da50e042495+
+pEp_for_iOS: dc44e71e03bd+
 pEp_for_iOS_intern: fe7c80780efc+
 pantomime-iOS: 55938caf87ac
 sequoia4ios: 3b4b432400c9827ecaf2f7a185333ea1488f4e5c
