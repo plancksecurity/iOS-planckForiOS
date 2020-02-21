@@ -25,7 +25,12 @@ final class AccountSettingsViewModel {
 
     weak var delegate: AccountSettingsViewModelDelegate?
 
-    private(set) var pEpSync: Bool
+    private let headers = [NSLocalizedString("Account",
+                                             comment: "Account settings"),
+                           NSLocalizedString("IMAP Settings",
+                                             comment: "Account settings title IMAP"),
+                           NSLocalizedString("SMTP Settings",
+                                             comment: "Account settings title SMTP")]
 
     /// If there was OAUTH2 for this account, here is a current token.
     /// This trumps both the `originalPassword` and a password given by the user
@@ -34,16 +39,7 @@ final class AccountSettingsViewModel {
     ///         for the verification be able to succeed.
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
-    private var headers: [String] {
-        let tempHeader = [NSLocalizedString("Account", comment: "Account settings"),
-                          NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
-                          NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP")]
-        return tempHeader
-    }
-    private var footers: [String] {
-        return [NSLocalizedString("Performs a reset of the privacy settings of your account.",
-                                  comment: "Explanation for Key Reset (of one account")]
-    }
+    private(set) var pEpSync: Bool
 
     private enum AccountSettingsError: Error, LocalizedError {
         case accountNotFound, failToModifyAccountPEPSync
@@ -51,7 +47,7 @@ final class AccountSettingsViewModel {
         var errorDescription: String? {
             switch self {
             case .accountNotFound, .failToModifyAccountPEPSync:
-                return NSLocalizedString("Something went wrong, please try again later", comment: "AccountSettings viewModel no account error")
+                return NSLocalizedString("Something went wrong, please try again later", comment: "AccountSettings viewModel: no account error")
             }
         }
     }
@@ -69,8 +65,7 @@ final class AccountSettingsViewModel {
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.account = account
 
-        let pEpSyncState = try? account.isKeySyncEnabled()
-        pEpSync = pEpSyncState ?? false
+        pEpSync = (try? account.isKeySyncEnabled()) ?? false
     }
 
     func handleResetIdentity() {
@@ -92,13 +87,6 @@ final class AccountSettingsViewModel {
         }
     }
 
-    func footerFor(section: Int) -> String {
-        guard section < footers.count else {
-            return ""
-        }
-        return footers[section]
-    }
-
     func pEpSync(enable: Bool) {
         do {
             try account.setKeySyncEnabled(enable: enable)
@@ -111,9 +99,14 @@ final class AccountSettingsViewModel {
     func updateToken(accessToken: OAuth2AccessTokenProtocol) {
         self.accessToken = accessToken
     }
+
+    func isPEPSyncSwitchGreyedOut() -> Bool {
+        return KeySyncUtil.isInDeviceGroup
+    }
 }
 
 // MARK: - Private
+
 extension AccountSettingsViewModel {
     private func sectionIsValid(section: Int) -> Bool {
         return section >= 0 && section < headers.count

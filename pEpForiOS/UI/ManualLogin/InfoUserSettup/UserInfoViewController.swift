@@ -62,8 +62,7 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
-        var vm = viewModelOrCrash()
-
+        let vm = viewModelOrCrash()
         setupView.firstTextField.set(text: vm.loginNameIMAP, animated: animated)
         setupView.secondTextField.set(text: vm.address, animated: animated)
         setupView.thirdTextField.set(text: vm.password, animated: animated)

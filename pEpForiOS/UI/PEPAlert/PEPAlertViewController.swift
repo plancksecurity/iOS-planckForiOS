@@ -138,7 +138,7 @@ extension PEPAlertViewController {
     private func setUp(alertButton: UIButton, style: PEPAlertViewModel.AlertType) {
         switch style {
         case .pEpSyncWizard:
-            alertButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+            alertButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .semibold)
         case .pEpDefault:
             alertButton.titleLabel?.font = .boldSystemFont(ofSize: 15) // ??? Dynamic font?
             break
