@@ -92,7 +92,8 @@ extension AccountSettingsTableViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: pEpHeaderView.reuseIdentifier) as? pEpHeaderView else {
-            return UIView()
+            Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
+            return nil
         }
 
         headerView.title = viewModel?[section].uppercased() ?? ""
