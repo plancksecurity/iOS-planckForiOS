@@ -84,8 +84,10 @@ class KeySyncFeatureDisabledEnabledTest: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
 
             let vmSettings = SettingsViewModel(delegate: SettingsViewModelDelegateMock())
-            let pEpSyncSectionData = vmSettings.items.filter { $0.type == .pEpSync }
-            let pEpSyncRowData = pEpSyncSectionData.first?.rows.filter { $0.identifier == .pEpSync }.first
+            let pEpSyncSectionData = vmSettings.items
+                .filter { $0.type == .pEpSync }
+            let pEpSyncRowData = pEpSyncSectionData.first?.rows
+                .filter { $0.identifier == .pEpSync }.first
             let pEpSyncSwitchRow = pEpSyncRowData as? SettingsViewModel.SwitchRow
 
             guard let pEpSyncSwitchRowEnabled = pEpSyncSwitchRow?.isOn else {
