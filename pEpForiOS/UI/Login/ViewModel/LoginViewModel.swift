@@ -12,16 +12,40 @@ import MessageModel
 import pEpIOSToolbox
 import PantomimeFramework
 
-enum LoginCellType {
-    case Text, Button
+// MARK: - AccountType
+
+extension LoginViewModel {
+    //Remove when account type is mgerge
+    //TODO: Xavia this enum is in Account selector view model, this is just a place holder. Remove it and use yours. (from alejandro, andreas assumes he means Xavier)
+    enum AccountType {
+        case gmail
+        case clientCertificate
+        case other
+
+        var isOauth: Bool {
+            return self != .other
+        }
+    }
 }
 
-class LoginViewModel {
+// MARK: - LoginCellType
+
+extension LoginViewModel {
+    enum LoginCellType {
+        case Text, Button
+    }
+}
+
+// MARK: - OAuth2Parameters
+
+extension LoginViewModel {
     struct OAuth2Parameters {
         let emailAddress: String
         let userName: String
     }
+}
 
+class LoginViewModel {
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
     weak var loginViewModelLoginErrorDelegate: LoginViewModelLoginErrorDelegate?
     weak var loginViewModelOAuth2ErrorDelegate: LoginViewModelOAuth2ErrorDelegate?

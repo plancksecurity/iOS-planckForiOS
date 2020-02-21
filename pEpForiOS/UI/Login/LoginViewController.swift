@@ -16,16 +16,6 @@ protocol LoginViewControllerDelegate: class  {
 }
 
 final class LoginViewController: BaseViewController {
-    //Remove when account type is mgerge
-    //TODO: Xavia this enum is in Account selector view model, this is just a place holder. Remove it and use yours.
-    enum AccountType {
-        case gmail
-        case other
-
-        var isOauth: Bool {
-            return self != .other
-        }
-    }
 
     weak var delegate: LoginViewControllerDelegate?
 
@@ -48,7 +38,7 @@ final class LoginViewController: BaseViewController {
     var loginViewModel: LoginViewModel?
     var offerManualSetup = false
     /// Use this property if is an oauth login. This will hide password TextFiled and show the Oauth screen.
-    var accountType: AccountType = .other {
+    var accountType: LoginViewModel.AccountType = .other {
         didSet {
             password.isHidden = accountType.isOauth
             password.isEnabled = !accountType.isOauth
