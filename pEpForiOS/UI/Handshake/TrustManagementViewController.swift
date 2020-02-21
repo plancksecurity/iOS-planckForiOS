@@ -39,9 +39,24 @@ class TrustManagementViewController: BaseViewController {
     }
 
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-        if motion == .motionShake {
-            viewModel?.shakeMotionDidEnd()
+        guard let vm = viewModel, vm.canUndo() && motion == .motionShake else { return }
+        let title = NSLocalizedString("Are you sure you want to undo the last action?", comment: "")
+        let alertController = UIAlertController.pEpAlertController(title: title,
+                                                                   message: nil,
+                                                                   preferredStyle: .alert)
+        let confirmTitle = NSLocalizedString("Yes", comment: "")
+        let action = UIAlertAction(title: confirmTitle, style: .default) { [weak vm] (action) in
+            vm?.shakeMotionDidEnd()
         }
+        alertController.addAction(action)
+        
+        //For the cancel button another action.
+        let cancelTitle = NSLocalizedString("Cancel", comment: "")
+        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { _ in
+            alertController.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
