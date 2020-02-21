@@ -11,12 +11,16 @@ import MessageModel
 import pEpIOSToolbox
 
 final class AccountSettingsTableViewController: BaseTableViewController {
+
+// MARK: - IBOutlets
+
     //general account fields
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var emailTextfield: UITextField!
     @IBOutlet weak var passwordTextfield: UITextField!
     @IBOutlet weak var resetIdentityLabel: UILabel!
-    @IBOutlet weak var switchKeySync: UISwitch!
+    @IBOutlet weak var keySyncLabel: UILabel!
+    @IBOutlet weak var keySyncSwitch: UISwitch!
     //imap fields
     @IBOutlet weak var imapServerTextfield: UITextField!
     @IBOutlet weak var imapPortTextfield: UITextField!
@@ -32,7 +36,10 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var resetIdentityCell: UITableViewCell!
+    @IBOutlet weak var switchKeySyncCell: UITableViewCell!
 
+// MARK: - Variables
+    let oauthViewModel = OAuth2AuthViewModel()
     /**
      When dealing with an OAuth2 account, this is the index path of the cell that
      should trigger the reauthorization.
@@ -40,13 +47,17 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     var oauth2ReauthIndexPath: IndexPath?
     var viewModel: AccountSettingsViewModel? = nil
 
-    let oauthViewModel = OAuth2AuthViewModel()
-
     private var resetIdentityIndexPath: IndexPath?
+
+// MARK: - Life Cycle
 
      override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.register(pEpHeaderView.self,
+                           forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
         viewModel?.delegate = self
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -55,9 +66,15 @@ final class AccountSettingsTableViewController: BaseTableViewController {
         hideBackButtonIfNeeded()
         //Work around async old stack context merge behaviour
         DispatchQueue.main.async { [weak self] in
-            self?.setUpView()
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.setUpView()
         }
     }
+
+// MARK: - IBActions
 
     @IBAction func switchPEPSyncToggle(_ sender: UISwitch) {
         viewModel?.pEpSync(enable: sender.isOn)
@@ -70,14 +87,16 @@ extension AccountSettingsTableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel?.count ?? 0
     }
-    
-    override func tableView(
-        _ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return viewModel?[section]
-    }
 
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return viewModel?.footerFor(section: section)
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: pEpHeaderView.reuseIdentifier) as? pEpHeaderView else {
+            Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
+            return nil
+        }
+
+        headerView.title = viewModel?[section].uppercased() ?? ""
+        return headerView
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -92,6 +111,12 @@ extension AccountSettingsTableViewController {
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        if cell == switchKeySyncCell {
+            setUpKeySyncCell(cell: cell,
+                                   isOn: viewModel?.pEpSync ?? false,
+                                   isGreyedOut: !(viewModel?.isPEPSyncSwitchGreyedOut() ?? false))
+        }
+
         if (viewModel?.isOAuth2 ?? false) && cell == passwordTableViewCell {
             oauth2ReauthIndexPath = indexPath
             return oauth2TableViewCell
@@ -107,14 +132,34 @@ extension AccountSettingsTableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.destination {
         case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
-            editableAccountSettingsViewController.appConfig = appConfig
-            if let account = viewModel?.account {
-                editableAccountSettingsViewController.viewModel =
-                    EditableAccountSettingsViewModel(account: account)
+            guard let account = viewModel?.account else {
+                Log.shared.errorAndCrash("No VM")
+                return
             }
+            editableAccountSettingsViewController.appConfig = appConfig
+            editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account)
         default:
             break
         }
+    }
+
+    /// Set up key sync cell
+    /// - Parameters:
+    ///   - cell: UITableViewCell
+    ///   - isOn: keySyncSwitch status
+    ///   - isGreyedOut: keySyncSwitch (if true - user can't interact with this cell)
+    private func setUpKeySyncCell(cell: UITableViewCell,
+                                        isOn: Bool,
+                                        isGreyedOut: Bool) {
+        cell.isUserInteractionEnabled = isGreyedOut
+        keySyncLabel.textColor = isGreyedOut
+            ? .pEpTextDark
+            : .gray
+        keySyncSwitch.isOn = isOn
+        keySyncSwitch.onTintColor = isGreyedOut
+            ? .pEpGreen
+            : .pEpGreyBackground
+        keySyncSwitch.isEnabled = isGreyedOut
     }
 }
 
@@ -143,7 +188,7 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
                 Log.shared.lostMySelf()
                 return
             }
-            me.switchKeySync.setOn(!me.switchKeySync.isOn, animated: true)
+            me.keySyncSwitch.setOn(!me.keySyncSwitch.isOn, animated: true)
         }
     }
 
@@ -187,11 +232,19 @@ extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
 // MARK: - Private
 
 extension AccountSettingsTableViewController {
+
+    private struct Localized {
+        static let navigationTitle = NSLocalizedString("Account",
+                                                       comment: "Account settings")
+    }
+
     private func setUpView() {
+        title = Localized.navigationTitle
         nameTextfield.text = viewModel?.account.user.userName
         emailTextfield.text = viewModel?.account.user.address
         passwordTextfield.text = "JustAPassword"
-        resetIdentityLabel.text = NSLocalizedString("Reset This Identity", comment: "Account settings reset this identity")
+        resetIdentityLabel.text = NSLocalizedString("Reset",
+                                                    comment: "Account settings reset identity")
         resetIdentityLabel.textColor = .pEpRed
 
         guard let viewModel = viewModel else {
@@ -199,7 +252,7 @@ extension AccountSettingsTableViewController {
             return
         }
 
-        switchKeySync.isOn = viewModel.pEpSync
+        keySyncSwitch.isOn = viewModel.pEpSync
 
         guard let imapServer = viewModel.account.imapServer else {
             Log.shared.errorAndCrash("Account without IMAP server")
@@ -229,9 +282,8 @@ extension AccountSettingsTableViewController {
             preferredStyle: .alert)
 
         let cancelAction = UIAlertAction(
-            title: NSLocalizedString(
-                "OK",
-                comment: "OK button for invalid accout settings user input alert"),
+            title: NSLocalizedString("OK",
+                                     comment: "OK button for invalid accout settings user input alert"),
             style: .cancel, handler: nil)
 
         alert.addAction(cancelAction)
@@ -271,7 +323,8 @@ extension AccountSettingsTableViewController {
                                                     return
         }
 
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
+        let cancelTitle = NSLocalizedString("Cancel",
+                                            comment: "Cancel reset account identity button title")
         let cancelAction = PEPUIAlertAction(title: cancelTitle,
                                             style: .pEpGray,
                                             handler: { _ in
@@ -280,7 +333,8 @@ extension AccountSettingsTableViewController {
         })
         pepAlertViewController.add(action: cancelAction)
 
-        let resetTitle = NSLocalizedString("Reset", comment: "Reset account identity button title")
+        let resetTitle = NSLocalizedString("Reset",
+                                           comment: "Reset account identity button title")
         let resetAction = PEPUIAlertAction(title: resetTitle,
                                            style: .pEpRed,
                                            handler: { [weak self] _ in
