@@ -116,6 +116,7 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
     // MARK: - Setup
 
     private func setup() {
+        tableView.separatorInset = UIEdgeInsets.zero
         tableView.delegate = self
         tableView.dataSource = self
         // rm seperator lines for empty view/cells
