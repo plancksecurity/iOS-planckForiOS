@@ -215,6 +215,7 @@
 		3A085A6E23FAF4D50013C63E /* pEpHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A085A6D23FAF4D50013C63E /* pEpHeaderView.swift */; };
 		3A0CBAAD23F5909C00AE200C /* WrappedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */; };
 		3A4AB35D2400256F00523306 /* pEpUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4AB35C2400256F00523306 /* pEpUILabel.swift */; };
+		3AAC2ACA24003A9C00ADBB51 /* AccountSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2AC924003A9C00ADBB51 /* AccountSettingsTableViewController.swift */; };
 		3AD0E0A123E4659F006FFED3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0E0A023E4659F006FFED3 /* Assets.xcassets */; };
 		3AD2CBC923FD92650003A536 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
@@ -695,8 +696,8 @@
 		37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedPlaceholderTextfield.swift; sourceTree = "<group>"; };
 		3A085A6D23FAF4D50013C63E /* pEpHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpHeaderView.swift; sourceTree = "<group>"; };
 		3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedCell.swift; sourceTree = "<group>"; };
-		3A9239C523FAE0A0003E6C48 /* AccountSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsTableViewController.swift; sourceTree = "<group>"; };
 		3A4AB35C2400256F00523306 /* pEpUILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpUILabel.swift; sourceTree = "<group>"; };
+		3AAC2AC924003A9C00ADBB51 /* AccountSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsTableViewController.swift; sourceTree = "<group>"; };
 		3AD0E0A023E4659F006FFED3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
@@ -1450,7 +1451,7 @@
 		15874BB62127493E00A3A4A6 /* AccountSettings */ = {
 			isa = PBXGroup;
 			children = (
-				3A9239C523FAE0A0003E6C48 /* AccountSettingsTableViewController.swift */,
+				3AAC2AC924003A9C00ADBB51 /* AccountSettingsTableViewController.swift */,
 				37156E42234CD43600845A28 /* EditableAccountSettings */,
 				15874BB72127493E00A3A4A6 /* ViewModel */,
 			);
@@ -3083,6 +3084,7 @@
 				3705096822CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift in Sources */,
 				152A39CF21905C3E00D9F8E4 /* ComposeUtil.swift in Sources */,
 				152A39C821905C3E00D9F8E4 /* ComposeViewModel+InitData.swift in Sources */,
+				3AAC2ACA24003A9C00ADBB51 /* AccountSettingsTableViewController.swift in Sources */,
 				0038494C20D2587F008000EA /* PepPictureComposer.swift in Sources */,
 				4356FFE721354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift in Sources */,
 				228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,
@@ -3091,7 +3093,6 @@
 				43293EFB1EB9DD6700EEE010 /* UIViewController+Extension.swift in Sources */,
 				152A39D521905C3E00D9F8E4 /* SubjectCellViewModel.swift in Sources */,
 				37816542230EC72C00B967E3 /* PEPAlertViewController.swift in Sources */,
-				3A9239C623FAE0A0003E6C48 /* AccountSettingsTableViewController.swift in Sources */,
 				00FD0CE62101F7D700BA0C56 /* ScreenComposerProtocol.swift in Sources */,
 				3705096C22DC8C1800CB73D6 /* KeyInputView.swift in Sources */,
 				4351C2D81F4441190053381F /* references.c in Sources */,
