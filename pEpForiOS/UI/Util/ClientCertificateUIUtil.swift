@@ -24,6 +24,7 @@ class ClientCertificateUIUtil: NSObject {
         self.clientCertificateUtil = clientCertificateUtil ?? ClientCertificateUtil()
     }
 
+    typealias Success = Bool
     public func importClientCertificate(at url: URL,
                                         viewControllerToPresentUiOn vc: UIViewController) {
         viewControllerToPresentUiOn = vc
