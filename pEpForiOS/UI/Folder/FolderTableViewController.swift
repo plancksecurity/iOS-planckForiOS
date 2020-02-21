@@ -44,7 +44,7 @@ class FolderTableViewController: BaseTableViewController {
     }
     
     private func initialConfig() {
-        self.title = NSLocalizedString("Folders", comment: "FoldersView")
+        self.title = NSLocalizedString("Mailboxes", comment: "FoldersView navigationbar title")
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
