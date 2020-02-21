@@ -65,8 +65,7 @@ final class AccountSettingsViewModel {
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.account = account
 
-        let pEpSyncState = try? account.isKeySyncEnabled()
-        pEpSync = pEpSyncState ?? false
+        pEpSync = (try? account.isKeySyncEnabled()) ?? false
     }
 
     func handleResetIdentity() {
