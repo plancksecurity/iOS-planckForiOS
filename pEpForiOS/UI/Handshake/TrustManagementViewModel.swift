@@ -79,6 +79,7 @@ final class TrustManagementViewModel {
             }
             return handshakeCombination.partnerIdentity.pEpColor()
         }
+        var shouldUpdateTrustwords : Bool = true
         fileprivate var forceRed: Bool = false
         /// The identity of the user to do the handshake
         fileprivate var handshakeCombination: TrustManagementUtil.HandshakeCombination
@@ -151,7 +152,8 @@ final class TrustManagementViewModel {
 
     /// Method that returns the list of the available languages
     /// - returns: the list of languages available.
-    public func handleChangeLanguagePressed() -> [String] {
+    public func handleChangeLanguagePressed(forRowAt indexPath : IndexPath) -> [String] {
+        setShouldUpdateTrustwords(indexPath: indexPath, status: true)
         guard let list = handshakeUtil?.languagesList() else {
             Log.shared.error("The list of languages could be retrieved.")
             return [String]()
@@ -176,6 +178,7 @@ final class TrustManagementViewModel {
     /// Method that makes the trustwords long or short (more or less trustwords in fact).
     /// - Parameter indexPath: The indexPath to get the row to toogle the status (long/short)
     public func handleToggleLongTrustwords(forRowAt indexPath: IndexPath) {
+        setShouldUpdateTrustwords(indexPath: indexPath, status: true)
         rows[indexPath.row].longTrustwords.toggle()
         trustManagementViewModelDelegate?.reload()
     }
@@ -188,43 +191,60 @@ final class TrustManagementViewModel {
     /// - returns: The string with the generated trustwords.
     public func generateTrustwords(forRowAt indexPath: IndexPath,
                                    long : Bool = false,
-                                   completion: @escaping (TrustWords)->Void) {
+                                   completion: @escaping (TrustWords) -> Void) {
+        guard shouldUpdateTrustwords(indexPath: indexPath) else {
+            //This is not an error.
+            return
+        }
 
+        setShouldUpdateTrustwords(indexPath: indexPath, status: false)
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            let complete: (TrustWords)->Void = { trustwords in
+            let complete: (TrustWords) -> Void = { trustwords in
                 DispatchQueue.main.async {
                     completion(trustwords)
                 }
             }
             let handshakeItem = me.rows[indexPath.row]
             handshakeItem.handshakeCombination.ownIdentity.session.performAndWait {
-
                 let selfIdentity = handshakeItem.handshakeCombination.ownIdentity
                 let partnerIdentity = handshakeItem.handshakeCombination.partnerIdentity
                 guard let trustwords = try? me.handshakeUtil?.getTrustwords(for: selfIdentity,
-                                                                         and: partnerIdentity,
-                                                                         language: handshakeItem.currentLanguage,
-                                                                         long: long)
+                                                                            and: partnerIdentity,
+                                                                            language: handshakeItem.currentLanguage,
+                                                                            long: long)
                     else {
                         Log.shared.errorAndCrash("No Trustwords")
                         complete("Error")
                         return
                 }
                 complete(trustwords)
-
             }
         }
     }
     
+    /// Indicates if the row allows to update the trustwords. 
+    /// - Parameter indexPath: <#indexPath description#>
+    private func shouldUpdateTrustwords(indexPath: IndexPath) -> Bool {
+        return rows[indexPath.row].shouldUpdateTrustwords
+    }
+
+    /// Enabling and disabling the update on the trustwords prevents
+    /// to do unnecessary heavy processing.
+    /// - Parameters:
+    ///   - indexPath: The indexPath of the row to enable or disable the trustwords update.
+    ///   - status: Indicates if the trustwords update is allowed (true) or not (false).
+    private func setShouldUpdateTrustwords(indexPath : IndexPath, status : Bool) {
+        rows[indexPath.row].shouldUpdateTrustwords = status
+    }
+
     /// Method that reverts the last action performed by the user
     /// After the execution of this method there won't be any action to un-do.
     public func shakeMotionDidEnd() {
-
-        /// Evaluate it the undo manager can undo means if it has something registerd to undo.
+       /// Evaluate it the undo manager can undo means if it has something registerd to undo.
         /// If so, undo it and reload the view.
         if (undoManager.canUndo) {
             undoManager.undo()

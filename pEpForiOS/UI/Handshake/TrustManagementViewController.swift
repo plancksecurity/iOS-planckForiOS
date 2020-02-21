@@ -22,7 +22,6 @@ class TrustManagementViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("The viewModel must not be nil")
             return
@@ -35,6 +34,8 @@ class TrustManagementViewController: BaseViewController {
             optionsButton.title = NSLocalizedString("Options", comment: "Options")
         }
         viewModel.trustManagementViewModelDelegate = self
+        trustManagementTableView.rowHeight = UITableView.automaticDimension
+        trustManagementTableView.estimatedRowHeight = 400
     }
 
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
@@ -107,7 +108,7 @@ extension TrustManagementViewController : UITableViewDataSource  {
         cell.partnerNameLabel.text = row.name
         cell.privacyStatusLabel.text = row.privacyStatusName
         cell.descriptionLabel.text = row.description
-//        configureTrustwords(identifier, row, cell, indexPath)
+        configureTrustwords(identifier, row, cell, indexPath)
         cell.delegate = self
         return cell
     }
@@ -157,7 +158,7 @@ extension TrustManagementViewController {
         let alertController = UIAlertController.pEpAlertController(title: nil,
                                                                    message: nil,
                                                                    preferredStyle: .actionSheet)
-        guard let languages = viewModel?.handleChangeLanguagePressed() else {
+        guard let languages = viewModel?.handleChangeLanguagePressed(forRowAt: indexPath) else {
             Log.shared.error("Languages not found")
             return
         }
@@ -236,11 +237,16 @@ extension TrustManagementViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        vm.generateTrustwords(forRowAt: indexPath, long: longMode) { trustwords in
+        
+        vm.generateTrustwords(forRowAt: indexPath, long: longMode) { [weak self] trustwords in
             let oneSpace = " "
             let threeSpaces = "   "
             let spacedTrustwords = trustwords.replacingOccurrences(of: oneSpace, with: threeSpaces)
-            cell.trustwordsLabel.text = longMode ? spacedTrustwords : "\(spacedTrustwords)…"
+            let textToSet = longMode ? spacedTrustwords : "\(spacedTrustwords)…"
+            if (cell.trustwordsLabel.text != textToSet) {
+                cell.trustwordsLabel.text = textToSet
+                self?.trustManagementTableView.updateSize()
+            }
         }
     }
 }
@@ -296,6 +302,7 @@ extension TrustManagementViewController {
         ///That means that's the only case must display the trustwords
         if identifier == onlyMasterCellIdentifier {
             if row.color == .yellow {
+                
                 setTrustwords(for: cell, at: indexPath, longMode: row.longTrustwords)
                 cell.trustwordsStackView.isHidden = false
                 cell.trustwordsButtonsContainer.isHidden = false
