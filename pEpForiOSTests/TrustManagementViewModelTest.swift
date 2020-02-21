@@ -92,9 +92,10 @@ class TrustManagementViewModelTest: CoreDataDrivenTestBase {
     
     //Test Change Language Pressed
     func testHandleChangeLanguagePressed() {
+        let firstItemPosition = IndexPath(item: 0, section: 0)
         let languagesExpectation = expectation(description: "languages")
         setupViewModel(util: TrustManagementUtilMock(languagesExpectation: languagesExpectation))
-        let languages = trustManagementViewModel?.handleChangeLanguagePressed()
+        let languages = trustManagementViewModel?.handleChangeLanguagePressed(forRowAt: firstItemPosition)
         XCTAssertEqual(TrustManagementUtilMock.languages, languages)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
@@ -117,12 +118,9 @@ class TrustManagementViewModelTest: CoreDataDrivenTestBase {
         let didConfirmExpectation = expectation(description: "didConfirm")
         let mockDelegate = MockTrustManagementViewModelHandler(didEndShakeMotionExpectation: didEndShakeMotionExpectation,
                                                          didConfirmHandshakeExpectation: didConfirmExpectation)
-        
         setupViewModel()
         trustManagementViewModel?.trustManagementViewModelDelegate = mockDelegate
-        
         trustManagementViewModel?.handleConfirmHandshakePressed(at: firstItemPosition)
-        
         trustManagementViewModel?.shakeMotionDidEnd()
         waitForExpectations(timeout: TestUtil.waitTime)
     }
@@ -133,16 +131,12 @@ class TrustManagementViewModelTest: CoreDataDrivenTestBase {
         let didDeny = expectation(description: "didDeny")
         let mockDelegate = MockTrustManagementViewModelHandler(didEndShakeMotionExpectation: didShake,
                                                          didDenyHandshakeExpectation: didDeny)
-        
         setupViewModel()
         trustManagementViewModel?.trustManagementViewModelDelegate = mockDelegate
-        
         //Reject handshake
         trustManagementViewModel?.handleRejectHandshakePressed(at: firstItemPosition)
-        
         //Gesture for undo
         trustManagementViewModel?.shakeMotionDidEnd()
-        
         ///Verify reset has been called only once.
         waitForExpectations(timeout: TestUtil.waitTime)
     }
@@ -154,10 +148,9 @@ class TrustManagementViewModelTest: CoreDataDrivenTestBase {
         let handshakeMock = TrustManagementUtilMock(getTrustwordsExpectation: getTWExp)
         setupViewModel(util: handshakeMock)
         
-        let trustwords = trustManagementViewModel?.generateTrustwords(forRowAt: firstItemPosition)
-        XCTAssertEqual(trustwords, TrustManagementUtilMock.someTrustWords)
-        let identity = identities[firstItemPosition.row]
-        XCTAssertEqual(identity, handshakeMock.identity)
+        trustManagementViewModel?.generateTrustwords(forRowAt: firstItemPosition, completion: { trustwords in
+            XCTAssertEqual(trustwords, TrustManagementUtilMock.someTrustWords)
+        })
         waitForExpectations(timeout: TestUtil.waitTime)
     }
     
@@ -196,7 +189,6 @@ extension TrustManagementViewModelTest {
         let cdIdentity: CdIdentity = SecretTestData().createWorkingCdIdentity(number:selfNumber,
                                                                               isMyself: true,
                                                                               context: moc)
-        
         let selfIdentity = Identity(cdObject: cdIdentity, context: moc)
         selfIdentity.fingerprint = "fingerprints"
         selfIdentity.save()
@@ -210,7 +202,6 @@ extension TrustManagementViewModelTest {
                 XCTFail()
                 return
             }
-            
             let message = TestUtil.createMessage(inFolder: folder1, from:from, tos: [selfIdentity])
             trustManagementViewModel = TrustManagementViewModel(message: message, handshakeUtil: util ?? TrustManagementUtilMock())
         }
@@ -220,22 +211,20 @@ extension TrustManagementViewModelTest {
 ///MARK: - Mock Util Classes
 
 class TrustManagementUtilMock: TrustManagementUtilProtocol {
-    func handshakeCombinations(message: Message) -> [HandshakeCombination] {
+    func handshakeCombinations(message: Message) -> [TrustManagementUtil.HandshakeCombination] {
         
         if let own = message.allIdentities.filter({$0.isMySelf == true}).first,
             let other = message.allIdentities.filter({$0.isMySelf != true}).first {
-            return [HandshakeCombination(ownIdentity:own, partnerIdentity: other)]
+            return [TrustManagementUtil.HandshakeCombination(ownIdentity:own, partnerIdentity: other)]
         }
         
-        
-        return [HandshakeCombination]()
+        return [TrustManagementUtil.HandshakeCombination]()
     }
     
-    func handshakeCombinations(identities: [Identity]) -> [HandshakeCombination] {
-        return [HandshakeCombination]()
+    func handshakeCombinations(identities: [Identity]) -> [TrustManagementUtil.HandshakeCombination] {
+        return [TrustManagementUtil.HandshakeCombination]()
     }
-    
-    
+
     var getTrustwordsExpectation: XCTestExpectation?
     var resetExpectation: XCTestExpectation?
     var confirmExpectation: XCTestExpectation?
@@ -322,60 +311,38 @@ class MockTrustManagementViewModelHandler : TrustManagementViewModelDelegate {
         self.didSelectLanguageExpectation = didSelectLanguageExpectation
         self.didToogleLongTrustwordsExpectation = didToogleLongTrustwordsExpectation
     }
-    
-    func didEndShakeMotion() {
-        if let expectation = didEndShakeMotionExpectation {
-            expectation.fulfill()
-        } else {
-            XCTFail("didEndShakeMotion failed")
+    func reload() {
+        if didEndShakeMotionExpectation != nil {
+            didEndShakeMotionExpectation?.fulfill()
+            didEndShakeMotionExpectation = nil
+        }
+        if didResetHandshakeExpectation != nil {
+            didResetHandshakeExpectation?.fulfill()
+            didResetHandshakeExpectation = nil
+        }
+        if didConfirmHandshakeExpectation != nil {
+            didConfirmHandshakeExpectation?.fulfill()
+            didConfirmHandshakeExpectation = nil
+        }
+        if didDenyHandshakeExpectation != nil {
+            didDenyHandshakeExpectation?.fulfill()
+            didDenyHandshakeExpectation = nil
+        }
+        if didSelectLanguageExpectation != nil {
+            didSelectLanguageExpectation?.fulfill()
+            didSelectLanguageExpectation = nil
+        }
+        if didToogleLongTrustwordsExpectation != nil {
+            didToogleLongTrustwordsExpectation?.fulfill()
+            didToogleLongTrustwordsExpectation = nil
         }
     }
-    
-    func didResetHandshake(forRowAt indexPath: IndexPath) {
-        if let expectation = didResetHandshakeExpectation {
-            expectation.fulfill()
-        } else {
-            XCTFail("didResetHandshake failed")
-        }
-    }
-    
-    func didConfirmHandshake(forRowAt indexPath: IndexPath) {
-        if let expectation = didConfirmHandshakeExpectation {
-            expectation.fulfill()
-        } else {
-            XCTFail("didConfirmHandshake failed")
-        }
-    }
-    
-    func didRejectHandshake(forRowAt indexPath: IndexPath) {
-        if let expectation = didDenyHandshakeExpectation {
-            expectation.fulfill()
-        } else {
-            XCTFail("failed didRejectHandshake")
-        }
-    }
-    
-    func didSelectLanguage(forRowAt indexPath: IndexPath) {
-        if let expectation = didSelectLanguageExpectation {
-            expectation.fulfill()
-        } else {
-            XCTFail("didSelectLanguage failed")
-        }
-    }
-    
+
     func didToogleProtection(forRowAt indexPath: IndexPath) {
         if let expectation = didChangeProtectionStatusExpectation {
             expectation.fulfill()
         } else {
             XCTFail("didToogleProtection failed")
-        }
-    }
-    
-    func didToogleLongTrustwords(forRowAt indexPath: IndexPath) {
-        if let expectation = didToogleLongTrustwordsExpectation {
-            expectation.fulfill()
-        } else {
-            XCTFail("didToogleLongTrustwordsExpectation failed")
         }
     }
 }
