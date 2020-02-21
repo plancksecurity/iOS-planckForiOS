@@ -11,7 +11,6 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 import PantomimeFramework
-import PEPObjCAdapterFramework
 
 // Related to bugfix for IOS-2019
 class KeySyncFeatureDisabledEnabledTest: XCTestCase {
