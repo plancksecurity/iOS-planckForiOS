@@ -763,10 +763,7 @@ extension EmailDetailViewController {
         let size = CGSize(width: 15, height: 25)
         nextButton?.image = nextButton?.image?.resizeImage(targetSize: size)
         previousButton?.image = previousButton?.image?.resizeImage(targetSize: size)
-        
         let isIpad = UIDevice.current.userInterfaceIdiom == .pad
-
-
         if !onlySplitViewMasterIsShown && isIpad {
             let nextPrevButtonSize = CGRect(x: 0, y: 0, width: 27, height: 15)
 
