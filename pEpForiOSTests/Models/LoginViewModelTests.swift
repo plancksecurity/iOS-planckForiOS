@@ -39,6 +39,7 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         var authMethod: AuthMethod?
         var password: String?
         var accessToken: OAuth2AccessTokenProtocol?
+        var clientCertificate: ClientCertificateUtil.ClientCertificate?
         var serverIMAP: String?
         var portIMAP: UInt16 = 993
         var transportIMAP: ConnectionTransport = .TLS

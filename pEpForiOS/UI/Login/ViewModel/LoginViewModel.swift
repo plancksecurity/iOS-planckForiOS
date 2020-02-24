@@ -83,7 +83,7 @@ class LoginViewModel {
 
     let qualifyServerService = QualifyServerIsLocalService()
 
-    init(verifiableAccount: VerifiableAccountProtocol,
+    init(verifiableAccount: VerifiableAccountProtocol = VerifiableAccount(),
          accountType: LoginViewModel.AccountType = .clientCertificate, //BUFF: XAVIER: default must be .other
          delegate: LoginViewModelDelegate? = nil) {
         self.verifiableAccount = verifiableAccount
@@ -120,10 +120,15 @@ class LoginViewModel {
     ///   - loginName: The optional login name for this account, if different from the email
     ///   - password: The password for the account
     ///   - accessToken: The access token for this account
-    func login(emailAddress: String, displayName: String, loginName: String? = nil,
-               password: String? = nil, accessToken: OAuth2AccessTokenProtocol? = nil) {
-        let acSettings = AccountSettings(accountName: emailAddress, provider: nil,
-                                         flags: AS_FLAG_USE_ANY, credentials: nil)
+    func login(emailAddress: String,
+               displayName: String,
+               loginName: String? = nil,
+               password: String? = nil,
+               accessToken: OAuth2AccessTokenProtocol? = nil) {
+        let acSettings = AccountSettings(accountName: emailAddress,
+                                         provider: nil,
+                                         flags: AS_FLAG_USE_ANY,
+                                         credentials: nil)
         acSettings.lookupCompletion() { [weak self] settings in
             GCD.onMain() {
                 statusOk()
@@ -169,7 +174,7 @@ class LoginViewModel {
             verifiableAccount.transportSMTP = smtpTransport
             verifiableAccount.isAutomaticallyTrustedImapServer = false
 
-            verifyAccount(model: verifiableAccount)
+            verifyAccount()
         }
     }
 
@@ -177,7 +182,7 @@ class LoginViewModel {
     ///
     /// - Parameter model: account data
     /// - Throws: AccountVerificationError
-    func verifyAccount(model: VerifiableAccountProtocol?) {
+    func verifyAccount() {
         if let imapServer = verifiableAccount.serverIMAP {
             qualifyServerService.delegate = self
             qualifyServerService.qualify(serverName: imapServer)
@@ -296,5 +301,14 @@ extension LoginViewModel: VerifiableAccountDelegate {
         case .failure(let error):
             informAccountVerificationResultDelegate(error: error)
         }
+    }
+}
+
+// MARK: - ClientCertificateManagementViewModelDelegate
+
+extension LoginViewModel: ClientCertificateManagementViewModelDelegate {
+    func didSelectClientCertificate(clientCertificate: ClientCertificateUtil.ClientCertificate?) {
+        fatalError("add cert to verifyable account")
+//        verifiableAccount.cli
     }
 }
