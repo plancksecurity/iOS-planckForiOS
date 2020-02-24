@@ -16,7 +16,10 @@ protocol ClientCertificateManagementViewModelDelegate {
 
 extension ClientCertificateManagementViewModel {
     struct Row {
-        let name: String
+        var name: String {
+            return clientCertificate.userReadableLabel
+        }
+        fileprivate let clientCertificate: ClientCertificateUtil.ClientCertificate
     }
 }
 
@@ -35,6 +38,6 @@ class ClientCertificateManagementViewModel {
 extension ClientCertificateManagementViewModel {
 
     private func setup() {
-        rows = clientCertificateUtil.listCertificates().map { Row(name: $0.userReadableLabel) }
+        rows = clientCertificateUtil.listCertificates().map { Row(clientCertificate: $0) }
     }
 }
