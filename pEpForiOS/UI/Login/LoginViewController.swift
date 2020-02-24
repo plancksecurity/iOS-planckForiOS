@@ -156,7 +156,7 @@ final class LoginViewController: BaseViewController {
 extension LoginViewController {
 
     func setupViewModel() {
-        viewModel = LoginViewModel(verifiableAccount: VerifiableAccount())
+        viewModel = LoginViewModel()
         viewModel?.loginViewModelLoginErrorDelegate = self
         viewModel?.loginViewModelOAuth2ErrorDelegate = self
         viewModel?.delegate = self
@@ -265,7 +265,7 @@ extension LoginViewController: SegueHandlerType {
             }
             vc.appConfig = appConfig
             // Give the next model all that we know.
-            vc.model = vm.verifiableAccount
+            vc.verifiableAccount = vm.verifiableAccount
         case .clientCertManagementSegue:
             guard let dvc = segue.destination as? ClientCertificateManagementViewController else {
                 Log.shared.errorAndCrash("Invalid state")
