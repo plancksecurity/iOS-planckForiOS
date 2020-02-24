@@ -15,7 +15,9 @@ import PantomimeFramework
 // MARK: - LoginViewModelDelegate
 
 protocol LoginViewModelDelegate: class {
-    func hidePasswordField(hide: Bool)
+    func passwordFieldStateUpdated(hidePasswordField: Bool)
+    func showMustImportClientCertificateAlert()
+    func showClientCertificateSeletionView()
 }
 
 // MARK: - AccountType
@@ -72,7 +74,7 @@ class LoginViewModel {
 
     var accountType: LoginViewModel.AccountType {
         didSet {
-            delegate?.hidePasswordField(hide: accountType.isOauth)
+            delegate?.passwordFieldStateUpdated(hidePasswordField: accountType.isOauth)
         }
     }
 
@@ -201,9 +203,17 @@ class LoginViewModel {
         return AccountSettings.quickLookUp(emailAddress: email)?.supportsOAuth2 ?? false
     }
 
-    /// - returns: Whether or not to show ClientCertificateManagementView
-    public var showClientCertSelection: Bool {
-        return accountType == .clientCertificate
+    public func handleViewWillAppear() {
+        guard accountType == .clientCertificate else {
+            // No special handling for other types ...
+            // ... nothing to so
+            return
+        }
+        if ClientCertificateUtil().listCertificates().count == 0 {
+            delegate?.showMustImportClientCertificateAlert()
+        } else {
+            delegate?.showClientCertificateSeletionView()
+        }
     }
 
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {

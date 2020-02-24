@@ -52,7 +52,11 @@ final class LoginViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateView()
-        showClientCertificateManagementViewIfNeeded()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        vm.handleViewWillAppear()
     }
 
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -593,19 +597,6 @@ extension LoginViewController {
         manualConfigButton.isEnabled = !isCurrentlyVerifying
     }
 
-    private func showClientCertificateManagementViewIfNeeded() {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-        guard vm.showClientCertSelection else {
-            // Nothing to do.
-            return
-        }
-        performSegue(withIdentifier: LoginViewController.SegueIdentifier.clientCertManagementSegue,
-                     sender: self)
-    }
-
     private func isLandscape() -> Bool {
         if UIDevice.current.orientation.isFlat  {
             return UIApplication.shared.statusBarOrientation.isLandscape
@@ -618,8 +609,27 @@ extension LoginViewController {
 // MARK: - LoginViewModelDelegate
 
 extension LoginViewController: LoginViewModelDelegate {
-    func hidePasswordField(hide: Bool) {
-        password.isHidden = hide
-        password.isEnabled = !hide
+    func showMustImportClientCertificateAlert() {
+        let title = NSLocalizedString("No Client Certificate",
+                                      comment: "No client certificate exists alert title")
+        let message = NSLocalizedString("No client certificate exists. You have to import your client certificate before entering login data.",
+                                        comment: "No client certificate exists alert message")
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message, inViewController: self) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.dismiss(animated: true) //BUFF: XAVIER: go back to Accountz Type selector
+        }
+    }
+
+    func showClientCertificateSeletionView() {
+        performSegue(withIdentifier: LoginViewController.SegueIdentifier.clientCertManagementSegue,
+                     sender: self)
+    }
+
+    func passwordFieldStateUpdated(hidePasswordField: Bool) {
+        password.isHidden = hidePasswordField
+        password.isEnabled = !hidePasswordField
     }
 }
