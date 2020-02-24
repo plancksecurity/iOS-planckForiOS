@@ -106,6 +106,7 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
             if let vc = segue.destination as? LoginViewController,
                 let selected = SelectedIndexPath {
                 vc.appConfig = appConfig
+                vc.account  = LoginViewModel(verifiableAccount: <#T##VerifiableAccountProtocol#>, accountType: <#T##LoginViewModel.AccountType#>, delegate: <#T##LoginViewModelDelegate?#>)
                 //vc.accountType = viewModel[selected.row]
                 vc.delegate = loginDelegate
             }
