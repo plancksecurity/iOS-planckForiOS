@@ -83,7 +83,7 @@ class LoginViewModel {
 
     let qualifyServerService = QualifyServerIsLocalService()
 
-    init(verifiableAccount: VerifiableAccountProtocol,
+    init(verifiableAccount: VerifiableAccountProtocol = VerifiableAccount(),
          accountType: LoginViewModel.AccountType = .clientCertificate, //BUFF: XAVIER: default must be .other
          delegate: LoginViewModelDelegate? = nil) {
         self.verifiableAccount = verifiableAccount
@@ -296,5 +296,14 @@ extension LoginViewModel: VerifiableAccountDelegate {
         case .failure(let error):
             informAccountVerificationResultDelegate(error: error)
         }
+    }
+}
+
+// MARK: - ClientCertificateManagementViewModelDelegate
+
+extension LoginViewModel: ClientCertificateManagementViewModelDelegate {
+    func didSelectClientCertificate(clientCertificate: ClientCertificateUtil.ClientCertificate?) {
+        fatalError("add cert to verifyable account")
+//        verifiableAccount.cli
     }
 }
