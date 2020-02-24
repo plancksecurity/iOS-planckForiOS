@@ -46,17 +46,13 @@ final class LoginViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupViewModel()
-        configureView()
-        configureAppearance()
-
-        setManualSetupButtonHidden(true)
+        setup()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateView()
+        showClientCertificateManagementViewIfNeeded()
     }
 
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -247,6 +243,7 @@ extension LoginViewController: SegueHandlerType {
     public enum SegueIdentifier: String {
         case noSegue
         case manualConfigSegue
+        case clientCertManagementSegue
     }
 
 
@@ -265,8 +262,17 @@ extension LoginViewController: SegueHandlerType {
             vc.appConfig = appConfig
             // Give the next model all that we know.
             vc.model = vm.verifiableAccount
+        case .clientCertManagementSegue:
+            guard let dvc = segue.destination as? ClientCertificateManagementViewController else {
+                Log.shared.errorAndCrash("Invalid state")
+                return
+            }
+            dvc.appConfig = appConfig
+            // Give the next model all that we know.
+            dvc.viewModel = vm.clientCertificateManagementViewModel()
         default:
-            break
+            Log.shared.errorAndCrash("Unhandled segue type")
+            return
         }
     }
 }
@@ -368,6 +374,14 @@ extension LoginViewController: LoginScrollViewDelegate {
 // MARK: - Private
 
 extension LoginViewController {
+
+    private func setup() {
+        setupViewModel()
+        configureView()
+        configureAppearance()
+        setManualSetupButtonHidden(true)
+    }
+
     private func hidePasswordTextField() {
         UIView.animate(withDuration: 0.2,
                        delay: 0,
@@ -584,11 +598,12 @@ extension LoginViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        guard vm.accountType == .clientCertificate else {
+        guard vm.showClientCertSelection else {
             // Nothing to do.
             return
         }
-        fatalError("toDo: show CC selector view")
+        performSegue(withIdentifier: LoginViewController.SegueIdentifier.clientCertManagementSegue,
+                     sender: self)
     }
 
     private func isLandscape() -> Bool {

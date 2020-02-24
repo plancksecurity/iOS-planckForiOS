@@ -417,6 +417,7 @@
                         <outlet property="scrollViewBottomConstraint" destination="H9T-wo-ehg" id="QWM-fs-2ko"/>
                         <outlet property="stackView" destination="8nk-hU-BvN" id="EaI-hB-wsa"/>
                         <outlet property="user" destination="pqA-KX-peU" id="TxE-c2-MzT"/>
+                        <segue destination="Qyj-kG-7VF" kind="presentation" identifier="clientCertManagementSegue" id="ekD-mr-6H9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bBb-dZ-w49" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -582,6 +583,62 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="9513" y="-396"/>
+        </scene>
+        <!--Client Certificate Management View Controller-->
+        <scene sceneID="KfB-P8-qVQ">
+            <objects>
+                <viewController storyboardIdentifier="ClientCertificateManagementViewController" id="Qyj-kG-7VF" customClass="ClientCertificateManagementViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="NT5-R2-fiW">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="MtE-5G-aJV">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ClientCertificateManagementTableViewCell" textLabel="zKX-6m-MG3" detailTextLabel="o6S-1a-Pmm" style="IBUITableViewCellStyleSubtitle" id="z2p-JP-FvM">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="55.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="z2p-JP-FvM" id="x7z-4G-uSy">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="55.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zKX-6m-MG3">
+                                                    <rect key="frame" x="20" y="10" width="33.5" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="o6S-1a-Pmm">
+                                                    <rect key="frame" x="20" y="31.5" width="44" height="14.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="MtE-5G-aJV" firstAttribute="top" secondItem="whS-bT-40C" secondAttribute="top" id="4th-dk-1yu"/>
+                            <constraint firstItem="whS-bT-40C" firstAttribute="trailing" secondItem="MtE-5G-aJV" secondAttribute="trailing" id="GTP-ud-oSd"/>
+                            <constraint firstItem="whS-bT-40C" firstAttribute="bottom" secondItem="MtE-5G-aJV" secondAttribute="bottom" id="Jbz-0o-VKd"/>
+                            <constraint firstItem="MtE-5G-aJV" firstAttribute="leading" secondItem="whS-bT-40C" secondAttribute="leading" id="Pxg-Ec-xgI"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="whS-bT-40C"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="MtE-5G-aJV" id="Awb-7P-FBh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="axc-fA-bI1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6410" y="354"/>
         </scene>
     </scenes>
     <resources>

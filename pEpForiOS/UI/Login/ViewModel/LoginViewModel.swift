@@ -82,7 +82,7 @@ class LoginViewModel {
     let qualifyServerService = QualifyServerIsLocalService()
 
     init(verifiableAccount: VerifiableAccountProtocol,
-         accountType: LoginViewModel.AccountType = .other,
+         accountType: LoginViewModel.AccountType = .clientCertificate, //BUFF: XAVIER: default must be .other
          delegate: LoginViewModelDelegate? = nil) {
         self.verifiableAccount = verifiableAccount
         self.accountType = accountType
@@ -201,12 +201,14 @@ class LoginViewModel {
         return AccountSettings.quickLookUp(emailAddress: email)?.supportsOAuth2 ?? false
     }
 
-    //BUFF: move
     /// - returns: Whether or not to show ClientCertificateManagementView
     public var showClientCertSelection: Bool {
         return accountType == .clientCertificate
     }
-    //
+
+    public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
+        return ClientCertificateManagementViewModel()
+    }
 }
 
 // MARK: - OAuth2AuthViewModelDelegate
