@@ -49,13 +49,13 @@ class EmailDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        setupToolbar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         doOnce?()
         doOnce = nil
-        setupToolbar()
     }
 
     override func viewWillLayoutSubviews() {
