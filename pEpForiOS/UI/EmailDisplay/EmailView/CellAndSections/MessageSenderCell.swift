@@ -25,7 +25,7 @@ open class MessageSenderCell: MessageCell {
             let recepient = recepient.address
             temp.append(recepient)
         }
-        let toDestinataries = NSLocalizedString("To:", comment: "Compose field title") + temp.joined(separator: ", ")
+        let toDestinataries = NSLocalizedString("To:", comment: "Compose field title") + " \(temp.joined(separator: ", "))"
         valueLabel?.attributedText = NSAttributedString(string: toDestinataries, attributes: attributes as [NSAttributedString.Key : Any])
     }
 }

@@ -21,7 +21,7 @@ class Appearance {
             normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: color)
         } else {
             UINavigationBar.appearance().backgroundColor = .white
-            UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: color]
+            UINavigationBar.appearance().titleTextAttributes = titleTextAttributes()
         }
 
         UIToolbar.appearance().backgroundColor = color
@@ -59,6 +59,13 @@ class Appearance {
         view.tintColor = color
     }
 
+    /// Return custom pEp titleTextAttributes
+    static private func titleTextAttributes() -> [NSAttributedString.Key : Any] {
+        return [.foregroundColor: UIColor.black,
+                .font: UIFont.pepFont(style: .body,
+                                      weight: .regular)]
+    }
+
     // MARK: - iOS 13
 
     /// Default appearance for navigation bars (iOS 13 and upwards).
@@ -67,6 +74,13 @@ class Appearance {
         let appearance = UINavigationBarAppearance()
 
         appearance.configureWithOpaqueBackground()
+        let defaultpEpTextAttributes: [NSAttributedString.Key : Any] =
+            [.foregroundColor: color]
+        appearance.buttonAppearance.normal.titleTextAttributes = defaultpEpTextAttributes
+        appearance.backButtonAppearance.normal.titleTextAttributes = defaultpEpTextAttributes
+        appearance.titleTextAttributes = titleTextAttributes()
+        appearance.largeTitleTextAttributes = defaultpEpTextAttributes
+        appearance.doneButtonAppearance.normal.titleTextAttributes = defaultpEpTextAttributes
 
         let font = UIFont.pepFont(style: .headline, weight: .medium)
         
@@ -74,11 +88,6 @@ class Appearance {
                                                                    .font: font,
                                                                    .baselineOffset: 2
         ]
-        appearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes
-        appearance.backButtonAppearance.normal.titleTextAttributes = titleTextAttributes
-        appearance.titleTextAttributes = titleTextAttributes
-        appearance.largeTitleTextAttributes = titleTextAttributes
-        appearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
 
         
         

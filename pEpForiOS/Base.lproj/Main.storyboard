@@ -599,14 +599,6 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="Usl-iS-7fo"/>
-                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" id="1zD-EW-3fN"/>
-                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="2fD-kL-Bvj"/>
-                        <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" modalPresentationStyle="pageSheet" id="RTR-We-Kc1"/>
-                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshake" modalPresentationStyle="automatic" id="mZj-Mg-VzM"/>
-                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshakeCollapsed" modalPresentationStyle="fullScreen" id="0zl-tV-6Kr"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
