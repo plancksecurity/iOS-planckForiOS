@@ -785,8 +785,8 @@ extension EmailDetailViewController {
 
             //Spacer
             let defaultSpacerWidth: CGFloat = 8.0
-            let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-            spacer.width = defaultSpacerWidth
+            let arrowsSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+            arrowsSpacer.width = defaultSpacerWidth
 
             let downBarButtonItem = UIBarButtonItem(customView: downButton)
             let upBarButtonItem = UIBarButtonItem(customView: upButton)
@@ -794,14 +794,19 @@ extension EmailDetailViewController {
             downBarButtonItem.isEnabled = thereIsANextMessageToShow
             upBarButtonItem.isEnabled = thereIsAPreviousMessageToShow
             
-            navigationItem.leftBarButtonItems = [downBarButtonItem, spacer, upBarButtonItem]
+            let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+            let isLandscape = UIApplication.shared.statusBarOrientation.isLandscape
+           
+            if isIpad && isLandscape {
+                navigationItem.leftBarButtonItems = [arrowsSpacer, downBarButtonItem, arrowsSpacer, upBarButtonItem]
+            } else {
+                navigationItem.leftBarButtonItems = [downBarButtonItem, arrowsSpacer, upBarButtonItem]
+            }
             
-            let midSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-            midSpacer.width = 18
             
-            let largeSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-            largeSpacer.width = 22
-
+            let buttonsSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+            buttonsSpacer.width = 18
+            
             //Reply
             let replyImage = UIImage(named: "pEpForiOS-icon-reply")
             let replyBarButtonItem = UIBarButtonItem(image: replyImage,
@@ -832,14 +837,13 @@ extension EmailDetailViewController {
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(destructiveButtonPressed(_:)))
-
             
             navigationItem.rightBarButtonItems = [replyBarButtonItem,
-                                                  midSpacer,
+                                                  buttonsSpacer,
                                                   folderButtonBarButtonItem,
-                                                  midSpacer,
+                                                  buttonsSpacer,
                                                   flagBarButtonItem,
-                                                  midSpacer,
+                                                  buttonsSpacer,
                                                   deleteButtonBarButtonItem]
         } else {
             navigationItem.leftBarButtonItems = []
