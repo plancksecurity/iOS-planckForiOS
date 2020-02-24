@@ -1212,12 +1212,12 @@ extension EmailListViewController: SegueHandlerType {
         case .segueAddNewAccount:
             guard
                 let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? LoginViewController else {
+                let vc = nav.rootViewController as? AccountTypeSelectorViewController else {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
             vc.appConfig = appConfig
-            vc.delegate = self
+            vc.loginDelegate = self
             vc.hidesBottomBarWhenPushed = true
             break
         case .segueFolderViews:
