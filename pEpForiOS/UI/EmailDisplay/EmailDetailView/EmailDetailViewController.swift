@@ -766,6 +766,7 @@ extension EmailDetailViewController {
         
         let isIpad = UIDevice.current.userInterfaceIdiom == .pad
 
+
         if !onlySplitViewMasterIsShown && isIpad {
             let nextPrevButtonSize = CGRect(x: 0, y: 0, width: 27, height: 15)
 
@@ -781,7 +782,6 @@ extension EmailDetailViewController {
             let upImage = UIImage(named: "chevron-icon-up")?.withRenderingMode(.alwaysTemplate)
             upButton.setBackgroundImage(upImage, for: .normal)
             upButton.tintColor = thereIsAPreviousMessageToShow ? UIColor.pEpGreen : UIColor.pEpGray
-
             upButton.addTarget(self, action: #selector(showPreviousIfAny), for: .touchUpInside)
             upButton.isEnabled = thereIsAPreviousMessageToShow
 
@@ -789,26 +789,19 @@ extension EmailDetailViewController {
             let defaultSpacerWidth: CGFloat = 8.0
             let arrowsSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
             arrowsSpacer.width = defaultSpacerWidth
-
             let downBarButtonItem = UIBarButtonItem(customView: downButton)
             let upBarButtonItem = UIBarButtonItem(customView: upButton)
-            
             downBarButtonItem.isEnabled = thereIsANextMessageToShow
             upBarButtonItem.isEnabled = thereIsAPreviousMessageToShow
-            
-            let isIpad = UIDevice.current.userInterfaceIdiom == .pad
             let isLandscape = UIApplication.shared.statusBarOrientation.isLandscape
-           
             if isIpad && isLandscape {
                 navigationItem.leftBarButtonItems = [arrowsSpacer, downBarButtonItem, arrowsSpacer, upBarButtonItem]
             } else {
                 navigationItem.leftBarButtonItems = [downBarButtonItem, arrowsSpacer, upBarButtonItem]
             }
-            
-            
             let buttonsSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-            buttonsSpacer.width = 18
-            
+            buttonsSpacer.width = isLandscape ? 18 : 14
+         
             //Reply
             let replyImage = UIImage(named: "pEpForiOS-icon-reply")
             let replyBarButtonItem = UIBarButtonItem(image: replyImage,
