@@ -12,6 +12,12 @@ import MessageModel
 import pEpIOSToolbox
 import PantomimeFramework
 
+// MARK: - LoginViewModelDelegate
+
+protocol LoginViewModelDelegate: class {
+    func hidePasswordField(hide: Bool)
+}
+
 // MARK: - AccountType
 
 extension LoginViewModel {
@@ -23,7 +29,7 @@ extension LoginViewModel {
         case other
 
         var isOauth: Bool {
-            return self != .other
+            return self == .gmail
         }
     }
 }
@@ -49,6 +55,7 @@ class LoginViewModel {
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
     weak var loginViewModelLoginErrorDelegate: LoginViewModelLoginErrorDelegate?
     weak var loginViewModelOAuth2ErrorDelegate: LoginViewModelOAuth2ErrorDelegate?
+    weak var delegate: LoginViewModelDelegate?
 
     /// Holding both the data of the current account in verification,
     /// and also the implementation of the verification.
@@ -63,13 +70,23 @@ class LoginViewModel {
         }
     }
 
+    var accountType: LoginViewModel.AccountType {
+        didSet {
+            delegate?.hidePasswordField(hide: accountType.isOauth)
+        }
+    }
+
     /// If the last login attempt was via OAuth2, this will collect temporary parameters
     private var lastOAuth2Parameters: OAuth2Parameters?
 
     let qualifyServerService = QualifyServerIsLocalService()
 
-    init(verifiableAccount: VerifiableAccountProtocol) {
+    init(verifiableAccount: VerifiableAccountProtocol,
+         accountType: LoginViewModel.AccountType = .other,
+         delegate: LoginViewModelDelegate? = nil) {
         self.verifiableAccount = verifiableAccount
+        self.accountType = accountType
+        self.delegate = delegate
     }
 
     func isThereAnAccount() -> Bool {
@@ -183,6 +200,13 @@ class LoginViewModel {
     func isOAuth2Possible(email: String?) -> Bool {
         return AccountSettings.quickLookUp(emailAddress: email)?.supportsOAuth2 ?? false
     }
+
+    //BUFF: move
+    /// - returns: Whether or not to show ClientCertificateManagementView
+    public var showClientCertSelection: Bool {
+        return accountType == .clientCertificate
+    }
+    //
 }
 
 // MARK: - OAuth2AuthViewModelDelegate
