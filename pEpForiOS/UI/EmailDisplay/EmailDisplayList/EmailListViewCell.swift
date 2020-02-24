@@ -10,7 +10,7 @@ import UIKit
 import MessageModel
 import SwipeCellKit
 
-class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
+final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
     public static let storyboardId = "EmailListViewCell"
 
     @IBOutlet weak var addressLabel: UILabel!
@@ -24,18 +24,6 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
     @IBOutlet weak var attachmentIcon: UIImageView!
     @IBOutlet weak var contactImageView: UIImageView!
 
-    /**
-     Fake constraint for IB to be happy.
-     - Note: This gets deactivated on runtime.
-     */
-    @IBOutlet weak var fakeRatingImageToContactImageVertical: NSLayoutConstraint?
-
-    /**
-     Fake constraint for IB to be happy.
-     - Note: This gets deactivated on runtime.
-     */
-    @IBOutlet weak var fakeRatingImageToContactImageHorizontal: NSLayoutConstraint?
-
     private var viewModel: MessageViewModel?
 
     /**
@@ -47,7 +35,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
      */
     private var originalBackgroundSelectionColor: UIColor?
 
-    private var hasAttachment:Bool = false {
+    private var hasAttachment: Bool = false {
         didSet {
             if hasAttachment {
                 attachmentIcon.isHidden = false
@@ -57,7 +45,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
         }
     }
 
-    public var isFlagged:Bool = false {
+    public var isFlagged: Bool = false {
         didSet {
             if isFlagged {
                 setFlagged()
@@ -67,7 +55,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
         }
     }
 
-    public var isSeen:Bool = false {
+    public var isSeen: Bool = false {
         didSet {
             if isSeen {
                 setSeen()
@@ -94,13 +82,6 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-
-        if let constr = fakeRatingImageToContactImageVertical {
-            constr.isActive = false
-        }
-        if let constr = fakeRatingImageToContactImageHorizontal {
-            constr.isActive = false
-        }
     }
 
     public func configure(for viewModel: MessageViewModel) {
@@ -168,10 +149,13 @@ extension EmailListViewCell {
     //    }
 
     private func setPepRatingImage(image: UIImage?) {
-        if ratingImage.image != image {
-            self.ratingImage.image = image
-            self.ratingImage.isHidden = (image == nil)
+        guard image != nil else {
+            Log.shared.info("Image is nil")
+            return
         }
+
+        self.ratingImage.image = image
+        self.ratingImage.isHidden = (image == nil)
     }
 
     private func setContactImage(image: UIImage?) {
@@ -201,26 +185,25 @@ extension EmailListViewCell {
     }
 
     private func setSeen() {
-        if let font = addressLabel.font {
-            let seenFont = UIFont.systemFont(ofSize: font.pointSize)
-            if font != seenFont {
-                setupLabels(font: seenFont)
-            }
-        }
+        setupLabels(seen: true)
     }
 
     private func unsetSeen() {
-        if let font = addressLabel.font {
-            let font = UIFont.boldSystemFont(ofSize: font.pointSize)
-            setupLabels(font: font)
-        }
+        setupLabels(seen: false)
     }
 
-    private func setupLabels(font: UIFont) {
-        addressLabel.font = font
-        subjectLabel.font = font
-        summaryLabel.font = font
-        dateLabel.font = font
+    private func setupLabels(seen: Bool) {
+        let fontWeight: UIFont.Weight = seen
+            ? .regular
+            : .semibold
+        addressLabel.font = UIFont.pepFont(style: .body,
+                                           weight: fontWeight)
+        subjectLabel.font = UIFont.pepFont(style: .subheadline,
+                                           weight: fontWeight)
+        summaryLabel.font = UIFont.pepFont(style: .subheadline,
+                                           weight: fontWeight)
+        dateLabel.font = UIFont.pepFont(style: .subheadline,
+                                        weight: fontWeight)
     }
 
 

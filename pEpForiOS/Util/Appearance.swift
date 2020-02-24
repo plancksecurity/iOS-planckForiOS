@@ -74,6 +74,7 @@ class Appearance {
         let appearance = UINavigationBarAppearance()
 
         appearance.configureWithOpaqueBackground()
+        appearance.shadowColor = .clear
         let defaultpEpTextAttributes: [NSAttributedString.Key : Any] =
             [.foregroundColor: color]
         appearance.buttonAppearance.normal.titleTextAttributes = defaultpEpTextAttributes

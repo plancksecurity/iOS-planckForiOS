@@ -214,7 +214,6 @@
 		37FFA7FA234B3C27004229BE /* AnimatedPlaceholderTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */; };
 		3A085A6E23FAF4D50013C63E /* pEpHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A085A6D23FAF4D50013C63E /* pEpHeaderView.swift */; };
 		3A0CBAAD23F5909C00AE200C /* WrappedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */; };
-		3A4AB35D2400256F00523306 /* pEpUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4AB35C2400256F00523306 /* pEpUILabel.swift */; };
 		3AAC2ACA24003A9C00ADBB51 /* AccountSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAC2AC924003A9C00ADBB51 /* AccountSettingsTableViewController.swift */; };
 		3AD0E0A123E4659F006FFED3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0E0A023E4659F006FFED3 /* Assets.xcassets */; };
 		3AD2CBC923FD92650003A536 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */; };
@@ -696,7 +695,6 @@
 		37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedPlaceholderTextfield.swift; sourceTree = "<group>"; };
 		3A085A6D23FAF4D50013C63E /* pEpHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpHeaderView.swift; sourceTree = "<group>"; };
 		3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedCell.swift; sourceTree = "<group>"; };
-		3A4AB35C2400256F00523306 /* pEpUILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpUILabel.swift; sourceTree = "<group>"; };
 		3AAC2AC924003A9C00ADBB51 /* AccountSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsTableViewController.swift; sourceTree = "<group>"; };
 		3AD0E0A023E4659F006FFED3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -1073,7 +1071,6 @@
 				15146C90237F07EF00D69495 /* PEPPageViewControllerBase.swift */,
 				43AAC2281F7A5AED00F435F4 /* BaseTableViewController.swift */,
 				43AAC2291F7A5AEE00F435F4 /* BaseViewController.swift */,
-				3A4AB35E2400257400523306 /* UI+pEpLayout */,
 			);
 			path = BaseClasses;
 			sourceTree = "<group>";
@@ -1765,14 +1762,6 @@
 				3A085A6D23FAF4D50013C63E /* pEpHeaderView.swift */,
 			);
 			path = Reusable;
-			sourceTree = "<group>";
-		};
-		3A4AB35E2400257400523306 /* UI+pEpLayout */ = {
-			isa = PBXGroup;
-			children = (
-				3A4AB35C2400256F00523306 /* pEpUILabel.swift */,
-			);
-			path = "UI+pEpLayout";
 			sourceTree = "<group>";
 		};
 		4304FCFD1EBB8C2C0086DADA /* LanguageList */ = {
@@ -3001,7 +2990,6 @@
 				37156E4E234DCE2B00845A28 /* UIViewController+LoadingInterface.swift in Sources */,
 				15874BC72127493E00A3A4A6 /* SettingDefaultAccountTableViewController.swift in Sources */,
 				4388A0E22008F813008CB98D /* (null) in Sources */,
-				3A4AB35D2400256F00523306 /* pEpUILabel.swift in Sources */,
 				152A39D021905C3E00D9F8E4 /* AttachmentCell.swift in Sources */,
 				0033C08120D7F3C600224E61 /* ThreadViewController+ViewModelDelegate.swift in Sources */,
 				4351C2DB1F4441190053381F /* utf8.c in Sources */,

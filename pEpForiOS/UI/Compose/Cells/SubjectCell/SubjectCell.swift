@@ -24,7 +24,7 @@ final class SubjectCell: TextViewContainingTableViewCell {
     }
 
     private func setStyle() {
-        subjectLabel.pEpSetFontFace()
+        subjectLabel.pEpSetFontFace(weight: .regular)
     }
 }
 
