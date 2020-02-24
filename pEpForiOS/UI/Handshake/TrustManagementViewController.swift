@@ -10,7 +10,8 @@ import UIKit
 
 /// View Controller to handle the HandshakeView.
 class TrustManagementViewController: BaseViewController {
-        
+    
+    var backButtonTitle : String?
     private let onlyMasterCellIdentifier = "TrustManagementTableViewCell_OnlyMaster"
     private let masterAndDetailCellIdentifier = "TrustManagementTableViewCell_Detailed"
     private let resetCellIdentifier = "TrustManagementTableViewResetCell"
@@ -22,6 +23,10 @@ class TrustManagementViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(reload),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
+
         guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("The viewModel must not be nil")
             return
@@ -38,13 +43,18 @@ class TrustManagementViewController: BaseViewController {
         trustManagementTableView.estimatedRowHeight = 400
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+    }
+
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         guard let vm = viewModel, vm.canUndo() && motion == .motionShake else { return }
-        let title = NSLocalizedString("Are you sure you want to undo the last action?", comment: "")
+        let title = NSLocalizedString("Undo last action", comment: "")
         let alertController = UIAlertController.pEpAlertController(title: title,
                                                                    message: nil,
                                                                    preferredStyle: .alert)
-        let confirmTitle = NSLocalizedString("Yes", comment: "")
+        let confirmTitle = NSLocalizedString("Undo", comment: "")
         let action = UIAlertAction(title: confirmTitle, style: .default) { [weak vm] (action) in
             vm?.shakeMotionDidEnd()
         }
@@ -211,8 +221,11 @@ extension TrustManagementViewController {
 /// MARK: - Handshake ViewModel Delegate
 
 extension TrustManagementViewController: TrustManagementViewModelDelegate {
-    public func reload() {
+    
+    @objc public func reload() {
+        UIView.setAnimationsEnabled(false)
         trustManagementTableView.reloadData()
+        UIView.setAnimationsEnabled(true)
     }
 }
 
@@ -222,7 +235,7 @@ extension TrustManagementViewController {
     
     /// Helper method to create and set the back button in the navigation bar.
     private func setLeftBarButton() {
-        let title = NSLocalizedString(" Messages", comment: "")
+        let title = backButtonTitle ?? NSLocalizedString(" Messages", comment: "")
         let button = UIButton.backButton(with: title)
         let action = #selector(backButtonPressed)
         button.addTarget(self, action:action, for: .touchUpInside)
@@ -317,7 +330,6 @@ extension TrustManagementViewController {
         ///That means that's the only case must display the trustwords
         if identifier == onlyMasterCellIdentifier {
             if row.color == .yellow {
-                
                 setTrustwords(for: cell, at: indexPath, longMode: row.longTrustwords)
                 cell.trustwordsStackView.isHidden = false
                 cell.trustwordsButtonsContainer.isHidden = false

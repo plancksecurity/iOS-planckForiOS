@@ -326,13 +326,13 @@
                                                             <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="8"/>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="9Tp-4I-e4a" userLabel="TrustwordsStackView">
-                                                            <rect key="frame" x="0.0" y="130.5" width="728" height="50"/>
+                                                            <rect key="frame" x="0.0" y="130.5" width="728" height="30"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OXX-Cs-6wl" userLabel="Container">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="720" height="50"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="720" height="30"/>
                                                                     <subviews>
                                                                         <label opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hi-BD-RyZ" userLabel="TrustWordsLabel">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="395.5" height="50"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="395.5" height="30"/>
                                                                             <accessibility key="accessibilityConfiguration" label="trustWordsLabel"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                             <nil key="textColor"/>
@@ -365,7 +365,7 @@
                                                             <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="8"/>
                                                         </stackView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dnU-49-est" userLabel="TrustButtonsView">
-                                                            <rect key="frame" x="0.0" y="200.5" width="728" height="89.5"/>
+                                                            <rect key="frame" x="0.0" y="180.5" width="728" height="89.5"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="nBb-xU-HZj" userLabel="DeclineButton">
                                                                     <rect key="frame" x="0.0" y="28.5" width="65" height="33"/>
@@ -398,12 +398,12 @@
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q6W-6u-cOm" userLabel="ResetContainer">
-                                                            <rect key="frame" x="0.0" y="310" width="728" height="50"/>
+                                                            <rect key="frame" x="0.0" y="290" width="728" height="70"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset all pEp data for this comunication partner:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U9H-8I-gF1" userLabel="Reset Label">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="50"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="250" height="70"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="200" id="n0x-3H-qor"/>
+                                                                        <constraint firstAttribute="width" constant="250" id="n0x-3H-qor"/>
                                                                     </constraints>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                     <nil key="textColor"/>
@@ -420,7 +420,7 @@
                                                                     </variation>
                                                                 </label>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dp8-qI-hos">
-                                                                    <rect key="frame" x="208" y="7.5" width="54" height="35"/>
+                                                                    <rect key="frame" x="258" y="17.5" width="54" height="35"/>
                                                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="35" id="Bmg-px-n6B"/>
@@ -440,7 +440,7 @@
                                                             <constraints>
                                                                 <constraint firstItem="U9H-8I-gF1" firstAttribute="centerY" secondItem="q6W-6u-cOm" secondAttribute="centerY" id="0qJ-ML-YAA"/>
                                                                 <constraint firstItem="U9H-8I-gF1" firstAttribute="leading" secondItem="q6W-6u-cOm" secondAttribute="leading" id="Aby-W2-mcP"/>
-                                                                <constraint firstAttribute="height" constant="50" id="G9z-gr-a8I"/>
+                                                                <constraint firstAttribute="height" constant="70" id="G9z-gr-a8I"/>
                                                                 <constraint firstAttribute="bottom" secondItem="U9H-8I-gF1" secondAttribute="bottom" id="GpA-uL-toB"/>
                                                                 <constraint firstItem="dp8-qI-hos" firstAttribute="leading" secondItem="U9H-8I-gF1" secondAttribute="trailing" constant="8" id="fS4-OT-FrD"/>
                                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dp8-qI-hos" secondAttribute="trailing" constant="8" id="h0c-2M-niU"/>

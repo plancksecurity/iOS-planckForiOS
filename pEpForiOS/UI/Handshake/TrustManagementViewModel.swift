@@ -79,6 +79,9 @@ final class TrustManagementViewModel {
             }
             return handshakeCombination.partnerIdentity.pEpColor()
         }
+        var trustwords : String?
+
+        //Prevents the overkill of require the trustwords when it's not necesary.
         fileprivate var shouldUpdateTrustwords : Bool = true
         fileprivate var forceRed: Bool = false
         /// The identity of the user to do the handshake
@@ -199,9 +202,13 @@ final class TrustManagementViewModel {
     public func generateTrustwords(forRowAt indexPath: IndexPath,
                                    long : Bool = false,
                                    completion: @escaping (TrustWords) -> Void) {
-        guard rows[indexPath.row].shouldUpdateTrustwords else { return }
+        guard rows[indexPath.row].shouldUpdateTrustwords else {
+            if let trustwords = rows[indexPath.row].trustwords {
+                completion(trustwords)
+            }
+            return
+        }
         rows[indexPath.row].shouldUpdateTrustwords = false
-
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -225,6 +232,7 @@ final class TrustManagementViewModel {
                         complete("Error")
                         return
                 }
+                me.rows[indexPath.row].trustwords = trustwords
                 complete(trustwords)
             }
         }

@@ -324,6 +324,7 @@ extension ComposeTableViewController: SegueHandlerType {
             }
 
             destination.appConfig = appConfig
+            destination.backButtonTitle = NSLocalizedString(" Cancel", comment: "")
             destination.shouldShowOptionsButton = true
             guard let trustManagementViewModel = vm.trustManagementViewModel() else {
                 Log.shared.error("Message not found")
