@@ -241,7 +241,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     func updatePrivacyStatus(color: PEPColor) {
         privacyStatusTitle.text = color.privacyStatusTitle
         privacyStatusDescription.text = color.privacyStatusDescription
-        pEpStatusImageView.image = color.statusIconForMessage()
+        pEpStatusImageView.image = color.statusIconInContactPicture()
     }
 
     func didChangeSelection() {

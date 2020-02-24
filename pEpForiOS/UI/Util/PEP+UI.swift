@@ -22,18 +22,18 @@ extension PEPColor {
         case PEPColor.noColor:
             return nil
         case PEPColor.red:
-            return UIImage(named: "pEp-status-red")
+            return UIImage(named: "pEp-status-msg-red")
         case .yellow:
             if enabled {
-                return UIImage(named: "pEp-status-yellow")
+                return UIImage(named: "pEp-status-msg-yellow")
             } else {
-                return UIImage(named: "pEp-status-yellow-disabled")
+                return UIImage(named: "pEp-status-msg-disabled-secure")
             }
         case .green:
             if enabled {
-                return UIImage(named: "pEp-status-green")
+                return UIImage(named: "pEp-status-msg-green")
             } else {
-                return UIImage(named: "pEp-status-green-disabled")
+                return UIImage(named: "pEp-status-msg-disabled-trusted")
             }
         }
     }
@@ -46,7 +46,7 @@ extension PEPColor {
     func statusIconInContactPicture() -> UIImage? {
         switch self {
         case PEPColor.noColor:
-            return UIImage(named: "pEp-status-grey_white-border")
+            return nil
         case PEPColor.red:
             return UIImage(named: "pEp-status-red_white-border")
         case .yellow:

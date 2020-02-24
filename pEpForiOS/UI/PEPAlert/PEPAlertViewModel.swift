@@ -10,6 +10,7 @@ import Foundation
 
 protocol PEPAlertViewModelProtocol: class {
     var alertActionsCount: Int { get }
+    var alertType: PEPAlertViewModel.AlertType { get }
     var delegate: PEPAlertViewModelDelegate? { get set }
 
     func add(action: PEPUIAlertAction)
@@ -17,10 +18,25 @@ protocol PEPAlertViewModelProtocol: class {
 }
 
 protocol PEPAlertViewModelDelegate: class {
-    func dissmiss()
+    func dismiss()
 }
 
 final class PEPAlertViewModel {
+
+    enum AlertType {
+        case pEpDefault
+        case pEpSyncWizard
+    }
+
+    private let type: AlertType
+
+    init() {
+        self.type = .pEpDefault
+    }
+
+    init(alertType: AlertType) {
+        self.type = alertType
+    }
 
     var alertActions = [PEPUIAlertAction]()
     weak var _delegate: PEPAlertViewModelDelegate?
@@ -38,6 +54,10 @@ extension PEPAlertViewModel: PEPAlertViewModelProtocol {
 
     var alertActionsCount: Int {
         return alertActions.count
+    }
+
+    var alertType: PEPAlertViewModel.AlertType {
+        return type
     }
 
     func add(action: PEPUIAlertAction) {

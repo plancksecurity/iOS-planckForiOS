@@ -1628,6 +1628,12 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     }
 
     private class TestDelegate:  ComposeViewModelDelegate {
+        func showTwoButtonAlert(withTitle title: String, message: String, cancelButtonText: String, positiveButtonText: String, cancelButtonAction: @escaping () -> Void, positiveButtonAction: @escaping () -> Void) {
+        }
+
+        func dismiss() {
+        }
+
         let expContentChangedCalled: XCTestExpectation?
         let expectedContentChangedIndexPath: IndexPath?
 

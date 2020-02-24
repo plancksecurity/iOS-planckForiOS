@@ -2,7 +2,7 @@
 
 translationdir=../pEp-Translate/
 
-languages=(de en)
+languages=(de en fr es)
 mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
 appdir=$mytmpdir/pEpForiOS

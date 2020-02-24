@@ -200,83 +200,9 @@ extension EmailViewController: MessageContentCellDelegate {
     }
 }
 
-// MARK: - SegueHandlerType
+// MARK: - Orientation Change Handling
 
-extension EmailViewController: SegueHandlerType {
-    enum SegueIdentifier: String {
-        case segueReplyFrom
-        case segueReplyAllForm
-        case segueForward
-        case segueHandshake
-        case segueHandshakeCollapsed
-        case segueShowMoveToFolder
-        case noSegue
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let theId = segueIdentifier(for: segue)
-        switch theId {
-        case .segueReplyFrom, .segueReplyAllForm, .segueForward:
-            guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? ComposeTableViewController else {
-                    Log.shared.errorAndCrash("No DVC?")
-                    break
-            }
-            destination.appConfig = appConfig
-            destination.viewModel = ComposeViewModel(composeMode: composeMode(for: theId),
-                                                     prefilledTo: nil,
-                                                     originalMessage: message)
-        case .segueShowMoveToFolder:
-            guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? MoveToAccountViewController else {
-                    Log.shared.errorAndCrash("No DVC?")
-                    break
-            }
-            destination.appConfig = appConfig
-            if let msg = message {
-                destination.viewModel = MoveToAccountViewModel(messages: [msg])
-            }
-        case .segueHandshake, .segueHandshakeCollapsed:
-
-            guard let nv = segue.destination as? UINavigationController,
-                let vc = nv.topViewController as? HandshakeViewController else {
-                    Log.shared.errorAndCrash("No DVC?")
-                    break
-            }
-
-            guard let message = message else {
-                Log.shared.errorAndCrash("No message")
-                return
-            }
-
-            // As we need a view to be source of the popover and title view is not always present.
-            // we directly use the navigation bar view.
-            nv.popoverPresentationController?.delegate = self
-            nv.popoverPresentationController?.sourceView = nv.view
-            nv.popoverPresentationController?.sourceRect = CGRect(x: nv.view.bounds.midX,
-                                                                  y: nv.view.bounds.midY,
-                                                                  width: 0,
-                                                                  height: 0)
-            vc.appConfig = appConfig
-            vc.message = message
-            break
-        case .noSegue:
-            break
-        }
-    }
-
-    private func composeMode(for segueId: SegueIdentifier) -> ComposeUtil.ComposeMode {
-        if segueId == .segueReplyFrom {
-            return .replyFrom
-        } else if segueId == .segueReplyAllForm {
-            return  .replyAll
-        } else if segueId == .segueForward {
-            return  .forward
-        } else {
-            Log.shared.errorAndCrash("Unsupported input")
-            return .replyFrom
-        }
-    }
+extension EmailViewController {
 
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
@@ -297,7 +223,7 @@ extension EmailViewController: MessageAttachmentDelegate {
     func didTap(cell: MessageCell, attachment: Attachment, location: CGPoint, inView: UIView?) {
         let busyState = inView?.displayAsBusy()
         let attachmentOp = AttachmentToLocalURLOperation(attachment: attachment)
-        attachmentOp.completionBlock = { [weak self] in
+        attachmentOp.completionBlock = { [weak self, weak attachmentOp] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
@@ -310,7 +236,7 @@ extension EmailViewController: MessageAttachmentDelegate {
                         inView?.stopDisplayingAsBusy(viewBusyState: bState)
                     }
                 }
-                guard let url = attachmentOp.fileURL else { //!!!: looks suspicously like retain cycle. attachmentOp <-> completionBlock
+                guard let url = attachmentOp?.fileURL else {
                     return
                 }
                 me.didCreateLocally(attachment: safeAttachment,
