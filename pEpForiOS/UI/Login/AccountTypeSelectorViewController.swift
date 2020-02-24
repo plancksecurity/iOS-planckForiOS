@@ -76,7 +76,7 @@ extension AccountTypeSelectorViewController: UICollectionViewDataSource {
         switch cellProvider {
         case .gmail:
             cell.configure(withFileName: viewModel.fileNameOrText(provider: cellProvider))
-        case .other:
+        case .other, .certificate:
             cell.configure(withText: viewModel.fileNameOrText(provider: cellProvider))
         }
         return cell
@@ -84,11 +84,15 @@ extension AccountTypeSelectorViewController: UICollectionViewDataSource {
 }
 
 extension AccountTypeSelectorViewController: UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         // this forces the collection view to have only 2 colums and all the cells with the same size
-        let cellHeight = (view.frame.width*0.67)/2
-        return CGSize(width: cellHeight, height: cellHeight)
+        let cellwidth = (view.frame.width*0.67)/2
+        let cellHeight = 2*cellwidth/3
+        return CGSize(width: cellwidth, height: cellHeight)
     }
+    
+    
 }
 
 extension AccountTypeSelectorViewController: SegueHandlerType {
@@ -102,7 +106,7 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
             if let vc = segue.destination as? LoginViewController,
                 let selected = SelectedIndexPath {
                 vc.appConfig = appConfig
-                vc.accountType = viewModel[selected.row]
+                //vc.accountType = viewModel[selected.row]
                 vc.delegate = loginDelegate
             }
         }

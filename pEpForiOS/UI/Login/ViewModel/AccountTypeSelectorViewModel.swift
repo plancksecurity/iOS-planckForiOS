@@ -12,6 +12,7 @@ import MessageModel
 public enum AccountTypeProvider {
     case gmail
     case other
+    case certificate
     var isOauth: Bool {
         return self != .other
     }
@@ -24,6 +25,7 @@ class AccountTypeSelectorViewModel {
 
     init() {
         providers.append(.gmail)
+        providers.append(.certificate)
         providers.append(.other)
     }
 
@@ -45,6 +47,12 @@ class AccountTypeSelectorViewModel {
             return "asset-Google"
         case .other:
             return NSLocalizedString("Other", comment: "Other provider key")
+        case .certificate:
+            return NSLocalizedString("""
+            Client
+            Certificate
+            """, comment: "client certificate provider key")
+            
         }
     }
 
