@@ -43,11 +43,6 @@ class TrustManagementViewController: BaseViewController {
         trustManagementTableView.estimatedRowHeight = 400
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
-    }
-
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         guard let vm = viewModel, vm.canUndo() && motion == .motionShake else { return }
         let title = NSLocalizedString("Undo last action", comment: "Undo trust change verification alert title")
