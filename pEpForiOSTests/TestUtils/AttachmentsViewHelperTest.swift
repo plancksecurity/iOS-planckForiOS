@@ -20,9 +20,10 @@ final class AttachmentsViewHelperTest: CoreDataDrivenTestBase {
 
     func testSmallGif() {
         let image = UIImage.image(gifData: getAnimatedSmallGifData())
+        let expectedNumbersOfFrames = 44
         XCTAssertNotNil(image)
         XCTAssertNotNil(image?.images)
-        XCTAssertEqual(44, image?.images?.count)
+        XCTAssertEqual(expectedNumbersOfFrames, image?.images?.count)
     }
 
     func testNoGif() {
