@@ -313,7 +313,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
 // MARK: - ClientCertificateManagementViewModelDelegate
 
 extension LoginViewModel: ClientCertificateManagementViewModelDelegate {
-    func didSelectClientCertificate(clientCertificate: ClientCertificateUtil.ClientCertificate) {
+    func didSelectClientCertificate(clientCertificate: ClientCertificate) {
         verifiableAccount.clientCertificate = clientCertificate
     }
 }
