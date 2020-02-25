@@ -10,8 +10,8 @@ import UIKit
 import Foundation
 
 extension UIImage {
-
     private struct Constant {
+        // Fast bug fix related to bug IOS-1696 (large) animated gif causes iOS app to crash (5oo-520 frames with resolution ~1100x800  needed ~1.8GB RAM)
         static let maxAllowedFrames = 60
     }
 
