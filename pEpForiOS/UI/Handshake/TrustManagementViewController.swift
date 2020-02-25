@@ -50,18 +50,18 @@ class TrustManagementViewController: BaseViewController {
 
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         guard let vm = viewModel, vm.canUndo() && motion == .motionShake else { return }
-        let title = NSLocalizedString("Undo last action", comment: "")
+        let title = NSLocalizedString("Undo last action", comment: "Undo trust change verification alert title")
         let alertController = UIAlertController.pEpAlertController(title: title,
                                                                    message: nil,
                                                                    preferredStyle: .alert)
-        let confirmTitle = NSLocalizedString("Undo", comment: "")
+        let confirmTitle = NSLocalizedString("Undo", comment: "Undo trust change verification button title")
         let action = UIAlertAction(title: confirmTitle, style: .default) { [weak vm] (action) in
             vm?.shakeMotionDidEnd()
         }
         alertController.addAction(action)
         
         //For the cancel button another action.
-        let cancelTitle = NSLocalizedString("Cancel", comment: "")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel trust change to be undone")
         let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { _ in
             alertController.dismiss(animated: true, completion: nil)
         }
@@ -76,6 +76,10 @@ class TrustManagementViewController: BaseViewController {
 
     @IBAction private func optionsButtonPressed(_ sender: UIBarButtonItem) {
         presentToogleProtectionActionSheet()
+    }
+   
+    deinit {
+        unregisterNotifications()
     }
 }
 
@@ -246,6 +250,21 @@ extension TrustManagementViewController {
 
     @objc private func backButtonPressed() {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+/// MARK: - Notification Center
+
+extension TrustManagementViewController {
+    
+    private func registerForNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(reload),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
+    }
+    
+    private func unregisterNotifications() {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

@@ -273,11 +273,11 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
         resetExpectation?.fulfill()
     }
     
-    func getFingerprints(for Identity: Identity) -> String? {
+    func getFingerprint(for Identity: Identity) -> String? {
         return nil
     }
     
-    func undoMisstrustOrTrust(for partnerIdentity: Identity, fingerprints: String?) {
+    func undoMisstrustOrTrust(for partnerIdentity: Identity, fingerprint: String?) {
         undoExpectation?.fulfill()
     }
     

@@ -1,5 +1,5 @@
 //
-//  HandshakeViewModel.swift
+//  TrustManagementViewModel.swift
 //  pEp
 //
 //  Created by Martin Brude on 30/01/2020.
@@ -10,14 +10,14 @@ import Foundation
 import MessageModel
 import PEPObjCAdapterFramework
 
-/// Handshake View Mode Delegate
+/// TrustManagementViewModel View Mode Delegate
 protocol TrustManagementViewModelDelegate: class {
 
     /// Delegate method to notify that an action ends and the view must be reloaded.
     func reload()
 }
 
-/// View Model to handle the handshake views.
+/// View Model to handle the TrustManagementViewModel views.
 final class TrustManagementViewModel {
     public weak var trustManagementViewModelDelegate : TrustManagementViewModelDelegate?
     public var pEpProtected : Bool {
@@ -32,7 +32,7 @@ final class TrustManagementViewModel {
         return message.session
     }
 
-    private var handshakeUtil : TrustManagementUtilProtocol?
+    private var trustManagementViewModel : TrustManagementUtilProtocol?
     private let undoManager = UndoManager()
     
     /// The item that represents the handshake partner
@@ -99,7 +99,7 @@ final class TrustManagementViewModel {
     ///   - handshakeUtil: The tool to interact with the engine. It provides a default instance. The parameter is used for testing purposes.
     public init(message : Message, handshakeUtil: TrustManagementUtilProtocol? = TrustManagementUtil()) {
         self.message = message
-        self.handshakeUtil = handshakeUtil
+        self.trustManagementViewModel = handshakeUtil
         generateRows()
     }
 
@@ -111,10 +111,9 @@ final class TrustManagementViewModel {
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
-        let fingerprints = handshakeUtil?.getFingerprints(for: identity)
-        rows[indexPath.row].fingerprint = fingerprints
+        rows[indexPath.row].fingerprint = trustManagementViewModel?.getFingerprint(for: identity)
         rows[indexPath.row].forceRed = true
-        handshakeUtil?.denyTrust(for: identity)
+        trustManagementViewModel?.denyTrust(for: identity)
         reevaluateAndUpdate()
         trustManagementViewModelDelegate?.reload()
     }
@@ -126,7 +125,7 @@ final class TrustManagementViewModel {
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
-        handshakeUtil?.confirmTrust(for: identity)
+        trustManagementViewModel?.confirmTrust(for: identity)
         reevaluateAndUpdate()
         trustManagementViewModelDelegate?.reload()
     }
@@ -139,8 +138,8 @@ final class TrustManagementViewModel {
         let row = rows[indexPath.row]
         rows[indexPath.row].shouldUpdateTrustwords = true
         rows[indexPath.row].forceRed = false
-        handshakeUtil?.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,
-                                            fingerprints: row.fingerprint)
+        trustManagementViewModel?.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,
+                                            fingerprint: row.fingerprint)
         reevaluateAndUpdate()
     }
 
@@ -149,16 +148,15 @@ final class TrustManagementViewModel {
     public func handleResetPressed(forRowAt indexPath: IndexPath) {
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
-        handshakeUtil?.resetTrust(for: row.handshakeCombination.partnerIdentity)
+        trustManagementViewModel?.resetTrust(for: row.handshakeCombination.partnerIdentity)
         reevaluateAndUpdate()
         trustManagementViewModelDelegate?.reload()
     }
 
-    /// Method that returns the list of the available languages
-    /// - returns: the list of languages available.
+    /// - returns: the available languages.
     public func handleChangeLanguagePressed(forRowAt indexPath : IndexPath) -> [String] {
         rows[indexPath.row].shouldUpdateTrustwords = true
-        guard let list = handshakeUtil?.languagesList() else {
+        guard let list = trustManagementViewModel?.languagesList() else {
             Log.shared.error("The list of languages could be retrieved.")
             return [String]()
         }
@@ -198,7 +196,7 @@ final class TrustManagementViewModel {
     /// - Parameters:
     ///   - indexPath: The indexPath of the row to toogle the status (long/short)
     ///   - long: Indicates if the trustwords MUST be long (more words)
-    /// - returns: The string with the generated trustwords.
+    /// - returns: The generated trustwords.
     public func generateTrustwords(forRowAt indexPath: IndexPath,
                                    long : Bool = false,
                                    completion: @escaping (TrustWords) -> Void) {
@@ -223,7 +221,7 @@ final class TrustManagementViewModel {
             handshakeItem.handshakeCombination.ownIdentity.session.performAndWait {
                 let selfIdentity = handshakeItem.handshakeCombination.ownIdentity
                 let partnerIdentity = handshakeItem.handshakeCombination.partnerIdentity
-                guard let trustwords = try? me.handshakeUtil?.getTrustwords(for: selfIdentity,
+                guard let trustwords = try? me.trustManagementViewModel?.getTrustwords(for: selfIdentity,
                                                                             and: partnerIdentity,
                                                                             language: handshakeItem.currentLanguage,
                                                                             long: long)
@@ -263,7 +261,7 @@ final class TrustManagementViewModel {
     
     /// Method that generates the rows to be used by the VC
     private func generateRows() {
-        if let combinations = handshakeUtil?.handshakeCombinations(message: message) {
+        if let combinations = trustManagementViewModel?.handshakeCombinations(message: message) {
             combinations.forEach { (combination) in
                 //default language is english
                 let language = combination.partnerIdentity.language ?? "en"
