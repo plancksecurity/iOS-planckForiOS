@@ -38,22 +38,6 @@ final class SettingsViewModel {
     typealias ActionBlock = (() -> Void)
     typealias AlertActionBlock = (() -> ())
 
-    /// Struct that represents a section in settingsTableViewController
-    struct Section: Equatable {
-        /// Title of the section
-        var title: String
-        /// footer of the section
-        var footer: String?
-        /// list of rows in the section
-        var rows: [SettingsRowProtocol]
-        /// type of the section
-        var type: SectionType
-    
-        static func == (lhs: SettingsViewModel.Section, rhs: SettingsViewModel.Section) -> Bool {
-            return (lhs.title == rhs.title && lhs.footer == rhs.footer)
-        }
-    }
-
     /// Items to be displayed in a SettingsTableViewController
     private (set) var items: [Section] = [Section]()
 
@@ -82,7 +66,7 @@ final class SettingsViewModel {
         let row = section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
         case .account, .defaultAccount, .setOwnKey, .credits, .extraKeys, .trustedServer,
-             .accountsToSync, .resetTrust:
+             .resetTrust:
             return "SettingsCell"
         case .resetAccounts:
             return "SettingsActionCell"
@@ -119,7 +103,7 @@ final class SettingsViewModel {
             return nil
         }
     }
-    
+
     /// Returns the account setted at the the row of the provided indexPath
     /// - Parameter indexPath: The index path to get the account
     public func account(at indexPath : IndexPath) -> Account? {
@@ -129,13 +113,13 @@ final class SettingsViewModel {
         }
         return nil
     }
-    
+
     /// Deletes the row at the passed index Path
     /// - Parameter indexPath: The index Path to
     public func deleteRowAt(_ indexPath: IndexPath) {
         items[indexPath.section].rows.remove(at: indexPath.row)
     }
-    
+
     /// Handle the tap gesture triggered on the ExtraKeys cell.
     public func handleExtraKeysEditabilityGestureTriggered() {
         let newValue = !AppSettings.shared.extraKeysEditable
@@ -145,16 +129,16 @@ final class SettingsViewModel {
     }
 }
 
-    // MARK: - Private
+// MARK: - Private
 
 extension SettingsViewModel {
-    
+
     /// This method sets up the settings view.
     /// Only this method should be called from the constructor.
     private func setup() {
         generateSections()
     }
-    
+
     /// This method generates all the sections for the settings view.
     private func generateSections() {
         items.append(Section(title: sectionTitles(type: .accounts),
@@ -182,7 +166,7 @@ extension SettingsViewModel {
                              rows: generateRows(type: .companyFeatures),
                              type: .companyFeatures))
     }
-    
+
     /// This method generates all the rows for the section type passed
     /// - Parameter type: The type of the section to generate the rows.
     /// - Returns: An array with the settings rows. Every setting row must conform the SettingsRowProtocol.
@@ -224,11 +208,6 @@ extension SettingsViewModel {
             rows.append(generateNavigationRow(type: .credits, isDangerous: false))
             rows.append(generateNavigationRow(type: .trustedServer, isDangerous: false))
             rows.append(generateNavigationRow(type: .setOwnKey, isDangerous: false))
-            rows.append(generateSwitchRow(type: .passiveMode,
-                                          isDangerous: false,
-                                          isOn: AppSettings.shared.passiveMode) { (value) in
-                                            AppSettings.shared.passiveMode = value
-            })
             rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
                                           isDangerous: false,
                                           isOn: AppSettings.shared.unsecureReplyWarningEnabled) {
@@ -241,15 +220,19 @@ extension SettingsViewModel {
                                             (value) in
                                             AppSettings.shared.unencryptedSubjectEnabled = !value
             })
+            rows.append(generateSwitchRow(type: .passiveMode,
+                                          isDangerous: false,
+                                          isOn: AppSettings.shared.passiveMode) { (value) in
+                                            AppSettings.shared.passiveMode = value
+            })
         case .pEpSync:
-            rows.append(generateSwitchRow(type: .pEpSync, isDangerous: false, isOn: KeySyncStatus) { [weak self] (value) in
+            rows.append(generateSwitchRow(type: .pEpSync, isDangerous: false, isOn: keySyncStatus) { [weak self] (value) in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(message: "Lost myself")
+                    Log.shared.lostMySelf()
                     return
                 }
                 me.PEPSyncUpdate(to: value)
             })
-            rows.append(generateNavigationRow(type: .accountsToSync, isDangerous: false))
         case .contacts:
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
         case .companyFeatures:
@@ -257,7 +240,7 @@ extension SettingsViewModel {
         }
         return rows
     }
-    
+
     /// This method generates a Navigation Row
     /// - Parameters:
     ///   - type: The type of row to generate
@@ -270,7 +253,7 @@ extension SettingsViewModel {
         let subtile = rowSubtitle(type: type)
         return NavigationRow(identifier: type, title:rowTitle, subtitle: subtile, isDangerous: isDangerous)
     }
-    
+
     /// This method generates a Switch Row
     /// - Parameters:
     ///   - type: The type of row that needs to  generate
@@ -285,7 +268,7 @@ extension SettingsViewModel {
         }
         return SwitchRow(identifier: type, title: rowTitle, isDangerous: isDangerous, isOn: isOn, action: action)
     }
-    
+
     /// This method generates the action row.
     /// - Parameters:
     ///   - type: The type of row that needs to generate
@@ -299,32 +282,40 @@ extension SettingsViewModel {
         }
         return ActionRow(identifier: type, title: rowTitle, isDangerous: isDangerous, action: action)
     }
-    
+
     /// This method return the corresponding title for each section.
     /// - Parameter type: The section type to choose the proper title.
     /// - Returns: The title for the requested section.
     private func sectionTitles(type: SectionType) -> String {
         switch type {
         case .accounts:
-            return NSLocalizedString("Accounts", comment: "Tableview section  header")
+            return NSLocalizedString("Accounts",
+                                     comment: "Tableview section  header: Accounts")
         case .globalSettings:
-            return NSLocalizedString("Global Settings", comment: "Tableview section header")
+            return NSLocalizedString("Global Settings",
+                                     comment: "Tableview section header: Global Settings")
         case .pEpSync:
-            return NSLocalizedString("p≡p sync", comment: "Tableview section header")
+            return NSLocalizedString("Sync",
+                                     comment: "Tableview section header: (p≡p) Sync")
         case .contacts:
-            return NSLocalizedString("Contacts", comment: "TableView section header")
+            return NSLocalizedString("Contacts",
+                                     comment: "TableView section header: Contacts")
         case .companyFeatures:
-            return NSLocalizedString("Enterprise Features", comment: "Tableview section header")
+            return NSLocalizedString("Enterprise Features",
+                                     comment: "Tableview section header: Enterprise Features")
         }
     }
-    
+
     /// Thie method provides the title for the footer of each section.
     /// - Parameter type: The section type to get the proper title
     /// - Returns: The title of the footer. If the section is an account, a pepSync or the company features, it will be nil because there is no footer.
     private func sectionFooter(type: SectionType) -> String? {
         switch type {
-        case .accounts, .pEpSync, .companyFeatures:
+        case .pEpSync, .companyFeatures:
             return nil
+        case .accounts:
+            return NSLocalizedString("Performs a reset of the privacy settings of your account(s)",
+                                     comment: "Settings accounts section, footer below Reset All cell")
         case .globalSettings:
             return NSLocalizedString("Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p.",
                                      comment: "passive mode description")
@@ -333,7 +324,7 @@ extension SettingsViewModel {
                                      comment: "TableView Contacts section footer")
         }
     }
-    
+
     /// Thie method provides the title for each cell, regarding its type.
     /// - Parameter type: The row type to get the proper title
     /// - Returns: The title of the row. If it's an account row, it will be nil and the name of the account should be used.
@@ -342,7 +333,7 @@ extension SettingsViewModel {
         case .account:
             return nil
         case .resetAccounts:
-            return NSLocalizedString("Reset All Identities",
+            return NSLocalizedString("Reset All",
                                      comment: "Settings: Cell (button) title for reset all identities")
         case .credits:
             return NSLocalizedString("Credits",
@@ -359,26 +350,24 @@ extension SettingsViewModel {
         case .extraKeys:
             return NSLocalizedString("Extra Keys",
                                      comment: "Settings: Cell (button) title to view Extra Keys setting")
-        case .accountsToSync:
-            return NSLocalizedString("Select accounts to sync",
-                                     comment: "Settings: Cell (button) title to view accounts to sync")
         case .resetTrust:
             return NSLocalizedString("Reset",
                                      comment: "Settings: cell (button) title to view the trust contacts option")
         case .passiveMode:
-            return NSLocalizedString("Enable passive mode",
+            return NSLocalizedString("Passive mode",
                                      comment: "Passive mode title")
         case .protectMessageSubject:
             return NSLocalizedString("Protect Message Subject",
                                      comment: "title for subject protection")
         case .pEpSync:
-        return NSLocalizedString("Enable p≡p Sync", comment: "settings, enable thread view or not")
-            case .unsecureReplyWarningEnabled:
+            return NSLocalizedString("p≡p Sync",
+                                     comment: "Settings: enable/disable p≡p Sync feature")
+        case .unsecureReplyWarningEnabled:
             return NSLocalizedString("Unsecure reply warning",
                                      comment: "setting row title: Unsecure reply warning")
         }
     }
-    
+
     /// Thie method provides the subtitle if needed.
     /// - Parameter type: The row type to get the proper title
     /// - Returns: The subtitle of the row.
@@ -386,7 +375,7 @@ extension SettingsViewModel {
         switch type {
         case .defaultAccount:
             return AppSettings.shared.defaultAccount
-        case .account, .accountsToSync, .credits, .extraKeys, .passiveMode, .pEpSync,
+        case .account, .credits, .extraKeys, .passiveMode, .pEpSync,
              .protectMessageSubject, .resetAccounts, .resetTrust, .setOwnKey, .trustedServer,
              .unsecureReplyWarningEnabled:
             return nil
@@ -410,13 +399,13 @@ extension SettingsViewModel {
             KeySyncUtil.disableKeySync()
         }
     }
-    
-    private var KeySyncStatus: Bool {
+
+    private var keySyncStatus: Bool {
         get {
             AppSettings.shared.isKeySyncEnabled
         }
     }
-    
+
     ///This method deletes the account passed by parameter.
     /// It also updates the default account if necessary.
     /// - Parameter account: The account to be deleted
@@ -424,16 +413,7 @@ extension SettingsViewModel {
         let oldAddress = account.user.address
         account.delete()
         Session.main.commit()
-        if Account.all().count == 1, let account = Account.all().first {
-            do {
-                if try !account.isKeySyncEnabled() {
-                    AppSettings.shared.keySyncEnabled = false
-                }
-            } catch {
-                Log.shared.errorAndCrash("Fail to get account pEpSync state")
-            }
-        }
-        
+
         if AppSettings.shared.defaultAccount == nil ||
             AppSettings.shared.defaultAccount == oldAddress {
             let newDefaultAccount = Account.all().first
@@ -444,7 +424,7 @@ extension SettingsViewModel {
             AppSettings.shared.defaultAccount = newDefaultAddress
         }
     }
-    
+
     /// Handle method to respond to the reset all identities button.
     private func handleResetAllIdentities() {
         delegate?.showLoadingView()
@@ -462,7 +442,7 @@ extension SettingsViewModel {
     }
 }
 
-/// Mark: - public enums
+// MARK: - Public enums & structs
 
 extension SettingsViewModel {
     /// Identifies the section in the table view.
@@ -473,7 +453,7 @@ extension SettingsViewModel {
         case contacts
         case companyFeatures
     }
-    
+
     /// Identifies semantically the type of row.
     public enum Row {
         case account
@@ -486,16 +466,31 @@ extension SettingsViewModel {
         case protectMessageSubject
         case unsecureReplyWarningEnabled
         case pEpSync
-        case accountsToSync
         case resetTrust
         case extraKeys
     }
+
+    /// Struct that represents a section in SettingsTableViewController
+    public struct Section: Equatable {
+        /// Title of the section
+        var title: String
+        /// footer of the section
+        var footer: String?
+        /// list of rows in the section
+        var rows: [SettingsRowProtocol]
+        /// type of the section
+        var type: SectionType
+
+        static func == (lhs: SettingsViewModel.Section, rhs: SettingsViewModel.Section) -> Bool {
+            return (lhs.title == rhs.title && lhs.footer == rhs.footer)
+        }
+    }
 }
 
-/// Mark: - private enums
+// MARK: - Private enums
 
 extension SettingsViewModel {
-    
+
     //Identifies visually the type of row.
     private enum RowType {
         case action
@@ -505,10 +500,10 @@ extension SettingsViewModel {
     }
 }
 
-/// Mark: - public structs to use SettingsViewModel.
+// MARK: - Public structs to use SettingsViewModel
 
 extension SettingsViewModel {
-    
+
     /// Struct that is used to perform an action. represents a ActionRow in settingsTableViewController
     public struct ActionRow: SettingsRowProtocol {
         /// The type of the row.
@@ -520,7 +515,7 @@ extension SettingsViewModel {
         /// Block that will be executed when action cell is pressed
         var action: ActionBlock?
     }
-    
+
     /// Struct that is used to perform a show detail action. represents a NavicationRow in SettingsTableViewController
     public struct NavigationRow: SettingsRowProtocol {
         /// The type of the row.
@@ -532,7 +527,7 @@ extension SettingsViewModel {
         /// Indicates if the action to be performed is dangerous.
         var isDangerous: Bool = false
     }
-    
+
     /// Struct that is used to show and interact with a switch. represents a SwitchRow in settingsTableViewController
     public struct SwitchRow: SettingsRowProtocol {
         //The row type
