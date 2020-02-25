@@ -22,7 +22,7 @@ class AccountTypeSelectorViewController: BaseViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         configureAppearance()
-        //configureView()
+        configureView()
     }
 
     private func configureAppearance() {
@@ -39,11 +39,12 @@ class AccountTypeSelectorViewController: BaseViewController {
 
     private func configureView() {
         self.navigationController?.navigationBar.isHidden = !viewModel.isThereAnAccount()
-        self.navigationItem.hidesBackButton = true
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title:NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"),
-            style:.plain, target:self,
-            action:#selector(self.backButton))
+        let imagebutton = UIButton(type: .custom)
+        imagebutton.setImage(UIImage(named: "close-icon"), for: .normal)
+        imagebutton.addTarget(self, action: #selector(backButton), for: .touchUpInside)
+        imagebutton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        let finalBarButton = UIBarButtonItem(customView: imagebutton)
+        self.navigationItem.leftBarButtonItem = finalBarButton
     }
 
     @objc func backButton() {
