@@ -11,7 +11,7 @@ import MessageModel
 protocol ClientCertificateManagementViewModelDelegate: class {
     /// Provides the client certificate the user selected
     /// - Parameter clientCertificate: the client certificate the user selected
-    func didSelectClientCertificate(clientCertificate: ClientCertificateUtil.ClientCertificate?)
+    func didSelectClientCertificate(clientCertificate: ClientCertificateUtil.ClientCertificate)
 }
 
 // MARK: - Row
