@@ -22,7 +22,7 @@ class AccountTypeSelectorViewController: BaseViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         configureAppearance()
-        configureView()
+        //configureView()
     }
 
     private func configureAppearance() {
@@ -76,7 +76,7 @@ extension AccountTypeSelectorViewController: UICollectionViewDataSource {
         switch cellProvider {
         case .gmail:
             cell.configure(withFileName: viewModel.fileNameOrText(provider: cellProvider))
-        case .other, .certificate:
+        case .other, .clientCertificate:
             cell.configure(withText: viewModel.fileNameOrText(provider: cellProvider))
         }
         return cell
@@ -106,8 +106,7 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
             if let vc = segue.destination as? LoginViewController,
                 let selected = SelectedIndexPath {
                 vc.appConfig = appConfig
-                vc.account  = LoginViewModel(verifiableAccount: <#T##VerifiableAccountProtocol#>, accountType: <#T##LoginViewModel.AccountType#>, delegate: <#T##LoginViewModelDelegate?#>)
-                //vc.accountType = viewModel[selected.row]
+                vc.viewModel = LoginViewModel(accountType: viewModel[selected.row])
                 vc.delegate = loginDelegate
             }
         }

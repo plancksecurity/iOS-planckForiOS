@@ -20,22 +20,6 @@ protocol LoginViewModelDelegate: class {
     func showClientCertificateSeletionView()
 }
 
-// MARK: - AccountType
-
-extension LoginViewModel {
-    //Remove when account type is mgerge
-    //TODO: Xavia this enum is in Account selector view model, this is just a place holder. Remove it and use yours. (from alejandro, andreas assumes he means Xavier)
-    enum AccountType {
-        case gmail
-        case clientCertificate
-        case other
-
-        var isOauth: Bool {
-            return self == .gmail
-        }
-    }
-}
-
 // MARK: - LoginCellType
 
 extension LoginViewModel {
@@ -72,7 +56,7 @@ class LoginViewModel {
         }
     }
 
-    var accountType: LoginViewModel.AccountType {
+    var accountType: AccountTypeProvider {
         didSet {
             delegate?.passwordFieldStateUpdated(hidePasswordField: accountType.isOauth)
         }
@@ -84,7 +68,7 @@ class LoginViewModel {
     let qualifyServerService = QualifyServerIsLocalService()
 
     init(verifiableAccount: VerifiableAccountProtocol = VerifiableAccount(),
-         accountType: LoginViewModel.AccountType = .clientCertificate, //BUFF: XAVIER: default must be .other
+         accountType: AccountTypeProvider = .other,
          delegate: LoginViewModelDelegate? = nil) {
         self.verifiableAccount = verifiableAccount
         self.accountType = accountType
@@ -209,6 +193,8 @@ class LoginViewModel {
     }
 
     public func handleViewWillAppear() {
+        // furt ensure to show the correct fields
+        delegate?.passwordFieldStateUpdated(hidePasswordField: accountType.isOauth)
         guard accountType == .clientCertificate else {
             // No special handling for other types ...
             // ... nothing to so

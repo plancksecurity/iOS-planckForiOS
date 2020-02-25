@@ -156,7 +156,9 @@ final class LoginViewController: BaseViewController {
 extension LoginViewController {
 
     func setupViewModel() {
-        viewModel = LoginViewModel()
+        if viewModel == nil {
+            viewModel = LoginViewModel()
+        }
         viewModel?.loginViewModelLoginErrorDelegate = self
         viewModel?.loginViewModelOAuth2ErrorDelegate = self
         viewModel?.delegate = self
@@ -588,7 +590,8 @@ extension LoginViewController {
             LoadingInterface.removeLoadingInterface()
         }
 
-        navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = false
+        navigationItem.hidesBackButton = false
 
         dismissButton.isEnabled = !isCurrentlyVerifying
         dismissButtonLeft.isEnabled = !isCurrentlyVerifying
