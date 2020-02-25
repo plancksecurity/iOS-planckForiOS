@@ -17,7 +17,7 @@ protocol AttachmentsViewHelperDelegate: class {
     func didCreate(attachmentsView: UIView?)
 }
 
-class AttachmentsViewHelper {
+final class AttachmentsViewHelper {
     weak var delegate: AttachmentsViewHelperDelegate?
     var attachmentsImageView: AttachmentsView?
 
