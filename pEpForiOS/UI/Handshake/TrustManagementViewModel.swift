@@ -34,6 +34,7 @@ final class TrustManagementViewModel {
 
     private var trustManagementViewModel : TrustManagementUtilProtocol?
     private let undoManager = UndoManager()
+    private var actionPerformed = [String]()
     
     /// The item that represents the handshake partner
     struct Row {
@@ -108,6 +109,8 @@ final class TrustManagementViewModel {
     /// Reject the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to reject the handshake
     public func handleRejectHandshakePressed(at indexPath: IndexPath) {
+        let actionName = NSLocalizedString("Trust Rejection", comment: "Action name to be suggested at the moment of revert")
+        actionPerformed.append(actionName)
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
@@ -121,6 +124,8 @@ final class TrustManagementViewModel {
     /// Confirm the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to confirm the handshake
     public func handleConfirmHandshakePressed(at indexPath: IndexPath) {
+        let actionName = NSLocalizedString("Trust Confirmation", comment: "Action name to be suggested at the moment of revert")
+        actionPerformed.append(actionName)
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
@@ -178,9 +183,14 @@ final class TrustManagementViewModel {
     }
 
     /// Informs if is it possible to undo an action.
-    /// - returns: Bool that indicates if it's possible to undo an action.
+    /// - returns: Indicates if it's possible to undo an action.
     public func canUndo() -> Bool {
         return undoManager.canUndo
+    }
+    
+    /// - returns: The name of the last action performed, nil if there isn't any.
+    public func lastActionPerformed() -> String? {
+        return actionPerformed.last
     }
 
     /// Method that makes the trustwords long or short (more or less trustwords in fact).
@@ -244,6 +254,7 @@ final class TrustManagementViewModel {
         if (undoManager.canUndo) {
             undoManager.undo()
             trustManagementViewModelDelegate?.reload()
+            _ = actionPerformed.popLast()
         }
     }
 

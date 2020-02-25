@@ -44,8 +44,9 @@ class TrustManagementViewController: BaseViewController {
     }
 
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-        guard let vm = viewModel, vm.canUndo() && motion == .motionShake else { return }
-        let title = NSLocalizedString("Undo last action", comment: "Undo trust change verification alert title")
+        guard let vm = viewModel, vm.canUndo() && motion == .motionShake,
+            let actionName = vm.lastActionPerformed() else { return }
+        let title = NSLocalizedString("Undo \(actionName)", comment: "Undo trust change verification alert title")
         let alertController = UIAlertController.pEpAlertController(title: title,
                                                                    message: nil,
                                                                    preferredStyle: .alert)
