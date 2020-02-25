@@ -38,6 +38,12 @@ class AccountTypeSelectorViewController: BaseViewController {
     }
 
     private func configureView() {
+        //as we need a title for the back button of the next view
+        //but this title is not show
+        //the view in the title are is replaced for a blank view.
+        self.navigationItem.titleView = UIView()
+        title = NSLocalizedString("Account Select", comment: "account type selector title")
+        
         self.navigationController?.navigationBar.isHidden = !viewModel.isThereAnAccount()
         let imagebutton = UIButton(type: .custom)
         imagebutton.setImage(UIImage(named: "close-icon"), for: .normal)
