@@ -11,7 +11,7 @@ import MessageModel
 protocol ClientCertificateManagementViewModelDelegate: class {
     /// Provides the client certificate the user selected
     /// - Parameter clientCertificate: the client certificate the user selected
-    func didSelectClientCertificate(clientCertificate: ClientCertificateUtil.ClientCertificate?)
+    func didSelectClientCertificate(clientCertificate: ClientCertificate)
 }
 
 // MARK: - Row
@@ -19,9 +19,9 @@ protocol ClientCertificateManagementViewModelDelegate: class {
 extension ClientCertificateManagementViewModel {
     struct Row {
         var name: String {
-            return clientCertificate.userReadableLabel
+            return clientCertificate.label ?? "--"
         }
-        fileprivate let clientCertificate: ClientCertificateUtil.ClientCertificate
+        fileprivate let clientCertificate: ClientCertificate
     }
 }
 

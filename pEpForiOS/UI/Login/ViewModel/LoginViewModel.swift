@@ -38,6 +38,9 @@ extension LoginViewModel {
 }
 
 class LoginViewModel {
+    /// If the last login attempt was via OAuth2, this will collect temporary parameters
+       private var lastOAuth2Parameters: OAuth2Parameters?
+
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
     weak var loginViewModelLoginErrorDelegate: LoginViewModelLoginErrorDelegate?
     weak var loginViewModelOAuth2ErrorDelegate: LoginViewModelOAuth2ErrorDelegate?
@@ -62,10 +65,7 @@ class LoginViewModel {
         }
     }
 
-    /// If the last login attempt was via OAuth2, this will collect temporary parameters
-    private var lastOAuth2Parameters: OAuth2Parameters?
-
-    let qualifyServerService = QualifyServerIsLocalService()
+    let qualifyServerIsLocalService = QualifyServerIsLocalService()
 
     init(verifiableAccount: VerifiableAccountProtocol = VerifiableAccount(),
          accountType: AccountTypeProvider = .other,
@@ -115,11 +115,11 @@ class LoginViewModel {
                                          credentials: nil)
         acSettings.lookupCompletion() { [weak self] settings in
             GCD.onMain() {
-                statusOk()
+                libAccoutSettingsStatusOK()
             }
         }
 
-        func statusOk() {
+        func libAccoutSettingsStatusOK() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
                 Log.shared.error("%@", "\(error)")
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
@@ -131,10 +131,10 @@ class LoginViewModel {
                     // AccountSettingsError() already handled the error
                     return
             }
-            let imapTransport = ConnectionTransport(
-                accountSettingsTransport: incomingServer.transport, imapPort: incomingServer.port)
-            let smtpTransport = ConnectionTransport(
-                accountSettingsTransport: outgoingServer.transport, smtpPort: outgoingServer.port)
+            let imapTransport = ConnectionTransport(accountSettingsTransport: incomingServer.transport,
+                                                    imapPort: incomingServer.port)
+            let smtpTransport = ConnectionTransport(accountSettingsTransport: outgoingServer.transport,
+                                                    smtpPort: outgoingServer.port)
 
             verifiableAccount.verifiableAccountDelegate = self
             verifiableAccount.address = emailAddress
@@ -158,30 +158,7 @@ class LoginViewModel {
             verifiableAccount.transportSMTP = smtpTransport
             verifiableAccount.isAutomaticallyTrustedImapServer = false
 
-            verifyAccount()
-        }
-    }
-
-    /// Creates and persits an account with given data and triggers a verification request.
-    ///
-    /// - Parameter model: account data
-    /// - Throws: AccountVerificationError
-    func verifyAccount() {
-        if let imapServer = verifiableAccount.serverIMAP {
-            qualifyServerService.delegate = self
-            qualifyServerService.qualify(serverName: imapServer)
-        } else {
-            accountHasBeenQualified(trusted: false)
-        }
-    }
-
-    func accountHasBeenQualified(trusted: Bool) {
-        verifiableAccount.isAutomaticallyTrustedImapServer = trusted
-        do {
-            try verifiableAccount.verify()
-        } catch {
-            Log.shared.error("%@", "\(error)")
-            loginViewModelLoginErrorDelegate?.handle(loginError: error)
+            checkIfServerShouldBeConsideredATrustedServer()
         }
     }
 
@@ -209,6 +186,30 @@ class LoginViewModel {
 
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
         return ClientCertificateManagementViewModel()
+    }
+}
+
+// MARK: - Private
+
+extension LoginViewModel {
+
+    private func checkIfServerShouldBeConsideredATrustedServer() {
+        if let imapServer = verifiableAccount.serverIMAP {
+            qualifyServerIsLocalService.delegate = self
+            qualifyServerIsLocalService.qualify(serverName: imapServer)
+        } else {
+            markServerAsTrusted(trusted: false)
+        }
+    }
+
+    private func markServerAsTrusted(trusted: Bool) {
+        verifiableAccount.isAutomaticallyTrustedImapServer = trusted
+        do {
+            try verifiableAccount.verify()
+        } catch {
+            Log.shared.error("%@", "\(error)")
+            loginViewModelLoginErrorDelegate?.handle(loginError: error)
+        }
     }
 }
 
@@ -243,10 +244,15 @@ extension LoginViewModel: OAuth2AuthViewModelDelegate {
 extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
     func didQualify(serverName: String, isLocal: Bool?, error: Error?) {
         GCD.onMain { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
             if let err = error {
                 self?.loginViewModelLoginErrorDelegate?.handle(loginError: err)
+                return
             }
-            self?.accountHasBeenQualified(trusted: isLocal ?? false)
+            me.markServerAsTrusted(trusted: isLocal ?? false)
         }
     }
 }
@@ -293,8 +299,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
 // MARK: - ClientCertificateManagementViewModelDelegate
 
 extension LoginViewModel: ClientCertificateManagementViewModelDelegate {
-    func didSelectClientCertificate(clientCertificate: ClientCertificateUtil.ClientCertificate?) {
-        fatalError("add cert to verifyable account")
-//        verifiableAccount.cli
+    func didSelectClientCertificate(clientCertificate: ClientCertificate) {
+        verifiableAccount.clientCertificate = clientCertificate
     }
 }
