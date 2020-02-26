@@ -180,8 +180,13 @@ final class TrustManagementViewModel {
 
     /// - returns: the available languages.
     public func handleChangeLanguagePressed(forRowAt indexPath : IndexPath) -> [String] {
+        guard let trustManagementViewModel = trustManagementViewModel else {
+            Log.shared.errorAndCrash("TrustManagementViewModelDelegate is nil")
+            return [String]()
+        }
+
         rows[indexPath.row].shouldUpdateTrustwords = true
-        guard let list = trustManagementViewModel?.languagesList() else {
+        guard let list = trustManagementViewModel.languagesList() else {
             Log.shared.error("The list of languages could be retrieved.")
             return [String]()
         }
@@ -193,8 +198,12 @@ final class TrustManagementViewModel {
     ///   - indexPath: The index path of the row
     ///   - language: The chosen language
     public func didSelectLanguage(forRowAt indexPath: IndexPath, language: String) {
+        guard let trustManagementViewModelDelegate = trustManagementViewModelDelegate else {
+            Log.shared.errorAndCrash("TrustManagementViewModelDelegate is nil")
+            return
+        }
         rows[indexPath.row].currentLanguage = language
-        trustManagementViewModelDelegate?.reload()
+        trustManagementViewModelDelegate.reload()
     }
     
     /// Toogle pEp protection status
@@ -221,9 +230,13 @@ final class TrustManagementViewModel {
     /// Method that makes the trustwords long or short (more or less trustwords in fact).
     /// - Parameter indexPath: The indexPath to get the row to toogle the status (long/short)
     public func handleToggleLongTrustwords(forRowAt indexPath: IndexPath) {
+        guard let trustManagementViewModelDelegate = trustManagementViewModelDelegate else {
+            Log.shared.errorAndCrash("TrustManagementViewModelDelegate is nil")
+            return
+        }
         rows[indexPath.row].shouldUpdateTrustwords = true
         rows[indexPath.row].longTrustwords.toggle()
-        trustManagementViewModelDelegate?.reload()
+        trustManagementViewModelDelegate.reload()
     }
 
     public typealias TrustWords = String
