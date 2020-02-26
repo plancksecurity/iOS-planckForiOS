@@ -1,15 +1,31 @@
 //
-//  AttachmentsViewHelperTest.swift
+//  UIImageExtensionsTests.swift
 //  pEpForiOSTests
 //
-//  Created by Adam Kowalski on 25/02/2020.
-//  Copyright © 2020 p≡p Security S.A. All rights reserved.
+//  Created by Dirk Zimmermann on 15.05.18.
+//  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
 import XCTest
+import pEpIOSToolbox
+
 @testable import pEpForiOS
 
-final class AttachmentsViewHelperTest: CoreDataDrivenTestBase {
+class UIImageExtensionsTests: XCTestCase {
+    private struct Constant {
+        // "small-animated-gif.gif" file has 44 frames
+        static let expectedNumbersOfFrames = 44
+    }
+    func testZeroFrame() {
+        let gifEmptyData = Data()
+        let gifImg = UIImage.image(gifData: gifEmptyData)
+        XCTAssertNil(gifImg)
+    }
+
+    func testSingleFrame() {
+        let gifImg = UIImage.image(gifData: getStandardGifData())
+        XCTAssertNotNil(gifImg)
+    }
 
     // Related to bug IOS-1696 (large) animated gif causes iOS app to crash
     func testLargeGif() {
@@ -20,27 +36,15 @@ final class AttachmentsViewHelperTest: CoreDataDrivenTestBase {
 
     func testSmallGif() {
         let image = UIImage.image(gifData: getAnimatedSmallGifData())
-        let expectedNumbersOfFrames = 44
         XCTAssertNotNil(image)
         XCTAssertNotNil(image?.images)
-        XCTAssertEqual(expectedNumbersOfFrames, image?.images?.count)
-    }
-
-    func testNoGif() {
-        let image = UIImage.image(gifData: getStandardGifData())
-        XCTAssertNotNil(image)
-        XCTAssertNil(image?.images)
-    }
-
-    func testEmptyGif() {
-        let image = UIImage.image(gifData: Data())
-        XCTAssertNil(image)
+        XCTAssertEqual(Constant.expectedNumbersOfFrames, image?.images?.count)
     }
 }
 
 // MARK: - Mock Data
 
-extension AttachmentsViewHelperTest {
+extension UIImageExtensionsTests {
     private func getAnimatedLargeGifData() -> Data {
         let imageFileName = "large-animated-gif.gif"
         guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
@@ -66,3 +70,4 @@ extension AttachmentsViewHelperTest {
         return imageData
     }
 }
+

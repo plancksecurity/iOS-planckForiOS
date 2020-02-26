@@ -214,7 +214,6 @@
 		37FFA7FA234B3C27004229BE /* AnimatedPlaceholderTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */; };
 		3A085A6E23FAF4D50013C63E /* pEpHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A085A6D23FAF4D50013C63E /* pEpHeaderView.swift */; };
 		3A0CBAAD23F5909C00AE200C /* WrappedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */; };
-		3A8588CC2405566500659D29 /* AttachmentsViewHelperTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8588CB2405566500659D29 /* AttachmentsViewHelperTest.swift */; };
 		3A8588D024057C8B00659D29 /* large-animated-gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3A8588CF24057C8A00659D29 /* large-animated-gif.gif */; };
 		3A8588D224058CA500659D29 /* small-animated-gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3A8588D124058CA500659D29 /* small-animated-gif.gif */; };
 		3A9239C623FAE0A0003E6C48 /* AccountSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9239C523FAE0A0003E6C48 /* AccountSettingsTableViewController.swift */; };
@@ -731,7 +730,6 @@
 		37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedPlaceholderTextfield.swift; sourceTree = "<group>"; };
 		3A085A6D23FAF4D50013C63E /* pEpHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpHeaderView.swift; sourceTree = "<group>"; };
 		3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedCell.swift; sourceTree = "<group>"; };
-		3A8588CB2405566500659D29 /* AttachmentsViewHelperTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentsViewHelperTest.swift; sourceTree = "<group>"; };
 		3A8588CF24057C8A00659D29 /* large-animated-gif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "large-animated-gif.gif"; sourceTree = "<group>"; };
 		3A8588D124058CA500659D29 /* small-animated-gif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "small-animated-gif.gif"; sourceTree = "<group>"; };
 		3A9239C523FAE0A0003E6C48 /* AccountSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -1131,7 +1129,6 @@
 				437795C72154D6FD00CC62C2 /* PEPMessage+TestExtension.swift */,
 				15D439A6216FB77600EB3933 /* UnitTestUtils.swift */,
 				15410D1E2199CA1100BBF65F /* XCTTestCase+Utils.swift */,
-				3A8588CB2405566500659D29 /* AttachmentsViewHelperTest.swift */,
 			);
 			path = TestUtils;
 			sourceTree = "<group>";
@@ -1402,6 +1399,7 @@
 		1574D07B2114694F00FEDC93 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */,
 				1574D07C2114696B00FEDC93 /* URL+MailToTest.swift */,
 			);
 			path = Extensions;
@@ -2058,7 +2056,6 @@
 				1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */,
 				1541D7F41FC82A4900D52A5D /* URL+MIME.swift */,
 				430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */,
-				4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */,
 				438BA0F4214F89CC001A4A82 /* MailParsingTests.swift */,
 			);
 			path = pEpForiOSTests;
@@ -3173,7 +3170,6 @@
 				15A763D11F72D68000670313 /* KeyChainTest.swift in Sources */,
 				436981C022830AF60006FA2D /* SecretTestData.swift in Sources */,
 				43EC75B32164E97800048CFE /* DecryptionUtil.swift in Sources */,
-				3A8588CC2405566500659D29 /* AttachmentsViewHelperTest.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
 				431C2B171F387C4100D87FFD /* LoginViewModelTests.swift in Sources */,
 				151AD7AD219D74C700FC36FF /* ComposeViewModelTest.swift in Sources */,
