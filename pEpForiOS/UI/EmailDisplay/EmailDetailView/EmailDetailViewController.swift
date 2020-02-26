@@ -166,7 +166,6 @@ extension EmailDetailViewController {
         viewModel?.delegate = self
         setupCollectionView()
         registerNotifications()
-//        setupToolbar()
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
