@@ -24,7 +24,7 @@ final class TrustManagementViewModel {
     public var pEpProtected : Bool {
         get {
             guard let composeDelegate = composeDelegate else {
-                Log.shared.error("Compose Delegate is missing")
+                Log.shared.errorAndCrash("Compose Delegate is missing")
                 return false
             }
             return composeDelegate.state.pEpProtection
