@@ -413,15 +413,6 @@ extension SettingsViewModel {
         let oldAddress = account.user.address
         account.delete()
         Session.main.commit()
-        if Account.all().count == 1, let account = Account.all().first {
-            do {
-                if try !account.isKeySyncEnabled() {
-                    AppSettings.shared.keySyncEnabled = false
-                }
-            } catch {
-                Log.shared.errorAndCrash("Fail to get account pEpSync state")
-            }
-        }
 
         if AppSettings.shared.defaultAccount == nil ||
             AppSettings.shared.defaultAccount == oldAddress {
