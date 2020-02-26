@@ -185,7 +185,7 @@ class LoginViewModel {
     }
 
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
-        return ClientCertificateManagementViewModel()
+        return ClientCertificateManagementViewModel(delegate: self)
     }
 }
 

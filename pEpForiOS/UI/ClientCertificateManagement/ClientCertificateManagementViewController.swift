@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// View that lists all imported client certificates and let's the user choose one.
 class ClientCertificateManagementViewController: BaseViewController {
     static let storiboardID = "ClientCertificateManagementViewController"
     static let cellID = "ClientCertificateManagementTableViewCell"
@@ -49,7 +50,12 @@ extension ClientCertificateManagementViewController {
 extension ClientCertificateManagementViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        fatalError("Unimplemented stub")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        vm.handleDidSelect(rowAt: indexPath)
+        dismiss(animated: true)
     }
 }
 
