@@ -23,7 +23,11 @@ final class TrustManagementViewModel {
     public weak var trustManagementViewModelDelegate : TrustManagementViewModelDelegate?
     public var pEpProtected : Bool {
         get {
-            return message.pEpProtected
+            guard let composeDelegate = composeDelegate else {
+                Log.shared.error("Compose Delegate is missing")
+                return false
+            }
+            return composeDelegate.state.pEpProtection
         }
     }
 
@@ -114,7 +118,6 @@ final class TrustManagementViewModel {
             Log.shared.errorAndCrash("TrustManagementViewModel is nil")
             return
         }
-        
         let actionName = NSLocalizedString("Trust Rejection", comment: "Action name to be suggested at the moment of revert")
         actionPerformed.append(actionName)
         registerUndoAction(at: indexPath)
@@ -134,7 +137,6 @@ final class TrustManagementViewModel {
             Log.shared.errorAndCrash("TrustManagementViewModel is nil")
             return
         }
-
         let actionName = NSLocalizedString("Trust Confirmation", comment: "Action name to be suggested at the moment of revert")
         actionPerformed.append(actionName)
         registerUndoAction(at: indexPath)
@@ -170,7 +172,6 @@ final class TrustManagementViewModel {
             Log.shared.errorAndCrash("TrustManagementViewModel is nil")
             return
         }
-
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
         trustManagementViewModel.resetTrust(for: row.handshakeCombination.partnerIdentity)
@@ -184,7 +185,6 @@ final class TrustManagementViewModel {
             Log.shared.errorAndCrash("TrustManagementViewModelDelegate is nil")
             return [String]()
         }
-
         rows[indexPath.row].shouldUpdateTrustwords = true
         guard let list = trustManagementViewModel.languagesList() else {
             Log.shared.error("The list of languages could be retrieved.")
@@ -208,7 +208,6 @@ final class TrustManagementViewModel {
     
     /// Toogle pEp protection status
     public func handleToggleProtectionPressed() {
-        message.pEpProtected.toggle()
         guard let composeDelegate = composeDelegate else {
             Log.shared.error("Compose Delegate is nil")
             return
@@ -266,7 +265,6 @@ final class TrustManagementViewModel {
                 Log.shared.errorAndCrash("Lost myself or the trustManagement ViewModel")
                 return
             }
-            
             let complete: (TrustWords?) -> Void = { trustwords in
                 DispatchQueue.main.async {
                     completion(trustwords)
