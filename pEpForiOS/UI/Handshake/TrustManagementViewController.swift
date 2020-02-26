@@ -15,7 +15,6 @@ class TrustManagementViewController: BaseViewController {
     private let onlyMasterCellIdentifier = "TrustManagementTableViewCell_OnlyMaster"
     private let masterAndDetailCellIdentifier = "TrustManagementTableViewCell_Detailed"
     private let resetCellIdentifier = "TrustManagementTableViewResetCell"
-    
     @IBOutlet weak var trustManagementTableView: UITableView!
     @IBOutlet weak var optionsButton: UIBarButtonItem!
     var shouldShowOptionsButton: Bool = false
@@ -311,26 +310,43 @@ TrustManagementResetTableViewCellDelegate {
     }
     
     func declineButtonPressed(on cell: TrustManagementTableViewCell) {
+        guard let viewModel = viewModel else {
+            Log.shared.errorAndCrash("TrustManagementViewModel is nil")
+            return
+        }
         if let indexPath = trustManagementTableView.indexPath(for: cell) {
-            viewModel?.handleRejectHandshakePressed(at: indexPath)
+            viewModel.handleRejectHandshakePressed(at: indexPath)
         }
     }
     
     func confirmButtonPressed(on cell: TrustManagementTableViewCell) {
+        guard let viewModel = viewModel else {
+            Log.shared.errorAndCrash("TrustManagementViewModel is nil")
+            return
+        }
+
         if let indexPath = trustManagementTableView.indexPath(for: cell) {
-            viewModel?.handleConfirmHandshakePressed(at: indexPath)
+            viewModel.handleConfirmHandshakePressed(at: indexPath)
         }
     }
     
     func resetButtonPressed(on cell: UITableViewCell) {
+        guard let viewModel = viewModel else {
+            Log.shared.errorAndCrash("TrustManagementViewModel is nil")
+            return
+        }
         if let indexPath = trustManagementTableView.indexPath(for: cell) {
-            viewModel?.handleResetPressed(forRowAt: indexPath)
+            viewModel.handleResetPressed(forRowAt: indexPath)
         }
     }
     
     func trustwordsLabelPressed(on cell: TrustManagementTableViewCell) {
+        guard let viewModel = viewModel else {
+            Log.shared.errorAndCrash("TrustManagementViewModel is nil")
+            return
+        }
         if let indexPath = trustManagementTableView.indexPath(for: cell) {
-            viewModel?.handleToggleLongTrustwords(forRowAt: indexPath)
+            viewModel.handleToggleLongTrustwords(forRowAt: indexPath)
         }
     }
 }
