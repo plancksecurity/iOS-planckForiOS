@@ -109,14 +109,19 @@ final class TrustManagementViewModel {
     /// Reject the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to reject the handshake
     public func handleRejectHandshakePressed(at indexPath: IndexPath) {
+        guard let trustManagementViewModel = trustManagementViewModel else {
+            Log.shared.errorAndCrash("TrustManagementViewModel is nil")
+            return
+        }
+        
         let actionName = NSLocalizedString("Trust Rejection", comment: "Action name to be suggested at the moment of revert")
         actionPerformed.append(actionName)
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
-        rows[indexPath.row].fingerprint = trustManagementViewModel?.getFingerprint(for: identity)
+        rows[indexPath.row].fingerprint = trustManagementViewModel.getFingerprint(for: identity)
         rows[indexPath.row].forceRed = true
-        trustManagementViewModel?.denyTrust(for: identity)
+        trustManagementViewModel.denyTrust(for: identity)
         reevaluateAndUpdate()
         trustManagementViewModelDelegate?.reload()
     }
@@ -124,13 +129,18 @@ final class TrustManagementViewModel {
     /// Confirm the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to confirm the handshake
     public func handleConfirmHandshakePressed(at indexPath: IndexPath) {
+        guard let trustManagementViewModel = trustManagementViewModel else {
+            Log.shared.errorAndCrash("TrustManagementViewModel is nil")
+            return
+        }
+
         let actionName = NSLocalizedString("Trust Confirmation", comment: "Action name to be suggested at the moment of revert")
         actionPerformed.append(actionName)
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
-        trustManagementViewModel?.confirmTrust(for: identity)
+        trustManagementViewModel.confirmTrust(for: identity)
         reevaluateAndUpdate()
         trustManagementViewModelDelegate?.reload()
     }
@@ -140,20 +150,29 @@ final class TrustManagementViewModel {
     /// So it is not important what action in concrete was performed.
     /// - Parameter indexPath: The index path of the row from where the last action has been performed.
     @objc public func handleUndo(forRowAt indexPath: IndexPath) {
+        guard let trustManagementViewModel = trustManagementViewModel else {
+            Log.shared.errorAndCrash("TrustManagementViewModel is nil")
+            return
+        }
         let row = rows[indexPath.row]
         rows[indexPath.row].shouldUpdateTrustwords = true
         rows[indexPath.row].forceRed = false
-        trustManagementViewModel?.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,
-                                            fingerprint: row.fingerprint)
+        trustManagementViewModel.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,
+                                                      fingerprint: row.fingerprint)
         reevaluateAndUpdate()
     }
-
+    
     /// Handles the redey action
     /// - Parameter indexPath: The indexPath of the item to get the user to undo last action.
     public func handleResetPressed(forRowAt indexPath: IndexPath) {
+        guard let trustManagementViewModel = trustManagementViewModel else {
+            Log.shared.errorAndCrash("TrustManagementViewModel is nil")
+            return
+        }
+
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
-        trustManagementViewModel?.resetTrust(for: row.handshakeCombination.partnerIdentity)
+        trustManagementViewModel.resetTrust(for: row.handshakeCombination.partnerIdentity)
         reevaluateAndUpdate()
         trustManagementViewModelDelegate?.reload()
     }
@@ -178,10 +197,8 @@ final class TrustManagementViewModel {
     }
     
     /// Toogle pEp protection status
-    /// - returns: the new value. True if enabled, false if not. 
-    public func handleToggleProtectionPressed() -> Bool {
+    public func handleToggleProtectionPressed(){
         message.pEpProtected.toggle()
-        return message.pEpProtected
     }
 
     /// Informs if is it possible to undo an action.
