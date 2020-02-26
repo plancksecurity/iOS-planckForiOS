@@ -301,11 +301,8 @@ extension EmailDetailViewController {
             // List is empty. That is ok. The user might have deleted the last shown message.
             return
         }
-        let rating = vm.pEpRating(forItemAt: indexPath)
-        guard let message = vm.message(representedByRowAt: indexPath),
-            let ratingView = showNavigationBarSecurityBadge(pEpRating: rating,
-                pEpProtection: message.pEpProtected)
-            else {
+        
+        guard let ratingView = showNavigationBarSecurityBadge(pEpRating: vm.pEpRating(forItemAt: indexPath)) else {
             // Nothing to show for current message
             return
         }
