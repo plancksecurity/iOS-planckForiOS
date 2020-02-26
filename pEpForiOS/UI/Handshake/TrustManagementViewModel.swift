@@ -17,32 +17,14 @@ protocol TrustManagementViewModelDelegate: class {
     func reload()
 }
 
-/// View Model to handle the TrustManagementViewModel views.
-final class TrustManagementViewModel {
-    weak var composeDelegate : ComposeViewModel?
-    public weak var trustManagementViewModelDelegate : TrustManagementViewModelDelegate?
-    public var pEpProtected : Bool {
-        get {
-            guard let composeDelegate = composeDelegate else {
-                Log.shared.errorAndCrash("Compose Delegate is missing")
-                return false
-            }
-            return composeDelegate.state.pEpProtection
-        }
-    }
+protocol TrustmanagementProtectionStateChangeDelegate: class {
+    /// Called whenever the user toggles protection state (for the message)
+    func protectionStateChanged(to newValue: Bool)
+}
 
-    var message: Message
-    
-    private var session: Session {
-        return message.session
-    }
-
-    private var trustManagementViewModel : TrustManagementUtilProtocol?
-    private let undoManager = UndoManager()
-    private var actionPerformed = [String]()
-    
+extension TrustManagementViewModel {
     /// The item that represents the handshake partner
-    struct Row {
+    public struct Row {
         /// Indicates the handshake partner's name
         var name: String {
             let name = handshakeCombination.partnerIdentity.userName
@@ -92,9 +74,30 @@ final class TrustManagementViewModel {
         fileprivate var forceRed: Bool = false
         /// The identity of the user to do the handshake
         fileprivate var handshakeCombination: TrustManagementUtil.HandshakeCombination
-        
+
         fileprivate var fingerprint: String?
     }
+}
+
+/// View Model to handle the TrustManagementViewModel views.
+final class TrustManagementViewModel {
+    weak public var delegate : TrustManagementViewModelDelegate?
+    weak public var protectionStateChangeDelegate: TrustmanagementProtectionStateChangeDelegate?
+    public var pEpProtected : Bool {
+        didSet {
+            protectionStateChangeDelegate?.protectionStateChanged(to: pEpProtected)
+        }
+    }
+    var shouldShowOptionsButton: Bool = false
+    private var message: Message
+
+    private var session: Session {
+        return message.session
+    }
+
+    private var trustManagementUtil : TrustManagementUtilProtocol?
+    private let undoManager = UndoManager()
+    private var actionPerformed = [String]()
     
     /// Items to be displayed in the View Controller
     private (set) var rows: [Row] = [Row]()
@@ -103,9 +106,17 @@ final class TrustManagementViewModel {
     /// - Parameters:
     ///   - message: The message to manage the trust
     ///   - handshakeUtil: The tool to interact with the engine. It provides a default instance. The parameter is used for testing purposes.
-    public init(message : Message, handshakeUtil: TrustManagementUtilProtocol? = TrustManagementUtil()) {
+    public init(message : Message,
+                pEpProtectionModifyable: Bool,
+                delegate : TrustManagementViewModelDelegate? = nil,
+                protectionStateChangeDelegate: TrustmanagementProtectionStateChangeDelegate? = nil,
+                trustManagementUtil: TrustManagementUtilProtocol? = TrustManagementUtil()) {
         self.message = message
-        self.trustManagementViewModel = handshakeUtil
+        self.trustManagementUtil = trustManagementUtil
+        self.pEpProtected = message.pEpProtected
+        self.shouldShowOptionsButton = pEpProtectionModifyable
+        self.delegate = delegate
+        self.protectionStateChangeDelegate = protectionStateChangeDelegate
         generateRows()
     }
 
@@ -114,7 +125,7 @@ final class TrustManagementViewModel {
     /// Reject the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to reject the handshake
     public func handleRejectHandshakePressed(at indexPath: IndexPath) {
-        guard let trustManagementViewModel = trustManagementViewModel else {
+        guard let trustManagementViewModel = trustManagementUtil else {
             Log.shared.errorAndCrash("TrustManagementViewModel is nil")
             return
         }
@@ -126,14 +137,13 @@ final class TrustManagementViewModel {
         rows[indexPath.row].fingerprint = trustManagementViewModel.getFingerprint(for: identity)
         rows[indexPath.row].forceRed = true
         trustManagementViewModel.denyTrust(for: identity)
-        reevaluateAndUpdate()
-        trustManagementViewModelDelegate?.reload()
+        delegate?.reload()
     }
     
     /// Confirm the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to confirm the handshake
     public func handleConfirmHandshakePressed(at indexPath: IndexPath) {
-        guard let trustManagementViewModel = trustManagementViewModel else {
+        guard let trustManagementViewModel = trustManagementUtil else {
             Log.shared.errorAndCrash("TrustManagementViewModel is nil")
             return
         }
@@ -144,8 +154,7 @@ final class TrustManagementViewModel {
         rows[indexPath.row].forceRed = false
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
         trustManagementViewModel.confirmTrust(for: identity)
-        reevaluateAndUpdate()
-        trustManagementViewModelDelegate?.reload()
+        delegate?.reload()
     }
     
     /// Handles the undo action.
@@ -153,7 +162,7 @@ final class TrustManagementViewModel {
     /// So it is not important what action in concrete was performed.
     /// - Parameter indexPath: The index path of the row from where the last action has been performed.
     @objc public func handleUndo(forRowAt indexPath: IndexPath) {
-        guard let trustManagementViewModel = trustManagementViewModel else {
+        guard let trustManagementViewModel = trustManagementUtil else {
             Log.shared.errorAndCrash("TrustManagementViewModel is nil")
             return
         }
@@ -162,26 +171,24 @@ final class TrustManagementViewModel {
         rows[indexPath.row].forceRed = false
         trustManagementViewModel.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,
                                                       fingerprint: row.fingerprint)
-        reevaluateAndUpdate()
     }
     
     /// Handles the redey action
     /// - Parameter indexPath: The indexPath of the item to get the user to undo last action.
     public func handleResetPressed(forRowAt indexPath: IndexPath) {
-        guard let trustManagementViewModel = trustManagementViewModel else {
+        guard let trustManagementViewModel = trustManagementUtil else {
             Log.shared.errorAndCrash("TrustManagementViewModel is nil")
             return
         }
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
         trustManagementViewModel.resetTrust(for: row.handshakeCombination.partnerIdentity)
-        reevaluateAndUpdate()
-        trustManagementViewModelDelegate?.reload()
+        delegate?.reload()
     }
 
     /// - returns: the available languages.
     public func handleChangeLanguagePressed(forRowAt indexPath : IndexPath) -> [String] {
-        guard let trustManagementViewModel = trustManagementViewModel else {
+        guard let trustManagementViewModel = trustManagementUtil else {
             Log.shared.errorAndCrash("TrustManagementViewModelDelegate is nil")
             return [String]()
         }
@@ -198,7 +205,7 @@ final class TrustManagementViewModel {
     ///   - indexPath: The index path of the row
     ///   - language: The chosen language
     public func didSelectLanguage(forRowAt indexPath: IndexPath, language: String) {
-        guard let trustManagementViewModelDelegate = trustManagementViewModelDelegate else {
+        guard let trustManagementViewModelDelegate = delegate else {
             Log.shared.errorAndCrash("TrustManagementViewModelDelegate is nil")
             return
         }
@@ -208,11 +215,7 @@ final class TrustManagementViewModel {
     
     /// Toogle pEp protection status
     public func handleToggleProtectionPressed() {
-        guard let composeDelegate = composeDelegate else {
-            Log.shared.error("Compose Delegate is nil")
-            return
-        }
-        composeDelegate.state.pEpProtection.toggle()
+        pEpProtected = !pEpProtected
     }
 
     /// Informs if is it possible to undo an action.
@@ -229,7 +232,7 @@ final class TrustManagementViewModel {
     /// Method that makes the trustwords long or short (more or less trustwords in fact).
     /// - Parameter indexPath: The indexPath to get the row to toogle the status (long/short)
     public func handleToggleLongTrustwords(forRowAt indexPath: IndexPath) {
-        guard let trustManagementViewModelDelegate = trustManagementViewModelDelegate else {
+        guard let trustManagementViewModelDelegate = delegate else {
             Log.shared.errorAndCrash("TrustManagementViewModelDelegate is nil")
             return
         }
@@ -260,7 +263,7 @@ final class TrustManagementViewModel {
         rows[indexPath.row].shouldUpdateTrustwords = false
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let me = self,
-                let trustManagementViewModel = me.trustManagementViewModel else {
+                let trustManagementViewModel = me.trustManagementUtil else {
                 completion(nil)
                 Log.shared.errorAndCrash("Lost myself or the trustManagement ViewModel")
                 return
@@ -296,26 +299,16 @@ final class TrustManagementViewModel {
         /// If so, undo it and reload the view.
         if (undoManager.canUndo) {
             undoManager.undo()
-            trustManagementViewModelDelegate?.reload()
+            delegate?.reload()
             _ = actionPerformed.popLast()
         }
     }
 
     ///MARK: - Private
 
-    private func reevaluateAndUpdate() {
-        session.performAndWait { [weak self] in
-            guard let me = self else {
-                Log.shared.error("Lost myself - The message will not be reevaluated")
-                return
-            }
-            RatingReEvaluator.reevaluate(message: me.message)
-        }
-    }
-    
     /// Method that generates the rows to be used by the VC
     private func generateRows() {
-        guard let trustManagementViewModel = trustManagementViewModel else {
+        guard let trustManagementViewModel = trustManagementUtil else {
             Log.shared.errorAndCrash("TrustManagementViewModel is nil")
             return
         }

@@ -650,29 +650,13 @@ extension ComposeViewModel {
     }
 }
 
-// MARK: - HandshakeViewModel
+// MARK: - TrustManagementViewModel
 
 extension ComposeViewModel {
-    // There is no view model for HandshakeViewController yet, thus we are setting up the VC itself
-    // as a workaround to avoid letting the VC know MessageModel
-    func setup(trustManagementViewController: TrustManagementViewController) {
-        // We MUST use an independent Session here. We do not want the outer world to see it nor to
-        //save somthinng from the state (Attachments, Identitie, ...) when saving the MainSession.
-        let session = Session()
-        let safeState = state.makeSafe(forSession: session)
-        session.performAndWait {
-            guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
-                Log.shared.errorAndCrash("No message")
-                return
-            }
-            trustManagementViewController.viewModel?.message = msg
-        }
-    }
 
     func canDoHandshake() -> Bool {
         return state.canHandshake()
     }
-    
 
     func trustManagementViewModel() -> TrustManagementViewModel? {
         guard let message = ComposeUtil.messageToSend(withDataFrom: state) else {
@@ -680,7 +664,17 @@ extension ComposeViewModel {
             return nil
         }
         let messageSafe = message.safeForSession(Session.main)
-        return TrustManagementViewModel(message: messageSafe)
+        return TrustManagementViewModel(message: messageSafe,
+                                        pEpProtectionModifyable: true,
+                                        protectionStateChangeDelegate: self)
+    }
+}
+
+// MARK: - TrustmanagementProtectionStateChangeDelegate
+
+extension ComposeViewModel: TrustmanagementProtectionStateChangeDelegate {
+    func protectionStateChanged(to newValue: Bool) {
+        state.pEpProtection = newValue
     }
 }
 

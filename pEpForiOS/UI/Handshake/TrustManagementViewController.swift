@@ -15,31 +15,30 @@ class TrustManagementViewController: BaseViewController {
     private let onlyMasterCellIdentifier = "TrustManagementTableViewCell_OnlyMaster"
     private let masterAndDetailCellIdentifier = "TrustManagementTableViewCell_Detailed"
     private let resetCellIdentifier = "TrustManagementTableViewResetCell"
-    @IBOutlet weak var trustManagementTableView: UITableView!
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var optionsButton: UIBarButtonItem!
-    var shouldShowOptionsButton: Bool = false
+
     var viewModel : TrustManagementViewModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(reload),
-                                               name: UIDevice.orientationDidChangeNotification,
-                                               object: nil)
+        setup()
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 400
+    }
 
-        guard let viewModel = viewModel else {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let vm = viewModel else {
             Log.shared.errorAndCrash("The viewModel must not be nil")
             return
         }
-        setLeftBarButton()
-
-        if (!shouldShowOptionsButton) {
+        if (!vm.shouldShowOptionsButton) {
             navigationItem.rightBarButtonItems?.removeAll(where: {$0 == optionsButton})
         } else {
             optionsButton.title = NSLocalizedString("Options", comment: "Options")
         }
-        viewModel.trustManagementViewModelDelegate = self
-        trustManagementTableView.rowHeight = UITableView.automaticDimension
-        trustManagementTableView.estimatedRowHeight = 400
+        vm.delegate = self
     }
 
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
@@ -66,7 +65,7 @@ class TrustManagementViewController: BaseViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        trustManagementTableView.reloadData()
+        tableView.reloadData()
     }
 
     @IBAction private func optionsButtonPressed(_ sender: UIBarButtonItem) {
@@ -75,6 +74,18 @@ class TrustManagementViewController: BaseViewController {
    
     deinit {
         unregisterNotifications()
+    }
+}
+
+// MARK: - Private
+
+extension TrustManagementViewController {
+
+    private func setup() {
+        NotificationCenter.default.addObserver(self, selector: #selector(reload),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil) //MARTIN: move to own method
+        setLeftBarButton()
     }
 }
 
@@ -175,7 +186,7 @@ extension TrustManagementViewController {
     /// Shows an action sheet with languages when the user taps the language button from a cell
     /// - Parameter cell: The cell of the language button tapped.
     private func showLanguagesList(for cell: TrustManagementTableViewCell) {
-        guard let indexPath = trustManagementTableView.indexPath(for: cell) else {
+        guard let indexPath = tableView.indexPath(for: cell) else {
             Log.shared.error("IndexPath not found")
             return
         }
@@ -223,7 +234,7 @@ extension TrustManagementViewController: TrustManagementViewModelDelegate {
     
     @objc public func reload() {
         UIView.setAnimationsEnabled(false)
-        trustManagementTableView.reloadData()
+        tableView.reloadData()
         UIView.setAnimationsEnabled(true)
     }
 }
@@ -295,7 +306,7 @@ extension TrustManagementViewController {
             let textToSet = longMode ? spacedTrustwords : "\(spacedTrustwords)…"
             if (cell.trustwordsLabel.text != textToSet) {
                 cell.trustwordsLabel.text = textToSet
-                me.trustManagementTableView.updateSize()
+                me.tableView.updateSize()
             }
         }
     }
@@ -314,7 +325,7 @@ TrustManagementResetTableViewCellDelegate {
             Log.shared.errorAndCrash("TrustManagementViewModel is nil")
             return
         }
-        if let indexPath = trustManagementTableView.indexPath(for: cell) {
+        if let indexPath = tableView.indexPath(for: cell) {
             viewModel.handleRejectHandshakePressed(at: indexPath)
         }
     }
@@ -325,7 +336,7 @@ TrustManagementResetTableViewCellDelegate {
             return
         }
 
-        if let indexPath = trustManagementTableView.indexPath(for: cell) {
+        if let indexPath = tableView.indexPath(for: cell) {
             viewModel.handleConfirmHandshakePressed(at: indexPath)
         }
     }
@@ -335,7 +346,7 @@ TrustManagementResetTableViewCellDelegate {
             Log.shared.errorAndCrash("TrustManagementViewModel is nil")
             return
         }
-        if let indexPath = trustManagementTableView.indexPath(for: cell) {
+        if let indexPath = tableView.indexPath(for: cell) {
             viewModel.handleResetPressed(forRowAt: indexPath)
         }
     }
@@ -345,7 +356,7 @@ TrustManagementResetTableViewCellDelegate {
             Log.shared.errorAndCrash("TrustManagementViewModel is nil")
             return
         }
-        if let indexPath = trustManagementTableView.indexPath(for: cell) {
+        if let indexPath = tableView.indexPath(for: cell) {
             viewModel.handleToggleLongTrustwords(forRowAt: indexPath)
         }
     }

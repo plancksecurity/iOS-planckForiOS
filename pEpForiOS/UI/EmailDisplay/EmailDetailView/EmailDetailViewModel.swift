@@ -54,7 +54,7 @@ class EmailDetailViewModel: EmailDisplayViewModel {
                 Log.shared.error("Message not found")
                 return nil
             }
-            return TrustManagementViewModel(message: message)
+            return TrustManagementViewModel(message: message, pEpProtectionModifyable: false)
         }
     }
 
