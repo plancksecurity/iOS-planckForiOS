@@ -178,8 +178,10 @@ final class TrustManagementViewModel {
     }
     
     /// Toogle pEp protection status
-    public func handleToggleProtectionPressed() {
+    /// - returns: the new value. True if enabled, false if not. 
+    public func handleToggleProtectionPressed() -> Bool {
         message.pEpProtected.toggle()
+        return message.pEpProtected
     }
 
     /// Informs if is it possible to undo an action.

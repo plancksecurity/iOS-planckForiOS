@@ -181,7 +181,7 @@ extension ComposeTableViewController {
             return
         }
         if (vm.state.canHandshake()) {
-            self.performSegue(withIdentifier: .segueTrustManagement, sender: self)
+            performSegue(withIdentifier: .segueTrustManagement, sender: self)
         }
     }
 }
@@ -331,7 +331,18 @@ extension ComposeTableViewController: SegueHandlerType {
                 return
             }
             destination.viewModel = trustManagementViewModel
+            destination.optionsDelegate = self
         }
+    }
+}
+
+extension ComposeTableViewController: TrustManagementViewControllerDelegate {
+    func pEpProtectionDidChange(to state: Bool) {
+        guard let rating = viewModel?.state.rating else {
+            Log.shared.error("Rating missing")
+            return
+        }
+        colorBatchNeedsUpdate(for: rating, protectionEnabled: state)
     }
 }
 
