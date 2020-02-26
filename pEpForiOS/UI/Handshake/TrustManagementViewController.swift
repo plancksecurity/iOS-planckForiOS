@@ -291,15 +291,23 @@ extension TrustManagementViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        
         vm.generateTrustwords(forRowAt: indexPath, long: longMode) { [weak self] trustwords in
+            guard let trustwords = trustwords else {
+                Log.shared.debug("Trustwords are nil. The view must not be updated")
+                return
+            }
+            guard let me = self else {
+                Log.shared.error("Lost myself")
+                return
+            }
+
             let oneSpace = " "
             let threeSpaces = "   "
             let spacedTrustwords = trustwords.replacingOccurrences(of: oneSpace, with: threeSpaces)
             let textToSet = longMode ? spacedTrustwords : "\(spacedTrustwords)…"
             if (cell.trustwordsLabel.text != textToSet) {
                 cell.trustwordsLabel.text = textToSet
-                self?.trustManagementTableView.updateSize()
+                me.trustManagementTableView.updateSize()
             }
         }
     }

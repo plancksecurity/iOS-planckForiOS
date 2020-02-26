@@ -25,14 +25,14 @@ extension UIViewController {
     ///   if no view was put there. In that case, the navigation item title view has
     ///   been nil'ed.
     @discardableResult func showNavigationBarSecurityBadge(pEpRating: PEPRating?,
-                                                           pEpProtection: Bool) -> UIView? {
+                                                           pEpProtection: Bool = true) -> UIView? {
         let titleView = navigationItemTitleView(pEpRating: pEpRating, pEpProtection: pEpProtection)
         titleView?.isUserInteractionEnabled = true
         navigationItem.titleView = titleView
         return titleView
     }
 
-    private func navigationItemTitleView(pEpRating: PEPRating?, pEpProtection: Bool) -> UIView? {
+    private func navigationItemTitleView(pEpRating: PEPRating?, pEpProtection: Bool = true) -> UIView? {
         if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
             // according to apple's design guidelines ('Hit Targets'):
             // https://developer.apple.com/design/tips/

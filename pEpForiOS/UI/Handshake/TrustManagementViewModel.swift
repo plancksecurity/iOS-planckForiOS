@@ -197,8 +197,9 @@ final class TrustManagementViewModel {
     }
     
     /// Toogle pEp protection status
-    public func handleToggleProtectionPressed(){
+    public func handleToggleProtectionPressed() -> Bool {
         message.pEpProtected.toggle()
+        return true
     }
 
     /// Informs if is it possible to undo an action.
@@ -221,29 +222,34 @@ final class TrustManagementViewModel {
     }
 
     public typealias TrustWords = String
+    
     /// Generate the trustwords
     /// - Parameters:
     ///   - indexPath: The indexPath of the row to toogle the status (long/short)
     ///   - long: Indicates if the trustwords MUST be long (more words)
-    /// - returns: The generated trustwords.
+    ///   - completion: the completion block to be executed once the trustwords are generated.
+    /// If the trustwords passed are nil the UI must no be updated.
     public func generateTrustwords(forRowAt indexPath: IndexPath,
                                    long : Bool = false,
-                                   completion: @escaping (TrustWords) -> Void) {
+                                   completion: @escaping (TrustWords?) -> Void) {
         guard rows[indexPath.row].shouldUpdateTrustwords else {
             if let trustwords = rows[indexPath.row].trustwords {
                 completion(trustwords)
+                return
             }
-            //Shouldn't update trustwords. Thus, we do not call the completion block.
+            completion(nil)
             return
         }
         rows[indexPath.row].shouldUpdateTrustwords = false
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            guard let me = self else {
-                /// This should not happen.
-                Log.shared.errorAndCrash("Lost myself")
+            guard let me = self,
+                let trustManagementViewModel = me.trustManagementViewModel else {
+                completion(nil)
+                Log.shared.errorAndCrash("Lost myself or the trustManagement ViewModel")
                 return
             }
-            let complete: (TrustWords) -> Void = { trustwords in
+            
+            let complete: (TrustWords?) -> Void = { trustwords in
                 DispatchQueue.main.async {
                     completion(trustwords)
                 }
@@ -252,13 +258,13 @@ final class TrustManagementViewModel {
             handshakeItem.handshakeCombination.ownIdentity.session.performAndWait {
                 let selfIdentity = handshakeItem.handshakeCombination.ownIdentity
                 let partnerIdentity = handshakeItem.handshakeCombination.partnerIdentity
-                guard let trustwords = try? me.trustManagementViewModel?.getTrustwords(for: selfIdentity,
-                                                                            and: partnerIdentity,
-                                                                            language: handshakeItem.currentLanguage,
-                                                                            long: long)
+                guard let trustwords = try? trustManagementViewModel.getTrustwords(for: selfIdentity,
+                                                                                   and: partnerIdentity,
+                                                                                   language: handshakeItem.currentLanguage,
+                                                                                   long: long)
                     else {
                         Log.shared.errorAndCrash("No Trustwords")
-                        complete("Error")
+                        completion(nil)
                         return
                 }
                 me.rows[indexPath.row].trustwords = trustwords
@@ -293,15 +299,18 @@ final class TrustManagementViewModel {
     
     /// Method that generates the rows to be used by the VC
     private func generateRows() {
-        if let combinations = trustManagementViewModel?.handshakeCombinations(message: message) {
-            combinations.forEach { (combination) in
-                //default language is english
-                let language = combination.partnerIdentity.language ?? "en"
-                let row = Row(currentLanguage: language,
-                              longTrustwords: false,
-                              handshakeCombination: combination)
-                rows.append(row)
-            }
+        guard let trustManagementViewModel = trustManagementViewModel else {
+            Log.shared.errorAndCrash("TrustManagementViewModel is nil")
+            return
+        }
+        let combinations = trustManagementViewModel.handshakeCombinations(message: message)
+        combinations.forEach { (combination) in
+            //default language is english
+            let language = combination.partnerIdentity.language ?? "en"
+            let row = Row(currentLanguage: language,
+                          longTrustwords: false,
+                          handshakeCombination: combination)
+            rows.append(row)
         }
     }
 
