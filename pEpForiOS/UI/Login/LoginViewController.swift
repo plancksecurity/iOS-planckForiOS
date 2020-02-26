@@ -622,7 +622,7 @@ extension LoginViewController: LoginViewModelDelegate {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.dismiss(animated: true) //BUFF: XAVIER: go back to Accountz Type selector
+            me.navigationController?.popViewController(animated: true)
         }
     }
 
