@@ -216,11 +216,13 @@ final class TrustManagementViewModel {
             if let trustwords = rows[indexPath.row].trustwords {
                 completion(trustwords)
             }
+            //Shouldn't update trustwords. Thus, we do not call the completion block.
             return
         }
         rows[indexPath.row].shouldUpdateTrustwords = false
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let me = self else {
+                /// This should not happen.
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
