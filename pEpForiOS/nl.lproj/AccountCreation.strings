@@ -1,18 +1,9 @@
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "bP7-By-IPD"; */
+"bP7-By-IPD.normalTitle" = "Annuleren";
 
 /* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "DEp-6Y-fcV"; */
 "DEp-6Y-fcV.text" = "p≡p Sync";
 
-/* Class = "UIButton"; normalTitle = "Manual Setup"; ObjectID = "JT1-ND-6bH"; */
-"JT1-ND-6bH.normalTitle" = "Manual Setup";
-
 /* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "Sub-2j-OvV"; */
-"Sub-2j-OvV.normalTitle" = "Cancel";
+"Sub-2j-OvV.normalTitle" = "Annuleren";
 
-/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "bP7-By-IPD"; */
-"bP7-By-IPD.normalTitle" = "Cancel";
-
-/* Class = "UIButton"; normalTitle = "Sign In"; ObjectID = "i7a-Xk-Hbw"; */
-"i7a-Xk-Hbw.normalTitle" = "Sign In";
-
-/* Class = "UIButton"; normalTitle = "Sign In"; ObjectID = "wIi-CI-cLC"; */
-"wIi-CI-cLC.normalTitle" = "Sign In";
