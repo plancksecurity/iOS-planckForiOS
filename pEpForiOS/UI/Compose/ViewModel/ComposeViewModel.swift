@@ -684,7 +684,6 @@ extension ComposeViewModel {
     }
 }
 
-
 // MARK: - Cell-ViewModel Delegates
 
 // MARK: RecipientCellViewModelResultDelegate

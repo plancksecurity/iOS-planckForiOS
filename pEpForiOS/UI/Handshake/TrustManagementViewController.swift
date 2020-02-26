@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol TrustManagementViewControllerDelegate: class {
-    func pEpProtectionDidChange(to state: Bool)
-}
-
 /// View Controller to handle the HandshakeView.
 class TrustManagementViewController: BaseViewController {
     
@@ -24,7 +20,6 @@ class TrustManagementViewController: BaseViewController {
     @IBOutlet weak var optionsButton: UIBarButtonItem!
     var shouldShowOptionsButton: Bool = false
     var viewModel : TrustManagementViewModel?
-    weak var optionsDelegate : TrustManagementViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -159,14 +154,8 @@ extension TrustManagementViewController {
         let enable = NSLocalizedString("Enable Protection", comment: "Enable Protection")
         let disable = NSLocalizedString("Disable Protection", comment: "Disable Protection")
         let toogleProtectionTitle = viewModel.pEpProtected  ? disable : enable
-        let action = UIAlertAction(title: toogleProtectionTitle, style: .default) { [weak self] (action) in
-            guard let me = self else {
-                Log.shared.error("Lost myself")
-                return
-            }
-
-            let newValue = viewModel.handleToggleProtectionPressed()
-            me.optionsDelegate?.pEpProtectionDidChange(to: newValue)
+        let action = UIAlertAction(title: toogleProtectionTitle, style: .default) { (action) in
+            viewModel.handleToggleProtectionPressed()
         }
         alertController.addAction(action)
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel")

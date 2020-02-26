@@ -19,6 +19,7 @@ protocol TrustManagementViewModelDelegate: class {
 
 /// View Model to handle the TrustManagementViewModel views.
 final class TrustManagementViewModel {
+    weak var composeDelegate : ComposeViewModel?
     public weak var trustManagementViewModelDelegate : TrustManagementViewModelDelegate?
     public var pEpProtected : Bool {
         get {
@@ -197,9 +198,13 @@ final class TrustManagementViewModel {
     }
     
     /// Toogle pEp protection status
-    public func handleToggleProtectionPressed() -> Bool {
+    public func handleToggleProtectionPressed() {
         message.pEpProtected.toggle()
-        return true
+        guard let composeDelegate = composeDelegate else {
+            Log.shared.error("Compose Delegate is nil")
+            return
+        }
+        composeDelegate.state.pEpProtection.toggle()
     }
 
     /// Informs if is it possible to undo an action.

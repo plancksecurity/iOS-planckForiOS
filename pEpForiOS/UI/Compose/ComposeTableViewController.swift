@@ -330,19 +330,9 @@ extension ComposeTableViewController: SegueHandlerType {
                 Log.shared.error("Message not found")
                 return
             }
+            trustManagementViewModel.composeDelegate = viewModel
             destination.viewModel = trustManagementViewModel
-            destination.optionsDelegate = self
         }
-    }
-}
-
-extension ComposeTableViewController: TrustManagementViewControllerDelegate {
-    func pEpProtectionDidChange(to state: Bool) {
-        guard let rating = viewModel?.state.rating else {
-            Log.shared.error("Rating missing")
-            return
-        }
-        colorBatchNeedsUpdate(for: rating, protectionEnabled: state)
     }
 }
 
