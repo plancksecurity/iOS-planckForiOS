@@ -100,16 +100,16 @@ class TrustManagementViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: TestUtil.waitTime)
     }
     
-//    //Test Toogle Protection Pressed
-//    func testHandleToggleProtectionPressed() { //MARTIN:
-//        let mockDelegate = MockTrustManagementViewModelHandler()
-//        setupViewModel()
-//        trustManagementViewModel?.trustManagementViewModelDelegate = mockDelegate
-//        let before = trustManagementViewModel?.message.pEpProtected
-//        trustManagementViewModel?.handleToggleProtectionPressed()
-//        let after = trustManagementViewModel?.message.pEpProtected
-//        XCTAssertTrue(before != after)
-//    }
+    //Test Toogle Protection Pressed
+    func testHandleToggleProtectionPressed() {
+        let mockDelegate = MockTrustManagementViewModelHandler()
+        setupViewModel()
+        trustManagementViewModel?.delegate = mockDelegate
+        let before = trustManagementViewModel?.pEpProtected
+        trustManagementViewModel?.handleToggleProtectionPressed()
+        let after = trustManagementViewModel?.pEpProtected
+        XCTAssertTrue(before != after)
+    }
     
     //Test Shake Motion
     func testShakeMotionDidEnd() {
@@ -143,9 +143,9 @@ class TrustManagementViewModelTest: CoreDataDrivenTestBase {
     
     /// Test get trustwords is being called.
     func testGetTrustwords() {
-        let getTWExp = expectation(description: "Get Trustwords Expectation")
+        let getTrustwordsExpectation = expectation(description: "Get Trustwords Expectation")
         let firstItemPosition = IndexPath(item: 0, section: 0)
-        let handshakeMock = TrustManagementUtilMock(getTrustwordsExpectation: getTWExp)
+        let handshakeMock = TrustManagementUtilMock(getTrustwordsExpectation: getTrustwordsExpectation)
         setupViewModel(util: handshakeMock)
         
         trustManagementViewModel?.generateTrustwords(forRowAt: firstItemPosition, completion: { trustwords in
@@ -203,10 +203,16 @@ extension TrustManagementViewModelTest {
                 return
             }
             let message = TestUtil.createMessage(inFolder: folder1, from:from, tos: [selfIdentity])
-//            trustManagementViewModel = TrustManagementViewModel(message: message, handshakeUtil: util ?? TrustManagementUtilMock()) //MARTIN:
+            
+            trustManagementViewModel = TrustManagementViewModel(message: message,
+                                                                pEpProtectionModifyable: true,
+                                                                delegate: nil,
+                                                                protectionStateChangeDelegate: ComposeViewModel(),
+                                                                trustManagementUtil: util ?? TrustManagementUtilMock())
         }
     }
 }
+
 
 ///MARK: - Mock Util Classes
 
@@ -257,7 +263,12 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
     
     func getTrustwords(for forSelf: Identity, and: Identity, language: String, long: Bool) -> String? {
         self.identity = and
-        getTrustwordsExpectation?.fulfill()
+
+        if getTrustwordsExpectation != nil {
+            getTrustwordsExpectation?.fulfill()
+            getTrustwordsExpectation = nil
+        }
+
         return TrustManagementUtilMock.someTrustWords
     }
     

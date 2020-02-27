@@ -82,9 +82,7 @@ class TrustManagementViewController: BaseViewController {
 extension TrustManagementViewController {
 
     private func setup() {
-        NotificationCenter.default.addObserver(self, selector: #selector(reload),
-                                               name: UIDevice.orientationDidChangeNotification,
-                                               object: nil) //MARTIN: move to own method
+        registerForNotifications()
         setLeftBarButton()
     }
 }

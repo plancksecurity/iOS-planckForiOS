@@ -12,7 +12,6 @@ import PEPObjCAdapterFramework
 
 /// TrustManagementViewModel View Mode Delegate
 protocol TrustManagementViewModelDelegate: class {
-
     /// Delegate method to notify that an action ends and the view must be reloaded.
     func reload()
 }
@@ -68,13 +67,11 @@ extension TrustManagementViewModel {
             return handshakeCombination.partnerIdentity.pEpColor()
         }
         var trustwords : String?
-
         //Prevents the overkill of require the trustwords when it's not necesary.
         fileprivate var shouldUpdateTrustwords : Bool = true
         fileprivate var forceRed: Bool = false
         /// The identity of the user to do the handshake
         fileprivate var handshakeCombination: TrustManagementUtil.HandshakeCombination
-
         fileprivate var fingerprint: String?
     }
 }
@@ -90,11 +87,6 @@ final class TrustManagementViewModel {
     }
     var shouldShowOptionsButton: Bool = false
     private var message: Message
-
-    private var session: Session {
-        return message.session
-    }
-
     private var trustManagementUtil : TrustManagementUtilProtocol?
     private let undoManager = UndoManager()
     private var actionPerformed = [String]()
