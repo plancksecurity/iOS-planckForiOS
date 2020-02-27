@@ -1,33 +1,3 @@
-/* Class = "UILabel"; text = "Sender"; ObjectID = "1c8-rl-2Ng"; */
-"1c8-rl-2Ng.text" = "Sender";
-
-/* Class = "UILabel"; text = "Date"; ObjectID = "bz8-dZ-9kk"; */
-"bz8-dZ-9kk.text" = "Date";
-
-/* Class = "UILabel"; text = "Sender"; ObjectID = "hki-aE-Mre"; */
-"hki-aE-Mre.text" = "Sender";
-
-/* Class = "UIBarButtonItem"; title = "p≡p"; ObjectID = "Kqn-gH-dsv"; */
-"Kqn-gH-dsv.title" = "p≡p";
-
-/* Class = "UILabel"; text = "See more"; ObjectID = "lDs-MI-bIw"; */
-"lDs-MI-bIw.text" = "See more";
-
-/* Class = "UILabel"; text = "Date"; ObjectID = "LiV-t9-n8p"; */
-"LiV-t9-n8p.text" = "Date";
-
-/* Class = "UITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do "; ObjectID = "SlN-yR-Ifs"; */
-"SlN-yR-Ifs.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do ";
-
-/* Class = "UILabel"; text = "Summary"; ObjectID = "tKI-X2-ryx"; */
-"tKI-X2-ryx.text" = "Summary";
-
 /* Class = "UILabel"; text = "To: "; ObjectID = "TKT-iA-rq1"; */
 "TKT-iA-rq1.text" = "To:";
-
-/* Class = "UILabel"; text = "Subject"; ObjectID = "Ux9-Hj-FDE"; */
-"Ux9-Hj-FDE.text" = "Subject";
-
-/* Class = "UILabel"; text = "Subject"; ObjectID = "YWw-6z-KdZ"; */
-"YWw-6z-KdZ.text" = "Subject";
 
