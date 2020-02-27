@@ -22,34 +22,34 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
 
-        someone = Identity(address: "someone@someone.someone")
+        someone = Identity(address: Constant.someone)
 
         // Folders
         let inbox = Folder(name: "Inbox", parent: nil, account: account, folderType: .inbox)
         inbox.save()
         self.inbox = inbox
-        let drafts = Folder(name: "Drafts", parent: inbox, account: account, folderType: .drafts)
+        let drafts = Folder(name: "Drafts", parent: nil, account: account, folderType: .drafts)
         drafts.save()
         self.drafts = drafts
         let outbox = Folder(name: "Outbox", parent: nil, account: account, folderType: .outbox)
         outbox.save()
         self.outbox = outbox
-        let msg = Message(uuid: UUID().uuidString, parentFolder: inbox)
-        msg.from = account.user
-        msg.replaceTo(with: [account.user, someone])
-        msg.replaceCc(with: [someone])
-        msg.shortMessage = "shortMessage"
-        msg.longMessage = "longMessage"
-        msg.longMessageFormatted = "longMessageFormatted"
-        msg.replaceAttachments(with: [Attachment(data: Data(),
-                                                 mimeType: "image/jpg",
-                                                 contentDisposition: .attachment)])
-        msg.appendToAttachments(Attachment(data: Data(),
-                                           mimeType: "image/jpg",
-                                           contentDisposition: .inline))
-        msg.save()
-        messageAllButBccSet = msg
+        let message = createMessage(inFolder: inbox,
+                                    from: account.user,
+                                    tos: [account.user, someone],
+                                    ccs: [someone],
+                                    bccs: [],
+                                    engineProccesed: false,
+                                    shortMessage: Constant.shortMessage,
+                                    longMessage: Constant.longMessage,
+                                    longMessageFormatted: Constant.longMessageFormattedHtml,
+                                    dateSent: Date(),
+                                    attachments: 0,
+                                    uid: nil)
 
+//        message.appendToAttachments(createTestAttachments())
+        message.save()
+        messageAllButBccSet = message
         someone.save()
     }
 
@@ -78,8 +78,8 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                                       toRecipients: expectedTo,
                                       ccRecipients: [],
                                       bccRecipients: [],
-                                      subject: " ",
-                                      bodyPlaintext: "",
+                                      subject: Constant.shortMessage,
+                                      bodyPlaintext: Constant.bodyPlainText,
                                       bodyHtml: nil,
                                       nonInlinedAttachments: [],
                                       inlinedAttachments: [])
@@ -99,8 +99,8 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                                       toRecipients: expectedTo,
                                       ccRecipients: [],
                                       bccRecipients: [],
-                                      subject: " ",
-                                      bodyPlaintext: "",
+                                      subject: Constant.shortMessage,
+                                      bodyPlaintext: Constant.bodyPlainText,
                                       bodyHtml: nil,
                                       nonInlinedAttachments: [],
                                       inlinedAttachments: [])
@@ -120,8 +120,8 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                                       toRecipients: expectedTo,
                                       ccRecipients: [],
                                       bccRecipients: [],
-                                      subject: " ",
-                                      bodyPlaintext: "",
+                                      subject: Constant.shortMessage,
+                                      bodyPlaintext: Constant.bodyPlainText,
                                       bodyHtml: nil,
                                       nonInlinedAttachments: [],
                                       inlinedAttachments: [])
@@ -139,8 +139,8 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                                       toRecipients: nil,
                                       ccRecipients: [],
                                       bccRecipients: [],
-                                      subject: " ",
-                                      bodyPlaintext: "",
+                                      subject: Constant.shortMessage,
+                                      bodyPlaintext: Constant.bodyPlainText,
                                       bodyHtml: nil,
                                       nonInlinedAttachments: [],
                                       inlinedAttachments: [])
@@ -163,8 +163,8 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                                       toRecipients: expectedTo,
                                       ccRecipients: [],
                                       bccRecipients: [],
-                                      subject: " ",
-                                      bodyPlaintext: "",
+                                      subject: Constant.shortMessage,
+                                      bodyPlaintext: Constant.bodyPlainText,
                                       bodyHtml: nil,
                                       nonInlinedAttachments: [],
                                       inlinedAttachments: [])
@@ -186,8 +186,8 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                                       toRecipients: expectedTo,
                                       ccRecipients: [],
                                       bccRecipients: [],
-                                      subject: " ",
-                                      bodyPlaintext: "",
+                                      subject: Constant.shortMessage,
+                                      bodyPlaintext: Constant.bodyPlainText,
                                       bodyHtml: nil,
                                       nonInlinedAttachments: [],
                                       inlinedAttachments: [])
@@ -228,10 +228,9 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
             XCTFail("No message")
             return
         }
-        let expectedHtmlBody: NSAttributedString? = nil
         assertComposeMode(mode,
                           originalMessage: originalMessage,
-                          expectedHtmlBody: expectedHtmlBody)
+                          expectedHtmlBody: nil)
     }
 
     func testComposeMode_fromInbox_forward() {
@@ -314,16 +313,14 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         guard
             let originalMessage = messageAllButBccSet,
             let outbox = outbox,
-            let origSubject = originalMessage.shortMessage,
-            let htmlBody =
-            originalMessage.longMessageFormatted?.htmlToAttributedString(attachmentDelegate: nil)
-            else {
+            let origSubject = originalMessage.shortMessage else {
                 XCTFail()
                 return
         }
         originalMessage.parent = outbox
         let expectedSubject = origSubject
-        let expectedHtmlBody = htmlBody
+        // Mode is normal in this case expectedHtmlBody should be nil
+        let expectedHtmlBody: NSAttributedString? = nil
         assertComposeMode(mode,
                           originalMessage: originalMessage,
                           expectedSubject: expectedSubject,
@@ -466,9 +463,9 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
 
     private func assertComposeMode(_ composeMode: ComposeUtil.ComposeMode,
                                    originalMessage: Message,
-                                   expectedSubject: String = " ",
-                                   expectedPlaintextBody: String = "",
-                                   expectedHtmlBody: NSAttributedString?) {
+                                   expectedSubject: String = Constant.shortMessage,
+                                   expectedPlaintextBody: String = Constant.bodyPlainText,
+                                   expectedHtmlBody: NSAttributedString? = nil) {
         let mode = composeMode
         testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
                                            orForOriginalMessage: originalMessage,
@@ -568,7 +565,11 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
             XCTAssertEqual(testee.bodyPlaintext, exp)
         }
         if let exp = bodyHtml {
-            XCTAssertEqual(testee.bodyHtml, exp)
+            guard let originalBodyHtml = testee.bodyHtml else {
+                XCTFail("No testee.bodyHtml")
+                return
+            }
+            XCTAssertEqual(originalBodyHtml, exp)
         }
         if let exp = nonInlinedAttachments {
             XCTAssertEqual(testee.nonInlinedAttachments, exp)
@@ -586,3 +587,87 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         }
     }
 }
+
+// MARK: - Mock data
+
+extension ComposeViewModel_InitDataTest {
+    private struct Constant {
+        static let someone = "someone@someone.someone"
+        static let shortMessage = " "
+        static let shortMessageReply = "Re:" + Constant.shortMessage
+        static let shortMessageForward = "Fwd:" + Constant.shortMessage
+        static let bodyPlainText = ""
+        static let bodyHtml = ""
+        static let longMessage = "longMessage"
+        static let longMessageFormatted = "Test"
+        static let longMessageFormattedHtml = "<html><p>Test</p></html>"
+        static let longMessageFormattedAttribString = NSAttributedString(string: Constant.longMessageFormatted)
+    }
+    private func getStandardJpgData() -> Data {
+        let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
+        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
+            XCTFail("imageData is nil!")
+            return Data()
+        }
+        return imageData
+    }
+    private func createTestAttachments(numAttachments: Int = 1,
+                                 data: Data? = nil,
+                                 mimeType: String = "test/mimeType",
+                                 fileName: String? = nil,
+                                 size: Int? = nil,
+                                 url: URL? = nil,
+                                 addImage: Bool = false,
+                                 assetUrl: URL? = nil,
+                                 contentDisposition: Attachment.ContentDispositionType = .inline)
+        -> [Attachment] {
+            var attachments = [Attachment]()
+            let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg" //IOS-1399: move to Utils
+            guard
+                let imageData = TestUtil.loadData(fileName: imageFileName),
+                let image = UIImage(data: imageData) else {
+                    XCTFail("No img")
+                    return []
+            }
+
+            for i in 0..<numAttachments {
+                attachments.append(Attachment(data: data,
+                                              mimeType: mimeType,
+                                              fileName: fileName == nil ? "\(i)" : fileName,
+                                              image: addImage ? image : nil,
+                                              assetUrl: assetUrl,
+                                              contentDisposition: contentDisposition))
+            }
+            return attachments
+    }
+    private func createMessage(inFolder folder: Folder,
+                              from: Identity,
+                              tos: [Identity] = [],
+                              ccs: [Identity] = [],
+                              bccs: [Identity] = [],
+                              engineProccesed: Bool = true,
+                              shortMessage: String = Constant.shortMessage,
+                              longMessage: String = Constant.longMessage,
+                              longMessageFormatted: String = Constant.longMessageFormatted,
+                              dateSent: Date = Date(),
+                              attachments: Int = 0,
+                              uid: Int? = nil) -> Message {
+        let msg: Message
+        if let uid = uid {
+            msg = Message(uuid: UUID().uuidString, uid: uid, parentFolder: folder)
+        } else {
+            msg = Message(uuid: UUID().uuidString, parentFolder: folder)
+        }
+        msg.from = from
+        msg.replaceTo(with: tos)
+        msg.replaceCc(with: ccs)
+        msg.replaceBcc(with: bccs)
+        msg.messageID = UUID().uuidString
+        msg.shortMessage = shortMessage
+        msg.longMessage = longMessage
+        msg.longMessageFormatted = longMessageFormatted
+        msg.sent = dateSent
+        return msg
+    }
+}
+
