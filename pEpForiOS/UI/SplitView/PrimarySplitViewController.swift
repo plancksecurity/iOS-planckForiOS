@@ -13,7 +13,7 @@ class PEPSplitViewController: UISplitViewController, UISplitViewControllerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.delegate = self
+        delegate = self
         preferredDisplayMode = .allVisible
     }
 
@@ -52,11 +52,13 @@ class PEPSplitViewController: UISplitViewController, UISplitViewControllerDelega
             return navigationController
     }
     
-    func splitViewController(_ splitViewController: UISplitViewController, showDetail vc: UIViewController, sender: Any?) -> Bool {
+    func splitViewController(_ splitViewController: UISplitViewController,
+                             showDetail vc: UIViewController, sender: Any?) -> Bool {
         if !onlySplitViewMasterIsShown {
             //apple docs say detailView will be always in the position 1 of the .viewcontrollers array
             let detail = 1
-            guard splitViewController.viewControllers.count == 2, let controller = splitViewController.viewControllers[detail] as? UINavigationController else {
+            guard splitViewController.viewControllers.count == 2,
+                let controller = splitViewController.viewControllers[detail] as? UINavigationController else {
                 return false
             }
             controller.viewControllers = [vc]

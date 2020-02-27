@@ -331,6 +331,16 @@ extension EmailDetailViewController {
         // Works around a UI glitch: When !onlySplitViewMasterIsShown, the colletionView scroll
         // position is inbetween two cells after orientation change.
         scrollToLastViewedCell()
+        //setButtonsPosition()
+    }
+    
+    private func setButtonsPosition(){
+        if !onlySplitViewMasterIsShown {
+            navigationItem.rightBarButtonItems = toolbarItems
+        } else {
+            toolbarItems = navigationItem.rightBarButtonItems
+            toolbarItems?.append(pEpIconSettingsButton)
+        }
     }
 
     private func setupToolbar() {
