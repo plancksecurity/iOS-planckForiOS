@@ -25,7 +25,6 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
 
         var loginNameSMTP: String?
 
-
         let accountSettings: TestDataBase.AccountSettings
         let expLookedUp: XCTestExpectation
 

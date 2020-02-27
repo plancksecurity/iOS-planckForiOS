@@ -101,15 +101,38 @@ extension TutorialWizardViewController {
         updateNavButton(lastScreen: false)
     }
 
+    //Staring point
     private func tutorialViewControllers() -> [TutorialViewController] {
         var result = [TutorialViewController]()
-        for tutorialImage in tutorialImages {
+        
+        for (index, tutorialImage) in tutorialImages.enumerated() {
             guard let tutorialViewController =
                 TutorialViewController.fromStoryboard(tutorialImage: tutorialImage) else {
                     continue
             }
             result.append(tutorialViewController)
+
         }
+//        for tutorialImage in tutorialImages {
+//            guard let tutorialViewController =
+//                TutorialViewController.fromStoryboard(tutorialImage: tutorialImage) else {
+//                    continue
+//            }
+//            result.append(tutorialViewController)
+//        }
         return result
+    }
+}
+
+
+extension TutorialViewController {
+    
+    private func assetName(step : Int) -> String {
+        let currentLanguageCode = Locale.current.languageCode ?? "en"
+        isL
+        "pEpForIOS-Tutorial-portrait-\(1)-\(currentLanguageCode)"
+        
+//        pEpForIOS-Tutorial-portrait-1-en
+        return ""
     }
 }

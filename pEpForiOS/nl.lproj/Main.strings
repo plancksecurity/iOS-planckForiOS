@@ -1,0 +1,39 @@
+/* Class = "UIBarButtonItem"; title = "Edit"; ObjectID = "4U1-dM-wKT"; */
+"4U1-dM-wKT.title" = "Aanpassen";
+
+/* Class = "UILabel"; text = "Date"; ObjectID = "a1D-BW-3Rd"; */
+"a1D-BW-3Rd.text" = "Datum";
+
+/* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "aP4-ia-HTP"; */
+"aP4-ia-HTP.title" = "Postvak in";
+
+/* Class = "UILabel"; text = "To:"; ObjectID = "Bd2-Nr-sTF"; */
+"Bd2-Nr-sTF.text" = "Aan:";
+
+/* Class = "UILabel"; text = "Subject"; ObjectID = "ha5-Vd-x3U"; */
+"ha5-Vd-x3U.text" = "Onderwerp";
+
+/* Class = "UILabel"; text = "Sender"; ObjectID = "hnw-Tp-mga"; */
+"hnw-Tp-mga.text" = "Verzender";
+
+/* Class = "UILabel"; text = "Sender"; ObjectID = "KTi-T9-Inm"; */
+"KTi-T9-Inm.text" = "Verzender";
+
+/* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "NoQ-uw-dGp"; */
+"NoQ-uw-dGp.title" = "Annuleren";
+
+/* Class = "UILabel"; text = "Subject:"; ObjectID = "NTc-GH-Ell"; */
+"NTc-GH-Ell.text" = "Onderwerp:";
+
+/* Class = "UILabel"; text = "From:"; ObjectID = "pkd-ua-DYh"; */
+"pkd-ua-DYh.text" = "Van:";
+
+/* Class = "UILabel"; text = "Date"; ObjectID = "Swb-L2-8yp"; */
+"Swb-L2-8yp.text" = "Datum";
+
+/* Class = "UILabel"; text = "Subject"; ObjectID = "xrz-WN-2Dg"; */
+"xrz-WN-2Dg.text" = "Onderwerp";
+
+/* Class = "UIBarButtonItem"; title = "Send"; ObjectID = "yQg-rY-YPK"; */
+"yQg-rY-YPK.title" = "Verzenden";
+

@@ -1,0 +1,26 @@
+{
+  "images" : [
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure&trusted-disabled-english.pdf"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure&trusted-disabled-english-1.pdf",
+      "locale" : "de"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure&trusted-disabled-english-2.pdf",
+      "locale" : "en"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  },
+  "properties" : {
+    "preserves-vector-representation" : true,
+    "localizable" : true
+  }
+}

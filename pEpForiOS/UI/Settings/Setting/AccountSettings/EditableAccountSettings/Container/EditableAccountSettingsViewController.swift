@@ -18,6 +18,7 @@ final class EditableAccountSettingsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setUp()
         viewModel?.delegate = self
     }
 
@@ -51,6 +52,18 @@ final class EditableAccountSettingsViewController: BaseViewController {
         default:
             break
         }
+    }
+}
+
+// MARK: - Private
+
+extension EditableAccountSettingsViewController {
+    private struct Localized {
+        static let navigationTitle = NSLocalizedString("Account",
+                                                       comment: "Account settings")
+    }
+    private func setUp() {
+        title = Localized.navigationTitle
     }
 }
 

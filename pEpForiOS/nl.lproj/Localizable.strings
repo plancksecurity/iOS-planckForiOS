@@ -1,0 +1,227 @@
+/* KeySyncWizard introduction message */
+"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?";
+
+/* Tableview section  header: Accounts */
+"Accounts" = "Accounts";
+
+/* Name of unified inbox (showing messages of all accoounts */
+"All" = "Alle";
+
+/* KeySyncWizard introduction message */
+"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?";
+
+/* Archive button in slide-left menu */
+"Archive" = "Archief";
+
+/* title attachments filter cell */
+"Attachments" = "Bijlagen";
+
+/* Cancel button title for manual account IMAP setup
+   Cancel button title for manual account SMTP setup */
+"Back" = "Back";
+
+/* Privacy status title */
+"Broken" = "Gebroken";
+
+/* alert action 3
+   Alert cancel button title before trusting an account
+   Cancel button title for manual account setup
+   Cancel button title of pEp protection toggle action sheet
+   Cancel for an alert view
+   Cancel in button in Login View
+   Cancel reset account identity button title
+   Cancel title button
+   compose email cancel
+   Default cancel button text
+   EmailList action title
+   keysync alert leave device group cancel
+   keySyncWizard animation view cancel button title
+   Message actions
+   MoveToFolderViewController NavigationBar canel button title
+   UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
+"Cancel" = "Annuleren";
+
+/* Privacy status title */
+"Cannot Decrypt" = "Kan niet decoderen";
+
+/* Compose field title */
+"CC:" = "CC:";
+
+/* Confirm correct trustwords (pEp, long version) */
+"Confirm Trustwords" = "Bevestig Trustwords";
+
+/* Settings: Cell (button) title to view app credits */
+"Credits" = "Credits";
+
+/* Account delete
+   compose email delete
+   ComposeTableView: button to decide to delete a message from Outbox after making changes.
+   Delete account button title
+   swipe delete ExtraKey action title */
+"Delete" = "Verwijderen";
+
+/* keysync alert leave device group disable */
+"Disable" = "Uitzetten";
+
+/* enable p≡p Sync with other devices in the group */
+"Enable p≡p Sync" = "Enable p≡p Sync";
+
+/* Finish button title for manual account SMTP setup
+   Start up tutorial finish button */
+"Finish" = "Finish";
+
+/* FoldersView */
+"Folders" = "Mappen";
+
+/* EmailList action title
+   Message actions */
+"Forward" = "Doorsturen";
+
+/* Compose field title
+   Title of account picker when composing a message */
+"From:" = "Van:";
+
+/* possible privacy status action */
+"Handshake" = "Handshake";
+
+/* Title for manual account IMAP setup */
+"IMAP" = "IMAP";
+
+/* Name of INBOX mailbox (of one account) */
+"Inbox" = "Postvak in";
+
+/* Manual Setup button in Login View */
+"Manual setup" = "Handmatige setup";
+
+/* EmailList action title */
+"Mark as Read" = "Markeer als gelezen";
+
+/* Privacy status title
+   privacyStatusTitle red */
+"Mistrusted" = "Niet vertouwd";
+
+/* File name used for videos the user attaches. */
+"Movie" = "Verplaatsen";
+
+/* keySyncWizard intro view Next button title
+   Next button title for manual account IMAP setup
+   Next button title for manual account setup */
+"Next" = "Volgende";
+
+/* privacyStatusDescription no_color
+   privacyStatusTitle no_color */
+"None" = "Geen";
+
+/* keySyncWizard intro view Not Now button title
+   not now button */
+"Not Now" = "Not Now";
+
+/* Default positive button text
+   Filter accept text
+   General alert positive button
+   keySyncWizard completion view OK button title
+   OK button for invalid accout settings user input alert
+   UIAlertAction ok after error */
+"OK" = "OK";
+
+/* Name of outbox (showing messages to send */
+"Outbox" = "Postvak uit";
+
+/* keySync handshake alert title
+   keySyncWizard animation view title
+   Settings: enable/disable p≡p Sync feature */
+"p≡p Sync" = "p≡p Sync";
+
+/* Password placeholder for manual account setup
+   Password TextField Placeholder in Login Screen */
+"Password" = "Wachtwoord";
+
+/* keySync handshake alert message for two devices in group */
+"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?";
+
+/* Port placeholder for manual account IMAP setup
+   Port placeholder for manual account SMTP setup */
+"Port" = "Port";
+
+/* action sheet title 1 */
+"Privacy Status" = "Privacy Status";
+
+/* ComposeTableView: Label of swipe left. Removing of attachment. */
+"Remove" = "Verwijder";
+
+/* EmailList action title
+   Message actions
+   read button in slide-left menu */
+"Reply" = "Beantwoorden";
+
+/* EmailList action title
+   Message actions */
+"Reply All" = "Allen beantwoorden";
+
+/* Account settings confirm to reset identity title alert
+   Account settings reset identity
+   Reset account identity button title
+   Settings: cell (button) title to view the trust contacts option */
+"Reset" = "Reset";
+
+/* Privacy status title
+   privacyStatusTitle yellow */
+"Secure" = "Veilig";
+
+/* Settings view title */
+"Settings" = "Instellingen";
+
+/* Compose field title */
+"Subject:" = "Onderwerp:";
+
+/* Privacy status explanation */
+"This message cannot be decrypted because the key is not available." = "Dit bericht kan niet gedecodeerd worden, omdat de sleutel niet beschikbaar is.";
+
+/* Privacy status explanation */
+"This message does not contain enough information to determine if it is secure." = "Dit bericht bevat onvoldoende informatie om te bevestigen dat het veilig is.";
+
+/* Privacy status explanation */
+"This message has unreliable protection" = "Dit bericht heeft onbetrouwbare bescherming.";
+
+/* Privacy status explanation */
+"This message is not secure and has been tampered with." = "Dit bericht is niet veilig en gemanipuleerd. ";
+
+/* Privacy status explanation */
+"This message is secure and trusted." = "Dit bericht is veilig en vertrouwd.";
+
+/* Privacy status explanation */
+"This message is secure but you still need to verify the identity of your communication partner." = "Het bericht is veilig maar u moet de identiteit van uw communicatiepartner nog bevestigen.";
+
+/* Privacy status explanation */
+"This message is unsecure for some communication partners." = "Dit bericht is onveilig voor sommige communicatiepartners.";
+
+/* Privacy status explanation */
+"This message is unsecure." = "Dit bericht is onveilig.";
+
+/* Compose field title */
+"To:" = "Aan:";
+
+/* Compose field title */
+"To: " = "Aan:";
+
+/* Trash button in slide-left menu */
+"Trash" = "Prullenbak";
+
+/* Privacy status title */
+"Under Attack" = "Aangevallen";
+
+/* Privacy status title */
+"Unknown" = "Onbekend";
+
+/* Privacy status title */
+"Unreliable Security" = "Onbetrouwbare Beveiliging.";
+
+/* Privacy status title */
+"Unsecure" = "Onveilig";
+
+/* Privacy status title */
+"Unsecure for Some" = "Onveilig voor sommige";
+
+/* Incorrect trustwords (pEp, long version) */
+"Wrong Trustwords" = "Verkeerde Trustwords";
+

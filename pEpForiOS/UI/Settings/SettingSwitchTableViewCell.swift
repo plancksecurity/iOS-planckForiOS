@@ -8,28 +8,20 @@
 
 import UIKit
 
+protocol SwitchCellDelegate: class {
+    func switchSettingCell(_ sender: SettingSwitchTableViewCell, didChangeSwitchStateTo newValue: Bool)
+}
+
 /// Base ViewController for settings that can be switched on/off
 class SettingSwitchTableViewCell: UITableViewCell {
+    
     @IBOutlet weak var switchItem : UISwitch!
     /// Short description shown to the user in front of the switch.
     @IBOutlet weak var switchDescription: UILabel!
 
-    var viewModel: SwitchSettingCellViewModelProtocol?
+    weak var delegate: SwitchCellDelegate?
 
     @IBAction func switchChanged(_ sender: Any) {
-        if let vm = viewModel {
-            vm.setSwitch(value: switchItem.isOn)
-        }
-    }
-
-    func setUpView() {
-        self.switchDescription.text = viewModel?.title
-        setSwitchValue()
-    }
-
-    func setSwitchValue() {
-        if let vm = viewModel {
-            switchItem.setOn(vm.switchValue, animated: false)
-        }
+        delegate?.switchSettingCell(self, didChangeSwitchStateTo: switchItem.isOn)
     }
 }
