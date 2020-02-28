@@ -129,6 +129,7 @@ final class TrustManagementViewModel {
         rows[indexPath.row].fingerprint = trustManagementViewModel.getFingerprint(for: identity)
         rows[indexPath.row].forceRed = true
         trustManagementViewModel.denyTrust(for: identity)
+        reevaluateMessage()
         delegate?.reload()
     }
     
@@ -146,6 +147,7 @@ final class TrustManagementViewModel {
         rows[indexPath.row].forceRed = false
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
         trustManagementViewModel.confirmTrust(for: identity)
+        reevaluateMessage()
         delegate?.reload()
     }
     
@@ -163,6 +165,7 @@ final class TrustManagementViewModel {
         rows[indexPath.row].forceRed = false
         trustManagementViewModel.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,
                                                       fingerprint: row.fingerprint)
+        reevaluateMessage()
     }
     
     /// Handles the redey action
@@ -175,6 +178,7 @@ final class TrustManagementViewModel {
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
         trustManagementViewModel.resetTrust(for: row.handshakeCombination.partnerIdentity)
+        reevaluateMessage()
         delegate?.reload()
     }
 
@@ -297,6 +301,18 @@ final class TrustManagementViewModel {
     }
 
     ///MARK: - Private
+
+    /// This must be called after every trust state change. The curently processed message might
+    /// change color.
+    private func reevaluateMessage() {
+        message.session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.error("Lost myself - The message will not be reevaluated")
+                return
+            }
+            RatingReEvaluator.reevaluate(message: me.message)
+        }
+    }
 
     /// Method that generates the rows to be used by the VC
     private func generateRows() {
