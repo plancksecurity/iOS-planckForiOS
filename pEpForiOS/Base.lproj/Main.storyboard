@@ -324,12 +324,12 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="x3Y-Mc-0bu">
                         <leftBarButtonItems>
-                            <barButtonItem image="chevron-icon-up" id="icA-8s-JIg" userLabel="previous">
+                            <barButtonItem id="icA-8s-JIg" userLabel="previous">
                                 <connections>
                                     <action selector="previousButtonPressed:" destination="fRo-D2-Fjz" id="T7l-k1-fbw"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="chevron-icon-down" id="Lee-9l-s9y" userLabel="next">
+                            <barButtonItem id="Lee-9l-s9y" userLabel="next">
                                 <connections>
                                     <action selector="nextButtonPressed:" destination="fRo-D2-Fjz" id="2j3-S3-wMK"/>
                                 </connections>
@@ -459,13 +459,13 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnw-Tp-mga">
-                                            <rect key="frame" x="20" y="11" width="331" height="33"/>
+                                            <rect key="frame" x="20" y="11" width="331" height="33.5"/>
                                             <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: Recipients" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mfx-AS-hpP">
-                                            <rect key="frame" x="20" y="50" width="331" height="16"/>
+                                            <rect key="frame" x="20" y="50.5" width="331" height="15.5"/>
                                             <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                             <color key="textColor" red="0.5490196078431373" green="0.5490196078431373" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -1007,10 +1007,8 @@
     </scenes>
     <resources>
         <image name="attachment-list-icon" width="14" height="15"/>
-        <image name="chevron-icon-down" width="18" height="10"/>
         <image name="chevron-icon-left" width="10" height="18"/>
         <image name="chevron-icon-right" width="10" height="18"/>
-        <image name="chevron-icon-up" width="18" height="10"/>
         <image name="compose" width="33" height="64"/>
         <image name="empty-avatar" width="150" height="150"/>
         <image name="pEp-status-yellow_white-border" width="21" height="21"/>
@@ -1025,8 +1023,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="g1q-wK-tff"/>
         <segue reference="Gcx-48-ZRF"/>
-        <segue reference="ok6-PZ-sCI"/>
-        <segue reference="r2P-Ra-zWf"/>
         <segue reference="0Yg-lj-kVR"/>
         <segue reference="HHz-at-Ehg"/>
     </inferredMetricsTieBreakers>
