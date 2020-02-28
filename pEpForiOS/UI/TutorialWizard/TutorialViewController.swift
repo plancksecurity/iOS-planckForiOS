@@ -34,7 +34,13 @@ class TutorialViewController: UIViewController {
         tutorialViewController.landscapeImage = tutorialImage.landscape
         return tutorialViewController
     }
-
+    
+    ///MB
+    static func fromStoryboard(step : Int) -> UIViewController? {
+        let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
+        return storyboard.instantiateViewController(withIdentifier: "TutorialStep\(step)ViewController")
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setUpViews()

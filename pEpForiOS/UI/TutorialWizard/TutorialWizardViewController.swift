@@ -102,37 +102,25 @@ extension TutorialWizardViewController {
     }
 
     //Staring point
-    private func tutorialViewControllers() -> [TutorialViewController] {
-        var result = [TutorialViewController]()
+    private func tutorialViewControllers() -> [UIViewController] {
+        var result = [UIViewController]()
         
-        for (index, tutorialImage) in tutorialImages.enumerated() {
+        for (step, tutorialImage) in tutorialImages.enumerated() {
             guard let tutorialViewController =
                 TutorialViewController.fromStoryboard(tutorialImage: tutorialImage) else {
                     continue
             }
             result.append(tutorialViewController)
+            
+            if step == 0 {
+                guard let stepViewController = TutorialViewController.fromStoryboard(step: step) else {
+                    Log.shared.errorAndCrash("Can't instanciate VC")
+                    return [UIViewController]()
+                }
+                result.append(stepViewController)
+            }
 
         }
-//        for tutorialImage in tutorialImages {
-//            guard let tutorialViewController =
-//                TutorialViewController.fromStoryboard(tutorialImage: tutorialImage) else {
-//                    continue
-//            }
-//            result.append(tutorialViewController)
-//        }
         return result
-    }
-}
-
-
-extension TutorialViewController {
-    
-    private func assetName(step : Int) -> String {
-        let currentLanguageCode = Locale.current.languageCode ?? "en"
-        isL
-        "pEpForIOS-Tutorial-portrait-\(1)-\(currentLanguageCode)"
-        
-//        pEpForIOS-Tutorial-portrait-1-en
-        return ""
     }
 }
