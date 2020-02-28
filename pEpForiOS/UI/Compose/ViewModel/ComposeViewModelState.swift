@@ -239,13 +239,13 @@ extension ComposeViewModel.ComposeViewModelState {
         return !handshakeActionCombinations().isEmpty
     }
 
-    private func handshakeActionCombinations() -> [HandshakeCombination] {
+    private func handshakeActionCombinations() -> [TrustManagementUtil.HandshakeCombination] {
         if let from = from {
             var allIdenties = toRecipients
             allIdenties.append(from)
             allIdenties.append(contentsOf: ccRecipients)
             allIdenties.append(contentsOf: bccRecipients)
-            return Message.handshakeActionCombinations(identities: allIdenties)
+            return TrustManagementUtil().handshakeCombinations(identities: allIdenties)
         } else {
             return []
         }

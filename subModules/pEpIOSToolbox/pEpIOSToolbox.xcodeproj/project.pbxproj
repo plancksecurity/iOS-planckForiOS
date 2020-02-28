@@ -227,6 +227,8 @@
 		B70A3A5322005B9600EDCE61 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				5B4B1BE223FC3E1E009C350C /* UILabel+Font.swift */,
+				5B4B1BE123FC3E1E009C350C /* UITextView+Font.swift */,
 				5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */,
 				155528C323A797DC008486DF /* UIView+Autolayout.swift */,
 				1505C5142316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift */,
@@ -467,11 +469,13 @@
 				370DB3CF22804A3600BC929A /* NSSecureCoding+Extension.swift in Sources */,
 				B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */,
 				B7465DBE22119D3A008A1708 /* Thread+Extension.swift in Sources */,
+				5B4B1BE323FC3E1E009C350C /* UITextView+Font.swift in Sources */,
 				37904564223FA486006DAB3B /* NetworkReachability.swift in Sources */,
 				B7A46C52220C732E0027CCB5 /* Data+Extensions.swift in Sources */,
 				154944CF229A97AA00CC6431 /* SelfReferencingOperation.swift in Sources */,
 				B7465DE32211C890008A1708 /* CGImageSource+Extension.swift in Sources */,
 				B7E9D25423561D370074F067 /* UiSplitViewController+DisplayMode.swift in Sources */,
+				5B4B1BE423FC3E1E009C350C /* UILabel+Font.swift in Sources */,
 				B7465DE12211C6E9008A1708 /* UIImage+GIF.swift in Sources */,
 				B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */,
 			);
