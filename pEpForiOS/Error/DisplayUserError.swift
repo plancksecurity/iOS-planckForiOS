@@ -105,6 +105,8 @@ struct DisplayUserError: LocalizedError {
                 break
             case .badResponse(_):
                 break
+            case .sslPeerCertUnknown:
+                break
             }
         } else if let imapError = error as? ImapSyncOperationError {
             type = DisplayUserError.type(forError: imapError)
@@ -179,6 +181,8 @@ struct DisplayUserError: LocalizedError {
             return .brokenServerConnectionSmtp
         case .badResponse:
             return .internalError
+        case .sslPeerCertUnknown:
+            return .clientCertificateError
         }
     }
 
