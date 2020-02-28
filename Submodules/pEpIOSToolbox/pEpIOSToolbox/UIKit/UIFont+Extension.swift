@@ -50,6 +50,8 @@ extension UIFont {
     /// - Parameter systemDynamicFont: system font with specified Text Style
     public static func pEpPreferredFontTypeFace(systemDynamicFont: UIFont) -> UIFont {
         guard let textStyle = systemDynamicFont.fontDescriptor.object(forKey: UIFontDescriptor.AttributeName.textStyle) as? String else {
+            Log.shared.error("Missing UIFont.TextStyle")
+            return systemDynamicFont
                 Log.shared.error("Missing UIFont.TextStyle")
                 return systemDynamicFont
         }
@@ -57,7 +59,7 @@ extension UIFont {
         return UIFont.pepFont(style: UIFont.TextStyle.init(rawValue: textStyle),
                               weight: .regular)
     }
-    
+
     private static func preferredFontSize(for textStyle: TextStyle) -> CGFloat {
         return UIFont.preferredFont(forTextStyle: textStyle).pointSize
     }
