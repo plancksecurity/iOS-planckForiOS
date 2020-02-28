@@ -200,8 +200,6 @@ extension EmailViewController: MessageContentCellDelegate {
     }
 }
 
-// MARK: - Orientation Change Handling
-
 extension EmailViewController {
 
     override func viewWillTransition(to size: CGSize,

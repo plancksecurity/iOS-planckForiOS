@@ -211,12 +211,12 @@ extension EmailDetailViewController {
     }
 
     @objc
-    private func showHandshakeView(gestureRecognizer: UITapGestureRecognizer? = nil) {
+    private func showTrustManagementView(gestureRecognizer: UITapGestureRecognizer? = nil) {
         if onlySplitViewMasterIsShown {
-            performSegue(withIdentifier: .segueHandshakeCollapsed, sender: self)
+            performSegue(withIdentifier: .segueTrustManagementCollapsed, sender: self)
 
         } else {
-            performSegue(withIdentifier: .segueHandshake, sender: self)
+            performSegue(withIdentifier: .segueTrustManagement, sender: self)
         }
     }
 
@@ -322,7 +322,7 @@ extension EmailDetailViewController {
 
         if vm.shouldShowPrivacyStatus(forItemAt: indexPath) {
             let tapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                              action: #selector(showHandshakeView(gestureRecognizer:)))
+                                                              action: #selector(showTrustManagementView(gestureRecognizer:)))
             ratingView.addGestureRecognizer(tapGestureRecognizer)
         }
     }
@@ -346,16 +346,66 @@ extension EmailDetailViewController {
         emailSubViewControllers = emailSubViewControllers.filter { $0.view.superview != nil }
     }
 
-    private func showHandshakeViewAction() -> UIAlertAction? {
-        let action = UIAlertAction(title: NSLocalizedString("Privacy Status",
-                                                            comment: "action sheet title 1"),
+    @objc
+    private func showPepActions(sender: UIBarButtonItem) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        guard let indexPath = indexPathOfCurrentlyVisibleCell else {
+            Log.shared.errorAndCrash("Nothing shown?")
+            return
+        }
+
+        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+
+        if vm.shouldShowPrivacyStatus(forItemAt:indexPath) {
+            actionSheetController.addAction(showTrustManagementViewAction())
+        }
+        actionSheetController.addAction(tutorialAction())
+        actionSheetController.addAction(showSettingsAction())
+
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("Cancel", comment: "possible private status action"),
+            style: .cancel) { (action) in }
+        actionSheetController.addAction(cancelAction)
+
+        if splitViewController != nil, !onlySplitViewMasterIsShown {
+            actionSheetController.popoverPresentationController?.barButtonItem = sender
+        }
+        present(actionSheetController, animated: true)
+    }
+
+    private func showSettingsAction() -> UIAlertAction {
+        let action = UIAlertAction(
+            title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
+            style: .default) { [weak self] (action) in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "lost myself")
+                    return
+                }
+                me.showSettingsViewController()
+        }
+        return action
+    }
+
+    private func tutorialAction() -> UIAlertAction{
+        return UIAlertAction(
+            title: NSLocalizedString("Tutorial", comment: "show tutorial from compose view"),
+            style: .default) { _ in
+                TutorialWizardViewController.presentTutorialWizard(viewController: self)
+        }
+    }
+
+    private func showTrustManagementViewAction() -> UIAlertAction {
+        let action = UIAlertAction(title: NSLocalizedString("Privacy Status", comment: "action sheet title 1"),
                                    style: .default) { [weak self] (action) in
                                     guard let me = self else {
                                         Log.shared.errorAndCrash(message: "lost myself")
                                         return
                                     }
-                                    me.showHandshakeView()
-        }
+                                    me.showTrustManagementView()
+        }      
         return action
     }
 
@@ -497,8 +547,8 @@ extension EmailDetailViewController: SegueHandlerType {
         case segueReplyFrom
         case segueReplyAllForm
         case segueForward
-        case segueHandshake
-        case segueHandshakeCollapsed
+        case segueTrustManagement
+        case segueTrustManagementCollapsed
         case segueShowMoveToFolder
         case noSegue
     }
@@ -543,17 +593,15 @@ extension EmailDetailViewController: SegueHandlerType {
             }
             destination.appConfig = appConfig
             destination.viewModel = viewModel?.getMoveToFolderViewModel(forMessageRepresentedByItemAt: indexPath)
-        case .segueHandshake, .segueHandshakeCollapsed:
+        case .segueTrustManagement, .segueTrustManagementCollapsed:
             guard let nv = segue.destination as? UINavigationController,
-                let vc = nv.topViewController as? HandshakeViewController else {
-                    Log.shared.errorAndCrash("No DVC?")
+                let vc = nv.topViewController as? TrustManagementViewController ,
+                let trustManagementViewModel = viewModel?.trustManagementViewModel else {
+                    Log.shared.errorAndCrash("No DVC, No trustManagementViewModel?")
                     break
             }
 
-            guard let message = vm.message(representedByRowAt: indexPath) else {
-                Log.shared.errorAndCrash("No message")
-                return
-            }
+            nv.modalPresentationStyle = .fullScreen
 
             //as we need a view to be source of the popover and title view is not always present.
             //we directly use the navigation bar view.
@@ -563,8 +611,10 @@ extension EmailDetailViewController: SegueHandlerType {
                                                                   y: nv.view.bounds.midY,
                                                                   width: 0,
                                                                   height: 0)
+            
             vc.appConfig = appConfig
-            vc.message = message
+            vc.viewModel = trustManagementViewModel
+
             break
         case .noSegue:
             break
