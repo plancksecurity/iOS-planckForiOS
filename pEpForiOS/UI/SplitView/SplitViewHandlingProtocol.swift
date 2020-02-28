@@ -10,11 +10,13 @@ import Foundation
 
 /// Protocol that split View will use to communicate when something will hapen
 protocol SplitViewHandlingProtocol {
-    /// <#Description#>
-    /// - Parameter newStatus: <#newStatus description#>
+    /// method called when the split view will change the display status
+    /// - Parameter newStatus: the new status
+    /// - Parameter SplitViewController: the splitview itself
     func splitViewControllerWill(SplitViewController: PEPSplitViewController, newStatus: SplitViewStatus)
 }
 
+/// enum that will be used by splitViewHandling to communicate the dufferent status
 public enum SplitViewStatus {
     case collapse
     case separate
