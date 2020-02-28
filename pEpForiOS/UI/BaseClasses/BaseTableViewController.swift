@@ -150,6 +150,8 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                 break
             case .actionFailed:
                 break
+            case .sslPeerCertUnknown:
+                break
             }
         }
         let showed = appConfig.showedAccountsError[extraInfo]
