@@ -32,6 +32,12 @@ class EmailDetailViewController: BaseViewController {
     @IBOutlet weak var pEpIconSettingsButton: UIBarButtonItem!
     @IBOutlet weak var moveToFolderButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
+    private var pEpButtonHelper = UIBarButtonItem.getPEPButton(action: #selector(showSettingsViewController), target: self)
+    
+    /// The original navigatio bar
+    var NavigationRightBar: [UIBarButtonItem]?
+    /// tne original toolbar
+    var ToolBar: [UIBarButtonItem]?
 
     /// IndexPath to show on load
     var firstItemToShow: IndexPath?
@@ -150,10 +156,12 @@ class EmailDetailViewController: BaseViewController {
         showSettingsViewController()
     }
 
+    @objc
     @IBAction func previousButtonPressed(_ sender: UIBarButtonItem) {
         showPreviousIfAny()
     }
     
+    @objc
     @IBAction func nextButtonPressed(_ sender: UIBarButtonItem) {
         showNextIfAny()
     }
@@ -331,15 +339,12 @@ extension EmailDetailViewController {
         // Works around a UI glitch: When !onlySplitViewMasterIsShown, the colletionView scroll
         // position is inbetween two cells after orientation change.
         scrollToLastViewedCell()
-        //setButtonsPosition()
     }
     
     private func setButtonsPosition(){
         if !onlySplitViewMasterIsShown {
+            toolbarItems?.removeAll(where: { $0 == pEpIconSettingsButton })
             navigationItem.rightBarButtonItems = toolbarItems
-        } else {
-            toolbarItems = navigationItem.rightBarButtonItems
-            toolbarItems?.append(pEpIconSettingsButton)
         }
     }
 
@@ -761,5 +766,34 @@ extension EmailDetailViewController: QLPreviewControllerDataSource {
             fatalError("Could not load URL")
         }
         return url as QLPreviewItem
+    }
+}
+
+// MARK: - SplitView handling
+
+extension EmailDetailViewController: SplitViewHandlingProtocol {
+    func splitViewControllerWill(SplitViewController: PEPSplitViewController, newStatus: SplitViewStatus) {
+        switch newStatus {
+        case .collapse:
+            // when splitview will collapse toolbar shoud be prepared
+            var newToolbarItems = navigationItem.rightBarButtonItems
+            navigationItem.rightBarButtonItems = nil
+            if let pepButton = pEpIconSettingsButton {
+                newToolbarItems?.append(pepButton)
+            } else {
+                newToolbarItems?.append(pEpButtonHelper)
+            }
+            let next = UIBarButtonItem.getNextButton(action: #selector(nextButtonPressed), target: self)
+            let previous = UIBarButtonItem.getPreviousButton(action: #selector(previousButtonPressed), target: self)
+            previous.isEnabled = thereIsAPreviousMessageToShow
+            next.isEnabled = thereIsANextMessageToShow
+            setToolbarItems(newToolbarItems, animated: true)
+            navigationItem.rightBarButtonItems = [previous, next]
+        case .separate:
+            //when separate will happens navbar should be prepared
+            toolbarItems?.removeAll(where: { $0 == pEpIconSettingsButton })
+            toolbarItems?.removeAll(where: { $0 == pEpButtonHelper })
+            navigationItem.rightBarButtonItems = toolbarItems
+        }
     }
 }

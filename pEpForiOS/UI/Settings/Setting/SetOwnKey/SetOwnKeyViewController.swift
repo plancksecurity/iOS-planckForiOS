@@ -37,6 +37,7 @@ class SetOwnKeyViewController: UIViewController {
         super.viewWillAppear(animated)
         showNavigationBar()
         errorTextField.text = nil
+        title = NSLocalizedString("Set Own Key", comment: "Set Own Key title")
     }
 
     // MARK: - Actions
