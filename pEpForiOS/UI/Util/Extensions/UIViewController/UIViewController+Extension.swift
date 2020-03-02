@@ -10,6 +10,13 @@ import UIKit
 import PEPObjCAdapterFramework
 
 extension UIViewController {
+    var isIpad : Bool {
+        return UIDevice.current.userInterfaceIdiom == .pad
+    }
+    
+    var isLandscape: Bool {
+        return UIDevice.current.orientation.isLandscape
+    }
     var isModalViewCurrentlyShown: Bool {
         return presentedViewController != nil
     }
@@ -32,8 +39,7 @@ extension UIViewController {
         return titleView
     }
 
-    private func navigationItemTitleView(pEpRating: PEPRating?,
-                                         pEpProtection: Bool = true) -> UIView? {
+    private func navigationItemTitleView(pEpRating: PEPRating?, pEpProtection: Bool = true) -> UIView? {
         if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
             // according to apple's design guidelines ('Hit Targets'):
             // https://developer.apple.com/design/tips/

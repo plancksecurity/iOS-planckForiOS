@@ -45,6 +45,8 @@ extension Date {
 
     public func fullString() -> String {
         let formatter = DateFormatter()
+        formatter.locale = Locale.autoupdatingCurrent
+        formatter.doesRelativeDateFormatting = true
         formatter.dateStyle = .short
         formatter.timeStyle = .short
         return formatter.string(from: self)

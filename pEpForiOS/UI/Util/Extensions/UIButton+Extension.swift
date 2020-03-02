@@ -19,10 +19,18 @@ extension UIButton {
 
         self.backgroundColor = backgroundColor
         setTitleColor(textColor, for: .normal)
-        layer.cornerRadius = 2
-        let insetV: CGFloat = 15
-        let insetH: CGFloat = 15
-        contentEdgeInsets = UIEdgeInsets(top: insetV, left: insetH, bottom: insetV, right: insetH)
+
+        layer.cornerRadius = 10
+        clipsToBounds = true
+
+        let insetPlusHorizontal: CGFloat = 20
+        let insetPlusVertical: CGFloat = 10
+        var insets = contentEdgeInsets
+        insets.left = insets.left + insetPlusHorizontal
+        insets.right = insets.right + insetPlusHorizontal
+        insets.top = insets.top + insetPlusVertical
+        insets.bottom = insets.bottom + insetPlusVertical
+        contentEdgeInsets = insets
     }
 
     public func convertToLoginButton(placeholder: String) {
@@ -39,9 +47,6 @@ extension UIButton {
         let actSize = bounds.size
         return iSize.width < actSize.width
     }
-}
-
-public class HandshakeButton: UIButton {
 
     public func roundCorners(corners: UIRectCorner, radius: CGFloat){
         clipsToBounds = true
@@ -55,5 +60,18 @@ public class HandshakeButton: UIButton {
         maskLayer.path = maskPath.cgPath
 
         layer.mask = maskLayer
+    }
+    
+    static func backButton(with text: String) -> UIButton {
+        let img2 = UIImage(named: "arrow-rgt-active")
+        let tintedimage = img2?.withRenderingMode(.alwaysTemplate)
+        let buttonLeft = UIButton(type: UIButton.ButtonType.custom)
+        buttonLeft.setImage(tintedimage, for: .normal)
+        buttonLeft.imageView?.contentMode = .scaleToFill
+        buttonLeft.imageView?.tintColor = UIColor.pEpGreen
+        buttonLeft.setTitle(text, for: .normal)
+        buttonLeft.tintColor = UIColor.pEpGreen
+        buttonLeft.setTitleColor(UIColor.pEpGreen, for: .normal)
+        return buttonLeft
     }
 }

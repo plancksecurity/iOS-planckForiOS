@@ -21,11 +21,12 @@ class EmailDetailViewController: BaseViewController {
     private var emailSubViewControllers = [EmailViewController]()
     /// Stuff that must be done once only in viewWillAppear
     private var doOnce: (()-> Void)?
-
     private var pdfPreviewUrl: URL?
 
     @IBOutlet weak var nextButton: UIBarButtonItem?
     @IBOutlet weak var previousButton: UIBarButtonItem?
+    @IBOutlet weak var nextButtonForSplitView: UIBarButtonItem?
+    @IBOutlet weak var prevButtonForSplitView: UIBarButtonItem?
     @IBOutlet weak var flagButton: UIBarButtonItem!
     @IBOutlet weak var destructiveButton: UIBarButtonItem!
     @IBOutlet weak var replyButton: UIBarButtonItem!
@@ -46,11 +47,12 @@ class EmailDetailViewController: BaseViewController {
         super.viewDidLoad()
         setup()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         doOnce?()
         doOnce = nil
+        setupToolbar()
     }
 
     override func viewWillLayoutSubviews() {
@@ -58,14 +60,18 @@ class EmailDetailViewController: BaseViewController {
         // Re-layout cells after device orientaion change
         collectionView.collectionViewLayout.invalidateLayout()
     }
-
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        setupToolbar()
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Target & Action
 
-    @IBAction func flagButtonPressed(_ sender: UIBarButtonItem) {
+    @objc @IBAction func flagButtonPressed(_ sender: UIBarButtonItem) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
@@ -74,6 +80,7 @@ class EmailDetailViewController: BaseViewController {
             Log.shared.errorAndCrash("Nothing shown?")
             return
         }
+        
         vm.handleFlagButtonPress(for: indexPath)
     }
 
@@ -152,10 +159,11 @@ class EmailDetailViewController: BaseViewController {
 extension EmailDetailViewController {
 
     private func setup() {
+
         viewModel?.delegate = self
         setupCollectionView()
         registerNotifications()
-        setupToolbar()
+//        setupToolbar()
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -174,7 +182,7 @@ extension EmailDetailViewController {
                                 forCellWithReuseIdentifier: EmailDetailViewController.cellId)
     }
 
-    private func showNextIfAny() {
+    @objc private func showNextIfAny() {
         guard
             let indexPathForCurrentlyVisibleCell = indexPathOfCurrentlyVisibleCell,
             thereIsANextMessageToShow
@@ -187,7 +195,7 @@ extension EmailDetailViewController {
         scroll(to: nextIndexPath)
     }
 
-    private func showPreviousIfAny() {
+    @objc private func showPreviousIfAny() {
         guard
             let indexPathForCurrentlyVisibleCell = indexPathOfCurrentlyVisibleCell,
             thereIsAPreviousMessageToShow
@@ -201,12 +209,12 @@ extension EmailDetailViewController {
     }
 
     @objc
-    private func showHandshakeView(gestureRecognizer: UITapGestureRecognizer? = nil) {
+    private func showTrustManagementView(gestureRecognizer: UITapGestureRecognizer? = nil) {
         if onlySplitViewMasterIsShown {
-            performSegue(withIdentifier: .segueHandshakeCollapsed, sender: self)
+            performSegue(withIdentifier: .segueTrustManagementCollapsed, sender: self)
 
         } else {
-            performSegue(withIdentifier: .segueHandshake, sender: self)
+            performSegue(withIdentifier: .segueTrustManagement, sender: self)
         }
     }
 
@@ -288,8 +296,12 @@ extension EmailDetailViewController {
 
         previousButton?.isEnabled = thereIsAPreviousMessageToShow
         nextButton?.isEnabled = thereIsANextMessageToShow
+        prevButtonForSplitView?.isEnabled = thereIsAPreviousMessageToShow
+        nextButtonForSplitView?.isEnabled = thereIsANextMessageToShow
+        
 
         showPepRating()
+        setupToolbar()
     }
 
     private func showPepRating() {
@@ -308,7 +320,7 @@ extension EmailDetailViewController {
 
         if vm.shouldShowPrivacyStatus(forItemAt: indexPath) {
             let tapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                              action: #selector(showHandshakeView(gestureRecognizer:)))
+                                                              action: #selector(showTrustManagementView(gestureRecognizer:)))
             ratingView.addGestureRecognizer(tapGestureRecognizer)
         }
     }
@@ -326,30 +338,72 @@ extension EmailDetailViewController {
         // position is inbetween two cells after orientation change.
         scrollToLastViewedCell()
     }
-
-    private func setupToolbar() {
-        if !onlySplitViewMasterIsShown {
-            toolbarItems?.removeAll(where: { $0 == pEpIconSettingsButton })
-            navigationItem.rightBarButtonItems = toolbarItems
-        }
-    }
-
+    
     // Removes all EmailViewController that are not connected to a cell any more.
     private func releaseUnusedSubViewControllers() {
         emailSubViewControllers = emailSubViewControllers.filter { $0.view.superview != nil }
     }
 
-    private func showHandshakeViewAction() -> UIAlertAction? {
-        let action = UIAlertAction(title: NSLocalizedString("Privacy Status",
-                                                            comment: "action sheet title 1"),
+    @objc
+    private func showPepActions(sender: UIBarButtonItem) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        guard let indexPath = indexPathOfCurrentlyVisibleCell else {
+            Log.shared.errorAndCrash("Nothing shown?")
+            return
+        }
+
+        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+
+        if vm.shouldShowPrivacyStatus(forItemAt:indexPath) {
+            actionSheetController.addAction(showTrustManagementViewAction())
+        }
+        actionSheetController.addAction(tutorialAction())
+        actionSheetController.addAction(showSettingsAction())
+
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("Cancel", comment: "possible private status action"),
+            style: .cancel) { (action) in }
+        actionSheetController.addAction(cancelAction)
+
+        if splitViewController != nil, !onlySplitViewMasterIsShown {
+            actionSheetController.popoverPresentationController?.barButtonItem = sender
+        }
+        present(actionSheetController, animated: true)
+    }
+
+    private func showSettingsAction() -> UIAlertAction {
+        let action = UIAlertAction(
+            title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
+            style: .default) { [weak self] (action) in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(message: "lost myself")
+                    return
+                }
+                me.showSettingsViewController()
+        }
+        return action
+    }
+
+    private func tutorialAction() -> UIAlertAction{
+        return UIAlertAction(
+            title: NSLocalizedString("Tutorial", comment: "show tutorial from compose view"),
+            style: .default) { _ in
+                TutorialWizardViewController.presentTutorialWizard(viewController: self)
+        }
+    }
+
+    private func showTrustManagementViewAction() -> UIAlertAction {
+        let action = UIAlertAction(title: NSLocalizedString("Privacy Status", comment: "action sheet title 1"),
                                    style: .default) { [weak self] (action) in
                                     guard let me = self else {
                                         Log.shared.errorAndCrash(message: "lost myself")
                                         return
                                     }
-                                    me.showHandshakeView()
+                                    me.showTrustManagementView()
         }
-
         return action
     }
 
@@ -491,8 +545,8 @@ extension EmailDetailViewController: SegueHandlerType {
         case segueReplyFrom
         case segueReplyAllForm
         case segueForward
-        case segueHandshake
-        case segueHandshakeCollapsed
+        case segueTrustManagement
+        case segueTrustManagementCollapsed
         case segueShowMoveToFolder
         case noSegue
     }
@@ -537,17 +591,15 @@ extension EmailDetailViewController: SegueHandlerType {
             }
             destination.appConfig = appConfig
             destination.viewModel = viewModel?.getMoveToFolderViewModel(forMessageRepresentedByItemAt: indexPath)
-        case .segueHandshake, .segueHandshakeCollapsed:
+        case .segueTrustManagement, .segueTrustManagementCollapsed:
             guard let nv = segue.destination as? UINavigationController,
-                let vc = nv.topViewController as? HandshakeViewController else {
-                    Log.shared.errorAndCrash("No DVC?")
+                let vc = nv.topViewController as? TrustManagementViewController ,
+                let trustManagementViewModel = viewModel?.trustManagementViewModel else {
+                    Log.shared.errorAndCrash("No DVC, No trustManagementViewModel?")
                     break
             }
 
-            guard let message = vm.message(representedByRowAt: indexPath) else {
-                Log.shared.errorAndCrash("No message")
-                return
-            }
+            nv.modalPresentationStyle = .fullScreen
 
             //as we need a view to be source of the popover and title view is not always present.
             //we directly use the navigation bar view.
@@ -557,8 +609,10 @@ extension EmailDetailViewController: SegueHandlerType {
                                                                   y: nv.view.bounds.midY,
                                                                   width: 0,
                                                                   height: 0)
+            
             vc.appConfig = appConfig
-            vc.message = message
+            vc.viewModel = trustManagementViewModel
+
             break
         case .noSegue:
             break
@@ -746,5 +800,96 @@ extension EmailDetailViewController: QLPreviewControllerDataSource {
             fatalError("Could not load URL")
         }
         return url as QLPreviewItem
+    }
+}
+
+// MARK: - Setup Toolbar
+
+extension EmailDetailViewController {
+    private func setupToolbar() {
+        let size = CGSize(width: 15, height: 25)
+        nextButton?.image = nextButton?.image?.resizeImage(targetSize: size)
+        previousButton?.image = previousButton?.image?.resizeImage(targetSize: size)
+
+        if !onlySplitViewMasterIsShown {
+            let nextPrevButtonSize = CGRect(x: 0, y: 0, width: 27, height: 15)
+
+            //Down
+            let downButton = UIButton(frame: nextPrevButtonSize)
+            let downImage = UIImage(named: "chevron-icon-down")?.withRenderingMode(.alwaysTemplate)
+            downButton.setBackgroundImage(downImage, for: .normal)
+            downButton.tintColor = thereIsANextMessageToShow ? UIColor.pEpGreen : UIColor.pEpGray
+            downButton.addTarget(self, action: #selector(showNextIfAny), for: .touchUpInside)
+            
+            //Up
+            let upButton = UIButton(frame: nextPrevButtonSize)
+            let upImage = UIImage(named: "chevron-icon-up")?.withRenderingMode(.alwaysTemplate)
+            upButton.setBackgroundImage(upImage, for: .normal)
+            upButton.tintColor = thereIsAPreviousMessageToShow ? UIColor.pEpGreen : UIColor.pEpGray
+
+            upButton.addTarget(self, action: #selector(showPreviousIfAny), for: .touchUpInside)
+            upButton.isEnabled = thereIsAPreviousMessageToShow
+
+            //Spacer
+            let defaultSpacerWidth: CGFloat = 8.0
+            let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+            spacer.width = defaultSpacerWidth
+
+            let downBarButtonItem = UIBarButtonItem(customView: downButton)
+            let upBarButtonItem = UIBarButtonItem(customView: upButton)
+            
+            downBarButtonItem.isEnabled = thereIsANextMessageToShow
+            upBarButtonItem.isEnabled = thereIsAPreviousMessageToShow
+            
+            navigationItem.leftBarButtonItems = [downBarButtonItem, spacer, upBarButtonItem]
+            
+            let midSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+            midSpacer.width = 18
+            
+            let largeSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+            largeSpacer.width = 22
+
+            //Reply
+            let replyImage = UIImage(named: "pEpForiOS-icon-reply")
+            let replyBarButtonItem = UIBarButtonItem(image: replyImage,
+                                                     style: .plain,
+                                                     target: self,
+                                                     action: #selector(replyButtonPressed(_:)))
+
+            //Folder
+            let folderImage = UIImage(named: "pEpForiOS-icon-movetofolder")
+            let folderButtonBarButtonItem = UIBarButtonItem(image: folderImage,
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(moveToFolderButtonPressed(_:)))
+
+            //Flag
+            let flagImage = viewModel?.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
+            let tintedimage = flagImage?.withRenderingMode(.alwaysTemplate)
+            let flagFrame = CGRect(x: 0, y: 0, width: 14, height: 24)
+            let flagButton = UIButton(frame: flagFrame)
+            flagButton.setBackgroundImage(tintedimage, for: .normal)
+            flagButton.imageView?.tintColor = UIColor.pEpGreen
+            flagButton.addTarget(self, action: #selector(flagButtonPressed(_:)), for: .touchUpInside)
+            let flagBarButtonItem = UIBarButtonItem(customView: flagButton)
+
+            //Delete
+            let deleteImage = viewModel?.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
+            let deleteButtonBarButtonItem = UIBarButtonItem(image: deleteImage,
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(destructiveButtonPressed(_:)))
+
+            
+            navigationItem.rightBarButtonItems = [replyBarButtonItem,
+                                                  midSpacer,
+                                                  folderButtonBarButtonItem,
+                                                  midSpacer,
+                                                  flagBarButtonItem,
+                                                  midSpacer,
+                                                  deleteButtonBarButtonItem]
+        } else {
+            navigationItem.leftBarButtonItems = []
+        }
     }
 }
