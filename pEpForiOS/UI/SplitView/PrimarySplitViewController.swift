@@ -23,7 +23,6 @@ class PEPSplitViewController: UISplitViewController, UISplitViewControllerDelega
         if let navigationController = secondaryViewController as? UINavigationController,
             let top = navigationController.topViewController, top.collapsedBehavior == .needed,
             let primaryNavigationController = primaryViewController as? UINavigationController {
-            
             navigationController.popViewController(animated: false)
             primaryNavigationController.pushViewController(top, animated: false)
             if let vc = top as? SplitViewHandlingProtocol {

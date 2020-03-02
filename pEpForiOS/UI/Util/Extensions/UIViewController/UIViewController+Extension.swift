@@ -115,28 +115,15 @@ extension UIViewController {
     func showNavigationBar() {
             navigationController?.setNavigationBarHidden(false, animated: false)
     }
-    
-    /// attribute that can be overwritten with the default behaviour of the splitview when will collapse
-    @objc public var collapsedBehavior: CollapsedBehavior {
-        get {
-            return .disposable
-        }
-    }
-    
-    /// attribute that can be overwritten with the default behaviour of the splitview when will separate
-    @objc public var separatedBehavior: SeparatedBehavior {
-        get {
-            return .master
-        }
-    }
 }
 
-@objc public enum CollapsedBehavior: Int {
-    case disposable = 0
-    case needed = 1
-}
-
-@objc public enum SeparatedBehavior: Int {
-    case master = 0
-    case detail = 1
+// MARK: - SplitViewControllerBehaviorProtocol
+extension UIViewController: SplitViewControllerBehaviorProtocol {
+    var collapsedBehavior: CollapsedSplitViewBehavior {
+        return .disposable
+    }
+    
+    var separatedBehavior: SeparatedSplitViewBehavior {
+        return .master
+    }
 }

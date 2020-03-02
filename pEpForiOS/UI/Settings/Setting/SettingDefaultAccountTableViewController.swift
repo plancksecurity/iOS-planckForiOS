@@ -25,13 +25,13 @@ class SettingDefaultAccountTableViewController: BaseTableViewController {
         title = NSLocalizedString("Default Account", comment: "Default account view title")
     }
 
-    override var collapsedBehavior: CollapsedBehavior {
+    override var collapsedBehavior: CollapsedSplitViewBehavior {
         get {
             return .needed
         }
     }
     
-    override var separatedBehavior: SeparatedBehavior {
+    override var separatedBehavior: SeparatedSplitViewBehavior {
         get {
             return .detail
         }

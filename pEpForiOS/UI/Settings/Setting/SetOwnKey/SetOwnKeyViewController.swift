@@ -13,14 +13,15 @@ class SetOwnKeyViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var errorTextField: UILabel!
     @IBOutlet weak var setOwnKeyButton: UIButton!
+    
 
-    override var collapsedBehavior: CollapsedBehavior {
+    override var collapsedBehavior: CollapsedSplitViewBehavior {
         get {
             return .needed
         }
     }
     
-    override var separatedBehavior: SeparatedBehavior{
+    override var separatedBehavior: SeparatedSplitViewBehavior {
         get {
             return .detail
         }

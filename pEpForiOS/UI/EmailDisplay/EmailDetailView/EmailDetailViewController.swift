@@ -43,13 +43,13 @@ class EmailDetailViewController: BaseViewController {
     /// IndexPath to show on load
     var firstItemToShow: IndexPath?
     
-    override var collapsedBehavior: CollapsedBehavior {
+    override var collapsedBehavior: CollapsedSplitViewBehavior {
         get {
             return .needed
         }
     }
     
-    override var separatedBehavior: SeparatedBehavior {
+    override var separatedBehavior: SeparatedSplitViewBehavior {
         get {
             return .detail
         }
