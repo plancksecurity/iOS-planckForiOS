@@ -607,7 +607,6 @@
 		158A565624052280003C0D7E /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/NothingSelected.strings; sourceTree = "<group>"; };
 		158A565724052280003C0D7E /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Settings.strings; sourceTree = "<group>"; };
 		158A565824052280003C0D7E /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/AccountCreation.strings; sourceTree = "<group>"; };
-		158A565924052281003C0D7E /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Handshake.strings; sourceTree = "<group>"; };
 		158A565A24052281003C0D7E /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		158A565B24052281003C0D7E /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/FolderViews.strings; sourceTree = "<group>"; };
 		158A565C24052281003C0D7E /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Reusable.strings; sourceTree = "<group>"; };
@@ -616,7 +615,6 @@
 		158A565F24052360003C0D7E /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/NothingSelected.strings; sourceTree = "<group>"; };
 		158A566024052360003C0D7E /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Settings.strings; sourceTree = "<group>"; };
 		158A566124052360003C0D7E /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/AccountCreation.strings; sourceTree = "<group>"; };
-		158A566224052360003C0D7E /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Handshake.strings; sourceTree = "<group>"; };
 		158A566324052360003C0D7E /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		158A566424052360003C0D7E /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/FolderViews.strings; sourceTree = "<group>"; };
 		158A566524052360003C0D7E /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Reusable.strings; sourceTree = "<group>"; };
@@ -627,7 +625,6 @@
 		158A566A2405236E003C0D7E /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/NothingSelected.strings; sourceTree = "<group>"; };
 		158A566B2405236F003C0D7E /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Settings.strings; sourceTree = "<group>"; };
 		158A566C2405236F003C0D7E /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/AccountCreation.strings; sourceTree = "<group>"; };
-		158A566D2405236F003C0D7E /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Handshake.strings; sourceTree = "<group>"; };
 		158A566E2405236F003C0D7E /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		158A566F2405236F003C0D7E /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/FolderViews.strings; sourceTree = "<group>"; };
 		158A56702405236F003C0D7E /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Reusable.strings; sourceTree = "<group>"; };
@@ -1792,15 +1789,6 @@
 				3A085A6D23FAF4D50013C63E /* pEpHeaderView.swift */,
 			);
 			path = Reusable;
-			sourceTree = "<group>";
-		};
-		4304FCFD1EBB8C2C0086DADA /* LanguageList */ = {
-			isa = PBXGroup;
-			children = (
-				B70D32A7205BCC2D0094A92A /* CellsAndSections */,
-				4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */,
-			);
-			path = LanguageList;
 			sourceTree = "<group>";
 		};
 		430D73601E9CBD0600EA6FA9 /* Background */ = {
@@ -3042,7 +3030,6 @@
 				152A39D121905C3E00D9F8E4 /* AttachmentViewModel.swift in Sources */,
 				4330278E1F7BABFF00D685F8 /* GradientView.swift in Sources */,
 				3AD2CBC923FD92650003A536 /* AccountSettingsViewModel.swift in Sources */,
-				434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */,
 				152A39E121905C3E00D9F8E4 /* RecipientCellViewModel+FieldType.swift in Sources */,
 				4351C2CC1F4441190053381F /* cmark_ctype.c in Sources */,
 				152A39DB21905C3E00D9F8E4 /* CellViewModel.swift in Sources */,

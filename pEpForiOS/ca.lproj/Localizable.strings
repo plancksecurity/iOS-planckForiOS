@@ -25,12 +25,14 @@
 
 /* alert action 3
    Alert cancel button title before trusting an account
+   Cancel
    Cancel button title for manual account setup
    Cancel button title of pEp protection toggle action sheet
    Cancel for an alert view
    Cancel in button in Login View
    Cancel reset account identity button title
    Cancel title button
+   Cancel trust change to be undone
    compose email cancel
    Default cancel button text
    EmailList action title
@@ -38,6 +40,7 @@
    keySyncWizard animation view cancel button title
    Message actions
    MoveToFolderViewController NavigationBar canel button title
+   possible private status action
    UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
 "Cancel" = "Cancel·lar";
 
@@ -63,7 +66,8 @@
 /* keysync alert leave device group disable */
 "Disable" = "Disable";
 
-/* Disable Protection button title of pEp protection toggle action sheet */
+/* Disable Protection
+   Disable Protection button title of pEp protection toggle action sheet */
 "Disable Protection" = "Deshabilitar protecció";
 
 /* enable p≡p Sync with other devices in the group */
@@ -171,7 +175,8 @@
    privacyStatusTitle yellow */
 "Secure" = "Segur";
 
-/* Settings view title */
+/* acction sheet title 2
+   Settings view title */
 "Settings" = "Configuració";
 
 /* Compose field title */
@@ -213,7 +218,9 @@
 /* Privacy status title */
 "Under Attack" = "Atacat";
 
-/* Privacy status title */
+/* Privacy status title
+   privacyStatusDescription no_color
+   privacyStatusTitle no_color */
 "Unknown" = "Desconegut";
 
 /* Privacy status title */
