@@ -6,10 +6,10 @@ SwipeCellKit: 00cd0cb5f9ceb4ae7a245fe21bf45643285d454b
 ldns: e83e808f0c56f6235061f5c904ff476ca75aa576
 libAccountSettings: 6f80e12e0379
 libetpan: c76daba0153eed0003d6990a5adadba8d561b8fa
-pEp-Translate: 0b58b96a4a55f740514587f39e81cc6a1a4dae3b
-pEpEngine: 60b4b4d3ea19
+pEp-Translate: 09ff221ad76966a62f7afeff43e00623840d6e19
+pEpEngine: 81c1161dd70e
 pEpObjCAdapter: 33119ff061e5
-pEp_for_iOS: d74543f090cd+
+pEp_for_iOS: b980599df3da+
 pEp_for_iOS_intern: fe7c80780efc+
 pantomime-iOS: 55938caf87ac
 sequoia4ios: 3b4b432400c9827ecaf2f7a185333ea1488f4e5c
