@@ -41,6 +41,10 @@ struct DisplayUserError: LocalizedError {
         /// Any verification error in the login view, like "invalid email"
         case loginValidationError
 
+        /// The server requested a client certificate, but none was provided or it did
+        /// match the server's expectation.
+        case clientCertificateError
+
         /// Use this only for errors that are not known to DisplayUserError yet and thus can not
         /// be categorized
         case unknownError
@@ -59,6 +63,7 @@ struct DisplayUserError: LocalizedError {
                  .brokenServerConnectionSmtp,
                  .messageNotSent,
                  .loginValidationError,
+                 .clientCertificateError,
                  .unknownError:
                 return true
             }
@@ -100,6 +105,8 @@ struct DisplayUserError: LocalizedError {
                 break
             case .badResponse(_):
                 break
+            case .sslPeerCertUnknown:
+                break
             }
         } else if let imapError = error as? ImapSyncOperationError {
             type = DisplayUserError.type(forError: imapError)
@@ -119,6 +126,8 @@ struct DisplayUserError: LocalizedError {
             case .badResponse(_):
                 break
             case .actionFailed:
+                break
+            case .sslPeerCertUnknown:
                 break
             }
         } else if let oauthInternalError = error as? OAuth2AuthViewModelError {
@@ -172,6 +181,8 @@ struct DisplayUserError: LocalizedError {
             return .brokenServerConnectionSmtp
         case .badResponse:
             return .internalError
+        case .sslPeerCertUnknown:
+            return .clientCertificateError
         }
     }
 
@@ -195,6 +206,8 @@ struct DisplayUserError: LocalizedError {
             return .internalError
         case .actionFailed:
             return .internalError
+        case .sslPeerCertUnknown:
+            return .clientCertificateError
         }
     }
 
@@ -326,6 +339,10 @@ struct DisplayUserError: LocalizedError {
                 "Validation Error",
                 comment:"Error title for validation errors on login screen")
 
+        case .clientCertificateError:
+            return NSLocalizedString("Login Failed",
+                                     comment: "Title of error alert shown to the user for client certificate problems")
+
         case .unknownError:
             // We have an error that is not known to us.
             // All we can do is pass its description.
@@ -377,6 +394,9 @@ struct DisplayUserError: LocalizedError {
             // We have an error that is not known to us.
             // All we can do is pass its description.
             return foreignDescription
+        case .clientCertificateError:
+            return NSLocalizedString("The client certificate was rejected by the server",
+                                     comment: "Error message shown to the user on problems with the client certificate")
         }
     }
 }
