@@ -12,7 +12,6 @@ import pEpIOSToolbox
 class PEPSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         delegate = self
         preferredDisplayMode = .allVisible
     }
