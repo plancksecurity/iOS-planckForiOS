@@ -1,5 +1,5 @@
 //
-//  PrimarySplitViewController.swift
+//  PEPSplitViewController.swift
 //  pEp
 //
 //  Created by Borja González de Pablo on 23/05/2018.
