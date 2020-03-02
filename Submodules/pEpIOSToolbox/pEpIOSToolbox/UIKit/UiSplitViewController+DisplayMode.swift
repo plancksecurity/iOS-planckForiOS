@@ -19,11 +19,9 @@ public extension UIViewController {
         if let selfsplit = self as? UISplitViewController {
             return selfsplit.currentDisplayMode
         }
-
         guard let splitview = splitViewController else {
             return .onlyMaster
         }
-        
         return splitview.currentDisplayMode
     }
 

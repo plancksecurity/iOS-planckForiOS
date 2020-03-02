@@ -774,15 +774,6 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 
 extension EmailListViewController: EmailListViewModelDelegate {
 
-    func checkIfSplitNeedsUpdate(indexpath: [IndexPath]) {
-        guard let last = lastSelectedIndexPath else {
-            return
-        }
-        if !onlySplitViewMasterIsShown && indexpath.contains(last) {
-            showEmail(forCellAt: last)
-        }
-    }
-
     func reloadData(viewModel: EmailDisplayViewModel) {
         tableView.reloadData()
     }
