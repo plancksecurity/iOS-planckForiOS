@@ -31,21 +31,22 @@ class TutorialStepViewController: UIViewController {
     }
     
     var font : UIFont {
+        let horizontalSizeClass = traitCollection.horizontalSizeClass
+        
         if isIpad {
-            return UIFont.systemFont(ofSize: 20.0, weight: .regular)
+            return UIFont.systemFont(ofSize: 25.0, weight: .regular)
         }
         return UIFont.systemFont(ofSize: 14.0, weight: .regular)
     }
     
     var titleFont : UIFont {
         if isIpad {
-            return UIFont.systemFont(ofSize: 36.0, weight: .regular)
+            return UIFont.systemFont(ofSize: 45.0, weight: .regular)
         }
         return UIFont.systemFont(ofSize: 28.0, weight: .regular)
     }
     
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         configureView()
     }
     

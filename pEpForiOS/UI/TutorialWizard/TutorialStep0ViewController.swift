@@ -98,7 +98,7 @@ extension TutorialStep0ViewController {
 
     private func setTextAlignment(for label : UILabel) {
         if isIpad || isLandscape {
-            label.textAlignment = .justified
+            label.textAlignment = .left
         } else {
             label.textAlignment = .center
         }
