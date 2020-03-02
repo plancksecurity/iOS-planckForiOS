@@ -52,7 +52,6 @@ class AccountTypeSelectorViewModel {
             Client
             Certificate
             """, comment: "client certificate provider key")
-            
         }
     }
 

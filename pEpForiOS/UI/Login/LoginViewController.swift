@@ -426,6 +426,8 @@ extension LoginViewController {
             navigationController?.navigationBar.isTranslucent = true
             navigationController?.navigationBar.backgroundColor = UIColor.clear
         }
+        navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+        
     }
 
     private func handleLoginError(error: Error, offerManualSetup: Bool) {
