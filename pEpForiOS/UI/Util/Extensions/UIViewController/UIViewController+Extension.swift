@@ -14,10 +14,6 @@ extension UIViewController {
         return UIDevice.current.userInterfaceIdiom == .pad
     }
     
-    var isRegularRegular: Bool {
-        return traitCollection.horizontalSizeClass == .regular && traitCollection.verticalSizeClass == .regular
-    }
-    
     var isLandscape: Bool {
         return UIDevice.current.orientation.isLandscape
     }
