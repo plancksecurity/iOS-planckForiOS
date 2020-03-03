@@ -268,14 +268,6 @@ extension LoginViewController: SegueHandlerType {
             vc.appConfig = appConfig
             // Give the next model all that we know.
             vc.verifiableAccount = vm.verifiableAccount
-        case .clientCertManagementSegue:
-            guard let dvc = segue.destination as? ClientCertificateManagementViewController else {
-                Log.shared.errorAndCrash("Invalid state")
-                return
-            }
-            dvc.appConfig = appConfig
-            // Give the next model all that we know.
-            dvc.viewModel = vm.clientCertificateManagementViewModel()
         default:
             Log.shared.errorAndCrash("Unhandled segue type")
             return
@@ -614,25 +606,6 @@ extension LoginViewController {
 // MARK: - LoginViewModelDelegate
 
 extension LoginViewController: LoginViewModelDelegate {
-    func showMustImportClientCertificateAlert() {
-        let title = NSLocalizedString("No Client Certificate",
-                                      comment: "No client certificate exists alert title")
-        let message = NSLocalizedString("No client certificate exists. You have to import your client certificate before entering login data.",
-                                        comment: "No client certificate exists alert message")
-        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message, inViewController: self) { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.navigationController?.popViewController(animated: true)
-        }
-    }
-
-    func showClientCertificateSeletionView() {
-        performSegue(withIdentifier: LoginViewController.SegueIdentifier.clientCertManagementSegue,
-                     sender: self)
-    }
-
     func passwordFieldStateUpdated(hidePasswordField: Bool) {
         password.isHidden = hidePasswordField
         password.isEnabled = !hidePasswordField

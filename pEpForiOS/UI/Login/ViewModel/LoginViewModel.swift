@@ -16,8 +16,6 @@ import PantomimeFramework
 
 protocol LoginViewModelDelegate: class {
     func passwordFieldStateUpdated(hidePasswordField: Bool)
-    func showMustImportClientCertificateAlert()
-    func showClientCertificateSeletionView()
 }
 
 // MARK: - LoginCellType
@@ -37,12 +35,7 @@ extension LoginViewModel {
     }
 }
 
-class LoginViewModel {
-    /// When doing an unwind seguehe iOS SDK calls `viewWillAppear()` on every intermediate VC that
-    /// is gets dismissed in the unwind (assumed an Apple bug. I bet they meant to call
-    /// `viewWillDisapear()`). THat obviously causes issues. To work around this, this block of
-    /// code has been introduced which is guaranteed to becalled once only.
-    private var doOnceInFirstViewWillAppear: (()->Void)?
+final class LoginViewModel {
     /// If the last login attempt was via OAuth2, this will collect temporary parameters
     private var lastOAuth2Parameters: OAuth2Parameters?
 
@@ -78,31 +71,6 @@ class LoginViewModel {
         self.verifiableAccount = verifiableAccount
         self.accountType = accountType
         self.delegate = delegate
-        setup()
-    }
-
-    private func setup() {
-        doOnceInFirstViewWillAppear = { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            defer {
-                // Guarantees that this closure can be called once only
-                me.doOnceInFirstViewWillAppear = nil
-
-            }
-            guard me.accountType == .clientCertificate else {
-                // No special handling for other types ...
-                // ... nothing to so
-                return
-            }
-            if ClientCertificateUtil().listCertificates().count == 0 {
-                me.delegate?.showMustImportClientCertificateAlert()
-            } else {
-                me.delegate?.showClientCertificateSeletionView()
-            }
-        }
     }
 
     func isThereAnAccount() -> Bool {
@@ -202,7 +170,6 @@ class LoginViewModel {
     public func handleViewWillAppear() {
         // furt ensure to show the correct fields
         delegate?.passwordFieldStateUpdated(hidePasswordField: accountType.isOauth)
-        doOnceInFirstViewWillAppear?()
     }
 
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {

@@ -14,8 +14,29 @@ extension ClientCertificateUIUtil {
     static public let pEpClientCertificateExtension = "pEp12"
 }
 
+// MARK: - Localized strings
+
+private struct Localized {
+    struct WrongPasswordError {
+        static let title = NSLocalizedString("Wrong Password",
+                                             comment: "Client certificate import: wrong password alert title")
+        static let message = NSLocalizedString("We could not import the certificate. The password is incorrect.\n\nTry again?",
+                                               comment: "Client certificate import: wrong password alert message")
+    }
+    struct CorruptedFileError {
+        static let title = NSLocalizedString("Corrupted File",
+                                      comment: "Client certificate import: corrupted file error alert title")
+        static let message = NSLocalizedString("The file could not be imported",
+                                      comment: "Client certificate import: corrupted file error alert message")
+    }
+    static let no = NSLocalizedString("No",
+                                      comment: "Alert button while client certificate is importing: Try again? No")
+    static let yes = NSLocalizedString("Yes",
+                                       comment: "Alert button while client certificate is importing: Try again? Yes")
+}
+
 /// Utils for importing Client Certificates.
-class ClientCertificateUIUtil: NSObject {
+final class ClientCertificateUIUtil: NSObject {
     private let clientCertificateUtil: ClientCertificateUtilProtocol
     private var viewControllerToPresentUiOn: UIViewController?
     private var p12Data: Data?
@@ -43,23 +64,21 @@ class ClientCertificateUIUtil: NSObject {
 extension ClientCertificateUIUtil {
 
     private func presentAlertViewForClientImportPassPhrase() {
-        let title = NSLocalizedString("Certificate Password",
-                                      comment: "Enter client certificate alert title")
-        let message = NSLocalizedString("Enter password of Certificate to import it.",
-                                        comment: "Enter client certificate alert message")
-        let alert = UIAlertController(title: title,
-                                      message: message,
-                                      preferredStyle: .alert)
-        alert.addTextField { (inputTextField: UITextField) in
-            inputTextField.isSecureTextEntry = true
-            inputTextField.delegate = self
-        }
-        alert.addAction(UIAlertAction(title: "Canel", style: .cancel))
-        guard let vc = viewControllerToPresentUiOn else {
+
+        guard let viewControllerToPresent = viewControllerToPresentUiOn else {
             Log.shared.errorAndCrash("No VC!")
             return
         }
-        vc.present(alert, animated: true)
+
+        guard let viewController =
+            UIStoryboard.init(name: "Certificates",
+                              bundle: nil).instantiateInitialViewController() as? ClientCertificatePasswordViewController else {
+            Log.shared.errorAndCrash("Certificates storyboard not found")
+            return
+        }
+        viewController.viewModel = ClientCertificatePasswordViewModel(delegate: self)
+        viewControllerToPresent.navigationController?.pushViewController(viewController,
+                                                                         animated: true)
     }
 
     private func handlePassphraseEntered(pass: String) {
@@ -81,12 +100,8 @@ extension ClientCertificateUIUtil {
             Log.shared.errorAndCrash("No VC")
             return
         }
-        let title = NSLocalizedString("Corrupted File",
-                                      comment: "Client certificate import: corrupted file error alert title")
-        let message = NSLocalizedString("The file could not be imported",
-                                      comment: "Client certificate import: corrupted file error alert message")
-        UIUtils.showAlertWithOnlyPositiveButton(title: title,
-                                                message: message,
+        UIUtils.showAlertWithOnlyPositiveButton(title: Localized.CorruptedFileError.title,
+                                                message: Localized.CorruptedFileError.message,
                                                 inViewController: vc)
     }
 
@@ -95,28 +110,44 @@ extension ClientCertificateUIUtil {
             Log.shared.errorAndCrash("No VC")
             return
         }
-        let title = NSLocalizedString("Wrong Password",
-                                      comment: "Client certificate import: wrong password alert title")
-        let message = NSLocalizedString("We could not import the certificate. The password is incorrect.\n\nTry again?",
-                                        comment: "Client certificate import: wrong password alert message")
-        UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: "No", positiveButtonText: "Yes", cancelButtonAction: {
-            // Do nothing
-        }, positiveButtonAction: { [weak self] in
-            // Show password input again
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.presentAlertViewForClientImportPassPhrase()
+        UIUtils.showTwoButtonAlert(withTitle: Localized.WrongPasswordError.title,
+                                   message: Localized.WrongPasswordError.message,
+                                   cancelButtonText: Localized.no,
+                                   positiveButtonText: Localized.yes,
+                                   cancelButtonAction: { [weak self] in
+
+                                    guard let me = self else {
+                                        Log.shared.errorAndCrash("Lost myself")
+                                        return
+                                    }
+                                    me.dismissView()
+
+            }, positiveButtonAction: {
+                // We don't need to do something here. Our expectation is close this alert
         }, inViewController: vc)
+    }
+
+    private func dismissView() {
+        guard let viewControllerToPresent = viewControllerToPresentUiOn else {
+            Log.shared.errorAndCrash("No viewControllerToPresent!")
+            return
+        }
+        guard let navigationController = viewControllerToPresent.navigationController else {
+            Log.shared.errorAndCrash("No navigationController!")
+            return
+        }
+        navigationController.popToRootViewController(animated: true)
     }
 }
 
-// MARK: - UITextFieldDelegate
+// MARK: - ClientCertificatePasswordDelegate
 
-extension ClientCertificateUIUtil: UITextFieldDelegate {
+extension ClientCertificateUIUtil: ClientCertificatePasswordDelegate {
+    func importCertificate(password: String) {
+        handlePassphraseEntered(pass: password)
+    }
 
-    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-        handlePassphraseEntered(pass: textField.text ?? "")
+    func dismiss() {
+        dismissView()
     }
 }

@@ -9,32 +9,22 @@
 import UIKit
 
 /// View that lists all imported client certificates and let's the user choose one.
-class ClientCertificateManagementViewController: BaseViewController {
-    static let storiboardID = "ClientCertificateManagementViewController"
-    static let cellID = "ClientCertificateManagementTableViewCell"
+final class ClientCertificateManagementViewController: BaseViewController {
+
     @IBOutlet weak var tableView: UITableView!
+
     public var viewModel: ClientCertificateManagementViewModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureAppearance()
         setupViewModel()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setup()
     }
 }
 
 // MARK: - Private
 
 extension ClientCertificateManagementViewController {
-
-    private func setup() {
-        tableView.delegate = self
-        tableView.dataSource = self
-    }
-
     private func setupViewModel() {
         guard viewModel == nil else {
             // Already setup.
@@ -43,49 +33,17 @@ extension ClientCertificateManagementViewController {
         }
         viewModel = ClientCertificateManagementViewModel()
     }
-}
 
-// MARK: - UITableViewDelegate
-
-extension ClientCertificateManagementViewController: UITableViewDelegate {
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
+    private func configureAppearance() {
+        if #available(iOS 13, *) {
+            Appearance.customiseForLogin(viewController: self)
+        } else {
+            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            navigationController?.navigationBar.shadowImage = UIImage()
+            navigationController?.navigationBar.isTranslucent = true
+            navigationController?.navigationBar.backgroundColor = UIColor.clear
         }
-        vm.handleDidSelect(rowAt: indexPath)
-        dismiss(animated: true)
-    }
-}
-
-// MARK: - UITableViewDataSource
-
-extension ClientCertificateManagementViewController: UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return 0
-        }
-        return vm.rows.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell =
-            tableView.dequeueReusableCell(withIdentifier: ClientCertificateManagementViewController.cellID,
-                                          for: indexPath)
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return UITableViewCell()
-        }
-        let row = vm.rows[indexPath.row]
-        cell.textLabel?.text = row.name
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        // Hide seperator lines for empty view.
-        return UIView()
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.tintColor = .white
     }
 }

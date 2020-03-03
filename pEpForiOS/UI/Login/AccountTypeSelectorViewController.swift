@@ -8,28 +8,30 @@
 
 import UIKit
 
-class AccountTypeSelectorViewController: BaseViewController {
+final class AccountTypeSelectorViewController: BaseViewController {
 
     let viewModel = AccountTypeSelectorViewModel()
 
-    var SelectedIndexPath: IndexPath?
+    var delegate: AccountTypeSelectorViewModelDelegate?
     var loginDelegate: LoginViewControllerDelegate?
 
     @IBOutlet var collectionView: UICollectionView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         collectionView.delegate = self
         collectionView.dataSource = self
         configureAppearance()
         configureView()
+        viewModel.delegate = self
     }
 
     private func configureAppearance() {
         if #available(iOS 13, *) {
             Appearance.customiseForLogin(viewController: self)
         } else {
-            self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+            self.navigationItem.leftBarButtonItem?.tintColor = .white
             self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             self.navigationController?.navigationBar.shadowImage = UIImage()
             self.navigationController?.navigationBar.isTranslucent = true
@@ -60,8 +62,12 @@ class AccountTypeSelectorViewController: BaseViewController {
 
 extension AccountTypeSelectorViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        SelectedIndexPath = indexPath
-        performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
+        switch viewModel.accountType(row: indexPath.row) {
+        case .clientCertificate:
+            viewModel.checkRequirements()
+        default:
+            performSegue(withIdentifier: SegueIdentifier.showLogin, sender: indexPath)
+        }
     }
 }
 
@@ -90,32 +96,65 @@ extension AccountTypeSelectorViewController: UICollectionViewDataSource {
     }
 }
 
+extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegate {
+    func showClientCertificateSeletionView() {
+        performSegue(withIdentifier: SegueIdentifier.clientCertManagementSegue,
+                     sender: self)
+    }
+
+    func showMustImportClientCertificateAlert() {
+        let title = NSLocalizedString("No Client Certificate",
+                                      comment: "No client certificate exists alert title")
+        let message = NSLocalizedString("No client certificate exists. You have to import your client certificate before entering login data.",
+                                        comment: "No client certificate exists alert message")
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message, inViewController: self) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.navigationController?.popViewController(animated: true)
+        }
+    }
+}
+
 extension AccountTypeSelectorViewController: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         // this forces the collection view to have only 2 colums and all the cells with the same size
         let cellwidth = (view.frame.width*0.67)/2
         let cellHeight = 2*cellwidth/3
         return CGSize(width: cellwidth, height: cellHeight)
     }
-    
-    
 }
 
 extension AccountTypeSelectorViewController: SegueHandlerType {
     public enum SegueIdentifier: String {
         case showLogin
+        case clientCertManagementSegue
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let selectedIndexPath = sender as? IndexPath else {
+            Log.shared.errorAndCrash("Lost selectedIndexPath")
+            return
+        }
         switch segueIdentifier(for: segue) {
         case .showLogin:
-            if let vc = segue.destination as? LoginViewController,
-                let selected = SelectedIndexPath {
+            if let vc = segue.destination as? LoginViewController {
+                guard let accountType = viewModel.accountType(row: selectedIndexPath.row) else {
+                    Log.shared.errorAndCrash("accountType is invalid")
+                    return
+                }
                 vc.appConfig = appConfig
-                vc.viewModel = LoginViewModel(accountType: viewModel[selected.row])
+                vc.viewModel = LoginViewModel(accountType: accountType)
                 vc.delegate = loginDelegate
             }
+            case .clientCertManagementSegue:
+                guard let dvc = segue.destination as? ClientCertificateManagementViewController else {
+                    Log.shared.errorAndCrash("Invalid state")
+                    return
+                }
+                dvc.appConfig = appConfig
+                dvc.viewModel = ClientCertificateManagementViewModel()
         }
     }
 }

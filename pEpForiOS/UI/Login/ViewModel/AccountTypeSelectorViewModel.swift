@@ -17,8 +17,14 @@ public enum AccountTypeProvider {
         return self == .gmail
     }
 }
+protocol AccountTypeSelectorViewModelDelegate: class {
+    func showMustImportClientCertificateAlert()
+    func showClientCertificateSeletionView()
+}
 
 class AccountTypeSelectorViewModel {
+
+    weak var delegate: AccountTypeSelectorViewModelDelegate?
 
     /// list of providers to show
     var providers = [AccountTypeProvider]()
@@ -39,9 +45,25 @@ class AccountTypeSelectorViewModel {
         return providers[index]
     }
 
+    public func accountType(row: Int) -> AccountTypeProvider? {
+        guard row < providers.count else {
+            Log.shared.errorAndCrash("Index out of range")
+            return nil
+        }
+        return providers[row]
+    }
+
+    public func checkRequirements() {
+        if ClientCertificateUtil().listCertificates().count == 0 {
+            delegate?.showMustImportClientCertificateAlert()
+        } else {
+            delegate?.showClientCertificateSeletionView()
+        }
+    }
+
     /// returns the text corresponding to the provider
     /// - Parameter provider: provider to obtain it's text
-    func fileNameOrText(provider: AccountTypeProvider) -> String {
+    public func fileNameOrText(provider: AccountTypeProvider) -> String {
         switch provider {
         case .gmail:
             return "asset-Google"
@@ -55,7 +77,7 @@ class AccountTypeSelectorViewModel {
         }
     }
 
-    func isThereAnAccount() -> Bool {
+    public func isThereAnAccount() -> Bool {
         return !Account.all().isEmpty
     }
 }
