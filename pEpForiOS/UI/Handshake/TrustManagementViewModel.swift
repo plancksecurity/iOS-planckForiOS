@@ -322,8 +322,9 @@ final class TrustManagementViewModel {
         }
         let combinations = trustManagementViewModel.handshakeCombinations(message: message)
         combinations.forEach { (combination) in
-            //default language is english
-            let language = combination.partnerIdentity.language ?? "en"
+            let backupLanguage = "en"
+            let language =
+            combination.partnerIdentity.language ?? Locale.current.languageCode ?? backupLanguage
             let row = Row(currentLanguage: language,
                           longTrustwords: false,
                           handshakeCombination: combination)

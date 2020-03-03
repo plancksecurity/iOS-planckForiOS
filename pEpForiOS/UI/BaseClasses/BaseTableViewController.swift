@@ -131,7 +131,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                 break
             case .badResponse(_):
                 break
-            case .sslPeerCertUnknown:
+            case .clientCertificateNotAccepted:
                 break
             }
         } else if let imapError = error as? ImapSyncOperationError {
@@ -152,7 +152,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                 break
             case .actionFailed:
                 break
-            case .sslPeerCertUnknown:
+            case .clientCertificateNotAccepted:
                 break
             }
         }
