@@ -31,17 +31,21 @@ class TutorialStepViewController: UIViewController {
     }
     
     var font : UIFont {
-        let horizontalSizeClass = traitCollection.horizontalSizeClass
-        
         if isIpad {
-            return UIFont.systemFont(ofSize: 25.0, weight: .regular)
+//            if isLandscape {
+                return UIFont.systemFont(ofSize: 25.0, weight: .regular)
+//            }
+//            return UIFont.systemFont(ofSize: 21.0, weight: .regular)
         }
         return UIFont.systemFont(ofSize: 14.0, weight: .regular)
     }
     
     var titleFont : UIFont {
         if isIpad {
-            return UIFont.systemFont(ofSize: 45.0, weight: .regular)
+//            if isLandscape {
+                return UIFont.systemFont(ofSize: 45.0, weight: .regular)
+//            }
+//            return UIFont.systemFont(ofSize: 38.0, weight: .regular)
         }
         return UIFont.systemFont(ofSize: 28.0, weight: .regular)
     }

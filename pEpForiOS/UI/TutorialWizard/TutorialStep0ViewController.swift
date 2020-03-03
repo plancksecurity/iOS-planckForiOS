@@ -76,6 +76,7 @@ extension TutorialStep0ViewController {
             attributedText.addAttributes(textAttributes, range: NSRange(location: range.location + range.length, length: text.count - range.length))
         }
         privacyStatusLabel.attributedText = attributedText
+        setTextAlignment(for: privacyStatusLabel)
     }
     
     private func setupPrivacyStatusShownLabel() {
