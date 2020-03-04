@@ -72,12 +72,14 @@
 
 /* alert action 3
    Alert cancel button title before trusting an account
+   Cancel
    Cancel button title for manual account setup
    Cancel button title of pEp protection toggle action sheet
    Cancel for an alert view
    Cancel in button in Login View
    Cancel reset account identity button title
    Cancel title button
+   Cancel trust change to be undone
    compose email cancel
    Default cancel button text
    EmailList action title
@@ -85,6 +87,7 @@
    keySyncWizard animation view cancel button title
    Message actions
    MoveToFolderViewController NavigationBar canel button title
+   possible private status action
    UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
 "Cancel" = "Abbrechen";
 
@@ -136,7 +139,8 @@
 /* keysync alert leave device group disable */
 "Disable" = "Deaktivieren";
 
-/* Disable Protection button title of pEp protection toggle action sheet */
+/* Disable Protection
+   Disable Protection button title of pEp protection toggle action sheet */
 "Disable Protection" = "Schutz abschalten";
 
 /* ComposeTableView: button to decide to discharge changes made on a drafted mail. */
@@ -157,7 +161,8 @@
 /* title for subject protection */
 "Enable Protected Subject" = "Geschützten Betreff aktivieren";
 
-/* Enable Protection button title of pEp protection toggle action sheet */
+/* Enable Protection
+   Enable Protection button title of pEp protection toggle action sheet */
 "Enable Protection" = "Schutz aktivieren";
 
 /* Title of error alert shown to the user in case a message could not be sent
@@ -450,7 +455,8 @@
 /* Settings: Cell (button) title for entering fingerprints that are made own keys */
 "Set Own Key" = "Eigenen Schlüssel festlegen";
 
-/* Settings view title */
+/* acction sheet title 2
+   Settings view title */
 "Settings" = "Einstellungen";
 
 /* Login */
@@ -571,7 +577,9 @@
 /* Displayed attachment filename if unknown */
 "unknown" = "unbekannt";
 
-/* Privacy status title */
+/* Privacy status title
+   privacyStatusDescription no_color
+   privacyStatusTitle no_color */
 "Unknown" = "Unbekannt";
 
 /* file name used for unnamed attachments */

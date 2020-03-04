@@ -105,7 +105,7 @@ struct DisplayUserError: LocalizedError {
                 break
             case .badResponse(_):
                 break
-            case .sslPeerCertUnknown:
+            case .clientCertificateNotAccepted:
                 break
             }
         } else if let imapError = error as? ImapSyncOperationError {
@@ -127,7 +127,7 @@ struct DisplayUserError: LocalizedError {
                 break
             case .actionFailed:
                 break
-            case .sslPeerCertUnknown:
+            case .clientCertificateNotAccepted:
                 break
             }
         } else if let oauthInternalError = error as? OAuth2AuthViewModelError {
@@ -181,7 +181,7 @@ struct DisplayUserError: LocalizedError {
             return .brokenServerConnectionSmtp
         case .badResponse:
             return .internalError
-        case .sslPeerCertUnknown:
+        case .clientCertificateNotAccepted:
             return .clientCertificateError
         }
     }
@@ -206,7 +206,7 @@ struct DisplayUserError: LocalizedError {
             return .internalError
         case .actionFailed:
             return .internalError
-        case .sslPeerCertUnknown:
+        case .clientCertificateNotAccepted:
             return .clientCertificateError
         }
     }

@@ -721,9 +721,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="splashscreen" translatesAutoresizingMaskIntoConstraints="NO" id="Qvj-Kg-e68">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashscreen" translatesAutoresizingMaskIntoConstraints="NO" id="Qvj-Kg-e68">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to p≡p" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YOK-e7-Ke7">
                                 <rect key="frame" x="85" y="72" width="244" height="41"/>
@@ -782,12 +781,16 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="qSY-an-Kw8" firstAttribute="leading" secondItem="4SX-0s-gq3" secondAttribute="leading" constant="40" id="1Xm-ta-HF3"/>
+                            <constraint firstAttribute="bottom" secondItem="Qvj-Kg-e68" secondAttribute="bottom" id="Dza-IP-yGG"/>
+                            <constraint firstItem="Qvj-Kg-e68" firstAttribute="leading" secondItem="vCs-pa-EKN" secondAttribute="leading" id="Kdx-W7-Dfx"/>
                             <constraint firstItem="YOK-e7-Ke7" firstAttribute="centerX" secondItem="vCs-pa-EKN" secondAttribute="centerX" id="Vco-8i-FcX"/>
                             <constraint firstItem="4SX-0s-gq3" firstAttribute="trailing" secondItem="qSY-an-Kw8" secondAttribute="trailing" constant="40" id="bkW-Yy-fDm"/>
                             <constraint firstItem="qSY-an-Kw8" firstAttribute="top" secondItem="fLS-EM-fbk" secondAttribute="bottom" constant="40" id="ceM-nr-qWS"/>
                             <constraint firstItem="4SX-0s-gq3" firstAttribute="bottom" secondItem="qSY-an-Kw8" secondAttribute="bottom" constant="40" id="nge-dY-DKp"/>
+                            <constraint firstItem="Qvj-Kg-e68" firstAttribute="top" secondItem="vCs-pa-EKN" secondAttribute="top" id="pVV-sD-NCc"/>
                             <constraint firstItem="YOK-e7-Ke7" firstAttribute="top" secondItem="4SX-0s-gq3" secondAttribute="top" constant="28" id="qJg-4z-rpE"/>
                             <constraint firstItem="fLS-EM-fbk" firstAttribute="top" secondItem="YOK-e7-Ke7" secondAttribute="bottom" constant="30" id="s3O-uh-Rhh"/>
+                            <constraint firstItem="Qvj-Kg-e68" firstAttribute="trailing" secondItem="vCs-pa-EKN" secondAttribute="trailing" id="x7u-wD-nFa"/>
                             <constraint firstItem="fLS-EM-fbk" firstAttribute="centerX" secondItem="vCs-pa-EKN" secondAttribute="centerX" id="yvS-mc-uSj"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4SX-0s-gq3"/>

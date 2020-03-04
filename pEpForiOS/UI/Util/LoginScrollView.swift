@@ -83,11 +83,7 @@ extension LoginScrollView {
 
     @objc private func updateScrollViewToShowKeyboard(notification: NSNotification) {
         adjustScrollViewHeight(notification: notification)
-        if UIDevice.current.userInterfaceIdiom != .pad {
-            centerFirstResponder(notification: notification)
-        } else {
-            scrollToCenterStackView()
-        }
+        centerFirstResponder(notification: notification)
     }
 
     private func keyBoardHeight(notification: NSNotification) -> CGFloat {

@@ -111,7 +111,7 @@ class Appearance {
     static private func customiseForLogin(navigationBarAppearance: UINavigationBarAppearance) {
         navigationBarAppearance.configureWithTransparentBackground()
         navigationBarAppearance.backgroundColor = UIColor.clear
-        let newTintImage = UIImage(named: "white-chevron-icon-left")!.withTintColor(UIColor.black)
+        let newTintImage = UIImage(named: "white-chevron-icon-left")!.withRenderingMode(.alwaysOriginal)
         //let newTintImage = UIImage(named: "close-icon")!.withTintColor(UIColor.black)
         //navigationBarAppearance.backIndicatorImage.withTintColor(UIColor.white)
         navigationBarAppearance.setBackIndicatorImage(newTintImage, transitionMaskImage: newTintImage)

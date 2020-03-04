@@ -68,7 +68,7 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
                 break
             case .badResponse(_):
                 break
-            case .sslPeerCertUnknown:
+            case .clientCertificateNotAccepted:
                 break
             }
         } else if let imapError = error as? ImapSyncOperationError {
@@ -89,7 +89,7 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
                 break
             case .actionFailed:
                 break
-            case .sslPeerCertUnknown:
+            case .clientCertificateNotAccepted:
                 break
             }
         }

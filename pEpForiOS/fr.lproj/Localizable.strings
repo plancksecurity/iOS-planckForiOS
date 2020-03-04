@@ -29,12 +29,14 @@
 
 /* alert action 3
    Alert cancel button title before trusting an account
+   Cancel
    Cancel button title for manual account setup
    Cancel button title of pEp protection toggle action sheet
    Cancel for an alert view
    Cancel in button in Login View
    Cancel reset account identity button title
    Cancel title button
+   Cancel trust change to be undone
    compose email cancel
    Default cancel button text
    EmailList action title
@@ -42,6 +44,7 @@
    keySyncWizard animation view cancel button title
    Message actions
    MoveToFolderViewController NavigationBar canel button title
+   possible private status action
    UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
 "Cancel" = "Annuler";
 
@@ -74,13 +77,15 @@
 /* keysync alert leave device group disable */
 "Disable" = "Désactiver";
 
-/* Disable Protection button title of pEp protection toggle action sheet */
+/* Disable Protection
+   Disable Protection button title of pEp protection toggle action sheet */
 "Disable Protection" = "Désactivez la protection";
 
 /* enable p≡p Sync with other devices in the group */
 "Enable p≡p Sync" = "Enable p≡p Sync";
 
-/* Enable Protection button title of pEp protection toggle action sheet */
+/* Enable Protection
+   Enable Protection button title of pEp protection toggle action sheet */
 "Enable Protection" = "Activer la protection";
 
 /* Finish button title for manual account SMTP setup
@@ -195,7 +200,8 @@
    privacyStatusTitle green */
 "Secure & Trusted" = "Sécurisé & Authentique";
 
-/* Settings view title */
+/* acction sheet title 2
+   Settings view title */
 "Settings" = "Paramètres";
 
 /* Title manual account SMTP setup */
@@ -250,7 +256,9 @@
 /* Displayed attachment filename if unknown */
 "unknown" = "Indéterminé";
 
-/* Privacy status title */
+/* Privacy status title
+   privacyStatusDescription no_color
+   privacyStatusTitle no_color */
 "Unknown" = "Indéterminé";
 
 /* Privacy status title */
