@@ -36,7 +36,7 @@ class TutorialViewController: UIViewController {
     }
     
     ///MB
-    static func fromStoryboard(step : Int) -> UIViewController? {
+    public static func fromStoryboard(step : Int) -> UIViewController? {
         let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
         return storyboard.instantiateViewController(withIdentifier: "TutorialStep\(step)ViewController")
     }

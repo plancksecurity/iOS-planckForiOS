@@ -106,11 +106,6 @@ extension TutorialWizardViewController {
         var result = [UIViewController]()
         
         for (step, tutorialImage) in tutorialImages.enumerated() {
-            guard let tutorialViewController =
-                TutorialViewController.fromStoryboard(tutorialImage: tutorialImage) else {
-                    continue
-            }
-            result.append(tutorialViewController)
             
             if step == 0 {
                 guard let stepViewController = TutorialViewController.fromStoryboard(step: step) else {
@@ -118,8 +113,13 @@ extension TutorialWizardViewController {
                     return [UIViewController]()
                 }
                 result.append(stepViewController)
+            } else {
+                guard let tutorialViewController =
+                    TutorialViewController.fromStoryboard(tutorialImage: tutorialImage) else {
+                        continue
+                }
+                result.append(tutorialViewController)
             }
-
         }
         return result
     }

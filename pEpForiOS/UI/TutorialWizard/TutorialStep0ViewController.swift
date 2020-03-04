@@ -13,21 +13,26 @@ import UIKit
 /// The layout differences regarding the device orientation and screen size are configured
 /// in storyboard using size classes.
 class TutorialStep0ViewController: TutorialStepViewController {
-    @IBOutlet private weak var titleLabelLeadingContraint: NSLayoutConstraint!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var skipTutorialLabel: UILabel!
     @IBOutlet private weak var privacyStatusLabel: UILabel!
     @IBOutlet private weak var privacyStatusShownLabel: UILabel!
     @IBOutlet private weak var topbarLabel: UILabel!
-    // We manipulate constraints to support iPad orientations as this inherits from CustomTraitCollectionViewController
+    @IBOutlet private weak var avatarImageView: UIImageView!
+    @IBOutlet private weak var topbarImageView: UIImageView!
+    @IBOutlet private weak var topbarWidthConstraint: NSLayoutConstraint!
+    
+    // We manipulate constraints to support iPad orientations as this inherits from CustomTraitCollectionViewController,
+    @IBOutlet private weak var titleLabelLeadingContraint: NSLayoutConstraint!
+
     @IBOutlet weak private var topbarLabelLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak private var distanceBetweenPrivacyStatusAndSkipTutorialLabels: NSLayoutConstraint!
+    @IBOutlet weak private var distanceBetweenPrivacyStatusAndSkipConstraint: NSLayoutConstraint!
     @IBOutlet weak private var distanceBetweenTitleViewAndTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak private var distanceBetweenPrivacyStatusAndSkipTutorialLabelConstraint: NSLayoutConstraint!
-    @IBOutlet weak private var distanceBetweenAvatarImageAndPrivacyStatusShownLabelConstraint: NSLayoutConstraint!
+    @IBOutlet weak private var distanceBetweenSkipAndTitleConstraint: NSLayoutConstraint!
+    @IBOutlet weak private var distanceBetweenAvatarAndPrivacyStatus2LabelConstraint: NSLayoutConstraint!
     @IBOutlet weak private var privacyStatusShownLabelLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak private var distanceBetweenBottomLabelAndPrivacyStatusIconLabelConstraint: NSLayoutConstraint!
-    @IBOutlet weak private var distanceBetweenTopbarImageAndBottomLabel: NSLayoutConstraint!
+    @IBOutlet weak private var distanceBetweenTopbarLabelAndPrivacyStatus2Constraint: NSLayoutConstraint!
+    @IBOutlet weak private var distanceBetweenTopbarImageAndBottomLabelConstraint: NSLayoutConstraint!
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -48,26 +53,59 @@ class TutorialStep0ViewController: TutorialStepViewController {
 // MARK: - Constraints adjustments
 
 extension TutorialStep0ViewController {
-    
-    private static let mediumDistance : CGFloat = 50.0
-    private static let smallDistance : CGFloat = 30.0
-    private static let bigDistance : CGFloat = 120.0
-    private static let hugeDistance : CGFloat = 170.0
+
+    private struct Constants {
+        struct Portrait {
+            static let skipTitleDistance : CGFloat = 70.0
+            static let titleViewTopDistance : CGFloat = 50.0
+            static let privacyStatusSkipDistance : CGFloat = 26.0
+            static let avatarPrivacyStatus2Distance : CGFloat = 30.0
+            static let titleLabelLeading : CGFloat = 170.0
+            static let privacyStatus2Leading: CGFloat = 170.0
+            static let distanceBetweenTopbarLabelAndPrivacyStatus2: CGFloat = 120.0
+            static let distanceBetweenTopbarImageAndBottomLabel: CGFloat = 50.0
+            static let topbarLabelLeadingConstraint: CGFloat = 20.0
+            static let topbarWidth: CGFloat = 500.0
+
+        }
+        struct Landscape {
+            static let skipTitleDistance: CGFloat = 26.0
+            static let titleViewTopDistance: CGFloat = 35.0
+            static let privacyStatusSkipDistance: CGFloat = 19.0
+            static let avatarPrivacyStatus2Distance: CGFloat = 15.5
+            static let titleLabelLeading: CGFloat = 50.0
+            static let privacyStatus2Leading: CGFloat = 80.0
+            static let distanceBetweenTopbarLabelAndPrivacyStatus2: CGFloat = 100.0
+            static let distanceBetweenTopbarImageAndBottomLabel: CGFloat = 20.0
+            static let topbarLabelLeadingConstraint: CGFloat = 80.0
+            static let topbarWidth: CGFloat = 500.0
+
+        }
+    }
     
     private func adjustConstraintsIfNeeded() {
-        guard let superView = view.superview, isIpad && !isLandscape else {
+        guard let superView = view.superview, isIpad else {
             Log.shared.error("Superview is missing or is not needed to adjust constraints here")
             return
         }
-        distanceBetweenPrivacyStatusAndSkipTutorialLabelConstraint.constant = TutorialStep0ViewController.mediumDistance
-        distanceBetweenTitleViewAndTopConstraint.constant = TutorialStep0ViewController.mediumDistance
-        distanceBetweenPrivacyStatusAndSkipTutorialLabels.constant = TutorialStep0ViewController.smallDistance
-        distanceBetweenAvatarImageAndPrivacyStatusShownLabelConstraint.constant = TutorialStep0ViewController.smallDistance
-        titleLabelLeadingContraint.constant = TutorialStep0ViewController.hugeDistance
-        privacyStatusShownLabelLeadingConstraint.constant = TutorialStep0ViewController.hugeDistance
-        distanceBetweenBottomLabelAndPrivacyStatusIconLabelConstraint.constant = TutorialStep0ViewController.bigDistance
-        distanceBetweenTopbarImageAndBottomLabel.constant = TutorialStep0ViewController.mediumDistance
-        topbarLabelLeadingConstraint.constant = TutorialStep0ViewController.bigDistance
+
+        let avatarSize = isLandscape ? CGSize(width: 100, height: 100) : CGSize(width: 78, height: 78)
+        avatarImageView.image = avatarImageView.image?.resizeImage(targetSize: avatarSize)
+        distanceBetweenSkipAndTitleConstraint.constant = isLandscape ? Constants.Landscape.skipTitleDistance : Constants.Portrait.skipTitleDistance
+        distanceBetweenTitleViewAndTopConstraint.constant = isLandscape ? Constants.Landscape.titleViewTopDistance : Constants.Portrait.titleViewTopDistance
+        distanceBetweenPrivacyStatusAndSkipConstraint.constant = isLandscape ? Constants.Landscape.privacyStatusSkipDistance : Constants.Portrait.privacyStatusSkipDistance
+        distanceBetweenAvatarAndPrivacyStatus2LabelConstraint.constant = isLandscape ? Constants.Landscape.avatarPrivacyStatus2Distance : Constants.Portrait.avatarPrivacyStatus2Distance
+        titleLabelLeadingContraint.constant = isLandscape ? Constants.Landscape.titleLabelLeading : Constants.Portrait.titleLabelLeading
+        
+        privacyStatusShownLabelLeadingConstraint.constant = isLandscape ? Constants.Landscape.privacyStatus2Leading : Constants.Portrait.privacyStatus2Leading
+        distanceBetweenTopbarLabelAndPrivacyStatus2Constraint.constant = isLandscape ? Constants.Landscape.distanceBetweenTopbarLabelAndPrivacyStatus2 :
+            Constants.Portrait.distanceBetweenTopbarLabelAndPrivacyStatus2
+        distanceBetweenTopbarImageAndBottomLabelConstraint.constant = isLandscape ? Constants.Landscape.distanceBetweenTopbarImageAndBottomLabel :
+            Constants.Portrait.distanceBetweenTopbarImageAndBottomLabel
+        topbarLabelLeadingConstraint.constant = isLandscape ? Constants.Landscape.topbarLabelLeadingConstraint : Constants.Portrait.topbarLabelLeadingConstraint
+        topbarWidthConstraint.isActive = true
+        topbarWidthConstraint.constant = isLandscape ? Constants.Landscape.topbarWidth : Constants.Portrait.topbarWidth
+        
         superView.layoutIfNeeded()
     }
 }

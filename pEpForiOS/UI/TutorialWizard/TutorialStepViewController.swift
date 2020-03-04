@@ -8,6 +8,7 @@
 
 import Foundation
 
+// This class MUST be inherited. Do not use it directly.
 class TutorialStepViewController: CustomTraitCollectionViewController {
     
     override func viewDidLoad() {
@@ -18,6 +19,7 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
     var centered : NSMutableParagraphStyle {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
+        paragraphStyle.lineSpacing = -2
         return paragraphStyle
     }
     
@@ -52,10 +54,13 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         configureView()
     }
 
     /// Abstract method to be overriden
     /// This method MUST configure aspects of the layout of the view that can not be configured in storyboard.
-    public func configureView() { }
+    public func configureView() {
+        Log.shared.errorAndCrash("This method must be overriden")
+    }
 }
