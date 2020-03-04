@@ -39,6 +39,13 @@ private struct Localized {
 final class ClientCertificateUIUtil: NSObject {
     private let clientCertificateUtil: ClientCertificateUtilProtocol
     private var viewControllerToPresentUiOn: UIViewController?
+    private var clientCertificatePasswordVC: ClientCertificatePasswordViewController? {
+        let vc = UIStoryboard.init(name: "Certificates",
+                          bundle: nil).instantiateInitialViewController() as? ClientCertificatePasswordViewController
+        vc?.viewModel = ClientCertificatePasswordViewModel(delegate: vc,
+                                                           passwordChangeDelegate: self)
+        return vc
+    }
     private var p12Data: Data?
 
     public init(clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
@@ -48,7 +55,9 @@ final class ClientCertificateUIUtil: NSObject {
     typealias Success = Bool
     public func importClientCertificate(at url: URL,
                                         viewControllerToPresentUiOn vc: UIViewController) {
+
         viewControllerToPresentUiOn = vc
+
         do {
             p12Data = try Data(contentsOf: url)
         } catch {
@@ -65,20 +74,17 @@ extension ClientCertificateUIUtil {
 
     private func presentAlertViewForClientImportPassPhrase() {
 
-        guard let viewControllerToPresent = viewControllerToPresentUiOn else {
+        guard let viewControllerPresenter = viewControllerToPresentUiOn else {
             Log.shared.errorAndCrash("No VC!")
             return
         }
 
-        guard let viewController =
-            UIStoryboard.init(name: "Certificates",
-                              bundle: nil).instantiateInitialViewController() as? ClientCertificatePasswordViewController else {
+        guard let clientCertificatePasswordVC = clientCertificatePasswordVC else {
             Log.shared.errorAndCrash("Certificates storyboard not found")
             return
         }
-        viewController.viewModel = ClientCertificatePasswordViewModel(delegate: self)
-        viewControllerToPresent.navigationController?.pushViewController(viewController,
-                                                                         animated: true)
+        clientCertificatePasswordVC.modalPresentationStyle = .fullScreen
+        viewControllerPresenter.present(clientCertificatePasswordVC, animated: true)
     }
 
     private func handlePassphraseEntered(pass: String) {
@@ -102,11 +108,17 @@ extension ClientCertificateUIUtil {
         }
         UIUtils.showAlertWithOnlyPositiveButton(title: Localized.CorruptedFileError.title,
                                                 message: Localized.CorruptedFileError.message,
-                                                inViewController: vc)
+                                                inViewController: vc, completion: { [weak self] in
+                                                    guard let me = self else {
+                                                        Log.shared.lostMySelf()
+                                                        return
+                                                    }
+                                                    me.dismissView()
+        })
     }
 
     private func showWrongPasswordError() {
-        guard let vc = viewControllerToPresentUiOn else {
+        guard let vc = clientCertificatePasswordVC else {
             Log.shared.errorAndCrash("No VC")
             return
         }
@@ -115,39 +127,29 @@ extension ClientCertificateUIUtil {
                                    cancelButtonText: Localized.no,
                                    positiveButtonText: Localized.yes,
                                    cancelButtonAction: { [weak self] in
-
                                     guard let me = self else {
-                                        Log.shared.errorAndCrash("Lost myself")
+                                        Log.shared.lostMySelf()
                                         return
                                     }
                                     me.dismissView()
-
             }, positiveButtonAction: {
                 // We don't need to do something here. Our expectation is close this alert
         }, inViewController: vc)
     }
 
     private func dismissView() {
-        guard let viewControllerToPresent = viewControllerToPresentUiOn else {
+        guard let viewClientCertificatePasswordVC = clientCertificatePasswordVC else {
             Log.shared.errorAndCrash("No viewControllerToPresent!")
             return
         }
-        guard let navigationController = viewControllerToPresent.navigationController else {
-            Log.shared.errorAndCrash("No navigationController!")
-            return
-        }
-        navigationController.popToRootViewController(animated: true)
+        viewClientCertificatePasswordVC.dismiss(animated: true)
     }
 }
 
 // MARK: - ClientCertificatePasswordDelegate
 
-extension ClientCertificateUIUtil: ClientCertificatePasswordDelegate {
-    func importCertificate(password: String) {
+extension ClientCertificateUIUtil: ClientCertificatePasswordViewModelPasswordChangeDelegate {
+    func didEnter(password: String) {
         handlePassphraseEntered(pass: password)
-    }
-
-    func dismiss() {
-        dismissView()
     }
 }

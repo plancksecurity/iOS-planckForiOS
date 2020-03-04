@@ -71,9 +71,9 @@ struct UIUtils {
                                    cancelButtonAction: @escaping ()->Void,
                                    positiveButtonAction: @escaping () -> Void,
                                    inViewController vc: UIViewController) {
-        let alertView = UIAlertController.pEpAlertController(title: title,
-                                                             message: message,
-                                                             preferredStyle: .alert)
+        let alertView = UIAlertController(title: title,
+                                        message: message,
+                                        preferredStyle: .alert)
         alertView.addAction(UIAlertAction(title: positiveButtonText,
                                           style: .default) { (alertAction) in
                                             positiveButtonAction()

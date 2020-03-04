@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class ClientCertificatePasswordViewController: BaseViewController {
+final class ClientCertificatePasswordViewController: UIViewController {
 
 // MARK: - IBOutlet
 
@@ -18,12 +18,12 @@ final class ClientCertificatePasswordViewController: BaseViewController {
     @IBOutlet weak private var okButton: UIButton!
     @IBOutlet weak private var cancelButton: UIButton!
 
-    var portraitConstraints: [NSLayoutConstraint] = []
-    var landscapeConstraints: [NSLayoutConstraint] = []
+    private var portraitConstraints: [NSLayoutConstraint] = []
+    private var landscapeConstraints: [NSLayoutConstraint] = []
 
 // MARK: - ViewModel
 
-    var viewModel: ClientCertificatePasswordViewModel?
+    public var viewModel: ClientCertificatePasswordViewModel?
 
 // MARK: - Localized strings
 
@@ -44,12 +44,18 @@ final class ClientCertificatePasswordViewController: BaseViewController {
         super.viewDidLoad()
 
         // I want to check that viewModel was initiated (only once)
-        guard let vm = viewModel else {
+        guard let _ = viewModel else {
             Log.shared.errorAndCrash("Lost viewModel")
             return
         }
 
+        setupConstraints()
+        setupStyle()
+        updateConstraints()
+    }
 
+    /// Setup constraints arrays for cancel & OK buttons.
+    private func setupConstraints() {
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         okButton.translatesAutoresizingMaskIntoConstraints = false
 
@@ -63,12 +69,10 @@ final class ClientCertificatePasswordViewController: BaseViewController {
                                cancelButton.rightAnchor.constraint(equalTo: passwordTextField.leftAnchor, constant: -40),
                                okButton.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor),
                                okButton.leftAnchor.constraint(equalTo: passwordTextField.rightAnchor, constant: 40)]
-
-        setupStyle()
     }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-
+    /// Change constraints for cancel & OK buttons between portrait and landscape modes
+    private func updateConstraints() {
         if !UIApplication.shared.statusBarOrientation.isPortrait {
             NSLayoutConstraint.deactivate(landscapeConstraints)
             NSLayoutConstraint.activate(portraitConstraints)
@@ -76,6 +80,10 @@ final class ClientCertificatePasswordViewController: BaseViewController {
             NSLayoutConstraint.deactivate(portraitConstraints)
             NSLayoutConstraint.activate(landscapeConstraints)
         }
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        updateConstraints()
     }
 }
 
@@ -94,12 +102,19 @@ extension ClientCertificatePasswordViewController {
 
 extension ClientCertificatePasswordViewController {
     @IBAction func cancelAction(_ sender: Any) {
-        viewModel?.dismissImportCertificateAction()
+        viewModel?.handleCancelButtonPresed()
     }
 
     @IBAction func okAction(_ sender: Any) {
         let password = passwordTextField.text ?? ""
-        passwordTextField.text = ""
-        viewModel?.importCertificateAction(password: password)
+        viewModel?.handleOkButtonPressed(password: password)
+    }
+}
+
+// MARK: - ClientCertificatePasswordViewModelDelegate
+
+extension ClientCertificatePasswordViewController: ClientCertificatePasswordViewModelDelegate {
+    func dismiss() {
+        dismiss(animated: true, completion: nil)
     }
 }

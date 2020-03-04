@@ -8,24 +8,30 @@
 
 import Foundation
 
-protocol ClientCertificatePasswordDelegate {
-    func importCertificate(password: String)
+protocol ClientCertificatePasswordViewModelPasswordChangeDelegate: class {
+    func didEnter(password: String)
+}
+
+protocol ClientCertificatePasswordViewModelDelegate: class {
     func dismiss()
 }
 
 final class ClientCertificatePasswordViewModel {
 
-    let delegate: ClientCertificatePasswordDelegate
+    weak var passwordChangeDelegate: ClientCertificatePasswordViewModelPasswordChangeDelegate?
+    weak var delegate: ClientCertificatePasswordViewModelDelegate?
 
-    init(delegate clientCertificateDelegate: ClientCertificatePasswordDelegate) {
-        delegate = clientCertificateDelegate
+    init(delegate: ClientCertificatePasswordViewModelDelegate? = nil,
+         passwordChangeDelegate: ClientCertificatePasswordViewModelPasswordChangeDelegate? = nil) {
+        self.delegate = delegate
+        self.passwordChangeDelegate = passwordChangeDelegate
     }
 
-    public func importCertificateAction(password: String) {
-        delegate.importCertificate(password: password)
+    public func handleOkButtonPressed(password: String) {
+        passwordChangeDelegate?.didEnter(password: password)
     }
 
-    public func dismissImportCertificateAction() {
-        delegate.dismiss()
+    public func handleCancelButtonPresed() {
+        delegate?.dismiss()
     }
 }

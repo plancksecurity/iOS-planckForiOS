@@ -12,6 +12,7 @@ final class AccountTypeSelectorViewController: BaseViewController {
 
     let viewModel = AccountTypeSelectorViewModel()
 
+    var selectedIndexPath: IndexPath?
     var delegate: AccountTypeSelectorViewModelDelegate?
     var loginDelegate: LoginViewControllerDelegate?
 
@@ -62,11 +63,12 @@ final class AccountTypeSelectorViewController: BaseViewController {
 
 extension AccountTypeSelectorViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedIndexPath = indexPath
         switch viewModel.accountType(row: indexPath.row) {
         case .clientCertificate:
             viewModel.checkRequirements()
         default:
-            performSegue(withIdentifier: SegueIdentifier.showLogin, sender: indexPath)
+            performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
         }
     }
 }
@@ -133,13 +135,10 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let selectedIndexPath = sender as? IndexPath else {
-            Log.shared.errorAndCrash("Lost selectedIndexPath")
-            return
-        }
         switch segueIdentifier(for: segue) {
         case .showLogin:
-            if let vc = segue.destination as? LoginViewController {
+            if let vc = segue.destination as? LoginViewController,
+                let selectedIndexPath = selectedIndexPath {
                 guard let accountType = viewModel.accountType(row: selectedIndexPath.row) else {
                     Log.shared.errorAndCrash("accountType is invalid")
                     return

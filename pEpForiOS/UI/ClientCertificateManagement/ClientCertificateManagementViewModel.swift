@@ -18,14 +18,14 @@ protocol ClientCertificateManagementViewModelDelegate: class {
 
 extension ClientCertificateManagementViewModel {
     struct Row {
-        var name: String {
+        public var name: String {
             return clientCertificate.label ?? "--"
         }
         fileprivate let clientCertificate: ClientCertificate
     }
 }
 
-class ClientCertificateManagementViewModel {
+final class ClientCertificateManagementViewModel {
     private let clientCertificateUtil: ClientCertificateUtil
     public private(set) var rows = [Row]()
     weak public var delegate: ClientCertificateManagementViewModelDelegate?
@@ -45,7 +45,6 @@ class ClientCertificateManagementViewModel {
 // MARK: - Private
 
 extension ClientCertificateManagementViewModel {
-
     private func setup() {
         rows = clientCertificateUtil.listCertificates().map { Row(clientCertificate: $0) }
     }

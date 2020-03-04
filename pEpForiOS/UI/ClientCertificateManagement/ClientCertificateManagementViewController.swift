@@ -17,8 +17,12 @@ final class ClientCertificateManagementViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureAppearance()
+
+        tableView.delegate = self
+        tableView.dataSource = self
+        setupTableView()
         setupViewModel()
+        configureAppearance()
     }
 }
 
@@ -45,5 +49,55 @@ extension ClientCertificateManagementViewController {
         }
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
+    }
+
+    private func setupTableView() {
+        if viewModel == nil {
+            viewModel = ClientCertificateManagementViewModel()
+        }
+        tableView.separatorInset = .zero
+        tableView.separatorStyle = .none
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension ClientCertificateManagementViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        vm.handleDidSelect(rowAt: indexPath)
+        dismiss(animated: true)
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension ClientCertificateManagementViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return 0
+        }
+        return vm.rows.count
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ClientChooseCertificateCell.reusableId) as? ClientChooseCertificateCell else {
+            Log.shared.errorAndCrash("No reusable cell")
+            return UITableViewCell()
+        }
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return UITableViewCell()
+        }
+        let row = vm.rows[indexPath.row]
+        cell.titleLabel?.text = row.name
+        return cell
+    }
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        // Hide seperator lines for empty view.
+        return UIView()
     }
 }

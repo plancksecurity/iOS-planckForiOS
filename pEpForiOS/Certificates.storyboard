@@ -128,6 +128,7 @@
                             <constraint firstItem="smi-RN-oWS" firstAttribute="centerX" secondItem="OmB-JR-0Xd" secondAttribute="centerX" id="TMy-QV-c62"/>
                             <constraint firstItem="OmB-JR-0Xd" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="smi-RN-oWS" secondAttribute="trailing" constant="36" id="VsT-Bj-Yv0"/>
                             <constraint firstAttribute="trailing" secondItem="hwX-rN-uqq" secondAttribute="trailing" id="WkN-z6-E4q"/>
+                            <constraint firstItem="OmB-JR-0Xd" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="smi-RN-oWS" secondAttribute="bottom" constant="20" id="Wwm-Jg-ZB3"/>
                             <constraint firstItem="smi-RN-oWS" firstAttribute="top" relation="greaterThanOrEqual" secondItem="OmB-JR-0Xd" secondAttribute="top" constant="1" id="Zat-rd-85i"/>
                             <constraint firstItem="hwX-rN-uqq" firstAttribute="leading" secondItem="ajb-yG-1c9" secondAttribute="leading" id="ckI-yc-1et"/>
                             <constraint firstItem="smi-RN-oWS" firstAttribute="height" relation="greaterThanOrEqual" secondItem="ajb-yG-1c9" secondAttribute="height" multiplier="0.5" id="e1k-Y0-mK4"/>

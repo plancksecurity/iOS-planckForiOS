@@ -218,8 +218,6 @@
 		3A0CBAAD23F5909C00AE200C /* WrappedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */; };
 		3A8588D024057C8B00659D29 /* large-animated-gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3A8588CF24057C8A00659D29 /* large-animated-gif.gif */; };
 		3A8588D224058CA500659D29 /* small-animated-gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3A8588D124058CA500659D29 /* small-animated-gif.gif */; };
-		3A8BC863240D44C100DB083A /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC862240D44C100DB083A /* TableViewCell.swift */; };
-		3A8BC865240D44E500DB083A /* ClientCertificatesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BC864240D44E500DB083A /* ClientCertificatesTableViewController.swift */; };
 		3A9239C623FAE0A0003E6C48 /* AccountSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9239C523FAE0A0003E6C48 /* AccountSettingsTableViewController.swift */; };
 		3AC2B841240E53DF00E08EB3 /* Certificates.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AC2B840240E53DF00E08EB3 /* Certificates.storyboard */; };
 		3AC2B843240E5FD900E08EB3 /* ClientCertificatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B842240E5FD900E08EB3 /* ClientCertificatePasswordViewController.swift */; };
@@ -740,8 +738,6 @@
 		3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedCell.swift; sourceTree = "<group>"; };
 		3A8588CF24057C8A00659D29 /* large-animated-gif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "large-animated-gif.gif"; sourceTree = "<group>"; };
 		3A8588D124058CA500659D29 /* small-animated-gif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "small-animated-gif.gif"; sourceTree = "<group>"; };
-		3A8BC862240D44C100DB083A /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
-		3A8BC864240D44E500DB083A /* ClientCertificatesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificatesTableViewController.swift; sourceTree = "<group>"; };
 		3A9239C523FAE0A0003E6C48 /* AccountSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsTableViewController.swift; sourceTree = "<group>"; };
 		3AC2B840240E53DF00E08EB3 /* Certificates.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Certificates.storyboard; sourceTree = "<group>"; };
 		3AC2B842240E5FD900E08EB3 /* ClientCertificatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificatePasswordViewController.swift; sourceTree = "<group>"; };
@@ -1534,8 +1530,6 @@
 				158A564F2403F043003C0D7E /* ClientCertificateManagementViewController.swift */,
 				158A56512403F05B003C0D7E /* ClientCertificateManagementViewModel.swift */,
 				3ACAB170240D067E00702D33 /* ClientChooseCertificateCell.swift */,
-				3A8BC862240D44C100DB083A /* TableViewCell.swift */,
-				3A8BC864240D44E500DB083A /* ClientCertificatesTableViewController.swift */,
 				3AC2B842240E5FD900E08EB3 /* ClientCertificatePasswordViewController.swift */,
 				3AC2B844240E692600E08EB3 /* ClientCertificatePasswordViewModel.swift */,
 			);
@@ -2903,7 +2897,6 @@
 				220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */,
 				1526596F216230B2006A78DF /* ComposeFieldModel.swift in Sources */,
 				492EF92D20C6957D004EAE14 /* ThreadViewController.swift in Sources */,
-				3A8BC865240D44E500DB083A /* ClientCertificatesTableViewController.swift in Sources */,
 				5BC14AF023EB19B5005F0AF3 /* TrustManagementViewController.swift in Sources */,
 				3A0CBAAD23F5909C00AE200C /* WrappedCell.swift in Sources */,
 				43257C821F50179800DDC7F0 /* BasicSaxParser.swift in Sources */,
@@ -2931,7 +2924,6 @@
 				43257C841F50629700DDC7F0 /* HtmlToAttributedTextSaxParser.swift in Sources */,
 				4351C2D61F4441190053381F /* man.c in Sources */,
 				150B8EB31FCEB93D00374438 /* UIUtils.swift in Sources */,
-				3A8BC863240D44C100DB083A /* TableViewCell.swift in Sources */,
 				43AAC22A1F7A5AEE00F435F4 /* BaseTableViewController.swift in Sources */,
 				152295542302F72900204FD3 /* ExtraKeysSettingViewController.swift in Sources */,
 				220DCE351E0AB5CC002FE716 /* MessageContentCell.swift in Sources */,
