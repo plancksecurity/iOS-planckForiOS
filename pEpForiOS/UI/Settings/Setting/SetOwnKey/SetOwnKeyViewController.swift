@@ -16,15 +16,11 @@ class SetOwnKeyViewController: UIViewController {
     
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {
-        get {
-            return .needed
-        }
+        return .needed
     }
     
     override var separatedBehavior: SeparatedSplitViewBehavior {
-        get {
-            return .detail
-        }
+        return .detail
     }
 
     // MARK: - View life cycle etc.

@@ -18,15 +18,11 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
     private let searchController = UISearchController(searchResultsController: nil)
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {
-        get {
-            return .needed
-        }
+        return .needed
     }
     
     override var separatedBehavior: SeparatedSplitViewBehavior {
-        get {
-            return .detail
-        }
+        return .detail
     }
 
     override func viewDidLoad() {

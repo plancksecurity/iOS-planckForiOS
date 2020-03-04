@@ -33,7 +33,8 @@ class EmailDetailViewController: BaseViewController {
     @IBOutlet weak var pEpIconSettingsButton: UIBarButtonItem!
     @IBOutlet weak var moveToFolderButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
-    private var pEpButtonHelper = UIBarButtonItem.getPEPButton(action: #selector(showSettingsViewController), target: self)
+    private var pEpButtonHelper = UIBarButtonItem.getPEPButton(action: #selector(showSettingsViewController),
+                                                               target: self)
     
     /// The original navigatio bar
     var NavigationRightBar: [UIBarButtonItem]?
@@ -44,15 +45,11 @@ class EmailDetailViewController: BaseViewController {
     var firstItemToShow: IndexPath?
     
     override var collapsedBehavior: CollapsedSplitViewBehavior {
-        get {
-            return .needed
-        }
+        return .needed
     }
     
     override var separatedBehavior: SeparatedSplitViewBehavior {
-        get {
-            return .detail
-        }
+        return .detail
     }
     
     var viewModel: EmailDetailViewModel? {
@@ -819,7 +816,7 @@ extension EmailDetailViewController: QLPreviewControllerDataSource {
 // MARK: - SplitView handling
 
 extension EmailDetailViewController: SplitViewHandlingProtocol {
-    func splitViewControllerWill(SplitViewController: PEPSplitViewController, newStatus: SplitViewStatus) {
+    func splitViewControllerWill(splitViewController: PEPSplitViewController, newStatus: SplitViewStatus) {
         switch newStatus {
         case .collapse:
             // when splitview will collapse toolbar shoud be prepared
@@ -828,6 +825,7 @@ extension EmailDetailViewController: SplitViewHandlingProtocol {
             if let pepButton = pEpIconSettingsButton {
                 newToolbarItems?.append(pepButton)
             } else {
+                newToolbarItems?.append(createFlexibleBarButtonItem())
                 newToolbarItems?.append(pEpButtonHelper)
             }
             let next = UIBarButtonItem.getNextButton(action: #selector(nextButtonPressed), target: self)
@@ -842,6 +840,16 @@ extension EmailDetailViewController: SplitViewHandlingProtocol {
             toolbarItems?.removeAll(where: { $0 == pEpButtonHelper })
             navigationItem.rightBarButtonItems = toolbarItems
         }
+    }
+    /// Our own factory method for creating flexible space bar button items,
+    /// tagged so we recognize them later, for easy removal.
+    private func createFlexibleBarButtonItem() -> UIBarButtonItem {
+        let item = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+            target: nil,
+            action: nil)
+        //item.tag = "88"
+        return item
     }
 }
 

@@ -12,8 +12,8 @@ import Foundation
 protocol SplitViewHandlingProtocol {
     /// method called when the split view will change the display status
     /// - Parameter newStatus: the new status 
-    /// - Parameter SplitViewController: the splitview itself
-    func splitViewControllerWill(SplitViewController: PEPSplitViewController, newStatus: SplitViewStatus)
+    /// - Parameter splitViewController: the splitview itself
+    func splitViewControllerWill(splitViewController: PEPSplitViewController, newStatus: SplitViewStatus)
 }
 
 @objc protocol SplitViewControllerBehaviorProtocol {

@@ -25,7 +25,7 @@ class PEPSplitViewController: UISplitViewController, UISplitViewControllerDelega
             navigationController.popViewController(animated: false)
             primaryNavigationController.pushViewController(top, animated: false)
             if let vc = top as? SplitViewHandlingProtocol {
-                vc.splitViewControllerWill(SplitViewController: self, newStatus: .collapse)
+                vc.splitViewControllerWill(splitViewController: self, newStatus: .collapse)
             }
         }
         return true
@@ -43,7 +43,7 @@ class PEPSplitViewController: UISplitViewController, UISplitViewControllerDelega
                 primaryView.popViewController(animated: false)
                 navigationController.pushViewController(topView, animated: false)
                 if let vc = topView as? SplitViewHandlingProtocol {
-                    vc.splitViewControllerWill(SplitViewController: self, newStatus: .separate)
+                    vc.splitViewControllerWill(splitViewController: self, newStatus: .separate)
                 }
             } else {
                 let storyboard = UIStoryboard(

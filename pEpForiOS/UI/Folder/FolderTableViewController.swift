@@ -190,7 +190,7 @@ class FolderTableViewController: BaseTableViewController {
     }
 
     private func show(folder: DisplayableFolderProtocol) {
-        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let sb = UIStoryboard(name: EmailViewController.storyboard, bundle: nil)
         guard
             let vc = sb.instantiateViewController(
                 withIdentifier: "EmailListViewController") as? EmailListViewController

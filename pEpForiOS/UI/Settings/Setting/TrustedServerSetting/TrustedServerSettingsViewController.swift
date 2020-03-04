@@ -13,15 +13,11 @@ class TrustedServerSettingsViewController: BaseTableViewController {
     var viewModel = TrustedServerSettingsViewModel()
     
     override var collapsedBehavior: CollapsedSplitViewBehavior {
-        get {
-            return .needed
-        }
+        return .needed
     }
     
     override var separatedBehavior: SeparatedSplitViewBehavior {
-        get {
-            return .detail
-        }
+        return .detail
     }
 
     override func viewDidLoad() {

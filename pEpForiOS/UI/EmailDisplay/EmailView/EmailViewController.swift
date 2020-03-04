@@ -23,7 +23,7 @@ class EmailViewController: BaseTableViewController {
     lazy private var backgroundQueue = OperationQueue()
     lazy private var documentInteractionController = UIDocumentInteractionController()
 
-    static let storyboard = "Main"
+    static public let storyboard = "Main"
     static let storyboardId = "EmailViewController"
     weak var delegate: EmailViewControllerDelegate?
     var message: Message?

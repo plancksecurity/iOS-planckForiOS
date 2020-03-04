@@ -17,15 +17,11 @@ class ExtraKeysSettingViewController: BaseViewController {
     private var viewModel: ExtraKeysSettingViewModel?
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {
-        get {
-            return .needed
-        }
+        return .needed
     }
     
     override var separatedBehavior: SeparatedSplitViewBehavior {
-        get {
-            return .detail
-        }
+        return .detail
     }
 
     // MARK: - Life Cycle

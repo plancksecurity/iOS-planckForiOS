@@ -48,15 +48,11 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     var viewModel: AccountSettingsViewModel? = nil
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {
-        get {
-            return .needed
-        }
+        return .needed
     }
     
     override var separatedBehavior: SeparatedSplitViewBehavior {
-        get {
-            return .detail
-        }
+        return .detail
     }
     private var resetIdentityIndexPath: IndexPath?
 
