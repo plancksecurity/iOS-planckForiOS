@@ -87,6 +87,18 @@ extension ClientCertificateUIUtil {
         viewControllerPresenter.present(clientCertificatePasswordVC, animated: true)
     }
 
+    func topViewController() -> UIViewController? {
+        guard let topViewController = UIApplication.shared.keyWindow?.rootViewController else {
+            Log.shared.errorAndCrash("Lost topViewController")
+            return nil
+        }
+        while (topViewController.presentedViewController != nil) {
+            return topViewController.presentedViewController!
+        }
+        return nil
+    }
+
+
     private func handlePassphraseEntered(pass: String) {
         guard let data = p12Data else {
             Log.shared.errorAndCrash("Invalid state: Password field should never been shown before having p12Data.")
