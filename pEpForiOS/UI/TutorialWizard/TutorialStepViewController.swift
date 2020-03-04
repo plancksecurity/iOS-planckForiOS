@@ -9,6 +9,12 @@
 import Foundation
 
 class TutorialStepViewController: CustomTraitCollectionViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureView()
+    }
+    
     var centered : NSMutableParagraphStyle {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center

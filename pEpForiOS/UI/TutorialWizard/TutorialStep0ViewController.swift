@@ -13,16 +13,14 @@ import UIKit
 /// The layout differences regarding the device orientation and screen size are configured
 /// in storyboard using size classes.
 class TutorialStep0ViewController: TutorialStepViewController {
-    
-    @IBOutlet weak private var titleLabelLeadingContraint: NSLayoutConstraint!
+    @IBOutlet private weak var titleLabelLeadingContraint: NSLayoutConstraint!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var skipTutorialLabel: UILabel!
     @IBOutlet private weak var privacyStatusLabel: UILabel!
     @IBOutlet private weak var privacyStatusShownLabel: UILabel!
     @IBOutlet private weak var topbarLabel: UILabel!
-    
-    //Contraints
-    @IBOutlet weak var bottomLabelLeadingContraint: NSLayoutConstraint!
+    // We manipulate constraints to support iPad orientations as this inherits from CustomTraitCollectionViewController
+    @IBOutlet weak private var topbarLabelLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak private var distanceBetweenPrivacyStatusAndSkipTutorialLabels: NSLayoutConstraint!
     @IBOutlet weak private var distanceBetweenTitleViewAndTopConstraint: NSLayoutConstraint!
     @IBOutlet weak private var distanceBetweenPrivacyStatusAndSkipTutorialLabelConstraint: NSLayoutConstraint!
@@ -30,11 +28,6 @@ class TutorialStep0ViewController: TutorialStepViewController {
     @IBOutlet weak private var privacyStatusShownLabelLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak private var distanceBetweenBottomLabelAndPrivacyStatusIconLabelConstraint: NSLayoutConstraint!
     @IBOutlet weak private var distanceBetweenTopbarImageAndBottomLabel: NSLayoutConstraint!
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureView()
-    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -55,20 +48,26 @@ class TutorialStep0ViewController: TutorialStepViewController {
 // MARK: - Constraints adjustments
 
 extension TutorialStep0ViewController {
+    
+    private static let mediumDistance : CGFloat = 50.0
+    private static let smallDistance : CGFloat = 30.0
+    private static let bigDistance : CGFloat = 120.0
+    private static let hugeDistance : CGFloat = 170.0
+    
     private func adjustConstraintsIfNeeded() {
         guard let superView = view.superview, isIpad && !isLandscape else {
             Log.shared.error("Superview is missing or is not needed to adjust constraints here")
             return
         }
-        distanceBetweenPrivacyStatusAndSkipTutorialLabelConstraint.constant = 50.0
-        distanceBetweenTitleViewAndTopConstraint.constant = 50.0
-        distanceBetweenPrivacyStatusAndSkipTutorialLabels.constant = 30.0
-        distanceBetweenAvatarImageAndPrivacyStatusShownLabelConstraint.constant = 30.0
-        titleLabelLeadingContraint.constant = 170.0
-        privacyStatusShownLabelLeadingConstraint.constant = 170.0
-        distanceBetweenBottomLabelAndPrivacyStatusIconLabelConstraint.constant = 120.0
-        distanceBetweenTopbarImageAndBottomLabel.constant = 50.0
-        bottomLabelLeadingContraint.constant = 120
+        distanceBetweenPrivacyStatusAndSkipTutorialLabelConstraint.constant = TutorialStep0ViewController.mediumDistance
+        distanceBetweenTitleViewAndTopConstraint.constant = TutorialStep0ViewController.mediumDistance
+        distanceBetweenPrivacyStatusAndSkipTutorialLabels.constant = TutorialStep0ViewController.smallDistance
+        distanceBetweenAvatarImageAndPrivacyStatusShownLabelConstraint.constant = TutorialStep0ViewController.smallDistance
+        titleLabelLeadingContraint.constant = TutorialStep0ViewController.hugeDistance
+        privacyStatusShownLabelLeadingConstraint.constant = TutorialStep0ViewController.hugeDistance
+        distanceBetweenBottomLabelAndPrivacyStatusIconLabelConstraint.constant = TutorialStep0ViewController.bigDistance
+        distanceBetweenTopbarImageAndBottomLabel.constant = TutorialStep0ViewController.mediumDistance
+        topbarLabelLeadingConstraint.constant = TutorialStep0ViewController.bigDistance
         superView.layoutIfNeeded()
     }
 }

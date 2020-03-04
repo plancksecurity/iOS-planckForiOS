@@ -762,7 +762,6 @@
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="bottomLabelLeadingContraint" destination="RIs-Sh-mwP" id="fcY-jx-j7v"/>
                         <outlet property="distanceBetweenAvatarImageAndPrivacyStatusShownLabelConstraint" destination="Ts5-Mn-9Re" id="FAo-Eh-ETb"/>
                         <outlet property="distanceBetweenBottomLabelAndPrivacyStatusIconLabelConstraint" destination="9zn-5L-zyu" id="WEh-o8-bb6"/>
                         <outlet property="distanceBetweenPrivacyStatusAndSkipTutorialLabelConstraint" destination="1Yi-sE-hzb" id="ENb-3f-2wI"/>
@@ -776,6 +775,7 @@
                         <outlet property="titleLabel" destination="ynz-KT-KJl" id="fVF-0v-Wi1"/>
                         <outlet property="titleLabelLeadingContraint" destination="k5O-4W-nBs" id="Y70-je-9ym"/>
                         <outlet property="topbarLabel" destination="26J-Qa-GAl" id="Ilb-Bb-Ua0"/>
+                        <outlet property="topbarLabelLeadingConstraint" destination="RIs-Sh-mwP" id="fcY-jx-j7v"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oai-ey-sKC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
