@@ -634,34 +634,44 @@
                                         </constraints>
                                         <prototypes>
                                             <tableViewCell opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ClientChooseCertificateCell" id="Pn0-2A-DOv" customClass="ClientChooseCertificateCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="28" width="382" height="97"/>
+                                                <rect key="frame" x="0.0" y="28" width="382" height="126"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Pn0-2A-DOv" id="D7m-vG-HQd">
-                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="97"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="126"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qZt-wf-aTO">
-                                                            <rect key="frame" x="20" y="20" width="342" height="57"/>
+                                                            <rect key="frame" x="20" y="20" width="342" height="75"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bMB-bi-vvg">
-                                                                    <rect key="frame" x="10" y="15" width="52.5" height="27"/>
+                                                                    <rect key="frame" x="10" y="15" width="52.5" height="26.5"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                                                    <nil key="textColor"/>
+                                                                    <color key="textColor" red="0.0064750583839999999" green="0.7039813399" blue="0.30714368819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cy2-FQ-sUK">
+                                                                    <rect key="frame" x="10" y="43.5" width="33" height="16"/>
+                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                                    <color key="textColor" red="0.0064750583839999999" green="0.7039813399" blue="0.30714368819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                             </subviews>
                                                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="bottom" secondItem="bMB-bi-vvg" secondAttribute="bottom" constant="15" id="2tW-Hi-4Ms"/>
-                                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bMB-bi-vvg" secondAttribute="trailing" constant="10" id="CdV-p9-MG5"/>
-                                                                <constraint firstItem="bMB-bi-vvg" firstAttribute="leading" secondItem="qZt-wf-aTO" secondAttribute="leading" constant="10" id="JTo-Y1-LJB"/>
-                                                                <constraint firstItem="bMB-bi-vvg" firstAttribute="top" secondItem="qZt-wf-aTO" secondAttribute="top" constant="15" id="PSQ-Cn-eds"/>
+                                                                <constraint firstItem="Cy2-FQ-sUK" firstAttribute="top" secondItem="bMB-bi-vvg" secondAttribute="bottom" constant="2" id="2mj-b7-YLC"/>
+                                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Cy2-FQ-sUK" secondAttribute="trailing" constant="10" id="J58-gn-biL"/>
+                                                                <constraint firstItem="bMB-bi-vvg" firstAttribute="top" secondItem="qZt-wf-aTO" secondAttribute="top" constant="15" id="K7s-Ml-EZ6"/>
+                                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bMB-bi-vvg" secondAttribute="trailing" constant="10" id="R25-H3-11f"/>
+                                                                <constraint firstItem="bMB-bi-vvg" firstAttribute="leading" secondItem="qZt-wf-aTO" secondAttribute="leading" constant="10" id="UDg-ch-UMQ"/>
+                                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Cy2-FQ-sUK" secondAttribute="bottom" constant="15" id="cxp-31-IsE"/>
+                                                                <constraint firstItem="Cy2-FQ-sUK" firstAttribute="leading" secondItem="qZt-wf-aTO" secondAttribute="leading" constant="10" id="dL3-9R-X0E"/>
                                                             </constraints>
                                                         </view>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="qZt-wf-aTO" secondAttribute="trailing" constant="20" symbolic="YES" id="9Ib-RI-rS9"/>
+                                                        <constraint firstAttribute="bottomMargin" secondItem="qZt-wf-aTO" secondAttribute="bottom" constant="20" id="PVq-qf-9f0"/>
                                                         <constraint firstItem="qZt-wf-aTO" firstAttribute="leading" secondItem="D7m-vG-HQd" secondAttribute="leading" constant="20" symbolic="YES" id="Wwn-c8-J6A"/>
                                                         <constraint firstItem="qZt-wf-aTO" firstAttribute="centerY" secondItem="D7m-vG-HQd" secondAttribute="centerY" id="YqH-P9-2I2"/>
                                                         <constraint firstItem="qZt-wf-aTO" firstAttribute="top" secondItem="D7m-vG-HQd" secondAttribute="top" constant="20" symbolic="YES" id="op4-Ke-aEH"/>
@@ -669,6 +679,7 @@
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
+                                                    <outlet property="dateLabel" destination="Cy2-FQ-sUK" id="g77-nv-wG1"/>
                                                     <outlet property="titleLabel" destination="bMB-bi-vvg" id="m7U-S2-39v"/>
                                                 </connections>
                                             </tableViewCell>

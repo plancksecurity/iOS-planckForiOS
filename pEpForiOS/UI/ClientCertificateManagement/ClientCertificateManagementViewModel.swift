@@ -21,6 +21,9 @@ extension ClientCertificateManagementViewModel {
         public var name: String {
             return clientCertificate.label ?? "--"
         }
+        public var date: Date? {
+            return clientCertificate.date
+        }
         fileprivate let clientCertificate: ClientCertificate
     }
 }

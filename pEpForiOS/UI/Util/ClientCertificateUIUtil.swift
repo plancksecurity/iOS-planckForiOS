@@ -102,7 +102,7 @@ extension ClientCertificateUIUtil {
     }
 
     private func showCorruptedFileError() {
-        guard let vc = viewControllerToPresentUiOn else {
+        guard let vc = topViewController() else {
             Log.shared.errorAndCrash("No VC")
             return
         }
@@ -118,7 +118,7 @@ extension ClientCertificateUIUtil {
     }
 
     private func showWrongPasswordError() {
-        guard let vc = clientCertificatePasswordVC else {
+        guard let vc = topViewController() else {
             Log.shared.errorAndCrash("No VC")
             return
         }

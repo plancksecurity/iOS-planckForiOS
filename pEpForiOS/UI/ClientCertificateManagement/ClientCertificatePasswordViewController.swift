@@ -12,11 +12,15 @@ final class ClientCertificatePasswordViewController: UIViewController {
 
 // MARK: - IBOutlet
 
+    @IBOutlet weak var scrollView: LoginScrollView!
+
     @IBOutlet weak private var passwordLabel: UILabel!
     @IBOutlet weak private var passwordTextField: UITextField!
 
     @IBOutlet weak private var okButton: UIButton!
     @IBOutlet weak private var cancelButton: UIButton!
+
+    @IBOutlet weak private var scrollViewBottomConstraint: NSLayoutConstraint!
 
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
@@ -49,8 +53,15 @@ final class ClientCertificatePasswordViewController: UIViewController {
             return
         }
 
+        passwordTextField.delegate = self
+        scrollView.loginScrollViewDelegate = self
         setupConstraints()
         setupStyle()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
         updateConstraints()
     }
 
@@ -60,20 +71,20 @@ final class ClientCertificatePasswordViewController: UIViewController {
         okButton.translatesAutoresizingMaskIntoConstraints = false
 
         portraitConstraints = [cancelButton.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor),
-                               cancelButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 0),
+                               cancelButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 12),
                                okButton.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
-                               okButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 0)
+                               okButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 12)
         ]
 
         landscapeConstraints = [cancelButton.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor),
-                               cancelButton.rightAnchor.constraint(equalTo: passwordTextField.leftAnchor, constant: -40),
+                               cancelButton.rightAnchor.constraint(equalTo: passwordTextField.leftAnchor, constant: -26),
                                okButton.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor),
-                               okButton.leftAnchor.constraint(equalTo: passwordTextField.rightAnchor, constant: 40)]
+                               okButton.leftAnchor.constraint(equalTo: passwordTextField.rightAnchor, constant: 26)]
     }
 
     /// Change constraints for cancel & OK buttons between portrait and landscape modes
     private func updateConstraints() {
-        if !UIApplication.shared.statusBarOrientation.isPortrait {
+        if UIDevice.current.orientation.isPortrait {
             NSLayoutConstraint.deactivate(landscapeConstraints)
             NSLayoutConstraint.activate(portraitConstraints)
         } else {
@@ -116,5 +127,29 @@ extension ClientCertificatePasswordViewController {
 extension ClientCertificatePasswordViewController: ClientCertificatePasswordViewModelDelegate {
     func dismiss() {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - LoginScrollViewDelegate
+
+extension ClientCertificatePasswordViewController: LoginScrollViewDelegate {
+    var bottomConstraint: NSLayoutConstraint {
+        get { scrollViewBottomConstraint }
+    }
+    var firstResponder: UIView? {
+        get { passwordTextField }
+    }
+}
+
+// MARK: - TextFieldDelegate
+
+extension ClientCertificatePasswordViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.endEditing(true)
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        okAction(textField)
+        return true
     }
 }

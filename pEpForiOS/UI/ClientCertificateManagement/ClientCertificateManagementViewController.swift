@@ -8,6 +8,14 @@
 
 import UIKit
 
+private struct Localized {
+    static let importDate = NSLocalizedString("Import date",
+                                              comment: "Select certificate - import certificate date")
+    static let colon = NSLocalizedString(":",
+                                         comment: "Select certificate - import certificate date colon")
+    static let separator = " "
+}
+
 /// View that lists all imported client certificates and let's the user choose one.
 final class ClientCertificateManagementViewController: BaseViewController {
 
@@ -58,6 +66,16 @@ extension ClientCertificateManagementViewController {
         tableView.separatorInset = .zero
         tableView.separatorStyle = .none
     }
+    private func formatDate(date: Date?) -> String? {
+        guard let date = date else {
+            Log.shared.errorAndCrash("date is optional!")
+            return nil
+        }
+        let dateFormatter = DateFormatter.init()
+        dateFormatter.dateStyle = DateFormatter.Style.short
+        dateFormatter.timeStyle = DateFormatter.Style.short
+        return dateFormatter.string(from: date)
+    }
 }
 
 // MARK: - UITableViewDelegate
@@ -94,6 +112,10 @@ extension ClientCertificateManagementViewController: UITableViewDataSource {
         }
         let row = vm.rows[indexPath.row]
         cell.titleLabel?.text = row.name
+        cell.dateLabel?.text = Localized.importDate
+            + Localized.colon
+            + Localized.separator
+            + (formatDate(date: row.date) ?? "")
         return cell
     }
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
