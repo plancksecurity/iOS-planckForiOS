@@ -107,7 +107,7 @@ extension TutorialWizardViewController {
         
         for (step, tutorialImage) in tutorialImages.enumerated() {
             
-            if step == 0 {
+            if step == 0 || step == 1 {
                 guard let stepViewController = TutorialViewController.fromStoryboard(step: step) else {
                     Log.shared.errorAndCrash("Can't instanciate VC")
                     return [UIViewController]()

@@ -30,7 +30,6 @@ class TutorialStep0ViewController: TutorialStepViewController {
     @IBOutlet weak private var distanceBetweenTitleViewAndTopConstraint: NSLayoutConstraint!
     @IBOutlet weak private var distanceBetweenSkipAndTitleConstraint: NSLayoutConstraint!
     @IBOutlet weak private var distanceBetweenAvatarAndPrivacyStatus2LabelConstraint: NSLayoutConstraint!
-    @IBOutlet weak private var privacyStatusShownLabelLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak private var distanceBetweenTopbarLabelAndPrivacyStatus2Constraint: NSLayoutConstraint!
     @IBOutlet weak private var distanceBetweenTopbarImageAndBottomLabelConstraint: NSLayoutConstraint!
     
@@ -79,7 +78,6 @@ extension TutorialStep0ViewController {
             static let distanceBetweenTopbarImageAndBottomLabel: CGFloat = 20.0
             static let topbarLabelLeadingConstraint: CGFloat = 80.0
             static let topbarWidth: CGFloat = 500.0
-
         }
     }
     
@@ -96,8 +94,6 @@ extension TutorialStep0ViewController {
         distanceBetweenPrivacyStatusAndSkipConstraint.constant = isLandscape ? Constants.Landscape.privacyStatusSkipDistance : Constants.Portrait.privacyStatusSkipDistance
         distanceBetweenAvatarAndPrivacyStatus2LabelConstraint.constant = isLandscape ? Constants.Landscape.avatarPrivacyStatus2Distance : Constants.Portrait.avatarPrivacyStatus2Distance
         titleLabelLeadingContraint.constant = isLandscape ? Constants.Landscape.titleLabelLeading : Constants.Portrait.titleLabelLeading
-        
-        privacyStatusShownLabelLeadingConstraint.constant = isLandscape ? Constants.Landscape.privacyStatus2Leading : Constants.Portrait.privacyStatus2Leading
         distanceBetweenTopbarLabelAndPrivacyStatus2Constraint.constant = isLandscape ? Constants.Landscape.distanceBetweenTopbarLabelAndPrivacyStatus2 :
             Constants.Portrait.distanceBetweenTopbarLabelAndPrivacyStatus2
         distanceBetweenTopbarImageAndBottomLabelConstraint.constant = isLandscape ? Constants.Landscape.distanceBetweenTopbarImageAndBottomLabel :

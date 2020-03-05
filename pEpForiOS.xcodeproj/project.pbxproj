@@ -392,6 +392,7 @@
 		5BC14AC923E47A55005F0AF3 /* TrustManagementViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14AC823E47A55005F0AF3 /* TrustManagementViewModelTest.swift */; };
 		5BC14AF023EB19B5005F0AF3 /* TrustManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14AEF23EB19B5005F0AF3 /* TrustManagementViewController.swift */; };
 		5BC4E5FF240E99C2008C01ED /* CustomTraitCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4E5FE240E99C2008C01ED /* CustomTraitCollectionViewController.swift */; };
+		5BC4E601240FF156008C01ED /* TutorialStep1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4E600240FF155008C01ED /* TutorialStep1ViewController.swift */; };
 		5BF449F4240827F500B23E50 /* TutorialStep0ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF449F3240827F500B23E50 /* TutorialStep0ViewController.swift */; };
 		5BF9B3D723FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */; };
 		8B69E3991E30F80E0022959E /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69E3981E30F80E0022959E /* Appearance.swift */; };
@@ -948,6 +949,7 @@
 		5BC14AC823E47A55005F0AF3 /* TrustManagementViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewModelTest.swift; sourceTree = "<group>"; };
 		5BC14AEF23EB19B5005F0AF3 /* TrustManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewController.swift; sourceTree = "<group>"; };
 		5BC4E5FE240E99C2008C01ED /* CustomTraitCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTraitCollectionViewController.swift; sourceTree = "<group>"; };
+		5BC4E600240FF155008C01ED /* TutorialStep1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep1ViewController.swift; sourceTree = "<group>"; };
 		5BF449F3240827F500B23E50 /* TutorialStep0ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep0ViewController.swift; sourceTree = "<group>"; };
 		5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementResetTableViewCell.swift; sourceTree = "<group>"; };
 		8B69E3981E30F80E0022959E /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
@@ -1734,6 +1736,7 @@
 			children = (
 				371A7157231D239B008B31F3 /* TutorialViewController.swift */,
 				5BF449F3240827F500B23E50 /* TutorialStep0ViewController.swift */,
+				5BC4E600240FF155008C01ED /* TutorialStep1ViewController.swift */,
 				5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */,
 				5BC4E5FE240E99C2008C01ED /* CustomTraitCollectionViewController.swift */,
 				371D641F231D17F80036AE62 /* TutorialWizardViewController.swift */,
@@ -2925,6 +2928,7 @@
 				1543B6B022ABF53C002B59AB /* KeySyncDeviceGroupUtil.swift in Sources */,
 				15874BCB2127493E00A3A4A6 /* AccountVerificationResultDelegate.swift in Sources */,
 				43E657E71F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift in Sources */,
+				5BC4E601240FF156008C01ED /* TutorialStep1ViewController.swift in Sources */,
 				43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */,
 				155475642137FD96005A52D0 /* FolderType+Extensions.swift in Sources */,
 				37156E48234CDD4A00845A28 /* EditableAccountSettingsTableViewController.swift in Sources */,
