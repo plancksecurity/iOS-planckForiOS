@@ -11,8 +11,6 @@ import UIKit
 final class AccountTypeSelectorViewController: BaseViewController {
 
     let viewModel = AccountTypeSelectorViewModel()
-
-    var selectedIndexPath: IndexPath?
     var delegate: AccountTypeSelectorViewModelDelegate?
     var loginDelegate: LoginViewControllerDelegate?
 
@@ -63,11 +61,11 @@ final class AccountTypeSelectorViewController: BaseViewController {
 
 extension AccountTypeSelectorViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedIndexPath = indexPath
         switch viewModel.accountType(row: indexPath.row) {
         case .clientCertificate:
             viewModel.checkRequirements()
         default:
+            viewModel.handleDidSelect(rowAt: indexPath)
             performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
         }
     }
@@ -133,27 +131,24 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
         case showLogin
         case clientCertManagementSegue
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .showLogin:
-            if let vc = segue.destination as? LoginViewController,
-                let selectedIndexPath = selectedIndexPath {
-                guard let accountType = viewModel.accountType(row: selectedIndexPath.row) else {
-                    Log.shared.errorAndCrash("accountType is invalid")
-                    return
-                }
-                vc.appConfig = appConfig
-                vc.viewModel = LoginViewModel(accountType: accountType)
-                vc.delegate = loginDelegate
+            guard let vc = segue.destination as? LoginViewController else {
+                Log.shared.errorAndCrash("accountType is invalid")
+                return
             }
-            case .clientCertManagementSegue:
-                guard let dvc = segue.destination as? ClientCertificateManagementViewController else {
-                    Log.shared.errorAndCrash("Invalid state")
-                    return
-                }
-                dvc.appConfig = appConfig
-                dvc.viewModel = ClientCertificateManagementViewModel()
+            vc.appConfig = appConfig
+            vc.viewModel = viewModel.loginViewModel()
+            vc.delegate = loginDelegate
+        case .clientCertManagementSegue:
+            guard let dvc = segue.destination as? ClientCertificateManagementViewController else {
+                Log.shared.errorAndCrash("Invalid state")
+                return
+            }
+            dvc.appConfig = appConfig
+            dvc.viewModel = ClientCertificateManagementViewModel()
         }
     }
 }

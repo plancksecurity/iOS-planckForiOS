@@ -12,12 +12,6 @@ import MessageModel
 import pEpIOSToolbox
 import PantomimeFramework
 
-// MARK: - LoginViewModelDelegate
-
-protocol LoginViewModelDelegate: class {
-    func passwordFieldStateUpdated(hidePasswordField: Bool)
-}
-
 // MARK: - LoginCellType
 
 extension LoginViewModel {
@@ -42,7 +36,6 @@ final class LoginViewModel {
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
     weak var loginViewModelLoginErrorDelegate: LoginViewModelLoginErrorDelegate?
     weak var loginViewModelOAuth2ErrorDelegate: LoginViewModelOAuth2ErrorDelegate?
-    weak var delegate: LoginViewModelDelegate?
 
     /// Holding both the data of the current account in verification,
     /// and also the implementation of the verification.
@@ -57,21 +50,17 @@ final class LoginViewModel {
         }
     }
 
-    var accountType: AccountTypeProvider {
-        didSet {
-            delegate?.passwordFieldStateUpdated(hidePasswordField: accountType.isOauth)
-        }
-    }
+    public var shouldShowPasswordField: Bool {
+           return !verifiableAccount.accountType.isOauth
+       }
 
     let qualifyServerIsLocalService = QualifyServerIsLocalService()
 
-    init(verifiableAccount: VerifiableAccountProtocol = VerifiableAccount(),
-         accountType: AccountTypeProvider = .other,
-         delegate: LoginViewModelDelegate? = nil) {
-        self.verifiableAccount = verifiableAccount
-        self.accountType = accountType
-        self.delegate = delegate
+    init(verifiableAccount: VerifiableAccountProtocol? = nil) {
+        self.verifiableAccount = verifiableAccount ?? VerifiableAccount()
     }
+
+
 
     func isThereAnAccount() -> Bool {
         return !Account.all().isEmpty
@@ -165,15 +154,6 @@ final class LoginViewModel {
     /// - Parameter email: Returns true, if this is an OAuth2 email address, true otherwise.
     func isOAuth2Possible(email: String?) -> Bool {
         return AccountSettings.quickLookUp(emailAddress: email)?.supportsOAuth2 ?? false
-    }
-
-    public func handleViewWillAppear() {
-        // furt ensure to show the correct fields
-        delegate?.passwordFieldStateUpdated(hidePasswordField: accountType.isOauth)
-    }
-
-    public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
-        return ClientCertificateManagementViewModel(delegate: self)
     }
 }
 
@@ -281,13 +261,5 @@ extension LoginViewModel: VerifiableAccountDelegate {
         case .failure(let error):
             informAccountVerificationResultDelegate(error: error)
         }
-    }
-}
-
-// MARK: - ClientCertificateManagementViewModelDelegate
-
-extension LoginViewModel: ClientCertificateManagementViewModelDelegate {
-    func didSelectClientCertificate(clientCertificate: ClientCertificate) {
-        verifiableAccount.clientCertificate = clientCertificate
     }
 }

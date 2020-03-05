@@ -717,6 +717,7 @@
                     <navigationItem key="navigationItem" id="TGi-N8-gcY"/>
                     <connections>
                         <outlet property="tableView" destination="AZr-4K-O4u" id="EB0-Ub-7b0"/>
+                        <segue destination="clh-8B-z2B" kind="show" identifier="showLogin" id="Eaq-Ij-JdY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="axc-fA-bI1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -822,4 +823,7 @@
         <image name="asset-Google" width="101" height="33"/>
         <image name="splashscreen" width="228" height="404"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Eaq-Ij-JdY"/>
+    </inferredMetricsTieBreakers>
 </document>

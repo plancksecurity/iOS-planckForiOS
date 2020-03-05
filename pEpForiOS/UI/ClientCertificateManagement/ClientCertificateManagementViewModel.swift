@@ -8,12 +8,6 @@
 
 import MessageModel
 
-protocol ClientCertificateManagementViewModelDelegate: class {
-    /// Provides the client certificate the user selected
-    /// - Parameter clientCertificate: the client certificate the user selected
-    func didSelectClientCertificate(clientCertificate: ClientCertificate)
-}
-
 // MARK: - Row
 
 extension ClientCertificateManagementViewModel {
@@ -30,18 +24,22 @@ extension ClientCertificateManagementViewModel {
 
 final class ClientCertificateManagementViewModel {
     private let clientCertificateUtil: ClientCertificateUtil
+    private let verifiableAccount: VerifiableAccount
     public private(set) var rows = [Row]()
-    weak public var delegate: ClientCertificateManagementViewModelDelegate?
 
-    public init(clientCertificateUtil: ClientCertificateUtil = ClientCertificateUtil(),
-                delegate: ClientCertificateManagementViewModelDelegate? = nil) {
+    public init(verifiableAccount: VerifiableAccount? = nil,
+                clientCertificateUtil: ClientCertificateUtil = ClientCertificateUtil()) {
         self.clientCertificateUtil = clientCertificateUtil
-        self.delegate = delegate
+        self.verifiableAccount = verifiableAccount ?? VerifiableAccount()
         setup()
     }
 
     public func handleDidSelect(rowAt indexPath: IndexPath) {
-        delegate?.didSelectClientCertificate(clientCertificate: rows[indexPath.row].clientCertificate)
+        verifiableAccount.clientCertificate = rows[indexPath.row].clientCertificate
+    }
+
+    public func loginViewModel() -> LoginViewModel {
+        return LoginViewModel(verifiableAccount: verifiableAccount)
     }
 }
 

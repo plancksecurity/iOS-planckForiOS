@@ -44,19 +44,11 @@ final class LoginViewController: BaseViewController {
         }
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setup()
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setup()
         updateView()
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-        vm.handleViewWillAppear()
+        setupPasswordField()
     }
 
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -106,7 +98,7 @@ final class LoginViewController: BaseViewController {
         // isOauthAccount is use to disable for ever the password field (when loading this view)
         // isOAuth2Possible is use to hide password field only if isOauthAccount is false and the
         // user type a possible ouath in the email textfield.
-        if vm.isOAuth2Possible(email: email) || vm.accountType.isOauth {
+        if vm.isOAuth2Possible(email: email) || vm.verifiableAccount.accountType.isOauth {
             let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
             vm.loginWithOAuth2(viewController: self,
                                emailAddress: email,
@@ -156,12 +148,12 @@ final class LoginViewController: BaseViewController {
 extension LoginViewController {
 
     func setupViewModel() {
-        if viewModel == nil {
-            viewModel = LoginViewModel()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
         }
-        viewModel?.loginViewModelLoginErrorDelegate = self
-        viewModel?.loginViewModelOAuth2ErrorDelegate = self
-        viewModel?.delegate = self
+        vm.loginViewModelLoginErrorDelegate = self
+        vm.loginViewModelOAuth2ErrorDelegate = self
     }
 }
 
@@ -174,7 +166,7 @@ extension LoginViewController {
             return
         }
 
-        guard !vm.accountType.isOauth else { return }
+        guard !vm.verifiableAccount.accountType.isOauth else { return }
 
         let oauth2Possible = vm.isOAuth2Possible(email: email)
         password.isEnabled = !oauth2Possible
@@ -438,7 +430,7 @@ extension LoginViewController {
             oauthError == .noConfiguration {
             title = NSLocalizedString("Invalid Address",
                                       comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
-            switch vm.accountType {
+            switch vm.verifiableAccount.accountType {
             case .gmail:
                 message = NSLocalizedString("Please enter a valid Gmail address.",
                                             comment: "Fail to log in, email does not match account type")
@@ -476,8 +468,6 @@ extension LoginViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        password.isHidden = vm.accountType.isOauth
-        password.isEnabled = !vm.accountType.isOauth
 
         let isThereAnAccount = vm.isThereAnAccount()
         loginButtonConstraint.constant =
@@ -520,6 +510,16 @@ extension LoginViewController {
                                                name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
     }
+
+    private func setupPasswordField() {
+           guard let vm = viewModel else {
+               Log.shared.errorAndCrash("No VM")
+               return
+           }
+           let shouldShow = vm.shouldShowPasswordField
+           password.isHidden = !shouldShow
+           password.isEnabled = shouldShow
+       }
 
     private func configureAnimatedTextFields() {
         user.textColorWithText = .pEpGreen
@@ -592,6 +592,8 @@ extension LoginViewController {
 
         loginButton.isEnabled = !isCurrentlyVerifying
         manualConfigButton.isEnabled = !isCurrentlyVerifying
+
+        setupPasswordField()
     }
 
     private func isLandscape() -> Bool {
@@ -600,14 +602,5 @@ extension LoginViewController {
         } else {
             return UIDevice.current.orientation.isLandscape
         }
-    }
-}
-
-// MARK: - LoginViewModelDelegate
-
-extension LoginViewController: LoginViewModelDelegate {
-    func passwordFieldStateUpdated(hidePasswordField: Bool) {
-        password.isHidden = hidePasswordField
-        password.isEnabled = !hidePasswordField
     }
 }

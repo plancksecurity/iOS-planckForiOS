@@ -9,48 +9,41 @@
 import Foundation
 import MessageModel
 
-public enum AccountTypeProvider {
-    case gmail
-    case other
-    case clientCertificate
-    var isOauth: Bool {
-        return self == .gmail
-    }
-}
+
+
 protocol AccountTypeSelectorViewModelDelegate: class {
     func showMustImportClientCertificateAlert()
     func showClientCertificateSeletionView()
 }
 
 class AccountTypeSelectorViewModel {
+    private let verifiableAccount: VerifiableAccount
 
     weak var delegate: AccountTypeSelectorViewModelDelegate?
 
     /// list of providers to show
-    var providers = [AccountTypeProvider]()
+    private let accountTypes: [VerifiableAccount.AccountType] = [.gmail, .clientCertificate, .other]
 
-    init() {
-        providers.append(.gmail)
-        providers.append(.clientCertificate)
-        providers.append(.other)
+    init(verifiableAccount: VerifiableAccount? = nil) {
+        self.verifiableAccount = verifiableAccount ?? VerifiableAccount()
     }
 
     var count: Int {
         get {
-            return providers.count
+            return accountTypes.count
         }
     }
 
-    subscript(index: Int) -> AccountTypeProvider {
-        return providers[index]
+    subscript(index: Int) -> VerifiableAccount.AccountType {
+        return accountTypes[index]
     }
 
-    public func accountType(row: Int) -> AccountTypeProvider? {
-        guard row < providers.count else {
+    public func accountType(row: Int) -> VerifiableAccount.AccountType? {
+        guard row < accountTypes.count else {
             Log.shared.errorAndCrash("Index out of range")
             return nil
         }
-        return providers[row]
+        return accountTypes[row]
     }
 
     public func checkRequirements() {
@@ -63,7 +56,7 @@ class AccountTypeSelectorViewModel {
 
     /// returns the text corresponding to the provider
     /// - Parameter provider: provider to obtain it's text
-    public func fileNameOrText(provider: AccountTypeProvider) -> String {
+    public func fileNameOrText(provider: VerifiableAccount.AccountType) -> String {
         switch provider {
         case .gmail:
             return "asset-Google"
@@ -80,4 +73,16 @@ class AccountTypeSelectorViewModel {
     public func isThereAnAccount() -> Bool {
         return !Account.all().isEmpty
     }
+
+    public func handleDidSelect(rowAt indexPath: IndexPath) {
+        verifiableAccount.accountType = accountTypes[indexPath.row]
+    }
+
+    public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
+           return ClientCertificateManagementViewModel(verifiableAccount: verifiableAccount)
+       }
+
+    public func loginViewModel() -> LoginViewModel {
+           return LoginViewModel(verifiableAccount: verifiableAccount)
+       }
 }

@@ -21,6 +21,7 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
 
 class LoginViewModelTests: CoreDataDrivenTestBase {
     class TestVerifiableAccount: VerifiableAccountProtocol {
+        var accountType: VerifiableAccount.AccountType = VerifiableAccount.AccountType.other
         var loginNameIMAP: String?
 
         var loginNameSMTP: String?

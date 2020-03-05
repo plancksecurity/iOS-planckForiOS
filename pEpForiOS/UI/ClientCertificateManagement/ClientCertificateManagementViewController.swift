@@ -87,7 +87,7 @@ extension ClientCertificateManagementViewController: UITableViewDelegate {
             return
         }
         vm.handleDidSelect(rowAt: indexPath)
-        dismiss(animated: true)
+        performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
     }
 }
 
@@ -123,5 +123,31 @@ extension ClientCertificateManagementViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         // Hide seperator lines for empty view.
         return UIView()
+    }
+}
+
+// MARK: - SegueHandlerType
+
+extension ClientCertificateManagementViewController: SegueHandlerType {
+    public enum SegueIdentifier: String {
+        case showLogin
+    }
+
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        switch segueIdentifier(for: segue) {
+        case .showLogin:
+            guard let dvc = segue.destination as? LoginViewController else {
+                    Log.shared.errorAndCrash("No DVC")
+                    return
+            }
+            dvc.appConfig = appConfig
+            let dvm = vm.loginViewModel()
+            dvc.viewModel = dvm
+        }
     }
 }
