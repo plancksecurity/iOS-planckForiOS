@@ -634,10 +634,10 @@
                                         </constraints>
                                         <prototypes>
                                             <tableViewCell opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ClientChooseCertificateCell" id="Pn0-2A-DOv" customClass="ClientCertificateSelectionCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="28" width="382" height="126"/>
+                                                <rect key="frame" x="0.0" y="28" width="382" height="115"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Pn0-2A-DOv" id="D7m-vG-HQd">
-                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="126"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="115"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qZt-wf-aTO">
@@ -671,7 +671,6 @@
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="qZt-wf-aTO" secondAttribute="trailing" constant="20" symbolic="YES" id="9Ib-RI-rS9"/>
-                                                        <constraint firstAttribute="bottomMargin" secondItem="qZt-wf-aTO" secondAttribute="bottom" constant="20" id="PVq-qf-9f0"/>
                                                         <constraint firstItem="qZt-wf-aTO" firstAttribute="leading" secondItem="D7m-vG-HQd" secondAttribute="leading" constant="20" symbolic="YES" id="Wwn-c8-J6A"/>
                                                         <constraint firstItem="qZt-wf-aTO" firstAttribute="centerY" secondItem="D7m-vG-HQd" secondAttribute="centerY" id="YqH-P9-2I2"/>
                                                         <constraint firstItem="qZt-wf-aTO" firstAttribute="top" secondItem="D7m-vG-HQd" secondAttribute="top" constant="20" symbolic="YES" id="op4-Ke-aEH"/>
