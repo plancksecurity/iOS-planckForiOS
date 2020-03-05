@@ -24,8 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Error Handler bubble errors up to the UI
     private var errorPropagator = ErrorPropagator()
 
-    private let mySelfQueue = LimitedOperationQueue()
-
     /// This is used to handle OAuth2 requests.
     private let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 

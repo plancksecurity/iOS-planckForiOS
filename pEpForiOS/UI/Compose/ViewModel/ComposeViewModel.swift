@@ -67,6 +67,25 @@ class ComposeViewModel {
 
     private var suggestionsVM: SuggestViewModel?
     private var lastRowWithSuggestions: IndexPath?
+
+    /// IndexPath of "To:" receipientVM
+    private var indexPathToVm: IndexPath {
+        return IndexPath(item: 0, section: 0)
+    }
+
+    /// IndexPath of "Subject" VM
+    private var indexPathSubjectVm: IndexPath {
+        let subjectSection = section(for: .subject)
+        guard
+            let vm = subjectSection?.rows.first,
+            let idxSubject = indexPath(for: vm) else {
+                Log.shared.errorAndCrash("No Subject?")
+                return IndexPath(row: 0, section: 0)
+        }
+        return idxSubject
+    }
+
+    /// IndexPath of "Body" VM
     private var indexPathBodyVm: IndexPath {
         let bodySection = section(for: .body)
         guard
@@ -104,11 +123,16 @@ class ComposeViewModel {
         return sections[indexPath.section].rows[indexPath.row]
     }
 
+    /// - returns: the indexpath of the cell to set focus the to.
     public func initialFocus() -> IndexPath {
         if state.initData?.toRecipients.isEmpty ?? false {
-            let to = IndexPath(row: 0, section: 0)
-            return to
+            // Use cases: new mail or forward (no To: prefilled)
+            return indexPathToVm
+        } else if state.subject.isEmpty || state.subject.isOnlyWhiteSpace() {
+            // Use case: open compose by clicking mailto: link
+            return indexPathSubjectVm
         } else {
+            // Use case: reply a mail (to and subject are set)
             return indexPathBodyVm
         }
     }
