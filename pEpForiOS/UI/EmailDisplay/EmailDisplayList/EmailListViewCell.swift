@@ -11,7 +11,7 @@ import MessageModel
 import SwipeCellKit
 
 final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
-    public static let storyboardId = "EmailListViewCell"
+    static public let storyboardId = "EmailListViewCell"
 
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
@@ -205,7 +205,6 @@ extension EmailListViewCell {
         dateLabel.font = UIFont.pepFont(style: .subheadline,
                                         weight: fontWeight)
     }
-
 
     /// This method highlights the cell that is being pressed.
     /// - Note: We only accept this if the cell is not in edit mode.
