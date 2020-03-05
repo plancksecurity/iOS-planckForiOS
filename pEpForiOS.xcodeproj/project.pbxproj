@@ -222,7 +222,8 @@
 		3AC2B841240E53DF00E08EB3 /* Certificates.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AC2B840240E53DF00E08EB3 /* Certificates.storyboard */; };
 		3AC2B843240E5FD900E08EB3 /* ClientCertificatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B842240E5FD900E08EB3 /* ClientCertificatePasswordViewController.swift */; };
 		3AC2B845240E692600E08EB3 /* ClientCertificatePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B844240E692600E08EB3 /* ClientCertificatePasswordViewModel.swift */; };
-		3ACAB171240D067E00702D33 /* ClientChooseCertificateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACAB170240D067E00702D33 /* ClientChooseCertificateCell.swift */; };
+		3AC2B847241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B846241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift */; };
+		3ACAB171240D067E00702D33 /* ClientCertificateSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACAB170240D067E00702D33 /* ClientCertificateSelectionCell.swift */; };
 		3AD0E0A123E4659F006FFED3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0E0A023E4659F006FFED3 /* Assets.xcassets */; };
 		3AD2CBC923FD92650003A536 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
@@ -742,7 +743,8 @@
 		3AC2B840240E53DF00E08EB3 /* Certificates.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Certificates.storyboard; sourceTree = "<group>"; };
 		3AC2B842240E5FD900E08EB3 /* ClientCertificatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificatePasswordViewController.swift; sourceTree = "<group>"; };
 		3AC2B844240E692600E08EB3 /* ClientCertificatePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificatePasswordViewModel.swift; sourceTree = "<group>"; };
-		3ACAB170240D067E00702D33 /* ClientChooseCertificateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientChooseCertificateCell.swift; sourceTree = "<group>"; };
+		3AC2B846241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificatePasswordViewModelTest.swift; sourceTree = "<group>"; };
+		3ACAB170240D067E00702D33 /* ClientCertificateSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateSelectionCell.swift; sourceTree = "<group>"; };
 		3AD0E0A023E4659F006FFED3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
@@ -1529,7 +1531,7 @@
 			children = (
 				158A564F2403F043003C0D7E /* ClientCertificateManagementViewController.swift */,
 				158A56512403F05B003C0D7E /* ClientCertificateManagementViewModel.swift */,
-				3ACAB170240D067E00702D33 /* ClientChooseCertificateCell.swift */,
+				3ACAB170240D067E00702D33 /* ClientCertificateSelectionCell.swift */,
 				3AC2B842240E5FD900E08EB3 /* ClientCertificatePasswordViewController.swift */,
 				3AC2B844240E692600E08EB3 /* ClientCertificatePasswordViewModel.swift */,
 			);
@@ -2315,6 +2317,7 @@
 				4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */,
 				431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */,
 				491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */,
+				3AC2B846241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3043,7 +3046,7 @@
 				15874BC72127493E00A3A4A6 /* SettingDefaultAccountTableViewController.swift in Sources */,
 				4388A0E22008F813008CB98D /* (null) in Sources */,
 				152A39D021905C3E00D9F8E4 /* AttachmentCell.swift in Sources */,
-				3ACAB171240D067E00702D33 /* ClientChooseCertificateCell.swift in Sources */,
+				3ACAB171240D067E00702D33 /* ClientCertificateSelectionCell.swift in Sources */,
 				0033C08120D7F3C600224E61 /* ThreadViewController+ViewModelDelegate.swift in Sources */,
 				4351C2DB1F4441190053381F /* utf8.c in Sources */,
 				371A715A231D45D0008B31F3 /* TutorialViewModel.swift in Sources */,
@@ -3183,6 +3186,7 @@
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
 				431C2B171F387C4100D87FFD /* LoginViewModelTests.swift in Sources */,
 				151AD7AD219D74C700FC36FF /* ComposeViewModelTest.swift in Sources */,
+				3AC2B847241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift in Sources */,
 				00227E6A21635DED000D9BDB /* FilterViewModelTest.swift in Sources */,
 				437795C82154D6FD00CC62C2 /* PEPMessage+TestExtension.swift in Sources */,
 				151F71F7202A06760057C74D /* TestDataBase.swift in Sources */,

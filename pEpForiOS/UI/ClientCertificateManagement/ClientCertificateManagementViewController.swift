@@ -102,20 +102,22 @@ extension ClientCertificateManagementViewController: UITableViewDataSource {
         return vm.rows.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ClientChooseCertificateCell.reusableId) as? ClientChooseCertificateCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ClientCertificateSelectionCell.reusableId) as? ClientCertificateSelectionCell else {
             Log.shared.errorAndCrash("No reusable cell")
+            // We prefer empty cell than app crash
             return UITableViewCell()
         }
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
+            // We prefer empty cell than app crash
             return UITableViewCell()
         }
         let row = vm.rows[indexPath.row]
-        cell.titleLabel?.text = row.name
-        cell.dateLabel?.text = Localized.importDate
+        let date = Localized.importDate
             + Localized.colon
             + Localized.separator
             + (formatDate(date: row.date) ?? "")
+        cell.setData(title: row.name, date: date)
         return cell
     }
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
