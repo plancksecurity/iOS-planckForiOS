@@ -22,11 +22,10 @@ extension NSAttributedString {
                                                                  maxWidth: maxWidth - margin)
             let attachString = NSAttributedString(attachment: textAttachment)
             attrText.replaceCharacters(in: selectedRange, with: attachString)
+            let pepFont = UIFont.pepFont(style: .body, weight: .regular)
             attrText.addAttribute(NSAttributedString.Key.font,
-                                  value: UIFont.pepFont(style: .footnote,
-                                                        weight: .regular),
-                                  range: NSRange(location: 0,
-                                                 length: attrText.length))
+                                  value: pepFont,
+                                  range: NSRange(location: 0, length: attrText.length))
             return (NSAttributedString(attributedString: attrText), textAttachment)
     }
 }

@@ -8,6 +8,11 @@
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFUIText-Regular.ttf">
+            <string>SFUIText-Regular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Navigation Controller-->
         <scene sceneID="e1W-O0-7gY">
@@ -292,44 +297,56 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems>
-                        <barButtonItem image="icon-unflagged" id="eWC-Rq-MJm" userLabel="Flag">
+                        <barButtonItem tag="4" image="pEpForiOS-icon-unflagged" id="eWC-Rq-MJm" userLabel="Flag">
                             <connections>
                                 <action selector="flagButtonPressed:" destination="fRo-D2-Fjz" id="B8k-7M-BGc"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="jm4-3w-I3N"/>
-                        <barButtonItem image="folders-icon-folder" id="Zlf-LL-yLH" userLabel="Move to Folder">
+                        <barButtonItem tag="2" image="pEpForiOS-icon-movetofolder" id="Zlf-LL-yLH" userLabel="Move to Folder">
                             <connections>
                                 <action selector="moveToFolderButtonPressed:" destination="fRo-D2-Fjz" id="b20-nd-RSu"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="uWS-vB-hh8"/>
-                        <barButtonItem image="folders-icon-trash" id="zPY-ag-aQd" userLabel="destructive item">
+                        <barButtonItem tag="4" image="pEpForiOS-icon-delete" id="zPY-ag-aQd" userLabel="destructive item">
                             <connections>
                                 <action selector="destructiveButtonPressed:" destination="fRo-D2-Fjz" id="UIg-Zz-5bT"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="akv-wk-ycl"/>
-                        <barButtonItem image="reply" id="OL8-wT-4Rt" userLabel="reply item">
+                        <barButtonItem tag="1" image="pEpForiOS-icon-reply" id="OL8-wT-4Rt" userLabel="reply item">
                             <connections>
                                 <action selector="replyButtonPressed:" destination="fRo-D2-Fjz" id="0ah-jt-IS7"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="otP-3i-BWs"/>
-                        <barButtonItem image="icon-settings" id="7lp-Wv-GHA">
+                        <barButtonItem image="pEpForiOS-icon-settings" id="7lp-Wv-GHA">
                             <connections>
                                 <action selector="pEpIconSettingsButtonPressed:" destination="fRo-D2-Fjz" id="eyE-Pw-fh5"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="x3Y-Mc-0bu">
+                        <leftBarButtonItems>
+                            <barButtonItem id="icA-8s-JIg" userLabel="previous">
+                                <connections>
+                                    <action selector="previousButtonPressed:" destination="fRo-D2-Fjz" id="T7l-k1-fbw"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem id="Lee-9l-s9y" userLabel="next">
+                                <connections>
+                                    <action selector="nextButtonPressed:" destination="fRo-D2-Fjz" id="2j3-S3-wMK"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
                         <rightBarButtonItems>
-                            <barButtonItem image="arrow-lft-active" id="4R9-FK-LNX" userLabel="next">
+                            <barButtonItem image="chevron-icon-right" id="4R9-FK-LNX" userLabel="next">
                                 <connections>
                                     <action selector="nextButtonPressed:" destination="fRo-D2-Fjz" id="nL5-r5-egL"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="arrow-rgt-active" id="uhj-ab-NtG" userLabel="previous">
+                            <barButtonItem image="chevron-icon-left" id="uhj-ab-NtG" userLabel="previous">
                                 <connections>
                                     <action selector="previousButtonPressed:" destination="fRo-D2-Fjz" id="K3n-l9-U40"/>
                                 </connections>
@@ -343,15 +360,17 @@
                         <outlet property="flagButton" destination="eWC-Rq-MJm" id="Fha-Mh-JQz"/>
                         <outlet property="moveToFolderButton" destination="Zlf-LL-yLH" id="z3R-Zj-R96"/>
                         <outlet property="nextButton" destination="4R9-FK-LNX" id="XRa-Kx-g3q"/>
+                        <outlet property="nextButtonForSplitView" destination="Lee-9l-s9y" id="4mz-Lb-0dZ"/>
                         <outlet property="pEpIconSettingsButton" destination="7lp-Wv-GHA" id="dUJ-XB-ke6"/>
+                        <outlet property="prevButtonForSplitView" destination="icA-8s-JIg" id="BoN-JL-bhN"/>
                         <outlet property="previousButton" destination="uhj-ab-NtG" id="lE3-hB-5GJ"/>
                         <outlet property="replyButton" destination="OL8-wT-4Rt" id="BiN-bh-B2V"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="6by-Pi-xWQ"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" id="r2P-Ra-zWf"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="0Yg-lj-kVR"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="g1q-wK-tff"/>
-                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshake" id="CKh-jT-ski"/>
-                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshakeCollapsed" id="Gcx-48-ZRF"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueTrustManagement" id="CKh-jT-ski"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueTrustManagementCollapsed" id="Gcx-48-ZRF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NqX-Lg-wmy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -445,31 +464,25 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnw-Tp-mga">
-                                            <rect key="frame" x="20" y="11" width="331" height="30"/>
-                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                            <rect key="frame" x="20" y="11" width="331" height="33.5"/>
+                                            <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: Recipients" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mfx-AS-hpP">
-                                            <rect key="frame" x="20" y="45" width="331" height="18"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <nil key="textColor"/>
+                                            <rect key="frame" x="20" y="50.5" width="331" height="15.5"/>
+                                            <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
+                                            <color key="textColor" red="0.5490196078431373" green="0.5490196078431373" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="separator_pixel_grey" translatesAutoresizingMaskIntoConstraints="NO" id="Gbh-o3-H58">
-                                            <rect key="frame" x="10" y="71" width="355" height="1"/>
-                                        </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Mfx-AS-hpP" firstAttribute="top" secondItem="hnw-Tp-mga" secondAttribute="bottom" constant="4" id="0eV-GZ-phc"/>
+                                        <constraint firstItem="Mfx-AS-hpP" firstAttribute="top" secondItem="hnw-Tp-mga" secondAttribute="bottom" constant="6" id="0eV-GZ-phc"/>
                                         <constraint firstItem="Mfx-AS-hpP" firstAttribute="leading" secondItem="hnw-Tp-mga" secondAttribute="leading" id="6iY-Wa-jvo"/>
                                         <constraint firstAttribute="topMargin" secondItem="hnw-Tp-mga" secondAttribute="top" id="BpX-2f-9Cg"/>
                                         <constraint firstItem="Mfx-AS-hpP" firstAttribute="trailing" secondItem="hnw-Tp-mga" secondAttribute="trailing" id="bRK-0S-gkk"/>
-                                        <constraint firstItem="Gbh-o3-H58" firstAttribute="top" secondItem="Mfx-AS-hpP" secondAttribute="bottom" constant="8" id="e9k-0K-Fjg"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="hnw-Tp-mga" secondAttribute="trailing" constant="8" id="oUv-TY-bIw"/>
-                                        <constraint firstAttribute="bottom" secondItem="Gbh-o3-H58" secondAttribute="bottom" id="peO-tq-6Wq"/>
-                                        <constraint firstAttribute="trailing" secondItem="Gbh-o3-H58" secondAttribute="trailing" constant="10" id="qWx-e1-BE2"/>
-                                        <constraint firstItem="Gbh-o3-H58" firstAttribute="leading" secondItem="dlZ-8o-1iE" secondAttribute="leading" constant="10" id="wko-Wm-rMg"/>
+                                        <constraint firstAttribute="bottom" secondItem="Mfx-AS-hpP" secondAttribute="bottom" constant="6" id="wTj-1x-Ezw"/>
                                         <constraint firstItem="hnw-Tp-mga" firstAttribute="leading" secondItem="dlZ-8o-1iE" secondAttribute="leading" constant="20" symbolic="YES" id="yzu-p3-Qxp"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -478,43 +491,55 @@
                                     <outlet property="valueLabel" destination="Mfx-AS-hpP" id="nfi-pV-1zO"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderSubjectCell" rowHeight="72" id="w8o-Py-AVt" customClass="MessageSubjectCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="194" width="375" height="72"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderSubjectCell" rowHeight="66" id="w8o-Py-AVt" customClass="MessageSubjectCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="194" width="375" height="66"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w8o-Py-AVt" id="0wZ-Iy-bZj">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="66"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Swb-L2-8yp">
-                                            <rect key="frame" x="20" y="35" width="331" height="18"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Subject" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xrz-WN-2Dg">
-                                            <rect key="frame" x="20" y="11" width="331" height="20"/>
-                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                            <rect key="frame" x="20" y="11" width="331" height="14"/>
+                                            <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Swb-L2-8yp">
+                                            <rect key="frame" x="20" y="31" width="331" height="20"/>
+                                            <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
+                                            <color key="textColor" red="0.5490196078431373" green="0.5490196078431373" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="separator_pixel_grey" translatesAutoresizingMaskIntoConstraints="NO" id="xaV-Jp-iQp">
+                                            <rect key="frame" x="20" y="65" width="355" height="1"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="cxK-z5-rBH"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Swb-L2-8yp" firstAttribute="trailing" secondItem="xrz-WN-2Dg" secondAttribute="trailing" id="16O-86-sIh"/>
                                         <constraint firstItem="xrz-WN-2Dg" firstAttribute="leading" secondItem="0wZ-Iy-bZj" secondAttribute="leading" constant="20" symbolic="YES" id="BSe-CV-7gi"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="xrz-WN-2Dg" secondAttribute="bottom" constant="30" id="PwY-pD-hXj"/>
+                                        <constraint firstItem="xaV-Jp-iQp" firstAttribute="leading" secondItem="xrz-WN-2Dg" secondAttribute="leading" id="Xgu-3F-4P6"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="xrz-WN-2Dg" secondAttribute="trailing" constant="8" id="Xkh-hJ-63Q"/>
+                                        <constraint firstAttribute="bottom" secondItem="xaV-Jp-iQp" secondAttribute="bottom" id="bJ6-th-thh"/>
+                                        <constraint firstItem="xaV-Jp-iQp" firstAttribute="top" secondItem="Swb-L2-8yp" secondAttribute="bottom" constant="14" id="nuS-Pm-B0K"/>
                                         <constraint firstItem="Swb-L2-8yp" firstAttribute="leading" secondItem="xrz-WN-2Dg" secondAttribute="leading" id="osb-VP-QxT"/>
-                                        <constraint firstItem="Swb-L2-8yp" firstAttribute="top" secondItem="xrz-WN-2Dg" secondAttribute="bottom" constant="4" id="uf5-XW-uD5"/>
+                                        <constraint firstItem="Swb-L2-8yp" firstAttribute="top" secondItem="xrz-WN-2Dg" secondAttribute="bottom" constant="6" id="uf5-XW-uD5"/>
                                         <constraint firstAttribute="topMargin" secondItem="xrz-WN-2Dg" secondAttribute="top" id="wfg-Nu-Ws1"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="xaV-Jp-iQp" secondAttribute="trailing" id="sWO-Bg-0fe"/>
+                                </constraints>
                                 <connections>
                                     <outlet property="titleLabel" destination="xrz-WN-2Dg" id="BWi-UX-AQh"/>
                                     <outlet property="valueLabel" destination="Swb-L2-8yp" id="50D-3R-mUV"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderBodyCell" rowHeight="200" id="emX-Ao-r5Q" customClass="MessageContentCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="266" width="375" height="200"/>
+                                <rect key="frame" x="0.0" y="260" width="375" height="200"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="emX-Ao-r5Q" id="Tft-DN-iZy">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
@@ -523,7 +548,7 @@
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="T6H-kH-E19">
                                             <rect key="frame" x="20" y="0.0" width="335" height="200"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES" shipmentTrackingNumber="YES" flightNumber="YES"/>
                                             <userDefinedRuntimeAttributes>
@@ -539,7 +564,7 @@
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="T6H-kH-E19" secondAttribute="trailing" constant="20" symbolic="YES" id="2xL-qT-ef6"/>
                                         <constraint firstAttribute="bottom" secondItem="T6H-kH-E19" secondAttribute="bottom" id="Gw3-ct-5tN"/>
-                                        <constraint firstItem="T6H-kH-E19" firstAttribute="leading" secondItem="Tft-DN-iZy" secondAttribute="leading" constant="20" symbolic="YES" id="NC0-HE-04X"/>
+                                        <constraint firstItem="T6H-kH-E19" firstAttribute="leading" secondItem="Tft-DN-iZy" secondAttribute="leading" constant="20" id="NC0-HE-04X"/>
                                         <constraint firstItem="T6H-kH-E19" firstAttribute="top" secondItem="Tft-DN-iZy" secondAttribute="top" id="YdU-CJ-7xa"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -548,7 +573,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="attachmentsCell" id="wEk-G8-zwU" customClass="MessageAttachmentsCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="466" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="460" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wEk-G8-zwU" id="W8L-Sa-ksv">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -579,10 +604,18 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="Usl-iS-7fo"/>
+                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" id="1zD-EW-3fN"/>
+                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="2fD-kL-Bvj"/>
+                        <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" modalPresentationStyle="pageSheet" id="RTR-We-Kc1"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueTrustManagement" modalPresentationStyle="automatic" id="mZj-Mg-VzM"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueTrustManagementCollapsed" modalPresentationStyle="fullScreen" id="0zl-tV-6Kr"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4756" y="-985"/>
+            <point key="canvasLocation" x="4756" y="-985.45727136431788"/>
         </scene>
         <!--Move to Account-->
         <scene sceneID="Rib-YI-OIO">
@@ -677,10 +710,10 @@
             </objects>
             <point key="canvasLocation" x="7911" y="-910"/>
         </scene>
-        <!--Handshake-->
+        <!--TrustManagement-->
         <scene sceneID="vNc-oF-Keh">
             <objects>
-                <viewControllerPlaceholder storyboardName="Handshake" id="Dbs-KG-RkX" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="TrustManagement" id="Dbs-KG-RkX" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vev-AJ-nPB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5522" y="-470"/>
@@ -948,7 +981,7 @@
                     <size key="freeformSize" width="375" height="800"/>
                     <connections>
                         <outlet property="sendButton" destination="yQg-rY-YPK" id="lhg-qw-PDF"/>
-                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshake" modalPresentationStyle="fullScreen" id="JbP-D9-Vpg"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueTrustManagement" modalPresentationStyle="fullScreen" id="JbP-D9-Vpg"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="te3-X0-7QD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -978,17 +1011,17 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow-lft-active" width="10" height="18"/>
-        <image name="arrow-rgt-active" width="10" height="18"/>
         <image name="attachment-list-icon" width="14" height="15"/>
+        <image name="chevron-icon-left" width="10" height="18"/>
+        <image name="chevron-icon-right" width="10" height="18"/>
         <image name="compose" width="33" height="64"/>
         <image name="empty-avatar" width="150" height="150"/>
-        <image name="folders-icon-folder" width="25" height="25"/>
-        <image name="folders-icon-trash" width="25" height="25"/>
-        <image name="icon-settings" width="49" height="20"/>
-        <image name="icon-unflagged" width="33" height="64"/>
         <image name="pEp-status-yellow_white-border" width="21" height="21"/>
-        <image name="reply" width="33" height="64"/>
+        <image name="pEpForiOS-icon-delete" width="16" height="24"/>
+        <image name="pEpForiOS-icon-movetofolder" width="29" height="24"/>
+        <image name="pEpForiOS-icon-reply" width="31" height="24"/>
+        <image name="pEpForiOS-icon-settings" width="59" height="24"/>
+        <image name="pEpForiOS-icon-unflagged" width="14" height="24"/>
         <image name="separator_pixel_grey" width="1" height="1"/>
         <image name="unread-icon" width="25" height="25"/>
     </resources>

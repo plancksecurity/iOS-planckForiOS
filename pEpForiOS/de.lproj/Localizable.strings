@@ -14,12 +14,14 @@
 /* Reply to single contact, without date. Placeholder: Name. */
 "%1$@ wrote:" = "%1$@ schrieb:";
 
+/* KeySyncWizard introduction message */
+"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Es wurde ein zweites Gerät gefunden, mit dem Sie Ihre Datenschutzeinstellungen synchronisieren können. Möchten Sie mit der Synchronisierung beginnen?";
+
 /* error message for .invalidEmail
    error message for .missingEmail */
 "A valid email is required" = "Eine gültige E-Mail Adresse wird benötigt";
 
-/* Account settings
-   Title for manual account setup */
+/* Account settings */
 "Account" = "Konto";
 
 /* Error description detecting account settings */
@@ -28,7 +30,7 @@
 /* Empty account name message */
 "Account name must not be empty." = "Kontoname darf nicht leer sein";
 
-/* Tableview section  header */
+/* Tableview section  header: Accounts */
 "Accounts" = "Konto:";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
@@ -39,6 +41,9 @@
 
 /* error message for .noConnectData */
 "An internal error occurred" = "Es ist ein interner Fehler aufgetreten.";
+
+/* KeySyncWizard introduction message */
+"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Es wurde ein weiteres Gerät gefunden, mit dem Sie Ihre Datenschutzeinstellungen synchronisieren können. Möchten Sie mit der Synchronisierung beginnen?";
 
 /* Archive button in slide-left menu */
 "Archive" = "Archivieren";
@@ -58,17 +63,28 @@
 /* title attachments filter cell */
 "Attachments" = "Anhänge";
 
+/* Cancel button title for manual account IMAP setup
+   Cancel button title for manual account SMTP setup */
+"Back" = "Zurück";
+
 /* Privacy status title */
 "Broken" = "Defekt";
 
 /* alert action 3
+   Alert cancel button title before trusting an account
+   Cancel
+   Cancel button title for manual account setup
+   Cancel button title of pEp protection toggle action sheet
    Cancel for an alert view
+   Cancel in button in Login View
    Cancel reset account identity button title
    Cancel title button
+   Cancel trust change to be undone
    compose email cancel
+   Default cancel button text
    EmailList action title
+   keysync alert leave device group cancel
    keySyncWizard animation view cancel button title
-   Login NavigationBar canel button title
    Message actions
    MoveToFolderViewController NavigationBar canel button title
    possible private status action
@@ -77,6 +93,9 @@
 
 /* Privacy status title */
 "Cannot Decrypt" = "Entschlüsselung ist nicht möglich";
+
+/* Compose field title */
+"CC:" = "CC:";
 
 /* Compose field title */
 "Cc/Bcc:" = "Cc/Bcc:";
@@ -94,7 +113,7 @@
 "Confirm Trustwords" = "Trustwords bestätigen";
 
 /* ResetTrustView title
-   TableView section header */
+   TableView section header: Contacts */
 "Contacts" = "Kontakte";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title Copy Email */
@@ -117,6 +136,13 @@
 /* Account delete confirmation comment */
 "delete account message" = "Kontonachricht löschen";
 
+/* keysync alert leave device group disable */
+"Disable" = "Deaktivieren";
+
+/* Disable Protection
+   Disable Protection button title of pEp protection toggle action sheet */
+"Disable Protection" = "Schutz abschalten";
+
 /* ComposeTableView: button to decide to discharge changes made on a drafted mail. */
 "Discharge changes" = "Änderungen verwerfen";
 
@@ -135,11 +161,11 @@
 /* title for subject protection */
 "Enable Protected Subject" = "Geschützten Betreff aktivieren";
 
-/* possible private status action */
+/* Enable Protection
+   Enable Protection button title of pEp protection toggle action sheet */
 "Enable Protection" = "Schutz aktivieren";
 
-/* Fail to update pEpSync value alert title
-   Title of error alert shown to the user in case a message could not be sent
+/* Title of error alert shown to the user in case a message could not be sent
    Title of error alert shown to the user in case an unknown error occured. */
 "Error" = "Fehler";
 
@@ -148,6 +174,10 @@
 
 /* Filter Title */
 "Filters" = "Filter";
+
+/* Finish button title for manual account SMTP setup
+   Start up tutorial finish button */
+"Finish" = "Abschließen";
 
 /* read button in slide-left menu */
 "Flag" = "Markieren";
@@ -170,7 +200,7 @@
 /* The 'Fwd:' that gets appended to the subject line */
 "Fwd: " = "Fwd: ";
 
-/* Tableview section header */
+/* Tableview section header: Global Settings */
 "Global Settings" = "Globale Einstellungen";
 
 /* possible privacy status action */
@@ -182,7 +212,7 @@
 /* Tableview section footer */
 "If enabled, message subjects are also protected." = "Schützt den Betreff, wenn aktiviert";
 
-/* Manual account setup */
+/* Title for manual account IMAP setup */
 "IMAP" = "IMAP";
 
 /* Empty IMAP server message */
@@ -231,8 +261,7 @@
 /* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
 "Keep in Outbox" = "Im Postausgang behalten";
 
-/* keySyncWizard completion view leave button title
-   Leave device group button title */
+/* keySyncWizard completion view leave button title */
 "Leave" = "Verlassen";
 
 /* Settings: Cell (button) title for leaving device group */
@@ -250,6 +279,12 @@
 /* manual */
 "Manual configuration" = "Manuelle Konfiguration";
 
+/* Manual Setup button in Login View */
+"Manual setup" = "Manuelle Einrichtung";
+
+/* EmailList action title */
+"Mark as Read" = "Als gelesen markieren";
+
 /* EmailList action title */
 "Mark as unread" = "Als ungelesen markieren";
 
@@ -263,6 +298,9 @@
 /* EmailList action title */
 "Move to Folder" = "Zu Ordner verschieben";
 
+/* File name used for videos the user attaches. */
+"Movie" = "Verschieben";
+
 /* username */
 "Name" = "Name";
 
@@ -272,7 +310,9 @@
 /* Title for notification show on lock screen for *one* new mail */
 "New message received" = "Neue E-Mail erhalten";
 
-/* keySyncWizard intro view Next button title */
+/* keySyncWizard intro view Next button title
+   Next button title for manual account IMAP setup
+   Next button title for manual account setup */
 "Next" = "Weiter";
 
 /* Error when no account found for set_own_key UI */
@@ -288,18 +328,18 @@
    privacyStatusTitle no_color */
 "None" = "Keine";
 
-/* keySyncWizard error view NotNow button title */
+/* keySyncWizard error view Not Now button title */
 "Not now" = "Nicht jetzt";
 
 /* keySyncWizard intro view Not Now button title
    not now button */
 "Not Now" = "Nicht jetzt";
 
-/* Filter accept text
+/* Default positive button text
+   Filter accept text
    General alert positive button
    keySyncWizard completion view OK button title
    OK button for invalid accout settings user input alert
-   OK button for pEpSyncError alert
    UIAlertAction ok after error */
 "OK" = "OK";
 
@@ -310,10 +350,12 @@
 "p≡p sync" = "p≡p Synchronisierung";
 
 /* keySync handshake alert title
-   keySyncWizard animation view title */
+   keySyncWizard animation view title
+   Settings: enable/disable p≡p Sync feature */
 "p≡p Sync" = "p≡p Synchronisierung";
 
-/* password */
+/* Password placeholder for manual account setup
+   Password TextField Placeholder in Login Screen */
 "Password" = "Passwort";
 
 /* Account settings title pEp Sync */
@@ -358,6 +400,13 @@
 /* Privacy status suggestion */
 "Please ask your communication partner to use an encryption solution or install p≡p." = "Bitten Sie Ihren Kommunikationspartner, eine Verschlüsselungslösung einzusetzen oder p≡p zu installieren.";
 
+/* keySync handshake alert message for two devices in group */
+"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Bitte stellen Sie sicher, das Sie beide Geräte vor sich haben, um die Trustwords zu vergleichen. Stimmen die Trustwords unten mit denen auf dem anderen Gerät überein?";
+
+/* Port placeholder for manual account IMAP setup
+   Port placeholder for manual account SMTP setup */
+"Port" = "Port";
+
 /* action sheet title 1 */
 "Privacy Status" = "Datenschutzstatus";
 
@@ -381,6 +430,12 @@
 /* EmailList action title
    Message actions */
 "Reply All" = "Allen antworten";
+
+/* Account settings confirm to reset identity title alert
+   Account settings reset identity
+   Reset account identity button title
+   Settings: cell (button) title to view the trust contacts option */
+"Reset" = "Zurücksetzen";
 
 /* compose email save */
 "Save Draft" = "Entwurf speichern";
@@ -413,7 +468,7 @@
 /* Body for notifications show on lock screen for new mail(s) */
 "Slide for more" = "Wischen um mehr zu sehen";
 
-/* Manual account setup */
+/* Title manual account SMTP setup */
 "SMTP" = "SMTP";
 
 /* Empty SMTP server message */
@@ -431,7 +486,7 @@
 /* Reply to unknown sender without date */
 "Someone wrote:" = "Jemand schrieb:";
 
-/* keySyncWizard error view message */
+/* keySyncWizard error view message when syncing devices */
 "Something went wrong with syncing the devices. Please try again." = "Etwas ist beim Synchronisieren der Geräte schief gelaufen.Bitte versuchen Sie es noch einmal.";
 
 /* Stop/trust button in handshake overview */
@@ -471,6 +526,9 @@
 /* Privacy status suggestion */
 "This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "Diese Nachricht besitzt keine zuverlässige Verschlüsselung oder keine digitale Signatur. Bitten Sie Ihren Kommunikationspartner, eine bessere Verschlüsselungslösung zu verwenden oder p≡p zu installieren.";
 
+/* Privacy status explanation */
+"This message has unreliable protection" = "Diese Nachricht wurde nicht zuverlässig geschützt.";
+
 /* Compose field title */
 "This message is from a mailing list." = "Diese E-Mail ist von einer Mailing-Liste.";
 
@@ -495,6 +553,9 @@
 /* Compose field title */
 "To:" = "An:";
 
+/* Compose field title */
+"To: " = "An:";
+
 /* UI alert title for transport protocol */
 "Transport protocol" = "Transport-Protokoll";
 
@@ -516,7 +577,9 @@
 /* Displayed attachment filename if unknown */
 "unknown" = "unbekannt";
 
-/* Privacy status title */
+/* Privacy status title
+   privacyStatusDescription no_color
+   privacyStatusTitle no_color */
 "Unknown" = "Unbekannt";
 
 /* file name used for unnamed attachments */
@@ -534,6 +597,14 @@
 
 /* Privacy status title */
 "Unsecure for Some" = "Teilweise unsicher";
+
+/* setting row title: Unsecure reply warning */
+"Unsecure reply warning" = "Warnhinweis bei unsicherer Weiterleitung";
+
+/* User Name placeholder for manual account IMAP setup
+   User Name placeholder for manual account setup
+   User Name placeholder for manual account SMTP setup */
+"User Name" = "Benutzername";
 
 /* Empty username message */
 "Username must not be empty." = "Der Benutzername darf nicht leer sein.";

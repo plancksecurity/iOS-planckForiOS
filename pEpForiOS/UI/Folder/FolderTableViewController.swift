@@ -42,7 +42,7 @@ class FolderTableViewController: BaseTableViewController {
         folderVM =  FolderViewModel()
         tableView.reloadData()
     }
-    
+
     private func initialConfig() {
         self.title = NSLocalizedString("Mailboxes", comment: "FoldersView navigationbar title")
         tableView.estimatedRowHeight = 44.0
@@ -64,7 +64,7 @@ class FolderTableViewController: BaseTableViewController {
             action: nil)
         self.toolbarItems = [flexibleSpace,item]
     }
-    
+
     @objc private func pullToRefresh() {
         folderVM?.refreshFolderList() { [weak self] in
             guard let me = self else {
@@ -169,7 +169,7 @@ class FolderTableViewController: BaseTableViewController {
                 Log.shared.errorAndCrash("No model")
                 return 0
             }
-        return vm[indexPath.section][indexPath.item].level
+            return vm[indexPath.section][indexPath.item].level
     }
 
     // MARK: - TableViewDelegate

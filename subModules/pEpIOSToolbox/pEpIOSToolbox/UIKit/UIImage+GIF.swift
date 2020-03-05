@@ -10,6 +10,11 @@ import UIKit
 import Foundation
 
 extension UIImage {
+    private struct Constant {
+        // Fast bug fix related to bug IOS-1696 (large) animated gif causes iOS app to crash (5oo-520 frames with resolution ~1100x800  needed ~1.8GB RAM)
+        static let maxAllowedFrames = 60
+    }
+
     static func image(animationFrames: [CGImageSource.AnimationFrame]) -> UIImage? {
         if animationFrames.isEmpty {
             return nil
@@ -27,6 +32,7 @@ extension UIImage {
         let parts = animationFrames.map { $0.durationDecis / gcdDecis }
 
         var images = [UIImage]()
+
         for iPart in 0..<parts.count {
             let frameImage = UIImage(cgImage: animationFrames[iPart].cgImage)
             let numberOfImagesNeeded = parts[iPart]
@@ -45,11 +51,11 @@ extension UIImage {
     public static func image(cgImageSource: CGImageSource) -> UIImage? {
         let animationFrames = cgImageSource.animationFrames()
 
-        if animationFrames.count == 1 {
+        if animationFrames.count == 1 || animationFrames.count > Constant.maxAllowedFrames {
             let frame1 = animationFrames[0]
             return UIImage(cgImage: frame1.cgImage)
         } else if animationFrames.count > 1 {
-            return image(animationFrames: animationFrames)
+             return image(animationFrames: animationFrames)
         } else {
             return nil
         }
@@ -66,4 +72,33 @@ extension UIImage {
             return nil
         }
     }
+    
+    /// Method that resize the image that invokes and returns a new one.
+    /// - Parameter targetSize: The desired size of the image.
+    public func resizeImage(targetSize: CGSize) -> UIImage? {
+
+        let widthRatio  = targetSize.width  / size.width
+        let heightRatio = targetSize.height / size.height
+
+        // Figure out what our orientation is, and use that to form the rectangle
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+        }
+
+        // This is the rect that we've calculated out and this is what is actually used below
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+
+        // Actually do the resizing to the rect using the ImageContext stuff
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage
+    }
 }
+
+
