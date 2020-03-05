@@ -106,6 +106,11 @@ extension ClientCertificateUIUtil {
         }
         do {
             try clientCertificateUtil.storeCertificate(p12Data: data, password: pass)
+            guard let vc = topViewController() else {
+                Log.shared.errorAndCrash("No VC")
+                return
+            }
+            dismissView(vc: vc)
         } catch ClientCertificateUtil.ImportError.wrongPassword {
             showWrongPasswordError()
         } catch {
@@ -125,7 +130,7 @@ extension ClientCertificateUIUtil {
                                                         Log.shared.lostMySelf()
                                                         return
                                                     }
-                                                    me.dismissView()
+                                                    me.dismissView(vc: vc)
         })
     }
 
@@ -143,18 +148,14 @@ extension ClientCertificateUIUtil {
                                         Log.shared.lostMySelf()
                                         return
                                     }
-                                    me.dismissView()
+                                    me.dismissView(vc: vc)
             }, positiveButtonAction: {
                 // We don't need to do something here. Our expectation is close this alert
         }, inViewController: vc)
     }
 
-    private func dismissView() {
-        guard let viewClientCertificatePasswordVC = clientCertificatePasswordVC else {
-            Log.shared.errorAndCrash("No viewControllerToPresent!")
-            return
-        }
-        viewClientCertificatePasswordVC.dismiss(animated: true)
+    private func dismissView(vc: UIViewController) {
+        vc.dismiss(animated: true)
     }
 }
 
