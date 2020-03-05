@@ -343,36 +343,6 @@ extension EmailDetailViewController {
         emailSubViewControllers = emailSubViewControllers.filter { $0.view.superview != nil }
     }
 
-    @objc
-    private func showPepActions(sender: UIBarButtonItem) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-        guard let indexPath = indexPathOfCurrentlyVisibleCell else {
-            Log.shared.errorAndCrash("Nothing shown?")
-            return
-        }
-
-        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
-
-        if vm.shouldShowPrivacyStatus(forItemAt:indexPath) {
-            actionSheetController.addAction(showTrustManagementViewAction())
-        }
-        actionSheetController.addAction(tutorialAction())
-        actionSheetController.addAction(showSettingsAction())
-
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("Cancel", comment: "possible private status action"),
-            style: .cancel) { (action) in }
-        actionSheetController.addAction(cancelAction)
-
-        if splitViewController != nil, !onlySplitViewMasterIsShown {
-            actionSheetController.popoverPresentationController?.barButtonItem = sender
-        }
-        present(actionSheetController, animated: true)
-    }
-
     private func showSettingsAction() -> UIAlertAction {
         let action = UIAlertAction(
             title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
