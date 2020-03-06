@@ -39,13 +39,13 @@ private struct Localized {
 final class ClientCertificateUIUtil: NSObject {
     private let clientCertificateUtil: ClientCertificateUtilProtocol
     private var viewControllerToPresentUiOn: UIViewController?
-    private var clientCertificatePasswordVC: ClientCertificatePasswordViewController? {
+    private lazy var clientCertificatePasswordVC: ClientCertificatePasswordViewController? = {
         let vc = UIStoryboard.init(name: "Certificates",
                           bundle: nil).instantiateInitialViewController() as? ClientCertificatePasswordViewController
         vc?.viewModel = ClientCertificatePasswordViewModel(delegate: vc,
                                                            passwordChangeDelegate: self)
         return vc
-    }
+    }()
     private var p12Data: Data?
 
     public init(clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
@@ -73,29 +73,16 @@ final class ClientCertificateUIUtil: NSObject {
 extension ClientCertificateUIUtil {
 
     private func presentAlertViewForClientImportPassPhrase() {
-
         guard let viewControllerPresenter = viewControllerToPresentUiOn else {
             Log.shared.errorAndCrash("No VC!")
             return
         }
-
         guard let clientCertificatePasswordVC = clientCertificatePasswordVC else {
             Log.shared.errorAndCrash("Certificates storyboard not found")
             return
         }
         clientCertificatePasswordVC.modalPresentationStyle = .fullScreen
         viewControllerPresenter.present(clientCertificatePasswordVC, animated: true)
-    }
-
-    func topViewController() -> UIViewController? {
-        guard let topViewController = UIApplication.shared.keyWindow?.rootViewController else {
-            Log.shared.errorAndCrash("Lost topViewController")
-            return nil
-        }
-        while (topViewController.presentedViewController != nil) {
-            return topViewController.presentedViewController!
-        }
-        return nil
     }
 
     private func handlePassphraseEntered(pass: String) {
@@ -113,13 +100,13 @@ extension ClientCertificateUIUtil {
     }
 
     private func showCorruptedFileError() {
-        guard let vc = topViewController() else {
+        guard let vc = clientCertificatePasswordVC else {
             Log.shared.errorAndCrash("No VC")
             return
         }
         UIUtils.showAlertWithOnlyPositiveButton(title: Localized.CorruptedFileError.title,
                                                 message: Localized.CorruptedFileError.message,
-                                                inViewController: vc, completion: { [weak self] in
+                                                completion: { [weak self] in
                                                     guard let me = self else {
                                                         Log.shared.lostMySelf()
                                                         return
@@ -129,7 +116,7 @@ extension ClientCertificateUIUtil {
     }
 
     private func showWrongPasswordError() {
-        guard let vc = topViewController() else {
+        guard let vc = clientCertificatePasswordVC else {
             Log.shared.errorAndCrash("No VC")
             return
         }
@@ -145,7 +132,7 @@ extension ClientCertificateUIUtil {
                                     me.dismiss(vc: vc)
             }, positiveButtonAction: {
                 // We don't need to do something here. Our expectation is close this alert
-        }, inViewController: vc)
+        })
     }
 
     private func dismiss(vc: UIViewController) {

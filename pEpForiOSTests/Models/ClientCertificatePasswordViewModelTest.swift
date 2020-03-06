@@ -24,11 +24,6 @@ final class ClientCertificatePasswordViewModelTest: XCTestCase {
         vm = nil
     }
 
-    func testSth() {
-        XCTAssertNotNil(vm, "vm is not set!")
-        vm?.delegate?.dismiss()
-    }
-
     func testhandleOkButtonPressedTest() {
         XCTAssertNotNil(vm, "vm is not set!")
         vm?.handleOkButtonPressed(password: Constant.password)

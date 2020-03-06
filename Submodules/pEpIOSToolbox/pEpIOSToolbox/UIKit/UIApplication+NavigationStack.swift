@@ -20,16 +20,15 @@ extension UIApplication {
             return nil
         }
         if let nav = vc as? UINavigationController {
-            return nav.topViewController
+            return topViewController(inNavigationStackOf: nav.topViewController)
         } else if let tab = vc as? UITabBarController, let selected = tab.selectedViewController {
             return topViewController(inNavigationStackOf: selected)
         } else if let splitVC = viewController as? UISplitViewController {
-            guard let vc = splitVC.viewControllers.first else {
+            guard let vc = splitVC.viewControllers.last else {
                 Log.shared.errorAndCrash("Splitview without Primary VC?")
                 return nil
             }
             return topViewController(inNavigationStackOf: vc)
-
         } else if let presented = vc.presentedViewController {
             return topViewController(inNavigationStackOf: presented)
         }

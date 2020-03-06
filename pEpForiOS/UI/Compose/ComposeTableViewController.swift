@@ -292,8 +292,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
                                    cancelButtonText: cancelButtonText,
                                    positiveButtonText: positiveButtonText,
                                    cancelButtonAction: cancelButtonAction,
-                                   positiveButtonAction: positiveButtonAction,
-                                   inViewController: self)
+                                   positiveButtonAction: positiveButtonAction)
     }
 
    func dismiss() {
