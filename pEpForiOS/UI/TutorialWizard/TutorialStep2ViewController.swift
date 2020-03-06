@@ -11,6 +11,8 @@ import UIKit
 
 class TutorialStep2ViewController: TutorialStepViewController {
     
+    @IBOutlet private weak var confirmButton: UIButton!
+    @IBOutlet private weak var declineButton: UIButton!
     @IBOutlet private weak var handshakeTitle: UILabel!
     @IBOutlet private weak var privacyStatusExplanationLabel: UILabel!
     @IBOutlet private weak var confirmTrustwordsExplanationLabel: UILabel!
@@ -21,8 +23,17 @@ class TutorialStep2ViewController: TutorialStepViewController {
         setupHandshakeTitle()
         setupPrivacyStatusExplanationLabel()
         setupcCnfirmTrustwordsExplanationLabel()
-        trustwordsContainer.layer.borderWidth = 2
-        trustwordsContainer.layer.borderColor = UIColor.lightGray.cgColor
+        trustwordsContainer.layer.borderWidth = 1
+        trustwordsContainer.layer.borderColor = UIColor.pEpGrayBorder.withAlphaComponent(0.5).cgColor
+
+        //Confirm Button
+        let confirmTitle = NSLocalizedString("Confirm", comment: "Confirm correct trustwords/PGP fingerprint")
+        confirmButton.setTitle(confirmTitle, for: .normal)
+        confirmButton.pEpIfyForTrust(backgroundColor: .pEpGreen, textColor: .white)
+        //Decline Button
+        let declineTitle = NSLocalizedString("Decline", comment: "Incorrect trustwords/PGP fingerprint")
+        declineButton.setTitle(declineTitle, for: .normal)
+        declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .white)
     }
     
     private func setupHandshakeTitle() {

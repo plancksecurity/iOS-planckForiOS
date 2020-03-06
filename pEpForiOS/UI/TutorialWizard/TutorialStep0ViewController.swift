@@ -168,7 +168,7 @@ extension String {
     /// In Debug, this allows to duplicate the string in order to test long strings on UI.
     ///
     /// - Parameters:
-    ///   - comment: The comment for the translator. If nil, will use the same key. 
+    ///   - comment: The comment for the translator. If nil, will use the same key.
     ///   - double: Indicates if the string must be duplicated.
     func localized(comment: String? = nil, double : Bool = false) -> String {
         let localized = NSLocalizedString(self, comment: comment ?? self)
