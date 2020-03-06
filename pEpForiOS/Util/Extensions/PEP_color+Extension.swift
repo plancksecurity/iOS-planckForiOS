@@ -10,20 +10,6 @@ import Foundation
 import PEPObjCAdapterFramework
 
 extension PEPColor {
-    var privacyStatusTitle: String {
-        switch self {
-        case PEPColor.red:
-            return NSLocalizedString("Mistrusted", comment: "privacyStatusTitle red")
-        case .yellow:
-            return NSLocalizedString("Secure", comment: "privacyStatusTitle yellow")
-        case .green:
-            return NSLocalizedString("Secure & Trusted", comment: "privacyStatusTitle green")
-        case PEPColor.noColor:
-            return NSLocalizedString("Unknown", comment: "privacyStatusTitle no_color")
-        default:
-            return "Undefined"
-        }
-    }
 
     var privacyStatusDescription: String {
         switch self {

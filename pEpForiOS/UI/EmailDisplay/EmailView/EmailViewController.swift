@@ -226,6 +226,10 @@ extension EmailViewController: MessageAttachmentDelegate {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            guard let strongAttachmentOP = attachmentOp else {
+                Log.shared.errorAndCrash("OP missing")
+                return
+            }
             let safeAttachment = attachment.safeForSession(Session.main)
 
             GCD.onMain {
@@ -234,7 +238,7 @@ extension EmailViewController: MessageAttachmentDelegate {
                         inView?.stopDisplayingAsBusy(viewBusyState: bState)
                     }
                 }
-                guard let url = attachmentOp?.fileURL else {
+                guard let url = strongAttachmentOP.fileURL else {
                     return
                 }
                 me.didCreateLocally(attachment: safeAttachment,
