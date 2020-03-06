@@ -87,17 +87,6 @@ extension ClientCertificateUIUtil {
         viewControllerPresenter.present(clientCertificatePasswordVC, animated: true)
     }
 
-    func topViewController() -> UIViewController? {
-        guard let topViewController = UIApplication.shared.keyWindow?.rootViewController else {
-            Log.shared.errorAndCrash("Lost topViewController")
-            return nil
-        }
-        while (topViewController.presentedViewController != nil) {
-            return topViewController.presentedViewController!
-        }
-        return nil
-    }
-
     private func handlePassphraseEntered(pass: String) {
         guard let data = p12Data else {
             Log.shared.errorAndCrash("Invalid state: Password field should never been shown before having p12Data.")
@@ -113,7 +102,7 @@ extension ClientCertificateUIUtil {
     }
 
     private func showCorruptedFileError() {
-        guard let vc = topViewController() else {
+        guard let vc = clientCertificatePasswordVC else {
             Log.shared.errorAndCrash("No VC")
             return
         }
@@ -129,7 +118,7 @@ extension ClientCertificateUIUtil {
     }
 
     private func showWrongPasswordError() {
-        guard let vc = topViewController() else {
+        guard let vc = clientCertificatePasswordVC else {
             Log.shared.errorAndCrash("No VC")
             return
         }

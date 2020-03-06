@@ -29,7 +29,6 @@ extension UIApplication {
                 return nil
             }
             return topViewController(inNavigationStackOf: vc)
-
         } else if let presented = vc.presentedViewController {
             return topViewController(inNavigationStackOf: presented)
         }
