@@ -149,11 +149,6 @@ extension EmailListViewCell {
     //    }
 
     private func setPepRatingImage(image: UIImage?) {
-        guard image != nil else {
-            Log.shared.info("Image is nil")
-            return
-        }
-
         self.ratingImage.image = image
         self.ratingImage.isHidden = (image == nil)
     }
