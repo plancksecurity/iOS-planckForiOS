@@ -418,6 +418,7 @@
 		B76CF8B320D2739B002429A8 /* MoveToFolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */; };
 		B778BB0F23DF040400CFC001 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B778BB0E23DF040400CFC001 /* SettingsViewModel.swift */; };
 		B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78309C61EAA09040051A2E0 /* AccountCreation.storyboard */; };
+		B78602B12412B6380027132B /* AccountTypeSelectorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78602B02412B6380027132B /* AccountTypeSelectorTest.swift */; };
 		B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF8241E76D706008C1739 /* FilterTableViewController.swift */; };
 		B792889A2302D3DE00D2C68B /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79288992302D3DE00D2C68B /* Array+Extension.swift */; };
 		B7A50746224CD27A007B988F /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A50745224CD27A007B988F /* FilterViewModel.swift */; };
@@ -982,6 +983,7 @@
 		B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderViewModel.swift; sourceTree = "<group>"; };
 		B778BB0E23DF040400CFC001 /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		B78309C71EAA09040051A2E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/AccountCreation.storyboard; sourceTree = "<group>"; };
+		B78602B02412B6380027132B /* AccountTypeSelectorTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorTest.swift; sourceTree = "<group>"; };
 		B78CF8241E76D706008C1739 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterTableViewController.swift; path = Filter/FilterTableViewController.swift; sourceTree = "<group>"; };
 		B79288992302D3DE00D2C68B /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		B7A50745224CD27A007B988F /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FilterViewModel.swift; path = Filter/ViewModel/FilterViewModel.swift; sourceTree = "<group>"; };
@@ -2318,6 +2320,7 @@
 				431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */,
 				491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */,
 				3AC2B846241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift */,
+				B78602B02412B6380027132B /* AccountTypeSelectorTest.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3238,6 +3241,7 @@
 				15410D252199ECD700BBF65F /* AttachmentViewModelTest.swift in Sources */,
 				43257C861F50659200DDC7F0 /* StringHTMLExtensionTests.swift in Sources */,
 				43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */,
+				B78602B12412B6380027132B /* AccountTypeSelectorTest.swift in Sources */,
 				375643502371BC4600FB354D /* EditableAccountSettingsTableViewModelTest.swift in Sources */,
 				5BC14AC923E47A55005F0AF3 /* TrustManagementViewModelTest.swift in Sources */,
 			);

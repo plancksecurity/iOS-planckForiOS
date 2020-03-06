@@ -10,7 +10,7 @@ import UIKit
 
 final class AccountTypeSelectorViewController: BaseViewController {
 
-    let viewModel = AccountTypeSelectorViewModel()
+    var viewModel: AccountTypeSelectorViewModel?
     var delegate: AccountTypeSelectorViewModelDelegate?
     var loginDelegate: LoginViewControllerDelegate?
 
@@ -23,7 +23,12 @@ final class AccountTypeSelectorViewController: BaseViewController {
         collectionView.dataSource = self
         configureAppearance()
         configureView()
-        viewModel.delegate = self
+        configureViewModel()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("no ViewModel")
+            return
+        }
+        vm.delegate = self
     }
 
     private func configureAppearance() {
@@ -44,14 +49,23 @@ final class AccountTypeSelectorViewController: BaseViewController {
         //the view in the title are is replaced for a blank view.
         self.navigationItem.titleView = UIView()
         title = NSLocalizedString("Account Select", comment: "account type selector title")
-
-        self.navigationController?.navigationBar.isHidden = !viewModel.isThereAnAccount()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("no ViewModel")
+            return
+        }
+        self.navigationController?.navigationBar.isHidden = vm.isThereAnAccount()
         let imagebutton = UIButton(type: .custom)
         imagebutton.setImage(UIImage(named: "close-icon"), for: .normal)
         imagebutton.addTarget(self, action: #selector(backButton), for: .touchUpInside)
         imagebutton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         let finalBarButton = UIBarButtonItem(customView: imagebutton)
         self.navigationItem.leftBarButtonItem = finalBarButton
+    }
+    
+    private func configureViewModel() {
+        if viewModel == nil {
+            viewModel = AccountTypeSelectorViewModel()
+        }
     }
 
     @objc func backButton() {
@@ -61,11 +75,11 @@ final class AccountTypeSelectorViewController: BaseViewController {
 
 extension AccountTypeSelectorViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch viewModel.accountType(row: indexPath.row) {
+        switch viewModel?.accountType(row: indexPath.row) {
         case .clientCertificate:
-            viewModel.handleDidChooseClientCertificate()
+            viewModel?.handleDidChooseClientCertificate()
         default:
-            viewModel.handleDidSelect(rowAt: indexPath)
+            viewModel?.handleDidSelect(rowAt: indexPath)
             performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
         }
     }
@@ -77,20 +91,25 @@ extension AccountTypeSelectorViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.count
+        guard let vm = viewModel else {
+            return 0
+            Log.shared.errorAndCrash("no ViewModel")
+        }
+        return vm.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "providerCell",
-                                                for: indexPath) as? AccountTypeSelectorCollectionViewCell else {
+                                                            for: indexPath) as? AccountTypeSelectorCollectionViewCell,
+                                                            let vm = viewModel else {
             return UICollectionViewCell()
         }
-        let cellProvider = viewModel[indexPath.row]
+        let cellProvider = vm[indexPath.row]
         switch cellProvider {
         case .gmail:
-            cell.configure(withFileName: viewModel.fileNameOrText(provider: cellProvider))
+            cell.configure(withFileName: vm.fileNameOrText(provider: cellProvider))
         case .other, .clientCertificate:
-            cell.configure(withText: viewModel.fileNameOrText(provider: cellProvider))
+            cell.configure(withText: vm.fileNameOrText(provider: cellProvider))
         }
         return cell
     }
@@ -119,9 +138,13 @@ extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegat
 
 extension AccountTypeSelectorViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var numberOfRows: CGFloat = 2.0
+        if UIApplication.shared.statusBarOrientation.isLandscape {
+            numberOfRows = 3.0
+        }
         // this forces the collection view to have only 2 colums and all the cells with the same size
         let spaceBetweenCells: CGFloat = 30.0
-        let cellwidth = (collectionView.frame.width - spaceBetweenCells)/2
+        let cellwidth = (collectionView.frame.width - spaceBetweenCells)/numberOfRows
         let cellHeight = cellwidth/2
         return CGSize(width: cellwidth, height: cellHeight)
     }
@@ -136,20 +159,22 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .showLogin:
-            guard let vc = segue.destination as? LoginViewController else {
+            guard let vc = segue.destination as? LoginViewController,
+                let vm = viewModel else {
                 Log.shared.errorAndCrash("accountType is invalid")
                 return
             }
             vc.appConfig = appConfig
-            vc.viewModel = viewModel.loginViewModel()
+            vc.viewModel = vm.loginViewModel()
             vc.delegate = loginDelegate
         case .clientCertManagementSegue:
-            guard let dvc = segue.destination as? ClientCertificateManagementViewController else {
+            guard let dvc = segue.destination as? ClientCertificateManagementViewController,
+                let vm = viewModel else {
                 Log.shared.errorAndCrash("Invalid state")
                 return
             }
             dvc.appConfig = appConfig
-            dvc.viewModel = ClientCertificateManagementViewModel()
+            dvc.viewModel = vm.clientCertificateManagementViewModel()
         }
     }
 }
