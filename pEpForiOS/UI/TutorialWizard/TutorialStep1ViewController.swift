@@ -74,7 +74,7 @@ extension TutorialStep1ViewController {
     
     func adjustConstraintsIfNeeded() {
         guard let superView = view.superview, isIpad else {
-            Log.shared.error("Superview is missing or is not needed to adjust constraints here")
+            Log.shared.info("Superview is missing or is not needed to adjust constraints here")
             return
         }
         secureContainerTopConstraint.constant = isLandscape ? Constants.Landscape.secureContainerTop :

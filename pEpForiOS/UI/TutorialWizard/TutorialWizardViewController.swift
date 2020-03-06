@@ -107,7 +107,7 @@ extension TutorialWizardViewController {
         
         for (step, tutorialImage) in tutorialImages.enumerated() {
             
-            if step == 0 || step == 1 {
+            if step == 0 || step == 1 || step == 2 {
                 guard let stepViewController = TutorialViewController.fromStoryboard(step: step) else {
                     Log.shared.errorAndCrash("Can't instanciate VC")
                     return [UIViewController]()
@@ -118,6 +118,8 @@ extension TutorialWizardViewController {
                     TutorialViewController.fromStoryboard(tutorialImage: tutorialImage) else {
                         continue
                 }
+                tutorialViewController.view.backgroundColor = UIColor.blue
+                
                 result.append(tutorialViewController)
             }
         }

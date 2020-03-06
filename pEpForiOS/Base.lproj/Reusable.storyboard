@@ -156,7 +156,7 @@
                                                 <rect key="frame" x="12" y="50" width="236" height="134"/>
                                                 <subviews>
                                                     <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" lineBreakMode="tailTruncation" numberOfLines="0" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="GC3-wG-GHD">
-                                                        <rect key="frame" x="8" y="8" width="220" height="284.33333333333331"/>
+                                                        <rect key="frame" x="8" y="8" width="220" height="284.5"/>
                                                         <gestureRecognizers/>
                                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
@@ -442,6 +442,132 @@
             </objects>
             <point key="canvasLocation" x="588" y="356.67166416791605"/>
         </scene>
+        <!--Tutorial Step2 View Controller-->
+        <scene sceneID="LGg-SX-HlR">
+            <objects>
+                <viewController storyboardIdentifier="TutorialStep2ViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="aQB-lg-HMZ" customClass="TutorialStep2ViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="eKo-cf-vy7">
+                        <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Handshake" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E4b-mc-IYT">
+                                <rect key="frame" x="241" y="30" width="86" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FF7-yG-JGd">
+                                <rect key="frame" x="20" y="71" width="528" height="198.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jbi-yG-9Il">
+                                        <rect key="frame" x="0.0" y="20" width="264" height="67"/>
+                                        <string key="text">When you click on the Privacy Status icon in the top bar, you will get to the Handshake, where you can verify your communication partner. </string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7SL-dj-Z7j">
+                                        <rect key="frame" x="0.0" y="117.5" width="264" height="72"/>
+                                        <string key="text">When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure &amp; Trusted. </string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UHI-c7-iQd" userLabel="Top Bar container">
+                                        <rect key="frame" x="274" y="20" width="254" height="90"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1b" translatesAutoresizingMaskIntoConstraints="NO" id="L4I-np-79E" userLabel="Topbar Image View">
+                                                <rect key="frame" x="0.0" y="0.0" width="254" height="45"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="L4I-np-79E" secondAttribute="height" multiplier="334:59" id="BQR-oN-hPV"/>
+                                                    <constraint firstAttribute="width" priority="250" constant="334" id="Wbr-bH-iYn"/>
+                                                </constraints>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="Wbr-bH-iYn"/>
+                                                    </mask>
+                                                </variation>
+                                                <variation key="heightClass=compact-widthClass=regular">
+                                                    <mask key="constraints">
+                                                        <include reference="Wbr-bH-iYn"/>
+                                                    </mask>
+                                                </variation>
+                                                <variation key="heightClass=regular-widthClass=compact">
+                                                    <mask key="constraints">
+                                                        <include reference="Wbr-bH-iYn"/>
+                                                    </mask>
+                                                </variation>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" image="pEp-status-msg-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="GHn-ST-FF0" userLabel="Privacy Status Image View">
+                                                <rect key="frame" x="97" y="15.5" width="60" height="21"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <constraints>
+                                            <constraint firstItem="L4I-np-79E" firstAttribute="leading" secondItem="UHI-c7-iQd" secondAttribute="leading" id="IhH-Nf-Eoh"/>
+                                            <constraint firstAttribute="height" constant="90" id="MvC-04-hcD"/>
+                                            <constraint firstItem="L4I-np-79E" firstAttribute="centerX" secondItem="UHI-c7-iQd" secondAttribute="centerX" id="OrF-7O-b8i"/>
+                                            <constraint firstItem="GHn-ST-FF0" firstAttribute="centerY" secondItem="L4I-np-79E" secondAttribute="centerY" multiplier="1.15" id="Vh9-o0-Awj"/>
+                                            <constraint firstItem="GHn-ST-FF0" firstAttribute="centerX" secondItem="L4I-np-79E" secondAttribute="centerX" id="doW-af-YFU"/>
+                                            <constraint firstItem="L4I-np-79E" firstAttribute="top" secondItem="UHI-c7-iQd" secondAttribute="top" id="pCp-bG-tgA"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OBK-1J-dko" userLabel="Trustwords container">
+                                        <rect key="frame" x="274" y="110" width="254" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="z3k-O9-fik"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                                <color key="value" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="OBK-1J-dko" firstAttribute="top" secondItem="UHI-c7-iQd" secondAttribute="bottom" id="7zr-XY-9v0"/>
+                                    <constraint firstItem="7SL-dj-Z7j" firstAttribute="trailing" secondItem="Jbi-yG-9Il" secondAttribute="trailing" id="AL3-mw-jEb"/>
+                                    <constraint firstItem="Jbi-yG-9Il" firstAttribute="top" secondItem="FF7-yG-JGd" secondAttribute="top" constant="20" id="Dyj-h1-beH"/>
+                                    <constraint firstItem="OBK-1J-dko" firstAttribute="trailing" secondItem="UHI-c7-iQd" secondAttribute="trailing" id="EGZ-lQ-bVe"/>
+                                    <constraint firstAttribute="bottom" secondItem="7SL-dj-Z7j" secondAttribute="bottom" constant="8.6666666666666288" id="GS8-Bp-5Qn"/>
+                                    <constraint firstItem="UHI-c7-iQd" firstAttribute="top" secondItem="Jbi-yG-9Il" secondAttribute="top" id="Nbz-tu-Zyg"/>
+                                    <constraint firstAttribute="trailing" secondItem="UHI-c7-iQd" secondAttribute="trailing" id="Rtm-rl-szO"/>
+                                    <constraint firstItem="7SL-dj-Z7j" firstAttribute="leading" secondItem="Jbi-yG-9Il" secondAttribute="leading" id="Y7A-PG-9Ca"/>
+                                    <constraint firstItem="7SL-dj-Z7j" firstAttribute="top" secondItem="Jbi-yG-9Il" secondAttribute="bottom" constant="30.666666666666657" id="edC-vd-nvh"/>
+                                    <constraint firstAttribute="centerX" secondItem="Jbi-yG-9Il" secondAttribute="trailing" id="ge3-8c-xui"/>
+                                    <constraint firstItem="UHI-c7-iQd" firstAttribute="leading" secondItem="Jbi-yG-9Il" secondAttribute="trailing" constant="10" id="oRZ-bW-jod"/>
+                                    <constraint firstItem="Jbi-yG-9Il" firstAttribute="leading" secondItem="FF7-yG-JGd" secondAttribute="leading" id="vhW-nn-jGW"/>
+                                    <constraint firstItem="OBK-1J-dko" firstAttribute="leading" secondItem="UHI-c7-iQd" secondAttribute="leading" id="vrP-7O-ceL"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="wFE-fi-182" firstAttribute="trailing" secondItem="FF7-yG-JGd" secondAttribute="trailing" constant="20" id="MBA-xv-9ap"/>
+                            <constraint firstItem="E4b-mc-IYT" firstAttribute="centerX" secondItem="wFE-fi-182" secondAttribute="centerX" id="YlP-NX-e0l"/>
+                            <constraint firstItem="E4b-mc-IYT" firstAttribute="top" secondItem="wFE-fi-182" secondAttribute="top" constant="30" id="Z7M-zJ-7EI"/>
+                            <constraint firstItem="FF7-yG-JGd" firstAttribute="leading" secondItem="wFE-fi-182" secondAttribute="leading" constant="20" id="bP7-Bm-hd2"/>
+                            <constraint firstItem="FF7-yG-JGd" firstAttribute="top" secondItem="E4b-mc-IYT" secondAttribute="bottom" constant="20" id="dIZ-gk-phn"/>
+                            <constraint firstItem="FF7-yG-JGd" firstAttribute="centerX" secondItem="wFE-fi-182" secondAttribute="centerX" id="ixT-xy-a6p"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="wFE-fi-182"/>
+                    </view>
+                    <connections>
+                        <outlet property="confirmTrustwordsExplanationLabel" destination="7SL-dj-Z7j" id="p1t-DN-ypf"/>
+                        <outlet property="handshakeTitle" destination="E4b-mc-IYT" id="pqA-6m-TJZ"/>
+                        <outlet property="privacyStatusExplanationLabel" destination="Jbi-yG-9Il" id="7sY-5k-j2O"/>
+                        <outlet property="trustwordsContainer" destination="OBK-1J-dko" id="ZRK-v7-wdZ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vno-HE-Guc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="357.04225352112678" y="1365"/>
+        </scene>
         <!--Key Sync Wizard View Controller-->
         <scene sceneID="3xa-QV-des">
             <objects>
@@ -535,7 +661,7 @@
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1a" translatesAutoresizingMaskIntoConstraints="NO" id="NB4-ZU-NhP" userLabel="Avatar Image View">
-                                <rect key="frame" x="131" y="226" width="58" height="58"/>
+                                <rect key="frame" x="178" y="241.5" width="58" height="58"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="NB4-ZU-NhP" secondAttribute="height" multiplier="1:1" id="RKe-Y1-5k5"/>
                                 </constraints>
@@ -645,7 +771,6 @@
                                 <exclude reference="3m0-VN-glA"/>
                                 <exclude reference="8zL-kn-hJv"/>
                                 <exclude reference="PxY-bj-HW1"/>
-                                <exclude reference="Tgu-8q-rpt"/>
                                 <exclude reference="DYx-Ba-FRn"/>
                                 <exclude reference="KlA-gU-SXu"/>
                                 <exclude reference="TxF-PG-8XV"/>
@@ -663,6 +788,7 @@
                                 <exclude reference="uMP-kD-xUc"/>
                                 <exclude reference="v1W-kn-t6D"/>
                                 <exclude reference="wHO-mi-PZg"/>
+                                <exclude reference="Tgu-8q-rpt"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact-widthClass=compact">
@@ -673,7 +799,6 @@
                             <mask key="constraints">
                                 <include reference="3m0-VN-glA"/>
                                 <include reference="8zL-kn-hJv"/>
-                                <include reference="Tgu-8q-rpt"/>
                                 <exclude reference="EcW-Pa-RUy"/>
                                 <exclude reference="P56-rh-cxw"/>
                                 <include reference="TxF-PG-8XV"/>
@@ -691,6 +816,7 @@
                                 <exclude reference="g3m-Mp-j72"/>
                                 <include reference="uMP-kD-xUc"/>
                                 <exclude reference="wfr-ue-0OH"/>
+                                <include reference="Tgu-8q-rpt"/>
                                 <exclude reference="736-uk-ad0"/>
                             </mask>
                         </variation>
@@ -726,7 +852,6 @@
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="zjz-re-gi9"/>
-                                <exclude reference="Tgu-8q-rpt"/>
                                 <exclude reference="EcW-Pa-RUy"/>
                                 <include reference="KlA-gU-SXu"/>
                                 <exclude reference="P56-rh-cxw"/>
@@ -735,6 +860,7 @@
                                 <include reference="RIs-Sh-mwP"/>
                                 <exclude reference="g3m-Mp-j72"/>
                                 <include reference="uMP-kD-xUc"/>
+                                <exclude reference="Tgu-8q-rpt"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -747,7 +873,6 @@
                                 <include reference="3m0-VN-glA"/>
                                 <include reference="8zL-kn-hJv"/>
                                 <include reference="PxY-bj-HW1"/>
-                                <include reference="Tgu-8q-rpt"/>
                                 <exclude reference="EcW-Pa-RUy"/>
                                 <exclude reference="KlA-gU-SXu"/>
                                 <exclude reference="P56-rh-cxw"/>
@@ -765,6 +890,7 @@
                                 <exclude reference="g3m-Mp-j72"/>
                                 <include reference="wHO-mi-PZg"/>
                                 <exclude reference="wfr-ue-0OH"/>
+                                <include reference="Tgu-8q-rpt"/>
                             </mask>
                         </variation>
                     </view>
@@ -979,7 +1105,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="krx-U5-0Ho" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="77.112676056338032" y="1370.625"/>
+            <point key="canvasLocation" x="-290" y="1371"/>
         </scene>
     </scenes>
     <resources>

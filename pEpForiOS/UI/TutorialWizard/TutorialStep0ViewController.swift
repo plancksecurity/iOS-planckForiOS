@@ -83,7 +83,7 @@ extension TutorialStep0ViewController {
     
     private func adjustConstraintsIfNeeded() {
         guard let superView = view.superview, isIpad else {
-            Log.shared.error("Superview is missing or is not needed to adjust constraints here")
+            Log.shared.info("Superview is missing or is not needed to adjust constraints here")
             return
         }
 
@@ -159,5 +159,24 @@ extension TutorialStep0ViewController {
         attributedText.addAttributes(textAttributes, range: NSRange(location: 0, length: text.count))
         label.textAlignment = isLandscape ? .left : .center
         label.attributedText = attributedText
+    }
+}
+
+extension String {
+    
+    /// Wrapper for NSLocalizedString macro.
+    /// In Debug, this allows to duplicate the string in order to test long strings on UI.
+    ///
+    /// - Parameters:
+    ///   - comment: The comment for the translator. If nil, will use the same key. 
+    ///   - double: Indicates if the string must be duplicated.
+    func localized(comment: String? = nil, double : Bool = false) -> String {
+        let localized = NSLocalizedString(self, comment: comment ?? self)
+        #if DEBUG
+            if double {
+                return String(repeating: localized, count: 2)
+            }
+        #endif
+        return localized
     }
 }
