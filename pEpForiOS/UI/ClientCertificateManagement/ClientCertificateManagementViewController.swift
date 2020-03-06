@@ -44,6 +44,7 @@ extension ClientCertificateManagementViewController {
         }
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.isHidden = false
     }
 
     private func setupTableView() {
