@@ -120,8 +120,9 @@ extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegat
 extension AccountTypeSelectorViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         // this forces the collection view to have only 2 colums and all the cells with the same size
-        let cellwidth = (view.frame.width*0.67)/2
-        let cellHeight = 2*cellwidth/3
+        let spaceBetweenCells: CGFloat = 30.0
+        let cellwidth = (collectionView.frame.width - spaceBetweenCells)/2
+        let cellHeight = cellwidth/2
         return CGSize(width: cellwidth, height: cellHeight)
     }
 }
