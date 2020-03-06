@@ -58,7 +58,9 @@ class SecurePDFScreenshotTest: XCTestCase {
 
     private func givenAScreenshotOfQuicklookWithANonJavascriptPDF(completion: @escaping (Result<Data>) -> ()) {
         let quickLook = givenAQuickLookLoadedWithANonJavascriptPDF()
-        screenshotOfViewControllerToPresent(viewController: quickLook, name: self.expectedScreenshotFileName, completion: completion)
+        screenshotOfViewControllerToPresent(viewController: quickLook,
+                                            name: self.expectedScreenshotFileName,
+                                            completion: completion)
     }
 
     private func givenScreenshotsOfNonJavascriptAndJavascriptPDFs(completion: @escaping (Result<(Data,Data)>) -> ()) {
@@ -80,13 +82,17 @@ class SecurePDFScreenshotTest: XCTestCase {
         }
     }
 
-    private func screenshotOfViewControllerToPresent(viewController: UIViewController, name: String, completion: @escaping (Result<Data>) -> ()) {
+    private func screenshotOfViewControllerToPresent(viewController: UIViewController,
+                                                     name: String,
+                                                     completion: @escaping (Result<Data>) -> ()) {
         present(viewController: viewController) { (didSucceed) in
             guard didSucceed else {
                 completion(.failure("Could not present viewController"))
                 return
             }
-            ScreenshotTestUtil.takeScreenshot(of: viewController.view, after: self.screenshotDelay, name: name) { maybeImageData in
+            ScreenshotTestUtil.takeScreenshot(of: viewController.view,
+                                              after: self.screenshotDelay,
+                                              name: name) { maybeImageData in
                 guard let imageData = maybeImageData else {
                     completion(.failure("There were problems creating the screenshot"))
                     return
