@@ -39,13 +39,13 @@ private struct Localized {
 final class ClientCertificateUIUtil: NSObject {
     private let clientCertificateUtil: ClientCertificateUtilProtocol
     private var viewControllerToPresentUiOn: UIViewController?
-    private var clientCertificatePasswordVC: ClientCertificatePasswordViewController? {
+    private lazy var clientCertificatePasswordVC: ClientCertificatePasswordViewController? = {
         let vc = UIStoryboard.init(name: "Certificates",
                           bundle: nil).instantiateInitialViewController() as? ClientCertificatePasswordViewController
         vc?.viewModel = ClientCertificatePasswordViewModel(delegate: vc,
                                                            passwordChangeDelegate: self)
         return vc
-    }
+    }()
     private var p12Data: Data?
 
     public init(clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
@@ -73,12 +73,10 @@ final class ClientCertificateUIUtil: NSObject {
 extension ClientCertificateUIUtil {
 
     private func presentAlertViewForClientImportPassPhrase() {
-
         guard let viewControllerPresenter = viewControllerToPresentUiOn else {
             Log.shared.errorAndCrash("No VC!")
             return
         }
-
         guard let clientCertificatePasswordVC = clientCertificatePasswordVC else {
             Log.shared.errorAndCrash("Certificates storyboard not found")
             return
