@@ -161,22 +161,3 @@ extension TutorialStep0ViewController {
         label.attributedText = attributedText
     }
 }
-
-extension String {
-    
-    /// Wrapper for NSLocalizedString macro.
-    /// In Debug, this allows to duplicate the string in order to test long strings on UI.
-    ///
-    /// - Parameters:
-    ///   - comment: The comment for the translator. If nil, will use the same key.
-    ///   - double: Indicates if the string must be duplicated.
-    func localized(comment: String? = nil, double : Bool = false) -> String {
-        let localized = NSLocalizedString(self, comment: comment ?? self)
-        #if DEBUG
-            if double {
-                return String(repeating: localized, count: 2)
-            }
-        #endif
-        return localized
-    }
-}

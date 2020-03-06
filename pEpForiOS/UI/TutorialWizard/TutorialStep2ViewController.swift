@@ -17,46 +17,57 @@ class TutorialStep2ViewController: TutorialStepViewController {
     @IBOutlet private weak var privacyStatusExplanationLabel: UILabel!
     @IBOutlet private weak var confirmTrustwordsExplanationLabel: UILabel!
     @IBOutlet weak var trustwordsContainer: UIView!
-    
-    
+
     public override func configureView() {
         setupHandshakeTitle()
         setupPrivacyStatusExplanationLabel()
         setupcCnfirmTrustwordsExplanationLabel()
-        trustwordsContainer.layer.borderWidth = 1
-        trustwordsContainer.layer.borderColor = UIColor.pEpGrayBorder.withAlphaComponent(0.5).cgColor
-
-        //Confirm Button
-        let confirmTitle = NSLocalizedString("Confirm", comment: "Confirm correct trustwords/PGP fingerprint")
-        confirmButton.setTitle(confirmTitle, for: .normal)
-        confirmButton.pEpIfyForTrust(backgroundColor: .pEpGreen, textColor: .white)
-        //Decline Button
-        let declineTitle = NSLocalizedString("Decline", comment: "Incorrect trustwords/PGP fingerprint")
-        declineButton.setTitle(declineTitle, for: .normal)
-        declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .white)
+        stupButtons()
     }
-    
-    private func setupHandshakeTitle() {
-        handshakeTitle.font = titleFont
-        handshakeTitle.text = "Handshake".localized()
-    }
-
-    private func setupPrivacyStatusExplanationLabel() {
-        privacyStatusExplanationLabel.font = font
-        privacyStatusExplanationLabel.text = "When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication parner.".localized()
-    }
-
-    private func setupcCnfirmTrustwordsExplanationLabel() {
-        confirmTrustwordsExplanationLabel.font = font
-        confirmTrustwordsExplanationLabel.text = "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted.".localized()
-    }
-
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         adjustConstraintsIfNeeded()
     }
 }
+
+
+// MARK: - Private - Setup View
+
+extension TutorialStep2ViewController {
+
+    private func setupHandshakeTitle() {
+        handshakeTitle.font = titleFont
+        handshakeTitle.text = NSLocalizedString("Handshake", comment: "Title of the view")
+    }
+
+    private func setupPrivacyStatusExplanationLabel() {
+        privacyStatusExplanationLabel.font = font
+        privacyStatusExplanationLabel.text = NSLocalizedString("When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication parner.", comment: "Privacy status explanation Label")
+    }
+
+    private func setupcCnfirmTrustwordsExplanationLabel() {
+        confirmTrustwordsExplanationLabel.font = font
+        confirmTrustwordsExplanationLabel.text = NSLocalizedString("When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted.", comment: "Confirm Trustwords explanation Label")
+    }
+    
+    private func stupButtons() {
+        trustwordsContainer.layer.borderWidth = 1
+        trustwordsContainer.layer.borderColor = UIColor.pEpGrayBorder.withAlphaComponent(0.5).cgColor
+        
+        //Confirm Button
+        let confirmTitle = NSLocalizedString("Confirm", comment: "Confirm correct trustwords/PGP fingerprint")
+        confirmButton.setTitle(confirmTitle, for: .normal)
+        confirmButton.pEpIfyForTrust(backgroundColor: .pEpGreen, textColor: .white, insetPlusHorizontal: 10, insetPlusVertical : 5, cornerRadius : 4)
+        
+        //Decline Button
+        let declineTitle = NSLocalizedString("Decline", comment: "Incorrect trustwords/PGP fingerprint")
+        declineButton.setTitle(declineTitle, for: .normal)
+        declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .white, insetPlusHorizontal: 10, insetPlusVertical : 5, cornerRadius : 4)
+    }
+}
+
+// MARK: - Private - Adjust constraints
 
 extension TutorialStep2ViewController {
 
