@@ -284,7 +284,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
 
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
         let title = NSLocalizedString("Extra Keys Editable", comment: "Extra Keys Editable")
-        UIUtils.showAlertWithOnlyPositiveButton(title:title, message: newValue, inViewController: self)
+        UIUtils.showAlertWithOnlyPositiveButton(title:title, message: newValue)
     }
 }
 

@@ -51,7 +51,9 @@ class SecurePDFScreenshotTest: XCTestCase {
 
     private func givenAScreenshotOfQuicklookWithAJavascriptPDF(completion: @escaping (Result<Data>) -> ()) {
         let quickLook = givenAQuickLookLoadedWithAJavascriptPDF()
-        screenshotOfViewControllerToPresent(viewController: quickLook, name: self.currentScreenshotFileName, completion: completion)
+        screenshotOfViewControllerToPresent(viewController: quickLook,
+                                            name: self.currentScreenshotFileName,
+                                            completion: completion)
     }
 
     private func givenAScreenshotOfQuicklookWithANonJavascriptPDF(completion: @escaping (Result<Data>) -> ()) {
