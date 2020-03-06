@@ -457,7 +457,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FF7-yG-JGd">
-                                <rect key="frame" x="20" y="61" width="528" height="187.5"/>
+                                <rect key="frame" x="20" y="61" width="528" height="188"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jbi-yG-9Il">
                                         <rect key="frame" x="0.0" y="20" width="264" height="67"/>
@@ -474,42 +474,21 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UHI-c7-iQd" userLabel="Top Bar container">
-                                        <rect key="frame" x="274" y="20" width="254" height="50"/>
+                                        <rect key="frame" x="274" y="20" width="254" height="67"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1b" translatesAutoresizingMaskIntoConstraints="NO" id="L4I-np-79E" userLabel="Topbar Image View">
-                                                <rect key="frame" x="0.0" y="0.0" width="254" height="45"/>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-4" translatesAutoresizingMaskIntoConstraints="NO" id="L4I-np-79E" userLabel="Topbar Image View">
+                                                <rect key="frame" x="0.0" y="0.0" width="254" height="72"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" secondItem="L4I-np-79E" secondAttribute="height" multiplier="334:59" id="BQR-oN-hPV"/>
-                                                    <constraint firstAttribute="width" priority="250" constant="334" id="Wbr-bH-iYn"/>
+                                                    <constraint firstAttribute="width" secondItem="L4I-np-79E" secondAttribute="height" multiplier="257:73" id="clU-MV-iHn"/>
                                                 </constraints>
-                                                <variation key="default">
-                                                    <mask key="constraints">
-                                                        <exclude reference="Wbr-bH-iYn"/>
-                                                    </mask>
-                                                </variation>
-                                                <variation key="heightClass=compact-widthClass=regular">
-                                                    <mask key="constraints">
-                                                        <include reference="Wbr-bH-iYn"/>
-                                                    </mask>
-                                                </variation>
-                                                <variation key="heightClass=regular-widthClass=compact">
-                                                    <mask key="constraints">
-                                                        <include reference="Wbr-bH-iYn"/>
-                                                    </mask>
-                                                </variation>
-                                            </imageView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" image="pEp-status-msg-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="GHn-ST-FF0" userLabel="Privacy Status Image View">
-                                                <rect key="frame" x="97" y="15.5" width="60" height="21"/>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
                                             <constraint firstItem="L4I-np-79E" firstAttribute="leading" secondItem="UHI-c7-iQd" secondAttribute="leading" id="IhH-Nf-Eoh"/>
-                                            <constraint firstAttribute="height" constant="50" id="MvC-04-hcD"/>
                                             <constraint firstItem="L4I-np-79E" firstAttribute="centerX" secondItem="UHI-c7-iQd" secondAttribute="centerX" id="OrF-7O-b8i"/>
-                                            <constraint firstItem="GHn-ST-FF0" firstAttribute="centerY" secondItem="L4I-np-79E" secondAttribute="centerY" multiplier="1.15" id="Vh9-o0-Awj"/>
-                                            <constraint firstItem="GHn-ST-FF0" firstAttribute="centerX" secondItem="L4I-np-79E" secondAttribute="centerX" id="doW-af-YFU"/>
-                                            <constraint firstItem="L4I-np-79E" firstAttribute="top" secondItem="UHI-c7-iQd" secondAttribute="top" id="pCp-bG-tgA"/>
+                                            <constraint firstAttribute="bottom" secondItem="L4I-np-79E" secondAttribute="bottom" constant="-5" id="dLL-Hf-Szc"/>
+                                            <constraint firstItem="L4I-np-79E" firstAttribute="top" secondItem="UHI-c7-iQd" secondAttribute="top" id="kwg-pT-aZa"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OBK-1J-dko" userLabel="Trustwords container">
@@ -564,6 +543,7 @@
                                     <constraint firstItem="OBK-1J-dko" firstAttribute="trailing" secondItem="UHI-c7-iQd" secondAttribute="trailing" id="EGZ-lQ-bVe"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="OBK-1J-dko" secondAttribute="bottom" constant="8" id="FVG-1y-16M"/>
                                     <constraint firstAttribute="bottom" secondItem="7SL-dj-Z7j" secondAttribute="bottom" constant="8.6666666666666288" id="GS8-Bp-5Qn"/>
+                                    <constraint firstItem="OBK-1J-dko" firstAttribute="top" secondItem="L4I-np-79E" secondAttribute="bottom" constant="15" id="JVS-9y-Fkg"/>
                                     <constraint firstItem="UHI-c7-iQd" firstAttribute="top" secondItem="Jbi-yG-9Il" secondAttribute="top" id="Nbz-tu-Zyg"/>
                                     <constraint firstAttribute="trailing" secondItem="UHI-c7-iQd" secondAttribute="trailing" id="Rtm-rl-szO"/>
                                     <constraint firstItem="7SL-dj-Z7j" firstAttribute="leading" secondItem="Jbi-yG-9Il" secondAttribute="leading" id="Y7A-PG-9Ca"/>
@@ -809,6 +789,7 @@
                                 <exclude reference="qJ6-Q2-ij9"/>
                                 <exclude reference="rrc-BP-nfQ"/>
                                 <exclude reference="vF2-n4-2b6"/>
+                                <exclude reference="Tgu-8q-rpt"/>
                                 <exclude reference="RIs-Sh-mwP"/>
                                 <exclude reference="XOm-lu-wC3"/>
                                 <exclude reference="b6g-ey-x8I"/>
@@ -819,7 +800,6 @@
                                 <exclude reference="uMP-kD-xUc"/>
                                 <exclude reference="v1W-kn-t6D"/>
                                 <exclude reference="wHO-mi-PZg"/>
-                                <exclude reference="Tgu-8q-rpt"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact-widthClass=compact">
@@ -839,6 +819,7 @@
                                 <exclude reference="cxE-k6-Gd0"/>
                                 <exclude reference="hbD-2r-UDT"/>
                                 <include reference="vF2-n4-2b6"/>
+                                <include reference="Tgu-8q-rpt"/>
                                 <exclude reference="708-0N-Er6"/>
                                 <include reference="foZ-io-sJe"/>
                                 <include reference="xM9-Yp-aIb"/>
@@ -847,7 +828,6 @@
                                 <exclude reference="g3m-Mp-j72"/>
                                 <include reference="uMP-kD-xUc"/>
                                 <exclude reference="wfr-ue-0OH"/>
-                                <include reference="Tgu-8q-rpt"/>
                                 <exclude reference="736-uk-ad0"/>
                             </mask>
                         </variation>
@@ -888,10 +868,10 @@
                                 <exclude reference="P56-rh-cxw"/>
                                 <exclude reference="TxF-PG-8XV"/>
                                 <exclude reference="cxE-k6-Gd0"/>
+                                <exclude reference="Tgu-8q-rpt"/>
                                 <include reference="RIs-Sh-mwP"/>
                                 <exclude reference="g3m-Mp-j72"/>
                                 <include reference="uMP-kD-xUc"/>
-                                <exclude reference="Tgu-8q-rpt"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -915,13 +895,13 @@
                                 <exclude reference="cxE-k6-Gd0"/>
                                 <exclude reference="hbD-2r-UDT"/>
                                 <include reference="vF2-n4-2b6"/>
+                                <include reference="Tgu-8q-rpt"/>
                                 <exclude reference="708-0N-Er6"/>
                                 <include reference="XOm-lu-wC3"/>
                                 <include reference="foZ-io-sJe"/>
                                 <exclude reference="g3m-Mp-j72"/>
                                 <include reference="wHO-mi-PZg"/>
                                 <exclude reference="wfr-ue-0OH"/>
-                                <include reference="Tgu-8q-rpt"/>
                             </mask>
                         </variation>
                     </view>
@@ -1152,6 +1132,7 @@
         <image name="pEpForIOS-Asset-Tutorial-2a" width="40" height="40"/>
         <image name="pEpForIOS-Asset-Tutorial-2b" width="40" height="40"/>
         <image name="pEpForIOS-Asset-Tutorial-2c" width="43" height="37"/>
+        <image name="pEpForIOS-Asset-Tutorial-4" width="335" height="95"/>
         <image name="pEpForiOS-icon-languagechange" width="100" height="100"/>
     </resources>
 </document>
