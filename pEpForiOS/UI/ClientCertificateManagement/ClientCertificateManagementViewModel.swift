@@ -13,10 +13,14 @@ import MessageModel
 extension ClientCertificateManagementViewModel {
     struct Row {
         public var name: String {
-            return clientCertificate.label ?? "--"
+            return clientCertificate.label
+                ?? "--"
         }
-        public var date: Date? {
-            return clientCertificate.date
+        public var date: String {
+            guard let date = clientCertificate.date else {
+                return ""
+            }
+            return date.fullString()
         }
         fileprivate let clientCertificate: ClientCertificate
     }

@@ -18,8 +18,8 @@ protocol ClientCertificatePasswordViewModelDelegate: class {
 
 final class ClientCertificatePasswordViewModel {
 
-    weak var passwordChangeDelegate: ClientCertificatePasswordViewModelPasswordChangeDelegate?
-    weak var delegate: ClientCertificatePasswordViewModelDelegate?
+    weak private var passwordChangeDelegate: ClientCertificatePasswordViewModelPasswordChangeDelegate?
+    weak private var delegate: ClientCertificatePasswordViewModelDelegate?
 
     init(delegate: ClientCertificatePasswordViewModelDelegate? = nil,
          passwordChangeDelegate: ClientCertificatePasswordViewModelPasswordChangeDelegate? = nil) {

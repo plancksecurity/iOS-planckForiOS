@@ -19,7 +19,7 @@ protocol AccountTypeSelectorViewModelDelegate: class {
 class AccountTypeSelectorViewModel {
     private let verifiableAccount: VerifiableAccount
 
-    weak var delegate: AccountTypeSelectorViewModelDelegate?
+    public weak var delegate: AccountTypeSelectorViewModelDelegate?
 
     /// list of providers to show
     private let accountTypes: [VerifiableAccount.AccountType] = [.gmail, .clientCertificate, .other]
@@ -46,7 +46,7 @@ class AccountTypeSelectorViewModel {
         return accountTypes[row]
     }
 
-    public func checkRequirements() {
+    public func handleDidChooseClientCertificate() {
         if ClientCertificateUtil().listCertificates().count == 0 {
             delegate?.showMustImportClientCertificateAlert()
         } else {

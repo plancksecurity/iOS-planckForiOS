@@ -44,7 +44,7 @@ final class AccountTypeSelectorViewController: BaseViewController {
         //the view in the title are is replaced for a blank view.
         self.navigationItem.titleView = UIView()
         title = NSLocalizedString("Account Select", comment: "account type selector title")
-        
+
         self.navigationController?.navigationBar.isHidden = !viewModel.isThereAnAccount()
         let imagebutton = UIButton(type: .custom)
         imagebutton.setImage(UIImage(named: "close-icon"), for: .normal)
@@ -63,7 +63,7 @@ extension AccountTypeSelectorViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch viewModel.accountType(row: indexPath.row) {
         case .clientCertificate:
-            viewModel.checkRequirements()
+            viewModel.handleDidChooseClientCertificate()
         default:
             viewModel.handleDidSelect(rowAt: indexPath)
             performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)

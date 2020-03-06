@@ -29,7 +29,7 @@ final class LoginViewController: BaseViewController {
     @IBOutlet weak var manualConfigButton: UIButton!
     @IBOutlet weak var mainContainerView: UIView!
     @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var scrollView: LoginScrollView!
+    @IBOutlet weak var scrollView: DynamicHeightScrollView!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
     @IBOutlet weak var loginButtonConstraint: NSLayoutConstraint!
@@ -349,9 +349,9 @@ extension LoginViewController.LoginError: LocalizedError {
     }
 }
 
-// MARK: - LoginScrollViewDelegate
+// MARK: - DynamicHeightScrollViewDelegate
 
-extension LoginViewController: LoginScrollViewDelegate {
+extension LoginViewController: DynamicHeightScrollViewDelegate {
     var firstResponder: UIView? {
         get { firstResponderTextField() }
     }
@@ -503,7 +503,7 @@ extension LoginViewController {
         hideSpecificDeviceButton()
         configureAnimatedTextFields()
 
-        scrollView.loginScrollViewDelegate = self
+        scrollView.dynamicHeightScrollViewDelegate = self
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(hideSpecificDeviceButton),

@@ -12,11 +12,10 @@ final class ClientCertificatePasswordViewController: UIViewController {
 
 // MARK: - IBOutlet
 
-    @IBOutlet weak var scrollView: LoginScrollView!
+    @IBOutlet weak private var scrollView: DynamicHeightScrollView!
 
     @IBOutlet weak private var passwordLabel: UILabel!
     @IBOutlet weak private var passwordTextField: UITextField!
-
     @IBOutlet weak private var okButton: UIButton!
     @IBOutlet weak private var cancelButton: UIButton!
 
@@ -37,7 +36,7 @@ final class ClientCertificatePasswordViewController: UIViewController {
         static let message = NSLocalizedString("Please enter the password of the certificate to import it:",
                                                comment: "Description for client certificate password screen")
         static let ok = NSLocalizedString("OK",
-                                          comment: "Cancel button for client certificate password screen")
+                                          comment: "OK button for client certificate password screen")
         static let cancel = NSLocalizedString("Cancel",
                                               comment: "Cancel button for client certificate password screen")
     }
@@ -47,14 +46,8 @@ final class ClientCertificatePasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // I want to check that viewModel was initiated (only once)
-        guard let _ = viewModel else {
-            Log.shared.errorAndCrash("Lost viewModel")
-            return
-        }
-
         passwordTextField.delegate = self
-        scrollView.loginScrollViewDelegate = self
+        scrollView.dynamicHeightScrollViewDelegate = self
         setupConstraints()
         setupStyle()
     }
@@ -113,12 +106,20 @@ extension ClientCertificatePasswordViewController {
 
 extension ClientCertificatePasswordViewController {
     @IBAction func cancelAction(_ sender: Any) {
-        viewModel?.handleCancelButtonPresed()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("Lost viewModel")
+            return
+        }
+        vm.handleCancelButtonPresed()
     }
 
     @IBAction func okAction(_ sender: Any) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("Lost viewModel")
+            return
+        }
         let password = passwordTextField.text ?? ""
-        viewModel?.handleOkButtonPressed(password: password)
+        vm.handleOkButtonPressed(password: password)
     }
 }
 
@@ -130,9 +131,9 @@ extension ClientCertificatePasswordViewController: ClientCertificatePasswordView
     }
 }
 
-// MARK: - LoginScrollViewDelegate
+// MARK: - DynamicHeightScrollViewDelegate
 
-extension ClientCertificatePasswordViewController: LoginScrollViewDelegate {
+extension ClientCertificatePasswordViewController: DynamicHeightScrollViewDelegate {
     var bottomConstraint: NSLayoutConstraint {
         get { scrollViewBottomConstraint }
     }

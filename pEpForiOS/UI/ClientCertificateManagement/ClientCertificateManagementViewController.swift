@@ -11,9 +11,6 @@ import UIKit
 private struct Localized {
     static let importDate = NSLocalizedString("Import date",
                                               comment: "Select certificate - import certificate date")
-    static let colon = NSLocalizedString(":",
-                                         comment: "Select certificate - import certificate date colon")
-    static let separator = " "
 }
 
 /// View that lists all imported client certificates and let's the user choose one.
@@ -29,7 +26,6 @@ final class ClientCertificateManagementViewController: BaseViewController {
         tableView.delegate = self
         tableView.dataSource = self
         setupTableView()
-        setupViewModel()
         configureAppearance()
     }
 }
@@ -37,15 +33,6 @@ final class ClientCertificateManagementViewController: BaseViewController {
 // MARK: - Private
 
 extension ClientCertificateManagementViewController {
-    private func setupViewModel() {
-        guard viewModel == nil else {
-            // Already setup.
-            // Nothing to do.
-            return
-        }
-        viewModel = ClientCertificateManagementViewModel()
-    }
-
     private func configureAppearance() {
         if #available(iOS 13, *) {
             Appearance.customiseForLogin(viewController: self)
@@ -60,21 +47,8 @@ extension ClientCertificateManagementViewController {
     }
 
     private func setupTableView() {
-        if viewModel == nil {
-            viewModel = ClientCertificateManagementViewModel()
-        }
         tableView.separatorInset = .zero
         tableView.separatorStyle = .none
-    }
-    private func formatDate(date: Date?) -> String? {
-        guard let date = date else {
-            Log.shared.errorAndCrash("date is optional!")
-            return nil
-        }
-        let dateFormatter = DateFormatter.init()
-        dateFormatter.dateStyle = DateFormatter.Style.short
-        dateFormatter.timeStyle = DateFormatter.Style.short
-        return dateFormatter.string(from: date)
     }
 }
 
@@ -102,7 +76,7 @@ extension ClientCertificateManagementViewController: UITableViewDataSource {
         return vm.rows.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ClientCertificateSelectionCell.reusableId) as? ClientCertificateSelectionCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ClientCertificateManagementTableViewCell.reusableId) as? ClientCertificateManagementTableViewCell else {
             Log.shared.errorAndCrash("No reusable cell")
             // We prefer empty cell than app crash
             return UITableViewCell()
@@ -113,10 +87,7 @@ extension ClientCertificateManagementViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         let row = vm.rows[indexPath.row]
-        let date = Localized.importDate
-            + Localized.colon
-            + Localized.separator
-            + (formatDate(date: row.date) ?? "")
+        let date = Localized.importDate + ": " + row.date
         cell.setData(title: row.name, date: date)
         return cell
     }

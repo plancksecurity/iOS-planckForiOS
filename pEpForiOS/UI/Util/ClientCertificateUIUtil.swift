@@ -98,7 +98,6 @@ extension ClientCertificateUIUtil {
         return nil
     }
 
-
     private func handlePassphraseEntered(pass: String) {
         guard let data = p12Data else {
             Log.shared.errorAndCrash("Invalid state: Password field should never been shown before having p12Data.")
@@ -106,11 +105,6 @@ extension ClientCertificateUIUtil {
         }
         do {
             try clientCertificateUtil.storeCertificate(p12Data: data, password: pass)
-            guard let vc = topViewController() else {
-                Log.shared.errorAndCrash("No VC")
-                return
-            }
-            dismissView(vc: vc)
         } catch ClientCertificateUtil.ImportError.wrongPassword {
             showWrongPasswordError()
         } catch {
@@ -130,7 +124,7 @@ extension ClientCertificateUIUtil {
                                                         Log.shared.lostMySelf()
                                                         return
                                                     }
-                                                    me.dismissView(vc: vc)
+                                                    me.dismiss(vc: vc)
         })
     }
 
@@ -148,13 +142,13 @@ extension ClientCertificateUIUtil {
                                         Log.shared.lostMySelf()
                                         return
                                     }
-                                    me.dismissView(vc: vc)
+                                    me.dismiss(vc: vc)
             }, positiveButtonAction: {
                 // We don't need to do something here. Our expectation is close this alert
         }, inViewController: vc)
     }
 
-    private func dismissView(vc: UIViewController) {
+    private func dismiss(vc: UIViewController) {
         vc.dismiss(animated: true)
     }
 }

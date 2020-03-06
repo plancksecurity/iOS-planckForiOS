@@ -47,7 +47,7 @@ final class ManualAccountSetupView: UIView {
     @IBOutlet weak var pEpSyncView: UIView!
     @IBOutlet weak var pEpSyncViewRight: UIView!
     
-    @IBOutlet weak var scrollView: LoginScrollView!
+    @IBOutlet weak var scrollView: DynamicHeightScrollView!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
 
     weak var delegate: ManualAccountSetupViewDelegate?
@@ -62,7 +62,7 @@ final class ManualAccountSetupView: UIView {
         setUpTextFieldsColor()
         hideSpecificDeviceButton()
         updateTextFeildsDelegates()
-        scrollView.loginScrollViewDelegate = self
+        scrollView.dynamicHeightScrollViewDelegate = self
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(hideSpecificDeviceButton),
@@ -113,7 +113,7 @@ final class ManualAccountSetupView: UIView {
 
 // MARK: - LoginScrollViewDelegate
 
-extension ManualAccountSetupView: LoginScrollViewDelegate {
+extension ManualAccountSetupView: DynamicHeightScrollViewDelegate {
     var firstResponder: UIView? {
         get { textFields().first { $0.isFirstResponder }}
     }

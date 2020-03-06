@@ -1,5 +1,5 @@
 //
-//  ClientChooseCertificateCell.swift
+//  ClientCertificateManagementTableViewCell.swift
 //  pEp
 //
 //  Created by Adam Kowalski on 02/03/2020.
@@ -8,9 +8,9 @@
 
 import UIKit
 
-final class ClientCertificateSelectionCell: UITableViewCell {
+final class ClientCertificateManagementTableViewCell: UITableViewCell {
 
-    static let reusableId = "ClientChooseCertificateCell"
+    static public let reusableId = "ClientCertificateManagementTableViewCell"
 
     @IBOutlet weak private var titleLabel: UILabel?
     @IBOutlet weak private var dateLabel: UILabel?
@@ -29,7 +29,7 @@ final class ClientCertificateSelectionCell: UITableViewCell {
 
 // MARK: - Private
 
-extension ClientCertificateSelectionCell {
+extension ClientCertificateManagementTableViewCell {
     private func setupStyle() {
         titleLabel?.font = .pepFont(style: .title2, weight: .regular)
         titleLabel?.textColor = .pEpGreen

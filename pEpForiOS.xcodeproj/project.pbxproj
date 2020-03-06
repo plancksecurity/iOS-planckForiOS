@@ -210,12 +210,13 @@
 		3791A46122BA77C900A9E534 /* KeySyncServiceHandshakeDelegateMoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3791A46022BA77C900A9E534 /* KeySyncServiceHandshakeDelegateMoc.swift */; };
 		37A710E0233B5AA5001FEAF0 /* UIHelper+PEP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */; };
 		37C3C0E62260C64D003E290C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C3C0E52260C64D003E290C /* Log.swift */; };
-		37F615C92386B14A001AAE48 /* LoginScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F615C82386B14A001AAE48 /* LoginScrollView.swift */; };
 		37F615CC238BE51F001AAE48 /* ManualAccountSetupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37F615CB238BE51F001AAE48 /* ManualAccountSetupView.xib */; };
 		37F615CF238BE584001AAE48 /* ManualAccountSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F615CE238BE584001AAE48 /* ManualAccountSetupView.swift */; };
 		37FFA7FA234B3C27004229BE /* AnimatedPlaceholderTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */; };
 		3A085A6E23FAF4D50013C63E /* pEpHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A085A6D23FAF4D50013C63E /* pEpHeaderView.swift */; };
 		3A0CBAAD23F5909C00AE200C /* WrappedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */; };
+		3A2119DF2412515D0030C3E4 /* DynamicHeightScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2119DE2412515D0030C3E4 /* DynamicHeightScrollView.swift */; };
+		3A2119E1241251A80030C3E4 /* ClientCertificateManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2119E0241251A70030C3E4 /* ClientCertificateManagementTableViewCell.swift */; };
 		3A8588D024057C8B00659D29 /* large-animated-gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3A8588CF24057C8A00659D29 /* large-animated-gif.gif */; };
 		3A8588D224058CA500659D29 /* small-animated-gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3A8588D124058CA500659D29 /* small-animated-gif.gif */; };
 		3A9239C623FAE0A0003E6C48 /* AccountSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9239C523FAE0A0003E6C48 /* AccountSettingsTableViewController.swift */; };
@@ -223,7 +224,6 @@
 		3AC2B843240E5FD900E08EB3 /* ClientCertificatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B842240E5FD900E08EB3 /* ClientCertificatePasswordViewController.swift */; };
 		3AC2B845240E692600E08EB3 /* ClientCertificatePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B844240E692600E08EB3 /* ClientCertificatePasswordViewModel.swift */; };
 		3AC2B847241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B846241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift */; };
-		3ACAB171240D067E00702D33 /* ClientCertificateSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACAB170240D067E00702D33 /* ClientCertificateSelectionCell.swift */; };
 		3AD0E0A123E4659F006FFED3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0E0A023E4659F006FFED3 /* Assets.xcassets */; };
 		3AD2CBC923FD92650003A536 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
@@ -731,12 +731,13 @@
 		37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIHelper+PEP.swift"; sourceTree = "<group>"; };
 		37C3C0E52260C64D003E290C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		37F272EF237075D9005C51AA /* EditableAccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
-		37F615C82386B14A001AAE48 /* LoginScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScrollView.swift; sourceTree = "<group>"; };
 		37F615CB238BE51F001AAE48 /* ManualAccountSetupView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ManualAccountSetupView.xib; sourceTree = "<group>"; };
 		37F615CE238BE584001AAE48 /* ManualAccountSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualAccountSetupView.swift; sourceTree = "<group>"; };
 		37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedPlaceholderTextfield.swift; sourceTree = "<group>"; };
 		3A085A6D23FAF4D50013C63E /* pEpHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpHeaderView.swift; sourceTree = "<group>"; };
 		3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedCell.swift; sourceTree = "<group>"; };
+		3A2119DE2412515D0030C3E4 /* DynamicHeightScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicHeightScrollView.swift; sourceTree = "<group>"; };
+		3A2119E0241251A70030C3E4 /* ClientCertificateManagementTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientCertificateManagementTableViewCell.swift; sourceTree = "<group>"; };
 		3A8588CF24057C8A00659D29 /* large-animated-gif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "large-animated-gif.gif"; sourceTree = "<group>"; };
 		3A8588D124058CA500659D29 /* small-animated-gif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "small-animated-gif.gif"; sourceTree = "<group>"; };
 		3A9239C523FAE0A0003E6C48 /* AccountSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -744,7 +745,6 @@
 		3AC2B842240E5FD900E08EB3 /* ClientCertificatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificatePasswordViewController.swift; sourceTree = "<group>"; };
 		3AC2B844240E692600E08EB3 /* ClientCertificatePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificatePasswordViewModel.swift; sourceTree = "<group>"; };
 		3AC2B846241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificatePasswordViewModelTest.swift; sourceTree = "<group>"; };
-		3ACAB170240D067E00702D33 /* ClientCertificateSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateSelectionCell.swift; sourceTree = "<group>"; };
 		3AD0E0A023E4659F006FFED3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
@@ -1529,9 +1529,9 @@
 		158A564E2403F00A003C0D7E /* ClientCertificateManagement */ = {
 			isa = PBXGroup;
 			children = (
+				3A2119E0241251A70030C3E4 /* ClientCertificateManagementTableViewCell.swift */,
 				158A564F2403F043003C0D7E /* ClientCertificateManagementViewController.swift */,
 				158A56512403F05B003C0D7E /* ClientCertificateManagementViewModel.swift */,
-				3ACAB170240D067E00702D33 /* ClientCertificateSelectionCell.swift */,
 				3AC2B842240E5FD900E08EB3 /* ClientCertificatePasswordViewController.swift */,
 				3AC2B844240E692600E08EB3 /* ClientCertificatePasswordViewModel.swift */,
 			);
@@ -2127,6 +2127,7 @@
 				15D43998216E695500EB3933 /* AccountPicker */,
 				15265973216234C0006A78DF /* SuggestTableViewController */,
 				150DF6D12052A99800A9DCF7 /* SecureWebViewController */,
+				3A2119DE2412515D0030C3E4 /* DynamicHeightScrollView.swift */,
 				37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */,
 				B7DB7FD1221AD332003968DA /* SegueHandlerType.swift */,
 				43C322081EA90192005073FB /* PEP+UI.swift */,
@@ -2146,7 +2147,6 @@
 				B7DFEA51225368670080A2BA /* VirtualFolder.swift */,
 				B7DFEA5322536D5E0080A2BA /* UnifiedInbox.swift */,
 				3705096B22DC8C1800CB73D6 /* KeyInputView.swift */,
-				37F615C82386B14A001AAE48 /* LoginScrollView.swift */,
 				156D493F23FE953C00EA18A9 /* ClientCertificateUIUtil.swift */,
 			);
 			path = Util;
@@ -2958,6 +2958,7 @@
 				220DCE2E1E0AB544002FE716 /* MessageCell.swift in Sources */,
 				B7DB7FD8221AD3BB003968DA /* UITableView+Extension.swift in Sources */,
 				8B69E3991E30F80E0022959E /* Appearance.swift in Sources */,
+				3A2119E1241251A80030C3E4 /* ClientCertificateManagementTableViewCell.swift in Sources */,
 				B716056020D3ECC900A733D6 /* MoveToFolderTableViewController.swift in Sources */,
 				1543B6B022ABF53C002B59AB /* KeySyncDeviceGroupUtil.swift in Sources */,
 				15874BCB2127493E00A3A4A6 /* AccountVerificationResultDelegate.swift in Sources */,
@@ -2996,6 +2997,7 @@
 				222B35581DF96389007A1F82 /* Capability.swift in Sources */,
 				0033C07F20D7EBD500224E61 /* ThreadedEmailViewModel+UpdateThreadDelegate.swift in Sources */,
 				15175CEC205929FB00A8D9D0 /* CidHandler.swift in Sources */,
+				3A2119DF2412515D0030C3E4 /* DynamicHeightScrollView.swift in Sources */,
 				152A39CB21905C3E00D9F8E4 /* DocumentAttachmentPickerViewModel.swift in Sources */,
 				43AAC22B1F7A5AEE00F435F4 /* BaseViewController.swift in Sources */,
 				43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */,
@@ -3046,7 +3048,6 @@
 				15874BC72127493E00A3A4A6 /* SettingDefaultAccountTableViewController.swift in Sources */,
 				4388A0E22008F813008CB98D /* (null) in Sources */,
 				152A39D021905C3E00D9F8E4 /* AttachmentCell.swift in Sources */,
-				3ACAB171240D067E00702D33 /* ClientCertificateSelectionCell.swift in Sources */,
 				0033C08120D7F3C600224E61 /* ThreadViewController+ViewModelDelegate.swift in Sources */,
 				4351C2DB1F4441190053381F /* utf8.c in Sources */,
 				371A715A231D45D0008B31F3 /* TutorialViewModel.swift in Sources */,
@@ -3115,7 +3116,6 @@
 				15874BD421274BD400A3A4A6 /* TrustedServerSettingCell.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
 				3705096622CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift in Sources */,
-				37F615C92386B14A001AAE48 /* LoginScrollView.swift in Sources */,
 				49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */,
 				5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */,
 				49228A5520D4035100A51E9D /* DetailCellSegue.swift in Sources */,

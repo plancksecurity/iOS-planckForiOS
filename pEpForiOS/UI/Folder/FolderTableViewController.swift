@@ -265,7 +265,6 @@ extension FolderTableViewController: SegueHandlerType {
             nav.modalPresentationStyle = .fullScreen
             vc.appConfig = self.appConfig
             vc.hidesBottomBarWhenPushed = true
-            //vc.delegate = self
 
         case .settingsSegue:
             guard let dvc = segue.destination as? SettingsTableViewController else {
