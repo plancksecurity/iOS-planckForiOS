@@ -17,10 +17,6 @@ class AttachmentViewModel: CellViewModel {
     init(attachment: Attachment) {
         self.attachment = attachment
     }
-
-    static let defaultFileName = NSLocalizedString("unknown",
-                                                   comment:
-        "Displayed attachment filename if unknown")
     public var fileName: String {
         var result: String? = nil
         attachment.session.performAndWait { [weak self] in
@@ -30,7 +26,7 @@ class AttachmentViewModel: CellViewModel {
             }
             result = me.attachment.fileName
         }
-        return result ?? AttachmentViewModel.defaultFileName
+        return result ?? Attachment.defaultFileName
     }
 
     public var fileExtension: String {

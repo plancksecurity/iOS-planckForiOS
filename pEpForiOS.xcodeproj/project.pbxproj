@@ -223,7 +223,6 @@
 		430BA229203438A3003B041C /* CdMessagePEPMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */; };
 		430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */; };
 		430D73651E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430D73641E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift */; };
-		430D73671E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430D73661E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift */; };
 		430E0BE71EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430E0BE61EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift */; };
 		43106A192045716000693144 /* OAuth2ConfigurationProtocol+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43106A182045716000693144 /* OAuth2ConfigurationProtocol+Extension.swift */; };
 		4312BE89228439670002129D /* SecretUITestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4312BE88228439670002129D /* SecretUITestData.swift */; };
@@ -739,7 +738,6 @@
 		430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdMessagePEPMessageTests.swift; sourceTree = "<group>"; };
 		430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PepAdapterTests.swift; sourceTree = "<group>"; };
 		430D73641E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsViewOperation.swift; sourceTree = "<group>"; };
-		430D73661E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentToLocalURLOperation.swift; sourceTree = "<group>"; };
 		430E0BE61EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableDictionary+pEp.swift"; sourceTree = "<group>"; };
 		43106A182045716000693144 /* OAuth2ConfigurationProtocol+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2ConfigurationProtocol+Extension.swift"; sourceTree = "<group>"; };
 		4312BE88228439670002129D /* SecretUITestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SecretUITestData.swift; path = ../../pEp_for_iOS_intern/SecretUITestData.swift; sourceTree = "<group>"; };
@@ -1795,7 +1793,6 @@
 			isa = PBXGroup;
 			children = (
 				430D73641E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift */,
-				430D73661E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -3035,7 +3032,6 @@
 				152A39DB21905C3E00D9F8E4 /* CellViewModel.swift in Sources */,
 				15944A30239802D5006B133B /* EmailDetailViewController.swift in Sources */,
 				155050F01FE82356009CEAD2 /* UserNotificationTool.swift in Sources */,
-				430D73671E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift in Sources */,
 				37156E44234CD47C00845A28 /* EditableAccountSettingsViewController.swift in Sources */,
 				4351C2D21F4441190053381F /* html.c in Sources */,
 				152A39DE21905C3E00D9F8E4 /* AccountCellViewModel.swift in Sources */,
