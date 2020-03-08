@@ -41,7 +41,7 @@ struct KeySyncErrorView {
                 return
             }
 
-            if let presentedViewController = viewController.presentedViewController { //BUFF: DIRK: I assume a) this code is copy and pasted else where and it may cause the
+            if let presentedViewController = viewController.presentedViewController {
                 presentedViewController.dismiss(animated: true) {
                     viewController.present(keySyncErrorView, animated: true, completion: nil)
                 }

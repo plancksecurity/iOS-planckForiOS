@@ -109,7 +109,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             if error is SmtpSendError || error is ImapSyncOperationError {
                 smtpOrImapAuthError(error: error)
             } else {
-                UIUtils.show(error: error)
+                UIUtils.show(error: error, inViewController: self)
             }
         }
     }
@@ -160,7 +160,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         if let swd = showed, swd  {
             //this error must not be shown
         } else {
-            UIUtils.show(error: error)
+            UIUtils.show(error: error, inViewController: self)
             if showed == nil {
                 appConfig.showedAccountsError[extraInfo] = false
             } else if showed == false {

@@ -13,12 +13,12 @@ import pEpIOSToolbox
 
 struct UIUtils {
 
-    /// Converts the error to a user frienldy DisplayUserError and presents it to the user.
-    /// The alert is presented modally over the currently shown viewVontroller
+    /// Converts the error to a user frienldy DisplayUserError and presents it to the user
     ///
     /// - Parameters:
     ///   - error: error to preset to user
-    static func show(error: Error) {
+    ///   - vc: ViewController to present the error on
+    static func show(error: Error, inViewController vc: UIViewController) {
         Log.shared.error("May or may not display error to user: (interpolate) %@", "\(error)")
 
         guard let displayError = DisplayUserError(withError: error) else {
@@ -27,18 +27,20 @@ struct UIUtils {
         }
         DispatchQueue.main.async {
             showAlertWithOnlyPositiveButton(title: displayError.title,
-                                            message: displayError.errorDescription)
+                                            message: displayError.errorDescription,
+                                            inViewController: vc)
         }
     }
 
     /// Shows an alert with "OK" button only.
-    /// The alert is presented modally over the currently shown viewVontroller
     /// - Parameters:
     ///   - title: alert title
     ///   - message: alert message
+    ///   - vc: viewController to present alert on
     ///   - completion: called when "OK" has been pressed
     static func showAlertWithOnlyPositiveButton(title: String?,
                                                 message: String?,
+                                                inViewController vc: UIViewController,
                                                 completion: (()->Void)? = nil) {
         // Do not show alerts when app is in background.
         if UIApplication.shared.applicationState != .active {
@@ -57,22 +59,9 @@ struct UIUtils {
                                         completion?()
         }
         alertView.addAction(okAction)
-        guard let vc = UIApplication.topViewController() else {
-            Log.shared.errorAndCrash("No top VC")
-            return
-        }
         vc.present(alertView, animated: true, completion: nil)
     }
 
-    /// Shows an alert with "OK" button only.
-    /// The alert is presented modally over the currently shown viewVontroller
-    /// - Parameters:
-    ///   - title: alert title
-    ///   - message: alert message
-    ///   - cancelButtonText: canel button label
-    ///   - positiveButtonText: positive button label
-    ///   - cancelButtonAction: executed when cancel button is pressed
-    ///   - positiveButtonAction: executed when positive button is pressed
     static func showTwoButtonAlert(withTitle title: String,
                                    message: String,
                                    cancelButtonText: String = NSLocalizedString("Cancel",
@@ -80,7 +69,8 @@ struct UIUtils {
                                    positiveButtonText: String = NSLocalizedString("OK",
                                                                                   comment: "Default positive button text"),
                                    cancelButtonAction: @escaping ()->Void,
-                                   positiveButtonAction: @escaping () -> Void) {
+                                   positiveButtonAction: @escaping () -> Void,
+                                   inViewController vc: UIViewController) {
         let alertView = UIAlertController.pEpAlertController(title: title,
                                         message: message,
                                         preferredStyle: .alert)
@@ -92,10 +82,7 @@ struct UIUtils {
                                           style: .cancel) { (alertAction) in
                                             cancelButtonAction()
         })
-        guard let vc = UIApplication.topViewController() else {
-            Log.shared.errorAndCrash("No top VC")
-            return
-        }
+
         vc.present(alertView, animated: true, completion: nil)
     }
 

@@ -165,7 +165,8 @@ extension ExtraKeysSettingViewController: ExtraKeysSettingViewModelDelegate {
         let message = NSLocalizedString("Invalid FPR",
                                         comment: "alert message. trying to add an invalid fingerprint")
         UIUtils.showAlertWithOnlyPositiveButton(title: title,
-                                                message: message)
+                                                message: message,
+                                                inViewController: self)
     }
 
     func refreshView() {
