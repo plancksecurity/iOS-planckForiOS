@@ -1,5 +1,5 @@
 //
-//  LoginScrollView.swift
+//  DynamicHeightScrollView.swift
 //  pEp
 //
 //  Created by Alejandro Gelos on 21/11/2019.
@@ -8,23 +8,23 @@
 
 import UIKit
 
-protocol LoginScrollViewDelegate: class {
+protocol DynamicHeightScrollViewDelegate: class {
     /// Bottom constraint of the scroll view. Used to change the hegiht of the scrollView, modifying the constant
     var bottomConstraint: NSLayoutConstraint { get }
     /// Current  scrollView subViews first responder that will be center
     var firstResponder: UIView? { get }
 }
 
-// Did not crate a nested class for LoginScrollView, since its not visible from Interface builder
+// Did not crate a nested class for DynamicHeightScrollView, since its not visible from Interface builder
 @IBDesignable
 /// Use this ScrollView to keep the first responder (typically TextFeilds) centered in the scrollView
-final class LoginScrollView: UIScrollView {
+final class DynamicHeightScrollView: UIScrollView {
 
     /// Use this property to enable/disable auto scroll to make visible, the firstResponder when editing or start editing
     @IBInspectable var makeVisibleAutoScroll: Bool = false
 
     /// Use this delegate to give the scrollView information to be able to center the firstResponder
-    weak var loginScrollViewDelegate: LoginScrollViewDelegate?
+    public weak var dynamicHeightScrollViewDelegate: DynamicHeightScrollViewDelegate?
 
     override func awakeFromNib() {
         configureKeyboardAwareness()
@@ -63,7 +63,7 @@ final class LoginScrollView: UIScrollView {
 
 // MARK: - Private
 
-extension LoginScrollView {
+extension DynamicHeightScrollView {
     private func configureKeyboardAwareness() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(updateScrollViewToHideyboard),
@@ -83,11 +83,7 @@ extension LoginScrollView {
 
     @objc private func updateScrollViewToShowKeyboard(notification: NSNotification) {
         adjustScrollViewHeight(notification: notification)
-        if UIDevice.current.userInterfaceIdiom != .pad {
-            centerFirstResponder(notification: notification)
-        } else {
-            scrollToCenterStackView()
-        }
+        centerFirstResponder(notification: notification)
     }
 
     private func keyBoardHeight(notification: NSNotification) -> CGFloat {
@@ -109,8 +105,8 @@ extension LoginScrollView {
     }
 
     private func adjustScrollViewHeight(notification: NSNotification) {
-        guard let bottomConstraint = loginScrollViewDelegate?.bottomConstraint else {
-            Log.shared.errorAndCrash("LoginScrollView delegate is nil")
+        guard let bottomConstraint = dynamicHeightScrollViewDelegate?.bottomConstraint else {
+            Log.shared.errorAndCrash("DynamicHeightScrollView delegate is nil")
             return
         }
         var bottomSafeArea: CGFloat = 0
@@ -118,7 +114,7 @@ extension LoginScrollView {
             let window = window {
             bottomSafeArea = window.safeAreaInsets.bottom
         }
-    
+
         bottomConstraint.constant = -keyBoardHeight(notification: notification) + bottomSafeArea
 
         guard let animationDuration = keyBoardAnimationDuration(notification: notification) else {
@@ -139,7 +135,7 @@ extension LoginScrollView {
     }
 
     private func centerFirstResponder(notification: NSNotification) {
-        guard let firstResponder = loginScrollViewDelegate?.firstResponder else {
+        guard let firstResponder = dynamicHeightScrollViewDelegate?.firstResponder else {
             //If no firstReponder, then just center the stack view
             scrollToCenterStackView()
             return
@@ -149,7 +145,7 @@ extension LoginScrollView {
 
     private func scrollToCenterStackView() {
         guard let superView = superview else {
-            Log.shared.errorAndCrash("Fail to get LoginScrollView superView")
+            Log.shared.errorAndCrash("Fail to get DynamicHeightScrollView superView")
             return
         }
         let newContentOffSet = (superView.bounds.height - bounds.height) / 2
