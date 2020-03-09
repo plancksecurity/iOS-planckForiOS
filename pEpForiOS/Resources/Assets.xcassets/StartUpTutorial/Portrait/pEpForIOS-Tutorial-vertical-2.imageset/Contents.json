@@ -17,14 +17,12 @@
     {
       "idiom" : "universal",
       "filename" : "pEpForIOS-Tutorial-vertical-2-es.pdf",
-      "unassigned" : true,
-      "scale" : "1x"
+      "locale" : "es"
     },
     {
       "idiom" : "universal",
       "filename" : "pEpForIOS-Tutorial-vertical-2-fr.pdf",
-      "unassigned" : true,
-      "scale" : "1x"
+      "locale" : "fr"
     }
   ],
   "info" : {
