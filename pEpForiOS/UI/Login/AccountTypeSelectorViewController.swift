@@ -10,7 +10,11 @@ import UIKit
 
 final class AccountTypeSelectorViewController: BaseViewController {
 
-    var viewModel: AccountTypeSelectorViewModel?
+    var viewModel = AccountTypeSelectorViewModel() {
+        didSet {
+            viewModel.delegate = self
+        }
+    }
     var delegate: AccountTypeSelectorViewModelDelegate?
     var loginDelegate: LoginViewControllerDelegate?
 
@@ -18,17 +22,14 @@ final class AccountTypeSelectorViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         collectionView.delegate = self
         collectionView.dataSource = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         configureAppearance()
         configureView()
-        configureViewModel()
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("no ViewModel")
-            return
-        }
-        vm.delegate = self
     }
 
     private func configureAppearance() {
@@ -49,11 +50,7 @@ final class AccountTypeSelectorViewController: BaseViewController {
         //the view in the title are is replaced for a blank view.
         self.navigationItem.titleView = UIView()
         title = NSLocalizedString("Account Select", comment: "account type selector title")
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("no ViewModel")
-            return
-        }
-        self.navigationController?.navigationBar.isHidden = vm.isThereAnAccount()
+        self.navigationController?.navigationBar.isHidden = viewModel.isThereAnAccount()
         let imagebutton = UIButton(type: .custom)
         imagebutton.setImage(UIImage(named: "close-icon"), for: .normal)
         imagebutton.addTarget(self, action: #selector(backButton), for: .touchUpInside)
@@ -62,12 +59,6 @@ final class AccountTypeSelectorViewController: BaseViewController {
         self.navigationItem.leftBarButtonItem = finalBarButton
     }
     
-    private func configureViewModel() {
-        if viewModel == nil {
-            viewModel = AccountTypeSelectorViewModel()
-        }
-    }
-
     @objc func backButton() {
         self.dismiss(animated: true, completion: nil)
     }
@@ -75,11 +66,11 @@ final class AccountTypeSelectorViewController: BaseViewController {
 
 extension AccountTypeSelectorViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch viewModel?.accountType(row: indexPath.row) {
+        switch viewModel.accountType(row: indexPath.row) {
         case .clientCertificate:
-            viewModel?.handleDidChooseClientCertificate()
+            viewModel.handleDidChooseClientCertificate()
         default:
-            viewModel?.handleDidSelect(rowAt: indexPath)
+            viewModel.handleDidSelect(rowAt: indexPath)
             performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
         }
     }
@@ -91,25 +82,20 @@ extension AccountTypeSelectorViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let vm = viewModel else {
-            return 0
-            Log.shared.errorAndCrash("no ViewModel")
-        }
-        return vm.count
+        return viewModel.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "providerCell",
-                                                            for: indexPath) as? AccountTypeSelectorCollectionViewCell,
-                                                            let vm = viewModel else {
+                                                            for: indexPath) as? AccountTypeSelectorCollectionViewCell else {
             return UICollectionViewCell()
         }
-        let cellProvider = vm[indexPath.row]
+        let cellProvider = viewModel[indexPath.row]
         switch cellProvider {
         case .gmail:
-            cell.configure(withFileName: vm.fileNameOrText(provider: cellProvider))
+            cell.configure(withFileName: viewModel.fileNameOrText(provider: cellProvider))
         case .other, .clientCertificate:
-            cell.configure(withText: vm.fileNameOrText(provider: cellProvider))
+            cell.configure(withText: viewModel.fileNameOrText(provider: cellProvider))
         }
         return cell
     }
@@ -159,22 +145,20 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .showLogin:
-            guard let vc = segue.destination as? LoginViewController,
-                let vm = viewModel else {
+            guard let vc = segue.destination as? LoginViewController else {
                 Log.shared.errorAndCrash("accountType is invalid")
                 return
             }
             vc.appConfig = appConfig
-            vc.viewModel = vm.loginViewModel()
+            vc.viewModel = viewModel.loginViewModel()
             vc.delegate = loginDelegate
         case .clientCertManagementSegue:
-            guard let dvc = segue.destination as? ClientCertificateManagementViewController,
-                let vm = viewModel else {
+            guard let dvc = segue.destination as? ClientCertificateManagementViewController else {
                 Log.shared.errorAndCrash("Invalid state")
                 return
             }
             dvc.appConfig = appConfig
-            dvc.viewModel = vm.clientCertificateManagementViewModel()
+            dvc.viewModel = viewModel.clientCertificateManagementViewModel()
         }
     }
 }
