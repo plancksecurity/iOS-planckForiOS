@@ -61,11 +61,13 @@ extension TutorialStep2ViewController {
         let confirmTitle = NSLocalizedString("Confirm", comment: "Confirm correct trustwords/PGP fingerprint")
         confirmButton.setTitle(confirmTitle, for: .normal)
         confirmButton.pEpIfyForTrust(backgroundColor: .pEpGreen, textColor: .white, insetPlusHorizontal: 10, insetPlusVertical : 5, cornerRadius : 4)
+        confirmButton.isUserInteractionEnabled = false
         
         //Decline Button
         let declineTitle = NSLocalizedString("Decline", comment: "Incorrect trustwords/PGP fingerprint")
         declineButton.setTitle(declineTitle, for: .normal)
         declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .white, insetPlusHorizontal: 10, insetPlusVertical : 5, cornerRadius : 4)
+        declineButton.isUserInteractionEnabled = false
     }
 }
 
