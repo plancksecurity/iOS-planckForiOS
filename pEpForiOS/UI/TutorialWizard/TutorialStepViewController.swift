@@ -8,15 +8,11 @@
 
 import Foundation
 
-
 // This class MUST be inherited. Do not use it directly.
+// This is why we accept the default protected visibility.
 class TutorialStepViewController: CustomTraitCollectionViewController {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureView()
-    }
-    
+    private var shouldUpdateLayoutDueRotation: Bool = false
+
     var centered : NSMutableParagraphStyle {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
@@ -56,20 +52,29 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
         }
         return UIFont.systemFont(ofSize: 28.0, weight: .regular)
     }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureView()
+    }
     
-    var subtitleFont : UIFont {
-        if isIpad {
-            return UIFont.systemFont(ofSize: 38.0, weight: .regular)
-        } else if Device.isIphone5 {
-            return UIFont.systemFont(ofSize: 21.0, weight: .regular)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if shouldUpdateLayoutDueRotation {
+            guard let superView = view.superview else {
+                Log.shared.errorAndCrash("Superview is lost")
+                return
+            }
+            superView.setNeedsLayout()
+            superView.layoutIfNeeded()
+            shouldUpdateLayoutDueRotation = false
         }
-        return UIFont.systemFont(ofSize: 20.0, weight: .regular)
     }
 
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-//        guard let childern = parent?.children as? [TutorialStepViewController] else { return }
-//        _ = childern.map { $0.configureView() }
+        shouldUpdateLayoutDueRotation = true
     }
 
     /// Abstract method to be overriden
@@ -87,4 +92,5 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
         private static let SCREEN_MIN_LENGTH = Int(min(screenWidth, screenHeight))
         static let isIphone5 = isIphone && screenMaxLength == 568 // 5, 5S, 5C, SE
     }
+    
 }

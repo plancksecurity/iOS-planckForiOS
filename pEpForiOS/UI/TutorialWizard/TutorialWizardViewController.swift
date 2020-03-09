@@ -11,10 +11,10 @@ import UIKit
 /// View Controller that handles the tutorial
 final class TutorialWizardViewController: PEPPageViewControllerBase {
     private static let storyboardId = "TutorialWizardViewController"
-    private var viewModel = TutorialWizardViewMode()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupView()
         if #available(iOS 13, *) {
             Appearance.customiseForTutorial(viewController: self)
@@ -53,6 +53,7 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
 // MARK: - Private
 
 extension TutorialWizardViewController {
+    
     private func setupView() {
         views = tutorialViewControllers()
         view.backgroundColor = .white
