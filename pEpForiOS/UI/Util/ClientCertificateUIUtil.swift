@@ -61,7 +61,7 @@ final class ClientCertificateUIUtil: NSObject {
         do {
             p12Data = try Data(contentsOf: url)
         } catch {
-            showCorruptedFileError()
+            showCorruptedFileError(in: vc)
             return
         }
         presentAlertViewForClientImportPassPhrase()
@@ -95,15 +95,15 @@ extension ClientCertificateUIUtil {
         } catch ClientCertificateUtil.ImportError.wrongPassword {
             showWrongPasswordError()
         } catch {
-            showCorruptedFileError()
+            guard let vc = clientCertificatePasswordVC else {
+                Log.shared.errorAndCrash(message: "Missing clientCertificatePasswordVC")
+                return
+            }
+            showCorruptedFileError(in: vc)
         }
     }
 
-    private func showCorruptedFileError() {
-        guard let vc = clientCertificatePasswordVC else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
+    private func showCorruptedFileError(in vc: UIViewController) {
         UIUtils.showAlertWithOnlyPositiveButton(title: Localized.CorruptedFileError.title,
                                                 message: Localized.CorruptedFileError.message,
                                                 inViewController: vc, completion: { [weak self] in
