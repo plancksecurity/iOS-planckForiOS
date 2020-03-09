@@ -19,6 +19,6 @@ final class WrappedCell: UITableViewCell {
     }
 
     private func setStyle() {
-        ccBccLabel.pEpSetFontFace()
+        ccBccLabel.pEpSetFontFace(weight: .regular)
     }
 }

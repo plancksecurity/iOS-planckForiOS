@@ -10,7 +10,7 @@ import UIKit
 
 extension UITextView {
     /// Sets pEp default custom font with respecting TextStyle - Dynamic Fonts
-    public func pEpSetFontFace() {
+    public func pEpSetFontFace(weight: UIFont.Weight = .regular) {
         guard let fontFace = font,
             let textStyle = fontFace.fontDescriptor.object(forKey: UIFontDescriptor.AttributeName.textStyle) as? String else {
                 Log.shared.error("Missing UIFont.TextStyle")
@@ -18,6 +18,6 @@ extension UITextView {
         }
 
         font = UIFont.pepFont(style: UIFont.TextStyle.init(rawValue: textStyle),
-                              weight: .regular)
+                              weight: weight)
     }
 }
