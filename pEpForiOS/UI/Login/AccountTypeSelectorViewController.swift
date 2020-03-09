@@ -10,11 +10,7 @@ import UIKit
 
 final class AccountTypeSelectorViewController: BaseViewController {
 
-    var viewModel = AccountTypeSelectorViewModel() {
-        didSet {
-            viewModel.delegate = self
-        }
-    }
+    var viewModel = AccountTypeSelectorViewModel()
     var delegate: AccountTypeSelectorViewModelDelegate?
     var loginDelegate: LoginViewControllerDelegate?
 
@@ -24,6 +20,7 @@ final class AccountTypeSelectorViewController: BaseViewController {
         super.viewDidLoad()
         collectionView.delegate = self
         collectionView.dataSource = self
+        viewModel.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,7 +47,7 @@ final class AccountTypeSelectorViewController: BaseViewController {
         //the view in the title are is replaced for a blank view.
         self.navigationItem.titleView = UIView()
         title = NSLocalizedString("Account Select", comment: "account type selector title")
-        self.navigationController?.navigationBar.isHidden = viewModel.isThereAnAccount()
+        self.navigationController?.navigationBar.isHidden = !viewModel.isThereAnAccount()
         let imagebutton = UIButton(type: .custom)
         imagebutton.setImage(UIImage(named: "close-icon"), for: .normal)
         imagebutton.addTarget(self, action: #selector(backButton), for: .touchUpInside)
