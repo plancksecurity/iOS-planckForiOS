@@ -11,20 +11,30 @@ import UIKit
 
 class TutorialStep2ViewController: TutorialStepViewController {
     
+    @IBOutlet private weak var secureLabel: UILabel!
+    @IBOutlet private weak var truswordsLabel: UILabel!
     @IBOutlet private weak var confirmButton: UIButton!
     @IBOutlet private weak var declineButton: UIButton!
     @IBOutlet private weak var handshakeTitle: UILabel!
     @IBOutlet private weak var privacyStatusExplanationLabel: UILabel!
     @IBOutlet private weak var confirmTrustwordsExplanationLabel: UILabel!
-    @IBOutlet weak var trustwordsContainer: UIView!
+    @IBOutlet private weak var trustwordsContainer: UIView!
 
-    @IBOutlet weak var containerLeadingConstraint: NSLayoutConstraint!
+    // We manipulate constraints to support iPad orientations as this inherits from CustomTraitCollectionViewController,
+    @IBOutlet private weak var containerLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var distanceBetweenTitleAndContainerView: NSLayoutConstraint!
+    @IBOutlet weak var secureCenterX: NSLayoutConstraint!
+    @IBOutlet weak var distanceBetweenLabels: NSLayoutConstraint!
+
     
     public override func configureView() {
         setupHandshakeTitle()
         setupPrivacyStatusExplanationLabel()
         setupcCnfirmTrustwordsExplanationLabel()
-        stupButtons()
+        setupButtons()
+        setupTrustwordsContainer()
+        setupTrustwordsLabel()
+        secureLabel.font = font
     }
     
     override func viewWillLayoutSubviews() {
@@ -38,6 +48,11 @@ class TutorialStep2ViewController: TutorialStepViewController {
 
 extension TutorialStep2ViewController {
 
+    private func setupTrustwordsLabel() {
+        truswordsLabel.font = smallFont
+        truswordsLabel.text = NSLocalizedString("OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER", comment: "Some trustwords")
+    }
+    
     private func setupHandshakeTitle() {
         handshakeTitle.font = titleFont
         handshakeTitle.text = NSLocalizedString("Handshake", comment: "Title of the view")
@@ -53,10 +68,7 @@ extension TutorialStep2ViewController {
         confirmTrustwordsExplanationLabel.text = NSLocalizedString("When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted.", comment: "Confirm Trustwords explanation Label")
     }
     
-    private func stupButtons() {
-        trustwordsContainer.layer.borderWidth = 1
-        trustwordsContainer.layer.borderColor = UIColor.pEpGrayBorder.withAlphaComponent(0.5).cgColor
-        
+    private func setupButtons() {
         //Confirm Button
         let confirmTitle = NSLocalizedString("Confirm", comment: "Confirm correct trustwords/PGP fingerprint")
         confirmButton.setTitle(confirmTitle, for: .normal)
@@ -69,6 +81,11 @@ extension TutorialStep2ViewController {
         declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .white, insetPlusHorizontal: 10, insetPlusVertical : 5, cornerRadius : 4)
         declineButton.isUserInteractionEnabled = false
     }
+
+    private func setupTrustwordsContainer() {
+        trustwordsContainer.layer.borderWidth = 1
+        trustwordsContainer.layer.borderColor = UIColor.pEpGrayBorder.withAlphaComponent(0.5).cgColor
+    }
 }
 
 // MARK: - Private - Adjust constraints
@@ -80,18 +97,22 @@ extension TutorialStep2ViewController {
             Log.shared.info("Superview is missing or is not needed to adjust constraints here")
             return
         }
-
-        containerLeadingConstraint.constant = Constants.Portrait.containerLeading
+        containerLeadingConstraint.constant = isLandscape ? Constants.Landscape.containerLeading : Constants.Portrait.containerLeading
+        distanceBetweenTitleAndContainerView.constant = isLandscape ? Constants.Landscape.distanceBelowTitle : Constants.Portrait.distanceBelowTitle
+        distanceBetweenLabels.constant = 50
+        secureCenterX.constant = -6
         superView.layoutIfNeeded()
     }
     
     private struct Constants {
         struct Portrait {
             static let containerLeading: CGFloat = 50
+            static let distanceBelowTitle: CGFloat = 20
         }
 
         struct Landscape {
-            static let containerLeading: CGFloat = 80
+            static let containerLeading: CGFloat = 100
+            static let distanceBelowTitle: CGFloat = 40
         }
     }
 }

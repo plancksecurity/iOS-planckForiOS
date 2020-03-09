@@ -23,7 +23,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tbj-uq-7Ob">
-                                <rect key="frame" x="64" y="60.999999999999986" width="768" height="188.66666666666663"/>
+                                <rect key="frame" x="64" y="60.999999999999986" width="768" height="196.66666666666663"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i1p-j1-tYp">
                                         <rect key="frame" x="0.0" y="0.0" width="384" height="50.333333333333336"/>
@@ -60,7 +60,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="THo-TL-grV" userLabel="Trustwords container">
-                                        <rect key="frame" x="394" y="114.33333333333334" width="374" height="74.333333333333343"/>
+                                        <rect key="frame" x="394" y="122.33333333333334" width="374" height="74.333333333333343"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EdT-Qp-2PC" userLabel="Triustwords Label">
                                                 <rect key="frame" x="10" y="8" width="350.33333333333331" height="14.333333333333336"/>
@@ -124,7 +124,7 @@
                                         </variation>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lMo-1v-V01">
-                                        <rect key="frame" x="0.0" y="114.33333333333334" width="384" height="54"/>
+                                        <rect key="frame" x="0.0" y="122.33333333333334" width="384" height="54"/>
                                         <string key="text">When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure &amp; Trusted. </string>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <nil key="textColor"/>
@@ -139,13 +139,11 @@
                                     <constraint firstItem="i1p-j1-tYp" firstAttribute="bottom" secondItem="S8t-jR-oY0" secondAttribute="top" constant="-20" id="MW3-d8-hoO"/>
                                     <constraint firstItem="lMo-1v-V01" firstAttribute="trailing" secondItem="i1p-j1-tYp" secondAttribute="trailing" id="Rca-8Z-MpT"/>
                                     <constraint firstItem="lMo-1v-V01" firstAttribute="leading" secondItem="i1p-j1-tYp" secondAttribute="leading" id="S2h-52-COk"/>
-                                    <constraint firstItem="lMo-1v-V01" firstAttribute="top" secondItem="i1p-j1-tYp" secondAttribute="bottom" priority="250" constant="30" id="UoB-qI-WAM">
-                                        <variation key="heightClass=regular-widthClass=compact" constant="200"/>
-                                    </constraint>
                                     <constraint firstItem="THo-TL-grV" firstAttribute="trailing" secondItem="S8t-jR-oY0" secondAttribute="trailing" id="VNi-K5-8JM"/>
                                     <constraint firstItem="i1p-j1-tYp" firstAttribute="leading" secondItem="tbj-uq-7Ob" secondAttribute="leading" id="XEG-b9-HLh"/>
-                                    <constraint firstAttribute="bottom" secondItem="lMo-1v-V01" secondAttribute="bottom" priority="250" constant="8" id="Xac-Hg-YGc"/>
+                                    <constraint firstAttribute="bottom" secondItem="lMo-1v-V01" secondAttribute="bottom" priority="250" id="Xac-Hg-YGc"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="THo-TL-grV" secondAttribute="bottom" id="cAy-cb-hsF"/>
+                                    <constraint firstItem="lMo-1v-V01" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i1p-j1-tYp" secondAttribute="bottom" priority="250" constant="8" id="gIR-IA-Oei"/>
                                     <constraint firstItem="i1p-j1-tYp" firstAttribute="top" secondItem="tbj-uq-7Ob" secondAttribute="top" id="hfp-6q-pXt"/>
                                     <constraint firstItem="S8t-jR-oY0" firstAttribute="top" secondItem="i1p-j1-tYp" secondAttribute="top" id="ltZ-7S-WJU"/>
                                     <constraint firstItem="THo-TL-grV" firstAttribute="top" secondItem="lMo-1v-V01" secondAttribute="top" id="nBB-sF-5JH"/>
@@ -154,7 +152,7 @@
                                     <constraint firstItem="lMo-1v-V01" firstAttribute="top" secondItem="THo-TL-grV" secondAttribute="bottom" constant="20" id="pQw-5W-1ot"/>
                                     <constraint firstAttribute="centerX" secondItem="i1p-j1-tYp" secondAttribute="trailing" id="uxU-8x-K6K"/>
                                     <constraint firstItem="S8t-jR-oY0" firstAttribute="leading" secondItem="i1p-j1-tYp" secondAttribute="trailing" constant="10" id="w0p-iB-mbO"/>
-                                    <constraint firstItem="THo-TL-grV" firstAttribute="top" secondItem="Lb9-UI-pW6" secondAttribute="bottom" constant="8" id="yGC-Y5-GbG"/>
+                                    <constraint firstItem="THo-TL-grV" firstAttribute="top" secondItem="Lb9-UI-pW6" secondAttribute="bottom" constant="16" id="yGC-Y5-GbG"/>
                                     <constraint firstAttribute="trailing" secondItem="i1p-j1-tYp" secondAttribute="trailing" id="ygN-LP-LkL"/>
                                 </constraints>
                                 <variation key="default">
@@ -162,10 +160,10 @@
                                         <exclude reference="HNu-qm-BcU"/>
                                         <exclude reference="MW3-d8-hoO"/>
                                         <exclude reference="ygN-LP-LkL"/>
+                                        <exclude reference="pQw-5W-1ot"/>
                                         <exclude reference="6bf-a2-AZf"/>
                                         <exclude reference="VNi-K5-8JM"/>
                                         <exclude reference="o2L-S9-KDX"/>
-                                        <exclude reference="pQw-5W-1ot"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=compact">
@@ -174,6 +172,7 @@
                                         <include reference="MW3-d8-hoO"/>
                                         <exclude reference="uxU-8x-K6K"/>
                                         <exclude reference="ygN-LP-LkL"/>
+                                        <include reference="pQw-5W-1ot"/>
                                         <include reference="6bf-a2-AZf"/>
                                         <exclude reference="ltZ-7S-WJU"/>
                                         <exclude reference="w0p-iB-mbO"/>
@@ -183,7 +182,6 @@
                                         <exclude reference="nBB-sF-5JH"/>
                                         <include reference="o2L-S9-KDX"/>
                                         <exclude reference="oVo-PP-BOQ"/>
-                                        <include reference="pQw-5W-1ot"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -191,6 +189,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="tbj-uq-7Ob" firstAttribute="centerX" secondItem="Zgk-Ua-Z7d" secondAttribute="centerX" id="HBV-4i-p6K"/>
+                            <constraint firstItem="Zgk-Ua-Z7d" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="tbj-uq-7Ob" secondAttribute="bottom" constant="8" id="KMn-FC-ghF"/>
                             <constraint firstItem="tbj-uq-7Ob" firstAttribute="leading" secondItem="Zgk-Ua-Z7d" secondAttribute="leading" constant="20" id="NXO-xZ-ZvI"/>
                             <constraint firstItem="tbj-uq-7Ob" firstAttribute="top" secondItem="ICO-LI-a2E" secondAttribute="bottom" constant="10" id="XWe-bo-B9z"/>
                             <constraint firstItem="ICO-LI-a2E" firstAttribute="centerX" secondItem="Zgk-Ua-Z7d" secondAttribute="centerX" id="aQG-DG-hwU"/>
@@ -205,14 +204,19 @@
                         <outlet property="confirmTrustwordsExplanationLabel" destination="lMo-1v-V01" id="gMC-8I-mgp"/>
                         <outlet property="containerLeadingConstraint" destination="NXO-xZ-ZvI" id="rNY-r8-TUs"/>
                         <outlet property="declineButton" destination="8Xq-lc-6Jt" id="7oq-Mp-sOx"/>
+                        <outlet property="distanceBetweenLabels" destination="gIR-IA-Oei" id="0dm-y4-aH3"/>
+                        <outlet property="distanceBetweenTitleAndContainerView" destination="XWe-bo-B9z" id="9AV-9F-ju3"/>
                         <outlet property="handshakeTitle" destination="ICO-LI-a2E" id="TWC-Oq-uQi"/>
                         <outlet property="privacyStatusExplanationLabel" destination="i1p-j1-tYp" id="738-JR-kTC"/>
+                        <outlet property="secureCenterX" destination="0lm-8T-muo" id="pEF-Q5-lEZ"/>
+                        <outlet property="secureLabel" destination="V9f-sY-x1Q" id="CJp-Cw-gy9"/>
                         <outlet property="trustwordsContainer" destination="THo-TL-grV" id="Q8b-Rv-WEz"/>
+                        <outlet property="truswordsLabel" destination="EdT-Qp-2PC" id="bNd-Zt-1Jm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QrC-U0-4M5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="357.04225352112678" y="1365"/>
+            <point key="canvasLocation" x="356.91964285714283" y="1362.3188405797102"/>
         </scene>
         <!--Tutorial Step0 View Controller-->
         <scene sceneID="Ws0-5Z-W6K">

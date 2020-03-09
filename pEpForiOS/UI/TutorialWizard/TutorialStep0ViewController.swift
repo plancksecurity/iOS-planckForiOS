@@ -20,11 +20,10 @@ class TutorialStep0ViewController: TutorialStepViewController {
     @IBOutlet private weak var topbarLabel: UILabel!
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var topbarImageView: UIImageView!
-    @IBOutlet private weak var topbarWidthConstraint: NSLayoutConstraint!
     
     // We manipulate constraints to support iPad orientations as this inherits from CustomTraitCollectionViewController,
+    @IBOutlet private weak var topbarWidthConstraint: NSLayoutConstraint!
     @IBOutlet private weak var titleLabelLeadingContraint: NSLayoutConstraint!
-
     @IBOutlet weak private var topbarLabelLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak private var distanceBetweenPrivacyStatusAndSkipConstraint: NSLayoutConstraint!
     @IBOutlet weak private var distanceBetweenTitleViewAndTopConstraint: NSLayoutConstraint!
