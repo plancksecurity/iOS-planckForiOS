@@ -25,6 +25,9 @@ struct Constants {
 
     /// Name of Storyboard that contains SuggestTableViewController.
     static let suggestionsStoryboard = "Reusable"
+    
+    /// Name of Storyboard that contains View Controllers of the Tutorial.
+    static let tutorialStoryboard = "Tutorial"
 
     /// Name of Storyboard that contains KeySyncWizardViewController.
     static let keySyncWizardStoryboard = "Reusable"

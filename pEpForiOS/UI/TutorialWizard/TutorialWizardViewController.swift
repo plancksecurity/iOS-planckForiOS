@@ -105,24 +105,24 @@ extension TutorialWizardViewController {
     private func tutorialViewControllers() -> [UIViewController] {
         var result = [UIViewController]()
         
-        for (step, tutorialImage) in tutorialImages.enumerated() {
-            
-            if step == 0 || step == 1 || step == 2 {
-                guard let stepViewController = TutorialViewController.fromStoryboard(step: step) else {
-                    Log.shared.errorAndCrash("Can't instanciate VC")
-                    return [UIViewController]()
-                }
-                result.append(stepViewController)
-            } else {
-                guard let tutorialViewController =
-                    TutorialViewController.fromStoryboard(tutorialImage: tutorialImage) else {
-                        continue
-                }
-                tutorialViewController.view.backgroundColor = UIColor.blue
-                
-                result.append(tutorialViewController)
+        for step in 0...2 {
+            guard let stepViewController = TutorialViewController.fromStoryboard(step: step) else {
+                Log.shared.errorAndCrash("Can't instanciate VC")
+                return [UIViewController]()
             }
+            result.append(stepViewController)
         }
+//
+//        for (step, tutorialImage) in tutorialImages.enumerated() {
+//
+//            if step == 0 || step == 1 || step == 2 {
+//                guard let stepViewController = TutorialViewController.fromStoryboard(step: step) else {
+//                    Log.shared.errorAndCrash("Can't instanciate VC")
+//                    return [UIViewController]()
+//                }
+//                result.append(stepViewController)
+//            }
+//        }
         return result
     }
 }
