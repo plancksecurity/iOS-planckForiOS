@@ -17,15 +17,18 @@ protocol AccountTypeSelectorViewModelDelegate: class {
 }
 
 class AccountTypeSelectorViewModel {
-    private let verifiableAccount: VerifiableAccount
+    private var verifiableAccount: VerifiableAccountProtocol
+    private let clientCertificateUtil: ClientCertificateUtilProtocol
 
     public weak var delegate: AccountTypeSelectorViewModelDelegate?
 
     /// list of providers to show
     private let accountTypes: [VerifiableAccount.AccountType] = [.gmail, .clientCertificate, .other]
 
-    init(verifiableAccount: VerifiableAccount? = nil) {
+    init(verifiableAccount: VerifiableAccountProtocol? = nil,
+         clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
         self.verifiableAccount = verifiableAccount ?? VerifiableAccount()
+        self.clientCertificateUtil = clientCertificateUtil ?? ClientCertificateUtil()
     }
 
     var count: Int {
@@ -47,7 +50,7 @@ class AccountTypeSelectorViewModel {
     }
 
     public func handleDidChooseClientCertificate() {
-        if ClientCertificateUtil().listCertificates().count == 0 {
+        if clientCertificateUtil.listCertificates(session: nil).count == 0 {
             delegate?.showMustImportClientCertificateAlert()
         } else {
             delegate?.showClientCertificateSeletionView()

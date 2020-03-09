@@ -28,10 +28,10 @@ extension ClientCertificateManagementViewModel {
 
 final class ClientCertificateManagementViewModel {
     private let clientCertificateUtil: ClientCertificateUtil
-    private let verifiableAccount: VerifiableAccount
+    private var verifiableAccount: VerifiableAccountProtocol
     public private(set) var rows = [Row]()
 
-    public init(verifiableAccount: VerifiableAccount? = nil,
+    public init(verifiableAccount: VerifiableAccountProtocol? = nil,
                 clientCertificateUtil: ClientCertificateUtil = ClientCertificateUtil()) {
         self.clientCertificateUtil = clientCertificateUtil
         self.verifiableAccount = verifiableAccount ?? VerifiableAccount()

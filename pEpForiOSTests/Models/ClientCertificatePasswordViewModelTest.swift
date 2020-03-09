@@ -19,7 +19,7 @@ final class ClientCertificatePasswordViewModelTest: XCTestCase {
         vm = ClientCertificatePasswordViewModel(delegate: self,
                                                 passwordChangeDelegate: self)
     }
-
+ 
     override func tearDown() {
         vm = nil
     }
