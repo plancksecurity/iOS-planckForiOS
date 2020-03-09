@@ -106,7 +106,7 @@ extension TutorialStep0ViewController {
     }
 }
 
-// MARK: - Labels configuration
+// MARK: - Layout configuration
 
 extension TutorialStep0ViewController {
     

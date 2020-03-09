@@ -15,15 +15,8 @@ class TutorialStep1ViewController: TutorialStepViewController {
     @IBOutlet private weak var secureAndTrustDescription: UILabel!
     @IBOutlet private weak var mistrustedLabel: UILabel!
     @IBOutlet private weak var mistrustedDescription: UILabel!
-
-    @IBOutlet private weak var secureContainerTopConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var distanceBetweenSecureContainerAndSecureDescription: NSLayoutConstraint!
-    @IBOutlet private weak var secureDescriptionToSecureAndTrust: NSLayoutConstraint!
-    @IBOutlet private weak var distanceBetweenSecureAndTrustDescriptionAndMistrustedContainer: NSLayoutConstraint!
-    @IBOutlet private weak var distanceBetweenSecureAndTrustContainerAndDescription: NSLayoutConstraint!
-    @IBOutlet weak var distanceBetweenMistrustAndDescription: NSLayoutConstraint!
+    @IBOutlet weak var centerY: NSLayoutConstraint!
     
-    @IBOutlet weak var secureDescriptionTrailing: NSLayoutConstraint!
     
     public override func configureView() {
         setupSecureLabel()
@@ -40,10 +33,12 @@ class TutorialStep1ViewController: TutorialStepViewController {
     }
 }
 
+// MARK: - Layout configuration
+
 extension TutorialStep1ViewController {
 
     private func setupSecureLabel() {
-        secureLabel.font = subtitleFont
+        secureLabel.font = titleFont
         secureLabel.text = NSLocalizedString("Secure", comment: "Secure Label - Step 1")
     }
 
@@ -53,7 +48,7 @@ extension TutorialStep1ViewController {
     }
 
     private func setupSecureAndTrustedLabel() {
-        secureAndTrustedLabel.font = subtitleFont
+        secureAndTrustedLabel.font = titleFont
         secureAndTrustedLabel.text = NSLocalizedString("Secure & Trusted", comment: "Secure & Trusted Label - Step 1")
     }
 
@@ -63,7 +58,7 @@ extension TutorialStep1ViewController {
     }
 
     private func setupMistrustedLabel() {
-        mistrustedLabel.font = subtitleFont
+        mistrustedLabel.font = titleFont
         mistrustedLabel.text = NSLocalizedString("Mistrusted", comment: "Mistrusted - Step 1")
     }
 
@@ -77,41 +72,18 @@ extension TutorialStep1ViewController {
             Log.shared.info("Superview is missing or is not needed to adjust constraints here")
             return
         }
-        secureContainerTopConstraint.constant = isLandscape ? Constants.Landscape.secureContainerTop :
-        Constants.Portrait.secureContainerTop
         
-        distanceBetweenSecureContainerAndSecureDescription.constant = isLandscape ? Constants.Landscape.containerAndDescriptionDistance :
-        Constants.Portrait.containerAndDescriptionDistance
-
-        secureDescriptionToSecureAndTrust.constant = isLandscape ? Constants.Landscape.containerAndDescriptionDistance :
-        Constants.Portrait.containerAndDescriptionDistance
-
-        distanceBetweenSecureAndTrustDescriptionAndMistrustedContainer.constant = isLandscape ? Constants.Landscape.containerAndDescriptionDistance :
-        Constants.Portrait.containerAndDescriptionDistance
-
-        distanceBetweenSecureAndTrustContainerAndDescription.constant = isLandscape ? Constants.Landscape.containerAndDescriptionDistance :
-        Constants.Portrait.containerAndDescriptionDistance
-
-        distanceBetweenMistrustAndDescription.constant = isLandscape ? Constants.Landscape.containerAndDescriptionDistance :
-        Constants.Portrait.containerAndDescriptionDistance
-
-        secureDescriptionTrailing.constant = isLandscape ? Constants.Landscape.descriptionTrailing :
-        Constants.Portrait.descriptionTrailing
-        
+        centerY.constant = isLandscape ? Constants.Landscape.centerYOffset : Constants.Portrait.centerYOffset
         superView.layoutIfNeeded()
     }
     
     private struct Constants {
         struct Portrait {
-            static let secureContainerTop: CGFloat = 50.0
-            static let containerAndDescriptionDistance: CGFloat = 40.0
-            static let descriptionTrailing: CGFloat = 85.0
+            static let centerYOffset: CGFloat = -120
         }
 
         struct Landscape {
-            static let secureContainerTop: CGFloat = 50.0
-            static let containerAndDescriptionDistance: CGFloat = 35.0
-            static let descriptionTrailing: CGFloat = 85.0
+            static let centerYOffset: CGFloat = -100
         }
     }
 }
