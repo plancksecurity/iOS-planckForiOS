@@ -2,17 +2,42 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "pep-status-underattack-english.pdf"
+      "filename" : "pep-status-mistrusted-english-1.pdf"
     },
     {
       "idiom" : "universal",
-      "filename" : "pep-status-underattack-english-2.pdf",
+      "filename" : "pep-status-mistrusted-catalan.pdf",
+      "locale" : "ca"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-mistrusted-german.pdf",
       "locale" : "de"
     },
     {
       "idiom" : "universal",
-      "filename" : "pep-status-underattack-english-1.pdf",
+      "filename" : "pep-status-mistrusted-english.pdf",
       "locale" : "en"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-mistrusted-spanish.pdf",
+      "locale" : "es"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-mistrusted-french.pdf",
+      "locale" : "fr"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-mistrusted-dutch.pdf",
+      "locale" : "nl"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-mistrusted-turkish.pdf",
+      "locale" : "tr"
     }
   ],
   "info" : {
