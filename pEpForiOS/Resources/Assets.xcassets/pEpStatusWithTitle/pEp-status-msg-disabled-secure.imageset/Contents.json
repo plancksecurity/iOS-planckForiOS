@@ -6,13 +6,38 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "pep-status-secure-disabled-english-1.pdf",
+      "filename" : "pep-status-secure-disabled-catalan.pdf",
+      "locale" : "ca"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure-disabled-german.pdf",
       "locale" : "de"
     },
     {
       "idiom" : "universal",
-      "filename" : "pep-status-secure-disabled-english-2.pdf",
+      "filename" : "pep-status-secure-disabled-english-1.pdf",
       "locale" : "en"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure-disabled-spanish.pdf",
+      "locale" : "es"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure-disabled-french.pdf",
+      "locale" : "fr"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure-disabled-dutch.pdf",
+      "locale" : "nl"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure-disabled-turkish.pdf",
+      "locale" : "tr"
     }
   ],
   "info" : {

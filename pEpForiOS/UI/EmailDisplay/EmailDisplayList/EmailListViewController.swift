@@ -11,7 +11,7 @@ import UIKit
 import SwipeCellKit
 import pEpIOSToolbox
 
-class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
+final class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
     /// Stuff that must be done once only in viewWillAppear
     private var doOnce: (()-> Void)?
     /// With this tag we recognize our own created flexible space buttons, for easy removal later.
@@ -116,6 +116,7 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
     // MARK: - Setup
 
     private func setup() {
+        tableView.separatorInset = UIEdgeInsets.zero
         tableView.delegate = self
         tableView.dataSource = self
         // rm seperator lines for empty view/cells
