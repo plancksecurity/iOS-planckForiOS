@@ -92,6 +92,11 @@ extension ClientCertificateUIUtil {
         }
         do {
             try clientCertificateUtil.storeCertificate(p12Data: data, password: pass)
+            guard let vc = clientCertificatePasswordVC else {
+                Log.shared.errorAndCrash(message: "missing ClientCertificatePaswordVC")
+                return
+            }
+            vc.dismiss()
         } catch ClientCertificateUtil.ImportError.wrongPassword {
             showWrongPasswordError()
         } catch {
