@@ -2,27 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "pEpForIOS-Tutorial-vertical-1-en-1.pdf"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "pEpForIOS-Tutorial-vertical-1-de.pdf",
-      "locale" : "de"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "pEpForIOS-Tutorial-vertical-1-en.pdf",
-      "locale" : "en"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "pEpForIOS-Tutorial-vertical-1-es.pdf",
-      "locale" : "es"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "pEpForIOS-Tutorial-vertical-1-fr.pdf",
-      "locale" : "fr"
+      "filename" : "pEpForIOS-Tutorial-vertical-1-en.pdf"
     }
   ],
   "info" : {
