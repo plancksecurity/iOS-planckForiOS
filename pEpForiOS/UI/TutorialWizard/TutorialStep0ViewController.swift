@@ -33,8 +33,8 @@ class TutorialStep0ViewController: TutorialStepViewController {
     @IBOutlet weak private var distanceBetweenTopbarLabelAndPrivacyStatus2Constraint: NSLayoutConstraint!
     @IBOutlet weak private var distanceBetweenTopbarImageAndBottomLabelConstraint: NSLayoutConstraint!
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
         adjustConstraintsIfNeeded()
     }
    

@@ -68,7 +68,8 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        configureView()
+//        guard let childern = parent?.children as? [TutorialStepViewController] else { return }
+//        _ = childern.map { $0.configureView() }
     }
 
     /// Abstract method to be overriden

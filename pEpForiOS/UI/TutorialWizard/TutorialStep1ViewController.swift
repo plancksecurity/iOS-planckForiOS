@@ -27,8 +27,8 @@ class TutorialStep1ViewController: TutorialStepViewController {
         setupMistrustedDescriptionLabel()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
         adjustConstraintsIfNeeded()
     }
 }

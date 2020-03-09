@@ -25,8 +25,8 @@ class TutorialStep2ViewController: TutorialStepViewController {
         stupButtons()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
         adjustConstraintsIfNeeded()
     }
 }

@@ -8,82 +8,42 @@
 
 import UIKit
 
+/// View Controller that handles the tutorial
 final class TutorialWizardViewController: PEPPageViewControllerBase {
-    static let storyboardId = "TutorialWizardViewController"
+    private static let storyboardId = "TutorialWizardViewController"
     private var viewModel = TutorialWizardViewMode()
-    private var tutorialImages = [TutorialViewController.TutorialImage]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpView()
-
+        setupView()
         if #available(iOS 13, *) {
             Appearance.customiseForTutorial(viewController: self)
         }
     }
 
-    static func fromStoryboard(tutorialImages: [TutorialViewController.TutorialImage])
-        -> TutorialWizardViewController? {
-            let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
-            guard let tutorialWizard = storyboard.instantiateViewController(
-                withIdentifier: storyboardId) as?
-                TutorialWizardViewController else {
-                    Log.shared.errorAndCrash("Fail to instantiateViewController TutorialWizardViewController")
-                    return nil
-            }
-            tutorialWizard.tutorialImages = tutorialImages
-
-            tutorialWizard.modalPresentationStyle = .overFullScreen
-
-            return tutorialWizard
-    }
-
-    static func wizardImages() -> [TutorialViewController.TutorialImage] {
-        let view_1:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: "pEpForIOS-Tutorial-vertical-1"), #imageLiteral(resourceName: "pEpForIOS-Tutorial-horizontal-1"))
-        let view_2:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: "pEpForIOS-Tutorial-vertical-2"), #imageLiteral(resourceName: "pEpForIOS-Tutorial-horizontal-2"))
-        let view_3:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: "pEpForIOS-Tutorial-vertical-3"), #imageLiteral(resourceName: "pEpForIOS-Tutorial-horizontal-3"))
-        let view_4:TutorialViewController.TutorialImage = (#imageLiteral(resourceName: "pEpForIOS-Tutorial-vertical-4"), #imageLiteral(resourceName: "pEpForIOS-Tutorial-horizontal-4"))
-        return [view_1, view_2, view_3, view_4]
-    }
-
-    static func presentTutorialWizard(viewController: UIViewController) {
-        let tutrialImages = wizardImages()
-        guard let tutorialWizard =
-            TutorialWizardViewController.fromStoryboard(tutorialImages: tutrialImages) else {
-                return
+    /// Presents the tutorial wizard
+    ///
+    /// - Parameter viewController: The base view controller to present the tutorial.
+    /// This allows to present the tutorial from several places.
+    public static func presentTutorialWizard(viewController: UIViewController) {
+        let storyboard = UIStoryboard(name: Constants.tutorialStoryboard, bundle: .main)
+        guard let tutorialWizard = storyboard.instantiateViewController(withIdentifier: storyboardId) as? TutorialWizardViewController else {
+            Log.shared.errorAndCrash("Fail to instantiateViewController TutorialWizardViewController")
+            return
         }
-
+        tutorialWizard.modalPresentationStyle = .overFullScreen
         tutorialWizard.isScrollEnable = true
         tutorialWizard.showDots = true
         tutorialWizard.pageControlTint = .pEpGray
         tutorialWizard.pageControlPageIndicatorColor = .black
         tutorialWizard.pageControlBackgroundColor = .white
-
         let navigationController = UINavigationController(rootViewController: tutorialWizard)
-
         DispatchQueue.main.async { [weak viewController] in
             navigationController.modalPresentationStyle = .fullScreen
             viewController?.present(navigationController, animated: true, completion: nil)
         }
     }
-
-    @objc func closeScreen() {
-        dismiss(animated: true)
-    }
-
-    func updateNavButton(lastScreen: Bool) {
-        var navBarButtonTitle = ""
-        if lastScreen {
-            navBarButtonTitle = NSLocalizedString("Finish",
-                                                  comment: "Start up tutorial finish button")
-        } else {
-            navBarButtonTitle = NSLocalizedString("Skip",
-                                                  comment: "Start up tutorial skip button")
-        }
-        let endButton = UIBarButtonItem(title: navBarButtonTitle, style: .done, target: self, action: #selector(closeScreen))
-        self.navigationItem.rightBarButtonItem  = endButton
-    }
-
+    
     override func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         super.pageViewController(pageViewController, didFinishAnimating: finished, previousViewControllers: previousViewControllers, transitionCompleted: completed)
         updateNavButton(lastScreen: isLast())
@@ -93,36 +53,42 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
 // MARK: - Private
 
 extension TutorialWizardViewController {
-    private func setUpView() {
+    private func setupView() {
         views = tutorialViewControllers()
         view.backgroundColor = .white
         navigationController?.navigationBar.barTintColor = .pEpGreen
         navigationController?.navigationBar.tintColor = .white
         updateNavButton(lastScreen: false)
     }
-
+    
     //Staring point
     private func tutorialViewControllers() -> [UIViewController] {
         var result = [UIViewController]()
         
+        //We have 3 steps in the tutorial.
         for step in 0...2 {
-            guard let stepViewController = TutorialViewController.fromStoryboard(step: step) else {
-                Log.shared.errorAndCrash("Can't instanciate VC")
-                return [UIViewController]()
-            }
+            let storyboard = UIStoryboard(name: Constants.tutorialStoryboard, bundle: .main)
+            let stepViewController = storyboard.instantiateViewController(withIdentifier: "TutorialStep\(step)ViewController")
             result.append(stepViewController)
         }
-//
-//        for (step, tutorialImage) in tutorialImages.enumerated() {
-//
-//            if step == 0 || step == 1 || step == 2 {
-//                guard let stepViewController = TutorialViewController.fromStoryboard(step: step) else {
-//                    Log.shared.errorAndCrash("Can't instanciate VC")
-//                    return [UIViewController]()
-//                }
-//                result.append(stepViewController)
-//            }
-//        }
         return result
+    }
+    
+    /// Close the tutorial.
+    @objc private func closeScreen() {
+        dismiss(animated: true)
+    }
+
+    /// Updates the right bar button, regarding if it's the last element or not.
+    /// - Parameter lastScreen: Indicates if it's the last screen.
+    private func updateNavButton(lastScreen: Bool) {
+        var navBarButtonTitle = ""
+        if lastScreen {
+            navBarButtonTitle = NSLocalizedString("Finish", comment: "Start up tutorial finish button")
+        } else {
+            navBarButtonTitle = NSLocalizedString("Skip", comment: "Start up tutorial skip button")
+        }
+        let endButton = UIBarButtonItem(title: navBarButtonTitle, style: .done, target: self, action: #selector(closeScreen))
+        navigationItem.rightBarButtonItem = endButton
     }
 }
