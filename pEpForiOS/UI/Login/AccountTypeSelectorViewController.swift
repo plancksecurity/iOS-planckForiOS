@@ -126,7 +126,7 @@ extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegat
                                       comment: "No client certificate exists alert title")
         let message = NSLocalizedString("No client certificate exists. You have to import your client certificate before entering login data.",
                                         comment: "No client certificate exists alert message")
-        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message, inViewController: self) { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return

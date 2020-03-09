@@ -194,7 +194,7 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
 
     func showErrorAlert(error: Error) {
         Log.shared.error("%@", "\(error)")
-        UIUtils.show(error: error)
+        UIUtils.show(error: error, inViewController: self)
     }
 
     func showLoadingView() {
