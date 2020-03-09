@@ -18,6 +18,8 @@ class TutorialStep2ViewController: TutorialStepViewController {
     @IBOutlet private weak var confirmTrustwordsExplanationLabel: UILabel!
     @IBOutlet weak var trustwordsContainer: UIView!
 
+    @IBOutlet weak var containerLeadingConstraint: NSLayoutConstraint!
+    
     public override func configureView() {
         setupHandshakeTitle()
         setupPrivacyStatusExplanationLabel()
@@ -77,16 +79,17 @@ extension TutorialStep2ViewController {
             return
         }
 
+        containerLeadingConstraint.constant = Constants.Portrait.containerLeading
         superView.layoutIfNeeded()
     }
     
     private struct Constants {
         struct Portrait {
-
+            static let containerLeading: CGFloat = 50
         }
 
         struct Landscape {
-
+            static let containerLeading: CGFloat = 80
         }
     }
 }

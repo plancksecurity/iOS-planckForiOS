@@ -62,7 +62,7 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
         super.viewWillAppear(animated)
         if shouldUpdateLayoutDueRotation {
             guard let superView = view.superview else {
-                Log.shared.errorAndCrash("Superview is lost")
+                Log.shared.error("Superview is lost")
                 return
             }
             superView.setNeedsLayout()
@@ -70,7 +70,6 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
             shouldUpdateLayoutDueRotation = false
         }
     }
-
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
