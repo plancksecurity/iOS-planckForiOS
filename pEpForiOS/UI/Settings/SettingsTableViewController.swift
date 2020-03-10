@@ -239,7 +239,7 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let identifier = segueIdentifier(for: indexPath)
         switch identifier {
-        case .passiveMode, .pEpSync, .protectMessageSubject:
+        case .passiveMode, .pEpSync, .protectMessageSubject, .unsecureReplyWarningEnabled:
             return
         case .resetAccounts:
             
