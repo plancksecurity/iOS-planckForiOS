@@ -843,6 +843,14 @@ extension EmailListViewController: EmailListViewModelDelegate {
             return
         }
 
+        let numberOfRows = tableView.numberOfRows(inSection: indexPath.section)
+        if indexPath.row >= numberOfRows {
+            Log.shared.errorAndCrash("Selecting out-of-bounds index %d of max %d",
+                                     indexPath.row,
+                                     numberOfRows - 1)
+            return
+        }
+
         // Select the cell shown in DetailView and scroll to it (nicely animated) in case it is
         // currently not visible.
         guard let visibleIndexPaths = tableView.indexPathsForVisibleRows else {
