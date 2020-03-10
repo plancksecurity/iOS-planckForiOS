@@ -83,18 +83,23 @@ extension AccountTypeSelectorViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "providerCell",
-                                                            for: indexPath) as? AccountTypeSelectorCollectionViewCell else {
-            return UICollectionViewCell()
-        }
         let cellProvider = viewModel[indexPath.row]
         switch cellProvider {
         case .gmail:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "providerImageCell",
+                                                                for: indexPath) as? AccountTypeSelectorImageCollectionViewCell else {
+                                                                    return UICollectionViewCell()
+            }
             cell.configure(withFileName: viewModel.fileNameOrText(provider: cellProvider))
+            return cell
         case .other, .clientCertificate:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "providerTextCell",
+                                                                for: indexPath) as? AccountTypeSelectorTextCollectionViewCell else {
+                                                                    return UICollectionViewCell()
+            }
             cell.configure(withText: viewModel.fileNameOrText(provider: cellProvider))
+            return cell
         }
-        return cell
     }
 }
 
