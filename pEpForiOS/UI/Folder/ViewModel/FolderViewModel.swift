@@ -9,12 +9,10 @@
 import Foundation
 import MessageModel
 
-
 /// View Model for folder hierarchy.
 public class FolderViewModel {
-    weak var delegate : FolderViewModelDelegate?
-    let folderSyncService = FolderSyncService()
-    
+
+    lazy var folderSyncService = FetchImapFoldersService()
     var items: [FolderSectionViewModel]
 
     /// Instantiates a folder hierarchy model with:
@@ -46,20 +44,28 @@ public class FolderViewModel {
         return Account.all().isEmpty
     }
 
-    func createEmailListViewModel(forAccountAt accountIndex: Int?, andFolderAt folderIndex: Int?,
-                                  messageSyncService: MessageSyncServiceProtocol)
-        -> EmailListViewModel {
-            guard let safeAccountIndex = accountIndex,
-                let safeFolderIndex = folderIndex else {
-                    return EmailListViewModel(messageSyncService: messageSyncService)
+    func refreshFolderList(completion: (()->())? = nil) {
+        do {
+            try folderSyncService.runService(inAccounts: Account.all()) { Success in
+                completion?()
             }
-            return EmailListViewModel(messageSyncService: messageSyncService,
-                                      folderToShow: self[safeAccountIndex][safeFolderIndex].folder)
-    }
-    
-    func refreshFolderList() {
-        folderSyncService.delegate = self
-        folderSyncService.requestFolders(inAccounts: Account.all())
+        } catch {
+            guard let er = error as? FetchImapFoldersService.FetchError else {
+                Log.shared.errorAndCrash("Unexpected error")
+                completion?()
+                return
+            }
+
+            switch er {
+            case .accountNotFound:
+                Log.shared.errorAndCrash("Account not found")
+                completion?()
+            case .isFetching:
+                //is Fetching do nothing
+                break
+            }
+            completion?()
+        }
     }
 
     subscript(index: Int) -> FolderSectionViewModel {
@@ -70,11 +76,5 @@ public class FolderViewModel {
 
     var count: Int {
         return self.items.count
-    }
-}
-
-extension FolderViewModel : FolderSyncServiceDelegate {
-    func finishedSyncingFolders() {
-        delegate?.folderViewModelDidUpdateFolderList(viewModel: self)
     }
 }

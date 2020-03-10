@@ -8,6 +8,11 @@
 
 import Foundation
 import MessageModel
+import pEpIOSToolbox
+
+protocol TrustedServerSettingsViewModelDelegate: class {
+    func showAlertBeforeStoringSecurely(forIndexPath indexPath: IndexPath)
+}
 
 struct TrustedServerSettingsViewModel {
     struct Row: Equatable {
@@ -16,46 +21,78 @@ struct TrustedServerSettingsViewModel {
     }
 
     private(set) var rows = [Row]()
+    weak var delegate: TrustedServerSettingsViewModelDelegate?
 
     init() {
         reset()
     }
 
-    mutating func setStoreSecurely(forAccountWith address: String, toValue newValue: Bool) {
-        guard serversAllowedToManuallyTrust().contains(address) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Address should be allowed")
+    /// Handle setting an account securely. Will not show any alert to confirm the acction
+    /// - Parameters:
+    ///   - indexPath: indexPath of the cell that trigger the action
+    ///   - newValue: new value of the Switch of the cell that trigger the action
+    mutating func setStoreSecurely(indexPath: IndexPath, toValue newValue: Bool) {
+        guard let account = account(fromIndexPath: indexPath) else {
+            Log.shared.errorAndCrash("No address found")
             return
         }
 
-        for i in 0..<rows.count {
-            let row = rows[i]
-            if row.address == address {
-                rows[i] = Row(address: row.address, storeMessagesSecurely: newValue)
-                break
-            }
+        updateRowData(indexPath: indexPath, toValue: newValue)
+        setStoreSecurely(forAccount: account, toValue: newValue)
+    }
+
+    /// Handle setting an account securely. If the account server is not  will show an alert to confirm the acction
+    /// - Parameters:
+    ///   - indexPath: indexPath of the cell that trigger the action
+    ///   - newValue: new value of the Switch of the cell that trigger the action
+    mutating func handleStoreSecurely(indexPath: IndexPath, toValue newValue: Bool) {
+        guard let account = account(fromIndexPath: indexPath) else {
+            Log.shared.errorAndCrash("No address found")
+            return
         }
 
-        let isTruestedServer = !newValue
-        if isTruestedServer {
-            AppSettings.addToManuallyTrustedServers(address: address)
+        if  shouldShowWaringnBeforeChangingTrustState(forAccount: account, storeSecurely: newValue) {
+            delegate?.showAlertBeforeStoringSecurely(forIndexPath: indexPath)
         } else {
-            AppSettings.removeFromManuallyTrustedServers(address: address)
+            updateRowData(indexPath: indexPath, toValue: newValue)
+            setStoreSecurely(forAccount: account, toValue: newValue)
         }
+    }
+}
+
+// MARK: - Private
+
+extension TrustedServerSettingsViewModel {
+    private func account(fromIndexPath indexPath: IndexPath) -> Account? {
+        let address = rows[indexPath.row].address
+        return Account.Fetch.accountAllowedToManuallyTrust(fromAddress: address)
+    }
+
+    private func setStoreSecurely(forAccount account: Account, toValue newValue: Bool) {
+        account.imapServer?.manuallyTrusted = !newValue
+        account.save()
+    }
+
+    mutating private func updateRowData(indexPath: IndexPath, toValue newValue: Bool) {
+        let row = rows[indexPath.row]
+        rows[indexPath.row] = Row(address: row.address, storeMessagesSecurely: newValue)
+    }
+
+    private func shouldShowWaringnBeforeChangingTrustState(forAccount account: Account,
+                                                           storeSecurely: Bool) -> Bool {
+        return  !storeSecurely && account.shouldShowWaringnBeforeTrusting
     }
 
     mutating private func reset() {
-        let servers = serversAllowedToManuallyTrust()
+        let accounts = Account.Fetch.allAccountsAllowedToManuallyTrust()
         var createes = [Row]()
-        for address in servers {
-            let isTrusted = AppSettings.isManuallyTrustedServer(address: address)
-            createes.append(Row(address: address, storeMessagesSecurely: !isTrusted))
+        for account in accounts {
+            guard let isTrusted = account.imapServer?.manuallyTrusted else {
+                Log.shared.errorAndCrash("Trusted server has no imapServer")
+                continue
+            }
+            createes.append(Row(address: account.user.address, storeMessagesSecurely: !isTrusted))
         }
         rows = createes
-    }
-
-    private func serversAllowedToManuallyTrust() -> [String] {
-        let accounts = Server.Fetch.allAccountsAllowedToManuallyTrust()
-        let addresses = accounts.map { $0.user.address }
-        return addresses
     }
 }

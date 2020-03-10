@@ -8,59 +8,37 @@
 
 import CoreData
 
+import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    let comp = "AppDelegate"
-
     var window: UIWindow?
 
-    var appConfig: AppConfig?
+    private var appConfig: AppConfig?
 
-    /** The SMTP/IMAP backend */
-    var networkService: NetworkService?
+    /** The model */
+    private var messageModelService: MessageModelServiceProtocol?
 
-    /**
-     UI triggerable actions for syncing messages.
-     */
-    var messageSyncService: MessageSyncService?
+    /// Error Handler bubble errors up to the UI
+    private var errorPropagator = ErrorPropagator()
 
-    /**
-     Error Handler to connect backend with UI
-     */
-    var errorPropagator = ErrorPropagator()
+    /// This is used to handle OAuth2 requests.
+    private let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
-    var application: UIApplication {
-        return UIApplication.shared
-    }
+    private var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
 
-    let mySelfQueue = LimitedOperationQueue()
+    /// Set to true whever the app goes into background, so the main PEPSession gets cleaned up.
+    private var shouldDestroySession = false
 
-    let sendLayerDelegate = DefaultUISendLayerDelegate()
-
-    /**
-     This is used to handle OAuth2 requests.
-     */
-    let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
-
-    var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskInvalid
-    var mySelfTaskId = UIBackgroundTaskInvalid
-
-    /**
-     Set to true whever the app goes into background, so the main session gets cleaned up.
-     */
-    var shouldDestroySession = false
-
-    func applicationDirectory() -> URL? {
-        let fm = FileManager.default
-        let dirs = fm.urls(for: .libraryDirectory, in: .userDomainMask)
-        return dirs.first
-    }
+    private lazy var clientCertificateUIUtil: ClientCertificateUIUtil = {
+        return ClientCertificateUIUtil()
+    }()
 
     private func setupInitialViewController() -> Bool {
         guard let appConfig = appConfig else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No AppConfig")
+            Log.shared.errorAndCrash("No AppConfig")
             return false
         }
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
@@ -68,8 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let navController = initialNVC.viewControllers.first as? UINavigationController,
             let rootVC = navController.rootViewController as? FolderTableViewController
             else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Problem initializing UI")
+                Log.shared.errorAndCrash("Problem initializing UI")
                 return false
         }
         rootVC.appConfig = appConfig
@@ -81,176 +58,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    /// Signals al services to start/resume.
-    /// Also signals it is save to use PEPSessions (again)
-    private func startServices() {
-        Log.shared.resume()
-        networkService?.start()
-    }
-
-    /// Signals all PEPSession users to stop using a session as soon as possible.
-    /// NetworkService will assure all local changes triggered by the user are synced to the server
-    /// and call it's delegate (me) after the last sync operation has finished.
-    private func stopUsingPepSession() {
-        syncUserActionsAndCleanupbackgroundTaskId =
-            application.beginBackgroundTask(expirationHandler: { [weak self] in
-                guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                    return
-                }
-                Log.shared.warn(component: #function,
-                                content: "syncUserActionsAndCleanupbackgroundTask with ID " +
-                    "\(me.syncUserActionsAndCleanupbackgroundTaskId) expired.")
-                // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
-                // that brutally shuts down everything.
-                me.application.endBackgroundTask(me.syncUserActionsAndCleanupbackgroundTaskId)
-            })
-        networkService?.processAllUserActionsAndstop()
-        // Stop logging to Engine. It would create new sessions.
-        Log.shared.pause()
-    }
-
-    func cleanupPEPSessionIfNeeded() {
+    private func cleanupPEPSessionIfNeeded() {
         if shouldDestroySession {
             PEPSession.cleanup()
         }
     }
 
-    func kickOffMySelf() {
-        mySelfTaskId = application.beginBackgroundTask(expirationHandler: { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
-            Log.shared.warn(component: #function,
-                            content: "mySelfTaskId with ID \(me.mySelfTaskId) expired.")
-            // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
-            // that brutally shuts down everything.
-            me.application.endBackgroundTask(me.mySelfTaskId)
-        })
-        let op = MySelfOperation()
-        op.completionBlock = { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
-            // We might be the last service that finishes, so we have to cleanup.
-            self?.cleanupPEPSessionIfNeeded()
-            if me.mySelfTaskId == UIBackgroundTaskInvalid {
-                return
-            }
-            me.application.endBackgroundTask(me.mySelfTaskId)
-            me.mySelfTaskId = UIBackgroundTaskInvalid
-
-        }
-        mySelfQueue.addOperation(op)
-    }
-
-    func loadCoreDataStack() {
-        let objectModel = MessageModelData.MessageModelData()
-        let options = [NSMigratePersistentStoresAutomaticallyOption: true,
-                       NSInferMappingModelAutomaticallyOption: true]
-        do {
-            try Record.loadCoreDataStack(managedObjectModel: objectModel,
-                                         storeURL: nil,
-                                         options: options)
-        } catch {
-            Log.shared.errorAndCrash(component: comp, errorString: "Error while Loading DataStack")
-        }
-    }
-
-    /**
-     Removes all keys, and the management DB, when the user chooses so.
-     - Returns: True if the pEp management DB was deleted, so further actions can be taken.
-     */
-    func deleteManagementDBIfRequired() -> Bool {
-        if AppSettings.shouldReinitializePepOnNextStartup {
-            AppSettings.shouldReinitializePepOnNextStartup = false
-            let _ = PEPUtil.pEpClean()
-            return true
-        }
-        return false
-    }
-
-    /**
-     If pEp has been reinitialized, delete all folders and messsages.
-     */
-    func deleteAllFolders(pEpReInitialized: Bool) {
-        if pEpReInitialized {
-            // NSBatchDeleteRequest doesn't work so well here because of the need
-            // to nullify the relations. This is used only for internal testing, so the
-            // performance is neglible.
-            let folders = CdFolder.all() as? [CdFolder] ?? []
-            for f in folders {
-                f.delete()
-            }
-
-            let msgs = CdMessage.all() as? [CdMessage] ?? []
-            for m in msgs {
-                m.delete()
-            }
-
-            CdHeaderField.deleteOrphans()
-            Record.saveAndWait()
-        }
-    }
-
     private func setupServices() {
-        let theMessageSyncService = MessageSyncService()
-        messageSyncService = theMessageSyncService
-        let theAppConfig = AppConfig(mySelfer: self,
-                                     messageSyncService: theMessageSyncService,
-                                     errorPropagator: errorPropagator,
-                                     oauth2AuthorizationFactory: oauth2Provider)
-        appConfig = theAppConfig
+        let keySyncHandshakeService = KeySyncHandshakeService()
+        messageModelService = MessageModelService(errorPropagator: errorPropagator,
+                                                  cnContactsAccessPermissionProvider: AppSettings.shared,
+                                                  keySyncServiceHandshakeDelegate: keySyncHandshakeService,
+                                                  keySyncStateProvider: AppSettings.shared)
+
+        appConfig = AppConfig(errorPropagator: errorPropagator,
+                              oauth2AuthorizationFactory: oauth2Provider,
+                              keySyncHandshakeService: keySyncHandshakeService)
+
         // This is a very dirty hack!! See SecureWebViewController docs for details.
-        SecureWebViewController.appConfigDirtyHack = theAppConfig
-
-        // set up logging for libraries
-        MessageModelConfig.logger = Log.shared
-
-        loadCoreDataStack()
-
-        networkService = NetworkService(mySelfer: self, errorPropagator: errorPropagator)
-        networkService?.sendLayerDelegate = sendLayerDelegate
-        networkService?.delegate = self
-        CdAccount.sendLayer = networkService
+        SecureWebViewController.appConfigDirtyHack = appConfig
     }
 
-    // Safely restarts all services
-    private func shutdownAndPrepareServicesForRestart() {
-        // We cancel the Network Service to make sure it is idle and ready for a clean restart.
-        // The actual restart of the services happens in NetworkServiceDelegate callbacks.
-        networkService?.cancel()
-    }
-
-    private func prepareUserNotifications() {
+    private func askUserForNotificationPermissions() {
         UserNotificationTool.resetApplicationIconBadgeNumber()
-        UserNotificationTool.askForPermissions() { granted in
-            // We do not care about whether or not the user granted permissions to
-            // post notifications here (e.g. we ignore granted)
-            // The calls are nested to avoid simultaniously showing permissions alert for notifications
-            // and contact access.
-            DispatchQueue.global(qos: .userInitiated).async {
-                MessageModel.perform {
-                    AddressBook.checkAndTransfer()
-                }
-            }
-        }
+        UserNotificationTool.askForPermissions()
     }
 
-    // MARK: - UIApplicationDelegate
+    // MARK: - HELPER
+
+    private func cleanup(andCall completionHandler:(UIBackgroundFetchResult) -> Void,
+                                result:UIBackgroundFetchResult) {
+        PEPSession.cleanup()
+        completionHandler(result)
+    }
+}
+
+// MARK: - UIApplicationDelegate
+
+extension AppDelegate {
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.warn(component: "UIApplicationDelegate",
-                        content: "applicationDidReceiveMemoryWarning")
+        Log.shared.errorAndCrash("applicationDidReceiveMemoryWarning")
     }
 
-    func application(
-        _ application: UIApplication, didFinishLaunchingWithOptions
-        launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        FolderThreading.switchThreading(onOrOff: AppSettings.threadedViewEnabled)
-
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them
             // and pretty much don't do anything.
@@ -258,165 +110,114 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
-
         Appearance.pEp()
-
-        let pEpReInitialized = deleteManagementDBIfRequired()
-
         setupServices()
-        Log.info(component: comp,
-                 content: "Library url: \(String(describing: applicationDirectory()))")
-        deleteAllFolders(pEpReInitialized: pEpReInitialized)
+        askUserForNotificationPermissions()
+        var result = setupInitialViewController()
 
-        prepareUserNotifications()
-
-        let result = setupInitialViewController()
+        if let openedToOpenFile = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
+            // We have been opened by the OS to handle a certain file.
+             result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
+        }
 
         return result
     }
 
+    /// Sent when the application is about to move from active to inactive state. This can occur
+    /// for certain types of temporary interruptions (such as an incoming phone call or SMS message)
+    /// or when the user quits the application and it begins the transition to the background state.
+    /// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame
+    /// rates. Games should use this method to pause the game.
+    ///
+    /// - note: this is also called when:
+    ///         * an alert is shown (e.g. OS asks for CNContact access permissions)
+    ///         * the user swipes up/down the "ControllCenter"
+    ///         * the keyboard is shown the first time on iOS13 and the "you can now swipe instead
+    ///             of typing" view is shown
     func applicationWillResignActive(_ application: UIApplication) {
-        shutdownAndPrepareServicesForRestart()
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        // We intentionally do nothing here.
+        // We assume to be kept alive until being informed (by another delegate method) otherwize.
     }
 
+    /// Use this method to release shared resources, save user data, invalidate timers, and store
+    /// enough application state information to restore your application to its current state in
+    /// case it is terminated later.
+    /// If your application supports background execution, this method is called instead of
+    /// applicationWillTerminate: when the user quits.
     func applicationDidEnterBackground(_ application: UIApplication) {
-        Log.info(component: comp, content: "applicationDidEnterBackground")
+        Log.shared.info("applicationDidEnterBackground")
+        Session.main.commit()
         shouldDestroySession = true
-        // generate keys in the background
-        kickOffMySelf()
-        stopUsingPepSession()
+        messageModelService?.finish()
     }
 
+    /// Called as part of the transition from the background to the inactive state; here you can
+    /// undo many of the changes made on entering the background.
     func applicationWillEnterForeground(_ application: UIApplication) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            MessageModel.perform {
-                AddressBook.checkAndTransfer()
-            }
-        }
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        // do nothing (?)
     }
 
-    // Note: this is also called when:
-    // - swiping down the iOS system notification center
-    // - iOS auto lock takes place
+    /// Restart any tasks that were paused (or not yet started) while the application was inactive.
+    /// If the application was previously in the background, optionally refresh the user interface.
+    /// Note: this is also called when:
+    /// - swiping down the iOS system notification center
+    /// - iOS auto lock takes place
     func applicationDidBecomeActive(_ application: UIApplication) {
         if MiscUtil.isUnitTest() {
             // Do nothing if unit tests are running
             return
         }
-
         shouldDestroySession = false
-
-        shutdownAndPrepareServicesForRestart()
-        kickOffMySelf()
         UserNotificationTool.resetApplicationIconBadgeNumber()
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        messageModelService?.start()
     }
 
+    /// Called when the application is about to terminate. Save data if appropriate. See also
+    /// applicationDidEnterBackground:.
+    /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        // Saves changes in the application's managed object context before the application terminates.
+        messageModelService?.stop()
         shouldDestroySession = true
-
-        // Just in case, last chance to clean up. Should not be necessary though.
-        PEPSession.cleanup()
+        cleanupPEPSessionIfNeeded()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        
-        guard let networkService = networkService else {
-            Log.shared.error(component: #function, errorString: "no networkService")
+
+        guard let messageModelService = messageModelService else {
+            Log.shared.error("no networkService")
             return
         }
-        
-        networkService.checkForNewMails() {[weak self] (numMails: Int?) in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
+
+        messageModelService.checkForNewMails_old() {[unowned self] (numMails: Int?) in
             guard let numMails = numMails else {
-                me.cleanupAndCall(completionHandler: completionHandler, result: .failed)
+                self.cleanup(andCall: completionHandler, result: .failed)
                 return
             }
             switch numMails {
             case 0:
-                me.cleanupAndCall(completionHandler: completionHandler, result: .noData)
+                self.cleanup(andCall: completionHandler, result: .noData)
             default:
-                me.informUser(numNewMails: numMails) {
-                    me.cleanupAndCall(completionHandler: completionHandler, result: .newData)
+                self.informUser(numNewMails: numMails) {
+                    self.cleanup(andCall: completionHandler, result: .newData)
                 }
             }
         }
     }
 
-    func application(_ app: UIApplication, open url: URL,
-                     options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        // Unclear if this is needed, presumabley doesn't get invoked for OAuth2 because
-        // SFSafariViewController is involved there.
-        return oauth2Provider.processAuthorizationRedirect(url: url)
+    func application(_ app: UIApplication,
+                     open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+         return handleUrlTheOSHasBroughtUsToForgroundFor(url)
     }
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity,
-                     restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb,
             let theUrl = userActivity.webpageURL {
             return oauth2Provider.processAuthorizationRedirect(url: theUrl)
         }
         return false
-    }
-
-    // MARK: - HELPER
-
-    private func cleanupAndCall(completionHandler:(UIBackgroundFetchResult) -> Void,
-                                result:UIBackgroundFetchResult) {
-        PEPSession.cleanup()
-        completionHandler(result)
-    }
-}
-
-// MARK: - KickOffMySelfProtocol
-
-extension AppDelegate: KickOffMySelfProtocol {
-    func startMySelf() {
-        kickOffMySelf()
-    }
-}
-
-// MARK: - NetworkServiceDelegate
-
-extension AppDelegate: NetworkServiceDelegate {
-    func networkServiceDidFinishLastSyncLoop(service: NetworkService) {
-        // Cleanup sessions.
-        Log.shared.infoComponent(#function, message: "Clean up sessions.")
-        PEPSession.cleanup()
-        if syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskInvalid {
-            return
-        }
-        if UIApplication.shared.applicationState != .background {
-            // We got woken up again before syncUserActionsAndCleanupbackgroundTask finished.
-            // No problem, start regular sync loop.
-            startServices()
-        }
-        application.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
-        syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskInvalid
-    }
-
-    func networkServiceDidCancel(service: NetworkService) {
-        switch UIApplication.shared.applicationState {
-        case .background:
-            // We have been cancelled because we are entering background.
-            // Quickly sync local changes and clean up.
-            stopUsingPepSession()
-        case .inactive:
-            // We re inactive. Keep services paused -> Do nothing
-            break
-        case .active:
-            // We have been cancelled soley to assure a clean restart.
-            startServices()
-        }
     }
 }
 
@@ -428,5 +229,36 @@ extension AppDelegate {
             UserNotificationTool.postUserNotification(forNumNewMails: numNewMails)
             completion()
         }
+    }
+}
+
+// MARK: - Client Certificate Import
+
+extension AppDelegate {
+
+    @discardableResult
+    private func handleUrlTheOSHasBroughtUsToForgroundFor(_ url: URL) -> Bool {
+        switch url.pathExtension {
+        case ClientCertificateUIUtil.pEpClientCertificateExtension:
+            return handleClientCertificateImport(forCertAt: url)
+        default:
+            Log.shared.errorAndCrash("Unexpected call. open for file with extention: %@",
+                                     url.pathExtension)
+        }
+        return false
+    }
+
+    private func handleClientCertificateImport(forCertAt url: URL) -> Bool {
+        guard url.pathExtension == ClientCertificateUIUtil.pEpClientCertificateExtension else {
+            Log.shared.errorAndCrash("This method is only for .pEp12 files.")
+            return false
+        }
+        guard let topVC = UIApplication.topViewController() else {
+            Log.shared.errorAndCrash("We must have a VC at this point.")
+            return false
+        }
+        clientCertificateUIUtil.importClientCertificate(at: url,
+                                                        viewControllerToPresentUiOn: topVC)
+        return true
     }
 }

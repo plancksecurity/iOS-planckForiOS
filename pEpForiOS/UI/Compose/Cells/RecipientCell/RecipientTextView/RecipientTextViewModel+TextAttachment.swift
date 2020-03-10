@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
 
 extension RecipientTextViewModel {
 
@@ -15,13 +16,17 @@ extension RecipientTextViewModel {
         private var font: UIFont
 
         init(recipient: Identity,
-             font:  UIFont = UIFont.pEpInput,
-             textColor: UIColor = .pEpGreen,
+             font:  UIFont = UIFont.pepFont(style: UIFont.TextStyle.footnote,
+                                            weight: UIFont.Weight.regular),
+             textColor: UIColor = .pEpDarkText,
              maxWidth: CGFloat = 0.0) {
             self.recipient = recipient
             self.font = font
             super.init(data: nil, ofType: nil)
-            setupRecipientImage(for: recipient, font: font, textColor: textColor, maxWidth: maxWidth)
+            setupRecipientImage(for: recipient,
+                                font: font,
+                                textColor: textColor,
+                                maxWidth: maxWidth)
         }
 
         required init?(coder aDecoder: NSCoder) {
@@ -43,12 +48,12 @@ extension RecipientTextViewModel {
 
         private func setupRecipientImage(for recipient: Identity,
                                          font:  UIFont,
-                                         textColor: UIColor = .pEpGreen,
+                                         textColor: UIColor = .pEpDarkText,
                                          maxWidth: CGFloat = 0.0) {
             let text = recipient.address
             let attributes = [
-                NSAttributedStringKey.foregroundColor: textColor,
-                NSAttributedStringKey.font: font
+                NSAttributedString.Key.foregroundColor: textColor,
+                NSAttributedString.Key.font: font
             ]
 
             let textMargin: CGFloat = 3.0
@@ -78,7 +83,7 @@ extension RecipientTextViewModel {
                       attributes: attributes, context: nil)
 
             guard let createe = UIGraphicsGetImageFromCurrentImageContext() else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No img")
+                Log.shared.errorAndCrash("No img")
                 return
             }
             UIGraphicsEndImageContext()

@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 class SuggestViewModelTest: CoreDataDrivenTestBase {
     static let defaultNumExistingContacts = 5
@@ -80,7 +80,8 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
     func testUserSelection_oneExists() {
         let numSuggestionsExpected = 1
         let selectRow = numSuggestionsExpected - 1
-        let existing = Identity(address: "testUserSelection@oneExists.security")
+        let existing = Identity(address: "testUserSelection@oneExists.security",
+                                userID: UUID().uuidString)
         existing.save()
         existingIdentities = [existing]
         assertResults(for: existing.address,
@@ -95,15 +96,20 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
         let numSuggestionsExpected = 2
         let selectRow = numSuggestionsExpected - 1
         let common = "testUserSelection@oneExists.security"
+
         let existing1 = Identity(address: "\(common)1")
         existing1.save()
+
         let existing2 = Identity(address: "\(common)2")
         existing2.save()
-        existingIdentities = [existing1, existing2]
+
+        existingIdentities = dataBaseOrder(identities: [existing1, existing2])
+        XCTAssertEqual(existingIdentities.count, numSuggestionsExpected)
+
         assertResults(for: common,
                       simulateUserSelectedRow: selectRow,
                       numExpectedResults: numSuggestionsExpected,
-                      expectedSelection: existing2,
+                      expectedSelection: existingIdentities[selectRow],
                       didToggleVisibilityMustBeCalled: true,
                       expectedDidToggleVisibilityToValue: true)
     }
@@ -112,15 +118,20 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
         let numSuggestionsExpected = 2
         let selectRow = 0
         let common = "testUserSelection@oneExists.security"
+
         let existing1 = Identity(address: "\(common)1")
         existing1.save()
+
         let existing2 = Identity(address: "\(common)2")
         existing2.save()
-        existingIdentities = [existing1, existing2]
+
+        existingIdentities = dataBaseOrder(identities: [existing1, existing2])
+        XCTAssertEqual(existingIdentities.count, numSuggestionsExpected)
+
         assertResults(for: common,
                       simulateUserSelectedRow: selectRow,
                       numExpectedResults: numSuggestionsExpected,
-                      expectedSelection: existing1,
+                      expectedSelection: existingIdentities[selectRow],
                       didToggleVisibilityMustBeCalled: true,
                       expectedDidToggleVisibilityToValue: true)
     }
@@ -131,13 +142,12 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
         existingIdentities = []
         for i in 1...numContacts {
             let id = Identity(address: "email\(i)@pep.security",
-                userID: nil,
+                userID: "\(i)",
                 addressBookID: nil,
-                userName: "id\(i)",
-                isMySelf: false)
-            id.save()
+                userName: "id\(i)")
             existingIdentities.append(id)
         }
+        moc.saveAndLogErrors()
     }
 
     /// - Parameters:
@@ -187,6 +197,24 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
             vm.handleRowSelected(at: selectRow)
         }
         waitForExpectations(timeout: TestUtil.waitTime)
+    }
+
+    /**
+     Sorts an `[Identity]` into database/stored order, that is, the order they
+     are stored in the database and would be returned in when using `Identity.all()`.
+     Note the use of `lowercased()`: Stored `Identity`s have their addresses lower-cased,
+     while self-created ones may not.
+     */
+    func dataBaseOrder(identities: [Identity]) -> [Identity] {
+        var addressSet = Set<String>()
+        for ident in identities {
+            let lcAddress = ident.address.lowercased()
+            addressSet = addressSet.union([lcAddress])
+        }
+
+        return Identity.all().filter {
+            return addressSet.contains($0.address.lowercased())
+        }
     }
 }
 

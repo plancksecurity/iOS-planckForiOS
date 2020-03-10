@@ -7,18 +7,8 @@
 //
 
 import MessageModel
-
-/// Informs the one that triggered the segued to here.
-protocol ComposeViewModelResultDelegate: class {
-    /// Called after a valid mail has been composed and saved for sending.
-    func composeViewModelDidComposeNewMail()
-    /// Called after saving a modified version of the original message.
-    /// (E.g. after editing a drafted message)
-    func composeViewModelDidModifyMessage()
-    /// Called after permanentaly deleting the original message.
-    /// (E.g. saving an edited oubox mail to drafts. It's permanentaly deleted from outbox.)
-    func composeViewModelDidDeleteMessage()
-}
+import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 protocol ComposeViewModelDelegate: class {
 
@@ -40,7 +30,7 @@ protocol ComposeViewModelDelegate: class {
 
     func sectionChanged(section: Int)
 
-    func colorBatchNeedsUpdate(for rating: PEP_rating, protectionEnabled: Bool)
+    func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool)
 
     func hideSuggestions()
 
@@ -55,10 +45,17 @@ protocol ComposeViewModelDelegate: class {
     func showDocumentAttachmentPicker()
 
     func documentAttachmentPickerDone()
+
+    func showTwoButtonAlert(withTitle title: String,
+                            message: String,
+                            cancelButtonText: String,
+                            positiveButtonText: String ,
+                            cancelButtonAction: @escaping ()->Void,
+                            positiveButtonAction: @escaping ()->Void)
+    func dismiss()
 }
 
 class ComposeViewModel {
-    weak var resultDelegate: ComposeViewModelResultDelegate?
     weak var delegate: ComposeViewModelDelegate? {
         didSet {
             delegate?.colorBatchNeedsUpdate(for: state.rating,
@@ -70,23 +67,45 @@ class ComposeViewModel {
 
     private var suggestionsVM: SuggestViewModel?
     private var lastRowWithSuggestions: IndexPath?
+
+    /// IndexPath of "To:" receipientVM
+    private var indexPathToVm: IndexPath {
+        return IndexPath(item: 0, section: 0)
+    }
+
+    /// IndexPath of "Subject" VM
+    private var indexPathSubjectVm: IndexPath {
+        let subjectSection = section(for: .subject)
+        guard
+            let vm = subjectSection?.rows.first,
+            let idxSubject = indexPath(for: vm) else {
+                Log.shared.errorAndCrash("No Subject?")
+                return IndexPath(row: 0, section: 0)
+        }
+        return idxSubject
+    }
+
+    /// IndexPath of "Body" VM
     private var indexPathBodyVm: IndexPath {
         let bodySection = section(for: .body)
         guard
             let vm = bodySection?.rows.first,
             let body = indexPath(for: vm) else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No body")
+                Log.shared.errorAndCrash("No body")
                 return IndexPath(row: 0, section: 0)
         }
         return body
     }
 
-    init(resultDelegate: ComposeViewModelResultDelegate? = nil,
-         composeMode: ComposeUtil.ComposeMode? = nil,
+    /// Private session to use for attachments (and maybe others) that are dangling/invalid until a
+    /// message to send is crafted. (E.g. attachments have message == nil, which is invalid and
+    /// would thus crash if anone commits the main session.
+    private let session = Session()
+
+    init(composeMode: ComposeUtil.ComposeMode? = nil,
          prefilledTo: Identity? = nil,
          prefilledFrom: Identity? = nil,
          originalMessage: Message? = nil) {
-        self.resultDelegate = resultDelegate
         let initData = InitData(withPrefilledToRecipient: prefilledTo,
                                 prefilledFromSender: prefilledFrom,
                                 orForOriginalMessage: originalMessage,
@@ -96,15 +115,24 @@ class ComposeViewModel {
         setup()
     }
 
+    public func handleDidReAppear() {
+        state.validate()
+    }
+
     public func viewModel(for indexPath: IndexPath) -> CellViewModel {
         return sections[indexPath.section].rows[indexPath.row]
     }
 
+    /// - returns: the indexpath of the cell to set focus the to.
     public func initialFocus() -> IndexPath {
         if state.initData?.toRecipients.isEmpty ?? false {
-            let to = IndexPath(row: 0, section: 0)
-            return to
+            // Use cases: new mail or forward (no To: prefilled)
+            return indexPathToVm
+        } else if state.subject.isEmpty || state.subject.isOnlyWhiteSpace() {
+            // Use case: open compose by clicking mailto: link
+            return indexPathSubjectVm
         } else {
+            // Use case: reply a mail (to and subject are set)
             return indexPathBodyVm
         }
     }
@@ -126,22 +154,42 @@ class ComposeViewModel {
     }
 
     public func handleUserClickedSendButton() {
-        guard let msg = ComposeUtil.messageToSend(withDataFrom: state) else {
-            Log.error(component: #function, errorString: "No message for sending")
-            return
+        let safeState = state.makeSafe(forSession: Session.main)
+        let sendClosure = { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
+                Log.shared.warn("No message for sending")
+                return
+            }
+            msg.sent = Date()
+            msg.save()
+
+            guard let data = me.state.initData else {
+                Log.shared.errorAndCrash("No data")
+                return
+            }
+            if data.isDrafts {
+                // From user perspective, we have edited a drafted message and will send it.
+                // Technically we are creating and sending a new message (msg), thus we have to
+                // delete the original, previously drafted one.
+                me.deleteOriginalMessage()
+            }
         }
-        msg.save()
-        guard let data = state.initData else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No data")
-            return
+
+        showAlertFordwardingLessSecureIfRequired(forState: safeState) { [weak self] (accepted) in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard accepted else {
+                return
+            }
+            sendClosure()
+            me.delegate?.dismiss()
         }
-        if data.isDraftsOrOutbox {
-            // From user perspective, we have edited a drafted message and will send it.
-            // Technically we are creating and sending a new message (msg), thus we have to
-            // delete the original, previously drafted one.
-            deleteOriginalMessage()
-        }
-        resultDelegate?.composeViewModelDidComposeNewMail()
     }
 
     public func isAttachmentSection(indexPath: IndexPath) -> Bool {
@@ -150,16 +198,20 @@ class ComposeViewModel {
 
     public func handleRemovedRow(at indexPath: IndexPath) {
         guard let removeeVM = viewModel(for: indexPath) as? AttachmentViewModel else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Only attachmnets can be removed by the user")
-                return
+            Log.shared.errorAndCrash("Only attachmnets can be removed by the user")
+            return
         }
         removeNonInlinedAttachment(removeeVM.attachment)
     }
+}
+
+// MARK: - Private
+
+extension ComposeViewModel {
 
     private func deleteOriginalMessage() {
         guard let data = state.initData else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No data")
+            Log.shared.errorAndCrash("No data")
             return
         }
         guard let om = data.originalMessage else {
@@ -169,7 +221,7 @@ class ComposeViewModel {
         }
         // Make sure the "draft" flag is not set to avoid the original msg will keep in virtual
         // mailboxes, that show all flagged messages.
-        om.imapFlags?.draft = false
+        om.imapFlags.draft = false
         om.imapMarkDeleted()
     }
 
@@ -181,7 +233,7 @@ class ComposeViewModel {
         for section in sections where section.type == .recipients {
             for row  in section.rows where row is RecipientCellViewModel {
                 guard let recipientVM = row as? RecipientCellViewModel else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Cast error")
+                    Log.shared.errorAndCrash("Cast error")
                     return false
                 }
                 if recipientVM.isDirty {
@@ -190,6 +242,60 @@ class ComposeViewModel {
             }
         }
         return false
+    }
+
+    typealias Accepted = Bool
+    /// When forwarding/answering a previously decrypted message and the pEpRating is considered as
+    /// less secure as the original message's pEp rating, warn the user.
+    private func showAlertFordwardingLessSecureIfRequired(forState state: ComposeViewModelState,
+                                                          completion: @escaping (Accepted)->()) {
+        guard AppSettings.shared.unsecureReplyWarningEnabled else {
+            // Setting is disabled ...
+            // ... nothing to do.
+            completion(true)
+            return
+        }
+        guard
+            let composeMode = state.initData?.composeMode,
+            composeMode != .normal
+            else {
+                // The message is not forwarded or answered, not our use case ...
+                // ... nothing to do
+                completion(true)
+                return
+        }
+        guard let originalMessage = state.initData?.originalMessage else {
+            Log.shared.errorAndCrash("Invalid state: Forward && not having an original message")
+            completion(true)
+            return
+        }
+        let originalRating = originalMessage.pEpRating()
+        let pEpRating = state.rating
+        let title: String
+        let message: String
+        if composeMode == .forward {
+            title = NSLocalizedString("Confirm Forward",
+                                      comment: "Confirm less secure forwarding message alert title")
+            message = NSLocalizedString("You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
+                                        comment: "Confirm less secure forwarding message alert body")
+        } else {
+            title = NSLocalizedString("Confirm Answer",
+                                      comment: "Confirm less secure answering message alert title")
+            message = NSLocalizedString("You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
+                                        comment: "Confirm less secure answer message alert body")
+        }
+
+        if pEpRating.hasLessSecurePepColor(than: originalRating) {
+            // Forwarded mesasge is less secure than original message. Warn the user.
+            delegate?.showTwoButtonAlert(withTitle: title,
+                                         message: message,
+                                         cancelButtonText: "NO",
+                                         positiveButtonText: "YES",
+                                         cancelButtonAction: { completion(false) },
+                                         positiveButtonAction: { completion(true) })
+        } else {
+            completion(true)
+        }
     }
 }
 
@@ -204,7 +310,7 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
     }
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
-                               didChangePEPRatingTo newRating: PEP_rating) {
+                               didChangePEPRatingTo newRating: PEPRating) {
         delegate?.colorBatchNeedsUpdate(for: newRating, protectionEnabled: state.pEpProtection)
     }
 
@@ -313,11 +419,11 @@ extension ComposeViewModel {
 
         let recipientsSection = section(for: .recipients)
         recipientsSection?.rows.append(RecipientCellViewModel(resultDelegate: self,
-                                           type: .cc,
-                                           recipients: []))
+                                                              type: .cc,
+                                                              recipients: []))
         recipientsSection?.rows.append(RecipientCellViewModel(resultDelegate: self,
-                                           type: .bcc,
-                                           recipients: []))
+                                                              type: .bcc,
+                                                              recipients: []))
         let idxRecipients = 0
         delegate?.sectionChanged(section: idxRecipients)
     }
@@ -359,28 +465,30 @@ extension ComposeViewModel {
 
 extension ComposeViewModel {
     private func removeNonInlinedAttachment(_ removee: Attachment) {
-        guard let section = section(for: .attachments) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "Only attachmnets can be removed by the user")
-            return
+        guard
+            let section = section(for: .attachments),
+            let rows = section.rows as? [AttachmentViewModel]
+            else {
+                Log.shared.errorAndCrash("Only attachments can be removed by the user")
+                return
         }
         // Remove from section
         var newAttachmentVMs = [AttachmentViewModel]()
-        for vm in section.rows {
-            guard let aVM = vm as? AttachmentViewModel else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
-                return
-            }
-            if aVM.attachment != removee {
-                newAttachmentVMs.append(aVM)
+        for vm in rows {
+            vm.attachment.session.performAndWait {
+                if vm.attachment != removee {
+                    newAttachmentVMs.append(vm)
+                }
             }
         }
         section.rows = newAttachmentVMs
         // Remove from state
         var newNonInlinedAttachments = [Attachment]()
         for att in state.nonInlinedAttachments {
-            if att != removee {
-                newNonInlinedAttachments.append(att)
+            att.session.performAndWait {
+                if att != removee {
+                    newNonInlinedAttachments.append(att)
+                }
             }
         }
         state.nonInlinedAttachments = newNonInlinedAttachments
@@ -394,7 +502,7 @@ extension ComposeViewModel {
             existing.rows.append(AttachmentViewModel(attachment: att))
         } else {
             guard let new = Section(type: .attachments, for: state, cellVmDelegate: self) else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                Log.shared.errorAndCrash("Invalid state")
                 return
             }
             sections.append(new)
@@ -421,8 +529,8 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
             let idxPath = lastRowWithSuggestions,
             let recipientVM = sections[idxPath.section].rows[idxPath.row] as? RecipientCellViewModel
             else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No row VM")
-            return
+                Log.shared.errorAndCrash("No row VM")
+                return
         }
         recipientVM.add(recipient: identity)
     }
@@ -436,7 +544,7 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
 
 extension ComposeViewModel {
     func documentAttachmentPickerViewModel() -> DocumentAttachmentPickerViewModel {
-        return DocumentAttachmentPickerViewModel(resultDelegate: self)
+        return DocumentAttachmentPickerViewModel(resultDelegate: self, session: session)
     }
 }
 
@@ -456,7 +564,7 @@ extension ComposeViewModel: DocumentAttachmentPickerViewModelResultDelegate {
 
 extension ComposeViewModel {
     func mediaAttachmentPickerProviderViewModel() -> MediaAttachmentPickerProviderViewModel {
-        return MediaAttachmentPickerProviderViewModel(resultDelegate: self)
+        return MediaAttachmentPickerProviderViewModel(resultDelegate: self, session: session)
     }
 
     func mediaAttachmentPickerProviderViewModelDidCancel(
@@ -472,8 +580,7 @@ extension ComposeViewModel: MediaAttachmentPickerProviderViewModelResultDelegate
         didSelect mediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment) {
         if mediaAttachment.type == .image {
             guard let bodyViewModel = bodyVM else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "No bodyVM. Maybe valid as picking is async.")
+                Log.shared.errorAndCrash("No bodyVM. Maybe valid as picking is async.")
                 return
             }
             bodyViewModel.inline(attachment: mediaAttachment.attachment)
@@ -498,7 +605,7 @@ extension ComposeViewModel {
 
     public var deleteActionTitle: String {
         guard let data = state.initData else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No data")
+            Log.shared.errorAndCrash("No data")
             return ""
         }
         let title: String
@@ -517,7 +624,7 @@ extension ComposeViewModel {
 
     public var saveActionTitle: String {
         guard let data = state.initData else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No data")
+            Log.shared.errorAndCrash("No data")
             return ""
         }
         let title: String
@@ -539,62 +646,59 @@ extension ComposeViewModel {
         return NSLocalizedString("Cancel", comment: "compose email cancel")
     }
 
-    public func handleDeleteActionTriggered() {
-        guard let data = state.initData else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No data")
-            return
-        }
-        if data.isOutbox {
-            data.originalMessage?.delete()
-            resultDelegate?.composeViewModelDidDeleteMessage()
-        }
-    }
-
     public func handleSaveActionTriggered() {
         guard let data = state.initData else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No data")
+            Log.shared.errorAndCrash("No data")
             return
         }
-        if data.isDraftsOrOutbox {
+        if data.isDrafts {
             // We are in drafts folder and, from user perespective, are editing a drafted mail.
             // Technically we have to create a new one and delete the original message, as the
-            // mail is already synced with the IMAP server and thus we must not modify it.
+            // mail is already synced with the IMAP server and thus we must/can not modify it.
             deleteOriginalMessage()
-            if data.isOutbox {
-                // Message will be saved (moved from user perspective) to drafts, but we are in
-                // outbox folder.
-                resultDelegate?.composeViewModelDidDeleteMessage()
-            }
         }
 
         guard let msg = ComposeUtil.messageToSend(withDataFrom: state) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No message")
+            Log.shared.errorAndCrash("No message")
             return
         }
         let acc = msg.parent.account
         guard let f = Folder.by(account:acc, folderType: .drafts) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No drafts")
+            Log.shared.errorAndCrash("No drafts")
             return
         }
         msg.parent = f
-        msg.imapFlags?.draft = true
+        msg.imapFlags.draft = true
         msg.sent = Date()
-        msg.save()
-        if data.isDrafts {
-            // We save a modified version of a drafted message. The UI might want to updtate
-            // its model.
-            resultDelegate?.composeViewModelDidModifyMessage()
-        }
+        Message.saveForAppend(msg: msg)
     }
 }
 
-// MARK: - HandshakeViewModel
+// MARK: - TrustManagementViewModel
 
 extension ComposeViewModel {
-    // There is no view model for HandshakeViewController yet, thus we are setting up the VC itself
-    // as a workaround to avoid letting the VC know MessageModel
-    func setup(handshakeViewController: HandshakeViewController) {
-        handshakeViewController.message = ComposeUtil.messageToSend(withDataFrom: state)
+
+    func canDoHandshake() -> Bool {
+        return state.canHandshake()
+    }
+
+    func trustManagementViewModel() -> TrustManagementViewModel? {
+        guard let message = ComposeUtil.messageToSend(withDataFrom: state) else {
+            Log.shared.errorAndCrash("No message")
+            return nil
+        }
+        let messageSafe = message.safeForSession(Session.main)
+        return TrustManagementViewModel(message: messageSafe,
+                                        pEpProtectionModifyable: true,
+                                        protectionStateChangeDelegate: self)
+    }
+}
+
+// MARK: - TrustmanagementProtectionStateChangeDelegate
+
+extension ComposeViewModel: TrustmanagementProtectionStateChangeDelegate {
+    func protectionStateChanged(to newValue: Bool) {
+        state.pEpProtection = newValue
     }
 }
 
@@ -603,6 +707,7 @@ extension ComposeViewModel {
 // MARK: RecipientCellViewModelResultDelegate
 
 extension ComposeViewModel: RecipientCellViewModelResultDelegate {
+
     func recipientCellViewModel(_ vm: RecipientCellViewModel,
                                 didChangeRecipients newRecipients: [Identity]) {
         switch vm.type {
@@ -617,13 +722,12 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, didBeginEditing text: String) {
         guard let idxPath = indexPath(for: vm) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We got called by a non-existing VM?")
+            Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
         lastRowWithSuggestions = idxPath
         delegate?.showSuggestions(forRowAt: idxPath)
-        suggestionsVM?.updateSuggestion(searchString: text)
+        suggestionsVM?.updateSuggestion(searchString: text.cleanAttachments)
     }
 
     func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel) {
@@ -634,26 +738,23 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, textChanged newText: String) {
         guard let idxPath = indexPath(for: vm) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We got called by a non-existing VM?")
+            Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
         lastRowWithSuggestions = idxPath
 
         delegate?.contentChanged(inRowAt: idxPath)
         delegate?.showSuggestions(forRowAt: idxPath)
-        suggestionsVM?.updateSuggestion(searchString: newText)
-        state.validate()
+        suggestionsVM?.updateSuggestion(searchString: newText.cleanAttachments)
     }
 }
 
-    // MARK: AccountCellViewModelResultDelegate
+// MARK: AccountCellViewModelResultDelegate
 
 extension ComposeViewModel: AccountCellViewModelResultDelegate {
     func accountCellViewModel(_ vm: AccountCellViewModel, accountChangedTo account: Account) {
         guard let idxPath = indexPath(for: vm) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We got called by a non-existing VM?")
+            Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
         state.from = account.user
@@ -667,8 +768,7 @@ extension ComposeViewModel: SubjectCellViewModelResultDelegate {
 
     func subjectCellViewModelDidChangeSubject(_ vm: SubjectCellViewModel) {
         guard let idxPath = indexPath(for: vm) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We got called by a non-existing VM?")
+            Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
         state.subject = vm.content ?? ""
@@ -707,8 +807,7 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
         state.bodyHtml = html
         state.bodyPlaintext = plain
         guard let idxPath = indexPath(for: vm) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We got called by a non-existing VM?")
+            Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
         delegate?.contentChanged(inRowAt: idxPath)

@@ -7,10 +7,10 @@
 //
 
 import UIKit
+import pEpIOSToolbox
+import MessageModel
 
-class FolderTableViewController: BaseTableViewController, FolderViewModelDelegate {
-    
-    
+class FolderTableViewController: BaseTableViewController {
     var folderVM: FolderViewModel?
     var showNext: Bool = true
     // MARK: - Life Cycle
@@ -23,27 +23,32 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
+
         if showNext {
-            showFolder(indexPath: nil)
+            show(folder: UnifiedInbox())
         }
+
         self.navigationController?.setToolbarHidden(false, animated: false)
+
+        showEmptyDetailViewIfApplicable(
+            message: NSLocalizedString(
+                "Please choose a folder",
+                comment: "No folder has been selected yet in the folders VC"))
     }
 
     // MARK: - Setup
 
     private func setup() {
-        DispatchQueue.main.async {
-            self.folderVM =  FolderViewModel()
-            self.tableView.reloadData()
-        }
+        folderVM =  FolderViewModel()
+        tableView.reloadData()
     }
-    
+
     private func initialConfig() {
-        self.title = NSLocalizedString("Folders", comment: "FoldersView")
+        self.title = NSLocalizedString("Mailboxes", comment: "FoldersView navigationbar title")
         tableView.estimatedRowHeight = 44.0
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
-        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
         refreshControl = UIRefreshControl()
         refreshControl?.tintColor = UIColor.pEpGreen
         if #available(iOS 10.0, *) {
@@ -54,25 +59,23 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
             action:#selector(showSettingsViewController),
             target: self)
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
             target: nil,
             action: nil)
         self.toolbarItems = [flexibleSpace,item]
     }
-    
+
     @objc private func pullToRefresh() {
-        folderVM?.delegate = self
-        folderVM?.refreshFolderList()
-    }
-    
-    func folderViewModelDidUpdateFolderList(viewModel: FolderViewModel) {
-        DispatchQueue.main.async {
-            self.folderVM =  FolderViewModel()
-            self.refreshControl?.endRefreshing()
-            self.tableView.reloadData()
+        folderVM?.refreshFolderList() { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(message: "Lost myself")
+                return
+            }
+            me.setup()
+            me.refreshControl?.endRefreshing()
         }
     }
-   
+
     // MARK: - Action
 
     @objc private func showSettingsViewController() {
@@ -111,7 +114,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
             header = CollapsibleTableViewHeader(reuseIdentifier: "header")
         }
         guard let vm = folderVM, let safeHeader = header else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No header or no model.")
+            Log.shared.errorAndCrash("No header or no model.")
             return header
         }
 
@@ -130,7 +133,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
     }
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard let vm = folderVM else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No model.")
+            Log.shared.errorAndCrash("No model.")
             return 0.0
         }
         if vm[section].hidden {
@@ -144,7 +147,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Default", for: indexPath)
         guard let vm = folderVM else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No model")
+            Log.shared.errorAndCrash("No model")
             return cell
         }
         let fcvm = vm[indexPath.section][indexPath.item]
@@ -163,17 +166,17 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
     override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath)
         -> Int {
             guard let vm = folderVM else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No model")
+                Log.shared.errorAndCrash("No model")
                 return 0
             }
-        return vm[indexPath.section][indexPath.item].level - 1
+            return vm[indexPath.section][indexPath.item].level
     }
 
     // MARK: - TableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let folderViewModel = folderVM else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No model")
+            Log.shared.errorAndCrash("No model")
             return
         }
         let cellViewModel = folderViewModel[indexPath.section][indexPath.row]
@@ -183,24 +186,23 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
             tableView.deselectRow(at: indexPath, animated: true)
             return
         }
-        showFolder(indexPath: indexPath)
+        show(folder: cellViewModel.folder)
     }
 
-    private func showFolder(indexPath: IndexPath?) {
+    private func show(folder: DisplayableFolderProtocol) {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard
-            let vc = sb.instantiateViewController(
-                withIdentifier: EmailListViewController.storyboardId)
-                as? EmailListViewController else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Problem!")
-                    return
+            let nav = sb.instantiateViewController(
+                withIdentifier: EmailListViewController.storyboardNavigationControllerId) as? UINavigationController,
+            let vc = nav.rootViewController as? EmailListViewController
+            else {
+                Log.shared.errorAndCrash("Problem!")
+                return
         }
         vc.appConfig = appConfig
-        let emailListViewModel =
-            folderVM?.createEmailListViewModel(forAccountAt: indexPath?.section,
-                                               andFolderAt: indexPath?.row,
-                                               messageSyncService: appConfig.messageSyncService)
-        vc.model = emailListViewModel
+        let emailListVM = EmailListViewModel(delegate: vc,
+                                             folderToShow: folder)
+        vc.viewModel = emailListVM
         vc.hidesBottomBarWhenPushed = false
 
         let animated =  showNext ? false : true
@@ -210,34 +212,11 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
 
     // MARK: - Segue
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "newAccountIphone"
-            || segue.identifier == "newAccountIpad"{
-            guard
-                let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? LoginViewController else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Missing VCs")
-                    return
-            }
-            vc.appConfig = self.appConfig
-            vc.hidesBottomBarWhenPushed = true
-            vc.delegate = self
-
-        } else if segue.identifier == "SettingsSegue" {
-            guard let dvc = segue.destination as? SettingsTableViewController else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Error casting DVC")
-                return
-            }
-            dvc.appConfig = self.appConfig
-            dvc.hidesBottomBarWhenPushed = true
-        }
-    }
-
     @IBAction func addAccountTapped(_ sender: Any) {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            performSegue(withIdentifier: "newAccountIpad", sender: self)
+            performSegue(withIdentifier: .newAccountIpad, sender: self)
         } else {
-            performSegue(withIdentifier: "newAccountIphone", sender: self)
+            performSegue(withIdentifier: .newAccountIphone, sender: self)
         }
     }
 
@@ -245,6 +224,10 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
      Unwind segue for the case of adding an account that requires manual setup
      */
     @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
+        showNext = true
+    }
+
+    @IBAction func segueUnwindLastAccountDeleted(segue:UIStoryboardSegue) {
         showNext = true
     }
 }
@@ -256,5 +239,41 @@ extension FolderTableViewController: LoginViewControllerDelegate {
         _ loginViewController: LoginViewController) {
         setup()
         showNext = true
+    }
+}
+
+// MARK: - Segue
+
+extension FolderTableViewController: SegueHandlerType {
+    enum SegueIdentifier: String {
+        case newAccountIphone
+        case newAccountIpad
+        case settingsSegue
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let segueId = segueIdentifier(for: segue)
+
+        switch segueId {
+        case .newAccountIphone, .newAccountIpad:
+            guard
+                let nav = segue.destination as? UINavigationController,
+                let vc = nav.rootViewController as? AccountTypeSelectorViewController else {
+                    Log.shared.errorAndCrash("Missing VCs")
+                    return
+            }
+            nav.modalPresentationStyle = .fullScreen
+            vc.appConfig = self.appConfig
+            
+            vc.hidesBottomBarWhenPushed = true
+
+        case .settingsSegue:
+            guard let dvc = segue.destination as? SettingsTableViewController else {
+                Log.shared.errorAndCrash("Error casting DVC")
+                return
+            }
+            dvc.appConfig = self.appConfig
+            dvc.hidesBottomBarWhenPushed = true
+        }
     }
 }

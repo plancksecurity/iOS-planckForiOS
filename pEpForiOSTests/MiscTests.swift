@@ -8,7 +8,7 @@
 
 import Foundation
 import XCTest
-
+@testable import pEpIOSToolbox
 @testable import pEpForiOS
 import MessageModel
 
@@ -30,12 +30,6 @@ class MiscTests: XCTestCase {
         let i32Next = UInt32(u)
         let i3 = Int64(i32Next)
         XCTAssertEqual(i1, i3)
-    }
-
-    func testMimeTypeJson() {
-        let mimeTypeController = MimeTypeUtil()
-        let s = mimeTypeController?.mimeType(fileExtension: "pdf")
-        XCTAssertEqual(s, "application/pdf")
     }
 
     func testBinaryIndex() {

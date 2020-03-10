@@ -2,19 +2,17 @@
 "CFBundleDisplayName" = "p≡p";
 
 /* Bundle name */
-"CFBundleName" = "p≡p";
+"CFBundleName" = "pEp";
 
 /* Privacy - Camera Usage Description */
 "NSCameraUsageDescription" = "Kamera verwenden";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "- p≡p ist eine App zum Verschlüsseln von Emails. Um E-Mails an existierende Kontakte zu versenden ist es notwendig dass p≡p diese kennt.
-
-- Kontakt-Daten werden dieses Gerät nicht verlassen, weder an p≡p noch einen Dritt-Anbieter.";
+"NSContactsUsageDescription" = "- p≡p ist eine Anwendung für verschlüsselte E-Mails.Um E-Mails an\n     gespeicherte Kontakte zu senden, muss p=p zugelassen werden,\n     um sie zu verwenden.- Die Kontaktdaten verlassen nie das Mobilgerät und werden nicht\n     an p≡p oder Dritte gesendet.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Lässt Sie Fotos in der Bibliothek speichern";
+"NSPhotoLibraryAddUsageDescription" = "Ermöglicht es, Fotos in der Galerie zu speichern";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "Lässt Sie Fotos aus der Bibliothek auswählen";
+"NSPhotoLibraryUsageDescription" = "Ermöglicht es, Fotos aus der Galerie auszuwählen";
 

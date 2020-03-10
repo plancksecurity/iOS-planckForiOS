@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import pEpIOSToolbox
 
 class HtmlToTextSaxParser: BasicSaxParser {
     var tagStack = [String]()
@@ -59,6 +60,6 @@ extension HtmlToTextSaxParser: AXHTMLParserDelegate {
     }
 
     func parser(_ parser: AXHTMLParser, parseErrorOccurred parseError: Error) {
-        Log.shared.error(component: #function, error: parseError)
+        Log.shared.error("%@", "\(parseError)")
     }
 }

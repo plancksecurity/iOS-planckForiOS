@@ -7,11 +7,12 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 /// Utils for composing a message. Helps finding out values depending on the original message
 /// (the correct recipients, cancle actions ...).
 struct ComposeUtil {
-
     enum ComposeMode: CaseIterable {
         case normal
         case replyFrom
@@ -26,16 +27,16 @@ struct ComposeUtil {
         switch composeMode {
         case .replyFrom:
             if om.parent.folderType == .sent || om.parent.folderType == .drafts {
-                result = om.to
+                result = om.to.allObjects
             } else if om.parent.folderType != .sent, let omFrom = om.from {
                 result = [omFrom]
             }
         case .replyAll:
             if om.parent.folderType == .sent || om.parent.folderType == .drafts  {
-                result = om.to
+                result = om.to.allObjects
             } else if om.parent.folderType != .sent, let omFrom = om.from {
                 guard let me = initialFrom(composeMode: composeMode, originalMessage: om) else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No from")
+                    Log.shared.errorAndCrash("No from")
                     return result
                 }
                 let origTos = om.to
@@ -46,7 +47,7 @@ struct ComposeUtil {
             if om.parent.folderType == .sent ||
                 om.parent.folderType == .drafts ||
                 om.parent.folderType == .outbox  {
-                result = om.to
+                result = om.to.allObjects
             }
         case .forward:
             break
@@ -59,10 +60,10 @@ struct ComposeUtil {
         switch composeMode {
         case .replyAll:
             if om.parent.folderType == .sent || om.parent.folderType == .drafts {
-                result = om.cc
+                result = om.cc.allObjects
             } else {
                 guard let me = initialFrom(composeMode: composeMode, originalMessage: om) else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No from")
+                    Log.shared.errorAndCrash("No from")
                     return result
                 }
                 let origCcs = om.cc
@@ -74,7 +75,7 @@ struct ComposeUtil {
             if om.parent.folderType == .sent ||
                 om.parent.folderType == .drafts ||
                 om.parent.folderType == .outbox  {
-                result = om.cc
+                result = om.cc.allObjects
             }
         }
         return result
@@ -87,7 +88,7 @@ struct ComposeUtil {
             if om.parent.folderType == .sent ||
                 om.parent.folderType == .drafts ||
                 om.parent.folderType == .outbox {
-                result = om.bcc
+                result = om.bcc.allObjects
             }
         case .replyFrom, .forward, .replyAll:
             break
@@ -123,9 +124,12 @@ struct ComposeUtil {
             // No om, no initial attachments
             return []
         }
-        let attachments = om.viewableAttachments()
+        let viewAbleAttachments = om.viewableAttachments()
             .filter { $0.contentDisposition == contentDisposition }
-        return attachments
+
+        let privateSession = Session()
+        let result = viewAbleAttachments.map { $0.clone(for: privateSession) }
+        return result
     }
 
     /// Computes whether or not attachments must be taken over in current compose mode
@@ -140,55 +144,54 @@ struct ComposeUtil {
         return composeMode == .forward || isInDraftsOrOutbox
     }
 
-    // MARK: - Message to send
-
-    static public func messageToSend(
-        withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
-        guard let from = state.from,
-            let account = Account.by(address: from.address) else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString:
-                    "We have a problem here getting the senders account.")
+    /// Creates a message from the given ComposeView State
+    ///
+    /// - note: MUST NOT be used on the main Session. For the maion Session, use
+    ///         messageToSend(withDataFrom:) instead.
+    ///
+    /// - Parameter state: state to get data from
+    /// - Parameter session: session to work on. MUST NOT be the main Session.
+    /// - Returns: new message with data from given state
+    static public func messageToSend(withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
+        guard
+            let from = state.from,
+            let session = state.from?.session,
+            let account = Account.by(address: from.address, in: session)?.safeForSession(session),
+            let outbox = Folder.by(account: account, folderType: .outbox)?.safeForSession(session)
+            else {
+                Log.shared.errorAndCrash("Invalid state")
                 return nil
         }
-        guard let f = Folder.by(account: account, folderType: .outbox) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No outbox")
-            return nil
-        }
-
-        let message = Message(uuid: MessageID.generate(), parentFolder: f)
+        let message = Message.newOutgoingMessage(session: session)
+        message.parent = outbox
         message.from = from
-        message.to = state.toRecipients
-        message.cc = state.ccRecipients
-        message.bcc = state.bccRecipients
+        message.replaceTo(with: state.toRecipients)
+        message.replaceCc(with: state.ccRecipients)
+        message.replaceBcc(with: state.bccRecipients)
         message.shortMessage = state.subject
         message.longMessage = state.bodyPlaintext
         message.longMessageFormatted = !state.bodyHtml.isEmpty ? state.bodyHtml : nil
-        message.attachments = state.inlinedAttachments + state.nonInlinedAttachments
+        message.replaceAttachments(with: state.inlinedAttachments + state.nonInlinedAttachments)
         message.pEpProtected = state.pEpProtection
-        message.setOriginalRatingHeader(rating: state.rating)
+        if !state.pEpProtection {
+            let unprotectedRating = PEPRating.unencrypted
+            message.setOriginalRatingHeader(rating: unprotectedRating)
+            message.pEpRatingInt = Int(unprotectedRating.rawValue)
+        } else {
+            message.setOriginalRatingHeader(rating: state.rating)
+            message.pEpRatingInt = Int(state.rating.rawValue)
+        }
 
-        updateReferences(of: message, accordingTo: state)
+        message.imapFlags.seen = imapSeenState(forMessageToSend: message)
 
         return message
     }
 
-    static private func updateReferences(of message: Message,
-                                         accordingTo composeState:
-        ComposeViewModel.ComposeViewModelState) {
-        guard let composeMode = composeState.initData?.composeMode else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No init data")
-            return
-        }
-        if composeMode == .replyFrom || composeMode == .replyAll,
-            let om = composeState.initData?.originalMessage {
-            // According to https://cr.yp.to/immhf/thread.html
-            var refs = om.references
-            refs.append(om.messageID)
-            if refs.count > 11 {
-                refs.remove(at: 1)
-            }
-            message.references = refs
+    static private func imapSeenState(forMessageToSend msg: Message) -> Bool {
+        if msg.parent.folderType == .outbox || msg.parent.folderType == .sent {
+            return true
+        } else {
+            return false
         }
     }
 }

@@ -1,0 +1,10 @@
+//
+//  public.xcconfig
+//  pEpForiOS
+//
+//  Created by Dirk Zimmermann on 12.01.18.
+//  Copyright © 2018 p≡p Security S.A. All rights reserved.
+//
+
+#include "../pEp_for_iOS_intern/secret.xcconfig"
+

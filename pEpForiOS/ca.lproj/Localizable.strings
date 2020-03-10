@@ -1,0 +1,285 @@
+/* KeySyncWizard introduction message */
+"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?";
+
+/* Tableview section  header: Accounts */
+"Accounts" = "Comptes";
+
+/* Name of unified inbox (showing messages of all accoounts */
+"All" = "Tots";
+
+/* KeySyncWizard introduction message */
+"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?";
+
+/* Archive button in slide-left menu */
+"Archive" = "Arxiu";
+
+/* title attachments filter cell */
+"Attachments" = "Adjunts";
+
+/* Cancel button title for manual account IMAP setup
+   Cancel button title for manual account SMTP setup */
+"Back" = "Back";
+
+/* Privacy status title */
+"Broken" = "Error";
+
+/* alert action 3
+   Alert cancel button title before trusting an account
+   Cancel
+   Cancel button for client certificate password screen
+   Cancel button title for manual account setup
+   Cancel button title of pEp protection toggle action sheet
+   Cancel for an alert view
+   Cancel in button in Login View
+   Cancel reset account identity button title
+   Cancel title button
+   Cancel trust change to be undone
+   compose email cancel
+   Default cancel button text
+   EmailList action title
+   keysync alert leave device group cancel
+   keySyncWizard animation view cancel button title
+   Message actions
+   MoveToFolderViewController NavigationBar canel button title
+   UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
+"Cancel" = "Cancel·lar";
+
+/* Privacy status title */
+"Cannot Decrypt" = "No es pot desxifrar";
+
+/* Compose field title */
+"CC:" = "A/c:";
+
+/* accept hand shake confirm button
+   Confirm correct trustwords/PGP fingerprint */
+"Confirm" = "Acceptar";
+
+/* Confirm correct trustwords (pEp, long version) */
+"Confirm Trustwords" = "Confirmar les Trustwords";
+
+/* Settings: Cell (button) title to view app credits */
+"Credits" = "Crèdits";
+
+/* Incorrect trustwords/PGP fingerprint */
+"Decline" = "Rebutjar";
+
+/* Account delete
+   compose email delete
+   ComposeTableView: button to decide to delete a message from Outbox after making changes.
+   Delete account button title
+   swipe delete ExtraKey action title */
+"Delete" = "Esborra";
+
+/* keysync alert leave device group disable */
+"Disable" = "Disable";
+
+/* Disable Protection
+   Disable Protection button title of pEp protection toggle action sheet */
+"Disable Protection" = "Deshabilitar protecció";
+
+/* enable p≡p Sync with other devices in the group */
+"Enable p≡p Sync" = "Enable p≡p Sync";
+
+/* Finish button title for manual account SMTP setup
+   Start up tutorial finish button */
+"Finish" = "Finish";
+
+/* FoldersView */
+"Folders" = "Carpetes";
+
+/* EmailList action title
+   Message actions */
+"Forward" = "Reenviar";
+
+/* Compose field title
+   Title of account picker when composing a message */
+"From:" = "De:";
+
+/* Title of the view */
+"Handshake" = "Handshake";
+
+/* Title for manual account IMAP setup */
+"IMAP" = "IMAP";
+
+/* Name of INBOX mailbox (of one account) */
+"Inbox" = "Bústia d'entrada";
+
+/* keySyncWizard completion view leave button title */
+"Leave" = "Surt";
+
+/* Manual Setup button in Login View */
+"Manual setup" = "Configuració manual";
+
+/* EmailList action title */
+"Mark as Read" = "Marca com a llegit";
+
+/* Mistrusted - Step 1
+   Privacy status title */
+"Mistrusted" = "No confiable";
+
+/* File name used for videos the user attaches. */
+"Movie" = "Mou";
+
+/* username */
+"Name" = "Nom";
+
+/* keySyncWizard intro view Next button title
+   Next button title for manual account IMAP setup
+   Next button title for manual account setup */
+"Next" = "Següent";
+
+/* privacyStatusDescription no_color
+   privacyStatusTitle no_color */
+"None" = "Cap";
+
+/* keySyncWizard intro view Not Now button title
+   not now button */
+"Not Now" = "Not Now";
+
+/* Default positive button text
+   Filter accept text
+   General alert positive button
+   keySyncWizard completion view OK button title
+   OK button for client certificate password screen
+   OK button for invalid accout settings user input alert
+   UIAlertAction ok after error */
+"OK" = "D’acord";
+
+/* Name of outbox (showing messages to send */
+"Outbox" = "Bústia de sortida";
+
+/* Tableview section header */
+"p≡p sync" = "p≡p sync";
+
+/* keySync handshake alert title
+   keySyncWizard animation view title
+   Settings: enable/disable p≡p Sync feature */
+"p≡p Sync" = "p≡p Sync";
+
+/* Passive mode title */
+"Passive mode" = "Mode passiu";
+
+/* Password placeholder for manual account setup
+   Password TextField Placeholder in Login Screen */
+"Password" = "Contrasenya";
+
+/* keySyncWizard animation view message while we sync your devices */
+"Please give us a moment while we sync your devices. This can take a minute or more." = "Espera un moment mentre sincronitzem els teus dispositius. Aquest procés pot tardar un minut o més.";
+
+/* keySync handshake alert message for two devices in group */
+"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?";
+
+/* Port placeholder for manual account IMAP setup
+   Port placeholder for manual account SMTP setup */
+"Port" = "Port";
+
+/* action sheet title 1 */
+"Privacy Status" = "Grau de privadesa";
+
+/* reject hand shake button */
+"Reject" = "Denegar";
+
+/* ComposeTableView: Label of swipe left. Removing of attachment. */
+"Remove" = "Treu";
+
+/* EmailList action title
+   Message actions
+   read button in slide-left menu */
+"Reply" = "Respondre";
+
+/* EmailList action title
+   Message actions */
+"Reply All" = "Respondre a tots";
+
+/* Account settings confirm to reset identity title alert
+   Account settings reset identity
+   Reset account identity button title
+   Settings: cell (button) title to view the trust contacts option */
+"Reset" = "Reset";
+
+/* Privacy status title
+   Secure Label - Step 1 */
+"Secure" = "Segur";
+
+/* acction sheet title 2
+   Settings view title */
+"Settings" = "Configuració";
+
+/* keySyncWizard error view message when syncing devices */
+"Something went wrong with syncing the devices. Please try again." = "Hi ha hagut un problema amb la sincronització dels dispositius. Torna-ho a provar.";
+
+/* Compose field title */
+"Subject:" = "Assumpte:";
+
+/* Tableview section header: (p≡p) Sync */
+"Sync" = "Sync";
+
+/* KeySyncWizard complete message - more than two devices */
+"The device is now member of your device group. All your privacy is now synchronized." = "El dispositiu és ara membre del teu grup de dispositius. Tota la teva privacitat s'ha sincronitzat.";
+
+/* Privacy status explanation */
+"This message cannot be decrypted because the key is not available." = "No s’ha pogut desxifrar el missatge perquè la clau no està disponible.";
+
+/* Privacy status explanation */
+"This message does not contain enough information to determine if it is secure." = "No es disposa d’informació suficient per determinar si la comunicació és segura.";
+
+/* Privacy status explanation */
+"This message has unreliable protection" = "El missatge té una protecció no confiable";
+
+/* Privacy status explanation */
+"This message is not secure and has been tampered with." = "Aquest missatge no és segur i ha sigut manipulat.";
+
+/* Privacy status explanation */
+"This message is secure and trusted." = "El missatge és segur i s'hi pot confiar.";
+
+/* Privacy status explanation */
+"This message is secure but you still need to verify the identity of your communication partner." = "El missatge és segur però encara és necessari verificar la identitat del contacte.";
+
+/* Privacy status explanation */
+"This message is unsecure for some communication partners." = "Aquest missatge no és segur per a algun dels interlocutors.";
+
+/* Privacy status explanation */
+"This message is unsecure." = "Aquest missatge no és segur.";
+
+/* Compose field title */
+"To:" = "A:";
+
+/* Compose field title */
+"To: " = "A:";
+
+/* Trash button in slide-left menu */
+"Trash" = "Paperera";
+
+/* show tutorial from compose view */
+"Tutorial" = "Tutorial";
+
+/* Privacy status title */
+"Under Attack" = "Atacat";
+
+/* Privacy status title
+   privacyStatusDescription no_color */
+"Unknown" = "Desconegut";
+
+/* Privacy status title */
+"Unreliable Security" = "Seguretat no confiable";
+
+/* Privacy status title */
+"Unsecure" = "No segur";
+
+/* Privacy status title */
+"Unsecure for Some" = "No segur per a alguns";
+
+/* setting row title: Unsecure reply warning */
+"Unsecure reply warning" = "Avís de reenviament insegur";
+
+/* User Name placeholder for manual account IMAP setup
+   User Name placeholder for manual account setup
+   User Name placeholder for manual account SMTP setup */
+"User Name" = "Usuari";
+
+/* KeySyncWizard complete message - two devices */
+"We successfully created a device group. All your privacy is now synchronized." = "Hem creat un grup de dispositius correctament. Tota la teva privacitat s'ha sincronitzat.";
+
+/* Incorrect trustwords (pEp, long version) */
+"Wrong Trustwords" = "Trustwords incorrectes";
+

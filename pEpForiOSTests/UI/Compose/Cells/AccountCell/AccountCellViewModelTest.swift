@@ -30,7 +30,7 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
 
     func testDisplayAccount_unknownAccount() {
         let initialAccount = account
-        let anotherAccount = SecretTestData().createWorkingAccount(number: 1)
+        let anotherAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
         assert(initialAccount: initialAccount,
                accountChangedMustBeCalled: false,
                expectedAccount: nil)
@@ -43,7 +43,7 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
 
     func testAccountPickerViewModelDidSelect_initialSet() {
         let initialAccount = account
-        let selectedAccount = SecretTestData().createWorkingAccount(number: 1)
+        let selectedAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
         assert(initialAccount: initialAccount,
                accountChangedMustBeCalled: true,
                expectedAccount: selectedAccount)
@@ -55,7 +55,7 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testAccountPickerViewModelDidSelect_initialNotSet() {
-        let selectedAccount = SecretTestData().createWorkingAccount(number: 1)
+        let selectedAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
         assert(initialAccount: nil,
                accountChangedMustBeCalled: true,
                expectedAccount: selectedAccount)
@@ -83,8 +83,11 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
         let testee = AccountCellViewModel(resultDelegate: dumbResultDelegate)
         XCTAssertNotNil(testee)
     }
+}
 
-   // MARK: - Helper
+// MARK: - Helper
+
+extension AccountCellViewModelTest {
 
     private func assert(initialAccount: Account? = nil,
                         accountChangedMustBeCalled: Bool?,
@@ -96,12 +99,12 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
             expAccountChangedCalled = expectation(inverted: !mustBeCalled)
         }
         let newResultDelegate = TestResultDelegate(expAccountChangedToCalled: expAccountChangedToCalled,
-                                                         expectedAccount: expectedAccount ?? nil)
+                                                   expectedAccount: expectedAccount ?? nil)
         resultDelegate = newResultDelegate
         delegate = TestDelegate(expAccountChangedCalled: expAccountChangedCalled,
-                                    expectedAddress: expectedAccount?.user.address ?? nil)
+                                expectedAddress: expectedAccount?.user.address ?? nil)
         vm = AccountCellViewModel(resultDelegate: newResultDelegate,
-                                      initialAccount: initialAccount)
+                                  initialAccount: initialAccount)
         vm.delegate = delegate
     }
 

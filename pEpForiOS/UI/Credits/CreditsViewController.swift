@@ -56,49 +56,6 @@ class CreditsViewController: BaseViewController {
         <blockquote>
         <p>&nbsp;</p>
         <p>p&equiv;p for iOS<br/> \(appVersion)</p>
-        <p>Credits:<br />
-        Yves Landert,
-        Xavier Algarra Torello,
-        Volker Birk,
-        Simon Witts,
-        Sibu Kurian,
-        Sandro K&ouml;chle,
-        Sabrina Schleifer,
-        Robert Goldmann,
-        Rena Tangens,
-        Patricia Bednar,
-        Patrick Meier,
-        padeluun,
-        Nana Karlstetter,
-        miguel@helm.cat,
-        Meinhard Starostik,
-        Mathijs de Haan,
-        Martin Vojcik,
-        Markus Schaber,
-        Leonard Marquitan,
-        Leon Schumacher,
-        Lars Rohwedder,
-        Krista Bennet,
-        Kinga Prettenhoffer,
-        Igor Vojinovic,
-        Hussein Kasem,
-        Hern&acirc;ni Marques,
-        Edouard Tisserant,
-        Dol&ccedil;a Moreno,
-        Dirk Zimmermann,
-        Dietz Proepper,
-        Detlev Sieber,
-        Dean,
-        Daniel Sosa,
-        borja@helm.cat,
-        be,
-        Berna Alp,
-        Bart Polot,
-        Arturo Jim&eacute;nez,
-        Andy Weber,
-        Andreas Buff,
-        Ana Rebollo
-        </p>
         <p>&nbsp;</p>
         <p>Thanks to:
         \(thanxRows())
@@ -127,7 +84,7 @@ class CreditsViewController: BaseViewController {
                      "OpenSSL-for-iPhone",
                      "SwipeCellKit",
                      "AppAuth-iOS",
-                     "netpgp"]
+                     "Sequoia-PGP"]
         let links = ["https://pep.foundation/dev/repos/pEpEngine/",
                      "https://gnupg.org/related_software/libassuan",
                      "https://gnupg.org/related_software/libksba",
@@ -138,7 +95,7 @@ class CreditsViewController: BaseViewController {
                      "https://github.com/x2on/OpenSSL-for-iPhone",
                      "https://github.com/SwipeCellKit/SwipeCellKit",
                      "https://github.com/openid/AppAuth-iOS",
-                     "http://www.netpgp.com/"]
+                     "https://sequoia-pgp.org/"]
 
         var htmlThanx = ""
         for (i, name) in names.enumerated() {
@@ -712,11 +669,8 @@ extension CreditsViewController: WKNavigationDelegate {
                 else {
                     break
             }
-            UIApplication.shared.openURL(newURL)
-        case .backForward: fallthrough
-        case .formResubmitted: fallthrough
-        case .formSubmitted: fallthrough
-        case .reload:
+            UIApplication.shared.open(newURL, options: [:])
+        case .backForward, .formResubmitted, .formSubmitted, .reload:
             break
         }
         decisionHandler(.cancel)

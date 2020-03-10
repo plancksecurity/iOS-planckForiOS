@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import pEpIOSToolbox
 
 struct InfoPlist {
     static private var infoDictMainBundle: [String:Any]? {
@@ -29,7 +30,7 @@ struct InfoPlist {
     
     static private func mainBundleInfoDictValue(forKey key: String) -> Any? {
         guard let infoDict = infoDictMainBundle else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No info dict")
+            Log.shared.errorAndCrash("No info dict")
             return nil
         }
         return infoDict[key]

@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 /**
  The error that gets delegated when there was no error during authorization, but
  neither a valid access token.
@@ -29,7 +31,7 @@ protocol OAuth2AuthorizationDelegateProtocol: class {
  authorization.
  */
 protocol OAuth2AuthorizationProtocol {
-    weak var delegate: OAuth2AuthorizationDelegateProtocol? { get set }
+    var delegate: OAuth2AuthorizationDelegateProtocol? { get set }
 
     /**
      Trigger an authorization request. When it was successful, or on error,

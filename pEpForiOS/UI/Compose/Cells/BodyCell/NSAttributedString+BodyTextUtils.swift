@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
 
 // MARK: - BodyTextUtils
 
@@ -15,7 +16,7 @@ extension NSAttributedString {
     public func assureMaxTextAttachmentImageWidth(_ maxWidth: CGFloat) {
         for textAttachment in textAttachments() {
             guard let image = textAttachment.image else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No image?")
+                Log.shared.errorAndCrash("No image?")
                 return
             }
             if image.size.width > maxWidth {

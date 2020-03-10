@@ -22,8 +22,9 @@ extension NSAttributedString {
                                                                  maxWidth: maxWidth - margin)
             let attachString = NSAttributedString(attachment: textAttachment)
             attrText.replaceCharacters(in: selectedRange, with: attachString)
-            attrText.addAttribute(NSAttributedStringKey.font,
-                                  value: UIFont.pEpInput,
+            let pepFont = UIFont.pepFont(style: .body, weight: .regular)
+            attrText.addAttribute(NSAttributedString.Key.font,
+                                  value: pepFont,
                                   range: NSRange(location: 0, length: attrText.length))
             return (NSAttributedString(attributedString: attrText), textAttachment)
     }

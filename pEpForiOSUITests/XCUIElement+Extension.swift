@@ -22,7 +22,7 @@ extension XCUIElement {
 
         self.tap()
 
-        let deleteString = stringValue.characters.map {
+        let deleteString = stringValue.map {
             _ in XCUIKeyboardKey.delete.rawValue
             }.joined(separator: "")
 

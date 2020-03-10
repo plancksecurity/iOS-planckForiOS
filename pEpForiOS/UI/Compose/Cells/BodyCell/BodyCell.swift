@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import pEpIOSToolbox
 
 class BodyCell: TextViewContainingTableViewCell {
     static let reuseId = "BodyCell"
@@ -25,8 +26,7 @@ class BodyCell: TextViewContainingTableViewCell {
 
     private func setupInitialText() {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return
         }
         let (text, attrText) = vm.inititalText()
@@ -43,7 +43,7 @@ class BodyCell: TextViewContainingTableViewCell {
     // Set cursor and show keyboard
     override func setFocus() {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return
         }
         if let rangeStart = textView.position(from: textView.beginningOfDocument,
@@ -64,8 +64,9 @@ extension BodyCell: BodyCellViewModelDelegate {
         let selectedRange = textView.selectedRange
         let attrText = NSMutableAttributedString(attributedString: textView.attributedText)
         attrText.replaceCharacters(in: selectedRange, with: text)
-        attrText.addAttribute(NSAttributedStringKey.font,
-                              value: UIFont.pEpInput,
+        let font = UIFont.pepFont(style: .body, weight: .regular)
+        attrText.addAttribute(NSAttributedString.Key.font,
+                              value: font,
                               range: NSRange(location: 0, length: attrText.length))
         textView.attributedText = attrText
         viewModel?.handleTextChange(newText: textView.text,
@@ -101,7 +102,7 @@ extension BodyCell {
                   shouldChangeTextIn range: NSRange,
                   replacementText text: String) -> Bool {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return true
         }
        return vm.shouldReplaceText(in: range, of: textView.attributedText, with: text)

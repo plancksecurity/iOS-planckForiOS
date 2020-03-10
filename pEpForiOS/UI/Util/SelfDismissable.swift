@@ -9,7 +9,7 @@
 import Foundation
 
 protocol SelfDismissable {
-    func configureDismissButton(with item:UIBarButtonSystemItem)
+    func configureDismissButton(with item:UIBarButtonItem.SystemItem)
 }
 
 @objc protocol Dismissable {
@@ -18,7 +18,7 @@ protocol SelfDismissable {
 
 extension SelfDismissable where Self: UIViewController & Dismissable {
 
-    func configureDismissButton(with item:UIBarButtonSystemItem) {
+    func configureDismissButton(with item:UIBarButtonItem.SystemItem) {
 
         let barButtonItem = UIBarButtonItem(barButtonSystemItem: item, target: self, action: #selector(requestDismiss))
 

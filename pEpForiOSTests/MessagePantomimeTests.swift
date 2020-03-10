@@ -7,28 +7,21 @@
 //
 
 import XCTest
+import CoreData
 
-import MessageModel
+@testable import MessageModel
+import PantomimeFramework
 import pEpForiOS
+import PEPObjCAdapterFramework
 
-class MessagePantomimeTests: XCTestCase {
-    var persistentSetup: PersistentSetup!
-
-    override func setUp() {
-        super.setUp()
-        persistentSetup = PersistentSetup()
-    }
-
-    override func tearDown() {
-        persistentSetup = nil
-        super.tearDown()
-    }
+//!!!: must be moved to MM
+class MessagePantomimeTests: CoreDataDrivenTestBase {
 
     func testPantomimeFlagsFromMessage() {
-        let m = CdMessage.create()
-        m.imap = CdImapFields.create()
+        let m = CdMessage(context: moc)
+        m.imap = CdImapFields(context: moc)
 
-        let cdFlags = CdImapFlags.create()
+        let cdFlags = CdImapFlags(context: moc)
         m.imap?.localFlags = cdFlags
 
         cdFlags.flagFlagged = true
@@ -76,13 +69,12 @@ class MessagePantomimeTests: XCTestCase {
         var allRefs = refs
         allRefs.append(inReplyTo)
 
-        let cdAccount = testData.createWorkingCdAccount()
+        let cdAccount = testData.createWorkingCdAccount(context: moc)
 
-        let cdFolder = CdFolder.create()
+        let cdFolder = CdFolder(context: moc)
         let folderName = "inbox"
         cdFolder.folderType = FolderType.inbox
         cdFolder.name = folderName
-        cdFolder.uuid = MessageID.generate()
         cdFolder.account = cdAccount
 
         let cwFolder = CWFolder(name: folderName)
@@ -95,24 +87,17 @@ class MessagePantomimeTests: XCTestCase {
         let update = CWMessageUpdate()
         update.rfc822 = true
         guard let cdMsg = CdMessage.insertOrUpdate(
-            pantomimeMessage: cwMsg, account: cdAccount, messageUpdate: update) else {
+            pantomimeMessage: cwMsg, account: cdAccount, messageUpdate: update, context: moc) else {
                 XCTFail()
                 return
         }
         let cdRefs = cdMsg.references?.array as? [CdMessageReference] ?? []
         XCTAssertEqual(cdRefs.count, refs.count + 1)
 
-        guard let msg = cdMsg.message() else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual(msg.references.count, refs.count + 1)
-        XCTAssertEqual(msg.references, allRefs)
+        let pEpMsg = cdMsg.pEpMessage()
+        XCTAssertEqual(pEpMsg.references as? [String] ?? [], allRefs)
 
-        let pEpMsgDict = cdMsg.pEpMessageDict()
-        XCTAssertEqual(pEpMsgDict[kPepReferences] as? [String] ?? [], allRefs)
-
-        let cwMsg2 = PEPUtil.pantomime(pEpMessageDict: pEpMsgDict)
+        let cwMsg2 = PEPUtils.pantomime(pEpMessage: pEpMsg)
         XCTAssertEqual(cwMsg2.allReferences() as? [String] ?? [], allRefs)
     }
 }

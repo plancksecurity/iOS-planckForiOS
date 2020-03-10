@@ -7,10 +7,11 @@
 //
 
 import MessageModel
+import PEPObjCAdapterFramework
 
 class UIHelper {
     static func variableCellHeightsTableView(_ tableView: UITableView) {
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
     }
     
@@ -50,53 +51,12 @@ class UIHelper {
     }
 
     /**
-     Get the UIColor for the background image of a send button for an (abstract) pEp color.
-     */
-    static func sendButtonBackgroundColorFromPepColor(_ pepColor: PEP_color) -> UIColor? {
-        switch pepColor {
-        case PEP_color_green:
-            return UIColor.green
-        case PEP_color_yellow:
-            return UIColor.yellow
-        case PEP_color_red:
-            return UIColor.red
-        default:
-            return nil
-        }
-    }
-
-    /**
-     Cell background color in trustwords cell for indicating the rating of a contact.
-     */
-    static func trustWordsCellBackgroundColorFromPepColor(_ pepColor: PEP_color) -> UIColor? {
-        return sendButtonBackgroundColorFromPepColor(pepColor)
-    }
-
-    /**
-     Get the UIColor for an identity (in a text field or label) for an (abstract) pEp color.
-     This might, or might not, be the same,
-     as `sendButtonBackgroundColorFromPepColor:PrivacyColor`.
-     */
-    static func textBackgroundUIColorFromPrivacyColor(_ pepColor: PEP_color) -> UIColor? {
-        switch pepColor {
-        case PEP_color_green:
-            return UIColor.green
-        case PEP_color_yellow:
-            return UIColor.yellow
-        case PEP_color_red:
-            return UIColor.red
-        default:
-            return nil
-        }
-    }
-
-    /**
      Gives the label a background color depending on the given privacy color.
      If the privacy color is `PrivacyColor.NoColor` the default color is used.
      */
     static func setBackgroundColor(
-        _ privacyColor: PEP_color, forLabel label: UILabel, defaultColor: UIColor?) {
-        if privacyColor != PEP_color_no_color {
+        _ privacyColor: PEPColor, forLabel label: UILabel, defaultColor: UIColor?) {
+        if privacyColor != PEPColor.noColor {
             let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor)
             label.backgroundColor = uiColor
         } else {

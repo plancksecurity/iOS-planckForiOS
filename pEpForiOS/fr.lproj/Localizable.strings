@@ -1,0 +1,331 @@
+/* No privacy status explanation
+   No privacy status suggestion */
+"-" = "-";
+
+/* KeySyncWizard introduction message */
+"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?";
+
+/* Tableview section  header: Accounts */
+"Accounts" = "Comptes";
+
+/* Name of unified inbox (showing messages of all accoounts */
+"All" = "Tout";
+
+/* KeySyncWizard introduction message */
+"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?";
+
+/* Archive button in slide-left menu */
+"Archive" = "archive";
+
+/* title attachments filter cell */
+"Attachments" = "Pièces jointes";
+
+/* Cancel button title for manual account IMAP setup
+   Cancel button title for manual account SMTP setup */
+"Back" = "Back";
+
+/* Privacy status title */
+"Broken" = "Cassé";
+
+/* alert action 3
+   Alert cancel button title before trusting an account
+   Cancel
+   Cancel button for client certificate password screen
+   Cancel button title for manual account setup
+   Cancel button title of pEp protection toggle action sheet
+   Cancel for an alert view
+   Cancel in button in Login View
+   Cancel reset account identity button title
+   Cancel title button
+   Cancel trust change to be undone
+   compose email cancel
+   Default cancel button text
+   EmailList action title
+   keysync alert leave device group cancel
+   keySyncWizard animation view cancel button title
+   Message actions
+   MoveToFolderViewController NavigationBar canel button title
+   UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
+"Cancel" = "Annuler";
+
+/* Privacy status title */
+"Cannot Decrypt" = "Impossible de déchiffrer";
+
+/* Compose field title */
+"CC:" = "Cc :";
+
+/* Confirm correct fingerprint (PGP, long version) */
+"Confirm Fingerprint" = "Confirmer empreinte";
+
+/* Confirm correct trustwords (pEp, long version) */
+"Confirm Trustwords" = "Confirmer les Trustwords";
+
+/* ResetTrustView title
+   TableView section header: Contacts */
+"Contacts" = "Contacts";
+
+/* Settings: Cell (button) title to view app credits */
+"Credits" = "Crédits";
+
+/* Incorrect trustwords/PGP fingerprint */
+"Decline" = "Rejeter";
+
+/* Account delete
+   compose email delete
+   ComposeTableView: button to decide to delete a message from Outbox after making changes.
+   Delete account button title
+   swipe delete ExtraKey action title */
+"Delete" = "Supprimer";
+
+/* keysync alert leave device group disable */
+"Disable" = "Désactiver";
+
+/* Disable Protection
+   Disable Protection button title of pEp protection toggle action sheet */
+"Disable Protection" = "Désactivez la protection";
+
+/* enable p≡p Sync with other devices in the group */
+"Enable p≡p Sync" = "Enable p≡p Sync";
+
+/* Enable Protection
+   Enable Protection button title of pEp protection toggle action sheet */
+"Enable Protection" = "Activer la protection";
+
+/* Finish button title for manual account SMTP setup
+   Start up tutorial finish button */
+"Finish" = "Finish";
+
+/* FoldersView */
+"Folders" = "Dossiers";
+
+/* EmailList action title
+   Message actions */
+"Forward" = "Transférer";
+
+/* Compose field title
+   Title of account picker when composing a message */
+"From:" = "De :";
+
+/* Title of the view */
+"Handshake" = "Handshake";
+
+/* Title for manual account IMAP setup */
+"IMAP" = "IMAP";
+
+/* Name of INBOX mailbox (of one account) */
+"Inbox" = "Boîte de réception";
+
+/* keySyncWizard completion view leave button title */
+"Leave" = "Quitter";
+
+/* Manual Setup button in Login View */
+"Manual setup" = "Configuration manuelle";
+
+/* EmailList action title */
+"Mark as Read" = "Marquer comme lu";
+
+/* Mistrusted - Step 1
+   Privacy status title */
+"Mistrusted" = "Suspect";
+
+/* File name used for videos the user attaches. */
+"Movie" = "Déplacer";
+
+/* username */
+"Name" = "Nom";
+
+/* keySyncWizard intro view Next button title
+   Next button title for manual account IMAP setup
+   Next button title for manual account setup */
+"Next" = "Suivant";
+
+/* privacyStatusDescription no_color
+   privacyStatusTitle no_color */
+"None" = "Aucun";
+
+/* keySyncWizard intro view Not Now button title
+   not now button */
+"Not Now" = "Not Now";
+
+/* Default positive button text
+   Filter accept text
+   General alert positive button
+   keySyncWizard completion view OK button title
+   OK button for client certificate password screen
+   OK button for invalid accout settings user input alert
+   UIAlertAction ok after error */
+"OK" = "Ok";
+
+/* Name of outbox (showing messages to send */
+"Outbox" = "Boîte d'envoi";
+
+/* Tableview section header */
+"p≡p sync" = "Sync p≡p";
+
+/* keySync handshake alert title
+   keySyncWizard animation view title
+   Settings: enable/disable p≡p Sync feature */
+"p≡p Sync" = "p≡p Sync";
+
+/* Passive mode title */
+"Passive mode" = "Mode passif";
+
+/* Password placeholder for manual account setup
+   Password TextField Placeholder in Login Screen */
+"Password" = "Mot de passe";
+
+/* Tableview section header */
+"PGP Compatibility" = "Compatibilité OpenPGP";
+
+/* keySyncWizard animation view message while we sync your devices */
+"Please give us a moment while we sync your devices. This can take a minute or more." = "Merci de patienter pendant la synchronisation vos dispositifs. Cela peut prendre quelques minutes.";
+
+/* keySync handshake alert message for two devices in group */
+"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?";
+
+/* Port placeholder for manual account IMAP setup
+   Port placeholder for manual account SMTP setup */
+"Port" = "Port";
+
+/* action sheet title 1 */
+"Privacy Status" = "Protection de la vie privée";
+
+/* title for subject protection */
+"Protect Message Subject" = "Protéger le sujet des messages";
+
+/* reject hand shake button */
+"Reject" = "Rejeter";
+
+/* ComposeTableView: Label of swipe left. Removing of attachment. */
+"Remove" = "Enlever";
+
+/* EmailList action title
+   Message actions
+   read button in slide-left menu */
+"Reply" = "Répondre";
+
+/* EmailList action title
+   Message actions */
+"Reply All" = "Répondre à tous";
+
+/* Account settings confirm to reset identity title alert
+   Account settings reset identity
+   Reset account identity button title
+   Settings: cell (button) title to view the trust contacts option */
+"Reset" = "Reset";
+
+/* Privacy status title
+   Secure Label - Step 1 */
+"Secure" = "Sécurisé";
+
+/* Privacy status title
+   Secure & Trusted Label - Step 1 */
+"Secure & Trusted" = "Sécurisé & Authentique";
+
+/* acction sheet title 2
+   Settings view title */
+"Settings" = "Paramètres";
+
+/* Title manual account SMTP setup */
+"SMTP" = "SMTP";
+
+/* keySyncWizard error view message when syncing devices */
+"Something went wrong with syncing the devices. Please try again." = "Une erreur s'est produite durant la synchronisation des dispositifs. Veuillez réessayer.";
+
+/* Settings: Cell (button) title to view default account setting
+   Trusted Server Setting Section Title */
+"Store Messages Securely" = "Enregistrer les messages de façon sécurisée";
+
+/* Compose field title */
+"Subject:" = "Objet :";
+
+/* Tableview section header: (p≡p) Sync */
+"Sync" = "Sync";
+
+/* KeySyncWizard complete message - more than two devices */
+"The device is now member of your device group. All your privacy is now synchronized." = "Ce dispositif fait maintenant partie de votre Groupe de dispositifs. Toutes vos données confidentielles sont maintenant synchronisées.";
+
+/* Privacy status explanation */
+"This message cannot be decrypted because the key is not available." = "La clef pour déchiffrer le message n'est pas disponible.";
+
+/* Privacy status explanation */
+"This message does not contain enough information to determine if it is secure." = "Les données de sécurité sont insuffisantes pour garantir la confidentialité ou l'authenticité du message.";
+
+/* Privacy status explanation */
+"This message has a communication partner that has previously been marked as mistrusted." = "Un des correspondants de ce message a été précédemment reconnu comme suspect.";
+
+/* Privacy status explanation */
+"This message has unreliable protection" = "Ce message n'a pas de protection fiable.";
+
+/* Privacy status explanation */
+"This message is not secure and has been tampered with." = "Les données de sécurité sont inconsistantes. Il semble que ce message soit falsifié.";
+
+/* Privacy status explanation */
+"This message is secure and trusted." = "La confidentialité et l'authenticité de ce message sont fiable.";
+
+/* Privacy status explanation */
+"This message is secure but you still need to verify the identity of your communication partner." = "Le message est chiffré mais vous devez encore vérifier l'identité de votre correspondant pour l'authentifier.";
+
+/* Privacy status explanation */
+"This message is unsecure for some communication partners." = "Cette correspondance n'est pas sécurisée pour tous ses destinataires.";
+
+/* Privacy status explanation */
+"This message is unsecure." = "Cette correspondance n'est pas sécurisée.";
+
+/* Compose field title */
+"To:" = "À :";
+
+/* Compose field title */
+"To: " = "À :";
+
+/* Trash button in slide-left menu */
+"Trash" = "Corbeille";
+
+/* show tutorial from compose view */
+"Tutorial" = "Tutoriel";
+
+/* Privacy status title */
+"Under Attack" = "Falsifié";
+
+/* Displayed attachment filename if unknown */
+"unknown" = "Indéterminé";
+
+/* Privacy status title
+   privacyStatusDescription no_color */
+"Unknown" = "Indéterminé";
+
+/* Privacy status title */
+"Unreliable Security" = "Securité non fiable";
+
+/* Privacy status title */
+"Unsecure" = "Non-sécurisé";
+
+/* Privacy status title */
+"Unsecure for Some" = "Non-sécurisé pour certains";
+
+/* setting row title: Unsecure reply warning */
+"Unsecure reply warning" = "Avertissement de réponse non sécurisée";
+
+/* User Name placeholder for manual account IMAP setup
+   User Name placeholder for manual account setup
+   User Name placeholder for manual account SMTP setup */
+"User Name" = "Nom de l'utilisateur";
+
+/* AccountsView: Prefix for version. Shows up like this: \"Version: 2.0.1 build 234\" */
+"Version" = "version";
+
+/* KeySyncWizard complete message - two devices */
+"We successfully created a device group. All your privacy is now synchronized." = "Nous avons correctement créé un groupe de dispositifs. Toutes vos données confidentielles sont maintenant synchronisées.";
+
+/* Incorrect fingerprint (PGP, long version) */
+"Wrong Fingerprint" = "Empreinte fausse";
+
+/* Incorrect trustwords (pEp, long version) */
+"Wrong Trustwords" = "Trustwords incorrects";
+
+/* Confirm less secure answer message alert body */
+"You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Vous êtes sur le point de transférer un message sécurisé de façon non-securisée. Si vous décidez de continuer, vous prenez le risque de divulguer des informations confidentielles.";
+
+/* Confirm less secure forwarding message alert body */
+"You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Vous êtes sur le point de transférer un message sécurisé de façon non-securisée. Si vous décidez de continuer, vous prenez le risque de divulguer des informations confidentielles.";
+

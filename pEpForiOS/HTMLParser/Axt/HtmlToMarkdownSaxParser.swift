@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import pEpIOSToolbox
 import MessageModel
 
 public protocol MarkdownImageDelegate: class {
@@ -62,6 +62,6 @@ extension HtmlToMarkdownSaxParser: AXHTMLParserDelegate {
     }
 
     func parser(_ parser: AXHTMLParser, parseErrorOccurred parseError: Error) {
-        Log.shared.error(component: #function, error: parseError)
+        Log.shared.errorAndCrash(error: parseError)
     }
 }

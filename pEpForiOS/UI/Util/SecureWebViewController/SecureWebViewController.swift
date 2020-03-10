@@ -7,6 +7,7 @@
 //
 
 import WebKit
+import pEpIOSToolbox
 
 protocol SecureWebViewControllerDelegate: class {
     /// Called on content size changes while within loading time.
@@ -110,6 +111,8 @@ class SecureWebViewController: UIViewController {
         let prefs = WKPreferences()
         prefs.javaScriptEnabled = false
         config.preferences = prefs
+        config.dataDetectorTypes =
+            [.link, .address, .calendarEvent, .phoneNumber, .trackingNumber, .flightNumber]
         // This handler provides local content for cid: URLs
         CidHandler.setup(config: config)
         webView = WKWebView(frame: .zero, configuration: config)
@@ -167,14 +170,13 @@ class SecureWebViewController: UIViewController {
                 forIdentifier: "pep.security.SecureWebViewController.block_all_external_content",
                 encodedContentRuleList: blockRules) { (contentRuleList, error) in
                     if let error = error {
-                        Log.shared.errorAndCrash(component: #function,
-                                                 errorString: "Compile error: \(error)")
+                        Log.shared.errorAndCrash(
+                            "Compile error: %@", "\(error)")
                         return
                     }
                     compiledBlockList = contentRuleList
                     guard let _ = compiledBlockList else {
-                        Log.shared.errorAndCrash(component: #function,
-                                                 errorString:
+                        Log.shared.errorAndCrash(
                             "Emergency exit. External content not blocked.")
                         completion()
                         return
@@ -228,7 +230,7 @@ class SecureWebViewController: UIViewController {
         let handler = {
             [weak self] (scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
 
@@ -386,20 +388,19 @@ extension SecureWebViewController: WKNavigationDelegate {
             return
         case .linkActivated:
             guard let url = navigationAction.request.url else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Link to nonexisting URL has been clicked?")
+                Log.shared.errorAndCrash("Link to nonexisting URL has been clicked?")
                 break
             }
             if url.scheme == "mailto" {
                 // The user clicked on an email URL.
                 urlClickHandler?.secureWebViewController(self, didClickMailToUrlLink: url)
             } else {
-                // The user clicked a links we do not allow custom handling for.
+                // The user clicked a link type we do not allow custom handling for.
                 // Try to open it in an appropriate app, do nothing if that fails.
                 guard UIApplication.shared.canOpenURL(url) else {
                     break
                 }
-                UIApplication.shared.openURL(url)
+                UIApplication.shared.open(url, options: [:])
             }
         case .backForward, .formResubmitted, .formSubmitted, .reload:
             // ignore

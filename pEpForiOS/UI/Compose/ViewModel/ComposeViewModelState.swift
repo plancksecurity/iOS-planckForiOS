@@ -7,13 +7,15 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 protocol ComposeViewModelStateDelegate: class {
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeValidationStateTo isValid: Bool)
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
-                               didChangePEPRatingTo newRating: PEP_rating)
+                               didChangePEPRatingTo newRating: PEPRating)
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeProtection newValue: Bool)
@@ -21,7 +23,7 @@ protocol ComposeViewModelStateDelegate: class {
 
 extension ComposeViewModel {
 
-/// Wraps bookholding properties
+    /// Wraps bookholding properties
     class ComposeViewModelState {
         private(set) var initData: InitData?
         private var isValidatedForSending = false {
@@ -31,7 +33,7 @@ extension ComposeViewModel {
             }
         }
         public private(set) var edited = false
-        public private(set) var rating = PEP_rating_undefined {
+        public private(set) var rating = PEPRating.undefined {
             didSet {
                 if rating != oldValue {
                     delegate?.composeViewModelState(self, didChangePEPRatingTo: rating)
@@ -39,11 +41,17 @@ extension ComposeViewModel {
             }
         }
 
-        public var pEpProtection = true {
-            didSet {
-                if pEpProtection != oldValue {
+        private var _pEpProtection = true
+        public var pEpProtection: Bool {
+            set {
+                let oldValue = _pEpProtection
+                _pEpProtection = (isForceUnprotectedDueToBccSet) ? false : newValue
+                if _pEpProtection != oldValue {
                     delegate?.composeViewModelState(self, didChangeProtection: pEpProtection)
                 }
+            }
+            get {
+                return _pEpProtection
             }
         }
 
@@ -111,6 +119,34 @@ extension ComposeViewModel {
             edited = false
         }
 
+        public func makeSafe(forSession session: Session,
+                             cloneAttachments: Bool = false) -> ComposeViewModelState {
+            let newValue = ComposeViewModelState(initData: initData, delegate: nil)
+
+            newValue.toRecipients = Identity.makeSafe(toRecipients, forSession: session)
+            newValue.ccRecipients = Identity.makeSafe(ccRecipients, forSession: session)
+            newValue.bccRecipients = Identity.makeSafe(bccRecipients, forSession: session)
+            if let from = from {
+                newValue.from = Identity.makeSafe(from, forSession: session)
+            }
+            newValue.inlinedAttachments = Attachment.clone(attachmnets: inlinedAttachments, //BUFF: Looks very wrong to me. Why clone? should make save?!
+                                                           for: session)
+            newValue.nonInlinedAttachments = Attachment.clone(attachmnets: nonInlinedAttachments, //BUFF: Looks very wrong to me. Why clone? should make save?!
+                                                              for: session)
+            newValue.isValidatedForSending = isValidatedForSending
+            newValue.pEpProtection = pEpProtection
+            newValue.bccWrapped = bccWrapped
+            newValue.subject = subject
+            newValue.bodyPlaintext = bodyPlaintext
+            newValue.bodyHtml = bodyHtml
+            newValue.isValidatedForSending = isValidatedForSending
+            newValue.rating = rating
+            newValue.edited = edited
+            newValue.delegate = delegate
+
+            return newValue
+        }
+
         public func setBccUnwrapped() {
             bccWrapped = false
         }
@@ -122,7 +158,7 @@ extension ComposeViewModel {
 
         private func setup() {
             guard let initData = initData else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No data")
+                Log.shared.errorAndCrash("No data")
                 return
             }
             toRecipients = initData.toRecipients
@@ -134,8 +170,8 @@ extension ComposeViewModel {
 
             pEpProtection = initData.pEpProtection
 
-            inlinedAttachments =  initData.inlinedAttachments
-            nonInlinedAttachments =  initData.nonInlinedAttachments
+            inlinedAttachments = initData.inlinedAttachments
+            nonInlinedAttachments = initData.nonInlinedAttachments
         }
 
         private func validateForSending() {
@@ -159,7 +195,7 @@ extension ComposeViewModel.ComposeViewModelState {
             return false
         }
         let outgoingRatingColor = rating.pEpColor()
-        return outgoingRatingColor == PEP_color_yellow || outgoingRatingColor == PEP_color_green
+        return outgoingRatingColor == .yellow || outgoingRatingColor == .green
     }
 }
 
@@ -172,29 +208,26 @@ extension ComposeViewModel.ComposeViewModelState {
     }
 
     private func calculatePepRating() {
-        guard !isForceUnprotectedDueToBccSet && pEpProtection else {
-            rating = PEP_rating_unencrypted
+        guard !isForceUnprotectedDueToBccSet else {
+            rating = .unencrypted
             return
         }
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let me = self else {
-                // That is a valid case. Compose view is gone before this block started to run.
-                return
-            }
-            let newRating: PEP_rating
-            let session = PEPSession()
-            if let from = me.from {
-                newRating = session.outgoingMessageRating(from: from,
-                                                       to: me.toRecipients,
-                                                       cc: me.ccRecipients,
-                                                       bcc: me.bccRecipients)
-            } else {
-                newRating = PEP_rating_undefined
-            }
-            DispatchQueue.main.async {
-                me.rating = newRating
-            }
+
+        guard let from = from else {
+            rating = PEPRating.undefined
+            return
         }
+
+        let session = Session.main
+        let safeFrom = from.safeForSession(session)
+        let safeTo = Identity.makeSafe(toRecipients, forSession: session)
+        let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
+        let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
+        let pEpsession = PEPSession()
+        rating = pEpsession.outgoingMessageRating(from: safeFrom,
+                                                  to: safeTo,
+                                                  cc: safeCc,
+                                                  bcc: safeBcc)
     }
 }
 
@@ -206,13 +239,13 @@ extension ComposeViewModel.ComposeViewModelState {
         return !handshakeActionCombinations().isEmpty
     }
 
-    private func handshakeActionCombinations() -> [HandshakeCombination] {
+    private func handshakeActionCombinations() -> [TrustManagementUtil.HandshakeCombination] {
         if let from = from {
             var allIdenties = toRecipients
             allIdenties.append(from)
             allIdenties.append(contentsOf: ccRecipients)
             allIdenties.append(contentsOf: bccRecipients)
-            return Message.handshakeActionCombinations(identities: allIdenties)
+            return TrustManagementUtil().handshakeCombinations(identities: allIdenties)
         } else {
             return []
         }

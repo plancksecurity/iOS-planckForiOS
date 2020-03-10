@@ -7,10 +7,14 @@
 //
 
 import UIKit
+import pEpIOSToolbox
 
+//!!!: The concept is very dirty. PrimarySplitViewController should not be aware of EmailListViewController.
+// According to //XAVIER, the implementation will change to be generic (emilaiVC independent) with the new SplitViewController concept which is WIP.
 class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDelegate {
-
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         self.delegate = self
         preferredDisplayMode = .allVisible
     }
@@ -18,9 +22,9 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
     func splitViewController(_ splitViewController: UISplitViewController,
                              collapseSecondary secondaryViewController:UIViewController,
                              onto primaryViewController:UIViewController) -> Bool {
-        guard let navigationController = secondaryViewController as? UINavigationController,
-            navigationController.rootViewController is EmailViewController ||
-                navigationController.rootViewController is ThreadViewController
+        guard
+            let navigationController = secondaryViewController as? UINavigationController,
+            navigationController.rootViewController is EmailViewController
             else {
                 return true
         }
@@ -31,29 +35,20 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
     func splitViewController(_ splitViewController: UISplitViewController,
                              separateSecondaryFrom primaryViewController: UIViewController)
         -> UIViewController? {
-
-            guard let navigationController =
-                    splitViewController.viewControllers.first as? UINavigationController,
+            guard
+                let navigationController =
+                splitViewController.viewControllers.first as? UINavigationController,
                 let secondaryNavigationController =
-                    navigationController.topViewController as? UINavigationController,
-                secondaryNavigationController.topViewController is EmailViewController ||
-                    secondaryNavigationController.topViewController is ThreadViewController
+                navigationController.topViewController as? UINavigationController,
+                secondaryNavigationController.topViewController is EmailViewController
                 else {
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let vc = storyboard.instantiateViewController(withIdentifier: "noMessagesViewController")
+                    let storyboard = UIStoryboard(
+                        name: UIStoryboard.noSelectionStoryBoard,
+                        bundle: nil)
+                    let vc = storyboard.instantiateViewController(
+                        withIdentifier: UIStoryboard.nothingSelectedViewController)
                     return vc
             }
             return secondaryNavigationController
-    }
-
-    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewControllerDisplayMode) {
-
-
-        guard let nav = viewControllers.last as? UINavigationController,
-            let emailViewController = nav.rootViewController as? EmailViewController else {
-                return
-        }
-
-        emailViewController.splitViewController(willChangeTo: displayMode)
     }
 }

@@ -10,48 +10,47 @@ import XCTest
 
 import CoreData
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel //FIXME:
+import PEPObjCAdapterFramework
 
-class CoreDataDrivenTestBase: XCTestCase {
+open class CoreDataDrivenTestBase: XCTestCase {
+    var moc : NSManagedObjectContext!
+
     var account: Account {
-        return cdAccount.account()
+        return Account(cdObject: cdAccount, context: moc)
     }
     var cdAccount: CdAccount!
-    var persistentSetup: PersistentSetup!
 
-    var imapConnectInfo: EmailConnectInfo!
-    var smtpConnectInfo: EmailConnectInfo!
-    var imapSyncData: ImapSyncData!
+    public var imapConnectInfo: EmailConnectInfo!
+    public var smtpConnectInfo: EmailConnectInfo!
+    public var imapConnection: ImapConnection!
 
     var session: PEPSession {
         return PEPSession()
     }
 
-    override func setUp() {
+    override open func setUp() {
         super.setUp()
+        Stack.shared.reset() //!!!: this should not be required. Rm after all tests use a propper base class!
+        moc = Stack.shared.mainContext
 
-        XCTAssertTrue(PEPUtil.pEpClean())
-        
-        persistentSetup = PersistentSetup()
-        
-        let cdAccount = SecretTestData().createWorkingCdAccount()
-        Record.saveAndWait()
+        let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
+        moc.saveAndLogErrors()
         self.cdAccount = cdAccount
 
         imapConnectInfo = cdAccount.imapConnectInfo
         smtpConnectInfo = cdAccount.smtpConnectInfo
-        imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
+        imapConnection = ImapConnection(connectInfo: imapConnectInfo)
 
         XCTAssertNotNil(imapConnectInfo)
         XCTAssertNotNil(smtpConnectInfo)
     }
 
-    override func tearDown() {
-        imapSyncData?.sync?.close()
-        persistentSetup.tearDownCoreDataStack()
-        persistentSetup = nil
+    override open func tearDown() {
+        imapConnection.close()
+        Stack.shared.reset()
         PEPSession.cleanup()
-        XCTAssertTrue(PEPUtil.pEpClean())
+        XCTAssertTrue(PEPUtils.pEpClean())
         super.tearDown()
     }
 
@@ -60,9 +59,10 @@ class CoreDataDrivenTestBase: XCTestCase {
     func fetchMessages(parentName: String) {
         let expMailsFetched = expectation(description: "expMailsFetched")
 
-        let opLogin = LoginImapOperation(parentName: parentName, imapSyncData: imapSyncData)
-        let op = FetchMessagesOperation(parentName: parentName, imapSyncData: imapSyncData,
-                                        folderName: ImapSync.defaultImapInboxName)
+        let opLogin = LoginImapOperation(parentName: parentName, imapConnection: imapConnection)
+        let op = FetchMessagesInImapFolderOperation(parentName: parentName,
+                                                    imapConnection: imapConnection,
+                                                    folderName: ImapConnection.defaultInboxName)
         op.addDependency(opLogin)
         op.completionBlock = {
             op.completionBlock = nil
@@ -75,7 +75,7 @@ class CoreDataDrivenTestBase: XCTestCase {
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors())
+            XCTAssertFalse(op.hasErrors)
         })
     }
 }

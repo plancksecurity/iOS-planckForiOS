@@ -9,39 +9,45 @@
 import UIKit
 import CoreData
 
-import MessageModel
+@testable import MessageModel
+import PEPObjCAdapterFramework
+import PantomimeFramework
 
+/// Base class for test data.
+/// - Note:
+///   1. This class is used both in MessageModel and the app,
+///      so it's _duplicated code_ for the testing targets.
+///   2. Make sure that, in your SecretTestData, you override:
+///      * `populateAccounts` if you don't use the greenmail local server for testing,
+///        or you want to test against other servers for various reasons.
+///      * `populateVerifiableAccounts` in order to provide verifiable servers, to test
+///        the verification parts.
 class TestDataBase {
     struct AccountSettings {
         var accountName: String?
         var idAddress: String
         var idUserName: String?
-        var smtpServerAddress: String?
+        var smtpLoginName: String?
+        var smtpServerAddress: String
         var smtpServerType: Server.ServerType = .smtp
         var smtpServerTransport: Server.Transport = .tls
         var smtpServerPort: UInt16 = 587
-        var imapServerAddress: String?
+        var imapLoginName: String?
+        var imapServerAddress: String
         var imapServerType: Server.ServerType = .imap
         var imapServerTransport: Server.Transport = .startTls
         var imapServerPort: UInt16 = 993
         var password: String?
 
-        init(accountName: String?, address: String) {
-            self.accountName = accountName
-            self.idAddress = address
-        }
-
-        init(address: String) {
-            self.init(accountName: nil, address: address)
-        }
-
         init(accountName: String,
              idAddress: String,
              idUserName: String,
+             imapLoginName: String? = nil,
              imapServerAddress: String,
              imapServerType: Server.ServerType,
              imapServerTransport: Server.Transport,
              imapServerPort: UInt16,
+             smtpLoginName: String? = nil,
              smtpServerAddress: String,
              smtpServerType: Server.ServerType,
              smtpServerTransport: Server.Transport,
@@ -50,10 +56,12 @@ class TestDataBase {
             self.accountName = accountName
             self.idAddress = idAddress
             self.idUserName = idUserName
+            self.smtpLoginName = smtpLoginName
             self.smtpServerAddress = smtpServerAddress
             self.smtpServerType = smtpServerType
             self.smtpServerTransport = smtpServerTransport
             self.smtpServerPort = smtpServerPort
+            self.imapLoginName = imapLoginName
             self.imapServerAddress = imapServerAddress
             self.imapServerType = imapServerType
             self.imapServerTransport = imapServerTransport
@@ -61,41 +69,42 @@ class TestDataBase {
             self.password = password
         }
 
-        func cdAccount() -> CdAccount {
-            let id = CdIdentity.create()
+        func cdAccount(context: NSManagedObjectContext) -> CdAccount {
+            let id = CdIdentity(context: context)
             id.address = idAddress
             id.userName = idUserName
+            id.userID = UUID().uuidString
 
-            let acc = CdAccount.create()
+            let acc = CdAccount(context: context)
             acc.identity = id
 
             //SMTP
-            let smtp = CdServer.create()
+            let smtp = CdServer(context: context)
             smtp.serverType = smtpServerType
-            smtp.port = NSNumber(value: smtpServerPort)
+            smtp.port = Int16(smtpServerPort)
             smtp.address = smtpServerAddress
             smtp.transport = smtpServerTransport
 
-            let keySmtp = MessageID.generate()
+            let keySmtp = UUID().uuidString
             CdServerCredentials.add(password: password, forKey: keySmtp)
-            let credSmtp = CdServerCredentials.create()
-            credSmtp.loginName = id.address
+            let credSmtp = CdServerCredentials(context: context)
+            credSmtp.loginName = smtpLoginName ?? id.address
             credSmtp.key = keySmtp
             smtp.credentials = credSmtp
 
             acc.addToServers(smtp)
 
             //IMAP
-            let imap = CdServer.create()
+            let imap = CdServer(context: context)
             imap.serverType = imapServerType
-            imap.port = NSNumber(value: imapServerPort)
+            imap.port = Int16(imapServerPort)
             imap.address = imapServerAddress
             imap.transport = imapServerTransport
 
-            let keyImap = MessageID.generate()
+            let keyImap = UUID().uuidString
             CdServerCredentials.add(password: password, forKey: keyImap)
-            let credImap = CdServerCredentials.create()
-            credImap.loginName = id.address
+            let credImap = CdServerCredentials(context: context)
+            credImap.loginName = imapLoginName ?? id.address
             credImap.key = keyImap
             imap.credentials = credImap
 
@@ -104,10 +113,11 @@ class TestDataBase {
             return acc
         }
 
-        func cdIdentityWithoutAccount(isMyself: Bool = false) -> CdIdentity {
-            let id = CdIdentity.create()
+        func cdIdentityWithoutAccount(isMyself: Bool = false, context: NSManagedObjectContext) -> CdIdentity {
+            let id = CdIdentity(context: context)
             id.address = idAddress
             id.userName = idUserName
+
             if isMyself {
                 id.userID = CdIdentity.pEpOwnUserID
             } else {
@@ -116,22 +126,29 @@ class TestDataBase {
             return id
         }
 
-        func account() -> Account {
-            let id = Identity.create(address: idAddress, userName: idUserName, isMySelf: true)
+        //!!!: very wrong. MMO + MOC
+        func account(context: NSManagedObjectContext) -> Account {
+            let id = Identity(address: idAddress,
+                              userName: idUserName,
+                              session: Session(context: context))
 
-            let credSmtp = ServerCredentials.create(loginName: id.address)
+            let credSmtp = ServerCredentials(loginName: id.address,
+                                             key: nil,
+                                             clientCertificate: nil)
             credSmtp.password = password
             let smtp = Server.create(serverType: .smtp,
                                      port: smtpServerPort,
-                                     address: smtpServerAddress ?? "",
+                                     address: smtpServerAddress,
                                      transport: smtpServerTransport,
                                      credentials:credSmtp)
 
-            let credImap = ServerCredentials.create(loginName: id.address)
+            let credImap = ServerCredentials(loginName: id.address,
+                                             key: nil,
+                                             clientCertificate: nil)
             credImap.password = password
             let imap = Server.create(serverType: .imap,
                                      port: imapServerPort,
-                                     address: imapServerAddress ?? "",
+                                     address: imapServerAddress,
                                      transport: imapServerTransport,
                                      credentials:credImap)
             
@@ -145,22 +162,63 @@ class TestDataBase {
             ident.userName = accountName
             return ident
         }
+
+        /// Transfers the account data into a `VerifiableAccountProtocol`
+        /// that you then can verify the acconut data with.
+        func populate(verifiableAccount: inout VerifiableAccountProtocol) {
+            verifiableAccount.userName = accountName
+            verifiableAccount.address = idAddress
+            verifiableAccount.loginNameIMAP = imapLoginName
+            verifiableAccount.loginNameSMTP = smtpLoginName
+            verifiableAccount.accessToken = nil
+            verifiableAccount.password = password
+
+            verifiableAccount.serverIMAP = imapServerAddress
+            verifiableAccount.portIMAP = imapServerPort
+            verifiableAccount.transportIMAP = ConnectionTransport(transport: imapServerTransport)
+
+            verifiableAccount.serverSMTP = smtpServerAddress
+            verifiableAccount.portSMTP = smtpServerPort
+            verifiableAccount.transportSMTP = ConnectionTransport(transport: smtpServerTransport)
+
+            verifiableAccount.authMethod = nil
+        }
     }
 
     private var testAccounts = [AccountSettings]()
+    private var verifiableTestAccounts = [AccountSettings]()
 
     func append(accountSettings: AccountSettings) {
         testAccounts.append(accountSettings)
     }
 
+    func append(verifiableAccountSettings: AccountSettings) {
+        verifiableTestAccounts.append(verifiableAccountSettings)
+    }
+
     /**
+     Add IMAP/SMTP accounts that are used for testing.
      - Note:
-       * Add test accounts in TestData.swift only!).
+       * These (local) accounts depend on a local greenmail server.
+         Please see the readme for details.
+       * Override this in SecretTestData if needed, for testing external servers.
        * The first 2 accounts play in tandem for some tests.
+       * Some tests send emails to unittest.ios.1@peptest.ch,
+         this account has to exist but there's no need to query it.
      */
     func populateAccounts() {
-        // Some sample code, use this in your own implementation.
-        append(accountSettings: AccountSettings(
+        addLocalTestAccount(userName: "test001")
+        addLocalTestAccount(userName: "test002")
+        addLocalTestAccount(userName: "test003")
+    }
+
+    /**
+     Accounts needed for testing LAS, that is they need to be registered
+     in the LAS DB or provide (correct) DNS SRV for IMAP and SMTP.
+     - Note: Override this in your SecretTestData to something that's working.
+     */
+    func populateVerifiableAccounts() {
+        append(verifiableAccountSettings: AccountSettings(
             accountName: "Whatever_you_want",
             idAddress: "whatever_you_want@yahoo.com",
             idUserName: "whatever_you_want@yahoo.com",
@@ -180,11 +238,34 @@ class TestDataBase {
         fatalError("Abstract method. Must be overridden")
     }
 
+    private func addLocalTestAccount(userName: String) {
+        let address = "\(userName)@localhost"
+        append(accountSettings: AccountSettings(
+            accountName: "Unit Test \(address)",
+            idAddress: address,
+            idUserName: "User \(address)",
+
+            imapLoginName: userName,
+            imapServerAddress: "localhost",
+            imapServerType: Server.ServerType.imap,
+            imapServerTransport: Server.Transport.plain,
+            imapServerPort: 3143,
+
+            smtpLoginName: userName,
+            smtpServerAddress: "localhost",
+            smtpServerType: Server.ServerType.smtp,
+            smtpServerTransport: Server.Transport.plain,
+            smtpServerPort: 3025,
+
+            password: "pwd"))
+    }
+
     /**
      - Returns: A valid `CdAccount`.
      */
-    func createWorkingCdAccount(number: Int = 0) -> CdAccount {
-        let result = createWorkingAccountSettings(number: number).cdAccount()
+    @discardableResult
+    func createWorkingCdAccount(number: Int = 0, context: NSManagedObjectContext) -> CdAccount {
+        let result = createWorkingAccountSettings(number: number).cdAccount(context: context)
         // The identity of an account is mySelf by definion.
         result.identity?.userID = CdIdentity.pEpOwnUserID
         return result
@@ -193,21 +274,13 @@ class TestDataBase {
     /**
      - Returns: A valid `CdIdentity` without parent account.
      */
-    func createWorkingCdIdentity(number: Int = 0, isMyself: Bool = false) -> CdIdentity {
-        let result = createWorkingAccountSettings(number: number).cdIdentityWithoutAccount(isMyself: isMyself)
+    func createWorkingCdIdentity(number: Int = 0,
+                                 isMyself: Bool = false,
+                                 context: NSManagedObjectContext) -> CdIdentity {
+        let result =
+            createWorkingAccountSettings(number: number).cdIdentityWithoutAccount(isMyself: isMyself,
+                                                                                  context: context)
         return result
-    }
-
-    /**
-     - Returns: A `CdAccount` that should not be able to be verified.
-     */
-    func createDisfunctionalCdAccount() -> CdAccount {
-        var accountSettings = createWorkingAccountSettings(number: 0)
-        accountSettings.smtpServerAddress = "localhost"
-        accountSettings.smtpServerPort = 2323
-        accountSettings.imapServerPort = 2323
-        accountSettings.imapServerAddress = "localhost"
-        return accountSettings.cdAccount()
     }
 
     func createWorkingAccountSettings(number: Int = 0) -> AccountSettings {
@@ -215,19 +288,44 @@ class TestDataBase {
         return testAccounts[number]
     }
 
+    func createVerifiableAccountSettings(number: Int = 0) -> AccountSettings {
+        populateVerifiableAccounts()
+        return verifiableTestAccounts[number]
+    }
+
     /**
      - Returns: A valid `Account`.
      */
-    func createWorkingAccount(number: Int = 0) -> Account {
-        return createWorkingAccountSettings(number: number).account()
+    func createWorkingAccount(number: Int = 0, context: NSManagedObjectContext) -> Account {
+        return createWorkingAccountSettings(number: number).account(context: context)
+    }
+
+    /**
+     - Returns: A valid `Account`.
+     */
+    func createWorkingAccount(number: Int = 0, session: Session? = Session.main) -> Account? {
+        guard let nonOptionalSession = session else {
+            Log.shared.errorAndCrash(message: "session was nil")
+            return nil
+        }
+        return createWorkingAccountSettings(number: number).account(context: nonOptionalSession.moc)
+    }
+    /**
+     - Returns: A valid `Account`.
+     */
+    func createVerifiableAccount(number: Int = 0, context: NSManagedObjectContext) -> Account {
+        return createVerifiableAccountSettings(number: number).account(context: context)
     }
 
     /**
      - Returns: A valid `PEPIdentity`.
      */
-    func createWorkingIdentity(number: Int = 0, isMyself: Bool = false) -> PEPIdentity {
+    func createWorkingIdentity(number: Int = 0,
+                               isMyself: Bool = false,
+                               context: NSManagedObjectContext) -> PEPIdentity {
         populateAccounts()
-        return createWorkingCdIdentity(number: number, isMyself: isMyself).pEpIdentity()
+        return createWorkingCdIdentity(number: number, isMyself: isMyself, context: context)
+            .pEpIdentity()
     }
 
     /**
@@ -235,7 +333,7 @@ class TestDataBase {
      */
     func createSmtpTimeOutAccountSettings() -> AccountSettings {
         populateAccounts()
-        var accountSettings = createWorkingAccountSettings(number: 0)
+        var accountSettings = createVerifiableAccountSettings(number: 0)
         accountSettings.smtpServerAddress = "localhost"
         accountSettings.smtpServerPort = 2323
         return accountSettings
@@ -255,22 +353,27 @@ class TestDataBase {
     /**
      - Returns: A `CdAccount` around `createSmtpTimeOutAccountSettings`.
      */
-    func createSmtpTimeOutCdAccount() -> CdAccount {
-        return createSmtpTimeOutAccountSettings().cdAccount()
+    func createSmtpTimeOutCdAccount(context: NSManagedObjectContext) -> CdAccount {
+        return createSmtpTimeOutAccountSettings().cdAccount(context: context)
     }
 
     /**
      - Returns: An `Account` around `createSmtpTimeOutAccountSettings`.
      */
-    func createSmtpTimeOutAccount() -> Account {
-        return createSmtpTimeOutAccountSettings().account()
+    func createSmtpTimeOutAccount(context: NSManagedObjectContext) -> Account {
+        return createSmtpTimeOutAccountSettings().account(context: context)
     }
 
     /**
      - Returns: An `Account` around `createImapTimeOutAccountSettings`.
      */
-    func createImapTimeOutAccount() -> Account {
-        return createImapTimeOutAccountSettings().account()
+    func createImapTimeOutAccount(context: NSManagedObjectContext) -> Account {
+        return createImapTimeOutAccountSettings().account(context: context)
     }
 
+    func populateVerifiableAccount(number: Int = 0,
+                                   verifiableAccount: inout VerifiableAccountProtocol) {
+        createVerifiableAccountSettings(number: number).populate(
+            verifiableAccount: &verifiableAccount)
+    }
 }

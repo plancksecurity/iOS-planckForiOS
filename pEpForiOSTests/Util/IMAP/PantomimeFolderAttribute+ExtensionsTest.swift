@@ -8,7 +8,10 @@
 
 import XCTest
 
+import PantomimeFramework
+
 @testable import pEpForiOS
+@testable import MessageModel
 
 class PantomimeFolderAttribute_ExtensionsTest: XCTestCase {
 

@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
 
 public struct ReplyUtil {
     private static let nameSeparator = ", "
@@ -19,7 +20,7 @@ public struct ReplyUtil {
         guard let quotedText = quotedText(for: message) else {
             return "\n\n\(footer())"
         }
-        let citation = citationHeaderForMessage(message, replyAll: replyAll)
+        let citation = citationHeaderForMessage(message)
 
         return "\n\n\(footer())\n\n\(citation)\n\n\(quotedText)"
     }
@@ -30,8 +31,8 @@ public struct ReplyUtil {
     ///   - textToCite: text to cite
     ///   - msg: message to take data (sender, date sent ...) from
     /// - Returns: text with citation header and "send by pEp" footer
-     static func citedMessageText(textToCite: String, fromMessage msg: Message) -> String {
-        let citation = citationHeaderForMessage(msg, replyAll: false)
+    static func citedMessageText(textToCite: String, fromMessage msg: Message) -> String {
+        let citation = citationHeaderForMessage(msg)
         return "\n\n\(footer())\n\n\(citation)\n\n\(textToCite)"
     }
 
@@ -43,11 +44,11 @@ public struct ReplyUtil {
     /// - Returns: text with citation header and "send by pEp" footer
     public static func citedMessageText(textToCite: NSAttributedString,
                                         fromMessage msg: Message) -> NSAttributedString {
-        let citation = citationHeaderForMessage(msg, replyAll: false)
+        let citation = citationHeaderForMessage(msg)
 
         let defaultFont = UIFont.preferredFont(forTextStyle: .body)
         var result = NSAttributedString(string: "\n\n\(footer())\n\n\(citation)\n\n",
-            attributes: [NSAttributedStringKey(rawValue: "NSFont"): defaultFont])
+            attributes: [NSAttributedString.Key(rawValue: "NSFont"): defaultFont])
         result = result + textToCite
         return result
     }
@@ -131,25 +132,19 @@ public struct ReplyUtil {
         return quotedText
     }
 
-    static private func citationHeaderForMessage(_ message: Message, replyAll: Bool) -> String {
+    static private func citationHeaderForMessage(_ message: Message) -> String {
         let dateFormatter = DateFormatter.init()
         dateFormatter.dateStyle = DateFormatter.Style.long
         dateFormatter.timeStyle = DateFormatter.Style.long
 
-        let theDate = message.received
+        let theDate = message.sent
 
         var theNames = [String]()
-        if replyAll {
-            let contacts = message.allRecipients
-            theNames.append(
-                contentsOf: contacts.map() { return replyNameFromIdentity($0) })
-        } else {
-            if let from = message.from {
-                theNames.append(replyNameFromIdentity(from))
-            }
+        if let from = message.from {
+            theNames.append(replyNameFromIdentity(from))
         }
 
-        if theNames.count == 0 {
+        if theNames.isEmpty {
             if let rd = theDate {
                 return String.localizedStringWithFormat(
                     NSLocalizedString("Someone wrote on %1$@:",
@@ -159,7 +154,7 @@ public struct ReplyUtil {
                 return NSLocalizedString("Someone wrote:",
                                          comment: "Reply to unknown sender without date")
             }
-        } else if theNames.count == 1 {
+        } else {
             if let rd = theDate {
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
@@ -172,21 +167,6 @@ public struct ReplyUtil {
                         "%1$@ wrote:",
                         comment: "Reply to single contact, without date. Placeholder: Name."),
                     theNames[0])
-            }
-        } else {
-            let allNames = theNames.joined(separator: nameSeparator)
-            if let rd = theDate {
-                return String.localizedStringWithFormat(
-                    NSLocalizedString(
-                        "%1$@ wrote on %@:",
-                        comment: "Reply to multiple contacts, with date. Placeholder: Name."),
-                    allNames, dateFormatter.string(from: rd as Date))
-            } else {
-                return String.localizedStringWithFormat(
-                    NSLocalizedString(
-                        "%1$@ wrote:",
-                        comment: "Reply to multiple contacts, without date. Placeholder: Names"),
-                    allNames)
             }
         }
     }

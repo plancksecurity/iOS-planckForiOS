@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import pEpIOSToolbox
 
 class AccountCell: TextViewContainingTableViewCell {
     static let reuseId = "AccountCell"
+
     private var viewModel: AccountCellViewModel? {
         didSet {
             viewModel?.delegate = self
@@ -21,15 +23,17 @@ class AccountCell: TextViewContainingTableViewCell {
 
     public func setup(with viewModel: AccountCellViewModel) {
         self.viewModel = viewModel
-        if viewModel.content != nil {
-            self.textView.text = viewModel.content
-        }
         setupPickerView()
+        guard let accountToShow = viewModel.displayAccount,
+            let pickerPosition = viewModel.accountPickerViewModel.row(at: accountToShow) else {
+            return
+        }
+        self.picker?.selectRow(pickerPosition, inComponent: 0, animated: true)
     }
 
     private func setupPickerView() {
         guard let viewModel = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return
         }
         picker = AccountPickerView()

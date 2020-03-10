@@ -16,28 +16,15 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
     var sent: Folder!
     var draft: Folder!
 
-    var replyAllChecker = ReplyAllPossibleChecker()
+    var msg: Message!
 
-    var externalFrom1 = Identity.create(
-        address: "1@example.com",
-        userID: "1",
-        addressBookID: "1",
-        userName: "user1",
-        isMySelf: false)
+    var replyAllChecker: ReplyAllPossibleChecker!
 
-    var otherRecipient1 = Identity.create(
-        address: "2@example.com",
-        userID: "2",
-        addressBookID: "2",
-        userName: "user2",
-        isMySelf: false)
+    var externalFrom1: Identity!
 
-    var otherRecipient2 = Identity.create(
-        address: "3@example.com",
-        userID: "3",
-        addressBookID: "3",
-        userName: "user3",
-        isMySelf: false)
+    var otherRecipient1: Identity!
+
+    var otherRecipient2: Identity!
 
     /**
      Maps test name to message counter in that test.
@@ -46,7 +33,21 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
 
     override func setUp() {
         super.setUp()
-        replyAllChecker = ReplyAllPossibleChecker()
+
+        externalFrom1 = Identity(address: "1@example.com",
+                                 userID: "1",
+                                 addressBookID: "1",
+                                 userName: "user1")
+
+        otherRecipient1 = Identity(address: "2@example.com",
+                                   userID: "2",
+                                   addressBookID: "2",
+                                   userName: "user2")
+
+        otherRecipient2 = Identity(address: "3@example.com",
+                                   userID: "3",
+                                   addressBookID: "3",
+                                   userName: "user3")
 
         inbox = Folder(name: "INBOX", parent: nil, account: account, folderType: .inbox)
         inbox.save()
@@ -56,6 +57,10 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
 
         draft = Folder(name: "DRAFTS", parent: nil, account: account, folderType: .drafts)
         draft.save()
+
+        let msg = Message.init(uuid: "\(666)", uid: 666, parentFolder: inbox)
+
+        replyAllChecker = ReplyAllPossibleChecker(messageToReplyTo: msg)
     }
     
     override func tearDown() {
@@ -105,7 +110,7 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                              cc: [],
                              bcc: []))
 
-        // PEP_rating_fully_anonymous?
+        // .fullyAnonymous?
         XCTAssertFalse(
             replyAllPossible(testName: #function,
                              folder: inbox,
@@ -269,7 +274,7 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                              cc: [],
                              bcc: []))
 
-        // PEP_rating_fully_anonymous?
+        // .fullyAnonymous?
         XCTAssertFalse(
             replyAllPossible(testName: #function,
                              folder: inbox,
@@ -337,40 +342,39 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                              bcc: []))
 
         // strange to land in drafts, but can happen (accidental move etc.)
-        XCTAssertFalse(
-            replyAllPossible(testName: #function,
-                             folder: draft,
-                             from: externalFrom1,
-                             to: [otherRecipient1, otherRecipient2],
-                             cc: [],
-                             bcc: []))
+        XCTAssertFalse(replyAllPossible(testName: #function,
+                                        folder: draft,
+                                        from: externalFrom1,
+                                        to: [otherRecipient1, otherRecipient2],
+                                        cc: [],
+                                        bcc: []))
     }
 
     // MARK: Helpers
 
-    func replyAllPossible(
-        testName: String,
-        folder: Folder,
-        from: Identity?, to: [Identity], cc: [Identity], bcc: [Identity]) -> Bool {
+    func replyAllPossible(testName: String,
+                          folder: Folder,
+                          from: Identity?,
+                          to: [Identity],
+                          cc: [Identity],
+                          bcc: [Identity]) -> Bool {
         let msgNumber = nextMessageNumber(testName: testName)
-
-        let msg = Message.init(uuid: "\(msgNumber)", uid: UInt(msgNumber), parentFolder: folder)
-
+        msg = Message.init(uuid: "\(msgNumber)", uid: msgNumber, parentFolder: folder)
         msg.from = from
-
+        replyAllChecker = ReplyAllPossibleChecker(messageToReplyTo: msg)
         if !to.isEmpty {
-            msg.to = to
+            msg.replaceTo(with: to)
         }
 
         if !cc.isEmpty {
-            msg.cc = cc
+            msg.replaceCc(with: cc)
         }
 
         if !bcc.isEmpty {
-            msg.bcc = bcc
+            msg.replaceBcc(with: bcc)
         }
 
-        return replyAllChecker.isReplyAllPossible(forMessage: msg)
+        return replyAllChecker.isReplyAllPossible()
     }
 
     func nextMessageNumber(testName: String) -> Int {
@@ -383,4 +387,5 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
             return 1
         }
     }
+    
 }

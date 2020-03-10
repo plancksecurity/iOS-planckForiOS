@@ -405,6 +405,43 @@ class BodyCellViewModelTest: XCTestCase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    func testShouldReplaceText_attachment_multipleRemove() {
+        let attachmentsToRemoveCount = 10
+        shouldReplaceText_attachment(remove: attachmentsToRemoveCount)
+    }
+    func shouldReplaceText_attachment (remove: Int) {
+        var textBuilder = NSAttributedString(string: "Test text")
+        let range = NSRange(location: 0, length: 0)
+        var initialAttachments = [Attachment]()
+
+        for i in 0..<remove {
+            let testAttachment = createTestAttachment(fileName: String(i), addImage: true)
+            textBuilder = insertTextattachment(for: testAttachment, in: range, of: textBuilder)
+            initialAttachments.append(testAttachment)
+        }
+
+        let attachmentToRemoveRange = NSRange(location: 0, length: textBuilder.length)
+        let expectedAttachmentsLeft = [Attachment]()
+
+        setupAssertionDelegates(initialPlaintext: nil,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: initialAttachments,
+                                expectInsertCalled: nil,
+                                inserted: nil,
+                                expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
+                                expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: true),
+                                inlined: expectedAttachmentsLeft,
+                                expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
+                                exectedPlain: nil,
+                                exectedHtml: nil)
+        let shouldReplace = vm.shouldReplaceText(in: attachmentToRemoveRange,
+                                                 of: textBuilder,
+                                                 with: "")
+        XCTAssertTrue(shouldReplace, "Should alway be true")
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     // MARK: handleUserClickedSelectMedia
 
     func testHandleUserClickedSelectMedia() {
@@ -565,11 +602,9 @@ class BodyCellViewModelTest: XCTestCase {
                 attachments.append(Attachment(data: data,
                                               mimeType: mimeType,
                                               fileName: fileName == nil ? "\(i)" : fileName,
-                    size: size,
-                    url: url,
-                    image: addImage ? image : nil,
-                    assetUrl: assetUrl,
-                    contentDisposition: contentDisposition))
+                                              image: addImage ? image : nil,
+                                              assetUrl: assetUrl,
+                                              contentDisposition: contentDisposition))
             }
             return attachments
     }
@@ -607,7 +642,7 @@ class BodyCellViewModelTest: XCTestCase {
 
     private func textAttachmentString(for attachment: Attachment) -> NSAttributedString {
         guard let image = attachment.image else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No image")
+            XCTFail("No image")
             return NSAttributedString()
         }
         attachment.contentDisposition = .inline

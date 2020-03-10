@@ -12,27 +12,29 @@ extension Attachment {
 
     public static func createFromAsset(mimeType: String,
                                        assetUrl: URL,
-                                       image: UIImage? = nil,
-                                       contentDisposition: ContentDispositionType) -> Attachment {
+                                       image: UIImage,
+                                       contentDisposition: ContentDispositionType,
+                                       session: Session = Session.main) -> Attachment {
         var urlExtension = assetUrl.pathExtension
         // We do not support HEIC for inlined images. Convert to JPG.
         if urlExtension == "HEIC" && contentDisposition == .inline,
-            let img = image,
-            let jpgData = UIImageJPEGRepresentation(img, 0.7), // We might want to ask the user for a size
+            let jpgData = image.jpegData(compressionQuality: 0.7), // We might want to ask the user for a size
             let jpg = UIImage(data: jpgData) {
             urlExtension = "JPG"
             let mime = "image/jpeg"
             return Attachment(data: jpgData,
                               mimeType: mime,
                               image:jpg,
-                              contentDisposition: .inline)
+                              contentDisposition: .inline,
+                              session: session)
         } else {
-            return Attachment.create(data: nil,
-                                     mimeType: mimeType,
-                                     fileName: assetUrl.absoluteString,
-                                     image: image,
-                                     assetUrl: assetUrl,
-                                     contentDisposition: contentDisposition)
+            return Attachment(data: image.jpegData(compressionQuality: 0.7),
+                              mimeType: mimeType,
+                              fileName: assetUrl.absoluteString,
+                              image: image,
+                              assetUrl: assetUrl,
+                              contentDisposition: contentDisposition,
+                              session: session)
         }
     }
 }

@@ -8,30 +8,33 @@
 
 import UIKit
 
-extension PEP_color {
-    /**
-     The icon suitable for indicating the rating of an outgoing message.
-     */
-    func statusIcon(enabled: Bool = true) -> UIImage? {
+import PEPObjCAdapterFramework
+import MessageModel
+
+extension PEPColor {
+
+    /// The icon suitable for indicating the pEp rating of a message.
+    ///
+    /// - Parameter enabled: whether or not pEp protection is enabled
+    /// - Returns: icon suitable for indicating the pEp rating of a message
+    func statusIconForMessage(enabled: Bool = true, withText : Bool = true) -> UIImage? {
         switch self {
-        case PEP_color_no_color:
-            return UIImage(named: "pEp-status-grey")
-        case PEP_color_red:
-            return UIImage(named: "pEp-status-red")
-        case PEP_color_yellow:
-            if enabled {
-                return UIImage(named: "pEp-status-yellow")
-            } else {
-                return UIImage(named: "pEp-status-yellow-disabled")
-            }
-        case PEP_color_green:
-            if enabled {
-                return UIImage(named: "pEp-status-green")
-            } else {
-                return UIImage(named: "pEp-status-green-disabled")
-            }
-        default:
+        case PEPColor.noColor:
             return nil
+        case PEPColor.red:
+            return withText ? UIImage(named: "pEp-status-msg-red") : UIImage(named: "pEp-status-red_white-border")
+        case .yellow:
+            if enabled {
+                return withText ? UIImage(named: "pEp-status-msg-yellow") : UIImage(named: "pEp-status-yellow_white-border")
+            } else {
+                return withText ? UIImage(named: "pEp-status-msg-disabled-secure") : nil
+            }
+        case .green:
+            if enabled {
+                return withText ? UIImage(named: "pEp-status-msg-green") : UIImage(named: "pEp-status-green_white-border")
+            } else {
+                return withText ? UIImage(named: "pEp-status-msg-disabled-trusted") : nil
+            }
         }
     }
 
@@ -42,13 +45,13 @@ extension PEP_color {
      */
     func statusIconInContactPicture() -> UIImage? {
         switch self {
-        case PEP_color_no_color:
-            return UIImage(named: "pEp-status-grey_white-border")
-        case PEP_color_red:
+        case PEPColor.noColor:
+            return nil
+        case PEPColor.red:
             return UIImage(named: "pEp-status-red_white-border")
-        case PEP_color_yellow:
+        case .yellow:
             return UIImage(named: "pEp-status-yellow_white-border")
-        case PEP_color_green:
+        case .green:
             return UIImage(named: "pEp-status-green_white-border")
         default:
             return nil
@@ -57,13 +60,13 @@ extension PEP_color {
 
     func uiColor() -> UIColor? {
         switch self {
-        case PEP_color_no_color:
+        case PEPColor.noColor:
             return UIColor.gray
-        case PEP_color_red:
+        case PEPColor.red:
             return UIColor.pEpRed
-        case PEP_color_yellow:
+        case .yellow:
             return UIColor.pEpYellow
-        case PEP_color_green:
+        case .green:
             return UIColor.pEpGreen
         default:
             return nil
@@ -71,17 +74,19 @@ extension PEP_color {
     }
 }
 
-extension PEP_rating {
-    func pEpColor() -> PEP_color {
-        return PEPUtil.pEpColor(pEpRating: self)
+extension PEPRating {
+    func uiColor() -> UIColor? {
+        return PEPUtils.pEpColor(pEpRating: self).uiColor()
     }
 
-    func uiColor() -> UIColor? {
-        return PEPUtil.pEpColor(pEpRating: self).uiColor()
+    var isNoColor: Bool {
+        get {
+            return pEpColor() == PEPColor.noColor
+        }
     }
 
     func statusIcon() -> UIImage? {
         let color = pEpColor()
-        return color.statusIcon()
+        return color.statusIconForMessage()
     }
 }

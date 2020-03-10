@@ -1,5 +1,5 @@
 //
-//  PEP_color+Extension.swift
+//  PEPColor+Extension.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 28.04.17.
@@ -7,38 +7,25 @@
 //
 
 import Foundation
+import PEPObjCAdapterFramework
 
-extension PEP_color {
-    var privacyStatusTitle: String {
-        switch self {
-        case PEP_color_red:
-            return NSLocalizedString("Mistrusted", comment: "privacyStatusTitle red")
-        case PEP_color_yellow:
-            return NSLocalizedString("Secure", comment: "privacyStatusTitle yellow")
-        case PEP_color_green:
-            return NSLocalizedString("Secure & Trusted", comment: "privacyStatusTitle green")
-        case PEP_color_no_color:
-            return NSLocalizedString("None", comment: "privacyStatusTitle no_color")
-        default:
-            return "Undefined"
-        }
-    }
+extension PEPColor {
 
     var privacyStatusDescription: String {
         switch self {
-        case PEP_color_red:
-            return NSLocalizedString("This communication partner is mistrusted",
+        case PEPColor.red:
+            return NSLocalizedString("This contact is mistrusted and might be an attack by a man-in-the-middle.",
                                      comment: "privacyStatusDescription red")
-        case PEP_color_yellow:
+        case .yellow:
             return NSLocalizedString(
-                "Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call",
+                "Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call.",
                 comment: "privacyStatusDescription yellow")
-        case PEP_color_green:
+        case .green:
             return NSLocalizedString(
-                "This communication partner is secure and trusted",
+                "This contact is completely trusted. All communication will be with the maximum level of privacy.",
                 comment: "privacyStatusDescription green")
-        case PEP_color_no_color:
-            return NSLocalizedString("None", comment: "privacyStatusDescription no_color")
+        case PEPColor.noColor:
+            return NSLocalizedString("Unknown", comment: "privacyStatusDescription no_color")
         default:
             return "Undefined"
         }

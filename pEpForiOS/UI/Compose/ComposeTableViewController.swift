@@ -10,6 +10,8 @@ import UIKit
 import MessageModel
 import SwipeCellKit
 import Photos
+import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 class ComposeTableViewController: BaseTableViewController {
     @IBOutlet var sendButton: UIBarButtonItem!
@@ -17,7 +19,7 @@ class ComposeTableViewController: BaseTableViewController {
     private var suggestionsChildViewController: SuggestTableViewController?
     lazy private var mediaAttachmentPickerProvider: MediaAttachmentPickerProvider? = {
         guard let pickerVm = viewModel?.mediaAttachmentPickerProviderViewModel() else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+            Log.shared.errorAndCrash("Invalid state")
             return nil
         }
         return MediaAttachmentPickerProvider(with: pickerVm)
@@ -50,13 +52,14 @@ class ComposeTableViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupRecipientSuggestionsTableViewController()
+        viewModel?.handleDidReAppear()
     }
 
     // MARK: - Setup & Configuration
 
     private func setupView() {
         registerXibs()
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
          //An arbitrary value auto resize seems to require for some reason.
         tableView.estimatedRowHeight = 1000
     }
@@ -73,13 +76,13 @@ class ComposeTableViewController: BaseTableViewController {
                 withIdentifier: SuggestTableViewController.storyboardId)
                 as? SuggestTableViewController,
             let suggestView = suggestVc.view else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No VC.")
+                Log.shared.errorAndCrash("No VC.")
                 return
         }
         suggestionsChildViewController = suggestVc
         suggestionsChildViewController?.appConfig = appConfig
         suggestionsChildViewController?.viewModel = vm.suggestViewModel()
-        addChildViewController(suggestVc)
+        addChild(suggestVc)
         suggestView.isHidden = true
         tableView.addSubview(suggestView)
     }
@@ -94,79 +97,91 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
-    func dismiss() {
-        dismiss(animated: true, completion: nil)
-    }
-
     @IBAction func send() {
         viewModel?.handleUserClickedSendButton()
-        dismiss()
     }
 }
 
 // MARK: - PEP Color View
 
 extension ComposeTableViewController {
-    private func setupPepColorView(for pEpRating: PEP_rating, pEpProtected: Bool) {
+    private func setupPepColorView(for pEpRating: PEPRating, pEpProtected: Bool) {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return
         }
 
         //Not so nice. The view(controller) should not know about state and protection.
-        if let view = showPepRating(pEpRating: pEpRating, pEpProtection: pEpProtected) {
-            if vm.state.canHandshake() || vm.state.userCanToggleProtection() {
-                let tapGestureRecognizer = UITapGestureRecognizer(
-                    target: self,
-                    action: #selector(actionHandshakeOrForceUnprotected))
-                view.addGestureRecognizer(tapGestureRecognizer)
-            }
+        let pEpRatingView = showNavigationBarSecurityBadge(pEpRating: pEpRating, pEpProtection: pEpProtected)
+
+        // Handshake on simple touch if possible
+        if vm.canDoHandshake() {
+            let tapGestureRecognizerHandshake = UITapGestureRecognizer(
+                target: self,
+                action: #selector(actionHandshake))
+            pEpRatingView?.addGestureRecognizer(tapGestureRecognizerHandshake)
+        }
+
+        // Toggle privacy status on long press for trusted and reliable
+        let pEpColor = pEpRating.pEpColor()
+        if pEpColor == .green || pEpColor == .yellow {
+            let tapGestureRecognizerToggleProtection = UILongPressGestureRecognizer(
+                target: self,
+                action: #selector(showPepActions))
+            pEpRatingView?.addGestureRecognizer(tapGestureRecognizerToggleProtection)
         }
     }
 
-    /// Shows a menu where user can choose to make a handshake, or toggle force unprotected.
-    @objc func actionHandshakeOrForceUnprotected(gestureRecognizer: UITapGestureRecognizer) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+    @objc
+    private func showPepActions(sender: UIBarButtonItem) {
+        guard let vm = viewModel, let titleView = navigationItem.titleView else {
+            Log.shared.errorAndCrash("No VM")
             return
         }
-        let theCanHandshake = vm.state.canHandshake()
-        let theCanToggleProtection = vm.state.userCanToggleProtection()
 
-        if theCanHandshake || theCanToggleProtection {
-            let alert = UIAlertController.pEpAlertController()
+        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+        actionSheetController.addAction(changeSecureStatusAction(pEpProtected: vm.state.pEpProtection))
+        actionSheetController.addAction(disableAlertAction())
+        actionSheetController.popoverPresentationController?.sourceView = titleView
+        actionSheetController.popoverPresentationController?.sourceRect = titleView.bounds
 
-            if theCanHandshake {
-                let actionReply = UIAlertAction(
-                    title: NSLocalizedString("Handshake",
-                                             comment: "possible privacy status action"),
-                    style: .default) {[weak self] (action) in
-                        self?.performSegue(withIdentifier: .segueHandshake, sender: self)
-                }
-                alert.addAction(actionReply)
-            }
+        present(actionSheetController, animated: true)
+    }
 
-            if theCanToggleProtection {
-                let originalValueOfProtection = vm.state.pEpProtection
-                let title = vm.state.pEpProtection ?
-                    NSLocalizedString("Disable Protection",
-                                      comment: "possible private status action") :
-                    NSLocalizedString("Enable Protection",
-                                      comment: "possible private status action")
-                let actionToggleProtection = UIAlertAction(
-                    title: title,
-                    style: .default) { (action) in
-                        vm.handleUserChangedProtectionStatus(to: !originalValueOfProtection)
-                }
-                alert.addAction(actionToggleProtection)
-            }
+    private func changeSecureStatusAction(pEpProtected: Bool) -> UIAlertAction {
+        let disable = NSLocalizedString("Disable Protection",
+                                        comment: "Disable Protection button title of pEp protection toggle action sheet")
+        let enable = NSLocalizedString("Enable Protection",
+                                       comment: "Enable Protection button title of pEp protection toggle action sheet")
 
-            let cancelAction = UIAlertAction(
-                title: NSLocalizedString("Cancel", comment: "possible private status action"),
-                style: .cancel) { (action) in }
-            alert.addAction(cancelAction)
+        let action = UIAlertAction(title: pEpProtected ? disable : enable ,
+                                   style: .default) { [weak self] (action) in
+                                    guard let me = self, let vm = me.viewModel else {
+                                        Log.shared.errorAndCrash(message: "lost myself")
+                                        return
+                                    }
+                                    let originalValueOfProtection = vm.state.pEpProtection
+                                    vm.handleUserChangedProtectionStatus(to: !originalValueOfProtection)
+        }
+        return action
+    }
 
-            present(alert, animated: true, completion: nil)
+    private func disableAlertAction() -> UIAlertAction {
+        return UIAlertAction(
+            title: NSLocalizedString("Cancel",
+                                     comment: "Cancel button title of pEp protection toggle action sheet"),
+            style: .cancel) { (action) in }
+    }
+
+    /// Shows the handshake menu, if applicable.
+    /// - Parameter gestureRecognizer: The gesture recognizer that triggered this
+    @objc func actionHandshake(gestureRecognizer: UITapGestureRecognizer) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        if (vm.state.canHandshake()) {
+            performSegue(withIdentifier: .segueTrustManagement, sender: self)
         }
     }
 }
@@ -181,7 +196,6 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     }
 
     func showSuggestions(forRowAt indexPath: IndexPath) {
-        suggestionsChildViewController?.view.isHidden = false
         updateSuggestTable(suggestionsForCellAt: indexPath)
         tableView.isScrollEnabled = false
     }
@@ -241,7 +255,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         tableView.endUpdates()
     }
 
-    func colorBatchNeedsUpdate(for rating: PEP_rating, protectionEnabled: Bool) {
+    func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool) {
         setupPepColorView(for: rating, pEpProtected: protectionEnabled)
     }
 
@@ -266,6 +280,25 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     func documentAttachmentPickerDone() {
         self.setPreviousFocusAfterPicker()
     }
+
+    func showTwoButtonAlert(withTitle title: String,
+                            message: String,
+                            cancelButtonText: String,
+                            positiveButtonText: String,
+                            cancelButtonAction: @escaping () -> Void,
+                            positiveButtonAction: @escaping () -> Void) {
+        UIUtils.showTwoButtonAlert(withTitle: title,
+                                   message: message,
+                                   cancelButtonText: cancelButtonText,
+                                   positiveButtonText: positiveButtonText,
+                                   cancelButtonAction: cancelButtonAction,
+                                   positiveButtonAction: positiveButtonAction,
+                                   inViewController: self)
+    }
+
+   func dismiss() {
+        dismiss(animated: true, completion: nil)
+    }
 }
 
 // MARK: - SegueHandlerType
@@ -273,20 +306,29 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
 extension ComposeTableViewController: SegueHandlerType {
 
     enum SegueIdentifier: String {
-        case segueHandshake
+        case segueTrustManagement
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
-        case .segueHandshake:
+        case .segueTrustManagement:
             guard
                 let nc = segue.destination as? UINavigationController,
-                let destination = nc.rootViewController as? HandshakeViewController else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                let destination = nc.rootViewController as? TrustManagementViewController else {
+                    Log.shared.errorAndCrash("Segue issue")
                     return
             }
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("No vm")
+                return
+            }
+
             destination.appConfig = appConfig
-            viewModel?.setup(handshakeViewController: destination)
+            guard let trustManagementViewModel = vm.trustManagementViewModel() else {
+                Log.shared.error("Message not found")
+                return
+            }
+            destination.viewModel = trustManagementViewModel
         }
     }
 }
@@ -316,7 +358,7 @@ extension ComposeTableViewController {
             }
             guard let me = self,
             let picker = me.mediaAttachmentPickerProvider?.imagePicker else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost somthing")
+                Log.shared.errorAndCrash("Lost somthing")
                 return
             }
             me.present(picker, animated: true)
@@ -338,7 +380,7 @@ extension ComposeTableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return 0
         }
         return vm.sections.count
@@ -347,7 +389,7 @@ extension ComposeTableViewController {
     override func tableView(_ tableView: UITableView,
                             numberOfRowsInSection section: Int) -> Int {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return 0
         }
         return vm.sections[section].rows.count
@@ -356,7 +398,7 @@ extension ComposeTableViewController {
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = setupCellForIndexPath(indexPath, in: tableView) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No cell")
+            Log.shared.errorAndCrash("No cell")
             return UITableViewCell()
         }
         return cell
@@ -365,7 +407,7 @@ extension ComposeTableViewController {
     private func setupCellForIndexPath(_ indexPath: IndexPath,
                                   in tableView: UITableView) -> UITableViewCell? {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return UITableViewCell()
         }
 
@@ -378,7 +420,7 @@ extension ComposeTableViewController {
                     as? RecipientCell,
                 let rowVm = section.rows[indexPath.row] as? RecipientCellViewModel
                 else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                    Log.shared.errorAndCrash("Invalid state")
                     return nil
             }
             cell.setup(with: rowVm)
@@ -391,7 +433,7 @@ extension ComposeTableViewController {
                     as? AccountCell,
                 let rowVm = section.rows[indexPath.row] as? AccountCellViewModel
                 else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                    Log.shared.errorAndCrash("Invalid state")
                     return nil
             }
             cell.setup(with: rowVm)
@@ -402,7 +444,7 @@ extension ComposeTableViewController {
                         as? SubjectCell,
                     let rowVm = section.rows[indexPath.row] as? SubjectCellViewModel
                     else {
-                        Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                        Log.shared.errorAndCrash("Invalid state")
                     return nil
             }
             cell.setup(with: rowVm)
@@ -413,7 +455,7 @@ extension ComposeTableViewController {
                     as? BodyCell,
                 let rowVm = section.rows[indexPath.row] as? BodyCellViewModel
                 else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                    Log.shared.errorAndCrash("Invalid state")
                     return nil
             }
             cell.setup(with: rowVm)
@@ -424,7 +466,7 @@ extension ComposeTableViewController {
                     as? AttachmentCell,
                 let rowVm = section.rows[indexPath.row] as? AttachmentViewModel
                 else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                    Log.shared.errorAndCrash("Invalid state")
                     return nil
             }
             cell.setup(with: rowVm)
@@ -459,8 +501,8 @@ extension ComposeTableViewController {
     // MARK: - SwipeTableViewCell
 
     private func deleteAction(forCellAt indexPath: IndexPath) {
-        viewModel?.handleRemovedRow(at: indexPath)
         tableView.beginUpdates()
+        viewModel?.handleRemovedRow(at: indexPath)
         tableView.deleteRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
     }
@@ -480,7 +522,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") {
             [weak self] action, indexPath in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             me.deleteAction(forCellAt: indexPath)
@@ -499,7 +541,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
             // The last cell is not yet displayed (as we are in "willDisplay ..."), thus async.
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Log.shared.errorAndCrash("Lost MySelf")
                     return
                 }
                 me.setInitialFocus()
@@ -519,7 +561,7 @@ extension ComposeTableViewController {
         }
         isInitialFocusSet = true
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return
         }
         let idxPath = vm.initialFocus()
@@ -533,13 +575,13 @@ extension ComposeTableViewController {
 
     private func setPreviousFocusAfterPicker() {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return
         }
         let idxPath = vm.beforePickerFocus()
         guard let cellToFocus = tableView.cellForRow(at: idxPath)
             as? TextViewContainingTableViewCell else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
+                Log.shared.errorAndCrash("Error casting")
                 return
         }
         cellToFocus.setFocus()
@@ -547,7 +589,7 @@ extension ComposeTableViewController {
 
     private func isLastRow(indexPath: IndexPath) -> Bool {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return false
         }
         let idxLastSection = vm.sections.count - 1
@@ -577,17 +619,16 @@ extension ComposeTableViewController {
 
     private func deleteAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
         let action: UIAlertAction
         let text = vm.deleteActionTitle
-        action = ac.action(text, .destructive) {[weak self] in
+        action = ac.action(text, .destructive) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
-            vm.handleDeleteActionTriggered()
             me.dismiss()
         }
         return action
@@ -595,14 +636,14 @@ extension ComposeTableViewController {
 
     private func saveAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
         let action: UIAlertAction
         let text = vm.saveActionTitle
         action = ac.action(text, .default) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             vm.handleSaveActionTriggered()
@@ -613,14 +654,14 @@ extension ComposeTableViewController {
 
     private func keepInOutboxAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
         let action: UIAlertAction
         let text = vm.keepInOutboxActionTitle
-        action = ac.action(text, .default) {[weak self] in
+        action = ac.action(text, .default) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
             me.dismiss()
@@ -630,7 +671,7 @@ extension ComposeTableViewController {
 
     private func cancelAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
         return ac.action(vm.cancelActionTitle, .cancel)

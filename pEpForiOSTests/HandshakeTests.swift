@@ -7,40 +7,28 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel //FIXME:
+import PEPObjCAdapterFramework
 
-class HandshakeTests: XCTestCase {
-    var persistentSetup: PersistentSetup!
-    var cdOwnAccount: CdAccount!
+class HandshakeTests: CoreDataDrivenTestBase {
     var fromIdent: PEPIdentity!
 
     override func setUp() {
         super.setUp()
 
-        XCTAssertTrue(PEPUtil.pEpClean())
-        persistentSetup = PersistentSetup()
+        cdAccount.identity?.userName = "iOS Test 002"
+        cdAccount.identity?.userID = "iostest002@peptest.ch_ID"
+        cdAccount.identity?.address = "iostest002@peptest.ch"
 
-        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0)
-        cdMyAccount.identity?.userName = "iOS Test 002"
-        cdMyAccount.identity?.userID = "iostest002@peptest.ch_ID"
-        cdMyAccount.identity?.address = "iostest002@peptest.ch"
+        let cdInbox = CdFolder(context: moc)
+        cdInbox.name = ImapConnection.defaultInboxName
+        cdInbox.account = cdAccount
+        moc.saveAndLogErrors()
 
-        let cdInbox = CdFolder.create()
-        cdInbox.name = ImapSync.defaultImapInboxName
-        cdInbox.uuid = MessageID.generate()
-        cdInbox.account = cdMyAccount
-        Record.saveAndWait()
-
-        cdOwnAccount = cdMyAccount
-
-        decryptedMessageSetup(pEpMySelfIdentity: cdMyAccount.pEpIdentity())
-    }
-
-    override func tearDown() {
-        PEPSession.cleanup()
-        super.tearDown()
+        decryptedMessageSetup(pEpMySelfIdentity: cdAccount.pEpIdentity())
     }
 
     func decryptedMessageSetup(pEpMySelfIdentity: PEPIdentity) {
@@ -48,18 +36,17 @@ class HandshakeTests: XCTestCase {
         try! session.mySelf(pEpMySelfIdentity)
         XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
 
-        guard let cdMessage = TestUtil.cdMessage(
-            fileName: "HandshakeTests_mail_001.txt",
-            cdOwnAccount: cdOwnAccount) else {
-                XCTFail()
-                return
+        guard let cdMessage = TestUtil.cdMessage(fileName: "HandshakeTests_mail_001.txt",
+                                                 cdOwnAccount: cdAccount) else {
+                                                    XCTFail()
+                                                    return
         }
 
-        let pEpMessage = cdMessage.pEpMessage()
+        let pEpMessage = cdMessage.pEpMessage(outgoing: true)
 
         let theAttachments = pEpMessage.attachments ?? []
         XCTAssertEqual(theAttachments.count, 1)
-        XCTAssertEqual(theAttachments[0].mimeType, MimeTypeUtil.contentTypeApplicationPGPKeys)
+        XCTAssertEqual(theAttachments[0].mimeType, ContentTypeUtils.ContentType.pgpKeys)
 
         guard let optFields = pEpMessage.optionalFields else {
             XCTFail("expected optional_fields to be defined")
@@ -78,13 +65,13 @@ class HandshakeTests: XCTestCase {
         XCTAssertTrue(foundXpEpVersion)
 
         var keys: NSArray?
-        var rating = PEP_rating_undefined
+        var rating = PEPRating.undefined
         let theMessage = try! session.decryptMessage(pEpMessage,
                                                      flags: nil,
                                                      rating: &rating,
                                                      extraKeys: &keys,
                                                      status: nil)
-        XCTAssertEqual(rating, PEP_rating_unencrypted)
+        XCTAssertEqual(rating, .unencrypted)
 
         guard let pEpFrom = theMessage.from else {
             XCTFail("expected from in message")
@@ -114,6 +101,7 @@ class HandshakeTests: XCTestCase {
 
     func testNegativeTrustResetCycle() {
         let session = PEPSession()
+
         try! session.update(fromIdent)
         XCTAssertNotNil(fromIdent.fingerPrint)
         XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
@@ -128,15 +116,18 @@ class HandshakeTests: XCTestCase {
         let session = PEPSession()
         try! session.update(fromIdent)
         XCTAssertNotNil(fromIdent.fingerPrint)
-        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+        XCTAssertTrue((try? session.isPEPUser(fromIdent).boolValue) ?? false)
 
-        var numRating = try! session.rating(for: fromIdent)
-        XCTAssertEqual(numRating.pEpRating, PEP_rating_reliable)
-
-        try! session.keyResetTrust(fromIdent)
-        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
-
-        numRating = try! session.rating(for: fromIdent)
-        XCTAssertEqual(numRating.pEpRating, PEP_rating_reliable)
+        do {
+            var numRating =  try! session.rating(for: fromIdent)
+            XCTAssertEqual(numRating.pEpRating, .reliable)
+            XCTAssertNoThrow(try session.keyResetTrust(fromIdent))
+            let isPepUser = try session.isPEPUser(fromIdent).boolValue
+            XCTAssertTrue(isPepUser)
+            numRating = try session.rating(for: fromIdent)
+            XCTAssertEqual(numRating.pEpRating, .reliable)
+        } catch {
+            XCTFail()
+        }
     }
 }

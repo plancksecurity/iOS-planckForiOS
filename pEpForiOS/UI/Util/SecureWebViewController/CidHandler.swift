@@ -8,6 +8,7 @@
 
 import WebKit
 import MessageModel
+import pEpIOSToolbox
 
 @available(iOS, introduced: 11.0)
 
@@ -35,7 +36,7 @@ extension CidHandler: WKURLSchemeHandler {
             urlSchemeTask.didFinish()
         }
         guard let url = urlSchemeTask.request.url else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No URL?")
+            Log.shared.errorAndCrash("No URL?")
             return
         }
 

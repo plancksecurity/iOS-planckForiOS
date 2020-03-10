@@ -8,10 +8,13 @@
       location = "container:../MessageModel/MessageModel/MessageModel.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:subModules/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
    </FileRef>
    <FileRef
-      location = "container:../pantomime-iOS/Pantomime.xcodeproj">
+      location = "container:../pantomime-iOS/PantomimeFramework/PantomimeFramework.xcodeproj">
    </FileRef>
    <FileRef
       location = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">

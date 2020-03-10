@@ -9,21 +9,22 @@
 import XCTest
 
 import CoreData
+import PantomimeFramework
 @testable import MessageModel
 @testable import pEpForiOS
+//!!!: move to MM
 
 class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
-
     // MARK: - StoreCommandForFlagsToRemoved / Add
 
     func testStoreCommandForFlagsToRemove_someServerFlagsSet() {
-        let m = CdMessage.create()
-        m.imap = CdImapFields.create()
+        let m = CdMessage(context: moc)
+        m.imap = CdImapFields(context: moc)
 
-        let localFlags = CdImapFlags.create()
+        let localFlags = CdImapFlags(context: moc)
         m.imap?.localFlags = localFlags
 
-        let serverFlags = CdImapFlags.create()
+        let serverFlags = CdImapFlags(context: moc)
         m.imap?.serverFlags = serverFlags
 
         m.uid = 1024
@@ -62,10 +63,10 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     }
 
     func testStoreCommandForFlagsToAdd_noServerFlagsSet() {
-        let m = CdMessage.create()
-        m.imap = CdImapFields.create()
+        let m = CdMessage(context: moc)
+        m.imap = CdImapFields(context: moc)
 
-        let localFlags = CdImapFlags.create()
+        let localFlags = CdImapFlags(context: moc)
         m.imap?.localFlags = localFlags
 
         m.uid = 1024
@@ -97,13 +98,13 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     }
 
     func testStoreCommandForFlagsToAdd_someServerFlagsSet() {
-        let m = CdMessage.create()
-        m.imap = CdImapFields.create()
+        let m = CdMessage(context: moc)
+        m.imap = CdImapFields(context: moc)
 
-        let localFlags = CdImapFlags.create()
+        let localFlags = CdImapFlags(context: moc)
         m.imap?.localFlags = localFlags
 
-        let serverFlags = CdImapFlags.create()
+        let serverFlags = CdImapFlags(context: moc)
         m.imap?.serverFlags = serverFlags
 
         m.uid = 1024
@@ -140,12 +141,11 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     }
 
     func testInsertOrUpdatePantomimeMessage() {
-        let cdAccount = SecretTestData().createWorkingCdAccount()
+        let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
 
-        let folder = CdFolder.create()
+        let folder = CdFolder(context: moc)
         folder.account = cdAccount
-        folder.name = ImapSync.defaultImapInboxName
-        folder.uuid = MessageID.generate()
+        folder.name = ImapConnection.defaultInboxName
 
         guard
             let data = TestUtil.loadData(fileName: "UnencryptedHTMLMail.txt"),
@@ -153,24 +153,23 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
                 XCTAssertTrue(false)
                 return
         }
-        message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
-        let msg = CdMessage.insertOrUpdate(
-            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true)
+        message.setFolder(CWIMAPFolder(name: ImapConnection.defaultInboxName))
+        let msg = CdMessage.insertOrUpdate(pantomimeMessage: message,
+                                           account: cdAccount,
+                                           messageUpdate: CWMessageUpdate(),
+                                           context: moc)
         XCTAssertNotNil(msg)
         if let m = msg {
             XCTAssertNotNil(m.longMessage)
             XCTAssertNotNil(m.longMessageFormatted)
         }
     }
-    
 
     //IOS-211 hi_there
     func testInsertOrUpdatePantomimeMessage_attachmentNotDuplicated_file1() {
-        let folder = CdFolder.create()
+        let folder = CdFolder(context: moc)
         folder.account = cdAccount
-        folder.name = ImapSync.defaultImapInboxName
-        folder.uuid = MessageID.generate()
+        folder.name = ImapConnection.defaultInboxName
 
         guard
             let messageWithKeyAndPdfAttached = TestUtil.loadData(fileName: "IOS-211_hi_there.txt"),
@@ -178,15 +177,21 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
                 XCTAssertTrue(false)
                 return
         }
-        message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
-        guard let _ = CdMessage.insertOrUpdate(
-            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true) else {
+        let nonZeroValue = UInt(1)
+        message.setUID(nonZeroValue)
+        message.setFolder(CWIMAPFolder(name: ImapConnection.defaultInboxName))
+        guard let _ = CdMessage.insertOrUpdate(pantomimeMessage: message,
+                                               account: cdAccount,
+                                               messageUpdate: CWMessageUpdate(),
+                                               context: moc)
+            else {
                 XCTFail("error parsing message")
                 return
         }
-        XCTAssertEqual(CdMessage.all()?.count, 1)
-        guard let testee = CdMessage.search(message: message, inAccount: cdAccount) else {
+        XCTAssertEqual(CdMessage.all(in: moc)?.count, 1)
+        guard let testee = CdMessage.search(message: message,
+                                            inAccount: cdAccount,
+                                            context: moc) else {
             XCTFail("No message")
             return
         }
@@ -198,25 +203,27 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     
     //IOS-211 pdfMail
     func testInsertOrUpdatePantomimeMessage_attachmentNotDuplicated_file2() {
-        let folder = CdFolder.create()
+        let folder = CdFolder(context: moc)
         folder.account = cdAccount
-        folder.name = ImapSync.defaultImapInboxName
-        folder.uuid = MessageID.generate()
+        folder.name = ImapConnection.defaultInboxName
+        
         guard
             let messageWithKeyAndPdfAttached = TestUtil.loadData(fileName: "IOS-211-pdfEmail.txt"),
             let message = CWIMAPMessage(data: messageWithKeyAndPdfAttached) else {
                 XCTAssertTrue(false)
                 return
         }
-        message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
+        let nonZeroValue = UInt(1)
+        message.setUID(nonZeroValue)
+        message.setFolder(CWIMAPFolder(name: ImapConnection.defaultInboxName))
         guard let _ = CdMessage.insertOrUpdate(
             pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true) else {
+            context: moc) else {
                 XCTFail("error parsing message")
                 return
         }
-        XCTAssertEqual(CdMessage.all()?.count, 1)
-        guard let testee = CdMessage.search(message: message, inAccount: cdAccount) else {
+        XCTAssertEqual(CdMessage.all(in: moc)?.count, 1)
+        guard let testee = CdMessage.search(message: message, inAccount: cdAccount, context: moc) else {
             XCTFail("No message")
             return
         }
@@ -226,55 +233,56 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     }
 
     func testUpdateFromServer() {
-        let (m, _, localFlags, serverFlags) = createCdMessageForFlags()
+        let m = createCdMessageForFlags()
         let cwFlags = CWFlags()
 
         // Server adds .seen, user just flagged -> both
-        localFlags.flagFlagged = true
+        m.imapFields().localFlags?.flagFlagged = true
         cwFlags.add(.seen)
         XCTAssertTrue(cwFlags.contain(.seen))
-        XCTAssertTrue(m.updateFromServer(cwFlags: cwFlags))
-        XCTAssertTrue(localFlags.flagFlagged)
-        XCTAssertTrue(localFlags.flagSeen)
-        XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
+        m.updateFromServer(cwFlags: cwFlags, context: moc)
+        XCTAssertTrue(m.imapFields().localFlags?.flagFlagged ?? false)
+        XCTAssertTrue(m.imapFields().localFlags?.flagSeen ?? false)
+        XCTAssertEqual(m.imapFields().serverFlags?.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
 
-        // No user action, server adds .seen -> .seen locally
-        localFlags.reset()
-        serverFlags.reset()
-        XCTAssertTrue(m.updateFromServer(cwFlags: cwFlags))
-        XCTAssertTrue(localFlags.flagSeen)
-        XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
+        // No user action, server adds .seen -> .seen locally (ServerFags)
+        m.imapFields().localFlags?.reset()
+        m.imapFields().serverFlags?.reset()
+        m.updateFromServer(cwFlags: cwFlags, context: moc)
+        XCTAssertTrue(m.imapFields().localFlags?.flagSeen ?? false)
+        let invalid = Int16(-1)
+        XCTAssertEqual(m.imapFields().serverFlags?.rawFlagsAsShort() ?? invalid, cwFlags.rawFlagsAsShort())
 
         // Conflict: User just unflagged, that should win over the data from the server
-        localFlags.reset()
-        serverFlags.reset()
+        m.imapFields().localFlags?.reset()
+        m.imapFields().serverFlags?.reset()
         cwFlags.removeAll()
         cwFlags.add(.flagged)
-        serverFlags.flagFlagged = true
-        XCTAssertFalse(m.updateFromServer(cwFlags: cwFlags))
-        XCTAssertFalse(localFlags.flagFlagged)
-        XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
+        m.imapFields().serverFlags?.flagFlagged = true
+        m.updateFromServer(cwFlags: cwFlags, context: moc)
+        XCTAssertFalse(m.imapFields().localFlags?.flagFlagged ?? true)
+        XCTAssertEqual(m.imapFields().serverFlags?.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
 
         // Conflict: User has unset .recent, but that comes as set from the server.
-        localFlags.reset()
-        serverFlags.reset()
+        m.imapFields().localFlags?.reset()
+        m.imapFields().serverFlags?.reset()
         cwFlags.removeAll()
         cwFlags.add(.recent)
         cwFlags.add(.flagged)
-        serverFlags.flagRecent = true
-        XCTAssertFalse(m.updateFromServer(cwFlags: cwFlags))
-        XCTAssertTrue(localFlags.flagRecent)
-        XCTAssertTrue(localFlags.flagFlagged)
-        XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
+        m.imapFields().serverFlags?.flagRecent = true
+        m.updateFromServer(cwFlags: cwFlags, context: moc)
+        XCTAssertTrue(m.imapFields().localFlags?.flagRecent ?? false)
+        XCTAssertTrue(m.imapFields().localFlags?.flagFlagged ?? false)
+        XCTAssertEqual(m.imapFields().serverFlags?.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
     }
 
     // MARK: - HELPER
 
-    func createCdMessageForFlags() -> (CdMessage, CdImapFields, CdImapFlags, CdImapFlags) {
-        let m = CdMessage.create()
-        let imap = CdImapFields.create()
-        let serverFlags = CdImapFlags.create()
-        let localFlags = CdImapFlags.create()
+    func createCdMessageForFlags() -> CdMessage {
+        let m = CdMessage(context: moc)
+        let imap = CdImapFields(context: moc)
+        let serverFlags = CdImapFlags(context: moc)
+        let localFlags = CdImapFlags(context: moc)
         m.imap = imap
         imap.localFlags = localFlags
         imap.serverFlags = serverFlags
@@ -287,7 +295,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         XCTAssertFalse(localFlags.flagDeleted)
         XCTAssertFalse(localFlags.flagFlagged)
 
-        return (m, imap, localFlags, serverFlags)
+        return m
     }
 
     func setAllCurrentImapFlags(of message: CdMessage, to isEnabled: Bool) {
@@ -307,5 +315,17 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         flags.flagRecent = isEnabled
         flags.flagFlagged = isEnabled
         flags.flagDraft = isEnabled
+    }
+}
+
+extension CdImapFlags {
+
+    public func reset() {
+        flagAnswered = false
+        flagDraft = false
+        flagFlagged = false
+        flagRecent = false
+        flagSeen = false
+        flagDeleted = false
     }
 }

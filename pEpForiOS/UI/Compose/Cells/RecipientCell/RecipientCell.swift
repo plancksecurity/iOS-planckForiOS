@@ -16,8 +16,14 @@ class RecipientCell: TextViewContainingTableViewCell {
         return textView as? RecipientTextView
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        setStyle(label: title)
+    }
+
     public func setup(with viewModel: RecipientCellViewModel) {
         self.viewModel = viewModel
+
         recipientTextView?.viewModel = self.viewModel?.recipientTextViewModel()
         title.text = viewModel.type.localizedTitle()
         recipientTextView?.setInitialText()
@@ -26,5 +32,9 @@ class RecipientCell: TextViewContainingTableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         recipientTextView?.text = ""
+    }
+
+    private func setStyle(label: UILabel) {
+        label.pEpSetFontFace(weight: .regular)
     }
 }

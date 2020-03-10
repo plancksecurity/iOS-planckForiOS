@@ -25,7 +25,7 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        let account = SecretUITestData.workingAccount1
+        let account = secretTestData().workingAccount1
         newAccountSetup(account: account)
         waitForever()
     }
@@ -35,22 +35,24 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        let account = SecretUITestData.workingAccount2
+        let account = secretTestData().workingAccount2
         newAccountSetup(account: account)
         waitForever()
     }
 
     func testAdditionalAccount() {
         app().launch()
-        addAccount()
-        let account = SecretUITestData.workingAccount3
+        tapAddAccount()
+        let account = secretTestData().workingAccount3
         newAccountSetup(account: account)
         waitForever()
     }
 
     func testAdditionalManualAccount() {
         app().launch()
-        addAdditionalManual(account: SecretUITestData.manualAccount)
+        let (manualAccount, correctPassword) = accountToManual(
+            account: secretTestData().workingAccount2)
+        addAdditionalManual(account: manualAccount, correctPassword: correctPassword)
     }
 
     func testAutoAccountPlusManual() {
@@ -58,10 +60,12 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        let account1 = SecretUITestData.workingAccount1
+        let account1 = secretTestData().workingAccount1
         newAccountSetup(account: account1)
 
-        addAdditionalManual(account: SecretUITestData.manualAccount)
+        let account2 = secretTestData().workingAccount2
+        let (manualAccount, correctPassword) = accountToManual(account: account2)
+        addAdditionalManual(account: manualAccount, correctPassword: correctPassword)
     }
 
     func testTwoInitialAccounts() {
@@ -69,13 +73,40 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        let account1 = SecretUITestData.workingAccount1
+        let account1 = secretTestData().workingAccount1
         newAccountSetup(account: account1)
 
-        addAccount()
+        skipTutorial()
 
-        let account2 = SecretUITestData.workingAccount2
+        waitForFolderButton()
+        tapAddAccount()
+
+        let account2 = secretTestData().workingAccount2
         newAccountSetup(account: account2)
+        waitForever()
+    }
+
+    func testThreeInitialAccounts() {
+        app().launch()
+
+        dismissInitialSystemAlerts()
+        let account1 = secretTestData().workingAccount1
+        newAccountSetup(account: account1)
+
+        skipTutorial()
+
+        waitForFolderButton()
+        tapAddAccount()
+
+        let account2 = secretTestData().workingAccount2
+        newAccountSetup(account: account2)
+        waitForever()
+
+        waitForFolderButton()
+        tapAddAccount()
+
+        let account3 = secretTestData().workingAccount3
+        newAccountSetup(account: account3)
         waitForever()
     }
 
@@ -86,12 +117,38 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        let account = SecretUITestData.manualAccount
+        var (manualAccount, correctPassword) = accountToManual(
+            account: secretTestData().workingAccount1)
+
+        newAccountSetup(account: manualAccount)
+
+        switchToManualConfig()
+
+        // Use correct password for the manual setup
+        manualAccount.password = correctPassword
+
+        manualNewAccountSetup(manualAccount, expectServerDetailsToBeAlreadyFilledIn: true)
+
+        waitForever()
+    }
+
+    func testNewAccountSetupManualThatFails() {
+        let theApp = app()
+
+        theApp.launch()
+
+        dismissInitialSystemAlerts()
+
+        var account = secretTestData().workingAccount1
+
+        // Make sure this account will fails, both in auto and manual modes
+        account.password += "ShouldNotWork"
+
         newAccountSetup(account: account)
 
         switchToManualConfig()
 
-        manualNewAccountSetup(account)
+        manualNewAccountSetup(account, expectServerDetailsToBeAlreadyFilledIn: true)
 
         waitForever()
     }
@@ -101,7 +158,7 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        let account = SecretUITestData.gmailOAuth2Account
+        let account = secretTestData().gmailOAuth2Account
         newAccountSetup(account: account, enterPassword: false)
         waitForever()
     }
@@ -111,7 +168,7 @@ class NewAccountSetupUITest: XCTestCase {
 
         dismissInitialSystemAlerts()
 
-        let account = SecretUITestData.yahooOAuth2Account
+        let account = secretTestData().yahooOAuth2Account
         newAccountSetup(account: account, enterPassword: false)
         waitForever()
     }
@@ -124,12 +181,16 @@ class NewAccountSetupUITest: XCTestCase {
         return app
     }
 
+    func secretTestData() -> UITestDataProtocol {
+        return SecretUITestData()
+    }
+
     /*
      Use if you want to wait forever. May be useful for debugging.
      */
     func waitForever() {
-        let _ = expectation(description: "Never happens")
-        waitForExpectations(timeout: 3000, handler: nil)
+        let exp = expectation(description: "Never happens")
+        wait(for: [exp], timeout: 3000)
     }
 
     func typeTextIfEmpty(textField: XCUIElement, text: String) {
@@ -138,7 +199,17 @@ class NewAccountSetupUITest: XCTestCase {
         }
     }
 
-    func manualNewAccountSetup(_ account: UIAccount) {
+    /// - Parameters:
+    ///     - account: The account info from which to get the data to fill in.
+    ///     - expectServerDetailsToBeAlreadyFilledIn:
+    ///       If this is set to true, then the expectation is that
+    ///       server details are already filled in.
+    ///       The use case is a successful lookup of account details,
+    ///       with the wrong password, to force the manual setup.
+    /// - Note: The functionality for full manual accounts, lacking server information,
+    ///         has been taken over by means of existing code (refactor), but not tested.
+    func manualNewAccountSetup(_ account: UIAccount,
+                               expectServerDetailsToBeAlreadyFilledIn: Bool) {
         let theApp = app()
         let tablesQuery = theApp.tables
 
@@ -151,30 +222,35 @@ class NewAccountSetupUITest: XCTestCase {
 
         tf = tablesQuery.cells.secureTextFields["password"]
         tf.tap()
-        typeTextIfEmpty(textField: tf, text: account.password)
+        tf.typeText(account.password)
 
         theApp.navigationBars.buttons["Next"].tap()
 
-        tf = tablesQuery.textFields["imapServer"]
-        tf.typeText(account.imapServerName)
-        tf = tablesQuery.textFields["imapPort"]
-        tf.tap()
-        tf.clearAndEnter(text: String(account.imapPort))
-
-        tablesQuery.buttons["imapTransportSecurity"].tap()
         let sheet = theApp.sheets["Transport protocol"]
-        sheet.buttons[account.imapTransportSecurityString].tap()
+
+        if !expectServerDetailsToBeAlreadyFilledIn {
+            tf = tablesQuery.textFields["imapServer"]
+            tf.typeText(account.imapServerName)
+            tf = tablesQuery.textFields["imapPort"]
+            tf.tap()
+            tf.clearAndEnter(text: String(account.imapPort))
+
+            tablesQuery.buttons["imapTransportSecurity"].tap()
+            sheet.buttons[account.imapTransportSecurityString].tap()
+        }
 
         theApp.navigationBars.buttons["Next"].tap()
 
-        tf = tablesQuery.textFields["smtpServer"]
-        tf.typeText(account.smtpServerName)
-        tf = tablesQuery.textFields["smtpPort"]
-        tf.tap()
-        tf.clearAndEnter(text: String(account.smtpPort))
+        if !expectServerDetailsToBeAlreadyFilledIn {
+            tf = tablesQuery.textFields["smtpServer"]
+            tf.typeText(account.smtpServerName)
+            tf = tablesQuery.textFields["smtpPort"]
+            tf.tap()
+            tf.clearAndEnter(text: String(account.smtpPort))
 
-        tablesQuery.buttons["smtpTransportSecurity"].tap()
-        sheet.buttons[account.smtpTransportSecurityString].tap()
+            tablesQuery.buttons["smtpTransportSecurity"].tap()
+            sheet.buttons[account.smtpTransportSecurityString].tap()
+        }
 
         let nextButton = theApp.navigationBars.buttons["Next"]
         nextButton.tap()
@@ -189,7 +265,6 @@ class NewAccountSetupUITest: XCTestCase {
      */
     func dismissInitialSystemAlerts() {
         dismissSystemAlert(buttonTitle: "Allow")
-        dismissSystemAlert(buttonTitle: "OK")
     }
 
     func dismissSystemAlert(buttonTitle: String) {
@@ -205,12 +280,15 @@ class NewAccountSetupUITest: XCTestCase {
         }
     }
 
-    func addAdditionalManual(account: UIAccount) {
-        addAccount()
+    func addAdditionalManual(account: UIAccount, correctPassword: String) {
+        tapAddAccount()
 
         signIn(account: account, enterPassword: true)
         switchToManualConfig()
-        manualNewAccountSetup(account)
+
+        var correctAccount = account
+        correctAccount.password = correctPassword
+        manualNewAccountSetup(correctAccount, expectServerDetailsToBeAlreadyFilledIn: true)
 
         waitForever()
     }
@@ -233,7 +311,7 @@ class NewAccountSetupUITest: XCTestCase {
             tf.typeText(account.password)
         }
 
-        theApp.buttons["Sign In"].tap()
+        theApp.buttons["Log In"].tap()
     }
 
     func switchToManualConfig() {
@@ -248,9 +326,59 @@ class NewAccountSetupUITest: XCTestCase {
         theApp.buttons["Manual configuration"].tap()
     }
 
-    func addAccount() {
+    func tapAddAccount() {
         let theApp = app()
         theApp.navigationBars["All"].buttons["Folders"].tap()
         theApp.tables.buttons["Add Account"].tap()
+    }
+
+    /// For the given account, sets the password to something that should not work,
+    /// transforming it into an account that requires manual setup.
+    /// - Returns: The account (that will require manual setup) plus the original password
+    ///            as a tuple.
+    func accountToManual(account: UIAccount) -> (UIAccount, String) {
+        var theAccount = account
+        // Wrong password should prevent the automatic login
+        let correctPassword = account.password
+        theAccount.password += "ShouldNotWork"
+        return (theAccount, correctPassword)
+    }
+
+    func waitForElementToAppear(_ element: XCUIElement,
+                                timeout: TimeInterval = 5) -> XCTWaiter.Result {
+        let predicate = NSPredicate(format: "exists == true")
+        let exp = expectation(for: predicate, evaluatedWith: element,
+                              handler: nil)
+
+        let result = XCTWaiter().wait(for: [exp], timeout: timeout)
+
+        if result == .completed {
+            exp.fulfill()
+        }
+
+        return result
+    }
+
+    func skipTutorial() {
+        let theApp = app()
+        let skipButton = theApp.navigationBars.buttons["Skip"]
+
+        guard waitForElementToAppear(skipButton, timeout: 15) == .completed else {
+            XCTFail("'Skip' button missing after setting up account")
+            return
+        }
+
+        skipButton.tap()
+    }
+
+    /// Switches from the universal inbox to the folders view.
+    func waitForFolderButton() {
+        let theApp = app()
+        let folderButton = theApp.navigationBars["All"].buttons["Folders"]
+
+        guard waitForElementToAppear(folderButton, timeout: 15) == .completed else {
+            XCTFail("'Folders' button missing after setting up account")
+            return
+        }
     }
 }

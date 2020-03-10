@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageModel
+import pEpIOSToolbox
 
 public class FolderSectionViewModel {
     public var collapsed = false
@@ -15,7 +16,7 @@ public class FolderSectionViewModel {
     public var hidden = false
     private var items = [FolderCellViewModel]()
     private var help = [FolderCellViewModel]()
-    let contactImageTool = IdentityImageTool()
+    let identityImageTool = IdentityImageTool()
 
     public init(account acc: Account?, Unified: Bool) {
         if Unified {
@@ -33,32 +34,36 @@ public class FolderSectionViewModel {
 
     private func generateAccountCells() {
         guard let ac = account else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No account selected")
+            Log.shared.errorAndCrash("No account selected")
             return
         }
-        for folder in ac.rootFolders {
+        let sorted = ac.rootFolders.sorted()
+        for folder in sorted {
             items.append(FolderCellViewModel(folder: folder, level: 0))
-            childFolder(root: folder, level: 1)
+            let level = folder.folderType == .inbox ? 0 : 1
+            calculateChildFolder(root: folder, level: level)
         }
     }
 
-    private func childFolder(root folder: Folder, level: Int) {
-        for subFolder in folder.subFolders() {
+    private func calculateChildFolder(root folder: Folder, level: Int) {
+        let sorted = folder.subFolders().sorted()
+        for subFolder in sorted {
             items.append(FolderCellViewModel(folder: subFolder, level: level))
-            childFolder(root: subFolder, level: level + 1)
+            calculateChildFolder(root: subFolder, level: level + 1)
         }
     }
 
     func getImage(callback: @escaping (UIImage?)-> Void) {
         guard let ac = account else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No account selected")
+            Log.shared.errorAndCrash("No account selected")
             return
         }
-        if let cachedContactImage = contactImageTool.cachedIdentityImage(for: ac.user) {
+        let userKey = IdentityImageTool.IdentityKey(identity: ac.user)
+        if let cachedContactImage = identityImageTool.cachedIdentityImage(for: userKey) {
             callback(cachedContactImage)
         } else {
-            DispatchQueue.global().async {
-                let contactImage = self.contactImageTool.identityImage(for: ac.user)
+            DispatchQueue.global(qos: .userInitiated).async {
+                let contactImage = self.identityImageTool.identityImage(for: userKey)
                 DispatchQueue.main.async {
                     callback(contactImage)
                 }
@@ -82,17 +87,6 @@ public class FolderSectionViewModel {
             return ""
         }
         return un
-    }
-
-    public func collapse() {
-        self.collapsed = !self.collapsed
-        if !collapsed {
-            items = help
-            help = [FolderCellViewModel]()
-        } else {
-            help = items
-            items = [FolderCellViewModel]()
-        }
     }
 
     subscript(index: Int) -> FolderCellViewModel {

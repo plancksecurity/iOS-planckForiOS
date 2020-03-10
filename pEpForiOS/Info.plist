@@ -6,6 +6,21 @@
 	<string>en_US</string>
 	<key>CFBundleDisplayName</key>
 	<string>p≡p</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array>
+				<string>pEpForiOS-icon</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>Client Certificates</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>security.pep.pEp12</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -17,7 +32,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.0.41</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -40,7 +55,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -72,6 +87,9 @@
 	<array>
 		<string>UniversLTStd.otf</string>
 		<string>UniversLTStd-Bold.otf</string>
+		<string>SFUIText-Regular.ttf</string>
+		<string>SFUIText-Medium.ttf</string>
+		<string>SFUIText-Semibold.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
@@ -97,6 +115,32 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Client Certificate</string>
+			<key>UTTypeIconFiles</key>
+			<array>
+				<string>pEpForiOS-icon</string>
+			</array>
+			<key>UTTypeIdentifier</key>
+			<string>security.pep.pEp12</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>pEp12</string>
+				</array>
+			</dict>
+		</dict>
 	</array>
 	<key>security.pEp.apps.pEpForiOS.oauth2</key>
 	<string>Verify OAuth2 authorization requests</string>

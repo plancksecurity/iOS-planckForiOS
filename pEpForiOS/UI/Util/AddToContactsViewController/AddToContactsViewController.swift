@@ -8,6 +8,7 @@
 
 import Foundation
 import ContactsUI
+import pEpIOSToolbox
 
 /// Represents ContactsUI for "add a contact" to the system address book
 class AddToContactsViewController: BaseViewController {
@@ -25,7 +26,7 @@ class AddToContactsViewController: BaseViewController {
 
     func setupContactVc() {
         guard let address = emailAddress else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No data to add?")
+            Log.shared.errorAndCrash("No data to add?")
             dismiss(animated: false)
             return
         }
@@ -34,7 +35,7 @@ class AddToContactsViewController: BaseViewController {
                                                         value: address as NSString))
         contactVC = CNContactViewController(forUnknownContact: newContact)
         guard let contactVC = contactVC else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Missing contactVC")
+            Log.shared.errorAndCrash("Missing contactVC")
             return
         }
         contactVC.contactStore = CNContactStore()
@@ -42,7 +43,7 @@ class AddToContactsViewController: BaseViewController {
         contactVC.allowsActions = false
         contactVC.view.tintColor = UIColor.pEpDarkGreen
 
-        addChildViewController(contactVC)
+        addChild(contactVC)
         view.addSubview(contactVC.view)
         contactVC.view.fullSizeInSuperView()
     }

@@ -9,16 +9,17 @@
 import XCTest
 
 @testable import pEpForiOS
+@testable import MessageModel
 
 class DisplayUserErrorTest: XCTestCase {
     let smtpSentErrors: [SmtpSendError] = [.illegalState(#function),
-                                           .authenticationFailed(#function),
+                                           .authenticationFailed(#function, "unknown"),
                                            .connectionLost(#function),
                                            .connectionTerminated(#function),
                                            .connectionTimedOut(#function),
                                            .badResponse(#function)]
-    let imapSyncErrors: [ImapSyncError] = [.illegalState(#function),
-                                           .authenticationFailed(#function),
+    let imapSyncErrors: [ImapSyncOperationError] = [.illegalState(#function),
+                                           .authenticationFailed(#function, "unknown"),
                                            .connectionLost(#function),
                                            .connectionTerminated(#function),
                                            .connectionTimedOut(#function),
@@ -48,7 +49,6 @@ class DisplayUserErrorTest: XCTestCase {
 
     let backgroundCoreDataErrors: [BackgroundError.CoreDataError] =
         [.couldNotInsertOrUpdate(info: "couldNotInsertOrUpdate"),
-         .couldNotStoreFolder(info: "couldNotStoreFolder"),
          .couldNotStoreMessage(info: "couldNotStoreMessage"),
          .couldNotFindAccount(info: "couldNotFindAccount"),
          .couldNotFindFolder(info: "couldNotFindFolder"),

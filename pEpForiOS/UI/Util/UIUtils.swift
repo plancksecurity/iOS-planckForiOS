@@ -9,6 +9,7 @@
 import UIKit
 import MessageModel
 import ContactsUI
+import pEpIOSToolbox
 
 struct UIUtils {
 
@@ -18,18 +19,29 @@ struct UIUtils {
     ///   - error: error to preset to user
     ///   - vc: ViewController to present the error on
     static func show(error: Error, inViewController vc: UIViewController) {
-        Log.shared.errorComponent(#function, message: "Will display error to user: \(error)")
+        Log.shared.error("May or may not display error to user: (interpolate) %@", "\(error)")
+
         guard let displayError = DisplayUserError(withError: error) else {
             // Do nothing. The error type is not suitable to bother the user with.
             return
         }
-        showAlertWithOnlyPositiveButton(title: displayError.title,
-                                        message: displayError.errorDescription,
-                                        inViewController: vc)
+        DispatchQueue.main.async {
+            showAlertWithOnlyPositiveButton(title: displayError.title,
+                                            message: displayError.errorDescription,
+                                            inViewController: vc)
+        }
     }
 
-    static func showAlertWithOnlyPositiveButton(title: String?, message: String?,
-                                                inViewController vc: UIViewController) {
+    /// Shows an alert with "OK" button only.
+    /// - Parameters:
+    ///   - title: alert title
+    ///   - message: alert message
+    ///   - vc: viewController to present alert on
+    ///   - completion: called when "OK" has been pressed
+    static func showAlertWithOnlyPositiveButton(title: String?,
+                                                message: String?,
+                                                inViewController vc: UIViewController,
+                                                completion: (()->Void)? = nil) {
         // Do not show alerts when app is in background.
         if UIApplication.shared.applicationState != .active {
             #if DEBUG
@@ -41,10 +53,36 @@ struct UIUtils {
         let alertView = UIAlertController.pEpAlertController(title: title,
                                                              message: message,
                                                              preferredStyle: .alert)
-        alertView.addAction(UIAlertAction(title: NSLocalizedString("OK", comment:
-            "General alert positive button"),
-                                          style: .default,
-                                          handler: nil))
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment:
+        "General alert positive button"),
+                                     style: .default) { action in
+                                        completion?()
+        }
+        alertView.addAction(okAction)
+        vc.present(alertView, animated: true, completion: nil)
+    }
+
+    static func showTwoButtonAlert(withTitle title: String,
+                                   message: String,
+                                   cancelButtonText: String = NSLocalizedString("Cancel",
+                                                                                comment: "Default cancel button text"),
+                                   positiveButtonText: String = NSLocalizedString("OK",
+                                                                                  comment: "Default positive button text"),
+                                   cancelButtonAction: @escaping ()->Void,
+                                   positiveButtonAction: @escaping () -> Void,
+                                   inViewController vc: UIViewController) {
+        let alertView = UIAlertController.pEpAlertController(title: title,
+                                        message: message,
+                                        preferredStyle: .alert)
+        alertView.addAction(UIAlertAction(title: positiveButtonText,
+                                          style: .default) { (alertAction) in
+                                            positiveButtonAction()
+        })
+        alertView.addAction(UIAlertAction(title: cancelButtonText,
+                                          style: .cancel) { (alertAction) in
+                                            cancelButtonAction()
+        })
+
         vc.present(alertView, animated: true, completion: nil)
     }
 
@@ -90,16 +128,16 @@ struct UIUtils {
             let composeVc = composeNavigationController.rootViewController
                 as? ComposeTableViewController
             else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Missing required data")
+                Log.shared.errorAndCrash("Missing required data")
                 return
         }
         var prefilledTo: Identity? = nil
         if let address = address {
             let to = Identity(address: address)
+            to.save()
             prefilledTo = to
         }
-        let composeVM = ComposeViewModel(resultDelegate: nil,
-                                         composeMode: .normal,
+        let composeVM = ComposeViewModel(composeMode: .normal,
                                          prefilledTo: prefilledTo,
                                          originalMessage: nil)
         composeVc.viewModel = composeVM
@@ -122,7 +160,7 @@ struct UIUtils {
         let storyboard = UIStoryboard(name: Constants.addToContactsStoryboard, bundle: nil)
         guard let contactVc = storyboard.instantiateViewController(withIdentifier:
             AddToContactsViewController.storyboardId) as? AddToContactsViewController else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Missing required data")
+                Log.shared.errorAndCrash("Missing required data")
                 return
         }
         contactVc.appConfig = appConfig
@@ -146,11 +184,11 @@ struct UIUtils {
                                                      at view: UIView,
                                                      appConfig: AppConfig) {
         guard let _ = UrlClickHandler.Scheme(for: url) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Unsupported scheme")
+            Log.shared.errorAndCrash("Unsupported scheme")
             return
         }
         guard let address = url.firstRecipientAddress() else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No address")
+            Log.shared.errorAndCrash("No address")
             return
         }
         presentActionSheetWithContactOptions(forContactWithEmailAddress: address,
@@ -237,7 +275,7 @@ struct UIUtils {
 
     static func presentSettings(on viewController: UIViewController, appConfig: AppConfig) {
         guard let vc = UIStoryboard.init(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: SettingsTableViewController.storyboardId) as? SettingsTableViewController else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No controller")
+            Log.shared.errorAndCrash("No controller")
             return
         }
         vc.appConfig = appConfig

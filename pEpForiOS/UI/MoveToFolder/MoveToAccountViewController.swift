@@ -15,7 +15,6 @@ class MoveToAccountViewController: BaseViewController {
     var viewModel: MoveToAccountViewModel?
     private let cellId = "AccountCell"
     private var selectedViewModel : MoveToFolderViewModel?
-    weak var delegate : MoveToFolderDelegate?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -65,7 +64,7 @@ extension MoveToAccountViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         if let vm = viewModel?[indexPath.row] {
-            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+            cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
             cell.textLabel?.text = vm.title
         }
         return cell
@@ -90,7 +89,6 @@ extension MoveToAccountViewController {
         if segue.identifier == "showAccount" {
             if let vc = segue.destination as? MoveToFolderTableViewController, let appCfg = self.appConfig, let vm = selectedViewModel {
                 vc.appConfig = appCfg
-                vm.delegate = self.delegate
                 vc.viewModel = vm
             }
         }

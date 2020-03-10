@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import pEpIOSToolbox
 
 /// Suggests a list of Identities that fit to a given sarch string
 class SuggestTableViewController: BaseTableViewController {
@@ -33,7 +34,7 @@ extension SuggestTableViewController: SuggestViewModelDelegate {
 extension SuggestTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let viewModel = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return
         }
         viewModel.handleRowSelected(at: indexPath.row)
@@ -47,7 +48,7 @@ extension SuggestTableViewController {
     public override func tableView(_ tableView: UITableView,
                                    numberOfRowsInSection section: Int) -> Int {
         guard let viewModel = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            Log.shared.errorAndCrash("No VM")
             return 0
         }
         return viewModel.numRows
@@ -60,10 +61,10 @@ extension SuggestTableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: ContactCell.reuseId,
                                                        for: indexPath)
             as? ContactCell else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Illegal state")
+                Log.shared.errorAndCrash("Illegal state")
                 return UITableViewCell()
         }
-        let row = viewModel.row(at: indexPath.row)
+        let row = viewModel[indexPath.row]
         cell.nameLabel.text = row.name
         cell.emailLabel.text = row.email
         return cell

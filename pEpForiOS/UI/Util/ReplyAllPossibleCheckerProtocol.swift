@@ -11,5 +11,5 @@ import Foundation
 import MessageModel
 
 protocol ReplyAllPossibleCheckerProtocol {
-    func isReplyAllPossible(forMessage: Message?) -> Bool
+    func isReplyAllPossible() -> Bool
 }

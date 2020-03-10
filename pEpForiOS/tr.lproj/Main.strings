@@ -1,0 +1,33 @@
+/* Class = "UIBarButtonItem"; title = "Edit"; ObjectID = "4U1-dM-wKT"; */
+"4U1-dM-wKT.title" = "Düzenle";
+
+/* Class = "UILabel"; text = "Date"; ObjectID = "a1D-BW-3Rd"; */
+"a1D-BW-3Rd.text" = "Tarih";
+
+/* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "aP4-ia-HTP"; */
+"aP4-ia-HTP.title" = "Gelen Kutusu";
+
+/* Class = "UILabel"; text = "To:"; ObjectID = "Bd2-Nr-sTF"; */
+"Bd2-Nr-sTF.text" = "Kime:";
+
+/* Class = "UILabel"; text = "Sender"; ObjectID = "hnw-Tp-mga"; */
+"hnw-Tp-mga.text" = "Gönderen";
+
+/* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "NoQ-uw-dGp"; */
+"NoQ-uw-dGp.title" = "Vazgeç";
+
+/* Class = "UILabel"; text = "Subject:"; ObjectID = "NTc-GH-Ell"; */
+"NTc-GH-Ell.text" = "Konu:";
+
+/* Class = "UILabel"; text = "From:"; ObjectID = "pkd-ua-DYh"; */
+"pkd-ua-DYh.text" = "Kimden:";
+
+/* Class = "UILabel"; text = "Date"; ObjectID = "Swb-L2-8yp"; */
+"Swb-L2-8yp.text" = "Tarih";
+
+/* Class = "UILabel"; text = "Subject"; ObjectID = "xrz-WN-2Dg"; */
+"xrz-WN-2Dg.text" = "Konu";
+
+/* Class = "UIBarButtonItem"; title = "Send"; ObjectID = "yQg-rY-YPK"; */
+"yQg-rY-YPK.title" = "Gönder";
+

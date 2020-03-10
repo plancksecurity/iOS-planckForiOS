@@ -40,16 +40,48 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testAccountAt_1() {
-        let secondAccount = createAndSaveSecondAccount()
-        let testIdx = 1
-        assertPickerViewModel(accountAt: testIdx, expected: secondAccount)
+        let _ = createAndSaveSecondAccount()
+        let sndIdx = 1
+
+        assertPickerViewModel(accountAt: sndIdx, expected: secondAccount())
     }
 
     func testAccountAt_not1() {
         createAndSaveSecondAccount()
         let testIdx = 1
-        let notSecondAccount = account
-        assertPickerViewModel(accountAt: testIdx, expected: notSecondAccount, shouldFail: true)
+
+        assertPickerViewModel(accountAt: testIdx,
+                              expected: firstAccount(),
+                              shouldFail: true)
+    }
+
+    //MARK: - row(at:)
+    func testRowForAccountAt_0() {
+        createAndSaveSecondAccount()
+        let expectedAccountIndex = 0
+        assertPickerViewModel(account: firstAccount().user.address, expectedPosition: expectedAccountIndex)
+    }
+
+    func testRowForAccountAt_1() {
+        let second = createAndSaveSecondAccount()
+        let expectedAccountIndex = 1
+        assertPickerViewModel(account: second.user.address, expectedPosition: expectedAccountIndex)
+    }
+
+    func testRowForAccountNotAt_0() {
+        let second = createAndSaveSecondAccount()
+        let expectedAccountIndex = 0
+        assertPickerViewModel(account: second.user.address,
+                              expectedPosition: expectedAccountIndex,
+                              shouldFail: true)
+    }
+
+    func testRowForAccountNotAt_1() {
+        createAndSaveSecondAccount()
+        let expectedAccountIndex = 1
+        assertPickerViewModel(account: firstAccount().user.address,
+                              expectedPosition: expectedAccountIndex,
+                              shouldFail: true)
     }
 
     // MARK: - handleUserSelected
@@ -62,29 +94,21 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
                             mustEqualSelected: true)
     }
 
-    func testHandleUserSelected_oneAccount_shouldFail() {
-        let firstRowIdx = 0
-        let accountNotSaved = SecretTestData().createWorkingAccount(number: 1)
-        assertUserSelection(selectIdx: firstRowIdx,
-                            accountToCompare: accountNotSaved,
-                            mustEqualSelected: false)
-    }
-
     func testHandleUserSelected_twoAccounts_correct() {
         let secondRowIdx = 1
-        let secondAccount = createAndSaveSecondAccount()
-        let pickedAccount = secondAccount
+        let _ = createAndSaveSecondAccount()
+
         assertUserSelection(selectIdx: secondRowIdx,
-                            accountToCompare: pickedAccount,
+                            accountToCompare: secondAccount(),
                             mustEqualSelected: true)
     }
 
     func testHandleUserSelected_twoAccounts_shouldFail() {
         let firstAccountIdx = 0
-        let secondAccount = createAndSaveSecondAccount()
-        let notPickedAccount = secondAccount
+        let _ = createAndSaveSecondAccount()
+
         assertUserSelection(selectIdx: firstAccountIdx,
-                            accountToCompare: notPickedAccount,
+                            accountToCompare: secondAccount(),
                             mustEqualSelected: false)
     }
 
@@ -112,6 +136,18 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
         }
     }
 
+    private func assertPickerViewModel(account: String,
+                                       expectedPosition: Int,
+                                       shouldFail: Bool = false) {
+        let vm = AccountPickerViewModel(resultDelegate: nil)
+        let testee = vm.row(at: account)
+        if shouldFail {
+            XCTAssertNotEqual(testee, expectedPosition)
+        } else {
+            XCTAssertEqual(testee, expectedPosition)
+        }
+    }
+
     private func assertPickerViewModel(numAccounts: Int) {
         let testee = AccountPickerViewModel(resultDelegate: nil)
         let numAccountsInDB = Account.all().count
@@ -120,15 +156,25 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
     }
 
     @discardableResult private func createAndSaveSecondAccount () -> Account {
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1)
+        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
         secondAccount.save()
         return secondAccount
     }
 
     private func deleteAllAccounts() {
-        for account in Account.all() {
-            account.delete()
-        }
+        Account.all().forEach { $0.delete() }
+    }
+
+    private func account(at: Int) -> Account {
+        return Account.all()[at]
+    }
+
+    private func firstAccount() -> Account {
+        return account(at: 0)
+    }
+
+    private func secondAccount() -> Account {
+        return account(at: 1)
     }
 }
 
