@@ -9,9 +9,10 @@
 import UIKit
 
 /// Collection view cell class
-class AccountTypeSelectorCollectionViewCell: UICollectionViewCell {
-
-    @IBOutlet var imageToFill: UIImageView!
+class AccountTypeSelectorImageCollectionViewCell: UICollectionViewCell {
+    
+    
+    @IBOutlet weak var imageToFill: UIImageView!
     
     /// adds an image loaded from the file name
     /// - Parameter fileName: file name to load
@@ -23,7 +24,7 @@ class AccountTypeSelectorCollectionViewCell: UICollectionViewCell {
     /// adds an image created from a text
     /// - Parameter text: source text
     func configure(withText text: String) {
-        let image = text.image(color: UIColor.pEpGreen)
-        imageToFill.image = image
+        let imags = text.image(size: frame.size, color: .pEpGreen)
+        imageToFill.image = imags
     }
 }
