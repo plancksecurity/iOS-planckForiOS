@@ -58,23 +58,6 @@ extension String {
         return trimmed().unquote().trimmed()
     }
 
-//    /**
-//     - Returns: The name part of an email, e.g. "test@blah.com" -> "test"
-//     */
-//    public func namePartOfEmail() -> String {
-//            let matches = String.namePartOfEmailRegex.matches(in: self, options: [], range: wholeRange())
-//            if matches.count == 1 {
-//                let m = matches[0]
-//                let r = m.range(at: 1)
-//                if r.location != NSNotFound {
-//                    let s = self as NSString
-//                    let result = s.substring(with: r)
-//                    return result
-//                }
-//            }
-//        return self.replacingOccurrences(of: "@", with: "_")
-//    }
-
     public func containsString(_ substring: String, ignoreCase: Bool = true,
                                ignoreDiacritic: Bool = true) -> Bool {
 
