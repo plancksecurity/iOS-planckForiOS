@@ -35,6 +35,6 @@ class RecipientCell: TextViewContainingTableViewCell {
     }
 
     private func setStyle(label: UILabel) {
-        label.pEpSetFontFace()
+        label.pEpSetFontFace(weight: .regular)
     }
 }

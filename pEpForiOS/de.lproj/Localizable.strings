@@ -73,6 +73,7 @@
 /* alert action 3
    Alert cancel button title before trusting an account
    Cancel
+   Cancel button for client certificate password screen
    Cancel button title for manual account setup
    Cancel button title of pEp protection toggle action sheet
    Cancel for an alert view
@@ -87,7 +88,6 @@
    keySyncWizard animation view cancel button title
    Message actions
    MoveToFolderViewController NavigationBar canel button title
-   possible private status action
    UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
 "Cancel" = "Abbrechen";
 
@@ -121,6 +121,9 @@
 
 /* Settings: Cell (button) title to view app credits */
 "Credits" = "Mitwirkung";
+
+/* Incorrect trustwords/PGP fingerprint */
+"Decline" = "Ablehnen";
 
 /* Default Account Setting Section Title
    Settings: Cell (button) title to view default account setting */
@@ -203,7 +206,7 @@
 /* Tableview section header: Global Settings */
 "Global Settings" = "Globale Einstellungen";
 
-/* possible privacy status action */
+/* Title of the view */
 "Handshake" = "Handshake";
 
 /* Trusted Server Setting Section Footer */
@@ -211,6 +214,9 @@
 
 /* Tableview section footer */
 "If enabled, message subjects are also protected." = "Schützt den Betreff, wenn aktiviert";
+
+/* Alert: Leave device group confirmation comment */
+"If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?" = "Wenn Sie p≡p Sync deaktivieren, werden Ihre Konten auf Ihren Geräten nicht mehr synchronisiert. Möchten Sie p≡p Sync wirklich deaktivieren?";
 
 /* Title for manual account IMAP setup */
 "IMAP" = "IMAP";
@@ -270,7 +276,8 @@
 /* Leave device group confirmation comment */
 "leaving device group" = "Gerätegruppe wird verlassen";
 
-/* Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed. */
+/* Title of error alert shown to the user for client certificate problems
+   Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed. */
 "Login Failed" = "Einloggen gescheitert";
 
 /* Privacy status suggestion */
@@ -288,8 +295,8 @@
 /* EmailList action title */
 "Mark as unread" = "Als ungelesen markieren";
 
-/* Privacy status title
-   privacyStatusTitle red */
+/* Mistrusted - Step 1
+   Privacy status title */
 "Mistrusted" = "Nicht vertrauenswürdig";
 
 /* more button in slide-left menu */
@@ -339,6 +346,7 @@
    Filter accept text
    General alert positive button
    keySyncWizard completion view OK button title
+   OK button for client certificate password screen
    OK button for invalid accout settings user input alert
    UIAlertAction ok after error */
 "OK" = "OK";
@@ -354,12 +362,15 @@
    Settings: enable/disable p≡p Sync feature */
 "p≡p Sync" = "p≡p Synchronisierung";
 
+/* Passive mode title */
+"Passive mode" = "Passivmodus";
+
 /* Password placeholder for manual account setup
    Password TextField Placeholder in Login Screen */
 "Password" = "Passwort";
 
 /* Account settings title pEp Sync */
-"pEp Sync" = "pEp Synchronisierung";
+"pEp Sync" = "p≡p Synchronisierung";
 
 /* TutorialWizard image 1 */
 "pEpForIOS-Tutorial-1" = "pEpForIOS-Tutorial-1";
@@ -400,6 +411,9 @@
 /* Privacy status suggestion */
 "Please ask your communication partner to use an encryption solution or install p≡p." = "Bitten Sie Ihren Kommunikationspartner, eine Verschlüsselungslösung einzusetzen oder p≡p zu installieren.";
 
+/* keySyncWizard animation view message while we sync your devices */
+"Please give us a moment while we sync your devices. This can take a minute or more." = "Bitte warten Sie einen Moment, bis ihre Geräte synchronisiert sind. Das kann eine Minute oder länger dauern.";
+
 /* keySync handshake alert message for two devices in group */
 "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Bitte stellen Sie sicher, das Sie beide Geräte vor sich haben, um die Trustwords zu vergleichen. Stimmen die Trustwords unten mit denen auf dem anderen Gerät überein?";
 
@@ -418,6 +432,9 @@
 
 /* read button in slide-left menu */
 "Read" = "Gelesen";
+
+/* reject hand shake button */
+"Reject" = "Ablehnen";
 
 /* ComposeTableView: Label of swipe left. Removing of attachment. */
 "Remove" = "Entfernen";
@@ -441,11 +458,11 @@
 "Save Draft" = "Entwurf speichern";
 
 /* Privacy status title
-   privacyStatusTitle yellow */
+   Secure Label - Step 1 */
 "Secure" = "Sicher";
 
 /* Privacy status title
-   privacyStatusTitle green */
+   Secure & Trusted Label - Step 1 */
 "Secure & Trusted" = "Sicher & Vertrauenswürdig";
 
 /* Title of error alert shown to the user in case we can not connect to the IMAP server
@@ -501,6 +518,12 @@
 
 /* Compose field title */
 "Subject:" = "Betreff:";
+
+/* Tableview section header: (p≡p) Sync */
+"Sync" = "Synchronisieren";
+
+/* KeySyncWizard complete message - more than two devices */
+"The device is now member of your device group. All your privacy is now synchronized." = "Das Gerät ist nun Teil Ihrer Gerätegruppe. Ihre gesamten Datenschutz-Einstellungen sind jetzt synchronisiert.";
 
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "Die Nachricht konnte nicht versandt werden. Bitte versuchen Sie es später noch einmal.";
@@ -578,8 +601,7 @@
 "unknown" = "unbekannt";
 
 /* Privacy status title
-   privacyStatusDescription no_color
-   privacyStatusTitle no_color */
+   privacyStatusDescription no_color */
 "Unknown" = "Unbekannt";
 
 /* file name used for unnamed attachments */
@@ -620,6 +642,9 @@
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "Der SMTP Server konnte nicht erreicht werden.";
+
+/* KeySyncWizard complete message - two devices */
+"We successfully created a device group. All your privacy is now synchronized." = "Ihre Gerätegruppe wurde erfolgreich gebildet. Ihre gesamten Datenschutz-Einstellungen sind jetzt synchronisiert.";
 
 /* Title for attachments filter */
 "With attachments" = "Mit Anhängen";

@@ -157,14 +157,12 @@ extension PEPPageViewControllerBase {
     private func previousView(of viewController: UIViewController? = nil) -> UIViewController? {
         let currentPossition = currentIndex(of: viewController)
         guard currentPossition > 0 else { return nil }
-
         return views[currentPossition - 1]
     }
 
     private func nextView(of viewController: UIViewController? = nil) -> UIViewController? {
         let currentPossition = currentIndex(of: viewController)
         guard currentPossition < views.count - 1 else { return nil }
-
         return views[currentPossition + 1]
     }
 

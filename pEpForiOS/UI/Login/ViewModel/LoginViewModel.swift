@@ -12,15 +12,26 @@ import MessageModel
 import pEpIOSToolbox
 import PantomimeFramework
 
-enum LoginCellType {
-    case Text, Button
+// MARK: - LoginCellType
+
+extension LoginViewModel {
+    enum LoginCellType {
+        case Text, Button
+    }
 }
 
-class LoginViewModel {
+// MARK: - OAuth2Parameters
+
+extension LoginViewModel {
     struct OAuth2Parameters {
         let emailAddress: String
         let userName: String
     }
+}
+
+final class LoginViewModel {
+    /// If the last login attempt was via OAuth2, this will collect temporary parameters
+    private var lastOAuth2Parameters: OAuth2Parameters?
 
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
     weak var loginViewModelLoginErrorDelegate: LoginViewModelLoginErrorDelegate?
@@ -39,14 +50,17 @@ class LoginViewModel {
         }
     }
 
-    /// If the last login attempt was via OAuth2, this will collect temporary parameters
-    private var lastOAuth2Parameters: OAuth2Parameters?
+    public var shouldShowPasswordField: Bool {
+           return !verifiableAccount.accountType.isOauth
+       }
 
-    let qualifyServerService = QualifyServerIsLocalService()
+    let qualifyServerIsLocalService = QualifyServerIsLocalService()
 
-    init(verifiableAccount: VerifiableAccountProtocol) {
-        self.verifiableAccount = verifiableAccount
+    init(verifiableAccount: VerifiableAccountProtocol? = nil) {
+        self.verifiableAccount = verifiableAccount ?? VerifiableAccount()
     }
+
+
 
     func isThereAnAccount() -> Bool {
         return !Account.all().isEmpty
@@ -77,17 +91,22 @@ class LoginViewModel {
     ///   - loginName: The optional login name for this account, if different from the email
     ///   - password: The password for the account
     ///   - accessToken: The access token for this account
-    func login(emailAddress: String, displayName: String, loginName: String? = nil,
-               password: String? = nil, accessToken: OAuth2AccessTokenProtocol? = nil) {
-        let acSettings = AccountSettings(accountName: emailAddress, provider: nil,
-                                         flags: AS_FLAG_USE_ANY, credentials: nil)
+    func login(emailAddress: String,
+               displayName: String,
+               loginName: String? = nil,
+               password: String? = nil,
+               accessToken: OAuth2AccessTokenProtocol? = nil) {
+        let acSettings = AccountSettings(accountName: emailAddress,
+                                         provider: nil,
+                                         flags: AS_FLAG_USE_ANY,
+                                         credentials: nil)
         acSettings.lookupCompletion() { [weak self] settings in
             GCD.onMain() {
-                statusOk()
+                libAccoutSettingsStatusOK()
             }
         }
 
-        func statusOk() {
+        func libAccoutSettingsStatusOK() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
                 Log.shared.error("%@", "\(error)")
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
@@ -99,10 +118,10 @@ class LoginViewModel {
                     // AccountSettingsError() already handled the error
                     return
             }
-            let imapTransport = ConnectionTransport(
-                accountSettingsTransport: incomingServer.transport, imapPort: incomingServer.port)
-            let smtpTransport = ConnectionTransport(
-                accountSettingsTransport: outgoingServer.transport, smtpPort: outgoingServer.port)
+            let imapTransport = ConnectionTransport(accountSettingsTransport: incomingServer.transport,
+                                                    imapPort: incomingServer.port)
+            let smtpTransport = ConnectionTransport(accountSettingsTransport: outgoingServer.transport,
+                                                    smtpPort: outgoingServer.port)
 
             verifiableAccount.verifiableAccountDelegate = self
             verifiableAccount.address = emailAddress
@@ -126,30 +145,7 @@ class LoginViewModel {
             verifiableAccount.transportSMTP = smtpTransport
             verifiableAccount.isAutomaticallyTrustedImapServer = false
 
-            verifyAccount(model: verifiableAccount)
-        }
-    }
-
-    /// Creates and persits an account with given data and triggers a verification request.
-    ///
-    /// - Parameter model: account data
-    /// - Throws: AccountVerificationError
-    func verifyAccount(model: VerifiableAccountProtocol?) {
-        if let imapServer = verifiableAccount.serverIMAP {
-            qualifyServerService.delegate = self
-            qualifyServerService.qualify(serverName: imapServer)
-        } else {
-            accountHasBeenQualified(trusted: false)
-        }
-    }
-
-    func accountHasBeenQualified(trusted: Bool) {
-        verifiableAccount.isAutomaticallyTrustedImapServer = trusted
-        do {
-            try verifiableAccount.verify()
-        } catch {
-            Log.shared.error("%@", "\(error)")
-            loginViewModelLoginErrorDelegate?.handle(loginError: error)
+            checkIfServerShouldBeConsideredATrustedServer()
         }
     }
 
@@ -158,6 +154,30 @@ class LoginViewModel {
     /// - Parameter email: Returns true, if this is an OAuth2 email address, true otherwise.
     func isOAuth2Possible(email: String?) -> Bool {
         return AccountSettings.quickLookUp(emailAddress: email)?.supportsOAuth2 ?? false
+    }
+}
+
+// MARK: - Private
+
+extension LoginViewModel {
+
+    private func checkIfServerShouldBeConsideredATrustedServer() {
+        if let imapServer = verifiableAccount.serverIMAP {
+            qualifyServerIsLocalService.delegate = self
+            qualifyServerIsLocalService.qualify(serverName: imapServer)
+        } else {
+            markServerAsTrusted(trusted: false)
+        }
+    }
+
+    private func markServerAsTrusted(trusted: Bool) {
+        verifiableAccount.isAutomaticallyTrustedImapServer = trusted
+        do {
+            try verifiableAccount.verify()
+        } catch {
+            Log.shared.error("%@", "\(error)")
+            loginViewModelLoginErrorDelegate?.handle(loginError: error)
+        }
     }
 }
 
@@ -192,10 +212,15 @@ extension LoginViewModel: OAuth2AuthViewModelDelegate {
 extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
     func didQualify(serverName: String, isLocal: Bool?, error: Error?) {
         GCD.onMain { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
             if let err = error {
                 self?.loginViewModelLoginErrorDelegate?.handle(loginError: err)
+                return
             }
-            self?.accountHasBeenQualified(trusted: isLocal ?? false)
+            me.markServerAsTrusted(trusted: isLocal ?? false)
         }
     }
 }

@@ -10,6 +10,13 @@ import UIKit
 import PEPObjCAdapterFramework
 
 extension UIViewController {
+    var isIpad : Bool {
+        return UIDevice.current.userInterfaceIdiom == .pad
+    }
+    
+    var isLandscape: Bool {
+        return UIDevice.current.orientation.isLandscape
+    }
     var isModalViewCurrentlyShown: Bool {
         return presentedViewController != nil
     }

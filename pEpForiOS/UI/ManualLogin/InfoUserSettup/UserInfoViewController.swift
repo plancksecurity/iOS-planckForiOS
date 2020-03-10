@@ -10,14 +10,14 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-final class UserInfoViewController: BaseViewController, TextfieldResponder {
+final class UserInfoViewController: BaseViewController {
     @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
     var fields = [UITextField]()
     var responder = 0
 
     /// - Note: This VC doesn't have a view model yet, so this is used for the model.
-    var model: VerifiableAccountProtocol?
+    var verifiableAccount: VerifiableAccountProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,14 +33,16 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
             setupView.scrollView.isScrollEnabled = false
         }
 
-        var vm = viewModelOrCrash()
-        vm.loginNameSMTP = vm.loginNameSMTP ?? vm.address
-        vm.loginNameIMAP = vm.loginNameIMAP ?? vm.address
+        guard var verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("Invalid state")
+            return
+        }
+        verifiableAccount.loginNameSMTP = verifiableAccount.loginNameSMTP ?? verifiableAccount.address
+        verifiableAccount.loginNameIMAP = verifiableAccount.loginNameIMAP ?? verifiableAccount.address
 
         fields = manualAccountSetupContainerView.manualSetupViewTextFeilds()
         setUpViewLocalizableTexts()
         setUpTextFieldsInputTraits()
-        updateAutoFillForNextViews()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -51,8 +53,11 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        firstResponder(!viewModelOrCrash().loginNameIsValid)
+        guard let verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("Invalid state")
+            return
+        }
+        firstResponder(!verifiableAccount.loginNameIsValid)
     }
 
     /// Update view state from the view model
@@ -62,33 +67,43 @@ final class UserInfoViewController: BaseViewController, TextfieldResponder {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
-        let vm = viewModelOrCrash()
-        setupView.firstTextField.set(text: vm.loginNameIMAP, animated: animated)
-        setupView.secondTextField.set(text: vm.address, animated: animated)
-        setupView.thirdTextField.set(text: vm.password, animated: animated)
-        setupView.fourthTextField.set(text: vm.userName, animated: animated)
+        guard let verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("Invalid state")
+            return
+        }
+        setupView.firstTextField.set(text: verifiableAccount.loginNameIMAP, animated: animated)
+        setupView.secondTextField.set(text: verifiableAccount.address, animated: animated)
+        setupView.thirdTextField.set(text: verifiableAccount.password, animated: animated)
+        setupView.fourthTextField.set(text: verifiableAccount.userName, animated: animated)
 
-        setupView.pEpSyncSwitch.isOn = vm.keySyncEnable
+        setupView.pEpSyncSwitch.isOn = verifiableAccount.keySyncEnable
 
-        setupView.nextButton.isEnabled = vm.isValidUser
-        setupView.nextRightButton.isEnabled = vm.isValidUser
+        setupView.nextButton.isEnabled = verifiableAccount.isValidUser
+        setupView.nextRightButton.isEnabled = verifiableAccount.isValidUser
     }
+}
+
+// MARK: - TextfieldResponder
+
+extension UserInfoViewController: TextfieldResponder {
 
     @IBAction func didTapOnView(_ sender: Any) {
-        view.endEditing(true)
-    }
+           view.endEditing(true)
+       }
 }
 
 // MARK: - UITextFieldDelegate
 
 extension UserInfoViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        guard let setupView = manualAccountSetupContainerView.setupView else {
-            Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
+        guard
+            let verifiableAccount = verifiableAccount,
+            let setupView = manualAccountSetupContainerView.setupView else {
+            Log.shared.errorAndCrash("Invalid state")
             return true
         }
         if textField == setupView.fourthTextField,
-            viewModelOrCrash().isValidUser {
+            verifiableAccount.isValidUser {
             handleGoToNextView()
             return true
         }
@@ -106,37 +121,47 @@ extension UserInfoViewController: UITextFieldDelegate {
 
 extension UserInfoViewController: ManualAccountSetupViewDelegate {
     func didChangePEPSyncSwitch(isOn: Bool) {
-        var vm = viewModelOrCrash()
-        vm.keySyncEnable = isOn
+        guard var verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("Invalid state")
+            return
+        }
+        verifiableAccount.keySyncEnable = isOn
     }
 
     func didChangeFirst(_ textField: UITextField) {
-        var vm = viewModelOrCrash()
-        vm.loginNameIMAP = textField.text
-        vm.loginNameSMTP = textField.text
-        model = vm
-        updateAutoFillForNextViews()
+        guard var verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("Invalid state")
+            return
+        }
+        verifiableAccount.loginNameIMAP = textField.text
+        verifiableAccount.loginNameSMTP = textField.text
         updateView()
     }
 
     func didChangeSecond(_ textField: UITextField) {
-        var vm = viewModelOrCrash()
-        vm.address = textField.text
-        model = vm
+        guard var verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("Invalid state")
+            return
+        }
+        verifiableAccount.address = textField.text
         updateView()
     }
 
     func didChangeThird(_ textField: UITextField) {
-        var vm = viewModelOrCrash()
-        vm.password = textField.text
-        model = vm
+        guard var verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("Invalid state")
+            return
+        }
+        verifiableAccount.password = textField.text
         updateView()
     }
 
     func didChangeFourth(_ textField: UITextField) {
-        var vm = viewModelOrCrash()
-        vm.userName = textField.text
-        model = vm
+        guard var verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("Invalid state")
+            return
+        }
+        verifiableAccount.userName = textField.text
         updateView()
     }
 
@@ -146,21 +171,6 @@ extension UserInfoViewController: ManualAccountSetupViewDelegate {
 
     func didPressNextButton() {
         handleGoToNextView()
-    }
-}
-
-// MARK: - Helpers
-
-extension UserInfoViewController {
-    func viewModelOrCrash() -> VerifiableAccountProtocol {
-        if let vm = model {
-            return vm
-        } else {
-            Log.shared.errorAndCrash("No view model")
-            let vm = BaseVerifiableAccount()
-            model = vm
-            return vm
-        }
     }
 }
 
@@ -177,7 +187,7 @@ extension UserInfoViewController: SegueHandlerType {
         switch segue.destination {
         case let iMAPSettingsViewController as IMAPSettingsViewController:
             iMAPSettingsViewController.appConfig = appConfig
-            iMAPSettingsViewController.model = model
+            iMAPSettingsViewController.verifiableAccount = verifiableAccount
         default:
             break
         }
@@ -186,7 +196,7 @@ extension UserInfoViewController: SegueHandlerType {
         case .IMAPSettings:
             if let destination = segue.destination as? IMAPSettingsViewController {
                 destination.appConfig = appConfig
-                destination.model = model
+                destination.verifiableAccount = verifiableAccount
             }
             break
         default:
@@ -199,7 +209,9 @@ extension UserInfoViewController: SegueHandlerType {
 
 extension UserInfoViewController {
     private func handleGoToNextView() {
-        guard viewModelOrCrash().isValidUser else {
+        guard
+            let verifiableAccount = verifiableAccount,
+            verifiableAccount.isValidUser else {
             Log.shared.errorAndCrash("Next button enable with not ValidUser in ManualAccountSetupView")
             return
         }
@@ -248,11 +260,5 @@ extension UserInfoViewController {
 
         let displayNamePlaceholder = NSLocalizedString("Display Name", comment: "Display Name placeholder for manual account setup")
         setupView.fourthTextField.placeholder = displayNamePlaceholder
-    }
-
-    private func updateAutoFillForNextViews() {
-        var vm = viewModelOrCrash()
-        vm.loginNameIMAP = vm.loginNameIMAP
-        vm.loginNameSMTP = vm.loginNameSMTP
     }
 }
