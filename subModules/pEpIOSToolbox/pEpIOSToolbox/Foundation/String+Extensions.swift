@@ -15,19 +15,10 @@ extension String {
     static public let space = " "
 
     static let unquoteRegex = try! NSRegularExpression(pattern: "^\"(.*)\"$", options: [])
-
-    static let namePartOfEmailRegex = try! NSRegularExpression(pattern: "^([^@]+)@", options: [])
-
     static let endWhiteSpaceRegex = try! NSRegularExpression(pattern: "^(.*?)\\s*$", options: [])
-
-    static let newlineRegex = try! NSRegularExpression(
-        pattern: "(\\n|\\r\\n)+", options: [])
-
-    static let threeOrMoreNewlinesRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n){3,}",
-                                                                   options: [])
-
-    static let fileExtensionRegex = try! NSRegularExpression(pattern: "^([^.]+)\\.([^.]+)$",
-                                                             options: [])
+    static let newlineRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n)+", options: [])
+    static let threeOrMoreNewlinesRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n){3,}", options: [])
+    static let fileExtensionRegex = try! NSRegularExpression(pattern: "^([^.]+)\\.([^.]+)$", options: [])
 
     /**
      Trims whitespace from back and front.
@@ -67,23 +58,22 @@ extension String {
         return trimmed().unquote().trimmed()
     }
 
-    /**
-     - Returns: The name part of an email, e.g. "test@blah.com" -> "test"
-     */
-    public func namePartOfEmail() -> String {
-            let matches = String.namePartOfEmailRegex.matches(
-                in: self, options: [], range: wholeRange())
-            if matches.count == 1 {
-                let m = matches[0]
-                let r = m.range(at: 1)
-                if r.location != NSNotFound {
-                    let s = self as NSString
-                    let result = s.substring(with: r)
-                    return result
-                }
-            }
-        return self.replacingOccurrences(of: "@", with: "_")
-    }
+//    /**
+//     - Returns: The name part of an email, e.g. "test@blah.com" -> "test"
+//     */
+//    public func namePartOfEmail() -> String {
+//            let matches = String.namePartOfEmailRegex.matches(in: self, options: [], range: wholeRange())
+//            if matches.count == 1 {
+//                let m = matches[0]
+//                let r = m.range(at: 1)
+//                if r.location != NSNotFound {
+//                    let s = self as NSString
+//                    let result = s.substring(with: r)
+//                    return result
+//                }
+//            }
+//        return self.replacingOccurrences(of: "@", with: "_")
+//    }
 
     public func containsString(_ substring: String, ignoreCase: Bool = true,
                                ignoreDiacritic: Bool = true) -> Bool {
@@ -387,12 +377,12 @@ extension String {
      - Returns: The first part of a String, with a maximum length of `ofLength`.
      */
     public func prefix(ofLength: Int) -> String {
-        if self.count >= ofLength {
-            let start = self.startIndex
-            return String(prefix(upTo: self.index(start, offsetBy: ofLength)))
-        } else {
-            return self
+        if count >= ofLength {
+            let start = startIndex
+            let substring = prefix(upTo: index(start, offsetBy: ofLength))
+            return "\(substring)"
         }
+        return self
     }
 
     /**
@@ -400,23 +390,22 @@ extension String {
      delimiters like "-", or " ".
      */
     func tokens() -> [String] {
-        return self.components(separatedBy: CharacterSet(charactersIn: "- ")).map {
+        return components(separatedBy: CharacterSet(charactersIn: "- ")).map {
             return $0.trimmingCharacters(in: .whitespacesAndNewlines)
         }
     }
-
-    /**
-     - Returns: The initials of the String interpreted as a name,
-     that is ideally the first letters of the given name and the last name.
-     If that is not possible, improvisations are used.
-     */
-    public func initials() -> String {
+    
+    /// - Returns: the initials of the String interpreted as a name.
+    /// that is ideally the first letters of the given name and lastname.
+    /// If it only has one word (name or lastname) that will be taken to get the initial.
+    /// If not possible, returns nil.
+    public func initials() -> String? {
         let words = tokens()
         if words.count == 0 {
-            return "?"
+            return nil
         }
         if words.count == 1 {
-            return self.prefix(ofLength: 2)
+            return prefix(ofLength: 2)
         }
         let word1 = words[0]
         let word2 = words[words.count - 1]
