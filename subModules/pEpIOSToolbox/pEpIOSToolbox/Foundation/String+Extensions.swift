@@ -362,10 +362,7 @@ extension String {
     public func prefix(ofLength: Int) -> String {
         if count >= ofLength {
             let start = startIndex
-            let substring = prefix(upTo: index(start, offsetBy: ofLength))
-            let pattern = "[^A-Za-z]"
-            let result = substring.replacingOccurrences(of: pattern, with: "", options: [.regularExpression])
-            return "\(result)"
+            return prefix(upTo: index(start, offsetBy: ofLength))
         }
         return self
     }
@@ -394,7 +391,11 @@ extension String {
         }
         let word1 = words[0]
         let word2 = words[words.count - 1]
-        return "\(word1.prefix(ofLength: 1).capitalized)\(word2.prefix(ofLength: 1).capitalized)"
+        
+        let pattern = "[^A-Za-z]"
+        let prefix1 = word1.prefix(ofLength: 1).replacingOccurrences(of: pattern, with: "", options: [.regularExpression])
+        let prefix2 = word2.prefix(ofLength: 1).replacingOccurrences(of: pattern, with: "", options: [.regularExpression])
+        return "\(prefix1.capitalized)\(prefix2.capitalized)"
     }
 
     /**
