@@ -238,35 +238,36 @@ final class TrustManagementViewModel {
     }
 
     public typealias TrustWords = String
-    
+
     /// Generate the trustwords
     /// - Parameters:
     ///   - indexPath: The indexPath of the row to toogle the status (long/short)
     ///   - long: Indicates if the trustwords MUST be long (more words)
     ///   - completion: the completion block to be executed once the trustwords are generated.
     /// If the trustwords passed are nil the UI must no be updated.
+    /// If the completion block is nil, only the model in the row at the provided indexPath will be updated.
     public func generateTrustwords(forRowAt indexPath: IndexPath,
                                    long : Bool = false,
-                                   completion: @escaping (TrustWords?) -> Void) {
+                                   completion: ((TrustWords?) -> Void)?)  {
         guard rows[indexPath.row].shouldUpdateTrustwords else {
             if let trustwords = rows[indexPath.row].trustwords {
-                completion(trustwords)
+                completion?(trustwords)
                 return
             }
-            completion(nil)
+            completion?(nil)
             return
         }
         rows[indexPath.row].shouldUpdateTrustwords = false
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let me = self,
                 let trustManagementViewModel = me.trustManagementUtil else {
-                completion(nil)
+                completion?(nil)
                 Log.shared.errorAndCrash("Lost myself or the trustManagement ViewModel")
                 return
             }
             let complete: (TrustWords?) -> Void = { trustwords in
                 DispatchQueue.main.async {
-                    completion(trustwords)
+                    completion?(trustwords)
                 }
             }
             let handshakeItem = me.rows[indexPath.row]
@@ -279,7 +280,7 @@ final class TrustManagementViewModel {
                                                                                    long: long)
                     else {
                         Log.shared.errorAndCrash("No Trustwords")
-                        completion(nil)
+                        completion?(nil)
                         return
                 }
                 me.rows[indexPath.row].trustwords = trustwords
@@ -321,7 +322,8 @@ final class TrustManagementViewModel {
             return
         }
         let combinations = trustManagementViewModel.handshakeCombinations(message: message)
-        combinations.forEach { (combination) in
+
+        for (index, combination) in combinations.enumerated() {
             let backupLanguage = "en"
             let language =
             combination.partnerIdentity.language ?? Locale.current.languageCode ?? backupLanguage
@@ -329,6 +331,8 @@ final class TrustManagementViewModel {
                           longTrustwords: false,
                           handshakeCombination: combination)
             rows.append(row)
+            let indexPath = IndexPath(row: index, section: 0)
+            generateTrustwords(forRowAt: indexPath, completion: nil)
         }
     }
 
