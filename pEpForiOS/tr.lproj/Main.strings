@@ -10,14 +10,8 @@
 /* Class = "UILabel"; text = "To:"; ObjectID = "Bd2-Nr-sTF"; */
 "Bd2-Nr-sTF.text" = "Kime:";
 
-/* Class = "UILabel"; text = "Subject"; ObjectID = "ha5-Vd-x3U"; */
-"ha5-Vd-x3U.text" = "Konu";
-
 /* Class = "UILabel"; text = "Sender"; ObjectID = "hnw-Tp-mga"; */
 "hnw-Tp-mga.text" = "Gönderen";
-
-/* Class = "UILabel"; text = "Sender"; ObjectID = "KTi-T9-Inm"; */
-"KTi-T9-Inm.text" = "Gönderen";
 
 /* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "NoQ-uw-dGp"; */
 "NoQ-uw-dGp.title" = "Vazgeç";
