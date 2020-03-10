@@ -9,6 +9,14 @@
 import WebKit
 
 class CreditsViewController: BaseViewController {
+    
+    override var collapsedBehavior: CollapsedSplitViewBehavior {
+        return .needed
+    }
+    
+    override var separatedBehavior: SeparatedSplitViewBehavior {
+        return .detail
+    }
 
     var webView: WKWebView!
 
