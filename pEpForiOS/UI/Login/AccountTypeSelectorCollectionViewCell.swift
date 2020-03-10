@@ -20,11 +20,4 @@ class AccountTypeSelectorImageCollectionViewCell: UICollectionViewCell {
         let image = UIImage(named: fileName)
         imageToFill.image = image
     }
-    
-    /// adds an image created from a text
-    /// - Parameter text: source text
-    func configure(withText text: String) {
-        let imags = text.image(size: frame.size, color: .pEpGreen)
-        imageToFill.image = imags
-    }
 }
