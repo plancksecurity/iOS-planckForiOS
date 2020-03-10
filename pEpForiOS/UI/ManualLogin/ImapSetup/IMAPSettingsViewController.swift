@@ -30,7 +30,7 @@ final class IMAPSettingsViewController: BaseViewController, TextfieldResponder {
     var responder = 0
 
     /// - Note: This VC doesn't have a view model yet, so this is used for the model.
-    var model: VerifiableAccountProtocol?
+    var verifiableAccount: VerifiableAccountProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,8 +53,11 @@ final class IMAPSettingsViewController: BaseViewController, TextfieldResponder {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        firstResponder(viewModelOrCrash().loginNameIMAP == nil)
+        guard let verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("No Verifiable account")
+            return
+        }
+        firstResponder(verifiableAccount.loginNameIMAP == nil)
     }
 
     @IBAction func didTapOnView(_ sender: Any) {
@@ -123,7 +126,7 @@ extension IMAPSettingsViewController: SegueHandlerType {
         case .SMTPSettings:
             if let destination = segue.destination as? SMTPSettingsViewController {
                 destination.appConfig = appConfig
-                destination.model = model
+                destination.verifiableAccount = verifiableAccount
             } else {
                 Log.shared.errorAndCrash(
                     "Seque is .SMTPSettings, but controller is not a SMTPSettingsViewController")
@@ -146,15 +149,20 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
     }
 
     func didChangeFirst(_ textField: UITextField) {
-        var vm = viewModelOrCrash()
-        vm.loginNameIMAP = textField.text
-        model = vm
+        guard var verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("No Verifiable account")
+            return
+        }
+        verifiableAccount.loginNameIMAP = textField.text
         updateView()
     }
 
     func didChangeSecond(_ textField: UITextField) {
-        var vm = viewModelOrCrash()
-        vm.serverIMAP = textField.text
+        guard var verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("No Verifiable account")
+            return
+        }
+        verifiableAccount.serverIMAP = textField.text
     }
 
     func didChangeThird(_ textField: UITextField) {
@@ -163,26 +171,15 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
                 //If not UInt16 then do nothing. Example empty string
                 return
         }
-        var vm = viewModelOrCrash()
-        vm.portIMAP = port
+        guard var verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("No Verifiable account")
+            return
+        }
+        verifiableAccount.portIMAP = port
     }
 
     func didChangeFourth(_ textField: UITextField) {
         //Do nothing, changes saved in model and textField in the bock of alert
-    }
-}
-
-// MARK: - Helpers
-
-extension IMAPSettingsViewController {
-    func viewModelOrCrash() -> VerifiableAccountProtocol {
-        guard let viewModel = model else {
-            Log.shared.errorAndCrash("No view model")
-            let viewModel = BaseVerifiableAccount()
-            model = viewModel
-            return viewModel
-        }
-        return viewModel
     }
 }
 
@@ -235,7 +232,7 @@ extension IMAPSettingsViewController {
             preferredStyle: .actionSheet)
         let block: (ConnectionTransport) -> () = { transport in
             sender.text = transport.localizedString()
-            self.model?.transportIMAP = transport
+            self.verifiableAccount?.transportIMAP = transport
         }
 
         if let popoverPresentationController = alertController.popoverPresentationController {
@@ -261,16 +258,23 @@ extension IMAPSettingsViewController {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
-        let vm = viewModelOrCrash()
-        setupView.firstTextField.set(text: vm.loginNameIMAP, animated: animated)
-        setupView.secondTextField.set(text: vm.serverIMAP, animated: animated)
-        setupView.thirdTextField.set(text: String(vm.portIMAP), animated: animated)
-        setupView.fourthTextField.set(text: vm.transportIMAP.localizedString(), animated: animated)
+        guard let verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("No Verifiable account")
+            return
+        }
+        setupView.firstTextField.set(text: verifiableAccount.loginNameIMAP,
+                                     animated: animated)
+        setupView.secondTextField.set(text: verifiableAccount.serverIMAP,
+                                      animated: animated)
+        setupView.thirdTextField.set(text: String(verifiableAccount.portIMAP),
+                                     animated: animated)
+        setupView.fourthTextField.set(text: verifiableAccount.transportIMAP.localizedString(),
+                                      animated: animated)
 
-        setupView.pEpSyncSwitch.isOn = vm.keySyncEnable
+        setupView.pEpSyncSwitch.isOn = verifiableAccount.keySyncEnable
 
-        setupView.nextButton.isEnabled = vm.isValidUser
-        setupView.nextRightButton.isEnabled = vm.isValidUser
+        setupView.nextButton.isEnabled = verifiableAccount.isValidUser
+        setupView.nextRightButton.isEnabled = verifiableAccount.isValidUser
     }
 
     private func setUpContainerView() {

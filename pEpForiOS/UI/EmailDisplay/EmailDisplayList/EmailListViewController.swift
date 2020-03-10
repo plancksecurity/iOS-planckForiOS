@@ -11,7 +11,7 @@ import UIKit
 import SwipeCellKit
 import pEpIOSToolbox
 
-class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
+final class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
     /// Stuff that must be done once only in viewWillAppear
     private var doOnce: (()-> Void)?
     /// With this tag we recognize our own created flexible space buttons, for easy removal later.
@@ -108,6 +108,7 @@ class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
     // MARK: - Setup
 
     private func setup() {
+        tableView.separatorInset = UIEdgeInsets.zero
         tableView.delegate = self
         tableView.dataSource = self
         // rm seperator lines for empty view/cells
@@ -1154,12 +1155,12 @@ extension EmailListViewController: SegueHandlerType {
         case .segueAddNewAccount:
             guard
                 let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? LoginViewController else {
+                let vc = nav.rootViewController as? AccountTypeSelectorViewController else {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
             vc.appConfig = appConfig
-            vc.delegate = self
+            vc.loginDelegate = self
             vc.hidesBottomBarWhenPushed = true
             break
         case .segueFolderViews:

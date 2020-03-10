@@ -10,7 +10,7 @@ import UIKit
 
 extension UILabel {
     /// Sets pEp default custom font with respecting TextStyle - Dynamic Fonts
-    public func pEpSetFontFace() {
-        font = UIFont.pEpPreferredFontTypeFace(systemDynamicFont: font)
+    public func pEpSetFontFace(weight: UIFont.Weight? = nil) {
+        font = .pEpPreferredFontTypeFace(systemDynamicFont: font, weight: weight)
     }
 }
