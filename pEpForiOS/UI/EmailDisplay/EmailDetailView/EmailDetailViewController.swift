@@ -36,6 +36,8 @@ class EmailDetailViewController: BaseViewController {
     private var pEpButtonHelper = UIBarButtonItem.getPEPButton(action: #selector(showSettingsViewController),
                                                                target: self)
     
+    private var separatorsArray = [UIBarButtonItem]()
+    
     /// The original navigatio bar
     var NavigationRightBar: [UIBarButtonItem]?
     /// tne original toolbar
@@ -67,6 +69,7 @@ class EmailDetailViewController: BaseViewController {
         super.viewWillAppear(animated)
         doOnce?()
         doOnce = nil
+        createSeparators()
         setupToolbar()
     }
 
@@ -792,22 +795,29 @@ extension EmailDetailViewController: SplitViewHandlingProtocol {
             var newToolbarItems = navigationItem.rightBarButtonItems
             navigationItem.rightBarButtonItems = nil
             if let pepButton = pEpIconSettingsButton {
+                newToolbarItems?.append(createFlexibleBarButtonItem())
                 newToolbarItems?.append(pepButton)
             } else {
                 newToolbarItems?.append(createFlexibleBarButtonItem())
                 newToolbarItems?.append(pEpButtonHelper)
             }
+            var newtoolbar = [UIBarButtonItem]()
+            for item in newToolbarItems! {
+                if separatorsArray.contains(item) {
+                    newtoolbar.append(createFlexibleBarButtonItem())
+                } else {
+                    newtoolbar.append(item)
+                }
+            }
+            setToolbarItems(newtoolbar, animated: true)
             let next = UIBarButtonItem.getNextButton(action: #selector(nextButtonPressed), target: self)
             let previous = UIBarButtonItem.getPreviousButton(action: #selector(previousButtonPressed), target: self)
             previous.isEnabled = thereIsAPreviousMessageToShow
             next.isEnabled = thereIsANextMessageToShow
-            setToolbarItems(newToolbarItems, animated: true)
             navigationItem.rightBarButtonItems = [previous, next]
         case .separate:
-            //when separate will happens navbar should be prepared
-            toolbarItems?.removeAll(where: { $0 == pEpIconSettingsButton })
-            toolbarItems?.removeAll(where: { $0 == pEpButtonHelper })
-            navigationItem.rightBarButtonItems = toolbarItems
+            //view itself correctly handles the bars when is gonna separate
+            break
         }
     }
     /// Our own factory method for creating flexible space bar button items,
@@ -817,7 +827,6 @@ extension EmailDetailViewController: SplitViewHandlingProtocol {
             barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
             target: nil,
             action: nil)
-        //item.tag = "88"
         return item
     }
 }
@@ -825,6 +834,17 @@ extension EmailDetailViewController: SplitViewHandlingProtocol {
 // MARK: - Setup Toolbar
 
 extension EmailDetailViewController {
+    private func createSeparators() {
+        //Spacer
+        let defaultSpacerWidth: CGFloat = 8.0
+        let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        spacer.width = defaultSpacerWidth
+        
+        let midSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        midSpacer.width = 18
+        
+        separatorsArray.append(contentsOf: [spacer,midSpacer])
+    }
     private func setupToolbar() {
         let size = CGSize(width: 15, height: 25)
         nextButton?.image = nextButton?.image?.resizeImage(targetSize: size)
@@ -849,24 +869,13 @@ extension EmailDetailViewController {
             upButton.addTarget(self, action: #selector(showPreviousIfAny), for: .touchUpInside)
             upButton.isEnabled = thereIsAPreviousMessageToShow
 
-            //Spacer
-            let defaultSpacerWidth: CGFloat = 8.0
-            let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-            spacer.width = defaultSpacerWidth
-
             let downBarButtonItem = UIBarButtonItem(customView: downButton)
             let upBarButtonItem = UIBarButtonItem(customView: upButton)
             
             downBarButtonItem.isEnabled = thereIsANextMessageToShow
             upBarButtonItem.isEnabled = thereIsAPreviousMessageToShow
             
-            navigationItem.leftBarButtonItems = [downBarButtonItem, spacer, upBarButtonItem]
-            
-            let midSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-            midSpacer.width = 18
-            
-            let largeSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-            largeSpacer.width = 22
+            navigationItem.leftBarButtonItems = [downBarButtonItem, separatorsArray[0], upBarButtonItem]
 
             //Reply
             let replyImage = UIImage(named: "pEpForiOS-icon-reply")
@@ -901,11 +910,11 @@ extension EmailDetailViewController {
 
             
             navigationItem.rightBarButtonItems = [replyBarButtonItem,
-                                                  midSpacer,
+                                                  separatorsArray[1],
                                                   folderButtonBarButtonItem,
-                                                  midSpacer,
+                                                  separatorsArray[1],
                                                   flagBarButtonItem,
-                                                  midSpacer,
+                                                  separatorsArray[1],
                                                   deleteButtonBarButtonItem]
         } else {
             navigationItem.leftBarButtonItems = []
