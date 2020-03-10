@@ -363,7 +363,9 @@ extension String {
         if count >= ofLength {
             let start = startIndex
             let substring = prefix(upTo: index(start, offsetBy: ofLength))
-            return "\(substring)"
+            let pattern = "[^A-Za-z]"
+            let result = substring.replacingOccurrences(of: pattern, with: "", options: [.regularExpression])
+            return "\(result)"
         }
         return self
     }
