@@ -362,7 +362,7 @@ extension String {
     public func prefix(ofLength: Int) -> String {
         if count >= ofLength {
             let start = startIndex
-            return prefix(upTo: index(start, offsetBy: ofLength))
+            return String(prefix(upTo: index(start, offsetBy: ofLength)))
         }
         return self
     }
@@ -382,19 +382,21 @@ extension String {
     /// If it only has one word (name or lastname) that will be taken to get the initial.
     /// If not possible, returns nil.
     public func initials() -> String? {
-        let words = tokens()
+        var words = tokens()
         if words.count == 0 {
             return nil
         }
+        let pattern = "[^A-Za-z]"
+        words = words.map { $0.replacingOccurrences(of: pattern, with: "", options: [.regularExpression]) }
+        
         if words.count == 1 {
             return prefix(ofLength: 2)
         }
         let word1 = words[0]
         let word2 = words[words.count - 1]
         
-        let pattern = "[^A-Za-z]"
-        let prefix1 = word1.prefix(ofLength: 1).replacingOccurrences(of: pattern, with: "", options: [.regularExpression])
-        let prefix2 = word2.prefix(ofLength: 1).replacingOccurrences(of: pattern, with: "", options: [.regularExpression])
+        let prefix1 = word1.prefix(ofLength: 1)
+        let prefix2 = word2.prefix(ofLength: 1)
         return "\(prefix1.capitalized)\(prefix2.capitalized)"
     }
 
