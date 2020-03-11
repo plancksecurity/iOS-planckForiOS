@@ -27,6 +27,9 @@ protocol EmailDetailViewModelSelectionChangeDelegate: class {
 }
 
 class EmailDetailViewModel: EmailDisplayViewModel {
+    
+    weak var trustManagementViewModelDelegate: TrustManagementViewModelDelegate?
+    
     /// Used to figure out whether or not the currently displayed message has been decrypted while
     /// being shown to the user.
     private var pathsForMessagesMarkedForRedecrypt = [IndexPath]()
@@ -43,6 +46,17 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         super.init(messageQueryResults: messageQueryResults)
         self.messageQueryResults.rowDelegate = self
     }
+    
+    /// TrustManagementViewModel getter
+    var trustManagementViewModel: TrustManagementViewModel? {
+        get {
+            guard let message = lastShownMessage else {
+                Log.shared.error("Message not found")
+                return nil
+            }
+            return TrustManagementViewModel(message: message, pEpProtectionModifyable: false)
+        }
+    }
 
     /// Replaces and uses the currently used message query with the given one. The displayed
     /// messages get updated automatically.
@@ -53,13 +67,6 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         try messageQueryResults.startMonitoring()
         reset()
         delegate?.reloadData(viewModel: self)
-    }
-
-    /// You can call this to show a specific, user selected message instead of instanziating a
-    /// new EmailDetailView.
-    /// - Parameter indexPath: indexPath to select
-    public func select(itemAt indexPath: IndexPath) {
-        delegate?.select(itemAt: indexPath)
     }
 
     /// Action handling
@@ -171,7 +178,7 @@ class EmailDetailViewModel: EmailDisplayViewModel {
             Log.shared.errorAndCrash("No msg")
             return false
         }
-        let handshakeCombos = message.handshakeActionCombinations()
+        let handshakeCombos = TrustManagementUtil().handshakeCombinations(message: message)
         guard !handshakeCombos.isEmpty else {
             return false
         }
@@ -206,9 +213,7 @@ extension EmailDetailViewModel {
             Log.shared.errorAndCrash("No msg")
             return
         }
-        if !message.imapFlags.seen {
-            message.markAsSeen()
-        }
+        message.markAsSeen()
     }
 
     private func markForRedecryptionIfNeeded(messageRepresentedBy indexPath: IndexPath) {
@@ -230,7 +235,7 @@ extension EmailDetailViewModel {
             Log.shared.errorAndCrash("No msg")
             return false
         }
-        let handshakeCombos = message.handshakeActionCombinations()
+        let handshakeCombos = TrustManagementUtil().handshakeCombinations(message: message)
         guard !handshakeCombos.isEmpty else {
             return false
         }

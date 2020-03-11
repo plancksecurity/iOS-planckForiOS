@@ -42,9 +42,9 @@ class FolderTableViewController: BaseTableViewController {
         folderVM =  FolderViewModel()
         tableView.reloadData()
     }
-    
+
     private func initialConfig() {
-        self.title = NSLocalizedString("Folders", comment: "FoldersView")
+        self.title = NSLocalizedString("Mailboxes", comment: "FoldersView navigationbar title")
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
@@ -64,7 +64,7 @@ class FolderTableViewController: BaseTableViewController {
             action: nil)
         self.toolbarItems = [flexibleSpace,item]
     }
-    
+
     @objc private func pullToRefresh() {
         folderVM?.refreshFolderList() { [weak self] in
             guard let me = self else {
@@ -169,7 +169,7 @@ class FolderTableViewController: BaseTableViewController {
                 Log.shared.errorAndCrash("No model")
                 return 0
             }
-        return vm[indexPath.section][indexPath.item].level
+            return vm[indexPath.section][indexPath.item].level
     }
 
     // MARK: - TableViewDelegate
@@ -258,14 +258,14 @@ extension FolderTableViewController: SegueHandlerType {
         case .newAccountIphone, .newAccountIpad:
             guard
                 let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? LoginViewController else {
+                let vc = nav.rootViewController as? AccountTypeSelectorViewController else {
                     Log.shared.errorAndCrash("Missing VCs")
                     return
             }
             nav.modalPresentationStyle = .fullScreen
             vc.appConfig = self.appConfig
+            
             vc.hidesBottomBarWhenPushed = true
-            vc.delegate = self
 
         case .settingsSegue:
             guard let dvc = segue.destination as? SettingsTableViewController else {

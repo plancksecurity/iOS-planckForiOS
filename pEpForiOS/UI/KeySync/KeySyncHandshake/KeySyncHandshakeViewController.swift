@@ -14,13 +14,18 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
 
     static let storyboardId = "KeySyncHandshakeViewController"
-    
-    @IBOutlet weak var keySyncWords: UILabel! {
+
+    @IBOutlet weak var trustwordsView: UIView! {
         didSet {
-            keySyncWords.backgroundColor = .pEpLightBackground
-            keySyncWords.layer.borderColor = UIColor.pEpGreyLines.cgColor
-            keySyncWords.layer.cornerRadius = 3
-            keySyncWords.layer.borderWidth = 1
+            trustwordsView.backgroundColor = .white
+            trustwordsView.layer.borderColor = UIColor.pEpGreyLines.cgColor
+            trustwordsView.layer.cornerRadius = 3
+            trustwordsView.layer.borderWidth = 1
+        }
+    }
+    @IBOutlet weak var trustwordsLabel: UILabel! {
+        didSet {
+            trustwordsLabel.backgroundColor = .white
         }
     }
     @IBOutlet weak var contentView: KeyInputView! {
@@ -34,34 +39,40 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
     @IBOutlet weak var alertTitle: UILabel! {
         didSet {
-            let alertTittle = NSLocalizedString("p≡p Sync", comment: "keySync handshake alert title")
+            let alertTittle = NSLocalizedString("p≡p Sync",
+                                                comment: "keySync handshake alert title")
             alertTitle.attributedText = alertTittle.paintPEPToPEPColour()
         }
     }
     @IBOutlet weak var message: UILabel! {
         didSet {
-            message.text = NSLocalizedString("A second device is detected. \nPlease confirm the Trustwords on both devices to sync all your privacy. Shall we synchronize?", comment: "keySync handshake alert message")
+            message.text = viewModel.getMessage()
         }
     }
-
     @IBOutlet weak var accept: UIButton! {
         didSet {
+            setFont(button: accept)
             accept.setTitleColor(.pEpGreen, for: .normal)
-            accept.setTitle(NSLocalizedString("Sync", comment: "accept hand shake sync button"), for: .normal)
+            accept.setTitle(NSLocalizedString("Confirm",
+                                              comment: "accept hand shake confirm button"), for: .normal)
             accept.backgroundColor = .pEpGreyBackground
         }
     }
     @IBOutlet weak var decline: UIButton! {
         didSet {
+            setFont(button: decline)
             decline.setTitleColor(.pEpRed, for: .normal)
-            decline.setTitle(NSLocalizedString("Decline", comment: "decline button"), for: .normal)
+            decline.setTitle(NSLocalizedString("Reject",
+                                               comment: "reject hand shake button"), for: .normal)
             decline.backgroundColor = .pEpGreyBackground
         }
     }
     @IBOutlet weak var cancel: UIButton! {
         didSet {
+            setFont(button: cancel)
             cancel.setTitleColor(.pEpGreyText, for: .normal)
-            cancel.setTitle(NSLocalizedString("Not Now", comment: "not now button"), for: .normal)
+            cancel.setTitle(NSLocalizedString("Not Now",
+                                              comment: "not now button"), for: .normal)
             cancel.backgroundColor = .pEpGreyBackground
         }
     }
@@ -75,16 +86,32 @@ final class KeySyncHandshakeViewController: UIViewController {
     private var pickerLanguages = [String]()
     private var meFPR: String?
     private var partnerFPR: String?
+    private var isNewGroup = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
-        viewModel.fingerPrints(meFPR: meFPR, partnerFPR: partnerFPR)
+        viewModel.setFingerPrints(meFPR: meFPR,
+                                  partnerFPR: partnerFPR,
+                                  isNewGroup: isNewGroup)
     }
 
-    func finderPrints(meFPR: String, partnerFPR: String) {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        message.text = viewModel.getMessage()
+    }
+
+    func setFingerPrints(meFPR: String,
+                         partnerFPR: String,
+                         isNewGroup: Bool) {
         self.meFPR = meFPR
         self.partnerFPR = partnerFPR
+        self.isNewGroup = isNewGroup
+    }
+
+    private func setFont(button: UIButton) {
+        button.titleLabel?.font = UIFont.pepFont(style: .body,
+                                                 weight: .regular)
     }
 
     @IBAction func didPress(_ sender: UIButton) {
@@ -128,7 +155,7 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
 
     func change(handshakeWordsTo: String) {
         DispatchQueue.main.async { [weak self] in
-            self?.keySyncWords.text = handshakeWordsTo
+            self?.trustwordsLabel.text = handshakeWordsTo
         }
     }
 }

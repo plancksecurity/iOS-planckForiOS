@@ -145,7 +145,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
 
         let folder = CdFolder(context: moc)
         folder.account = cdAccount
-        folder.name = PantomimeImapApi.defaultImapInboxName
+        folder.name = ImapConnection.defaultInboxName
 
         guard
             let data = TestUtil.loadData(fileName: "UnencryptedHTMLMail.txt"),
@@ -153,7 +153,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
                 XCTAssertTrue(false)
                 return
         }
-        message.setFolder(CWIMAPFolder(name: PantomimeImapApi.defaultImapInboxName))
+        message.setFolder(CWIMAPFolder(name: ImapConnection.defaultInboxName))
         let msg = CdMessage.insertOrUpdate(pantomimeMessage: message,
                                            account: cdAccount,
                                            messageUpdate: CWMessageUpdate(),
@@ -169,7 +169,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     func testInsertOrUpdatePantomimeMessage_attachmentNotDuplicated_file1() {
         let folder = CdFolder(context: moc)
         folder.account = cdAccount
-        folder.name = PantomimeImapApi.defaultImapInboxName
+        folder.name = ImapConnection.defaultInboxName
 
         guard
             let messageWithKeyAndPdfAttached = TestUtil.loadData(fileName: "IOS-211_hi_there.txt"),
@@ -179,7 +179,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         }
         let nonZeroValue = UInt(1)
         message.setUID(nonZeroValue)
-        message.setFolder(CWIMAPFolder(name: PantomimeImapApi.defaultImapInboxName))
+        message.setFolder(CWIMAPFolder(name: ImapConnection.defaultInboxName))
         guard let _ = CdMessage.insertOrUpdate(pantomimeMessage: message,
                                                account: cdAccount,
                                                messageUpdate: CWMessageUpdate(),
@@ -205,7 +205,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     func testInsertOrUpdatePantomimeMessage_attachmentNotDuplicated_file2() {
         let folder = CdFolder(context: moc)
         folder.account = cdAccount
-        folder.name = PantomimeImapApi.defaultImapInboxName
+        folder.name = ImapConnection.defaultInboxName
         
         guard
             let messageWithKeyAndPdfAttached = TestUtil.loadData(fileName: "IOS-211-pdfEmail.txt"),
@@ -215,7 +215,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         }
         let nonZeroValue = UInt(1)
         message.setUID(nonZeroValue)
-        message.setFolder(CWIMAPFolder(name: PantomimeImapApi.defaultImapInboxName))
+        message.setFolder(CWIMAPFolder(name: ImapConnection.defaultInboxName))
         guard let _ = CdMessage.insertOrUpdate(
             pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
             context: moc) else {

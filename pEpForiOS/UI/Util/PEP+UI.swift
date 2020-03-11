@@ -17,23 +17,23 @@ extension PEPColor {
     ///
     /// - Parameter enabled: whether or not pEp protection is enabled
     /// - Returns: icon suitable for indicating the pEp rating of a message
-    func statusIconForMessage(enabled: Bool = true) -> UIImage? {
+    func statusIconForMessage(enabled: Bool = true, withText : Bool = true) -> UIImage? {
         switch self {
         case PEPColor.noColor:
             return nil
         case PEPColor.red:
-            return UIImage(named: "pEp-status-red")
+            return withText ? UIImage(named: "pEp-status-msg-red") : UIImage(named: "pEp-status-red_white-border")
         case .yellow:
             if enabled {
-                return UIImage(named: "pEp-status-yellow")
+                return withText ? UIImage(named: "pEp-status-msg-yellow") : UIImage(named: "pEp-status-yellow_white-border")
             } else {
-                return UIImage(named: "pEp-status-yellow-disabled")
+                return withText ? UIImage(named: "pEp-status-msg-disabled-secure") : nil
             }
         case .green:
             if enabled {
-                return UIImage(named: "pEp-status-green")
+                return withText ? UIImage(named: "pEp-status-msg-green") : UIImage(named: "pEp-status-green_white-border")
             } else {
-                return UIImage(named: "pEp-status-green-disabled")
+                return withText ? UIImage(named: "pEp-status-msg-disabled-trusted") : nil
             }
         }
     }
@@ -46,7 +46,7 @@ extension PEPColor {
     func statusIconInContactPicture() -> UIImage? {
         switch self {
         case PEPColor.noColor:
-            return UIImage(named: "pEp-status-grey_white-border")
+            return nil
         case PEPColor.red:
             return UIImage(named: "pEp-status-red_white-border")
         case .yellow:

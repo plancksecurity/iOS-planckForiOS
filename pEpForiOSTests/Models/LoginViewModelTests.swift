@@ -21,10 +21,10 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
 
 class LoginViewModelTests: CoreDataDrivenTestBase {
     class TestVerifiableAccount: VerifiableAccountProtocol {
+        var accountType: VerifiableAccount.AccountType = VerifiableAccount.AccountType.other
         var loginNameIMAP: String?
 
         var loginNameSMTP: String?
-
 
         let accountSettings: TestDataBase.AccountSettings
         let expLookedUp: XCTestExpectation
@@ -40,6 +40,7 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         var authMethod: AuthMethod?
         var password: String?
         var accessToken: OAuth2AccessTokenProtocol?
+        var clientCertificate: ClientCertificate?
         var serverIMAP: String?
         var portIMAP: UInt16 = 993
         var transportIMAP: ConnectionTransport = .TLS

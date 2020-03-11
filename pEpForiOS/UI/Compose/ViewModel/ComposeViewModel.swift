@@ -45,6 +45,14 @@ protocol ComposeViewModelDelegate: class {
     func showDocumentAttachmentPicker()
 
     func documentAttachmentPickerDone()
+
+    func showTwoButtonAlert(withTitle title: String,
+                            message: String,
+                            cancelButtonText: String,
+                            positiveButtonText: String ,
+                            cancelButtonAction: @escaping ()->Void,
+                            positiveButtonAction: @escaping ()->Void)
+    func dismiss()
 }
 
 class ComposeViewModel {
@@ -59,6 +67,25 @@ class ComposeViewModel {
 
     private var suggestionsVM: SuggestViewModel?
     private var lastRowWithSuggestions: IndexPath?
+
+    /// IndexPath of "To:" receipientVM
+    private var indexPathToVm: IndexPath {
+        return IndexPath(item: 0, section: 0)
+    }
+
+    /// IndexPath of "Subject" VM
+    private var indexPathSubjectVm: IndexPath {
+        let subjectSection = section(for: .subject)
+        guard
+            let vm = subjectSection?.rows.first,
+            let idxSubject = indexPath(for: vm) else {
+                Log.shared.errorAndCrash("No Subject?")
+                return IndexPath(row: 0, section: 0)
+        }
+        return idxSubject
+    }
+
+    /// IndexPath of "Body" VM
     private var indexPathBodyVm: IndexPath {
         let bodySection = section(for: .body)
         guard
@@ -96,11 +123,16 @@ class ComposeViewModel {
         return sections[indexPath.section].rows[indexPath.row]
     }
 
+    /// - returns: the indexpath of the cell to set focus the to.
     public func initialFocus() -> IndexPath {
         if state.initData?.toRecipients.isEmpty ?? false {
-            let to = IndexPath(row: 0, section: 0)
-            return to
+            // Use cases: new mail or forward (no To: prefilled)
+            return indexPathToVm
+        } else if state.subject.isEmpty || state.subject.isOnlyWhiteSpace() {
+            // Use case: open compose by clicking mailto: link
+            return indexPathSubjectVm
         } else {
+            // Use case: reply a mail (to and subject are set)
             return indexPathBodyVm
         }
     }
@@ -123,22 +155,40 @@ class ComposeViewModel {
 
     public func handleUserClickedSendButton() {
         let safeState = state.makeSafe(forSession: Session.main)
-        guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
-            Log.shared.warn("No message for sending")
-            return
-        }
-        msg.sent = Date()
-        msg.save()
+        let sendClosure = { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
+                Log.shared.warn("No message for sending")
+                return
+            }
+            msg.sent = Date()
+            msg.save()
 
-        guard let data = state.initData else {
-            Log.shared.errorAndCrash("No data")
-            return
+            guard let data = me.state.initData else {
+                Log.shared.errorAndCrash("No data")
+                return
+            }
+            if data.isDrafts {
+                // From user perspective, we have edited a drafted message and will send it.
+                // Technically we are creating and sending a new message (msg), thus we have to
+                // delete the original, previously drafted one.
+                me.deleteOriginalMessage()
+            }
         }
-        if data.isDrafts {
-            // From user perspective, we have edited a drafted message and will send it.
-            // Technically we are creating and sending a new message (msg), thus we have to
-            // delete the original, previously drafted one.
-            deleteOriginalMessage()
+
+        showAlertFordwardingLessSecureIfRequired(forState: safeState) { [weak self] (accepted) in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard accepted else {
+                return
+            }
+            sendClosure()
+            me.delegate?.dismiss()
         }
     }
 
@@ -153,6 +203,11 @@ class ComposeViewModel {
         }
         removeNonInlinedAttachment(removeeVM.attachment)
     }
+}
+
+// MARK: - Private
+
+extension ComposeViewModel {
 
     private func deleteOriginalMessage() {
         guard let data = state.initData else {
@@ -187,6 +242,60 @@ class ComposeViewModel {
             }
         }
         return false
+    }
+
+    typealias Accepted = Bool
+    /// When forwarding/answering a previously decrypted message and the pEpRating is considered as
+    /// less secure as the original message's pEp rating, warn the user.
+    private func showAlertFordwardingLessSecureIfRequired(forState state: ComposeViewModelState,
+                                                          completion: @escaping (Accepted)->()) {
+        guard AppSettings.shared.unsecureReplyWarningEnabled else {
+            // Setting is disabled ...
+            // ... nothing to do.
+            completion(true)
+            return
+        }
+        guard
+            let composeMode = state.initData?.composeMode,
+            composeMode != .normal
+            else {
+                // The message is not forwarded or answered, not our use case ...
+                // ... nothing to do
+                completion(true)
+                return
+        }
+        guard let originalMessage = state.initData?.originalMessage else {
+            Log.shared.errorAndCrash("Invalid state: Forward && not having an original message")
+            completion(true)
+            return
+        }
+        let originalRating = originalMessage.pEpRating()
+        let pEpRating = state.rating
+        let title: String
+        let message: String
+        if composeMode == .forward {
+            title = NSLocalizedString("Confirm Forward",
+                                      comment: "Confirm less secure forwarding message alert title")
+            message = NSLocalizedString("You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
+                                        comment: "Confirm less secure forwarding message alert body")
+        } else {
+            title = NSLocalizedString("Confirm Answer",
+                                      comment: "Confirm less secure answering message alert title")
+            message = NSLocalizedString("You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
+                                        comment: "Confirm less secure answer message alert body")
+        }
+
+        if pEpRating.hasLessSecurePepColor(than: originalRating) {
+            // Forwarded mesasge is less secure than original message. Warn the user.
+            delegate?.showTwoButtonAlert(withTitle: title,
+                                         message: message,
+                                         cancelButtonText: "NO",
+                                         positiveButtonText: "YES",
+                                         cancelButtonAction: { completion(false) },
+                                         positiveButtonAction: { completion(true) })
+        } else {
+            completion(true)
+        }
     }
 }
 
@@ -565,27 +674,31 @@ extension ComposeViewModel {
     }
 }
 
-// MARK: - HandshakeViewModel
+// MARK: - TrustManagementViewModel
 
 extension ComposeViewModel {
-    // There is no view model for HandshakeViewController yet, thus we are setting up the VC itself
-    // as a workaround to avoid letting the VC know MessageModel
-    func setup(handshakeViewController: HandshakeViewController) {
-        // We MUST use an independent Session here. We do not want the outer world to see it nor to
-        //save somthinng from the state (Attachments, Identitie, ...) when saving the MainSession.
-        let session = Session()
-        let safeState = state.makeSafe(forSession: session)
-        session.performAndWait {
-            guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
-                Log.shared.errorAndCrash("No message")
-                return
-            }
-            handshakeViewController.message = msg
-        }
-    }
 
     func canDoHandshake() -> Bool {
         return state.canHandshake()
+    }
+
+    func trustManagementViewModel() -> TrustManagementViewModel? {
+        guard let message = ComposeUtil.messageToSend(withDataFrom: state) else {
+            Log.shared.errorAndCrash("No message")
+            return nil
+        }
+        let messageSafe = message.safeForSession(Session.main)
+        return TrustManagementViewModel(message: messageSafe,
+                                        pEpProtectionModifyable: true,
+                                        protectionStateChangeDelegate: self)
+    }
+}
+
+// MARK: - TrustmanagementProtectionStateChangeDelegate
+
+extension ComposeViewModel: TrustmanagementProtectionStateChangeDelegate {
+    func protectionStateChanged(to newValue: Bool) {
+        state.pEpProtection = newValue
     }
 }
 

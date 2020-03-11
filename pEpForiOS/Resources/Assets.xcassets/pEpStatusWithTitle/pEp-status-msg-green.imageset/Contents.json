@@ -1,0 +1,51 @@
+{
+  "images" : [
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure&trusted-english.pdf"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure&trusted-catalan.pdf",
+      "locale" : "ca"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure&trusted-german.pdf",
+      "locale" : "de"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure&trusted-english-1.pdf",
+      "locale" : "en"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure&trusted-spanish.pdf",
+      "locale" : "es"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure&trusted-french.pdf",
+      "locale" : "fr"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure&trusted-dutch.pdf",
+      "locale" : "nl"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-secure&trusted-turkish.pdf",
+      "locale" : "tr"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  },
+  "properties" : {
+    "preserves-vector-representation" : true,
+    "localizable" : true
+  }
+}
