@@ -47,7 +47,15 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     var oauth2ReauthIndexPath: IndexPath?
     var viewModel: AccountSettingsViewModel? = nil
 
+    override var collapsedBehavior: CollapsedSplitViewBehavior {
+        return .needed
+    }
+    
+    override var separatedBehavior: SeparatedSplitViewBehavior {
+        return .detail
+    }
     private var resetIdentityIndexPath: IndexPath?
+
 
 // MARK: - Life Cycle
 
@@ -62,8 +70,9 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        showNavigationBar()
+        title = NSLocalizedString("Account", comment: "Account view title")
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
-        hideBackButtonIfNeeded()
         //Work around async old stack context merge behaviour
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
@@ -79,7 +88,6 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     @IBAction func switchPEPSyncToggle(_ sender: UISwitch) {
         viewModel?.pEpSync(enable: sender.isOn)
     }
-
 }
 
 // MARK: - UITableViewDataSource
@@ -248,23 +256,30 @@ extension AccountSettingsTableViewController {
                                                     comment: "Account settings reset identity")
         resetIdentityLabel.textColor = .pEpRed
 
-        if let viewModel = viewModel {
-            keySyncSwitch.isOn = viewModel.pEpSync
+        guard let viewModel = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
         }
 
-        if let imapServer = viewModel?.account.imapServer {
-            imapServerTextfield.text = imapServer.address
-            imapPortTextfield.text = String(imapServer.port)
-            imapSecurityTextfield.text = imapServer.transport.asString()
-            imapUsernameTextField.text = imapServer.credentials.loginName
-        }
+        keySyncSwitch.isOn = viewModel.pEpSync
 
-        if let smtpServer = viewModel?.account.smtpServer {
-            self.smtpServerTextfield.text = smtpServer.address
-            self.smtpPortTextfield.text = String(smtpServer.port)
-            smtpSecurityTextfield.text = smtpServer.transport.asString()
-            smtpUsernameTextField.text = smtpServer.credentials.loginName
+        guard let imapServer = viewModel.account.imapServer else {
+            Log.shared.errorAndCrash("Account without IMAP server")
+            return
         }
+        imapServerTextfield.text = imapServer.address
+        imapPortTextfield.text = String(imapServer.port)
+        imapSecurityTextfield.text = imapServer.transport.asString()
+        imapUsernameTextField.text = imapServer.credentials.loginName
+
+        guard let smtpServer = viewModel.account.smtpServer else {
+            Log.shared.errorAndCrash("Account without SMTP server")
+            return
+        }
+        smtpServerTextfield.text = smtpServer.address
+        smtpPortTextfield.text = String(smtpServer.port)
+        smtpSecurityTextfield.text = smtpServer.transport.asString()
+        smtpUsernameTextField.text = smtpServer.credentials.loginName
     }
 
     private func informUser(about error:Error) {
@@ -347,12 +362,6 @@ extension AccountSettingsTableViewController {
 
         DispatchQueue.main.async { [weak self] in
             self?.present(pepAlertViewController, animated: true)
-        }
-    }
-
-    private func hideBackButtonIfNeeded() {
-        if !onlySplitViewMasterIsShown {
-            navigationItem.leftBarButtonItem = nil// hidesBackButton = true
         }
     }
 }

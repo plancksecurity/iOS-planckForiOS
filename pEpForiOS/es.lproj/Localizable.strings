@@ -25,12 +25,15 @@
 
 /* alert action 3
    Alert cancel button title before trusting an account
+   Cancel
+   Cancel button for client certificate password screen
    Cancel button title for manual account setup
    Cancel button title of pEp protection toggle action sheet
    Cancel for an alert view
    Cancel in button in Login View
    Cancel reset account identity button title
    Cancel title button
+   Cancel trust change to be undone
    compose email cancel
    Default cancel button text
    EmailList action title
@@ -53,6 +56,9 @@
 /* Settings: Cell (button) title to view app credits */
 "Credits" = "Creditos";
 
+/* Incorrect trustwords/PGP fingerprint */
+"Decline" = "Rechazar";
+
 /* Account delete
    compose email delete
    ComposeTableView: button to decide to delete a message from Outbox after making changes.
@@ -63,7 +69,8 @@
 /* keysync alert leave device group disable */
 "Disable" = "Desactivar";
 
-/* Disable Protection button title of pEp protection toggle action sheet */
+/* Disable Protection
+   Disable Protection button title of pEp protection toggle action sheet */
 "Disable Protection" = "Deshabitar protección";
 
 /* enable p≡p Sync with other devices in the group */
@@ -84,7 +91,7 @@
    Title of account picker when composing a message */
 "From:" = "De:";
 
-/* possible privacy status action */
+/* Title of the view */
 "Handshake" = "Handshake";
 
 /* Title for manual account IMAP setup */
@@ -93,18 +100,24 @@
 /* Name of INBOX mailbox (of one account) */
 "Inbox" = "Entrada";
 
+/* keySyncWizard completion view leave button title */
+"Leave" = "Salir";
+
 /* Manual Setup button in Login View */
 "Manual setup" = "Configuración manual";
 
 /* EmailList action title */
 "Mark as Read" = "Marcar como leído";
 
-/* Privacy status title
-   privacyStatusTitle red */
+/* Mistrusted - Step 1
+   Privacy status title */
 "Mistrusted" = "Sospechoso";
 
 /* File name used for videos the user attaches. */
 "Movie" = "Mover";
+
+/* username */
+"Name" = "Nombre";
 
 /* keySyncWizard intro view Next button title
    Next button title for manual account IMAP setup
@@ -123,6 +136,7 @@
    Filter accept text
    General alert positive button
    keySyncWizard completion view OK button title
+   OK button for client certificate password screen
    OK button for invalid accout settings user input alert
    UIAlertAction ok after error */
 "OK" = "Aceptar";
@@ -130,14 +144,23 @@
 /* Name of outbox (showing messages to send */
 "Outbox" = "Salida";
 
+/* Tableview section header */
+"p≡p sync" = "p≡p sync";
+
 /* keySync handshake alert title
    keySyncWizard animation view title
    Settings: enable/disable p≡p Sync feature */
 "p≡p Sync" = "p≡p Sync";
 
+/* Passive mode title */
+"Passive mode" = "Modo pasivo";
+
 /* Password placeholder for manual account setup
    Password TextField Placeholder in Login Screen */
 "Password" = "Contraseña";
+
+/* keySyncWizard animation view message while we sync your devices */
+"Please give us a moment while we sync your devices. This can take a minute or more." = "Espera unos instantes mientras sincronizamos tus dispositivos. Este proceso puede llevar unos minutos.";
 
 /* keySync handshake alert message for two devices in group */
 "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Por favor, asegúrate de tener los dos dispositivos delante para comparar las Trustwords. Coinciden las Trustwords abajo con las del otro dispositivo?";
@@ -148,6 +171,9 @@
 
 /* action sheet title 1 */
 "Privacy Status" = "Grado de privacidad";
+
+/* reject hand shake button */
+"Reject" = "Rechazar";
 
 /* ComposeTableView: Label of swipe left. Removing of attachment. */
 "Remove" = "Eliminar";
@@ -168,14 +194,24 @@
 "Reset" = "Restablecer";
 
 /* Privacy status title
-   privacyStatusTitle yellow */
+   Secure Label - Step 1 */
 "Secure" = "Seguro";
 
-/* Settings view title */
+/* acction sheet title 2
+   Settings view title */
 "Settings" = "Configuración";
+
+/* keySyncWizard error view message when syncing devices */
+"Something went wrong with syncing the devices. Please try again." = "Se ha producido un error al sincronizar los dispositivos. Vuelve a intentarlo.";
 
 /* Compose field title */
 "Subject:" = "Asunto:";
+
+/* Tableview section header: (p≡p) Sync */
+"Sync" = "Sync";
+
+/* KeySyncWizard complete message - more than two devices */
+"The device is now member of your device group. All your privacy is now synchronized." = "El dispositivo ahora forma parte de tu grupo de dispositivos. Ahora toda tu privacidad está sincronizada.";
 
 /* Privacy status explanation */
 "This message cannot be decrypted because the key is not available." = "No se ha podido descifrar el mensaje porque la clave no esta disponible.";
@@ -210,10 +246,14 @@
 /* Trash button in slide-left menu */
 "Trash" = "Papelera";
 
+/* show tutorial from compose view */
+"Tutorial" = "Tutorial";
+
 /* Privacy status title */
 "Under Attack" = "Falsificado";
 
-/* Privacy status title */
+/* Privacy status title
+   privacyStatusDescription no_color */
 "Unknown" = "Desconocido";
 
 /* Privacy status title */
@@ -232,6 +272,9 @@
    User Name placeholder for manual account setup
    User Name placeholder for manual account SMTP setup */
 "User Name" = "Usuario";
+
+/* KeySyncWizard complete message - two devices */
+"We successfully created a device group. All your privacy is now synchronized." = "Se ha creado con éxito un grupo de dispositivos. Ahora toda tu privacidad está sincronizada.";
 
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Trustwords incorrectas";

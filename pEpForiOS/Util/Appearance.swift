@@ -74,15 +74,20 @@ class Appearance {
         let appearance = UINavigationBarAppearance()
 
         appearance.configureWithOpaqueBackground()
-        let defaultpEpTextAttributes: [NSAttributedString.Key : Any] =
-            [.foregroundColor: color]
-        appearance.buttonAppearance.normal.titleTextAttributes = defaultpEpTextAttributes
-        appearance.backButtonAppearance.normal.titleTextAttributes = defaultpEpTextAttributes
-        appearance.titleTextAttributes = titleTextAttributes()
-        appearance.largeTitleTextAttributes = defaultpEpTextAttributes
-        appearance.doneButtonAppearance.normal.titleTextAttributes = defaultpEpTextAttributes
+        let font = UIFont.pepFont(style: .headline, weight: .medium)
+        
+        let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: color,
+                                                                   .font: font,
+                                                                   .baselineOffset: 2
+        ]
+        appearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes
+        appearance.backButtonAppearance.normal.titleTextAttributes = titleTextAttributes
+        appearance.titleTextAttributes = titleTextAttributes
+        appearance.largeTitleTextAttributes = titleTextAttributes
+        appearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
 
-        let chevronLeftImg = UIImage(named: "chevron-left-original")
+        let chevronLeftImg = UIImage(named: "chevron-icon-left")?
+            .resizeImage(targetSize: CGSize(width: 15, height: 25))
         appearance.setBackIndicatorImage(chevronLeftImg, transitionMaskImage: chevronLeftImg)
 
         return appearance
@@ -106,6 +111,10 @@ class Appearance {
     static private func customiseForLogin(navigationBarAppearance: UINavigationBarAppearance) {
         navigationBarAppearance.configureWithTransparentBackground()
         navigationBarAppearance.backgroundColor = UIColor.clear
+        let newTintImage = UIImage(named: "white-chevron-icon-left")!.withRenderingMode(.alwaysOriginal)
+        //let newTintImage = UIImage(named: "close-icon")!.withTintColor(UIColor.black)
+        //navigationBarAppearance.backIndicatorImage.withTintColor(UIColor.white)
+        navigationBarAppearance.setBackIndicatorImage(newTintImage, transitionMaskImage: newTintImage)
         customiseButtons(navigationBarAppearance: navigationBarAppearance)
     }
 

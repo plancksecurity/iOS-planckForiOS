@@ -68,6 +68,8 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
                 break
             case .badResponse(_):
                 break
+            case .clientCertificateNotAccepted:
+                break
             }
         } else if let imapError = error as? ImapSyncOperationError {
             switch imapError {
@@ -86,6 +88,8 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
             case .badResponse(_):
                 break
             case .actionFailed:
+                break
+            case .clientCertificateNotAccepted:
                 break
             }
         }

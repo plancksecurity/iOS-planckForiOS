@@ -19,14 +19,8 @@
 /* Class = "UIViewController"; title = "Move to Account"; ObjectID = "EmS-3d-sKb"; */
 "EmS-3d-sKb.title" = "Zum Konto verschieben";
 
-/* Class = "UILabel"; text = "Subject"; ObjectID = "ha5-Vd-x3U"; */
-"ha5-Vd-x3U.text" = "Betreff";
-
 /* Class = "UILabel"; text = "Sender"; ObjectID = "hnw-Tp-mga"; */
 "hnw-Tp-mga.text" = "Sender";
-
-/* Class = "UILabel"; text = "Sender"; ObjectID = "KTi-T9-Inm"; */
-"KTi-T9-Inm.text" = "Absender";
 
 /* Class = "UILabel"; text = "To: Recipients"; ObjectID = "Mfx-AS-hpP"; */
 "Mfx-AS-hpP.text" = "An: Empfänger";

@@ -4,9 +4,6 @@
 /* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "DEp-6Y-fcV"; */
 "DEp-6Y-fcV.text" = "p≡p Sync";
 
-/* Class = "UIButton"; normalTitle = "Manual Setup"; ObjectID = "JT1-ND-6bH"; */
-"JT1-ND-6bH.normalTitle" = "";
-
 /* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "Sub-2j-OvV"; */
 "Sub-2j-OvV.normalTitle" = "Cancelar";
 

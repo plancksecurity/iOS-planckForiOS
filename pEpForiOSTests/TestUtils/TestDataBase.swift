@@ -117,8 +117,9 @@ class TestDataBase {
             let id = CdIdentity(context: context)
             id.address = idAddress
             id.userName = idUserName
+
             if isMyself {
-                id.userID = UUID().uuidString
+                id.userID = CdIdentity.pEpOwnUserID
             } else {
                 id.userID = UUID().uuidString
             }
@@ -131,7 +132,9 @@ class TestDataBase {
                               userName: idUserName,
                               session: Session(context: context))
 
-            let credSmtp = ServerCredentials.create(loginName: id.address)
+            let credSmtp = ServerCredentials(loginName: id.address,
+                                             key: nil,
+                                             clientCertificate: nil)
             credSmtp.password = password
             let smtp = Server.create(serverType: .smtp,
                                      port: smtpServerPort,
@@ -139,7 +142,9 @@ class TestDataBase {
                                      transport: smtpServerTransport,
                                      credentials:credSmtp)
 
-            let credImap = ServerCredentials.create(loginName: id.address)
+            let credImap = ServerCredentials(loginName: id.address,
+                                             key: nil,
+                                             clientCertificate: nil)
             credImap.password = password
             let imap = Server.create(serverType: .imap,
                                      port: imapServerPort,

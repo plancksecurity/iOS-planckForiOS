@@ -1,15 +1,15 @@
 v$(MARKETING_VERSION)
 AppAuth-iOS: c9103384853af90b046219573f322286de306564
-MessageModel: ca14eb56d5f3
+MessageModel: 679666898497
 OpenSSL-for-iPhone: 10019638e80e8a8a5fc19642a840d8a69fac7349
 SwipeCellKit: 00cd0cb5f9ceb4ae7a245fe21bf45643285d454b
 ldns: e83e808f0c56f6235061f5c904ff476ca75aa576
-libAccountSettings: 23e0aedaf6a7
+libAccountSettings: 6f80e12e0379
 libetpan: c76daba0153eed0003d6990a5adadba8d561b8fa
-pEp-Translate: 957ac52736473c99d7be712eafa455df649beddf
-pEpEngine: dddd95125ced
-pEpObjCAdapter: 33119ff061e5
-pEp_for_iOS: dc44e71e03bd+
+pEp-Translate: d803ce0ac11a7d568ab296e527832e438cb4edd7
+pEpEngine: 582a1e585f10
+pEpObjCAdapter: 76b4766ebb92
+pEp_for_iOS: 29e6a0e5bb3a+
 pEp_for_iOS_intern: fe7c80780efc+
-pantomime-iOS: 55938caf87ac
+pantomime-iOS: 9de6754a61fb
 sequoia4ios: 3b4b432400c9827ecaf2f7a185333ea1488f4e5c

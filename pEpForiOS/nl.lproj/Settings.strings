@@ -1,3 +1,30 @@
+/* Class = "UILabel"; text = "Reset"; ObjectID = "4L6-wx-Ghl"; */
+"4L6-wx-Ghl.text" = "Reset";
+
+/* Class = "UILabel"; text = "Password"; ObjectID = "aYO-l7-9iG"; */
+"aYO-l7-9iG.text" = "Wachtwoord";
+
+/* Class = "UILabel"; text = "Username"; ObjectID = "azH-be-f3A"; */
+"azH-be-f3A.text" = "Gebruikersnaam";
+
+/* Class = "UILabel"; text = "Port"; ObjectID = "Osx-2y-29f"; */
+"Osx-2y-29f.text" = "Port";
+
+/* Class = "UILabel"; text = "Username"; ObjectID = "RYB-AT-TSB"; */
+"RYB-AT-TSB.text" = "Gebruikersnaam";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "s9I-CU-fSE"; */
+"s9I-CU-fSE.text" = "Naam";
+
 /* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "Tjb-uM-eUF"; */
 "Tjb-uM-eUF.text" = "p≡p Sync";
+
+/* Class = "UILabel"; text = "Username"; ObjectID = "tt1-bn-s7P"; */
+"tt1-bn-s7P.text" = "Gebruikersnaam";
+
+/* Class = "UILabel"; text = "Port"; ObjectID = "U7P-zv-48U"; */
+"U7P-zv-48U.text" = "Port";
+
+/* Class = "UILabel"; text = "Username"; ObjectID = "vzX-eS-BYY"; */
+"vzX-eS-BYY.text" = "Gebruikersnaam";
 

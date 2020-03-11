@@ -10,6 +10,12 @@ import UIKit
 import PEPObjCAdapterFramework
 
 extension UIViewController {
+    var isIpad : Bool {
+        return UIDevice.current.userInterfaceIdiom == .pad
+    }
+    var isLandscape: Bool {
+        return UIDevice.current.orientation.isLandscape
+    }
     var isModalViewCurrentlyShown: Bool {
         return presentedViewController != nil
     }
@@ -32,8 +38,7 @@ extension UIViewController {
         return titleView
     }
 
-    private func navigationItemTitleView(pEpRating: PEPRating?,
-                                         pEpProtection: Bool = true) -> UIView? {
+    private func navigationItemTitleView(pEpRating: PEPRating?, pEpProtection: Bool = true) -> UIView? {
         if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
             // according to apple's design guidelines ('Hit Targets'):
             // https://developer.apple.com/design/tips/
@@ -63,7 +68,6 @@ extension UIViewController {
 
             return badgeView
         }
-
         return nil
     }
 
@@ -103,7 +107,47 @@ extension UIViewController {
         NSLayoutConstraint(item: activityIndicator, attribute: .centerY, relatedBy: .equal,
                            toItem: view, attribute: .centerY, multiplier: 1,
                            constant: 0).isActive = true
-
         return activityIndicator
+    }
+
+    func hideNavigationBarIfSplitViewShown() {
+        if !onlySplitViewMasterIsShown {
+            navigationController?.setNavigationBarHidden(true, animated: false)
+        }
+    }
+
+    func showNavigationBar() {
+            navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+}
+
+// MARK: - SplitViewControllerBehaviorProtocol
+extension UIViewController: SplitViewControllerBehaviorProtocol {
+    /// Method to detect the actual status of the splitViewController
+    ///
+    /// - Returns: returns the value of the actual status of the split view controller using SplitViewDisplayMode
+    func currentSplitViewMode() -> UISplitViewController.SplitViewDisplayMode {
+        
+        if let selfsplit = self as? UISplitViewController {
+            return selfsplit.currentDisplayMode
+        }
+        guard let splitview = splitViewController else {
+            return .onlyMaster
+        }
+        return splitview.currentDisplayMode
+    }
+    
+    var onlySplitViewMasterIsShown: Bool {
+        get {
+            return currentSplitViewMode() == .onlyMaster
+        }
+    }
+    
+    var collapsedBehavior: CollapsedSplitViewBehavior {
+        return .disposable
+    }
+    
+    var separatedBehavior: SeparatedSplitViewBehavior {
+        return .master
     }
 }

@@ -190,11 +190,10 @@ class FolderTableViewController: BaseTableViewController {
     }
 
     private func show(folder: DisplayableFolderProtocol) {
-        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let sb = UIStoryboard(name: EmailViewController.storyboard, bundle: nil)
         guard
-            let nav = sb.instantiateViewController(
-                withIdentifier: EmailListViewController.storyboardNavigationControllerId) as? UINavigationController,
-            let vc = nav.rootViewController as? EmailListViewController
+            let vc = sb.instantiateViewController(
+                withIdentifier: EmailListViewController.storyboardId) as? EmailListViewController
             else {
                 Log.shared.errorAndCrash("Problem!")
                 return
@@ -213,11 +212,7 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - Segue
 
     @IBAction func addAccountTapped(_ sender: Any) {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            performSegue(withIdentifier: .newAccountIpad, sender: self)
-        } else {
-            performSegue(withIdentifier: .newAccountIphone, sender: self)
-        }
+        performSegue(withIdentifier: .newAccount, sender: self)
     }
 
     /**
@@ -246,8 +241,7 @@ extension FolderTableViewController: LoginViewControllerDelegate {
 
 extension FolderTableViewController: SegueHandlerType {
     enum SegueIdentifier: String {
-        case newAccountIphone
-        case newAccountIpad
+        case newAccount
         case settingsSegue
     }
 
@@ -255,17 +249,17 @@ extension FolderTableViewController: SegueHandlerType {
         let segueId = segueIdentifier(for: segue)
 
         switch segueId {
-        case .newAccountIphone, .newAccountIpad:
+        case .newAccount:
             guard
                 let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? LoginViewController else {
+                let vc = nav.rootViewController as? AccountTypeSelectorViewController else {
                     Log.shared.errorAndCrash("Missing VCs")
                     return
             }
             nav.modalPresentationStyle = .fullScreen
             vc.appConfig = self.appConfig
+            
             vc.hidesBottomBarWhenPushed = true
-            vc.delegate = self
 
         case .settingsSegue:
             guard let dvc = segue.destination as? SettingsTableViewController else {

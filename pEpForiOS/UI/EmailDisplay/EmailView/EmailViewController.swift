@@ -20,10 +20,9 @@ protocol EmailViewControllerDelegate: class {
 
 class EmailViewController: BaseTableViewController {
     private var tableData: ComposeDataSource?
-    lazy private var backgroundQueue = OperationQueue()
     lazy private var documentInteractionController = UIDocumentInteractionController()
 
-    static let storyboard = "Main"
+    static public let storyboard = "Main"
     static let storyboardId = "EmailViewController"
     weak var delegate: EmailViewControllerDelegate?
     var message: Message?
@@ -200,8 +199,6 @@ extension EmailViewController: MessageContentCellDelegate {
     }
 }
 
-// MARK: - Orientation Change Handling
-
 extension EmailViewController {
 
     override func viewWillTransition(to size: CGSize,
@@ -222,50 +219,48 @@ extension EmailViewController: MessageAttachmentDelegate {
 
     func didTap(cell: MessageCell, attachment: Attachment, location: CGPoint, inView: UIView?) {
         let busyState = inView?.displayAsBusy()
-        let attachmentOp = AttachmentToLocalURLOperation(attachment: attachment)
-        attachmentOp.completionBlock = { [weak self, weak attachmentOp] in
+        attachment.saveToTmpDirectory { [weak self] url in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            guard let url = url else {
+                Log.shared.errorAndCrash("No Local URL")
+                return
+            }
             let safeAttachment = attachment.safeForSession(Session.main)
-
             GCD.onMain {
                 defer {
                     if let bState = busyState {
                         inView?.stopDisplayingAsBusy(viewBusyState: bState)
                     }
                 }
-                guard let url = attachmentOp?.fileURL else {
-                    return
-                }
-                me.didCreateLocally(attachment: safeAttachment,
-                                    url: url,
-                                    cell: cell,
-                                    location: location,
-                                    inView: inView)
+                me.showToUser(documentAt: url,
+                              givenMimeType: safeAttachment.mimeType,
+                              representedBy: cell,
+                              showAt: location,
+                              in: inView)
             }
         }
-        backgroundQueue.addOperation(attachmentOp)
     }
 
-    private func didCreateLocally(attachment: Attachment,
-                                  url: URL,
-                                  cell: MessageCell,
-                                  location: CGPoint,
-                                  inView: UIView?) {
+    private func showToUser(documentAt url: URL,
+                            givenMimeType: String?,
+                            representedBy cell: MessageCell,
+                            showAt location: CGPoint,
+                            in view: UIView?) {
         let mimeType = MimeTypeUtils.findBestMimeType(forFileAt: url,
-                                                      withGivenMimeType: attachment.mimeType)
+                                                      withGivenMimeType: givenMimeType)
         if mimeType == MimeTypeUtils.MimesType.pdf
             && QLPreviewController.canPreview(url as QLPreviewItem) {
             delegate?.showPdfPreview(forPdfAt: url)
         } else {
             documentInteractionController.url = url
-            let theView = inView ?? cell
+            let presentingView = view ?? cell
             let dim: CGFloat = 40
             let rect = CGRect.rectAround(center: location, width: dim, height: dim)
             documentInteractionController.presentOptionsMenu(from: rect,
-                                                             in: theView,
+                                                             in: presentingView,
                                                              animated: true)
         }
     }
