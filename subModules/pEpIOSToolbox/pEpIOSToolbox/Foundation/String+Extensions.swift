@@ -19,6 +19,8 @@ extension String {
     static let newlineRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n)+", options: [])
     static let threeOrMoreNewlinesRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n){3,}", options: [])
     static let fileExtensionRegex = try! NSRegularExpression(pattern: "^([^.]+)\\.([^.]+)$", options: [])
+    static let emailRegex = try! NSRegularExpression(pattern: "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}", options: [])
+
 
     /**
      Trims whitespace from back and front.
@@ -383,6 +385,7 @@ extension String {
     /// If not possible, returns nil.
     public func initials() -> String? {
         var words = tokens()
+        words = words.filter{ !String.emailRegex.matchesWhole(string: $0) }
         if words.count == 0 {
             return nil
         }
