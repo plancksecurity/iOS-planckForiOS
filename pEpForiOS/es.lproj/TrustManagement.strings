@@ -29,8 +29,8 @@
 /* Class = "UILabel"; text = "Your communication partner is mistrusted."; ObjectID = "HIb-Ji-yfV"; */
 "HIb-Ji-yfV.text" = "Your communication partner is mistrusted.";
 
-/* Class = "UILabel"; text = "Reset all pEp data for this comunication partner:"; ObjectID = "K85-bq-q6Q"; */
-"K85-bq-q6Q.text" = "Reset all pEp data for this comunication partner:";
+/* Class = "UILabel"; text = "Reset all p≡p data for this comunication partner:"; ObjectID = "K85-bq-q6Q"; */
+"K85-bq-q6Q.text" = "Reset all p≡p data for this comunication partner:";
 
 /* Class = "UIButton"; accessibilityLabel = "confirmButton"; ObjectID = "Q7n-8c-O25"; */
 "Q7n-8c-O25.accessibilityLabel" = "confirmButton";
@@ -44,8 +44,8 @@
 /* Class = "UILabel"; text = "Mistrusted"; ObjectID = "XAP-1X-nYK"; */
 "XAP-1X-nYK.text" = "Mistrusted";
 
-/* Class = "UILabel"; text = "Reset all pEp data for this comunication partner:"; ObjectID = "aT5-52-Wck"; */
-"aT5-52-Wck.text" = "Reset all pEp data for this comunication partner:";
+/* Class = "UILabel"; text = "Reset all p≡p data for this comunication partner:"; ObjectID = "aT5-52-Wck"; */
+"aT5-52-Wck.text" = "Reset all p≡p data for this comunication partner:";
 
 /* Class = "UIButton"; accessibilityLabel = "confirmButton"; ObjectID = "cAK-ZW-JLu"; */
 "cAK-ZW-JLu.accessibilityLabel" = "confirmButton";
@@ -71,8 +71,8 @@
 /* Class = "UIButton"; normalTitle = "Decline"; ObjectID = "sVr-xT-f8t"; */
 "sVr-xT-f8t.normalTitle" = "Decline";
 
-/* Class = "UILabel"; text = "Reset all pEp data for this comunication partner:"; ObjectID = "x6I-yN-Uyv"; */
-"x6I-yN-Uyv.text" = "Reset all pEp data for this comunication partner:";
+/* Class = "UILabel"; text = "Reset all p≡p data for this comunication partner:"; ObjectID = "x6I-yN-Uyv"; */
+"x6I-yN-Uyv.text" = "Reset all p≡p data for this comunication partner:";
 
 /* Class = "UIBarButtonItem"; title = "Options"; ObjectID = "zNZ-mq-ElZ"; */
 "zNZ-mq-ElZ.title" = "Options";
