@@ -23,7 +23,10 @@ class AccountTypeSelectorViewModel {
     public weak var delegate: AccountTypeSelectorViewModelDelegate?
 
     /// list of providers to show
-    private let accountTypes: [VerifiableAccount.AccountType] = [.gmail, .clientCertificate, .other]
+    private let accountTypes = [VerifiableAccount.AccountType.gmail,
+                                .yahoo,
+                                .clientCertificate,
+                                .other]
 
     init(verifiableAccount: VerifiableAccountProtocol? = nil,
          clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
@@ -64,6 +67,9 @@ class AccountTypeSelectorViewModel {
         switch provider {
         case .gmail:
             return "asset-Google"
+        case .yahoo:
+            return NSLocalizedString("Yahoo",
+                                     comment: "Provider name for Yahoo in account selection")
         case .other:
             return NSLocalizedString("Other", comment: "Other provider key")
         case .clientCertificate:
