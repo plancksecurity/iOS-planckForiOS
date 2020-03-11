@@ -118,7 +118,6 @@
                         <barButtonItem systemItem="compose" id="eLo-P1-6VE"/>
                     </toolbarItems>
                     <connections>
-                        <segue destination="9z2-yI-qGJ" kind="showDetail" identifier="segueEditAccount" id="WKY-VX-I5i"/>
                         <segue destination="9LH-QE-79O" kind="showDetail" identifier="sequeShowCredits" id="H2d-0I-oCO"/>
                         <segue destination="1at-88-jou" kind="unwind" identifier="noAccounts" unwindAction="segueUnwindLastAccountDeletedWithSegue:" id="dbj-Gx-Exo"/>
                         <segue destination="pQb-5p-QId" kind="showDetail" identifier="segueShowSettingDefaultAccount" id="qiY-7g-nll"/>
@@ -126,6 +125,7 @@
                         <segue destination="cMW-fr-EKn" kind="showDetail" identifier="segueSetOwnKey" id="D3B-Zt-U43"/>
                         <segue destination="4fP-ku-UtU" kind="showDetail" identifier="segueExtraKeys" id="DPP-UI-qfC"/>
                         <segue destination="tfJ-nw-QBg" kind="showDetail" identifier="ResetTrust" id="sr5-ig-b4W"/>
+                        <segue destination="Eri-pJ-T3J" kind="showDetail" identifier="segueEditAccount" id="Flj-eg-anX"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -825,7 +825,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Hi-lO-EOj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1327" y="442"/>
+            <point key="canvasLocation" x="-1306" y="-391"/>
         </scene>
         <!--Trusted Server Settings View Controller-->
         <scene sceneID="ayN-a1-vAb">
@@ -917,24 +917,6 @@
             </objects>
             <point key="canvasLocation" x="-388" y="-391"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="uMt-7B-UA8">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9z2-yI-qGJ" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Djr-bU-nlg">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Eri-pJ-T3J" kind="relationship" relationship="rootViewController" id="rIu-wq-ddQ"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="GlG-Ym-lHb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1327" y="-389"/>
-        </scene>
         <!--Editable Account Settings View Controller-->
         <scene sceneID="GDI-yq-B0C">
             <objects>
@@ -977,7 +959,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VYD-1J-s8m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-388" y="441"/>
+            <point key="canvasLocation" x="-1306" y="385"/>
         </scene>
         <!--Editable Account Settings Table View Controller-->
         <scene sceneID="9s9-Il-XHa">
@@ -1400,7 +1382,7 @@
                     </connections>
                 </pickerView>
             </objects>
-            <point key="canvasLocation" x="510" y="441"/>
+            <point key="canvasLocation" x="-388" y="343"/>
         </scene>
     </scenes>
 </document>

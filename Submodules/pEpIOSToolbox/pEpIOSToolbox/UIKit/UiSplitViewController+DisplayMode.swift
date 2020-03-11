@@ -9,25 +9,6 @@
 import Foundation
 import UIKit
 
-public extension UIViewController {
-
-    /// Method to detect the actual status of the splitViewController
-    ///
-    /// - Returns: returns the value of the actual status of the split view controller using SplitViewDisplayMode
-    func currentSplitViewMode() -> UISplitViewController.SplitViewDisplayMode {
-        guard let splitview = splitViewController else {
-            return .onlyMaster
-        }
-        return splitview.currentDisplayMode
-    }
-
-    var onlySplitViewMasterIsShown: Bool {
-        get {
-            return currentSplitViewMode() == .onlyMaster
-        }
-    }
-}
-
 public extension UISplitViewController {
 
     /// Specify the current state of the splitviewcontroller
