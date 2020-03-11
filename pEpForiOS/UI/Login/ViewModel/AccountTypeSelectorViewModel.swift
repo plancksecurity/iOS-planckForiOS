@@ -23,12 +23,18 @@ class AccountTypeSelectorViewModel {
     public weak var delegate: AccountTypeSelectorViewModelDelegate?
 
     /// list of providers to show
-    private let accountTypes: [VerifiableAccount.AccountType] = [.gmail, .clientCertificate, .other]
+    private var accountTypes: [VerifiableAccount.AccountType]
 
     init(verifiableAccount: VerifiableAccountProtocol? = nil,
          clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
         self.verifiableAccount = verifiableAccount ?? VerifiableAccount()
         self.clientCertificateUtil = clientCertificateUtil ?? ClientCertificateUtil()
+        accountTypes = [VerifiableAccount.AccountType]()
+        accountTypes.append(.gmail)
+        if self.clientCertificateUtil.listCertificates(session: nil).count > 0 {
+            accountTypes.append(.clientCertificate)
+        }
+        accountTypes.append(.other)
     }
 
     var count: Int {
