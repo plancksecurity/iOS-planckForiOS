@@ -53,6 +53,7 @@ class AccountTypeSelectorViewModel {
         if clientCertificateUtil.listCertificates(session: nil).count == 0 {
             delegate?.showMustImportClientCertificateAlert()
         } else {
+            verifiableAccount.accountType = .clientCertificate
             delegate?.showClientCertificateSeletionView()
         }
     }
