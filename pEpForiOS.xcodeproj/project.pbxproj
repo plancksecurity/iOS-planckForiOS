@@ -895,6 +895,10 @@
 		43980E4B1CBD0BCA00A7FC3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		43980EF91CBD415700A7FC3C /* AppConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		439817522418ECA700C8AB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/NothingSelected.strings; sourceTree = "<group>"; };
+		439817542418ECA800C8AB84 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/NothingSelected.strings; sourceTree = "<group>"; };
+		439817562418ECC400C8AB84 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		439817582418ECC600C8AB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		43985D092044296D0080FA9A /* OAuth2AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2AuthViewModel.swift; sourceTree = "<group>"; };
 		43985D0D204438480080FA9A /* AccountSettingsProtocol+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountSettingsProtocol+Extension.swift"; sourceTree = "<group>"; };
 		43993C2F2357587700FE311E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -3382,6 +3386,8 @@
 				158A565624052280003C0D7E /* nl */,
 				158A565F24052360003C0D7E /* ca */,
 				158A566A2405236E003C0D7E /* tr */,
+				439817522418ECA700C8AB84 /* en */,
+				439817542418ECA800C8AB84 /* de */,
 			);
 			name = NothingSelected.storyboard;
 			sourceTree = "<group>";
@@ -3410,6 +3416,8 @@
 				158A565A24052281003C0D7E /* nl */,
 				158A566324052360003C0D7E /* ca */,
 				158A566E2405236F003C0D7E /* tr */,
+				439817562418ECC400C8AB84 /* de */,
+				439817582418ECC600C8AB84 /* en */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
