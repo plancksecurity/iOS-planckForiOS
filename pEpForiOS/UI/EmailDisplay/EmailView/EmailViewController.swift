@@ -22,7 +22,7 @@ class EmailViewController: BaseTableViewController {
     private var tableData: ComposeDataSource?
     lazy private var documentInteractionController = UIDocumentInteractionController()
 
-    static let storyboard = "Main"
+    static public let storyboard = "Main"
     static let storyboardId = "EmailViewController"
     weak var delegate: EmailViewControllerDelegate?
     var message: Message?

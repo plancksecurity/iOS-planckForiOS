@@ -18,12 +18,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     private let flexibleSpaceButtonItemTag = 77
     /// True if the pEp button on the left/master side should be shown.
     private var shouldShowPepButtonInMasterToolbar = true
-    /// The key path for observing the view controllers of the split view controller,
-    /// compatible with Objective-C.
-    private let splitViewObserverKeyPath = #keyPath(UISplitViewController.viewControllers)
-    /// With KVO we have to keep our books lest not to remove an observer without
-    /// observing first.
-    private var observingSplitViewControllers = false
 
     public static let storyboardId = "EmailListViewController"
     public static let storyboardNavigationControllerId = "EmailListNavigationViewController"
@@ -76,7 +70,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
             me.updateFilterButtonView()
             vm.startMonitoring() //!!!: UI should not know about startMonitoring
             me.tableView.reloadData()
-            me.watchDetailView()
             me.doOnce = nil
         }
         setup()
@@ -106,7 +99,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        unwatchDetailView()
     }
 
     deinit {
@@ -267,13 +259,8 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
         performSegue(withIdentifier: SegueIdentifier.segueEditDraft, sender: self)
     }
 
-    /// we have to handle the ipad/iphone segue in a different way. see IOS-1737
     private func showEmail(forCellAt indexPath: IndexPath) {
-        if onlySplitViewMasterIsShown {
-            performSegue(withIdentifier: SegueIdentifier.segueShowEmailNotSplitView, sender: self)
-        } else {
-            performSegue(withIdentifier: SegueIdentifier.segueShowEmailSplitView, sender: self)
-        }
+        performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
     }
 
     private func showNoMessageSelected() {
@@ -759,40 +746,6 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         }
         return theItems
     }
-
-    // MARK: - Observing the split view controller
-
-    //???: Hard to undestand. What is the observeer used for? Out of 3 devs, zero understood.
-
-    /// Start observing the view controllers in the split view.
-    private func watchDetailView() {
-        if !observingSplitViewControllers, let spvc = splitViewController {
-            spvc.addObserver(self,
-                             forKeyPath: splitViewObserverKeyPath,
-                             options: [],
-                             context: nil)
-            observingSplitViewControllers = true
-        }
-    }
-
-    /// Stop listening for changes in the view controllers in the split view.
-    private func unwatchDetailView() {
-        if observingSplitViewControllers, let spvc = splitViewController {
-            spvc.removeObserver(self, forKeyPath: splitViewObserverKeyPath)
-            observingSplitViewControllers = false
-        }
-    }
-
-    /// React to changes to the view controllers of our split view controller.
-    override func observeValue(forKeyPath keyPath: String?,
-                               of object: Any?,
-                               change: [NSKeyValueChangeKey : Any]?,
-                               context: UnsafeMutableRawPointer?) {
-        if keyPath != splitViewObserverKeyPath {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-            return
-        }
-    }
 }
 
 // MARK: - UISearchResultsUpdating, UISearchControllerDelegate
@@ -821,15 +774,6 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListViewModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
-
-    func checkIfSplitNeedsUpdate(indexpath: [IndexPath]) {
-        guard let last = lastSelectedIndexPath else {
-            return
-        }
-        if !onlySplitViewMasterIsShown && indexpath.contains(last) {
-            showEmail(forCellAt: last)
-        }
-    }
 
     func reloadData(viewModel: EmailDisplayViewModel) {
         tableView.reloadData()
@@ -1171,8 +1115,7 @@ extension EmailListViewController: SegueHandlerType {
     
     enum SegueIdentifier: String {
         case segueAddNewAccount
-        case segueShowEmailSplitView
-        case segueShowEmailNotSplitView
+        case segueShowEmail
         case segueCompose
         case segueReply
         case segueReplyAll
@@ -1194,10 +1137,9 @@ extension EmailListViewController: SegueHandlerType {
              .segueCompose,
              .segueEditDraft:
             setupComposeViewController(for: segue)
-        case .segueShowEmailNotSplitView, .segueShowEmailSplitView:
+        case .segueShowEmail:
             guard
-                let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? EmailDetailViewController,
+                let vc = segue.destination as? EmailDetailViewController,
                 let indexPath = lastSelectedIndexPath else {
                     Log.shared.errorAndCrash("Segue issue")
                     return

@@ -18,6 +18,20 @@ class SettingDefaultAccountTableViewController: BaseTableViewController {
     var allAccounts: [Account] {
         return Account.all()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        showNavigationBar()
+        title = NSLocalizedString("Default Account", comment: "Default account view title")
+    }
+
+    override var collapsedBehavior: CollapsedSplitViewBehavior {
+        return .needed
+    }
+    
+    override var separatedBehavior: SeparatedSplitViewBehavior {
+        return .detail
+    }
 
     // MARK: - UITableviewDataSource
 
