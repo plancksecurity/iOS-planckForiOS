@@ -615,7 +615,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="optionsButton" destination="zNZ-mq-ElZ" id="J6G-jk-mG0"/>
-                        <outlet property="trustManagementTableView" destination="crl-YO-ia8" id="RKE-4e-rtw"/>
+                        <outlet property="tableView" destination="crl-YO-ia8" id="hZ6-sT-Gcp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OAD-MK-tHj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -2026,14 +2026,14 @@
 			path = HTMLParser;
 			sourceTree = "<group>";
 		};
-		438D5A6F1EA77CFC001A37E1 /* Handshake */ = {
+		438D5A6F1EA77CFC001A37E1 /* TrustManagement */ = {
 			isa = PBXGroup;
 			children = (
 				B70D32A6205BCC120094A92A /* CellsAndSections */,
 				5BC14AEF23EB19B5005F0AF3 /* TrustManagementViewController.swift */,
 				5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */,
 			);
-			path = Handshake;
+			path = TrustManagement;
 			sourceTree = "<group>";
 		};
 		43980E1A1CBD0BC900A7FC3C = {
@@ -2297,7 +2297,7 @@
 				B70D32B0205BCFBD0094A92A /* EmailDisplay */,
 				B78CF8261E76D70D008C1739 /* Filter */,
 				B71EBBB41E55E43100150177 /* Folder */,
-				438D5A6F1EA77CFC001A37E1 /* Handshake */,
+				438D5A6F1EA77CFC001A37E1 /* TrustManagement */,
 				B70D32AA205BCCC70094A92A /* Login */,
 				B70D32AF205BCF460094A92A /* ManualLogin */,
 				15BA537A20A1F5CA0090F126 /* MoveToFolder */,
