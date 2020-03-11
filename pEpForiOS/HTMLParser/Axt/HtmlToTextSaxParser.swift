@@ -40,12 +40,12 @@ extension HtmlToTextSaxParser: AXHTMLParserDelegate {
     func parser(_ parser: AXHTMLParser, didStartElement elementName: String,
                 attributes attributeDict: [AnyHashable : Any] = [:]) {
         tagStack.append(elementName)
-        if elementName == "br" || elementName == "p" || elementName == "div" {
-            add(string: "\n")
-        }
     }
 
     func parser(_ parser: AXHTMLParser, didEndElement elementName: String) {
+        if elementName == "br" || elementName == "p" || elementName == "div" {
+            add(string: "\n")
+        }
         tagStack.removeLast()
     }
 

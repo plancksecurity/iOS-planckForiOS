@@ -27,6 +27,7 @@ class ReplyUtilTests: XCTestCase {
         }
         XCTAssertEqual(ReplyUtil.replySubject(message: msg), expectedReplySubject)
     }
+    // Create new ticket for this bug?
     func testReplyNonSubject() {
         let msg = getMockMessage()
         msg.shortMessage = nil
@@ -38,6 +39,7 @@ class ReplyUtilTests: XCTestCase {
         // XCTAssertEqual failed: ("") is not equal to ("Re:  ")
     }
 
+    // Create new ticket for this bug?
     func testForwardSubject() {
         let msg = getMockMessage()
         msg.shortMessage = Constant.crazySpaces + Constant.subject
@@ -49,6 +51,7 @@ class ReplyUtilTests: XCTestCase {
         // XCTAssertEqual failed: ("Fwd:       This is a subject") is not equal to ("Fwd: ")
     }
 
+    // Create new ticket for this bug?
     func testForwardNonSubject() {
         let msg = getMockMessage()
         msg.shortMessage = nil
@@ -84,10 +87,11 @@ class ReplyUtilTests: XCTestCase {
         msg.sent = sentDate // ~ January 12, 1970 at 2:46:40 PM GMT+1
         msg.longMessageFormatted = Constant.longMessageHtmlFormatted
         let dateString = getDateFormattedString(date: sentDate)
-        let exp = "\n\n\(String.pepSignature)\n\nSomeone wrote on \(dateString):\n\n> Test"
+        let exp = "\n\n\(String.pepSignature)\n\nSomeone wrote on \(dateString):\n\n> Test\n> Test"
         let sth = ReplyUtil.quotedMessageText(message: msg, replyAll: false)
         XCTAssertEqual(sth, exp)
     }
+
     func testQuotedMessageTextNotEmptySentDateIsUnknown() {
         let identity = Identity(address: "what@example.com",
                                 userID: "userID",
@@ -98,12 +102,12 @@ class ReplyUtilTests: XCTestCase {
         let msg = Message(uuid: "001", uid: 1, parentFolder: folder)
         msg.sent = nil
         msg.longMessageFormatted = Constant.longMessageHtmlFormatted
-        let exp = "\n\n\(String.pepSignature)\n\nSomeone wrote:\n\n> Test"
+        let exp = "\n\n\(String.pepSignature)\n\nSomeone wrote:\n\n> Test\n> Test"
         let sth = ReplyUtil.quotedMessageText(message: msg, replyAll: false)
         XCTAssertEqual(sth, exp)
     }
-    // Failed because current implementation ReplyUtil.citedMessageText is wrong
-    // We expect cited message not message without '>' characters
+
+    // Refer to IOS-1363
     func testCitedMessageTextNotEmptySentDateIsUnknown() {
         let identity = Identity(address: "what@example.com",
                                 userID: "userID",
@@ -118,8 +122,9 @@ class ReplyUtilTests: XCTestCase {
         let sth = ReplyUtil.citedMessageText(textToCite: "Test", fromMessage: msg)
         XCTAssertEqual(sth, exp,
                        showDifference(string1: sth, string2: exp))
-        // Unexpected differences: Test != > Te
     }
+
+    // Refer to IOS-1363
     // Failed because current implementation ReplyUtil.citedMessageText is wrong
     // We expect cited message not message without '>' characters
     func testCitedHtmlMessageTextNotEmptySentDateIsUnknown() {
@@ -133,13 +138,10 @@ class ReplyUtilTests: XCTestCase {
         msg.sent = nil
         let bodyHtml = Constant.longMessageHtmlFormatted
         msg.longMessageFormatted = bodyHtml
-        let exp = NSAttributedString(string: "\n\n\(String.pepSignature)\n\nSomeone wrote:\n\n\n> Test")
+        let exp = NSAttributedString(string: "\n\n\(String.pepSignature)\n\nSomeone wrote:\n\n> Test\nTest\n")
         let sth = ReplyUtil.citedMessageText(textToCite: bodyHtml.htmlToAttributedString(attachmentDelegate: nil), fromMessage: msg)
-
-        // WIP: only temporary - message text will be removed
         XCTAssertEqual(sth.string, exp.string,
                        showDifference(string1: sth.string, string2: exp.string))
-        // Unexpected differences: Test != > Te
     }
 }
 
@@ -152,7 +154,7 @@ extension ReplyUtilTests {
         static let expectedReplyPrefix = "Re: " // TODO: - Re: not localized!
         static let expectedForwardPrefix = NSLocalizedString("Fwd: ",
                                                              comment: "The 'Fwd:' that gets appended to the subject line")
-        static let longMessageHtmlFormatted = "<html><body><p>Test</p></body></html>"
+        static let longMessageHtmlFormatted = "<html><body><p>Test</p><p>Test</p></body></html>"
         static let crazySpaces = "     "
     }
     private func getDateFormattedString(date: Date) -> String {

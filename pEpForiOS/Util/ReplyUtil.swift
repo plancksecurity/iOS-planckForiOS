@@ -33,7 +33,8 @@ public struct ReplyUtil {
     /// - Returns: text with citation header and "send by pEp" footer
     static func citedMessageText(textToCite: String, fromMessage msg: Message) -> String {
         let citation = citationHeaderForMessage(msg)
-        return "\n\n\(footer())\n\n\(citation)\n\n\(textToCite)"
+        let quoteChar = ">"
+        return "\n\n\(footer())\n\n\(citation)\n\n\(quoteChar) \(textToCite)"
     }
 
     /// Adds citation header with data of a given message to a given text.
@@ -49,7 +50,8 @@ public struct ReplyUtil {
         let defaultFont = UIFont.preferredFont(forTextStyle: .body)
         var result = NSAttributedString(string: "\n\n\(footer())\n\n\(citation)\n\n",
             attributes: [NSAttributedString.Key(rawValue: "NSFont"): defaultFont])
-        result = result + textToCite
+        let quoteChar = ">"
+        result = result + quoteChar + " " + textToCite
         return result
     }
 
