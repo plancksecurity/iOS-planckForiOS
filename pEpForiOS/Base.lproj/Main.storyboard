@@ -34,7 +34,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wYS-Rz-jbd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2818" y="-757"/>
+            <point key="canvasLocation" x="2521" y="-758"/>
         </scene>
         <!--EmailListViewController-->
         <scene sceneID="ed4-cB-BMk">
@@ -222,7 +222,6 @@
                     <connections>
                         <outlet property="enableFilterButton" destination="qvK-qQ-Gk6" id="c4d-QA-utg"/>
                         <outlet property="tableView" destination="1Oj-l2-jRA" id="dbk-cO-CLi"/>
-                        <segue destination="tTN-8A-7tU" kind="show" identifier="segueShowEmailNotSplitView" id="uOM-R2-1sE"/>
                         <segue destination="Rly-af-89k" kind="presentation" identifier="segueAddNewAccount" id="Sq5-Lx-gH6"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAll" id="yAp-Cu-TCw"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="ok6-PZ-sCI"/>
@@ -231,6 +230,7 @@
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="cRe-YG-393"/>
                         <segue destination="nc4-kR-K9D" kind="show" identifier="segueShowFilter" id="t4t-3T-ovM"/>
                         <segue destination="tTN-8A-7tU" kind="showDetail" identifier="segueShowEmailSplitView" id="HHz-at-Ehg"/>
+                        <segue destination="fRo-D2-Fjz" kind="show" identifier="segueShowEmailNotSplitView" id="UYH-1Q-XsE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m6c-dF-C80" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -464,13 +464,13 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnw-Tp-mga">
-                                            <rect key="frame" x="20" y="11" width="331" height="33.5"/>
+                                            <rect key="frame" x="20" y="11" width="331" height="33"/>
                                             <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: Recipients" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mfx-AS-hpP">
-                                            <rect key="frame" x="20" y="50.5" width="331" height="15.5"/>
+                                            <rect key="frame" x="20" y="50" width="331" height="16"/>
                                             <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                             <color key="textColor" red="0.5490196078431373" green="0.5490196078431373" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -1028,7 +1028,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="cRe-YG-393"/>
         <segue reference="JbP-D9-Vpg"/>
+        <segue reference="UYH-1Q-XsE"/>
         <segue reference="ok6-PZ-sCI"/>
-        <segue reference="uOM-R2-1sE"/>
     </inferredMetricsTieBreakers>
 </document>

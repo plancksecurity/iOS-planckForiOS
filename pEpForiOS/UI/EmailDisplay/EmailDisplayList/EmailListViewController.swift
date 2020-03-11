@@ -1194,10 +1194,21 @@ extension EmailListViewController: SegueHandlerType {
              .segueCompose,
              .segueEditDraft:
             setupComposeViewController(for: segue)
-        case .segueShowEmailNotSplitView, .segueShowEmailSplitView:
+            
+        case .segueShowEmailSplitView:
+        guard
+            let nav = segue.destination as? UINavigationController,
+            let vc = nav.rootViewController as? EmailDetailViewController,
+            let indexPath = lastSelectedIndexPath else {
+                Log.shared.errorAndCrash("Segue issue")
+                return
+        }
+        vc.appConfig = appConfig
+        vc.viewModel = viewModel?.emailDetialViewModel()
+        vc.firstItemToShow = indexPath
+        case .segueShowEmailNotSplitView:
             guard
-                let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? EmailDetailViewController,
+                let vc = segue.destination as? EmailDetailViewController,
                 let indexPath = lastSelectedIndexPath else {
                     Log.shared.errorAndCrash("Segue issue")
                     return
