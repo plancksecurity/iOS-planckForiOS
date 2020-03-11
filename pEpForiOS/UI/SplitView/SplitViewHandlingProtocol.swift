@@ -16,15 +16,16 @@ protocol SplitViewHandlingProtocol {
     func splitViewControllerWill(splitViewController: PEPSplitViewController, newStatus: SplitViewStatus)
 }
 
+/// <#Description#>
 @objc protocol SplitViewControllerBehaviorProtocol {
     /// Attribute that can be overwritten with the default behaviour of the splitview when this will collapse
-    /// Split view expect to found this attribute in the controller that will be collapsed,
-    /// and will use it's value to decide the behavour on collapse action of this view.
+    /// Split view expect to find this attribute in the controller that will be collapsed,
+    /// and will use its value to decide the Behavior on collapse action of this view.
     var collapsedBehavior: CollapsedSplitViewBehavior { get }
     
     /// Attribute that can be overwritten with the default behaviour of the splitview when this will separate
-    /// Split view expect to found this attribute in the controller that will be separated,
-    /// and will use it's value to decide the behavour on separate action of this view.
+    /// Split view expect to find this attribute in the controller that will be separated,
+    /// and will use its value to decide the Behavior on separate action of this view.
     var separatedBehavior: SeparatedSplitViewBehavior { get }
 }
 
