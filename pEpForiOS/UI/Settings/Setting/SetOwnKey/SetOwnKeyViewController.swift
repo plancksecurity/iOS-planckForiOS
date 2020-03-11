@@ -13,18 +13,28 @@ class SetOwnKeyViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var errorTextField: UILabel!
     @IBOutlet weak var setOwnKeyButton: UIButton!
+    
+
+    override var collapsedBehavior: CollapsedSplitViewBehavior {
+        return .needed
+    }
+    
+    override var separatedBehavior: SeparatedSplitViewBehavior {
+        return .detail
+    }
 
     // MARK: - View life cycle etc.
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         convertTopEp(button: setOwnKeyButton)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        showNavigationBar()
         errorTextField.text = nil
+        title = NSLocalizedString("Set Own Key", comment: "Set Own Key title")
     }
 
     // MARK: - Actions
