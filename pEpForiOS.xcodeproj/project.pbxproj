@@ -899,7 +899,6 @@
 		439817542418ECA800C8AB84 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/NothingSelected.strings; sourceTree = "<group>"; };
 		439817562418ECC400C8AB84 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		439817582418ECC600C8AB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		4398175A2418ED2000C8AB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/TrustManagement.storyboard; sourceTree = "<group>"; };
 		4398175C2418ED2F00C8AB84 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/TrustManagement.storyboard; sourceTree = "<group>"; };
 		4398175E2418ED3100C8AB84 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/TrustManagement.strings; sourceTree = "<group>"; };
 		439817602418ED3500C8AB84 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/TrustManagement.strings; sourceTree = "<group>"; };
@@ -907,7 +906,6 @@
 		439817642418ED3B00C8AB84 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/TrustManagement.strings; sourceTree = "<group>"; };
 		439817662418ED3F00C8AB84 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/TrustManagement.strings; sourceTree = "<group>"; };
 		439817682418ED4400C8AB84 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/TrustManagement.strings; sourceTree = "<group>"; };
-		4398176A2418EDB200C8AB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Tutorial.storyboard; sourceTree = "<group>"; };
 		4398176C2418EDCC00C8AB84 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Tutorial.storyboard; sourceTree = "<group>"; };
 		4398176E2418EDD000C8AB84 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Tutorial.strings; sourceTree = "<group>"; };
 		439817702418EDD200C8AB84 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Tutorial.strings; sourceTree = "<group>"; };
@@ -915,6 +913,8 @@
 		439817742418EDD700C8AB84 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Tutorial.strings; sourceTree = "<group>"; };
 		439817762418EDD900C8AB84 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Tutorial.strings; sourceTree = "<group>"; };
 		439817782418EDDB00C8AB84 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Tutorial.strings; sourceTree = "<group>"; };
+		439817792418F06000C8AB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Tutorial.strings; sourceTree = "<group>"; };
+		4398177A2418F06A00C8AB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TrustManagement.strings; sourceTree = "<group>"; };
 		43985D092044296D0080FA9A /* OAuth2AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2AuthViewModel.swift; sourceTree = "<group>"; };
 		43985D0D204438480080FA9A /* AccountSettingsProtocol+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountSettingsProtocol+Extension.swift"; sourceTree = "<group>"; };
 		43993C2F2357587700FE311E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -3439,7 +3439,6 @@
 		4398175B2418ED2000C8AB84 /* TrustManagement.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4398175A2418ED2000C8AB84 /* en */,
 				4398175C2418ED2F00C8AB84 /* Base */,
 				4398175E2418ED3100C8AB84 /* ca */,
 				439817602418ED3500C8AB84 /* nl */,
@@ -3447,6 +3446,7 @@
 				439817642418ED3B00C8AB84 /* de */,
 				439817662418ED3F00C8AB84 /* es */,
 				439817682418ED4400C8AB84 /* tr */,
+				4398177A2418F06A00C8AB84 /* en */,
 			);
 			name = TrustManagement.storyboard;
 			sourceTree = "<group>";
@@ -3454,7 +3454,6 @@
 		4398176B2418EDB200C8AB84 /* Tutorial.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4398176A2418EDB200C8AB84 /* en */,
 				4398176C2418EDCC00C8AB84 /* Base */,
 				4398176E2418EDD000C8AB84 /* ca */,
 				439817702418EDD200C8AB84 /* nl */,
@@ -3462,6 +3461,7 @@
 				439817742418EDD700C8AB84 /* de */,
 				439817762418EDD900C8AB84 /* es */,
 				439817782418EDDB00C8AB84 /* tr */,
+				439817792418F06000C8AB84 /* en */,
 			);
 			name = Tutorial.storyboard;
 			sourceTree = "<group>";
