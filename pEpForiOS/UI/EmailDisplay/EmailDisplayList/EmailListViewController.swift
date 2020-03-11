@@ -1194,7 +1194,6 @@ extension EmailListViewController: SegueHandlerType {
              .segueCompose,
              .segueEditDraft:
             setupComposeViewController(for: segue)
-            
         case .segueShowEmailSplitView:
         guard
             let nav = segue.destination as? UINavigationController,
