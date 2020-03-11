@@ -42,7 +42,7 @@ class ExtraKeysSettingViewController: BaseViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidAppear(animated)
         AppSettings.shared.extraKeysEditable = false
-        self.navigationItem.setHidesBackButton(true, animated: false)
+        navigationItem.setHidesBackButton(true, animated: false)
     }
 
     deinit {
