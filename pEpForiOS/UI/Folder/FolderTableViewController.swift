@@ -193,7 +193,7 @@ class FolderTableViewController: BaseTableViewController {
         let sb = UIStoryboard(name: EmailViewController.storyboard, bundle: nil)
         guard
             let vc = sb.instantiateViewController(
-                withIdentifier: "EmailListViewController") as? EmailListViewController
+                withIdentifier: EmailListViewController.storyboardId) as? EmailListViewController
             else {
                 Log.shared.errorAndCrash("Problem!")
                 return

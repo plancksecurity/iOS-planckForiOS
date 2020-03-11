@@ -364,10 +364,4 @@ extension AccountSettingsTableViewController {
             self?.present(pepAlertViewController, animated: true)
         }
     }
-
-//    private func hideBackButtonIfNeeded() {
-//        if !onlySplitViewMasterIsShown {
-//            navigationItem.leftBarButtonItem = nil// hidesBackButton = true
-//        }
-//    }
 }

@@ -304,8 +304,8 @@ extension EmailDetailViewController {
             return
         }
 
-        destructiveButton.image = vm.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
-        flagButton.image = vm.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
+        destructiveButton?.image = vm.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
+        flagButton?.image = vm.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
 
         previousButton?.isEnabled = thereIsAPreviousMessageToShow
         nextButton?.isEnabled = thereIsANextMessageToShow
