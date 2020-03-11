@@ -13,7 +13,6 @@ extension UIViewController {
     var isIpad : Bool {
         return UIDevice.current.userInterfaceIdiom == .pad
     }
-    
     var isLandscape: Bool {
         return UIDevice.current.orientation.isLandscape
     }
@@ -69,7 +68,6 @@ extension UIViewController {
 
             return badgeView
         }
-
         return nil
     }
 
@@ -109,7 +107,6 @@ extension UIViewController {
         NSLayoutConstraint(item: activityIndicator, attribute: .centerY, relatedBy: .equal,
                            toItem: view, attribute: .centerY, multiplier: 1,
                            constant: 0).isActive = true
-
         return activityIndicator
     }
 
