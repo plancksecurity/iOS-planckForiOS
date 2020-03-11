@@ -16,7 +16,7 @@ protocol SplitViewHandlingProtocol {
     func splitViewControllerWill(splitViewController: PEPSplitViewController, newStatus: SplitViewStatus)
 }
 
-/// <#Description#>
+/// Protocol that split view uses to choose the behavior when collapse or separate will happen.
 @objc protocol SplitViewControllerBehaviorProtocol {
     /// Attribute that can be overwritten with the default behaviour of the splitview when this will collapse
     /// Split view expect to find this attribute in the controller that will be collapsed,
