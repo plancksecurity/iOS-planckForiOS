@@ -66,8 +66,8 @@ extension TutorialWizardViewController {
     private func tutorialViewControllers() -> [UIViewController] {
         var result = [UIViewController]()
         
-        //We have 3 steps in the tutorial.
-        for step in 0...2 {
+        //We have 4 steps in the tutorial.
+        for step in 0...3 {
             let storyboard = UIStoryboard(name: Constants.tutorialStoryboard, bundle: .main)
             let stepViewController = storyboard.instantiateViewController(withIdentifier: "TutorialStep\(step)ViewController")
             result.append(stepViewController)
