@@ -68,8 +68,7 @@ class AccountTypeSelectorViewModel {
         case .gmail:
             return "asset-Google"
         case .yahoo:
-            return NSLocalizedString("Yahoo",
-                                     comment: "Provider name for Yahoo in account selection")
+            return "asset-Yahoo"
         case .other:
             return NSLocalizedString("Other", comment: "Other provider key")
         case .clientCertificate:
