@@ -320,6 +320,7 @@
 		43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */; };
 		43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF91CBD415700A7FC3C /* AppConfig.swift */; };
 		439817592418ED2000C8AB84 /* TrustManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4398175B2418ED2000C8AB84 /* TrustManagement.storyboard */; };
+		439817692418EDB200C8AB84 /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4398176B2418EDB200C8AB84 /* Tutorial.storyboard */; };
 		43985D0A2044296D0080FA9A /* OAuth2AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43985D092044296D0080FA9A /* OAuth2AuthViewModel.swift */; };
 		43985D0E204438480080FA9A /* AccountSettingsProtocol+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43985D0D204438480080FA9A /* AccountSettingsProtocol+Extension.swift */; };
 		43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */; };
@@ -385,7 +386,6 @@
 		49DCCD2721E8ABD600ABE487 /* javascript.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 49079D9821E3867900D15A0D /* javascript.pdf */; };
 		49DCCD2821E8ABDF00ABE487 /* ScreenshotTestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F689921E6600500A10C63 /* ScreenshotTestUtil.swift */; };
 		5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */; };
-		5B2D8BCB241648E90062FE01 /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B2D8BCA241648E90062FE01 /* Tutorial.storyboard */; };
 		5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */; };
 		5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */; };
 		5B3C13BF23D8AF2E00FC0A53 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */; };
@@ -907,6 +907,14 @@
 		439817642418ED3B00C8AB84 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/TrustManagement.strings; sourceTree = "<group>"; };
 		439817662418ED3F00C8AB84 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/TrustManagement.strings; sourceTree = "<group>"; };
 		439817682418ED4400C8AB84 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/TrustManagement.strings; sourceTree = "<group>"; };
+		4398176A2418EDB200C8AB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Tutorial.storyboard; sourceTree = "<group>"; };
+		4398176C2418EDCC00C8AB84 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Tutorial.storyboard; sourceTree = "<group>"; };
+		4398176E2418EDD000C8AB84 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Tutorial.strings; sourceTree = "<group>"; };
+		439817702418EDD200C8AB84 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Tutorial.strings; sourceTree = "<group>"; };
+		439817722418EDD500C8AB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Tutorial.strings; sourceTree = "<group>"; };
+		439817742418EDD700C8AB84 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Tutorial.strings; sourceTree = "<group>"; };
+		439817762418EDD900C8AB84 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Tutorial.strings; sourceTree = "<group>"; };
+		439817782418EDDB00C8AB84 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Tutorial.strings; sourceTree = "<group>"; };
 		43985D092044296D0080FA9A /* OAuth2AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2AuthViewModel.swift; sourceTree = "<group>"; };
 		43985D0D204438480080FA9A /* AccountSettingsProtocol+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountSettingsProtocol+Extension.swift"; sourceTree = "<group>"; };
 		43993C2F2357587700FE311E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -978,7 +986,6 @@
 		49D3BECB20F8F7330043E05D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		49DCCD1F21E75BE300ABE487 /* nojavascript.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = nojavascript.pdf; sourceTree = "<group>"; };
 		5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCellProtocols.swift; sourceTree = "<group>"; };
-		5B2D8BCA241648E90062FE01 /* Tutorial.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Tutorial.storyboard; sourceTree = "<group>"; };
 		5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewController.swift; sourceTree = "<group>"; };
 		5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCell.swift; sourceTree = "<group>"; };
 		5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -2438,7 +2445,7 @@
 				43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */,
 				151DE7E61FC5D41600CDC273 /* FolderViews.storyboard */,
 				155F2DA020530798001B4B1C /* Reusable.storyboard */,
-				5B2D8BCA241648E90062FE01 /* Tutorial.storyboard */,
+				4398176B2418EDB200C8AB84 /* Tutorial.storyboard */,
 				491B656020CFE0FD00C2ADDA /* Thread.storyboard */,
 				3A2119E624125AC60030C3E4 /* Certificates.storyboard */,
 			);
@@ -2772,7 +2779,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				491B656220CFE0FD00C2ADDA /* Thread.storyboard in Resources */,
-				5B2D8BCB241648E90062FE01 /* Tutorial.storyboard in Resources */,
+				439817692418EDB200C8AB84 /* Tutorial.storyboard in Resources */,
 				1526596C216230B1006A78DF /* ComposeData.plist in Resources */,
 				151C68002418158B00481F75 /* SFUIText-Regular.ttf in Resources */,
 				43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */,
@@ -3442,6 +3449,21 @@
 				439817682418ED4400C8AB84 /* tr */,
 			);
 			name = TrustManagement.storyboard;
+			sourceTree = "<group>";
+		};
+		4398176B2418EDB200C8AB84 /* Tutorial.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4398176A2418EDB200C8AB84 /* en */,
+				4398176C2418EDCC00C8AB84 /* Base */,
+				4398176E2418EDD000C8AB84 /* ca */,
+				439817702418EDD200C8AB84 /* nl */,
+				439817722418EDD500C8AB84 /* fr */,
+				439817742418EDD700C8AB84 /* de */,
+				439817762418EDD900C8AB84 /* es */,
+				439817782418EDDB00C8AB84 /* tr */,
+			);
+			name = Tutorial.storyboard;
 			sourceTree = "<group>";
 		};
 		43C98AC1219C275E006418B0 /* Localizable.strings */ = {
