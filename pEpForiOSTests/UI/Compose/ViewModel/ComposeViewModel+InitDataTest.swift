@@ -571,17 +571,26 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
             XCTAssertEqual(testee.bodyHtml, exp)
         }
         if let exp = nonInlinedAttachments {
-            XCTAssertEqual(testee.nonInlinedAttachments, exp)
-            XCTAssertEqual(testee.nonInlinedAttachments.count, exp.count)
+            let safeExp = Attachment.makeSafe(exp, forSession: Session.main)
+            let safeTesteeNonInlinedAttachments = Attachment.makeSafe(testee.nonInlinedAttachments,
+                                                                      forSession: Session.main)
+            XCTAssertEqual(safeTesteeNonInlinedAttachments, safeExp)
+            XCTAssertEqual(safeTesteeNonInlinedAttachments.count, safeExp.count)
             for to in testee.nonInlinedAttachments {
-                XCTAssertTrue(exp.contains(to))
+                let safeTo = to.safeForSession(Session.main)
+                XCTAssertTrue(safeExp.contains(safeTo))
             }
         }
         if let exp = inlinedAttachments {
-            XCTAssertEqual(testee.inlinedAttachments, exp)
-            XCTAssertEqual(testee.inlinedAttachments.count, exp.count)
+            let safeExp = Attachment.makeSafe(exp, forSession: Session.main)
+            let safeTesteeInlinedAttachments = Attachment.makeSafe(testee.inlinedAttachments,
+                                                                      forSession: Session.main)
+
+            XCTAssertEqual(safeTesteeInlinedAttachments, safeExp)
+            XCTAssertEqual(safeTesteeInlinedAttachments.count, safeExp.count)
             for to in testee.inlinedAttachments {
-                XCTAssertTrue(exp.contains(to))
+                let safeTo = to.safeForSession(Session.main)
+                XCTAssertTrue(safeExp.contains(safeTo))
             }
         }
     }
