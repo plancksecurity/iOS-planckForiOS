@@ -9,10 +9,7 @@
 import pEpIOSToolbox
 
 struct Constants {
-    static let defaultFileName = NSLocalizedString("unnamed", comment:
-        "file name used for unnamed attachments")
-
-    /// Storyboard ID to instantiate ComposeViewController
+        /// Storyboard ID to instantiate ComposeViewController
     /// Is not in ComposeViewController.swift as it is the ID of the NavigationController that
     /// holds the ViewController, which the ViewController has no knowledge of.
     static let composeSceneStoryboardId = "ReplyNavigation"
@@ -25,6 +22,9 @@ struct Constants {
 
     /// Name of Storyboard that contains SuggestTableViewController.
     static let suggestionsStoryboard = "Reusable"
+    
+    /// Name of Storyboard that contains View Controllers of the Tutorial.
+    static let tutorialStoryboard = "Tutorial"
 
     /// Name of Storyboard that contains KeySyncWizardViewController.
     static let keySyncWizardStoryboard = "Reusable"

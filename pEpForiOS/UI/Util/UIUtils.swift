@@ -32,9 +32,16 @@ struct UIUtils {
         }
     }
 
+    /// Shows an alert with "OK" button only.
+    /// - Parameters:
+    ///   - title: alert title
+    ///   - message: alert message
+    ///   - vc: viewController to present alert on
+    ///   - completion: called when "OK" has been pressed
     static func showAlertWithOnlyPositiveButton(title: String?,
                                                 message: String?,
-                                                inViewController vc: UIViewController) {
+                                                inViewController vc: UIViewController,
+                                                completion: (()->Void)? = nil) {
         // Do not show alerts when app is in background.
         if UIApplication.shared.applicationState != .active {
             #if DEBUG
@@ -46,10 +53,12 @@ struct UIUtils {
         let alertView = UIAlertController.pEpAlertController(title: title,
                                                              message: message,
                                                              preferredStyle: .alert)
-        alertView.addAction(UIAlertAction(title: NSLocalizedString("OK", comment:
-            "General alert positive button"),
-                                          style: .default,
-                                          handler: nil))
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment:
+        "General alert positive button"),
+                                     style: .default) { action in
+                                        completion?()
+        }
+        alertView.addAction(okAction)
         vc.present(alertView, animated: true, completion: nil)
     }
 
@@ -63,8 +72,8 @@ struct UIUtils {
                                    positiveButtonAction: @escaping () -> Void,
                                    inViewController vc: UIViewController) {
         let alertView = UIAlertController.pEpAlertController(title: title,
-                                                             message: message,
-                                                             preferredStyle: .alert)
+                                        message: message,
+                                        preferredStyle: .alert)
         alertView.addAction(UIAlertAction(title: positiveButtonText,
                                           style: .default) { (alertAction) in
                                             positiveButtonAction()

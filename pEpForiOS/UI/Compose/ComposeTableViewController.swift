@@ -181,7 +181,7 @@ extension ComposeTableViewController {
             return
         }
         if (vm.state.canHandshake()) {
-            self.performSegue(withIdentifier: .segueHandshake, sender: self)
+            performSegue(withIdentifier: .segueTrustManagement, sender: self)
         }
     }
 }
@@ -306,15 +306,15 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
 extension ComposeTableViewController: SegueHandlerType {
 
     enum SegueIdentifier: String {
-        case segueHandshake
+        case segueTrustManagement
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
-        case .segueHandshake:
+        case .segueTrustManagement:
             guard
                 let nc = segue.destination as? UINavigationController,
-                let destination = nc.rootViewController as? HandshakeViewController else {
+                let destination = nc.rootViewController as? TrustManagementViewController else {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
@@ -322,8 +322,13 @@ extension ComposeTableViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("No vm")
                 return
             }
+
             destination.appConfig = appConfig
-            vm.setup(handshakeViewController: destination)
+            guard let trustManagementViewModel = vm.trustManagementViewModel() else {
+                Log.shared.error("Message not found")
+                return
+            }
+            destination.viewModel = trustManagementViewModel
         }
     }
 }

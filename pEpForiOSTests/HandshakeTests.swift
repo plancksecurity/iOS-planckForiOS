@@ -36,11 +36,10 @@ class HandshakeTests: CoreDataDrivenTestBase {
         try! session.mySelf(pEpMySelfIdentity)
         XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
 
-        guard let cdMessage = TestUtil.cdMessage(
-            fileName: "HandshakeTests_mail_001.txt",
-            cdOwnAccount: cdAccount) else {
-                XCTFail()
-                return
+        guard let cdMessage = TestUtil.cdMessage(fileName: "HandshakeTests_mail_001.txt",
+                                                 cdOwnAccount: cdAccount) else {
+                                                    XCTFail()
+                                                    return
         }
 
         let pEpMessage = cdMessage.pEpMessage(outgoing: true)

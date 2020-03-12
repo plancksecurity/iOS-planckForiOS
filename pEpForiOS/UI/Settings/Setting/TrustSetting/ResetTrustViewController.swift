@@ -17,6 +17,14 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
 
     private let searchController = UISearchController(searchResultsController: nil)
 
+    override var collapsedBehavior: CollapsedSplitViewBehavior {
+        return .needed
+    }
+    
+    override var separatedBehavior: SeparatedSplitViewBehavior {
+        return .detail
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -28,6 +36,7 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
         tableView.delegate = self
         // Hide toolbar
         navigationController?.setToolbarHidden(true, animated: false)
+        showNavigationBar()
         model.delegate = self
         // searchBar configuration
         configureSearchBar()
@@ -174,19 +183,17 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
         }
         alertView.addAction(cancelAction)
 
-        if onlySplitViewMasterIsShown {
-            let cell = tableView.cellForRow(at: indexPath)
-            alertView.popoverPresentationController?.sourceView = cell?.contentView
-            if let label = cell?.textLabel {
-                let contentSize = label.intrinsicContentSize
-                alertView.popoverPresentationController?.sourceRect =
-                    CGRect(x: label.frame.origin.x + contentSize.width + 5,
-                           y: label.frame.origin.y + contentSize.height + 5,
-                           width: 0,
-                           height: 0)
-            }
-
+        let cell = tableView.cellForRow(at: indexPath)
+        alertView.popoverPresentationController?.sourceView = cell?.contentView
+        if let label = cell?.textLabel {
+            let contentSize = label.intrinsicContentSize
+            alertView.popoverPresentationController?.sourceRect =
+                CGRect(x: label.frame.origin.x + contentSize.width + 5,
+                       y: label.frame.origin.y + contentSize.height + 5,
+                       width: 0,
+                       height: 0)
         }
+
         present(alertView, animated: true, completion: nil)
     }
 

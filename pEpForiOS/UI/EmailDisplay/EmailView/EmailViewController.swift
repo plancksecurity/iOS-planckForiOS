@@ -20,10 +20,9 @@ protocol EmailViewControllerDelegate: class {
 
 class EmailViewController: BaseTableViewController {
     private var tableData: ComposeDataSource?
-    lazy private var backgroundQueue = OperationQueue()
     lazy private var documentInteractionController = UIDocumentInteractionController()
 
-    static let storyboard = "Main"
+    static public let storyboard = "Main"
     static let storyboardId = "EmailViewController"
     weak var delegate: EmailViewControllerDelegate?
     var message: Message?
@@ -200,83 +199,7 @@ extension EmailViewController: MessageContentCellDelegate {
     }
 }
 
-// MARK: - SegueHandlerType
-
-extension EmailViewController: SegueHandlerType {
-    enum SegueIdentifier: String {
-        case segueReplyFrom
-        case segueReplyAllForm
-        case segueForward
-        case segueHandshake
-        case segueHandshakeCollapsed
-        case segueShowMoveToFolder
-        case noSegue
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let theId = segueIdentifier(for: segue)
-        switch theId {
-        case .segueReplyFrom, .segueReplyAllForm, .segueForward:
-            guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? ComposeTableViewController else {
-                    Log.shared.errorAndCrash("No DVC?")
-                    break
-            }
-            destination.appConfig = appConfig
-            destination.viewModel = ComposeViewModel(composeMode: composeMode(for: theId),
-                                                     prefilledTo: nil,
-                                                     originalMessage: message)
-        case .segueShowMoveToFolder:
-            guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? MoveToAccountViewController else {
-                    Log.shared.errorAndCrash("No DVC?")
-                    break
-            }
-            destination.appConfig = appConfig
-            if let msg = message {
-                destination.viewModel = MoveToAccountViewModel(messages: [msg])
-            }
-        case .segueHandshake, .segueHandshakeCollapsed:
-
-            guard let nv = segue.destination as? UINavigationController,
-                let vc = nv.topViewController as? HandshakeViewController else {
-                    Log.shared.errorAndCrash("No DVC?")
-                    break
-            }
-
-            guard let message = message else {
-                Log.shared.errorAndCrash("No message")
-                return
-            }
-
-            // As we need a view to be source of the popover and title view is not always present.
-            // we directly use the navigation bar view.
-            nv.popoverPresentationController?.delegate = self
-            nv.popoverPresentationController?.sourceView = nv.view
-            nv.popoverPresentationController?.sourceRect = CGRect(x: nv.view.bounds.midX,
-                                                                  y: nv.view.bounds.midY,
-                                                                  width: 0,
-                                                                  height: 0)
-            vc.appConfig = appConfig
-            vc.message = message
-            break
-        case .noSegue:
-            break
-        }
-    }
-
-    private func composeMode(for segueId: SegueIdentifier) -> ComposeUtil.ComposeMode {
-        if segueId == .segueReplyFrom {
-            return .replyFrom
-        } else if segueId == .segueReplyAllForm {
-            return  .replyAll
-        } else if segueId == .segueForward {
-            return  .forward
-        } else {
-            Log.shared.errorAndCrash("Unsupported input")
-            return .replyFrom
-        }
-    }
+extension EmailViewController {
 
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
@@ -296,50 +219,48 @@ extension EmailViewController: MessageAttachmentDelegate {
 
     func didTap(cell: MessageCell, attachment: Attachment, location: CGPoint, inView: UIView?) {
         let busyState = inView?.displayAsBusy()
-        let attachmentOp = AttachmentToLocalURLOperation(attachment: attachment)
-        attachmentOp.completionBlock = { [weak self] in
+        attachment.saveToTmpDirectory { [weak self] url in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            guard let url = url else {
+                Log.shared.errorAndCrash("No Local URL")
+                return
+            }
             let safeAttachment = attachment.safeForSession(Session.main)
-
             GCD.onMain {
                 defer {
                     if let bState = busyState {
                         inView?.stopDisplayingAsBusy(viewBusyState: bState)
                     }
                 }
-                guard let url = attachmentOp.fileURL else { //!!!: looks suspicously like retain cycle. attachmentOp <-> completionBlock
-                    return
-                }
-                me.didCreateLocally(attachment: safeAttachment,
-                                    url: url,
-                                    cell: cell,
-                                    location: location,
-                                    inView: inView)
+                me.showToUser(documentAt: url,
+                              givenMimeType: safeAttachment.mimeType,
+                              representedBy: cell,
+                              showAt: location,
+                              in: inView)
             }
         }
-        backgroundQueue.addOperation(attachmentOp)
     }
 
-    private func didCreateLocally(attachment: Attachment,
-                                  url: URL,
-                                  cell: MessageCell,
-                                  location: CGPoint,
-                                  inView: UIView?) {
+    private func showToUser(documentAt url: URL,
+                            givenMimeType: String?,
+                            representedBy cell: MessageCell,
+                            showAt location: CGPoint,
+                            in view: UIView?) {
         let mimeType = MimeTypeUtils.findBestMimeType(forFileAt: url,
-                                                      withGivenMimeType: attachment.mimeType)
+                                                      withGivenMimeType: givenMimeType)
         if mimeType == MimeTypeUtils.MimesType.pdf
             && QLPreviewController.canPreview(url as QLPreviewItem) {
             delegate?.showPdfPreview(forPdfAt: url)
         } else {
             documentInteractionController.url = url
-            let theView = inView ?? cell
+            let presentingView = view ?? cell
             let dim: CGFloat = 40
             let rect = CGRect.rectAround(center: location, width: dim, height: dim)
             documentInteractionController.presentOptionsMenu(from: rect,
-                                                             in: theView,
+                                                             in: presentingView,
                                                              animated: true)
         }
     }

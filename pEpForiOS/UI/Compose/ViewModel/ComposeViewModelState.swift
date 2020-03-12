@@ -129,9 +129,9 @@ extension ComposeViewModel {
             if let from = from {
                 newValue.from = Identity.makeSafe(from, forSession: session)
             }
-            newValue.inlinedAttachments = Attachment.clone(attachmnets: inlinedAttachments,
+            newValue.inlinedAttachments = Attachment.clone(attachmnets: inlinedAttachments, //BUFF: Looks very wrong to me. Why clone? should make save?!
                                                            for: session)
-            newValue.nonInlinedAttachments = Attachment.clone(attachmnets: nonInlinedAttachments,
+            newValue.nonInlinedAttachments = Attachment.clone(attachmnets: nonInlinedAttachments, //BUFF: Looks very wrong to me. Why clone? should make save?!
                                                               for: session)
             newValue.isValidatedForSending = isValidatedForSending
             newValue.pEpProtection = pEpProtection
@@ -239,13 +239,13 @@ extension ComposeViewModel.ComposeViewModelState {
         return !handshakeActionCombinations().isEmpty
     }
 
-    private func handshakeActionCombinations() -> [HandshakeCombination] {
+    private func handshakeActionCombinations() -> [TrustManagementUtil.HandshakeCombination] {
         if let from = from {
             var allIdenties = toRecipients
             allIdenties.append(from)
             allIdenties.append(contentsOf: ccRecipients)
             allIdenties.append(contentsOf: bccRecipients)
-            return Message.handshakeActionCombinations(identities: allIdenties)
+            return TrustManagementUtil().handshakeCombinations(identities: allIdenties)
         } else {
             return []
         }

@@ -67,6 +67,25 @@ class ComposeViewModel {
 
     private var suggestionsVM: SuggestViewModel?
     private var lastRowWithSuggestions: IndexPath?
+
+    /// IndexPath of "To:" receipientVM
+    private var indexPathToVm: IndexPath {
+        return IndexPath(item: 0, section: 0)
+    }
+
+    /// IndexPath of "Subject" VM
+    private var indexPathSubjectVm: IndexPath {
+        let subjectSection = section(for: .subject)
+        guard
+            let vm = subjectSection?.rows.first,
+            let idxSubject = indexPath(for: vm) else {
+                Log.shared.errorAndCrash("No Subject?")
+                return IndexPath(row: 0, section: 0)
+        }
+        return idxSubject
+    }
+
+    /// IndexPath of "Body" VM
     private var indexPathBodyVm: IndexPath {
         let bodySection = section(for: .body)
         guard
@@ -104,11 +123,16 @@ class ComposeViewModel {
         return sections[indexPath.section].rows[indexPath.row]
     }
 
+    /// - returns: the indexpath of the cell to set focus the to.
     public func initialFocus() -> IndexPath {
         if state.initData?.toRecipients.isEmpty ?? false {
-            let to = IndexPath(row: 0, section: 0)
-            return to
+            // Use cases: new mail or forward (no To: prefilled)
+            return indexPathToVm
+        } else if state.subject.isEmpty || state.subject.isOnlyWhiteSpace() {
+            // Use case: open compose by clicking mailto: link
+            return indexPathSubjectVm
         } else {
+            // Use case: reply a mail (to and subject are set)
             return indexPathBodyVm
         }
     }
@@ -650,27 +674,31 @@ extension ComposeViewModel {
     }
 }
 
-// MARK: - HandshakeViewModel
+// MARK: - TrustManagementViewModel
 
 extension ComposeViewModel {
-    // There is no view model for HandshakeViewController yet, thus we are setting up the VC itself
-    // as a workaround to avoid letting the VC know MessageModel
-    func setup(handshakeViewController: HandshakeViewController) {
-        // We MUST use an independent Session here. We do not want the outer world to see it nor to
-        //save somthinng from the state (Attachments, Identitie, ...) when saving the MainSession.
-        let session = Session()
-        let safeState = state.makeSafe(forSession: session)
-        session.performAndWait {
-            guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
-                Log.shared.errorAndCrash("No message")
-                return
-            }
-            handshakeViewController.message = msg
-        }
-    }
 
     func canDoHandshake() -> Bool {
         return state.canHandshake()
+    }
+
+    func trustManagementViewModel() -> TrustManagementViewModel? {
+        guard let message = ComposeUtil.messageToSend(withDataFrom: state) else {
+            Log.shared.errorAndCrash("No message")
+            return nil
+        }
+        let messageSafe = message.safeForSession(Session.main)
+        return TrustManagementViewModel(message: messageSafe,
+                                        pEpProtectionModifyable: true,
+                                        protectionStateChangeDelegate: self)
+    }
+}
+
+// MARK: - TrustmanagementProtectionStateChangeDelegate
+
+extension ComposeViewModel: TrustmanagementProtectionStateChangeDelegate {
+    func protectionStateChanged(to newValue: Bool) {
+        state.pEpProtection = newValue
     }
 }
 
