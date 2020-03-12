@@ -56,9 +56,11 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 13.0, *) {
-            let standard = UINavigationBarAppearance()
-            standard.titleTextAttributes = [.foregroundColor: UIColor.black]
-            navigationController?.navigationBar.standardAppearance = standard
+            let font = UIFont.pepFont(style: .headline, weight: .medium)
+            let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.black,
+                                                                       .font: font,
+                                                                       .baselineOffset: 2]
+            navigationController?.navigationBar.standardAppearance.titleTextAttributes = titleTextAttributes
         } else {
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
         }
@@ -85,6 +87,7 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         navigationController?.setToolbarHidden(false, animated: true)
         if MiscUtil.isUnitTest() {
             return
@@ -102,10 +105,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
         }
 
         updateFilterText()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
     }
 
     deinit {
