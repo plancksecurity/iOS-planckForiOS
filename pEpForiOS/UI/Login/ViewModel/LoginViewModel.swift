@@ -85,7 +85,8 @@ final class LoginViewModel {
                               viewController: viewController)
     }
 
-    /// Tries to "login", that is, retrieve account data, with the given parameters.
+    /// Depending on account type, either tries to retrive account settings via a query
+    /// to the account settings lib, or procedes directly to attempting login.
     /// - Parameters:
     ///   - emailAddres: The email of this account
     ///   - displayName: The chosen name of the user, or nick
@@ -97,6 +98,30 @@ final class LoginViewModel {
                loginName: String? = nil,
                password: String? = nil,
                accessToken: OAuth2AccessTokenProtocol? = nil) {
+        if verifiableAccount.containsCompleteServerInfo {
+            checkIfServerShouldBeConsideredATrustedServer()
+        } else {
+            loginViaAccountSettings(emailAddress: emailAddress,
+                                    displayName: displayName,
+                                    loginName: loginName,
+                                    password: password,
+                                    accessToken: accessToken)
+        }
+    }
+
+    /// Tries to get login information via account settings, then continues with
+    /// the account setup (login).
+    /// - Parameters:
+    ///   - emailAddress: The email of this account
+    ///   - displayName: The chosen name of the user, or nick
+    ///   - loginName: The optional login name for this account, if different from the email
+    ///   - password: The password for the account
+    ///   - accessToken: The access token for this account
+    func loginViaAccountSettings(emailAddress: String,
+                                 displayName: String,
+                                 loginName: String? = nil,
+                                 password: String? = nil,
+                                 accessToken: OAuth2AccessTokenProtocol? = nil) {
         let acSettings = AccountSettings(accountName: emailAddress,
                                          provider: nil,
                                          flags: AS_FLAG_USE_ANY,
