@@ -17,7 +17,6 @@ protocol AccountTypeSelectorViewModelDelegate: class {
 }
 
 class AccountTypeSelectorViewModel {
-    private var verifiableAccount: VerifiableAccountProtocol
     private let clientCertificateUtil: ClientCertificateUtilProtocol
 
     public weak var delegate: AccountTypeSelectorViewModelDelegate?
@@ -25,9 +24,9 @@ class AccountTypeSelectorViewModel {
     /// list of providers to show
     private let accountTypes: [VerifiableAccount.AccountType] = [.gmail, .clientCertificate, .other]
 
-    init(verifiableAccount: VerifiableAccountProtocol? = nil,
-         clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
-        self.verifiableAccount = verifiableAccount ?? VerifiableAccount()
+    var chosenAccountType: VerifiableAccount.AccountType = .other
+
+    init(clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
         self.clientCertificateUtil = clientCertificateUtil ?? ClientCertificateUtil()
     }
 
@@ -53,7 +52,7 @@ class AccountTypeSelectorViewModel {
         if clientCertificateUtil.listCertificates(session: nil).count == 0 {
             delegate?.showMustImportClientCertificateAlert()
         } else {
-            verifiableAccount.accountType = .clientCertificate
+            chosenAccountType = .clientCertificate
             delegate?.showClientCertificateSeletionView()
         }
     }
@@ -79,14 +78,14 @@ class AccountTypeSelectorViewModel {
     }
 
     public func handleDidSelect(rowAt indexPath: IndexPath) {
-        verifiableAccount.accountType = accountTypes[indexPath.row]
+        chosenAccountType = accountTypes[indexPath.row]
     }
 
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
-           return ClientCertificateManagementViewModel(verifiableAccount: verifiableAccount)
+        return ClientCertificateManagementViewModel(verifiableAccount: VerifiableAccount.verifiableAccout(for: chosenAccountType))
        }
 
     public func loginViewModel() -> LoginViewModel {
-           return LoginViewModel(verifiableAccount: verifiableAccount)
+           return LoginViewModel(verifiableAccount: VerifiableAccount.verifiableAccout(for: chosenAccountType))
        }
 }

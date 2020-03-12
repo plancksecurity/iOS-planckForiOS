@@ -38,9 +38,8 @@ class AccountTypeSelectorTest: CoreDataDrivenTestBase {
     func testNoClientCertificateAlert() {
         let delegateExpectation = expectation(description: "delegateExpectation")
         let vmDelegate = AccountTypeDelegateMockTest(noClientCertificatesExpectation: delegateExpectation)
-        let verificableAccount = VerificableAccountMockTest()
         let clientCertificateUtil = ClientCertificateUtilMockTest()
-        let vm = AccountTypeSelectorViewModel(verifiableAccount: verificableAccount, clientCertificateUtil: clientCertificateUtil)
+        let vm = AccountTypeSelectorViewModel(clientCertificateUtil: clientCertificateUtil)
         vm.delegate = vmDelegate
         vm.handleDidChooseClientCertificate()
         waitForExpectations(timeout: TestUtil.waitTime)
@@ -51,8 +50,7 @@ class AccountTypeSelectorTest: CoreDataDrivenTestBase {
         let delegateExpectation = expectation(description: "delegateExpectation")
         let vmDelegate = AccountTypeDelegateMockTest(thereAreClientCertificatesExpectation: delegateExpectation)
         let clientCertificateUtil = ClientCertificateUtilMockTest(thereAreCerts: true)
-        let verificableAccount = VerificableAccountMockTest()
-        let vm = AccountTypeSelectorViewModel(verifiableAccount: verificableAccount, clientCertificateUtil: clientCertificateUtil)
+        let vm = AccountTypeSelectorViewModel(clientCertificateUtil: clientCertificateUtil)
         vm.delegate = vmDelegate
         vm.handleDidChooseClientCertificate()
         waitForExpectations(timeout: TestUtil.waitTime)
