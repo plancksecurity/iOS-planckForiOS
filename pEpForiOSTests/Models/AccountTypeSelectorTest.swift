@@ -15,6 +15,26 @@ import PEPObjCAdapterFramework
 
 class AccountTypeSelectorTest: CoreDataDrivenTestBase {
     
+    func testNumberOfExpectedRowsWithoutCertificate() {
+        let expectedNumberOfRows = 2
+        let vmDelegate = AccountTypeDelegateMockTest()
+        let verificableAccount = VerificableAccountMockTest()
+        let clientCertificateUtil = ClientCertificateUtilMockTest()
+        let vm = AccountTypeSelectorViewModel(verifiableAccount: verificableAccount, clientCertificateUtil: clientCertificateUtil)
+        vm.delegate = vmDelegate
+        XCTAssertEqual(vm.count, expectedNumberOfRows)
+    }
+    
+    func testNumberOfExpectedRowsWithCertificate() {
+        let expectedNumberOfRows = 3
+        let vmDelegate = AccountTypeDelegateMockTest()
+        let verificableAccount = VerificableAccountMockTest()
+        let clientCertificateUtil = ClientCertificateUtilMockTest(thereAreCerts: true)
+        let vm = AccountTypeSelectorViewModel(verifiableAccount: verificableAccount, clientCertificateUtil: clientCertificateUtil)
+        vm.delegate = vmDelegate
+        XCTAssertEqual(vm.count, expectedNumberOfRows)
+    }
+    
     func testNoPreviousAccount() {
         let vm = AccountTypeSelectorViewModel()
         Account.all().forEach { (acc) in
@@ -69,13 +89,6 @@ class AccountTypeSelectorTest: CoreDataDrivenTestBase {
         XCTAssertEqual(vm.fileNameOrText(provider: .gmail), "asset-Google")
         XCTAssertEqual(vm.fileNameOrText(provider: .other), "Other")
     }
-    
-    func testNumberOfSections() {
-        let expectedSections = 3
-        let vm = AccountTypeSelectorViewModel()
-        XCTAssertEqual(expectedSections, vm.count)
-    }
-    
 }
 
 class AccountTypeDelegateMockTest: AccountTypeSelectorViewModelDelegate {
