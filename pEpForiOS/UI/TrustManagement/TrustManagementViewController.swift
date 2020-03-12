@@ -48,7 +48,7 @@ class TrustManagementViewController: BaseViewController {
                                                                    preferredStyle: .alert)
         let confirmTitle = NSLocalizedString("Undo", comment: "Undo trust change verification button title")
         let action = UIAlertAction(title: confirmTitle, style: .default) { [weak vm] (action) in
-            vm?.shakeMotionDidEnd()
+            vm?.handleShakeMotionDidEnd()
         }
         alertController.addAction(action)
         
@@ -130,16 +130,16 @@ extension TrustManagementViewController : UITableViewDataSource  {
                 Log.shared.error("The TrustManagementTableViewCell couldn't be dequeued")
                 return UITableViewCell()
         }
-        viewModel?.getImage(forRowAt: indexPath, complete: { (image) in
+        viewModel?.getImage(forRowAt: indexPath) { (image) in
             DispatchQueue.main.async {
                 cell.partnerImageView.image = image
             }
-        })
+        }
         cell.privacyStatusImageView.image = row.privacyStatusImage
         cell.partnerNameLabel.text = row.name
         cell.privacyStatusLabel.text = row.privacyStatusName
         cell.descriptionLabel.text = row.description
-        configureTrustwords(identifier, row, cell, indexPath)
+        setupCell(cell, withDataFrom: row, cellIdentifier: identifier)
         cell.delegate = self
         return cell
     }
@@ -189,24 +189,19 @@ extension TrustManagementViewController {
         let alertController = UIAlertController.pEpAlertController(title: nil,
                                                                    message: nil,
                                                                    preferredStyle: .actionSheet)
-        guard let languages = viewModel?.handleChangeLanguagePressed(forRowAt: indexPath) else {
-            Log.shared.error("Languages not found")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
             return
         }
         //For every language a row in the action sheet.
-        for language in languages {
+        for language in vm.languages {
             guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)
                 else {
                     Log.shared.debug("Language name not found")
                     break
             }
-            let action = UIAlertAction(title: languageName, style: .default) { [weak self] (action) in
-                guard let me = self else {
-                    Log.shared.error("Lost myself")
-                    return
-                }
-                me.viewModel?.didSelectLanguage(forRowAt: indexPath,
-                                                language: language)
+            let action = UIAlertAction(title: languageName, style: .default) { (action) in
+                vm.handleDidSelect(language: language, forRowAt: indexPath)
             }
             alertController.addAction(action)
         }
@@ -224,11 +219,16 @@ extension TrustManagementViewController {
     }
 }
 
-/// MARK: - Handshake ViewModel Delegate
+/// MARK: - TrustManagementViewModelDelegate
 
 extension TrustManagementViewController: TrustManagementViewModelDelegate {
-    
-    @objc public func reload() {
+
+    func dataChanged(forRowAt indexPath: IndexPath) {
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+    }
+
+    @objc // Is objC because we also call this from the VC as a selector.
+    public func reload() {
         UIView.setAnimationsEnabled(false)
         tableView.reloadData()
         UIView.setAnimationsEnabled(true)
@@ -268,44 +268,6 @@ extension TrustManagementViewController {
     
     private func unregisterNotifications() {
         NotificationCenter.default.removeObserver(self)
-    }
-}
-
-/// MARK: - Set trustwords
-
-extension TrustManagementViewController {
-    
-    /// Generates and sets the trustwords to the cell
-    /// - Parameters:
-    ///   - cell: The cell where the trustwords would be setted
-    ///   - indexPath: The indexPath of the row to generate the trustwords.
-    ///   - longMode: Indicates if the trustwords have to be long.
-    private func setTrustwords(for cell: TrustManagementTableViewCell,
-                               at indexPath: IndexPath,
-                               longMode: Bool) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-        vm.generateTrustwords(forRowAt: indexPath, long: longMode) { [weak self] trustwords in
-            guard let trustwords = trustwords else {
-                Log.shared.debug("Trustwords are nil. The view must not be updated")
-                return
-            }
-            guard let me = self else {
-                Log.shared.error("Lost myself")
-                return
-            }
-
-            let oneSpace = " "
-            let threeSpaces = "   "
-            let spacedTrustwords = trustwords.replacingOccurrences(of: oneSpace, with: threeSpaces)
-            let textToSet = longMode ? spacedTrustwords : "\(spacedTrustwords)…"
-            if (cell.trustwordsLabel.text != textToSet) {
-                cell.trustwordsLabel.text = textToSet
-                me.tableView.updateSize()
-            }
-        }
     }
 }
 
@@ -372,21 +334,23 @@ extension TrustManagementViewController {
     ///   - row: The row to get information to configure the cell.
     ///   - cell: The cell to be configured.
     ///   - indexPath: The indexPath of the row, to get the trustwords.
-    private func configureTrustwords(_ identifier: String, _ row: TrustManagementViewModel.Row, _ cell: TrustManagementTableViewCell, _ indexPath: IndexPath) {
+    private func setupCell(_ cell: TrustManagementTableViewCell,
+                           withDataFrom row: TrustManagementViewModel.Row,
+                           cellIdentifier: String) { //MARTIN: bad & wrong. 1) uses PEPColor. MSUT use only UI.., String or VM. this causes 2) login in VC instead of VM 3) Logic completely untested as not in VM (untestable)
         ///Yellow means secure but not trusted.
         ///That means that's the only case must display the trustwords
-        if identifier == onlyMasterCellIdentifier {
+        if cellIdentifier == onlyMasterCellIdentifier {
             if row.color == .yellow {
-                setTrustwords(for: cell, at: indexPath, longMode: row.longTrustwords)
+                cell.trustwordsLabel.text = row.trustwords
                 cell.trustwordsStackView.isHidden = false
                 cell.trustwordsButtonsContainer.isHidden = false
             } else {
                 cell.trustwordsStackView.isHidden = true
                 cell.trustwordsButtonsContainer.isHidden = true
             }
-        } else if identifier == masterAndDetailCellIdentifier {
+        } else if cellIdentifier == masterAndDetailCellIdentifier {
             if row.color == .yellow {
-                setTrustwords(for: cell, at: indexPath, longMode: row.longTrustwords)
+                cell.trustwordsLabel.text = row.trustwords
                 cell.trustwordsLabel.isHidden = false
                 cell.confirmButton.isHidden = false
                 cell.declineButton.isHidden = false

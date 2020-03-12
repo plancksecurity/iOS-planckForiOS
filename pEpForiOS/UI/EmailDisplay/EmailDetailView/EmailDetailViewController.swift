@@ -68,7 +68,6 @@ class EmailDetailViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         doOnce?()
-        doOnce = nil
         createSeparators()
         setupToolbar()
     }
@@ -190,6 +189,7 @@ extension EmailDetailViewController {
             }
             me.viewModel?.startMonitoring()
             me.collectionView.reloadData()
+            me.doOnce = nil
         }
     }
 
