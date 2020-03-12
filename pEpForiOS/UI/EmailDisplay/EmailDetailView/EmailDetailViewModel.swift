@@ -154,10 +154,11 @@ class EmailDetailViewModel: EmailDisplayViewModel {
                 Log.shared.info("Nothing shown")
                 return nil
         }
+        
         if msg.imapFlags.flagged {
-            return #imageLiteral(resourceName: "icon-flagged")
+            return UIImage(named: "pEpForiOS-icon-flagged")
         } else {
-            return #imageLiteral(resourceName: "icon-unflagged")
+            return UIImage(named: "pEpForiOS-icon-unflagged")
         }
     }
 

@@ -17,6 +17,14 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
 
     private let searchController = UISearchController(searchResultsController: nil)
 
+    override var collapsedBehavior: CollapsedSplitViewBehavior {
+        return .needed
+    }
+    
+    override var separatedBehavior: SeparatedSplitViewBehavior {
+        return .detail
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -28,6 +36,7 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
         tableView.delegate = self
         // Hide toolbar
         navigationController?.setToolbarHidden(true, animated: false)
+        showNavigationBar()
         model.delegate = self
         // searchBar configuration
         configureSearchBar()

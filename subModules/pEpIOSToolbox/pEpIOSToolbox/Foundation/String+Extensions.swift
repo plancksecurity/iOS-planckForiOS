@@ -15,19 +15,12 @@ extension String {
     static public let space = " "
 
     static let unquoteRegex = try! NSRegularExpression(pattern: "^\"(.*)\"$", options: [])
-
-    static let namePartOfEmailRegex = try! NSRegularExpression(pattern: "^([^@]+)@", options: [])
-
     static let endWhiteSpaceRegex = try! NSRegularExpression(pattern: "^(.*?)\\s*$", options: [])
+    static let newlineRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n)+", options: [])
+    static let threeOrMoreNewlinesRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n){3,}", options: [])
+    static let fileExtensionRegex = try! NSRegularExpression(pattern: "^([^.]+)\\.([^.]+)$", options: [])
+    static let emailRegex = try! NSRegularExpression(pattern: "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}", options: [])
 
-    static let newlineRegex = try! NSRegularExpression(
-        pattern: "(\\n|\\r\\n)+", options: [])
-
-    static let threeOrMoreNewlinesRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n){3,}",
-                                                                   options: [])
-
-    static let fileExtensionRegex = try! NSRegularExpression(pattern: "^([^.]+)\\.([^.]+)$",
-                                                             options: [])
 
     /**
      Trims whitespace from back and front.
@@ -65,24 +58,6 @@ extension String {
      */
     public func fullyUnquoted() -> String {
         return trimmed().unquote().trimmed()
-    }
-
-    /**
-     - Returns: The name part of an email, e.g. "test@blah.com" -> "test"
-     */
-    public func namePartOfEmail() -> String {
-            let matches = String.namePartOfEmailRegex.matches(
-                in: self, options: [], range: wholeRange())
-            if matches.count == 1 {
-                let m = matches[0]
-                let r = m.range(at: 1)
-                if r.location != NSNotFound {
-                    let s = self as NSString
-                    let result = s.substring(with: r)
-                    return result
-                }
-            }
-        return self.replacingOccurrences(of: "@", with: "_")
     }
 
     public func containsString(_ substring: String, ignoreCase: Bool = true,
@@ -387,12 +362,11 @@ extension String {
      - Returns: The first part of a String, with a maximum length of `ofLength`.
      */
     public func prefix(ofLength: Int) -> String {
-        if self.count >= ofLength {
-            let start = self.startIndex
-            return String(prefix(upTo: self.index(start, offsetBy: ofLength)))
-        } else {
-            return self
+        if count >= ofLength {
+            let start = startIndex
+            return String(prefix(upTo: index(start, offsetBy: ofLength)))
         }
+        return self
     }
 
     /**
@@ -400,27 +374,33 @@ extension String {
      delimiters like "-", or " ".
      */
     func tokens() -> [String] {
-        return self.components(separatedBy: CharacterSet(charactersIn: "- ")).map {
+        return components(separatedBy: CharacterSet(charactersIn: "- ")).map {
             return $0.trimmingCharacters(in: .whitespacesAndNewlines)
         }
     }
-
-    /**
-     - Returns: The initials of the String interpreted as a name,
-     that is ideally the first letters of the given name and the last name.
-     If that is not possible, improvisations are used.
-     */
-    public func initials() -> String {
-        let words = tokens()
+    
+    /// - Returns: the initials of the String interpreted as a name.
+    /// that is ideally the first letters of the given name and lastname.
+    /// If it only has one word (name or lastname) that will be taken to get the initial.
+    /// If not possible, returns nil.
+    public func initials() -> String? {
+        var words = tokens()
+        words = words.filter{ !String.emailRegex.matchesWhole(string: $0) }
         if words.count == 0 {
-            return "?"
+            return nil
         }
+        let pattern = "[^A-Za-z]"
+        words = words.map { $0.replacingOccurrences(of: pattern, with: "", options: [.regularExpression]) }
+        
         if words.count == 1 {
-            return self.prefix(ofLength: 2)
+            return prefix(ofLength: 2)
         }
         let word1 = words[0]
         let word2 = words[words.count - 1]
-        return "\(word1.prefix(ofLength: 1).capitalized)\(word2.prefix(ofLength: 1).capitalized)"
+        
+        let prefix1 = word1.prefix(ofLength: 1)
+        let prefix2 = word2.prefix(ofLength: 1)
+        return "\(prefix1.capitalized)\(prefix2.capitalized)"
     }
 
     /**
@@ -465,24 +445,4 @@ extension String {
         return NSRange(location: 0, length: count)
     }
 
-}
-
-// MARK: - Extensions for create an image from text
-extension String {
-
-    /// returns an image from the actual string
-    /// - Parameters:
-    ///   - size: image size if nil uses the text size
-    public func image(size: CGSize? = nil, color: UIColor = UIColor.black) -> UIImage? {
-//        var paragraphStyle = NSParagraphStyle.defa
-//        paragraphStyle.alignment = NSTextAlignment.center
-        var attributes = [NSAttributedString.Key: Any]()
-        attributes[.foregroundColor] = color
-//        attributes[.paragraphStyle] = paragraphStyle
-        let size = size ?? (self as NSString).size(withAttributes: attributes)
-        return UIGraphicsImageRenderer(size: size).image { _ in
-            (self as NSString).draw(in: CGRect(origin: .zero, size: size),
-                                    withAttributes: attributes)
-        }
-    }
 }

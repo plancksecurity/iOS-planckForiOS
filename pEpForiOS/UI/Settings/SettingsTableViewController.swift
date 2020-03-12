@@ -239,7 +239,7 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let identifier = segueIdentifier(for: indexPath)
         switch identifier {
-        case .passiveMode, .pEpSync, .protectMessageSubject:
+        case .passiveMode, .pEpSync, .protectMessageSubject, .unsecureReplyWarningEnabled:
             return
         case .resetAccounts:
             
@@ -350,8 +350,7 @@ extension SettingsTableViewController {
 
         switch SegueIdentifier(rawValue: segueIdentifier) {
         case .segueEditAccount:
-            guard let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? AccountSettingsTableViewController,
+            guard let destination = segue.destination as? AccountSettingsTableViewController,
                 let indexPath = sender as? IndexPath,
                 let account = viewModel.account(at: indexPath) else {
                     Log.shared.error("SegueIdentifier: segueEditAccount - Early quit! Requirements not met.")

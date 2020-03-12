@@ -47,7 +47,15 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     var oauth2ReauthIndexPath: IndexPath?
     var viewModel: AccountSettingsViewModel? = nil
 
+    override var collapsedBehavior: CollapsedSplitViewBehavior {
+        return .needed
+    }
+    
+    override var separatedBehavior: SeparatedSplitViewBehavior {
+        return .detail
+    }
     private var resetIdentityIndexPath: IndexPath?
+
 
 // MARK: - Life Cycle
 
@@ -62,8 +70,9 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        showNavigationBar()
+        title = NSLocalizedString("Account", comment: "Account view title")
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
-        hideBackButtonIfNeeded()
         //Work around async old stack context merge behaviour
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
@@ -353,12 +362,6 @@ extension AccountSettingsTableViewController {
 
         DispatchQueue.main.async { [weak self] in
             self?.present(pepAlertViewController, animated: true)
-        }
-    }
-
-    private func hideBackButtonIfNeeded() {
-        if !onlySplitViewMasterIsShown {
-            navigationItem.leftBarButtonItem = nil// hidesBackButton = true
         }
     }
 }

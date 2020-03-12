@@ -33,10 +33,27 @@ class EmailDetailViewController: BaseViewController {
     @IBOutlet weak var pEpIconSettingsButton: UIBarButtonItem!
     @IBOutlet weak var moveToFolderButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
+    private var pEpButtonHelper = UIBarButtonItem.getPEPButton(action: #selector(showSettingsViewController),
+                                                               target: self)
+    
+    private var separatorsArray = [UIBarButtonItem]()
+    
+    /// The original navigatio bar
+    var NavigationRightBar: [UIBarButtonItem]?
+    /// tne original toolbar
+    var ToolBar: [UIBarButtonItem]?
 
     /// IndexPath to show on load
     var firstItemToShow: IndexPath?
-
+    
+    override var collapsedBehavior: CollapsedSplitViewBehavior {
+        return .needed
+    }
+    
+    override var separatedBehavior: SeparatedSplitViewBehavior {
+        return .detail
+    }
+    
     var viewModel: EmailDetailViewModel? {
         didSet {
             viewModel?.delegate = self
@@ -52,6 +69,7 @@ class EmailDetailViewController: BaseViewController {
         super.viewWillAppear(animated)
         doOnce?()
         doOnce = nil
+        createSeparators()
         setupToolbar()
     }
 
@@ -145,10 +163,12 @@ class EmailDetailViewController: BaseViewController {
         showSettingsViewController()
     }
 
+    @objc
     @IBAction func previousButtonPressed(_ sender: UIBarButtonItem) {
         showPreviousIfAny()
     }
     
+    @objc
     @IBAction func nextButtonPressed(_ sender: UIBarButtonItem) {
         showNextIfAny()
     }
@@ -209,12 +229,7 @@ extension EmailDetailViewController {
 
     @objc
     private func showTrustManagementView(gestureRecognizer: UITapGestureRecognizer? = nil) {
-        if onlySplitViewMasterIsShown {
-            performSegue(withIdentifier: .segueTrustManagementCollapsed, sender: self)
-
-        } else {
             performSegue(withIdentifier: .segueTrustManagement, sender: self)
-        }
     }
 
     private var indexPathOfCurrentlyVisibleCell: IndexPath? {
@@ -274,15 +289,14 @@ extension EmailDetailViewController {
     }
 
     private func configureView() {
-        // Make sure the NavigationBar is shown, even if the previous view has hidden it.
-        navigationController?.setNavigationBarHidden(false, animated: false) //XAVIER: rm NC in storyboard after new SplitView handling approach is in.
-
         //ToolBar
         if splitViewController != nil {
             if onlySplitViewMasterIsShown {
                 navigationController?.setToolbarHidden(false, animated: false)
             } else {
+                // Make sure the NavigationBar is shown, even if the previous view has hidden it.
                 navigationController?.setToolbarHidden(true, animated: false)
+                navigationController?.setNavigationBarHidden(false, animated: false)
             }
         }
         guard let vm = viewModel else {
@@ -290,8 +304,8 @@ extension EmailDetailViewController {
             return
         }
 
-        destructiveButton.image = vm.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
-        flagButton.image = vm.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
+        destructiveButton?.image = vm.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
+        flagButton?.image = vm.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
 
         previousButton?.isEnabled = thereIsAPreviousMessageToShow
         nextButton?.isEnabled = thereIsANextMessageToShow
@@ -377,7 +391,7 @@ extension EmailDetailViewController {
     }
 
     @objc
-    private func showHandshakeScreen() {
+    private func showTrustManagementScreen() {
         splitViewController?.preferredDisplayMode = .allVisible
         guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
             let vc = nav.topViewController else {
@@ -515,7 +529,6 @@ extension EmailDetailViewController: SegueHandlerType {
         case segueReplyAllForm
         case segueForward
         case segueTrustManagement
-        case segueTrustManagementCollapsed
         case segueShowMoveToFolder
         case noSegue
     }
@@ -560,7 +573,7 @@ extension EmailDetailViewController: SegueHandlerType {
             }
             destination.appConfig = appConfig
             destination.viewModel = viewModel?.getMoveToFolderViewModel(forMessageRepresentedByItemAt: indexPath)
-        case .segueTrustManagement, .segueTrustManagementCollapsed:
+        case .segueTrustManagement:
             guard let nv = segue.destination as? UINavigationController,
                 let vc = nv.topViewController as? TrustManagementViewController ,
                 let trustManagementViewModel = viewModel?.trustManagementViewModel else {
@@ -772,9 +785,66 @@ extension EmailDetailViewController: QLPreviewControllerDataSource {
     }
 }
 
+// MARK: - SplitView handling
+
+extension EmailDetailViewController: SplitViewHandlingProtocol {
+    func splitViewControllerWill(splitViewController: PEPSplitViewController, newStatus: SplitViewStatus) {
+        switch newStatus {
+        case .collapse:
+            // when splitview will collapse toolbar shoud be prepared
+            var newToolbarItems = navigationItem.rightBarButtonItems
+            navigationItem.rightBarButtonItems = nil
+            if let pepButton = pEpIconSettingsButton {
+                newToolbarItems?.append(createFlexibleBarButtonItem())
+                newToolbarItems?.append(pepButton)
+            } else {
+                newToolbarItems?.append(createFlexibleBarButtonItem())
+                newToolbarItems?.append(pEpButtonHelper)
+            }
+            var newtoolbar = [UIBarButtonItem]()
+            for item in newToolbarItems! {
+                if separatorsArray.contains(item) {
+                    newtoolbar.append(createFlexibleBarButtonItem())
+                } else {
+                    newtoolbar.append(item)
+                }
+            }
+            setToolbarItems(newtoolbar, animated: true)
+            let next = UIBarButtonItem.getNextButton(action: #selector(nextButtonPressed), target: self)
+            let previous = UIBarButtonItem.getPreviousButton(action: #selector(previousButtonPressed), target: self)
+            previous.isEnabled = thereIsAPreviousMessageToShow
+            next.isEnabled = thereIsANextMessageToShow
+            navigationItem.rightBarButtonItems = [previous, next]
+        case .separate:
+            //view itself correctly handles the bars when is gonna separate
+            break
+        }
+    }
+    /// Our own factory method for creating flexible space bar button items,
+    /// tagged so we recognize them later, for easy removal.
+    private func createFlexibleBarButtonItem() -> UIBarButtonItem {
+        let item = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+            target: nil,
+            action: nil)
+        return item
+    }
+}
+
 // MARK: - Setup Toolbar
 
 extension EmailDetailViewController {
+    private func createSeparators() {
+        //Spacer
+        let defaultSpacerWidth: CGFloat = 8.0
+        let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        spacer.width = defaultSpacerWidth
+        
+        let midSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        midSpacer.width = 18
+        
+        separatorsArray.append(contentsOf: [spacer,midSpacer])
+    }
     private func setupToolbar() {
         let size = CGSize(width: 15, height: 25)
         nextButton?.image = nextButton?.image?.resizeImage(targetSize: size)
@@ -799,24 +869,13 @@ extension EmailDetailViewController {
             upButton.addTarget(self, action: #selector(showPreviousIfAny), for: .touchUpInside)
             upButton.isEnabled = thereIsAPreviousMessageToShow
 
-            //Spacer
-            let defaultSpacerWidth: CGFloat = 8.0
-            let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-            spacer.width = defaultSpacerWidth
-
             let downBarButtonItem = UIBarButtonItem(customView: downButton)
             let upBarButtonItem = UIBarButtonItem(customView: upButton)
             
             downBarButtonItem.isEnabled = thereIsANextMessageToShow
             upBarButtonItem.isEnabled = thereIsAPreviousMessageToShow
             
-            navigationItem.leftBarButtonItems = [downBarButtonItem, spacer, upBarButtonItem]
-            
-            let midSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-            midSpacer.width = 18
-            
-            let largeSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-            largeSpacer.width = 22
+            navigationItem.leftBarButtonItems = [downBarButtonItem, separatorsArray[0], upBarButtonItem]
 
             //Reply
             let replyImage = UIImage(named: "pEpForiOS-icon-reply")
@@ -851,11 +910,11 @@ extension EmailDetailViewController {
 
             
             navigationItem.rightBarButtonItems = [replyBarButtonItem,
-                                                  midSpacer,
+                                                  separatorsArray[1],
                                                   folderButtonBarButtonItem,
-                                                  midSpacer,
+                                                  separatorsArray[1],
                                                   flagBarButtonItem,
-                                                  midSpacer,
+                                                  separatorsArray[1],
                                                   deleteButtonBarButtonItem]
         } else {
             navigationItem.leftBarButtonItems = []
