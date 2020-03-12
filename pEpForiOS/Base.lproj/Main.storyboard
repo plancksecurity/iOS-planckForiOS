@@ -212,7 +212,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m6c-dF-C80" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2942" y="-1845"/>
+            <point key="canvasLocation" x="2941.5999999999999" y="-1845.4272863568217"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pH2-0g-XGV">
@@ -440,13 +440,13 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnw-Tp-mga">
-                                            <rect key="frame" x="20" y="11" width="331" height="33.5"/>
+                                            <rect key="frame" x="20" y="11" width="331" height="33"/>
                                             <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: Recipients" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mfx-AS-hpP">
-                                            <rect key="frame" x="20" y="50.5" width="331" height="15.5"/>
+                                            <rect key="frame" x="20" y="50" width="331" height="16"/>
                                             <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                             <color key="textColor" red="0.5490196078431373" green="0.5490196078431373" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -983,6 +983,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="cRe-YG-393"/>
         <segue reference="CKh-jT-ski"/>
-        <segue reference="6by-Pi-xWQ"/>
+        <segue reference="Bs0-pZ-8nY"/>
     </inferredMetricsTieBreakers>
 </document>
