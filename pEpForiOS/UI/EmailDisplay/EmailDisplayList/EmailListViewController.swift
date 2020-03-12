@@ -55,6 +55,13 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if #available(iOS 13.0, *) {
+            let standard = UINavigationBarAppearance()
+            standard.titleTextAttributes = [.foregroundColor: UIColor.black]
+            navigationController?.navigationBar.standardAppearance = standard
+        } else {
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
+        }
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -1169,6 +1176,7 @@ extension EmailListViewController: SegueHandlerType {
             }
             vc.appConfig = appConfig
             vc.loginDelegate = self
+            vc.needsWhiteTintColor = true
             vc.hidesBottomBarWhenPushed = true
             break
         case .segueFolderViews:

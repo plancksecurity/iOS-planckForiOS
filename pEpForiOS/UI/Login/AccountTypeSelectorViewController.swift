@@ -154,6 +154,7 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
             vc.appConfig = appConfig
             vc.viewModel = viewModel.loginViewModel()
             vc.delegate = loginDelegate
+            vc.needsWhiteTintColor = true
         case .clientCertManagementSegue:
             guard let dvc = segue.destination as? ClientCertificateManagementViewController else {
                 Log.shared.errorAndCrash("Invalid state")

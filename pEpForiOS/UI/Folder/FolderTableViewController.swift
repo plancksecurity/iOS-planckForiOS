@@ -256,11 +256,10 @@ extension FolderTableViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Missing VCs")
                     return
             }
+            vc.needsWhiteTintColor = true
             nav.modalPresentationStyle = .fullScreen
             vc.appConfig = self.appConfig
-            
             vc.hidesBottomBarWhenPushed = true
-
         case .settingsSegue:
             guard let dvc = segue.destination as? SettingsTableViewController else {
                 Log.shared.errorAndCrash("Error casting DVC")

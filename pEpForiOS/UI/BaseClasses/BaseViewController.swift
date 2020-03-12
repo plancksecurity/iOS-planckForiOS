@@ -13,6 +13,9 @@ import MessageModel
 
 class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
     private var _appConfig: AppConfig?
+    
+    var needsWhiteTintColor : Bool = false
+
     var appConfig: AppConfig! {
         get {
             guard _appConfig != nil else {
@@ -29,6 +32,22 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
 
     func didSetAppConfig() {
         // Do nothing. Meant to override in subclasses.
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if needsWhiteTintColor {
+            navigationController?.navigationBar.barTintColor = UIColor.white //iOS 13
+            UINavigationBar.appearance().tintColor = UIColor.white //iOS 11
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if needsWhiteTintColor {
+            navigationController?.navigationBar.barTintColor = UIColor.black
+            UINavigationBar.appearance().tintColor = UIColor.black
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
