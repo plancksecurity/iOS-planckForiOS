@@ -19,6 +19,8 @@ protocol AccountTypeSelectorViewModelDelegate: class {
 class AccountTypeSelectorViewModel {
     private let clientCertificateUtil: ClientCertificateUtilProtocol
 
+    private var verifiableAccount: VerifiableAccountProtocol?
+
     public weak var delegate: AccountTypeSelectorViewModelDelegate?
 
     /// list of providers to show
@@ -82,10 +84,16 @@ class AccountTypeSelectorViewModel {
     }
 
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
-        return ClientCertificateManagementViewModel(verifiableAccount: VerifiableAccount.verifiableAccout(for: chosenAccountType))
+        // Client certificate handling will insert a client certificate into the given verifiable
+        // account (hidden side effect), therefore from this point on it needs to be
+        // persistent.
+        verifiableAccount = verifiableAccount ?? VerifiableAccount.verifiableAccout(for: chosenAccountType)
+        return ClientCertificateManagementViewModel(verifiableAccount: verifiableAccount)
        }
 
     public func loginViewModel() -> LoginViewModel {
-           return LoginViewModel(verifiableAccount: VerifiableAccount.verifiableAccout(for: chosenAccountType))
+        // If we handled certificates, then the verifiable account is already set and must be used.
+        verifiableAccount = verifiableAccount ?? VerifiableAccount.verifiableAccout(for: chosenAccountType)
+        return LoginViewModel(verifiableAccount: verifiableAccount)
        }
 }
