@@ -57,7 +57,8 @@ final class LoginViewModel {
     let qualifyServerIsLocalService = QualifyServerIsLocalService()
 
     init(verifiableAccount: VerifiableAccountProtocol? = nil) {
-        self.verifiableAccount = verifiableAccount ?? VerifiableAccount()
+        self.verifiableAccount = verifiableAccount ??
+            VerifiableAccount.verifiableAccout(for: .other)
     }
 
 
