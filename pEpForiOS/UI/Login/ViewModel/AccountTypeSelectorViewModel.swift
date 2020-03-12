@@ -9,8 +9,6 @@
 import Foundation
 import MessageModel
 
-
-
 protocol AccountTypeSelectorViewModelDelegate: class {
     func showMustImportClientCertificateAlert()
     func showClientCertificateSeletionView()
@@ -83,9 +81,9 @@ class AccountTypeSelectorViewModel {
 
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
         return ClientCertificateManagementViewModel(verifiableAccount: VerifiableAccount.verifiableAccout(for: chosenAccountType))
-       }
+    }
 
     public func loginViewModel() -> LoginViewModel {
-           return LoginViewModel(verifiableAccount: VerifiableAccount.verifiableAccout(for: chosenAccountType))
-       }
+        return LoginViewModel(verifiableAccount: VerifiableAccount.verifiableAccout(for: chosenAccountType))
+    }
 }
