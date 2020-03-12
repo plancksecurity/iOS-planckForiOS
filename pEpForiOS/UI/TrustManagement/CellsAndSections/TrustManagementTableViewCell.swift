@@ -88,8 +88,8 @@ final class TrustManagementTableViewCell: UITableViewCell {
         resetButton.pEpIfyForTrust(backgroundColor: .pEpGrayBackgroundReset, textColor: .white)
      
         //Reset label
-        resetLabel.text = NSLocalizedString("Reset all pEp data for this comunication partner:",
-                                            comment: "Reset all pEp data for this comunication partner:")
+        resetLabel.text = NSLocalizedString("Reset all p≡p data for this comunication partner:",
+                                            comment: "Reset all p≡p data for this comunication partner:")
         //Image view
         partnerImageView.layer.cornerRadius = 10
         partnerImageView.layer.masksToBounds = true

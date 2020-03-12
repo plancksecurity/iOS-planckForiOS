@@ -1198,22 +1198,24 @@ extension EmailListViewController: SegueHandlerType {
         guard
             let nav = segue.destination as? UINavigationController,
             let vc = nav.rootViewController as? EmailDetailViewController,
-            let indexPath = lastSelectedIndexPath else {
-                Log.shared.errorAndCrash("Segue issue")
+            let indexPath = lastSelectedIndexPath,
+            let viewModel = viewModel?.emailDetialViewModel() else {
+                Log.shared.errorAndCrash("segueShowEmailSplitView segue issue")
                 return
         }
         vc.appConfig = appConfig
-        vc.viewModel = viewModel?.emailDetialViewModel()
+        vc.viewModel = viewModel
         vc.firstItemToShow = indexPath
         case .segueShowEmailNotSplitView:
             guard
                 let vc = segue.destination as? EmailDetailViewController,
-                let indexPath = lastSelectedIndexPath else {
-                    Log.shared.errorAndCrash("Segue issue")
+                let indexPath = lastSelectedIndexPath,
+                let viewModel = viewModel?.emailDetialViewModel() else {
+                    Log.shared.errorAndCrash("segueShowEmailNotSplitView segue issue")
                     return
             }
             vc.appConfig = appConfig
-            vc.viewModel = viewModel?.emailDetialViewModel()
+            vc.viewModel = viewModel
             vc.firstItemToShow = indexPath
         case .segueShowFilter:
             guard let destiny = segue.destination as? FilterTableViewController else {

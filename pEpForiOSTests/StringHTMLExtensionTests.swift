@@ -69,14 +69,48 @@ class StringHTMLExtensionTests: XCTestCase {
         XCTAssertNotEqual(mdString, inputString)
     }
 
+    // BUG IOS-2126
+    // Test doesn't fullfill our expectations
     func testMarkdownToHtml() {
         let s1 = "Hi, what's up!"
-        XCTAssertEqual(s1.markdownToHtml(), "<p>\(s1)</p>\n")
+        XCTAssertEqual(s1.markdownToHtml(), "<p>\(s1)</p>")
 
         let alt1 = "Image1"
         let ref1 = "cid:001"
         XCTAssertEqual("![\(alt1)](\(ref1))".markdownToHtml(),
-                       "<p><img src=\"\(ref1)\" alt=\"\(alt1)\" /></p>\n")
+                       "<p><img src=\"\(ref1)\" alt=\"\(alt1)\" /></p>")
+    }
+
+    // BUG IOS-2126
+    func testMarkdownToHtmlNewLine() {
+        let newLinePlainText = "\n"
+        let newLineHtmlTag = "<br>"
+        let s1 = "Hi, what's up!" + newLinePlainText
+        let exp = "Hi, what's up!" + newLineHtmlTag
+        XCTAssertEqual(s1.markdownToHtml(), "<p>\(exp)</p>")
+    }
+
+    // BUG IOS-2126
+    func testMarkdownToHtmlTagBr() {
+        let s1 = "\n\n"
+        let sth = s1.markdownToHtml()
+        XCTAssertEqual(sth, "<p><br><br></p>")
+    }
+
+    // BUG IOS-2126
+    func testMarkdownToHtmlTab() {
+        let s1 = "Hello World!\t"
+        let sth = s1.markdownToHtml()
+        XCTAssertEqual(sth, "<p>Hello World! </p>")
+    }
+
+    func testMarkdownMoreComplicated() {
+        XCTAssertEqual(Constant.markdownString.markdownToHtml(), Constant.markdownAsHtmlString)
+    }
+
+    func testMarkdownToHtml5Spaces() {
+        let s1 = "Hello 5(     ) spaces"
+        XCTAssertEqual(s1.markdownToHtml(), "<p>\(s1)</p>")
     }
 
     func testExtractCid() {
@@ -147,5 +181,48 @@ class StringHTMLExtensionTests: XCTestCase {
         }
         XCTAssertEqual(attachmentNew.data, attachment.data)
         XCTAssertEqual(attachmentNew.mimeType, attachment.mimeType)
+    }
+}
+
+extension StringHTMLExtensionTests {
+    private struct Constant {
+        static let markdownString = """
+Heading
+=======
+
+Sub-heading
+-----------
+
+Paragraphs are separated
+by a blank line.
+
+Two spaces at the end of a line
+produces a line break.
+
+Text attributes _italic_,
+**bold**, `monospace`.
+
+Horizontal rule:
+
+---
+
+Strikesomething:
+~~strikesomething~~
+
+Bullet list:
+
+  * one
+  * two
+  * three
+
+Numbered list:
+
+  1. one
+  2. two
+  3. three
+"""
+
+        static let markdownAsHtmlString = "<p>Heading<br>=======<br><br>Sub-heading<br>-----------<br><br>Paragraphs are separated<br>by a blank line.<br><br>Two spaces at the end of a line<br>produces a line break.<br><br>Text attributes <em>italic</em>,<br><strong>bold</strong>, <code>monospace</code>.<br><br>Horizontal rule:<br><br>---<br><br>Strikesomething:<br>~~strikesomething~~<br><br>Bullet list:<br><br>  * one<br>  * two<br>  * three<br><br>Numbered list:<br><br>  1. one<br>  2. two<br>  3. three</p>";
+
     }
 }
