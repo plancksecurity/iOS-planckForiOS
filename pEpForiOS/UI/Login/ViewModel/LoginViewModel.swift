@@ -99,6 +99,13 @@ final class LoginViewModel {
                password: String? = nil,
                accessToken: OAuth2AccessTokenProtocol? = nil) {
         if verifiableAccount.containsCompleteServerInfo {
+            addVerificationData(verifiableAccount: verifiableAccount,
+                                emailAddress: emailAddress,
+                                displayName: displayName,
+                                loginName: loginName,
+                                password: password,
+                                accessToken: accessToken)
+
             checkIfServerShouldBeConsideredATrustedServer()
         } else {
             loginViaAccountSettings(emailAddress: emailAddress,
@@ -149,20 +156,13 @@ final class LoginViewModel {
             let smtpTransport = ConnectionTransport(accountSettingsTransport: outgoingServer.transport,
                                                     smtpPort: outgoingServer.port)
 
-            verifiableAccount.verifiableAccountDelegate = self
-            verifiableAccount.address = emailAddress
-            verifiableAccount.userName = displayName
+            addVerificationData(verifiableAccount: verifiableAccount,
+                                emailAddress: emailAddress,
+                                displayName: displayName,
+                                loginName: loginName,
+                                password: password,
+                                accessToken: accessToken)
 
-            let login = loginName ?? emailAddress
-            verifiableAccount.loginNameIMAP = login
-            verifiableAccount.loginNameSMTP = login
-
-            // Note: auth method is never taken from LAS. We either have OAuth2,
-            // as determined previously, or we will defer to pantomime to find out the best method.
-            verifiableAccount.authMethod = accessToken != nil ? .saslXoauth2 : nil
-
-            verifiableAccount.password = password
-            verifiableAccount.accessToken = accessToken
             verifiableAccount.serverIMAP = incomingServer.hostname
             verifiableAccount.portIMAP = UInt16(incomingServer.port)
             verifiableAccount.transportIMAP = imapTransport
@@ -173,6 +173,40 @@ final class LoginViewModel {
 
             checkIfServerShouldBeConsideredATrustedServer()
         }
+    }
+
+    /// Set up a given verifiable account with parameters, changing it in-place.
+    /// - Parameters:
+    ///   - verifiableAccount: The verifiable account to change
+    ///   - emailAddress: The email address of the account
+    ///   - displayName: The user-chosen display name / nick
+    ///   - loginName: The login name needed for the servers, if different from the email address
+    ///   - password: The password to log in
+    ///   - accessToken: An optional OAUTH2 access token
+    func addVerificationData(verifiableAccount: VerifiableAccountProtocol,
+                             emailAddress: String,
+                             displayName: String,
+                             loginName: String? = nil,
+                             password: String? = nil,
+                             accessToken: OAuth2AccessTokenProtocol? = nil) {
+        var theVerifiableAccount = verifiableAccount
+
+        // Note: auth method is never taken from LAS. We either have OAuth2,
+        // as determined previously, or we will defer to pantomime to find out the best method.
+        theVerifiableAccount.authMethod = accessToken != nil ? .saslXoauth2 : nil
+
+        theVerifiableAccount.verifiableAccountDelegate = self
+        theVerifiableAccount.address = emailAddress
+        theVerifiableAccount.userName = displayName
+
+        let login = loginName ?? emailAddress
+        theVerifiableAccount.loginNameIMAP = login
+        theVerifiableAccount.loginNameSMTP = login
+
+        theVerifiableAccount.password = password
+        theVerifiableAccount.accessToken = accessToken
+
+        theVerifiableAccount.verifiableAccountDelegate = self
     }
 
     /// Is an account with this email address typically an OAuth2 account?
