@@ -11,6 +11,8 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
+// StringHTMLExtensionTests all tests are green on date 20200313
+
 class StringHTMLExtensionTests: XCTestCase {
     let pepSignatureTrimmed = String.pepSignature.trimmed()
 
@@ -20,14 +22,14 @@ class StringHTMLExtensionTests: XCTestCase {
             + "</head>\r\n  <body bgcolor=\"#FFFFFF\" text=\"#000000\">\r\n"
             + "<p>HTML! <b>Yes!</b><br>\r\n"
             + "</p>\r\n  </body>\r\n</html>\r\n"
-        XCTAssertEqual(html.extractTextFromHTML(), "HTML! Yes!")
+        XCTAssertEqual(html.extractTextFromHTML(respectNewLines: false), "HTML! Yes!")
 
         html = "<html>\r\n  <head>\r\n\r\n"
             + "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\r\n"
             + "</head>\r\n  <body bgcolor=\"#FFFFFF\" text=\"#000000\">\r\n"
             + "<p>HTML! <b>Yes!</b><br>\r\n"
             + "</p><p>Whatever. New paragraph.</p>\r\n  </body>\r\n</html>\r\n"
-        XCTAssertEqual(html.extractTextFromHTML(), "HTML! Yes! Whatever. New paragraph.")
+        XCTAssertEqual(html.extractTextFromHTML(respectNewLines: false), "HTML! Yes! Whatever. New paragraph.")
 
         html = "<html>\r\n  <head>\r\n\r\n"
             + "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\r\n"
@@ -35,7 +37,7 @@ class StringHTMLExtensionTests: XCTestCase {
             + "<p>HTML! <b>Yes!</b><br>\r\n"
             + "</p><p>Whatever. New <b>bold</b> paragraph.</p>\r\n  </body>\r\n</html>\r\n"
         XCTAssertEqual(
-            html.extractTextFromHTML(), "HTML! Yes! Whatever. New bold paragraph.")
+            html.extractTextFromHTML(respectNewLines: false), "HTML! Yes! Whatever. New bold paragraph.")
     }
 
     class TestMarkdownImageDelegate: MarkdownImageDelegate {
@@ -154,14 +156,18 @@ class StringHTMLExtensionTests: XCTestCase {
                                     fileName: "cid:\(cid1)",
             contentDisposition: .attachment)
 
-        let input = "<p><img src=\"cid:\(cid1)\" alt=\"\(alt1)\" /></p>\n<p>\(String.pEpSignatureHtml)</p>\n<p>Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:</p>\n<blockquote>\n<p>Just some mind the gap text.</p>\n<p>Blah!</p>\n</blockquote>\n"
+        let attachmentHtml = "<p><img src=\"cid:\(cid1)\" alt=\"\(alt1)\" /></p>"
+        let input = "\(attachmentHtml)\n<p>\(String.pEpSignatureHtml)</p>\n<p>Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:</p>\n<cite>\n<p>Just some mind the gap text.</p>\n<p>Blah!</p>\n</cite>\n"
+        let inputWithoutAttachmentCiteTag = "<p>\(String.pEpSignatureHtml)</p>\n<p>Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:</p>\n<cite>\n<p>Just some mind the gap text.</p>\n<p>Blah!</p>\n</cite>\n"
+        let inputWithoutAttachmentBlockquoteTag = "<p>\(String.pEpSignatureHtml)</p>\n<p>Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:</p>\n<blockquote>\n<p>Just some mind the gap text.</p>\n<p>Blah!</p>\n</blockquote>\n"
 
         let attachmentDelegate = AttachmentDelegate(attachments: [attachment])
         let attributedString = input.htmlToAttributedString(attachmentDelegate: attachmentDelegate)
-        XCTAssertEqual(
-            attributedString.string,
-            "\n￼\n\n\(pepSignatureTrimmed)\n\nTest 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:\n\n> Just some mind the gap text.\n> Blah!\n")
-
+        let sthWithCiteTag = inputWithoutAttachmentCiteTag.htmlToAttributedString(attachmentDelegate: nil).string
+        let sthWithBlockquoteTag = inputWithoutAttachmentBlockquoteTag.htmlToAttributedString(attachmentDelegate: nil).string
+        let exp = "\(pepSignatureTrimmed)\n\nTest 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:\n\n> Just some mind the gap text.\n> Blah!\n\n"
+        XCTAssertEqual(sthWithCiteTag, exp)
+        XCTAssertEqual(sthWithBlockquoteTag, exp)
         XCTAssertEqual(attachmentDelegate.numberOfAttachmentsUsed, 1)
         XCTAssertEqual(attachmentDelegate.attachments[0].mimeType, theMimeType)
 

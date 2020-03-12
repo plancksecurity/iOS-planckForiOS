@@ -54,7 +54,10 @@ extension HtmlToTextSaxParser: AXHTMLParserDelegate {
             var toAppend = string
             if nestedInside(tag: "blockquote") {
                 toAppend = "> \(toAppend)"
+            } else if nestedInside(tag: "cite") {
+                toAppend = "> \(toAppend)"
             }
+
             add(string: toAppend)
         }
     }

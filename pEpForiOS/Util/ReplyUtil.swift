@@ -33,8 +33,16 @@ public struct ReplyUtil {
     /// - Returns: text with citation header and "send by pEp" footer
     static func citedMessageText(textToCite: String, fromMessage msg: Message) -> String {
         let citation = citationHeaderForMessage(msg)
+        return "\n\n\(footer())\n\n\(citation)\n\n\(citedTextWithNewLines(textToCite: textToCite))"
+    }
+
+    static func citedTextWithNewLines(textToCite: String) -> String {
         let quoteChar = ">"
-        return "\n\n\(footer())\n\n\(citation)\n\n\(quoteChar) \(textToCite)"
+        var citedText = ""
+        for line in textToCite.components(separatedBy: "\n") {
+            citedText = citedText + quoteChar + " " + line + "\n"
+        }
+        return citedText.trimmingCharacters(in: .newlines)
     }
 
     /// Adds citation header with data of a given message to a given text.
@@ -74,17 +82,22 @@ public struct ReplyUtil {
             return "\(replyPrefix)\(theSubject)"
         }
 
-        return ""
+        return replyPrefix
     }
 
     public static func forwardSubject(message: Message) -> String {
-        if let subject = message.shortMessage {
-            let fwd = NSLocalizedString(
-                "Fwd: ", comment: "The 'Fwd:' that gets appended to the subject line")
-            return "\(fwd) \(subject)"
-        } else {
-            return ""
+        let replyPrefix = "Fwd: "
+
+        if var theSubject = message.shortMessage {
+            theSubject = theSubject.trimmed()
+            while theSubject.hasPrefix(replyPrefix) {
+                theSubject = String(theSubject[replyPrefix.endIndex..<theSubject.endIndex])
+                theSubject = theSubject.trimmed()
+            }
+
+            return "\(replyPrefix)\(theSubject)"
         }
+        return replyPrefix
     }
 
     // MARK: - Private
@@ -98,7 +111,7 @@ public struct ReplyUtil {
         guard let text = extractMessageTextToQuote(from: message) else {
             return nil
         }
-        return quoteText(text)
+        return citedTextWithNewLines(textToCite: text)
     }
 
     /// Extracts the text that should be used for quoting (in reply/forwarding) from a given message.
@@ -112,7 +125,7 @@ public struct ReplyUtil {
         guard let formatted = message.longMessageFormatted else {
             return textToQuote
         }
-        textToQuote = formatted.extractTextFromHTML()
+        textToQuote = formatted.extractTextFromHTML(respectNewLines: true)
 
         return textToQuote //message.longMessage
     }
@@ -122,16 +135,6 @@ public struct ReplyUtil {
             return name
         }
         return identity.address
-    }
-
-    static private func quoteText(_ text: String) -> String {
-        let newLineCS = CharacterSet.init(charactersIn: newline)
-        let lines = text.components(separatedBy: newLineCS)
-        let quoted = lines.map() {
-            return "> \($0)"
-        }
-        let quotedText = quoted.joined(separator: newline)
-        return quotedText
     }
 
     static private func citationHeaderForMessage(_ message: Message) -> String {

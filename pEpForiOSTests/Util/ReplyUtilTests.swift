@@ -12,6 +12,7 @@ import XCTest
 @testable import MessageModel
 
 // ReplyUtilsTest code coverage ~80% on date 20200228
+// ReplyUtilsTest all tests are green on date 20200313
 
 class ReplyUtilTests: XCTestCase {
 
@@ -27,39 +28,31 @@ class ReplyUtilTests: XCTestCase {
         }
         XCTAssertEqual(ReplyUtil.replySubject(message: msg), expectedReplySubject)
     }
-    // Create new ticket for this bug?
+
     func testReplyNonSubject() {
         let msg = getMockMessage()
         msg.shortMessage = nil
-        let exp = Constant.expectedReplyPrefix + " "
+        let exp = Constant.expectedReplyPrefix
         let sth = ReplyUtil.replySubject(message: msg)
         XCTAssertEqual(sth, exp,
                        showDifference(string1: sth, string2: exp, onlyFirstChar: true))
-        // Failed! Current implementation is wrong.
-        // XCTAssertEqual failed: ("") is not equal to ("Re:  ")
     }
 
-    // Create new ticket for this bug?
     func testForwardSubject() {
         let msg = getMockMessage()
         msg.shortMessage = Constant.crazySpaces + Constant.subject
         let sth = ReplyUtil.forwardSubject(message: msg)
-        let exp = Constant.expectedForwardPrefix
+        let exp = Constant.expectedForwardPrefix + Constant.subject
         XCTAssertEqual(sth, exp,
                        showDifference(string1: sth, string2: exp, onlyFirstChar: true))
-        // Failed! Current implementation is wrong.
-        // XCTAssertEqual failed: ("Fwd:       This is a subject") is not equal to ("Fwd: ")
     }
 
-    // Create new ticket for this bug?
     func testForwardNonSubject() {
         let msg = getMockMessage()
         msg.shortMessage = nil
         let exp = Constant.expectedForwardPrefix
         let sth = ReplyUtil.forwardSubject(message: msg)
         XCTAssertEqual(sth, exp)
-        // Failed! Current implementation is wrong.
-        // XCTAssertEqual failed: ("") is not equal to ("Fwd:  ")
     }
 
     func testQuotedMessageTextEmpty() {
@@ -102,7 +95,8 @@ class ReplyUtilTests: XCTestCase {
         let msg = Message(uuid: "001", uid: 1, parentFolder: folder)
         msg.sent = nil
         msg.longMessageFormatted = Constant.longMessageHtmlFormatted
-        let exp = "\n\n\(String.pepSignature)\n\nSomeone wrote:\n\n> Test\n> Test"
+        let someOneWrote = NSLocalizedString("Someone wrote:", comment: "")
+        let exp = "\n\n\(String.pepSignature)\n\n\(someOneWrote)\n\n> Test\n> Test"
         let sth = ReplyUtil.quotedMessageText(message: msg, replyAll: false)
         XCTAssertEqual(sth, exp)
     }
@@ -118,15 +112,14 @@ class ReplyUtilTests: XCTestCase {
         let msg = Message(uuid: "001", uid: 1, parentFolder: folder)
         msg.sent = nil
         msg.longMessageFormatted = Constant.longMessageHtmlFormatted
-        let exp = "\n\n\(String.pepSignature)\n\nSomeone wrote:\n\n> Test"
+        let someOneWrote = NSLocalizedString("Someone wrote:", comment: "")
+        let exp = "\n\n\(String.pepSignature)\n\n\(someOneWrote)\n\n> Test"
         let sth = ReplyUtil.citedMessageText(textToCite: "Test", fromMessage: msg)
         XCTAssertEqual(sth, exp,
                        showDifference(string1: sth, string2: exp))
     }
 
     // Refer to IOS-1363
-    // Failed because current implementation ReplyUtil.citedMessageText is wrong
-    // We expect cited message not message without '>' characters
     func testCitedHtmlMessageTextNotEmptySentDateIsUnknown() {
         let identity = Identity(address: "what@example.com",
                                 userID: "userID",
@@ -138,7 +131,8 @@ class ReplyUtilTests: XCTestCase {
         msg.sent = nil
         let bodyHtml = Constant.longMessageHtmlFormatted
         msg.longMessageFormatted = bodyHtml
-        let exp = NSAttributedString(string: "\n\n\(String.pepSignature)\n\nSomeone wrote:\n\n> Test\nTest\n")
+        let someOneWrote = NSLocalizedString("Someone wrote:", comment: "")
+        let exp = NSAttributedString(string: "\n\n\(String.pepSignature)\n\n\(someOneWrote)\n\n> Test\nTest\n")
         let sth = ReplyUtil.citedMessageText(textToCite: bodyHtml.htmlToAttributedString(attachmentDelegate: nil), fromMessage: msg)
         XCTAssertEqual(sth.string, exp.string,
                        showDifference(string1: sth.string, string2: exp.string))
@@ -151,7 +145,7 @@ extension ReplyUtilTests {
     private struct Constant {
         static let footnote = String.pepSignature
         static let subject = "This is a subject"
-        static let expectedReplyPrefix = "Re: " // TODO: - Re: not localized!
+        static let expectedReplyPrefix = "Re: "
         static let expectedForwardPrefix = NSLocalizedString("Fwd: ",
                                                              comment: "The 'Fwd:' that gets appended to the subject line")
         static let longMessageHtmlFormatted = "<html><body><p>Test</p><p>Test</p></body></html>"
