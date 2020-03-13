@@ -22,6 +22,7 @@ class AccountTypeSelectorViewModel {
     /// list of providers to show
     private let accountTypes: [VerifiableAccount.AccountType] = [.gmail,
                                                                  .o365,
+                                                                 .icloud,
                                                                  .clientCertificate,
                                                                  .other]
 
@@ -73,6 +74,8 @@ class AccountTypeSelectorViewModel {
             """, comment: "client certificate provider key")
         case .o365:
             return "asset-Office365"
+        case .icloud:
+            return "asset-iCloud"
         }
     }
 
