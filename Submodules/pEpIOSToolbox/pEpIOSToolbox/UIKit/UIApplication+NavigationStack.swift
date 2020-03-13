@@ -12,9 +12,14 @@ import UIKit
 
 extension UIApplication {
 
+    /// - returns: The currently visible view controller if any, nil otherwize. Child ViewControllers are ignored.
+    class public func currentlyVisibleViewController() -> UIViewController? {
+        return topViewController(inNavigationStackOf: UIApplication.shared.keyWindow?.rootViewController)
+    }
+
+    /// - Parameter viewController: ViewController whichs navigation stack's top VC should be found
     /// - returns: The view controller at the top of the navigation stack.
-    class public func topViewController(
-        inNavigationStackOf viewController: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+    class private func topViewController(inNavigationStackOf viewController: UIViewController?) -> UIViewController? {
         guard let vc = viewController else {
             Log.shared.errorAndCrash("No VC. Probably unexpected.")
             return nil
@@ -23,12 +28,12 @@ extension UIApplication {
             return topViewController(inNavigationStackOf: nav.topViewController)
         } else if let tab = vc as? UITabBarController, let selected = tab.selectedViewController {
             return topViewController(inNavigationStackOf: selected)
-        } else if let splitVC = viewController as? UISplitViewController {
-            guard let vc = splitVC.viewControllers.first else {
+        } else if let splitVC = vc as? UISplitViewController {
+            guard let primaryVc = splitVC.viewControllers.first else {
                 Log.shared.errorAndCrash("Splitview without Primary VC?")
                 return nil
             }
-            return topViewController(inNavigationStackOf: vc)
+            return topViewController(inNavigationStackOf: primaryVc)
         } else if let presented = vc.presentedViewController {
             return topViewController(inNavigationStackOf: presented)
         }
