@@ -20,7 +20,10 @@ class AccountTypeSelectorViewModel {
     public weak var delegate: AccountTypeSelectorViewModelDelegate?
 
     /// list of providers to show
-    private let accountTypes: [VerifiableAccount.AccountType] = [.gmail, .clientCertificate, .other]
+    private let accountTypes: [VerifiableAccount.AccountType] = [.gmail,
+                                                                 .o365,
+                                                                 .clientCertificate,
+                                                                 .other]
 
     var chosenAccountType: VerifiableAccount.AccountType = .other
 
