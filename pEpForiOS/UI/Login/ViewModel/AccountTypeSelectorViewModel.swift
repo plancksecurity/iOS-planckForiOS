@@ -24,6 +24,7 @@ class AccountTypeSelectorViewModel {
                                                                  .o365,
                                                                  .icloud,
                                                                  .outlook,
+                                                                 .aol,
                                                                  .clientCertificate,
                                                                  .other]
 
@@ -79,6 +80,8 @@ class AccountTypeSelectorViewModel {
             return "asset-iCloud"
         case .outlook:
             return "asset-Outlook"
+        case .aol:
+            return "asset-Aol"
         }
     }
 
