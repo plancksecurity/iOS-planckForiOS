@@ -23,6 +23,7 @@ class AccountTypeSelectorViewModel {
     private let accountTypes: [VerifiableAccount.AccountType] = [.gmail,
                                                                  .o365,
                                                                  .icloud,
+                                                                 .outlook,
                                                                  .clientCertificate,
                                                                  .other]
 
@@ -76,6 +77,8 @@ class AccountTypeSelectorViewModel {
             return "asset-Office365"
         case .icloud:
             return "asset-iCloud"
+        case .outlook:
+            return "asset-Outlook"
         }
     }
 
