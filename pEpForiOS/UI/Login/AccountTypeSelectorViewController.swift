@@ -85,7 +85,7 @@ extension AccountTypeSelectorViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cellProvider = viewModel[indexPath.row]
         switch cellProvider {
-        case .gmail:
+        case .gmail, .o365:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "providerImageCell",
                                                                 for: indexPath) as? AccountTypeSelectorImageCollectionViewCell else {
                                                                     return UICollectionViewCell()

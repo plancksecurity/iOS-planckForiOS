@@ -68,6 +68,8 @@ class AccountTypeSelectorViewModel {
             Client
             Certificate
             """, comment: "client certificate provider key")
+        case .o365:
+            return "asset-Office365"
         }
     }
 
