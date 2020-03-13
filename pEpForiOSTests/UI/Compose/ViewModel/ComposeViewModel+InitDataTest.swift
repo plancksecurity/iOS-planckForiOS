@@ -483,20 +483,20 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
     }
 
     /// Asserts the testee for the given values. Optional arguments set to `nil` are ignored.
-    private func assertTesteeForExpectedValues( composeMode: ComposeUtil.ComposeMode? = nil,
-                                                originalMessage: Message? = nil,
-                                                isDrafts: Bool? = nil,
-                                                isOutbox: Bool? = nil,
-                                                pEpProtection: Bool? = nil,
-                                                from: Identity? = nil,
-                                                toRecipients: [Identity]? = nil,
-                                                ccRecipients: [Identity]? = nil,
-                                                bccRecipients: [Identity]? = nil,
-                                                subject: String? = nil,
-                                                bodyPlaintext: String? = nil,
-                                                bodyHtml: NSAttributedString? = nil,
-                                                nonInlinedAttachments: [Attachment]? = nil,
-                                                inlinedAttachments: [Attachment]? = nil) {
+    private func assertTesteeForExpectedValues(composeMode: ComposeUtil.ComposeMode? = nil,
+                                               originalMessage: Message? = nil,
+                                               isDrafts: Bool? = nil,
+                                               isOutbox: Bool? = nil,
+                                               pEpProtection: Bool? = nil,
+                                               from: Identity? = nil,
+                                               toRecipients: [Identity]? = nil,
+                                               ccRecipients: [Identity]? = nil,
+                                               bccRecipients: [Identity]? = nil,
+                                               subject: String? = nil,
+                                               bodyPlaintext: String? = nil,
+                                               bodyHtml: NSAttributedString? = nil,
+                                               nonInlinedAttachments: [Attachment]? = nil,
+                                               inlinedAttachments: [Attachment]? = nil) {
         guard let testee = testee else {
             XCTFail("No testee")
             return
