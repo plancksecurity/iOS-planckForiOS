@@ -18,7 +18,7 @@ struct UIUtils {
     /// - Parameters:
     ///   - error: error to preset to user
     ///   - vc: ViewController to present the error on
-    static func show(error: Error, inViewController vc: UIViewController) {
+    static func show(error: Error) {
         Log.shared.error("May or may not display error to user: (interpolate) %@", "\(error)")
 
         guard let displayError = DisplayUserError(withError: error) else {
@@ -27,10 +27,100 @@ struct UIUtils {
         }
         DispatchQueue.main.async {
             showAlertWithOnlyPositiveButton(title: displayError.title,
-                                            message: displayError.errorDescription,
-                                            inViewController: vc)
+                                            message: displayError.errorDescription)
         }
     }
+
+    /// On iPads, an UIAlertController must have `popoverPresentationController` set.
+    ///
+    /// - Parameters:
+    ///   - actionSheet: popover to set anchor to
+    ///   - presentingViewController: view controller the popover should be presented on
+    static private func setIPadAnchor(for actionSheet: UIAlertController, //BUFF: move
+        in rect: CGRect,
+        at view: UIView) {
+
+        actionSheet.popoverPresentationController?.sourceRect = rect
+
+        actionSheet.popoverPresentationController?.sourceView = view
+        actionSheet.popoverPresentationController?.permittedArrowDirections
+            = UIPopoverArrowDirection.up
+    }
+
+    /// Presents action sheet with all available custom actions for a given url.
+    /// Currently the only URL scheme custom actions exist for is mailto:
+    ///
+    /// - Parameters:
+    ///   - address: address to show custom actions for
+    ///   - viewController: viewcontroller to present action view controllers on (if requiered)
+    ///   - appConfig: AppConfig to forward to potentionally created viewControllers
+    static func presentActionSheetWithContactOptions(forContactWithEmailAddress address: String,
+                                                     at rect: CGRect,
+                                                     at view: UIView,
+                                                     appConfig: AppConfig) {
+        let contact = Identity(address: address)
+        let alertSheet = UIAlertController.init(title: nil,
+                                                message: nil,
+                                                preferredStyle: .actionSheet)
+
+        setIPadAnchor(for: alertSheet, in: rect, at: view)
+
+        alertSheet.view.tintColor = UIColor.pEpDarkGreen
+        //
+        let newMailtitle = NSLocalizedString("New Mail Message",
+                                             comment:
+            "UIUtils.presentActionSheetWithContactOptions.button.title New Mail Message")
+        alertSheet.addAction(UIAlertAction(title: newMailtitle, style: .default) { (action) in
+            presentComposeView(forRecipientWithAddress: address,
+                               appConfig: appConfig)
+        })
+        //
+        let addTitle = NSLocalizedString("Add to Contacts",
+                                         comment:
+            "UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts")
+        alertSheet.addAction(UIAlertAction(title: addTitle, style: .default) { (action) in
+            presentAddToContactsView(for: contact, appConfig: appConfig)
+        })
+        //
+        let copyTitle = NSLocalizedString("Copy Email",
+                                          comment:
+            "UIUtils.presentActionSheetWithContactOptions.button.title Copy Email")
+        alertSheet.addAction(UIAlertAction(title: copyTitle, style: .default) { (action) in
+            UIPasteboard.general.string = address
+        })
+        //
+        let cancelTitle = NSLocalizedString("Cancel",
+                                            comment:
+            "UIUtils.presentActionSheetWithContactOptions.button.title Cancel")
+        alertSheet.addAction(UIAlertAction(title: cancelTitle, style: .cancel) { (action) in
+            print("cancel action")
+        })
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
+        presenterVc.present(alertSheet, animated: true, completion: nil)
+    }
+
+    // MARK: - Settings Presentation
+
+    static func presentSettings(appConfig: AppConfig) {
+        guard let vc = UIStoryboard.init(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: SettingsTableViewController.storyboardId) as? SettingsTableViewController else {
+            Log.shared.errorAndCrash("No controller")
+            return
+        }
+        vc.appConfig = appConfig
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
+        presenterVc.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+// MARK: - Alerts
+
+extension UIUtils {
 
     /// Shows an alert with "OK" button only.
     /// - Parameters:
@@ -40,26 +130,29 @@ struct UIUtils {
     ///   - completion: called when "OK" has been pressed
     static func showAlertWithOnlyPositiveButton(title: String?,
                                                 message: String?,
-                                                inViewController vc: UIViewController,
                                                 completion: (()->Void)? = nil) {
         // Do not show alerts when app is in background.
         if UIApplication.shared.applicationState != .active {
             #if DEBUG
-                // show alert in background when in debug.
+            // show alert in background when in debug.
             #else
-                return
+            return
             #endif
         }
         let alertView = UIAlertController.pEpAlertController(title: title,
                                                              message: message,
                                                              preferredStyle: .alert)
         let okAction = UIAlertAction(title: NSLocalizedString("OK", comment:
-        "General alert positive button"),
+            "General alert positive button"),
                                      style: .default) { action in
                                         completion?()
         }
         alertView.addAction(okAction)
-        vc.present(alertView, animated: true, completion: nil)
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
+        presenterVc.present(alertView, animated: true, completion: nil)
     }
 
     static func showTwoButtonAlert(withTitle title: String,
@@ -69,11 +162,10 @@ struct UIUtils {
                                    positiveButtonText: String = NSLocalizedString("OK",
                                                                                   comment: "Default positive button text"),
                                    cancelButtonAction: @escaping ()->Void,
-                                   positiveButtonAction: @escaping () -> Void,
-                                   inViewController vc: UIViewController) {
+                                   positiveButtonAction: @escaping () -> Void) {
         let alertView = UIAlertController.pEpAlertController(title: title,
-                                        message: message,
-                                        preferredStyle: .alert)
+                                                             message: message,
+                                                             preferredStyle: .alert)
         alertView.addAction(UIAlertAction(title: positiveButtonText,
                                           style: .default) { (alertAction) in
                                             positiveButtonAction()
@@ -83,9 +175,17 @@ struct UIUtils {
                                             cancelButtonAction()
         })
 
-        vc.present(alertView, animated: true, completion: nil)
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
+        presenterVc.present(alertView, animated: true, completion: nil)
     }
+}
 
+// MARK: - Compose View
+
+extension UIUtils {
     // MARK: - Compose View
 
     /// Modally presents a "Compose New Mail" view.
@@ -97,7 +197,6 @@ struct UIUtils {
     ///   - viewController: presenting view controller
     ///   - appConfig: AppConfig to forward
     static func presentComposeView(forRecipientInUrl url: URL?,
-                                   on viewController: UIViewController,
                                    appConfig: AppConfig) {
         let address = url?.firstRecipientAddress()
         if url != nil && address == nil {
@@ -106,7 +205,6 @@ struct UIUtils {
         }
 
         presentComposeView(forRecipientWithAddress: address,
-                           on: viewController,
                            appConfig: appConfig)
     }
 
@@ -119,7 +217,6 @@ struct UIUtils {
     ///   - viewController: presenting view controller
     ///   - appConfig: AppConfig to forward
     static func presentComposeView(forRecipientWithAddress address: String?,
-                                   on viewController: UIViewController,
                                    appConfig: AppConfig) {
         let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
         guard
@@ -143,8 +240,46 @@ struct UIUtils {
         composeVc.viewModel = composeVM
         composeVc.appConfig = appConfig
 
-        viewController.present(composeNavigationController, animated: true)
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
+        presenterVc.present(composeNavigationController, animated: true)
     }
+}
+
+// MARK: - Activity Indicator
+
+extension UIUtils {
+
+    /// Show simple UIActivityIndicatorView in midle of current view
+    ///
+    /// - Returns: UIActivityIndicatorView. Useful to hold for removing from super view
+    @discardableResult
+    static public func showActivityIndicator() -> UIActivityIndicatorView {
+        let activityIndicator = UIActivityIndicatorView(style: .gray)
+        activityIndicator.startAnimating()
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
+            return activityIndicator
+        }
+        let view: UIView = presenterVc.view
+        view.addSubview(activityIndicator)
+
+        NSLayoutConstraint(item: activityIndicator, attribute: .centerX, relatedBy: .equal,
+                           toItem: view, attribute: .centerX, multiplier: 1,
+                           constant: 0).isActive = true
+        NSLayoutConstraint(item: activityIndicator, attribute: .centerY, relatedBy: .equal,
+                           toItem: view, attribute: .centerY, multiplier: 1,
+                           constant: 0).isActive = true
+        return activityIndicator
+    }
+}
+
+// MARK: - Contacts Related
+
+extension UIUtils {
 
     // MARK: - Add to Contacts View
 
@@ -155,7 +290,6 @@ struct UIUtils {
     ///   - viewController:  presenting view controller
     ///   - appConfig: AppConfig to forward
     static func presentAddToContactsView(for contact: Identity,
-                                         on viewController: UIViewController,
                                          appConfig: AppConfig) {
         let storyboard = UIStoryboard(name: Constants.addToContactsStoryboard, bundle: nil)
         guard let contactVc = storyboard.instantiateViewController(withIdentifier:
@@ -166,7 +300,11 @@ struct UIUtils {
         contactVc.appConfig = appConfig
         contactVc.emailAddress = contact.address
         let navigationController = UINavigationController(rootViewController: contactVc)
-        viewController.present(navigationController, animated: true, completion: nil)
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
+        presenterVc.present(navigationController, animated: true, completion: nil)
     }
 
     // MARK: - Contact Handling Action Sheet
@@ -178,11 +316,10 @@ struct UIUtils {
     ///   - url: url to show custom actions for
     ///   - viewController: viewcontroller to present action view controllers on (if requiered)
     ///   - appConfig: AppConfig to forward to potentionally created viewControllers
-    static func presentActionSheetWithContactOptions(forUrl url: URL,
-                                                     on viewController: UIViewController,
-                                                     at rect: CGRect,
-                                                     at view: UIView,
-                                                     appConfig: AppConfig) {
+    static public func presentActionSheetWithContactOptions(forUrl url: URL,
+                                                            at rect: CGRect,
+                                                            at view: UIView,
+                                                            appConfig: AppConfig) {
         guard let _ = UrlClickHandler.Scheme(for: url) else {
             Log.shared.errorAndCrash("Unsupported scheme")
             return
@@ -192,93 +329,8 @@ struct UIUtils {
             return
         }
         presentActionSheetWithContactOptions(forContactWithEmailAddress: address,
-                                             on: viewController,
                                              at: rect,
                                              at: view,
                                              appConfig: appConfig)
-    }
-
-    /// On iPads, an UIAlertController must have `popoverPresentationController` set.
-    ///
-    /// - Parameters:
-    ///   - actionSheet: popover to set anchor to
-    ///   - presentingViewController: view controller the popover should be presented on
-    static private func setIPadAnchor(for actionSheet: UIAlertController,
-                                      in rect: CGRect,
-                                      at view: UIView) {
-
-        actionSheet.popoverPresentationController?.sourceRect = rect
-
-        actionSheet.popoverPresentationController?.sourceView = view
-        actionSheet.popoverPresentationController?.permittedArrowDirections
-            = UIPopoverArrowDirection.up
-
-
-
-    }
-
-    /// Presents action sheet with all available custom actions for a given url.
-    /// Currently the only URL scheme custom actions exist for is mailto:
-    ///
-    /// - Parameters:
-    ///   - address: address to show custom actions for
-    ///   - viewController: viewcontroller to present action view controllers on (if requiered)
-    ///   - appConfig: AppConfig to forward to potentionally created viewControllers
-    static func presentActionSheetWithContactOptions(forContactWithEmailAddress address: String,
-                                                     on viewController: UIViewController,
-                                                     at rect: CGRect,
-                                                     at view: UIView,
-                                                     appConfig: AppConfig) {
-        let contact = Identity(address: address)
-
-        let alertSheet = UIAlertController.init(title: nil,
-                                                message: nil,
-                                                preferredStyle: .actionSheet)
-
-        setIPadAnchor(for: alertSheet, in: rect, at: view)
-
-        alertSheet.view.tintColor = UIColor.pEpDarkGreen
-        //
-        let newMailtitle = NSLocalizedString("New Mail Message",
-                                             comment:
-            "UIUtils.presentActionSheetWithContactOptions.button.title New Mail Message")
-        alertSheet.addAction(UIAlertAction(title: newMailtitle, style: .default) { (action) in
-            presentComposeView(forRecipientWithAddress: address,
-                               on: viewController,
-                               appConfig: appConfig)
-        })
-        //
-        let addTitle = NSLocalizedString("Add to Contacts",
-                                         comment:
-            "UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts")
-        alertSheet.addAction(UIAlertAction(title: addTitle, style: .default) { (action) in
-            presentAddToContactsView(for: contact, on: viewController, appConfig: appConfig)
-        })
-        //
-        let copyTitle = NSLocalizedString("Copy Email",
-                                          comment:
-            "UIUtils.presentActionSheetWithContactOptions.button.title Copy Email")
-        alertSheet.addAction(UIAlertAction(title: copyTitle, style: .default) { (action) in
-            UIPasteboard.general.string = address
-        })
-        //
-        let cancelTitle = NSLocalizedString("Cancel",
-                                            comment:
-            "UIUtils.presentActionSheetWithContactOptions.button.title Cancel")
-        alertSheet.addAction(UIAlertAction(title: cancelTitle, style: .cancel) { (action) in
-            print("cancel action")
-        })
-        viewController.present(alertSheet, animated: true, completion: nil)
-    }
-
-    // MARK: - Settings Presentation
-
-    static func presentSettings(on viewController: UIViewController, appConfig: AppConfig) {
-        guard let vc = UIStoryboard.init(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: SettingsTableViewController.storyboardId) as? SettingsTableViewController else {
-            Log.shared.errorAndCrash("No controller")
-            return
-        }
-        vc.appConfig = appConfig
-        viewController.navigationController?.pushViewController(vc, animated: true)
     }
 }

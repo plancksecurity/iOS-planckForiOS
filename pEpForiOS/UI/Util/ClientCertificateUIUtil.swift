@@ -110,14 +110,13 @@ extension ClientCertificateUIUtil {
 
     private func showCorruptedFileError(in vc: UIViewController) {
         UIUtils.showAlertWithOnlyPositiveButton(title: Localized.CorruptedFileError.title,
-                                                message: Localized.CorruptedFileError.message,
-                                                inViewController: vc, completion: { [weak self] in
+                                                message: Localized.CorruptedFileError.message) { [weak self] in
                                                     guard let me = self else {
                                                         Log.shared.lostMySelf()
                                                         return
                                                     }
                                                     me.dismiss(vc: vc)
-        })
+        }
     }
 
     private func showWrongPasswordError() {
@@ -137,7 +136,7 @@ extension ClientCertificateUIUtil {
                                     me.dismiss(vc: vc)
             }, positiveButtonAction: {
                 // We don't need to do something here. Our expectation is close this alert
-        }, inViewController: vc)
+        })
     }
 
     private func dismiss(vc: UIViewController) {

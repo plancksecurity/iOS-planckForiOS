@@ -19,11 +19,10 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             guard let safeConfig = _appConfig else {
                 Log.shared.errorAndCrash("No appConfig?")
 
-                // We have no config. Return something.
+                // We have no config. Return nonsense.
                 let errorPropagator = ErrorPropagator()
                 return AppConfig(errorPropagator: errorPropagator,
-                                 oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider(),
-                                 keySyncHandshakeService: KeySyncHandshakeService())
+                                 oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider())
             }
             return safeConfig
         }
@@ -46,7 +45,6 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             return
         }
         appConfig.errorPropagator.subscriber = self
-        appConfig.keySyncHandshakeService.presenter = self
         self.navigationController?.title = title
         BaseTableViewController.setupCommonSettings(tableView: tableView)
     }
@@ -109,7 +107,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             if error is SmtpSendError || error is ImapSyncOperationError {
                 smtpOrImapAuthError(error: error)
             } else {
-                UIUtils.show(error: error, inViewController: self)
+                UIUtils.show(error: error)
             }
         }
     }
@@ -160,7 +158,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         if let swd = showed, swd  {
             //this error must not be shown
         } else {
-            UIUtils.show(error: error, inViewController: self)
+            UIUtils.show(error: error)
             if showed == nil {
                 appConfig.showedAccountsError[extraInfo] = false
             } else if showed == false {

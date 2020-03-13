@@ -210,7 +210,7 @@ extension SMTPSettingsViewController: VerifiableAccountDelegate {
                             me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
                         case false:
                             me.isCurrentlyVerifying = false
-                            UIUtils.show(error: VerifiableAccountValidationError.invalidUserData, inViewController: me)
+                            UIUtils.show(error: VerifiableAccountValidationError.invalidUserData)
                         }
                     }
                 }
@@ -224,7 +224,7 @@ extension SMTPSettingsViewController: VerifiableAccountDelegate {
                     return
                 }
                 me.isCurrentlyVerifying = false
-                UIUtils.show(error: error, inViewController: me)
+                UIUtils.show(error: error)
             }
         }
     }

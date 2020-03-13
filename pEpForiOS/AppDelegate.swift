@@ -68,12 +68,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let keySyncHandshakeService = KeySyncHandshakeService()
         messageModelService = MessageModelService(errorPropagator: errorPropagator,
                                                   cnContactsAccessPermissionProvider: AppSettings.shared,
-                                                  keySyncServiceHandshakeDelegate: keySyncHandshakeService,
+                                                  keySyncServiceHandshakeHandler: KeySyncHandshakeService(),
                                                   keySyncStateProvider: AppSettings.shared)
 
         appConfig = AppConfig(errorPropagator: errorPropagator,
-                              oauth2AuthorizationFactory: oauth2Provider,
-                              keySyncHandshakeService: keySyncHandshakeService)
+                              oauth2AuthorizationFactory: oauth2Provider)
 
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = appConfig
@@ -253,7 +252,7 @@ extension AppDelegate {
             Log.shared.errorAndCrash("This method is only for .pEp12 files.")
             return false
         }
-        guard let topVC = UIApplication.topViewController() else {
+        guard let topVC = UIApplication.currentlyVisibleViewController() else {
             Log.shared.errorAndCrash("We must have a VC at this point.")
             return false
         }

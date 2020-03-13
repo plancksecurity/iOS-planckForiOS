@@ -11,28 +11,6 @@ import PEPObjCAdapterFramework
 // MARK: - UIHelper+PEP
 
 extension UIHelper {
-    /// Indicate if the viewController is a pEpModal ViewController.
-    /// pEpModals are TutorialWizardViewController and LoginViewController
-    ///
-    /// - Parameter viewController: viewController to check if is a pEpModel
-    /// - Returns: true if is a pEpModal and false if not.
-    static func isPEPModal(viewController: UIViewController?) -> Bool {
-        guard let viewController = viewController else {
-            return false
-        }
-
-        if viewController is TutorialWizardViewController {
-            return true
-        }
-
-        if let nav = viewController as? UINavigationController,
-            nav.rootViewController is LoginViewController {
-            return true
-        }
-
-        return false
-    }
-
     /**
      Get the UIColor for the background image of a send button for an (abstract) pEp color.
      */
