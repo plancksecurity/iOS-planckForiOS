@@ -8,6 +8,10 @@
 
 import MessageModel
 
+protocol CertificateResultsListener: class {
+    func certificateAdded()
+}
+
 // MARK: - Constants
 
 extension ClientCertificateUIUtil {
@@ -47,6 +51,7 @@ final class ClientCertificateUIUtil: NSObject {
         return vc
     }()
     private var p12Data: Data?
+    public weak var delegate: CertificateResultsListener?
 
     public init(clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
         self.clientCertificateUtil = clientCertificateUtil ?? ClientCertificateUtil()
@@ -55,7 +60,9 @@ final class ClientCertificateUIUtil: NSObject {
     typealias Success = Bool
     public func importClientCertificate(at url: URL,
                                         viewControllerToPresentUiOn vc: UIViewController) {
-
+        if let vcCertificateResultListener =  viewControllerToPresentUiOn as? CertificateResultsListener {
+            delegate = vcCertificateResultListener
+        }
         viewControllerToPresentUiOn = vc
 
         do {
@@ -96,6 +103,7 @@ extension ClientCertificateUIUtil {
                 Log.shared.errorAndCrash(message: "missing ClientCertificatePaswordVC")
                 return
             }
+            delegate?.certificateAdded()
             vc.dismiss()
         } catch ClientCertificateUtil.ImportError.wrongPassword {
             showWrongPasswordError()
@@ -116,7 +124,7 @@ extension ClientCertificateUIUtil {
                                                         Log.shared.lostMySelf()
                                                         return
                                                     }
-                                                    me.dismiss(vc: vc)
+                                                    me.dismiss(vc: vc) //!!!: Xavier: is this really needed i think not. only can generate errors.
         })
     }
 

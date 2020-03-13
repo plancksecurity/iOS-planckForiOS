@@ -164,3 +164,10 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
         }
     }
 }
+
+extension AccountTypeSelectorViewController: CertificateResultsListener {
+    func certificateAdded() {
+        viewModel = AccountTypeSelectorViewModel()
+        collectionView.reloadData()
+    }
+}
