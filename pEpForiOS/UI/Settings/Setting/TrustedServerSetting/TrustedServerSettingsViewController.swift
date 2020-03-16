@@ -131,8 +131,9 @@ extension TrustedServerSettingsViewController {
                                                 pepAlert?.dismiss()
                                                 return
                                             }
+                                            me.viewModel.setStoreSecurely(indexPath: indexPath,
+                                                                          toValue: false)
                                             pepAlert?.dismiss()
-                                            me.viewModel.setStoreSecurely(indexPath: indexPath, toValue: true)
         })
         pepAlert?.add(action: cancelAction)
         pepAlert?.add(action: trustAction)
