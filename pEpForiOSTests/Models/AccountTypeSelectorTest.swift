@@ -123,6 +123,8 @@ class ClientCertificateUtilMockTest: ClientCertificateUtilProtocol {
     func storeCertificate(p12Data: Data, password: String) throws {
         
     }
+
+    func delete(clientCertificate: ClientCertificate) throws {}
 }
 
 class VerificableAccountMockTest: VerifiableAccountProtocol {
