@@ -48,8 +48,8 @@ final class ClientCertificateImportViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
         updateConstraints()
+        viewModel?.importClientCertificate()
     }
 
     /// Setup constraints arrays for cancel & OK buttons.
