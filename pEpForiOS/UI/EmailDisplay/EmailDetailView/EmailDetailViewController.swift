@@ -80,10 +80,15 @@ class EmailDetailViewController: BaseViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setupToolbar()
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+        // Works around a UI glitch: When !onlySplitViewMasterIsShown, the colletionView scroll
+        // position is inbetween two cells after orientation change.
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.scrollToLastViewedCell()
+        }
     }
 
     // MARK: - Target & Action
@@ -178,10 +183,8 @@ class EmailDetailViewController: BaseViewController {
 extension EmailDetailViewController {
 
     private func setup() {
-
         viewModel?.delegate = self
         setupCollectionView()
-        registerNotifications()
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -255,7 +258,7 @@ extension EmailDetailViewController {
                 return
         }
         collectionView?.scrollToItem(at: indexPath,
-                                     at: .centeredHorizontally,
+                                     at: .left,
                                      animated: false)
     }
 
@@ -336,20 +339,6 @@ extension EmailDetailViewController {
                                                               action: #selector(showTrustManagementView(gestureRecognizer:)))
             ratingView.addGestureRecognizer(tapGestureRecognizer)
         }
-    }
-
-    private func registerNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(EmailDetailViewController.rotated),
-                                               name: UIDevice.orientationDidChangeNotification,
-                                               object: nil)
-    }
-
-    @objc
-    private func rotated() {
-        // Works around a UI glitch: When !onlySplitViewMasterIsShown, the colletionView scroll
-        // position is inbetween two cells after orientation change.
-        scrollToLastViewedCell()
     }
     
     // Removes all EmailViewController that are not connected to a cell any more.
