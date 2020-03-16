@@ -64,7 +64,8 @@
    TableView section header: Contacts */
 "Contacts" = "Contacts";
 
-/* Settings: Cell (button) title to view app credits */
+/* Credits view title
+   Settings: Cell (button) title to view app credits */
 "Credits" = "Crédits";
 
 /* Incorrect trustwords/PGP fingerprint */
@@ -187,7 +188,8 @@
    Port placeholder for manual account SMTP setup */
 "Port" = "Port";
 
-/* action sheet title 1 */
+/* action sheet title 1
+   Privacy Status Label */
 "Privacy Status" = "Protection de la vie privée";
 
 /* title for subject protection */

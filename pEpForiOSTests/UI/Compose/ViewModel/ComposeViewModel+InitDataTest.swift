@@ -309,27 +309,6 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                           expectedHtmlBody: expectedHtmlBody)
     }
 
-    func testComposeMode_fromOutbox() {
-        let mode = ComposeUtil.ComposeMode.normal
-        guard
-            let originalMessage = messageAllButBccSet,
-            let outbox = outbox,
-            let origSubject = originalMessage.shortMessage,
-            let htmlBody =
-            originalMessage.longMessageFormatted?.htmlToAttributedString(attachmentDelegate: nil)
-            else {
-                XCTFail()
-                return
-        }
-        originalMessage.parent = outbox
-        let expectedSubject = origSubject
-        let expectedHtmlBody = htmlBody
-        assertComposeMode(mode,
-                          originalMessage: originalMessage,
-                          expectedSubject: expectedSubject,
-                          expectedHtmlBody: expectedHtmlBody)
-    }
-
     // MARK: - isDraftsOrOutbox isDrafts isOutbox
 
     func testIsDraftsOrOutbox_noOrigMessage() {
@@ -504,20 +483,20 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
     }
 
     /// Asserts the testee for the given values. Optional arguments set to `nil` are ignored.
-    private func assertTesteeForExpectedValues( composeMode: ComposeUtil.ComposeMode? = nil,
-                                                originalMessage: Message? = nil,
-                                                isDrafts: Bool? = nil,
-                                                isOutbox: Bool? = nil,
-                                                pEpProtection: Bool? = nil,
-                                                from: Identity? = nil,
-                                                toRecipients: [Identity]? = nil,
-                                                ccRecipients: [Identity]? = nil,
-                                                bccRecipients: [Identity]? = nil,
-                                                subject: String? = nil,
-                                                bodyPlaintext: String? = nil,
-                                                bodyHtml: NSAttributedString? = nil,
-                                                nonInlinedAttachments: [Attachment]? = nil,
-                                                inlinedAttachments: [Attachment]? = nil) {
+    private func assertTesteeForExpectedValues(composeMode: ComposeUtil.ComposeMode? = nil,
+                                               originalMessage: Message? = nil,
+                                               isDrafts: Bool? = nil,
+                                               isOutbox: Bool? = nil,
+                                               pEpProtection: Bool? = nil,
+                                               from: Identity? = nil,
+                                               toRecipients: [Identity]? = nil,
+                                               ccRecipients: [Identity]? = nil,
+                                               bccRecipients: [Identity]? = nil,
+                                               subject: String? = nil,
+                                               bodyPlaintext: String? = nil,
+                                               bodyHtml: NSAttributedString? = nil,
+                                               nonInlinedAttachments: [Attachment]? = nil,
+                                               inlinedAttachments: [Attachment]? = nil) {
         guard let testee = testee else {
             XCTFail("No testee")
             return
@@ -571,17 +550,26 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
             XCTAssertEqual(testee.bodyHtml, exp)
         }
         if let exp = nonInlinedAttachments {
-            XCTAssertEqual(testee.nonInlinedAttachments, exp)
-            XCTAssertEqual(testee.nonInlinedAttachments.count, exp.count)
+            let safeExp = Attachment.makeSafe(exp, forSession: Session.main)
+            let safeTesteeNonInlinedAttachments = Attachment.makeSafe(testee.nonInlinedAttachments,
+                                                                      forSession: Session.main)
+            XCTAssertEqual(safeTesteeNonInlinedAttachments, safeExp)
+            XCTAssertEqual(safeTesteeNonInlinedAttachments.count, safeExp.count)
             for to in testee.nonInlinedAttachments {
-                XCTAssertTrue(exp.contains(to))
+                let safeTo = to.safeForSession(Session.main)
+                XCTAssertTrue(safeExp.contains(safeTo))
             }
         }
         if let exp = inlinedAttachments {
-            XCTAssertEqual(testee.inlinedAttachments, exp)
-            XCTAssertEqual(testee.inlinedAttachments.count, exp.count)
+            let safeExp = Attachment.makeSafe(exp, forSession: Session.main)
+            let safeTesteeInlinedAttachments = Attachment.makeSafe(testee.inlinedAttachments,
+                                                                      forSession: Session.main)
+
+            XCTAssertEqual(safeTesteeInlinedAttachments, safeExp)
+            XCTAssertEqual(safeTesteeInlinedAttachments.count, safeExp.count)
             for to in testee.inlinedAttachments {
-                XCTAssertTrue(exp.contains(to))
+                let safeTo = to.safeForSession(Session.main)
+                XCTAssertTrue(safeExp.contains(safeTo))
             }
         }
     }

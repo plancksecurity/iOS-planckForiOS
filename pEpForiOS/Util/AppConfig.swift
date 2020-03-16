@@ -19,14 +19,10 @@ class AppConfig {
     ///For the views to kick off oauth2 requests.
     let oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol
 
-    let keySyncHandshakeService: KeySyncHandshakeService
-
     init(errorPropagator: ErrorPropagator,
-         oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol,
-         keySyncHandshakeService: KeySyncHandshakeService) {
+         oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol) {
         self.errorPropagator = errorPropagator
         self.oauth2AuthorizationFactory = oauth2AuthorizationFactory
-        self.keySyncHandshakeService = keySyncHandshakeService
         self.showedAccountsError = [:]
     }
 }

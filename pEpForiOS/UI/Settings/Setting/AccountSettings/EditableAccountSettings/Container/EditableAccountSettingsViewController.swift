@@ -71,7 +71,7 @@ extension EditableAccountSettingsViewController {
 
 extension EditableAccountSettingsViewController: EditableAccountSettingsViewModelDelegate {
     func showErrorAlert(error: Error) {
-        UIUtils.show(error: error, inViewController: self)
+        UIUtils.show(error: error)
     }
 
     func showLoadingView() {
