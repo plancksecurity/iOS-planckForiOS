@@ -255,7 +255,7 @@ extension AppDelegate {
         guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
             return false
         }
-        vc.viewModel = ClientCertificateImportViewModel(delegate: vc)
+        vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url, delegate: vc)
         vc.modalPresentationStyle = .fullScreen
         topVC.present(vc, animated: true)
         return true

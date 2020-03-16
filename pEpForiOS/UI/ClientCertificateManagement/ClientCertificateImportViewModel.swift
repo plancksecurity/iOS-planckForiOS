@@ -15,11 +15,11 @@ protocol ClientCertificatePasswordViewModelPasswordChangeDelegate: class {
 
 protocol ClientCertificatePasswordViewModelDelegate: class {
     func dismiss()
-    func showError(type: importError, dissmisAfterError: Bool)
+    func showError(type: importCertificateError, dissmisAfterError: Bool)
 }
 
-enum importError {
-    case wrongPasswrd
+public enum importCertificateError {
+    case wrongPassword
     case corruptedFile
 }
 
@@ -28,20 +28,21 @@ final class ClientCertificateImportViewModel {
     weak private var passwordChangeDelegate: ClientCertificatePasswordViewModelPasswordChangeDelegate?
     weak private var delegate: ClientCertificatePasswordViewModelDelegate?
     private let clientCertificateUtil: ClientCertificateUtilProtocol
-    
+    private var certificateUrl: URL
     private var p12Data: Data?
 
-    init(delegate: ClientCertificatePasswordViewModelDelegate? = nil,
+    init(certificateUrl: URL, delegate: ClientCertificatePasswordViewModelDelegate? = nil,
          passwordChangeDelegate: ClientCertificatePasswordViewModelPasswordChangeDelegate? = nil,
          clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
+        self.certificateUrl = certificateUrl
         self.delegate = delegate
         self.passwordChangeDelegate = passwordChangeDelegate
         self.clientCertificateUtil = clientCertificateUtil ?? ClientCertificateUtil()
     }
     
-    public func importClientCertificate(at url: URL) {
+    public func importClientCertificate() {
         do {
-            p12Data = try Data(contentsOf: url)
+            p12Data = try Data(contentsOf: certificateUrl)
         } catch {
             delegate?.showError(type: .corruptedFile, dissmisAfterError: true)
             return
@@ -57,7 +58,7 @@ final class ClientCertificateImportViewModel {
             try clientCertificateUtil.storeCertificate(p12Data: data, password: pass)
             delegate?.dismiss()
         } catch ClientCertificateUtil.ImportError.wrongPassword {
-            delegate?.showError(type: .wrongPasswrd, dissmisAfterError: false)
+            delegate?.showError(type: .wrongPassword, dissmisAfterError: false)
         } catch {
             delegate?.showError(type: .corruptedFile, dissmisAfterError: true)
         }
@@ -69,34 +70,7 @@ final class ClientCertificateImportViewModel {
 }
 
 
-//private func showCorruptedFileError(in vc: UIViewController) {
-//    UIUtils.showAlertWithOnlyPositiveButton(title: Localized.CorruptedFileError.title,
-//                                            message: Localized.CorruptedFileError.message) { [weak self] in
-//                                                guard let me = self else {
-//                                                    Log.shared.lostMySelf()
-//                                                    return
-//                                                }
-//                                                me.dismiss(vc: vc)
-//    }
-//}
 
 
-//private func showWrongPasswordError() {
-//    guard let vc = clientCertificatePasswordVC else {
-//        Log.shared.errorAndCrash("No VC")
-//        return
-//    }
-//    UIUtils.showTwoButtonAlert(withTitle: Localized.WrongPasswordError.title,
-//                               message: Localized.WrongPasswordError.message,
-//                               cancelButtonText: Localized.no,
-//                               positiveButtonText: Localized.yes,
-//                               cancelButtonAction: { [weak self] in
-//                                guard let me = self else {
-//                                    Log.shared.lostMySelf()
-//                                    return
-//                                }
-//                                me.dismiss(vc: vc)
-//        }, positiveButtonAction: {
-//            // We don't need to do something here. Our expectation is close this alert
-//    })
-//}
+
+

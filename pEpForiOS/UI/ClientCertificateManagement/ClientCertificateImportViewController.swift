@@ -120,8 +120,13 @@ extension ClientCertificateImportViewController {
 // MARK: - ClientCertificatePasswordViewModelDelegate
 
 extension ClientCertificateImportViewController: ClientCertificatePasswordViewModelDelegate {
-    func showError(type: importError, dissmisAfterError: Bool) {
-        return
+    func showError(type: importCertificateError, dissmisAfterError: Bool) {
+        switch type {
+        case .wrongPassword:
+            showWrongPasswordError()
+        case .corruptedFile:
+            showCorruptedFileError()
+        }
     }
     
     func dismiss() {
@@ -150,6 +155,38 @@ extension ClientCertificateImportViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         okAction(textField)
         return true
+    }
+}
+
+// MARK: - Showing Error
+
+extension ClientCertificateImportViewController {
+    
+    private func showCorruptedFileError() {
+        UIUtils.showAlertWithOnlyPositiveButton(title: Localized.CorruptedFileError.title,
+                                                message: Localized.CorruptedFileError.message) { [weak self] in
+                                                    guard let me = self else {
+                                                        Log.shared.lostMySelf()
+                                                        return
+                                                    }
+                                                    me.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    private func showWrongPasswordError() {
+        UIUtils.showTwoButtonAlert(withTitle: Localized.WrongPasswordError.title,
+                                   message: Localized.WrongPasswordError.message,
+                                       cancelButtonText: Localized.no,
+                                       positiveButtonText: Localized.yes,
+                                       cancelButtonAction: { [weak self] in
+                                        guard let me = self else {
+                                            Log.shared.lostMySelf()
+                                            return
+                                        }
+                                        me.dismiss(animated: true, completion: nil)
+            }, positiveButtonAction: {
+                // We don't need to do something here. Our expectation is close this alert
+        })
     }
 }
 
