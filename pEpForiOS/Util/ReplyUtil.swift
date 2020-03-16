@@ -36,13 +36,20 @@ public struct ReplyUtil {
         return "\n\n\(footer())\n\n\(citation)\n\n\(citedTextWithNewLines(textToCite: textToCite))"
     }
 
-    static func citedTextWithNewLines(textToCite: String) -> String {
+    public static func citedTextWithNewLines(textToCite: String) -> String {
         let quoteChar = ">"
         var citedText = ""
         for line in textToCite.components(separatedBy: "\n") {
             citedText = citedText + quoteChar + " " + line + "\n"
         }
         return citedText.trimmingCharacters(in: .newlines)
+    }
+
+    // WIP: - ak
+    /// Show vertical line for cited messages (only in presentation layer)
+    public static func citedHtmlVisibleVerticalLineString(html: String) -> String {
+        return html
+            .replacingOccurrences(of: "<blockquote type=\"cite\"", with: "<blockquote type=\"cite\" style=\"border-left: 2px solid #0000FF; padding-left: 8px; margin-left:0px;\"")
     }
 
     /// Adds citation header with data of a given message to a given text.
@@ -82,22 +89,16 @@ public struct ReplyUtil {
             return "\(replyPrefix)\(theSubject)"
         }
 
-        return replyPrefix
+        return ""
     }
 
     public static func forwardSubject(message: Message) -> String {
-        let replyPrefix = "Fwd: "
-
-        if var theSubject = message.shortMessage {
-            theSubject = theSubject.trimmed()
-            while theSubject.hasPrefix(replyPrefix) {
-                theSubject = String(theSubject[replyPrefix.endIndex..<theSubject.endIndex])
-                theSubject = theSubject.trimmed()
-            }
-
-            return "\(replyPrefix)\(theSubject)"
+        if let subject = message.shortMessage {
+            let fwd = "Fwd: "
+            return String(fwd + subject.trimmed())
+        } else {
+            return ""
         }
-        return replyPrefix
     }
 
     // MARK: - Private

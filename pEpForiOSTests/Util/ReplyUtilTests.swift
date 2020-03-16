@@ -32,7 +32,7 @@ class ReplyUtilTests: XCTestCase {
     func testReplyNonSubject() {
         let msg = getMockMessage()
         msg.shortMessage = nil
-        let exp = Constant.expectedReplyPrefix
+        let exp = Constant.expectedReplyPrefixForEmptySubject
         let sth = ReplyUtil.replySubject(message: msg)
         XCTAssertEqual(sth, exp,
                        showDifference(string1: sth, string2: exp, onlyFirstChar: true))
@@ -50,7 +50,7 @@ class ReplyUtilTests: XCTestCase {
     func testForwardNonSubject() {
         let msg = getMockMessage()
         msg.shortMessage = nil
-        let exp = Constant.expectedForwardPrefix
+        let exp = Constant.expectedForwardPrefixForEmptySubject
         let sth = ReplyUtil.forwardSubject(message: msg)
         XCTAssertEqual(sth, exp)
     }
@@ -146,8 +146,9 @@ extension ReplyUtilTests {
         static let footnote = String.pepSignature
         static let subject = "This is a subject"
         static let expectedReplyPrefix = "Re: "
-        static let expectedForwardPrefix = NSLocalizedString("Fwd: ",
-                                                             comment: "The 'Fwd:' that gets appended to the subject line")
+        static let expectedReplyPrefixForEmptySubject = ""
+        static let expectedForwardPrefix = "Fwd: "
+        static let expectedForwardPrefixForEmptySubject = ""
         static let longMessageHtmlFormatted = "<html><body><p>Test</p><p>Test</p></body></html>"
         static let crazySpaces = "     "
     }

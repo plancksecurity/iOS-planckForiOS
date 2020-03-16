@@ -140,7 +140,7 @@ class TrustManagementViewModelTest: CoreDataDrivenTestBase {
         ///Verify reset has been called only once.
         waitForExpectations(timeout: TestUtil.waitTime)
     }
-    
+
     /// Test get trustwords is being called.
     func testGetTrustwords() {
         let getTrustwordsExpectation = expectation(description: "Get Trustwords Expectation")
@@ -153,7 +153,9 @@ class TrustManagementViewModelTest: CoreDataDrivenTestBase {
         })
         waitForExpectations(timeout: TestUtil.waitTime)
     }
-    
+
+
+    // TODO: - Martin, Index out of range crash.
     //Test the Select language is being called
     func testDidSelectLanguage() {
         setupViewModel()
