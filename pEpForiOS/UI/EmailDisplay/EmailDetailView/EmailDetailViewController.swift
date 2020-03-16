@@ -68,7 +68,6 @@ class EmailDetailViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         doOnce?()
-        doOnce = nil
         createSeparators()
         setupToolbar()
     }
@@ -190,6 +189,7 @@ extension EmailDetailViewController {
             }
             me.viewModel?.startMonitoring()
             me.collectionView.reloadData()
+            me.doOnce = nil
         }
     }
 
@@ -391,23 +391,13 @@ extension EmailDetailViewController {
     }
 
     @objc
-    private func showTrustManagementScreen() {
-        splitViewController?.preferredDisplayMode = .allVisible
-        guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
-            let vc = nav.topViewController else {
-                return
-        }
-        UIUtils.presentSettings(on: vc, appConfig: appConfig)
-    }
-
-    @objc
     private func showSettingsViewController() {
         splitViewController?.preferredDisplayMode = .allVisible
         guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
             let vc = nav.topViewController else {
                 return
         }
-        UIUtils.presentSettings(on: vc, appConfig: appConfig)
+        UIUtils.presentSettings(appConfig: appConfig)
     }
 
     private func setupEmailViewController(forRowAt indexPath: IndexPath) -> EmailViewController? {
