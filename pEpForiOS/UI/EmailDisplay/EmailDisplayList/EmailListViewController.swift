@@ -494,7 +494,7 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
         } else {
             textFilterButton.title = ""
             enableFilterButton.image = UIImage(named: "unread-filter-inactive-old")?.resizeImage(targetSize: size)
-        }
+        }     
     }
     
     private func updateFilterText() {
