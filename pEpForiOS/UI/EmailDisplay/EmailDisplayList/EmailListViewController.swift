@@ -55,15 +55,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 13.0, *) {
-            let font = UIFont.pepFont(style: .headline, weight: .medium)
-            let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.black,
-                                                                       .font: font,
-                                                                       .baselineOffset: 2]
-            navigationController?.navigationBar.standardAppearance.titleTextAttributes = titleTextAttributes
-        } else {
-            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
-        }
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -150,6 +141,17 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 
         let flexibleSpace = createFlexibleBarButtonItem()
         toolbarItems?.append(contentsOf: [flexibleSpace, createPepBarButtonItem()])
+        
+        if #available(iOS 13.0, *) {
+            let font = UIFont.pepFont(style: .headline, weight: .medium)
+            let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.black,
+                                                                       .font: font,
+                                                                       .baselineOffset: 2]
+            navigationController?.navigationBar.standardAppearance.titleTextAttributes = titleTextAttributes
+        } else {
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
+            navigationController?.navigationBar.tintColor = UIColor.pEpGreen
+        }
     }
 
     private func setupRefreshControl() {

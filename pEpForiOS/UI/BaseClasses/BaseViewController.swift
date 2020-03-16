@@ -46,7 +46,7 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
         super.viewWillDisappear(animated)
         if needsWhiteTintColor {
             navigationController?.navigationBar.barTintColor = UIColor.black
-            UINavigationBar.appearance().tintColor = UIColor.black
+            UINavigationBar.appearance().tintColor = UIColor.pEpGreen
         }
     }
 

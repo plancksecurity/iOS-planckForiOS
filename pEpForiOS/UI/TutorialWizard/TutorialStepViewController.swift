@@ -66,6 +66,7 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

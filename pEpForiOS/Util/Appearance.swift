@@ -12,13 +12,13 @@ import UIKit
 class Appearance {
     public static func pEp(_ color: UIColor = .pEpGreen) {
         // Still needed for iOS 13 for button bar items.
-        UINavigationBar.appearance().tintColor = color
+        UINavigationBar.appearance().tintColor = .pEpGreen
 
         if #available(iOS 13, *) {
             // iOS 13 ignores the navigation bar tint color in some cases,
             // therefore we use the new appearance API to customise explicitly.
             let normalNavigationBar = UINavigationBar.appearance()
-            normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: color)
+            normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: .black)
         } else {
             UINavigationBar.appearance().backgroundColor = .white
             UINavigationBar.appearance().titleTextAttributes = titleTextAttributes()
@@ -80,11 +80,17 @@ class Appearance {
                                                                    .font: font,
                                                                    .baselineOffset: 2
         ]
-        appearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes
-        appearance.backButtonAppearance.normal.titleTextAttributes = titleTextAttributes
+        
+        let greenTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.pEpGreen,
+                                                                   .font: font,
+                                                                   .baselineOffset: 2
+        ]
+
+        appearance.buttonAppearance.normal.titleTextAttributes = greenTextAttributes
+//        appearance.backButtonAppearance.normal.titleTextAttributes = greenTextAttributes
         appearance.titleTextAttributes = titleTextAttributes
         appearance.largeTitleTextAttributes = titleTextAttributes
-        appearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
+        appearance.doneButtonAppearance.normal.titleTextAttributes = greenTextAttributes
 
         let chevronLeftImg = UIImage(named: "chevron-icon-left")?
             .resizeImage(targetSize: CGSize(width: 15, height: 25))
@@ -112,8 +118,6 @@ class Appearance {
         navigationBarAppearance.configureWithTransparentBackground()
         navigationBarAppearance.backgroundColor = UIColor.clear
         let newTintImage = UIImage(named: "white-chevron-icon-left")!.withRenderingMode(.alwaysOriginal)
-        //let newTintImage = UIImage(named: "close-icon")!.withTintColor(UIColor.black)
-        //navigationBarAppearance.backIndicatorImage.withTintColor(UIColor.white)
         navigationBarAppearance.setBackIndicatorImage(newTintImage, transitionMaskImage: newTintImage)
         customiseButtons(navigationBarAppearance: navigationBarAppearance)
     }
