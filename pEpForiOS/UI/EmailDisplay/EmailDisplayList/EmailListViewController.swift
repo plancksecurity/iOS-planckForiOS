@@ -487,12 +487,13 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
         }
 
         textFilterButton.isEnabled = vm.isFilterEnabled
+        let size = CGSize(width: 23, height: 23)
         if textFilterButton.isEnabled {
-            enableFilterButton.image = UIImage(named: "unread-icon-active-1")
+            enableFilterButton.image = UIImage(named: "unread-filter-active-old")?.resizeImage(targetSize: size)
             updateFilterText()
         } else {
             textFilterButton.title = ""
-            enableFilterButton.image = UIImage(named: "unread-icon-1")
+            enableFilterButton.image = UIImage(named: "unread-filter-inactive-old")?.resizeImage(targetSize: size)
         }
     }
     
