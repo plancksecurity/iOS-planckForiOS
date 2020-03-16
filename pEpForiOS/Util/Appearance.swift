@@ -72,30 +72,19 @@ class Appearance {
     @available(iOS 13, *)
     static private func navigationBarAppearanceDefault(color: UIColor) -> UINavigationBarAppearance {
         let appearance = UINavigationBarAppearance()
-
         appearance.configureWithOpaqueBackground()
         let font = UIFont.pepFont(style: .headline, weight: .medium)
-        
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: color,
                                                                    .font: font,
-                                                                   .baselineOffset: 2
-        ]
-        
-        let greenTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.pEpGreen,
-                                                                   .font: font,
-                                                                   .baselineOffset: 2
-        ]
-
-        appearance.buttonAppearance.normal.titleTextAttributes = greenTextAttributes
-//        appearance.backButtonAppearance.normal.titleTextAttributes = greenTextAttributes
+                                                                   .baselineOffset: 2]
+        let buttonsAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.pEpGreen]
+        appearance.buttonAppearance.normal.titleTextAttributes = buttonsAttributes
         appearance.titleTextAttributes = titleTextAttributes
         appearance.largeTitleTextAttributes = titleTextAttributes
-        appearance.doneButtonAppearance.normal.titleTextAttributes = greenTextAttributes
-
+        appearance.doneButtonAppearance.normal.titleTextAttributes = buttonsAttributes
         let chevronLeftImg = UIImage(named: "chevron-icon-left")?
             .resizeImage(targetSize: CGSize(width: 15, height: 25))
         appearance.setBackIndicatorImage(chevronLeftImg, transitionMaskImage: chevronLeftImg)
-
         return appearance
     }
 
