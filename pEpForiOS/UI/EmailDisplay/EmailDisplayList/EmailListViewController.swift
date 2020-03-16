@@ -488,11 +488,11 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 
         textFilterButton.isEnabled = vm.isFilterEnabled
         if textFilterButton.isEnabled {
-            enableFilterButton.image = UIImage(named: "unread-icon-active")
+            enableFilterButton.image = UIImage(named: "unread-icon-active-1")
             updateFilterText()
         } else {
             textFilterButton.title = ""
-            enableFilterButton.image = UIImage(named: "unread-icon")
+            enableFilterButton.image = UIImage(named: "unread-icon-1")
         }
     }
     

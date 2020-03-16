@@ -177,7 +177,7 @@
                         <viewLayoutGuide key="safeArea" id="gL5-KI-75G"/>
                     </view>
                     <toolbarItems>
-                        <barButtonItem image="unread-icon" id="qvK-qQ-Gk6" userLabel="Enable Filter Button">
+                        <barButtonItem image="unread-icon-active-1" id="qvK-qQ-Gk6" userLabel="Enable Filter Button">
                             <connections>
                                 <action selector="filterButtonHasBeenPressed:" destination="ldy-GA-D6J" id="ywQ-Ih-ND0"/>
                             </connections>
@@ -978,7 +978,7 @@
         <image name="pEpForiOS-icon-settings" width="59" height="24"/>
         <image name="pEpForiOS-icon-unflagged" width="14" height="24"/>
         <image name="separator_pixel_grey" width="1" height="1"/>
-        <image name="unread-icon" width="25" height="25"/>
+        <image name="unread-icon-active-1" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="cRe-YG-393"/>
