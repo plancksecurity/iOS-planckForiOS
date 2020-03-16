@@ -713,16 +713,9 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
             collectionView?.performBatchUpdates(performChangesBlock)
         }
         configureView()
-        guard let indexPath = indexPathOfCurrentlyVisibleCell else {
-            // Empty list, is ok.
-            // Do nothing.
-            return
-        }
-        // Must be dispatched to avoid recursive saves
-        // (save -> Queryresults Delegate -> calls us -> save -> ...)
-        DispatchQueue.main.async {
-            vm.handleEmailShown(forItemAt: indexPath)
-        }
+
+        // We might need to scroll emailLISTview to curretlySelectedIndexPath here in case loads
+        //of new mails came in or have been deleted and the selected row is not visible any more.
     }
 
     func reloadData(viewModel: EmailDisplayViewModel) {
