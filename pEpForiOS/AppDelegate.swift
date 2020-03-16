@@ -252,13 +252,12 @@ extension AppDelegate {
             Log.shared.errorAndCrash("We must have a VC at this point.")
             return false
         }
-        let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: <#String#>) as? ClientCertificateImportViewController
-        
-
-        
-        
-        //!!!: Show clientCertifiatepassword
-        //clientCertificateUIUtil.importClientCertificate(at: url, viewControllerToPresentUiOn: topVC)
+        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
+            return false
+        }
+        vc.viewModel = ClientCertificateImportViewModel(delegate: vc)
+        vc.modalPresentationStyle = .fullScreen
+        topVC.present(vc, animated: true)
         return true
     }
 }
