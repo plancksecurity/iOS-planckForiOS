@@ -627,7 +627,7 @@
                                 <rect key="frame" x="0.0" y="131" width="834" height="1043"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="AZr-4K-O4u">
-                                        <rect key="frame" x="167" y="20" width="500" height="1003"/>
+                                        <rect key="frame" x="167" y="20" width="500" height="880"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="500" id="NBq-lE-8mP"/>
@@ -688,12 +688,12 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="AZr-4K-O4u" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ztt-aa-W7u" secondAttribute="leading" constant="16" id="19F-rt-Jli"/>
-                                    <constraint firstAttribute="bottom" secondItem="AZr-4K-O4u" secondAttribute="bottom" priority="750" constant="20" symbolic="YES" id="3Ph-0C-LeS"/>
+                                    <constraint firstAttribute="bottom" secondItem="AZr-4K-O4u" secondAttribute="bottom" priority="750" constant="143" id="3Ph-0C-LeS"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="AZr-4K-O4u" secondAttribute="trailing" constant="16" id="3Qp-4F-xcF"/>
                                     <constraint firstItem="AZr-4K-O4u" firstAttribute="top" secondItem="Ztt-aa-W7u" secondAttribute="top" constant="20" symbolic="YES" id="50s-kh-WR3"/>
                                     <constraint firstItem="AZr-4K-O4u" firstAttribute="centerX" secondItem="Ztt-aa-W7u" secondAttribute="centerX" id="HQB-up-Xj7"/>
-                                    <constraint firstAttribute="trailing" secondItem="AZr-4K-O4u" secondAttribute="trailing" priority="750" constant="16" id="aBQ-ft-r9s"/>
-                                    <constraint firstItem="AZr-4K-O4u" firstAttribute="leading" secondItem="Ztt-aa-W7u" secondAttribute="leading" priority="750" constant="16" id="oau-Tp-snw"/>
+                                    <constraint firstAttribute="trailing" secondItem="AZr-4K-O4u" secondAttribute="trailing" priority="750" constant="167" id="aBQ-ft-r9s"/>
+                                    <constraint firstItem="AZr-4K-O4u" firstAttribute="leading" secondItem="Ztt-aa-W7u" secondAttribute="leading" priority="750" constant="167" id="oau-Tp-snw"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="AZr-4K-O4u" secondAttribute="bottom" id="vhM-3r-RTl"/>
                                 </constraints>
                             </view>
@@ -722,7 +722,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="axc-fA-bI1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5586.9565217391309" y="379.6875"/>
+            <point key="canvasLocation" x="5586.330935251799" y="379.3969849246231"/>
         </scene>
         <!--Account Type Selector View Controller-->
         <scene sceneID="V9w-WW-Gu0">
@@ -861,6 +861,6 @@
         <image name="splashscreen" width="228" height="404"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="A6U-Bz-3KU"/>
+        <segue reference="Eaq-Ij-JdY"/>
     </inferredMetricsTieBreakers>
 </document>

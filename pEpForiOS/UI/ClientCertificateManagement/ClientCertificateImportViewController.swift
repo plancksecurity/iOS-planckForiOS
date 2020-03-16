@@ -8,10 +8,17 @@
 
 import UIKit
 
-final class ClientCertificatePasswordViewController: UIViewController {
+// MARK: - Constants
+
+extension ClientCertificateImportViewController {
+    static public let pEpClientCertificateExtension = "pEp12"
+    static public let storyboadIdentifier = "ClientCertificatePasswordViewController"
+}
+
+final class ClientCertificateImportViewController: UIViewController {
 
 // MARK: - IBOutlet
-
+    
     @IBOutlet weak private var scrollView: DynamicHeightScrollView!
 
     @IBOutlet weak private var passwordLabel: UILabel!
@@ -26,20 +33,7 @@ final class ClientCertificatePasswordViewController: UIViewController {
 
 // MARK: - ViewModel
 
-    public var viewModel: ClientCertificatePasswordViewModel?
-
-// MARK: - Localized strings
-
-    private struct Localized {
-        static let title = NSLocalizedString("Client Certificate",
-                                             comment: "Header for client certificate password screen")
-        static let message = NSLocalizedString("Please enter the password of the certificate to import it:",
-                                               comment: "Description for client certificate password screen")
-        static let ok = NSLocalizedString("OK",
-                                          comment: "OK button for client certificate password screen")
-        static let cancel = NSLocalizedString("Cancel",
-                                              comment: "Cancel button for client certificate password screen")
-    }
+    public var viewModel: ClientCertificateImportViewModel?
 
 // MARK: Life cycle
 
@@ -93,7 +87,7 @@ final class ClientCertificatePasswordViewController: UIViewController {
 
 // MARK: - Private
 
-extension ClientCertificatePasswordViewController {
+extension ClientCertificateImportViewController {
     private func setupStyle() {
         okButton.tintColor = .white
         okButton.setTitle(Localized.ok, for: .normal)
@@ -104,7 +98,7 @@ extension ClientCertificatePasswordViewController {
 
 // MARK: - IBAction
 
-extension ClientCertificatePasswordViewController {
+extension ClientCertificateImportViewController {
     @IBAction func cancelAction(_ sender: Any) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("Lost viewModel")
@@ -119,13 +113,17 @@ extension ClientCertificatePasswordViewController {
             return
         }
         let password = passwordTextField.text ?? ""
-        vm.handleOkButtonPressed(password: password)
+        vm.handlePassphraseEntered(pass: password)
     }
 }
 
 // MARK: - ClientCertificatePasswordViewModelDelegate
 
-extension ClientCertificatePasswordViewController: ClientCertificatePasswordViewModelDelegate {
+extension ClientCertificateImportViewController: ClientCertificatePasswordViewModelDelegate {
+    func showError(type: importError, dissmisAfterError: Bool) {
+        return
+    }
+    
     func dismiss() {
         dismiss(animated: true, completion: nil)
     }
@@ -133,7 +131,7 @@ extension ClientCertificatePasswordViewController: ClientCertificatePasswordView
 
 // MARK: - DynamicHeightScrollViewDelegate
 
-extension ClientCertificatePasswordViewController: DynamicHeightScrollViewDelegate {
+extension ClientCertificateImportViewController: DynamicHeightScrollViewDelegate {
     var bottomConstraint: NSLayoutConstraint {
         get { scrollViewBottomConstraint }
     }
@@ -144,7 +142,7 @@ extension ClientCertificatePasswordViewController: DynamicHeightScrollViewDelega
 
 // MARK: - TextFieldDelegate
 
-extension ClientCertificatePasswordViewController: UITextFieldDelegate {
+extension ClientCertificateImportViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.endEditing(true)
     }
@@ -153,4 +151,33 @@ extension ClientCertificatePasswordViewController: UITextFieldDelegate {
         okAction(textField)
         return true
     }
+}
+
+// MARK: - Localized strings
+
+private struct Localized {
+    struct WrongPasswordError {
+        static let title = NSLocalizedString("Wrong Password",
+                                             comment: "Client certificate import: wrong password alert title")
+        static let message = NSLocalizedString("We could not import the certificate. The password is incorrect.\n\nTry again?",
+                                               comment: "Client certificate import: wrong password alert message")
+    }
+    struct CorruptedFileError {
+        static let title = NSLocalizedString("Corrupted File",
+                                             comment: "Client certificate import: corrupted file error alert title")
+        static let message = NSLocalizedString("The file could not be imported",
+                                               comment: "Client certificate import: corrupted file error alert message")
+    }
+    static let no = NSLocalizedString("No",
+                                      comment: "Alert button while client certificate is importing: Try again? No")
+    static let yes = NSLocalizedString("Yes",
+                                       comment: "Alert button while client certificate is importing: Try again? Yes")
+    static let title = NSLocalizedString("Client Certificate",
+                                         comment: "Header for client certificate password screen")
+    static let message = NSLocalizedString("Please enter the password of the certificate to import it:",
+                                           comment: "Description for client certificate password screen")
+    static let ok = NSLocalizedString("OK",
+                                      comment: "OK button for client certificate password screen")
+    static let cancel = NSLocalizedString("Cancel",
+                                          comment: "Cancel button for client certificate password screen")
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwipeCellKit
 
 private struct Localized {
     static let importDate = NSLocalizedString("Import date",
@@ -19,6 +20,12 @@ final class ClientCertificateManagementViewController: BaseViewController {
     @IBOutlet weak var tableView: UITableView!
 
     public var viewModel: ClientCertificateManagementViewModel?
+    
+    //swipe acctions types
+    var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
+    var buttonStyle: ButtonStyle = .backgroundColor
+    
+    private var swipeDelete: SwipeAction? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -120,6 +127,44 @@ extension ClientCertificateManagementViewController: SegueHandlerType {
             dvc.appConfig = appConfig
             let dvm = vm.loginViewModel()
             dvc.viewModel = dvm
+        }
+    }
+}
+
+extension ClientCertificateManagementViewController: SwipeTableViewCellDelegate {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        
+        // Create swipe actions, taking the currently displayed folder into account
+        var swipeActions = [SwipeAction]()
+        let swipeActionDescriptor = SwipeActionDescriptor.trash
+        let deleteAction =
+            SwipeAction(style: .destructive,
+                        title: swipeActionDescriptor.title(forDisplayMode: .titleAndImage)) {
+                            [weak self] action, indexPath in
+                            guard let me = self else {
+                                Log.shared.errorAndCrash("Lost MySelf")
+                                return
+                            }
+                            me.swipeDelete = action
+                            //me.deleteAction(forCellAt: indexPath)
+        }
+        configure(action: deleteAction, with: swipeActionDescriptor)
+        swipeActions.append(deleteAction)
+        return swipeActions
+    }
+    
+    func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
+        action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
+        action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
+        
+        switch buttonStyle {
+        case .backgroundColor:
+            action.backgroundColor = descriptor.color
+        case .circular:
+            action.backgroundColor = .clear
+            action.textColor = descriptor.color
+            action.font = .systemFont(ofSize: 13)
+            action.transitionDelegate = ScaleTransition.default
         }
     }
 }
