@@ -79,7 +79,7 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - Action
 
     @objc private func showSettingsViewController() {
-        UIUtils.presentSettings(on: self, appConfig: appConfig)
+        UIUtils.presentSettings(appConfig: appConfig)
     }
 
     // MARK: - Cell Setup

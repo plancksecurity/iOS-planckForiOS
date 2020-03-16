@@ -71,45 +71,6 @@ extension UIViewController {
         return nil
     }
 
-    @discardableResult
-    func presentKeySyncWizard(meFPR: String,
-                              partnerFPR: String,
-                              isNewGroup: Bool,
-                              completion: @escaping (KeySyncWizardViewController.Action) -> Void )
-        -> KeySyncWizardViewController? {
-            guard let pageViewController = KeySyncWizardViewController.fromStoryboard(meFPR: meFPR,
-                                                                                      partnerFPR: partnerFPR,
-                                                                                      isNewGroup: isNewGroup,
-                                                                                      completion: completion) else {
-                                                                                        return nil
-            }
-            DispatchQueue.main.async { [weak self] in
-                pageViewController.modalPresentationStyle = .overFullScreen
-                self?.present(pageViewController, animated: true, completion: nil)
-            }
-            return pageViewController
-    }
-
-    @discardableResult
-    /// Show simple UIActivityIndicatorView in midle of current view
-    ///
-    /// - Returns: UIActivityIndicatorView. Useful to hold for removing from super view
-    func showActivityIndicator() -> UIActivityIndicatorView {
-        let activityIndicator = UIActivityIndicatorView(style: .gray)
-        activityIndicator.startAnimating()
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-
-        view.addSubview(activityIndicator)
-
-        NSLayoutConstraint(item: activityIndicator, attribute: .centerX, relatedBy: .equal,
-                           toItem: view, attribute: .centerX, multiplier: 1,
-                           constant: 0).isActive = true
-        NSLayoutConstraint(item: activityIndicator, attribute: .centerY, relatedBy: .equal,
-                           toItem: view, attribute: .centerY, multiplier: 1,
-                           constant: 0).isActive = true
-        return activityIndicator
-    }
-
     func hideNavigationBarIfSplitViewShown() {
         if !onlySplitViewMasterIsShown {
             navigationController?.setNavigationBarHidden(true, animated: false)

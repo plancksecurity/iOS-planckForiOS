@@ -14,9 +14,8 @@ import MessageModel
 /// requires that for some reason.
 protocol UrlClickHandlerProtocol: SecureWebViewUrlClickHandlerProtocol, UITextViewDelegate {
     /// - Parameters:
-    ///   - actor: View Controller to act on
     ///   - appConfig: appConfig. Required to pass around
-    init(actor: UIViewController, appConfig: AppConfig)
+    init(appConfig: AppConfig)
 }
 
 class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
@@ -30,29 +29,21 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
             self = scheme
         }
     }
-    /// View controller to act on.
-    private weak var actor: UIViewController?
     private let appConfig: AppConfig
 
-    required init(actor: UIViewController, appConfig: AppConfig) {
-        self.actor = actor
+    required init(appConfig: AppConfig) {
         self.appConfig = appConfig
     }
 
     private func presentComposeView(forRecipientInUrl url: URL) {
-        if let theActor = actor {
-            UIUtils.presentComposeView(forRecipientInUrl: url, on: theActor, appConfig: appConfig)
-        }
+        UIUtils.presentComposeView(forRecipientInUrl: url, appConfig: appConfig)
     }
-
+    
     private func presentAvailableMailtoUrlHandlingChoices(for url: URL, at rect: CGRect, at view: UIView) {
-        if let theActor = actor {
-            UIUtils.presentActionSheetWithContactOptions(forUrl: url,
-                                                         on: theActor,
-                                                         at: rect,
-                                                         at: view,
-                                                         appConfig: appConfig)
-        }
+        UIUtils.presentActionSheetWithContactOptions(forUrl: url,
+                                                     at: rect,
+                                                     at: view,
+                                                     appConfig: appConfig)
     }
 
     // MARK: - UITextViewDelegate
