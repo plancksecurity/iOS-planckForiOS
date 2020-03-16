@@ -6,6 +6,8 @@
 //  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
+import MessageModel
+
 // MARK: - UIUtil+Compose
 
 extension UIUtils {
