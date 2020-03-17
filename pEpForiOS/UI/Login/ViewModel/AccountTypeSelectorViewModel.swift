@@ -31,10 +31,7 @@ class AccountTypeSelectorViewModel {
 
     init(clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
         self.clientCertificateUtil = clientCertificateUtil ?? ClientCertificateUtil()
-        if self.clientCertificateUtil.listCertificates(session: nil).count == 0 {
-            let positionOfClientCert = 4
-            accountTypes.remove(at: positionOfClientCert)
-        }
+        refreshAccountTypes()
     }
 
     var count: Int {
@@ -45,6 +42,16 @@ class AccountTypeSelectorViewModel {
 
     subscript(index: Int) -> VerifiableAccount.AccountType {
         return accountTypes[index]
+    }
+    
+    public func refreshAccountTypes() {
+        if self.clientCertificateUtil.listCertificates(session: nil).count == 0 && accountTypes.contains(.clientCertificate) {
+            guard let positionOfClientCert = accountTypes.firstIndex(of: .clientCertificate) else {
+                Log.shared.errorAndCrash(message: "wrong data in accountTypes")
+                return
+            }
+            accountTypes.remove(at: positionOfClientCert)
+        }
     }
 
     public func accountType(row: Int) -> VerifiableAccount.AccountType? {

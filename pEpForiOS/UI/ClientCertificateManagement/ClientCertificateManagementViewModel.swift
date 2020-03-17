@@ -55,6 +55,7 @@ final class ClientCertificateManagementViewModel {
         let list = clientCertificateUtil.listCertificates()
         do {
             try clientCertificateUtil.delete(clientCertificate: list[indexPath.row])
+            rows.remove(at: indexPath.row)
             return true
         } catch {
             let cert = list[indexPath.row]
