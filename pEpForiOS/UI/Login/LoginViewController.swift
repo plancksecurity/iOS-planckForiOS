@@ -49,6 +49,10 @@ final class LoginViewController: BaseViewController {
         setup()
         updateView()
         setupPasswordField()
+        if let accountType = viewModel?.verifiableAccount.accountType,
+            accountType == .icloud {
+            showiCloudAlert()
+        }
     }
 
     @IBAction func dismissButtonAction(_ sender: Any) {
