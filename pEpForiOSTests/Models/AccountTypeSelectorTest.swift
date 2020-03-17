@@ -69,7 +69,7 @@ class AccountTypeSelectorTest: CoreDataDrivenTestBase {
     }
     
     func testNumberOfSections() {
-        let expectedSections = 3
+        let expectedSections = 6
         let vm = AccountTypeSelectorViewModel()
         XCTAssertEqual(expectedSections, vm.count)
     }
