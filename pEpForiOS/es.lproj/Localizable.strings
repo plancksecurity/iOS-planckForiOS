@@ -50,6 +50,10 @@
 /* Compose field title */
 "CC:" = "Cc:";
 
+/* accept hand shake confirm button
+   Confirm correct trustwords/PGP fingerprint */
+"Confirm" = "Aceptar";
+
 /* Confirm correct trustwords (pEp, long version) */
 "Confirm Trustwords" = "Confirmar Trustwords";
 
@@ -95,6 +99,9 @@
 /* Title of the view */
 "Handshake" = "Handshake";
 
+/* Trusted Server Setting Section Footer */
+"If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!" = "Si está desactivado, se guarda una copia no encriptada de cada mensaje en el servidor.\n\n¡No desactives está opción si tienes dudas sobre su funcionamiento!";
+
 /* Title for manual account IMAP setup */
 "IMAP" = "IMAP";
 
@@ -125,6 +132,9 @@
    Next button title for manual account setup */
 "Next" = "Siguiente";
 
+/* Privacy status suggestion */
+"No action needed!" = "¡No hace falta realizar ninguna acción!";
+
 /* privacyStatusDescription no_color
    privacyStatusTitle no_color */
 "None" = "Test_LexiaPark_2";
@@ -137,6 +147,7 @@
    Filter accept text
    General alert positive button
    keySyncWizard completion view OK button title
+   OK (dismiss) button for iCloud instructions alert
    OK button for client certificate password screen
    OK button for invalid accout settings user input alert
    UIAlertAction ok after error */
@@ -159,6 +170,9 @@
 /* Password placeholder for manual account setup
    Password TextField Placeholder in Login Screen */
 "Password" = "Contraseña";
+
+/* Account settings title pEp Sync */
+"pEp Sync" = "p≡p Sync";
 
 /* keySyncWizard animation view message while we sync your devices */
 "Please give us a moment while we sync your devices. This can take a minute or more." = "Espera unos instantes mientras sincronizamos tus dispositivos. Este proceso puede llevar unos minutos.";
@@ -214,6 +228,9 @@
 
 /* KeySyncWizard complete message - more than two devices */
 "The device is now member of your device group. All your privacy is now synchronized." = "El dispositivo ahora forma parte de tu grupo de dispositivos. Ahora toda tu privacidad está sincronizada.";
+
+/* error message for .minimumLengthUsername */
+"The username must contain more than 1 characters" = "El nombre de usuario debe contener más de 1 carácter";
 
 /* Privacy status explanation */
 "This message cannot be decrypted because the key is not available." = "No se ha podido descifrar el mensaje porque la clave no esta disponible.";

@@ -50,6 +50,10 @@
 /* Compose field title */
 "CC:" = "Bilgi:";
 
+/* accept hand shake confirm button
+   Confirm correct trustwords/PGP fingerprint */
+"Confirm" = "Güvenlik kelimelerini Onayla";
+
 /* Confirm correct trustwords (pEp, long version) */
 "Confirm Trustwords" = "Trustwords'ü onayla";
 
@@ -137,6 +141,7 @@
    Filter accept text
    General alert positive button
    keySyncWizard completion view OK button title
+   OK (dismiss) button for iCloud instructions alert
    OK button for client certificate password screen
    OK button for invalid accout settings user input alert
    UIAlertAction ok after error */

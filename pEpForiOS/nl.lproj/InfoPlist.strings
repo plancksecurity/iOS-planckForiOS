@@ -1,3 +1,6 @@
 /* Bundle display name */
 "CFBundleDisplayName" = "p≡p";
 
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "- p≡p is een app voor versleutelde e-mails. Om e-mails naar\n     opgeslagen contactpersonen te kunnen verzenden, moet u p≡p\t\n     toestemming geven om deze te gebruiken.\n\n- Contactgegevens verlaten het mobiele apparaat nooit en worden \t\tevenmin verzonden naar p≡p of een derde partij.";
+

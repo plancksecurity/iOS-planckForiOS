@@ -50,6 +50,9 @@
 /* Compose field title */
 "CC:" = "CC:";
 
+/* Compose field title */
+"Cc/Bcc:" = "Cc/Bcc:";
+
 /* accept hand shake confirm button
    Confirm correct trustwords/PGP fingerprint */
 "Confirm" = "Bevestigen";
@@ -129,6 +132,9 @@
    Next button title for manual account setup */
 "Next" = "Volgende";
 
+/* Privacy status suggestion */
+"No action needed!" = "Geen actie nodig!";
+
 /* privacyStatusDescription no_color
    privacyStatusTitle no_color */
 "None" = "Geen";
@@ -141,6 +147,7 @@
    Filter accept text
    General alert positive button
    keySyncWizard completion view OK button title
+   OK (dismiss) button for iCloud instructions alert
    OK button for client certificate password screen
    OK button for invalid accout settings user input alert
    UIAlertAction ok after error */
@@ -229,7 +236,7 @@
 "This message has unreliable protection" = "Dit bericht heeft onbetrouwbare bescherming.";
 
 /* Privacy status explanation */
-"This message is not secure and has been tampered with." = "Dit bericht is niet veilig en gemanipuleerd. ";
+"This message is not secure and has been tampered with." = "Dit bericht is niet veilig en gemanipuleerd.";
 
 /* Privacy status explanation */
 "This message is secure and trusted." = "Dit bericht is veilig en vertrouwd.";
@@ -263,7 +270,7 @@
 "Unknown" = "Onbekend";
 
 /* Privacy status title */
-"Unreliable Security" = "Onbetrouwbare Beveiliging.";
+"Unreliable Security" = "Onbetrouwbare Beveiliging";
 
 /* Privacy status title */
 "Unsecure" = "Onveilig";

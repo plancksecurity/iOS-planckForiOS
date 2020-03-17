@@ -72,7 +72,7 @@
 "Delete" = "Esborra";
 
 /* keysync alert leave device group disable */
-"Disable" = "Disable";
+"Disable" = "Desactivar";
 
 /* Disable Protection
    Disable Protection button title of pEp protection toggle action sheet */
@@ -141,6 +141,7 @@
    Filter accept text
    General alert positive button
    keySyncWizard completion view OK button title
+   OK (dismiss) button for iCloud instructions alert
    OK button for client certificate password screen
    OK button for invalid accout settings user input alert
    UIAlertAction ok after error */

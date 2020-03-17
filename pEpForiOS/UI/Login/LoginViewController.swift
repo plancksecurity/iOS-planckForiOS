@@ -49,6 +49,14 @@ final class LoginViewController: BaseViewController {
         setup()
         updateView()
         setupPasswordField()
+
+        guard let accountType = viewModel?.verifiableAccount.accountType else {
+            Log.shared.errorAndCrash(message: "Lacking viewModel.verifiableAccount.accountType")
+            return
+        }
+        if accountType == .icloud {
+            showiCloudAlert()
+        }
     }
 
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -578,3 +586,32 @@ extension LoginViewController {
         }
     }
 }
+
+// MARK: - iCloud alert
+
+extension LoginViewController {
+    private func showiCloudAlert() {
+        func openiCloudInfoInBrowser() {
+            let urlString = "https://support.apple.com/en-jo/HT204397"
+            guard let url = URL(string: urlString) else {
+                Log.shared.errorAndCrash(message: "Not a URL? \(urlString)")
+                return
+            }
+            UIApplication.shared.open(url,
+                                      options: [:],
+                                      completionHandler: nil)
+        }
+
+        UIUtils.showTwoButtonAlert(withTitle: NSLocalizedString("iCloud",
+                                                                comment: "Alert title for iCloud instructions"),
+                                   message: NSLocalizedString("You need to create an app-specific password in your iCloud account.",
+                                                              comment: "iCloud instructions"),
+                                   cancelButtonText: NSLocalizedString("OK",
+                                                                       comment: "OK (dismiss) button for iCloud instructions alert"),
+                                   positiveButtonText: NSLocalizedString("Info",
+                                                                         comment: "Info button for showing iCloud page"),
+                                   cancelButtonAction: {},
+                                   positiveButtonAction: openiCloudInfoInBrowser)
+    }
+}
+
