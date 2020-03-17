@@ -45,6 +45,15 @@ final class ClientCertificateManagementViewModel {
     public func loginViewModel() -> LoginViewModel {
         return LoginViewModel(verifiableAccount: verifiableAccount)
     }
+    public func deleteCertificate(indexPath: IndexPath) {
+        let list = clientCertificateUtil.listCertificates()
+        do {
+            try clientCertificateUtil.delete(clientCertificate: list[indexPath.row])
+        } catch {
+            Log.shared.errorAndCrash(message: "something goes wrong removing cert")
+        }
+        
+    }
 }
 
 // MARK: - Private

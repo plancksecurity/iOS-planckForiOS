@@ -37,7 +37,7 @@ final class ClientCertificateManagementViewController: BaseViewController {
         configureAppearance()
     }
     @IBAction func addCertificate(_ sender: Any) {
-        let picker = UIDocumentPickerViewController(documentTypes: ["public.data"], in: .import)
+        let picker = UIDocumentPickerViewController(documentTypes: ["security.pep.pEp12"], in: .import)
         picker.delegate = self
         picker.modalPresentationStyle = .formSheet
         present(picker, animated: true)
@@ -171,11 +171,15 @@ extension ClientCertificateManagementViewController: SwipeTableViewCellDelegate 
                                 return
                             }
                             me.swipeDelete = action
-                            //me.deleteAction(forCellAt: indexPath)
+                            me.deleteAction(forCellAt: indexPath)
         }
         configure(action: deleteAction, with: swipeActionDescriptor)
         swipeActions.append(deleteAction)
         return swipeActions
+    }
+    
+    func deleteAction(forCellAt: IndexPath) {
+        viewModel?.deleteCertificate(indexPath: forCellAt)
     }
     
     func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
