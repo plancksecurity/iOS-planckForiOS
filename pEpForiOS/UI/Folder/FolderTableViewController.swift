@@ -256,7 +256,6 @@ extension FolderTableViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Missing VCs")
                     return
             }
-            vc.navigationBarTintColorWhite = true
             nav.modalPresentationStyle = .fullScreen
             vc.appConfig = self.appConfig
             vc.hidesBottomBarWhenPushed = true

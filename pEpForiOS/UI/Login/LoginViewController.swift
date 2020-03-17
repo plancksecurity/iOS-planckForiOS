@@ -44,6 +44,11 @@ final class LoginViewController: BaseViewController {
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationBarTintColorWhite = true
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
@@ -258,7 +263,6 @@ extension LoginViewController: SegueHandlerType {
                     return
             }
             vc.appConfig = appConfig
-            vc.navigationBarTintColorWhite = true
             // Give the next model all that we know.
             vc.verifiableAccount = vm.verifiableAccount
         default:

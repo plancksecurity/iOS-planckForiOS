@@ -18,6 +18,7 @@ final class AccountTypeSelectorViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationBarTintColorWhite = true
         collectionView.delegate = self
         collectionView.dataSource = self
         viewModel.delegate = self
@@ -154,7 +155,6 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
             vc.appConfig = appConfig
             vc.viewModel = viewModel.loginViewModel()
             vc.delegate = loginDelegate
-            vc.navigationBarTintColorWhite = true
         case .clientCertManagementSegue:
             guard let dvc = segue.destination as? ClientCertificateManagementViewController else {
                 Log.shared.errorAndCrash("Invalid state")
