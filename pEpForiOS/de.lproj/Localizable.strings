@@ -9,7 +9,7 @@
 "(numMails) new messages received" = "(numMails) neue Nachrichten erhalten";
 
 /* Reply to single contact, with date. Placeholders: Name, date. */
-"%1$@ wrote on %2$@:" = "%1$@ schrieb auf %2$@:";
+"%1$@ wrote on %2$@:" = "%1$@ schrieb am %2$@:";
 
 /* Reply to single contact, without date. Placeholder: Name. */
 "%1$@ wrote:" = "%1$@ schrieb:";
@@ -29,10 +29,10 @@
 "Account detection timed out" = "Zeitlimit zur Kontoerkennung abgelaufen";
 
 /* Empty account name message */
-"Account name must not be empty." = "Kontoname darf nicht leer sein";
+"Account name must not be empty." = "Kontoname darf nicht leer sein.";
 
 /* Tableview section  header: Accounts */
-"Accounts" = "Konto:";
+"Accounts" = "Konto";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
 "Add to Contacts" = "Zu Kontakten hinzufügen";
@@ -40,8 +40,11 @@
 /* Name of unified inbox (showing messages of all accoounts */
 "All" = "Alle";
 
+/* Error message shown to the user in case an error in the app occured that is not caused or related to the server */
+"An internal error occured. Sorry, that should not happen." = "Es ist ein interner Fehler aufgetreten. Entschuldigen Sie, das hätte nicht passieren dürfen.";
+
 /* error message for .noConnectData */
-"An internal error occurred" = "Es ist ein interner Fehler aufgetreten.";
+"An internal error occurred" = "Es ist ein interner Fehler aufgetreten";
 
 /* KeySyncWizard introduction message */
 "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Es wurde ein weiteres Gerät gefunden, mit dem Sie Ihre Datenschutzeinstellungen synchronisieren können. Möchten Sie mit der Synchronisierung beginnen?";
@@ -102,10 +105,17 @@
 "Cc/Bcc:" = "Cc/Bcc:";
 
 /* Empty IMAP transport security method */
-"Choose IMAP transport security method." = "Wählen Sie die IMAP Transportverschlüsselung.";
+"Choose IMAP transport security method." = "Wählen Sie die IMAP-Transportverschlüsselung.";
+
+/* Empty SMTP transport security method */
+"Choose SMTP transport security method." = "Wählen Sie die SMTP-Transportverschlüsselung";
 
 /* Privacy status suggestion */
 "Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Führen Sie einen Handshake mit dem Kommunikationspartner durch. Ein Handshake wird nur einmal pro Kommunikationspartner benötigt und stellt die Vertrauenswürdigkeit sicher.";
+
+/* accept hand shake confirm button
+   Confirm correct trustwords/PGP fingerprint */
+"Confirm" = "Bestätigen";
 
 /* Confirm correct fingerprint (PGP, long version) */
 "Confirm Fingerprint" = "Fingerabdruck bestätigen";
@@ -171,12 +181,15 @@
    Enable Protection button title of pEp protection toggle action sheet */
 "Enable Protection" = "Schutz aktivieren";
 
+/* Tableview section header: Enterprise Features */
+"Enterprise Features" = "Unternehmensfunktionen";
+
 /* Title of error alert shown to the user in case a message could not be sent
    Title of error alert shown to the user in case an unknown error occured. */
 "Error" = "Fehler";
 
 /* Settings: Cell (button) title to view Extra Keys setting */
-"Extra Keys" = "Extra Tasten";
+"Extra Keys" = "Extra Schlüssel";
 
 /* Filter Title */
 "Filters" = "Filter";
@@ -213,10 +226,13 @@
 "Handshake" = "Handshake";
 
 /* Trusted Server Setting Section Footer */
-"If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!" = "Wenn ausgeschaltet, werden Nachrichten entschlüsselt auf dem Server gespeichert.\n\nNur ausschalten wenn der Server tatsächlich vertrauenswürdig ist.";
+"If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!" = "Wenn deaktiviert, werden Nachrichten entschlüsselt auf dem Server gespeichert.\n\nNur ausschalten wenn der Server tatsächlich vertrauenswürdig ist!";
 
 /* Tableview section footer */
-"If enabled, message subjects are also protected." = "Schützt den Betreff, wenn aktiviert";
+"If enabled, message subjects are also protected." = "Schützt den Betreff, wenn aktiviert.";
+
+/* Privacy status suggestion */
+"If this message was addressed to you, please inform the sender that you don't have the key." = "Falls diese Nachricht an Sie gerichtet war. Bitte teilen Sie dem Absender mit, dass Sie den Schlüssel nicht haben.";
 
 /* Alert: Leave device group confirmation comment */
 "If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?" = "Wenn Sie p≡p Sync deaktivieren, werden Ihre Konten auf Ihren Geräten nicht mehr synchronisiert. Möchten Sie p≡p Sync wirklich deaktivieren?";
@@ -225,7 +241,7 @@
 "IMAP" = "IMAP";
 
 /* Empty IMAP server message */
-"IMAP server must not be empty." = "IMAP Server muss angegeben werden";
+"IMAP server must not be empty." = "IMAP Server muss angegeben werden.";
 
 /* Account settings title IMAP */
 "IMAP Settings" = "IMAP Einstellungen";
@@ -253,7 +269,7 @@
 "Invalid FPR" = "Ungültige FPR";
 
 /* Title of invalid accout settings user input alert */
-"Invalid Input" = "Ungültige Eingabe.";
+"Invalid Input" = "Ungültige Eingabe";
 
 /* Invalid input for por */
 "Invalid port: %1$@" = "Ungültiger Port: %1$@";
@@ -281,10 +297,13 @@
 
 /* Title of error alert shown to the user for client certificate problems
    Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed. */
-"Login Failed" = "Einloggen gescheitert";
+"Login Failed" = "Anmeldung fehlgeschlagen";
 
 /* Privacy status suggestion */
-"Make sure the privacy status for each communication partner listed is at least secure" = "Stellen Sie sicher, dass der Datenschutzstatus für jeden Kommunikationspartner mindestens Sicher ist.";
+"Make sure the privacy status for each communication partner listed is at least secure" = "Stellen Sie sicher, dass der Datenschutzstatus für jeden Kommunikationspartner mindestens Sicher ist";
+
+/* privacyStatusDescription yellow */
+"Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call" = "Machen Sie diesen Kommunikationspartner sicher und vertrauenswürdig, indem Sie die folgenden Trustwords mit dem Kommunikationspartner vergleichen, z. B. indem Sie einen Anruf tätigen";
 
 /* manual */
 "Manual configuration" = "Manuelle Konfiguration";
@@ -315,7 +334,7 @@
 "Name" = "Name";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title New Mail Message */
-"New Mail Message" = "Neue E-Mail";
+"New Mail Message" = "Neue E-Mail Nachricht";
 
 /* Title for notification show on lock screen for *one* new mail */
 "New message received" = "Neue E-Mail erhalten";
@@ -326,7 +345,7 @@
 "Next" = "Weiter";
 
 /* Error when no account found for set_own_key UI */
-"No account found with the given email." = "Kein Konto für die E-Mail vorhanden";
+"No account found with the given email." = "Kein Konto für die E-Mail vorhanden.";
 
 /* Privacy status suggestion */
 "No action needed!" = "Keine weiteren Schritte nötig!";
@@ -349,6 +368,7 @@
    Filter accept text
    General alert positive button
    keySyncWizard completion view OK button title
+   OK (dismiss) button for iCloud instructions alert
    OK button for client certificate password screen
    OK button for invalid accout settings user input alert
    UIAlertAction ok after error */
@@ -356,6 +376,9 @@
 
 /* Name of outbox (showing messages to send */
 "Outbox" = "Postausgang";
+
+/* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
+"p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App." = "p≡p hat keine Berechtigung für den Zugriff auf die Fotogalerie. In App Einstellungen können Sie eine Berechtigung erteilen.";
 
 /* Tableview section header */
 "p≡p sync" = "p≡p Synchronisierung";
@@ -414,11 +437,23 @@
 /* Privacy status suggestion */
 "Please ask your communication partner to use an encryption solution or install p≡p." = "Bitten Sie Ihren Kommunikationspartner, eine Verschlüsselungslösung einzusetzen oder p≡p zu installieren.";
 
+/* No folder has been selected yet in the folders VC */
+"Please choose a folder" = "Bitte wählen Sie einen Ordner aus";
+
+/* No messages has been selected for detail view */
+"Please choose a message" = "Bitte wählen Sie eine Nachricht aus";
+
+/* No setting has been selected yet in the settings VC */
+"Please choose a setting" = "Bitte wählen Sie eine Einstellung aus";
+
 /* keySyncWizard animation view message while we sync your devices */
 "Please give us a moment while we sync your devices. This can take a minute or more." = "Bitte warten Sie einen Moment, bis ihre Geräte synchronisiert sind. Das kann eine Minute oder länger dauern.";
 
 /* keySync handshake alert message for two devices in group */
-"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Bitte stellen Sie sicher, das Sie beide Geräte vor sich haben, um die Trustwords zu vergleichen. Stimmen die Trustwords unten mit denen auf dem anderen Gerät überein?";
+"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Bitte stellen Sie sicher, dass Sie beide Geräte vor sich haben, um die Trustwords zu vergleichen. Stimmen die Trustwords unten mit denen auf dem anderen Gerät überein?";
+
+/* keySync handshake alert message for more than two devices in group */
+"Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Bitte stellen Sie sicher, dass Sie beide Geräte vor sich haben, um die Trustwords zu vergleichen. Stimmen die Trustwords unten mit denen auf dem anderen Gerät überein?";
 
 /* Port placeholder for manual account IMAP setup
    Port placeholder for manual account SMTP setup */
@@ -458,6 +493,12 @@
    Settings: cell (button) title to view the trust contacts option */
 "Reset" = "Zurücksetzen";
 
+/* alert action 2 */
+"Reset Trust For All Identities" = "Vertrauen für alle Identitäten zurücksetzen";
+
+/* alert action 1 */
+"Reset Trust For This Identity" = "Vertrauen für diese Identität zurücksetzen";
+
 /* compose email save */
 "Save Draft" = "Entwurf speichern";
 
@@ -468,6 +509,9 @@
 /* Privacy status title
    Secure & Trusted Label - Step 1 */
 "Secure & Trusted" = "Sicher & Vertrauenswürdig";
+
+/* Alert title before trusting an account */
+"Security Alert" = "Sicherheitshinweis";
 
 /* Title of error alert shown to the user in case we can not connect to the IMAP server
    Title of error alert shown to the user in case we can not connect to the SMTP server */
@@ -494,13 +538,19 @@
 "SMTP" = "SMTP";
 
 /* Empty SMTP server message */
-"SMTP server must not be empty." = "SMTP Server darf nicht leer sein";
+"SMTP server must not be empty." = "SMTP Server darf nicht leer sein.";
 
 /* Account settings title SMTP */
 "SMTP Settings" = "SMTP Einstellungen";
 
+/* Empty username message */
+"Smtp username must not be empty." = "SMTP-Benutzername darf nicht leer sein.";
+
 /* Title for address filter */
 "some address" = "irgendeine Adresse";
+
+/* Message of alert: a required field is empty */
+"Some mandatory fields are empty" = "Einige Pflichtfelder sind leer";
 
 /* Reply to unknown sender with date */
 "Someone wrote on %1$@:" = "Jemand schrieb am %1$@:";
@@ -509,7 +559,10 @@
 "Someone wrote:" = "Jemand schrieb:";
 
 /* keySyncWizard error view message when syncing devices */
-"Something went wrong with syncing the devices. Please try again." = "Etwas ist beim Synchronisieren der Geräte schief gelaufen.Bitte versuchen Sie es noch einmal.";
+"Something went wrong with syncing the devices. Please try again." = "Etwas ist beim Synchronisieren der Geräte schief gelaufen. Bitte versuchen Sie es noch einmal.";
+
+/* AccountSettings viewModel: no account error */
+"Something went wrong, please try again later" = "Etwas ist schief gelaufen. Bitte versuchen Sie es später noch einmal";
 
 /* Stop/trust button in handshake overview */
 "Start Trusting" = "Vertrauen";
@@ -519,7 +572,7 @@
 
 /* Settings: Cell (button) title to view default account setting
    Trusted Server Setting Section Title */
-"Store Messages Securely" = "Nachrichten vertraulich speichern";
+"Store Messages Securely" = "Nachrichten verschlüsselt speichern";
 
 /* Compose field title */
 "Subject:" = "Betreff:";
@@ -533,11 +586,17 @@
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "Die Nachricht konnte nicht versandt werden. Bitte versuchen Sie es später noch einmal.";
 
+/* Account settings confirm to reset identity title alert */
+"This action will reset your identity. \n Are you sure you want to reset?" = "Dieser Vorgang setzt Ihre Identität zurück. \n Möchten Sie Ihre Identität wirklich zurücksetzen?";
+
 /* privacyStatusDescription red */
 "This communication partner is mistrusted" = "Ihr Kommunikationspartner ist nicht vertrauenswürdig";
 
 /* privacyStatusDescription green */
 "This communication partner is secure and trusted" = "Dieser Kommunikationspartner ist sicher & vertrauenswürdig";
+
+/* Alert message before trusting an account */
+"This is a public cloud account. Your data will be exposed. Are you sure you want to configure this as trusted?" = "Dies ist ein öffentliches Cloud-Konto. Ihre Daten werden unverschlüsselt gespeichert. Möchten Sie das Konto wirklich als vertrauenswürdig konfigurieren?";
 
 /* Privacy status explanation */
 "This message cannot be decrypted because the key is not available." = "Die Nachricht konnte nicht entschlüsselt werden, weil der Schlüssel fehlt.";
@@ -600,7 +659,7 @@
 "Under Attack" = "Manipuliert";
 
 /* read button in slide-left menu */
-"Unflag" = "De-Markieren";
+"Unflag" = "Markierung entfernen";
 
 /* Displayed attachment filename if unknown */
 "unknown" = "unbekannt";
@@ -623,7 +682,7 @@
 "Unsecure" = "Unsicher";
 
 /* Privacy status title */
-"Unsecure for Some" = "Teilweise unsicher";
+"Unsecure for Some" = "Für einige unsicher";
 
 /* setting row title: Unsecure reply warning */
 "Unsecure reply warning" = "Warnhinweis bei unsicherer Weiterleitung";
@@ -643,10 +702,10 @@
 "Version" = "Version";
 
 /* Error message shown to the user in case we can not connect to the IMAP server */
-"We could not connect to the IMAP server." = "Der IMAP Server konnte nicht erreicht werden.";
+"We could not connect to the IMAP server." = "Der IMAP-Server konnte nicht erreicht werden.";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
-"We could not connect to the SMTP server." = "Der SMTP Server konnte nicht erreicht werden.";
+"We could not connect to the SMTP server." = "Der SMTP_Server konnte nicht erreicht werden.";
 
 /* KeySyncWizard complete message - two devices */
 "We successfully created a device group. All your privacy is now synchronized." = "Ihre Gerätegruppe wurde erfolgreich gebildet. Ihre gesamten Datenschutz-Einstellungen sind jetzt synchronisiert.";

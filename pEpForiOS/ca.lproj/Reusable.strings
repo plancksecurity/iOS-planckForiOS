@@ -11,7 +11,7 @@
 "GC3-wG-GHD.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
 
 /* Class = "UINavigationItem"; title = "Add to Contacts"; ObjectID = "Jan-ZA-zMd"; */
-"Jan-ZA-zMd.title" = "Add to Contacts";
+"Jan-ZA-zMd.title" = "Afegeix a Contactes";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "kNd-Jx-X9l"; */
 "kNd-Jx-X9l.text" = "Label";
@@ -20,7 +20,7 @@
 "KYt-Qv-FPp.text" = "Label";
 
 /* Class = "UILabel"; text = "Email"; ObjectID = "Lcu-U0-qEs"; */
-"Lcu-U0-qEs.text" = "Email";
+"Lcu-U0-qEs.text" = "Correu electrònic";
 
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Rgh-E1-f1w"; */
 "Rgh-E1-f1w.normalTitle" = "Button";

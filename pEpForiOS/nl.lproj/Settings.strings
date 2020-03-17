@@ -1,20 +1,29 @@
 /* Class = "UILabel"; text = "Reset"; ObjectID = "4L6-wx-Ghl"; */
-"4L6-wx-Ghl.text" = "Reset";
+"4L6-wx-Ghl.text" = "Deze identiteit opnieuw instellen";
 
 /* Class = "UILabel"; text = "Password"; ObjectID = "aYO-l7-9iG"; */
-"aYO-l7-9iG.text" = "Wachtwoord";
+"aYO-l7-9iG.text" = "Wachtwoord:";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "azH-be-f3A"; */
 "azH-be-f3A.text" = "Gebruikersnaam";
 
+/* Class = "UILabel"; text = "Transport Security"; ObjectID = "dpq-4F-9sG"; */
+"dpq-4F-9sG.text" = "Transportbeveiliging:";
+
+/* Class = "UILabel"; text = "Email"; ObjectID = "o8M-bM-KZX"; */
+"o8M-bM-KZX.text" = "E-mail:";
+
+/* Class = "UILabel"; text = "Server"; ObjectID = "oCE-8g-idG"; */
+"oCE-8g-idG.text" = "Server:";
+
 /* Class = "UILabel"; text = "Port"; ObjectID = "Osx-2y-29f"; */
-"Osx-2y-29f.text" = "Port";
+"Osx-2y-29f.text" = "Poort:";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "RYB-AT-TSB"; */
 "RYB-AT-TSB.text" = "Gebruikersnaam";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "s9I-CU-fSE"; */
-"s9I-CU-fSE.text" = "Naam";
+"s9I-CU-fSE.text" = "Naam:";
 
 /* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "Tjb-uM-eUF"; */
 "Tjb-uM-eUF.text" = "p≡p Sync";
@@ -23,8 +32,11 @@
 "tt1-bn-s7P.text" = "Gebruikersnaam";
 
 /* Class = "UILabel"; text = "Port"; ObjectID = "U7P-zv-48U"; */
-"U7P-zv-48U.text" = "Port";
+"U7P-zv-48U.text" = "Poort:";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "vzX-eS-BYY"; */
 "vzX-eS-BYY.text" = "Gebruikersnaam";
+
+/* Class = "UILabel"; text = "Server"; ObjectID = "x85-ha-uBw"; */
+"x85-ha-uBw.text" = "Server:";
 
