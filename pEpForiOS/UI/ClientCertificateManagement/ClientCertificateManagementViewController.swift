@@ -37,9 +37,9 @@ final class ClientCertificateManagementViewController: BaseViewController {
         configureAppearance()
     }
     @IBAction func addCertificate(_ sender: Any) {
-        let picker = UIDocumentPickerViewController(documentTypes: ["security.pep.pEp12"], in: .import)
+        let picker = UIDocumentPickerViewController(documentTypes: ["public.data"], in: .import)
         picker.delegate = self
-        picker.modalPresentationStyle = .formSheet
+        picker.modalPresentationStyle = .fullScreen
         present(picker, animated: true)
     }
 }
