@@ -89,6 +89,10 @@ extension ClientCertificateManagementViewController: UITableViewDataSource {
             // We prefer empty cell than app crash
             return UITableViewCell()
         }
+        guard let swipeCell = cell as? PEPSwipeTableViewCell else {
+            return UITableViewCell()
+        }
+        swipeCell.delegate = self
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             // We prefer empty cell than app crash
@@ -112,7 +116,6 @@ extension ClientCertificateManagementViewController: SegueHandlerType {
         case showLogin
     }
 
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
@@ -131,7 +134,10 @@ extension ClientCertificateManagementViewController: SegueHandlerType {
     }
 }
 
+// MARK: - Swipe actions
+
 extension ClientCertificateManagementViewController: SwipeTableViewCellDelegate {
+    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         
         // Create swipe actions, taking the currently displayed folder into account
@@ -167,4 +173,22 @@ extension ClientCertificateManagementViewController: SwipeTableViewCellDelegate 
             action.transitionDelegate = ScaleTransition.default
         }
     }
+    
+    func tableView(_ tableView: UITableView,
+                   editActionsOptionsForRowAt indexPath: IndexPath,
+                   for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
+        var options = SwipeTableOptions()
+        options.transitionStyle = .border
+        options.buttonSpacing = 11
+        options.expansionStyle = .destructive(automaticallyDelete: false)
+        return options
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? EmailListViewCell else {
+            return
+        }
+        cell.clear()
+    }
+
 }
