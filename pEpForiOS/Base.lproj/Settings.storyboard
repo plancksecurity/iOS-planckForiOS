@@ -832,6 +832,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="certificateLabel" destination="FZs-iB-I5N" id="NZc-NC-Pmw"/>
                         <outlet property="certificateTableViewCell" destination="EaE-o2-IdS" id="qOI-8J-Err"/>
                         <outlet property="emailTextfield" destination="FIa-wa-uSF" id="RVW-cY-4Ny"/>
                         <outlet property="imapPortTextfield" destination="ukB-K0-MMG" id="rGA-tC-CYA"/>
