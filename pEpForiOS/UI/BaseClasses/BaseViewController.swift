@@ -23,6 +23,9 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
             if navigationBarTintColorWhite {
                 navigationController?.navigationBar.barTintColor = UIColor.white //iOS 13
                 UINavigationBar.appearance().tintColor = UIColor.white //iOS 11
+            } else {
+                navigationController?.navigationBar.barTintColor = UIColor.black
+                UINavigationBar.appearance().tintColor = UIColor.pEpGreen
             }
         }
     }
