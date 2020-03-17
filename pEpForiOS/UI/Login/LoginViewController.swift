@@ -258,7 +258,7 @@ extension LoginViewController: SegueHandlerType {
                     return
             }
             vc.appConfig = appConfig
-            vc.needsWhiteTintColor = true
+            vc.navigationBarTintColorWhite = true
             // Give the next model all that we know.
             vc.verifiableAccount = vm.verifiableAccount
         default:

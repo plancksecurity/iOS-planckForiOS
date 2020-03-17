@@ -55,7 +55,6 @@ extension SettingsTableViewController {
         comment: "Settings view title")
     }
     private func setUp() {
-        UINavigationBar.appearance().tintColor = .black
         title = Localized.navigationTitle
         tableView.register(pEpHeaderView.self,
                            forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)

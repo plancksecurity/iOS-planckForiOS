@@ -1177,7 +1177,7 @@ extension EmailListViewController: SegueHandlerType {
             }
             vc.appConfig = appConfig
             vc.loginDelegate = self
-            vc.needsWhiteTintColor = true
+            vc.navigationBarTintColorWhite = true
             vc.hidesBottomBarWhenPushed = true
             break
         case .segueFolderViews:
