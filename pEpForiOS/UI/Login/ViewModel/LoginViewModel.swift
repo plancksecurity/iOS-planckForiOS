@@ -58,7 +58,7 @@ final class LoginViewModel {
 
     init(verifiableAccount: VerifiableAccountProtocol? = nil) {
         self.verifiableAccount = verifiableAccount ??
-            VerifiableAccount.verifiableAccout(for: .other)
+            VerifiableAccount.verifiableAccount(for: .other)
     }
 
 

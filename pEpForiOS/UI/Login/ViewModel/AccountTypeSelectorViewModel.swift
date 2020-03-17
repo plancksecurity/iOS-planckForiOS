@@ -91,10 +91,10 @@ class AccountTypeSelectorViewModel {
     }
 
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
-        return ClientCertificateManagementViewModel(verifiableAccount: VerifiableAccount.verifiableAccout(for: chosenAccountType))
+        return ClientCertificateManagementViewModel(verifiableAccount: VerifiableAccount.verifiableAccount(for: chosenAccountType))
     }
 
     public func loginViewModel() -> LoginViewModel {
-        return LoginViewModel(verifiableAccount: VerifiableAccount.verifiableAccout(for: chosenAccountType))
+        return LoginViewModel(verifiableAccount: VerifiableAccount.verifiableAccount(for: chosenAccountType))
     }
 }

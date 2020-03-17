@@ -35,7 +35,7 @@ final class ClientCertificateManagementViewModel {
                 clientCertificateUtil: ClientCertificateUtil = ClientCertificateUtil()) {
         self.clientCertificateUtil = clientCertificateUtil
         self.verifiableAccount = verifiableAccount ??
-            VerifiableAccount.verifiableAccout(for: .clientCertificate)
+            VerifiableAccount.verifiableAccount(for: .clientCertificate)
         setup()
     }
 

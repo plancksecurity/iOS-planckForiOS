@@ -138,7 +138,7 @@ extension EditableAccountSettingsViewModel {
                         password: String? = nil,
                         imap: ServerViewModel,
                         smtp: ServerViewModel) {
-        var theVerifier = verifiableAccount ?? VerifiableAccount.verifiableAccout(for: .other)
+        var theVerifier = verifiableAccount ?? VerifiableAccount.verifiableAccount(for: .other)
         theVerifier.verifiableAccountDelegate = self
         verifiableAccount = theVerifier
 
