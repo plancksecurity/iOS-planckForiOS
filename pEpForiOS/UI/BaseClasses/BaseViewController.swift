@@ -13,6 +13,23 @@ import MessageModel
 
 class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
     private var _appConfig: AppConfig?
+    
+    /// Indicates when the navigation bar tint color must be white.
+    /// As in iOS 13 the property to set that color changed, we use this flag to set it properly.
+    /// Use it if for an specific view, the navigation bar tint color must be white.
+    /// To use is, set it to true before the segue is performed.
+    public var navigationBarTintColorWhite : Bool = false {
+        didSet {
+            if navigationBarTintColorWhite {
+                navigationController?.navigationBar.barTintColor = UIColor.white //iOS 13
+                UINavigationBar.appearance().tintColor = UIColor.white //iOS 11
+            } else {
+                navigationController?.navigationBar.barTintColor = UIColor.black
+                UINavigationBar.appearance().tintColor = UIColor.pEpGreen
+            }
+        }
+    }
+
     var appConfig: AppConfig! {
         get {
             guard _appConfig != nil else {
@@ -30,10 +47,15 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
     func didSetAppConfig() {
         // Do nothing. Meant to override in subclasses.
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         appConfig?.errorPropagator.subscriber = self
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationBarTintColorWhite = false
     }
 
     // MARK: - ErrorPropagatorSubscriber

@@ -258,9 +258,7 @@ extension FolderTableViewController: SegueHandlerType {
             }
             nav.modalPresentationStyle = .fullScreen
             vc.appConfig = self.appConfig
-            
             vc.hidesBottomBarWhenPushed = true
-
         case .settingsSegue:
             guard let dvc = segue.destination as? SettingsTableViewController else {
                 Log.shared.errorAndCrash("Error casting DVC")
