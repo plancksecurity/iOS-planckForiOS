@@ -21,7 +21,7 @@ final class UserInfoViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationBarTintColorWhite = true
+
         guard let setupView = manualAccountSetupContainerView.setupView else {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
