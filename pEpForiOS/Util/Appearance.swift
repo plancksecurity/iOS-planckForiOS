@@ -10,29 +10,33 @@ import Foundation
 import UIKit
 
 class Appearance {
-    public static func pEp(_ color: UIColor = .pEpGreen) {
+
+    /// Sets up the default appeareance configuration
+    /// This method defines tint color and backgrounds for navigation bars, toolbars,
+    /// textviews, textfields and searchbars.
+    public static func setup() {
         // Still needed for iOS 13 for button bar items.
-        UINavigationBar.appearance().tintColor = color
+        UINavigationBar.appearance().tintColor = .pEpGreen
 
         if #available(iOS 13, *) {
             // iOS 13 ignores the navigation bar tint color in some cases,
             // therefore we use the new appearance API to customise explicitly.
             let normalNavigationBar = UINavigationBar.appearance()
-            normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: color)
+            normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: .black)
         } else {
             UINavigationBar.appearance().backgroundColor = .white
             UINavigationBar.appearance().titleTextAttributes = titleTextAttributes()
         }
 
-        UIToolbar.appearance().backgroundColor = color
-        UIToolbar.appearance().barTintColor = color
+        UIToolbar.appearance().backgroundColor = .pEpGreen
+        UIToolbar.appearance().barTintColor = .pEpGreen
         UIToolbar.appearance().tintColor = .white
 
-        UITextView.appearance().tintColor = color
-        UITextField.appearance().tintColor = color
+        UITextView.appearance().tintColor = .pEpGreen
+        UITextField.appearance().tintColor = .pEpGreen
 
         UISearchBar.appearance().barTintColor = .white
-        UISearchBar.appearance().tintColor = color
+        UISearchBar.appearance().tintColor = .pEpGreen
         if #available(iOS 13, *) {
             // The navigation bar doesn't react to setting the tint color,
             // so better do nothing there at all.
@@ -41,7 +45,7 @@ class Appearance {
             UISearchBar.appearance().backgroundColor = .pEpNavigation
         }
 
-        setAlertControllerTintColor(color)
+        setAlertControllerTintColor(.pEpGreen)
 
         Appearance.configureSelectedBackgroundViewForPep(
             tableViewCell: UITableViewCell.appearance())
@@ -72,24 +76,19 @@ class Appearance {
     @available(iOS 13, *)
     static private func navigationBarAppearanceDefault(color: UIColor) -> UINavigationBarAppearance {
         let appearance = UINavigationBarAppearance()
-
         appearance.configureWithOpaqueBackground()
         let font = UIFont.pepFont(style: .headline, weight: .medium)
-        
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: color,
                                                                    .font: font,
-                                                                   .baselineOffset: 2
-        ]
-        appearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes
-        appearance.backButtonAppearance.normal.titleTextAttributes = titleTextAttributes
+                                                                   .baselineOffset: 2]
+        let buttonsAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.pEpGreen]
+        appearance.buttonAppearance.normal.titleTextAttributes = buttonsAttributes
         appearance.titleTextAttributes = titleTextAttributes
         appearance.largeTitleTextAttributes = titleTextAttributes
-        appearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
-
+        appearance.doneButtonAppearance.normal.titleTextAttributes = buttonsAttributes
         let chevronLeftImg = UIImage(named: "chevron-icon-left")?
             .resizeImage(targetSize: CGSize(width: 15, height: 25))
         appearance.setBackIndicatorImage(chevronLeftImg, transitionMaskImage: chevronLeftImg)
-
         return appearance
     }
 
@@ -112,8 +111,6 @@ class Appearance {
         navigationBarAppearance.configureWithTransparentBackground()
         navigationBarAppearance.backgroundColor = UIColor.clear
         let newTintImage = UIImage(named: "white-chevron-icon-left")!.withRenderingMode(.alwaysOriginal)
-        //let newTintImage = UIImage(named: "close-icon")!.withTintColor(UIColor.black)
-        //navigationBarAppearance.backIndicatorImage.withTintColor(UIColor.white)
         navigationBarAppearance.setBackIndicatorImage(newTintImage, transitionMaskImage: newTintImage)
         customiseButtons(navigationBarAppearance: navigationBarAppearance)
     }
