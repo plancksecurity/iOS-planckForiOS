@@ -323,7 +323,13 @@ extension AccountSettingsTableViewController {
     }
     
     private func handleCertificate() {
+        guard let vc = UIStoryboard.init(name: "AccountCreation", bundle: nil).instantiateViewController(withIdentifier: "ClientCertificateManagementViewController") as? ClientCertificateManagementViewController else {
+            return
+        }
+        vc.viewModel = ClientCertificateManagementViewModel()
         
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
     }
 
     private func handleOauth2Reauth() {
