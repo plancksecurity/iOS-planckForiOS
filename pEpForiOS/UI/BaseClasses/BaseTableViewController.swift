@@ -68,10 +68,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if navigationBarTintColorWhite {
-            navigationController?.navigationBar.barTintColor = UIColor.black
-            UINavigationBar.appearance().tintColor = UIColor.pEpGreen
-        }
+        navigationBarTintColorWhite = false
     }
 
     static func setupCommonSettings(tableView: UITableView) {
