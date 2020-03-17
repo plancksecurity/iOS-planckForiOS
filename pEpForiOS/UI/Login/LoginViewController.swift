@@ -44,11 +44,6 @@ final class LoginViewController: BaseViewController {
         }
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        navigationBarTintColorWhite = true
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
