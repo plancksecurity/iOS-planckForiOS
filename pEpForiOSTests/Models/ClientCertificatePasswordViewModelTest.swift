@@ -13,10 +13,11 @@ final class ClientCertificatePasswordViewModelTest: XCTestCase {
 
     private let expHandleCancelButtonPressed = XCTestExpectation(description: "Waiting for delegate")
     private let expHandleOkButtonPressed = XCTestExpectation(description: "Waiting for passwordChangeDelegate")
-    private var vm: ClientCertificatePasswordViewModel?
+    private var vm: ClientCertificateImportViewModel?
+    private var fakeURL = URL(fileURLWithPath: "")
 
     override func setUp() {
-        vm = ClientCertificatePasswordViewModel(delegate: self,
+        vm = ClientCertificateImportViewModel(certificateUrl: fakeURL, delegate: self,
                                                 passwordChangeDelegate: self)
     }
  
@@ -26,7 +27,7 @@ final class ClientCertificatePasswordViewModelTest: XCTestCase {
 
     func testhandleOkButtonPressedTest() {
         XCTAssertNotNil(vm, "vm is not set!")
-        vm?.handleOkButtonPressed(password: Constant.password)
+        vm?.handlePassphraseEntered(pass: Constant.password)
         wait(for: [expHandleOkButtonPressed], timeout: 2)
     }
 
@@ -38,6 +39,9 @@ final class ClientCertificatePasswordViewModelTest: XCTestCase {
 }
 
 extension ClientCertificatePasswordViewModelTest: ClientCertificateImportViewModelDelegate {
+    func showError(type: importCertificateError, dissmisAfterError: Bool) {
+    }
+    
     func dismiss() {
         expHandleCancelButtonPressed.fulfill()
     }
