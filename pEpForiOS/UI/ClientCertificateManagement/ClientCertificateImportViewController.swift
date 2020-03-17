@@ -1,5 +1,5 @@
 //
-//  ClientCertificatePasswordViewController.swift
+//  ClientCertificateImportViewController.swift
 //  pEp
 //
 //  Created by Adam Kowalski on 03/03/2020.

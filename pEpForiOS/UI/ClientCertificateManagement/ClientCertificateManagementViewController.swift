@@ -18,7 +18,8 @@ private struct Localized {
 final class ClientCertificateManagementViewController: BaseViewController {
 
     @IBOutlet weak var tableView: UITableView!
-
+    @IBOutlet weak var addCertButton: UIButton!
+    
     public var viewModel: ClientCertificateManagementViewModel?
     
     //swipe acctions types
@@ -34,6 +35,23 @@ final class ClientCertificateManagementViewController: BaseViewController {
         tableView.dataSource = self
         setupTableView()
         configureAppearance()
+    }
+    @IBAction func addCertificate(_ sender: Any) {
+        let picker = UIDocumentPickerViewController(documentTypes: ["public.data"], in: .import)
+        picker.delegate = self
+        picker.modalPresentationStyle = .formSheet
+        present(picker, animated: true)
+    }
+}
+
+extension ClientCertificateManagementViewController: UIDocumentPickerDelegate {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
+            return
+        }
+        vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url, delegate: vc)
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
     }
 }
 
@@ -52,6 +70,7 @@ extension ClientCertificateManagementViewController {
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isHidden = false
+        addCertButton.tintColor = UIColor.white
     }
 
     private func setupTableView() {
