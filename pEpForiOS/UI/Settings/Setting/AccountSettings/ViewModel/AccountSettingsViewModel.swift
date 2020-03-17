@@ -67,6 +67,13 @@ final class AccountSettingsViewModel {
 
         pEpSync = (try? account.isKeySyncEnabled()) ?? false
     }
+    
+    func certRow() -> Bool {
+        guard (account.imapServer?.credentials.clientCertificate) != nil else {
+            return false
+        }
+        return true
+    }
 
     func handleResetIdentity() {
         delegate?.showLoadingView()

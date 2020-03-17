@@ -32,6 +32,7 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var smtpSecurityTextfield: UITextField!
     @IBOutlet weak var smtpUsernameTextField: UITextField!
 
+    @IBOutlet weak var certificateTableViewCell: UITableViewCell!
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
@@ -110,10 +111,14 @@ extension AccountSettingsTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let origCount = super.tableView(tableView, numberOfRowsInSection: section)
+        var finalCount = origCount
         if section == 0 {
-            return origCount - 1
+//            if !(viewModel?.certRow() ?? false) {
+//                finalCount = finalCount - 1
+//            }
+            return finalCount - 1
         } else {
-            return origCount
+            return finalCount
         }
     }
 
@@ -130,7 +135,10 @@ extension AccountSettingsTableViewController {
             oauth2ReauthIndexPath = indexPath
             return oauth2TableViewCell
         }
-
+        if cell == certificateTableViewCell {
+            cell.isHidden = !(viewModel?.certRow() ?? false)
+        }
+        
         if cell == resetIdentityCell {
             resetIdentityIndexPath = indexPath
         }
