@@ -98,7 +98,7 @@ final class LoginViewController: BaseViewController {
         // isOauthAccount is use to disable for ever the password field (when loading this view)
         // isOAuth2Possible is use to hide password field only if isOauthAccount is false and the
         // user type a possible ouath in the email textfield.
-        if vm.verifiableAccount.accountType.isOauth || vm.isOAuth2Possible(email: email) {
+        if vm.verifiableAccount.accountType.isOauth {
             let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
             vm.loginWithOAuth2(viewController: self,
                                emailAddress: email,
@@ -115,10 +115,6 @@ final class LoginViewController: BaseViewController {
                      displayName: userName,
                      password: pass)
         }
-    }
-
-    @IBAction func emailChanged(_ sender: UITextField) {
-        updatePasswordField(email: sender.text)
     }
 
     @IBAction func pEpSyncStateChanged(_ sender: UISwitch) {
@@ -154,28 +150,6 @@ extension LoginViewController {
         }
         vm.loginViewModelLoginErrorDelegate = self
         vm.loginViewModelOAuth2ErrorDelegate = self
-    }
-}
-
-// MARK: - Private
-
-extension LoginViewController {
-    private func updatePasswordField(email: String?) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-
-        guard !vm.verifiableAccount.accountType.isOauth else { return }
-
-        let oauth2Possible = vm.isOAuth2Possible(email: email)
-        password.isEnabled = !oauth2Possible
-
-        if oauth2Possible {
-            hidePasswordTextField()
-        } else {
-            showPasswordTextField()
-        }
     }
 }
 

@@ -209,13 +209,6 @@ final class LoginViewModel {
 
         theVerifiableAccount.verifiableAccountDelegate = self
     }
-
-    /// Is an account with this email address typically an OAuth2 account?
-    /// Only uses fast local lookups.
-    /// - Parameter email: Returns true, if this is an OAuth2 email address, true otherwise.
-    func isOAuth2Possible(email: String?) -> Bool {
-        return AccountSettings.quickLookUp(emailAddress: email)?.supportsOAuth2 ?? false
-    }
 }
 
 // MARK: - Private
