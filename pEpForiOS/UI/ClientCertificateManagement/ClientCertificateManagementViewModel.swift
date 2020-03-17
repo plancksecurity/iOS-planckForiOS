@@ -34,7 +34,8 @@ final class ClientCertificateManagementViewModel {
     public init(verifiableAccount: VerifiableAccountProtocol? = nil,
                 clientCertificateUtil: ClientCertificateUtil = ClientCertificateUtil()) {
         self.clientCertificateUtil = clientCertificateUtil
-        self.verifiableAccount = verifiableAccount ?? VerifiableAccount()
+        self.verifiableAccount = verifiableAccount ??
+            VerifiableAccount.verifiableAccount(for: .clientCertificate)
         setup()
     }
 

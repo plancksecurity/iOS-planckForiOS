@@ -57,7 +57,8 @@ final class LoginViewModel {
     let qualifyServerIsLocalService = QualifyServerIsLocalService()
 
     init(verifiableAccount: VerifiableAccountProtocol? = nil) {
-        self.verifiableAccount = verifiableAccount ?? VerifiableAccount()
+        self.verifiableAccount = verifiableAccount ??
+            VerifiableAccount.verifiableAccount(for: .other)
     }
 
 
@@ -84,7 +85,9 @@ final class LoginViewModel {
                               viewController: viewController)
     }
 
-    /// Tries to "login", that is, retrieve account data, with the given parameters.
+    /// Depending on `VerifiableAccountProtocol.containsCompleteServerInfo`,
+    /// either tries to retrive account settings via a query
+    /// to the account settings lib, or procedes directly to attempting a login.
     /// - Parameters:
     ///   - emailAddres: The email of this account
     ///   - displayName: The chosen name of the user, or nick
@@ -96,6 +99,37 @@ final class LoginViewModel {
                loginName: String? = nil,
                password: String? = nil,
                accessToken: OAuth2AccessTokenProtocol? = nil) {
+        if verifiableAccount.containsCompleteServerInfo {
+            addVerificationData(verifiableAccount: verifiableAccount,
+                                emailAddress: emailAddress,
+                                displayName: displayName,
+                                loginName: loginName,
+                                password: password,
+                                accessToken: accessToken)
+
+            checkIfServerShouldBeConsideredATrustedServer()
+        } else {
+            loginViaAccountSettings(emailAddress: emailAddress,
+                                    displayName: displayName,
+                                    loginName: loginName,
+                                    password: password,
+                                    accessToken: accessToken)
+        }
+    }
+
+    /// Tries to get login information via account settings, then continues with
+    /// the account setup (login).
+    /// - Parameters:
+    ///   - emailAddress: The email of this account
+    ///   - displayName: The chosen name of the user, or nick
+    ///   - loginName: The optional login name for this account, if different from the email
+    ///   - password: The password for the account
+    ///   - accessToken: The access token for this account
+    private func loginViaAccountSettings(emailAddress: String,
+                                         displayName: String,
+                                         loginName: String? = nil,
+                                         password: String? = nil,
+                                         accessToken: OAuth2AccessTokenProtocol? = nil) {
         let acSettings = AccountSettings(accountName: emailAddress,
                                          provider: nil,
                                          flags: AS_FLAG_USE_ANY,
@@ -123,20 +157,13 @@ final class LoginViewModel {
             let smtpTransport = ConnectionTransport(accountSettingsTransport: outgoingServer.transport,
                                                     smtpPort: outgoingServer.port)
 
-            verifiableAccount.verifiableAccountDelegate = self
-            verifiableAccount.address = emailAddress
-            verifiableAccount.userName = displayName
+            addVerificationData(verifiableAccount: verifiableAccount,
+                                emailAddress: emailAddress,
+                                displayName: displayName,
+                                loginName: loginName,
+                                password: password,
+                                accessToken: accessToken)
 
-            let login = loginName ?? emailAddress
-            verifiableAccount.loginNameIMAP = login
-            verifiableAccount.loginNameSMTP = login
-
-            // Note: auth method is never taken from LAS. We either have OAuth2,
-            // as determined previously, or we will defer to pantomime to find out the best method.
-            verifiableAccount.authMethod = accessToken != nil ? .saslXoauth2 : nil
-
-            verifiableAccount.password = password
-            verifiableAccount.accessToken = accessToken
             verifiableAccount.serverIMAP = incomingServer.hostname
             verifiableAccount.portIMAP = UInt16(incomingServer.port)
             verifiableAccount.transportIMAP = imapTransport
@@ -149,11 +176,38 @@ final class LoginViewModel {
         }
     }
 
-    /// Is an account with this email address typically an OAuth2 account?
-    /// Only uses fast local lookups.
-    /// - Parameter email: Returns true, if this is an OAuth2 email address, true otherwise.
-    func isOAuth2Possible(email: String?) -> Bool {
-        return AccountSettings.quickLookUp(emailAddress: email)?.supportsOAuth2 ?? false
+    /// Set up a given verifiable account with parameters, changing it in-place.
+    /// - Parameters:
+    ///   - verifiableAccount: The verifiable account to change
+    ///   - emailAddress: The email address of the account
+    ///   - displayName: The user-chosen display name / nick
+    ///   - loginName: The login name needed for the servers, if different from the email address
+    ///   - password: The password to log in
+    ///   - accessToken: An optional OAUTH2 access token
+    private func addVerificationData(verifiableAccount: VerifiableAccountProtocol,
+                                     emailAddress: String,
+                                     displayName: String,
+                                     loginName: String? = nil,
+                                     password: String? = nil,
+                                     accessToken: OAuth2AccessTokenProtocol? = nil) {
+        var theVerifiableAccount = verifiableAccount
+
+        // Note: auth method is never taken from LAS. We either have OAuth2,
+        // as determined previously, or we will defer to pantomime to find out the best method.
+        theVerifiableAccount.authMethod = accessToken != nil ? .saslXoauth2 : nil
+
+        theVerifiableAccount.verifiableAccountDelegate = self
+        theVerifiableAccount.address = emailAddress
+        theVerifiableAccount.userName = displayName
+
+        let login = loginName ?? emailAddress
+        theVerifiableAccount.loginNameIMAP = login
+        theVerifiableAccount.loginNameSMTP = login
+
+        theVerifiableAccount.password = password
+        theVerifiableAccount.accessToken = accessToken
+
+        theVerifiableAccount.verifiableAccountDelegate = self
     }
 }
 
