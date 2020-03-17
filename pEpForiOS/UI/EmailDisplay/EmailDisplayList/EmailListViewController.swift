@@ -689,6 +689,17 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         vm.fetchOlderMessagesIfRequired(forIndexPath: indexPath)
     }
 
+    func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
+        // Using a UITableView (not UITableViewController), the default scroll-to-top gesture
+        // (tap on status bar) is broken in this view. It ands up with a content offset > (0.0),
+        // showing the inactive pull-to-refresh spinner. This is probably caused by our workaround
+        // for adding a pull-to-refresh spinner without gliches.
+        //To work around the wron content offset, we intersept the default implementation here and
+        // trigger scoll to top ourselfs.
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        return false
+    }
+
     // MARK: - SwipeTableViewCellDelegate
 
     func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {

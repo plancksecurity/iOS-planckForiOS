@@ -72,7 +72,6 @@
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
-                                                            <action selector="emailChanged:" destination="clh-8B-z2B" eventType="editingChanged" id="lyn-wg-lDp"/>
                                                             <outlet property="delegate" destination="clh-8B-z2B" id="wfT-nP-T86"/>
                                                         </connections>
                                                     </textField>

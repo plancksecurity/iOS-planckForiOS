@@ -56,6 +56,8 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
 
         let isValidUser = false
 
+        var containsCompleteServerInfo: Bool = false
+
         func verify() throws {
             XCTAssertEqual(address, accountSettings.idAddress)
 

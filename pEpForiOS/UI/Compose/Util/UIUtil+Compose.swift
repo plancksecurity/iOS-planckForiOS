@@ -10,6 +10,8 @@ import MessageModel
 
 // MARK: - UIUtil+Compose
 
+import MessageModel
+
 extension UIUtils {
 
     /// Modally presents a "Compose New Mail" view.

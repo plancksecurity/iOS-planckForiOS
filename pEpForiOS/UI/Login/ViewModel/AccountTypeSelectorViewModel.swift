@@ -9,25 +9,27 @@
 import Foundation
 import MessageModel
 
-
-
 protocol AccountTypeSelectorViewModelDelegate: class {
     func showMustImportClientCertificateAlert()
     func showClientCertificateSeletionView()
 }
 
 class AccountTypeSelectorViewModel {
-    private var verifiableAccount: VerifiableAccountProtocol
     private let clientCertificateUtil: ClientCertificateUtilProtocol
 
     public weak var delegate: AccountTypeSelectorViewModelDelegate?
 
     /// list of providers to show
-    private let accountTypes: [VerifiableAccount.AccountType] = [.gmail, .clientCertificate, .other]
+    private let accountTypes: [VerifiableAccount.AccountType] = [.gmail,
+                                                                 .o365,
+                                                                 .icloud,
+                                                                 .outlook,
+                                                                 .clientCertificate,
+                                                                 .other]
 
-    init(verifiableAccount: VerifiableAccountProtocol? = nil,
-         clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
-        self.verifiableAccount = verifiableAccount ?? VerifiableAccount()
+    var chosenAccountType: VerifiableAccount.AccountType = .other
+
+    init(clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
         self.clientCertificateUtil = clientCertificateUtil ?? ClientCertificateUtil()
     }
 
@@ -53,7 +55,7 @@ class AccountTypeSelectorViewModel {
         if clientCertificateUtil.listCertificates(session: nil).count == 0 {
             delegate?.showMustImportClientCertificateAlert()
         } else {
-            verifiableAccount.accountType = .clientCertificate
+            chosenAccountType = .clientCertificate
             delegate?.showClientCertificateSeletionView()
         }
     }
@@ -71,6 +73,12 @@ class AccountTypeSelectorViewModel {
             Client
             Certificate
             """, comment: "client certificate provider key")
+        case .o365:
+            return "asset-Office365"
+        case .icloud:
+            return "asset-iCloud"
+        case .outlook:
+            return "asset-Outlook"
         }
     }
 
@@ -79,14 +87,14 @@ class AccountTypeSelectorViewModel {
     }
 
     public func handleDidSelect(rowAt indexPath: IndexPath) {
-        verifiableAccount.accountType = accountTypes[indexPath.row]
+        chosenAccountType = accountTypes[indexPath.row]
     }
 
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
-           return ClientCertificateManagementViewModel(verifiableAccount: verifiableAccount)
-       }
+        return ClientCertificateManagementViewModel(verifiableAccount: VerifiableAccount.verifiableAccount(for: chosenAccountType))
+    }
 
     public func loginViewModel() -> LoginViewModel {
-           return LoginViewModel(verifiableAccount: verifiableAccount)
-       }
+        return LoginViewModel(verifiableAccount: VerifiableAccount.verifiableAccount(for: chosenAccountType))
+    }
 }

@@ -38,9 +38,8 @@ class AccountTypeSelectorTest: CoreDataDrivenTestBase {
     func testNoClientCertificateAlert() {
         let delegateExpectation = expectation(description: "delegateExpectation")
         let vmDelegate = AccountTypeDelegateMockTest(noClientCertificatesExpectation: delegateExpectation)
-        let verificableAccount = VerificableAccountMockTest()
         let clientCertificateUtil = ClientCertificateUtilMockTest()
-        let vm = AccountTypeSelectorViewModel(verifiableAccount: verificableAccount, clientCertificateUtil: clientCertificateUtil)
+        let vm = AccountTypeSelectorViewModel(clientCertificateUtil: clientCertificateUtil)
         vm.delegate = vmDelegate
         vm.handleDidChooseClientCertificate()
         waitForExpectations(timeout: TestUtil.waitTime)
@@ -51,8 +50,7 @@ class AccountTypeSelectorTest: CoreDataDrivenTestBase {
         let delegateExpectation = expectation(description: "delegateExpectation")
         let vmDelegate = AccountTypeDelegateMockTest(thereAreClientCertificatesExpectation: delegateExpectation)
         let clientCertificateUtil = ClientCertificateUtilMockTest(thereAreCerts: true)
-        let verificableAccount = VerificableAccountMockTest()
-        let vm = AccountTypeSelectorViewModel(verifiableAccount: verificableAccount, clientCertificateUtil: clientCertificateUtil)
+        let vm = AccountTypeSelectorViewModel(clientCertificateUtil: clientCertificateUtil)
         vm.delegate = vmDelegate
         vm.handleDidChooseClientCertificate()
         waitForExpectations(timeout: TestUtil.waitTime)
@@ -71,7 +69,7 @@ class AccountTypeSelectorTest: CoreDataDrivenTestBase {
     }
     
     func testNumberOfSections() {
-        let expectedSections = 3
+        let expectedSections = 6
         let vm = AccountTypeSelectorViewModel()
         XCTAssertEqual(expectedSections, vm.count)
     }
@@ -125,58 +123,4 @@ class ClientCertificateUtilMockTest: ClientCertificateUtilProtocol {
     }
 
     func delete(clientCertificate: ClientCertificate) throws {}
-}
-
-class VerificableAccountMockTest: VerifiableAccountProtocol {
-    
-    var verifiableAccountDelegate: VerifiableAccountDelegate?
-    
-    var accountType: VerifiableAccount.AccountType = .clientCertificate
-    
-    var address: String?
-    
-    var userName: String?
-    
-    var authMethod: AuthMethod?
-    
-    var password: String?
-    
-    var keySyncEnable: Bool = false
-    
-    var accessToken: OAuth2AccessTokenProtocol?
-    
-    var clientCertificate: ClientCertificate?
-    
-    var loginNameIMAP: String?
-    
-    var serverIMAP: String?
-    
-    var portIMAP: UInt16 = 0
-    
-    var transportIMAP: ConnectionTransport = .plain
-    
-    var loginNameSMTP: String?
-    
-    var serverSMTP: String?
-    
-    var portSMTP: UInt16 = 0
-    
-    var transportSMTP: ConnectionTransport = .plain
-    
-    var isAutomaticallyTrustedImapServer: Bool = false
-    
-    var isManuallyTrustedImapServer: Bool = false
-    
-    func verify() throws {
-        return
-    }
-    
-    func save(completion: ((Success) -> ())?) throws {
-        return
-    }
-    
-    var loginNameIsValid: Bool = false
-    
-    var isValidUser: Bool = false
-    
 }
