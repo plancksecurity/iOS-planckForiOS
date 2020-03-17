@@ -10,6 +10,10 @@ import MessageModel
 
 // MARK: - Row
 
+protocol ClientCertificateManagementViewModelDelegate: class{
+    func showInUseError(by: String)
+}
+
 extension ClientCertificateManagementViewModel {
     struct Row {
         public var name: String {
@@ -29,6 +33,7 @@ extension ClientCertificateManagementViewModel {
 final class ClientCertificateManagementViewModel {
     private let clientCertificateUtil: ClientCertificateUtil
     private var verifiableAccount: VerifiableAccountProtocol
+    public weak var delegate: ClientCertificateManagementViewModelDelegate?
     public private(set) var rows = [Row]()
 
     public init(verifiableAccount: VerifiableAccountProtocol? = nil,
@@ -45,14 +50,16 @@ final class ClientCertificateManagementViewModel {
     public func loginViewModel() -> LoginViewModel {
         return LoginViewModel(verifiableAccount: verifiableAccount)
     }
-    public func deleteCertificate(indexPath: IndexPath) {
+    public func deleteCertificate(indexPath: IndexPath) -> Bool{
         let list = clientCertificateUtil.listCertificates()
         do {
             try clientCertificateUtil.delete(clientCertificate: list[indexPath.row])
+            return true
         } catch {
-            Log.shared.errorAndCrash(message: "something goes wrong removing cert")
+            let cert = list[indexPath.row]
+            delegate?.showInUseError(by: cert.label ?? "--")
+            return false
         }
-        
     }
 }
 

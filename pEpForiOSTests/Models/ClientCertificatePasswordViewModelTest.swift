@@ -37,7 +37,7 @@ final class ClientCertificatePasswordViewModelTest: XCTestCase {
     }
 }
 
-extension ClientCertificatePasswordViewModelTest: ClientCertificatePasswordViewModelDelegate {
+extension ClientCertificatePasswordViewModelTest: ClientCertificateImportViewModelDelegate {
     func dismiss() {
         expHandleCancelButtonPressed.fulfill()
     }

@@ -326,7 +326,10 @@ extension AccountSettingsTableViewController {
         guard let vc = UIStoryboard.init(name: "AccountCreation", bundle: nil).instantiateViewController(withIdentifier: "ClientCertificateManagementViewController") as? ClientCertificateManagementViewController else {
             return
         }
-        vc.viewModel = ClientCertificateManagementViewModel()
+        vc.appConfig = appConfig
+        let vm = ClientCertificateManagementViewModel()
+        vm.delegate = vc
+        vc.viewModel = vm
         
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)

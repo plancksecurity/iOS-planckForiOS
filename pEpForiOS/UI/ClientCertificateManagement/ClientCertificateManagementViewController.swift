@@ -70,6 +70,8 @@ extension ClientCertificateManagementViewController {
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isHidden = false
+        let image = UIImage(named: "button-add")
+        addCertButton.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
         addCertButton.tintColor = UIColor.white
     }
 
@@ -179,7 +181,19 @@ extension ClientCertificateManagementViewController: SwipeTableViewCellDelegate 
     }
     
     func deleteAction(forCellAt: IndexPath) {
-        viewModel?.deleteCertificate(indexPath: forCellAt)
+        guard let vm = viewModel else { return }
+        let deleteSuccess = vm.deleteCertificate(indexPath: forCellAt)
+        if deleteSuccess {
+            if let swipeDelete = self.swipeDelete {
+                swipeDelete.fulfill(with: .delete)
+                self.swipeDelete = nil
+            }
+        } else {
+            if let swipeDelete = self.swipeDelete {
+                swipeDelete.fulfill(with: .reset)
+                self.swipeDelete = nil
+            }
+        }
     }
     
     func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
@@ -213,5 +227,12 @@ extension ClientCertificateManagementViewController: SwipeTableViewCellDelegate 
         }
         cell.clear()
     }
+}
 
+extension ClientCertificateManagementViewController: ClientCertificateManagementViewModelDelegate {
+    func showInUseError(by: String) {
+        let errorString = NSLocalizedString("You can only delete certificates that are not connected to an account. The certificate is currently used for the following account: \(by)", comment: "alert error message certificate delete")
+        UIUtils.showAlertWithOnlyPositiveButton(title: NSLocalizedString("Not possible to delete", comment: "alert error title certificate delete") ,
+                                                message: errorString)
+    }
 }

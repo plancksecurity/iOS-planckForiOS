@@ -321,12 +321,12 @@
                                                 <exclude reference="wIi-CI-cLC"/>
                                             </mask>
                                             <mask key="constraints">
+                                                <exclude reference="GmD-Wm-JOd"/>
+                                                <exclude reference="yhd-W2-zSi"/>
                                                 <exclude reference="7aS-8l-hE8"/>
                                                 <exclude reference="EfY-cM-oX6"/>
                                                 <exclude reference="Ibq-10-F28"/>
                                                 <exclude reference="nuG-ed-xFj"/>
-                                                <exclude reference="GmD-Wm-JOd"/>
-                                                <exclude reference="yhd-W2-zSi"/>
                                             </mask>
                                         </variation>
                                         <variation key="heightClass=compact">
@@ -340,10 +340,10 @@
                                         </variation>
                                         <variation key="heightClass=regular">
                                             <mask key="constraints">
-                                                <include reference="7aS-8l-hE8"/>
-                                                <include reference="EfY-cM-oX6"/>
                                                 <include reference="GmD-Wm-JOd"/>
                                                 <include reference="yhd-W2-zSi"/>
+                                                <include reference="7aS-8l-hE8"/>
+                                                <include reference="EfY-cM-oX6"/>
                                             </mask>
                                         </variation>
                                         <variation key="heightClass=regular-widthClass=regular">
@@ -688,6 +688,7 @@
                                     </tableView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tm4-05-7M1">
                                         <rect key="frame" x="115.5" y="462" width="144" height="22"/>
+                                        <inset key="imageEdgeInsets" minX="-15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Add Certificate" image="button-add"/>
                                         <connections>
                                             <action selector="addCertificate:" destination="Qyj-kG-7VF" eventType="touchUpInside" id="qgF-AB-hfB"/>

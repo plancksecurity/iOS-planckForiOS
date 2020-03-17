@@ -13,7 +13,7 @@ protocol ClientCertificatePasswordViewModelPasswordChangeDelegate: class {
     func didEnter(password: String)
 }
 
-protocol ClientCertificatePasswordViewModelDelegate: class {
+protocol ClientCertificateImportViewModelDelegate: class {
     func dismiss()
     func showError(type: importCertificateError, dissmisAfterError: Bool)
 }
@@ -26,12 +26,12 @@ public enum importCertificateError {
 final class ClientCertificateImportViewModel {
 
     weak private var passwordChangeDelegate: ClientCertificatePasswordViewModelPasswordChangeDelegate?
-    weak private var delegate: ClientCertificatePasswordViewModelDelegate?
+    weak private var delegate: ClientCertificateImportViewModelDelegate?
     private let clientCertificateUtil: ClientCertificateUtilProtocol
     private var certificateUrl: URL
     private var p12Data: Data?
 
-    init(certificateUrl: URL, delegate: ClientCertificatePasswordViewModelDelegate? = nil,
+    init(certificateUrl: URL, delegate: ClientCertificateImportViewModelDelegate? = nil,
          passwordChangeDelegate: ClientCertificatePasswordViewModelPasswordChangeDelegate? = nil,
          clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
         self.certificateUrl = certificateUrl

@@ -119,7 +119,7 @@ extension ClientCertificateImportViewController {
 
 // MARK: - ClientCertificatePasswordViewModelDelegate
 
-extension ClientCertificateImportViewController: ClientCertificatePasswordViewModelDelegate {
+extension ClientCertificateImportViewController: ClientCertificateImportViewModelDelegate {
     func showError(type: importCertificateError, dissmisAfterError: Bool) {
         switch type {
         case .wrongPassword:
