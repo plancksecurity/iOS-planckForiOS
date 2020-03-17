@@ -27,6 +27,8 @@ final class AccountTypeSelectorViewController: BaseViewController {
         super.viewWillAppear(animated)
         configureAppearance()
         configureView()
+        viewModel.refreshAccountTypes()
+        collectionView.reloadData()
     }
 
     private func configureAppearance() {
@@ -38,6 +40,7 @@ final class AccountTypeSelectorViewController: BaseViewController {
             self.navigationController?.navigationBar.shadowImage = UIImage()
             self.navigationController?.navigationBar.isTranslucent = true
             self.navigationController?.navigationBar.backgroundColor = UIColor.clear
+            self.navigationController?.navigationBar.tintColor = UIColor.white
         }
     }
 
@@ -164,3 +167,12 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
         }
     }
 }
+
+// MARK: - ClientCertificateImport Delegate
+extension AccountTypeSelectorViewController: ClientCertificateImportViewControllerDelegate {
+    func certificateCouldImported() {
+        viewModel.refreshAccountTypes()
+        collectionView.reloadData()
+    }
+}
+

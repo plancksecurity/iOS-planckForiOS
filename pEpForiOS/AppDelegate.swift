@@ -32,10 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Set to true whever the app goes into background, so the main PEPSession gets cleaned up.
     private var shouldDestroySession = false
 
-    private lazy var clientCertificateUIUtil: ClientCertificateUIUtil = {
-        return ClientCertificateUIUtil()
-    }()
-
     private func setupInitialViewController() -> Bool {
         guard let appConfig = appConfig else {
             Log.shared.errorAndCrash("No AppConfig")
@@ -97,7 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.errorAndCrash("applicationDidReceiveMemoryWarning")
+        //Log.shared.errorAndCrash("applicationDidReceiveMemoryWarning")
     }
 
     func application(_ application: UIApplication,
@@ -238,7 +234,7 @@ extension AppDelegate {
     @discardableResult
     private func handleUrlTheOSHasBroughtUsToForgroundFor(_ url: URL) -> Bool {
         switch url.pathExtension {
-        case ClientCertificateUIUtil.pEpClientCertificateExtension:
+        case ClientCertificateImportViewController.pEpClientCertificateExtension:
             return handleClientCertificateImport(forCertAt: url)
         default:
             Log.shared.errorAndCrash("Unexpected call. open for file with extention: %@",
@@ -248,7 +244,7 @@ extension AppDelegate {
     }
 
     private func handleClientCertificateImport(forCertAt url: URL) -> Bool {
-        guard url.pathExtension == ClientCertificateUIUtil.pEpClientCertificateExtension else {
+        guard url.pathExtension == ClientCertificateImportViewController.pEpClientCertificateExtension else {
             Log.shared.errorAndCrash("This method is only for .pEp12 files.")
             return false
         }
@@ -256,8 +252,15 @@ extension AppDelegate {
             Log.shared.errorAndCrash("We must have a VC at this point.")
             return false
         }
-        clientCertificateUIUtil.importClientCertificate(at: url,
-                                                        viewControllerToPresentUiOn: topVC)
+        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
+            return false
+        }
+        vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url, delegate: vc)
+        if let topDelegate = topVC as? ClientCertificateImportViewControllerDelegate {
+            vc.delegate = topDelegate
+        }
+        vc.modalPresentationStyle = .fullScreen
+        topVC.present(vc, animated: true)
         return true
     }
 }
