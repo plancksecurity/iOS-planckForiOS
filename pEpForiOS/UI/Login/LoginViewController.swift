@@ -578,3 +578,21 @@ extension LoginViewController {
         }
     }
 }
+
+// MARK: - iCloud alert
+
+extension LoginViewController {
+    private func showiCloudAlert() {
+        UIUtils.showTwoButtonAlert(withTitle: NSLocalizedString("iCloud",
+                                                                comment: "Alert title for iCloud instructions"),
+                                   message: NSLocalizedString("You need to create an app-specific password in your iCloud account.",
+                                                              comment: "iCloud instructions"),
+                                   cancelButtonText: NSLocalizedString("OK",
+                                                                       comment: "OK (dismiss) button for iCloud instructions alert"),
+                                   positiveButtonText: NSLocalizedString("Info",
+                                                                         comment: "Info button for showing iCloud page"),
+                                   cancelButtonAction: {},
+                                   positiveButtonAction: {})
+    }
+}
+
