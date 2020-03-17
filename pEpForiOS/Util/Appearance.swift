@@ -10,7 +10,11 @@ import Foundation
 import UIKit
 
 class Appearance {
-    public static func pEp(_ color: UIColor = .pEpGreen) {
+
+    /// Sets up the default appeareance configuration
+    /// This method defines tint color and backgrounds for navigation bars, toolbars,
+    /// textviews, textfields and searchbars.
+    public static func setup() {
         // Still needed for iOS 13 for button bar items.
         UINavigationBar.appearance().tintColor = .pEpGreen
 
@@ -24,15 +28,15 @@ class Appearance {
             UINavigationBar.appearance().titleTextAttributes = titleTextAttributes()
         }
 
-        UIToolbar.appearance().backgroundColor = color
-        UIToolbar.appearance().barTintColor = color
+        UIToolbar.appearance().backgroundColor = .pEpGreen
+        UIToolbar.appearance().barTintColor = .pEpGreen
         UIToolbar.appearance().tintColor = .white
 
-        UITextView.appearance().tintColor = color
-        UITextField.appearance().tintColor = color
+        UITextView.appearance().tintColor = .pEpGreen
+        UITextField.appearance().tintColor = .pEpGreen
 
         UISearchBar.appearance().barTintColor = .white
-        UISearchBar.appearance().tintColor = color
+        UISearchBar.appearance().tintColor = .pEpGreen
         if #available(iOS 13, *) {
             // The navigation bar doesn't react to setting the tint color,
             // so better do nothing there at all.
@@ -41,7 +45,7 @@ class Appearance {
             UISearchBar.appearance().backgroundColor = .pEpNavigation
         }
 
-        setAlertControllerTintColor(color)
+        setAlertControllerTintColor(.pEpGreen)
 
         Appearance.configureSelectedBackgroundViewForPep(
             tableViewCell: UITableViewCell.appearance())
