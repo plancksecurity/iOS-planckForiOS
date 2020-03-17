@@ -15,6 +15,10 @@ extension ClientCertificateImportViewController {
     static public let storyboadIdentifier = "ClientCertificatePasswordViewController"
 }
 
+protocol ClientCertificateImportViewControllerDelegate: class {
+    func certificateCouldImported()
+}
+
 final class ClientCertificateImportViewController: UIViewController {
 
 // MARK: - IBOutlet
@@ -34,6 +38,8 @@ final class ClientCertificateImportViewController: UIViewController {
 // MARK: - ViewModel
 
     public var viewModel: ClientCertificateImportViewModel?
+    
+    weak var delegate: ClientCertificateImportViewControllerDelegate?
 
 // MARK: Life cycle
 
@@ -130,6 +136,7 @@ extension ClientCertificateImportViewController: ClientCertificateImportViewMode
     }
     
     func dismiss() {
+        delegate?.certificateCouldImported()
         dismiss(animated: true, completion: nil)
     }
 }

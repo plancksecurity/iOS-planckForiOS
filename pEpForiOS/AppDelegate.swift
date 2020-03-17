@@ -256,6 +256,9 @@ extension AppDelegate {
             return false
         }
         vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url, delegate: vc)
+        if let topDelegate = topVC as? ClientCertificateImportViewControllerDelegate {
+            vc.delegate = topDelegate
+        }
         vc.modalPresentationStyle = .fullScreen
         topVC.present(vc, animated: true)
         return true

@@ -20,12 +20,7 @@ class AccountTypeSelectorViewModel {
     public weak var delegate: AccountTypeSelectorViewModelDelegate?
 
     /// list of providers to show
-    private var accountTypes: [VerifiableAccount.AccountType] = [.gmail,
-                                                                 .o365,
-                                                                 .icloud,
-                                                                 .outlook,
-                                                                 .clientCertificate,
-                                                                 .other]
+    private var accountTypes = [VerifiableAccount.AccountType]()
 
     var chosenAccountType: VerifiableAccount.AccountType = .other
 
@@ -45,6 +40,12 @@ class AccountTypeSelectorViewModel {
     }
     
     public func refreshAccountTypes() {
+        accountTypes = [.gmail,
+                        .o365,
+                        .icloud,
+                        .outlook,
+                        .clientCertificate,
+                        .other]
         if self.clientCertificateUtil.listCertificates(session: nil).count == 0 && accountTypes.contains(.clientCertificate) {
             guard let positionOfClientCert = accountTypes.firstIndex(of: .clientCertificate) else {
                 Log.shared.errorAndCrash(message: "wrong data in accountTypes")

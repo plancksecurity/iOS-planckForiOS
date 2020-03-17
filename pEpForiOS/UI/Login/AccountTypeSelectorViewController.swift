@@ -27,6 +27,8 @@ final class AccountTypeSelectorViewController: BaseViewController {
         super.viewWillAppear(animated)
         configureAppearance()
         configureView()
+        viewModel.refreshAccountTypes()
+        collectionView.reloadData()
     }
 
     private func configureAppearance() {
@@ -164,3 +166,12 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
         }
     }
 }
+
+// MARK: - ClientCertificateImport Delegate
+extension AccountTypeSelectorViewController: ClientCertificateImportViewControllerDelegate {
+    func certificateCouldImported() {
+        viewModel.refreshAccountTypes()
+        collectionView.reloadData()
+    }
+}
+
