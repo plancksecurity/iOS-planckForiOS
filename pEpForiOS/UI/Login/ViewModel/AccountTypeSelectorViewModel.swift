@@ -20,7 +20,7 @@ class AccountTypeSelectorViewModel {
     public weak var delegate: AccountTypeSelectorViewModelDelegate?
 
     /// list of providers to show
-    private let accountTypes: [VerifiableAccount.AccountType] = [.gmail,
+    private var accountTypes: [VerifiableAccount.AccountType] = [.gmail,
                                                                  .o365,
                                                                  .icloud,
                                                                  .outlook,
@@ -31,6 +31,10 @@ class AccountTypeSelectorViewModel {
 
     init(clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
         self.clientCertificateUtil = clientCertificateUtil ?? ClientCertificateUtil()
+        if self.clientCertificateUtil.listCertificates(session: nil).count == 0 {
+            let positionOfClientCert = 4
+            accountTypes.remove(at: positionOfClientCert)
+        }
     }
 
     var count: Int {
