@@ -40,6 +40,7 @@ final class AccountTypeSelectorViewController: BaseViewController {
             self.navigationController?.navigationBar.shadowImage = UIImage()
             self.navigationController?.navigationBar.isTranslucent = true
             self.navigationController?.navigationBar.backgroundColor = UIColor.clear
+            self.navigationController?.navigationBar.tintColor = UIColor.white
         }
     }
 
