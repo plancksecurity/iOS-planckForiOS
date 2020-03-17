@@ -85,8 +85,9 @@ final class LoginViewModel {
                               viewController: viewController)
     }
 
-    /// Depending on account type, either tries to retrive account settings via a query
-    /// to the account settings lib, or procedes directly to attempting login.
+    /// Depending on `VerifiableAccountProtocol.containsCompleteServerInfo`,
+    /// either tries to retrive account settings via a query
+    /// to the account settings lib, or procedes directly to attempting a login.
     /// - Parameters:
     ///   - emailAddres: The email of this account
     ///   - displayName: The chosen name of the user, or nick
