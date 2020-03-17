@@ -18,7 +18,6 @@ final class AccountTypeSelectorViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationBarTintColorWhite = true
         collectionView.delegate = self
         collectionView.dataSource = self
         viewModel.delegate = self

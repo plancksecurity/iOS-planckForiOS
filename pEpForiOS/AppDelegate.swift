@@ -109,7 +109,7 @@ extension AppDelegate {
         }
 
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
-        Appearance.setup()
+        Appearance.pEp()
         setupServices()
         askUserForNotificationPermissions()
         var result = setupInitialViewController()
