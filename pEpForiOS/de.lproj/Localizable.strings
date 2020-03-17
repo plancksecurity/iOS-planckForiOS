@@ -21,7 +21,8 @@
    error message for .missingEmail */
 "A valid email is required" = "Eine gültige E-Mail Adresse wird benötigt";
 
-/* Account settings */
+/* Account settings
+   Account view title */
 "Account" = "Konto";
 
 /* Error description detecting account settings */
@@ -119,13 +120,15 @@
 /* UIUtils.presentActionSheetWithContactOptions.button.title Copy Email */
 "Copy Email" = "E-Mail kopieren";
 
-/* Settings: Cell (button) title to view app credits */
+/* Credits view title
+   Settings: Cell (button) title to view app credits */
 "Credits" = "Mitwirkung";
 
 /* Incorrect trustwords/PGP fingerprint */
 "Decline" = "Ablehnen";
 
 /* Default Account Setting Section Title
+   Default account view title
    Settings: Cell (button) title to view default account setting */
 "Default Account" = "Standard-Konto";
 
@@ -421,7 +424,8 @@
    Port placeholder for manual account SMTP setup */
 "Port" = "Port";
 
-/* action sheet title 1 */
+/* action sheet title 1
+   Privacy Status Label */
 "Privacy Status" = "Datenschutzstatus";
 
 /* passive mode description */
@@ -469,7 +473,8 @@
    Title of error alert shown to the user in case we can not connect to the SMTP server */
 "Server Unreachable" = "Server konnte nicht erreicht werden";
 
-/* Settings: Cell (button) title for entering fingerprints that are made own keys */
+/* Set Own Key title
+   Settings: Cell (button) title for entering fingerprints that are made own keys */
 "Set Own Key" = "Eigenen Schlüssel festlegen";
 
 /* acction sheet title 2

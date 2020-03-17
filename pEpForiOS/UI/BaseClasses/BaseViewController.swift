@@ -34,7 +34,6 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         appConfig?.errorPropagator.subscriber = self
-        appConfig?.keySyncHandshakeService.presenter = self
     }
 
     // MARK: - ErrorPropagatorSubscriber
@@ -46,7 +45,7 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
             if error is SmtpSendError || error is ImapSyncOperationError {
                 smtpOrImapAuthError(error: error)
             } else {
-                UIUtils.show(error: error, inViewController: self)
+                UIUtils.show(error: error)
             }
         }
     }
@@ -97,7 +96,7 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
         if let swd = showed, swd  {
             //this error must not be shown
         } else {
-            UIUtils.show(error: error, inViewController: self)
+            UIUtils.show(error: error)
             if showed == nil {
                 appConfig.showedAccountsError[extraInfo] = false
             } else if showed == false {

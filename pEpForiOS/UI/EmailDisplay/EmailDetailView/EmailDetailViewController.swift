@@ -68,7 +68,6 @@ class EmailDetailViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         doOnce?()
-        doOnce = nil
         createSeparators()
         setupToolbar()
     }
@@ -81,10 +80,15 @@ class EmailDetailViewController: BaseViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setupToolbar()
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+        // Works around a UI glitch: When !onlySplitViewMasterIsShown, the colletionView scroll
+        // position is inbetween two cells after orientation change.
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.scrollToLastViewedCell()
+        }
     }
 
     // MARK: - Target & Action
@@ -179,10 +183,8 @@ class EmailDetailViewController: BaseViewController {
 extension EmailDetailViewController {
 
     private func setup() {
-
         viewModel?.delegate = self
         setupCollectionView()
-        registerNotifications()
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -190,6 +192,7 @@ extension EmailDetailViewController {
             }
             me.viewModel?.startMonitoring()
             me.collectionView.reloadData()
+            me.doOnce = nil
         }
     }
 
@@ -255,7 +258,7 @@ extension EmailDetailViewController {
                 return
         }
         collectionView?.scrollToItem(at: indexPath,
-                                     at: .centeredHorizontally,
+                                     at: .left,
                                      animated: false)
     }
 
@@ -337,20 +340,6 @@ extension EmailDetailViewController {
             ratingView.addGestureRecognizer(tapGestureRecognizer)
         }
     }
-
-    private func registerNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(EmailDetailViewController.rotated),
-                                               name: UIDevice.orientationDidChangeNotification,
-                                               object: nil)
-    }
-
-    @objc
-    private func rotated() {
-        // Works around a UI glitch: When !onlySplitViewMasterIsShown, the colletionView scroll
-        // position is inbetween two cells after orientation change.
-        scrollToLastViewedCell()
-    }
     
     // Removes all EmailViewController that are not connected to a cell any more.
     private func releaseUnusedSubViewControllers() {
@@ -391,23 +380,13 @@ extension EmailDetailViewController {
     }
 
     @objc
-    private func showTrustManagementScreen() {
-        splitViewController?.preferredDisplayMode = .allVisible
-        guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
-            let vc = nav.topViewController else {
-                return
-        }
-        UIUtils.presentSettings(on: vc, appConfig: appConfig)
-    }
-
-    @objc
     private func showSettingsViewController() {
         splitViewController?.preferredDisplayMode = .allVisible
         guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
             let vc = nav.topViewController else {
                 return
         }
-        UIUtils.presentSettings(on: vc, appConfig: appConfig)
+        UIUtils.presentSettings(appConfig: appConfig)
     }
 
     private func setupEmailViewController(forRowAt indexPath: IndexPath) -> EmailViewController? {
@@ -723,16 +702,9 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
             collectionView?.performBatchUpdates(performChangesBlock)
         }
         configureView()
-        guard let indexPath = indexPathOfCurrentlyVisibleCell else {
-            // Empty list, is ok.
-            // Do nothing.
-            return
-        }
-        // Must be dispatched to avoid recursive saves
-        // (save -> Queryresults Delegate -> calls us -> save -> ...)
-        DispatchQueue.main.async {
-            vm.handleEmailShown(forItemAt: indexPath)
-        }
+
+        // We might need to scroll emailLISTview to curretlySelectedIndexPath here in case loads
+        //of new mails came in or have been deleted and the selected row is not visible any more.
     }
 
     func reloadData(viewModel: EmailDisplayViewModel) {

@@ -1,5 +1,5 @@
 //
-//  KeySyncServiceHandshakeDelegateMoc.swift
+//  KeySyncServiceHandshakeHandlerMoc.swift
 //  pEpForiOSTests
 //
 //  Created by Alejandro Gelos on 19/06/2019.
@@ -10,7 +10,7 @@ import Foundation
 import MessageModel
 import PEPObjCAdapterFramework
 
-class KeySyncServiceHandshakeDelegateMoc: KeySyncServiceHandshakeDelegate {
+class KeySyncServiceHandshakeHandlerMoc: KeySyncServiceHandshakeHandlerProtocol {
     func showHandshake(me: PEPIdentity,
                        partner: PEPIdentity,
                        isNewGroup: Bool,

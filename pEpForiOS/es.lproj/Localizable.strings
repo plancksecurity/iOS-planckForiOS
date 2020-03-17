@@ -53,7 +53,8 @@
 /* Confirm correct trustwords (pEp, long version) */
 "Confirm Trustwords" = "Confirmar Trustwords";
 
-/* Settings: Cell (button) title to view app credits */
+/* Credits view title
+   Settings: Cell (button) title to view app credits */
 "Credits" = "Creditos";
 
 /* Incorrect trustwords/PGP fingerprint */
@@ -169,7 +170,8 @@
    Port placeholder for manual account SMTP setup */
 "Port" = "Puerto";
 
-/* action sheet title 1 */
+/* action sheet title 1
+   Privacy Status Label */
 "Privacy Status" = "Grado de privacidad";
 
 /* reject hand shake button */

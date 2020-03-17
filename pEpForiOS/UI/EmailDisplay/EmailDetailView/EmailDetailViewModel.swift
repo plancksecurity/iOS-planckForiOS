@@ -154,10 +154,11 @@ class EmailDetailViewModel: EmailDisplayViewModel {
                 Log.shared.info("Nothing shown")
                 return nil
         }
+        
         if msg.imapFlags.flagged {
-            return #imageLiteral(resourceName: "icon-flagged")
+            return UIImage(named: "pEpForiOS-icon-flagged")
         } else {
-            return #imageLiteral(resourceName: "icon-unflagged")
+            return UIImage(named: "pEpForiOS-icon-unflagged")
         }
     }
 
@@ -228,18 +229,6 @@ extension EmailDetailViewModel {
         if message.markForRetryDecryptIfUndecryptable() {
             pathsForMessagesMarkedForRedecrypt.append(indexPath)
         }
-    }
-
-    private func isHandshakePossible(forItemAt indexPath: IndexPath) -> Bool {
-        guard let message = message(representedByRowAt: indexPath) else {
-            Log.shared.errorAndCrash("No msg")
-            return false
-        }
-        let handshakeCombos = TrustManagementUtil().handshakeCombinations(message: message)
-        guard !handshakeCombos.isEmpty else {
-            return false
-        }
-        return true
     }
 }
 
