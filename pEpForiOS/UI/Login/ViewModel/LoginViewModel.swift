@@ -125,11 +125,11 @@ final class LoginViewModel {
     ///   - loginName: The optional login name for this account, if different from the email
     ///   - password: The password for the account
     ///   - accessToken: The access token for this account
-    func loginViaAccountSettings(emailAddress: String,
-                                 displayName: String,
-                                 loginName: String? = nil,
-                                 password: String? = nil,
-                                 accessToken: OAuth2AccessTokenProtocol? = nil) {
+    private func loginViaAccountSettings(emailAddress: String,
+                                         displayName: String,
+                                         loginName: String? = nil,
+                                         password: String? = nil,
+                                         accessToken: OAuth2AccessTokenProtocol? = nil) {
         let acSettings = AccountSettings(accountName: emailAddress,
                                          provider: nil,
                                          flags: AS_FLAG_USE_ANY,
@@ -184,12 +184,12 @@ final class LoginViewModel {
     ///   - loginName: The login name needed for the servers, if different from the email address
     ///   - password: The password to log in
     ///   - accessToken: An optional OAUTH2 access token
-    func addVerificationData(verifiableAccount: VerifiableAccountProtocol,
-                             emailAddress: String,
-                             displayName: String,
-                             loginName: String? = nil,
-                             password: String? = nil,
-                             accessToken: OAuth2AccessTokenProtocol? = nil) {
+    private func addVerificationData(verifiableAccount: VerifiableAccountProtocol,
+                                     emailAddress: String,
+                                     displayName: String,
+                                     loginName: String? = nil,
+                                     password: String? = nil,
+                                     accessToken: OAuth2AccessTokenProtocol? = nil) {
         var theVerifiableAccount = verifiableAccount
 
         // Note: auth method is never taken from LAS. We either have OAuth2,
