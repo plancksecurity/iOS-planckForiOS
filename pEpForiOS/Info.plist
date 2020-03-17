@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en_US</string>
 	<key>CFBundleDisplayName</key>
@@ -9,6 +11,8 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
 			<key>CFBundleTypeIconFiles</key>
 			<array>
 				<string>pEpForiOS-icon</string>
@@ -137,6 +141,7 @@
 			<dict>
 				<key>public.filename-extension</key>
 				<array>
+					<string>pfx</string>
 					<string>pEp12</string>
 				</array>
 			</dict>
