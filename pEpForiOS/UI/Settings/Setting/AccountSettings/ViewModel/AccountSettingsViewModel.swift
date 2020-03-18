@@ -68,7 +68,7 @@ final class AccountSettingsViewModel {
         pEpSync = (try? account.isKeySyncEnabled()) ?? false
     }
     
-    public func certificateNotRowShouldBeShown(indexPath: IndexPath) -> Bool {
+    public func rowShouldBeHidden(indexPath: IndexPath) -> Bool {
         if indexPath.section == 0 && indexPath.row == 3 {
             if account.imapServer?.credentials.clientCertificate != nil {
                 return false

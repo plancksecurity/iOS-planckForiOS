@@ -149,7 +149,7 @@ extension AccountSettingsTableViewController {
         guard let vm = viewModel else {
             return defaultValue
         }
-        if vm.certificateNotRowShouldBeShown(indexPath: indexPath) {
+        if vm.rowShouldBeHidden(indexPath: indexPath) {
             return 0
         } else {
             return defaultValue
