@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import UIKit
 
 @testable import pEpForiOS
 @testable import MessageModel
@@ -138,6 +139,50 @@ class StringHTMLExtensionTests: XCTestCase {
             numberOfAttachmentsUsed += 1
             return attch
         }
+    }
+
+    func testHtmlInjection() {
+
+        let src = """
+        <html>\n  <head>\n   </head>\n  <body text=\"#000000\" bgcolor=\"#FFFFFF\">\n    <p><br></p>\n    <div class=\"moz-cite-prefix\">On 13/03/2020 14:59,\n      <a class=\"moz-txt-link-abbreviated\" href=\"mailto:iostest017@peptest.ch\">iostest017@peptest.ch</a> wrote:<br>\n    </div>\n    <blockquote type=\"cite\"\n      cite=\"mid:21d07f32-b8dd-d0c9-5066-35f4f14ad7d5@peptest.ch\">\n    \n      <p>Again<br>\n      </p>\n    </blockquote>\n    Comment1<br>\n    <blockquote type=\"cite\"\n      cite=\"mid:21d07f32-b8dd-d0c9-5066-35f4f14ad7d5@peptest.ch\">\n      <p> </p>\n      <div class=\"moz-cite-prefix\">On 13/03/2020 14:20, iostest018\n        wrote:<br>\n      </div>\n      <blockquote type=\"cite\"\n        cite=\"mid:ca880105-6e34-ecf3-c8cc-c542191ac4fd@peptest.ch\">\n               <p><br>\n        </p>\n      </blockquote>\n    </blockquote>\n    Comment2<br>\n    <blockquote type=\"cite\"\n      cite=\"mid:21d07f32-b8dd-d0c9-5066-35f4f14ad7d5@peptest.ch\">\n      <blockquote type=\"cite\"\n        cite=\"mid:ca880105-6e34-ecf3-c8cc-c542191ac4fd@peptest.ch\">\n        <p> </p>\n        <div class=\"moz-cite-prefix\">On 13/03/2020 11:35, iostest018\n          wrote:<br>\n        </div>\n        <blockquote type=\"cite\"\n          cite=\"mid:6ddb0381-d4ce-fe15-0bb9-3a38eb6a5f9f@peptest.ch\">\n                  <blockquote style=\"border-left: 2px solid #03AA4B; padding-left: 8px; margin-left:0px;\">Hello</p>\n        </blockquote>\n      </blockquote>\n    </blockquote>\n    Comment 3<br>\n    < type=\"cite\"\n      cite=\"mid:21d07f32-b8dd-d0c9-5066-35f4f14ad7d5@peptest.ch\">\n      <blockquote type=\"cite\"\n        cite=\"mid:ca880105-6e34-ecf3-c8cc-c542191ac4fd@peptest.ch\">\n        <blockquote type=\"cite\"\n          cite=\"mid:6ddb0381-d4ce-fe15-0bb9-3a38eb6a5f9f@peptest.ch\">\n          <p><font size=\"+3\" color=\"#cc0000\">Big red text</font></p>
+
+
+            <p style="margin-left: 8px;"><font color=\"#aa00ff\">Sth </font>
+
+        </p><p>Below should be inline picture attached</p>\n          <p><img moz-do-not-send=\"false\"             src=\"cid:part1.7D984609.4029FB7F@peptest.ch\" alt=\"This is\n              a png picutre. You should see it.\" class=\"\" width=\"98\"           height=\"110\"></p>        <p>Cheers</p><p>Test Monkey<br></p>          Added sth to text<br></blockquote>\n      </blockquote></blockquote></body></html>
+        """.replacingOccurrences(of: "\n", with: "")
+        .replacingOccurrences(of: "<br>", with: "<br/>")
+
+        let parser = HtmlTagParser(data: src.data(using: .utf16)!)
+        let sth = String(parser.htmlString)
+
+    }
+
+    func testHtmlToAttributedStringAppleConversion() {
+
+        let src = """
+        <div>
+          <p>Taken from wikpedia</p>
+          <img src="data:image/png;charset=utf-8;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA
+            AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+                9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
+        </div>
+        """
+
+        let sth = src.htmlToAttributedStringApple()
+    }
+
+    func testHtmlConvertImageLinksToImageBase64() {
+        let src = """
+        <div>
+          <p>Taken from wikpedia</p>
+          <img src="data:image/png;charset=utf-8;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA
+            AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+                9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
+        </div>
+        """
+
+        src.htmlConvertImageLinksToImageBase64(html: src, attachmentDelegate: nil)
     }
 
     /**

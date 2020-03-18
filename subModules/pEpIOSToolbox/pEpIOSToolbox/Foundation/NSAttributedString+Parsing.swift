@@ -32,4 +32,46 @@ public extension NSAttributedString {
         }
         return resultString
     }
+
+    func toHtml() -> String? {
+        let htmlDocAttrib = [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html]
+
+        guard let htmlData = try? self.data(from: self.wholeRange(),
+                                            documentAttributes: htmlDocAttrib) else {
+                                                return nil
+        }
+        let html = String(data: htmlData, encoding: .utf8) ?? nil
+        return html
+    }
+
+    func toCitation() -> NSAttributedString {
+        let attributedString = NSMutableAttributedString(attributedString: self)
+        var newParagraphs: [Int] = []
+        var index = 0
+
+        for char in attributedString.string {
+            index = index + 1
+            if char.isNewline() {
+                newParagraphs.append(index)
+            }
+        }
+
+        let fontAvenir = UIFont(name: "Avenir Next Condensed Ultra Light", size: 15)
+        let fontSystem = UIFont.systemFont(ofSize: 15, weight: .light)
+
+        let fakeVerticalLine = NSAttributedString(string: " ", attributes: [NSAttributedString.Key.backgroundColor : UIColor.pEpGreen, NSAttributedString.Key.font : fontAvenir ?? fontSystem])
+        let horizontalSpace = NSAttributedString(string: " ", attributes: [
+            NSAttributedString.Key.backgroundColor : UIColor.clear,
+            NSAttributedString.Key.font : fontAvenir ?? fontSystem])
+
+        var offset = 0
+
+        for index in newParagraphs {
+            attributedString.insert(fakeVerticalLine, at: index + offset)
+            attributedString.insert(horizontalSpace, at: index + 1 + offset)
+            attributedString.insert(horizontalSpace, at: index + 2 + offset)
+            offset = offset + 3
+        }
+        return attributedString
+    }
 }

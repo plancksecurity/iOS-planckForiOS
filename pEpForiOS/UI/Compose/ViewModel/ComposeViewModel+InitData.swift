@@ -146,7 +146,8 @@ extension ComposeViewModel {
             }
             switch composeMode {
             case .replyFrom:
-                setInitialBody(text: ReplyUtil.quotedMessageText(message: message, replyAll: false))
+                setBodyPotetionallyTakingOverAttachments()
+//                setInitialBody(text: ReplyUtil.quotedMessageText(message: message, replyAll: false))
             case .replyAll:
                 setInitialBody(text: ReplyUtil.quotedMessageText(message: message, replyAll: true))
             case .forward:
@@ -178,10 +179,13 @@ extension ComposeViewModel {
                 return
             }
 
-            guard isDrafts || composeMode == .forward else {
-                Log.shared.errorAndCrash("Unsupported mode or message")
-                return
+            guard isDrafts
+                || composeMode == .forward
+                || composeMode == .replyFrom else {
+                    Log.shared.errorAndCrash("Unsupported mode or message")
+                    return
             }
+            // HTML available case.
             if let html = msg.longMessageFormatted {
                 // Attachments must be (and are) on a private
                 let attachmentSession = inlinedAttachments.first?.session
@@ -190,19 +194,35 @@ extension ComposeViewModel {
                     inlinedAttachments: inlinedAttachments, session: attachmentSession)
                 let attributedString = html.htmlToAttributedString(attachmentDelegate: parserDelegate)
                 var result = attributedString
-                if composeMode == .forward {
-                    // forwarded messges must have a cite header ("yxz wrote on ...")
-                    result = ReplyUtil.citedMessageText(textToCite: attributedString,
-                                                        fromMessage: msg)
+                switch composeMode {
+                case .replyFrom:
+//                    result = ReplyUtil.citedMessageText(textToCite: attributedString,
+//                                                        fromMessage: msg)
+                    // add new line above cited text
+                    result = NSAttributedString(string: "\n\n") + result.toCitation()
+                case .forward:
+                    // forwarded messages must have a cite header ("yxz wrote on ...")
+//                    result = ReplyUtil.citedMessageText(textToCite: attributedString,
+//                                                        fromMessage: msg)
+                    // add new line above cited text
+                    result = NSAttributedString(string: "\n\n") + result.toCitation()
+                default:
+                    break
                 }
                 setInitialBody(text: result)
             } else {
                 // No HTML available.
                 var result = msg.longMessage ?? ""
-                if composeMode == .forward {
+                switch composeMode {
+                case .replyFrom:
+                    result = ReplyUtil.citedMessageText(textToCite: msg.longMessage ?? "",
+                                                        fromMessage: msg)
+                case .forward:
                     // forwarded messges must have a cite header ("yxz wrote on ...")
                     result = ReplyUtil.citedMessageText(textToCite: msg.longMessage ?? "",
                                                         fromMessage: msg)
+                default:
+                    break;
                 }
                 setInitialBody(text: result)
             }

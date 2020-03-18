@@ -166,12 +166,12 @@ extension BodyCellViewModel {
 // MARK: - HTML
 
 extension BodyCellViewModel {
-
     private func createHtmlVersionAndInformDelegate(newAttributedText attrText: NSAttributedString) {
         let (markdownText, _) = attrText.convertToMarkDown()
         let plaintext = markdownText
-        let html = markdownText.markdownToHtml()
-        resultDelegate?.bodyCellViewModel(self, bodyChangedToPlaintext: plaintext,
+        let html = attrText.toHtml()
+        resultDelegate?.bodyCellViewModel(self,
+                                          bodyChangedToPlaintext: plaintext,
                                           html: html ?? "")
     }
 }
