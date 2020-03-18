@@ -78,7 +78,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         navigationController?.setToolbarHidden(false, animated: true)
         if MiscUtil.isUnitTest() {
             return
@@ -95,6 +94,10 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
             doOnce?()
         }
         updateFilterText()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
 
     deinit {
