@@ -1,0 +1,21 @@
+/* No comment provided by engineer. */
+"None" = "Aucun";
+
+/* pEp mail signature. Newlines will be added by app */
+"sent with p≡p" = "envoyé avec LexiaPark_Test";
+
+/* Error description when failing to validate account fields */
+"Some fields seems not to be valid. Please check all input fields." = "Certains champs ne semblent pas valides. Veuillez vérifier tous les champs de saisie.";
+
+/* No comment provided by engineer. */
+"SSL/TLS" = "SSL/TLS";
+
+/* No comment provided by engineer. */
+"StartTLS" = "StartTLS";
+
+/* section title for identity without username */
+"Unknown Name" = "Nom inconnu";
+
+/* file name used for unnamed attachments */
+"unnamed" = "Sans nom";
+

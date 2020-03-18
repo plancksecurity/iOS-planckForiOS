@@ -5,7 +5,7 @@
       location = "group:pEpForiOS.xcodeproj">
    </FileRef>
    <FileRef
-      location = "container:../MessageModel/MessageModel/MessageModel.xcodeproj">
+      location = "group:Submodules/MessageModel/MessageModel/MessageModel.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:subModules/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
