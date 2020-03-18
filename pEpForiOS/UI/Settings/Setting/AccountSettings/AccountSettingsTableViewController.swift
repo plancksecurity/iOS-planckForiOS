@@ -134,7 +134,6 @@ extension AccountSettingsTableViewController {
             return oauth2TableViewCell
         }
         if cell == certificateTableViewCell {
-            certificateLabel.text = viewModel?.certificateInfo()
             certificateIndexPath = indexPath
         }
         
@@ -272,6 +271,7 @@ extension AccountSettingsTableViewController {
         title = Localized.navigationTitle
         nameTextfield.text = viewModel?.account.user.userName
         emailTextfield.text = viewModel?.account.user.address
+        certificateLabel.text = viewModel?.certificateInfo()
         passwordTextfield.text = "JustAPassword"
         resetIdentityLabel.text = NSLocalizedString("Reset",
                                                     comment: "Account settings reset identity")

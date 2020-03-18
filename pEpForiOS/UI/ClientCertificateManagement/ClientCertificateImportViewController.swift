@@ -126,7 +126,7 @@ extension ClientCertificateImportViewController {
 // MARK: - ClientCertificatePasswordViewModelDelegate
 
 extension ClientCertificateImportViewController: ClientCertificateImportViewModelDelegate {
-    func showError(type: importCertificateError, dissmisAfterError: Bool) {
+    func showError(type: ImportCertificateError, dissmisAfterError: Bool) {
         switch type {
         case .wrongPassword:
             showWrongPasswordError()

@@ -35,7 +35,8 @@ final class ClientCertificateManagementViewController: BaseViewController {
         setupTableView()
         configureAppearance()
     }
-    @IBAction func addCertificate(_ sender: Any) {
+    
+    @IBAction func addCertificateButtonPressed(_ sender: Any) {
         let picker = UIDocumentPickerViewController(documentTypes: ["public.data"], in: .import)
         picker.delegate = self
         picker.modalPresentationStyle = .fullScreen
