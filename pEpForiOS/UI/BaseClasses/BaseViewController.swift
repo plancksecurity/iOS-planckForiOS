@@ -21,7 +21,7 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
     public var navigationBarTintColorWhite : Bool = false {
         didSet {
             guard let navController = navigationController else {
-                Log.shared.errorAndCrash("Lost navigationController")
+                Log.shared.errorAndCrash("No navigationController")
                 return
             }
 
