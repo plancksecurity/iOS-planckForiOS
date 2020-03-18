@@ -30,6 +30,7 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
                 navController.navigationBar.tintColor = .white
                 UINavigationBar.appearance().tintColor = .white
             } else {
+                //Keep the values of navigation navigationBar's tintColor and barTintColor to support the first loading.
                 UINavigationBar.appearance().tintColor = .pEpGreen
             }
         }

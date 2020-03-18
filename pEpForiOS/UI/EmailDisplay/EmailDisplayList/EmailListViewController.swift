@@ -94,7 +94,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
         if !vm.showLoginView {
             doOnce?()
         }
-
         updateFilterText()
     }
 
