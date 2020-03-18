@@ -13,6 +13,26 @@ import MessageModel
 
 class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber {
 
+    /// Indicates when the navigation bar tint color must be white.
+    /// As in iOS 13 the property to set that color changed, we use this flag to set it properly.
+    /// Use it if for an specific view, the navigation bar tint color must be white.
+    /// To use is, set it to true before the segue is performed.
+    public var navigationBarTintColorWhite : Bool = false {
+        didSet {
+            guard let navController = navigationController else {
+                Log.shared.errorAndCrash("No navigationController")
+                return
+            }
+            if navigationBarTintColorWhite {
+                navController.navigationBar.barTintColor = .white
+                navController.navigationBar.tintColor = .white
+                UINavigationBar.appearance().tintColor = .white
+            } else {
+                UINavigationBar.appearance().tintColor = .pEpGreen
+            }
+        }
+    }
+
     private var _appConfig: AppConfig?
     var appConfig: AppConfig {
         get {
@@ -47,6 +67,11 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         appConfig.errorPropagator.subscriber = self
         self.navigationController?.title = title
         BaseTableViewController.setupCommonSettings(tableView: tableView)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationBarTintColorWhite = false
     }
 
     static func setupCommonSettings(tableView: UITableView) {
