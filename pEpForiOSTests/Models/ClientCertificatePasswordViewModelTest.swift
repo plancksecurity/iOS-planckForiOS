@@ -39,7 +39,7 @@ final class ClientCertificatePasswordViewModelTest: XCTestCase {
 }
 
 extension ClientCertificatePasswordViewModelTest: ClientCertificateImportViewModelDelegate {
-    func showError(type: importCertificateError, dissmisAfterError: Bool) {
+    func showError(type: ImportCertificateError, dissmisAfterError: Bool) {
     }
     
     func dismiss() {

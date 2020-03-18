@@ -8,11 +8,16 @@
 
 import MessageModel
 
-// MARK: - Row
+enum ClientCertificateAction {
+    case newAccount
+    case updateCertificate
+}
 
 protocol ClientCertificateManagementViewModelDelegate: class{
     func showInUseError(by: String)
 }
+
+// MARK: - Row
 
 extension ClientCertificateManagementViewModel {
     struct Row {
@@ -35,17 +40,29 @@ final class ClientCertificateManagementViewModel {
     private var verifiableAccount: VerifiableAccountProtocol
     public weak var delegate: ClientCertificateManagementViewModelDelegate?
     public private(set) var rows = [Row]()
+    public var accountToUpdate: Account?
 
     public init(verifiableAccount: VerifiableAccountProtocol? = nil,
-                clientCertificateUtil: ClientCertificateUtil = ClientCertificateUtil()) {
+                clientCertificateUtil: ClientCertificateUtil = ClientCertificateUtil(),
+                account: Account? = nil) {
         self.clientCertificateUtil = clientCertificateUtil
         self.verifiableAccount = verifiableAccount ??
             VerifiableAccount.verifiableAccount(for: .clientCertificate)
         setup()
+        accountToUpdate = account
     }
 
-    public func handleDidSelect(rowAt indexPath: IndexPath) {
-        verifiableAccount.clientCertificate = rows[indexPath.row].clientCertificate
+    public func handleDidSelect(rowAt indexPath: IndexPath) -> ClientCertificateAction {
+        let certificate = rows[indexPath.row].clientCertificate
+        if let account = accountToUpdate {
+            account.imapServer?.credentials.clientCertificate = certificate
+            account.smtpServer?.credentials.clientCertificate = certificate
+            Session.main.commit()
+            return .updateCertificate
+        } else {
+            verifiableAccount.clientCertificate = rows[indexPath.row].clientCertificate
+            return .newAccount
+        }
     }
 
     public func loginViewModel() -> LoginViewModel {

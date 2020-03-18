@@ -113,11 +113,10 @@ extension AccountSettingsTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let origCount = super.tableView(tableView, numberOfRowsInSection: section)
-        var finalCount = origCount
         if section == 0 {
-            return finalCount - 1
+            return origCount - 1
         } else {
-            return finalCount
+            return origCount
         }
     }
 
@@ -135,7 +134,6 @@ extension AccountSettingsTableViewController {
             return oauth2TableViewCell
         }
         if cell == certificateTableViewCell {
-            certificateLabel.text = viewModel?.certificateInfo()
             certificateIndexPath = indexPath
         }
         
@@ -147,10 +145,14 @@ extension AccountSettingsTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 && indexPath.row == 5 {
+        let defaultValue = super.tableView(tableView, heightForRowAt: indexPath)
+        guard let vm = viewModel else {
+            return defaultValue
+        }
+        if vm.rowShouldBeHidden(indexPath: indexPath) {
             return 0
         } else {
-            return super.tableView(tableView, heightForRowAt: indexPath)
+            return defaultValue
         }
     }
 
@@ -269,6 +271,7 @@ extension AccountSettingsTableViewController {
         title = Localized.navigationTitle
         nameTextfield.text = viewModel?.account.user.userName
         emailTextfield.text = viewModel?.account.user.address
+        certificateLabel.text = viewModel?.certificateInfo()
         passwordTextfield.text = "JustAPassword"
         resetIdentityLabel.text = NSLocalizedString("Reset",
                                                     comment: "Account settings reset identity")
@@ -327,12 +330,10 @@ extension AccountSettingsTableViewController {
             return
         }
         vc.appConfig = appConfig
-        let vm = ClientCertificateManagementViewModel()
-        vm.delegate = vc
-        vc.viewModel = vm
-        
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
+        let nextViewModel = viewModel?.clientCertificateViewModel()
+        nextViewModel?.delegate = vc
+        vc.viewModel = nextViewModel
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     private func handleOauth2Reauth() {
