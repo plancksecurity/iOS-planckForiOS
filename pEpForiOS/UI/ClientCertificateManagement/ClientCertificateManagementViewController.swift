@@ -68,7 +68,6 @@ extension ClientCertificateManagementViewController {
             navigationController?.navigationBar.backgroundColor = UIColor.clear
         }
         navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isHidden = false
         let image = UIImage(named: "button-add")
         addCertButton.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
