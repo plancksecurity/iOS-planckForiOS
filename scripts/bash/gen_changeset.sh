@@ -21,11 +21,11 @@ pwd
 dir="`pwd`"
 
 # Print version
-printf %s  "v" >> $CHANGESET
+#printf %s  "v" >> $CHANGESET
 
-INFO_PLIST=${dir}/pEp_for_iOS/pEpForiOS/Info.plist
-VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "${INFO_PLIST}") 
-echo "${VERSION}" >> $CHANGESET
+#INFO_PLIST=${dir}/pEp_for_iOS/pEpForiOS/Info.plist
+#VERSION=$(/usr/libexec/PlistBuddy -c "Print :MARKETING_VERSION" "${INFO_PLIST}")
+#echo "${VERSION}" >> $CHANGESET
 
 
 
