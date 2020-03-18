@@ -19,11 +19,12 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
     /// To use is, set it to true before the segue is performed.
     public var navigationBarTintColorWhite : Bool = false {
         didSet {
-            guard let navController = navigationController else {
-                Log.shared.errorAndCrash("No navigationController")
-                return
-            }
             if navigationBarTintColorWhite {
+                guard let navController = navigationController else {
+                    // This is a valid case. Not all ViewControllers are in a NavigationController
+                    return
+                }
+
                 navController.navigationBar.barTintColor = .white
                 navController.navigationBar.tintColor = .white
                 UINavigationBar.appearance().tintColor = .white
