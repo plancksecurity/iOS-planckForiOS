@@ -40,10 +40,10 @@ class AccountTypeSelectorViewModel {
     }
     
     public func refreshAccountTypes() {
-        accountTypes = [.gmail,
+        accountTypes = [.icloud,
                         .o365,
-                        .icloud,
                         .outlook,
+                        .gmail,
                         .clientCertificate,
                         .other]
         if self.clientCertificateUtil.listCertificates(session: nil).count == 0 && accountTypes.contains(.clientCertificate) {
