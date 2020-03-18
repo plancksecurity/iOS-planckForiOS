@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwipeCellKit
 
 private struct Localized {
     static let importDate = NSLocalizedString("Import date",
@@ -17,8 +18,15 @@ private struct Localized {
 final class ClientCertificateManagementViewController: BaseViewController {
 
     @IBOutlet weak var tableView: UITableView!
-
+    @IBOutlet weak var addCertButton: UIButton!
+    
     public var viewModel: ClientCertificateManagementViewModel?
+    
+    //swipe acctions types
+    var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
+    var buttonStyle: ButtonStyle = .backgroundColor
+    
+    private var swipeDelete: SwipeAction? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +35,23 @@ final class ClientCertificateManagementViewController: BaseViewController {
         tableView.dataSource = self
         setupTableView()
         configureAppearance()
+    }
+    @IBAction func addCertificate(_ sender: Any) {
+        let picker = UIDocumentPickerViewController(documentTypes: ["public.data"], in: .import)
+        picker.delegate = self
+        picker.modalPresentationStyle = .fullScreen
+        present(picker, animated: true)
+    }
+}
+
+extension ClientCertificateManagementViewController: UIDocumentPickerDelegate {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
+            return
+        }
+        vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url, delegate: vc)
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
     }
 }
 
@@ -45,6 +70,9 @@ extension ClientCertificateManagementViewController {
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isHidden = false
+        let image = UIImage(named: "button-add")
+        addCertButton.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
+        addCertButton.tintColor = UIColor.white
     }
 
     private func setupTableView() {
@@ -82,6 +110,10 @@ extension ClientCertificateManagementViewController: UITableViewDataSource {
             // We prefer empty cell than app crash
             return UITableViewCell()
         }
+        guard let swipeCell = cell as? PEPSwipeTableViewCell else {
+            return UITableViewCell()
+        }
+        swipeCell.delegate = self
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             // We prefer empty cell than app crash
@@ -105,7 +137,6 @@ extension ClientCertificateManagementViewController: SegueHandlerType {
         case showLogin
     }
 
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
@@ -121,5 +152,87 @@ extension ClientCertificateManagementViewController: SegueHandlerType {
             let dvm = vm.loginViewModel()
             dvc.viewModel = dvm
         }
+    }
+}
+
+// MARK: - Swipe actions
+
+extension ClientCertificateManagementViewController: SwipeTableViewCellDelegate {
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        
+        // Create swipe actions, taking the currently displayed folder into account
+        var swipeActions = [SwipeAction]()
+        let swipeActionDescriptor = SwipeActionDescriptor.trash
+        let deleteAction =
+            SwipeAction(style: .destructive,
+                        title: swipeActionDescriptor.title(forDisplayMode: .titleAndImage)) {
+                            [weak self] action, indexPath in
+                            guard let me = self else {
+                                Log.shared.errorAndCrash("Lost MySelf")
+                                return
+                            }
+                            me.swipeDelete = action
+                            me.deleteAction(forCellAt: indexPath)
+        }
+        configure(action: deleteAction, with: swipeActionDescriptor)
+        swipeActions.append(deleteAction)
+        return swipeActions
+    }
+    
+    func deleteAction(forCellAt: IndexPath) {
+        guard let vm = viewModel else { return }
+        let deleteSuccess = vm.deleteCertificate(indexPath: forCellAt)
+        if deleteSuccess {
+            if let swipeDelete = self.swipeDelete {
+                swipeDelete.fulfill(with: .delete)
+                self.swipeDelete = nil
+            }
+        } else {
+            if let swipeDelete = self.swipeDelete {
+                swipeDelete.fulfill(with: .reset)
+                self.swipeDelete = nil
+            }
+        }
+    }
+    
+    func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
+        action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
+        action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
+        
+        switch buttonStyle {
+        case .backgroundColor:
+            action.backgroundColor = descriptor.color
+        case .circular:
+            action.backgroundColor = .clear
+            action.textColor = descriptor.color
+            action.font = .systemFont(ofSize: 13)
+            action.transitionDelegate = ScaleTransition.default
+        }
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   editActionsOptionsForRowAt indexPath: IndexPath,
+                   for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
+        var options = SwipeTableOptions()
+        options.transitionStyle = .border
+        options.buttonSpacing = 11
+        options.expansionStyle = .destructive(automaticallyDelete: false)
+        return options
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? EmailListViewCell else {
+            return
+        }
+        cell.clear()
+    }
+}
+
+extension ClientCertificateManagementViewController: ClientCertificateManagementViewModelDelegate {
+    func showInUseError(by: String) {
+        let errorString = NSLocalizedString("You can only delete certificates that are not connected to an account. The certificate is currently used for the following account: \(by)", comment: "alert error message certificate delete")
+        UIUtils.showAlertWithOnlyPositiveButton(title: NSLocalizedString("Not possible to delete", comment: "alert error title certificate delete") ,
+                                                message: errorString)
     }
 }

@@ -21,6 +21,7 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var resetIdentityLabel: UILabel!
     @IBOutlet weak var keySyncLabel: UILabel!
     @IBOutlet weak var keySyncSwitch: UISwitch!
+    @IBOutlet weak var certificateLabel: UITextField!
     //imap fields
     @IBOutlet weak var imapServerTextfield: UITextField!
     @IBOutlet weak var imapPortTextfield: UITextField!
@@ -32,6 +33,7 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var smtpSecurityTextfield: UITextField!
     @IBOutlet weak var smtpUsernameTextField: UITextField!
 
+    @IBOutlet weak var certificateTableViewCell: UITableViewCell!
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
@@ -55,6 +57,7 @@ final class AccountSettingsTableViewController: BaseTableViewController {
         return .detail
     }
     private var resetIdentityIndexPath: IndexPath?
+    private var certificateIndexPath: IndexPath?
 
 
 // MARK: - Life Cycle
@@ -110,10 +113,11 @@ extension AccountSettingsTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let origCount = super.tableView(tableView, numberOfRowsInSection: section)
+        var finalCount = origCount
         if section == 0 {
-            return origCount - 1
+            return finalCount - 1
         } else {
-            return origCount
+            return finalCount
         }
     }
 
@@ -130,12 +134,24 @@ extension AccountSettingsTableViewController {
             oauth2ReauthIndexPath = indexPath
             return oauth2TableViewCell
         }
-
+        if cell == certificateTableViewCell {
+            certificateLabel.text = viewModel?.certificateInfo()
+            certificateIndexPath = indexPath
+        }
+        
         if cell == resetIdentityCell {
             resetIdentityIndexPath = indexPath
         }
 
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 && indexPath.row == 5 {
+            return 0
+        } else {
+            return super.tableView(tableView, heightForRowAt: indexPath)
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -181,6 +197,8 @@ extension AccountSettingsTableViewController: UITextFieldDelegate {
             handleOauth2Reauth()
         case resetIdentityIndexPath:
             handleResetIdentity()
+        case certificateIndexPath:
+            handleCertificate()
         default:
             break
         }
@@ -302,6 +320,19 @@ extension AccountSettingsTableViewController {
     private func popViewController() {
         //!!!: see IOS-1608 this is a patch as we have 2 navigationControllers and need to pop to the previous view.
         (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
+    }
+    
+    private func handleCertificate() {
+        guard let vc = UIStoryboard.init(name: "AccountCreation", bundle: nil).instantiateViewController(withIdentifier: "ClientCertificateManagementViewController") as? ClientCertificateManagementViewController else {
+            return
+        }
+        vc.appConfig = appConfig
+        let vm = ClientCertificateManagementViewModel()
+        vm.delegate = vc
+        vc.viewModel = vm
+        
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
     }
 
     private func handleOauth2Reauth() {

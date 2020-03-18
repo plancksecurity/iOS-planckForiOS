@@ -27,6 +27,8 @@ final class AccountTypeSelectorViewController: BaseViewController {
         super.viewWillAppear(animated)
         configureAppearance()
         configureView()
+        viewModel.refreshAccountTypes()
+        collectionView.reloadData()
     }
 
     private func configureAppearance() {
@@ -38,6 +40,7 @@ final class AccountTypeSelectorViewController: BaseViewController {
             self.navigationController?.navigationBar.shadowImage = UIImage()
             self.navigationController?.navigationBar.isTranslucent = true
             self.navigationController?.navigationBar.backgroundColor = UIColor.clear
+            self.navigationController?.navigationBar.tintColor = UIColor.white
         }
     }
 
@@ -85,7 +88,7 @@ extension AccountTypeSelectorViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cellProvider = viewModel[indexPath.row]
         switch cellProvider {
-        case .gmail:
+        case .gmail, .o365, .icloud, .outlook:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "providerImageCell",
                                                                 for: indexPath) as? AccountTypeSelectorImageCollectionViewCell else {
                                                                     return UICollectionViewCell()
@@ -164,3 +167,12 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
         }
     }
 }
+
+// MARK: - ClientCertificateImport Delegate
+extension AccountTypeSelectorViewController: ClientCertificateImportViewControllerDelegate {
+    func certificateCouldImported() {
+        viewModel.refreshAccountTypes()
+        collectionView.reloadData()
+    }
+}
+

@@ -2,7 +2,7 @@
 //  LoginViewController.swift
 //  pEp
 //
-//  Created by Miguel Berrocal Gómez on 13/07/2018.
+//  Created by Xavier Algarra on 13/07/2018.
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
@@ -49,6 +49,14 @@ final class LoginViewController: BaseViewController {
         setup()
         updateView()
         setupPasswordField()
+
+        guard let accountType = viewModel?.verifiableAccount.accountType else {
+            Log.shared.errorAndCrash(message: "Lacking viewModel.verifiableAccount.accountType")
+            return
+        }
+        if accountType == .icloud {
+            showiCloudAlert()
+        }
     }
 
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -98,7 +106,7 @@ final class LoginViewController: BaseViewController {
         // isOauthAccount is use to disable for ever the password field (when loading this view)
         // isOAuth2Possible is use to hide password field only if isOauthAccount is false and the
         // user type a possible ouath in the email textfield.
-        if vm.isOAuth2Possible(email: email) || vm.verifiableAccount.accountType.isOauth {
+        if vm.verifiableAccount.accountType.isOauth {
             let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
             vm.loginWithOAuth2(viewController: self,
                                emailAddress: email,
@@ -115,10 +123,6 @@ final class LoginViewController: BaseViewController {
                      displayName: userName,
                      password: pass)
         }
-    }
-
-    @IBAction func emailChanged(_ sender: UITextField) {
-        updatePasswordField(email: sender.text)
     }
 
     @IBAction func pEpSyncStateChanged(_ sender: UISwitch) {
@@ -154,28 +158,6 @@ extension LoginViewController {
         }
         vm.loginViewModelLoginErrorDelegate = self
         vm.loginViewModelOAuth2ErrorDelegate = self
-    }
-}
-
-// MARK: - Private
-
-extension LoginViewController {
-    private func updatePasswordField(email: String?) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-
-        guard !vm.verifiableAccount.accountType.isOauth else { return }
-
-        let oauth2Possible = vm.isOAuth2Possible(email: email)
-        password.isEnabled = !oauth2Possible
-
-        if oauth2Possible {
-            hidePasswordTextField()
-        } else {
-            showPasswordTextField()
-        }
     }
 }
 
@@ -604,3 +586,32 @@ extension LoginViewController {
         }
     }
 }
+
+// MARK: - iCloud alert
+
+extension LoginViewController {
+    private func showiCloudAlert() {
+        func openiCloudInfoInBrowser() {
+            let urlString = "https://support.apple.com/en-jo/HT204397"
+            guard let url = URL(string: urlString) else {
+                Log.shared.errorAndCrash(message: "Not a URL? \(urlString)")
+                return
+            }
+            UIApplication.shared.open(url,
+                                      options: [:],
+                                      completionHandler: nil)
+        }
+
+        UIUtils.showTwoButtonAlert(withTitle: NSLocalizedString("iCloud",
+                                                                comment: "Alert title for iCloud instructions"),
+                                   message: NSLocalizedString("You need to create an app-specific password in your iCloud account.",
+                                                              comment: "iCloud instructions"),
+                                   cancelButtonText: NSLocalizedString("OK",
+                                                                       comment: "OK (dismiss) button for iCloud instructions alert"),
+                                   positiveButtonText: NSLocalizedString("Info",
+                                                                         comment: "Info button for showing iCloud page"),
+                                   cancelButtonAction: {},
+                                   positiveButtonAction: openiCloudInfoInBrowser)
+    }
+}
+

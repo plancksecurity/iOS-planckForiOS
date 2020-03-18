@@ -3,7 +3,7 @@
 "-" = "-";
 
 /* KeySyncWizard introduction message */
-"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?";
+"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Un deuxième appareil a été détecté. Nous pouvons former un groupe d'appareils pour synchroniser toute votre confidentialité sur les deux appareils. Pouvons-nous commencer la synchronisation ?";
 
 /* Tableview section  header: Accounts */
 "Accounts" = "Comptes";
@@ -12,7 +12,7 @@
 "All" = "Tout";
 
 /* KeySyncWizard introduction message */
-"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?";
+"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Un autre appareil a été détecté. Nous pouvons l'ajouter à votre groupe d'appareils pour synchroniser toute votre confidentialité sur tous les appareils. Pouvons-nous commencer la synchronisation ?";
 
 /* Archive button in slide-left menu */
 "Archive" = "archive";
@@ -22,7 +22,7 @@
 
 /* Cancel button title for manual account IMAP setup
    Cancel button title for manual account SMTP setup */
-"Back" = "Back";
+"Back" = "Retour";
 
 /* Privacy status title */
 "Broken" = "Cassé";
@@ -53,6 +53,10 @@
 
 /* Compose field title */
 "CC:" = "Cc :";
+
+/* accept hand shake confirm button
+   Confirm correct trustwords/PGP fingerprint */
+"Confirm" = "Accepter";
 
 /* Confirm correct fingerprint (PGP, long version) */
 "Confirm Fingerprint" = "Confirmer empreinte";
@@ -86,7 +90,7 @@
 "Disable Protection" = "Désactivez la protection";
 
 /* enable p≡p Sync with other devices in the group */
-"Enable p≡p Sync" = "Enable p≡p Sync";
+"Enable p≡p Sync" = "Activer la synchronisation p≡p";
 
 /* Enable Protection
    Enable Protection button title of pEp protection toggle action sheet */
@@ -94,7 +98,7 @@
 
 /* Finish button title for manual account SMTP setup
    Start up tutorial finish button */
-"Finish" = "Finish";
+"Finish" = "Terminer";
 
 /* FoldersView */
 "Folders" = "Dossiers";
@@ -146,12 +150,13 @@
 
 /* keySyncWizard intro view Not Now button title
    not now button */
-"Not Now" = "Not Now";
+"Not Now" = "Pas maintenant";
 
 /* Default positive button text
    Filter accept text
    General alert positive button
    keySyncWizard completion view OK button title
+   OK (dismiss) button for iCloud instructions alert
    OK button for client certificate password screen
    OK button for invalid accout settings user input alert
    UIAlertAction ok after error */
@@ -175,6 +180,9 @@
    Password TextField Placeholder in Login Screen */
 "Password" = "Mot de passe";
 
+/* Account settings title pEp Sync */
+"pEp Sync" = "Sync p≡p";
+
 /* Tableview section header */
 "PGP Compatibility" = "Compatibilité OpenPGP";
 
@@ -182,7 +190,7 @@
 "Please give us a moment while we sync your devices. This can take a minute or more." = "Merci de patienter pendant la synchronisation vos dispositifs. Cela peut prendre quelques minutes.";
 
 /* keySync handshake alert message for two devices in group */
-"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?";
+"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Veuillez vous assurer d'avoir les deux appareils afin de pouvoir comparer les mots de confiance sur les deux appareils. Les Trustwords ci-dessous sont-ils pareils que les Trustwords sur l'autre appareil ?";
 
 /* Port placeholder for manual account IMAP setup
    Port placeholder for manual account SMTP setup */
@@ -326,8 +334,8 @@
 "Wrong Trustwords" = "Trustwords incorrects";
 
 /* Confirm less secure answer message alert body */
-"You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Vous êtes sur le point de transférer un message sécurisé de façon non-securisée. Si vous décidez de continuer, vous prenez le risque de divulguer des informations confidentielles.";
+"You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Vous êtes sur le point de transférer un message sécurisé de façon non-securisée. Si vous décidez de continuer, vous prenez le risque de divulguer des informations confidentielles. Êtes-vous sûr de vouloir continuer ?";
 
 /* Confirm less secure forwarding message alert body */
-"You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Vous êtes sur le point de transférer un message sécurisé de façon non-securisée. Si vous décidez de continuer, vous prenez le risque de divulguer des informations confidentielles.";
+"You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Vous êtes sur le point de transférer un message sécurisé de façon non-securisée. Si vous décidez de continuer, vous prenez le risque de divulguer des informations confidentielles. Êtes-vous sûr de vouloir continuer ?";
 

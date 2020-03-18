@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SwipeCellKit
 
-final class ClientCertificateManagementTableViewCell: UITableViewCell {
+final class ClientCertificateManagementTableViewCell: PEPSwipeTableViewCell {
 
     static public let reusableId = "ClientCertificateManagementTableViewCell"
 

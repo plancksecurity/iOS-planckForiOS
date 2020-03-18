@@ -67,6 +67,24 @@ final class AccountSettingsViewModel {
 
         pEpSync = (try? account.isKeySyncEnabled()) ?? false
     }
+    
+    func certRow() -> Bool {
+        guard (account.imapServer?.credentials.clientCertificate) != nil else {
+            return false
+        }
+        return true
+    }
+    
+    func certificateInfo() -> String {
+        
+        guard let certificate = account.imapServer?.credentials.clientCertificate else {
+            return ""
+        }
+        let name = certificate.label ?? "--"
+        let date = certificate.date?.fullString() ?? ""
+        let separator = NSLocalizedString("Exp. date:", comment: "spearator string bewtween name and date")
+        return "\(name), \(separator) \(date)"
+    }
 
     func handleResetIdentity() {
         delegate?.showLoadingView()

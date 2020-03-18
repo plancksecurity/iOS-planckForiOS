@@ -5,19 +5,31 @@
 "8ib-BO-jFp.text" = "Empreinte digitale";
 
 /* Class = "UILabel"; text = "Password"; ObjectID = "aYO-l7-9iG"; */
-"aYO-l7-9iG.text" = "Mot de passe";
+"aYO-l7-9iG.text" = "Mot de passe :";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "azH-be-f3A"; */
 "azH-be-f3A.text" = "Nom d'utilisateur";
 
+/* Class = "UILabel"; text = "Transport Security"; ObjectID = "dpq-4F-9sG"; */
+"dpq-4F-9sG.text" = "Protocole de Sécurité :";
+
+/* Class = "UILabel"; text = "Server"; ObjectID = "DQ0-sB-CRx"; */
+"DQ0-sB-CRx.text" = "Serveur :";
+
+/* Class = "UILabel"; text = "Email"; ObjectID = "o8M-bM-KZX"; */
+"o8M-bM-KZX.text" = "Adresse courriel :";
+
+/* Class = "UILabel"; text = "Server"; ObjectID = "oCE-8g-idG"; */
+"oCE-8g-idG.text" = "Serveur :";
+
 /* Class = "UILabel"; text = "Port"; ObjectID = "Osx-2y-29f"; */
-"Osx-2y-29f.text" = "Port";
+"Osx-2y-29f.text" = "Port :";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "RYB-AT-TSB"; */
 "RYB-AT-TSB.text" = "Nom d'utilisateur";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "s9I-CU-fSE"; */
-"s9I-CU-fSE.text" = "Nom";
+"s9I-CU-fSE.text" = "Nom :";
 
 /* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "Tjb-uM-eUF"; */
 "Tjb-uM-eUF.text" = "p≡p Sync";
@@ -25,9 +37,18 @@
 /* Class = "UILabel"; text = "Username"; ObjectID = "tt1-bn-s7P"; */
 "tt1-bn-s7P.text" = "Nom d'utilisateur";
 
+/* Class = "UILabel"; text = "Transport Security"; ObjectID = "Tul-XU-PSw"; */
+"Tul-XU-PSw.text" = "Protocole de Sécurité :";
+
 /* Class = "UILabel"; text = "Port"; ObjectID = "U7P-zv-48U"; */
-"U7P-zv-48U.text" = "Port";
+"U7P-zv-48U.text" = "Port :";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "vzX-eS-BYY"; */
 "vzX-eS-BYY.text" = "Nom d'utilisateur";
+
+/* Class = "UILabel"; text = "Server"; ObjectID = "weI-Bw-0PK"; */
+"weI-Bw-0PK.text" = "Serveur :";
+
+/* Class = "UILabel"; text = "Server"; ObjectID = "x85-ha-uBw"; */
+"x85-ha-uBw.text" = "Serveur :";
 
