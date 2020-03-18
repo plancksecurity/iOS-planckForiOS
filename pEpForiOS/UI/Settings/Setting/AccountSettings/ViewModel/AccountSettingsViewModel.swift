@@ -68,14 +68,19 @@ final class AccountSettingsViewModel {
         pEpSync = (try? account.isKeySyncEnabled()) ?? false
     }
     
-    func certRow() -> Bool {
-        guard (account.imapServer?.credentials.clientCertificate) != nil else {
-            return false
+    public func rowShouldBeShown(indexPath: IndexPath) -> Bool {
+        if indexPath.section == 0 && indexPath.row == 5{
+            return true
         }
-        return true
+        return false
     }
     
-    func certificateInfo() -> String {
+    public func clientCertificateViewModel() -> ClientCertificateManagementViewModel {
+        let viewModel = ClientCertificateManagementViewModel(account: account)
+        return viewModel
+    }
+    
+    public func certificateInfo() -> String {
         
         guard let certificate = account.imapServer?.credentials.clientCertificate else {
             return ""
@@ -86,7 +91,7 @@ final class AccountSettingsViewModel {
         return "\(name), \(separator) \(date)"
     }
 
-    func handleResetIdentity() {
+    public func handleResetIdentity() {
         delegate?.showLoadingView()
         account.resetKeys() { [weak self] result in
             guard let me = self else {
@@ -105,7 +110,7 @@ final class AccountSettingsViewModel {
         }
     }
 
-    func pEpSync(enable: Bool) {
+    public func pEpSync(enable: Bool) {
         do {
             try account.setKeySyncEnabled(enable: enable)
         } catch {
@@ -114,11 +119,11 @@ final class AccountSettingsViewModel {
         }
     }
 
-    func updateToken(accessToken: OAuth2AccessTokenProtocol) {
+    public func updateToken(accessToken: OAuth2AccessTokenProtocol) {
         self.accessToken = accessToken
     }
 
-    func isPEPSyncSwitchGreyedOut() -> Bool {
+    public func isPEPSyncSwitchGreyedOut() -> Bool {
         return KeySyncUtil.isInDeviceGroup
     }
 }

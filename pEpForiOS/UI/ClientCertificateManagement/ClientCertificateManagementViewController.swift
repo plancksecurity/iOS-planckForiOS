@@ -30,7 +30,6 @@ final class ClientCertificateManagementViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         tableView.delegate = self
         tableView.dataSource = self
         setupTableView()
@@ -73,6 +72,18 @@ extension ClientCertificateManagementViewController {
         let image = UIImage(named: "button-add")
         addCertButton.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
         addCertButton.tintColor = UIColor.white
+        
+        let backButtonTitle = NSLocalizedString("Cancel",
+                                                comment: "Back button for client cert managment")
+        let newBackButton = UIBarButtonItem(title: backButtonTitle,
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(backButton))
+        navigationItem.leftBarButtonItem = newBackButton
+    }
+    
+    @objc private func backButton() {
+        navigationController?.popViewController(animated: true)
     }
 
     private func setupTableView() {
@@ -89,8 +100,13 @@ extension ClientCertificateManagementViewController: UITableViewDelegate {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        vm.handleDidSelect(rowAt: indexPath)
-        performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
+        let select = vm.handleDidSelect(rowAt: indexPath)
+        switch select {
+        case .newAccount:
+            performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
+        case .updateCertificate:
+            navigationController?.popViewController(animated: true)
+        }
     }
 }
 
@@ -110,10 +126,7 @@ extension ClientCertificateManagementViewController: UITableViewDataSource {
             // We prefer empty cell than app crash
             return UITableViewCell()
         }
-        guard let swipeCell = cell as? PEPSwipeTableViewCell else {
-            return UITableViewCell()
-        }
-        swipeCell.delegate = self
+        cell.delegate = self
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             // We prefer empty cell than app crash

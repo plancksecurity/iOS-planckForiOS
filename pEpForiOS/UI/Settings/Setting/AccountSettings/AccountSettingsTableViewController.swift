@@ -113,11 +113,10 @@ extension AccountSettingsTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let origCount = super.tableView(tableView, numberOfRowsInSection: section)
-        var finalCount = origCount
         if section == 0 {
-            return finalCount - 1
+            return origCount - 1
         } else {
-            return finalCount
+            return origCount
         }
     }
 
@@ -147,10 +146,14 @@ extension AccountSettingsTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 && indexPath.row == 5 {
+        let defaultValue = super.tableView(tableView, heightForRowAt: indexPath)
+        guard let vm = viewModel else {
+            return defaultValue
+        }
+        if vm.rowShouldBeShown(indexPath: indexPath) {
             return 0
         } else {
-            return super.tableView(tableView, heightForRowAt: indexPath)
+            return defaultValue
         }
     }
 
@@ -327,12 +330,10 @@ extension AccountSettingsTableViewController {
             return
         }
         vc.appConfig = appConfig
-        let vm = ClientCertificateManagementViewModel()
-        vm.delegate = vc
-        vc.viewModel = vm
-        
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
+        let nextViewModel = viewModel?.clientCertificateViewModel()
+        nextViewModel?.delegate = vc
+        vc.viewModel = nextViewModel
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     private func handleOauth2Reauth() {
