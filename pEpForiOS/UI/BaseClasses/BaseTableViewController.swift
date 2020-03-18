@@ -24,6 +24,8 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             }
             if navigationBarTintColorWhite {
                 navController.navigationBar.barTintColor = .white
+                navController.navigationBar.tintColor = .white
+                UINavigationBar.appearance().tintColor = .white
             } else {
                 UINavigationBar.appearance().tintColor = .pEpGreen
             }
