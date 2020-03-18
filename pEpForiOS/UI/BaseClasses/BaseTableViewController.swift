@@ -20,15 +20,18 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
     public var navigationBarTintColorWhite : Bool = false {
         didSet {
             if navigationBarTintColorWhite {
-                navigationController?.navigationBar.barTintColor = UIColor.white //iOS 13
+                guard let navController = navigationController else {
+                    Log.shared.errorAndCrash("Lost navigationController")
+                    return
+                }
+                navController.navigationBar.barTintColor = UIColor.white //iOS 13
+                navController.navigationBar.tintColor = .white //iOS 11
                 UINavigationBar.appearance().tintColor = UIColor.white //iOS 11
             } else {
-                navigationController?.navigationBar.barTintColor = UIColor.black
                 UINavigationBar.appearance().tintColor = UIColor.pEpGreen
             }
         }
     }
-
 
     private var _appConfig: AppConfig?
     var appConfig: AppConfig {
