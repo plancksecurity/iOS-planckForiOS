@@ -115,7 +115,7 @@
                BlueprintIdentifier = "43CB60811DA4EB4E0015281E"
                BuildableName = "MessageModel.framework"
                BlueprintName = "MessageModel"
-               ReferencedContainer = "container:../MessageModel/MessageModel/MessageModel.xcodeproj">
+               ReferencedContainer = "container:Submodules/MessageModel/MessageModel/MessageModel.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -160,6 +160,20 @@
                ReferencedContainer = "container:pEpForiOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43CB608A1DA4EB4E0015281E"
+               BuildableName = "MessageModelTests.xctest"
+               BlueprintName = "MessageModelTests"
+               ReferencedContainer = "container:Submodules/MessageModel/MessageModel/MessageModel.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -200,16 +214,6 @@
                BuildableName = "pEpForiOSTests.xctest"
                BlueprintName = "pEpForiOSTests"
                ReferencedContainer = "container:pEpForiOS.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43CB608A1DA4EB4E0015281E"
-               BuildableName = "MessageModelTests.xctest"
-               BlueprintName = "MessageModelTests"
-               ReferencedContainer = "container:../MessageModel/MessageModel/MessageModel.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference

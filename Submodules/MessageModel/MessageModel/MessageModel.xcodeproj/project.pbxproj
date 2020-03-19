@@ -110,6 +110,7 @@
 		158A6E042305C2F5006A9ECE /* PEPUtil+EncryptionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6E032305C2F5006A9ECE /* PEPUtil+EncryptionTest.swift */; };
 		158A6E1023073DB0006A9ECE /* PEPDecryptFlags+ReUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6E0F23073DB0006A9ECE /* PEPDecryptFlags+ReUpload.swift */; };
 		158A6E162307468F006A9ECE /* CdAttachment+PEPAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6E152307468F006A9ECE /* CdAttachment+PEPAttachment.swift */; };
+		158BCFF22423800400E41F67 /* SecretTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158BCFF12423800400E41F67 /* SecretTestData.swift */; };
 		159AB567235396E1008AB1F3 /* DeleteOutdatedAutoconsumableMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159AB566235396E1008AB1F3 /* DeleteOutdatedAutoconsumableMessagesService.swift */; };
 		159AB56B23539CBA008AB1F3 /* CNContactsAccessPermissionProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159AB56A23539CBA008AB1F3 /* CNContactsAccessPermissionProviderProtocol.swift */; };
 		159B728223F55B9E00F4B0E9 /* PEPRating+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159B728123F55B9E00F4B0E9 /* PEPRating+Utils.swift */; };
@@ -181,7 +182,6 @@
 		43123FB9225369660038D72C /* CdMessage+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FB8225369660038D72C /* CdMessage+NonOptionalConvenienceAccessors.swift */; };
 		43123FBD225374030038D72C /* CdFolder+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FBC225374030038D72C /* CdFolder+IMAP.swift */; };
 		43123FC2225388FB0038D72C /* CdMessage+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FC1225388FB0038D72C /* CdMessage+IMAP.swift */; };
-		4312BE7C22841C5A0002129D /* SecretTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4312BE7B22841C5A0002129D /* SecretTestData.swift */; };
 		431FD70522EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431FD70422EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift */; };
 		4331CE75229BD7E100DDDC65 /* UseFirstHTMLPartAsBodyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4331CE74229BD7E100DDDC65 /* UseFirstHTMLPartAsBodyTest.swift */; };
 		4331CE7A229BDD0900DDDC65 /* PantomimeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4331CE79229BDD0900DDDC65 /* PantomimeFramework.framework */; };
@@ -562,6 +562,7 @@
 		158A6E032305C2F5006A9ECE /* PEPUtil+EncryptionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPUtil+EncryptionTest.swift"; sourceTree = "<group>"; };
 		158A6E0F23073DB0006A9ECE /* PEPDecryptFlags+ReUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPDecryptFlags+ReUpload.swift"; sourceTree = "<group>"; };
 		158A6E152307468F006A9ECE /* CdAttachment+PEPAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAttachment+PEPAttachment.swift"; sourceTree = "<group>"; };
+		158BCFF12423800400E41F67 /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SecretTestData.swift; path = ../../../../../../pEp_for_iOS_intern/SecretTestData.swift; sourceTree = "<group>"; };
 		159AB566235396E1008AB1F3 /* DeleteOutdatedAutoconsumableMessagesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteOutdatedAutoconsumableMessagesService.swift; sourceTree = "<group>"; };
 		159AB56A23539CBA008AB1F3 /* CNContactsAccessPermissionProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNContactsAccessPermissionProviderProtocol.swift; sourceTree = "<group>"; };
 		159B728123F55B9E00F4B0E9 /* PEPRating+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPRating+Utils.swift"; sourceTree = "<group>"; };
@@ -634,7 +635,6 @@
 		43123FB8225369660038D72C /* CdMessage+NonOptionalConvenienceAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+NonOptionalConvenienceAccessors.swift"; sourceTree = "<group>"; };
 		43123FBC225374030038D72C /* CdFolder+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+IMAP.swift"; sourceTree = "<group>"; };
 		43123FC1225388FB0038D72C /* CdMessage+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+IMAP.swift"; sourceTree = "<group>"; };
-		4312BE7B22841C5A0002129D /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SecretTestData.swift; path = ../../../../../../pEp_for_iOS_intern/SecretTestData.swift; sourceTree = "<group>"; };
 		431FD70422EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+PredicateFactory+KeySync.swift"; sourceTree = "<group>"; };
 		4331CE74229BD7E100DDDC65 /* UseFirstHTMLPartAsBodyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseFirstHTMLPartAsBodyTest.swift; sourceTree = "<group>"; };
 		4331CE79229BDD0900DDDC65 /* PantomimeFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2078,8 +2078,8 @@
 			isa = PBXGroup;
 			children = (
 				158A6E022305C2C6006A9ECE /* PEPUtil */,
+				158BCFF12423800400E41F67 /* SecretTestData.swift */,
 				43517239229FD4AA00D92026 /* TestUtil+LoadData.swift */,
-				4312BE7B22841C5A0002129D /* SecretTestData.swift */,
 				439B16B422802F0600201DE5 /* TestDataBase.swift */,
 				490FF8071E795B6C00BC15F9 /* Int16+FlagBitsTest.swift */,
 				37BC7AFF222D23460047267A /* MessageModelObjectUtilsTest.swift */,
@@ -2776,13 +2776,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4312BE7C22841C5A0002129D /* SecretTestData.swift in Sources */,
 				152EC88722E73721001836F9 /* CdMessage+FakeTest.swift in Sources */,
 				154D173723733133001FDF78 /* CdAccount+TestUtils.swift in Sources */,
 				154D172B23732FF7001FDF78 /* MoveToFolderOperationTest.swift in Sources */,
 				15CCE30022297464004A8306 /* LogTest.swift in Sources */,
 				490FF8161E79942500BC15F9 /* CdImapFlags+TestHelper.swift in Sources */,
 				153E4E4D1F5038E00021CBD8 /* MessageTest.swift in Sources */,
+				158BCFF22423800400E41F67 /* SecretTestData.swift in Sources */,
 				4368309F22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift in Sources */,
 				430CDA892296BEFC00AAC37F /* CdMessageCreation.swift in Sources */,
 				B78ACA662304798F00F8A396 /* FetchMessagesServiceTest.swift in Sources */,
@@ -3078,7 +3078,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = MessageModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -3101,7 +3101,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = MessageModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
