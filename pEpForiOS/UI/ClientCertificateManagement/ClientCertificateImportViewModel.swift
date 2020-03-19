@@ -26,7 +26,8 @@ final class ClientCertificateImportViewModel {
     private var certificateUrl: URL
     private var p12Data: Data?
 
-    init(certificateUrl: URL, delegate: ClientCertificateImportViewModelDelegate? = nil,
+    init(certificateUrl: URL,
+         delegate: ClientCertificateImportViewModelDelegate? = nil,
          clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
         self.certificateUrl = certificateUrl
         self.delegate = delegate
@@ -63,9 +64,3 @@ final class ClientCertificateImportViewModel {
         delegate?.dismiss()
     }
 }
-
-
-
-
-
-
