@@ -35,10 +35,6 @@ extension OutlookSpecificInformation: ProviderSpecificInformationProtocol {
         return folder.folderType != .sent
     }
 
-    func isVirtualMailbox(_ folder: Folder) -> Bool {
-        return false
-    }
-
     func shouldUidMoveMailsToTrashWhenDeleted(inFolder folder: Folder) -> Bool {
         return true
     }

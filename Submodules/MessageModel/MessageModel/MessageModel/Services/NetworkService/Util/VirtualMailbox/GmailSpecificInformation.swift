@@ -55,12 +55,6 @@ extension GmailSpecificInformation: ProviderSpecificInformationProtocol {
             folder.folderType == .pEpSync
     }
 
-    func isVirtualMailbox(_ folder: Folder) -> Bool {
-        return self.belongsToProvider(folder)
-            && folder.parent != nil
-            && folder.name.hasPrefix("[Gmail]")
-    }
-
     func shouldUidMoveMailsToTrashWhenDeleted(inFolder folder: Folder) -> Bool {
         return mailboxTypesDeletedMailsShouldBeUidMovedToTrash.contains(folder.folderType)
     }
