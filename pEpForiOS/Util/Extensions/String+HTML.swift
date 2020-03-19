@@ -58,7 +58,7 @@ extension String {
 
         let imageBaseMetaTags = "data:image/png;cid:{cid};charset=utf-8;base64,"
 
-        let results = matches(text: html, pattern: pattern)
+        let results = html.find(pattern: pattern)
 
         var htmlImgToBase64Converted = html
 
@@ -83,60 +83,34 @@ extension String {
         return htmlImgToBase64Converted
     }
 
-    public func htmlConvertImageBase64ToImageCidReference(html: String) -> String {
-
-        let pattern = "<img\\b(?=\\s)(?=(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"][^\\s>]*)*?\\ssrc=['\"]([^\"]*)['\"]?)(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"\\s]*)*\"\\s?\\/?>"
-
-        let imageBaseMetaTags = "data:image/png;cid:{cid};charset=utf-8;base64,"
-
-        let results = matches(text: html, pattern: pattern)
-
-        var htmlImgToBase64Converted = html
-
-        for result in results {
-            guard let data = result.data(using: .utf16) else {
-                break
-            }
-            let parser = HtmlTagParser(data: data)
-            let src = parser.src.first ?? "empty src"
-            let alt = parser.alt.first ?? "empty alt"
-            if src.contains(find: "data:image/png;cid:") {
-                let cidReference = src.components(separatedBy: ":")
-                htmlImgToBase64Converted = htmlImgToBase64Converted.replacingOccurrences(of: src, with: "")
-            }
-        }
-
-        return htmlImgToBase64Converted
-    }
-
-    func matches(text: String, pattern: String) -> [String] {
-        do {
-            let regex = try NSRegularExpression(pattern: pattern)
-            let string = NSString(string: text)
-            let results = regex.matches(in: text, range: NSMakeRange(0, string.length))
-            return results.map { string.substring(with: $0.range) }
-        } catch let error {
-            print("Error, maybe invalid regex: " + error.localizedDescription)
-        }
-        return []
-    }
-
     public func htmlToAttributedString(attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate?) -> NSAttributedString {
 
-        let htmlWithCitedChar = self
+        var htmlWithCitedChars = self
+
+        let patternStartBlockqoute = "[<]blockquote[^>]*>(.*?)"
+        let patternEndBlockqoute = "[<]/blockquote[^>]*>(.*?)"
+
+        for result in htmlWithCitedChars.find(pattern: patternStartBlockqoute) {
+            htmlWithCitedChars = htmlWithCitedChars.replacingOccurrences(of: result, with: "›")
+        }
+        for result in htmlWithCitedChars.find(pattern: patternEndBlockqoute) {
+            htmlWithCitedChars = htmlWithCitedChars.replacingOccurrences(of: result, with: "‹")
+        }
 
         // prepare HTML for HTML foundation framework parsing
         // we change cid to image coded with base64
-        let html = htmlConvertImageLinksToImageBase64(html: htmlWithCitedChar, attachmentDelegate: attachmentDelegate)
+        let html = htmlConvertImageLinksToImageBase64(html: htmlWithCitedChars, attachmentDelegate: attachmentDelegate)
         let htmlData = html.data(using: .utf16,
-                                 allowLossyConversion: false)
+                                 allowLossyConversion: true)
         let options: [NSAttributedString.DocumentReadingOptionKey : Any] =
             [.documentType : NSAttributedString.DocumentType.html]
-        let attribString = try? NSAttributedString(data: htmlData ?? Data(),
+        guard let attribString = try? NSAttributedString(data: htmlData ?? Data(),
                                                    options: options,
-                                                   documentAttributes: nil)
+                                                   documentAttributes: nil) else {
+                                                    return NSAttributedString(string: "")
+        }
 
-        return attribString ?? NSAttributedString(string: "")
+        return attribString
 
 //        // get only images
 //        let parser = HtmlToAttributedTextSaxParser()

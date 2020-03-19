@@ -47,12 +47,23 @@ public extension NSAttributedString {
     func toCitation() -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: self)
         var newParagraphs: [Int] = []
+        var levels: [Int] = [0]
         var index = 0
 
         for char in attributedString.string {
             index = index + 1
+            switch char  {
+            case "›":
+                levels.append(index)
+            case "‹":
+                levels.removeLast()
+            default:
+                break
+            }
             if char.isNewline() {
-                newParagraphs.append(index)
+                for _ in levels {
+                    newParagraphs.append(index)
+                }
             }
         }
 
@@ -72,6 +83,25 @@ public extension NSAttributedString {
             attributedString.insert(horizontalSpace, at: index + 2 + offset)
             offset = offset + 3
         }
-        return attributedString
+        return attributedString.replacingOccurrences(ofWith: ["›" : "", "‹" : "\n"])
+    }
+
+    func replacingOccurrences(ofWith: [String: String]) -> NSAttributedString {
+
+        let attributedString = NSMutableAttributedString(attributedString: self)
+        let charsToReplace = Array(ofWith.keys.map { String($0) })
+
+        for charToReplace in charsToReplace {
+            while attributedString.mutableString.contains(charToReplace) {
+                let range = attributedString.mutableString.range(of: charToReplace)
+                guard range.lowerBound != NSNotFound else {
+                    // early quit, nothing to do and also avoid an endless loop
+                    break
+                }
+                attributedString.replaceCharacters(in: range, with: ofWith[charToReplace] ?? "")
+            }
+        }
+
+        return NSAttributedString(attributedString: attributedString)
     }
 }

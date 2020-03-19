@@ -185,6 +185,21 @@ class StringHTMLExtensionTests: XCTestCase {
         src.htmlConvertImageLinksToImageBase64(html: src, attachmentDelegate: nil)
     }
 
+    func testHtmlConvertImageBase64ToImageCidReference() {
+        let cid = "cid:part1.7D984609.4029FB7F@peptest.ch"
+        let src = """
+        <div>
+          <p>Taken from wikpedia</p>
+          <img src="data:image/png;\(cid);charset=utf-8;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA
+            AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+                9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
+        </div>
+        """
+
+        src.htmlConvertImageBase64ToImageCidReference(html: src)
+        print(src)
+    }
+
     /**
      Proves that we can convert primitive HTML with inline image references into an
      `NSAttributedString`, and that into markdown, while keeping the attachment's

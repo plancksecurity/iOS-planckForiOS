@@ -141,6 +141,44 @@ extension String {
         return matchesPattern(pattern, reOptions: [])
     }
 
+    // TODO: - ak Add documentation
+    public func find(pattern: String) -> [String] {
+        do {
+            let regex = try NSRegularExpression(pattern: pattern)
+            let string = NSString(string: self)
+            let results = regex.matches(in: self, range: NSMakeRange(0, string.length))
+            return results.map { string.substring(with: $0.range) }
+        } catch let error {
+            print("Error, maybe invalid regex: " + error.localizedDescription)
+        }
+        return []
+    }
+
+    public func htmlConvertImageBase64ToImageCidReference(html: String) -> String {
+        let pattern = "<img\\b(?=\\s)(?=(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"][^\\s>]*)*?\\ssrc=['\"]([^\"]*)['\"]?)(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"\\s]*)*\"\\s?\\/?>"
+        let results = html.find(pattern: pattern)
+        var htmlImgToBase64Converted = html
+
+        for result in results {
+            guard let data = result.data(using: .utf16) else {
+                break
+            }
+            let parser = HtmlTagParser(data: data)
+            let src = parser.src.first ?? "empty src"
+            let alt = parser.alt.first ?? "empty alt"
+            if src.contains(find: "data:image/png;cid:") {
+                let cidReference = src.components(separatedBy: ";")
+                for item in cidReference {
+                    if !item.contains(find: "cid:") {
+                        htmlImgToBase64Converted = htmlImgToBase64Converted.replacingOccurrences(of: item, with: "")
+                    }
+                }
+            }
+        }
+
+        return htmlImgToBase64Converted
+    }
+
     /**
      Does this String match the given regex pattern?
      - Parameter pattern: The pattern to match.
