@@ -35,7 +35,9 @@ final class ClientCertificateImportViewModel {
     
     public func importClientCertificate() {
         do {
+            certificateUrl.startAccessingSecurityScopedResource()
             p12Data = try Data(contentsOf: certificateUrl)
+            certificateUrl.stopAccessingSecurityScopedResource()
         } catch {
             delegate?.showError(type: .corruptedFile, dissmisAfterError: true)
             return
