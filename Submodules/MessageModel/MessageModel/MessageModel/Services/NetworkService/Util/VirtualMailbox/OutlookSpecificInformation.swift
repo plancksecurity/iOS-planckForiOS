@@ -11,8 +11,9 @@ import Foundation
 struct OutlookSpecificInformation {
 }
 
-/// Accounts on outlook.com have a special sent folder that is automatically updated
-/// when using SMTP.
+/// Outlook.com/o365 accounts have a special sent folder that is automatically updated
+/// when using SMTP. They cannot be told apart from the servers they use,
+/// so they share one implementation.
 extension OutlookSpecificInformation: ProviderSpecificInformationProtocol {
     func belongsToProvider(_ folder: Folder) -> Bool {
         return belongsToProvider(folder.cdObject)
