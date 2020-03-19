@@ -16,19 +16,23 @@ struct OutlookSpecificInformation {
 /// so they share one implementation.
 extension OutlookSpecificInformation: ProviderSpecificInformationProtocol {
     func belongsToProvider(_ folder: Folder) -> Bool {
+        // Delegate to CdFolder implementation.
         return belongsToProvider(folder.cdObject)
     }
 
     func belongsToProvider(_ folder: CdFolder) -> Bool {
-        return false
+        let acType = folder.accountOrCrash.accountType
+        return acType == .o365 || acType == .outlook
     }
 
     func isOkToAppendMessages(toFolder folder: Folder) -> Bool {
-        return false
+        // Delegate to CdFolder implementation.
+        return isOkToAppendMessages(toFolder: folder.cdObject)
     }
 
     func isOkToAppendMessages(toFolder folder: CdFolder) -> Bool {
-        return false
+        // Don't append to send, other folders are OK for now.
+        return folder.folderType != .sent
     }
 
     func isVirtualMailbox(_ folder: Folder) -> Bool {
@@ -36,10 +40,11 @@ extension OutlookSpecificInformation: ProviderSpecificInformationProtocol {
     }
 
     func shouldUidMoveMailsToTrashWhenDeleted(inFolder folder: Folder) -> Bool {
-        return false
+        return true
     }
 
     func defaultDestructiveActionIsArchive(forFolder folder: Folder) -> Bool {
+        // This is not gmail, so delete properly.
         return false
     }
 }
