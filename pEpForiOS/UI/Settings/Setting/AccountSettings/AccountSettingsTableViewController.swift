@@ -67,6 +67,8 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
         tableView.register(pEpHeaderView.self,
                            forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
+        super.tableView.rowHeight = UITableView.automaticDimension
+        super.tableView.estimatedRowHeight = 50
         viewModel?.delegate = self
 
     }
@@ -145,6 +147,7 @@ extension AccountSettingsTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
         let defaultValue = super.tableView(tableView, heightForRowAt: indexPath)
         guard let vm = viewModel else {
             return defaultValue
@@ -152,7 +155,7 @@ extension AccountSettingsTableViewController {
         if vm.rowShouldBeHidden(indexPath: indexPath) {
             return 0
         } else {
-            return defaultValue
+            return UITableView.automaticDimension
         }
     }
 
