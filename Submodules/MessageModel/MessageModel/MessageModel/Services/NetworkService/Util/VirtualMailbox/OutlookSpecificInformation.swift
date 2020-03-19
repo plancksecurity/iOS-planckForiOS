@@ -15,7 +15,7 @@ struct OutlookSpecificInformation {
 /// when using SMTP.
 extension OutlookSpecificInformation: ProviderSpecificInformationProtocol {
     func belongsToProvider(_ folder: Folder) -> Bool {
-        return false
+        return belongsToProvider(folder.cdObject)
     }
 
     func belongsToProvider(_ folder: CdFolder) -> Bool {
