@@ -9,8 +9,8 @@
 import XCTest
 @testable import pEpForiOS
 
+/*
 final class ClientCertificatePasswordViewModelTest: XCTestCase {
-
     private let expHandleCancelButtonPressed = XCTestExpectation(description: "Waiting for delegate")
     private let expHandleOkButtonPressed = XCTestExpectation(description: "Waiting for passwordChangeDelegate")
     private var vm: ClientCertificateImportViewModel?
@@ -60,3 +60,4 @@ extension ClientCertificatePasswordViewModelTest: ClientCertificatePasswordViewM
 private struct Constant {
     static let password = "1234"
 }
+*/
