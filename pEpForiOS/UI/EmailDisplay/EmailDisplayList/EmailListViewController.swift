@@ -173,6 +173,7 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 
     private func setupSearchBar() {
         if #available(iOS 11.0, *) {
+            searchController.isActive = false
             searchController.searchResultsUpdater = self
             searchController.dimsBackgroundDuringPresentation = false
             searchController.delegate = self
