@@ -633,7 +633,7 @@
 		43123FB8225369660038D72C /* CdMessage+NonOptionalConvenienceAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+NonOptionalConvenienceAccessors.swift"; sourceTree = "<group>"; };
 		43123FBC225374030038D72C /* CdFolder+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+IMAP.swift"; sourceTree = "<group>"; };
 		43123FC1225388FB0038D72C /* CdMessage+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+IMAP.swift"; sourceTree = "<group>"; };
-		4312BE7B22841C5A0002129D /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SecretTestData.swift; path = ../../../../pEp_for_iOS_intern/SecretTestData.swift; sourceTree = "<group>"; };
+		4312BE7B22841C5A0002129D /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SecretTestData.swift; path = ../../../../../../pEp_for_iOS_intern/SecretTestData.swift; sourceTree = "<group>"; };
 		431FD70422EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+PredicateFactory+KeySync.swift"; sourceTree = "<group>"; };
 		4331CE74229BD7E100DDDC65 /* UseFirstHTMLPartAsBodyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseFirstHTMLPartAsBodyTest.swift; sourceTree = "<group>"; };
 		4331CE79229BDD0900DDDC65 /* PantomimeFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
