@@ -39,11 +39,11 @@ struct GmailSpecificInformation {
 extension GmailSpecificInformation: ProviderSpecificInformationProtocol {
 
     func belongsToProvider(_ folder: Folder) -> Bool {
-        return folder.account.user.address.isGmailAddress
+        return belongsToProvider(folder.cdObject)
     }
 
     func belongsToProvider(_ folder: CdFolder) -> Bool {
-        return folder.accountOrCrash.identityOrCrash.addressOrCrash.isGmailAddress
+        return folder.accountOrCrash.accountType == .gmail
     }
 
     func isOkToAppendMessages(toFolder folder: Folder) -> Bool {
