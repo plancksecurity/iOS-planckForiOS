@@ -17,6 +17,7 @@ protocol ClientCertificateImportViewModelDelegate: class {
 public enum ImportCertificateError {
     case wrongPassword
     case corruptedFile
+    case noPermissions
 }
 
 final class ClientCertificateImportViewModel {
@@ -36,9 +37,14 @@ final class ClientCertificateImportViewModel {
     
     public func importClientCertificate() {
         do {
-            certificateUrl.startAccessingSecurityScopedResource()
+            let accessGranted = certificateUrl.startAccessingSecurityScopedResource()
+            defer { certificateUrl.stopAccessingSecurityScopedResource() }
+            guard accessGranted else {
+                delegate?.showError(type: .noPermissions, dissmisAfterError: true)
+                return
+            }
             p12Data = try Data(contentsOf: certificateUrl)
-            certificateUrl.stopAccessingSecurityScopedResource()
+
         } catch {
             delegate?.showError(type: .corruptedFile, dissmisAfterError: true)
             return
