@@ -29,6 +29,7 @@
 
 /* alert action 3
    Alert cancel button title before trusting an account
+   Back button for client cert managment
    Cancel
    Cancel button for client certificate password screen
    Cancel button title for manual account setup

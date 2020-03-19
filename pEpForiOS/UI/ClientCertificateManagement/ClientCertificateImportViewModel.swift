@@ -9,34 +9,27 @@
 import Foundation
 import MessageModel
 
-protocol ClientCertificatePasswordViewModelPasswordChangeDelegate: class {
-    func didEnter(password: String)
-}
-
 protocol ClientCertificateImportViewModelDelegate: class {
     func dismiss()
-    func showError(type: importCertificateError, dissmisAfterError: Bool)
+    func showError(type: ImportCertificateError, dissmisAfterError: Bool)
 }
 
-public enum importCertificateError {
+public enum ImportCertificateError {
     case wrongPassword
     case corruptedFile
 }
 
 final class ClientCertificateImportViewModel {
 
-    weak private var passwordChangeDelegate: ClientCertificatePasswordViewModelPasswordChangeDelegate?
     weak private var delegate: ClientCertificateImportViewModelDelegate?
     private let clientCertificateUtil: ClientCertificateUtilProtocol
     private var certificateUrl: URL
     private var p12Data: Data?
 
     init(certificateUrl: URL, delegate: ClientCertificateImportViewModelDelegate? = nil,
-         passwordChangeDelegate: ClientCertificatePasswordViewModelPasswordChangeDelegate? = nil,
          clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
         self.certificateUrl = certificateUrl
         self.delegate = delegate
-        self.passwordChangeDelegate = passwordChangeDelegate
         self.clientCertificateUtil = clientCertificateUtil ?? ClientCertificateUtil()
     }
     
