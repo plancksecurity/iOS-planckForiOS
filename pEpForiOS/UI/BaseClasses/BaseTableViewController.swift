@@ -20,7 +20,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
     public var navigationBarTintColorWhite : Bool = false {
         didSet {
             guard let navController = navigationController else {
-                Log.shared.error("No navigationController")
+                Log.shared.info("No navigationController")
                 return
             }
             if navigationBarTintColorWhite {
