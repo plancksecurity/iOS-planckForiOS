@@ -1,5 +1,5 @@
 //
-//  OutlookSpecificInformation.swift
+//  OutlookO365SpecificInformation.swift
 //  MessageModel
 //
 //  Created by Dirk Zimmermann on 19.03.20.
@@ -8,13 +8,13 @@
 
 import Foundation
 
-struct OutlookSpecificInformation {
+struct OutlookO365SpecificInformation {
 }
 
 /// Outlook.com/o365 accounts have a special sent folder that is automatically updated
 /// when using SMTP. They cannot be told apart from the servers they use,
 /// so they share one implementation.
-extension OutlookSpecificInformation: ProviderSpecificInformationProtocol {
+extension OutlookO365SpecificInformation: ProviderSpecificInformationProtocol {
     func belongsToProvider(_ folder: Folder) -> Bool {
         // Delegate to CdFolder implementation.
         return belongsToProvider(folder.cdObject)
