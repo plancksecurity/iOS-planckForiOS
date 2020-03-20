@@ -1,11 +1,71 @@
+/* client certificate provider key */
+"\n            Client\n            Certificate\n            " = "\n            Client\n            Certificaat\n            ";
+
+/* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
+"\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n% 1 $ @\n\n% 2 $ @\n\n% 3 $ @\n\nBijlages zijn uitgeschakeld.\n\n";
+
+/* TrustManagementView Back Button Title */
+" Message" = " Bericht";
+
+/* No privacy status explanation
+   No privacy status suggestion */
+"-" = "-";
+
+/* Title for notification show on lock screen for new mails */
+"(numMails) new messages received" = "(numMails) nieuwe berichten ontvangen";
+
+/* Reply to single contact, with date. Placeholders: Name, date. */
+"%1$@ wrote on %2$@:" = "%1$@ schreef op %2$@:";
+
+/* Reply to single contact, without date. Placeholder: Name. */
+"%1$@ wrote:" = "%1$@ schreef:";
+
+/* error message for .missingPassword */
+"A non-empty password is required" = "Wachtwoord is verplicht";
+
+/* error message for .missingUsername */
+"A non-empty username is required" = "Gebruikersnaam is verplicht";
+
 /* KeySyncWizard introduction message */
 "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?";
+
+/* error message for .invalidEmail
+   error message for .missingEmail */
+"A valid email is required" = "Een geldig e-mailadres is vereist";
+
+/* Account settings
+   Account view title */
+"Account" = "Account";
+
+/* Title for manual account setup */
+"ACCOUNT" = "ACCOUNT";
+
+/* Error description detecting account settings */
+"Account detection timed out" = "Accountdetectie is verlopen";
+
+/* Empty account name message */
+"Account name must not be empty." = "Accountnaam mag niet leeg zijn.";
+
+/* account type selector title */
+"Account Select" = "Account Select";
 
 /* Tableview section  header: Accounts */
 "Accounts" = "Accounts";
 
+/* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
+"Add to Contacts" = "Toevoegen aan Contacten";
+
 /* Name of unified inbox (showing messages of all accoounts */
 "All" = "Alle";
+
+/* Error message shown to the user in case an error in the app occured that is not caused or related to the server */
+"An internal error occured. Sorry, that should not happen." = "Er is een interne fout opgetreden. Sorry, dat had niet mogen gebeuren.";
+
+/* error message for .noConnectData */
+"An internal error occurred" = "Er is een interne fout opgetreden";
+
+/* Tutorial Fourth text */
+"And in the top bar when you open or write an email:" = "En in de bovenste balk wanneer u een e-mail opent of schrijft:";
 
 /* KeySyncWizard introduction message */
 "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?";
@@ -13,12 +73,30 @@
 /* Archive button in slide-left menu */
 "Archive" = "Archief";
 
+/* Account delete confirmation */
+"Are you sure you want to delete the account?" = "Weet je zeker dat je het account wilt verwijderen?";
+
+/* Leave device group confirmation */
+"Are you sure you want to leave your device group?" = "Weet je zeker dat je je apparaatgroep wilt verlaten?";
+
+/* Insert document in message text context menu */
+"Attach file" = "Bestand toevoegen";
+
+/* Attach photo/video (message text context menu) */
+"Attach media" = "Media toevoegen";
+
+/* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
+"Attached Image %1$d (%2$@)" = "Bijgevoegde afbeelding %1$d (%2$@)";
+
 /* title attachments filter cell */
 "Attachments" = "Bijlagen";
 
 /* Cancel button title for manual account IMAP setup
    Cancel button title for manual account SMTP setup */
 "Back" = "Back";
+
+/* Compose field title */
+"BCC:" = "Bcc:";
 
 /* Privacy status title */
 "Broken" = "Gebroken";
@@ -53,6 +131,21 @@
 
 /* Compose field title */
 "Cc/Bcc:" = "Cc/Bcc:";
+
+/* UI alert message for transport protocol */
+"Choose a Security protocol for your accont" = "Kies een Beveiligingsprotocol voor je account";
+
+/* Empty IMAP transport security method */
+"Choose IMAP transport security method." = "Kies een IMAP transport beveiligingsmethode.";
+
+/* Empty SMTP transport security method */
+"Choose SMTP transport security method." = "Kies SMTP transport beveiligingsmethode";
+
+/* Header for client certificate password screen */
+"Client Certificate" = "Client Certificaat";
+
+/* privacyStatusDescription yellow */
+"Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call." = "Communicatie met deze contactpersoon is volledig Veilig & Vertrouwd door onderstaande Vertrouwenswoorden te vergelijken met je contactpersoon, bijvoorbeeld door elkaar te bellen.";
 
 /* accept hand shake confirm button
    Confirm correct trustwords/PGP fingerprint */
