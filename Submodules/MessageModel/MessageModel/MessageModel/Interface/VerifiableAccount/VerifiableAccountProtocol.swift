@@ -128,8 +128,9 @@ public protocol VerifiableAccountProtocol {
     /// - Throws: VerifiableAccountValidationError
     func verify() throws
 
-    /// If the verification was successful, saves the account and calls `completion`
-    /// with `true`, otherwise calls it with `false`.
+    /// When called after a successful `verify()`, prepares the account
+    /// (generating keys, fetching folders ...) and saves it.
+    /// On success calls `completion` with `true`, otherwise calls it with `false`.
     /// - Note: Throws for missing data (i.e., all cases when `verify()` would throw).
     /// - Throws: VerifiableAccountValidationError
     func save(completion: ((Success)->())? ) throws
