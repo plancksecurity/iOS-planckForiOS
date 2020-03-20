@@ -74,11 +74,18 @@ extension AppendMailsToFolderOperation {
                     return
                 }
                 me.lastHandledMessageObjectID = cdMessage.objectID
-                let messageIsAlreadyEncrypted = cdMessage.isReEncryptedWithExtryKeys
+                let messageIsAlreadyEncryptedForExtraKeys = cdMessage.isReEncryptedWithExtraKeys
                 let pEpMessage = cdMessage.pEpMessage()
 
-                if me.folderCache.shouldNotAppendMessages {
-                    // We are not supposed to append messages to this folder.
+                let shouldNotAppend =
+                    // We are not supposed to append messages to this folder. E.g. to Gmail sent folder.
+                    me.folderCache.shouldNotAppendMessages &&
+                        // We _do_ want to append mails the Engine told us to reUpload though
+                        !messageIsAlreadyEncryptedForExtraKeys &&
+                        // We _do_ want to append unencrypted version for trustedServers
+                        me.encryptMode != .unencryptedForTrustedServer
+                if shouldNotAppend {
+                    // We are not supposed to append. Ignore this message. //!!!: should we delete it? I think so! Its a message marked for appending in a folder we should not append to. Imo it causes ending in this if clause on every replication loop for every affected message.
                     me.handleNextMessage()
                     return
                 }
@@ -95,7 +102,7 @@ extension AppendMailsToFolderOperation {
                 // returns PEP_ILLEGAL_VALUE).
                 let appendWithoutBotheringTheEngine =
                     me.encryptMode == .unencryptedForTrustedServer || // Always append unencrypted and without bothering the Engine for trusted server ...
-                        messageIsAlreadyEncrypted || // The message is reencrypted for extra keys, must not be encrypted again. Do not show to the Engine neither.
+                        messageIsAlreadyEncryptedForExtraKeys || // The message is reencrypted for extra keys, must not be encrypted again. Do not show to the Engine neither.
                         cdMessage.isAutoConsumable // Engine asked to append this
 
                 guard !appendWithoutBotheringTheEngine else {
@@ -175,7 +182,7 @@ extension AppendMailsToFolderOperation {
 // MARK: - Extra Keys
 
 extension CdMessage {
-    fileprivate var isReEncryptedWithExtryKeys: Bool {
+    fileprivate var isReEncryptedWithExtraKeys: Bool {
         guard let flags = PEPDecryptFlags(rawValue: flagsFromDecryptionRawValue) else {
             // No flag set.
             return false
