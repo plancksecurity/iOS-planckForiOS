@@ -13,7 +13,7 @@ import Foundation
 public extension CdFolder {
     /// We currently only take Gmail into account.
     private var supportedProviders: [ProviderSpecificInformationProtocol] {
-        return [GmailSpecificInformation()]
+        return [GmailSpecificInformation(), OutlookSpecificInformation()]
     }
 
     private var providerSpecificInfo: ProviderSpecificInformationProtocol? {
