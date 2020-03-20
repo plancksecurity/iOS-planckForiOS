@@ -34,9 +34,8 @@ function import_in_place() {
 for lang in $languages
 do
     import $lang pEpForiOS.xcodeproj $translationdir
-    import $lang ../MessageModel/MessageModel/MessageModel.xcodeproj $translationdir/MessageModel
 done
 
 echo
-echo \*\*\* Verify the changes in pEpForiOS and MessageModel and commit \*\*\*
+echo \*\*\* Verify the changes in pEpForiOS and commit \*\*\*
 echo
