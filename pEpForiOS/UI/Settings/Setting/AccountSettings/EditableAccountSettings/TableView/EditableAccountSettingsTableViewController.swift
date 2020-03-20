@@ -36,6 +36,13 @@ final class EditableAccountSettingsTableViewController: BaseTableViewController 
 
         setUpView()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // we need to reload data for relayout cells - UITableView.automaticDimension
+        reloadTable()
+    }
 }
 
 // MARK: - UITextFieldDelegate
@@ -143,21 +150,30 @@ extension EditableAccountSettingsTableViewController {
 extension EditableAccountSettingsTableViewController: EditableAccountSettingsTableViewModelDelegate {
     func reloadTable() {
         DispatchQueue.main.async { [weak self] in
-            self?.nameTextfield.text = self?.viewModel?.name
-            self?.emailTextfield.text = self?.viewModel?.email
-            self?.passwordTextfield.text = self?.viewModel?.password ?? "JustAPassword"
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            guard let vm = me.viewModel else {
+                Log.shared.errorAndCrash("Lost viewModel!")
+                return
+            }
+            me.nameTextfield.text = vm.name
+            me.emailTextfield.text = vm.email
+            me.passwordTextfield.text = vm.password ?? "JustAPassword"
+            me.passwordTextfield.layoutSubviews()
 
-            self?.imapServerTextfield.text = self?.viewModel?.imapServer?.address
-            self?.imapPortTextfield.text = self?.viewModel?.imapServer?.port
-            self?.imapSecurityTextfield.text = self?.viewModel?.imapServer?.transport
-            self?.imapUsernameTextfield.text = self?.viewModel?.imapUsername
+            me.imapServerTextfield.text = vm.imapServer?.address
+            me.imapPortTextfield.text = vm.imapServer?.port
+            me.imapSecurityTextfield.text = vm.imapServer?.transport
+            me.imapUsernameTextfield.text = vm.imapUsername
 
-            self?.smtpServerTextfield.text = self?.viewModel?.smtpServer?.address
-            self?.smtpPortTextfield.text = self?.viewModel?.smtpServer?.port
-            self?.smtpSecurityTextfield.text = self?.viewModel?.smtpServer?.transport
-            self?.smtpUsernameTextfield.text = self?.viewModel?.smtpUsername
+            me.smtpServerTextfield.text = vm.smtpServer?.address
+            me.smtpPortTextfield.text = vm.smtpServer?.port
+            me.smtpSecurityTextfield.text = vm.smtpServer?.transport
+            me.smtpUsernameTextfield.text = vm.smtpUsername
 
-            self?.tableView.reloadData()
+            me.tableView.reloadData()
         }
     }
 }
@@ -169,6 +185,8 @@ extension EditableAccountSettingsTableViewController {
     private func setUpView() {
         tableView.register(pEpHeaderView.self,
                            forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 50
         tableView.delegate = self
         smtpSecurityTextfield.inputView = securityPicker
         imapSecurityTextfield.inputView = securityPicker

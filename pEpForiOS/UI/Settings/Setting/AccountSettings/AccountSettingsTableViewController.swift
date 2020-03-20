@@ -70,7 +70,6 @@ final class AccountSettingsTableViewController: BaseTableViewController {
         super.tableView.rowHeight = UITableView.automaticDimension
         super.tableView.estimatedRowHeight = 50
         viewModel?.delegate = self
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -86,6 +85,13 @@ final class AccountSettingsTableViewController: BaseTableViewController {
             }
             me.setUpView()
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // we need to reload data for relayout cells - UITableView.automaticDimension
+        tableView.reloadData()
     }
 
 // MARK: - IBActions
@@ -134,12 +140,9 @@ extension AccountSettingsTableViewController {
         if (viewModel?.isOAuth2 ?? false) && cell == passwordTableViewCell {
             oauth2ReauthIndexPath = indexPath
             return oauth2TableViewCell
-        }
-        if cell == certificateTableViewCell {
+        } else if cell == certificateTableViewCell {
             certificateIndexPath = indexPath
-        }
-        
-        if cell == resetIdentityCell {
+        } else if cell == resetIdentityCell {
             resetIdentityIndexPath = indexPath
         }
 
@@ -148,15 +151,9 @@ extension AccountSettingsTableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-        let defaultValue = super.tableView(tableView, heightForRowAt: indexPath)
-        guard let vm = viewModel else {
-            return defaultValue
-        }
-        if vm.rowShouldBeHidden(indexPath: indexPath) {
-            return 0
-        } else {
-            return UITableView.automaticDimension
-        }
+        return viewModel?.rowShouldBeHidden(indexPath: indexPath) ?? false
+            ? 0
+            : UITableView.automaticDimension
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
