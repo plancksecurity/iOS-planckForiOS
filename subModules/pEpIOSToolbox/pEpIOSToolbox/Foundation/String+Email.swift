@@ -22,14 +22,6 @@ extension String {
             options: [])
     }
 
-    public var isGmailAddress: Bool {
-        return String.gmailRegex.matchesWhole(string: self.lowercased())
-    }
-
-    public var isYahooAddress: Bool {
-        return String.yahooRegex.matchesWhole(string: self.lowercased())
-    }
-
     /**
      Very rudimentary test whether this String is a valid email.
      - Returns: `true` if the number of matches are exactly 1, `false` otherwise.
