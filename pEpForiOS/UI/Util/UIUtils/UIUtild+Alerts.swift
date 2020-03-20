@@ -17,6 +17,7 @@ extension UIUtils {
     ///   - completion: called when "OK" has been pressed
     static func showAlertWithOnlyPositiveButton(title: String?,
                                                 message: String?,
+                                                inNavigationStackOf viewController: UIViewController? = nil,
                                                 completion: (()->Void)? = nil) {
         // Do not show alerts when app is in background.
         if UIApplication.shared.applicationState != .active {
@@ -35,7 +36,7 @@ extension UIUtils {
                                         completion?()
         }
         alertView.addAction(okAction)
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+        guard let presenterVc = UIApplication.currentlyVisibleViewController(inNavigationStackOf: viewController) else {
             Log.shared.errorAndCrash("No VC")
             return
         }
@@ -49,7 +50,8 @@ extension UIUtils {
                                    positiveButtonText: String = NSLocalizedString("OK",
                                                                                   comment: "Default positive button text"),
                                    cancelButtonAction: @escaping ()->Void,
-                                   positiveButtonAction: @escaping () -> Void) {
+                                   positiveButtonAction: @escaping () -> Void,
+                                   inNavigationStackOf viewController: UIViewController? = nil) {
         let alertView = UIAlertController.pEpAlertController(title: title,
                                                              message: message,
                                                              preferredStyle: .alert)
@@ -62,7 +64,7 @@ extension UIUtils {
                                             cancelButtonAction()
         })
 
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+        guard let presenterVc = UIApplication.currentlyVisibleViewController(inNavigationStackOf: viewController) else {
             Log.shared.errorAndCrash("No VC")
             return
         }
