@@ -352,7 +352,8 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 
 
         //right navigation button to ensure the logic
-        let cancel = UIBarButtonItem(title: "Cancel",
+        let cancel = UIBarButtonItem(title: NSLocalizedString("Cancel",
+                                                              comment: "EmailList: Cancel edit mode button title"),
                                      style: UIBarButtonItem.Style.plain,
                                      target: self,
                                      action: #selector(cancelToolbar(_:)))
