@@ -16,7 +16,7 @@ struct OutlookO365SpecificInformation {
 /// so they share one implementation.
 extension OutlookO365SpecificInformation: ProviderSpecificInformationProtocol {
     func belongsToProvider(_ folder: Folder) -> Bool {
-        // Delegate to CdFolder implementation.
+        // Defer to CdFolder implementation.
         return belongsToProvider(folder.cdObject)
     }
 
@@ -26,12 +26,12 @@ extension OutlookO365SpecificInformation: ProviderSpecificInformationProtocol {
     }
 
     func isOkToAppendMessages(toFolder folder: Folder) -> Bool {
-        // Delegate to CdFolder implementation.
+        // Defer to CdFolder implementation.
         return isOkToAppendMessages(toFolder: folder.cdObject)
     }
 
     func isOkToAppendMessages(toFolder folder: CdFolder) -> Bool {
-        // Don't append to send, other folders are OK for now.
+        // Appent to all folders except `.sent`.
         return folder.folderType != .sent
     }
 
@@ -40,7 +40,7 @@ extension OutlookO365SpecificInformation: ProviderSpecificInformationProtocol {
     }
 
     func defaultDestructiveActionIsArchive(forFolder folder: Folder) -> Bool {
-        // This is not gmail, so delete properly.
+        // Can delete properly.
         return false
     }
 }
