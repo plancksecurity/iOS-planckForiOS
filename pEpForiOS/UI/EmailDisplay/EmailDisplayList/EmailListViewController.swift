@@ -52,9 +52,11 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
                                                             action: nil)
 
     // MARK: - Life Cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        edgesForExtendedLayout = .all
+
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -96,9 +98,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
         updateFilterText()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -107,7 +106,7 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     // MARK: - Setup
 
     private func setup() {
-        tableView.separatorInset = UIEdgeInsets.zero
+        tableView.separatorInset = .zero
         tableView.delegate = self
         tableView.dataSource = self
         // rm seperator lines for empty view/cells
@@ -133,8 +132,7 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
         ///if we are in setup and the folder is unifiedInbox
         ///we have to reload the unifiedInbox to ensure that all the accounts are present.
         if vm.folderToShow is UnifiedInbox {
-            viewModel = EmailListViewModel(delegate: self,
-                                           folderToShow: UnifiedInbox())
+            viewModel = EmailListViewModel(delegate: self, folderToShow: UnifiedInbox())
         }
         setupRefreshControl()
 
@@ -174,30 +172,14 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     // MARK: - Search Bar
 
     private func setupSearchBar() {
-        definesPresentationContext = true
-        configureSearchBar()
         if #available(iOS 11.0, *) {
             searchController.isActive = false
+            searchController.searchResultsUpdater = self
+            searchController.dimsBackgroundDuringPresentation = false
+            searchController.delegate = self
+            definesPresentationContext = true
             navigationItem.searchController = searchController
             navigationItem.hidesSearchBarWhenScrolling = true
-        } else {
-            addSearchBar10()
-
-            if tableView.tableHeaderView == nil {
-                tableView.tableHeaderView = searchController.searchBar
-            }
-
-            // some notifications to control when the app enter and recover from background
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didBecomeActiveInstallSearchBar10),
-                name: UIApplication.didBecomeActiveNotification,
-                object: nil)
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didBecomeInactiveUninstallSearchbar10),
-                name: UIApplication.didEnterBackgroundNotification,
-                object: nil)
         }
     }
 
@@ -216,42 +198,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
             }
         }
     }
-
-    /**
-     Configure the search controller, shared between iOS versions 11 and earlier.
-     */
-    private func configureSearchBar() {
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.delegate = self
-    }
-
-    /**
-     Showing the search controller in versions iOS 10 and earlier.
-     */
-    @objc func didBecomeActiveInstallSearchBar10() {
-        if tableView.tableHeaderView == nil {
-            tableView.tableHeaderView = searchController.searchBar
-        }
-    }
-
-    /**
-     Hide/remove the search controller in versions iOS 10 and earlier.
-     */
-    @objc func didBecomeInactiveUninstallSearchbar10() {
-        tableView.tableHeaderView = nil
-    }
-
-    /**
-     Add the search bar when running on iOS 10 or earlier.
-     */
-    private func addSearchBar10() {
-        tableView.tableHeaderView = searchController.searchBar
-        tableView.setContentOffset(CGPoint(x: 0.0,
-                                           y: searchController.searchBar.frame.size.height),
-                                   animated: false)
-    }
-
     // MARK: - Other
 
     private func showEditDraftComposeView() {
@@ -360,7 +306,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 
         editRightButton = navigationItem.rightBarButtonItem
         navigationItem.rightBarButtonItem = cancel
-
     }
 
     @objc private func showSettingsViewController() {
