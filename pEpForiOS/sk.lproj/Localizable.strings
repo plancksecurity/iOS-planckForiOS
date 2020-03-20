@@ -1,398 +1,465 @@
 /* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
-"\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n";
+"\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nPrílohy sú zakázané.\n\n";
 
 /* No privacy status explanation
    No privacy status suggestion */
 "-" = "-";
 
 /* Title for notification show on lock screen for new mails */
-"(numMails) new messages received" = "(numMails) new messages received";
+"(numMails) new messages received" = "(numMails) prijaté nové správy";
 
 /* Reply to single contact, with date. Placeholders: Name, date. */
-"%1$@ wrote on %2$@:" = "%1$@ wrote on %2$@:";
+"%1$@ wrote on %2$@:" = "%1$@ napísal na %2$@:";
 
 /* Reply to single contact, without date. Placeholder: Name. */
-"%1$@ wrote:" = "%1$@ wrote:";
+"%1$@ wrote:" = "Napísal (-a)% 1 $ @:";
 
 /* error message for .missingPassword */
-"A non-empty password is required" = "Password is required";
+"A non-empty password is required" = "Heslo je povinné";
 
 /* error message for .missingUsername */
-"A non-empty username is required" = "Username is required";
+"A non-empty username is required" = "Používateľské meno je povinné";
 
-/* keySync handshake alert message - two devices */
-"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?";
-
-/* keySync handshake alert message - more than two devices */
-"Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?";
-
-/* KeySyncWizard introduction message - two devices */
-"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?";
-
-/* KeySyncWizard introduction message - more than two devices */
-"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?";
-
-/* KeySyncWizard complete message - two devices */
-"We successfully created a device group. All your privacy is now synchronized." = "We successfully created a device group. All your privacy is now synchronized.";
-
-/* KeySyncWizard complete message - more than two devices */
-"The device is now member of your device group. All your privacy is now synchronized." = "The device is now member of your device group. All your privacy is now synchronized.";
+/* KeySyncWizard introduction message */
+"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Bolo zistené druhé zariadenie. Môžeme vytvoriť skupinu zariadení na synchronizáciu všetkého vášho súkromia na oboch zariadeniach. Začneme synchronizáciu?";
 
 /* error message for .invalidEmail
    error message for .missingEmail */
-"A valid email is required" = "A valid email is required";
+"A valid email is required" = "Vyžaduje sa platný e-mail";
 
 /* Account settings
-   Title for manual account setup */
-"Account" = "Account";
+   Account view title */
+"Account" = "účet";
+
+/* Title for manual account setup */
+"ACCOUNT" = "ÚČET";
 
 /* Error description detecting account settings */
-"Account detection timed out" = "Account detection timed out";
+"Account detection timed out" = "Vypršal časový limit detekcie účtu";
 
 /* Empty account name message */
-"Account name must not be empty." = "Account name must not be empty.";
+"Account name must not be empty." = "Názov účtu nesmie byť prázdny.";
 
-/* Tableview section  header */
-"Accounts" = "Accounts";
+/* Tableview section  header: Accounts */
+"Accounts" = "Účty";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
-"Add to Contacts" = "Add to Contacts";
+"Add to Contacts" = "Pridať z kontaktov";
 
 /* Name of unified inbox (showing messages of all accoounts */
-"All" = "All";
+"All" = "Všetky";
 
 /* Error message shown to the user in case an error in the app occured that is not caused or related to the server */
-"An internal error occured. Sorry, that should not happen." = "An internal error occurred. Sorry, that shouldn't have happened.";
+"An internal error occured. Sorry, that should not happen." = "Vyskytla sa interná chyba. Ospravedlňujeme sa, ale to sa nemalo stať.";
 
 /* error message for .noConnectData */
-"An internal error occurred" = "An internal error occurred";
+"An internal error occurred" = "Vyskytla sa interná chyba";
+
+/* KeySyncWizard introduction message */
+"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Bolo zistené ďalšie zariadenie. Môžeme ho pridať do skupiny zariadení, aby sa synchronizovalo všetko vaše súkromie na všetkých zariadeniach. Začneme synchronizáciu?";
 
 /* Archive button in slide-left menu */
-"Archive" = "Archive";
+"Archive" = "Archivovať";
 
 /* Account delete confirmation */
-"Are you sure you want to delete the account?" = "Are you sure you want to delete the account?";
+"Are you sure you want to delete the account?" = "Naozaj chcete odstrániť účet?";
 
 /* Leave device group confirmation */
-"Are you sure you want to leave your device group?" = "Are you sure you want to leave your device group?";
+"Are you sure you want to leave your device group?" = "Naozaj chcete opustiť skupinu zariadení?";
 
 /* Insert document in message text context menu */
-"Attach file" = "Attach file";
+"Attach file" = "Priložiť súbor";
 
 /* Attach photo/video (message text context menu) */
-"Attach media" = "Attach media";
+"Attach media" = "Pripojte médiá";
 
 /* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
-"Attached Image %1$d (%2$@)" = "Attached image %1$d (%2$@)";
+"Attached Image %1$d (%2$@)" = "Pripojený obrázok %1$d (%2$@)";
 
 /* title attachments filter cell */
-"Attachments" = "Attachments";
+"Attachments" = "Prílohy";
+
+/* Cancel button title for manual account IMAP setup
+   Cancel button title for manual account SMTP setup */
+"Back" = "späť";
 
 /* Compose field title */
-"BCC:" = "Bcc:";
+"BCC:" = "Skrytá kópia:";
 
 /* Privacy status title */
-"Broken" = "Broken";
+"Broken" = "Pokazené";
 
 /* alert action 3
+   Alert cancel button title before trusting an account
+   Back button for client cert managment
+   Cancel
+   Cancel button for client certificate password screen
+   Cancel button title for manual account setup
+   Cancel button title of pEp protection toggle action sheet
    Cancel for an alert view
+   Cancel in button in Login View
    Cancel reset account identity button title
    Cancel title button
+   Cancel trust change to be undone
    compose email cancel
+   Default cancel button text
    EmailList action title
+   keysync alert leave device group cancel
    keySyncWizard animation view cancel button title
-   Login NavigationBar canel button title
    Message actions
    MoveToFolderViewController NavigationBar canel button title
-   possible private status action
    UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
-"Cancel" = "Cancel";
+"Cancel" = "Zrušiť";
 
 /* Privacy status title */
-"Cannot Decrypt" = "Cannot Decrypt";
+"Cannot Decrypt" = "Nie je možné dešifrovať";
 
 /* Compose field title */
-"CC:" = "Cc:";
+"CC:" = "Kópia:";
 
 /* Compose field title */
-"Cc/Bcc:" = "Cc/Bcc:";
+"Cc/Bcc:" = "CC / BCC (kópie/skryté kópie):";
 
 /* UI alert message for transport protocol */
-"Choose a Security protocol for your accont" = "Choose a Security protocol for your account";
+"Choose a Security protocol for your accont" = "Vyberte pre svoj účet protokol zabezpečenia";
 
 /* Empty IMAP transport security method */
-"Choose IMAP transport security method." = "Choose IMAP transport security method.";
+"Choose IMAP transport security method." = "Vyberte spôsob zabezpečenia prenosu IMAP.";
 
 /* Empty SMTP transport security method */
-"Choose SMTP transport security method." = "Choose SMTP transport security method";
+"Choose SMTP transport security method." = "Vyberte spôsob zabezpečenia prenosu SMTP";
 
 /* Privacy status suggestion */
-"Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication.";
+"Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Vyplňte handshake s vašim komunikačným partnerom. Handshake je potrebný iba jeden partner a zabezpečí bezpečnú a dôveryhodnú komunikáciu.";
+
+/* accept hand shake confirm button
+   Confirm correct trustwords/PGP fingerprint */
+"Confirm" = "Potvrdiť";
+
+/* Confirm less secure answering message alert title */
+"Confirm Answer" = "Potvrďte odpoveď";
 
 /* Confirm correct fingerprint (PGP, long version) */
-"Confirm Fingerprint" = "Confirm Fingerprint";
+"Confirm Fingerprint" = "Potvrdenie odtlačku prsta";
+
+/* Confirm less secure forwarding message alert title */
+"Confirm Forward" = "Potvrdiť vpred";
 
 /* Confirm correct trustwords (pEp, long version) */
-"Confirm Trustwords" = "Confirm Trustwords";
+"Confirm Trustwords" = "Potvrďte Trustwords";
 
 /* ResetTrustView title
-   TableView section header */
-"Contacts" = "Contacts";
+   TableView section header: Contacts */
+"Contacts" = "Kontakty";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title Copy Email */
-"Copy Email" = "Copy Email";
+"Copy Email" = "Skopírujte e-mail";
 
 /* Error description detecting account settings */
-"Could not find servers. Please enter manually" = "Could not find servers. Please enter manually.";
+"Could not find servers. Please enter manually" = "Nepodarilo sa nájsť servery. Zadajte ručne.";
 
-/* Settings: Cell (button) title to view app credits */
-"Credits" = "Credits";
+/* Credits view title
+   Settings: Cell (button) title to view app credits */
+"Credits" = "Autori";
 
 /* Default Account Setting Section Title
+   Default account view title
    Settings: Cell (button) title to view default account setting */
-"Default Account" = "Default Account";
+"Default Account" = "Predvolený účet";
 
 /* Account delete
    compose email delete
    ComposeTableView: button to decide to delete a message from Outbox after making changes.
    Delete account button title
    swipe delete ExtraKey action title */
-"Delete" = "Delete";
+"Delete" = "Vymazať";
 
 /* Account delete confirmation comment */
-"delete account message" = "delete account message";
+"delete account message" = "vymazať správu účtu";
 
-/* possible private status action */
-"Disable Protection" = "Disable protection";
+/* keysync alert leave device group disable */
+"Disable" = "Zakázať";
+
+/* Leave device group confirmation */
+"Disable p≡p Sync" = "Zakázať synchronizáciu p≡p";
+
+/* Disable Protection
+   Disable Protection button title of pEp protection toggle action sheet */
+"Disable Protection" = "Zakázať šifrovanie";
 
 /* ComposeTableView: button to decide to discharge changes made on a drafted mail. */
-"Discharge changes" = "Discharge changes";
+"Discharge changes" = "Zahoďte zmeny";
+
+/* Display Name placeholder for manual account setup
+   Display Name TextField Placeholder in Login Screen */
+"Display Name" = "Zobraziť meno";
+
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"E-mail Address" = "E-mailová adresa";
 
 /* Email */
-"Email" = "Email";
+"Email" = "E-mail";
 
 /* Title of alert: a required field is empty */
-"Empty Field" = "Empty Field";
+"Empty Field" = "Prázdne pole";
 
 /* enable p≡p Sync with other devices in the group */
-"Enable p≡p Sync" = "Enable p≡p Sync";
+"Enable p≡p Sync" = "Povoliť synchronizáciu p≡p";
 
 /* Passive mode title */
-"Enable passive mode" = "Enable passive mode";
+"Enable passive mode" = "Povoliť pasívny režim";
 
 /* title for subject protection */
-"Enable Protected Subject" = "Enable Protected Subject";
+"Enable Protected Subject" = "Povoliť chránený predmet";
 
-/* possible private status action */
-"Enable Protection" = "Enable Protection";
+/* Enable Protection
+   Enable Protection button title of pEp protection toggle action sheet */
+"Enable Protection" = "Povoľte ochranu súkromia";
 
-/* Fail to update pEpSync value alert title
-   Title of error alert shown to the user in case a message could not be sent
+/* Tableview section header: Enterprise Features */
+"Enterprise Features" = "Enterprise Funkcie";
+
+/* Title of error alert shown to the user in case a message could not be sent
    Title of error alert shown to the user in case an unknown error occured. */
-"Error" = "Error";
+"Error" = "Chyba";
+
+/* No comment provided by engineer. */
+"Error casting" = "Chyba pri odovzdávaní";
 
 /* Settings: Cell (button) title to view Extra Keys setting */
-"Extra Keys" = "Extra Keys";
+"Extra Keys" = "Extra kľúče";
+
+/* Extra Keys Editable */
+"Extra Keys Editable" = "Extra Kľúče je možné upravovať";
 
 /* Filter Title */
-"Filters" = "Filters";
+"Filters" = "Filtre";
+
+/* Finish button title for manual account SMTP setup
+   Start up tutorial finish button */
+"Finish" = "Hotovo";
 
 /* read button in slide-left menu */
-"Flag" = "Flag";
+"Flag" = "Označiť";
 
 /* Title for Flagged filter
    title unread filter cell */
-"Flagged" = "Flagged";
+"Flagged" = "Označené";
 
 /* FoldersView */
-"Folders" = "Folders";
+"Folders" = "Priečinky";
 
 /* EmailList action title
    Message actions */
-"Forward" = "Forward";
+"Forward" = "Preposlať";
 
 /* Compose field title
    Title of account picker when composing a message */
-"From:" = "From:";
+"From:" = "Od:";
 
 /* The 'Fwd:' that gets appended to the subject line */
 "Fwd: " = "Fwd: ";
 
-/* Tableview section header */
-"Global Settings" = "Global Settings";
+/* Tableview section header: Global Settings */
+"Global Settings" = "Všeobecné nastavenia";
 
-/* possible privacy status action */
+/* Title of the view */
 "Handshake" = "Handshake";
 
 /* Trusted Server Setting Section Footer */
-"If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!" = "If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!";
+"If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!" = "Ak je zakázaná, na serveri sa uloží nezašifrovaná kópia každej správy.\n\nNezakážte, ak si nie ste istí, čo robíte!";
 
 /* Tableview section footer */
-"If enabled, message subjects are also protected." = "If enabled, message subjects are also protected.";
+"If enabled, message subjects are also protected." = "Ak je povolená, sú chránené aj predmety správ.";
 
 /* Privacy status suggestion */
-"If this message was addressed to you, please inform the sender that you don't have the key." = "If this message was addressed to you. Please inform the sender that you don't have the key.";
+"If this message was addressed to you, please inform the sender that you don't have the key." = "Ak bola táto správa určená vám. Prosím, informujte odosielateľa, že nemáte kľúč.";
 
-/* Manual account setup */
+/* Title for manual account IMAP setup */
 "IMAP" = "IMAP";
 
 /* Empty IMAP port server message */
-"IMAP Port must not be empty." = "IMAP port must not be empty.";
+"IMAP Port must not be empty." = "Port IMAP nesmie byť prázdny.";
 
 /* Empty IMAP server message */
-"IMAP server must not be empty." = "IMAP server must not be empty.";
+"IMAP server must not be empty." = "Server IMAP nesmie byť prázdny.";
 
 /* Account settings title IMAP */
-"IMAP Settings" = "IMAP Settings";
+"IMAP Settings" = "Nastavenia IMAP";
+
+/* Empty username message */
+"Imap username must not be empty." = "Používateľské meno pre IMAP nesmie byť prázdne.";
 
 /* Name of INBOX mailbox (of one account) */
-"Inbox" = "Inbox";
+"Inbox" = "Doručená";
 
 /* title for the accounts section */
-"INCLUDE MAIL FROM:" = "INCLUDE MAIL FROM:";
+"INCLUDE MAIL FROM:" = "ZAHRNITE MAIL OD:";
 
 /* title for the include section */
-"INCLUDE:" = "INCLUDE:";
+"INCLUDE:" = "ZAHŔŇA:";
 
 /* Title of error alert shown to the user in case an error in the app occured that is not caused or related to the server */
-"Internal Error" = "Internal Error";
+"Internal Error" = "Vnútorná chyba";
 
 /* Invalid input for account */
-"Invalid account name: %1$@" = "Invalid account name: %1$@";
+"Invalid account name: %1$@" = "Neplatný názov účtu: %1$@";
+
+/* Please enter a valid Gmail address.Fail to log in, email does not match account type */
+"Invalid Address" = "Neplatná adresa";
 
 /* Invalid input for email address */
-"Invalid email address: %1$@" = "Invalid email address: %1$@";
+"Invalid email address: %1$@" = "Neplatná e-mailová adresa: %1$@";
 
 /* alert message. trying to add an invalid fingerprint
    alert title. trying to add an invalid fingerprint */
-"Invalid FPR" = "Invalid FPR";
+"Invalid FPR" = "Neplatný kód FPR";
 
 /* Title of invalid accout settings user input alert */
-"Invalid Input" = "Invalid Input";
+"Invalid Input" = "Neplatný vstup";
 
 /* Invalid input for por */
-"Invalid port: %1$@" = "Invalid port: %1$@";
+"Invalid port: %1$@" = "Neplatný port: %1$@";
 
 /* Invalid input for server */
-"Invalid server: %1$@" = "Invalid server: %1$@";
+"Invalid server: %1$@" = "Neplatný server: %1$@";
 
 /* Invalid input for transport security */
-"Invalid transport security: %1$@" = "Invalid transport security: %1$@";
+"Invalid transport security: %1$@" = "Neplatné zabezpečenie prepravy: %1$@";
 
 /* Invalid input for username */
-"Invalid username: %1$@" = "Invalid username: %1$@";
+"Invalid username: %1$@" = "Neplatné používateľské meno: %1$@";
 
 /* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
-"It was impossible to login to %1$@. Username or password is wrong." = "It was not possible to log in to %1$@. Username or password is wrong.";
+"It was impossible to login to %1$@. Username or password is wrong." = "Nebolo možné prihlásiť sa k %1$@. Používateľské meno alebo heslo je nesprávne.";
 
 /* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
-"It was impossible to login to the server. Username or password is wrong." = "It was not possible to log in to the server. Username or password is wrong.";
+"It was impossible to login to the server. Username or password is wrong." = "Nebolo možné prihlásiť sa na server. Používateľské meno alebo heslo je nesprávne.";
 
 /* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
-"Keep in Outbox" = "Keep in Outbox";
+"Keep in Outbox" = "Ponechať v priečinku Na odoslanie";
 
-/* keySyncWizard completion view leave button title
-   Leave device group button title */
-"Leave" = "Leave";
+/* keySyncWizard completion view leave button title */
+"Leave" = "Odísť";
 
 /* Settings: Cell (button) title for leaving device group */
-"Leave Device Group" = "Leave Device Group";
+"Leave Device Group" = "Opustiť skupinu zariadení";
 
 /* Leave device group confirmation comment */
-"leaving device group" = "leaving device group";
+"leaving device group" = "opúšťate skupinu zariadení";
 
-/* Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed. */
-"Login Failed" = "Login Failed";
+/* Log in button in Login View */
+"Log In" = "Prihlásiť sa";
+
+/* Title of error alert shown to the user for client certificate problems
+   Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed. */
+"Login Failed" = "Prihlásenie zlyhalo";
 
 /* Privacy status suggestion */
-"Make sure the privacy status for each communication partner listed is at least secure" = "Make sure the privacy status for each communication partner listed is at least secure";
+"Make sure the privacy status for each communication partner listed is at least secure" = "Uistite sa, že stav ochrany osobných údajov každého uvedeného komunikačného partnera je aspoň bezpečný";
 
 /* privacyStatusDescription yellow */
-"Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call" = "Make this communication partner secure and trusted by comparing the trustwords below with them, for example by making a phone call";
+"Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call" = "Zabezpečte a dôverujte tohto komunikačného partnera porovnaním týchto Trustwords s nimi, napríklad uskutočnením telefonického hovoru";
 
 /* manual */
-"Manual configuration" = "Manual configuration";
+"Manual configuration" = "Manuálna konfigurácia";
+
+/* Manual Setup button in Login View */
+"Manual setup" = "Ručné nastavenie";
 
 /* EmailList action title */
-"Mark as Read" = "Mark as read";
+"Mark as Read" = "Označiť ako prečítané";
 
 /* EmailList action title */
-"Mark as unread" = "Mark as unread";
+"Mark as unread" = "Označiť ako neprečítané";
 
-/* Privacy status title
-   privacyStatusTitle red */
-"Mistrusted" = "Mistrusted";
+/* Mistrusted - Step 1
+   Privacy status title */
+"Mistrusted" = "nedôveroval";
 
 /* more button in slide-left menu */
-"More" = "More";
+"More" = "Viac";
 
 /* MoveToFolderViewController title */
-"Move To" = "Move to";
+"Move To" = "Presunúť do";
 
 /* EmailList action title */
-"Move to Folder" = "Move to Folder";
+"Move to Folder" = "Presunúť do priečinku";
 
 /* File name used for videos the user attaches. */
-"Movie" = "Move";
+"Movie" = "Presunúť";
 
 /* username */
-"Name" = "Name";
+"Name" = "Meno";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title New Mail Message */
-"New Mail Message" = "New Mail Message";
+"New Mail Message" = "Nová poštová správa";
 
 /* Title for notification show on lock screen for *one* new mail */
-"New message received" = "New message received";
+"New message received" = "Bola prijatá nová správa";
 
-/* keySyncWizard intro view Next button title */
-"Next" = "Next";
+/* keySyncWizard intro view Next button title
+   Next button title for manual account IMAP setup
+   Next button title for manual account setup */
+"Next" = "Ďalej";
 
 /* Error when no account found for set_own_key UI */
-"No account found with the given email." = "No account found with the given email.";
+"No account found with the given email." = "S daným e-mailom sa nenašiel žiadny účet.";
 
 /* Privacy status suggestion */
-"No action needed!" = "No action needed!";
+"No action needed!" = "Nie sú potrebné žiadne kroky!";
 
 /* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
-"No Permissions" = "No Permissions";
+"No Permissions" = "Žiadne povolenia";
 
 /* privacyStatusDescription no_color
    privacyStatusTitle no_color */
-"None" = "None";
+"None" = "Žiadne";
 
-/* keySyncWizard error view NotNow button title */
-"Not now" = "Not now";
+/* keySyncWizard error view Not Now button title */
+"Not now" = "Teraz nie";
 
 /* keySyncWizard intro view Not Now button title
    not now button */
-"Not Now" = "Not Now";
+"Not Now" = "Teraz nie";
 
-/* Filter accept text
+/* Default message in detail view when nothing has been selected */
+"Nothing Selected" = "Nič vybrané";
+
+/* Default positive button text
+   Filter accept text
    General alert positive button
    keySyncWizard completion view OK button title
+   OK (dismiss) button for iCloud instructions alert
+   OK button for client certificate password screen
    OK button for invalid accout settings user input alert
-   OK button for pEpSyncError alert
    UIAlertAction ok after error */
 "OK" = "OK";
 
+/* title for the attachment section */
+"OTHER:" = "Ostatné:";
+
 /* Name of outbox (showing messages to send */
-"Outbox" = "Outbox";
+"Outbox" = "Pošta na odoslanie";
 
 /* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
-"p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App." = "p≡p does not have permission to access \nthe Photo Gallery. You can grant permission in App Settings.";
+"p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App." = "p≡p nemá povolenie na prístup\nvo fotogalérii. Povolenie môžete udeliť v Nastaveniach aplikácie.";
 
 /* Tableview section header */
 "p≡p sync" = "p≡p sync";
 
 /* keySync handshake alert title
-   keySyncWizard animation view title */
+   keySyncWizard animation view title
+   Settings: enable/disable p≡p Sync feature */
 "p≡p Sync" = "p≡p Sync";
 
-/* password */
-"Password" = "Password";
+/* Password placeholder for manual account setup
+   Password TextField Placeholder in Login Screen */
+"Password" = "Heslo";
 
 /* Account settings title pEp Sync */
-"pEp Sync" = "pEp Sync";
+"pEp Sync" = "p≡p Sync";
 
 /* TutorialWizard image 1 */
 "pEpForIOS-Tutorial-1" = "pEpForIOS-Tutorial-1";
@@ -424,258 +491,354 @@
 /* TutorialWizard image 5 horizontal */
 "pEpForIOS-Tutorial-5-horizontal" = "pEpForIOS-Tutorial-5-horizontal";
 
+/* TableView Contacts section footer */
+"Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages." = "Vykoná reset nastavení ochrany osobných údajov uložených pre komunikačného partnera. Môže to byť potrebné napríklad, ak váš komunikačný partner nedokáže prečítať vaše správy.";
+
 /* Tableview section header */
-"PGP Compatibility" = "PGP Compatibility";
+"PGP Compatibility" = "Kompatibilita PGP";
 
 /* Privacy status suggestion */
-"Please add the necessary information." = "Please add the necessary information.";
+"Please add the necessary information." = "Pridajte potrebné informácie.";
 
 /* Privacy status suggestion */
-"Please ask your communication partner to use an encryption solution or install p≡p." = "Please ask your communication partner to use an encryption solution or install p≡p.";
+"Please ask your communication partner to use an encryption solution or install p≡p." = "Požiadajte svojho komunikačného partnera, aby použil šifrovacie riešenie alebo nainštaloval p≡p.";
 
-/* keySyncWizard animation view message */
-"Please give us a moment while we sync your devices. This can take a minute or more." = "Please give us a moment while we sync your devices. This can take a minute or more.";
+/* No folder has been selected yet in the folders VC */
+"Please choose a folder" = "Vyberte priečinok";
+
+/* No messages has been selected for detail view */
+"Please choose a message" = "Vyberte správu";
+
+/* No setting has been selected yet in the settings VC */
+"Please choose a setting" = "Vyberte nastavenie";
+
+/* Fail to log in, email does not match account type */
+"Please enter a valid Gmail address." = "Zadajte platnú adresu Gmail.";
+
+/* keySyncWizard animation view message while we sync your devices */
+"Please give us a moment while we sync your devices. This can take a minute or more." = "Venujte nám chvíľu, kým synchronizujeme vaše zariadenia. Môže to trvať minútu alebo viac.";
+
+/* keySync handshake alert message for two devices in group */
+"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Uistite sa, že máte obe zariadenia spolu, aby ste mohli porovnávať heslá na oboch zariadeniach. Sú Trustwords nižšie rovnaké ako Trustwords na druhom zariadení?";
+
+/* keySync handshake alert message for more than two devices in group */
+"Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Uistite sa, že máte zariadenia spolu, aby ste na zariadeniach mohli porovnávať slová Trustwords. Sú Trustwords nižšie rovnaké ako Trustwords na druhom zariadení?";
 
 /* Validation error for set_own_key UI */
-"Please provide an email and a fingerprint. The email must match an existing account." = "Please provide an email address and a fingerprint. The email address must match an existing account.";
+"Please provide an email and a fingerprint. The email must match an existing account." = "Uveďte e-mailovú adresu a odtlačok prsta. E-mailová adresa sa musí zhodovať s existujúcim účtom.";
 
-/* action sheet title 1 */
-"Privacy Status" = "Privacy Status";
+/* Port placeholder for manual account IMAP setup
+   Port placeholder for manual account SMTP setup */
+"Port" = "Port";
+
+/* action sheet title 1
+   Privacy Status Label */
+"Privacy Status" = "Stav ochrany osobných údajov";
+
+/* title for subject protection */
+"Protect Message Subject" = "Chrániť predmet správy";
 
 /* passive mode description */
-"Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p." = "Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p.";
+"Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p." = "Materiál verejného kľúča bude pripojený k správe, iba ak p≡p zistí, že príjemca používa aj p≡p.";
 
 /* Privacy status suggestion */
-"Re-establish the connection with your communication partner and try to complete another handshake." = "Re-establish the connection with your communication partner and try to complete another handshake.";
+"Re-establish the connection with your communication partner and try to complete another handshake." = "Obnovte spojenie s vašim komunikačným partnerom a skúste dokončiť ďalšie podanie ruky.";
 
 /* read button in slide-left menu */
-"Read" = "Read";
+"Read" = "Prečítané";
+
+/* reject hand shake button */
+"Reject" = "Odmietnuť";
 
 /* ComposeTableView: Label of swipe left. Removing of attachment. */
-"Remove" = "Remove";
+"Remove" = "Odstrániť";
 
 /* EmailList action title
    Message actions
    read button in slide-left menu */
-"Reply" = "Reply";
+"Reply" = "Odpovedať";
 
 /* EmailList action title
    Message actions */
-"Reply All" = "Reply All";
+"Reply All" = "Odpovedať všetkým";
 
-/* alert action 2 */
-"Reset Trust For All Identities" = "Reset Trust for All Identities";
+/* Account settings confirm to reset identity title alert
+   Account settings reset identity
+   Reset account identity button title
+   Settings: cell (button) title to view the trust contacts option */
+"Reset" = "Obnoviť";
+
+/* Reset account identity button title
+   Settings: Cell (button) title for reset all identities */
+"Reset All" = "Resetovať všetko";
+
+/* Settings confirm to reset all identity title alert */
+"Reset All Identities" = "Obnoviť všetky identity";
 
 /* alert action 1 */
-"Reset Trust For This Identity" = "Reset Trust for This Identity";
+"Reset This Identity" = "Obnoviť túto identitu";
+
+/* alert action 2 */
+"Reset Trust For All Identities" = "Obnoviť dôveru pre všetky identity";
+
+/* alert action 1 */
+"Reset Trust For This Identity" = "Obnoviť túto identitu";
 
 /* ComposeTableView: button to decide to save changes made on a drafted mail. */
-"Save changes" = "Save Changes";
+"Save changes" = "Uložiť zmeny";
 
 /* compose email save */
-"Save Draft" = "Save Draft";
+"Save Draft" = "Uložiť koncept";
+
+/* No comment provided by engineer. */
+"scroll-to-caret-on-edit" = "scroll-to-caret-on-edit";
 
 /* Privacy status title
-   privacyStatusTitle yellow */
-"Secure" = "Secure";
+   Secure Label - Step 1 */
+"Secure" = "Zabezpečiť";
 
 /* Privacy status title
-   privacyStatusTitle green */
-"Secure & Trusted" = "Secure & Trusted";
+   Secure & Trusted Label - Step 1 */
+"Secure & Trusted" = "Zabezpečené & amp; dôveryhodný";
+
+/* Alert title before trusting an account */
+"Security Alert" = "Bezpečnostné upozornenie";
 
 /* Privacy status suggestion */
-"Separately verify the content of this message with your communication partner." = "Verify the content of this message with your communication partner separately.";
+"Separately verify the content of this message with your communication partner." = "Obsah tejto správy si overte osobitne u svojho komunikačného partnera.";
+
+/* Server placeholder for manual account IMAP setup
+   Server placeholder for manual account SMTP setup */
+"Server" = "server";
 
 /* Title of error alert shown to the user in case we can not connect to the IMAP server
    Title of error alert shown to the user in case we can not connect to the SMTP server */
-"Server Unreachable" = "Server Unreachable";
+"Server Unreachable" = "Server je nedostupný";
 
-/* Settings: Cell (button) title for entering fingerprints that are made own keys */
-"Set Own Key" = "Set Own Key";
+/* Set Own Key title
+   Settings: Cell (button) title for entering fingerprints that are made own keys */
+"Set Own Key" = "Nastaviť vlastný kľúč";
 
 /* acction sheet title 2
    Settings view title */
-"Settings" = "Settings";
+"Settings" = "Nastavenia";
 
 /* Login */
-"Sign In" = "Sign In";
+"Sign In" = "Prihlásiť sa";
 
 /* Start up tutorial skip button */
-"Skip" = "Skip";
+"Skip" = "Preskočiť";
 
 /* Body for notifications show on lock screen for new mail(s) */
-"Slide for more" = "Slide for more";
+"Slide for more" = "Pozrieť viac";
 
-/* Manual account setup */
+/* Title manual account SMTP setup */
 "SMTP" = "SMTP";
 
 /* Empty SMTP port server message */
-"SMTP Port must not be empty." = "IMAP port must not be empty.";
+"SMTP Port must not be empty." = "Port IMAP nesmie byť prázdny.";
 
 /* Empty SMTP server message */
-"SMTP server must not be empty." = "SMTP server must not be empty.";
+"SMTP server must not be empty." = "Server SMTP nesmie byť prázdny.";
 
 /* Account settings title SMTP */
-"SMTP Settings" = "SMTP Settings";
+"SMTP Settings" = "Nastavenia SMTP";
+
+/* Empty username message */
+"Smtp username must not be empty." = "Používateľské meno pre IMAP nesmie byť prázdne.";
 
 /* Title for address filter */
-"some address" = "some address";
+"some address" = "nejaká adresa";
+
+/* Message of alert: a required field is empty */
+"Some mandatory fields are empty" = "Niektoré povinné polia sú prázdne";
 
 /* Reply to unknown sender with date */
-"Someone wrote on %1$@:" = "Someone wrote on %1$@:";
+"Someone wrote on %1$@:" = "Niekto napísal na %1$@:";
 
 /* Reply to unknown sender without date */
-"Someone wrote:" = "Someone wrote:";
+"Someone wrote:" = "Niekto napísal:";
 
-/* keySyncWizard error view message */
-"Something went wrong with syncing the devices. Please try again." = "Something went wrong with syncing the devices. Please try again.";
+/* keySyncWizard error view message when syncing devices */
+"Something went wrong with syncing the devices. Please try again." = "Pri synchronizácii zariadení sa vyskytla chyba. Prosím skúste znova.";
 
-/* AccountSettings viewModel no account error */
-"Something went wrong, please try again later" = "Something went wrong. Please try again later";
-
-/* Stop/trust button in handshake overview */
-"Start Trusting" = "Start Trusting";
+/* AccountSettings viewModel: no account error */
+"Something went wrong, please try again later" = "Niečo sa pokazilo. Skúste neskôr prosím";
 
 /* Stop/trust button in handshake overview */
-"Stop Trusting" = "Stop Trusting";
+"Start Trusting" = "Začať dôverovať";
+
+/* Stop/trust button in handshake overview */
+"Stop Trusting" = "Prestať dôverovať";
 
 /* Settings: Cell (button) title to view default account setting
    Trusted Server Setting Section Title */
-"Store Messages Securely" = "Store Messages Securely";
+"Store Messages Securely" = "Bezpečne ukladajte správy";
 
 /* Compose field title */
-"Subject:" = "Subject:";
-
-/* accept hand shake sync button */
-"Confirm" = "Confirm";
-
-/* decline hand shake sync button */
-"Reject" = "Reject";
+"Subject:" = "Predmet:";
 
 /* error message for .accountExistence */
-"The account already exists" = "This account already exists";
+"The account already exists" = "tento účet už existuje";
+
+/* KeySyncWizard complete message - more than two devices */
+"The device is now member of your device group. All your privacy is now synchronized." = "Zariadenie je teraz členom vašej skupiny zariadení. Všetko vaše súkromie je teraz synchronizované.";
 
 /* Error message shown to the user in case a message could not be sent. */
-"The message could not be sent. Please try again later." = "The message could not be sent. Please try again later.";
+"The message could not be sent. Please try again later." = "Správu nebolo možné odoslať. Skúste neskôr prosím.";
 
 /* error message for .minimumLengthUsername */
-"The username must contain more than 1 characters" = "The username must contain more than 1 character";
+"The username must contain more than 1 characters" = "Používateľské meno musí obsahovať viac ako 1 znak";
+
+/* Account settings confirm to reset identity title alert */
+"This action will reset all your identities. \n Are you sure you want to reset?" = "Táto akcia vynuluje všetky vaše identity.\n Naozaj chcete resetovať?";
+
+/* Account settings confirm to reset identity title alert */
+"This action will reset your identity. \n Are you sure you want to reset?" = "Táto akcia resetuje vašu totožnosť.\n Naozaj chcete resetovať?";
 
 /* privacyStatusDescription red */
-"This communication partner is mistrusted" = "This communication partner is mistrusted";
+"This communication partner is mistrusted" = "Váš komunikačný partner je nedôverčivý";
 
 /* privacyStatusDescription green */
-"This communication partner is secure and trusted" = "This communication partner is secure and trusted";
+"This communication partner is secure and trusted" = "Tento komunikačný partner je bezpečný a dôveryhodný";
+
+/* Alert message before trusting an account */
+"This is a public cloud account. Your data will be exposed. Are you sure you want to configure this as trusted?" = "Toto je verejné cloudové konto. Vaše údaje budú odhalené. Naozaj to chcete nakonfigurovať ako dôveryhodné?";
 
 /* Privacy status explanation */
-"This message cannot be decrypted because the key is not available." = "This message cannot be decrypted because the key is not available.";
+"This message cannot be decrypted because the key is not available." = "Túto správu nie je možné dešifrovať, pretože kľúč nie je k dispozícii.";
 
 /* Privacy status explanation */
-"This message cannot be decrypted." = "This message cannot be decrypted.";
+"This message cannot be decrypted." = "Túto správu nie je možné dešifrovať.";
 
 /* content that is shown for undecryptable messages */
-"This message could not be decrypted." = "This message could not be decrypted.";
+"This message could not be decrypted." = "Túto správu nie je možné dešifrovať.";
 
 /* Privacy status explanation */
-"This message does not contain enough information to determine if it is secure." = "This message does not contain enough information to determine if it is secure.";
+"This message does not contain enough information to determine if it is secure." = "Táto správa neobsahuje dostatok informácií na určenie, či je bezpečná.";
 
 /* Privacy status explanation */
-"This message has a communication partner that has previously been marked as mistrusted." = "This message includes a communication partner that has previously been marked as mistrusted.";
+"This message has a communication partner that has previously been marked as mistrusted." = "Táto správa obsahuje komunikačného partnera, ktorý bol predtým označený ako nedôverčivý.";
 
 /* Privacy status suggestion */
-"This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p.";
+"This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "Táto správa nemá spoľahlivé šifrovanie ani podpis. Požiadajte svojho komunikačného partnera, aby aktualizoval svoje šifrovacie riešenie alebo nainštaloval p≡p.";
 
 /* Privacy status explanation */
-"This message has unreliable protection" = "This message has unreliable protection.";
+"This message has unreliable protection" = "Táto správa má nespoľahlivú ochranu.";
 
 /* Compose field title */
-"This message is from a mailing list." = "This message is from a mailing list.";
+"This message is from a mailing list." = "Táto správa pochádza zo zoznamu adries.";
 
 /* Privacy status explanation */
-"This message is not secure and has been tampered with." = "This message is not secure and has been tampered with.";
+"This message is not secure and has been tampered with." = "Táto správa nie je bezpečná a bolo s ňou manipulované.";
 
 /* Privacy status explanation */
-"This message is secure and trusted." = "This message is secure and trusted.";
+"This message is secure and trusted." = "Táto správa je bezpečná a dôveryhodná.";
 
 /* Privacy status explanation */
-"This message is secure but you still need to verify the identity of your communication partner." = "This message is secure but you still need to verify the identity of your communication partner.";
+"This message is secure but you still need to verify the identity of your communication partner." = "Táto správa je bezpečná, ale stále musíte overiť totožnosť svojho komunikačného partnera.";
 
 /* Privacy status explanation */
-"This message is unsecure for some communication partners." = "This message is unsecure for some communication partners.";
+"This message is unsecure for some communication partners." = "Táto správa je pre niektorých komunikačných partnerov nezabezpečená.";
 
 /* Privacy status explanation */
-"This message is unsecure." = "This message is unsecure.";
+"This message is unsecure." = "Táto správa je nezabezpečená.";
 
 /* settings, enable thread view or not */
-"Thread Messages" = "Thread Messages";
+"Thread Messages" = "Vláknové správy";
 
 /* Compose field title */
-"To:" = "To:";
+"To:" = "Komu:";
 
 /* Compose field title */
-"To: " = "To:";
+"To: " = "Komu:";
 
 /* UI alert title for transport protocol */
-"Transport protocol" = "Transport protocol";
+"Transport protocol" = "Zabezpečenie prenosu";
+
+/* TransportSecurity placeholder for manual account IMAP setup
+   TransportSecurity placeholder for manual account SMTP setup */
+"Transport Security" = "Zabezpečenie prenosu";
 
 /* Trash button in slide-left menu */
-"Trash" = "Trash";
+"Trash" = "Kôš";
+
+/* Alert trust button title before trusting an account */
+"Trust" = "Dôvera";
 
 /* keySyncWizard error view Try Again button title */
-"Try Again" = "Try Again";
+"Try Again" = "Skúste to znova";
 
 /* show tutorial from compose view */
-"Tutorial" = "Tutorial";
+"Tutorial" = "Návod";
 
 /* Privacy status title */
-"Under Attack" = "Under Attack";
+"Under Attack" = "Pod útokom";
 
 /* read button in slide-left menu */
-"Unflag" = "Unflag";
+"Unflag" = "zrušiť označenie";
 
 /* Displayed attachment filename if unknown */
-"unknown" = "unknown";
+"unknown" = "neznáme";
 
-/* Privacy status title */
-"Unknown" = "Unknown";
+/* Privacy status title
+   privacyStatusDescription no_color */
+"Unknown" = "Neznáme";
 
 /* file name used for unnamed attachments */
-"unnamed" = "unnamed";
+"unnamed" = "nepomenované";
 
 /* Title for unread filter
    title unread filter cell */
-"Unread" = "Unread";
+"Unread" = "Neprečítané";
 
 /* Privacy status title */
-"Unreliable Security" = "Unreliable Security";
+"Unreliable Security" = "Nespoľahlivá bezpečnosť";
 
 /* Privacy status title */
-"Unsecure" = "Unsecure";
+"Unsecure" = "Nezabezpečené";
 
 /* Privacy status title */
-"Unsecure for Some" = "Unsecure for Some";
+"Unsecure for Some" = "Nezabezpečené pre niektorých";
+
+/* setting row title: Unsecure reply warning */
+"Unsecure reply warning" = "Varovanie nezabezpečenej odpovede";
+
+/* User Name placeholder for manual account IMAP setup
+   User Name placeholder for manual account setup
+   User Name placeholder for manual account SMTP setup */
+"User Name" = "Meno používateľa";
 
 /* Empty username message */
-"Username must not be empty." = "Username must not be empty.";
+"Username must not be empty." = "Používateľské meno nesmie byť prázdne.";
 
 /* Error title for validation errors on login screen */
-"Validation Error" = "Validation Error";
+"Validation Error" = "Chyba overenia";
 
 /* AccountsView: Prefix for version. Shows up like this: \"Version: 2.0.1 build 234\" */
-"Version" = "Version";
+"Version" = "Verzia";
 
 /* Error message shown to the user in case we can not connect to the IMAP server */
-"We could not connect to the IMAP server." = "We could not connect to the IMAP server.";
+"We could not connect to the IMAP server." = "Nepodarilo sa pripojiť k serveru IMAP.";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
-"We could not connect to the SMTP server." = "We could not connect to the SMTP server.";
+"We could not connect to the SMTP server." = "K serveru SMTP sa nepodarilo pripojiť.";
+
+/* KeySyncWizard complete message - two devices */
+"We successfully created a device group. All your privacy is now synchronized." = "Úspešne sme vytvorili skupinu zariadení. Všetko vaše súkromie je teraz synchronizované.";
 
 /* Title for attachments filter */
-"With attachments" = "With attachments";
+"With attachments" = "S prílohami";
 
 /* Incorrect fingerprint (PGP, long version) */
-"Wrong Fingerprint" = "Wrong Fingerprint";
+"Wrong Fingerprint" = "Chybný PGP Fingerprint";
 
 /* Incorrect trustwords (pEp, long version) */
-"Wrong Trustwords" = "Wrong Trustwords";
+"Wrong Trustwords" = "Chybné Trustwords";
+
+/* Confirm less secure answer message alert body */
+"You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Chystáte sa odpovedať na bezpečnú správu ako nezabezpečenú. Ak sa rozhodnete pokračovať, môže dôjsť k úniku dôverných informácií, čo vás a vašich komunikačných partnerov ohrozí. Ste si istý, že chcete pokračovať?";
+
+/* Confirm less secure forwarding message alert body */
+"You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Chystáte sa poslať zabezpečenú správu ako nezabezpečenú. Ak sa rozhodnete pokračovať, môže dôjsť k úniku dôverných informácií, čo vás a vašich komunikačných partnerov ohrozí. Ste si istý, že chcete pokračovať?";
 
