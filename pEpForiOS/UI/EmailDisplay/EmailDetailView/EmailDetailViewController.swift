@@ -62,6 +62,7 @@ class EmailDetailViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        edgesForExtendedLayout = .all
         setup()
     }
     
