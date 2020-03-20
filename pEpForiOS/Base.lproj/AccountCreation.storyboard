@@ -690,7 +690,7 @@
                                         <inset key="imageEdgeInsets" minX="-15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Add Certificate" image="button-add"/>
                                         <connections>
-                                            <action selector="addCertificate:" destination="Qyj-kG-7VF" eventType="touchUpInside" id="qgF-AB-hfB"/>
+                                            <action selector="addCertificateButtonPressed:" destination="Qyj-kG-7VF" eventType="touchUpInside" id="JfZ-om-m4g"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -722,14 +722,14 @@
                     </view>
                     <navigationItem key="navigationItem" id="TGi-N8-gcY"/>
                     <connections>
-                        <outlet property="addCertButton" destination="Tm4-05-7M1" id="mBu-g2-6hY"/>
+                        <outlet property="addCertButton" destination="Tm4-05-7M1" id="SuH-wP-5LU"/>
                         <outlet property="tableView" destination="AZr-4K-O4u" id="EB0-Ub-7b0"/>
                         <segue destination="clh-8B-z2B" kind="show" identifier="showLogin" id="Eaq-Ij-JdY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="axc-fA-bI1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5366" y="410"/>
+            <point key="canvasLocation" x="5365.6000000000004" y="409.7451274362819"/>
         </scene>
         <!--Account Type Selector View Controller-->
         <scene sceneID="V9w-WW-Gu0">

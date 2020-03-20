@@ -79,7 +79,6 @@ class MediaAttachmentPickerProviderViewModel {
             if attachment.data == nil {
                 do {
                     attachment.data = try Data(contentsOf: url)
-
                 } catch let err {
                     Log.shared.error("%@", "\(err)")
                 }

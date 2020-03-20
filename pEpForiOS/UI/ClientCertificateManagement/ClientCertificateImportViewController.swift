@@ -126,12 +126,14 @@ extension ClientCertificateImportViewController {
 // MARK: - ClientCertificatePasswordViewModelDelegate
 
 extension ClientCertificateImportViewController: ClientCertificateImportViewModelDelegate {
-    func showError(type: importCertificateError, dissmisAfterError: Bool) {
+    func showError(type: ImportCertificateError, dissmisAfterError: Bool) {
         switch type {
         case .wrongPassword:
             showWrongPasswordError()
         case .corruptedFile:
             showCorruptedFileError()
+        case .noPermissions:
+            showPermissionsDeniedError()
         }
     }
     
@@ -168,10 +170,23 @@ extension ClientCertificateImportViewController: UITextFieldDelegate {
 // MARK: - Showing Error
 
 extension ClientCertificateImportViewController {
+
+    private func showPermissionsDeniedError() {
+        UIUtils.showAlertWithOnlyPositiveButton(title: Localized.PermissionsDeniedError.title,
+                                                message: Localized.PermissionsDeniedError.message,
+                                                inNavigationStackOf: self) { [weak self] in
+                                                    guard let me = self else {
+                                                        Log.shared.lostMySelf()
+                                                        return
+                                                    }
+                                                    me.dismiss(animated: true, completion: nil)
+        }
+    }
     
     private func showCorruptedFileError() {
         UIUtils.showAlertWithOnlyPositiveButton(title: Localized.CorruptedFileError.title,
-                                                message: Localized.CorruptedFileError.message) { [weak self] in
+                                                message: Localized.CorruptedFileError.message,
+                                                inNavigationStackOf: self) { [weak self] in
                                                     guard let me = self else {
                                                         Log.shared.lostMySelf()
                                                         return
@@ -193,7 +208,7 @@ extension ClientCertificateImportViewController {
                                         me.dismiss(animated: true, completion: nil)
             }, positiveButtonAction: {
                 // We don't need to do something here. Our expectation is close this alert
-        })
+        }, inNavigationStackOf: self)
     }
 }
 
@@ -204,6 +219,12 @@ private struct Localized {
         static let title = NSLocalizedString("Wrong Password",
                                              comment: "Client certificate import: wrong password alert title")
         static let message = NSLocalizedString("We could not import the certificate. The password is incorrect.\n\nTry again?",
+                                               comment: "Client certificate import: wrong password alert message")
+    }
+    struct PermissionsDeniedError {
+        static let title = NSLocalizedString("Permissions Denied",
+                                             comment: "Client certificate import: PermissionsDenied alert title")
+        static let message = NSLocalizedString("We could not import the certificate. We do not have permissions to open this file.\n\nTry again?",
                                                comment: "Client certificate import: wrong password alert message")
     }
     struct CorruptedFileError {
