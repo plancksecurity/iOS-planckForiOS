@@ -77,6 +77,7 @@ extension String {
                 htmlImgToBase64Converted = htmlImgToBase64Converted
                     .replacingOccurrences(of: src, with: imageBaseMetaTags + imageBase64)
                     .replacingOccurrences(of: "cid:{cid}", with: src)
+                    .replacingOccurrences(of: "<img ", with: "![\(alt)](\(src))<img ")
             }
         }
 
@@ -100,7 +101,7 @@ extension String {
         // prepare HTML for HTML foundation framework parsing
         // we change cid to image coded with base64
         let html = htmlConvertImageLinksToImageBase64(html: htmlWithCitedChars, attachmentDelegate: attachmentDelegate)
-        let htmlData = html.data(using: .utf16,
+        let htmlData = html.data(using: .utf8,
                                  allowLossyConversion: true)
         let options: [NSAttributedString.DocumentReadingOptionKey : Any] =
             [.documentType : NSAttributedString.DocumentType.html]
@@ -110,12 +111,64 @@ extension String {
                                                     return NSAttributedString(string: "")
         }
 
-        return attribString
+        var string = NSAttributedString(attributedString: attribString)
 
-//        // get only images
-//        let parser = HtmlToAttributedTextSaxParser()
-//        parser.attachmentDelegate = attachmentDelegate
-//        parser.parse(string: self)
-//        return parser.attributedOutput
+        let patternFindImageMarkdownSyntax = "(?:!\\[(.*?)\\]\\((.*?)\\))"
+        for match in string.string.find(pattern: patternFindImageMarkdownSyntax) {
+
+            var src = ""
+            var alt = ""
+            for component in match.components(separatedBy: "]") {
+                if component.contains("![") {
+                    alt = component.replacingOccurrences(of: "![", with: "")
+                } else if component.contains("(") {
+                    src = component
+                        .replacingOccurrences(of: ")", with: "")
+                        .replacingOccurrences(of: "(", with: "")
+                } else {
+                    break
+                }
+            }
+            if let attachment = attachmentDelegate?.imageAttachment(src: src, alt: alt) {
+                let textAttachment = TextAttachment()
+                textAttachment.image = attachment.image
+                textAttachment.attachment = attachment
+                let imageString = NSAttributedString(attachment: textAttachment)
+                string = string.replacingOccurrences(ofWith: [match : imageString])
+            }
+        }
+
+        return string
+    }
+
+    public func replaceMarkdownImageSyntaxToHtmlSyntax() -> String {
+
+        let patternFindImageMarkdownSyntax = "(?:!\\[(.*?)\\]\\((.*?)\\))"
+
+        for match in self.find(pattern: patternFindImageMarkdownSyntax) {
+
+        let htmlSyntax = "<img src=\"{src}\" alt=\"{alt}\"/>"
+        var src = ""
+        var alt = ""
+
+        for component in match.components(separatedBy: "]") {
+            if component.contains("![") {
+                alt = component.replacingOccurrences(of: "![", with: "")
+            } else if component.contains("(") {
+                src = component
+                    .replacingOccurrences(of: "(", with: "")
+                    .replacingOccurrences(of: ")", with: "")
+            } else {
+                break
+            }
+        }
+
+            let htmlImageSyntaxArrayFilled = htmlSyntax
+            .replacingOccurrences(of: "{src}", with: src)
+            .replacingOccurrences(of: "{alt}", with: alt)
+
+            return self.replacingOccurrences(of: match, with: htmlImageSyntaxArrayFilled)
+        }
+        return ""
     }
 }

@@ -138,7 +138,7 @@ public struct ReplyUtil {
         return identity.address
     }
 
-    static private func citationHeaderForMessage(_ message: Message) -> String {
+    static public func citationHeaderForMessage(_ message: Message) -> String {
         let dateFormatter = DateFormatter.init()
         dateFormatter.dateStyle = DateFormatter.Style.long
         dateFormatter.timeStyle = DateFormatter.Style.long

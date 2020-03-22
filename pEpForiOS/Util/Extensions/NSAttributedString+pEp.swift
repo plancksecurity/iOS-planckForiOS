@@ -138,6 +138,38 @@ extension NSAttributedString {
         )
         return createe
     }
+
+    public func toHtml() -> String? {
+        let htmlDocAttrib = [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html]
+
+        // conversion NSTextAttachment with image to <img src.../> html tag with cid:{cid}
+        var mutableAttribString = NSMutableAttributedString(attributedString: self)
+
+        var images: [NSRange : String] = [:]
+
+        self.enumerateAttribute(.attachment, in: self.wholeRange()) { (value, range, stop) in
+            if let attachment = value as? TextAttachment {
+                let delegate = ToMarkdownDelegate()
+                let string = delegate.stringFor(attachment: attachment)
+                images[range] = string!.cleanAttachments
+            }
+        }
+
+
+        for item in images.reversed() {
+            mutableAttribString.replaceCharacters(in: item.key, with: item.value)
+        }
+
+        guard let htmlData = try? mutableAttribString.data(from: mutableAttribString.wholeRange(),
+                                            documentAttributes: htmlDocAttrib) else {
+                                                return nil
+        }
+        let html = String(data: htmlData, encoding: .utf8) ?? ""
+
+        return html.replaceMarkdownImageSyntaxToHtmlSyntax()
+            .replacingOccurrences(of: "›", with: "<blockquote type=\"cite\">")
+            .replacingOccurrences(of: "‹", with: "</blockquote>")
+    }
 }
 
 extension NSMutableAttributedString {

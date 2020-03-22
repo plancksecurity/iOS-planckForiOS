@@ -33,18 +33,7 @@ public extension NSAttributedString {
         return resultString
     }
 
-    func toHtml() -> String? {
-        let htmlDocAttrib = [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html]
-
-        guard let htmlData = try? self.data(from: self.wholeRange(),
-                                            documentAttributes: htmlDocAttrib) else {
-                                                return nil
-        }
-        let html = String(data: htmlData, encoding: .utf8) ?? nil
-        return html
-    }
-
-    func toCitation() -> NSAttributedString {
+    func toCitation(addCitationLevel: Bool = false) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: self)
         var newParagraphs: [Int] = []
         var levels: [Int] = [0]
@@ -62,6 +51,9 @@ public extension NSAttributedString {
             }
             if char.isNewline() {
                 for _ in levels {
+                    newParagraphs.append(index)
+                }
+                if addCitationLevel && levels.isEmpty {
                     newParagraphs.append(index)
                 }
             }
@@ -86,10 +78,10 @@ public extension NSAttributedString {
         return attributedString.replacingOccurrences(ofWith: ["›" : "", "‹" : "\n"])
     }
 
-    func replacingOccurrences(ofWith: [String: String]) -> NSAttributedString {
+    func replacingOccurrences<T>(ofWith: [String: T]) -> NSAttributedString {
 
         let attributedString = NSMutableAttributedString(attributedString: self)
-        let charsToReplace = Array(ofWith.keys.map { String($0) })
+        let charsToReplace = Array(ofWith.keys)
 
         for charToReplace in charsToReplace {
             while attributedString.mutableString.contains(charToReplace) {
@@ -98,7 +90,12 @@ public extension NSAttributedString {
                     // early quit, nothing to do and also avoid an endless loop
                     break
                 }
-                attributedString.replaceCharacters(in: range, with: ofWith[charToReplace] ?? "")
+                if let value = ofWith[charToReplace] as? String {
+                    attributedString.replaceCharacters(in: range, with: value)
+                }
+                if let value = ofWith[charToReplace] as? NSAttributedString {
+                    attributedString.replaceCharacters(in: range, with: value)
+                }
             }
         }
 

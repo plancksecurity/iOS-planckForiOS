@@ -196,16 +196,15 @@ extension ComposeViewModel {
                 var result = attributedString
                 switch composeMode {
                 case .replyFrom:
-//                    result = ReplyUtil.citedMessageText(textToCite: attributedString,
-//                                                        fromMessage: msg)
-                    // add new line above cited text
-                    result = NSAttributedString(string: "\n\n") + result.toCitation()
+                    let verticalSpace = NSAttributedString(string: "\n\n")
+                    let citationHeader = NSAttributedString(string:  ReplyUtil.citationHeaderForMessage(msg))
+                    let messageCited = result.toCitation(addCitationLevel: true)
+                    result = verticalSpace + citationHeader + messageCited
                 case .forward:
-                    // forwarded messages must have a cite header ("yxz wrote on ...")
-//                    result = ReplyUtil.citedMessageText(textToCite: attributedString,
-//                                                        fromMessage: msg)
-                    // add new line above cited text
-                    result = NSAttributedString(string: "\n\n") + result.toCitation()
+                    let verticalSpace = NSAttributedString(string: "\n\n")
+                    let citationHeader = "" // NSAttributedString(string:  ReplyUtil.citationHeaderForMessage(msg))
+                    let messageCited = result.toCitation()
+                    result = verticalSpace + citationHeader + messageCited
                 default:
                     break
                 }
