@@ -20,7 +20,7 @@
 //        vm = ClientCertificateImportViewModel(certificateUrl: fakeURL, delegate: self,
 //                                                passwordChangeDelegate: self)
 //    }
-// 
+//
 //    override func tearDown() {
 //        vm = nil
 //    }
@@ -41,22 +41,23 @@
 //extension ClientCertificatePasswordViewModelTest: ClientCertificateImportViewModelDelegate {
 //    func showError(type: ImportCertificateError, dissmisAfterError: Bool) {
 //    }
-//    
+//
 //    func dismiss() {
 //        expHandleCancelButtonPressed.fulfill()
 //    }
 //}
 //
-////extension ClientCertificatePasswordViewModelTest: ClientCertificatePasswordViewModelPasswordChangeDelegate {
-////    func didEnter(password: String) {
-////        let exp = Constant.password
-////        XCTAssertEqual(password, exp)
-////        expHandleOkButtonPressed.fulfill()
-////    }
-////}
+//extension ClientCertificatePasswordViewModelTest: ClientCertificatePasswordViewModelPasswordChangeDelegate {
+//    func didEnter(password: String) {
+//        let exp = Constant.password
+//        XCTAssertEqual(password, exp)
+//        expHandleOkButtonPressed.fulfill()
+//    }
+//}
 //
 //// MARK: - Mock Data
 //
 //private struct Constant {
 //    static let password = "1234"
 //}
+////XAVIER:

@@ -429,13 +429,11 @@ extension String {
         }
         let pattern = "[^A-Za-z]"
         words = words.map { $0.replacingOccurrences(of: pattern, with: "", options: [.regularExpression]) }
-        
         if words.count == 1 {
-            return prefix(ofLength: 2)
+            return prefix(ofLength: 1).capitalized
         }
         let word1 = words[0]
         let word2 = words[words.count - 1]
-        
         let prefix1 = word1.prefix(ofLength: 1)
         let prefix2 = word2.prefix(ofLength: 1)
         return "\(prefix1.capitalized)\(prefix2.capitalized)"
