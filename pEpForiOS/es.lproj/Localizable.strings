@@ -154,7 +154,7 @@
 
 /* accept hand shake confirm button
    Confirm correct trustwords/PGP fingerprint */
-"Confirm" = "Aceptar";
+"Confirm" = "Confirmar";
 
 /* Confirm less secure answering message alert title */
 "Confirm Answer" = "Confirmar Respuesta";
@@ -424,7 +424,8 @@
 /* EmailList action title */
 "Mark as Read" = "Marcar como leído";
 
-/* EmailList action title */
+/* Email Detail View reply button menu - toggle seen state button text: unread
+   EmailList action title */
 "Mark as unread" = "Marcar como no leído";
 
 /* Mistrusted - Step 1

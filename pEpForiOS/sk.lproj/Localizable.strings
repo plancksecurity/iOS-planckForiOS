@@ -424,7 +424,8 @@
 /* EmailList action title */
 "Mark as Read" = "Označiť ako prečítané";
 
-/* EmailList action title */
+/* Email Detail View reply button menu - toggle seen state button text: unread
+   EmailList action title */
 "Mark as unread" = "Označiť ako neprečítané";
 
 /* Mistrusted - Step 1
@@ -622,7 +623,7 @@
 
 /* action sheet title 1
    Privacy Status Label */
-"Privacy Status" = "Stav ochrany osobných údajov";
+"Privacy Status" = "Stav súkromia";
 
 /* title for subject protection */
 "Protect Message Subject" = "Chrániť predmet správy";
