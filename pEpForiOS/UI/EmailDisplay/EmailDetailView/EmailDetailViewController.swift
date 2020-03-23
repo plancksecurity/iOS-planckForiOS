@@ -149,7 +149,8 @@ class EmailDetailViewController: BaseViewController {
                 return
             }
             me.performSegue(withIdentifier: .segueForward , sender: self)
-        }.withCancelOption()
+        }.withToggelMarkSeenOption(for: vm.message(representedByRowAt: indexPath))
+            .withCancelOption()
             .build()
 
         if let popoverPresentationController = alert.popoverPresentationController {
@@ -228,7 +229,7 @@ extension EmailDetailViewController {
 
     @objc
     private func showTrustManagementView(gestureRecognizer: UITapGestureRecognizer? = nil) {
-            performSegue(withIdentifier: .segueTrustManagement, sender: self)
+        performSegue(withIdentifier: .segueTrustManagement, sender: self)
     }
 
     private var indexPathOfCurrentlyVisibleCell: IndexPath? {
@@ -803,7 +804,6 @@ extension EmailDetailViewController {
         
         separatorsArray.append(contentsOf: [spacer,midSpacer])
     }
-
     private func setupToolbar() {
         if onlySplitViewMasterIsShown {
             navigationController?.setToolbarHidden(false, animated: false)
@@ -812,13 +812,13 @@ extension EmailDetailViewController {
             navigationController?.setToolbarHidden(true, animated: false)
             navigationController?.setNavigationBarHidden(false, animated: false)
         }
-
         let size = CGSize(width: 15, height: 25)
         nextButton?.image = nextButton?.image?.resizeImage(targetSize: size)
         previousButton?.image = previousButton?.image?.resizeImage(targetSize: size)
 
         if !onlySplitViewMasterIsShown {
-            //Up & down buttons
+            // Up & Down Buttons
+
             let nextPrevButtonSize = CGRect(x: 0, y: 0, width: 27, height: 15)
 
             let downButton = UIButton(frame: nextPrevButtonSize)
@@ -831,6 +831,7 @@ extension EmailDetailViewController {
             let upImage = UIImage(named: "chevron-icon-up")?.withRenderingMode(.alwaysTemplate)
             upButton.setBackgroundImage(upImage, for: .normal)
             upButton.tintColor = thereIsAPreviousMessageToShow ? UIColor.pEpGreen : UIColor.pEpGray
+
             upButton.addTarget(self, action: #selector(showPreviousIfAny), for: .touchUpInside)
             upButton.isEnabled = thereIsAPreviousMessageToShow
 
