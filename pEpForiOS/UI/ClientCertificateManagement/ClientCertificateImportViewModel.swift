@@ -25,33 +25,21 @@ final class ClientCertificateImportViewModel {
     weak private var delegate: ClientCertificateImportViewModelDelegate?
     private let clientCertificateUtil: ClientCertificateUtilProtocol
     private var certificateUrl: URL
-    /// Whether or not the file at url is in a secure enclave
-    private let ceritficateUrlIsInSecureEnclave: Bool
     private var p12Data: Data?
 
     init(certificateUrl: URL,
-         ceritficateUrlIsInSecureEnclave: Bool? = nil,
          delegate: ClientCertificateImportViewModelDelegate? = nil,
          clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
         self.certificateUrl = certificateUrl
-        self.ceritficateUrlIsInSecureEnclave = ceritficateUrlIsInSecureEnclave ?? true
         self.delegate = delegate
         self.clientCertificateUtil = clientCertificateUtil ?? ClientCertificateUtil()
     }
     
     public func importClientCertificate() {
         do {
-            if ceritficateUrlIsInSecureEnclave {
-                let accessGranted = certificateUrl.startAccessingSecurityScopedResource()
-                guard accessGranted else {
-                    delegate?.showError(type: .noPermissions, dissmisAfterError: true)
-                    return
-                }
-            }
+            CFURLStartAccessingSecurityScopedResource(certificateUrl as CFURL)
+            defer { CFURLStopAccessingSecurityScopedResource(certificateUrl as CFURL) }
             p12Data = try Data(contentsOf: certificateUrl)
-            if ceritficateUrlIsInSecureEnclave {
-                certificateUrl.stopAccessingSecurityScopedResource()
-            }
         } catch {
             delegate?.showError(type: .corruptedFile, dissmisAfterError: true)
             return
