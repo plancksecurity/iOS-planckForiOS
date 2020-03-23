@@ -81,6 +81,7 @@ final class ClientCertificateManagementViewModel {
         }
     }
     
+    /// generate new rows from actual data
     public func refreshData() {
         setup()
     }
