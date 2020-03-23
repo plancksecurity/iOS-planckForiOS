@@ -80,6 +80,10 @@ final class ClientCertificateManagementViewModel {
             return false
         }
     }
+    
+    public func refreshData() {
+        setup()
+    }
 }
 
 // MARK: - Private
