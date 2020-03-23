@@ -42,7 +42,7 @@ class FolderTableViewController: BaseTableViewController {
     }
 
     private func initialConfig() {
-        self.title = NSLocalizedString("Mailboxes", comment: "FoldersView navigationbar title")
+        title = NSLocalizedString("Mailboxes", comment: "FoldersView navigationbar title")
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
@@ -60,7 +60,10 @@ class FolderTableViewController: BaseTableViewController {
             barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
             target: nil,
             action: nil)
-        self.toolbarItems = [flexibleSpace,item]
+        let compose = UIBarButtonItem.getComposeButton(
+            action:#selector(showCompose),
+            target: self)
+        toolbarItems = [flexibleSpace, compose, flexibleSpace, item]
     }
 
     @objc private func pullToRefresh() {
@@ -76,6 +79,10 @@ class FolderTableViewController: BaseTableViewController {
 
     // MARK: - Action
 
+    @objc private func showCompose() {
+        UIUtils.presentComposeView(forRecipientInUrl: nil, appConfig: appConfig)
+    }
+    
     @objc private func showSettingsViewController() {
         UIUtils.presentSettings(appConfig: appConfig)
     }
