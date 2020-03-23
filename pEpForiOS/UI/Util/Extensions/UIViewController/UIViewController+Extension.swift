@@ -10,6 +10,12 @@ import UIKit
 import PEPObjCAdapterFramework
 
 extension UIViewController {
+    var isIpad : Bool {
+        return UIDevice.current.userInterfaceIdiom == .pad
+    }
+    var isLandscape: Bool {
+        return UIDevice.current.orientation.isLandscape
+    }
     var isModalViewCurrentlyShown: Bool {
         return presentedViewController != nil
     }
@@ -62,47 +68,47 @@ extension UIViewController {
 
             return badgeView
         }
-
         return nil
     }
 
-    @discardableResult
-    func presentKeySyncWizard(meFPR: String,
-                              partnerFPR: String,
-                              isNewGroup: Bool,
-                              completion: @escaping (KeySyncWizardViewController.Action) -> Void )
-        -> KeySyncWizardViewController? {
-            guard let pageViewController = KeySyncWizardViewController.fromStoryboard(meFPR: meFPR,
-                                                                                      partnerFPR: partnerFPR,
-                                                                                      isNewGroup: isNewGroup,
-                                                                                      completion: completion) else {
-                                                                                        return nil
-            }
-            DispatchQueue.main.async { [weak self] in
-                pageViewController.modalPresentationStyle = .overFullScreen
-                self?.present(pageViewController, animated: true, completion: nil)
-            }
-            return pageViewController
+    func hideNavigationBarIfSplitViewShown() {
+        if !onlySplitViewMasterIsShown {
+            navigationController?.setNavigationBarHidden(true, animated: false)
+        }
     }
 
-    @discardableResult
-    /// Show simple UIActivityIndicatorView in midle of current view
+    func showNavigationBar() {
+            navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+}
+
+// MARK: - SplitViewControllerBehaviorProtocol
+extension UIViewController: SplitViewControllerBehaviorProtocol {
+    /// Method to detect the actual status of the splitViewController
     ///
-    /// - Returns: UIActivityIndicatorView. Useful to hold for removing from super view
-    func showActivityIndicator() -> UIActivityIndicatorView {
-        let activityIndicator = UIActivityIndicatorView(style: .gray)
-        activityIndicator.startAnimating()
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-
-        view.addSubview(activityIndicator)
-
-        NSLayoutConstraint(item: activityIndicator, attribute: .centerX, relatedBy: .equal,
-                           toItem: view, attribute: .centerX, multiplier: 1,
-                           constant: 0).isActive = true
-        NSLayoutConstraint(item: activityIndicator, attribute: .centerY, relatedBy: .equal,
-                           toItem: view, attribute: .centerY, multiplier: 1,
-                           constant: 0).isActive = true
-
-        return activityIndicator
+    /// - Returns: returns the value of the actual status of the split view controller using SplitViewDisplayMode
+    func currentSplitViewMode() -> UISplitViewController.SplitViewDisplayMode {
+        
+        if let selfsplit = self as? UISplitViewController {
+            return selfsplit.currentDisplayMode
+        }
+        guard let splitview = splitViewController else {
+            return .onlyMaster
+        }
+        return splitview.currentDisplayMode
+    }
+    
+    var onlySplitViewMasterIsShown: Bool {
+        get {
+            return currentSplitViewMode() == .onlyMaster
+        }
+    }
+    
+    var collapsedBehavior: CollapsedSplitViewBehavior {
+        return .disposable
+    }
+    
+    var separatedBehavior: SeparatedSplitViewBehavior {
+        return .master
     }
 }

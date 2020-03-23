@@ -11,6 +11,14 @@ import pEpIOSToolbox
 
 class TrustedServerSettingsViewController: BaseTableViewController {
     var viewModel = TrustedServerSettingsViewModel()
+    
+    override var collapsedBehavior: CollapsedSplitViewBehavior {
+        return .needed
+    }
+    
+    override var separatedBehavior: SeparatedSplitViewBehavior {
+        return .detail
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -123,8 +131,9 @@ extension TrustedServerSettingsViewController {
                                                 pepAlert?.dismiss()
                                                 return
                                             }
+                                            me.viewModel.setStoreSecurely(indexPath: indexPath,
+                                                                          toValue: false)
                                             pepAlert?.dismiss()
-                                            me.viewModel.setStoreSecurely(indexPath: indexPath, toValue: true)
         })
         pepAlert?.add(action: cancelAction)
         pepAlert?.add(action: trustAction)

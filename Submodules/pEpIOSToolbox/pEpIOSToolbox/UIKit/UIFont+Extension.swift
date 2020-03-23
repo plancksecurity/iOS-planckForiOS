@@ -19,6 +19,9 @@ extension UIFont {
     static private let regular = "SFUIText-Regular"
     static private let semibold = "SFUIText-Semibold"
 
+    
+    
+    
     /// Retrieves the font for the provided style and type
     /// - Parameters:
     ///   - style: The style of the font.

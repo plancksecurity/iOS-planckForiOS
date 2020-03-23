@@ -78,8 +78,7 @@ public struct Capability {
                                                     comment:
                         "Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions.")
                     UIUtils.showAlertWithOnlyPositiveButton(title: title,
-                                                            message: message,
-                                                            inViewController: vc)
+                                                            message: message)
                     completion(permissionsGranted, error)
                 }
             }

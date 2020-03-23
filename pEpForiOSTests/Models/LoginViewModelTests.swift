@@ -21,6 +21,7 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
 
 class LoginViewModelTests: CoreDataDrivenTestBase {
     class TestVerifiableAccount: VerifiableAccountProtocol {
+        var accountType: VerifiableAccount.AccountType = VerifiableAccount.AccountType.other
         var loginNameIMAP: String?
 
         var loginNameSMTP: String?
@@ -39,6 +40,7 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         var authMethod: AuthMethod?
         var password: String?
         var accessToken: OAuth2AccessTokenProtocol?
+        var clientCertificate: ClientCertificate?
         var serverIMAP: String?
         var portIMAP: UInt16 = 993
         var transportIMAP: ConnectionTransport = .TLS
@@ -53,6 +55,8 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         let loginNameIsValid = false
 
         let isValidUser = false
+
+        var containsCompleteServerInfo: Bool = false
 
         func verify() throws {
             XCTAssertEqual(address, accountSettings.idAddress)

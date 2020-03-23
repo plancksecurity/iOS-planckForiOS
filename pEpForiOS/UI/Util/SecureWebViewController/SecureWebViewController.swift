@@ -234,20 +234,30 @@ class SecureWebViewController: UIViewController {
                 return
             }
 
-            if me.isContentLoadedAndLayouted {
-                // We assuem initial loading is done.
-                // The size change must be zooming triggered by user.
-                return
-            }
-
             guard
                 let contentSize = change.newValue,
                 !me.shouldIgnoreContentSizeChange(newSize: contentSize) else {
                     return
             }
-            me.contentSize = contentSize
-            me.lastReportedSizeUpdate = Date()
-            me.delegate?.secureWebViewController(me, sizeChangedTo: contentSize)
+
+            if contentSize.width == me.view.bounds.width {
+                // In case there is no zoom but the vertical size still changed
+                me.contentSize = contentSize
+                me.lastReportedSizeUpdate = Date()
+                me.delegate?.secureWebViewController(me, sizeChangedTo: contentSize)
+            }
+            else {
+                if me.isContentLoadedAndLayouted {
+                    // We assuem initial loading is done.
+                    // The size change must be zooming triggered by user.
+                    return
+                }
+                
+                
+                me.contentSize = contentSize
+                me.lastReportedSizeUpdate = Date()
+                me.delegate?.secureWebViewController(me, sizeChangedTo: contentSize)
+            }
         }
         sizeChangeObserver = webView.scrollView.observe(\UIScrollView.contentSize,
                                                         options: [NSKeyValueObservingOptions.new],
@@ -462,10 +472,9 @@ extension UISplitViewController {
             }
 
             UIUtils.presentActionSheetWithContactOptions(forContactWithEmailAddress: mailAddress,
-                                                         on: self,
                                                          at: alertRect,
                                                          at: self.view,
-                                                        appConfig: appConfig)
+                                                         appConfig: appConfig)
         } else if alertTitle.hasPrefix(UrlClickHandler.Scheme.mailto.rawValue) {
             // It *is* an Action Sheet shown due to long-press on mailto: URL, but we do not know
             // the clicked address.

@@ -85,7 +85,6 @@ git clone https://pep-security.lu/gitlab/misc/ldns.git
 hg clone https://pep.foundation/dev/repos/pantomime-iOS/
 hg clone https://pep.foundation/dev/repos/pEpEngine
 hg clone https://pep.foundation/dev/repos/pEpObjCAdapter
-hg clone https://pep.foundation/dev/repos/MessageModel/
 hg clone https://pep.foundation/dev/repos/libAccountSettings/
 
 hg clone https://pep-security.ch/dev/repos/pEp_for_iOS/

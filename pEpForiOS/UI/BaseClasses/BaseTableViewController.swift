@@ -13,17 +13,37 @@ import MessageModel
 
 class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber {
 
+    /// Indicates when the navigation bar tint color must be white.
+    /// As in iOS 13 the property to set that color changed, we use this flag to set it properly.
+    /// Use it if for an specific view, the navigation bar tint color must be white.
+    /// To use is, set it to true before the segue is performed.
+    public var navigationBarTintColorWhite : Bool = false {
+        didSet {
+            if navigationBarTintColorWhite {
+                guard let navController = navigationController else {
+                    // This is a valid case. Not all ViewControllers are in a NavigationController
+                    return
+                }
+
+                navController.navigationBar.barTintColor = .white
+                navController.navigationBar.tintColor = .white
+                UINavigationBar.appearance().tintColor = .white
+            } else {
+                UINavigationBar.appearance().tintColor = .pEpGreen
+            }
+        }
+    }
+
     private var _appConfig: AppConfig?
     var appConfig: AppConfig {
         get {
             guard let safeConfig = _appConfig else {
                 Log.shared.errorAndCrash("No appConfig?")
 
-                // We have no config. Return something.
+                // We have no config. Return nonsense.
                 let errorPropagator = ErrorPropagator()
                 return AppConfig(errorPropagator: errorPropagator,
-                                 oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider(),
-                                 keySyncHandshakeService: KeySyncHandshakeService())
+                                 oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider())
             }
             return safeConfig
         }
@@ -46,9 +66,13 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             return
         }
         appConfig.errorPropagator.subscriber = self
-        appConfig.keySyncHandshakeService.presenter = self
         self.navigationController?.title = title
         BaseTableViewController.setupCommonSettings(tableView: tableView)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationBarTintColorWhite = false
     }
 
     static func setupCommonSettings(tableView: UITableView) {
@@ -109,7 +133,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             if error is SmtpSendError || error is ImapSyncOperationError {
                 smtpOrImapAuthError(error: error)
             } else {
-                UIUtils.show(error: error, inViewController: self)
+                UIUtils.show(error: error)
             }
         }
     }
@@ -131,6 +155,8 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                 break
             case .badResponse(_):
                 break
+            case .clientCertificateNotAccepted:
+                break
             }
         } else if let imapError = error as? ImapSyncOperationError {
             switch imapError {
@@ -150,13 +176,15 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                 break
             case .actionFailed:
                 break
+            case .clientCertificateNotAccepted:
+                break
             }
         }
         let showed = appConfig.showedAccountsError[extraInfo]
         if let swd = showed, swd  {
             //this error must not be shown
         } else {
-            UIUtils.show(error: error, inViewController: self)
+            UIUtils.show(error: error)
             if showed == nil {
                 appConfig.showedAccountsError[extraInfo] = false
             } else if showed == false {

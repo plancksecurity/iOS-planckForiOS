@@ -25,7 +25,9 @@
 
 /* alert action 3
    Alert cancel button title before trusting an account
+   Back button for client cert managment
    Cancel
+   Cancel button for client certificate password screen
    Cancel button title for manual account setup
    Cancel button title of pEp protection toggle action sheet
    Cancel for an alert view
@@ -40,7 +42,6 @@
    keySyncWizard animation view cancel button title
    Message actions
    MoveToFolderViewController NavigationBar canel button title
-   possible private status action
    UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
 "Cancel" = "Vazgeç";
 
@@ -50,11 +51,19 @@
 /* Compose field title */
 "CC:" = "Bilgi:";
 
+/* accept hand shake confirm button
+   Confirm correct trustwords/PGP fingerprint */
+"Confirm" = "Güvenlik kelimelerini Onayla";
+
 /* Confirm correct trustwords (pEp, long version) */
 "Confirm Trustwords" = "Trustwords'ü onayla";
 
-/* Settings: Cell (button) title to view app credits */
+/* Credits view title
+   Settings: Cell (button) title to view app credits */
 "Credits" = "Krediler";
+
+/* Incorrect trustwords/PGP fingerprint */
+"Decline" = "Hatalı Güvenlik kelimeleri";
 
 /* Account delete
    compose email delete
@@ -88,7 +97,7 @@
    Title of account picker when composing a message */
 "From:" = "Kimden:";
 
-/* possible privacy status action */
+/* Title of the view */
 "Handshake" = "Handshake";
 
 /* Title for manual account IMAP setup */
@@ -97,18 +106,24 @@
 /* Name of INBOX mailbox (of one account) */
 "Inbox" = "Gelen Kutusu";
 
+/* keySyncWizard completion view leave button title */
+"Leave" = "Ayrıl";
+
 /* Manual Setup button in Login View */
 "Manual setup" = "El ile ayar";
 
 /* EmailList action title */
 "Mark as Read" = "Okundu olarak işaretle";
 
-/* Privacy status title
-   privacyStatusTitle red */
+/* Mistrusted - Step 1
+   Privacy status title */
 "Mistrusted" = "Güvenilmez";
 
 /* File name used for videos the user attaches. */
 "Movie" = "Taşı";
+
+/* username */
+"Name" = "Adı";
 
 /* keySyncWizard intro view Next button title
    Next button title for manual account IMAP setup
@@ -127,6 +142,8 @@
    Filter accept text
    General alert positive button
    keySyncWizard completion view OK button title
+   OK (dismiss) button for iCloud instructions alert
+   OK button for client certificate password screen
    OK button for invalid accout settings user input alert
    UIAlertAction ok after error */
 "OK" = "Tamam";
@@ -134,14 +151,23 @@
 /* Name of outbox (showing messages to send */
 "Outbox" = "Giden Kutusu";
 
+/* Tableview section header */
+"p≡p sync" = "p≡p eşitleme";
+
 /* keySync handshake alert title
    keySyncWizard animation view title
    Settings: enable/disable p≡p Sync feature */
 "p≡p Sync" = "p≡p Sync";
 
+/* Passive mode title */
+"Passive mode" = "Pasif mod";
+
 /* Password placeholder for manual account setup
    Password TextField Placeholder in Login Screen */
 "Password" = "Şifre";
+
+/* keySyncWizard animation view message while we sync your devices */
+"Please give us a moment while we sync your devices. This can take a minute or more." = "Lütfen aygıtlarınızı eşitlememiz için zaman tanıyın. Bu işlem bir dakika veya daha uzun sürebilir.";
 
 /* keySync handshake alert message for two devices in group */
 "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?";
@@ -150,8 +176,12 @@
    Port placeholder for manual account SMTP setup */
 "Port" = "Port";
 
-/* action sheet title 1 */
+/* action sheet title 1
+   Privacy Status Label */
 "Privacy Status" = "Gizlilik Durumu";
+
+/* reject hand shake button */
+"Reject" = "Reddet";
 
 /* ComposeTableView: Label of swipe left. Removing of attachment. */
 "Remove" = "Kaldır";
@@ -172,7 +202,7 @@
 "Reset" = "Reset";
 
 /* Privacy status title
-   privacyStatusTitle yellow */
+   Secure Label - Step 1 */
 "Secure" = "Güvenli";
 
 /* acction sheet title 2
@@ -182,8 +212,17 @@
 /* Title manual account SMTP setup */
 "SMTP" = "SMTP";
 
+/* keySyncWizard error view message when syncing devices */
+"Something went wrong with syncing the devices. Please try again." = "Aygıtlar eşitlenirken bir şeyler yolunda gitmedi. Lütfen tekrar deneyin.";
+
 /* Compose field title */
 "Subject:" = "Konu:";
+
+/* Tableview section header: (p≡p) Sync */
+"Sync" = "Sync";
+
+/* KeySyncWizard complete message - more than two devices */
+"The device is now member of your device group. All your privacy is now synchronized." = "Aygıt artık aygıt grubunuzun bir üyesi. Gizliliğiniz artık tamamen işaretlendi.";
 
 /* Privacy status explanation */
 "This message cannot be decrypted because the key is not available." = "Bu mesaj deşifre edilememektedir çünkü anahtar bulunmamaktadır.";
@@ -218,12 +257,14 @@
 /* Trash button in slide-left menu */
 "Trash" = "Çöp";
 
+/* show tutorial from compose view */
+"Tutorial" = "Eğitim";
+
 /* Privacy status title */
 "Under Attack" = "Saldırı altında";
 
 /* Privacy status title
-   privacyStatusDescription no_color
-   privacyStatusTitle no_color */
+   privacyStatusDescription no_color */
 "Unknown" = "Bilinmeyen";
 
 /* Privacy status title */
@@ -235,10 +276,16 @@
 /* Privacy status title */
 "Unsecure for Some" = "Bazıları için güvensiz";
 
+/* setting row title: Unsecure reply warning */
+"Unsecure reply warning" = "Yanıt uyarısı güvenliğini kaldır";
+
 /* User Name placeholder for manual account IMAP setup
    User Name placeholder for manual account setup
    User Name placeholder for manual account SMTP setup */
 "User Name" = "Kullanıcı Adı";
+
+/* KeySyncWizard complete message - two devices */
+"We successfully created a device group. All your privacy is now synchronized." = "Başarıyla bir aygıt grubu oluşturduk. Gizliliğiniz artık tamamen işaretlendi.";
 
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Hatalı Trustwords";

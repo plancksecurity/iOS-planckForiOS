@@ -16,7 +16,7 @@ final class SMTPSettingsViewController: BaseViewController, TextfieldResponder {
     @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
     /// - Note: This VC doesn't have a view model yet, so this is used for the model.
-    var model: VerifiableAccountProtocol?
+    var verifiableAccount: VerifiableAccountProtocol?
 
     var fields = [UITextField]()
     var responder = 0
@@ -47,8 +47,11 @@ final class SMTPSettingsViewController: BaseViewController, TextfieldResponder {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        firstResponder(viewModelOrCrash().loginNameSMTP == nil)
+        guard let verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("No Verifiable account")
+            return
+        }
+        firstResponder(verifiableAccount.loginNameSMTP == nil)
     }
 
     @IBAction func didTapOnView(_ sender: Any) {
@@ -135,15 +138,20 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
     }
 
     func didChangeFirst(_ textField: UITextField) {
-        var vm = viewModelOrCrash()
-        vm.loginNameSMTP = textField.text
-        model = vm
+        guard var verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("No Verifiable account")
+            return
+        }
+        verifiableAccount.loginNameSMTP = textField.text
         updateView()
     }
 
     func didChangeSecond(_ textField: UITextField) {
-        var vm = viewModelOrCrash()
-        vm.serverSMTP = textField.text
+       guard var verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("No Verifiable account")
+            return
+        }
+        verifiableAccount.serverSMTP = textField.text
     }
 
     func didChangeThird(_ textField: UITextField) {
@@ -152,8 +160,11 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
                 //If not UInt16 then do nothing. Example empty string
                 return
         }
-        var vm = viewModelOrCrash()
-        vm.portSMTP = port
+        guard var verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("No Verifiable account")
+            return
+        }
+        verifiableAccount.portSMTP = port
     }
 
     func didChangeFourth(_ textField: UITextField) {
@@ -187,7 +198,7 @@ extension SMTPSettingsViewController: VerifiableAccountDelegate {
         switch result {
         case .success(()):
             do {
-                try model?.save() { [weak self] success in
+                try verifiableAccount?.save() { [weak self] success in
                     DispatchQueue.main.async { [weak self] in
                         guard let me = self else {
                             Log.shared.errorAndCrash("Lost MySelf")
@@ -199,7 +210,7 @@ extension SMTPSettingsViewController: VerifiableAccountDelegate {
                             me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
                         case false:
                             me.isCurrentlyVerifying = false
-                            UIUtils.show(error: VerifiableAccountValidationError.invalidUserData, inViewController: me)
+                            UIUtils.show(error: VerifiableAccountValidationError.invalidUserData)
                         }
                     }
                 }
@@ -213,23 +224,8 @@ extension SMTPSettingsViewController: VerifiableAccountDelegate {
                     return
                 }
                 me.isCurrentlyVerifying = false
-                UIUtils.show(error: error, inViewController: me)
+                UIUtils.show(error: error)
             }
-        }
-    }
-}
-
-// MARK: - Helpers
-
-extension SMTPSettingsViewController {
-    func viewModelOrCrash() -> VerifiableAccountProtocol {
-        if let vm = model {
-            return vm
-        } else {
-            Log.shared.errorAndCrash("No view model")
-            let vm = BaseVerifiableAccount()
-            model = vm
-            return vm
         }
     }
 }
@@ -244,17 +240,24 @@ extension SMTPSettingsViewController {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
-        var vm = viewModelOrCrash()
+        guard let verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("No Verifiable account")
+            return
+        }
 
-        setupView.firstTextField.set(text: vm.loginNameSMTP, animated: animated)
-        setupView.secondTextField.set(text: vm.serverSMTP, animated: animated)
-        setupView.thirdTextField.set(text: String(vm.portSMTP), animated: animated)
-        setupView.fourthTextField.set(text: vm.transportSMTP.localizedString(), animated: animated)
+        setupView.firstTextField.set(text: verifiableAccount.loginNameSMTP,
+                                     animated: animated)
+        setupView.secondTextField.set(text: verifiableAccount.serverSMTP,
+                                      animated: animated)
+        setupView.thirdTextField.set(text: String(verifiableAccount.portSMTP),
+                                     animated: animated)
+        setupView.fourthTextField.set(text: verifiableAccount.transportSMTP.localizedString(),
+                                      animated: animated)
 
-        setupView.pEpSyncSwitch.isOn = vm.keySyncEnable
+        setupView.pEpSyncSwitch.isOn = verifiableAccount.keySyncEnable
 
-        setupView.nextButton.isEnabled = vm.isValidUser
-        setupView.nextRightButton.isEnabled = vm.isValidUser
+        setupView.nextButton.isEnabled = verifiableAccount.isValidUser
+        setupView.nextRightButton.isEnabled = verifiableAccount.isValidUser
 
         if isCurrentlyVerifying {
             LoadingInterface.showLoadingInterface()
@@ -268,7 +271,7 @@ extension SMTPSettingsViewController {
     ///
     /// - Throws: AccountVerificationError
     private func verifyAccount() throws {
-        guard var viewModel = model else {
+        guard var viewModel = verifiableAccount else {
             Log.shared.errorAndCrash("No view model in STMP ViewController")
             return
         }
@@ -339,7 +342,7 @@ extension SMTPSettingsViewController {
                                        comment: "UI alert message for transport protocol"),
             preferredStyle: .actionSheet)
         let block: (ConnectionTransport) -> () = { transport in
-            self.model?.transportSMTP = transport
+            self.verifiableAccount?.transportSMTP = transport
             sender.text = transport.localizedString()
         }
 

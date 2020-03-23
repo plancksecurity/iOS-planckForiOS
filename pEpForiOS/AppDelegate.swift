@@ -16,21 +16,21 @@ import PEPObjCAdapterFramework
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
-    var appConfig: AppConfig?
+    private var appConfig: AppConfig?
 
     /** The model */
-    var messageModelService: MessageModelServiceProtocol?
+    private var messageModelService: MessageModelServiceProtocol?
 
     /// Error Handler bubble errors up to the UI
-    var errorPropagator = ErrorPropagator()
+    private var errorPropagator = ErrorPropagator()
 
     /// This is used to handle OAuth2 requests.
-    let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
+    private let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
-    var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
+    private var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
 
     /// Set to true whever the app goes into background, so the main PEPSession gets cleaned up.
-    var shouldDestroySession = false
+    private var shouldDestroySession = false
 
     private func setupInitialViewController() -> Bool {
         guard let appConfig = appConfig else {
@@ -54,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func cleanupPEPSessionIfNeeded() {
+    private func cleanupPEPSessionIfNeeded() {
         if shouldDestroySession {
             PEPSession.cleanup()
         }
@@ -64,12 +64,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let keySyncHandshakeService = KeySyncHandshakeService()
         messageModelService = MessageModelService(errorPropagator: errorPropagator,
                                                   cnContactsAccessPermissionProvider: AppSettings.shared,
-                                                  keySyncServiceHandshakeDelegate: keySyncHandshakeService,
+                                                  keySyncServiceHandshakeHandler: KeySyncHandshakeService(),
                                                   keySyncStateProvider: AppSettings.shared)
 
         appConfig = AppConfig(errorPropagator: errorPropagator,
-                              oauth2AuthorizationFactory: oauth2Provider,
-                              keySyncHandshakeService: keySyncHandshakeService)
+                              oauth2AuthorizationFactory: oauth2Provider)
 
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = appConfig
@@ -80,10 +79,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserNotificationTool.askForPermissions()
     }
 
-    // MARK: - UIApplicationDelegate
+    // MARK: - HELPER
+
+    private func cleanup(andCall completionHandler:(UIBackgroundFetchResult) -> Void,
+                                result:UIBackgroundFetchResult) {
+        PEPSession.cleanup()
+        completionHandler(result)
+    }
+}
+
+// MARK: - UIApplicationDelegate
+
+extension AppDelegate {
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.errorAndCrash("applicationDidReceiveMemoryWarning")
+        //Log.shared.errorAndCrash("applicationDidReceiveMemoryWarning")
     }
 
     func application(_ application: UIApplication,
@@ -95,14 +105,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
-
-        Appearance.pEp()
-
+        Appearance.setup    ()
         setupServices()
-
         askUserForNotificationPermissions()
+        var result = setupInitialViewController()
 
-        let result = setupInitialViewController()
+        if let openedToOpenFile = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
+            // We have been opened by the OS to handle a certain file.
+             result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
+        }
 
         return result
     }
@@ -167,7 +178,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        
+
         guard let messageModelService = messageModelService else {
             Log.shared.error("no networkService")
             return
@@ -189,11 +200,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    func application(_ app: UIApplication, open url: URL,
+    func application(_ app: UIApplication,
+                     open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        // Unclear if this is needed, presumabley doesn't get invoked for OAuth2 because
-        // SFSafariViewController is involved there.
-        return oauth2Provider.processAuthorizationRedirect(url: url)
+         return handleUrlTheOSHasBroughtUsToForgroundFor(url)
     }
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity,
@@ -203,14 +213,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return oauth2Provider.processAuthorizationRedirect(url: theUrl)
         }
         return false
-    }
-
-    // MARK: - HELPER
-
-    private func cleanup(andCall completionHandler:(UIBackgroundFetchResult) -> Void,
-                                result:UIBackgroundFetchResult) {
-        PEPSession.cleanup()
-        completionHandler(result)
     }
 }
 
@@ -222,5 +224,43 @@ extension AppDelegate {
             UserNotificationTool.postUserNotification(forNumNewMails: numNewMails)
             completion()
         }
+    }
+}
+
+// MARK: - Client Certificate Import
+
+extension AppDelegate {
+
+    @discardableResult
+    private func handleUrlTheOSHasBroughtUsToForgroundFor(_ url: URL) -> Bool {
+        switch url.pathExtension {
+        case ClientCertificateImportViewController.pEpClientCertificateExtension:
+            return handleClientCertificateImport(forCertAt: url)
+        default:
+            Log.shared.errorAndCrash("Unexpected call. open for file with extention: %@",
+                                     url.pathExtension)
+        }
+        return false
+    }
+
+    private func handleClientCertificateImport(forCertAt url: URL) -> Bool {
+        guard url.pathExtension == ClientCertificateImportViewController.pEpClientCertificateExtension else {
+            Log.shared.errorAndCrash("This method is only for .pEp12 files.")
+            return false
+        }
+        guard let topVC = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("We must have a VC at this point.")
+            return false
+        }
+        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
+            return false
+        }
+        vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url, delegate: vc)
+        if let topDelegate = topVC as? ClientCertificateImportViewControllerDelegate {
+            vc.delegate = topDelegate
+        }
+        vc.modalPresentationStyle = .fullScreen
+        topVC.present(vc, animated: true)
+        return true
     }
 }

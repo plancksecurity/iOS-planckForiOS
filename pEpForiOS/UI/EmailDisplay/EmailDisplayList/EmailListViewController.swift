@@ -18,12 +18,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     private let flexibleSpaceButtonItemTag = 77
     /// True if the pEp button on the left/master side should be shown.
     private var shouldShowPepButtonInMasterToolbar = true
-    /// The key path for observing the view controllers of the split view controller,
-    /// compatible with Objective-C.
-    private let splitViewObserverKeyPath = #keyPath(UISplitViewController.viewControllers)
-    /// With KVO we have to keep our books lest not to remove an observer without
-    /// observing first.
-    private var observingSplitViewControllers = false
 
     public static let storyboardId = "EmailListViewController"
     public static let storyboardNavigationControllerId = "EmailListNavigationViewController"
@@ -58,9 +52,11 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
                                                             action: nil)
 
     // MARK: - Life Cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        edgesForExtendedLayout = .all
+
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -76,7 +72,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
             me.updateFilterButtonView()
             vm.startMonitoring() //!!!: UI should not know about startMonitoring
             me.tableView.reloadData()
-            me.watchDetailView()
             me.doOnce = nil
         }
         setup()
@@ -100,14 +95,9 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
         if !vm.showLoginView {
             doOnce?()
         }
-
         updateFilterText()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        unwatchDetailView()
-    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -116,7 +106,7 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     // MARK: - Setup
 
     private func setup() {
-        tableView.separatorInset = UIEdgeInsets.zero
+        tableView.separatorInset = .zero
         tableView.delegate = self
         tableView.dataSource = self
         // rm seperator lines for empty view/cells
@@ -142,8 +132,7 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
         ///if we are in setup and the folder is unifiedInbox
         ///we have to reload the unifiedInbox to ensure that all the accounts are present.
         if vm.folderToShow is UnifiedInbox {
-            viewModel = EmailListViewModel(delegate: self,
-                                           folderToShow: UnifiedInbox())
+            viewModel = EmailListViewModel(delegate: self, folderToShow: UnifiedInbox())
         }
         setupRefreshControl()
 
@@ -183,30 +172,14 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     // MARK: - Search Bar
 
     private func setupSearchBar() {
-        definesPresentationContext = true
-        configureSearchBar()
         if #available(iOS 11.0, *) {
             searchController.isActive = false
+            searchController.searchResultsUpdater = self
+            searchController.dimsBackgroundDuringPresentation = false
+            searchController.delegate = self
+            definesPresentationContext = true
             navigationItem.searchController = searchController
             navigationItem.hidesSearchBarWhenScrolling = true
-        } else {
-            addSearchBar10()
-
-            if tableView.tableHeaderView == nil {
-                tableView.tableHeaderView = searchController.searchBar
-            }
-
-            // some notifications to control when the app enter and recover from background
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didBecomeActiveInstallSearchBar10),
-                name: UIApplication.didBecomeActiveNotification,
-                object: nil)
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didBecomeInactiveUninstallSearchbar10),
-                name: UIApplication.didEnterBackgroundNotification,
-                object: nil)
         }
     }
 
@@ -225,55 +198,14 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
             }
         }
     }
-
-    /**
-     Configure the search controller, shared between iOS versions 11 and earlier.
-     */
-    private func configureSearchBar() {
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.delegate = self
-    }
-
-    /**
-     Showing the search controller in versions iOS 10 and earlier.
-     */
-    @objc func didBecomeActiveInstallSearchBar10() {
-        if tableView.tableHeaderView == nil {
-            tableView.tableHeaderView = searchController.searchBar
-        }
-    }
-
-    /**
-     Hide/remove the search controller in versions iOS 10 and earlier.
-     */
-    @objc func didBecomeInactiveUninstallSearchbar10() {
-        tableView.tableHeaderView = nil
-    }
-
-    /**
-     Add the search bar when running on iOS 10 or earlier.
-     */
-    private func addSearchBar10() {
-        tableView.tableHeaderView = searchController.searchBar
-        tableView.setContentOffset(CGPoint(x: 0.0,
-                                           y: searchController.searchBar.frame.size.height),
-                                   animated: false)
-    }
-
     // MARK: - Other
 
     private func showEditDraftComposeView() {
         performSegue(withIdentifier: SegueIdentifier.segueEditDraft, sender: self)
     }
 
-    /// we have to handle the ipad/iphone segue in a different way. see IOS-1737
     private func showEmail(forCellAt indexPath: IndexPath) {
-        if onlySplitViewMasterIsShown {
-            performSegue(withIdentifier: SegueIdentifier.segueShowEmailNotSplitView, sender: self)
-        } else {
-            performSegue(withIdentifier: SegueIdentifier.segueShowEmailSplitView, sender: self)
-        }
+        performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
     }
 
     private func showNoMessageSelected() {
@@ -366,18 +298,18 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 
 
         //right navigation button to ensure the logic
-        let cancel = UIBarButtonItem(title: "Cancel",
+        let cancel = UIBarButtonItem(title: NSLocalizedString("Cancel",
+                                                              comment: "EmailList: Cancel edit mode button title"),
                                      style: UIBarButtonItem.Style.plain,
                                      target: self,
                                      action: #selector(cancelToolbar(_:)))
 
         editRightButton = navigationItem.rightBarButtonItem
         navigationItem.rightBarButtonItem = cancel
-
     }
 
     @objc private func showSettingsViewController() {
-        UIUtils.presentSettings(on: self, appConfig: appConfig)
+        UIUtils.presentSettings(appConfig: appConfig)
     }
 
     @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
@@ -702,6 +634,17 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         vm.fetchOlderMessagesIfRequired(forIndexPath: indexPath)
     }
 
+    func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
+        // Using a UITableView (not UITableViewController), the default scroll-to-top gesture
+        // (tap on status bar) is broken in this view. It ands up with a content offset > (0.0),
+        // showing the inactive pull-to-refresh spinner. This is probably caused by our workaround
+        // for adding a pull-to-refresh spinner without gliches.
+        //To work around the wron content offset, we intersept the default implementation here and
+        // trigger scoll to top ourselfs.
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        return false
+    }
+
     // MARK: - SwipeTableViewCellDelegate
 
     func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
@@ -759,40 +702,6 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         }
         return theItems
     }
-
-    // MARK: - Observing the split view controller
-
-    //???: Hard to undestand. What is the observeer used for? Out of 3 devs, zero understood.
-
-    /// Start observing the view controllers in the split view.
-    private func watchDetailView() {
-        if !observingSplitViewControllers, let spvc = splitViewController {
-            spvc.addObserver(self,
-                             forKeyPath: splitViewObserverKeyPath,
-                             options: [],
-                             context: nil)
-            observingSplitViewControllers = true
-        }
-    }
-
-    /// Stop listening for changes in the view controllers in the split view.
-    private func unwatchDetailView() {
-        if observingSplitViewControllers, let spvc = splitViewController {
-            spvc.removeObserver(self, forKeyPath: splitViewObserverKeyPath)
-            observingSplitViewControllers = false
-        }
-    }
-
-    /// React to changes to the view controllers of our split view controller.
-    override func observeValue(forKeyPath keyPath: String?,
-                               of object: Any?,
-                               change: [NSKeyValueChangeKey : Any]?,
-                               context: UnsafeMutableRawPointer?) {
-        if keyPath != splitViewObserverKeyPath {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-            return
-        }
-    }
 }
 
 // MARK: - UISearchResultsUpdating, UISearchControllerDelegate
@@ -821,15 +730,6 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListViewModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
-
-    func checkIfSplitNeedsUpdate(indexpath: [IndexPath]) {
-        guard let last = lastSelectedIndexPath else {
-            return
-        }
-        if !onlySplitViewMasterIsShown && indexpath.contains(last) {
-            showEmail(forCellAt: last)
-        }
-    }
 
     func reloadData(viewModel: EmailDisplayViewModel) {
         tableView.reloadData()
@@ -896,6 +796,14 @@ extension EmailListViewController: EmailListViewModelDelegate {
         let cell = tableView.cellForRow(at: indexPath)
         guard !(cell?.isSelected ?? false) else {
             // the cell is already selected. Nothing to do
+            return
+        }
+
+        let numberOfRows = tableView.numberOfRows(inSection: indexPath.section)
+        if indexPath.row >= numberOfRows {
+            Log.shared.errorAndCrash("Selecting out-of-bounds index %d of max %d",
+                                     indexPath.row,
+                                     numberOfRows - 1)
             return
         }
 
@@ -1163,8 +1071,7 @@ extension EmailListViewController: SegueHandlerType {
     
     enum SegueIdentifier: String {
         case segueAddNewAccount
-        case segueShowEmailSplitView
-        case segueShowEmailNotSplitView
+        case segueShowEmail
         case segueCompose
         case segueReply
         case segueReplyAll
@@ -1186,10 +1093,9 @@ extension EmailListViewController: SegueHandlerType {
              .segueCompose,
              .segueEditDraft:
             setupComposeViewController(for: segue)
-        case .segueShowEmailNotSplitView, .segueShowEmailSplitView:
+        case .segueShowEmail:
             guard
-                let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? EmailDetailViewController,
+                let vc = segue.destination as? EmailDetailViewController,
                 let indexPath = lastSelectedIndexPath else {
                     Log.shared.errorAndCrash("Segue issue")
                     return
@@ -1213,12 +1119,12 @@ extension EmailListViewController: SegueHandlerType {
         case .segueAddNewAccount:
             guard
                 let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? LoginViewController else {
+                let vc = nav.rootViewController as? AccountTypeSelectorViewController else {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
             vc.appConfig = appConfig
-            vc.delegate = self
+            vc.loginDelegate = self
             vc.hidesBottomBarWhenPushed = true
             break
         case .segueFolderViews:

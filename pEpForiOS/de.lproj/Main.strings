@@ -17,16 +17,16 @@
 "BjL-CL-0Cu.text" = "Diese E-Mail wurde über einen E-Mail-Verteiler gesendet.";
 
 /* Class = "UIViewController"; title = "Move to Account"; ObjectID = "EmS-3d-sKb"; */
-"EmS-3d-sKb.title" = "Zum Konto verschieben";
+"EmS-3d-sKb.title" = "Zu Konto verschieben";
 
-/* Class = "UILabel"; text = "Subject"; ObjectID = "ha5-Vd-x3U"; */
-"ha5-Vd-x3U.text" = "Betreff";
+/* Class = "UILabel"; text = "Subject jlkfj glkafj kal jfa slfaj alsjf aslj fsajk"; ObjectID = "ha5-Vd-x3U"; */
+"ha5-Vd-x3U.text" = "Betreff jlkfj glkafj kal jfa slfaj alsjf aslj fsajk";
 
 /* Class = "UILabel"; text = "Sender"; ObjectID = "hnw-Tp-mga"; */
 "hnw-Tp-mga.text" = "Sender";
 
-/* Class = "UILabel"; text = "Sender"; ObjectID = "KTi-T9-Inm"; */
-"KTi-T9-Inm.text" = "Absender";
+/* Class = "UILabel"; text = "Sender sfasflask jfhsajfkas fjksaj"; ObjectID = "KTi-T9-Inm"; */
+"KTi-T9-Inm.text" = "Absender sfasflask jfhsajfkas fjksaj";
 
 /* Class = "UILabel"; text = "To: Recipients"; ObjectID = "Mfx-AS-hpP"; */
 "Mfx-AS-hpP.text" = "An: Empfänger";
@@ -54,6 +54,9 @@
 
 /* Class = "UILabel"; text = "Date"; ObjectID = "Swb-L2-8yp"; */
 "Swb-L2-8yp.text" = "Datum";
+
+/* Class = "UILabel"; text = "Summary"; ObjectID = "Tbi-dG-KCA"; */
+"Tbi-dG-KCA.text" = "Zusammenfassung";
 
 /* Class = "UILabel"; text = "Subject"; ObjectID = "xrz-WN-2Dg"; */
 "xrz-WN-2Dg.text" = "Betreff";

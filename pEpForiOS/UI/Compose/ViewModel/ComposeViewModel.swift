@@ -485,8 +485,9 @@ extension ComposeViewModel {
         // Remove from state
         var newNonInlinedAttachments = [Attachment]()
         for att in state.nonInlinedAttachments {
+            let safeRemovee = removee.safeForSession(att.session)
             att.session.performAndWait {
-                if att != removee {
+                if att != safeRemovee {
                     newNonInlinedAttachments.append(att)
                 }
             }

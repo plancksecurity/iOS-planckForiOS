@@ -21,13 +21,14 @@ protocol EmailViewControllerDelegate: class {
 class EmailViewController: BaseTableViewController {
     private var tableData: ComposeDataSource?
     lazy private var documentInteractionController = UIDocumentInteractionController()
+    private var clientCertificateImportViewController: ClientCertificateImportViewController?
 
-    static let storyboard = "Main"
+    static public let storyboard = "Main"
     static let storyboardId = "EmailViewController"
     weak var delegate: EmailViewControllerDelegate?
     var message: Message?
     lazy var clickHandler: UrlClickHandler = {
-        return UrlClickHandler(actor: self, appConfig: appConfig)
+        return UrlClickHandler(appConfig: appConfig)
     }()
 
     // MARK: - LIFE CYCLE
@@ -251,7 +252,15 @@ extension EmailViewController: MessageAttachmentDelegate {
                             in view: UIView?) {
         let mimeType = MimeTypeUtils.findBestMimeType(forFileAt: url,
                                                       withGivenMimeType: givenMimeType)
-        if mimeType == MimeTypeUtils.MimesType.pdf
+
+        if url.pathExtension == "pEp12" || url.pathExtension == "pfx" {
+            setupClientCertificateImportViewController(forClientCertificateAt: url)
+            guard let vc = clientCertificateImportViewController else {
+                Log.shared.errorAndCrash("No VC")
+                return
+            }
+            present(vc, animated: true)
+        } else if mimeType == MimeTypeUtils.MimesType.pdf
             && QLPreviewController.canPreview(url as QLPreviewItem) {
             delegate?.showPdfPreview(forPdfAt: url)
         } else {
@@ -263,6 +272,19 @@ extension EmailViewController: MessageAttachmentDelegate {
                                                              in: presentingView,
                                                              animated: true)
         }
+    }
+
+    private func setupClientCertificateImportViewController(forClientCertificateAt url: URL) {
+        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil)
+            .instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
+                Log.shared.errorAndCrash("No VC")
+            return
+        }
+        vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url,
+                                                        ceritficateUrlIsInSecureEnclave: false,
+                                                        delegate: vc)
+        vc.modalPresentationStyle = .fullScreen
+        clientCertificateImportViewController = vc
     }
 }
 

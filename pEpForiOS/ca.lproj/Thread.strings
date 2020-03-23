@@ -7,6 +7,9 @@
 /* Class = "UILabel"; text = "Sender"; ObjectID = "hki-aE-Mre"; */
 "hki-aE-Mre.text" = "Remitent";
 
+/* Class = "UIBarButtonItem"; title = "p≡p"; ObjectID = "Kqn-gH-dsv"; */
+"Kqn-gH-dsv.title" = "p≡p";
+
 /* Class = "UILabel"; text = "Date"; ObjectID = "LiV-t9-n8p"; */
 "LiV-t9-n8p.text" = "Data";
 

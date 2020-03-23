@@ -9,6 +9,14 @@
 import WebKit
 
 class CreditsViewController: BaseViewController {
+    
+    override var collapsedBehavior: CollapsedSplitViewBehavior {
+        return .needed
+    }
+    
+    override var separatedBehavior: SeparatedSplitViewBehavior {
+        return .detail
+    }
 
     var webView: WKWebView!
 
@@ -17,6 +25,8 @@ class CreditsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.loadHTMLString(html(), baseURL: nil)
+        showNavigationBar()
+        title = NSLocalizedString("Credits", comment: "Credits view title")
     }
 
     // Due to an Apple bug (https://bugs.webkit.org/show_bug.cgi?id=137160),

@@ -239,7 +239,7 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let identifier = segueIdentifier(for: indexPath)
         switch identifier {
-        case .passiveMode, .pEpSync, .protectMessageSubject:
+        case .passiveMode, .pEpSync, .protectMessageSubject, .unsecureReplyWarningEnabled:
             return
         case .resetAccounts:
             
@@ -267,7 +267,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
                 Log.shared.lostMySelf()
                 return
             }
-            me.activityIndicatorView = me.showActivityIndicator()
+            me.activityIndicatorView = UIUtils.showActivityIndicator()
         }
     }
 
@@ -284,7 +284,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
 
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
         let title = NSLocalizedString("Extra Keys Editable", comment: "Extra Keys Editable")
-        UIUtils.showAlertWithOnlyPositiveButton(title:title, message: newValue, inViewController: self)
+        UIUtils.showAlertWithOnlyPositiveButton(title:title, message: newValue)
     }
 }
 
@@ -350,8 +350,7 @@ extension SettingsTableViewController {
 
         switch SegueIdentifier(rawValue: segueIdentifier) {
         case .segueEditAccount:
-            guard let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? AccountSettingsTableViewController,
+            guard let destination = segue.destination as? AccountSettingsTableViewController,
                 let indexPath = sender as? IndexPath,
                 let account = viewModel.account(at: indexPath) else {
                     Log.shared.error("SegueIdentifier: segueEditAccount - Early quit! Requirements not met.")
