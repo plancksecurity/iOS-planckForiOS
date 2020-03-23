@@ -249,3 +249,11 @@ extension ClientCertificateManagementViewController: ClientCertificateManagement
                                                 message: errorString)
     }
 }
+
+// MARK: - ClientCertificateImport Delegate
+extension ClientCertificateManagementViewController: ClientCertificateImportViewControllerDelegate {
+    func certificateCouldImported() {
+        viewModel?.refreshData()
+        tableView.reloadData()
+    }
+}
