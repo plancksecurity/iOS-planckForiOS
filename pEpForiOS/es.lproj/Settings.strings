@@ -16,9 +16,6 @@
 /* Class = "UILabel"; text = "Fingerprint"; ObjectID = "8ib-BO-jFp"; */
 "8ib-BO-jFp.text" = "Huella";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "Ag8-Qj-N8l"; */
-"Ag8-Qj-N8l.text" = "Etiqueta";
-
 /* Class = "UILabel"; text = "Password"; ObjectID = "aYO-l7-9iG"; */
 "aYO-l7-9iG.text" = "Contraseña";
 

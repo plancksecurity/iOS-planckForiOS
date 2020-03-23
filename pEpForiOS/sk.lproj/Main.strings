@@ -19,8 +19,14 @@
 /* Class = "UIViewController"; title = "Move to Account"; ObjectID = "EmS-3d-sKb"; */
 "EmS-3d-sKb.title" = "Presunúť na účet";
 
+/* Class = "UILabel"; text = "Subject jlkfj glkafj kal jfa slfaj alsjf aslj fsajk"; ObjectID = "ha5-Vd-x3U"; */
+"ha5-Vd-x3U.text" = "Predmet jlkfj glkafj kal jfa slfaj alsjf aslj fsajk";
+
 /* Class = "UILabel"; text = "Sender"; ObjectID = "hnw-Tp-mga"; */
 "hnw-Tp-mga.text" = "Odosielateľ";
+
+/* Class = "UILabel"; text = "Sender sfasflask jfhsajfkas fjksaj"; ObjectID = "KTi-T9-Inm"; */
+"KTi-T9-Inm.text" = "Odosielateľ sfasflask jfhsajfkas fjksaj";
 
 /* Class = "UILabel"; text = "To: Recipients"; ObjectID = "Mfx-AS-hpP"; */
 "Mfx-AS-hpP.text" = "Komu: Príjemcovia";

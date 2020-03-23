@@ -38,10 +38,12 @@
    compose email cancel
    Default cancel button text
    EmailList action title
+   EmailList: Cancel edit mode button title
    keysync alert leave device group cancel
    keySyncWizard animation view cancel button title
    Message actions
    MoveToFolderViewController NavigationBar canel button title
+   TrustManagementView: trustword language selector cancel button label
    UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
 "Cancel" = "Vazgeç";
 

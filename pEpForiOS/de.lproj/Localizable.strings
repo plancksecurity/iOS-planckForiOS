@@ -116,10 +116,12 @@
    compose email cancel
    Default cancel button text
    EmailList action title
+   EmailList: Cancel edit mode button title
    keysync alert leave device group cancel
    keySyncWizard animation view cancel button title
    Message actions
    MoveToFolderViewController NavigationBar canel button title
+   TrustManagementView: trustword language selector cancel button label
    UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
 "Cancel" = "Abbrechen";
 
@@ -145,7 +147,7 @@
 "Client Certificate" = "Client-Zertifikat";
 
 /* privacyStatusDescription yellow */
-"Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call." = "Die Kommunikation mit diesem Kontakt ist Sicher & amp; Vertrauenswürdig, nachdem Sie die folgenden Trustwords mit Ihrem Kontakt vergleichen, z. B. indem Sie einen Anruf tätigen.";
+"Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call." = "Die Kommunikation mit diesem Kontakt ist Sicher & Vertrauenswürdig, nachdem Sie die folgenden Trustwords mit Ihrem Kontakt vergleichen, z. B. indem Sie einen Anruf tätigen.";
 
 /* Privacy status suggestion */
 "Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Führen Sie einen Handshake mit dem Kommunikationspartner durch. Ein Handshake wird nur einmal pro Kommunikationspartner benötigt und stellt die Vertrauenswürdigkeit sicher.";
@@ -575,6 +577,9 @@
 /* TableView Contacts section footer */
 "Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages." = "Setzt die für einen Kommunikationspartner gespeicherten Datenschutzeinstellungen zurück. Könnte beispielsweise erforderlich sein, wenn Ihr Kommunikationspartner Ihre Nachrichten nicht lesen kann.";
 
+/* Client certificate import: PermissionsDenied alert title */
+"Permissions Denied" = "Berechtigungen verweigert";
+
 /* Tableview section header */
 "PGP Compatibility" = "Kompatibilität zu PGP";
 
@@ -808,10 +813,10 @@
 "This contact is completely trusted. All communication will be with the maximum level of privacy." = "Dieser Kontakt ist absolut vertrauenswürdig. Die gesamte Kommunikation bietet ein Höchstmaß an Datenschutz.";
 
 /* privacyStatusDescription red */
-"This contact is mistrusted and might be an attack by a man-in-the-middle." = "Dieser Kontakt ist verdächtig und es könnte sich um eine man-in-the-middle Attacke handeln.";
+"This contact is mistrusted and might be an attack by a man-in-the-middle." = "Dieser Kontakt ist nicht vertrauenswürdig und es könnte sich um eine man-in-the-middle Attacke handeln.";
 
 /* Privacy status title */
-"This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the p≡p data." = "Dieser Kontakt ist verdächtig. Wenn Sie die Trustwords versehentlich abgelehnt haben, können Sie die p≡p-Daten für diesen Kommunikationspartner zurücksetzen.";
+"This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the p≡p data." = "Dieser Kontakt ist nicht vertrauenswürdig. Wenn Sie die Trustwords versehentlich abgelehnt haben, können Sie die p≡p-Daten für diesen Kommunikationspartner zurücksetzen.";
 
 /* Alert message before trusting an account */
 "This is a public cloud account. Your data will be exposed. Are you sure you want to configure this as trusted?" = "Dies ist ein öffentliches Cloud-Konto. Ihre Daten werden unverschlüsselt gespeichert. Möchten Sie das Konto wirklich als vertrauenswürdig konfigurieren?";
@@ -829,7 +834,7 @@
 "This message does not contain enough information to determine if it is secure." = "Über diese Nachricht liegen nicht genügend Informationen vor, um überprüfen zu können, ob sie sicher übertragen wurde.";
 
 /* Privacy status explanation */
-"This message has a communication partner that has previously been marked as mistrusted." = "Diese Nachricht enthält einen Kommunikationspartner, der zuvor als verdächtig markiert wurde.";
+"This message has a communication partner that has previously been marked as mistrusted." = "Diese Nachricht enthält einen Kommunikationspartner, der zuvor als nicht vertrauenswürdig markiert wurde.";
 
 /* Privacy status suggestion */
 "This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "Diese Nachricht besitzt keine zuverlässige Verschlüsselung oder keine digitale Signatur. Bitten Sie Ihren Kommunikationspartner, eine bessere Verschlüsselungslösung zu verwenden oder p≡p zu installieren.";
@@ -956,6 +961,9 @@
 
 /* Client certificate import: wrong password alert message */
 "We could not import the certificate. The password is incorrect.\n\nTry again?" = "Wir konnten das Zertifikat nicht importieren. Das Passwort ist inkorrekt.\n\nNochmals versuchen?";
+
+/* Client certificate import: wrong password alert message */
+"We could not import the certificate. We do not have permissions to open this file.\n\nTry again?" = "Wir konnten das Zertifikat nicht importieren. Wir haben keine Berechtigung zum Öffnen dieser Datei.\n\nNochmals versuchen?";
 
 /* KeySyncWizard complete message - two devices */
 "We successfully created a device group. All your privacy is now synchronized." = "Ihre Gerätegruppe wurde erfolgreich gebildet. Ihre gesamten Datenschutz-Einstellungen sind jetzt synchronisiert.";
