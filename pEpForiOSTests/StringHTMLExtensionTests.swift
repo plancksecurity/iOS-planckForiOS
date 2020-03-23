@@ -138,6 +138,77 @@ class StringHTMLExtensionTests: XCTestCase {
         }
     }
 
+    func testHtmlToAttributedString() {
+        let cid1 = "attached-inline-image-1-jpg-3A18D4C9-FA39-486F-AE80-65374C7E5880@pretty.Easy.privacy"
+        let alt1 = "Attached Image 1 (jpg)"
+
+        let theData = "Not an image".data(using: .utf8)
+        let theMimeType = MimeTypeUtils.MimesType.jpeg
+        let attachment = Attachment(data: theData,
+                                    mimeType: theMimeType,
+                                    fileName: "cid:\(cid1)",
+            contentDisposition: .attachment)
+        let input = "<p><img src=\"cid:\(cid1)\" alt=\"\(alt1)\" /></p>\n<p>\(String.pEpSignatureHtml)</p>\n<p>Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:</p>\n<blockquote>\n<p>Just some mind the gap text.</p>\n<p>Blah!</p>\n</blockquote>\n"
+
+        let attachmentDelegate = AttachmentDelegate(attachments: [attachment])
+        let sth = input.htmlToAttributedString(attachmentDelegate: attachmentDelegate)
+
+        let exp = "\n\n\(pepSignatureTrimmed)\n\nTest 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:\n\n> Just some mind the gap text.\n> Blah!\n\n"
+
+        XCTAssertEqual(sth.string.trimmingCharacters(in: .symbols), exp)
+
+    }
+
+    func testHtmlToAttributedStringMoreThanOneBlockquoteTag() {
+        let cid1 = "attached-inline-image-1-jpg-3A18D4C9-FA39-486F-AE80-65374C7E5880@pretty.Easy.privacy"
+        let alt1 = "Attached Image 1 (jpg)"
+
+        let theData = "Not an image".data(using: .utf8)
+        let theMimeType = MimeTypeUtils.MimesType.jpeg
+        let attachment = Attachment(data: theData,
+                                    mimeType: theMimeType,
+                                    fileName: "cid:\(cid1)",
+            contentDisposition: .attachment)
+        let input = "<p><img src=\"cid:\(cid1)\" alt=\"\(alt1)\" /></p>\n<p>\(String.pEpSignatureHtml)</p>\n<p>Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:</p>\n<blockquote>\n<p>Just some mind the gap text.<blockquote type=\"cite\"><p>John wrote me sth...</p></p></blockquote>\n<p>Blah!</p>\n</blockquote>\n"
+
+        let attachmentDelegate = AttachmentDelegate(attachments: [attachment])
+        let sth = input.htmlToAttributedString(attachmentDelegate: attachmentDelegate)
+
+        let exp = "\n\n\(pepSignatureTrimmed)\n\nTest 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:\n\n> Just some mind the gap text.\n> John wrote me sth...\n> Blah!\n\n"
+
+        XCTAssertEqual(sth.string.trimmingCharacters(in: .symbols), exp)
+
+    }
+
+    func testHtmlToAttributedStringWithFont() {
+        let cid1 = "attached-inline-image-1-jpg-3A18D4C9-FA39-486F-AE80-65374C7E5880@pretty.Easy.privacy"
+        let alt1 = "Attached Image 1 (jpg)"
+
+        let theData = "Not an image".data(using: .utf8)
+        let theMimeType = MimeTypeUtils.MimesType.jpeg
+        let attachment = Attachment(data: theData,
+                                    mimeType: theMimeType,
+                                    fileName: "cid:\(cid1)",
+            contentDisposition: .attachment)
+        let input = "<p><img src=\"cid:\(cid1)\" alt=\"\(alt1)\" /></p>\n<p>\(String.pEpSignatureHtml)</p>\n<p>Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:</p>\n<blockquote>\n<p>Just some mind the gap text.<blockquote type=\"cite\"><p> <font color=\"Red\">John</font> wrote me sth...</p></p></blockquote>\n<p>Blah!</p>\n</blockquote>\n"
+
+        let attachmentDelegate = AttachmentDelegate(attachments: [attachment])
+        let sth = input.htmlToAttributedString(attachmentDelegate: attachmentDelegate)
+
+        let exp = "\n\n\(pepSignatureTrimmed)\n\nTest 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:\n\n> Just some mind the gap text.\n> John wrote me sth...\n> Blah!\n\n"
+
+        XCTAssertEqual(sth.string.trimmingCharacters(in: .symbols), exp)
+
+    }
+
+    func testHtmlToAttributedStringSampleEmail() {
+        let input = Constant.sampleHtmlEmail
+        let sth = input.htmlToAttributedString(attachmentDelegate: nil)
+        let exp = Constant.sampleEmailExpectation
+
+        XCTAssertEqual(sth.string, exp)
+    }
+
     /**
      Proves that we can convert primitive HTML with inline image references into an
      `NSAttributedString`, and that into markdown, while keeping the attachment's
@@ -159,8 +230,8 @@ class StringHTMLExtensionTests: XCTestCase {
         let attachmentDelegate = AttachmentDelegate(attachments: [attachment])
         let attributedString = input.htmlToAttributedString(attachmentDelegate: attachmentDelegate)
         XCTAssertEqual(
-            attributedString.string,
-            "\n￼\n\n\(pepSignatureTrimmed)\n\nTest 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:\n\n> Just some mind the gap text.\n> Blah!\n")
+            attributedString.string.trimmingCharacters(in: .symbols),
+            "\n\n\(pepSignatureTrimmed)\n\nTest 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:\n\n> Just some mind the gap text.\n> Blah!\n\n")
 
         XCTAssertEqual(attachmentDelegate.numberOfAttachmentsUsed, 1)
         XCTAssertEqual(attachmentDelegate.attachments[0].mimeType, theMimeType)
@@ -223,6 +294,65 @@ Numbered list:
 """
 
         static let markdownAsHtmlString = "<p>Heading<br>=======<br><br>Sub-heading<br>-----------<br><br>Paragraphs are separated<br>by a blank line.<br><br>Two spaces at the end of a line<br>produces a line break.<br><br>Text attributes <em>italic</em>,<br><strong>bold</strong>, <code>monospace</code>.<br><br>Horizontal rule:<br><br>---<br><br>Strikesomething:<br>~~strikesomething~~<br><br>Bullet list:<br><br>  * one<br>  * two<br>  * three<br><br>Numbered list:<br><br>  1. one<br>  2. two<br>  3. three</p>";
+
+        static let sampleHtmlEmail = """
+<html>
+  <head>
+    <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF=
+-8">
+  </head>
+  <body text=3D"#000000" bgcolor=3D"#FFFFFF">
+    <p>Again<br>
+    </p>
+    <div class=3D"moz-cite-prefix">On 13/03/2020 14:20, iostest018 wrote:=
+<br>
+    </div>
+    <blockquote type=3D"cite"
+      cite=3D"mid:ca880105-6e34-ecf3-c8cc-c542191ac4fd@peptest.ch">
+      <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DU=
+TF-8">
+      <p><br>
+      </p>
+      <div class=3D"moz-cite-prefix">On 13/03/2020 11:35, iostest018
+        wrote:<br>
+      </div>
+      <blockquote type=3D"cite"
+        cite=3D"mid:6ddb0381-d4ce-fe15-0bb9-3a38eb6a5f9f@peptest.ch">
+        <meta http-equiv=3D"content-type" content=3D"text/html;
+          charset=3DUTF-8">
+        <p>Hello</p>
+        <p><font size=3D"+3" color=3D"#cc0000">Big red text</font></p>
+        <p>Below should be inline picture attached</p>
+        <p>Cheers</p>
+        <p>Test Monkey<br>
+        </p>
+        <br>
+      </blockquote>
+    </blockquote>
+  </body>
+</html>
+"""
+
+        static let sampleEmailExpectation = """
+Again
+
+On 13/03/2020 14:20, iostest018 wrote:
+>
+>
+> On 13/03/2020 11:35, iostest018 wrote:
+>>
+>> Hello
+>>
+>> Big red text
+>>
+>> Below should be inline picture attached
+>>
+>> Cheers
+>>
+>> Test Monkey
+>>
+>>
+"""
 
     }
 }

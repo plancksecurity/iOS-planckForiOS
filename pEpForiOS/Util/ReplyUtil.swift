@@ -65,25 +65,8 @@ public struct ReplyUtil {
         let defaultFont = UIFont.preferredFont(forTextStyle: .body)
         let result = NSAttributedString(string: "\n\n\(footer())\n\n\(citation)\n\n",
             attributes: [NSAttributedString.Key.font: defaultFont])
-        let quoteChar = ">"
-        let citedText = NSMutableAttributedString(attributedString: textToCite)
 
-        var newLines: [Int] = []
-        var index = 0
-
-        for char in textToCite.string {
-            index = index + 1
-            if char == "\n" {
-                newLines.append(index)
-            }
-        }
-        var offset = 0
-        for index in newLines {
-            citedText.insert(NSAttributedString(string: quoteChar,
-                                                attributes: [NSAttributedString.Key.font: defaultFont]), at: index + offset)
-            offset = offset + 1
-        }
-        return NSAttributedString(attributedString: result + citedText)
+        return NSAttributedString(attributedString: result)
     }
 
     /**

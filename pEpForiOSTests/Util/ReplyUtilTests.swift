@@ -133,7 +133,7 @@ class ReplyUtilTests: XCTestCase {
         msg.longMessageFormatted = bodyHtml
         let someOneWrote = NSLocalizedString("Someone wrote:", comment: "")
         let exp = NSAttributedString(string: "\n\n\(String.pepSignature)\n\n\(someOneWrote)\n\n>Test\n>Test\n>")
-        let sth = ReplyUtil.citedMessageText(textToCite: bodyHtml.htmlToAttributedString(attachmentDelegate: nil), fromMessage: msg)
+        let sth = ReplyUtil.citedMessageText(textToCite: NSAttributedString(string: "\n\n\(String.pepSignature)\n\n\(someOneWrote)\n\nTest\nTest"), fromMessage: msg)
         XCTAssertEqual(sth.string, exp.string,
                        showDifference(string1: sth.string, string2: exp.string))
     }
