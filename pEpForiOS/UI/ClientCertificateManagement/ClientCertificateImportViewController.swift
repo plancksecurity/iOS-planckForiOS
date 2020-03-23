@@ -49,12 +49,12 @@ final class ClientCertificateImportViewController: UIViewController {
         passwordTextField.delegate = self
         scrollView.dynamicHeightScrollViewDelegate = self
         setupConstraints()
+        updateConstraints()
         setupStyle()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        updateConstraints()
         viewModel?.importClientCertificate()
     }
 
