@@ -61,9 +61,8 @@ class FolderTableViewController: BaseTableViewController {
             target: nil,
             action: nil)
         let compose = UIBarButtonItem.getComposeButton(
-            action:#selector(showSettingsViewController),
+            action:#selector(showCompose),
             target: self)
-
         toolbarItems = [flexibleSpace, compose, flexibleSpace, item]
     }
 
@@ -80,6 +79,10 @@ class FolderTableViewController: BaseTableViewController {
 
     // MARK: - Action
 
+    @objc private func showCompose() {
+        UIUtils.presentComposeView(forRecipientInUrl: nil, appConfig: appConfig)
+    }
+    
     @objc private func showSettingsViewController() {
         UIUtils.presentSettings(appConfig: appConfig)
     }
