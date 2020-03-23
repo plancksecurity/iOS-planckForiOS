@@ -27,9 +27,6 @@ class FolderTableViewController: BaseTableViewController {
         if showNext {
             show(folder: UnifiedInbox())
         }
-
-        self.navigationController?.setToolbarHidden(false, animated: false)
-
         showEmptyDetailViewIfApplicable(
             message: NSLocalizedString(
                 "Please choose a folder",
@@ -39,6 +36,7 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - Setup
 
     private func setup() {
+        self.navigationController?.setToolbarHidden(false, animated: false)
         folderVM =  FolderViewModel()
         tableView.reloadData()
     }
