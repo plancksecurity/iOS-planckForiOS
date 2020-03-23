@@ -246,5 +246,3 @@ private struct Localized {
     static let cancel = NSLocalizedString("Cancel",
                                           comment: "Cancel button for client certificate password screen")
 }
-
-
