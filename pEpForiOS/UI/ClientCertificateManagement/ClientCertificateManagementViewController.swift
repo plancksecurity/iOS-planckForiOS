@@ -253,7 +253,7 @@ extension ClientCertificateManagementViewController: ClientCertificateManagement
 // MARK: - ClientCertificateImport Delegate
 extension ClientCertificateManagementViewController: ClientCertificateImportViewControllerDelegate {
     func certificateCouldImported() {
-        viewModel?.refreshData()
+        viewModel?.handleNewCertificateImported()
         tableView.reloadData()
     }
 }
