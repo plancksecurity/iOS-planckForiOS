@@ -207,7 +207,9 @@ extension TrustManagementViewController {
         }
         
         //For the cancel button another action.
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+        let cancel = NSLocalizedString("Cancel",
+                                       comment: "TrustManagementView: trustword language selector cancel button label")
+        let cancelAction = UIAlertAction(title: cancel, style: .cancel) { _ in
             alertController.dismiss(animated: true, completion: nil)
         }
         alertController.addAction(cancelAction)

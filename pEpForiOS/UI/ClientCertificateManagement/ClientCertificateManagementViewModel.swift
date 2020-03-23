@@ -80,6 +80,11 @@ final class ClientCertificateManagementViewModel {
             return false
         }
     }
+    
+    /// generate new rows from actual data
+    public func handleNewCertificateImported() {
+        setup()
+    }
 }
 
 // MARK: - Private

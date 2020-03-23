@@ -40,9 +40,6 @@ public protocol ProviderSpecificInformationProtocol {
     /// Like isOkToAppendMessages(toFolder folder: Folder)
     func isOkToAppendMessages(toFolder folder: CdFolder) -> Bool
 
-    /// - Returns:  Whether or not the given folder represents a virtual mailbox of the provider.
-    func isVirtualMailbox(_ folder: Folder) -> Bool
-
     /// - Returns:  Whether or not deleted messages should be moved to trash using the UID MOVE
     ///             extension instead of copying it locally and then appending it.
     func shouldUidMoveMailsToTrashWhenDeleted(inFolder folder: Folder) -> Bool

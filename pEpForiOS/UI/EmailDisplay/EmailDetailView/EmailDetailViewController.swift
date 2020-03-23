@@ -37,11 +37,6 @@ class EmailDetailViewController: BaseViewController {
                                                                target: self)
     
     private var separatorsArray = [UIBarButtonItem]()
-    
-    /// The original navigatio bar
-    var NavigationRightBar: [UIBarButtonItem]?
-    /// tne original toolbar
-    var ToolBar: [UIBarButtonItem]?
 
     /// IndexPath to show on load
     var firstItemToShow: IndexPath?
@@ -62,6 +57,7 @@ class EmailDetailViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        edgesForExtendedLayout = .all
         setup()
     }
     
@@ -69,7 +65,7 @@ class EmailDetailViewController: BaseViewController {
         super.viewWillAppear(animated)
         doOnce?()
         createSeparators()
-        setupToolbar()
+        configureView()
     }
 
     override func viewWillLayoutSubviews() {
@@ -153,7 +149,8 @@ class EmailDetailViewController: BaseViewController {
                 return
             }
             me.performSegue(withIdentifier: .segueForward , sender: self)
-        }.withCancelOption()
+        }.withToggelMarkSeenOption(for: vm.message(representedByRowAt: indexPath))
+            .withCancelOption()
             .build()
 
         if let popoverPresentationController = alert.popoverPresentationController {
@@ -232,7 +229,7 @@ extension EmailDetailViewController {
 
     @objc
     private func showTrustManagementView(gestureRecognizer: UITapGestureRecognizer? = nil) {
-            performSegue(withIdentifier: .segueTrustManagement, sender: self)
+        performSegue(withIdentifier: .segueTrustManagement, sender: self)
     }
 
     private var indexPathOfCurrentlyVisibleCell: IndexPath? {
@@ -292,16 +289,6 @@ extension EmailDetailViewController {
     }
 
     private func configureView() {
-        //ToolBar
-        if splitViewController != nil {
-            if onlySplitViewMasterIsShown {
-                navigationController?.setToolbarHidden(false, animated: false)
-            } else {
-                // Make sure the NavigationBar is shown, even if the previous view has hidden it.
-                navigationController?.setToolbarHidden(true, animated: false)
-                navigationController?.setNavigationBarHidden(false, animated: false)
-            }
-        }
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
@@ -818,21 +805,28 @@ extension EmailDetailViewController {
         separatorsArray.append(contentsOf: [spacer,midSpacer])
     }
     private func setupToolbar() {
+        if onlySplitViewMasterIsShown {
+            navigationController?.setToolbarHidden(false, animated: false)
+        } else {
+            // Make sure the NavigationBar is shown, even if the previous view has hidden it.
+            navigationController?.setToolbarHidden(true, animated: false)
+            navigationController?.setNavigationBarHidden(false, animated: false)
+        }
         let size = CGSize(width: 15, height: 25)
         nextButton?.image = nextButton?.image?.resizeImage(targetSize: size)
         previousButton?.image = previousButton?.image?.resizeImage(targetSize: size)
 
         if !onlySplitViewMasterIsShown {
+            // Up & Down Buttons
+
             let nextPrevButtonSize = CGRect(x: 0, y: 0, width: 27, height: 15)
 
-            //Down
             let downButton = UIButton(frame: nextPrevButtonSize)
             let downImage = UIImage(named: "chevron-icon-down")?.withRenderingMode(.alwaysTemplate)
             downButton.setBackgroundImage(downImage, for: .normal)
             downButton.tintColor = thereIsANextMessageToShow ? UIColor.pEpGreen : UIColor.pEpGray
             downButton.addTarget(self, action: #selector(showNextIfAny), for: .touchUpInside)
-            
-            //Up
+
             let upButton = UIButton(frame: nextPrevButtonSize)
             let upImage = UIImage(named: "chevron-icon-up")?.withRenderingMode(.alwaysTemplate)
             upButton.setBackgroundImage(upImage, for: .normal)

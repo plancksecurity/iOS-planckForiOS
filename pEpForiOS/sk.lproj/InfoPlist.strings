@@ -1,0 +1,21 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "p≡p";
+
+/* Bundle name */
+"CFBundleName" = "pEp";
+
+/* (No Comment) */
+"Client Certificate" = "Certifikát klienta";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Použite fotoaparát";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "- p≡p je aplikácia pre šifrované e-maily. Aby bolo možné poslať\n     e-maily uloženým kontaktom, je potrebné povoliť aplikácii p≡p\n     prístup k nim.\n\n- Údaje kontaktov nikdy neopustia mobilné zariadenie a nebudú\n     zaslané vývojárom p≡p alebo ktorejkoľvek tretej strane.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Umožňuje ukladať fotografie do fotogalérie";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Umožňuje vám vybrať fotografie z Galérie fotografií";
+

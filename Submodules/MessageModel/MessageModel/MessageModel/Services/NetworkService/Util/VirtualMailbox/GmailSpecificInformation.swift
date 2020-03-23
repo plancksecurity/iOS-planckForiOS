@@ -8,15 +8,6 @@
 
 struct GmailSpecificInformation {
 
-    private var mailboxTypesDeletedMailsShouldBeCopiedToTrashFrom: [FolderType] {
-        // In Gmail we must not copy any mail to trash.
-        // In all folders but "All Messages":
-        // - the server takes care to UID MOVE messages that are flagged \deleted
-        // In "All Messages" folder:
-        // - We have to UID MOVE the message to trash folder
-        return []
-    }
-
     private var mailboxTypesDeletedMailsShouldBeUidMovedToTrash: [FolderType] {
         // In Gmail the server takes care to UID MOVE messages that are flagged \deleted for all
         // folders but "All Messages", thus the only use case we have to actively UID MOVE a
@@ -39,11 +30,11 @@ struct GmailSpecificInformation {
 extension GmailSpecificInformation: ProviderSpecificInformationProtocol {
 
     func belongsToProvider(_ folder: Folder) -> Bool {
-        return folder.account.user.address.isGmailAddress
+        return belongsToProvider(folder.cdObject)
     }
 
     func belongsToProvider(_ folder: CdFolder) -> Bool {
-        return folder.accountOrCrash.identityOrCrash.addressOrCrash.isGmailAddress
+        return folder.accountOrCrash.accountType == .gmail
     }
 
     func isOkToAppendMessages(toFolder folder: Folder) -> Bool {
@@ -53,12 +44,6 @@ extension GmailSpecificInformation: ProviderSpecificInformationProtocol {
     func isOkToAppendMessages(toFolder folder: CdFolder) -> Bool {
         return appandableVirtualMailboxTypes.contains(folder.folderType) ||
             folder.folderType == .pEpSync
-    }
-
-    func isVirtualMailbox(_ folder: Folder) -> Bool {
-        return self.belongsToProvider(folder)
-            && folder.parent != nil
-            && folder.name.hasPrefix("[Gmail]")
     }
 
     func shouldUidMoveMailsToTrashWhenDeleted(inFolder folder: Folder) -> Bool {
