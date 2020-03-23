@@ -29,7 +29,7 @@
 "E4b-mc-IYT.text" = "Handshake";
 
 /* Class = "UILabel"; text = "Mistrusted"; ObjectID = "eK9-eY-X1L"; */
-"eK9-eY-X1L.text" = "Verdächtig";
+"eK9-eY-X1L.text" = "Nicht vertrauenswürdig";
 
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "emU-WV-Kap"; */
 "emU-WV-Kap.normalTitle" = "Schaltfläche";

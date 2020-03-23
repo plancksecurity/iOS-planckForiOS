@@ -11,13 +11,14 @@ import CoreData
 import PEPObjCAdapterFramework
 
 extension VerifiableAccount {
-    public enum AccountType {
+    public enum AccountType: CaseIterable {
         case gmail
         case other
         case clientCertificate
         case o365
         case icloud
         case outlook
+
         public var isOauth: Bool {
             return self == .gmail
         }

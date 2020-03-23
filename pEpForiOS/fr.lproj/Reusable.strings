@@ -26,7 +26,7 @@
 "DFW-OW-8OC.text" = "Sécurisé & amp ; Fiable";
 
 /* Class = "UILabel"; text = "Handshake"; ObjectID = "E4b-mc-IYT"; */
-"E4b-mc-IYT.text" = "Poignée de main";
+"E4b-mc-IYT.text" = "Handshake";
 
 /* Class = "UILabel"; text = "Mistrusted"; ObjectID = "eK9-eY-X1L"; */
 "eK9-eY-X1L.text" = "Non fiable";
@@ -74,7 +74,7 @@
 "SUa-gz-P97.accessibilityLabel" = "mauvaisbouton";
 
 /* Class = "UIButton"; normalTitle = "Decline"; ObjectID = "SUa-gz-P97"; */
-"SUa-gz-P97.normalTitle" = "Refuser";
+"SUa-gz-P97.normalTitle" = "Rejeter";
 
 /* Class = "UILabel"; text = "With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact."; ObjectID = "uqG-OB-ggb"; */
 "uqG-OB-ggb.text" = "Avec ce statut de confidentialité, toutes les communications sont sécurisées, mais pour confirmer que votre contact est vraiment la personne que vous connaissez, vous devez comparer les Trustwords avec ce contact.";
