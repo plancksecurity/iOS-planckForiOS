@@ -10,6 +10,11 @@ import Foundation
 import UIKit
 
 extension UIBarButtonItem {
+    
+    public static func getComposeButton(action: Selector, target: Any) -> UIBarButtonItem {
+        let img = UIImage(named: "compose")
+        return getButton(image: img, action: action, target: target)
+    }
     public static func getPEPButton(action: Selector, target: Any) -> UIBarButtonItem {
         let img = UIImage(named: "icon-settings")
         return getButton(image: img, action: action, target: target)
