@@ -12,9 +12,12 @@ extension String {
     /**
      Extracts pure text from HTML, useful for creating snippets of a mail.
      */
-    public func extractTextFromHTML() -> String? {
+    public func extractTextFromHTML(respectNewLines: Bool = false) -> String? {
         let parser = HtmlToTextSaxParser()
         parser.parse(string: self)
+        if respectNewLines {
+            return parser.output?.trimmed()
+        }
         return parser.output?.replaceNewLinesWith(" ").trimmed()
     }
 

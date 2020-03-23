@@ -16,7 +16,7 @@ class HtmlToTextSaxParser: BasicSaxParser {
         super.parse(string: string, theDelegate: self)
     }
 
-    var tagsAcceptingChars = Set<String>(["p", "div", "body", "b", "td", "span", "a"])
+    var tagsAcceptingChars = Set<String>(["p", "div", "body", "b", "td", "span", "a", "font"])
 
     override init() {
         for i in 1...20 {
@@ -40,12 +40,15 @@ extension HtmlToTextSaxParser: AXHTMLParserDelegate {
     func parser(_ parser: AXHTMLParser, didStartElement elementName: String,
                 attributes attributeDict: [AnyHashable : Any] = [:]) {
         tagStack.append(elementName)
-        if elementName == "br" || elementName == "p" || elementName == "div" {
+        if elementName == "br" || elementName == "div" {
             add(string: "\n")
         }
     }
 
     func parser(_ parser: AXHTMLParser, didEndElement elementName: String) {
+        if elementName == "p" {
+            add(string: "\n")
+        }
         tagStack.removeLast()
     }
 
