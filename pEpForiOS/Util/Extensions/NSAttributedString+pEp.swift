@@ -140,14 +140,15 @@ extension NSAttributedString {
     }
 
     public func toHtml() -> String? {
-        let htmlDocAttrib = [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html]
+        let htmlDocAttribKey = [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html]
 
         // conversion NSTextAttachment with image to <img src.../> html tag with cid:{cid}
-        let mutableAttribString = NSMutableAttributedString(attributedString: self)
+        let mutableAttribString = NSMutableAttributedString(attributedString: self.citationVerticalLineToBlockquote())
 
         var images: [NSRange : String] = [:]
 
-        self.enumerateAttribute(.attachment, in: self.wholeRange()) { (value, range, stop) in
+        mutableAttribString.enumerateAttribute(.attachment,
+                                               in: mutableAttribString.wholeRange()) { (value, range, stop) in
             if let attachment = value as? TextAttachment {
                 let delegate = ToMarkdownDelegate()
                 if let stringForAttachment = delegate.stringFor(attachment: attachment) {
@@ -161,7 +162,7 @@ extension NSAttributedString {
         }
 
         guard let htmlData = try? mutableAttribString.data(from: mutableAttribString.wholeRange(),
-                                            documentAttributes: htmlDocAttrib) else {
+                                            documentAttributes: htmlDocAttribKey) else {
                                                 return nil
         }
         let html = String(data: htmlData, encoding: .utf8) ?? ""

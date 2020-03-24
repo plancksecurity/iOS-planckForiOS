@@ -47,6 +47,11 @@ class AttributedString_ParsingTests: XCTestCase {
 
     }
 
+    func testCitationVerticalLineToBlockquote() {
+        let input = NSAttributedString(string: "     ")
+        let sth = input.citationVerticalLineToBlockquote()
+    }
+
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {

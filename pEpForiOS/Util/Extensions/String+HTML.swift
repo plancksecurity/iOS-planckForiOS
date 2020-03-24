@@ -107,8 +107,9 @@ extension String {
                 }
             }
             if let attachment = attachmentDelegate?.imageAttachment(src: src, alt: alt) {
+                guard let image = attachment.image else { return string }
                 let textAttachment = TextAttachment()
-                textAttachment.image = attachment.image
+                textAttachment.image = image
                 textAttachment.attachment = attachment
                 let imageString = NSAttributedString(attachment: textAttachment)
                 string = string.replacingOccurrences(ofWith: [match : imageString])

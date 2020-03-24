@@ -38,9 +38,8 @@ public extension NSAttributedString {
         let mutableAttributedString = NSMutableAttributedString(string: "")
 
         var ranges: [Int: (range: NSRange, level: Int)] = [:]
-        var blockquoteLevels = 0
+        var blockquoteLevels = addCitationLevel ? 1 : 0
         var indexForStartLine = 0
-
 
         for line in attributedString.mutableString.components(separatedBy: .newlines) {
             blockquoteLevels = blockquoteLevels + blockquoteLevel(text: line)
@@ -59,26 +58,50 @@ public extension NSAttributedString {
             indexForStartLine += line.count
         }
 
-//        for line in self.string.components(separatedBy: .newlines) {
-//            blockquoteLevels = blockquoteLevels + blockquoteLevel(text: line)
-//            var toAdd = ""
-//            for _ in 0..<blockquoteLevels {
-//                toAdd += ">"
-//            }
-//            attributedString.append(NSAttributedString(string: toAdd + " " + line + "\n"))
-//            print("DEV: line: [\(blockquoteLevels)] \(toAdd) \(line)")
-//            ranges[indexForStartLine] = (range: NSRange(location: indexForStartLine,
-//                                                        length: line.count),
-//                                         level: blockquoteLevels)
-//            indexForStartLine += line.count
-//        }
-
-        let verticalLine = NSAttributedString(string: " ", attributes: [NSAttributedString.Key.backgroundColor : UIColor.pEpGreen])
-        let spaceForVerticalLine = NSAttributedString(string: " ", attributes: [NSAttributedString.Key.backgroundColor : UIColor.clear])
+        let verticalLine = NSAttributedString(string: " ", attributes: [NSAttributedString.Key.backgroundColor : UIColor.pEpGreen])
+        let spaceForVerticalLine = NSAttributedString(string: " ", attributes: [NSAttributedString.Key.backgroundColor : UIColor.clear])
 
         return mutableAttributedString
-            .replacingOccurrences(ofWith: [">" : verticalLine + spaceForVerticalLine + spaceForVerticalLine])
-            .replacingOccurrences(ofWith: ["› " : "", "›" : "", "‹ " : "", "‹" : "", " ›" : "", " ‹" : ""])
+            .replacingOccurrences(ofWith: [">" : verticalLine + spaceForVerticalLine])
+            .replacingOccurrences(ofWith: ["› " : "", "›" : "", " ‹ " : "", " ›" : "", "‹ " : "", "‹" : ""])
+    }
+
+    func citationVerticalLineToBlockquote() -> NSAttributedString {
+        let mutattribstring = NSMutableAttributedString(attributedString: self.replacingOccurrences(ofWith: [" " : "Ψ", " " : ""]))
+        let mutableAttribString = NSMutableAttributedString(string: "")
+
+        let lines: [String] = mutattribstring.mutableString.components(separatedBy: .newlines)
+
+        var previousLevel = 0
+
+        for i in 0..<lines.count {
+            let levels: Int = lines[i].filter { $0 == "Ψ" }.count
+            let nextLineLevels: Int = lines[i + 1 < lines.count
+                ? i + 1
+                : 0]
+                .filter { $0 == "Ψ" }
+                .count
+            let range = mutattribstring.mutableString.range(of: lines[i], options: .literal)
+            if range.location == NSNotFound {
+                mutableAttribString.append(NSAttributedString(string: "\n"))
+                continue
+            }
+            if levels > previousLevel {
+                for _ in 0..<levels - previousLevel {
+                    mutableAttribString.append(NSAttributedString(string: "›"))
+                }
+            }
+            mutableAttribString.append(mutattribstring.attributedSubstring(from: range))
+            if nextLineLevels < levels {
+                for _ in 0..<levels - nextLineLevels {
+                    mutableAttribString.append(NSAttributedString(string: "‹"))
+                }
+            }
+            mutableAttribString.append(NSAttributedString(string: "\n"))
+            previousLevel = levels
+        }
+
+        return mutableAttribString.replacingOccurrences(ofWith: ["Ψ" : ""])
     }
 
     private func blockquoteLevel(text: String) -> Int {
@@ -122,9 +145,5 @@ public extension NSAttributedString {
         }
 
         return NSAttributedString(attributedString: attributedString)
-    }
-
-    func rangeOf(string: String) -> Range<String.Index>? {
-        return self.string.range(of: string)
     }
 }

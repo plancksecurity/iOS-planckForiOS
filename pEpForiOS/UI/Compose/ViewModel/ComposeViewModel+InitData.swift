@@ -140,17 +140,8 @@ extension ComposeViewModel {
         }
 
         mutating private func setupInitialBody(from message: Message?) {
-            guard let message = message else {
-                // We have no original message. That's OK for compose mode .normal.
-                return
-            }
             switch composeMode {
-            case .replyFrom:
-                setBodyPotetionallyTakingOverAttachments()
-//                setInitialBody(text: ReplyUtil.quotedMessageText(message: message, replyAll: false))
-            case .replyAll:
-                setInitialBody(text: ReplyUtil.quotedMessageText(message: message, replyAll: true))
-            case .forward:
+            case .replyFrom, .replyAll, .forward:
                 setBodyPotetionallyTakingOverAttachments()
             case .normal:
                 if isDrafts {
@@ -172,7 +163,6 @@ extension ComposeViewModel {
             bodyHtml = text
         }
 
-        /// Is sutable for isDrafts || composeMode == .forward only.
         mutating private func setBodyPotetionallyTakingOverAttachments() {
             guard let msg = originalMessage else {
                 Log.shared.errorAndCrash("Inconsitant state")
@@ -181,7 +171,8 @@ extension ComposeViewModel {
 
             guard isDrafts
                 || composeMode == .forward
-                || composeMode == .replyFrom else {
+                || composeMode == .replyFrom
+                || composeMode == .replyAll else {
                     Log.shared.errorAndCrash("Unsupported mode or message")
                     return
             }
@@ -194,20 +185,20 @@ extension ComposeViewModel {
                     inlinedAttachments: inlinedAttachments, session: attachmentSession)
                 let attributedString = html.htmlToAttributedString(attachmentDelegate: parserDelegate)
                 var result = attributedString
+                let verticalSpace = NSAttributedString(string: "\n")
+                let citationHeader = NSAttributedString(string:  ReplyUtil.citationHeaderForMessage(msg))
+                var messageCited = NSAttributedString(string: "")
                 switch composeMode {
                 case .replyFrom:
-                    let verticalSpace = NSAttributedString(string: "\n\n")
-                    let citationHeader = NSAttributedString(string:  ReplyUtil.citationHeaderForMessage(msg))
-                    let messageCited = result.toCitation(addCitationLevel: true)
-                    result = verticalSpace + citationHeader + messageCited
+                    messageCited = result.toCitation(addCitationLevel: true)
+                case .replyAll:
+                    messageCited = result.toCitation(addCitationLevel: true)
                 case .forward:
-                    let verticalSpace = NSAttributedString(string: "\n\n")
-                    let citationHeader = "" // NSAttributedString(string:  ReplyUtil.citationHeaderForMessage(msg))
-                    let messageCited = result.toCitation()
-                    result = verticalSpace + citationHeader + messageCited
+                    messageCited = result.toCitation()
                 default:
                     break
                 }
+                result = verticalSpace + verticalSpace + citationHeader + verticalSpace + messageCited
                 setInitialBody(text: result)
             } else {
                 // No HTML available.

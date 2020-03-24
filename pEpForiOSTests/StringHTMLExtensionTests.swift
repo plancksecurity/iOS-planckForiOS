@@ -158,20 +158,6 @@ class StringHTMLExtensionTests: XCTestCase {
 
     }
 
-    func testHtmlToAttributedStringAppleConversion() {
-
-        let src = """
-        <div>
-          <p>Taken from wikpedia</p>
-          <img src="data:image/png;charset=utf-8;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA
-            AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
-                9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
-        </div>
-        """
-
-        let sth = src.htmlToAttributedStringApple()
-    }
-
     func testHtmlConvertImageLinksToImageBase64() {
         let src = """
         <div>
