@@ -65,13 +65,13 @@ class EmailDetailViewController: BaseViewController {
     // width but the view controller's width. That's why we need to adjust the title view position
     // in that case.
     private func adjustTitleViewPositionIfNeeded() {
+        navigationItem.titleView?.transform = .identity
         if isIpad && isLandscape {
-            guard let titleView = navigationItem.titleView else { return }
-            let oldCenterX = titleView.center.x
+            let oldCenterX = view.center.x
             let newCenterX = UIScreen.main.bounds.size.width / 2
             let deltaX = oldCenterX - newCenterX
-            titleView.transform = CGAffineTransform.identity.translatedBy(x: deltaX, y: 0)
-            navigationItem.titleView = titleView
+            navigationItem.titleView?.transform =
+                CGAffineTransform.identity.translatedBy(x: deltaX, y: 0)
         }
     }
 
@@ -83,11 +83,12 @@ class EmailDetailViewController: BaseViewController {
     }
 
     override func viewWillLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+        super.viewWillLayoutSubviews()
         // Re-layout cells after device orientaion change
         collectionView.collectionViewLayout.invalidateLayout()
         adjustTitleViewPositionIfNeeded()
     }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setupToolbar()
@@ -384,10 +385,6 @@ extension EmailDetailViewController {
     @objc
     private func showSettingsViewController() {
         splitViewController?.preferredDisplayMode = .allVisible
-        guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
-            let vc = nav.topViewController else {
-                return
-        }
         UIUtils.presentSettings(appConfig: appConfig)
     }
 
