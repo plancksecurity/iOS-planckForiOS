@@ -16,11 +16,8 @@
 /* Class = "UILabel"; text = "Fingerprint"; ObjectID = "8ib-BO-jFp"; */
 "8ib-BO-jFp.text" = "Vingerafdruk";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "Ag8-Qj-N8l"; */
-"Ag8-Qj-N8l.text" = "Label";
-
 /* Class = "UILabel"; text = "Password"; ObjectID = "aYO-l7-9iG"; */
-"aYO-l7-9iG.text" = "Wachtwoord:";
+"aYO-l7-9iG.text" = "Wachtwoord";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "azH-be-f3A"; */
 "azH-be-f3A.text" = "Gebruikersnaam";
@@ -35,7 +32,7 @@
 "daw-LF-EZF.text" = "Transport Beveiliging:";
 
 /* Class = "UILabel"; text = "Transport Security"; ObjectID = "dpq-4F-9sG"; */
-"dpq-4F-9sG.text" = "Transportbeveiliging:";
+"dpq-4F-9sG.text" = "Transport Beveiliging";
 
 /* Class = "UILabel"; text = "Server"; ObjectID = "DQ0-sB-CRx"; */
 "DQ0-sB-CRx.text" = "Server:";
@@ -59,13 +56,13 @@
 "Ne5-6o-O4F.text" = "E-mail:";
 
 /* Class = "UILabel"; text = "Email"; ObjectID = "o8M-bM-KZX"; */
-"o8M-bM-KZX.text" = "E-mail:";
+"o8M-bM-KZX.text" = "E-mail";
 
 /* Class = "UILabel"; text = "Server"; ObjectID = "oCE-8g-idG"; */
-"oCE-8g-idG.text" = "Server:";
+"oCE-8g-idG.text" = "Server";
 
 /* Class = "UILabel"; text = "Port"; ObjectID = "Osx-2y-29f"; */
-"Osx-2y-29f.text" = "Poort:";
+"Osx-2y-29f.text" = "Poort";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "Pdx-rN-QPm"; */
 "Pdx-rN-QPm.text" = "Titel";
@@ -77,7 +74,7 @@
 "RYB-AT-TSB.text" = "Gebruikersnaam";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "s9I-CU-fSE"; */
-"s9I-CU-fSE.text" = "Naam:";
+"s9I-CU-fSE.text" = "Naam";
 
 /* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "Tjb-uM-eUF"; */
 "Tjb-uM-eUF.text" = "p≡p Sync";
@@ -89,7 +86,7 @@
 "Tul-XU-PSw.text" = "Transport Beveiliging";
 
 /* Class = "UILabel"; text = "Port"; ObjectID = "U7P-zv-48U"; */
-"U7P-zv-48U.text" = "Poort:";
+"U7P-zv-48U.text" = "Poort";
 
 /* Class = "UILabel"; text = "set_own_key Error"; ObjectID = "ujL-Pa-uXD"; Note = "Don't localize this"; */
 "ujL-Pa-uXD.text" = "set_own_key Error";
@@ -113,7 +110,7 @@
 "X0Z-Ju-XOO.text" = "Label";
 
 /* Class = "UILabel"; text = "Server"; ObjectID = "x85-ha-uBw"; */
-"x85-ha-uBw.text" = "Server:";
+"x85-ha-uBw.text" = "Server";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "xiv-OD-YNL"; */
 "xiv-OD-YNL.text" = "Titel";

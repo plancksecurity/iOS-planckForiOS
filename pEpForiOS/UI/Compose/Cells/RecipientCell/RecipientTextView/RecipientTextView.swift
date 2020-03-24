@@ -23,7 +23,7 @@ class RecipientTextView: UITextView {
 
     public func setInitialText() {
         reportWidthChange()
-        if let attr = viewModel?.inititalText() {
+        if let attr = viewModel?.inititalText(), attr.string != "" {
             attributedText = attr
         } else {
             text = " "

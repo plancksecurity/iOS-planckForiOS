@@ -1,5 +1,11 @@
+/* client certificate provider key */
+"\n            Client\n            Certificate\n            " = "\n            Zákazník\n            certifikát\n            ";
+
 /* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
 "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nPrílohy sú zakázané.\n\n";
+
+/* TrustManagementView Back Button Title */
+" Message" = " Správa";
 
 /* No privacy status explanation
    No privacy status suggestion */
@@ -40,6 +46,9 @@
 /* Empty account name message */
 "Account name must not be empty." = "Názov účtu nesmie byť prázdny.";
 
+/* account type selector title */
+"Account Select" = "Vyberte účet";
+
 /* Tableview section  header: Accounts */
 "Accounts" = "Účty";
 
@@ -54,6 +63,9 @@
 
 /* error message for .noConnectData */
 "An internal error occurred" = "Vyskytla sa interná chyba";
+
+/* Tutorial Fourth text */
+"And in the top bar when you open or write an email:" = "A pri otváraní alebo písaní e-mailu na hornom paneli:";
 
 /* KeySyncWizard introduction message */
 "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Bolo zistené ďalšie zariadenie. Môžeme ho pridať do skupiny zariadení, aby sa synchronizovalo všetko vaše súkromie na všetkých zariadeniach. Začneme synchronizáciu?";
@@ -104,10 +116,12 @@
    compose email cancel
    Default cancel button text
    EmailList action title
+   EmailList: Cancel edit mode button title
    keysync alert leave device group cancel
    keySyncWizard animation view cancel button title
    Message actions
    MoveToFolderViewController NavigationBar canel button title
+   TrustManagementView: trustword language selector cancel button label
    UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
 "Cancel" = "Zrušiť";
 
@@ -128,6 +142,12 @@
 
 /* Empty SMTP transport security method */
 "Choose SMTP transport security method." = "Vyberte spôsob zabezpečenia prenosu SMTP";
+
+/* Header for client certificate password screen */
+"Client Certificate" = "Certifikát klienta";
+
+/* privacyStatusDescription yellow */
+"Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call." = "Komunikácia s týmto kontaktom bude úplne Bezpečná a Dôveryhodná porovnaním nasledujúcich Trustwords s kontaktom, napríklad telefonickým hovorom.";
 
 /* Privacy status suggestion */
 "Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Vyplňte handshake s vašim komunikačným partnerom. Handshake je potrebný iba jeden partner a zabezpečí bezpečnú a dôveryhodnú komunikáciu.";
@@ -155,12 +175,18 @@
 /* UIUtils.presentActionSheetWithContactOptions.button.title Copy Email */
 "Copy Email" = "Skopírujte e-mail";
 
+/* Client certificate import: corrupted file error alert title */
+"Corrupted File" = "Poškodený súbor";
+
 /* Error description detecting account settings */
 "Could not find servers. Please enter manually" = "Nepodarilo sa nájsť servery. Zadajte ručne.";
 
 /* Credits view title
    Settings: Cell (button) title to view app credits */
 "Credits" = "Autori";
+
+/* Incorrect trustwords/PGP fingerprint */
+"Decline" = "Odmietnuť";
 
 /* Default Account Setting Section Title
    Default account view title
@@ -227,6 +253,9 @@
 /* No comment provided by engineer. */
 "Error casting" = "Chyba pri odovzdávaní";
 
+/* spearator string bewtween name and date */
+"Exp. date:" = "Exp. dátum:";
+
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Extra kľúče";
 
@@ -267,14 +296,23 @@
 /* Title of the view */
 "Handshake" = "Handshake";
 
+/* Alert title for iCloud instructions */
+"iCloud" = "iCloud";
+
 /* Trusted Server Setting Section Footer */
 "If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!" = "Ak je zakázaná, na serveri sa uloží nezašifrovaná kópia každej správy.\n\nNezakážte, ak si nie ste istí, čo robíte!";
 
 /* Tableview section footer */
 "If enabled, message subjects are also protected." = "Ak je povolená, sú chránené aj predmety správ.";
 
+/* Secure & Trusted Description Label - Step 1 */
+"If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle." = "Ak Trustwords nie sú správne, môže dôjsť k útoku mužom uprostred.";
+
 /* Privacy status suggestion */
 "If this message was addressed to you, please inform the sender that you don't have the key." = "Ak bola táto správa určená vám. Prosím, informujte odosielateľa, že nemáte kľúč.";
+
+/* Alert: Leave device group confirmation comment */
+"If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?" = "Ak zakážete synchronizáciu p≡p, vaše účty na vašich zariadeniach sa už nebudú synchronizovať. Naozaj chcete vypnúť synchronizáciu p≡p?";
 
 /* Title for manual account IMAP setup */
 "IMAP" = "IMAP";
@@ -291,6 +329,15 @@
 /* Empty username message */
 "Imap username must not be empty." = "Používateľské meno pre IMAP nesmie byť prázdne.";
 
+/* Select certificate - import certificate date */
+"Import date" = "Dátum importu";
+
+/* Privacy status explanation */
+"In order to make the communication with this communication partner Secure & Trusted, you will have to compare the Trustwords below with this communication partner and ensure they match yours." = "Za účelom zabezpečenia komunikácie s týmto komunikačným partnerom na uroven Bezpečná a Dôveryhodná, budete musieť porovnať nižšie uvedené Trustwords s týmto komunikačným partnerom a zabezpečiť, aby sa zhodovali s vašimi.";
+
+/* Privacy Status - Common Denominator Explanation */
+"In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners." = "V takom prípade je stav ochrany súkromia správy bezpečný, pretože ide o najmenšieho spoločného menovateľa oboch komunikačných partnerov.";
+
 /* Name of INBOX mailbox (of one account) */
 "Inbox" = "Doručená";
 
@@ -299,6 +346,9 @@
 
 /* title for the include section */
 "INCLUDE:" = "ZAHŔŇA:";
+
+/* Info button for showing iCloud page */
+"Info" = "Informácie";
 
 /* Title of error alert shown to the user in case an error in the app occured that is not caused or related to the server */
 "Internal Error" = "Vnútorná chyba";
@@ -356,6 +406,9 @@
    Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed. */
 "Login Failed" = "Prihlásenie zlyhalo";
 
+/* FoldersView navigationbar title */
+"Mailboxes" = "Schránky";
+
 /* Privacy status suggestion */
 "Make sure the privacy status for each communication partner listed is at least secure" = "Uistite sa, že stav ochrany osobných údajov každého uvedeného komunikačného partnera je aspoň bezpečný";
 
@@ -371,7 +424,8 @@
 /* EmailList action title */
 "Mark as Read" = "Označiť ako prečítané";
 
-/* EmailList action title */
+/* Email Detail View reply button menu - toggle seen state button text: unread
+   EmailList action title */
 "Mark as unread" = "Označiť ako neprečítané";
 
 /* Mistrusted - Step 1
@@ -404,11 +458,20 @@
    Next button title for manual account setup */
 "Next" = "Ďalej";
 
+/* Alert button while client certificate is importing: Try again? No */
+"No" = "Nie";
+
 /* Error when no account found for set_own_key UI */
 "No account found with the given email." = "S daným e-mailom sa nenašiel žiadny účet.";
 
 /* Privacy status suggestion */
 "No action needed!" = "Nie sú potrebné žiadne kroky!";
+
+/* No client certificate exists alert title */
+"No Client Certificate" = "Žiadny certifikát klienta";
+
+/* No client certificate exists alert message */
+"No client certificate exists. You have to import your client certificate before entering login data." = "Neexistuje žiadny klientsky certifikát. Pred zadaním prihlasovacích údajov musíte importovať klientsky certifikát.";
 
 /* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
 "No Permissions" = "Žiadne povolenia";
@@ -424,6 +487,9 @@
    not now button */
 "Not Now" = "Teraz nie";
 
+/* alert error title certificate delete */
+"Not possible to delete" = "Nie je možné odstrániť";
+
 /* Default message in detail view when nothing has been selected */
 "Nothing Selected" = "Nič vybrané";
 
@@ -437,11 +503,20 @@
    UIAlertAction ok after error */
 "OK" = "OK";
 
+/* Options */
+"Options" = "Možnosti";
+
+/* Other provider key */
+"Other" = "Iná";
+
 /* title for the attachment section */
 "OTHER:" = "Ostatné:";
 
 /* Name of outbox (showing messages to send */
 "Outbox" = "Pošta na odoslanie";
+
+/* Some trustwords */
+"OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER" = "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER";
 
 /* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
 "p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App." = "p≡p nemá povolenie na prístup\nvo fotogalérii. Povolenie môžete udeliť v Nastaveniach aplikácie.";
@@ -453,6 +528,12 @@
    keySyncWizard animation view title
    Settings: enable/disable p≡p Sync feature */
 "p≡p Sync" = "p≡p Sync";
+
+/* Tutorial Second text */
+"p≡p uses a Privacy Status icon to indicate how secure your communication is." = "p≡p používa ikonu stavu súkromia na označenie, ako je vaša komunikácia bezpečná.";
+
+/* Passive mode title */
+"Passive mode" = "Pasívny režim";
 
 /* Password placeholder for manual account setup
    Password TextField Placeholder in Login Screen */
@@ -491,8 +572,14 @@
 /* TutorialWizard image 5 horizontal */
 "pEpForIOS-Tutorial-5-horizontal" = "pEpForIOS-Tutorial-5-horizontal";
 
+/* Settings accounts section, footer below Reset All cell */
+"Performs a reset of the privacy settings of your account(s)" = "Vykoná reset nastavení Stavu súkromia vašich účtov";
+
 /* TableView Contacts section footer */
 "Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages." = "Vykoná reset nastavení ochrany osobných údajov uložených pre komunikačného partnera. Môže to byť potrebné napríklad, ak váš komunikačný partner nedokáže prečítať vaše správy.";
+
+/* Client certificate import: PermissionsDenied alert title */
+"Permissions Denied" = "Povolenia boli zamietnuté";
 
 /* Tableview section header */
 "PGP Compatibility" = "Kompatibilita PGP";
@@ -515,6 +602,9 @@
 /* Fail to log in, email does not match account type */
 "Please enter a valid Gmail address." = "Zadajte platnú adresu Gmail.";
 
+/* Description for client certificate password screen */
+"Please enter the password of the certificate to import it:" = "Ak chcete importovať certifikát, zadajte heslo certifikátu:";
+
 /* keySyncWizard animation view message while we sync your devices */
 "Please give us a moment while we sync your devices. This can take a minute or more." = "Venujte nám chvíľu, kým synchronizujeme vaše zariadenia. Môže to trvať minútu alebo viac.";
 
@@ -533,7 +623,7 @@
 
 /* action sheet title 1
    Privacy Status Label */
-"Privacy Status" = "Stav ochrany osobných údajov";
+"Privacy Status" = "Stav súkromia";
 
 /* title for subject protection */
 "Protect Message Subject" = "Chrániť predmet správy";
@@ -574,6 +664,9 @@
 
 /* Settings confirm to reset all identity title alert */
 "Reset All Identities" = "Obnoviť všetky identity";
+
+/* Reset all p≡p data for this comunication partner: */
+"Reset all p≡p data for this comunication partner:" = "Resetujte všetky dáta p≡p pre tohto komunikačného partnera:";
 
 /* alert action 1 */
 "Reset This Identity" = "Obnoviť túto identitu";
@@ -678,11 +771,23 @@
 /* Compose field title */
 "Subject:" = "Predmet:";
 
+/* Tableview section header: (p≡p) Sync */
+"Sync" = "Sync";
+
 /* error message for .accountExistence */
 "The account already exists" = "tento účet už existuje";
 
+/* Error message shown to the user on problems with the client certificate */
+"The client certificate was rejected by the server" = "Server zamietol klientsky certifikát";
+
 /* KeySyncWizard complete message - more than two devices */
 "The device is now member of your device group. All your privacy is now synchronized." = "Zariadenie je teraz členom vašej skupiny zariadení. Všetko vaše súkromie je teraz synchronizované.";
+
+/* Client certificate import: corrupted file error alert message */
+"The file could not be imported" = "Súbor sa nepodarilo importovať";
+
+/* Privacy Status Explanation */
+"The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:" = "Ikona v hornom paneli odráža Stav súkromia správy, ktorá je najnižším najnižším spoločným menovateľom všetkých komunikačných partnerov tejto správy, napríklad:";
 
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "Správu nebolo možné odoslať. Skúste neskôr prosím.";
@@ -701,6 +806,18 @@
 
 /* privacyStatusDescription green */
 "This communication partner is secure and trusted" = "Tento komunikačný partner je bezpečný a dôveryhodný";
+
+/* Privacy status explanation */
+"This contact is completely trusted. All communication will be the maximum level of privacy." = "Tento kontakt je úplne Dôveryhodný. Celá komunikácia bude maximálnou úrovňou súkromia.";
+
+/* privacyStatusDescription green */
+"This contact is completely trusted. All communication will be with the maximum level of privacy." = "Tento kontakt je úplne dôveryhodný. Celá komunikácia bude s maximálnou úrovňou súkromia.";
+
+/* privacyStatusDescription red */
+"This contact is mistrusted and might be an attack by a man-in-the-middle." = "Tento kontakt je Nedôveryhodny a môže to byť útok muža v strede.";
+
+/* Privacy status title */
+"This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the p≡p data." = "Tento kontakt je Nedôveryhodný. Ak ste omylom zamietli Trustwords, môžete resetovať dáta p≡p.";
 
 /* Alert message before trusting an account */
 "This is a public cloud account. Your data will be exposed. Are you sure you want to configure this as trusted?" = "Toto je verejné cloudové konto. Vaše údaje budú odhalené. Naozaj to chcete nakonfigurovať ako dôveryhodné?";
@@ -744,6 +861,9 @@
 /* Privacy status explanation */
 "This message is unsecure." = "Táto správa je nezabezpečená.";
 
+/* Tutorial Third text */
+"This Privacy Status is shown as an icon the user´s avatars:" = "Tento Stav súkromia sa zobrazuje ako ikona avatarov používateľa:";
+
 /* settings, enable thread view or not */
 "Thread Messages" = "Vláknové správy";
 
@@ -766,6 +886,12 @@
 /* Alert trust button title before trusting an account */
 "Trust" = "Dôvera";
 
+/* Action name to be suggested at the moment of revert */
+"Trust Confirmation" = "Potvrdenie dôvery";
+
+/* Action name to be suggested at the moment of revert */
+"Trust Rejection" = "Zamietnutie dôvery";
+
 /* keySyncWizard error view Try Again button title */
 "Try Again" = "Skúste to znova";
 
@@ -774,6 +900,12 @@
 
 /* Privacy status title */
 "Under Attack" = "Pod útokom";
+
+/* Undo trust change verification button title */
+"Undo" = "Vrátenie späť";
+
+/* Undo trust change verification alert title */
+"Undo (actionName)" = "Vrátiť späť (actionName)";
 
 /* read button in slide-left menu */
 "Unflag" = "zrušiť označenie";
@@ -784,6 +916,10 @@
 /* Privacy status title
    privacyStatusDescription no_color */
 "Unknown" = "Neznáme";
+
+/* Privacy status explanation
+   Privacy status suggestion */
+"Unknown." = "Neznáme.";
 
 /* file name used for unnamed attachments */
 "unnamed" = "nepomenované";
@@ -824,21 +960,57 @@
 /* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "K serveru SMTP sa nepodarilo pripojiť.";
 
+/* Client certificate import: wrong password alert message */
+"We could not import the certificate. The password is incorrect.\n\nTry again?" = "Certifikát sa nepodarilo importovať. Heslo je nesprávne.\n\nSkúste to znova?";
+
+/* Client certificate import: wrong password alert message */
+"We could not import the certificate. We do not have permissions to open this file.\n\nTry again?" = "Certifikát sa nepodarilo importovať. Nemáme povolenie na otvorenie tohto súboru.\n\nSkúste to znova?";
+
 /* KeySyncWizard complete message - two devices */
 "We successfully created a device group. All your privacy is now synchronized." = "Úspešne sme vytvorili skupinu zariadení. Všetko vaše súkromie je teraz synchronizované.";
+
+/* Welcome to the p≡p Tutorial - Step 0 */
+"Welcome to the p≡p Tutorial" = "Vitajte v tutoriále p≡p";
+
+/* Secure & Trusted Description Label - Step 1 */
+"When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted" = "Po potvrdení správnosti Trustwords a dokončení Handshake bude komunikácia úplne bezpečná a dôveryhodná";
+
+/* Privacy status explanation Label */
+"When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication parner." = "Po kliknutí na ikonu stavu súkromia na hornom paneli sa dostanete na stránku Handshake, kde si môžete overiť komunikačneho partnera.";
+
+/* Confirm Trustwords explanation Label */
+"When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted." = "Keď potvrdíte správnosť hesiel vášho komunikačného partnera, vaša komunikácia bude úplne Bezpečná & amp; Dôveryhodná.";
 
 /* Title for attachments filter */
 "With attachments" = "S prílohami";
 
+/* Secure Description Label - Step 1 */
+"With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact." = "S týmto Stavom súkromia je všetka komunikácia bezpečná, ale aby ste potvrdili, že váš kontakt je skutočne osobou, ktorú poznáte, mali by ste porovnať Trustwords s týmto kontaktom.";
+
 /* Incorrect fingerprint (PGP, long version) */
 "Wrong Fingerprint" = "Chybný PGP Fingerprint";
 
+/* Client certificate import: wrong password alert title */
+"Wrong Password" = "Zlé heslo";
+
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Chybné Trustwords";
+
+/* Alert button while client certificate is importing: Try again? Yes */
+"Yes" = "Áno";
 
 /* Confirm less secure answer message alert body */
 "You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Chystáte sa odpovedať na bezpečnú správu ako nezabezpečenú. Ak sa rozhodnete pokračovať, môže dôjsť k úniku dôverných informácií, čo vás a vašich komunikačných partnerov ohrozí. Ste si istý, že chcete pokračovať?";
 
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Chystáte sa poslať zabezpečenú správu ako nezabezpečenú. Ak sa rozhodnete pokračovať, môže dôjsť k úniku dôverných informácií, čo vás a vašich komunikačných partnerov ohrozí. Ste si istý, že chcete pokračovať?";
+
+/* Tutorial First text */
+"You can close this tutorial anytime with the Skip button." = "Túto príručku môžete kedykoľvek zavrieť pomocou tlačidla Preskočiť.";
+
+/* alert error message certificate delete */
+"You can only delete certificates that are not connected to an account. The certificate is currently used for the following account: (by)" = "Môžete odstrániť iba certifikáty, ktoré nie sú pripojené k účtu. Certifikát sa momentálne používa pre tento účet: (podľa)";
+
+/* iCloud instructions */
+"You need to create an app-specific password in your iCloud account." = "Vo svojom účte iCloud musíte vytvoriť heslo pre konkrétnu aplikáciu.";
 
