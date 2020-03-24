@@ -61,6 +61,20 @@ class EmailDetailViewController: BaseViewController {
         setup()
     }
     
+    //As this screen might be rendered in a split view, the title view is not centered to the device
+    // width but the view controller's width. That's why we need to adjust the title view position
+    // in that case.
+    private func adjustTitleViewPositionIfNeeded() {
+        if isIpad && isLandscape {
+            guard let titleView = navigationItem.titleView else { return }
+            let oldCenterX = titleView.center.x
+            let newCenterX = UIScreen.main.bounds.size.width / 2
+            let deltaX = oldCenterX - newCenterX
+            titleView.transform = CGAffineTransform.identity.translatedBy(x: deltaX, y: 0)
+            navigationItem.titleView = titleView
+        }
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         doOnce?()
@@ -72,6 +86,7 @@ class EmailDetailViewController: BaseViewController {
         super.viewDidLayoutSubviews()
         // Re-layout cells after device orientaion change
         collectionView.collectionViewLayout.invalidateLayout()
+        adjustTitleViewPositionIfNeeded()
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
