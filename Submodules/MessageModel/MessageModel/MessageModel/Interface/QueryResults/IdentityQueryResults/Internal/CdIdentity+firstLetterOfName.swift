@@ -10,15 +10,15 @@ import Foundation
 
 // Mark: - NSFetchResults calculated field
 extension CdIdentity {
-
-    /// Calculated field that retrives the first letter of the name.
+    /// Calculated field that retrives the first letter of the name, or "#" if the first
+    /// character is not a letter.
     @objc
     var firstLetterOfName: String {
         get {
             if let first = userName?.prefix(ofLength: 1), first.isLetter {
                 return first
             } else {
-                return NSLocalizedString("Unknown Name", comment: "section title for identity without username")
+                return "#"
             }
         }
     }
