@@ -32,7 +32,7 @@
 "eK9-eY-X1L.text" = "Niet Vertrouwd";
 
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "emU-WV-Kap"; */
-"emU-WV-Kap.normalTitle" = "Button";
+"emU-WV-Kap.normalTitle" = "Knop";
 
 /* Class = "UILabel"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "GC3-wG-GHD"; */
 "GC3-wG-GHD.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
@@ -59,7 +59,7 @@
 "orZ-GB-OGi.text" = "Veilig";
 
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Rgh-E1-f1w"; */
-"Rgh-E1-f1w.normalTitle" = "Button";
+"Rgh-E1-f1w.normalTitle" = "Knop";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "rPi-Px-Pyp"; */
 "rPi-Px-Pyp.text" = "Label";
@@ -80,7 +80,7 @@
 "uqG-OB-ggb.text" = "Met deze Privacy Status is alle communicatie veilig, maar om te bevestigen dat je contact echt de persoon is die je kent, moet je de Vertrouwenswoorden met deze persoon vergelijken.";
 
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "w5A-sP-MB2"; */
-"w5A-sP-MB2.normalTitle" = "Button";
+"w5A-sP-MB2.normalTitle" = "Knop";
 
 /* Class = "UILabel"; text = "Welcome to the p≡p Tutorial"; ObjectID = "ynz-KT-KJl"; */
 "ynz-KT-KJl.text" = "Welkom bij de p≡p Tutorial";

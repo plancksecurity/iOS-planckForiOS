@@ -4,6 +4,9 @@
 /* Bundle name */
 "CFBundleName" = "pEp";
 
+/* (No Comment) */
+"Client Certificate" = "Certifikát klienta";
+
 /* Privacy - Camera Usage Description */
 "NSCameraUsageDescription" = "Použite fotoaparát";
 
