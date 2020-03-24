@@ -202,11 +202,50 @@ class StringHTMLExtensionTests: XCTestCase {
     }
 
     func testHtmlToAttributedStringSampleEmail() {
-        let input = Constant.sampleHtmlEmail
-        let sth = input.htmlToAttributedString(attachmentDelegate: nil)
-        let exp = Constant.sampleEmailExpectation
+        let input = """
+        <html>
+          <head>
+            <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF=
+        -8">
+          </head>
+          <body text=3D"#000000" bgcolor=3D"#FFFFFF">
+            <p>Again<br>
+            </p>
+            <div class=3D"moz-cite-prefix">On 13/03/2020 14:20, iostest018 wrote:=
+        <br>
+            </div>
+            <blockquote type=3D"cite"
+              cite=3D"mid:ca880105-6e34-ecf3-c8cc-c542191ac4fd@peptest.ch">
+              <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DU=
+        TF-8">
+              <p><br>
+              </p>
+              <div class=3D"moz-cite-prefix">On 13/03/2020 11:35, iostest018
+                wrote:<br>
+              </div>
+              <blockquote type=3D"cite"
+                cite=3D"mid:6ddb0381-d4ce-fe15-0bb9-3a38eb6a5f9f@peptest.ch">
+                <meta http-equiv=3D"content-type" content=3D"text/html;
+                  charset=3DUTF-8">
+                <p>Hello</p>
+                <p><font size=3D"+3" color=3D"#cc0000">Big red text</font></p>
+                <p>Below should be inline picture attached</p>
+                <p>Cheers</p>
+                <p>Test Monkey<br>
+                </p>
+                <br>
+              </blockquote>
+            </blockquote>
+          </body>
+        </html>
+        """
+        let attribString = try! NSAttributedString(data: input.data(using: .utf8)!, options: [.documentType:
+        NSAttributedString.DocumentType.html, .characterEncoding:
+        String.Encoding.utf8.rawValue], documentAttributes: nil)
 
-        XCTAssertEqual(sth.string, exp)
+        let textView = UITextView(frame: CGRect(x: 0, y: 0, width: 1000, height: 1000))
+        textView.attributedText = attribString
+
     }
 
     /**
