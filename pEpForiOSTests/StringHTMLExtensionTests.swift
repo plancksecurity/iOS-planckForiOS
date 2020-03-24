@@ -245,7 +245,6 @@ class StringHTMLExtensionTests: XCTestCase {
 
         let textView = UITextView(frame: CGRect(x: 0, y: 0, width: 1000, height: 1000))
         textView.attributedText = attribString
-
     }
 
     /**
@@ -291,6 +290,147 @@ class StringHTMLExtensionTests: XCTestCase {
         }
         XCTAssertEqual(attachmentNew.data, attachment.data)
         XCTAssertEqual(attachmentNew.mimeType, attachment.mimeType)
+    }
+
+    // MARK: - Buff Test Recursive Blockquote Approach
+    //            let htmlInput = """
+    //            <html>
+    //              <head>
+    //                <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF=
+    //            -8">
+    //              </head>
+    //              <body text=3D"#000000" bgcolor=3D"#FFFFFF">
+    //                <p>Again<br>
+    //                </p>
+    //                <div class=3D"moz-cite-prefix">On 13/03/2020 14:20, iostest018 wrote:=
+    //            <br>
+    //                </div>
+    //                <blockquote type=3D"cite"
+    //                  cite=3D"mid:ca880105-6e34-ecf3-c8cc-c542191ac4fd@peptest.ch">
+    //                  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DU=
+    //            TF-8">
+    //                  <p><br>
+    //                  </p>
+    //                  <div class=3D"moz-cite-prefix">On 13/03/2020 11:35, iostest018
+    //                    wrote:<br>
+    //                  </div>
+    //                  <blockquote type=3D"cite"
+    //                    cite=3D"mid:6ddb0381-d4ce-fe15-0bb9-3a38eb6a5f9f@peptest.ch">
+    //                    <meta http-equiv=3D"content-type" content=3D"text/html;
+    //                      charset=3DUTF-8">
+    //                    <p>Hello</p>
+    //                    <p><font size=3D"+3" color=3D"#cc0000">Big red text</font></p>
+    //                    <p>Below should be inline picture attached</p>
+    //                    <p>Cheers</p>
+    //                    <p>Test Monkey<br>
+    //                    </p>
+    //                    <br>
+    //                  </blockquote>
+    //                </blockquote>
+    //              </body>
+    //            </html>
+    //            """
+    func testBuffTestRecursiveBlockquoteApproach() {
+        let htmlInput = """
+        <html>
+            <p> PEP outer pre </p>
+            <blockquote type=3D"cite"
+              cite=3D"mid:ca880105-6e34-ecf3-c8cc-c542191ac4fd@peptest.ch">
+                 <p> PEP level 1 pre </p>
+              <blockquote type=3D"cite"
+                cite=3D"mid:6ddb0381-d4ce-fe15-0bb9-3a38eb6a5f9f@peptest.ch">
+                    <p> PEP level 2 pre</p>
+              </blockquote>
+             <p> PEP level 1 post </p>
+            </blockquote>
+            <p> PEP outer post</p>
+          </body>
+        </html>
+        """
+
+        guard let htmlComponents = blockQuoteHtmlComponents(for: htmlInput) else {
+            fatalError("is valid?")
+        }
+
+        var workon = NSMutableAttributedString()
+        for html in htmlComponents  {
+            let attribString = try! NSAttributedString(data: html.data(using: .utf8)!,
+                                                       options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue],
+                                                       documentAttributes: nil)
+            workon.append(attribString)
+        }
+        //
+
+
+        let attribString = try! NSAttributedString(data: workon.data(using: .utf8)!, options: [.documentType:
+            NSAttributedString.DocumentType.html, .characterEncoding:
+                String.Encoding.utf8.rawValue], documentAttributes: nil)
+
+        let textView = UITextView(frame: CGRect(x: 0, y: 0, width: 1000, height: 1000))
+        textView.attributedText = attribString
+
+    }
+
+    // Regex for finding <blockquote type=3D"cite" cite=3D"mid:ca880105-6e34-ecf3-c8cc-c542191ac4fd@peptest.ch">
+    let openingBlockquoteRegex = #" \<blockquote[^>]*\>"#
+    let closingBlockquoteRegex = #"\<\/blockquote\>"#
+
+    private func blockQuoteOpeningTagRanges(for html: String) -> [NSRange]?{
+        guard let regex = try? NSRegularExpression(pattern: openingBlockquoteRegex, options: []) else {
+            return nil
+        }
+        let ranges = regex.matches(in: html, options: [], range: html.wholeRange()).map { $0.range }
+
+        return ranges
+    }
+
+    private func blockQuoteClosingTagRanges(for html: String) -> [NSRange]?{
+        guard let regex = try? NSRegularExpression(pattern: closingBlockquoteRegex, options: []) else {
+            return nil
+        }
+        let ranges = regex.matches(in: html, options: [], range: html.wholeRange()).map { $0.range }
+
+        return ranges
+    }
+
+//    private func outerHtmlBlocks(for html: String,
+//                                 openingTagRanges:[NSRange],
+//                                 closeTagRanges:[NSRange]) -> (leadingHtml: String, trailingHtml: String)? {
+//
+//
+//    }
+
+
+    /// -returns: Html components. Inner first
+    private func blockQuoteHtmlComponents(for html: String) -> [String]? {
+        guard let _ = blockQuoteOpeningTagRanges(for: html) else {
+            // No quotes, nothing todo
+            return nil
+        }
+        let delimiter = "pEpDeLimiter" + UUID().uuidString
+        var workon = html
+        repeat {
+            if let openingRanges = blockQuoteOpeningTagRanges(for: workon),
+                let firstOpening = openingRanges.first {
+                workon = workon.stringByReplacingCharactersInRange(firstOpening,
+                                                                   withString: delimiter)
+            }
+
+            if let closingRanges = blockQuoteClosingTagRanges(for: workon),
+                let firstClosing = closingRanges.last {
+                workon = workon.stringByReplacingCharactersInRange(firstClosing,
+                                                                   withString: delimiter)
+            }
+
+
+        } while !((blockQuoteOpeningTagRanges(for: workon) ?? []).isEmpty && (blockQuoteClosingTagRanges(for: workon) ?? []).isEmpty)
+
+        let components = workon.components(separatedBy: delimiter)
+        guard !components.isEmpty, components.count > 1 else {
+            fatalError("This should never happen. ?? Or should it?")
+        }
+
+        return components
     }
 }
 
