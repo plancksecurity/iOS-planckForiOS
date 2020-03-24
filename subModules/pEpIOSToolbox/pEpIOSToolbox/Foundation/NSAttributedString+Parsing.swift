@@ -59,23 +59,7 @@ public extension NSAttributedString {
             }
         }
 
-        let fontAvenir = UIFont(name: "Avenir Next Condensed Ultra Light", size: 15)
-        let fontSystem = UIFont.systemFont(ofSize: 15, weight: .light)
-
-        let fakeVerticalLine = NSAttributedString(string: " ", attributes: [NSAttributedString.Key.backgroundColor : UIColor.pEpGreen, NSAttributedString.Key.font : fontAvenir ?? fontSystem])
-        let horizontalSpace = NSAttributedString(string: " ", attributes: [
-            NSAttributedString.Key.backgroundColor : UIColor.clear,
-            NSAttributedString.Key.font : fontAvenir ?? fontSystem])
-
-        var offset = 0
-
-        for index in newParagraphs {
-            attributedString.insert(fakeVerticalLine, at: index + offset)
-            attributedString.insert(horizontalSpace, at: index + 1 + offset)
-            attributedString.insert(horizontalSpace, at: index + 2 + offset)
-            offset = offset + 3
-        }
-        return attributedString.replacingOccurrences(ofWith: ["›" : "", "‹" : "\n"])
+        return attributedString
     }
 
     func replacingOccurrences<T>(ofWith: [String: T]) -> NSAttributedString {

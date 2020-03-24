@@ -39,28 +39,13 @@ extension String {
             .replacingOccurrencesOfPepSignatureWithHtmlVersion()
     }
 
-    public func htmlToAttributedStringApple() -> NSAttributedString {
-
-        // HTML Foundation framework
-        let htmlData = self.data(using: .utf16,
-                                 allowLossyConversion: true)
-        let options: [NSAttributedString.DocumentReadingOptionKey : Any] =
-            [.documentType : NSAttributedString.DocumentType.html]
-        let attribString = try! NSAttributedString(data: htmlData ?? Data(),
-                                                   options: options,
-                                                   documentAttributes: nil)
-        return attribString
-    }
-
     public func htmlConvertImageLinksToImageBase64(html: String, attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate? = nil) -> String {
 
         let pattern = "<img\\b(?=\\s)(?=(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"][^\\s>]*)*?\\ssrc=['\"]([^\"]*)['\"]?)(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"\\s]*)*\"\\s?\\/?>"
 
-        let imageBaseMetaTags = "data:image/png;cid:{cid};charset=utf-8;base64,"
-
         let results = html.find(pattern: pattern)
 
-        var htmlImgToBase64Converted = html
+        var htmlConverted = html
 
         for result in results {
             guard let data = result.data(using: .utf16) else {
@@ -70,18 +55,10 @@ extension String {
             let src = parser.src.first ?? "empty src"
             let alt = parser.alt.first ?? "empty alt"
 
-            if let attachment = attachmentDelegate?.imageAttachment(src: src, alt: alt),
-                let image = attachment.image,
-                let imageData = image.pngData() {
-                let imageBase64 = imageData.base64EncodedString()
-                htmlImgToBase64Converted = htmlImgToBase64Converted
-                    .replacingOccurrences(of: src, with: imageBaseMetaTags + imageBase64)
-                    .replacingOccurrences(of: "cid:{cid}", with: src)
-                    .replacingOccurrences(of: "<img ", with: "![\(alt)](\(src))<img ")
-            }
+            htmlConverted = htmlConverted.replacingOccurrences(of: result, with: "![\(alt)](\(src))<img ")
         }
 
-        return htmlImgToBase64Converted
+        return htmlConverted
     }
 
     public func htmlToAttributedString(attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate?) -> NSAttributedString {

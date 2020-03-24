@@ -143,15 +143,16 @@ extension NSAttributedString {
         let htmlDocAttrib = [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html]
 
         // conversion NSTextAttachment with image to <img src.../> html tag with cid:{cid}
-        var mutableAttribString = NSMutableAttributedString(attributedString: self)
+        let mutableAttribString = NSMutableAttributedString(attributedString: self)
 
         var images: [NSRange : String] = [:]
 
         self.enumerateAttribute(.attachment, in: self.wholeRange()) { (value, range, stop) in
             if let attachment = value as? TextAttachment {
                 let delegate = ToMarkdownDelegate()
-                let string = delegate.stringFor(attachment: attachment)
-                images[range] = string!.cleanAttachments
+                if let stringForAttachment = delegate.stringFor(attachment: attachment) {
+                    images[range] = stringForAttachment.cleanAttachments
+                }
             }
         }
 
