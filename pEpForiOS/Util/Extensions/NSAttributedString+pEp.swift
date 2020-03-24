@@ -156,7 +156,6 @@ extension NSAttributedString {
             }
         }
 
-
         for item in images.reversed() {
             mutableAttribString.replaceCharacters(in: item.key, with: item.value)
         }

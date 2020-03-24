@@ -182,7 +182,7 @@ class StringHTMLExtensionTests: XCTestCase {
         </div>
         """
 
-        src.htmlConvertImageLinksToImageBase64(html: src, attachmentDelegate: nil)
+        src.htmlConvertImageLinksToImageMarkdownString(html: src, attachmentDelegate: nil)
     }
 
     func testHtmlConvertImageBase64ToImageCidReference() {

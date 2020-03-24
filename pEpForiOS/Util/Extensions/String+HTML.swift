@@ -39,7 +39,7 @@ extension String {
             .replacingOccurrencesOfPepSignatureWithHtmlVersion()
     }
 
-    public func htmlConvertImageLinksToImageBase64(html: String, attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate? = nil) -> String {
+    public func htmlConvertImageLinksToImageMarkdownString(html: String, attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate? = nil) -> String {
 
         let pattern = "<img\\b(?=\\s)(?=(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"][^\\s>]*)*?\\ssrc=['\"]([^\"]*)['\"]?)(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"\\s]*)*\"\\s?\\/?>"
 
@@ -77,7 +77,7 @@ extension String {
 
         // prepare HTML for HTML foundation framework parsing
         // we change cid to image coded with base64
-        let html = htmlConvertImageLinksToImageBase64(html: htmlWithCitedChars, attachmentDelegate: attachmentDelegate)
+        let html = htmlConvertImageLinksToImageMarkdownString(html: htmlWithCitedChars, attachmentDelegate: attachmentDelegate)
         let htmlData = html.data(using: .utf8,
                                  allowLossyConversion: true)
         let options: [NSAttributedString.DocumentReadingOptionKey : Any] =

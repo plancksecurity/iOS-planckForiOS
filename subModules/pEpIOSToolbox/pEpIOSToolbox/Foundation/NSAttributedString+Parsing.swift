@@ -35,31 +35,69 @@ public extension NSAttributedString {
 
     func toCitation(addCitationLevel: Bool = false) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: self)
-        var newParagraphs: [Int] = []
-        var levels: [Int] = [0]
-        var index = 0
+        let mutableAttributedString = NSMutableAttributedString(string: "")
 
-        for char in attributedString.string {
-            index = index + 1
-            switch char  {
-            case "›":
-                levels.append(index)
-            case "‹":
-                levels.removeLast()
-            default:
-                break
+        var ranges: [Int: (range: NSRange, level: Int)] = [:]
+        var blockquoteLevels = 0
+        var indexForStartLine = 0
+
+
+        for line in attributedString.mutableString.components(separatedBy: .newlines) {
+            blockquoteLevels = blockquoteLevels + blockquoteLevel(text: line)
+            var toAdd = ""
+            for _ in 0..<blockquoteLevels {
+                toAdd += ">"
             }
-            if char.isNewline() {
-                for _ in levels {
-                    newParagraphs.append(index)
-                }
-                if addCitationLevel && levels.isEmpty {
-                    newParagraphs.append(index)
-                }
+            let range = attributedString.mutableString.range(of: line, options: .literal)
+            if range.location == NSNotFound {
+                continue
+            }
+            mutableAttributedString.append(NSAttributedString(string: toAdd + " ") + self.attributedSubstring(from: range) + NSAttributedString(string: "\n"))
+            ranges[indexForStartLine] = (range: NSRange(location: indexForStartLine,
+                                                        length: line.count),
+                                         level: blockquoteLevels)
+            indexForStartLine += line.count
+        }
+
+//        for line in self.string.components(separatedBy: .newlines) {
+//            blockquoteLevels = blockquoteLevels + blockquoteLevel(text: line)
+//            var toAdd = ""
+//            for _ in 0..<blockquoteLevels {
+//                toAdd += ">"
+//            }
+//            attributedString.append(NSAttributedString(string: toAdd + " " + line + "\n"))
+//            print("DEV: line: [\(blockquoteLevels)] \(toAdd) \(line)")
+//            ranges[indexForStartLine] = (range: NSRange(location: indexForStartLine,
+//                                                        length: line.count),
+//                                         level: blockquoteLevels)
+//            indexForStartLine += line.count
+//        }
+
+        let verticalLine = NSAttributedString(string: " ", attributes: [NSAttributedString.Key.backgroundColor : UIColor.pEpGreen])
+        let spaceForVerticalLine = NSAttributedString(string: " ", attributes: [NSAttributedString.Key.backgroundColor : UIColor.clear])
+
+        return mutableAttributedString
+            .replacingOccurrences(ofWith: [">" : verticalLine + spaceForVerticalLine + spaceForVerticalLine])
+            .replacingOccurrences(ofWith: ["› " : "", "›" : "", "‹ " : "", "‹" : "", " ›" : "", " ‹" : ""])
+    }
+
+    private func blockquoteLevel(text: String) -> Int {
+        var level = 0
+
+        for char in text {
+            switch char {
+            case "›":
+                level += 1
+            case "‹":
+                level -= 1
+            case " ":
+                break
+            default:
+                return level
             }
         }
 
-        return attributedString
+        return level
     }
 
     func replacingOccurrences<T>(ofWith: [String: T]) -> NSAttributedString {
@@ -84,5 +122,9 @@ public extension NSAttributedString {
         }
 
         return NSAttributedString(attributedString: attributedString)
+    }
+
+    func rangeOf(string: String) -> Range<String.Index>? {
+        return self.string.range(of: string)
     }
 }
