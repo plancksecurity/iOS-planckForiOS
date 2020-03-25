@@ -15,7 +15,7 @@ extension CdIdentity {
     @objc
     var firstLetterOfName: String {
         get {
-            guard let theUserName = userName else {
+            guard let theUserName = userName as NSString? else {
                 return "#"
             }
             return theUserName.firstLetterOfName()
