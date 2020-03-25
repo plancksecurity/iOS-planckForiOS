@@ -128,32 +128,34 @@ extension String {
 
     public func replaceMarkdownImageSyntaxToHtmlSyntax() -> String {
 
+        var html = self
+
         let patternFindImageMarkdownSyntax = "(?:!\\[(.*?)\\]\\((.*?)\\))"
 
         for match in self.find(pattern: patternFindImageMarkdownSyntax) {
 
-        let htmlSyntax = "<img src=\"{src}\" alt=\"{alt}\"/>"
-        var src = ""
-        var alt = ""
+            let htmlSyntax = "<img src=\"{src}\" alt=\"{alt}\"/>"
+            var src = ""
+            var alt = ""
 
-        for component in match.components(separatedBy: "]") {
-            if component.contains("![") {
-                alt = component.replacingOccurrences(of: "![", with: "")
-            } else if component.contains("(") {
-                src = component
-                    .replacingOccurrences(of: "(", with: "")
-                    .replacingOccurrences(of: ")", with: "")
-            } else {
-                break
+            for component in match.components(separatedBy: "]") {
+                if component.contains("![") {
+                    alt = component.replacingOccurrences(of: "![", with: "")
+                } else if component.contains("(") {
+                    src = component
+                        .replacingOccurrences(of: "(", with: "")
+                        .replacingOccurrences(of: ")", with: "")
+                } else {
+                    break
+                }
             }
-        }
 
             let htmlImageSyntaxArrayFilled = htmlSyntax
-            .replacingOccurrences(of: "{src}", with: src)
-            .replacingOccurrences(of: "{alt}", with: alt)
+                .replacingOccurrences(of: "{src}", with: src)
+                .replacingOccurrences(of: "{alt}", with: alt)
 
-            return self.replacingOccurrences(of: match, with: htmlImageSyntaxArrayFilled)
+            html = html.replacingOccurrences(of: match, with: htmlImageSyntaxArrayFilled)
         }
-        return ""
+        return html
     }
 }
