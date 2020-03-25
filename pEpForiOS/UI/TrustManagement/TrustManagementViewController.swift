@@ -243,9 +243,9 @@ extension TrustManagementViewController {
     
     /// Helper method to create and set the back button in the navigation bar.
     private func setLeftBarButton() {
-        let title = NSLocalizedString(" Message",
-                                      comment: "TrustManagementView Back Button Title")
+        let title = NSLocalizedString("Message", comment: "TrustManagementView Back Button Title")
         let button = UIButton.backButton(with: title)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 2)
         let action = #selector(backButtonPressed)
         button.addTarget(self, action:action, for: .touchUpInside)
         let leftItem = UIBarButtonItem(customView: button)
