@@ -242,7 +242,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         let expectedSubject = ReplyUtil.forwardSubject(message: originalMessage)
         // Body
         guard let origBodyAttributedString =
-            originalMessage.longMessageFormatted?.htmlToAttributedString(attachmentDelegate: nil)
+            originalMessage.longMessageFormatted?.htmlToAttributedString(deleteInlinePictures: false, attachmentDelegate: nil)
             else {
                 XCTFail("No body")
                 return
@@ -294,7 +294,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
             let drafts = drafts,
             let origSubject = originalMessage.shortMessage,
             let htmlBody =
-            originalMessage.longMessageFormatted?.htmlToAttributedString(attachmentDelegate: nil)
+            originalMessage.longMessageFormatted?.htmlToAttributedString(deleteInlinePictures: false, attachmentDelegate: nil)
             else {
                 XCTFail()
                 return
@@ -315,7 +315,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
             let outbox = outbox,
             let origSubject = originalMessage.shortMessage,
             let htmlBody =
-            originalMessage.longMessageFormatted?.htmlToAttributedString(attachmentDelegate: nil)
+            originalMessage.longMessageFormatted?.htmlToAttributedString(deleteInlinePictures: false, attachmentDelegate: nil)
             else {
                 XCTFail()
                 return

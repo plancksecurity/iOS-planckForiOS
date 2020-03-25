@@ -208,9 +208,9 @@ class StringHTMLExtensionTests: XCTestCase {
         let inputWithoutAttachmentBlockquoteTag = "<p>\(String.pEpSignatureHtml)</p>\n<p>Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:</p>\n<blockquote>\n<p>Just some mind the gap text.</p>\n<p>Blah!</p>\n</blockquote>\n"
 
         let attachmentDelegate = AttachmentDelegate(attachments: [attachment])
-        let attributedString = input.htmlToAttributedString(attachmentDelegate: attachmentDelegate)
-        let sthWithCiteTag = inputWithoutAttachmentCiteTag.htmlToAttributedString(attachmentDelegate: nil).string
-        let sthWithBlockquoteTag = inputWithoutAttachmentBlockquoteTag.htmlToAttributedString(attachmentDelegate: nil).string
+        let attributedString = input.htmlToAttributedString(deleteInlinePictures: false, attachmentDelegate: attachmentDelegate)
+        let sthWithCiteTag = inputWithoutAttachmentCiteTag.htmlToAttributedString(deleteInlinePictures: false, attachmentDelegate: nil).string
+        let sthWithBlockquoteTag = inputWithoutAttachmentBlockquoteTag.htmlToAttributedString(deleteInlinePictures: false, attachmentDelegate: nil).string
         let exp = "\(pepSignatureTrimmed)\n\nTest 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:\n\n> Just some mind the gap text.\n> Blah!\n\n"
         XCTAssertEqual(sthWithCiteTag, exp)
         XCTAssertEqual(sthWithBlockquoteTag, exp)

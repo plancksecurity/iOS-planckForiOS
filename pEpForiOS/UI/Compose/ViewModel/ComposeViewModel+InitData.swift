@@ -185,6 +185,7 @@ extension ComposeViewModel {
                     inlinedAttachments: inlinedAttachments, session: attachmentSession)
                 let deleteInlinePictures = composeMode == .forward ? false : true
                 let attributedString = html.htmlToAttributedString(deleteInlinePictures: deleteInlinePictures, attachmentDelegate: parserDelegate)
+
                 var result = attributedString
                 let verticalSpace = NSAttributedString(string: "\n")
                 let citationHeader = NSAttributedString(string:  ReplyUtil.citationHeaderForMessage(msg))

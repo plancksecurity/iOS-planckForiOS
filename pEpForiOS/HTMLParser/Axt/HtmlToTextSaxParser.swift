@@ -44,7 +44,7 @@ extension HtmlToTextSaxParser: AXHTMLParserDelegate {
 
     func parser(_ parser: AXHTMLParser, didEndElement elementName: String) {
         if elementName == "br" || elementName == "p" {
-//            add(string: "\n")
+            add(string: "\n")
         }
         tagStack.removeLast()
     }
@@ -53,12 +53,9 @@ extension HtmlToTextSaxParser: AXHTMLParserDelegate {
         if acceptCharacters() {
             var toAppend = string
             if nestedInside(tag: "blockquote") {
-//                toAppend = "> \(toAppend)"
-            } else if nestedInside(tag: "cite") {
-//                toAppend = "> \(toAppend)"
+                toAppend = "> \(toAppend)"
             }
-
-//            add(string: toAppend)
+            add(string: toAppend)
         }
     }
 

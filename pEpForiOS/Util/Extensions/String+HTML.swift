@@ -61,7 +61,7 @@ extension String {
         return htmlConverted
     }
 
-    public func htmlToAttributedString(deleteInlinePictures: Bool,
+    public func htmlToAttributedString(deleteInlinePictures: Bool = false,
                                        attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate?) -> NSAttributedString {
 
         var htmlWithCitedChars = self
