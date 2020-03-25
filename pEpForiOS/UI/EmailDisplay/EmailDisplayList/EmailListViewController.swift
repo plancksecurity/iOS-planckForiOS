@@ -953,13 +953,7 @@ extension EmailListViewController {
 
     func createCancelAction() -> UIAlertAction {
         let title = NSLocalizedString("Cancel", comment: "EmailList action title")
-        return  UIAlertAction(title: title, style: .cancel) {
-            [weak self] action in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
-                return
-            }
-        }
+        return  UIAlertAction(title: title, style: .cancel)
     }
 
     func createReplyAction() ->  UIAlertAction {
