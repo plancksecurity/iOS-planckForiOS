@@ -19,7 +19,7 @@ protocol ClientCertificateImportViewControllerDelegate: class {
     func certificateCouldImported()
 }
 
-final class ClientCertificateImportViewController: UIViewController {
+final class ClientCertificateImportViewController: BaseViewController {
 
 // MARK: - IBOutlet
     

@@ -280,7 +280,10 @@ extension EmailViewController: MessageAttachmentDelegate {
                 Log.shared.errorAndCrash("No VC")
             return
         }
-        vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url, delegate: vc)
+        vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url,
+                                                        ceritficateUrlIsInSecureEnclave: false,
+                                                        delegate: vc)
+        vc.appConfig = appConfi
         vc.modalPresentationStyle = .fullScreen
         clientCertificateImportViewController = vc
     }

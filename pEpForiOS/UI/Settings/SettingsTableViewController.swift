@@ -366,13 +366,13 @@ extension SettingsTableViewController {
              .segueAddNewAccount,
              .sequeShowCredits,
              .ResetTrust,
+             .segueSetOwnKey,
              .segueExtraKeys:
             guard let destination = segue.destination as? BaseViewController else { return }
             destination.appConfig = self.appConfig
         case .none:
             break
-        case .segueSetOwnKey,
-             .ResetTrustSplitView,
+        case .ResetTrustSplitView,
              .noSegue,
              .passiveMode,
              .protectMessageSubject,

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UISearchResultsUpdating {
+class ResetTrustViewController: BaseViewController, UISearchControllerDelegate, UISearchResultsUpdating {
 
     private let cellId = "ResetTrustSettingCell"
     private let model = ResetTrustViewModel()

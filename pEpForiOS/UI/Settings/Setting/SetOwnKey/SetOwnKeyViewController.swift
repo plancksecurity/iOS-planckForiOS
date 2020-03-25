@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SetOwnKeyViewController: UIViewController {
+class SetOwnKeyViewController: BaseViewController {
     @IBOutlet weak var fingerprintTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var errorTextField: UILabel!

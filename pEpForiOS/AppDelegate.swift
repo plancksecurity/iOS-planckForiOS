@@ -260,6 +260,7 @@ extension AppDelegate {
             vc.delegate = topDelegate
         }
         vc.modalPresentationStyle = .fullScreen
+        vc.appConfig = appConfig
         topVC.present(vc, animated: true)
         return true
     }
