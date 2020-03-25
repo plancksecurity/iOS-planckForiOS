@@ -160,7 +160,7 @@ extension IdentityQueryResults {
         var sortDescriptors = [NSSortDescriptor]()
         let sortByUsername = NSSortDescriptor(key: CdIdentity.AttributeName.userName,
                                     ascending: true,
-                                    selector: #selector(NSString.firstLetterOfNameCompare))
+                                    selector: #selector(NSString.firstLetterCompare))
         let sortByAddress = NSSortDescriptor(key: CdIdentity.AttributeName.address,
                                      ascending: true,
                                      selector: #selector(NSString.localizedCaseInsensitiveCompare))
@@ -170,7 +170,7 @@ extension IdentityQueryResults {
     }
 
     private func getSectionNameKeyPath() -> String {
-        return "firstLetterOfName"
+        return "firstLetter"
     }
 
     private func getNewQueryResultController()
