@@ -959,9 +959,6 @@ extension EmailListViewController {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
-            me.tableView.beginUpdates()
-            me.tableView.setEditing(false, animated: true)
-            me.tableView.endUpdates()
         }
     }
 
