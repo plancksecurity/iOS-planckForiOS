@@ -443,3 +443,22 @@ extension String {
         return NSRange(location: 0, length: count)
     }
 }
+
+// TODO: Move to proper place
+extension NSString {
+    public func firstLetterOfName() -> String {
+        let first = substring(to: 1)
+        if first.isLetter && first != "" {
+            return first.uppercased()
+        } else {
+            return "#"
+        }
+    }
+
+    @objc
+    public func firstLetterOfNameCompare(_ string: String) -> ComparisonResult {
+        let s1 = firstLetterOfName()
+        let s2 = string.firstLetterOfName()
+        return s1.compare(s2)
+    }
+}

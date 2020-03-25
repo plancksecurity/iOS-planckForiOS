@@ -16,10 +16,9 @@ extension CdIdentity {
     var firstLetterOfName: String {
         get {
             guard let theUserName = userName as NSString? else {
-                // Note: This must coincide with NSString.firstLetter()
                 return "#"
             }
-            return theUserName.firstLetter()
+            return theUserName.firstLetterOfName()
         }
     }
 }
