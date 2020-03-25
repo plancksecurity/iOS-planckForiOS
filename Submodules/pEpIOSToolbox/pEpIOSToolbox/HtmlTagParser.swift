@@ -8,7 +8,7 @@
 
 import Foundation
 
-class HtmlTagParser: NSObject, XMLParserDelegate {
+final class HtmlTagParser: NSObject, XMLParserDelegate {
 
     private let parser: XMLParser
     private var currentTag: String = ""

@@ -157,7 +157,7 @@ extension String {
     public func htmlConvertImageBase64ToImageCidReference(html: String) -> String {
         let pattern = "<img\\b(?=\\s)(?=(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"][^\\s>]*)*?\\ssrc=['\"]([^\"]*)['\"]?)(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"\\s]*)*\"\\s?\\/?>"
         let results = html.find(pattern: pattern)
-        var htmlImgToBase64Converted = html
+        var htmlImgTagsToMarkdownTags = html
 
         for result in results {
             guard let data = result.data(using: .utf16) else {
@@ -170,13 +170,13 @@ extension String {
                 let cidReference = src.components(separatedBy: ";")
                 for item in cidReference {
                     if !item.contains(find: "cid:") {
-                        htmlImgToBase64Converted = htmlImgToBase64Converted.replacingOccurrences(of: item, with: "")
+                        htmlImgTagsToMarkdownTags = htmlImgTagsToMarkdownTags.replacingOccurrences(of: item, with: "")
                     }
                 }
             }
         }
 
-        return htmlImgToBase64Converted
+        return htmlImgTagsToMarkdownTags
     }
 
     /**
@@ -367,7 +367,7 @@ extension String {
 }
 
 extension NSAttributedString {
-    
+
     public func wholeRange() -> NSRange {
         return NSRange(location: 0, length: length)
     }

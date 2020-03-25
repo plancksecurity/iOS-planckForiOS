@@ -183,7 +183,8 @@ extension ComposeViewModel {
                 // We have HTML content. Parse it taking inlined attachments into account.
                 let parserDelegate = InitDataHtmlToAttributedTextSaxParserAttachmentDelegate(
                     inlinedAttachments: inlinedAttachments, session: attachmentSession)
-                let attributedString = html.htmlToAttributedString(attachmentDelegate: parserDelegate)
+                let deleteInlinePictures = composeMode == .forward ? false : true
+                let attributedString = html.htmlToAttributedString(deleteInlinePictures: deleteInlinePictures, attachmentDelegate: parserDelegate)
                 var result = attributedString
                 let verticalSpace = NSAttributedString(string: "\n")
                 let citationHeader = NSAttributedString(string:  ReplyUtil.citationHeaderForMessage(msg))

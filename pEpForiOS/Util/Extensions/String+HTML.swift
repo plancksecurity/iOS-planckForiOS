@@ -61,7 +61,8 @@ extension String {
         return htmlConverted
     }
 
-    public func htmlToAttributedString(attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate?) -> NSAttributedString {
+    public func htmlToAttributedString(deleteInlinePictures: Bool,
+                                       attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate?) -> NSAttributedString {
 
         var htmlWithCitedChars = self
 
@@ -112,7 +113,13 @@ extension String {
                 textAttachment.image = image
                 textAttachment.attachment = attachment
                 let imageString = NSAttributedString(attachment: textAttachment)
-                string = string.replacingOccurrences(ofWith: [match : imageString])
+                let replaceTo = deleteInlinePictures
+                    ? NSAttributedString(string: "")
+                    : imageString
+                string = string.replacingOccurrences(ofWith: [match : replaceTo])
+            }
+            if deleteInlinePictures {
+                string = string.replacingOccurrences(ofWith: [match : ""])
             }
         }
 

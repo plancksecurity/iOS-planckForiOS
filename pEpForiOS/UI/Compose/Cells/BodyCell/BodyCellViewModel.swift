@@ -167,9 +167,9 @@ extension BodyCellViewModel {
 
 extension BodyCellViewModel {
     private func createHtmlVersionAndInformDelegate(newAttributedText attrText: NSAttributedString) {
-        let (markdownText, _) = attrText.convertToMarkDown()
-        let plaintext = markdownText
-        let htmlWithImages = attrText.toHtml()
+        let emailBody = attrText.toHtml()
+        let plaintext = emailBody.plainText
+        let htmlWithImages = emailBody.html
         resultDelegate?.bodyCellViewModel(self,
                                           bodyChangedToPlaintext: plaintext,
                                           html: htmlWithImages ?? "")

@@ -139,11 +139,17 @@ extension NSAttributedString {
         return createe
     }
 
-    public func toHtml() -> String? {
+    public func toHtml() -> (plainText: String, html: String?) {
+
         let htmlDocAttribKey = [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html]
 
         // conversion NSTextAttachment with image to <img src.../> html tag with cid:{cid}
-        let mutableAttribString = NSMutableAttributedString(attributedString: self.citationVerticalLineToBlockquote())
+
+        let htmlConv = HtmlConversions()
+        let plainTextAndHtml = htmlConv.citationVerticalLineToBlockquote(aString: self)
+        let plainText = plainTextAndHtml.plainText
+
+        let mutableAttribString = NSMutableAttributedString(attributedString: plainTextAndHtml.attribString)
 
         var images: [NSRange : String] = [:]
 
@@ -152,7 +158,9 @@ extension NSAttributedString {
             if let attachment = value as? TextAttachment {
                 let delegate = ToMarkdownDelegate()
                 if let stringForAttachment = delegate.stringFor(attachment: attachment) {
-                    images[range] = stringForAttachment.cleanAttachments
+                    if delegate.attachments.count > 0 {
+                        images[range] = stringForAttachment.cleanAttachments
+                    }
                 }
             }
         }
@@ -163,13 +171,15 @@ extension NSAttributedString {
 
         guard let htmlData = try? mutableAttribString.data(from: mutableAttribString.wholeRange(),
                                             documentAttributes: htmlDocAttribKey) else {
-                                                return nil
+                                                return (plainText: plainText, html: nil)
         }
-        let html = String(data: htmlData, encoding: .utf8) ?? ""
-
-        return html.replaceMarkdownImageSyntaxToHtmlSyntax()
+        let html = (String(data: htmlData, encoding: .utf8) ?? "")
+            .replaceMarkdownImageSyntaxToHtmlSyntax()
             .replacingOccurrences(of: "›", with: "<blockquote type=\"cite\">")
             .replacingOccurrences(of: "‹", with: "</blockquote>")
+
+
+        return (plainText: plainText, html: html)
     }
 }
 
