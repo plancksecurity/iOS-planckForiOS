@@ -16,7 +16,7 @@ extension CdIdentity {
     var firstLetterOfName: String {
         get {
             if let first = userName?.prefix(ofLength: 1), first.isLetter, first != "" {
-                return first
+                return first.uppercased()
             } else {
                 return "#"
             }
