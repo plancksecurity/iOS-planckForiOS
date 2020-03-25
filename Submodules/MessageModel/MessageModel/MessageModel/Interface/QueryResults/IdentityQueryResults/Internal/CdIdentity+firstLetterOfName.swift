@@ -15,7 +15,7 @@ extension CdIdentity {
     @objc
     var firstLetterOfName: String {
         get {
-            if let first = userName?.prefix(ofLength: 1), first.isLetter {
+            if let first = userName?.prefix(ofLength: 1), first.isLetter, first != "" {
                 return first
             } else {
                 return "#"
