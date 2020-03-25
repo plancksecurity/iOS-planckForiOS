@@ -443,12 +443,4 @@ extension String {
         return NSRange(location: 0, length: count)
     }
 
-    public func firstLetterOfName() -> String {
-        let first = prefix(ofLength: 1)
-        if first.isLetter && first != "" {
-            return first.uppercased()
-        } else {
-            return "#"
-        }
-    }
 }

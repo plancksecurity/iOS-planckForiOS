@@ -15,10 +15,11 @@ extension CdIdentity {
     @objc
     var firstLetterOfName: String {
         get {
-            guard let theUserName = userName else {
+            if let first = userName?.prefix(ofLength: 1), first.isLetter, first != "" {
+                return first.uppercased()
+            } else {
                 return "#"
             }
-            return theUserName.firstLetterOfName()
         }
     }
 }
