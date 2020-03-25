@@ -60,7 +60,7 @@ class EmailDetailViewController: BaseViewController {
         edgesForExtendedLayout = .all
         setup()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         doOnce?()
@@ -69,10 +69,12 @@ class EmailDetailViewController: BaseViewController {
     }
 
     override func viewWillLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+        super.viewWillLayoutSubviews()
         // Re-layout cells after device orientaion change
         collectionView.collectionViewLayout.invalidateLayout()
+        adjustTitleViewPositionIfNeeded()
     }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setupToolbar()
@@ -86,7 +88,7 @@ class EmailDetailViewController: BaseViewController {
             me.scrollToLastViewedCell()
         }
     }
-
+    
     // MARK: - Target & Action
 
     @objc @IBAction func flagButtonPressed(_ sender: UIBarButtonItem) {
@@ -178,6 +180,20 @@ class EmailDetailViewController: BaseViewController {
 // MARK: - Private
 
 extension EmailDetailViewController {
+
+    // As this screen might be rendered in a split view, the title view is not centered to the device
+    // width but the view controller's width. That's why we need to adjust the title view position
+    // in that case.
+    private func adjustTitleViewPositionIfNeeded() {
+        navigationItem.titleView?.transform = .identity
+        if isIpad && isLandscape {
+            let oldCenterX = view.center.x
+            let newCenterX = UIScreen.main.bounds.size.width / 2
+            let deltaX = oldCenterX - newCenterX
+            navigationItem.titleView?.transform =
+                CGAffineTransform.identity.translatedBy(x: deltaX, y: 0)
+        }
+    }
 
     private func setup() {
         viewModel?.delegate = self
@@ -369,10 +385,6 @@ extension EmailDetailViewController {
     @objc
     private func showSettingsViewController() {
         splitViewController?.preferredDisplayMode = .allVisible
-        guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
-            let vc = nav.topViewController else {
-                return
-        }
         UIUtils.presentSettings(appConfig: appConfig)
     }
 
