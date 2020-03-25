@@ -60,20 +60,6 @@ class EmailDetailViewController: BaseViewController {
         edgesForExtendedLayout = .all
         setup()
     }
-    
-    //As this screen might be rendered in a split view, the title view is not centered to the device
-    // width but the view controller's width. That's why we need to adjust the title view position
-    // in that case.
-    private func adjustTitleViewPositionIfNeeded() {
-        navigationItem.titleView?.transform = .identity
-        if isIpad && isLandscape {
-            let oldCenterX = view.center.x
-            let newCenterX = UIScreen.main.bounds.size.width / 2
-            let deltaX = oldCenterX - newCenterX
-            navigationItem.titleView?.transform =
-                CGAffineTransform.identity.translatedBy(x: deltaX, y: 0)
-        }
-    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -102,7 +88,7 @@ class EmailDetailViewController: BaseViewController {
             me.scrollToLastViewedCell()
         }
     }
-
+    
     // MARK: - Target & Action
 
     @objc @IBAction func flagButtonPressed(_ sender: UIBarButtonItem) {
@@ -194,6 +180,20 @@ class EmailDetailViewController: BaseViewController {
 // MARK: - Private
 
 extension EmailDetailViewController {
+
+    // As this screen might be rendered in a split view, the title view is not centered to the device
+    // width but the view controller's width. That's why we need to adjust the title view position
+    // in that case.
+    private func adjustTitleViewPositionIfNeeded() {
+        navigationItem.titleView?.transform = .identity
+        if isIpad && isLandscape {
+            let oldCenterX = view.center.x
+            let newCenterX = UIScreen.main.bounds.size.width / 2
+            let deltaX = oldCenterX - newCenterX
+            navigationItem.titleView?.transform =
+                CGAffineTransform.identity.translatedBy(x: deltaX, y: 0)
+        }
+    }
 
     private func setup() {
         viewModel?.delegate = self
