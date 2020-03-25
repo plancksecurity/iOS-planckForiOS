@@ -10,8 +10,8 @@ import Foundation
 
 // Mark: - NSFetchResults calculated field
 extension CdIdentity {
-    /// Calculated field that retrives the first letter of the user name,
-    /// or "#" if the first character is not a letter, or there is no user name.
+    /// The first letter of the user name, or "#" if the first character
+    /// is not a letter or empty, or there is no user name at all.
     @objc
     var firstLetterOfName: String {
         get {
