@@ -30,6 +30,8 @@ public class HtmlConversions {
         var blockquoteLevels = addCitationLevel ? 1 : 0
         var indexForStartLine = 0
 
+        var inlineAttachmentRanges = inlineAttachmentRange(attributedString: attributedString)
+
         for line in attributedString.mutableString.components(separatedBy: .newlines) {
             let difference = blockquoteLevel(text: line)
             blockquoteLevels += difference
@@ -39,7 +41,12 @@ public class HtmlConversions {
                     toAdd += "　"
                 }
             }
-            let range = attributedString.mutableString.range(of: line, options: [])
+            var range = attributedString.mutableString.range(of: line, options: [])
+            if line.isAttachment && !inlineAttachmentRanges.isEmpty {
+                range = inlineAttachmentRanges.first
+                    ?? NSRange(location: NSNotFound, length: 0)
+                inlineAttachmentRanges.removeFirst()
+            }
 
             if range.location == NSNotFound {
                 continue
@@ -117,6 +124,24 @@ public class HtmlConversions {
 // MARK: - Private
 
 extension HtmlConversions {
+    private func inlineAttachmentRange(attributedString: NSAttributedString) -> [NSRange] {
+
+        var inlineAttachmentRange = [NSRange]()
+
+        attributedString
+            .enumerateAttributes(in: attributedString.wholeRange(),
+                                 options: NSAttributedString.EnumerationOptions.longestEffectiveRangeNotRequired) { (attributes, range, stop) in
+                                    let line = attributedString.attributedSubstring(from: range)
+                                    if line.string.isAttachment {
+                                        inlineAttachmentRange.append(range)
+                                    }
+
+        }
+
+        return inlineAttachmentRange
+    }
+
+
     /// Counting "›" and "‹" special chars (in our case) to get difference levels for citation
     /// We use these chars (similar to <blockquote> tags) for cite in HTML
     /// - Parameter text: String with "›" and "‹" special chars

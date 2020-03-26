@@ -48,7 +48,7 @@ extension String {
         var htmlConverted = html
 
         for result in results {
-            guard let data = result.data(using: .utf8) else {
+            guard let data = result.data(using: .utf16) else {
                 break
             }
             let parser = HtmlTagParser(data: data)
