@@ -141,6 +141,20 @@ extension String {
         return matchesPattern(pattern, reOptions: [])
     }
 
+    /// Find substrings for given pattern
+    /// - Parameter pattern: regex pattern
+    public func find(pattern: String) -> [String] {
+        do {
+            let regex = try NSRegularExpression(pattern: pattern)
+            let string = NSString(string: self)
+            let results = regex.matches(in: self, range: NSMakeRange(0, string.length))
+            return results.map { string.substring(with: $0.range) }
+        } catch let error {
+            print("Error, maybe invalid regex: " + error.localizedDescription)
+        }
+        return []
+    }
+
     /**
      Does this String match the given regex pattern?
      - Parameter pattern: The pattern to match.
@@ -329,7 +343,7 @@ extension String {
 }
 
 extension NSAttributedString {
-    
+
     public func wholeRange() -> NSRange {
         return NSRange(location: 0, length: length)
     }
