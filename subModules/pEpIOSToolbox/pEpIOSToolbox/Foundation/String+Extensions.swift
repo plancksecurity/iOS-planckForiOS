@@ -141,7 +141,8 @@ extension String {
         return matchesPattern(pattern, reOptions: [])
     }
 
-    // TODO: - ak Add documentation
+    /// Find substrings for given pattern
+    /// - Parameter pattern: regex pattern
     public func find(pattern: String) -> [String] {
         do {
             let regex = try NSRegularExpression(pattern: pattern)
@@ -152,31 +153,6 @@ extension String {
             print("Error, maybe invalid regex: " + error.localizedDescription)
         }
         return []
-    }
-
-    public func htmlConvertImageBase64ToImageCidReference(html: String) -> String {
-        let pattern = "<img\\b(?=\\s)(?=(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"][^\\s>]*)*?\\ssrc=['\"]([^\"]*)['\"]?)(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"\\s]*)*\"\\s?\\/?>"
-        let results = html.find(pattern: pattern)
-        var htmlImgTagsToMarkdownTags = html
-
-        for result in results {
-            guard let data = result.data(using: .utf16) else {
-                break
-            }
-            let parser = HtmlTagParser(data: data)
-            let src = parser.src.first ?? "empty src"
-            let alt = parser.alt.first ?? "empty alt"
-            if src.contains(find: "data:image/png;cid:") {
-                let cidReference = src.components(separatedBy: ";")
-                for item in cidReference {
-                    if !item.contains(find: "cid:") {
-                        htmlImgTagsToMarkdownTags = htmlImgTagsToMarkdownTags.replacingOccurrences(of: item, with: "")
-                    }
-                }
-            }
-        }
-
-        return htmlImgTagsToMarkdownTags
     }
 
     /**

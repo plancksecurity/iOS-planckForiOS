@@ -187,6 +187,8 @@ extension ComposeViewModel {
                 let attributedString = html.htmlToAttributedString(deleteInlinePictures: deleteInlinePictures, attachmentDelegate: parserDelegate)
 
                 var result = attributedString
+                let textViewPrev = UITextView(frame: CGRect(x: 0, y: 0, width: 500, height: 500))
+                textViewPrev.attributedText = result
                 let verticalSpace = NSAttributedString(string: "\n")
                 let citationHeader = NSAttributedString(string:  ReplyUtil.citationHeaderForMessage(msg))
                 var messageCited = NSAttributedString(string: "")
@@ -201,6 +203,8 @@ extension ComposeViewModel {
                     break
                 }
                 result = verticalSpace + verticalSpace + citationHeader + verticalSpace + messageCited
+                let textView = UITextView(frame: CGRect(x: 0, y: 0, width: 500, height: 500))
+                textView.attributedText = result
                 setInitialBody(text: result)
             } else {
                 // No HTML available.

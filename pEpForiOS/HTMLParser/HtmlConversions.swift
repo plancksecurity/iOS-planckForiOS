@@ -36,10 +36,11 @@ public class HtmlConversions {
             var toAdd = ""
             if blockquoteLevels > 0 {
                 for _ in 0..<blockquoteLevels {
-                    toAdd += ">"
+                    toAdd += "　"
                 }
             }
-            let range = attributedString.mutableString.range(of: line, options: .literal)
+            let range = attributedString.mutableString.range(of: line, options: [])
+
             if range.location == NSNotFound {
                 continue
             }
@@ -54,12 +55,13 @@ public class HtmlConversions {
             indexForStartLine += line.count
         }
 
-            return citationRemoveSpecialChars(attribText: NSAttributedString(attributedString: mutableAttributedString))
+        return citationRemoveSpecialChars(attribText: NSAttributedString(attributedString: mutableAttributedString))
     }
 
     public func citationGraterThanToVerticalLines(attribText: NSAttributedString) -> NSAttributedString {
+
         return attribText
-            .replacingOccurrences(ofWith: [">" : HtmlConversions.verticalLine + HtmlConversions.spaceForVerticalLine])
+            .replacingOccurrences(ofWith: ["　" : HtmlConversions.verticalLine + HtmlConversions.spaceForVerticalLine])
     }
 
     public func citationRemoveSpecialChars(attribText: NSAttributedString) -> NSAttributedString {

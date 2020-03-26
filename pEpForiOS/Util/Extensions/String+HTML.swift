@@ -48,12 +48,12 @@ extension String {
         var htmlConverted = html
 
         for result in results {
-            guard let data = result.data(using: .utf16) else {
+            guard let data = result.data(using: .utf8) else {
                 break
             }
             let parser = HtmlTagParser(data: data)
             let src = parser.src.first ?? "empty src"
-            let alt = parser.alt.first ?? "empty alt"
+            let alt = parser.alt.first ?? ""
 
             htmlConverted = htmlConverted.replacingOccurrences(of: result, with: "![\(alt)](\(src))<img ")
         }

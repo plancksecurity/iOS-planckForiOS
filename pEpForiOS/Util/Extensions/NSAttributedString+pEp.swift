@@ -139,47 +139,17 @@ extension NSAttributedString {
         return createe
     }
 
-    public func toHtml() -> (plainText: String, html: String?) {
-
-        let htmlDocAttribKey = [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html]
-
-        // conversion NSTextAttachment with image to <img src.../> html tag with cid:{cid}
-
-        let htmlConv = HtmlConversions()
-        let plainTextAndHtml = htmlConv.citationVerticalLineToBlockquote(aString: self)
-        let plainText = plainTextAndHtml.plainText
-
-        let mutableAttribString = NSMutableAttributedString(attributedString: plainTextAndHtml.attribString)
-
-        var images: [NSRange : String] = [:]
-
-        mutableAttribString.enumerateAttribute(.attachment,
-                                               in: mutableAttribString.wholeRange()) { (value, range, stop) in
-            if let attachment = value as? TextAttachment {
-                let delegate = ToMarkdownDelegate()
-                if let stringForAttachment = delegate.stringFor(attachment: attachment) {
-                    if delegate.attachments.count > 0 {
-                        images[range] = stringForAttachment.cleanAttachments
-                    }
-                }
-            }
-        }
-
-        for item in images.reversed() {
-            mutableAttribString.replaceCharacters(in: item.key, with: item.value)
-        }
-
-        guard let htmlData = try? mutableAttribString.data(from: mutableAttribString.wholeRange(),
-                                            documentAttributes: htmlDocAttribKey) else {
-                                                return (plainText: plainText, html: nil)
-        }
-        let html = (String(data: htmlData, encoding: .utf8) ?? "")
-            .replaceMarkdownImageSyntaxToHtmlSyntax()
-            .replacingOccurrences(of: "›", with: "<blockquote type=\"cite\">")
-            .replacingOccurrences(of: "‹", with: "</blockquote>")
-
-
-        return (plainText: plainText, html: html)
+    /// Concatenates two attributed strings.
+    ///
+    /// - Parameters:
+    ///   - lhs: first string
+    ///   - rhs: string to concatenate to first string
+    /// - Returns: lhs + rhs concatenated
+    static public func +(lhs: NSAttributedString, rhs: NSAttributedString) -> NSAttributedString {
+        let result = NSMutableAttributedString()
+        result.append(lhs)
+        result.append(rhs)
+        return result
     }
 }
 

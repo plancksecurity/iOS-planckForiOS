@@ -33,19 +33,6 @@ public extension NSAttributedString {
         return resultString
     }
 
-    func toCitation(addCitationLevel: Bool = false) -> NSAttributedString {
-
-        let htmlConversion = HtmlConversions()
-
-        let attribStringWithGratherThanChars = htmlConversion
-        .citedTextGratherThanChars(attribText: self,
-                                   addCitationLevel: addCitationLevel)
-
-        let attribStringWithVerticalLines = htmlConversion.citationGraterThanToVerticalLines(attribText: attribStringWithGratherThanChars)
-
-        return attribStringWithVerticalLines
-    }
-
     /// Replace given keys to given value  using occurrences
     /// - Parameter ofWith: [key - (find key) String : value - (replace with)  String / NSAttribString]
     func replacingOccurrences<T>(ofWith: [String: T]) -> NSAttributedString {
