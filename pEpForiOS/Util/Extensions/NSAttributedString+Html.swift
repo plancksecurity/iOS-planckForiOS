@@ -17,13 +17,7 @@ extension NSAttributedString {
         .citedTextGratherThanChars(attribText: self,
                                    addCitationLevel: addCitationLevel)
 
-        let textViewPrev = UITextView(frame: CGRect(x: 0, y: 0, width: 500, height: 500))
-        textViewPrev.attributedText = attribStringWithGratherThanChars
-
         let attribStringWithVerticalLines = htmlConversion.citationGraterThanToVerticalLines(attribText: attribStringWithGratherThanChars)
-
-        let textView = UITextView(frame: CGRect(x: 0, y: 0, width: 500, height: 500))
-        textView.attributedText = attribStringWithVerticalLines
 
         return attribStringWithVerticalLines
     }
