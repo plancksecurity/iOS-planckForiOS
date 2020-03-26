@@ -20,7 +20,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     private var shouldShowPepButtonInMasterToolbar = true
 
     public static let storyboardId = "EmailListViewController"
-    public static let storyboardNavigationControllerId = "EmailListNavigationViewController"
     static let FILTER_TITLE_MAX_XAR = 20
 
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!

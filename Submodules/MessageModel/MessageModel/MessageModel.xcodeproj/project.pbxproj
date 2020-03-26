@@ -364,7 +364,7 @@
 		8BE460921DB7B5FC008D63C6 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4608F1DB7B5FC008D63C6 /* Stack.swift */; };
 		B73252F422B019470039DE29 /* FolderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73252F322B019470039DE29 /* FolderTest.swift */; };
 		B745C15F231D270900D3CC69 /* FetchImapFolderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B745C15E231D270900D3CC69 /* FetchImapFolderTest.swift */; };
-		B747A7E2234E4B7800508565 /* CdIdentity+firstLetterOfName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B747A7E1234E4B7800508565 /* CdIdentity+firstLetterOfName.swift */; };
+		B747A7E2234E4B7800508565 /* CdIdentity+SectionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B747A7E1234E4B7800508565 /* CdIdentity+SectionTitle.swift */; };
 		B751B99522D4D5100018DE0D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B751B99422D4D5100018DE0D /* AppDelegate.swift */; };
 		B751B99722D4D5100018DE0D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B751B99622D4D5100018DE0D /* ViewController.swift */; };
 		B751B99A22D4D5100018DE0D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B751B99822D4D5100018DE0D /* Main.storyboard */; };
@@ -821,7 +821,7 @@
 		8BE4608F1DB7B5FC008D63C6 /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		B73252F322B019470039DE29 /* FolderTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderTest.swift; sourceTree = "<group>"; };
 		B745C15E231D270900D3CC69 /* FetchImapFolderTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchImapFolderTest.swift; sourceTree = "<group>"; };
-		B747A7E1234E4B7800508565 /* CdIdentity+firstLetterOfName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdIdentity+firstLetterOfName.swift"; sourceTree = "<group>"; };
+		B747A7E1234E4B7800508565 /* CdIdentity+SectionTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdIdentity+SectionTitle.swift"; sourceTree = "<group>"; };
 		B751B99222D4D5100018DE0D /* OfferCapabilitiesToUnitTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OfferCapabilitiesToUnitTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B751B99422D4D5100018DE0D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B751B99622D4D5100018DE0D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -2141,7 +2141,7 @@
 		B747A7E0234E4B5B00508565 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
-				B747A7E1234E4B7800508565 /* CdIdentity+firstLetterOfName.swift */,
+				B747A7E1234E4B7800508565 /* CdIdentity+SectionTitle.swift */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
@@ -2686,7 +2686,7 @@
 				439B16AB22802B6B00201DE5 /* VerifiableAccountSMTP.swift in Sources */,
 				154660C42333927B008D2137 /* BackgroundTaskManager.swift in Sources */,
 				43F484461E8130A80028BC1A /* CdImapFields+Extension.swift in Sources */,
-				B747A7E2234E4B7800508565 /* CdIdentity+firstLetterOfName.swift in Sources */,
+				B747A7E2234E4B7800508565 /* CdIdentity+SectionTitle.swift in Sources */,
 				15A3B4DB235862B700DB9135 /* CdAccount+SendServiceProvider.swift in Sources */,
 				158A5E3A23521756002277A6 /* ServiceProtocol.swift in Sources */,
 				15466135233B9A64008D2137 /* OperationBasedService.swift in Sources */,

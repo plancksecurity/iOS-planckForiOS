@@ -170,7 +170,7 @@ extension IdentityQueryResults {
     }
 
     private func getSectionNameKeyPath() -> String {
-        return "firstLetterOfName"
+        return "sectionTitle"
     }
 
     private func getNewQueryResultController()
