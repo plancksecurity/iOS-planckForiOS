@@ -63,8 +63,8 @@ class ReplyUtilTests: XCTestCase {
         let account = Account(user: identity, servers: [])
         let folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
         let msg = Message(uuid: "001", uid: 1, parentFolder: folder)
-        let exp = "\n\n\(String.pepSignature)"
-        let sth = ReplyUtil.quotedMessageText(message: msg, replyAll: false)
+        let exp = String("\n\n\(String.pepSignature)")
+        let sth = ReplyUtil.quotedMessageText(message: msg, replyAll: false).string
         XCTAssertEqual(sth, exp)
     }
 
@@ -81,7 +81,7 @@ class ReplyUtilTests: XCTestCase {
         msg.longMessageFormatted = Constant.longMessageHtmlFormatted
         let dateString = getDateFormattedString(date: sentDate)
         let exp = "\n\n\(String.pepSignature)\n\nSomeone wrote on \(dateString):\n\n> Test\n> Test"
-        let sth = ReplyUtil.quotedMessageText(message: msg, replyAll: false)
+        let sth = ReplyUtil.quotedMessageText(message: msg, replyAll: false).string
         XCTAssertEqual(sth, exp)
     }
 
@@ -97,7 +97,7 @@ class ReplyUtilTests: XCTestCase {
         msg.longMessageFormatted = Constant.longMessageHtmlFormatted
         let someOneWrote = NSLocalizedString("Someone wrote:", comment: "")
         let exp = "\n\n\(String.pepSignature)\n\n\(someOneWrote)\n\n> Test\n> Test"
-        let sth = ReplyUtil.quotedMessageText(message: msg, replyAll: false)
+        let sth = ReplyUtil.quotedMessageText(message: msg, replyAll: false).string
         XCTAssertEqual(sth, exp)
     }
 

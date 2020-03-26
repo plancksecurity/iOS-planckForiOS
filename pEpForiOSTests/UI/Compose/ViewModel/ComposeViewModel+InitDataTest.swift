@@ -262,12 +262,10 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
             return
         }
         let expectedSubject = ReplyUtil.replySubject(message: originalMessage)
-        let expectedBody = ReplyUtil.quotedMessageText(message: originalMessage,
-                                                       replyAll: false)
+
         assertComposeMode(mode,
                           originalMessage: originalMessage,
                           expectedSubject: expectedSubject,
-                          expectedPlaintextBody: expectedBody,
                           expectedHtmlBody: nil)
     }
 
@@ -278,12 +276,10 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
             return
         }
         let expectedSubject = ReplyUtil.replySubject(message: originalMessage)
-        let expectedBody = ReplyUtil.quotedMessageText(message: originalMessage,
-                                                       replyAll: true)
+
         assertComposeMode(mode,
                           originalMessage: originalMessage,
                           expectedSubject: expectedSubject,
-                          expectedPlaintextBody: expectedBody,
                           expectedHtmlBody: nil)
     }
 
