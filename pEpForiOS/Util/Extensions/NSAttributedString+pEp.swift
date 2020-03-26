@@ -138,6 +138,19 @@ extension NSAttributedString {
         )
         return createe
     }
+
+    /// Concatenates two attributed strings.
+    ///
+    /// - Parameters:
+    ///   - lhs: first string
+    ///   - rhs: string to concatenate to first string
+    /// - Returns: lhs + rhs concatenated
+    static public func +(lhs: NSAttributedString, rhs: NSAttributedString) -> NSAttributedString {
+        let result = NSMutableAttributedString()
+        result.append(lhs)
+        result.append(rhs)
+        return result
+    }
 }
 
 extension NSMutableAttributedString {

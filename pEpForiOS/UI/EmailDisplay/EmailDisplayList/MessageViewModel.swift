@@ -172,7 +172,7 @@ class MessageViewModel: CustomDebugStringConvertible {
             let factorHtmlTags = 3
             let numChars = maxBodyPreviewCharacters * factorHtmlTags
             let truncatedHtml = html.prefix(ofLength: numChars)
-            body = truncatedHtml.extractTextFromHTML()
+            body = truncatedHtml.extractTextFromHTML(respectNewLines: false)
 
             //IOS-1347:
             // We might want to cleans when displaying instead of when saving.
