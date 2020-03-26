@@ -417,8 +417,10 @@ extension EmailDetailViewController: UICollectionViewDelegate {
             return
         }
 
-        // Handle pre-emptive loading of older messages from the server, if they exist
-        vm.fetchOlderMessagesIfRequired(forIndexPath: indexPath)
+        // Handle pre-emptive loading of older messages from the server, if they exist.
+        if currentSplitViewMode() == .onlyDetail {
+            vm.fetchOlderMessagesIfRequired(forIndexPath: indexPath)
+        }
 
         // Scroll to show message selected by previous (EmailList) view
         guard let indexToScrollTo = firstItemToShow else {
