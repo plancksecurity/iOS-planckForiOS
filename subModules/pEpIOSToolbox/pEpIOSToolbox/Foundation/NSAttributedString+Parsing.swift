@@ -32,4 +32,29 @@ public extension NSAttributedString {
         }
         return resultString
     }
+
+    /// Replace given keys to given value  using occurrences
+    /// - Parameter ofWith: [key - (find key) String : value - (replace with)  String / NSAttribString]
+    func replacingOccurrences<T>(ofWith: [String: T]) -> NSAttributedString {
+
+        let attributedString = NSMutableAttributedString(attributedString: self)
+        let charsToReplace = Array(ofWith.keys)
+
+        for charToReplace in charsToReplace {
+            while attributedString.mutableString.contains(charToReplace) {
+                let range = attributedString.mutableString.range(of: charToReplace)
+                guard range.lowerBound != NSNotFound else {
+                    // early quit, nothing to do and also avoid an endless loop
+                    break
+                }
+                if let value = ofWith[charToReplace] as? String {
+                    attributedString.replaceCharacters(in: range, with: value)
+                } else if let value = ofWith[charToReplace] as? NSAttributedString {
+                    attributedString.replaceCharacters(in: range, with: value)
+                }
+            }
+        }
+
+        return NSAttributedString(attributedString: attributedString)
+    }
 }

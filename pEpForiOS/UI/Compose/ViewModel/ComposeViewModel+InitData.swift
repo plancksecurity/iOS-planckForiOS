@@ -159,14 +159,6 @@ extension ComposeViewModel {
             }
         }
 
-        mutating private func setInitialBody(text: String) {
-            if text.isEmpty {
-                bodyPlaintext = ""
-            } else {
-                bodyPlaintext = text
-            }
-        }
-
         mutating private func setInitialBody(text: NSAttributedString) {
             bodyHtml = text
         }
@@ -204,7 +196,7 @@ extension ComposeViewModel {
                     result = ReplyUtil.citedMessageText(textToCite: msg.longMessage ?? "",
                                                         fromMessage: msg)
                 }
-                setInitialBody(text: result)
+                setInitialBody(text: NSAttributedString(string: result))
             }
         }
     }

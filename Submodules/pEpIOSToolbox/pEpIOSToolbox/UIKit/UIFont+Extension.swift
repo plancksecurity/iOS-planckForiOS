@@ -66,9 +66,7 @@ extension UIFont {
 
     static private func getFontWeight(from font: UIFont) -> UIFont.Weight {
         let familyName = font.fontDescriptor
-        print("DEV: familyName: \(familyName)")
         if let fontName: String = font.fontDescriptor.fontAttributes[.visibleName] as? String {
-            print("DEV: fontName: \(fontName)")
             if fontName.lowercased().contains(medium.lowercased()) {
                 return UIFont.Weight.medium
             } else if fontName.lowercased().contains(semibold.lowercased()) {

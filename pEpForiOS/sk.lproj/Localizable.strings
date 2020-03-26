@@ -4,9 +4,6 @@
 /* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
 "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nPrílohy sú zakázané.\n\n";
 
-/* TrustManagementView Back Button Title */
-" Message" = " Správa";
-
 /* No privacy status explanation
    No privacy status suggestion */
 "-" = "-";

@@ -5,9 +5,9 @@ ldns: e83e808f0c56f6235061f5c904ff476ca75aa576
 libAccountSettings: 6f80e12e0379
 libetpan: c76daba0153eed0003d6990a5adadba8d561b8fa
 pEp-Translate: 0774ba78a2dda594ac5b073704a01d53be39a56f
-pEpEngine: 6449b75af95b
+pEpEngine: c71ec33fb346
 pEpObjCAdapter: 76b4766ebb92
-pEp_for_iOS: da7cf8a4a518+
+pEp_for_iOS: 1261dddf3cef+
 pEp_for_iOS_intern: fe7c80780efc+
 pantomime-iOS: 55f41ad6d243
 sequoia4ios: 3f58a85b1901967eaf66467371689aec24e9246a
