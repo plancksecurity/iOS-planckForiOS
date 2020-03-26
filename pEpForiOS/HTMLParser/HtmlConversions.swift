@@ -22,7 +22,8 @@ public class HtmlConversions {
     public init() { }
 
     public func citedTextGratherThanChars(attribText: NSAttributedString,
-                                          addCitationLevel: Bool = false) -> NSAttributedString {
+                                          addCitationLevel: Bool = false,
+                                          specialChar: String = "　") -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: attribText)
         let mutableAttributedString = NSMutableAttributedString(string: "")
 
@@ -38,7 +39,7 @@ public class HtmlConversions {
             var toAdd = ""
             if blockquoteLevels > 0 {
                 for _ in 0..<blockquoteLevels {
-                    toAdd += "　"
+                    toAdd += specialChar
                 }
             }
             var range = attributedString.mutableString.range(of: line, options: [])

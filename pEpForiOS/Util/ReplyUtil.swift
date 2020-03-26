@@ -16,13 +16,13 @@ public struct ReplyUtil {
     /**
      Gets the quoted message body for the given `Message`.
      */
-    public static func quotedMessageText(message: Message, replyAll: Bool) -> String {
+    public static func quotedMessageText(message: Message, replyAll: Bool) -> NSAttributedString {
         guard let quotedText = quotedText(for: message) else {
-            return "\n\n\(footer())"
+            return NSAttributedString(string: "\n\n\(footer())")
         }
         let citation = citationHeaderForMessage(message)
 
-        return "\n\n\(footer())\n\n\(citation)\n\n\(quotedText)"
+        return NSAttributedString(string: "\n\n\(footer())\n\n\(citation)\n\n") + quotedText
     }
 
     /// Adds citation header with data of a given message to a given text.
@@ -45,7 +45,6 @@ public struct ReplyUtil {
         return citedText.trimmingCharacters(in: .newlines)
     }
 
-    // WIP: - ak
     /// Show vertical line for cited messages (only in presentation layer)
     public static func citedHtmlVisibleVerticalLineString(html: String) -> String {
         return html
@@ -61,13 +60,10 @@ public struct ReplyUtil {
     public static func citedMessageText(textToCite: NSAttributedString,
                                         fromMessage msg: Message) -> NSAttributedString {
         let citation = citationHeaderForMessage(msg)
-
         let defaultFont = UIFont.preferredFont(forTextStyle: .body)
-        var result = NSAttributedString(string: "\n\n\(footer())\n\n\(citation)\n\n",
+        let result = NSAttributedString(string: "\n\n\(footer())\n\n\(citation)\n\n",
             attributes: [NSAttributedString.Key(rawValue: "NSFont"): defaultFont])
-        let quoteChar = ">"
-        result = result + quoteChar + " " + textToCite
-        return result
+        return result + "" + textToCite.toCitation(addCitationLevel: true)
     }
 
     /**
@@ -108,11 +104,11 @@ public struct ReplyUtil {
     /// - Returns:  If longMessageFormatted exists: formatted message with HTML striped, in quoted form
     ///             else if longMessage exists: longMessage in quoted form
     ///             nil otherwize
-    static private func quotedText(for message: Message) -> String? {
+    static private func quotedText(for message: Message) -> NSAttributedString? {
         guard let text = extractMessageTextToQuote(from: message) else {
             return nil
         }
-        return citedTextWithNewLines(textToCite: text)
+        return text.toCitation(addCitationLevel: true)
     }
 
     /// Extracts the text that should be used for quoting (in reply/forwarding) from a given message.
@@ -121,14 +117,13 @@ public struct ReplyUtil {
     /// - Returns:  If longMessageFormatted exists: formatted message with HTML tags are striped
     ///             else if longMessage exists: longMessage
     ///             nil otherwize
-    static private func extractMessageTextToQuote(from message: Message) -> String? {
-        var textToQuote = message.longMessage ?? nil
+    static private func extractMessageTextToQuote(from message: Message) -> NSAttributedString? {
+        let textToQuote = message.longMessage ?? nil
         guard let formatted = message.longMessageFormatted else {
-            return textToQuote
+            return NSAttributedString(string: textToQuote ?? "")
         }
-        textToQuote = formatted.extractTextFromHTML(respectNewLines: true)
-
-        return textToQuote //message.longMessage
+        return formatted.htmlToAttributedString(deleteInlinePictures: true,
+                                                attachmentDelegate: nil)
     }
 
     static private func replyNameFromIdentity(_ identity: Identity) -> String {

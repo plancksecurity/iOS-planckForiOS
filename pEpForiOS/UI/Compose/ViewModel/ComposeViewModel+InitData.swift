@@ -140,8 +140,16 @@ extension ComposeViewModel {
         }
 
         mutating private func setupInitialBody(from message: Message?) {
+            guard let message = message else {
+                // We have no original message. That's OK for compose mode .normal.
+                return
+            }
             switch composeMode {
-            case .replyFrom, .replyAll, .forward:
+            case .replyFrom:
+                setInitialBody(text: ReplyUtil.quotedMessageText(message: message, replyAll: false))
+            case .replyAll:
+                setInitialBody(text: ReplyUtil.quotedMessageText(message: message, replyAll: true))
+            case .forward:
                 setBodyPotetionallyTakingOverAttachments()
             case .normal:
                 if isDrafts {
@@ -163,58 +171,38 @@ extension ComposeViewModel {
             bodyHtml = text
         }
 
+        /// Is sutable for isDrafts || composeMode == .forward only.
         mutating private func setBodyPotetionallyTakingOverAttachments() {
             guard let msg = originalMessage else {
                 Log.shared.errorAndCrash("Inconsitant state")
                 return
             }
 
-            guard isDrafts
-                || composeMode == .forward
-                || composeMode == .replyFrom
-                || composeMode == .replyAll else {
-                    Log.shared.errorAndCrash("Unsupported mode or message")
-                    return
+            guard isDrafts || composeMode == .forward else {
+                Log.shared.errorAndCrash("Unsupported mode or message")
+                return
             }
-            // HTML available case.
             if let html = msg.longMessageFormatted {
                 // Attachments must be (and are) on a private
                 let attachmentSession = inlinedAttachments.first?.session
                 // We have HTML content. Parse it taking inlined attachments into account.
                 let parserDelegate = InitDataHtmlToAttributedTextSaxParserAttachmentDelegate(
                     inlinedAttachments: inlinedAttachments, session: attachmentSession)
-                let deleteInlinePictures = composeMode == .forward ? false : true
-                let attributedString = html.htmlToAttributedString(deleteInlinePictures: deleteInlinePictures, attachmentDelegate: parserDelegate)
-
+                let attributedString = html.htmlToAttributedString(attachmentDelegate: parserDelegate)
                 var result = attributedString
-                let verticalSpace = NSAttributedString(string: "\n")
-                let citationHeader = NSAttributedString(string:  ReplyUtil.citationHeaderForMessage(msg))
-                var messageCited = NSAttributedString(string: "")
-                switch composeMode {
-                case .replyFrom:
-                    messageCited = result.toCitation(addCitationLevel: true)
-                case .replyAll:
-                    messageCited = result.toCitation(addCitationLevel: true)
-                case .forward:
-                    messageCited = result.toCitation()
-                default:
-                    break
+                if composeMode == .forward {
+                    // forwarded messges must have a cite header ("yxz wrote on ...")
+                    result = ReplyUtil.citedMessageText(textToCite: attributedString,
+                                                        fromMessage: msg)
                 }
-                result = verticalSpace + verticalSpace + citationHeader + verticalSpace + messageCited
                 setInitialBody(text: result)
             } else {
                 // No HTML available.
                 var result = msg.longMessage ?? ""
-                switch composeMode {
-                case .replyFrom:
-                    result = ReplyUtil.citedMessageText(textToCite: msg.longMessage ?? "",
-                                                        fromMessage: msg)
-                case .forward:
+                if composeMode == .forward {
                     // forwarded messges must have a cite header ("yxz wrote on ...")
                     result = ReplyUtil.citedMessageText(textToCite: msg.longMessage ?? "",
                                                         fromMessage: msg)
-                default:
-                    break;
                 }
                 setInitialBody(text: result)
             }
