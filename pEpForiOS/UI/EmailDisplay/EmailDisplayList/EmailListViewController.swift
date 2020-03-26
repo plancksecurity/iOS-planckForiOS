@@ -420,7 +420,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
         } else {
             toolbarItems?.remove(at: 1)
             toolbarItems?.remove(at: 1)
-
         }
         updateFilterButtonView()
     }
@@ -468,7 +467,14 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.rowCount ?? 0
+        let valueToReturn = viewModel?.rowCount ?? 0
+        if valueToReturn == 0 {
+           /* if let ip = tableView.indexPathForSelectedRow {
+                tableView.deselectRow(at: ip, animated: false)
+            }*/
+            showNoMessageSelected()
+        }
+        return valueToReturn
     }
 
     func tableView(_ tableView: UITableView,
