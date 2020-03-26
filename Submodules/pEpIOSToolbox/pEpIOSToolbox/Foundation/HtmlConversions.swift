@@ -31,19 +31,26 @@ public class HtmlConversions {
         var indexForStartLine = 0
 
         for line in attributedString.mutableString.components(separatedBy: .newlines) {
-            blockquoteLevels = blockquoteLevels + blockquoteLevel(text: line)
+            let difference = blockquoteLevel(text: line)
+            blockquoteLevels += difference
             var toAdd = ""
-            for _ in 0..<blockquoteLevels {
-                toAdd += ">"
+            if blockquoteLevels > 0 {
+                for _ in 0..<blockquoteLevels {
+                    toAdd += ">"
+                }
             }
             let range = attributedString.mutableString.range(of: line, options: .literal)
             if range.location == NSNotFound {
                 continue
             }
-            mutableAttributedString.append(NSAttributedString(string: toAdd + " ") + attribText.attributedSubstring(from: range) + NSAttributedString(string: "\n"))
+            let subString = attribText.attributedSubstring(from: range)
+            mutableAttributedString.append(NSAttributedString(string: toAdd + " ") + subString + NSAttributedString(string: "\n"))
             ranges[indexForStartLine] = (range: NSRange(location: indexForStartLine,
                                                         length: line.count),
                                          level: blockquoteLevels)
+
+            blockquoteLevels -= line.filter { $0 == "‹" }.count + difference - line.filter { $0 == "›" }.count
+
             indexForStartLine += line.count
         }
 
@@ -117,9 +124,9 @@ extension HtmlConversions {
         for char in text {
             switch char {
             case "›":
-                level += 1
+                level = level + 1
             case "‹":
-                level -= 1
+                level = level - 1
             case " ":
                 break
             default:
