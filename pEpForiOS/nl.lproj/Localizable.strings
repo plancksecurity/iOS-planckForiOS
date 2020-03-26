@@ -27,7 +27,7 @@
 "A non-empty username is required" = "Gebruikersnaam is verplicht";
 
 /* KeySyncWizard introduction message */
-"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?";
+"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Er is een tweede apparaat gedetecteerd. We kunnen een apparaatgroep vormen om al je privacy op beide apparaten te synchroniseren. Zullen we beginnen met synchroniseren?";
 
 /* error message for .invalidEmail
    error message for .missingEmail */
@@ -47,7 +47,7 @@
 "Account name must not be empty." = "Accountnaam mag niet leeg zijn.";
 
 /* account type selector title */
-"Account Select" = "Account Select";
+"Account Select" = "Account Selectie";
 
 /* Tableview section  header: Accounts */
 "Accounts" = "Accounts";
@@ -68,7 +68,7 @@
 "And in the top bar when you open or write an email:" = "En in de bovenste balk wanneer u een e-mail opent of schrijft:";
 
 /* KeySyncWizard introduction message */
-"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?";
+"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Er is een ander apparaat gedetecteerd. We kunnen het aan je apparaatgroep toevoegen om al je privacy op alle apparaten te synchroniseren. Zullen we beginnen met synchroniseren?";
 
 /* Archive button in slide-left menu */
 "Archive" = "Archief";
@@ -93,7 +93,7 @@
 
 /* Cancel button title for manual account IMAP setup
    Cancel button title for manual account SMTP setup */
-"Back" = "Back";
+"Back" = "Terug";
 
 /* Compose field title */
 "BCC:" = "Bcc:";
@@ -186,7 +186,7 @@
 "Credits" = "Credits";
 
 /* Incorrect trustwords/PGP fingerprint */
-"Decline" = "Decline";
+"Decline" = "Afwijzen";
 
 /* Default Account Setting Section Title
    Default account view title
@@ -228,7 +228,7 @@
 "Empty Field" = "Leeg Veld";
 
 /* enable p≡p Sync with other devices in the group */
-"Enable p≡p Sync" = "Enable p≡p Sync";
+"Enable p≡p Sync" = "p≡p Sync Inschakelen";
 
 /* Passive mode title */
 "Enable passive mode" = "Passieve modus inschakelen";
@@ -264,7 +264,7 @@
 
 /* Finish button title for manual account SMTP setup
    Start up tutorial finish button */
-"Finish" = "Finish";
+"Finish" = "Voltooien";
 
 /* read button in slide-left menu */
 "Flag" = "Vlag";
@@ -421,7 +421,8 @@
 /* EmailList action title */
 "Mark as Read" = "Markeer als gelezen";
 
-/* EmailList action title */
+/* Email Detail View reply button menu - toggle seen state button text: unread
+   EmailList action title */
 "Mark as unread" = "Als ongelezen markeren";
 
 /* Mistrusted - Step 1
@@ -574,6 +575,9 @@
 /* TableView Contacts section footer */
 "Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages." = "Voert een reset uit van de privacy instellingen die zijn opgeslagen voor een communicatiepartner. Kan bijvoorbeeld nodig zijn als je communicatiepartner je berichten niet kan lezen.";
 
+/* Client certificate import: PermissionsDenied alert title */
+"Permissions Denied" = "Toestemming Geweigerd";
+
 /* Tableview section header */
 "PGP Compatibility" = "PGP Compatibiliteit";
 
@@ -631,7 +635,7 @@
 "Read" = "Lezen";
 
 /* reject hand shake button */
-"Reject" = "Weigeren";
+"Reject" = "Afwijzen";
 
 /* ComposeTableView: Label of swipe left. Removing of attachment. */
 "Remove" = "Verwijder";
@@ -955,6 +959,9 @@
 
 /* Client certificate import: wrong password alert message */
 "We could not import the certificate. The password is incorrect.\n\nTry again?" = "We konden het certificaat niet importeren. Het wachtwoord is incorrect.\n\nOpnieuw proberen?";
+
+/* Client certificate import: wrong password alert message */
+"We could not import the certificate. We do not have permissions to open this file.\n\nTry again?" = "We konden het certificaat niet importeren. We hebben geen toestemming om dit bestand te openen.\n\nOpnieuw proberen?";
 
 /* KeySyncWizard complete message - two devices */
 "We successfully created a device group. All your privacy is now synchronized." = "We hebben een apparatengroep gemaakt. Al uw privacy is nu gesynchroniseerd.";

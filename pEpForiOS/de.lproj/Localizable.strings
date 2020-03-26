@@ -424,7 +424,8 @@
 /* EmailList action title */
 "Mark as Read" = "Als gelesen markieren";
 
-/* EmailList action title */
+/* Email Detail View reply button menu - toggle seen state button text: unread
+   EmailList action title */
 "Mark as unread" = "Als ungelesen markieren";
 
 /* Mistrusted - Step 1

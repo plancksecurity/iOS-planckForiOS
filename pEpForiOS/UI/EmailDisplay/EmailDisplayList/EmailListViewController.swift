@@ -583,11 +583,12 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+
         if tableView.isEditing {
-            guard let vm = viewModel else {
-                Log.shared.errorAndCrash("No VM")
-                return
-            }
             guard let selectedIndexPaths = tableView.indexPathsForSelectedRows else {
                 // Nothing selected ...
                 // ... nothing to do.
@@ -595,10 +596,6 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             }
             vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)
         } else {
-            guard let vm = viewModel else {
-                Log.shared.errorAndCrash("No VM")
-                return
-            }
             if vm.isSelectable(messageAt: indexPath) {
                 lastSelectedIndexPath = indexPath
                 tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
@@ -956,16 +953,7 @@ extension EmailListViewController {
 
     func createCancelAction() -> UIAlertAction {
         let title = NSLocalizedString("Cancel", comment: "EmailList action title")
-        return  UIAlertAction(title: title, style: .cancel) {
-            [weak self] action in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
-                return
-            }
-            me.tableView.beginUpdates()
-            me.tableView.setEditing(false, animated: true)
-            me.tableView.endUpdates()
-        }
+        return  UIAlertAction(title: title, style: .cancel)
     }
 
     func createReplyAction() ->  UIAlertAction {
