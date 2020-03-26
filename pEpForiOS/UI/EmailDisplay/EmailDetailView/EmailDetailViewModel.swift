@@ -196,6 +196,35 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         }
         return MoveToAccountViewModel(messages: [msg])
     }
+
+    /// The number of rows (not yet displayed to the user) before we want to fetch older messages.
+    /// A balance between good user experience (have data in time,
+    /// ideally before the user has scrolled to the last row) and memory usage has to be found.
+    private let numRowsBeforeLastToTriggerFetchOder = 1
+
+    /// Figures out whether or not fetching of older messages should be requested.
+    /// Takes numRowsBeforeLastToTriggerFetchOder into account,
+    ///
+    /// - Parameter row: number of displayed tableView row to base computation on
+    /// - Returns: true if fetch older messages should be requested, false otherwize
+    private func triggerFetchOlder(lastDisplayedRow row: Int) -> Bool {
+        return row >= rowCount - numRowsBeforeLastToTriggerFetchOder
+    }
+
+    // When the user has scrolled down (almost) to the end, we fetch older emails.
+    /// - Parameter indexPath: indexpath to pontetionally fetch older messages for
+    public func fetchOlderMessagesIfRequired(forIndexPath indexPath: IndexPath) {
+        if !triggerFetchOlder(lastDisplayedRow: indexPath.row) {
+            return
+        }
+
+        guard let msg = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No message from which to get the folder")
+            return
+        }
+
+        msg.parent.fetchOlder(completion: nil)
+    }
 }
 
 // MARK: - Private

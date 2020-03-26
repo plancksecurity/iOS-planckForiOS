@@ -412,6 +412,17 @@ extension EmailDetailViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         willDisplay cell: UICollectionViewCell,
                         forItemAt indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("Expect to have a view model")
+            return
+        }
+
+        // Handle pre-emptive loading of older messages from the server, if they exist,
+        // but only if there is no email list shown (therefore `onlySplitViewMasterIsShown`).
+        if onlySplitViewMasterIsShown {
+            vm.fetchOlderMessagesIfRequired(forIndexPath: indexPath)
+        }
+
         // Scroll to show message selected by previous (EmailList) view
         guard let indexToScrollTo = firstItemToShow else {
             // Is not first load.
@@ -421,11 +432,9 @@ extension EmailDetailViewController: UICollectionViewDelegate {
         // On first load only: Display message selected by user in previous VC
         collectionView.scrollToItem(at: indexToScrollTo, at: .left, animated: false)
         firstItemToShow = nil
-        guard
-            let vm = viewModel,
-            let currentlyVisibledIdxPth = indexPathOfCurrentlyVisibleCell else {
-                Log.shared.errorAndCrash("Invalid state")
-                return
+        guard let currentlyVisibledIdxPth = indexPathOfCurrentlyVisibleCell else {
+            Log.shared.errorAndCrash("Invalid state")
+            return
         }
         vm.handleEmailShown(forItemAt: currentlyVisibledIdxPth)
         configureView()
