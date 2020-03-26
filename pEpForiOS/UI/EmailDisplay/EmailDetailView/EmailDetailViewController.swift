@@ -710,7 +710,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
         collectionView?.reloadData()
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // This is a valid case. it might happen when filters are applied
                 return
             }
             me.configureView()

@@ -467,6 +467,8 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let valueToReturn = viewModel?.rowCount ?? 0
+//        if there is no message to show then there is no message selected and also
+//        no message selected screen is shown
         if valueToReturn == 0 {
             showNoMessageSelected()
             lastSelectedIndexPath = nil
