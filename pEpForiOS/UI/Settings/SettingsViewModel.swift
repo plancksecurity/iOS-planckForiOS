@@ -141,27 +141,27 @@ extension SettingsViewModel {
 
     /// This method generates all the sections for the settings view.
     private func generateSections() {
-        items.append(Section(title: sectionTitles(type: .accounts),
+        items.append(Section(title: sectionTitle(type: .accounts),
                              footer: sectionFooter(type: .accounts),
                              rows: generateRows(type: .accounts),
                              type: .accounts))
         
-        items.append(Section(title: sectionTitles(type: .globalSettings),
+        items.append(Section(title: sectionTitle(type: .globalSettings),
                              footer: sectionFooter(type: .globalSettings),
                              rows: generateRows(type: .globalSettings),
                              type: .globalSettings))
         
-        items.append(Section(title: sectionTitles(type: .pEpSync),
+        items.append(Section(title: sectionTitle(type: .pEpSync),
                              footer: sectionFooter(type: .pEpSync),
                              rows: generateRows(type: .pEpSync),
                              type: .pEpSync))
         
-        items.append(Section(title: sectionTitles(type: .contacts),
+        items.append(Section(title: sectionTitle(type: .contacts),
                              footer: sectionFooter(type: .contacts),
                              rows: generateRows(type: .contacts),
                              type: .contacts))
         
-        items.append(Section(title: sectionTitles(type: .companyFeatures),
+        items.append(Section(title: sectionTitle(type: .companyFeatures),
                              footer: sectionFooter(type: .companyFeatures),
                              rows: generateRows(type: .companyFeatures),
                              type: .companyFeatures))
@@ -286,7 +286,7 @@ extension SettingsViewModel {
     /// This method return the corresponding title for each section.
     /// - Parameter type: The section type to choose the proper title.
     /// - Returns: The title for the requested section.
-    private func sectionTitles(type: SectionType) -> String {
+    private func sectionTitle(type: SectionType) -> String {
         switch type {
         case .accounts:
             return NSLocalizedString("Accounts",
