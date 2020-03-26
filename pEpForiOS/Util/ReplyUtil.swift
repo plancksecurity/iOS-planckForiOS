@@ -63,7 +63,7 @@ public struct ReplyUtil {
         let defaultFont = UIFont.preferredFont(forTextStyle: .body)
         let result = NSAttributedString(string: "\n\n\(footer())\n\n\(citation)\n\n",
             attributes: [NSAttributedString.Key(rawValue: "NSFont"): defaultFont])
-        return result + "" + textToCite.toCitation(addCitationLevel: true)
+        return result + textToCite.toCitation(addCitationLevel: true)
     }
 
     /**
