@@ -469,10 +469,8 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let valueToReturn = viewModel?.rowCount ?? 0
         if valueToReturn == 0 {
-           /* if let ip = tableView.indexPathForSelectedRow {
-                tableView.deselectRow(at: ip, animated: false)
-            }*/
             showNoMessageSelected()
+            lastSelectedIndexPath = nil
         }
         return valueToReturn
     }
