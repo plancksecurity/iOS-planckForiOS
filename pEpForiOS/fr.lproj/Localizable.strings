@@ -4,9 +4,6 @@
 /* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
 "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nLes pièces jointes sont désactivées.\n\n";
 
-/* TrustManagementView Back Button Title */
-" Message" = " Message";
-
 /* No privacy status explanation
    No privacy status suggestion */
 "-" = "-";
@@ -420,6 +417,9 @@
 
 /* Manual Setup button in Login View */
 "Manual setup" = "Configuration manuelle";
+
+/* Email Detail View reply button menu - toggle seen state button text: read */
+"Mark as read" = "Marquer comme lu";
 
 /* EmailList action title */
 "Mark as Read" = "Marquer comme lu";

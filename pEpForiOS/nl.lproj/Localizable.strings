@@ -4,9 +4,6 @@
 /* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
 "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n% 1 $ @\n\n% 2 $ @\n\n% 3 $ @\n\nBijlages zijn uitgeschakeld.\n\n";
 
-/* TrustManagementView Back Button Title */
-" Message" = " Bericht";
-
 /* No privacy status explanation
    No privacy status suggestion */
 "-" = "-";
@@ -213,6 +210,9 @@
    Disable Protection button title of pEp protection toggle action sheet */
 "Disable Protection" = "Bescherming uitschakelen";
 
+/* ComposeTableView: button to decide to discharge changes made on a drafted mail. */
+"Discharge changes" = "Wijzigingen Annuleren";
+
 /* Display Name placeholder for manual account setup
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Weergavenaam";
@@ -291,7 +291,7 @@
 "Global Settings" = "Algemene Instellingen";
 
 /* Title of the view */
-"Handshake" = "Handshake";
+"Handshake" = "Handdruk";
 
 /* Alert title for iCloud instructions */
 "iCloud" = "iCloud";
@@ -418,6 +418,9 @@
 /* Manual Setup button in Login View */
 "Manual setup" = "Handmatige setup";
 
+/* Email Detail View reply button menu - toggle seen state button text: read */
+"Mark as read" = "Markeer als gelezen";
+
 /* EmailList action title */
 "Mark as Read" = "Markeer als gelezen";
 
@@ -482,7 +485,7 @@
 
 /* keySyncWizard intro view Not Now button title
    not now button */
-"Not Now" = "Not Now";
+"Not Now" = "Niet Nu";
 
 /* alert error title certificate delete */
 "Not possible to delete" = "Niet mogelijk om te verwijderen";
@@ -606,7 +609,7 @@
 "Please give us a moment while we sync your devices. This can take a minute or more." = "Geef ons een momentje om uw apparaten te synchroniseren. Dit kan een minuut of langer duren.";
 
 /* keySync handshake alert message for two devices in group */
-"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?";
+"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Zorg ervoor dat je beide apparaten bij elkaar hebt, zodat je de Vertrouwenswoorden op beide apparaten kunt vergelijken. Zijn de onderstaande Vertrouwenswoorden gelijk aan die op het andere apparaat?";
 
 /* keySync handshake alert message for more than two devices in group */
 "Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Zorg ervoor dat je de apparaten bij elkaar hebt, zodat je de Vertrouwenswoorden op de apparaten kunt vergelijken. Zijn onderstaande Vertrouwenswoorden gelijk aan die op het andere apparaat?";

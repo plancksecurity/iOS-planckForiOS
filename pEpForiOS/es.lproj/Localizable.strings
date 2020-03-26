@@ -4,9 +4,6 @@
 /* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
 "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nLos adjuntos están deshabilitados.\n\n";
 
-/* TrustManagementView Back Button Title */
-" Message" = " Mensaje";
-
 /* No privacy status explanation
    No privacy status suggestion */
 "-" = "-";
@@ -421,6 +418,9 @@
 /* Manual Setup button in Login View */
 "Manual setup" = "Configuración manual";
 
+/* Email Detail View reply button menu - toggle seen state button text: read */
+"Mark as read" = "Marcar como leído";
+
 /* EmailList action title */
 "Mark as Read" = "Marcar como leído";
 
@@ -806,6 +806,9 @@
 
 /* privacyStatusDescription green */
 "This communication partner is secure and trusted" = "Este interlocutor es seguro y de confianza";
+
+/* Privacy status explanation */
+"This contact is completely trusted. All communication will be the maximum level of privacy." = "Este contacto es completamente confiable. Toda comunicación será el máximo nivel de privacidad.";
 
 /* privacyStatusDescription green */
 "This contact is completely trusted. All communication will be with the maximum level of privacy." = "Este contacto es completamente de confianza. Toda comunicación se realizará con el máximo nivel de privacidad.";
