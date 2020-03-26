@@ -20,7 +20,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     private var shouldShowPepButtonInMasterToolbar = true
 
     public static let storyboardId = "EmailListViewController"
-    public static let storyboardNavigationControllerId = "EmailListNavigationViewController"
     static let FILTER_TITLE_MAX_XAR = 20
 
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
@@ -953,16 +952,7 @@ extension EmailListViewController {
 
     func createCancelAction() -> UIAlertAction {
         let title = NSLocalizedString("Cancel", comment: "EmailList action title")
-        return  UIAlertAction(title: title, style: .cancel) {
-            [weak self] action in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
-                return
-            }
-            me.tableView.beginUpdates()
-            me.tableView.setEditing(false, animated: true)
-            me.tableView.endUpdates()
-        }
+        return  UIAlertAction(title: title, style: .cancel)
     }
 
     func createReplyAction() ->  UIAlertAction {
