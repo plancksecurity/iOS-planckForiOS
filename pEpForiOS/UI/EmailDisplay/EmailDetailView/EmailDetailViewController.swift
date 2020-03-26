@@ -418,7 +418,7 @@ extension EmailDetailViewController: UICollectionViewDelegate {
         }
 
         // Handle pre-emptive loading of older messages from the server, if they exist.
-        if currentSplitViewMode() == .onlyDetail {
+        if onlySplitViewMasterIsShown {
             vm.fetchOlderMessagesIfRequired(forIndexPath: indexPath)
         }
 
