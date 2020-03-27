@@ -17,12 +17,20 @@ public struct ReplyUtil {
      Gets the quoted message body for the given `Message`.
      */
     public static func quotedMessageText(message: Message, replyAll: Bool) -> NSAttributedString {
-        guard let quotedText = quotedText(for: message) else {
-            return NSAttributedString(string: "\n\n\(footer())")
-        }
-        let citation = citationHeaderForMessage(message)
 
-        return NSAttributedString(string: "\n\n\(footer())\n\n\(citation)\n\n") + quotedText
+        let footerPlainText = footer()
+
+        guard let quotedText = quotedText(for: message) else {
+            return "\n\n\(footerPlainText)".attribString()
+        }
+        let citationPlainText = citationHeaderForMessage(message)
+
+        return "\n\n".attribString()
+            + footer().attribString()
+            + "\n\n"
+            + citationPlainText.attribString()
+            + "\n\n"
+            + quotedText
     }
 
     /// Adds citation header with data of a given message to a given text.
