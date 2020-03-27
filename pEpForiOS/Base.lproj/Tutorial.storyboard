@@ -303,7 +303,7 @@
                                 </variation>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" image="pEp-status-msg-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="m1I-aD-8YL" userLabel="Privacy Status Image View">
-                                <rect key="frame" x="185" y="187.5" width="64" height="22"/>
+                                <rect key="frame" x="187" y="188" width="60" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="m1I-aD-8YL" secondAttribute="height" multiplier="20:7" id="p5W-jS-9CY"/>
                                 </constraints>
@@ -426,6 +426,7 @@
                                 <exclude reference="qFg-e7-nlJ"/>
                                 <exclude reference="Gw3-Af-We7"/>
                                 <exclude reference="t2A-k1-CaL"/>
+                                <exclude reference="3UK-f1-Rsj"/>
                                 <exclude reference="1Pa-6H-avv"/>
                                 <exclude reference="J2K-du-E0D"/>
                                 <exclude reference="hKh-6F-csZ"/>
@@ -436,7 +437,6 @@
                                 <exclude reference="MS1-XZ-VhU"/>
                                 <exclude reference="VAp-d8-7hj"/>
                                 <exclude reference="s6u-pb-jBv"/>
-                                <exclude reference="3UK-f1-Rsj"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact-widthClass=compact">
@@ -456,6 +456,7 @@
                                 <exclude reference="dOy-ft-D9A"/>
                                 <exclude reference="f8a-Ye-P6H"/>
                                 <include reference="t2A-k1-CaL"/>
+                                <include reference="3UK-f1-Rsj"/>
                                 <exclude reference="WvA-uW-4Qb"/>
                                 <include reference="q0F-vt-SQT"/>
                                 <include reference="wmk-gG-zBz"/>
@@ -464,7 +465,6 @@
                                 <include reference="MS1-XZ-VhU"/>
                                 <exclude reference="mgS-Qv-8LE"/>
                                 <exclude reference="mp1-Oi-yyk"/>
-                                <include reference="3UK-f1-Rsj"/>
                                 <exclude reference="hzy-F1-Opq"/>
                             </mask>
                         </variation>
@@ -505,10 +505,10 @@
                                 <include reference="bRv-qP-Fd6"/>
                                 <exclude reference="oPK-An-ZaY"/>
                                 <exclude reference="dOy-ft-D9A"/>
+                                <exclude reference="3UK-f1-Rsj"/>
                                 <include reference="hKh-6F-csZ"/>
                                 <include reference="1K7-r3-AOS"/>
                                 <exclude reference="mp1-Oi-yyk"/>
-                                <exclude reference="3UK-f1-Rsj"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -532,13 +532,13 @@
                                 <exclude reference="dOy-ft-D9A"/>
                                 <exclude reference="f8a-Ye-P6H"/>
                                 <include reference="t2A-k1-CaL"/>
+                                <include reference="3UK-f1-Rsj"/>
                                 <include reference="1Pa-6H-avv"/>
                                 <exclude reference="WvA-uW-4Qb"/>
                                 <include reference="wmk-gG-zBz"/>
                                 <include reference="BgP-yO-oKN"/>
                                 <exclude reference="FVf-d8-32H"/>
                                 <exclude reference="mp1-Oi-yyk"/>
-                                <include reference="3UK-f1-Rsj"/>
                             </mask>
                         </variation>
                     </view>
@@ -574,13 +574,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cq4-wZ-BZM">
-                                <rect key="frame" x="13" y="10" width="542" height="357.5"/>
+                                <rect key="frame" x="13" y="10" width="542" height="310"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8y6-WE-Ucs" userLabel="Secure container">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8y6-WE-Ucs" userLabel="Secure container">
                                         <rect key="frame" x="222.5" y="0.0" width="97" height="24"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="pEpForIOS-Asset-Tutorial-2a" translatesAutoresizingMaskIntoConstraints="NO" id="Y9O-qa-2Mj" userLabel="Secure Image View">
-                                                <rect key="frame" x="0.0" y="-8" width="30" height="40"/>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-2a" translatesAutoresizingMaskIntoConstraints="NO" id="Y9O-qa-2Mj" userLabel="Secure Image View">
+                                                <rect key="frame" x="0.0" y="-3" width="30" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="66p-v2-JY7">
                                                         <variation key="heightClass=compact-widthClass=compact" constant="30"/>
@@ -588,7 +588,7 @@
                                                     <constraint firstAttribute="width" secondItem="Y9O-qa-2Mj" secondAttribute="height" multiplier="1:1" id="GHe-7h-Nn2"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Secure" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N7R-0r-VFh">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secure" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N7R-0r-VFh">
                                                 <rect key="frame" x="36" y="0.0" width="61" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <nil key="textColor"/>
@@ -605,18 +605,18 @@
                                             <constraint firstItem="Y9O-qa-2Mj" firstAttribute="leading" secondItem="8y6-WE-Ucs" secondAttribute="leading" id="jCs-Hd-15J"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rM7-ay-vaT" userLabel="Secure Description">
-                                        <rect key="frame" x="20" y="34" width="502" height="84"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rM7-ay-vaT" userLabel="Secure Description">
+                                        <rect key="frame" x="20" y="34" width="502" height="50.5"/>
                                         <string key="text">With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9B2-eA-M1i" userLabel="Secure &amp; Trusted container">
-                                        <rect key="frame" x="178.5" y="148" width="185" height="24"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9B2-eA-M1i" userLabel="Secure &amp; Trusted container">
+                                        <rect key="frame" x="178.5" y="99.5" width="185" height="24"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="pEpForIOS-Asset-Tutorial-2b" translatesAutoresizingMaskIntoConstraints="NO" id="494-Ps-I6O" userLabel="Secure &amp; Trusted Image View">
-                                                <rect key="frame" x="0.0" y="-8" width="30" height="40"/>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-2b" translatesAutoresizingMaskIntoConstraints="NO" id="494-Ps-I6O" userLabel="Secure &amp; Trusted Image View">
+                                                <rect key="frame" x="0.0" y="-3" width="30" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="Fdy-u8-IFB">
                                                         <variation key="heightClass=compact-widthClass=compact" constant="30"/>
@@ -624,7 +624,7 @@
                                                     <constraint firstAttribute="width" secondItem="494-Ps-I6O" secondAttribute="height" multiplier="1:1" id="sXs-iy-aHf"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" ambiguous="YES" text="Secure &amp; Trusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s5s-sx-Dv7">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Secure &amp; Trusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s5s-sx-Dv7">
                                                 <rect key="frame" x="36" y="0.0" width="149" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <nil key="textColor"/>
@@ -641,21 +641,18 @@
                                             <constraint firstItem="s5s-sx-Dv7" firstAttribute="centerY" secondItem="9B2-eA-M1i" secondAttribute="centerY" id="dDX-Pt-7Tp"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qWE-M6-upt" userLabel="Secure &amp; Trusted description">
-                                        <rect key="frame" x="18" y="192" width="506" height="67"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" priority="1" constant="41" id="ASm-aL-F6o"/>
-                                        </constraints>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qWE-M6-upt" userLabel="Secure &amp; Trusted description">
+                                        <rect key="frame" x="18" y="133.5" width="506" height="33.5"/>
                                         <string key="text">When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ahu-KZ-JXr" userLabel="Mistrusted container">
-                                        <rect key="frame" x="206.5" y="289" width="129" height="24"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ahu-KZ-JXr" userLabel="Mistrusted container">
+                                        <rect key="frame" x="206.5" y="182" width="129" height="24"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="pEpForIOS-Asset-Tutorial-2c" translatesAutoresizingMaskIntoConstraints="NO" id="bbW-CB-Ek3" userLabel="Mistrusted Image View">
-                                                <rect key="frame" x="0.0" y="-6.5" width="30" height="37"/>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-2c" translatesAutoresizingMaskIntoConstraints="NO" id="bbW-CB-Ek3" userLabel="Mistrusted Image View">
+                                                <rect key="frame" x="0.0" y="-1" width="30" height="26"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="43" id="Rv7-cF-Vcg">
                                                         <variation key="heightClass=compact-widthClass=compact" constant="30"/>
@@ -663,7 +660,7 @@
                                                     <constraint firstAttribute="width" secondItem="bbW-CB-Ek3" secondAttribute="height" multiplier="43:37" id="eqE-QC-ccS"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" ambiguous="YES" text="Mistrusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ogr-uB-snW">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Mistrusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ogr-uB-snW">
                                                 <rect key="frame" x="36" y="0.0" width="93" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <nil key="textColor"/>
@@ -680,8 +677,8 @@
                                             <constraint firstItem="bbW-CB-Ek3" firstAttribute="centerY" secondItem="Ogr-uB-snW" secondAttribute="centerY" id="qbl-YN-cIs"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wF1-W3-tf3" userLabel="Secure &amp; Trusted description">
-                                        <rect key="frame" x="67" y="333" width="408" height="50.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wF1-W3-tf3" userLabel="Secure &amp; Trusted description">
+                                        <rect key="frame" x="67" y="216" width="408" height="33.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -703,7 +700,6 @@
                                         <variation key="heightClass=compact-widthClass=regular" constant="60"/>
                                         <variation key="heightClass=regular-widthClass=regular" constant="60"/>
                                     </constraint>
-                                    <constraint firstAttribute="width" priority="250" constant="300" id="H6C-pJ-hw2"/>
                                     <constraint firstItem="9B2-eA-M1i" firstAttribute="top" secondItem="rM7-ay-vaT" secondAttribute="bottom" constant="8" symbolic="YES" id="JX0-v7-aEl">
                                         <variation key="heightClass=regular" constant="30"/>
                                         <variation key="heightClass=compact-widthClass=compact" constant="15"/>
@@ -721,7 +717,6 @@
                                         <variation key="heightClass=regular" constant="20"/>
                                         <variation key="heightClass=compact-widthClass=regular" constant="12"/>
                                     </constraint>
-                                    <constraint firstAttribute="bottom" secondItem="wF1-W3-tf3" secondAttribute="bottom" id="iaa-wx-kbb"/>
                                     <constraint firstItem="rM7-ay-vaT" firstAttribute="top" secondItem="8y6-WE-Ucs" secondAttribute="bottom" constant="10" id="k9q-gw-JZS">
                                         <variation key="heightClass=compact-widthClass=regular" constant="12"/>
                                     </constraint>
@@ -738,13 +733,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="cq4-wZ-BZM" firstAttribute="top" secondItem="xjO-hE-Hg6" secondAttribute="top" constant="30" id="FSK-RW-vQA"/>
-                            <constraint firstItem="cq4-wZ-BZM" firstAttribute="centerY" secondItem="xjO-hE-Hg6" secondAttribute="centerY" multiplier="1.18" id="Hef-MP-Let"/>
                             <constraint firstItem="cq4-wZ-BZM" firstAttribute="centerX" secondItem="xjO-hE-Hg6" secondAttribute="centerX" id="Pmn-o5-jUG"/>
-                            <constraint firstItem="xjO-hE-Hg6" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="cq4-wZ-BZM" secondAttribute="trailing" constant="12" id="QAl-v2-iLY"/>
                             <constraint firstItem="cq4-wZ-BZM" firstAttribute="top" secondItem="xjO-hE-Hg6" secondAttribute="top" constant="30" id="dbH-as-dEO">
                                 <variation key="heightClass=compact-widthClass=compact" constant="10"/>
                                 <variation key="heightClass=compact-widthClass=regular" constant="20"/>
                             </constraint>
+                            <constraint firstItem="cq4-wZ-BZM" firstAttribute="leading" secondItem="xjO-hE-Hg6" secondAttribute="leading" constant="13" id="lOe-fI-YdG"/>
+                            <constraint firstItem="cq4-wZ-BZM" firstAttribute="bottom" secondItem="xjO-hE-Hg6" secondAttribute="bottom" id="vAx-wE-zZV"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xjO-hE-Hg6"/>
                         <variation key="default">
@@ -752,20 +747,13 @@
                                 <exclude reference="FSK-RW-vQA"/>
                             </mask>
                         </variation>
-                        <variation key="heightClass=compact-widthClass=regular">
-                            <mask key="constraints">
-                                <exclude reference="Hef-MP-Let"/>
-                            </mask>
-                        </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="constraints">
                                 <include reference="FSK-RW-vQA"/>
-                                <exclude reference="Hef-MP-Let"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="centerY" destination="Hef-MP-Let" id="sRm-bk-7zf"/>
                         <outlet property="mistrustedDescription" destination="wF1-W3-tf3" id="xEu-ts-Zng"/>
                         <outlet property="mistrustedLabel" destination="Ogr-uB-snW" id="ToX-zx-Qlz"/>
                         <outlet property="secureAndTrustDescription" destination="qWE-M6-upt" id="zhw-Y9-6K1"/>
@@ -803,17 +791,17 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dbb-pf-Jeu">
-                                <rect key="frame" x="28.5" y="36.5" width="511" height="208.5"/>
+                                <rect key="frame" x="30" y="36.5" width="508" height="208.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rLc-J2-pmo" userLabel="Explanation">
-                                        <rect key="frame" x="0.0" y="0.0" width="511" height="50.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="508" height="50.5"/>
                                         <string key="text">The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1b" translatesAutoresizingMaskIntoConstraints="NO" id="JRj-Lz-8Q6" userLabel="Topbar Image View">
-                                        <rect key="frame" x="155.5" y="66.5" width="222" height="39"/>
+                                        <rect key="frame" x="143" y="66.5" width="222" height="39"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="334" id="2ya-QD-SoU">
                                                 <variation key="heightClass=compact-widthClass=compact" constant="222"/>
@@ -851,7 +839,7 @@
                                         </variation>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-4b" translatesAutoresizingMaskIntoConstraints="NO" id="Dxw-e9-73u" userLabel="Secure and trusted asset">
-                                        <rect key="frame" x="287.5" y="115.5" width="38" height="38"/>
+                                        <rect key="frame" x="273" y="115.5" width="38" height="38"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="58" id="FqF-sF-qoh">
                                                 <variation key="heightClass=compact-widthClass=compact" constant="38"/>
@@ -861,7 +849,7 @@
                                         </constraints>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" image="pEp-status-msg-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="d7r-hM-zxS" userLabel="Privacy Status Image View">
-                                        <rect key="frame" x="247.5" y="79" width="38" height="14"/>
+                                        <rect key="frame" x="235" y="79" width="38" height="14"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="d7r-hM-zxS" secondAttribute="height" multiplier="19:7" id="3GQ-vg-oVB"/>
                                             <constraint firstAttribute="width" constant="38" id="uJH-lX-ZtV"/>
@@ -878,7 +866,7 @@
                                         </variation>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1a" translatesAutoresizingMaskIntoConstraints="NO" id="dxb-MX-efP" userLabel="Secure Asset">
-                                        <rect key="frame" x="207.5" y="115.5" width="38" height="38"/>
+                                        <rect key="frame" x="195" y="115.5" width="38" height="38"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="dxb-MX-efP" secondAttribute="height" multiplier="1:1" id="5yL-s7-a0K"/>
                                             <constraint firstAttribute="width" constant="58" id="nvW-CQ-RjZ">
@@ -888,7 +876,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E7G-lq-Zvz" userLabel="Common Denominator">
-                                        <rect key="frame" x="0.0" y="163.5" width="511" height="33.5"/>
+                                        <rect key="frame" x="0.0" y="163.5" width="508" height="33.5"/>
                                         <string key="text">In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
@@ -907,7 +895,6 @@
                                     </constraint>
                                     <constraint firstItem="Dxw-e9-73u" firstAttribute="centerX" secondItem="JRj-Lz-8Q6" secondAttribute="centerX" multiplier="1.15" id="K2m-od-FZd"/>
                                     <constraint firstItem="d7r-hM-zxS" firstAttribute="centerY" secondItem="JRj-Lz-8Q6" secondAttribute="centerY" id="Mxv-dF-njm"/>
-                                    <constraint firstItem="dxb-MX-efP" firstAttribute="centerX" secondItem="JRj-Lz-8Q6" secondAttribute="centerX" multiplier="0.85" id="PF5-00-lpe"/>
                                     <constraint firstItem="rLc-J2-pmo" firstAttribute="leading" secondItem="Dbb-pf-Jeu" secondAttribute="leading" constant="41" id="Ww9-yc-bvT">
                                         <variation key="heightClass=compact-widthClass=compact" constant="0.0"/>
                                         <variation key="heightClass=compact-widthClass=regular" constant="0.0"/>
@@ -933,7 +920,6 @@
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="8ua-G5-iPD"/>
-                                        <exclude reference="PF5-00-lpe"/>
                                         <exclude reference="K2m-od-FZd"/>
                                         <exclude reference="eVD-b3-iNw"/>
                                     </mask>
@@ -941,7 +927,6 @@
                                 <variation key="heightClass=compact-widthClass=compact">
                                     <mask key="constraints">
                                         <include reference="8ua-G5-iPD"/>
-                                        <include reference="PF5-00-lpe"/>
                                         <exclude reference="jg0-YR-q4G"/>
                                         <exclude reference="3I6-WL-DQA"/>
                                         <include reference="K2m-od-FZd"/>
@@ -966,7 +951,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="foH-y3-Ues" firstAttribute="bottom" secondItem="Dbb-pf-Jeu" secondAttribute="bottom" constant="75" id="AT2-e8-dE7"/>
-                            <constraint firstItem="Dbb-pf-Jeu" firstAttribute="width" secondItem="xn1-YN-U8k" secondAttribute="width" multiplier="0.9" id="MD5-Nt-FBy"/>
+                            <constraint firstItem="Dbb-pf-Jeu" firstAttribute="leading" secondItem="foH-y3-Ues" secondAttribute="leading" constant="30" id="PFN-Kt-QTE"/>
                             <constraint firstItem="2dW-Vn-WjN" firstAttribute="centerX" secondItem="foH-y3-Ues" secondAttribute="centerX" id="eaq-Sv-Im8"/>
                             <constraint firstItem="2dW-Vn-WjN" firstAttribute="top" secondItem="foH-y3-Ues" secondAttribute="top" constant="30" id="hkj-1w-puL">
                                 <variation key="heightClass=compact-widthClass=compact" constant="8"/>
@@ -995,7 +980,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="pEp-status-msg-yellow" width="64" height="21"/>
+        <image name="pEp-status-msg-yellow" width="56" height="21"/>
         <image name="pEpForIOS-Asset-Tutorial-1a" width="58" height="58"/>
         <image name="pEpForIOS-Asset-Tutorial-1b" width="334" height="59"/>
         <image name="pEpForIOS-Asset-Tutorial-2a" width="40" height="40"/>
