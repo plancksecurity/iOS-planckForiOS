@@ -98,7 +98,7 @@ extension TutorialStep2ViewController {
             return
         }
         containerLeadingConstraint.constant = isLandscape ? Constants.Landscape.containerLeading : Constants.Portrait.containerLeading
-        distanceBetweenTitleAndContainerView.constant = isLandscape ? Constants.Landscape.distanceBelowTitle : Constants.Portrait.distanceBelowTitle
+//        distanceBetweenTitleAndContainerView.constant = isLandscape ? Constants.Landscape.distanceBelowTitle : Constants.Portrait.distanceBelowTitle
         distanceBetweenLabels.constant = 50
         secureCenterX.constant = -6
         superView.layoutIfNeeded()

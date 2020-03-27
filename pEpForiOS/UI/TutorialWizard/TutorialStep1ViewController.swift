@@ -74,8 +74,8 @@ extension TutorialStep1ViewController {
             return
         }
         
-        centerY.constant = isLandscape ? Constants.Landscape.centerYOffset : Constants.Portrait.centerYOffset
-        superView.layoutIfNeeded()
+//        centerY.constant = isLandscape ? Constants.Landscape.centerYOffset : Constants.Portrait.centerYOffset
+//        superView.layoutIfNeeded()
     }
     
     private struct Constants {
