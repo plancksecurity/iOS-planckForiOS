@@ -27,11 +27,6 @@ class TutorialStep1ViewController: TutorialStepViewController {
         setupMistrustedLabel()
         setupMistrustedDescriptionLabel()
     }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        adjustConstraintsIfNeeded()
-    }
 }
 
 // MARK: - Layout configuration
@@ -66,16 +61,6 @@ extension TutorialStep1ViewController {
     private func setupMistrustedDescriptionLabel() {
         mistrustedDescription.text = NSLocalizedString("If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle.", comment: "Secure & Trusted Description Label - Step 1")
         mistrustedDescription.font = font
-    }
-    
-    func adjustConstraintsIfNeeded() {
-        guard let superView = view.superview, isIpad else {
-            Log.shared.info("Superview is missing or is not needed to adjust constraints here")
-            return
-        }
-        
-        centerY.constant = isLandscape ? Constants.Landscape.centerYOffset : Constants.Portrait.centerYOffset
-        superView.layoutIfNeeded()
     }
     
     private struct Constants {
