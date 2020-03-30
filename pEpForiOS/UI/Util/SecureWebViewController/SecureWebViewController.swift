@@ -290,6 +290,63 @@ class SecureWebViewController: UIViewController {
         return result
     }
 
+//    //BUFF: brealks all. DONT !
+//    private func minFontSizeAssured(inHtml html: String, minFontSize: Int = 20) -> String {
+//        var result = html
+//
+//        let pxAndPt = ["px","pt"]
+//        for defType in pxAndPt {
+//            let patternGetFontSizes = "font-size:(?<\(defType)>\\d+).*?\(defType);"
+//            //        let patternGetFontSizesPT = #"font-size:(?<pt>\d+).*?px;"#
+//            guard let regexGetFontSizes =
+//                try? NSRegularExpression(pattern: patternGetFontSizes, options: []) else {
+//                    Log.shared.errorAndCrash("Error with regex pattern")
+//                    return html
+//            }
+//            let matched = regexGetFontSizes.matches(in: html, options: [], range: html.wholeRange())
+//            var fontSizeValues = [String]()
+//            for match in matched {
+//                let nsRange = match.range(withName: "\(defType)")
+//                guard let range = Range(nsRange, in: html) else {
+//                    Log.shared.errorAndCrash("Problem!")
+//                    continue
+//                }
+//                let fontSize = html.substring(with: range)
+//                fontSizeValues.append(fontSize)
+//            }
+//
+//            for fontSize in fontSizeValues {
+//                guard let int = Int(fontSize), int < minFontSize else {
+//                    // font size is OK (> min).
+//                    // Nothing to do.
+//                    continue
+//                }
+//                let search = "font-size:\(fontSize)"
+//                let replace = "font-size:\(minFontSize)"
+//                result = result.replacingOccurrences(of: search, with: replace)
+//            }
+//        }
+//
+//
+//
+//
+//        return result
+//    }
+//
+//
+//    private func unsopportedTagsRemoved(fromHtml html: String) -> String {
+//        var result = html
+//
+//        let unsupportedTags = ["table"]
+//        for unsupportedTag in unsupportedTags {
+//            let pattern = "<\(unsupportedTag).*?>"
+//            result.removeRegexMatches(of: pattern)
+//        }
+//        return result
+//    }
+
+
+
     /// Returns a modified version of the given html, adjusted to:
     /// - simulate "PageScaleToFit" layout behaviour
     /// - responsive image size
@@ -299,6 +356,7 @@ class SecureWebViewController: UIViewController {
     /// - Returns: tweaked html
     private func tweakedHtml(inHtml html: String) -> String {
         var html = html
+
         // Remove existing viewport definitions that are pontentially unsupported by WKWebview.
         html.removeRegexMatches(of: "<meta name=\\\"viewport\\\".*?>")
         // Define viewport WKWebview can deal with
@@ -318,11 +376,18 @@ class SecureWebViewController: UIViewController {
                 text-decoration: underline;
         }
         """
+        //BUFF: Brian Hoey fix. I am afraid that will break more mails than it fixes.
+        let styleFontSize = """
+            div {
+                    font-size: xx-large;
+            }
+        """
         let tweak = """
-            \(scaleToFitHtml)
+                \(scaleToFitHtml)
             <style>
                 \(styleResponsiveImageSize)
                 \(styleLinkStyle)
+                \(styleFontSize)
             </style>
         """
         // Inject tweak if appropriate
@@ -344,6 +409,14 @@ class SecureWebViewController: UIViewController {
                 """
             )
         }
+
+//        result = unsopportedTagsRemoved(fromHtml: result)
+
+
+//        //BUFF: FONT
+//        result = minFontSizeAssured(inHtml: result) //BUFF: RM
+
+
         return result
     }
 
@@ -352,10 +425,11 @@ class SecureWebViewController: UIViewController {
     /// - Parameter html: string to assure its wrapped in html tags
     /// - Returns: wrapped string
     private func htmlTagsAssured(html: String) -> String {
+        let searchStartTag = "<html" // Example: <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40">
         let startHtml = "<html>"
         let endHtml = "</html>"
         var result = html
-        if !html.contains(find: startHtml) {
+        if !html.contains(find: searchStartTag) {
             result = startHtml + html + endHtml
         }
         return result

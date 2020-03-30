@@ -11,10 +11,9 @@ import Foundation
 import pEpIOSToolbox
 
 extension String {
-    public func firstMatch(pattern: String, rangeNumber: Int = 1) -> String? {
+    public func firstMatch(pattern: String, rangeNumber: Int = 1) -> String? { //!!!: should be in Toolbox
         do {
-            let regex = try NSRegularExpression(
-                pattern: pattern, options: [])
+            let regex = try NSRegularExpression(pattern: pattern, options: [])
             if let match = regex.firstMatch(in: self, options: [], range: wholeRange()) {
                 let r = match.range(at: rangeNumber)
                 let s = (self as NSString).substring(with: r)
