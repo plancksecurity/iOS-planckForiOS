@@ -643,6 +643,11 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         // for adding a pull-to-refresh spinner without gliches.
         //To work around the wron content offset, we intersept the default implementation here and
         // trigger scoll to top ourselfs.
+        guard tableView.numberOfRows(inSection: 0) > 0 else {
+            // No cells, no scroll to cell. Else we crash.
+            // Do nothing.
+            return false
+        }
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         return false
     }
