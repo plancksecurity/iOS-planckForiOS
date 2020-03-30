@@ -111,7 +111,8 @@ class EmailListViewModel: EmailDisplayViewModel {
 
     /// Whether or not to show the Tutorial
     public var shouldShowTutorialWizard: Bool {
-        return AppSettings.shared.shouldShowTutorialWizard
+//        return AppSettings.shared.shouldShowTutorialWizard
+        return true
     }
 
     /// Call when the tutorial has been displayed to the user
