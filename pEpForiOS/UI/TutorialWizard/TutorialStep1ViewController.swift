@@ -73,9 +73,6 @@ extension TutorialStep1ViewController {
             Log.shared.info("Superview is missing or is not needed to adjust constraints here")
             return
         }
-        
-//        centerY.constant = isLandscape ? Constants.Landscape.centerYOffset : Constants.Portrait.centerYOffset
-//        superView.layoutIfNeeded()
     }
     
     private struct Constants {
