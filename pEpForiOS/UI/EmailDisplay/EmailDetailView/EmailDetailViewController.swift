@@ -77,6 +77,7 @@ class EmailDetailViewController: BaseViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+        //coordinator.animateAlongsideTransition(in: <#T##UIView?#>, animation: <#T##((UIViewControllerTransitionCoordinatorContext) -> Void)?##((UIViewControllerTransitionCoordinatorContext) -> Void)?##(UIViewControllerTransitionCoordinatorContext) -> Void#>, completion: <#T##((UIViewControllerTransitionCoordinatorContext) -> Void)?##((UIViewControllerTransitionCoordinatorContext) -> Void)?##(UIViewControllerTransitionCoordinatorContext) -> Void#>)
         setupToolbar()
         // Works around a UI glitch: When !onlySplitViewMasterIsShown, the colletionView scroll
         // position is inbetween two cells after orientation change.
@@ -795,6 +796,7 @@ extension EmailDetailViewController: SplitViewHandlingProtocol {
             previous.isEnabled = thereIsAPreviousMessageToShow
             next.isEnabled = thereIsANextMessageToShow
             navigationItem.rightBarButtonItems = [previous, next]
+            navigationItem.leftBarButtonItems = []
         case .separate:
             //view itself correctly handles the bars when is gonna separate
             break
