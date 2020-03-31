@@ -73,6 +73,8 @@ class SecureWebViewController: UIViewController {
         return false
     }
 
+    public var minimumFontSize: CGFloat = 20.0
+
     private var webView: WKWebView!
     private var sizeChangeObserver: NSKeyValueObservation?
 
@@ -108,11 +110,15 @@ class SecureWebViewController: UIViewController {
             return
         }
         let config = WKWebViewConfiguration()
-        let prefs = WKPreferences()
-        prefs.javaScriptEnabled = false
-        config.preferences = prefs
-        config.dataDetectorTypes =
-            [.link, .address, .calendarEvent, .phoneNumber, .trackingNumber, .flightNumber]
+
+
+        config.preferences = preferences()
+        config.dataDetectorTypes = [.link,
+                                    .address,
+                                    .calendarEvent,
+                                    .phoneNumber,
+                                    .trackingNumber,
+                                    .flightNumber]
         // This handler provides local content for cid: URLs
         CidHandler.setup(config: config)
         webView = WKWebView(frame: .zero, configuration: config)
@@ -122,6 +128,19 @@ class SecureWebViewController: UIViewController {
         webView.scrollView.isUserInteractionEnabled = userInteractionEnabled
         view = webView
     }
+
+    //BUFF: move
+
+//    private func injectCss() {
+//        webView
+//    }
+    private func preferences(javaScriptEnabled: Bool = false) -> WKPreferences {
+        let createe  = WKPreferences()
+        createe.javaScriptEnabled = javaScriptEnabled
+        createe.minimumFontSize = minimumFontSize
+        return createe
+    }
+    //
 
     // MARK: - WKContentRuleList (block loading of all remote content)
 
@@ -301,10 +320,16 @@ class SecureWebViewController: UIViewController {
         var html = html
         // Remove existing viewport definitions that are pontentially unsupported by WKWebview.
         html.removeRegexMatches(of: "<meta name=\\\"viewport\\\".*?>")
+
+
         // Define viewport WKWebview can deal with
         let screenWidth = UIScreen.main.bounds.width
+//        let scaleToFitHtml =
+//        "<meta name=\"viewport\" content=\"width=\(screenWidth), shrink-to-fit=YES\"/>"
         let scaleToFitHtml =
-        "<meta name=\"viewport\" content=\"width=\(screenWidth), shrink-to-fit=YES\"/>"
+        "<meta name=\"viewport\" content=\"width=\(screenWidth)\"/>"
+
+
         // Build HTML tweak
         let styleResponsiveImageSize = """
             img {
@@ -377,6 +402,10 @@ class SecureWebViewController: UIViewController {
 // MARK: - WKNavigationDelegate
 
 extension SecureWebViewController: WKNavigationDelegate {
+
+//    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+//        print("asdf")
+//    }
 
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
