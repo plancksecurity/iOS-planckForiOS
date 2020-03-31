@@ -41,12 +41,9 @@ public extension NSAttributedString {
         let charsToReplace = Array(ofWith.keys)
 
         for charToReplace in charsToReplace {
-            while attributedString.mutableString.contains(charToReplace) {
-                let range = attributedString.mutableString.range(of: charToReplace)
-                guard range.lowerBound != NSNotFound else {
-                    // early quit, nothing to do and also avoid an endless loop
-                    break
-                }
+            while
+                let range = attributedString.mutableString.range(of: charToReplace) as Optional,
+                range.lowerBound != NSNotFound {
                 if let value = ofWith[charToReplace] as? String {
                     attributedString.replaceCharacters(in: range, with: value)
                 } else if let value = ofWith[charToReplace] as? NSAttributedString {
