@@ -98,7 +98,7 @@ extension ComposeViewModel {
             }
         }
 
-        var bodyHtml = "" {
+        var bodyText = NSAttributedString(string: "") {
             didSet {
                 edited = true
             }
@@ -138,7 +138,7 @@ extension ComposeViewModel {
             newValue.bccWrapped = bccWrapped
             newValue.subject = subject
             newValue.bodyPlaintext = bodyPlaintext
-            newValue.bodyHtml = bodyHtml
+            newValue.bodyText = bodyText
             newValue.isValidatedForSending = isValidatedForSending
             newValue.rating = rating
             newValue.edited = edited

@@ -776,8 +776,8 @@ extension EmailDetailViewController: SplitViewHandlingProtocol {
                 }
             }
             setToolbarItems(newtoolbar, animated: true)
-            let next = UIBarButtonItem.getNextButton(action: #selector(nextButtonPressed), target: self)
-            let previous = UIBarButtonItem.getPreviousButton(action: #selector(previousButtonPressed), target: self)
+            let next = UIBarButtonItem.getNextButton(action: #selector(previousButtonPressed), target: self)
+            let previous = UIBarButtonItem.getPreviousButton(action: #selector(nextButtonPressed), target: self)
             previous.isEnabled = thereIsAPreviousMessageToShow
             next.isEnabled = thereIsANextMessageToShow
             navigationItem.rightBarButtonItems = [previous, next]
