@@ -250,7 +250,7 @@ extension EmailDetailViewController {
 
     private var indexPathOfCurrentlyVisibleCell: IndexPath? {
         // We are manually computing the currently shown indexPath as
-        // collectionView.indexPathsForVisibleItems oftern contains more then one (i.e. 2) indexpaths.
+        // collectionView.indexPathsForVisibleItems often contains more then one (i.e. 2) indexpaths.
         let visibleRect = CGRect(origin: collectionView.contentOffset,
                                  size: collectionView.bounds.size)
         let visiblePoint = CGPoint(x: visibleRect.midX,
