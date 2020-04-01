@@ -105,10 +105,6 @@ class EmailDetailViewController: BaseViewController {
     }
 
     @IBAction func moveToFolderButtonPressed(_ sender: UIBarButtonItem) {
-        guard let vm = viewModel, vm.rowCount > 0 else {
-            // We haven't any email, we should early quit
-            return
-        }
         performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
     }
 
