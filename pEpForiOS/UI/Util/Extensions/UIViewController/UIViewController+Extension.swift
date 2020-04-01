@@ -23,7 +23,7 @@ extension UIViewController {
     // As this screen might be rendered in a split view, the title view is not centered to the device
     // width but the view controller's width. That's why we need to adjust the title view position
     // in that case.
-    public func adjustTitleViewPositionIfNeeded() {
+    func adjustTitleViewPositionIfNeeded() {
         //reset previous transformations if any
         navigationItem.titleView?.transform = .identity
         if isIpad && isLandscape {
@@ -94,7 +94,7 @@ extension UIViewController {
     }
 
     func showNavigationBar() {
-            navigationController?.setNavigationBarHidden(false, animated: false)
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
 }
 
