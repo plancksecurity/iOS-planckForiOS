@@ -304,6 +304,8 @@ class SecureWebViewController: UIViewController {
     /// - Returns: html ready for displaying
     private func preprocess(html: String) -> String {
         var result = html
+//        result.removeRegexMatches(of: "<table.*?</table>")
+//        result.removeRegexMatches(of: "<blockquote?s:.</blockquote>")
         result = htmlTagsAssured(html: result)
         result = tweakedHtml(inHtml: result)
         return result
@@ -327,10 +329,43 @@ class SecureWebViewController: UIViewController {
 //        let scaleToFitHtml =
 //        "<meta name=\"viewport\" content=\"width=\(screenWidth), shrink-to-fit=YES\"/>"
         let scaleToFitHtml =
-        "<meta name=\"viewport\" content=\"width=\(screenWidth)\"/>"
-
+        "<meta name=\"viewport\" content=\"width=\(screenWidth)\", initial-scale=1.0/>"
 
         // Build HTML tweak
+
+        let wordWrap = "word-wrap: break-word;"
+        let styleBodyOptimize = """
+            body {
+                font-family: Arial !important;
+                font-size: \(minimumFontSize);
+                max-width: 100% !important;
+            }
+        """
+
+        let styleTableOptimize = """
+            table {
+                max-width: 100% !important;
+            }
+        """
+
+        let styleTableRowOptimize = """
+            table {
+                max-width: 100% !important;
+            }
+        """
+
+        let styleParagraphOptimize = """
+            p {
+                max-width: 100% !important;
+            }
+        """
+
+        let styleBlockquoteOptimize = """
+            p {
+                max-width: \(screenWidth)pt !important;
+            }
+        """
+
         let styleResponsiveImageSize = """
             img {
                 max-width: 100%;
@@ -341,11 +376,19 @@ class SecureWebViewController: UIViewController {
             a:link {
                 color:\(UIColor.pEpDarkGreenHex);
                 text-decoration: underline;
+                \(wordWrap)
         }
         """
+        //\(styleBlockquoteOptimize)
+        //\(styleParagraphOptimize)
         let tweak = """
             \(scaleToFitHtml)
             <style>
+                \(styleBodyOptimize)
+                \(styleTableOptimize)
+                \(styleTableRowOptimize)
+
+
                 \(styleResponsiveImageSize)
                 \(styleLinkStyle)
             </style>
@@ -380,7 +423,7 @@ class SecureWebViewController: UIViewController {
         let startHtml = "<html>"
         let endHtml = "</html>"
         var result = html
-        if !html.contains(find: startHtml) {
+        if !html.contains(find: endHtml) {
             result = startHtml + html + endHtml
         }
         return result
