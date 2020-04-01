@@ -745,19 +745,16 @@ class BodyCellViewModelTest: XCTestCase {
             }
         }
 
-        func bodyCellViewModel(_ vm: BodyCellViewModel,
-                               bodyChangedToPlaintext plain: String,
-                               html: String) {
+        func bodyCellViewModel(_ vm: BodyCellViewModel, bodyAttributedString: NSAttributedString) {
             guard let exp = expBodyChangedCalled else {
                 // We ignore called or not
                 return
             }
             exp.fulfill()
+            let expBody = bodyAttributedString.toHtml()
+            let expPlainText = expBody.plainText
             if let expected1 = exectedPlain {
-                XCTAssertEqual(plain, expected1)
-            }
-            if let expected2 = exectedHtml {
-                XCTAssertEqual(html, expected2)
+                XCTAssertEqual(expPlainText, expected1)
             }
         }
     }

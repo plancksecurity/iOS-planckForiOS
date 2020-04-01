@@ -213,7 +213,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     }
 
     func testEdited_dirty_changedBodyHtml() {
-        testee?.bodyHtml = #function
+        testee?.bodyText = NSAttributedString(string: #function)
         guard let edited = testee?.edited else {
             XCTFail()
             return
