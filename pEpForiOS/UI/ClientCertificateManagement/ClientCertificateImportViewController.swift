@@ -48,46 +48,12 @@ final class ClientCertificateImportViewController: UIViewController {
 
         passwordTextField.delegate = self
         scrollView.dynamicHeightScrollViewDelegate = self
-        setupConstraints()
         setupStyle()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        updateConstraints()
         viewModel?.importClientCertificate()
-    }
-
-    /// Setup constraints arrays for cancel & OK buttons.
-    private func setupConstraints() {
-        cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        okButton.translatesAutoresizingMaskIntoConstraints = false
-
-        portraitConstraints = [cancelButton.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor),
-                               cancelButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 12),
-                               okButton.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
-                               okButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 12)
-        ]
-
-        landscapeConstraints = [cancelButton.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor),
-                               cancelButton.rightAnchor.constraint(equalTo: passwordTextField.leftAnchor, constant: -26),
-                               okButton.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor),
-                               okButton.leftAnchor.constraint(equalTo: passwordTextField.rightAnchor, constant: 26)]
-    }
-
-    /// Change constraints for cancel & OK buttons between portrait and landscape modes
-    private func updateConstraints() {
-        if UIDevice.current.orientation.isPortrait {
-            NSLayoutConstraint.deactivate(landscapeConstraints)
-            NSLayoutConstraint.activate(portraitConstraints)
-        } else {
-            NSLayoutConstraint.deactivate(portraitConstraints)
-            NSLayoutConstraint.activate(landscapeConstraints)
-        }
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        updateConstraints()
     }
 }
 

@@ -20,7 +20,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     private var shouldShowPepButtonInMasterToolbar = true
 
     public static let storyboardId = "EmailListViewController"
-    public static let storyboardNavigationControllerId = "EmailListNavigationViewController"
     static let FILTER_TITLE_MAX_XAR = 20
 
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
@@ -52,9 +51,11 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
                                                             action: nil)
 
     // MARK: - Life Cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        edgesForExtendedLayout = .all
+
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -96,9 +97,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
         updateFilterText()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -107,7 +105,7 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     // MARK: - Setup
 
     private func setup() {
-        tableView.separatorInset = UIEdgeInsets.zero
+        tableView.separatorInset = .zero
         tableView.delegate = self
         tableView.dataSource = self
         // rm seperator lines for empty view/cells
@@ -133,8 +131,7 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
         ///if we are in setup and the folder is unifiedInbox
         ///we have to reload the unifiedInbox to ensure that all the accounts are present.
         if vm.folderToShow is UnifiedInbox {
-            viewModel = EmailListViewModel(delegate: self,
-                                           folderToShow: UnifiedInbox())
+            viewModel = EmailListViewModel(delegate: self, folderToShow: UnifiedInbox())
         }
         setupRefreshControl()
 
@@ -174,30 +171,14 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     // MARK: - Search Bar
 
     private func setupSearchBar() {
-        definesPresentationContext = true
-        configureSearchBar()
         if #available(iOS 11.0, *) {
             searchController.isActive = false
+            searchController.searchResultsUpdater = self
+            searchController.dimsBackgroundDuringPresentation = false
+            searchController.delegate = self
+            definesPresentationContext = true
             navigationItem.searchController = searchController
             navigationItem.hidesSearchBarWhenScrolling = true
-        } else {
-            addSearchBar10()
-
-            if tableView.tableHeaderView == nil {
-                tableView.tableHeaderView = searchController.searchBar
-            }
-
-            // some notifications to control when the app enter and recover from background
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didBecomeActiveInstallSearchBar10),
-                name: UIApplication.didBecomeActiveNotification,
-                object: nil)
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didBecomeInactiveUninstallSearchbar10),
-                name: UIApplication.didEnterBackgroundNotification,
-                object: nil)
         }
     }
 
@@ -216,42 +197,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
             }
         }
     }
-
-    /**
-     Configure the search controller, shared between iOS versions 11 and earlier.
-     */
-    private func configureSearchBar() {
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.delegate = self
-    }
-
-    /**
-     Showing the search controller in versions iOS 10 and earlier.
-     */
-    @objc func didBecomeActiveInstallSearchBar10() {
-        if tableView.tableHeaderView == nil {
-            tableView.tableHeaderView = searchController.searchBar
-        }
-    }
-
-    /**
-     Hide/remove the search controller in versions iOS 10 and earlier.
-     */
-    @objc func didBecomeInactiveUninstallSearchbar10() {
-        tableView.tableHeaderView = nil
-    }
-
-    /**
-     Add the search bar when running on iOS 10 or earlier.
-     */
-    private func addSearchBar10() {
-        tableView.tableHeaderView = searchController.searchBar
-        tableView.setContentOffset(CGPoint(x: 0.0,
-                                           y: searchController.searchBar.frame.size.height),
-                                   animated: false)
-    }
-
     // MARK: - Other
 
     private func showEditDraftComposeView() {
@@ -352,14 +297,14 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 
 
         //right navigation button to ensure the logic
-        let cancel = UIBarButtonItem(title: "Cancel",
+        let cancel = UIBarButtonItem(title: NSLocalizedString("Cancel",
+                                                              comment: "EmailList: Cancel edit mode button title"),
                                      style: UIBarButtonItem.Style.plain,
                                      target: self,
                                      action: #selector(cancelToolbar(_:)))
 
         editRightButton = navigationItem.rightBarButtonItem
         navigationItem.rightBarButtonItem = cancel
-
     }
 
     @objc private func showSettingsViewController() {
@@ -474,7 +419,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
         } else {
             toolbarItems?.remove(at: 1)
             toolbarItems?.remove(at: 1)
-
         }
         updateFilterButtonView()
     }
@@ -522,7 +466,14 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.rowCount ?? 0
+        let valueToReturn = viewModel?.rowCount ?? 0
+//        if there is no message to show then there is no message selected and also
+//        no message selected screen is shown
+        if valueToReturn == 0 {
+            showNoMessageSelected()
+            lastSelectedIndexPath = nil
+        }
+        return valueToReturn
     }
 
     func tableView(_ tableView: UITableView,
@@ -637,11 +588,12 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+
         if tableView.isEditing {
-            guard let vm = viewModel else {
-                Log.shared.errorAndCrash("No VM")
-                return
-            }
             guard let selectedIndexPaths = tableView.indexPathsForSelectedRows else {
                 // Nothing selected ...
                 // ... nothing to do.
@@ -649,10 +601,6 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             }
             vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)
         } else {
-            guard let vm = viewModel else {
-                Log.shared.errorAndCrash("No VM")
-                return
-            }
             if vm.isSelectable(messageAt: indexPath) {
                 lastSelectedIndexPath = indexPath
                 tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
@@ -695,6 +643,11 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         // for adding a pull-to-refresh spinner without gliches.
         //To work around the wron content offset, we intersept the default implementation here and
         // trigger scoll to top ourselfs.
+        guard tableView.numberOfRows(inSection: 0) > 0 else {
+            // No cells, no scroll to cell. Else we crash.
+            // Do nothing.
+            return false
+        }
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         return false
     }
@@ -1010,16 +963,7 @@ extension EmailListViewController {
 
     func createCancelAction() -> UIAlertAction {
         let title = NSLocalizedString("Cancel", comment: "EmailList action title")
-        return  UIAlertAction(title: title, style: .cancel) {
-            [weak self] action in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
-                return
-            }
-            me.tableView.beginUpdates()
-            me.tableView.setEditing(false, animated: true)
-            me.tableView.endUpdates()
-        }
+        return  UIAlertAction(title: title, style: .cancel)
     }
 
     func createReplyAction() ->  UIAlertAction {

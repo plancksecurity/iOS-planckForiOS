@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_5" orientation="landscape" appearance="light"/>
+    <device id="retina6_1" orientation="landscape" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
@@ -16,17 +16,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Handshake" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ICO-LI-a2E">
-                                <rect key="frame" x="405" y="30" width="86" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tbj-uq-7Ob">
-                                <rect key="frame" x="64" y="60.999999999999986" width="768" height="196.66666666666663"/>
+                                <rect key="frame" x="64" y="86" width="768" height="300"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i1p-j1-tYp">
-                                        <rect key="frame" x="0.0" y="0.0" width="384" height="50.333333333333336"/>
+                                        <rect key="frame" x="0.0" y="71" width="384" height="50.5"/>
                                         <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                         <string key="text">When you click on the Privacy Status icon in the top bar, you will get to the Handshake, where you can verify your communication partner. </string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -34,16 +28,16 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S8t-jR-oY0" userLabel="Top Bar container">
-                                        <rect key="frame" x="394" y="0.0" width="374" height="106.33333333333333"/>
+                                        <rect key="frame" x="394" y="71" width="374" height="106"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-4" translatesAutoresizingMaskIntoConstraints="NO" id="Lb9-UI-pW6" userLabel="Topbar Image View">
-                                                <rect key="frame" x="0.0" y="0.0" width="374" height="106.33333333333333"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="374" height="106"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="Lb9-UI-pW6" secondAttribute="height" multiplier="257:73" id="R3O-g6-7es"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secure" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9f-sY-x1Q">
-                                                <rect key="frame" x="197.33333333333337" y="29.333333333333329" width="54" height="21"/>
+                                                <rect key="frame" x="197.5" y="29" width="54" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -60,16 +54,16 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="THo-TL-grV" userLabel="Trustwords container">
-                                        <rect key="frame" x="394" y="122.33333333333334" width="374" height="74.333333333333343"/>
+                                        <rect key="frame" x="394" y="193" width="374" height="70"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EdT-Qp-2PC" userLabel="Triustwords Label">
-                                                <rect key="frame" x="10" y="8" width="350.33333333333331" height="14.333333333333336"/>
+                                                <rect key="frame" x="10" y="8" width="350.5" height="14.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="8Xq-lc-6Jt" userLabel="DeclineButton">
-                                                <rect key="frame" x="10" y="30.333333333333314" width="46" height="28"/>
+                                                <rect key="frame" x="10" y="30.5" width="46" height="28"/>
                                                 <accessibility key="accessibilityConfiguration" label="wrongButton">
                                                     <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
                                                 </accessibility>
@@ -77,7 +71,7 @@
                                                 <state key="normal" title="Decline"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="4fD-jL-4Gx" userLabel="ConfirmButton">
-                                                <rect key="frame" x="78" y="30.333333333333314" width="49" height="28"/>
+                                                <rect key="frame" x="78" y="30.5" width="49" height="28"/>
                                                 <accessibility key="accessibilityConfiguration" label="confirmButton">
                                                     <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
                                                 </accessibility>
@@ -89,6 +83,7 @@
                                         <constraints>
                                             <constraint firstItem="8Xq-lc-6Jt" firstAttribute="top" secondItem="EdT-Qp-2PC" secondAttribute="bottom" constant="8" id="2kN-aB-7Hq"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="4fD-jL-4Gx" secondAttribute="trailing" constant="20" symbolic="YES" id="DHX-Kh-6kM"/>
+                                            <constraint firstAttribute="height" constant="70" id="DIQ-iG-iHM"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="EdT-Qp-2PC" secondAttribute="trailing" constant="10" id="IBh-Wd-ISM"/>
                                             <constraint firstItem="EdT-Qp-2PC" firstAttribute="leading" secondItem="THo-TL-grV" secondAttribute="leading" constant="10" id="N85-SY-TQx"/>
                                             <constraint firstItem="8Xq-lc-6Jt" firstAttribute="centerY" secondItem="4fD-jL-4Gx" secondAttribute="centerY" id="Zth-FI-C6a"/>
@@ -96,7 +91,6 @@
                                             <constraint firstItem="8Xq-lc-6Jt" firstAttribute="leading" secondItem="EdT-Qp-2PC" secondAttribute="leading" id="gFu-xc-A1J"/>
                                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="8Xq-lc-6Jt" secondAttribute="bottom" constant="16" id="mcK-us-XmG"/>
                                             <constraint firstItem="4fD-jL-4Gx" firstAttribute="leading" secondItem="8Xq-lc-6Jt" secondAttribute="trailing" priority="250" constant="22" id="rYk-RG-ffK"/>
-                                            <constraint firstAttribute="height" constant="89" id="tEn-e1-igh"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="EdT-Qp-2PC" secondAttribute="trailing" constant="-80.5" id="yM1-aF-FzD">
                                                 <variation key="heightClass=regular-widthClass=compact" constant="0.0"/>
                                             </constraint>
@@ -112,39 +106,49 @@
                                         </userDefinedRuntimeAttributes>
                                         <variation key="default">
                                             <mask key="constraints">
-                                                <exclude reference="tEn-e1-igh"/>
+                                                <exclude reference="mcK-us-XmG"/>
                                             </mask>
                                         </variation>
                                         <variation key="heightClass=regular-widthClass=compact">
                                             <mask key="constraints">
-                                                <include reference="tEn-e1-igh"/>
                                                 <exclude reference="IBh-Wd-ISM"/>
                                                 <exclude reference="mcK-us-XmG"/>
                                             </mask>
                                         </variation>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lMo-1v-V01">
-                                        <rect key="frame" x="0.0" y="122.33333333333334" width="384" height="54"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lMo-1v-V01">
+                                        <rect key="frame" x="0.0" y="193" width="384" height="54"/>
                                         <string key="text">When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure &amp; Trusted. </string>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Handshake" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ICO-LI-a2E">
+                                        <rect key="frame" x="341" y="30" width="86" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="ICO-LI-a2E" firstAttribute="top" secondItem="tbj-uq-7Ob" secondAttribute="top" constant="30" id="1lD-5n-BhD">
+                                        <variation key="heightClass=compact-widthClass=compact" constant="15"/>
+                                    </constraint>
+                                    <constraint firstItem="i1p-j1-tYp" firstAttribute="top" secondItem="ICO-LI-a2E" secondAttribute="bottom" constant="20" id="3Vm-Jl-2Jr">
+                                        <variation key="heightClass=compact-widthClass=compact" constant="10"/>
+                                    </constraint>
                                     <constraint firstItem="S8t-jR-oY0" firstAttribute="leading" secondItem="tbj-uq-7Ob" secondAttribute="leading" id="6bf-a2-AZf"/>
                                     <constraint firstItem="THo-TL-grV" firstAttribute="trailing" secondItem="S8t-jR-oY0" secondAttribute="trailing" id="6wN-k1-4Yt"/>
                                     <constraint firstAttribute="trailing" secondItem="S8t-jR-oY0" secondAttribute="trailing" id="CyJ-HU-34L"/>
+                                    <constraint firstItem="ICO-LI-a2E" firstAttribute="centerX" secondItem="tbj-uq-7Ob" secondAttribute="centerX" id="D5O-GT-Axj"/>
                                     <constraint firstAttribute="trailing" secondItem="i1p-j1-tYp" secondAttribute="trailing" id="HNu-qm-BcU"/>
                                     <constraint firstItem="i1p-j1-tYp" firstAttribute="bottom" secondItem="S8t-jR-oY0" secondAttribute="top" constant="-20" id="MW3-d8-hoO"/>
                                     <constraint firstItem="lMo-1v-V01" firstAttribute="trailing" secondItem="i1p-j1-tYp" secondAttribute="trailing" id="Rca-8Z-MpT"/>
                                     <constraint firstItem="lMo-1v-V01" firstAttribute="leading" secondItem="i1p-j1-tYp" secondAttribute="leading" id="S2h-52-COk"/>
                                     <constraint firstItem="THo-TL-grV" firstAttribute="trailing" secondItem="S8t-jR-oY0" secondAttribute="trailing" id="VNi-K5-8JM"/>
                                     <constraint firstItem="i1p-j1-tYp" firstAttribute="leading" secondItem="tbj-uq-7Ob" secondAttribute="leading" id="XEG-b9-HLh"/>
-                                    <constraint firstAttribute="bottom" secondItem="lMo-1v-V01" secondAttribute="bottom" priority="250" id="Xac-Hg-YGc"/>
-                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="THo-TL-grV" secondAttribute="bottom" id="cAy-cb-hsF"/>
-                                    <constraint firstItem="lMo-1v-V01" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i1p-j1-tYp" secondAttribute="bottom" priority="250" constant="8" id="gIR-IA-Oei"/>
-                                    <constraint firstItem="i1p-j1-tYp" firstAttribute="top" secondItem="tbj-uq-7Ob" secondAttribute="top" id="hfp-6q-pXt"/>
+                                    <constraint firstItem="lMo-1v-V01" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i1p-j1-tYp" secondAttribute="bottom" constant="8" id="gIR-IA-Oei"/>
+                                    <constraint firstAttribute="height" priority="1" constant="300" id="jKz-nK-5C2"/>
                                     <constraint firstItem="S8t-jR-oY0" firstAttribute="top" secondItem="i1p-j1-tYp" secondAttribute="top" id="ltZ-7S-WJU"/>
                                     <constraint firstItem="THo-TL-grV" firstAttribute="top" secondItem="lMo-1v-V01" secondAttribute="top" id="nBB-sF-5JH"/>
                                     <constraint firstItem="THo-TL-grV" firstAttribute="leading" secondItem="S8t-jR-oY0" secondAttribute="leading" id="o2L-S9-KDX"/>
@@ -178,7 +182,6 @@
                                         <exclude reference="w0p-iB-mbO"/>
                                         <exclude reference="6wN-k1-4Yt"/>
                                         <include reference="VNi-K5-8JM"/>
-                                        <exclude reference="cAy-cb-hsF"/>
                                         <exclude reference="nBB-sF-5JH"/>
                                         <include reference="o2L-S9-KDX"/>
                                         <exclude reference="oVo-PP-BOQ"/>
@@ -188,16 +191,23 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="tbj-uq-7Ob" firstAttribute="top" secondItem="Zgk-Ua-Z7d" secondAttribute="top" id="2Ra-hG-aec"/>
+                            <constraint firstItem="tbj-uq-7Ob" firstAttribute="centerY" secondItem="Zgk-Ua-Z7d" secondAttribute="centerY" multiplier="1.2" id="995-73-MhA"/>
                             <constraint firstItem="tbj-uq-7Ob" firstAttribute="centerX" secondItem="Zgk-Ua-Z7d" secondAttribute="centerX" id="HBV-4i-p6K"/>
-                            <constraint firstItem="Zgk-Ua-Z7d" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="tbj-uq-7Ob" secondAttribute="bottom" constant="8" id="KMn-FC-ghF"/>
                             <constraint firstItem="tbj-uq-7Ob" firstAttribute="leading" secondItem="Zgk-Ua-Z7d" secondAttribute="leading" constant="20" id="NXO-xZ-ZvI"/>
-                            <constraint firstItem="tbj-uq-7Ob" firstAttribute="top" secondItem="ICO-LI-a2E" secondAttribute="bottom" constant="10" id="XWe-bo-B9z"/>
-                            <constraint firstItem="ICO-LI-a2E" firstAttribute="centerX" secondItem="Zgk-Ua-Z7d" secondAttribute="centerX" id="aQG-DG-hwU"/>
-                            <constraint firstItem="ICO-LI-a2E" firstAttribute="top" secondItem="Zgk-Ua-Z7d" secondAttribute="top" constant="30" id="uBd-xj-kKb">
-                                <variation key="heightClass=compact-widthClass=compact" constant="10"/>
-                            </constraint>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Zgk-Ua-Z7d"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="995-73-MhA"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact-widthClass=regular">
+                            <mask key="constraints">
+                                <exclude reference="2Ra-hG-aec"/>
+                                <include reference="995-73-MhA"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="confirmButton" destination="4fD-jL-4Gx" id="8Oi-Aa-HdU"/>
@@ -205,7 +215,6 @@
                         <outlet property="containerLeadingConstraint" destination="NXO-xZ-ZvI" id="rNY-r8-TUs"/>
                         <outlet property="declineButton" destination="8Xq-lc-6Jt" id="7oq-Mp-sOx"/>
                         <outlet property="distanceBetweenLabels" destination="gIR-IA-Oei" id="0dm-y4-aH3"/>
-                        <outlet property="distanceBetweenTitleAndContainerView" destination="XWe-bo-B9z" id="9AV-9F-ju3"/>
                         <outlet property="handshakeTitle" destination="ICO-LI-a2E" id="TWC-Oq-uQi"/>
                         <outlet property="privacyStatusExplanationLabel" destination="i1p-j1-tYp" id="738-JR-kTC"/>
                         <outlet property="secureCenterX" destination="0lm-8T-muo" id="pEF-Q5-lEZ"/>
@@ -216,7 +225,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QrC-U0-4M5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="356.91964285714283" y="1362.3188405797102"/>
+            <point key="canvasLocation" x="355.98591549295776" y="1361.25"/>
         </scene>
         <!--Tutorial Step0 View Controller-->
         <scene sceneID="Ws0-5Z-W6K">
@@ -227,40 +236,40 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Welcome to the p≡p Tutorial" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XKD-ea-9Kh">
-                                <rect key="frame" x="301.66666666666669" y="20" width="293.00000000000006" height="28.666666666666671"/>
+                                <rect key="frame" x="301.5" y="20" width="293" height="29"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can close this tutorial anytime with the Skip button." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RKC-QV-5yv">
-                                <rect key="frame" x="136" y="68.666666666666671" width="336" height="15.666666666666671"/>
+                                <rect key="frame" x="136" y="67" width="336" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="p≡p uses a Privacy Status icon to indicate how secure your communication is" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WAK-KE-bk0">
-                                <rect key="frame" x="135.99999999999997" y="99.333333333333329" width="467.33333333333326" height="15.666666666666671"/>
+                                <rect key="frame" x="136" y="97" width="467.5" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="This Privacy Status Icon is shown as an Icon the user's avatar" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B9p-Ah-ajI">
-                                <rect key="frame" x="136.00000000000003" y="130" width="370.66666666666674" height="15.666666666666657"/>
+                                <rect key="frame" x="136" y="127" width="370.5" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1a" translatesAutoresizingMaskIntoConstraints="NO" id="sOf-oo-dcP" userLabel="Contact Placeholder">
-                                <rect key="frame" x="536.66666666666663" y="130" width="58" height="58"/>
+                                <rect key="frame" x="536.5" y="127" width="58" height="58"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="And in the top bar when you open or write an email:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZDk-Zf-Xez">
-                                <rect key="frame" x="135.99999999999997" y="160.66666666666666" width="311.33333333333326" height="15.666666666666657"/>
+                                <rect key="frame" x="136" y="157" width="311.5" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1b" translatesAutoresizingMaskIntoConstraints="NO" id="BKf-gk-loR" userLabel="Topbar Image View">
-                                <rect key="frame" x="136" y="192.33333333333334" width="334" height="59"/>
+                                <rect key="frame" x="136" y="187" width="334" height="59"/>
                                 <constraints>
                                     <constraint firstAttribute="width" priority="250" constant="334" id="8tO-z1-YHB"/>
                                     <constraint firstAttribute="width" secondItem="BKf-gk-loR" secondAttribute="height" multiplier="334:59" id="Pb3-uV-GDF"/>
@@ -290,13 +299,13 @@
                                 </variation>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" image="pEp-status-msg-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="m1I-aD-8YL" userLabel="Privacy Status Image View">
-                                <rect key="frame" x="273" y="217.33333333333334" width="60" height="21"/>
+                                <rect key="frame" x="273" y="212" width="60" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="m1I-aD-8YL" secondAttribute="height" multiplier="20:7" id="p5W-jS-9CY"/>
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1a" translatesAutoresizingMaskIntoConstraints="NO" id="BTb-PE-Srj" userLabel="Avatar Image View">
-                                <rect key="frame" x="178" y="240.66666666666663" width="58" height="58"/>
+                                <rect key="frame" x="178" y="241.5" width="58" height="58"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="BTb-PE-Srj" secondAttribute="height" multiplier="1:1" id="Biy-dA-Fo9"/>
                                 </constraints>
@@ -331,7 +340,7 @@
                             <constraint firstItem="vnx-d9-CLf" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="RKC-QV-5yv" secondAttribute="trailing" constant="8" id="H7i-Xe-y6J"/>
                             <constraint firstItem="RKC-QV-5yv" firstAttribute="top" secondItem="XKD-ea-9Kh" secondAttribute="bottom" constant="46" id="IT2-Sz-ATc">
                                 <variation key="heightClass=compact-widthClass=compact" constant="8"/>
-                                <variation key="heightClass=compact-widthClass=regular" constant="20"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="18"/>
                                 <variation key="heightClass=regular-widthClass=compact" constant="18"/>
                             </constraint>
                             <constraint firstItem="ZDk-Zf-Xez" firstAttribute="leading" secondItem="B9p-Ah-ajI" secondAttribute="leading" id="J2K-du-E0D"/>
@@ -357,7 +366,7 @@
                             <constraint firstItem="B9p-Ah-ajI" firstAttribute="centerX" secondItem="WAK-KE-bk0" secondAttribute="centerX" id="f8a-Ye-P6H"/>
                             <constraint firstItem="ZDk-Zf-Xez" firstAttribute="top" secondItem="B9p-Ah-ajI" secondAttribute="bottom" constant="100" id="fkJ-Il-LtR">
                                 <variation key="heightClass=compact-widthClass=compact" constant="12"/>
-                                <variation key="heightClass=compact-widthClass=regular" constant="15"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="14"/>
                                 <variation key="heightClass=regular-widthClass=compact" constant="80"/>
                                 <variation key="heightClass=regular-widthClass=regular" constant="25"/>
                             </constraint>
@@ -379,20 +388,20 @@
                             <constraint firstItem="XKD-ea-9Kh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vnx-d9-CLf" secondAttribute="leading" constant="50" id="p8o-M3-tE1"/>
                             <constraint firstItem="WAK-KE-bk0" firstAttribute="top" secondItem="RKC-QV-5yv" secondAttribute="bottom" constant="19" id="pPm-0o-drZ">
                                 <variation key="heightClass=compact-widthClass=compact" constant="12"/>
-                                <variation key="heightClass=compact-widthClass=regular" constant="15"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="14"/>
                                 <variation key="heightClass=regular-widthClass=compact" constant="12"/>
                                 <variation key="heightClass=regular-widthClass=regular" constant="25"/>
                             </constraint>
                             <constraint firstItem="ZDk-Zf-Xez" firstAttribute="leading" secondItem="B9p-Ah-ajI" secondAttribute="leading" id="q0F-vt-SQT"/>
                             <constraint firstItem="vnx-d9-CLf" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="B9p-Ah-ajI" secondAttribute="trailing" symbolic="YES" id="qBz-FH-jIg"/>
                             <constraint firstItem="WAK-KE-bk0" firstAttribute="leading" secondItem="RKC-QV-5yv" secondAttribute="leading" id="qFg-e7-nlJ"/>
-                            <constraint firstItem="BKf-gk-loR" firstAttribute="top" secondItem="ZDk-Zf-Xez" secondAttribute="bottom" constant="16" id="s6u-pb-jBv"/>
+                            <constraint firstItem="BKf-gk-loR" firstAttribute="top" secondItem="ZDk-Zf-Xez" secondAttribute="bottom" constant="14" id="s6u-pb-jBv"/>
                             <constraint firstItem="B9p-Ah-ajI" firstAttribute="leading" secondItem="WAK-KE-bk0" secondAttribute="leading" id="t2A-k1-CaL"/>
                             <constraint firstItem="ZDk-Zf-Xez" firstAttribute="top" secondItem="BTb-PE-Srj" secondAttribute="bottom" priority="250" constant="26.5" id="unO-tk-QET"/>
                             <constraint firstItem="ZDk-Zf-Xez" firstAttribute="leading" secondItem="B9p-Ah-ajI" secondAttribute="leading" id="wmk-gG-zBz"/>
                             <constraint firstItem="B9p-Ah-ajI" firstAttribute="top" secondItem="WAK-KE-bk0" secondAttribute="bottom" constant="15" id="zdQ-ZH-yDm">
                                 <variation key="heightClass=compact-widthClass=compact" constant="12"/>
-                                <variation key="heightClass=compact-widthClass=regular" constant="15"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="14"/>
                                 <variation key="heightClass=regular-widthClass=compact" constant="12"/>
                                 <variation key="heightClass=regular-widthClass=regular" constant="25"/>
                             </constraint>
@@ -413,6 +422,7 @@
                                 <exclude reference="qFg-e7-nlJ"/>
                                 <exclude reference="Gw3-Af-We7"/>
                                 <exclude reference="t2A-k1-CaL"/>
+                                <exclude reference="3UK-f1-Rsj"/>
                                 <exclude reference="1Pa-6H-avv"/>
                                 <exclude reference="J2K-du-E0D"/>
                                 <exclude reference="hKh-6F-csZ"/>
@@ -423,7 +433,6 @@
                                 <exclude reference="MS1-XZ-VhU"/>
                                 <exclude reference="VAp-d8-7hj"/>
                                 <exclude reference="s6u-pb-jBv"/>
-                                <exclude reference="3UK-f1-Rsj"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact-widthClass=compact">
@@ -443,6 +452,7 @@
                                 <exclude reference="dOy-ft-D9A"/>
                                 <exclude reference="f8a-Ye-P6H"/>
                                 <include reference="t2A-k1-CaL"/>
+                                <include reference="3UK-f1-Rsj"/>
                                 <exclude reference="WvA-uW-4Qb"/>
                                 <include reference="q0F-vt-SQT"/>
                                 <include reference="wmk-gG-zBz"/>
@@ -451,7 +461,6 @@
                                 <include reference="MS1-XZ-VhU"/>
                                 <exclude reference="mgS-Qv-8LE"/>
                                 <exclude reference="mp1-Oi-yyk"/>
-                                <include reference="3UK-f1-Rsj"/>
                                 <exclude reference="hzy-F1-Opq"/>
                             </mask>
                         </variation>
@@ -492,10 +501,10 @@
                                 <include reference="bRv-qP-Fd6"/>
                                 <exclude reference="oPK-An-ZaY"/>
                                 <exclude reference="dOy-ft-D9A"/>
+                                <exclude reference="3UK-f1-Rsj"/>
                                 <include reference="hKh-6F-csZ"/>
                                 <include reference="1K7-r3-AOS"/>
                                 <exclude reference="mp1-Oi-yyk"/>
-                                <exclude reference="3UK-f1-Rsj"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -519,13 +528,13 @@
                                 <exclude reference="dOy-ft-D9A"/>
                                 <exclude reference="f8a-Ye-P6H"/>
                                 <include reference="t2A-k1-CaL"/>
+                                <include reference="3UK-f1-Rsj"/>
                                 <include reference="1Pa-6H-avv"/>
                                 <exclude reference="WvA-uW-4Qb"/>
                                 <include reference="wmk-gG-zBz"/>
                                 <include reference="BgP-yO-oKN"/>
                                 <exclude reference="FVf-d8-32H"/>
                                 <exclude reference="mp1-Oi-yyk"/>
-                                <include reference="3UK-f1-Rsj"/>
                             </mask>
                         </variation>
                     </view>
@@ -561,10 +570,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cq4-wZ-BZM">
-                                <rect key="frame" x="59" y="30.000000000000014" width="778" height="244.33333333333337"/>
+                                <rect key="frame" x="57" y="12" width="782" height="381"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8y6-WE-Ucs" userLabel="Secure container">
-                                        <rect key="frame" x="335.66666666666669" y="16" width="107" height="24"/>
+                                        <rect key="frame" x="337.5" y="8" width="107" height="24"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-2a" translatesAutoresizingMaskIntoConstraints="NO" id="Y9O-qa-2Mj" userLabel="Secure Image View">
                                                 <rect key="frame" x="0.0" y="-8" width="40" height="40"/>
@@ -593,17 +602,17 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rM7-ay-vaT" userLabel="Secure Description">
-                                        <rect key="frame" x="73" y="52" width="632.33333333333337" height="33.666666666666657"/>
+                                        <rect key="frame" x="75" y="44" width="632.5" height="33.5"/>
                                         <string key="text">With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9B2-eA-M1i" userLabel="Secure &amp; Trusted container">
-                                        <rect key="frame" x="291.66666666666669" y="103.66666666666666" width="195" height="24"/>
+                                        <rect key="frame" x="293.5" y="89.5" width="195" height="24"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-2b" translatesAutoresizingMaskIntoConstraints="NO" id="494-Ps-I6O" userLabel="Secure &amp; Trusted Image View">
-                                                <rect key="frame" x="0.0" y="-7.9999999999999858" width="40" height="40"/>
+                                                <rect key="frame" x="0.0" y="-8" width="40" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="Fdy-u8-IFB">
                                                         <variation key="heightClass=compact-widthClass=compact" constant="30"/>
@@ -629,20 +638,17 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qWE-M6-upt" userLabel="Secure &amp; Trusted description">
-                                        <rect key="frame" x="60" y="139.66666666666666" width="658" height="33.666666666666657"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" priority="1" constant="41" id="ASm-aL-F6o"/>
-                                        </constraints>
+                                        <rect key="frame" x="62" y="121.5" width="658" height="33.5"/>
                                         <string key="text">When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ahu-KZ-JXr" userLabel="Mistrusted container">
-                                        <rect key="frame" x="318" y="191.33333333333334" width="142" height="24"/>
+                                        <rect key="frame" x="320" y="167" width="142" height="24"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-2c" translatesAutoresizingMaskIntoConstraints="NO" id="bbW-CB-Ek3" userLabel="Mistrusted Image View">
-                                                <rect key="frame" x="0.0" y="-6.3333333333333428" width="43" height="37"/>
+                                                <rect key="frame" x="0.0" y="-6.5" width="43" height="37"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="43" id="Rv7-cF-Vcg">
                                                         <variation key="heightClass=compact-widthClass=compact" constant="30"/>
@@ -668,7 +674,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wF1-W3-tf3" userLabel="Secure &amp; Trusted description">
-                                        <rect key="frame" x="121.66666666666669" y="227.33333333333331" width="534.66666666666652" height="17"/>
+                                        <rect key="frame" x="123.5" y="199" width="535" height="17"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -683,22 +689,21 @@
                                     <constraint firstItem="Ahu-KZ-JXr" firstAttribute="top" secondItem="qWE-M6-upt" secondAttribute="bottom" constant="10" id="Fh4-pG-dBM">
                                         <variation key="heightClass=regular" constant="30"/>
                                         <variation key="heightClass=compact-widthClass=compact" constant="15"/>
-                                        <variation key="heightClass=compact-widthClass=regular" constant="18"/>
+                                        <variation key="heightClass=compact-widthClass=regular" constant="12"/>
                                     </constraint>
                                     <constraint firstItem="9B2-eA-M1i" firstAttribute="centerX" secondItem="cq4-wZ-BZM" secondAttribute="centerX" id="Fwf-p5-IAq"/>
                                     <constraint firstItem="wF1-W3-tf3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cq4-wZ-BZM" secondAttribute="leading" constant="10" id="Gyo-xz-AN0">
                                         <variation key="heightClass=compact-widthClass=regular" constant="60"/>
                                         <variation key="heightClass=regular-widthClass=regular" constant="60"/>
                                     </constraint>
-                                    <constraint firstAttribute="width" priority="250" constant="300" id="H6C-pJ-hw2"/>
                                     <constraint firstItem="9B2-eA-M1i" firstAttribute="top" secondItem="rM7-ay-vaT" secondAttribute="bottom" constant="8" symbolic="YES" id="JX0-v7-aEl">
                                         <variation key="heightClass=regular" constant="30"/>
                                         <variation key="heightClass=compact-widthClass=compact" constant="15"/>
-                                        <variation key="heightClass=compact-widthClass=regular" constant="18"/>
+                                        <variation key="heightClass=compact-widthClass=regular" constant="12"/>
                                     </constraint>
                                     <constraint firstItem="qWE-M6-upt" firstAttribute="top" secondItem="9B2-eA-M1i" secondAttribute="bottom" constant="10" id="PqI-yj-ID8">
                                         <variation key="heightClass=regular" constant="20"/>
-                                        <variation key="heightClass=compact-widthClass=regular" constant="12"/>
+                                        <variation key="heightClass=compact-widthClass=regular" constant="8"/>
                                     </constraint>
                                     <constraint firstItem="rM7-ay-vaT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cq4-wZ-BZM" secondAttribute="leading" constant="20" id="YCi-56-xrw">
                                         <variation key="heightClass=compact-widthClass=regular" constant="60"/>
@@ -706,9 +711,8 @@
                                     </constraint>
                                     <constraint firstItem="wF1-W3-tf3" firstAttribute="top" secondItem="Ahu-KZ-JXr" secondAttribute="bottom" constant="10" id="Ypd-nN-gtu">
                                         <variation key="heightClass=regular" constant="20"/>
-                                        <variation key="heightClass=compact-widthClass=regular" constant="12"/>
+                                        <variation key="heightClass=compact-widthClass=regular" constant="8"/>
                                     </constraint>
-                                    <constraint firstAttribute="bottom" secondItem="wF1-W3-tf3" secondAttribute="bottom" id="iaa-wx-kbb"/>
                                     <constraint firstItem="rM7-ay-vaT" firstAttribute="top" secondItem="8y6-WE-Ucs" secondAttribute="bottom" constant="10" id="k9q-gw-JZS">
                                         <variation key="heightClass=compact-widthClass=regular" constant="12"/>
                                     </constraint>
@@ -716,7 +720,7 @@
                                     <constraint firstItem="rM7-ay-vaT" firstAttribute="centerX" secondItem="8y6-WE-Ucs" secondAttribute="centerX" id="pgV-wA-3eN"/>
                                     <constraint firstItem="qWE-M6-upt" firstAttribute="centerX" secondItem="cq4-wZ-BZM" secondAttribute="centerX" id="qr8-ZA-m13"/>
                                     <constraint firstItem="8y6-WE-Ucs" firstAttribute="top" secondItem="cq4-wZ-BZM" secondAttribute="top" id="riQ-Zy-yyc">
-                                        <variation key="heightClass=compact-widthClass=regular" constant="16"/>
+                                        <variation key="heightClass=compact-widthClass=regular" constant="8"/>
                                     </constraint>
                                     <constraint firstItem="Ahu-KZ-JXr" firstAttribute="centerX" secondItem="cq4-wZ-BZM" secondAttribute="centerX" id="wl4-QS-8Hq"/>
                                 </constraints>
@@ -725,12 +729,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="cq4-wZ-BZM" firstAttribute="top" secondItem="xjO-hE-Hg6" secondAttribute="top" constant="30" id="FSK-RW-vQA"/>
-                            <constraint firstItem="cq4-wZ-BZM" firstAttribute="centerY" secondItem="xjO-hE-Hg6" secondAttribute="centerY" multiplier="1.18" id="Hef-MP-Let"/>
                             <constraint firstItem="cq4-wZ-BZM" firstAttribute="centerX" secondItem="xjO-hE-Hg6" secondAttribute="centerX" id="Pmn-o5-jUG"/>
-                            <constraint firstItem="xjO-hE-Hg6" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="cq4-wZ-BZM" secondAttribute="trailing" constant="12" id="QAl-v2-iLY"/>
                             <constraint firstItem="cq4-wZ-BZM" firstAttribute="top" secondItem="xjO-hE-Hg6" secondAttribute="top" constant="30" id="dbH-as-dEO">
                                 <variation key="heightClass=compact-widthClass=compact" constant="10"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="12"/>
                             </constraint>
+                            <constraint firstItem="cq4-wZ-BZM" firstAttribute="leading" secondItem="xjO-hE-Hg6" secondAttribute="leading" constant="13" id="lOe-fI-YdG"/>
+                            <constraint firstItem="cq4-wZ-BZM" firstAttribute="bottom" secondItem="xjO-hE-Hg6" secondAttribute="bottom" id="vAx-wE-zZV"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xjO-hE-Hg6"/>
                         <variation key="default">
@@ -738,20 +743,13 @@
                                 <exclude reference="FSK-RW-vQA"/>
                             </mask>
                         </variation>
-                        <variation key="heightClass=compact-widthClass=regular">
-                            <mask key="constraints">
-                                <exclude reference="Hef-MP-Let"/>
-                            </mask>
-                        </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="constraints">
                                 <include reference="FSK-RW-vQA"/>
-                                <exclude reference="Hef-MP-Let"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="centerY" destination="Hef-MP-Let" id="sRm-bk-7zf"/>
                         <outlet property="mistrustedDescription" destination="wF1-W3-tf3" id="xEu-ts-Zng"/>
                         <outlet property="mistrustedLabel" destination="Ogr-uB-snW" id="ToX-zx-Qlz"/>
                         <outlet property="secureAndTrustDescription" destination="qWE-M6-upt" id="zhw-Y9-6K1"/>
@@ -783,23 +781,23 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Privacy Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2dW-Vn-WjN">
-                                <rect key="frame" x="393" y="30" width="110" height="20.333333333333329"/>
+                                <rect key="frame" x="393" y="12" width="110" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dbb-pf-Jeu">
-                                <rect key="frame" x="44.666666666666686" y="70.333333333333329" width="806.66666666666652" height="247.66666666666669"/>
+                                <rect key="frame" x="74" y="42.5" width="748" height="275.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rLc-J2-pmo" userLabel="Explanation">
-                                        <rect key="frame" x="41" y="0.0" width="724.66666666666663" height="33.666666666666664"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="748" height="33.5"/>
                                         <string key="text">The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1b" translatesAutoresizingMaskIntoConstraints="NO" id="JRj-Lz-8Q6" userLabel="Topbar Image View">
-                                        <rect key="frame" x="236.33333333333337" y="49.666666666666671" width="334" height="59"/>
+                                        <rect key="frame" x="246.5" y="53.5" width="255" height="45"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="334" id="2ya-QD-SoU">
                                                 <variation key="heightClass=compact-widthClass=compact" constant="222"/>
@@ -837,7 +835,7 @@
                                         </variation>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-4b" translatesAutoresizingMaskIntoConstraints="NO" id="Dxw-e9-73u" userLabel="Secure and trusted asset">
-                                        <rect key="frame" x="474.99999999999994" y="131.66666666666669" width="58.000000000000057" height="58"/>
+                                        <rect key="frame" x="395" y="118.5" width="38" height="38"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="58" id="FqF-sF-qoh">
                                                 <variation key="heightClass=compact-widthClass=compact" constant="38"/>
@@ -847,7 +845,7 @@
                                         </constraints>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" image="pEp-status-msg-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="d7r-hM-zxS" userLabel="Privacy Status Image View">
-                                        <rect key="frame" x="373" y="68.000000000000014" width="61" height="22.333333333333329"/>
+                                        <rect key="frame" x="345.5" y="65.5" width="57" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="d7r-hM-zxS" secondAttribute="height" multiplier="19:7" id="3GQ-vg-oVB"/>
                                             <constraint firstAttribute="width" constant="38" id="uJH-lX-ZtV"/>
@@ -864,7 +862,7 @@
                                         </variation>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1a" translatesAutoresizingMaskIntoConstraints="NO" id="dxb-MX-efP" userLabel="Secure Asset">
-                                        <rect key="frame" x="273.66666666666663" y="131.66666666666669" width="58" height="58"/>
+                                        <rect key="frame" x="315" y="118.5" width="38" height="38"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="dxb-MX-efP" secondAttribute="height" multiplier="1:1" id="5yL-s7-a0K"/>
                                             <constraint firstAttribute="width" constant="58" id="nvW-CQ-RjZ">
@@ -874,7 +872,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E7G-lq-Zvz" userLabel="Common Denominator">
-                                        <rect key="frame" x="41" y="209.66666666666669" width="724.66666666666663" height="33.666666666666657"/>
+                                        <rect key="frame" x="0.0" y="176.5" width="748" height="33.5"/>
                                         <string key="text">In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
@@ -893,7 +891,6 @@
                                     </constraint>
                                     <constraint firstItem="Dxw-e9-73u" firstAttribute="centerX" secondItem="JRj-Lz-8Q6" secondAttribute="centerX" multiplier="1.15" id="K2m-od-FZd"/>
                                     <constraint firstItem="d7r-hM-zxS" firstAttribute="centerY" secondItem="JRj-Lz-8Q6" secondAttribute="centerY" id="Mxv-dF-njm"/>
-                                    <constraint firstItem="dxb-MX-efP" firstAttribute="centerX" secondItem="JRj-Lz-8Q6" secondAttribute="centerX" multiplier="0.85" id="PF5-00-lpe"/>
                                     <constraint firstItem="rLc-J2-pmo" firstAttribute="leading" secondItem="Dbb-pf-Jeu" secondAttribute="leading" constant="41" id="Ww9-yc-bvT">
                                         <variation key="heightClass=compact-widthClass=compact" constant="0.0"/>
                                         <variation key="heightClass=compact-widthClass=regular" constant="0.0"/>
@@ -903,7 +900,7 @@
                                     <constraint firstItem="Dxw-e9-73u" firstAttribute="centerX" secondItem="JRj-Lz-8Q6" secondAttribute="centerX" constant="40" id="eVD-b3-iNw"/>
                                     <constraint firstItem="Dxw-e9-73u" firstAttribute="top" secondItem="JRj-Lz-8Q6" secondAttribute="bottom" priority="750" constant="23" id="hkk-YN-uBN">
                                         <variation key="heightClass=compact-widthClass=compact" constant="10"/>
-                                        <variation key="heightClass=compact-widthClass=regular" constant="10"/>
+                                        <variation key="heightClass=compact-widthClass=regular" constant="20"/>
                                     </constraint>
                                     <constraint firstItem="E7G-lq-Zvz" firstAttribute="leading" secondItem="rLc-J2-pmo" secondAttribute="leading" id="icV-PX-7po"/>
                                     <constraint firstItem="dxb-MX-efP" firstAttribute="width" secondItem="dxb-MX-efP" secondAttribute="height" multiplier="1:1" id="jfG-OV-PYD"/>
@@ -913,13 +910,12 @@
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="JRj-Lz-8Q6" secondAttribute="trailing" constant="8" id="sZM-Nv-v7F"/>
                                     <constraint firstItem="rLc-J2-pmo" firstAttribute="centerX" secondItem="Dbb-pf-Jeu" secondAttribute="centerX" id="th7-Kh-2QV"/>
                                     <constraint firstItem="JRj-Lz-8Q6" firstAttribute="top" secondItem="rLc-J2-pmo" secondAttribute="bottom" priority="750" constant="16" id="zAv-wO-Ltj">
-                                        <variation key="heightClass=compact-widthClass=regular" constant="8"/>
+                                        <variation key="heightClass=compact-widthClass=regular" constant="20"/>
                                     </constraint>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="8ua-G5-iPD"/>
-                                        <exclude reference="PF5-00-lpe"/>
                                         <exclude reference="K2m-od-FZd"/>
                                         <exclude reference="eVD-b3-iNw"/>
                                     </mask>
@@ -927,10 +923,9 @@
                                 <variation key="heightClass=compact-widthClass=compact">
                                     <mask key="constraints">
                                         <include reference="8ua-G5-iPD"/>
-                                        <include reference="PF5-00-lpe"/>
                                         <exclude reference="jg0-YR-q4G"/>
-                                        <include reference="K2m-od-FZd"/>
                                         <exclude reference="3I6-WL-DQA"/>
+                                        <include reference="K2m-od-FZd"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=compact-widthClass=regular">
@@ -952,7 +947,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="foH-y3-Ues" firstAttribute="bottom" secondItem="Dbb-pf-Jeu" secondAttribute="bottom" constant="75" id="AT2-e8-dE7"/>
-                            <constraint firstItem="Dbb-pf-Jeu" firstAttribute="width" secondItem="xn1-YN-U8k" secondAttribute="width" multiplier="0.9" id="MD5-Nt-FBy"/>
+                            <constraint firstItem="Dbb-pf-Jeu" firstAttribute="leading" secondItem="foH-y3-Ues" secondAttribute="leading" constant="30" id="PFN-Kt-QTE"/>
                             <constraint firstItem="2dW-Vn-WjN" firstAttribute="centerX" secondItem="foH-y3-Ues" secondAttribute="centerX" id="eaq-Sv-Im8"/>
                             <constraint firstItem="2dW-Vn-WjN" firstAttribute="top" secondItem="foH-y3-Ues" secondAttribute="top" constant="30" id="hkj-1w-puL">
                                 <variation key="heightClass=compact-widthClass=compact" constant="8"/>
@@ -981,7 +976,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="pEp-status-msg-yellow" width="61" height="21"/>
+        <image name="pEp-status-msg-yellow" width="56" height="21"/>
         <image name="pEpForIOS-Asset-Tutorial-1a" width="58" height="58"/>
         <image name="pEpForIOS-Asset-Tutorial-1b" width="334" height="59"/>
         <image name="pEpForIOS-Asset-Tutorial-2a" width="40" height="40"/>

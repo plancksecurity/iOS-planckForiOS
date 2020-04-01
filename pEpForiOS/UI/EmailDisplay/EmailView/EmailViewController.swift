@@ -108,13 +108,14 @@ class EmailViewController: BaseTableViewController {
             return
         }
         if let htmlBody = htmlBody(message: m) {
-            // Its fine to use a webview (iOS>=11) and we do have HTML content.
+            // We do have HTML content.
             contentCell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
             let displayHtml = appendInlinedPlainText(fromAttachmentsIn: m, to: htmlBody)
-            htmlViewerViewController.display(htmlString: displayHtml)
+            let displayNiceCitedDisplay = ReplyUtil.citedHtmlVisibleVerticalLineString(html: displayHtml)
+            htmlViewerViewController.display(htmlString: displayNiceCitedDisplay)
         } else {
-            // We are not allowed to use a webview (iOS<11) or do not have HTML content.
+            // We do not have HTML content.
             // Remove the HTML view if we just stepped from an HTML mail to one without
             if htmlViewerViewControllerExists &&
                 htmlViewerViewController.view.superview == contentCell.contentView {
@@ -280,9 +281,7 @@ extension EmailViewController: MessageAttachmentDelegate {
                 Log.shared.errorAndCrash("No VC")
             return
         }
-        vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url,
-                                                        ceritficateUrlIsInSecureEnclave: false,
-                                                        delegate: vc)
+        vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url, delegate: vc)
         vc.modalPresentationStyle = .fullScreen
         clientCertificateImportViewController = vc
     }

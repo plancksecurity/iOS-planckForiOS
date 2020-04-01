@@ -18,8 +18,7 @@ protocol BodyCellViewModelResultDelegate: class {
                            inlinedAttachmentsChanged inlinedAttachments: [Attachment])
 
     func bodyCellViewModel(_ vm: BodyCellViewModel,
-                           bodyChangedToPlaintext plain: String,
-                           html: String)
+                           bodyAttributedString: NSAttributedString)
 }
 
 protocol BodyCellViewModelDelegate: class {
@@ -77,6 +76,11 @@ class BodyCellViewModel: CellViewModel {
             .compactMap { $0 }
         removeInlinedAttachments(attachments)
         return true
+    }
+
+    /// Call necessary things when user finished text editing
+    public func handleDidEndEditing(attributedText: NSAttributedString) {
+        createHtmlVersionAndInformDelegate(newAttributedText: attributedText)
     }
 
     // MARK: - Context Menu
@@ -166,12 +170,7 @@ extension BodyCellViewModel {
 // MARK: - HTML
 
 extension BodyCellViewModel {
-
     private func createHtmlVersionAndInformDelegate(newAttributedText attrText: NSAttributedString) {
-        let (markdownText, _) = attrText.convertToMarkDown()
-        let plaintext = markdownText
-        let html = markdownText.markdownToHtml()
-        resultDelegate?.bodyCellViewModel(self, bodyChangedToPlaintext: plaintext,
-                                          html: html ?? "")
+        resultDelegate?.bodyCellViewModel(self, bodyAttributedString: attrText)
     }
 }

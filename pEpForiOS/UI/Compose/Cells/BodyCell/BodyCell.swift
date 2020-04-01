@@ -98,6 +98,11 @@ extension BodyCell {
         setupContextMenu()
     }
 
+    func textViewDidEndEditing(_ textView: UITextView) {
+        viewModel?.handleDidEndEditing(attributedText: textView.attributedText)
+        tearDownContextMenu()
+    }
+
     func textView(_ textView: UITextView,
                   shouldChangeTextIn range: NSRange,
                   replacementText text: String) -> Bool {
@@ -106,10 +111,6 @@ extension BodyCell {
             return true
         }
        return vm.shouldReplaceText(in: range, of: textView.attributedText, with: text)
-    }
-
-    func textViewDidEndEditing(_ textView: UITextView) {
-        tearDownContextMenu()
     }
 
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {

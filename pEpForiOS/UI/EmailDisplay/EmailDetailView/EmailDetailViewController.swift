@@ -37,11 +37,6 @@ class EmailDetailViewController: BaseViewController {
                                                                target: self)
     
     private var separatorsArray = [UIBarButtonItem]()
-    
-    /// The original navigatio bar
-    var NavigationRightBar: [UIBarButtonItem]?
-    /// tne original toolbar
-    var ToolBar: [UIBarButtonItem]?
 
     /// IndexPath to show on load
     var firstItemToShow: IndexPath?
@@ -62,21 +57,24 @@ class EmailDetailViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        edgesForExtendedLayout = .all
         setup()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         doOnce?()
         createSeparators()
-        setupToolbar()
+        configureView()
     }
 
     override func viewWillLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+        super.viewWillLayoutSubviews()
         // Re-layout cells after device orientaion change
         collectionView.collectionViewLayout.invalidateLayout()
+        adjustTitleViewPositionIfNeeded()
     }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setupToolbar()
@@ -90,7 +88,7 @@ class EmailDetailViewController: BaseViewController {
             me.scrollToLastViewedCell()
         }
     }
-
+    
     // MARK: - Target & Action
 
     @objc @IBAction func flagButtonPressed(_ sender: UIBarButtonItem) {
@@ -153,7 +151,8 @@ class EmailDetailViewController: BaseViewController {
                 return
             }
             me.performSegue(withIdentifier: .segueForward , sender: self)
-        }.withCancelOption()
+        }.withToggelMarkSeenOption(for: vm.message(representedByRowAt: indexPath))
+            .withCancelOption()
             .build()
 
         if let popoverPresentationController = alert.popoverPresentationController {
@@ -232,7 +231,7 @@ extension EmailDetailViewController {
 
     @objc
     private func showTrustManagementView(gestureRecognizer: UITapGestureRecognizer? = nil) {
-            performSegue(withIdentifier: .segueTrustManagement, sender: self)
+        performSegue(withIdentifier: .segueTrustManagement, sender: self)
     }
 
     private var indexPathOfCurrentlyVisibleCell: IndexPath? {
@@ -292,16 +291,6 @@ extension EmailDetailViewController {
     }
 
     private func configureView() {
-        //ToolBar
-        if splitViewController != nil {
-            if onlySplitViewMasterIsShown {
-                navigationController?.setToolbarHidden(false, animated: false)
-            } else {
-                // Make sure the NavigationBar is shown, even if the previous view has hidden it.
-                navigationController?.setToolbarHidden(true, animated: false)
-                navigationController?.setNavigationBarHidden(false, animated: false)
-            }
-        }
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
@@ -382,10 +371,6 @@ extension EmailDetailViewController {
     @objc
     private func showSettingsViewController() {
         splitViewController?.preferredDisplayMode = .allVisible
-        guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
-            let vc = nav.topViewController else {
-                return
-        }
         UIUtils.presentSettings(appConfig: appConfig)
     }
 
@@ -413,6 +398,17 @@ extension EmailDetailViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         willDisplay cell: UICollectionViewCell,
                         forItemAt indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("Expect to have a view model")
+            return
+        }
+
+        // Handle pre-emptive loading of older messages from the server, if they exist,
+        // but only if there is no email list shown (therefore `onlySplitViewMasterIsShown`).
+        if onlySplitViewMasterIsShown {
+            vm.fetchOlderMessagesIfRequired(forIndexPath: indexPath)
+        }
+
         // Scroll to show message selected by previous (EmailList) view
         guard let indexToScrollTo = firstItemToShow else {
             // Is not first load.
@@ -422,11 +418,9 @@ extension EmailDetailViewController: UICollectionViewDelegate {
         // On first load only: Display message selected by user in previous VC
         collectionView.scrollToItem(at: indexToScrollTo, at: .left, animated: false)
         firstItemToShow = nil
-        guard
-            let vm = viewModel,
-            let currentlyVisibledIdxPth = indexPathOfCurrentlyVisibleCell else {
-                Log.shared.errorAndCrash("Invalid state")
-                return
+        guard let currentlyVisibledIdxPth = indexPathOfCurrentlyVisibleCell else {
+            Log.shared.errorAndCrash("Invalid state")
+            return
         }
         vm.handleEmailShown(forItemAt: currentlyVisibledIdxPth)
         configureView()
@@ -711,7 +705,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
         collectionView?.reloadData()
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // This is a valid case. it might happen when filters are applied
                 return
             }
             me.configureView()
@@ -782,8 +776,8 @@ extension EmailDetailViewController: SplitViewHandlingProtocol {
                 }
             }
             setToolbarItems(newtoolbar, animated: true)
-            let next = UIBarButtonItem.getNextButton(action: #selector(nextButtonPressed), target: self)
-            let previous = UIBarButtonItem.getPreviousButton(action: #selector(previousButtonPressed), target: self)
+            let next = UIBarButtonItem.getNextButton(action: #selector(previousButtonPressed), target: self)
+            let previous = UIBarButtonItem.getPreviousButton(action: #selector(nextButtonPressed), target: self)
             previous.isEnabled = thereIsAPreviousMessageToShow
             next.isEnabled = thereIsANextMessageToShow
             navigationItem.rightBarButtonItems = [previous, next]
@@ -818,21 +812,28 @@ extension EmailDetailViewController {
         separatorsArray.append(contentsOf: [spacer,midSpacer])
     }
     private func setupToolbar() {
+        if onlySplitViewMasterIsShown {
+            navigationController?.setToolbarHidden(false, animated: false)
+        } else {
+            // Make sure the NavigationBar is shown, even if the previous view has hidden it.
+            navigationController?.setToolbarHidden(true, animated: false)
+            navigationController?.setNavigationBarHidden(false, animated: false)
+        }
         let size = CGSize(width: 15, height: 25)
         nextButton?.image = nextButton?.image?.resizeImage(targetSize: size)
         previousButton?.image = previousButton?.image?.resizeImage(targetSize: size)
 
         if !onlySplitViewMasterIsShown {
+            // Up & Down Buttons
+
             let nextPrevButtonSize = CGRect(x: 0, y: 0, width: 27, height: 15)
 
-            //Down
             let downButton = UIButton(frame: nextPrevButtonSize)
             let downImage = UIImage(named: "chevron-icon-down")?.withRenderingMode(.alwaysTemplate)
             downButton.setBackgroundImage(downImage, for: .normal)
             downButton.tintColor = thereIsANextMessageToShow ? UIColor.pEpGreen : UIColor.pEpGray
             downButton.addTarget(self, action: #selector(showNextIfAny), for: .touchUpInside)
-            
-            //Up
+
             let upButton = UIButton(frame: nextPrevButtonSize)
             let upImage = UIImage(named: "chevron-icon-up")?.withRenderingMode(.alwaysTemplate)
             upButton.setBackgroundImage(upImage, for: .normal)

@@ -330,7 +330,6 @@ extension Stack {
         return bundleId
     }
 
-
     static private var defaultURL: URL {
         return storeURL(for: defaultName)
     }

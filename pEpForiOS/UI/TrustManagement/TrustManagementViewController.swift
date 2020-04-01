@@ -207,7 +207,9 @@ extension TrustManagementViewController {
         }
         
         //For the cancel button another action.
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+        let cancel = NSLocalizedString("Cancel",
+                                       comment: "TrustManagementView: trustword language selector cancel button label")
+        let cancelAction = UIAlertAction(title: cancel, style: .cancel) { _ in
             alertController.dismiss(animated: true, completion: nil)
         }
         alertController.addAction(cancelAction)
@@ -241,9 +243,9 @@ extension TrustManagementViewController {
     
     /// Helper method to create and set the back button in the navigation bar.
     private func setLeftBarButton() {
-        let title = NSLocalizedString(" Message",
-                                      comment: "TrustManagementView Back Button Title")
+        let title = NSLocalizedString("Message", comment: "TrustManagementView Back Button Title")
         let button = UIButton.backButton(with: title)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 2)
         let action = #selector(backButtonPressed)
         button.addTarget(self, action:action, for: .touchUpInside)
         let leftItem = UIBarButtonItem(customView: button)
