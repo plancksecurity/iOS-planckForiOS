@@ -381,12 +381,10 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                didComposeNewMailMustBeCalled: false,
                didModifyMessageMustBeCalled: false,
                didDeleteMessageMustBeCalled: false)
-        let newPlaintext = "newPlaitext"
         let newHtml = "<p>fake</p>"
-        vm?.bodyCellViewModel(bodyVm,
-                              bodyChangedToPlaintext: newPlaintext,
-                              html: newHtml)
-        XCTAssertEqual(vm?.state.bodyHtml, newHtml)
+        let attributedString = newHtml.htmlToAttributedString(attachmentDelegate: nil)
+        vm?.bodyCellViewModel(bodyVm, bodyAttributedString: attributedString)
+        XCTAssertEqual(vm?.state.bodyText, attributedString)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
