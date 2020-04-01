@@ -295,10 +295,8 @@ extension EmailDetailViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        guard vm.rowCount > 0 else {
+        guard vm.rowCount > 0, onlySplitViewMasterIsShown else {
             // We haven't any email, we should exit from this view
-            // Line below should only work for iPhones
-            // (navigationController is nil in this case on iPads)
             navigationController?.popViewController(animated: true)
             return
         }
