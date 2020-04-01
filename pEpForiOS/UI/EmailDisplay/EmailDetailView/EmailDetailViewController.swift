@@ -105,6 +105,10 @@ class EmailDetailViewController: BaseViewController {
     }
 
     @IBAction func moveToFolderButtonPressed(_ sender: UIBarButtonItem) {
+        guard let vm = viewModel, vm.rowCount > 0 else {
+            // We haven't any email, we should early quit
+            return
+        }
         performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
     }
 
@@ -291,14 +295,15 @@ extension EmailDetailViewController {
     }
 
     private func configureView() {
-        if indexPathOfCurrentlyVisibleCell == nil {
-            // We haven't any email, we should exit from this view
-            // Line below should only work for iPhones (navigationController is nil in this case on iPads)
-            navigationController?.popViewController(animated: true)
-            return
-        }
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
+            return
+        }
+        guard vm.rowCount > 0 else {
+            // We haven't any email, we should exit from this view
+            // Line below should only work for iPhones
+            // (navigationController is nil in this case on iPads)
+            navigationController?.popViewController(animated: true)
             return
         }
 
