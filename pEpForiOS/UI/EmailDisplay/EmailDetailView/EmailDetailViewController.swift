@@ -291,6 +291,12 @@ extension EmailDetailViewController {
     }
 
     private func configureView() {
+        if indexPathOfCurrentlyVisibleCell == nil {
+            // We haven't any email, we should exit from this view
+            // Line below should only work for iPhones (navigationController is nil in this case on iPads)
+            navigationController?.popViewController(animated: true)
+            return
+        }
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
