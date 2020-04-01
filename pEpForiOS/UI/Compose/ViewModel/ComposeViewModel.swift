@@ -154,6 +154,7 @@ class ComposeViewModel {
     }
 
     public func handleUserClickedSendButton() {
+
         let safeState = state.makeSafe(forSession: Session.main)
         let sendClosure = { [weak self] in
             guard let me = self else {
@@ -802,11 +803,8 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
         delegate?.hideMediaAttachmentPicker()
     }
 
-    func bodyCellViewModel(_ vm: BodyCellViewModel,
-                           bodyChangedToPlaintext plain: String,
-                           html: String) {
-        state.bodyHtml = html
-        state.bodyPlaintext = plain
+    func bodyCellViewModel(_ vm: BodyCellViewModel, bodyAttributedString: NSAttributedString) {
+        state.bodyText = bodyAttributedString
 
         guard let idxPath = indexPath(for: vm) else {
             Log.shared.errorAndCrash("We got called by a non-existing VM?")
