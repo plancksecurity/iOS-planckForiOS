@@ -68,10 +68,17 @@ class AccountTypeSelectorTest: CoreDataDrivenTestBase {
         XCTAssertEqual(vm.fileNameOrText(provider: .other), "Other")
     }
     
-    func testNumberOfSections() {
-        let expectedSections = 6
+    func testNumberOfSectionsWithoutCertificate() {
+        let expectedSectionsWithoutCertificate = 5
         let vm = AccountTypeSelectorViewModel()
-        XCTAssertEqual(expectedSections, vm.count)
+        XCTAssertEqual(expectedSectionsWithoutCertificate, vm.count)
+    }
+    
+    func testNumberOfSectionsWithCertificate() {
+        let expectedSectionsWithCertificate = 6
+        let clientCertificateUtil = ClientCertificateUtilMockTest(thereAreCerts: true)
+        let vm = AccountTypeSelectorViewModel(clientCertificateUtil: clientCertificateUtil)
+        XCTAssertEqual(expectedSectionsWithCertificate, vm.count)
     }
     
 }

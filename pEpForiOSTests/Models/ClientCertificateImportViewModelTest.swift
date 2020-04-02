@@ -11,8 +11,6 @@ import XCTest
 
 final class ClientCertificateImportViewModelTest: XCTestCase {
 
-    //private let expHandleCancelButtonPressed = XCTestExpectation(description: "Waiting for delegate")
-    //private let expHandleAcceptButtonPressed = XCTestExpectation(description: "Waiting for passwordChangeDelegate")
     private var bundle: Bundle!
     private var vm: ClientCertificateImportViewModel?
     private var fakeURL: URL!
@@ -26,7 +24,7 @@ final class ClientCertificateImportViewModelTest: XCTestCase {
         vm = nil
     }
 
-    func testhandleOkButtonPressedTest() {
+    func testHandleOkButtonPressed() {
         let dismissExpectation = expectation(description: "dismissExpectation")
         let delegate = ClientCertificateImportViewModelDelegateMock(dismissExpectation: dismissExpectation)
         vm = ClientCertificateImportViewModel(certificateUrl: fakeURL, delegate: delegate)
@@ -34,6 +32,17 @@ final class ClientCertificateImportViewModelTest: XCTestCase {
         XCTAssertNotNil(vm, "vm is not set!")
         vm?.importClientCertificate()
         vm?.handlePassphraseEntered(pass: Constant.password)
+        waitForExpectations(timeout: TestUtil.waitTime)
+    }
+    
+    func testHandleOkButtonPressedWithWrongPassword() {
+        let wrongPasswordExpectation = expectation(description: "wrongPasswordExpectation")
+        let delegate = ClientCertificateImportViewModelDelegateMock(wrongURLExpectation: wrongPasswordExpectation)
+        vm = ClientCertificateImportViewModel(certificateUrl: fakeURL, delegate: delegate)
+        vm?.importClientCertificate()
+        XCTAssertNotNil(vm, "vm is not set!")
+        vm?.importClientCertificate()
+        vm?.handlePassphraseEntered(pass: Constant.wrongPassword)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
 
