@@ -92,7 +92,6 @@ class EmailViewController: BaseTableViewController {
      */
     private func htmlBody(message: Message?) ->  String? {
         guard
-            SecureWebViewController.isSaveToUseWebView,
             let m = message,
             let htmlBody = m.longMessageFormatted,
             !htmlBody.isEmpty else {
