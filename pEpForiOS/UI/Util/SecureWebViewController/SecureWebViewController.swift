@@ -362,7 +362,7 @@ class SecureWebViewController: UIViewController {
 
         // Build HTML tweak
 
-        let wordWrap = "word-wrap: break-word;"
+        let wordWrap = "word-break: break-all; !important;"//"word-wrap: break-word !important;"
         let styleBodyOptimize = """
             body {
                 font-family: "San Francisco" !important;
