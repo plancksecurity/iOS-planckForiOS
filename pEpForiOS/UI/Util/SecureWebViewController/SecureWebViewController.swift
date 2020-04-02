@@ -365,7 +365,7 @@ class SecureWebViewController: UIViewController {
         let wordWrap = "word-wrap: break-word;"
         let styleBodyOptimize = """
             body {
-                font-family: Arial !important;
+                font-family: "San Francisco" !important;
                 font-size: \(minimumFontSize);
                 max-width: 100% !important;
                 min-width: 100% !important;
@@ -378,30 +378,32 @@ class SecureWebViewController: UIViewController {
             }
         """
 
-//        let styleTableRowOptimize = """
-//            tr {
-//                max-width: 50% !important;
-//            }
-//        """
-//
-//        let styleTableCellOptimize = """
-//           td {
-//               max-width: 50% !important;
-//               \(wordWrap)
-//           }
-//        """
-//
-//        let styleParagraphOptimize = """
-//            p {
-//                max-width: 100% !important;
-//            }
-//        """
+                    //BUFF: rm! useless
+                    //        let styleTableRowOptimize = """
+                    //            tr {
+                    //                \(wordWrap)
+                    //            }
+                    //        """
+                    //
+                    //        let styleTableCellOptimize = """
+                    //           td {
+                    //               \(wordWrap)
+                    //           }
+                    //        """
 
-        let styleBlockquoteOptimize = """
-            blockquote {
-                max-width: \(screenWidth)pt !important;
-            }
-        """
+                    //BUFF: rm! breaks things
+                    //        let styleParagraphOptimize = """
+                    //            p {
+                    //                width: \(screenWidth)pt !important;
+                    //            }
+                    //            """
+
+                    //BUFF: rm! useless
+                    //        let styleBlockquoteOptimize = """
+                    //            blockquote {
+                    //                max-width: \(screenWidth)pt !important;
+                    //            }
+                    //        """
 
         let styleResponsiveImageSize = """
             img {
@@ -416,16 +418,14 @@ class SecureWebViewController: UIViewController {
                 \(wordWrap)
         }
         """
-        // \(styleTableRowOptimize)
-        // \(styleTableCellOptimize)
-        // \(styleParagraphOptimize)
+
         let tweak = """
             \(scaleToFitHtml)
             <style>
                 \(styleBodyOptimize)
                 \(styleTableOptimize)
 
-            \(styleBlockquoteOptimize)
+
 
                 \(styleResponsiveImageSize)
                 \(styleLinkStyle)
