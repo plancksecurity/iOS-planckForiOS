@@ -27,6 +27,11 @@ protocol SecureWebViewUrlClickHandlerProtocol: class {
                                  didClickMailToUrlLink url: URL)
 }
 
+
+//
+// WKContentRuleList is not available below iOS11, thus remote content would be loaded
+// which is considered as inaceptable for a secure web view.
+@available(iOS 11.0, *)
 /// Webview that does not:
 /// - excecute JS
 /// - load any remote content
@@ -66,14 +71,7 @@ class SecureWebViewController: UIViewController {
         }
     }
 
-    static var isSaveToUseWebView: Bool {
-        if #available(iOS 11.0, *) {
-            return true
-        }
-        return false
-    }
-
-    public var minimumFontSize: CGFloat = 20.0
+    public var minimumFontSize: CGFloat = 16.0
 
     private var webView: WKWebView!
     private var sizeChangeObserver: NSKeyValueObservation?
@@ -100,15 +98,6 @@ class SecureWebViewController: UIViewController {
     // This implementation is taken over from the Apple docs:
     // https://developer.apple.com/documentation/webkit/wkwebview#2560973
     override func loadView() {
-        guard #available(iOS 11.0, *) else {
-            // WKContentRuleList is not available below iOS11, thus remote content would be loaded
-            // which is considered as inaceptable for a secure web view.
-            // Emergency exit.
-            fatalError()
-        }
-        if webView != nil {
-            return
-        }
         let config = WKWebViewConfiguration()
 
 
@@ -129,18 +118,12 @@ class SecureWebViewController: UIViewController {
         view = webView
     }
 
-    //BUFF: move
-
-//    private func injectCss() {
-//        webView
-//    }
     private func preferences(javaScriptEnabled: Bool = false) -> WKPreferences {
         let createe  = WKPreferences()
         createe.javaScriptEnabled = javaScriptEnabled
         createe.minimumFontSize = minimumFontSize
         return createe
     }
-    //
 
     // MARK: - WKContentRuleList (block loading of all remote content)
 
@@ -299,15 +282,51 @@ class SecureWebViewController: UIViewController {
     // MARK: - HTML TWEAKS
 
     /// Prepares the html string for displaying.
-    ///
-    /// - Parameter html: html to prepare
-    /// - Returns: html ready for displaying
-    private func preprocess(html: String) -> String {
+    /// - Parameters:
+    ///   - html: html to prepare
+    ///   - completion: called when done. Passes the HTML ready for displaying.
+    ///                 Is guaranteed to be called on the main queue.
+    private func preprocess(html: String, completion: @escaping (String)->Void) {
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                completion(html)
+                return
+            }
+            var result = html
+            result = me.htmlTagsAssured(html: result)
+            result = ReplyUtil.htmlWithVerticalLinesForBlockQuotesInjected(html: result)
+            result = me.htmlWithFixedWithReplaxedWithMaxWidth(inHtml: result)
+            //        result.removeRegexMatches(of: "<table.*?</table>")
+            //        result.removeRegexMatches(of: "<blockquote?s:.</blockquote>")
+            result = me.tweakedHtml(inHtml: result)
+
+            DispatchQueue.main.async {
+                completion(result)
+            }
+        }
+    }
+
+    /// Replaces fixed `width`values with `max-width: 100%`.
+    /// - note: this is an expensive task for long HTML.
+    private func htmlWithFixedWithReplaxedWithMaxWidth(inHtml html: String) -> String {
         var result = html
-//        result.removeRegexMatches(of: "<table.*?</table>")
-//        result.removeRegexMatches(of: "<blockquote?s:.</blockquote>")
-        result = htmlTagsAssured(html: result)
-        result = tweakedHtml(inHtml: result)
+        let fixedWidthInCssPattern = #"\{[\S\s]*(?<rangeName>width:.*?;)[\S\s]*\}"#
+        guard let fixedWidthCssRegex = try? NSRegularExpression(pattern: fixedWidthInCssPattern,
+                                                                options: NSRegularExpression.Options.caseInsensitive)
+            else {
+                Log.shared.errorAndCrash("Wrong pattern")
+                return result
+        }
+
+        let fixedWidthCssMatches = fixedWidthCssRegex.matches(in: html, options: [], range: html.wholeRange())
+        for fixedWidthCssMatch in fixedWidthCssMatches {
+            let captureRange = fixedWidthCssMatch.range(withName: "rangeName")
+            let tmpResultNsString = result as NSString // Required to use NSRange in next line
+            result = tmpResultNsString.replacingCharacters(in: captureRange,
+                                                           with: "max-width: 100% !important;")
+        }
+
         return result
     }
 
@@ -339,6 +358,7 @@ class SecureWebViewController: UIViewController {
                 font-family: Arial !important;
                 font-size: \(minimumFontSize);
                 max-width: 100% !important;
+                min-width: 100% !important;
             }
         """
 
@@ -348,20 +368,27 @@ class SecureWebViewController: UIViewController {
             }
         """
 
-        let styleTableRowOptimize = """
-            table {
-                max-width: 100% !important;
-            }
-        """
-
-        let styleParagraphOptimize = """
-            p {
-                max-width: 100% !important;
-            }
-        """
+//        let styleTableRowOptimize = """
+//            tr {
+//                max-width: 50% !important;
+//            }
+//        """
+//
+//        let styleTableCellOptimize = """
+//           td {
+//               max-width: 50% !important;
+//               \(wordWrap)
+//           }
+//        """
+//
+//        let styleParagraphOptimize = """
+//            p {
+//                max-width: 100% !important;
+//            }
+//        """
 
         let styleBlockquoteOptimize = """
-            p {
+            blockquote {
                 max-width: \(screenWidth)pt !important;
             }
         """
@@ -379,15 +406,16 @@ class SecureWebViewController: UIViewController {
                 \(wordWrap)
         }
         """
-        //\(styleBlockquoteOptimize)
-        //\(styleParagraphOptimize)
+        // \(styleTableRowOptimize)
+        // \(styleTableCellOptimize)
+        // \(styleParagraphOptimize)
         let tweak = """
             \(scaleToFitHtml)
             <style>
                 \(styleBodyOptimize)
                 \(styleTableOptimize)
-                \(styleTableRowOptimize)
 
+            \(styleBlockquoteOptimize)
 
                 \(styleResponsiveImageSize)
                 \(styleLinkStyle)
@@ -431,13 +459,15 @@ class SecureWebViewController: UIViewController {
 
     // MARK: - API
 
-    func display(htmlString: String) {
-        guard #available(iOS 11.0, *) else {
-            return
-        }
-        let displayHtml = preprocess(html: htmlString)
-        setupBlocklist() {
-            self.webView.loadHTMLString(displayHtml, baseURL: nil)
+    func display(html: String) {
+        setupBlocklist() { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.preprocess(html: html) { processedHtml in
+                me.webView.loadHTMLString(processedHtml, baseURL: nil)
+            }
         }
     }
 }
@@ -445,10 +475,6 @@ class SecureWebViewController: UIViewController {
 // MARK: - WKNavigationDelegate
 
 extension SecureWebViewController: WKNavigationDelegate {
-
-//    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-//        print("asdf")
-//    }
 
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
@@ -477,6 +503,8 @@ extension SecureWebViewController: WKNavigationDelegate {
         case .backForward, .formResubmitted, .formSubmitted, .reload:
             // ignore
             break
+        @unknown default:
+            Log.shared.errorAndCrash("Unhandled case")
         }
         decisionHandler(.cancel)
     }

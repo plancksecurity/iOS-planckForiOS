@@ -54,9 +54,14 @@ public struct ReplyUtil {
     }
 
     /// Show vertical line for cited messages (only in presentation layer)
-    public static func citedHtmlVisibleVerticalLineString(html: String) -> String {
+    /// - Parameter html: html to inject vertical lines to
+    /// - returns: html with vertical lines injected.
+    public static func htmlWithVerticalLinesForBlockQuotesInjected(html: String) -> String {
+        let searchTerm = "<blockquote type=\"cite\""
+        let replace = "<blockquote type=\"cite\" style=\"border-left: 3px solid \(UIColor.pEpGreenHex); padding-left: 8px; margin-left:0px;\""
         return html
-            .replacingOccurrences(of: "<blockquote type=\"cite\"", with: "<blockquote type=\"cite\" style=\"border-left: 3px solid \(UIColor.pEpGreenHex); padding-left: 8px; margin-left:0px;\"")
+            .replacingOccurrences(of: searchTerm,
+                                  with: replace)
     }
 
     /// Adds citation header with data of a given message to a given text.
