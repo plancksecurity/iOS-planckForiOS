@@ -20,11 +20,11 @@ extension UIBarButtonItem {
         return getButton(image: img, action: action, target: target)
     }
     public static func getNextButton(action: Selector, target: Any) -> UIBarButtonItem {
-        let img = UIImage(named: "arrow-rgt-active")
+        let img = UIImage(named: "chevron-icon-right")
         return getButton(image: img, action: action, target: target)
     }
     public static func getPreviousButton(action: Selector, target: Any) -> UIBarButtonItem {
-        let img = UIImage(named: "arrow-lft-active")
+        let img = UIImage(named: "chevron-icon-left")
         return getButton(image: img, action: action, target: target)
     }
     private static func getButton(image: UIImage?, action: Selector, target: Any) -> UIBarButtonItem {

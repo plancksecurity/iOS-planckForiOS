@@ -162,6 +162,9 @@ struct ComposeUtil {
                 Log.shared.errorAndCrash("Invalid state")
                 return nil
         }
+        let body = state.bodyText.toHtml()
+        let bodyPlainText = body.plainText
+        let bodyHtml = body.html ?? ""
         let message = Message.newOutgoingMessage(session: session)
         message.parent = outbox
         message.from = from
@@ -169,8 +172,8 @@ struct ComposeUtil {
         message.replaceCc(with: state.ccRecipients)
         message.replaceBcc(with: state.bccRecipients)
         message.shortMessage = state.subject
-        message.longMessage = state.bodyPlaintext
-        message.longMessageFormatted = !state.bodyHtml.isEmpty ? state.bodyHtml : nil
+        message.longMessage = bodyPlainText
+        message.longMessageFormatted = !bodyHtml.isEmpty ? bodyHtml : nil
         message.replaceAttachments(with: state.inlinedAttachments + state.nonInlinedAttachments)
         message.pEpProtected = state.pEpProtection
         if !state.pEpProtection {

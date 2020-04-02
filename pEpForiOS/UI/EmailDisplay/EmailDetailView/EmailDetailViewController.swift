@@ -181,20 +181,6 @@ class EmailDetailViewController: BaseViewController {
 
 extension EmailDetailViewController {
 
-    // As this screen might be rendered in a split view, the title view is not centered to the device
-    // width but the view controller's width. That's why we need to adjust the title view position
-    // in that case.
-    private func adjustTitleViewPositionIfNeeded() {
-        navigationItem.titleView?.transform = .identity
-        if isIpad && isLandscape {
-            let oldCenterX = view.center.x
-            let newCenterX = UIScreen.main.bounds.size.width / 2
-            let deltaX = oldCenterX - newCenterX
-            navigationItem.titleView?.transform =
-                CGAffineTransform.identity.translatedBy(x: deltaX, y: 0)
-        }
-    }
-
     private func setup() {
         viewModel?.delegate = self
         setupCollectionView()
@@ -790,8 +776,8 @@ extension EmailDetailViewController: SplitViewHandlingProtocol {
                 }
             }
             setToolbarItems(newtoolbar, animated: true)
-            let next = UIBarButtonItem.getNextButton(action: #selector(nextButtonPressed), target: self)
-            let previous = UIBarButtonItem.getPreviousButton(action: #selector(previousButtonPressed), target: self)
+            let next = UIBarButtonItem.getNextButton(action: #selector(previousButtonPressed), target: self)
+            let previous = UIBarButtonItem.getPreviousButton(action: #selector(nextButtonPressed), target: self)
             previous.isEnabled = thereIsAPreviousMessageToShow
             next.isEnabled = thereIsANextMessageToShow
             navigationItem.rightBarButtonItems = [previous, next]
