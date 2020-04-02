@@ -294,12 +294,13 @@ class SecureWebViewController: UIViewController {
                 return
             }
             var result = html
-            result = me.htmlTagsAssured(html: result)
             result = ReplyUtil.htmlWithVerticalLinesForBlockQuotesInjected(html: result)
+            result = me.htmlTagsAssured(html: result)
+
             result = me.htmlWithFixedWithReplaxedWithMaxWidth(inHtml: result)
             //        result.removeRegexMatches(of: "<table.*?</table>")
             //        result.removeRegexMatches(of: "<blockquote?s:.</blockquote>")
-            result = me.tweakedHtml(inHtml: result)
+            result = me.htmlOptimizedForDisplay(inHtml: result)
 
             DispatchQueue.main.async {
                 completion(result)
@@ -310,8 +311,14 @@ class SecureWebViewController: UIViewController {
     /// Replaces fixed `width`values with `max-width: 100%`.
     /// - note: this is an expensive task for long HTML.
     private func htmlWithFixedWithReplaxedWithMaxWidth(inHtml html: String) -> String {
+        // I get non spam mails with >100.000 chars. Matching regex can not handle them. It never
+        // returns, thus we show the an empty mail.
+        let numCharsForIsTooExpensiveToParse = 80000
+        guard html.count < numCharsForIsTooExpensiveToParse else {
+            return html
+        }
         var result = html
-        let fixedWidthInCssPattern = #"\{[\S\s]*(?<rangeName>width:.*?;)[\S\s]*\}"#
+        let fixedWidthInCssPattern = #"\{[\S\s]*(?<rangeName>width:.*?px;)[\S\s]*\}"#
         guard let fixedWidthCssRegex = try? NSRegularExpression(pattern: fixedWidthInCssPattern,
                                                                 options: NSRegularExpression.Options.caseInsensitive)
             else {
@@ -319,7 +326,9 @@ class SecureWebViewController: UIViewController {
                 return result
         }
 
-        let fixedWidthCssMatches = fixedWidthCssRegex.matches(in: html, options: [], range: html.wholeRange())
+        let fixedWidthCssMatches = fixedWidthCssRegex.matches(in: html,
+                                                              options: [],
+                                                              range: html.wholeRange())
         for fixedWidthCssMatch in fixedWidthCssMatches {
             let captureRange = fixedWidthCssMatch.range(withName: "rangeName")
             let tmpResultNsString = result as NSString // Required to use NSRange in next line
@@ -334,10 +343,11 @@ class SecureWebViewController: UIViewController {
     /// - simulate "PageScaleToFit" layout behaviour
     /// - responsive image size
     /// - set default link color to pEp color
+    /// - Fixed `width:` replaced in CSS
     ///
     /// - Parameter html: html string that should be tweaked for nicer display
     /// - Returns: tweaked html
-    private func tweakedHtml(inHtml html: String) -> String {
+    private func htmlOptimizedForDisplay(inHtml html: String) -> String {
         var html = html
         // Remove existing viewport definitions that are pontentially unsupported by WKWebview.
         html.removeRegexMatches(of: "<meta name=\\\"viewport\\\".*?>")
