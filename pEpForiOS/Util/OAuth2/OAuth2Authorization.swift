@@ -43,9 +43,13 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
                     accessToken: OAuth2AccessToken(authState: state, keyChainID: UUID().uuidString))
             } else {
                 self?.authState = nil
-                self?.delegate?.authorizationRequestFinished(
+                if let err = error as NSError?, err.code == -3 {
+                    self?.delegate?.authorizationRequestFinished(error: OAuth2AuthorizationError.userCancelled, accessToken: nil)
+                } else {
+                 self?.delegate?.authorizationRequestFinished(
                     error: error ?? OAuth2AuthorizationError.inconsistentAuthorizationResult,
                     accessToken: nil)
+                }
             }
         }
     }

@@ -140,7 +140,7 @@ struct DisplayUserError: LocalizedError {
         } else if let oauthError = error as? OAuth2AuthorizationError {
             type = DisplayUserError.type(forError: oauthError)
         }
-        // BackgroundError
+            // BackgroundError
         else if let err = error as? BackgroundError.GeneralError {
             type = DisplayUserError.type(forError: err)
         } else if let err = error as? BackgroundError.ImapError {
@@ -152,20 +152,15 @@ struct DisplayUserError: LocalizedError {
         } else if let err = error as? BackgroundError.PepError {
             type = DisplayUserError.type(forError: err)
         }
-        // Login view controller
+            // Login view controller
         else if let err = error as? LoginViewController.LoginError {
             type = .loginValidationError
             foreignDescription = err.localizedDescription
         }
-        // Unknown
+            // Unknown
         else {
-            let nsError = (error as NSError)
-            if nsError.code == -3 {
-                type = .userCancelled
-            } else {
-                foreignDescription = error.localizedDescription
-                type = .unknownError
-            }
+            foreignDescription = error.localizedDescription
+            type = .unknownError
         }
         if !type.shouldBeShownToUser {
             return nil
@@ -317,6 +312,8 @@ struct DisplayUserError: LocalizedError {
         switch error {
         case .inconsistentAuthorizationResult:
             return .authenticationFailed
+        case .userCancelled:
+            return .userCancelled
         }
     }
 
