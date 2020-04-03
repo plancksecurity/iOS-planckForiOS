@@ -2,41 +2,41 @@
 //  TrustedServerSettingsViewController.swift
 //  pEp
 //
-//  Created by Andreas Buff on 17.08.18.
-//  Copyright © 2018 p≡p Security S.A. All rights reserved.
+//  Created by Martin Brude on 02/04/2020.
+//  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
 import UIKit
-import pEpIOSToolbox
 
-class TrustedServerSettingsViewController: BaseTableViewController {
-    var viewModel = TrustedServerSettingsViewModel()
+class TrustedServerSettingsViewController: BaseViewController {
+
+    @IBOutlet private weak var tableView: UITableView!
+    private var viewModel = TrustedServerSettingsViewModel()
     
     override var collapsedBehavior: CollapsedSplitViewBehavior {
         return .needed
     }
-    
+
     override var separatedBehavior: SeparatedSplitViewBehavior {
         return .detail
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        tableView.dataSource = self
         viewModel.delegate = self
     }
 }
 
 // MARK: -  UITableViewDataSource
 
-extension TrustedServerSettingsViewController {
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension TrustedServerSettingsViewController : UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.rows.count
     }
 
-    override func tableView(_ tableView: UITableView,
-                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard
             let cell =
             tableView.dequeueReusableCell(withIdentifier: TrustedServerSettingCell.storyboardId) as?
@@ -52,14 +52,12 @@ extension TrustedServerSettingsViewController {
         return cell
     }
 
-    override func tableView(_ tableView: UITableView,
-                            titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return NSLocalizedString("Store Messages Securely",
                                  comment: "Trusted Server Setting Section Title")
     }
 
-    override func tableView(_ tableView: UITableView,
-                            titleForFooterInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return NSLocalizedString(
             "If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!",
             comment: "Trusted Server Setting Section Footer")
@@ -69,8 +67,7 @@ extension TrustedServerSettingsViewController {
 // MARK: - TrustedServerSettingCellDelegate
 
 extension TrustedServerSettingsViewController: TrustedServerSettingCellDelegate {
-    func trustedServerSettingCell(sender: TrustedServerSettingCell,
-                                  didChangeSwitchValue newValue: Bool) {
+    func trustedServerSettingCell(sender: TrustedServerSettingCell, didChangeSwitchValue newValue: Bool) {
         guard let indexPath = tableView.indexPath(for: sender) else {
             Log.shared.errorAndCrash("Invalid indexPath for this TrustedServerSettingCell")
             return
@@ -131,8 +128,7 @@ extension TrustedServerSettingsViewController {
                                                 pepAlert?.dismiss()
                                                 return
                                             }
-                                            me.viewModel.setStoreSecurely(indexPath: indexPath,
-                                                                          toValue: false)
+                                            me.viewModel.setStoreSecurely(indexPath: indexPath, toValue: false)
                                             pepAlert?.dismiss()
         })
         pepAlert?.add(action: cancelAction)
