@@ -23,6 +23,9 @@ import MessageModel
 /// required.
 struct DisplayUserError: LocalizedError {
     enum ErrorType {
+        //The user cancel the action.
+        case userCancelled
+
         /// We could not login for some reason
         case authenticationFailed
 
@@ -58,6 +61,8 @@ struct DisplayUserError: LocalizedError {
                 #else
                     return false
                 #endif
+            case .userCancelled:
+                return false
             case .authenticationFailed,
                  .brokenServerConnectionImap,
                  .brokenServerConnectionSmtp,
@@ -135,7 +140,7 @@ struct DisplayUserError: LocalizedError {
         } else if let oauthError = error as? OAuth2AuthorizationError {
             type = DisplayUserError.type(forError: oauthError)
         }
-            // BackgroundError
+        // BackgroundError
         else if let err = error as? BackgroundError.GeneralError {
             type = DisplayUserError.type(forError: err)
         } else if let err = error as? BackgroundError.ImapError {
@@ -147,17 +152,21 @@ struct DisplayUserError: LocalizedError {
         } else if let err = error as? BackgroundError.PepError {
             type = DisplayUserError.type(forError: err)
         }
-            // Login view controller
+        // Login view controller
         else if let err = error as? LoginViewController.LoginError {
             type = .loginValidationError
             foreignDescription = err.localizedDescription
         }
-            // Unknown
+        // Unknown
         else {
-            foreignDescription = error.localizedDescription
-            type = .unknownError
+            let nsError = (error as NSError)
+            if nsError.code == -3 {
+                type = .userCancelled
+            } else {
+                foreignDescription = error.localizedDescription
+                type = .unknownError
+            }
         }
-
         if !type.shouldBeShownToUser {
             return nil
         }
@@ -349,6 +358,9 @@ struct DisplayUserError: LocalizedError {
             return NSLocalizedString("Error",
                                      comment:
                 "Title of error alert shown to the user in case an unknown error occured.")
+        case .userCancelled:
+            // If the user cancel the action, non message has to be shown.
+            return nil
         }
     }
 
@@ -397,6 +409,9 @@ struct DisplayUserError: LocalizedError {
         case .clientCertificateError:
             return NSLocalizedString("The client certificate was rejected by the server",
                                      comment: "Error message shown to the user on problems with the client certificate")
+        case .userCancelled:
+            // If the user cancel the action, non message has to be shown.
+            return nil
         }
     }
 }
