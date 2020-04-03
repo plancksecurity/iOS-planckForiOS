@@ -20,6 +20,21 @@ extension UIViewController {
         return presentedViewController != nil
     }
 
+    // As this screen might be rendered in a split view, the title view is not centered to the device
+    // width but the view controller's width. That's why we need to adjust the title view position
+    // in that case.
+    func adjustTitleViewPositionIfNeeded() {
+        //reset previous transformations if any
+        navigationItem.titleView?.transform = .identity
+        if isIpad && isLandscape {
+            let oldCenterX = view.center.x
+            let newCenterX = UIScreen.main.bounds.size.width / 2
+            let deltaX = oldCenterX - newCenterX
+            navigationItem.titleView?.transform =
+                CGAffineTransform.identity.translatedBy(x: deltaX, y: 0)
+        }
+    }
+    
     /// Puts the privacy rating or pEp logo into the navigation item or removes it.
     ///
     /// When running on layouts _without_ a split view (that is, on smaller iPhones),
@@ -35,6 +50,7 @@ extension UIViewController {
         let titleView = navigationItemTitleView(pEpRating: pEpRating, pEpProtection: pEpProtection)
         titleView?.isUserInteractionEnabled = true
         navigationItem.titleView = titleView
+        adjustTitleViewPositionIfNeeded()
         return titleView
     }
 
@@ -78,7 +94,7 @@ extension UIViewController {
     }
 
     func showNavigationBar() {
-            navigationController?.setNavigationBarHidden(false, animated: false)
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
 }
 
