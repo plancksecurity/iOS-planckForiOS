@@ -162,7 +162,10 @@ struct ComposeUtil {
                 Log.shared.errorAndCrash("Invalid state")
                 return nil
         }
-        let body = state.bodyText.toHtml()
+        //!!!: DIRTY ALARM!
+        //!!!: ADAM:
+        //BUFF: !!!
+        let body = state.bodyText.toHtml(inlinedAttachments: state.inlinedAttachments) //!!!: ADAM: Bad! method called toHtml returns plaintext
         let bodyPlainText = body.plainText
         let bodyHtml = body.html ?? ""
         let message = Message.newOutgoingMessage(session: session)

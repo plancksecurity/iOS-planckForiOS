@@ -2207,7 +2207,6 @@
 				B7DB7FC22215C484003968DA /* Extensions */,
 				15D43998216E695500EB3933 /* AccountPicker */,
 				15265973216234C0006A78DF /* SuggestTableViewController */,
-				150DF6D12052A99800A9DCF7 /* SecureWebViewController */,
 				3A2119DE2412515D0030C3E4 /* DynamicHeightScrollView.swift */,
 				37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */,
 				B7DB7FD1221AD332003968DA /* SegueHandlerType.swift */,
@@ -2351,6 +2350,7 @@
 				371D641B231D17100036AE62 /* StartUpTutotial */,
 				003C0FAA20B57C2E0093A987 /* SplitView */,
 				492EF92B20C69547004EAE14 /* Thread */,
+				150DF6D12052A99800A9DCF7 /* SecureWebViewController */,
 				43AA82511E9B925000ABD5A8 /* Util */,
 			);
 			path = UI;
