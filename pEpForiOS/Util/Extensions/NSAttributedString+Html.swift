@@ -6,7 +6,7 @@
 //  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
+import MessageModel
 
 extension NSAttributedString {
 
@@ -22,7 +22,7 @@ extension NSAttributedString {
         return attribStringWithVerticalLines
     }
 
-    func toHtml() -> (plainText: String, html: String?) {
+    func toHtml(inlinedAttachments:[Attachment]) -> (plainText: String, html: String?) { //!!!: ADAM: DIRTY WORKARAOUND
 
         let htmlDocAttribKey = [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html]
 
@@ -36,27 +36,32 @@ extension NSAttributedString {
 
         var images: [NSRange : String] = [:]
 
+        var idx = 0 //!!!: ADAM: DIRTY HACK!
         mutableAttribString
             .enumerateAttribute(
                 .attachment,
                 in: mutableAttribString.wholeRange()) { (value, range, stop) in
-                    if let attachment = value as? TextAttachment {
+
+                    if let textAttachment = value as? TextAttachment {
                         let delegate = ToMarkdownDelegate()
-                        if let stringForAttachment = delegate.stringFor(attachment: attachment) {
+                        textAttachment.attachment = inlinedAttachments[idx]
+                        idx += 1
+                        if let stringForTextAttachment = delegate.stringFor(attachment: textAttachment) { //BUFF: !!! HERE
                             if delegate.attachments.count > 0 {
-                                images[range] = stringForAttachment.cleanAttachments
+                                images[range] = stringForTextAttachment.cleanAttachments
                             }
                         }
                     }
         }
 
-        for item in images.sorted(by: { $0.key.location > $1.key.location }) {
-            mutableAttribString.replaceCharacters(in: item.key, with: item.value)
+        for image in images.sorted(by: { $0.key.location > $1.key.location }) {
+            mutableAttribString.replaceCharacters(in: image.key, with: image.value)
         }
 
         guard let htmlData = try? mutableAttribString.data(from: mutableAttribString.wholeRange(),
-                                                           documentAttributes: htmlDocAttribKey) else {
-                                                            return (plainText: plainText, html: nil)
+                                                           documentAttributes: htmlDocAttribKey)
+            else {
+                return (plainText: plainText, html: nil)
         }
         let html = (String(data: htmlData, encoding: .utf8) ?? "")
             .replaceMarkdownImageSyntaxToHtmlSyntax()
