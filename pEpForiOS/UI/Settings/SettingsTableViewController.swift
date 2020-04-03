@@ -365,13 +365,10 @@ extension SettingsTableViewController {
              .segueAddNewAccount,
              .sequeShowCredits,
              .ResetTrust,
-             .segueExtraKeys:
+             .segueExtraKeys,
+             .segueShowSettingTrustedServers:
             guard let destination = segue.destination as? BaseViewController else { return }
             destination.appConfig = self.appConfig
-        case .segueShowSettingTrustedServers:
-            guard let destination = segue.destination as? TrustedServerSettingsViewController else { return }
-            destination.appConfig = self.appConfig
-            break
         case .none:
             break
         case .segueSetOwnKey,
