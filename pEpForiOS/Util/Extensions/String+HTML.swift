@@ -33,7 +33,7 @@ extension String {
         return parser.output
     }
 
-    public func markdownToHtml() -> String? {
+    public func markdownToHtml() -> String? { //!!!: ADAM: you made this dead code (and thus removed its required functionality)
         return (self as NSString)
             .nsMarkdownToHtml()?
             .replacingOccurrencesOfPepSignatureWithHtmlVersion()
