@@ -366,7 +366,6 @@ extension SettingsTableViewController {
              .sequeShowCredits,
              .ResetTrust,
              .segueExtraKeys:
-            
             guard let destination = segue.destination as? BaseViewController else { return }
             destination.appConfig = self.appConfig
         case .segueShowSettingTrustedServers:

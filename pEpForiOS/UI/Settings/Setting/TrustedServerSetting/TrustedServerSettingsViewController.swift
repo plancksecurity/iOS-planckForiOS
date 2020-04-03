@@ -31,7 +31,7 @@ class TrustedServerSettingsViewController: BaseViewController {
 // MARK: -  UITableViewDataSource
 
 extension TrustedServerSettingsViewController : UITableViewDataSource {
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.rows.count
     }
