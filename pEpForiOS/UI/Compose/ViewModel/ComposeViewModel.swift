@@ -128,7 +128,11 @@ class ComposeViewModel {
         if state.initData?.toRecipients.isEmpty ?? false {
             // Use cases: new mail or forward (no To: prefilled)
             return indexPathToVm
-        } else if state.subject.isEmpty || state.subject.isOnlyWhiteSpace() {
+        } else if state.subject.isEmpty || state.subject.isOnlyWhiteSpace(){
+            if let composeMode = state.initData?.composeMode,
+                (composeMode == .replyFrom || composeMode == .replyAll) {
+                // When replying a mail we always want the cursor in body, even the subject is empty
+                return indexPathBodyVm            }
             // Use case: open compose by clicking mailto: link
             return indexPathSubjectVm
         } else {
