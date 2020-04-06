@@ -25,9 +25,6 @@
 /* Class = "UILabel"; text = "Sender"; ObjectID = "hnw-Tp-mga"; */
 "hnw-Tp-mga.text" = "Remitente";
 
-/* Class = "UILabel"; text = "Sender sfasflask jfhsajfkas fjksaj"; ObjectID = "KTi-T9-Inm"; */
-"KTi-T9-Inm.text" = "Sender sfasflask jfhsajfkas fjksaj";
-
 /* Class = "UILabel"; text = "To: Recipients"; ObjectID = "Mfx-AS-hpP"; */
 "Mfx-AS-hpP.text" = "Para: Destinatarios";
 
