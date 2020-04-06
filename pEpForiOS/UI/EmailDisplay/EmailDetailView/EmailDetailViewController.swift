@@ -295,6 +295,11 @@ extension EmailDetailViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
+        guard vm.rowCount > 0, onlySplitViewMasterIsShown else {
+            // We haven't any email, we should exit from this view
+            navigationController?.popViewController(animated: true)
+            return
+        }
 
         destructiveButton?.image = vm.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
         flagButton?.image = vm.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
