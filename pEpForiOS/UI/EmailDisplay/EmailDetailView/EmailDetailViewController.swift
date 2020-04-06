@@ -784,11 +784,16 @@ extension EmailDetailViewController: SplitViewHandlingProtocol {
                 }
             }
             setToolbarItems(newtoolbar, animated: true)
-            let next = UIBarButtonItem.getNextButton(action: #selector(previousButtonPressed), target: self)
-            let previous = UIBarButtonItem.getPreviousButton(action: #selector(nextButtonPressed), target: self)
+            let next = UIBarButtonItem.getNextButton(action: #selector(nextButtonPressed), target: self)
+            let previous = UIBarButtonItem.getPreviousButton(action: #selector(previousButtonPressed), target: self)
             previous.isEnabled = thereIsAPreviousMessageToShow
             next.isEnabled = thereIsANextMessageToShow
-            navigationItem.rightBarButtonItems = [previous, next]
+            let size = CGSize(width: 15, height: 25)
+            next.image = next.image?.resizeImage(targetSize: size)
+            previous.image = previous.image?.resizeImage(targetSize: size)
+            previousButton = previous
+            nextButton = next
+            navigationItem.setRightBarButtonItems([next, previous], animated: false)
             navigationItem.leftBarButtonItems = []
         case .separate:
             //view itself correctly handles the bars when is gonna separate
