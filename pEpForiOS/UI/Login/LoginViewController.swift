@@ -557,7 +557,6 @@ extension LoginViewController {
                             return
                         }
                         me.mainContainerView.layoutIfNeeded()
-                        me.view.layoutIfNeeded()
         })
     }
 
