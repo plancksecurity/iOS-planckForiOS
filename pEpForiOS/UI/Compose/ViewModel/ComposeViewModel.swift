@@ -660,7 +660,9 @@ extension ComposeViewModel {
             deleteOriginalMessage()
         }
 
-        guard let msg = ComposeUtil.messageToSend(withDataFrom: state) else {
+        let safeState = state.makeSafe(forSession: Session.main)
+
+        guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
             Log.shared.errorAndCrash("No message")
             return
         }
