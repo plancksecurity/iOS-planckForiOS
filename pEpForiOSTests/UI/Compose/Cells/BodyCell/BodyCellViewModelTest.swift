@@ -745,7 +745,7 @@ class BodyCellViewModelTest: XCTestCase {
             }
         }
 
-//        func bodyCellViewModel(_ vm: BodyCellViewModel, bodyAttributedString: NSAttributedString) { //!!!: ADAM: commented due to the changes
+        func bodyCellViewModel(_ vm: BodyCellViewModel, bodyAttributedString: NSAttributedString) { //!!!: ADAM: commented due to the changes
 //            guard let exp = expBodyChangedCalled else {
 //                // We ignore called or not
 //                return
@@ -756,6 +756,6 @@ class BodyCellViewModelTest: XCTestCase {
 //            if let expected1 = exectedPlain {
 //                XCTAssertEqual(expPlainText, expected1)
 //            }
-//        }
+        }
     }
 }
