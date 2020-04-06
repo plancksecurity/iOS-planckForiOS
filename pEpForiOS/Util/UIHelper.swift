@@ -14,12 +14,6 @@ class UIHelper {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
     }
-    
-    static func labelFromContact(_ contact: CdIdentity) -> UILabel {
-        let l = UILabel()
-        l.text = contact.address
-        return l
-    }
 
     /**
      Put a String into a label. If the String is empty, hide the label.
@@ -35,20 +29,6 @@ class UIHelper {
             label.isHidden = true
         }
     }
-    
-    static func cleanHtml(_ string: String?) -> String? {
-        guard let str = string else { return string }
-        return str.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
-    }
-
-    /**
-     Makes label bold, using the system font.
-     */
-    static func boldifyLabel(_ label: UILabel) {
-        let size = label.font.pointSize
-        let font = UIFont.boldSystemFont(ofSize: size)
-        label.font = font
-    }
 
     /**
      Gives the label a background color depending on the given privacy color.
@@ -62,21 +42,5 @@ class UIHelper {
         } else {
             label.backgroundColor = defaultColor
         }
-    }
-
-    /**
-     Creates a 1x1 point size image filled with the given color. Useful for giving buttons
-     a background color.
-     */
-    static func imageFromColor(_ color: UIColor) -> UIImage {
-        let rect = CGRect(origin: CGPoint(x: 0, y: 0),
-                          size: CGSize(width: 1, height: 1))
-        UIGraphicsBeginImageContext(rect.size)
-        let context = UIGraphicsGetCurrentContext()
-        context!.setFillColor(color.cgColor)
-        context!.fill(rect)
-        let img = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return img!
     }
 }
