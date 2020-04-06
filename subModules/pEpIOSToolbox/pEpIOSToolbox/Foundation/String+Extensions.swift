@@ -388,9 +388,10 @@ extension String {
      delimiters like "-", or " ".
      */
     func tokens() -> [String] {
+        let pattern = "[^A-Za-z0-9]"
         return components(separatedBy: CharacterSet(charactersIn: "- ")).map {
             return $0.trimmingCharacters(in: .whitespacesAndNewlines)
-        }
+        }.map { $0.replacingOccurrences(of: pattern, with: "", options: [.regularExpression]) }
     }
     
     /// - Returns: the initials of the String interpreted as a name.
@@ -403,12 +404,10 @@ extension String {
         if words.count == 0 {
             return nil
         }
-        let pattern = "[^A-Za-z]"
-        words = words.map { $0.replacingOccurrences(of: pattern, with: "", options: [.regularExpression]) }
-        if words.count == 1 {
-            return prefix(ofLength: 1).capitalized
-        }
         let word1 = words[0]
+        if words.count == 1 {
+            return word1.prefix(ofLength: 1).capitalized
+        }
         let word2 = words[words.count - 1]
         let prefix1 = word1.prefix(ofLength: 1)
         let prefix2 = word2.prefix(ofLength: 1)
