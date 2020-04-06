@@ -59,6 +59,16 @@ final class LoginViewController: BaseViewController {
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        manualConfigButton.titleLabel?.numberOfLines = 0
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setManualSetupButtonHidden(manualConfigButton.isHidden)
+    }
+    
     @IBAction func dismissButtonAction(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
@@ -541,11 +551,8 @@ extension LoginViewController {
     }
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
-        guard manualConfigButton.isHidden != hidden else { return }
         manualConfigButton.isHidden = hidden
-        pEpSyncViewCenterHConstraint.constant = hidden ? 0 : -stackView.bounds.midX / 2
-        manualConfigButton.alpha = hidden ? 1 : 0
-
+        pEpSyncViewCenterHConstraint.isActive = hidden
         UIView.animate(withDuration: 0.25,
                        delay: 0,
                        options: .curveEaseInOut,
@@ -554,8 +561,8 @@ extension LoginViewController {
                             Log.shared.lostMySelf()
                             return
                         }
-                        me.manualConfigButton.alpha = hidden ? 0 : 1
                         me.mainContainerView.layoutIfNeeded()
+                        me.view.layoutIfNeeded()
         })
     }
 
