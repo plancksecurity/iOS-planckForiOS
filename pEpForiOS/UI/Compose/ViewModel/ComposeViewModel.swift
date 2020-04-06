@@ -128,7 +128,11 @@ class ComposeViewModel {
         if state.initData?.toRecipients.isEmpty ?? false {
             // Use cases: new mail or forward (no To: prefilled)
             return indexPathToVm
-        } else if state.subject.isEmpty || state.subject.isOnlyWhiteSpace() {
+        } else if state.subject.isEmpty || state.subject.isOnlyWhiteSpace(){
+            if let composeMode = state.initData?.composeMode,
+                (composeMode == .replyFrom || composeMode == .replyAll) {
+                // When replying a mail we always want the cursor in body, even the subject is empty
+                return indexPathBodyVm            }
             // Use case: open compose by clicking mailto: link
             return indexPathSubjectVm
         } else {
@@ -378,10 +382,13 @@ extension ComposeViewModel {
                                                     initialAccount: fromAccount)
                 rows.append(rowModel)
             case .subject:
-                let rowModel = SubjectCellViewModel(resultDelegate: cellVmDelegate)
-                if let subject = state?.subject {
-                    rowModel.content = subject
+                var subject = state?.subject ?? ""
+                if subject.isEmpty {
+                    // Works around a layout issue that shows empty two lines when replying a mail
+                    // with empty subject.
+                    subject = " "
                 }
+                let rowModel = SubjectCellViewModel(content: subject, resultDelegate: cellVmDelegate)
                 rows.append(rowModel)
             case .body:
                 rows.append(BodyCellViewModel(resultDelegate: cellVmDelegate,
