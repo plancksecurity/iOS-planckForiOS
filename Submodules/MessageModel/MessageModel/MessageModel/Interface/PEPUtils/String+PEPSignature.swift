@@ -20,6 +20,20 @@ extension String {
 
     public func replacingOccurrencesOfPepSignatureWithHtmlVersion() -> String {
         let pEpSignatureTrimmed = String.pepSignature.trimmed()
-        return replacingOccurrences(of: pEpSignatureTrimmed, with: String.pEpSignatureHtml)
+
+        var result = replacingOccurrences(of: pEpSignatureTrimmed, with: String.pEpSignatureHtml)
+
+        //!!!: DIRTY HACK. //ADAM: when an image is inlined, the signature looks like this for some reason.
+        let strangePEPSignaturePattern = #"<p class=\"[\S][\S]\"><span class=\"[\S][\S]\">sent with p<\/span><span class=\"[\S][\S]\">≡<\/span><span class=\"[\S][\S]\">p<\/span><\/p>"#
+        guard let strangePEPSignatureRegex = try? NSRegularExpression(pattern: strangePEPSignaturePattern,
+                                                           options: [])
+            else {
+                return result
+        }
+        result = strangePEPSignatureRegex.stringByReplacingMatches(in: result,
+                                                                   options: [],
+                                                                   range: result.wholeRange(),
+                                                                   withTemplate: String.pEpSignatureHtml)
+        return result
     }
 }
