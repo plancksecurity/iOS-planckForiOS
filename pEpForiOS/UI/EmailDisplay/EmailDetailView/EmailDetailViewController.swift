@@ -295,7 +295,10 @@ extension EmailDetailViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        guard vm.rowCount > 0, onlySplitViewMasterIsShown else {
+        
+        //if there are no messages to show and we are in "Iphone" we have to pop up the detailView
+        //and go back to the list.
+        if vm.rowCount == 0 && onlySplitViewMasterIsShown {
             // We haven't any email, we should exit from this view
             navigationController?.popViewController(animated: true)
             return
