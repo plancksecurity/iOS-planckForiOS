@@ -239,18 +239,30 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let identifier = segueIdentifier(for: indexPath)
         switch identifier {
-        case .passiveMode, .pEpSync, .protectMessageSubject, .unsecureReplyWarningEnabled:
-            return
+        case .passiveMode,
+             .pEpSync,
+             .protectMessageSubject,
+             .unsecureReplyWarningEnabled,
+             .noSegue:
+            Log.shared.error("The segue identifier for this row is not valid. This may not be a selectable cell, a switch cell for example.")
         case .resetAccounts:
-            
-            guard let row = viewModel.section(for: indexPath).rows[indexPath.row] as? SettingsViewModel.ActionRow, let action = row.action,
+            guard let row = viewModel.section(for: indexPath).rows[indexPath.row] as? SettingsViewModel.ActionRow,
+                let action = row.action,
                 let alert = getResetAllIdentityAlertController(action: action) else {
                     return
             }
-
             present(alert, animated: true)
             tableView.deselectRow(at: indexPath, animated: true)
-        default:
+        case .segueAddNewAccount,
+             .segueEditAccount,
+             .segueShowSettingDefaultAccount,
+             .sequeShowCredits,
+             .segueShowSettingTrustedServers,
+             .segueExtraKeys,
+             .segueSetOwnKey,
+             .noAccounts,
+             .resetTrustSplitView,
+             .resetTrust:
             performSegue(withIdentifier: identifier.rawValue, sender: indexPath)
         }
     }
@@ -302,8 +314,8 @@ extension SettingsTableViewController {
         case segueExtraKeys
         case segueSetOwnKey
         case noAccounts
-        case ResetTrustSplitView
-        case ResetTrust
+        case resetTrustSplitView
+        case resetTrust
         case noSegue
         case passiveMode
         case protectMessageSubject
@@ -329,7 +341,7 @@ extension SettingsTableViewController {
         case .setOwnKey:
             return .segueSetOwnKey
         case .resetTrust:
-            return .ResetTrust
+            return .resetTrust
         case .extraKeys:
             return .segueExtraKeys
         case .passiveMode:
@@ -365,14 +377,14 @@ extension SettingsTableViewController {
         case .noAccounts,
              .segueAddNewAccount,
              .sequeShowCredits,
-             .ResetTrust,
+             .resetTrust,
              .segueExtraKeys:
             guard let destination = segue.destination as? BaseViewController else { return }
             destination.appConfig = self.appConfig
         case .none:
             break
         case .segueSetOwnKey,
-             .ResetTrustSplitView,
+             .resetTrustSplitView,
              .noSegue,
              .passiveMode,
              .protectMessageSubject,
