@@ -789,6 +789,7 @@ extension EmailDetailViewController: SplitViewHandlingProtocol {
             previous.isEnabled = thereIsAPreviousMessageToShow
             next.isEnabled = thereIsANextMessageToShow
             navigationItem.rightBarButtonItems = [previous, next]
+            navigationItem.leftBarButtonItems = []
         case .separate:
             //view itself correctly handles the bars when is gonna separate
             break
