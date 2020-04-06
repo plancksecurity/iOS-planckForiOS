@@ -1,3 +1,6 @@
+/* Class = "UILabel"; text = "Privacy Status"; ObjectID = "2dW-Vn-WjN"; */
+"2dW-Vn-WjN.text" = "Grau de privadesa";
+
 /* Class = "UIButton"; accessibilityLabel = "confirmButton"; ObjectID = "4fD-jL-4Gx"; */
 "4fD-jL-4Gx.accessibilityLabel" = "confirmButton";
 
@@ -12,6 +15,9 @@
 
 /* Class = "UILabel"; text = "This Privacy Status Icon is shown as an Icon the user's avatar"; ObjectID = "B9p-Ah-ajI"; */
 "B9p-Ah-ajI.text" = "This Privacy Status Icon is shown as an Icon the user's avatar";
+
+/* Class = "UILabel"; text = "In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners."; ObjectID = "E7G-lq-Zvz"; */
+"E7G-lq-Zvz.text" = "En aquest cas, l’estat de privadesa del missatge és segur, perquè aquest és el denominador més baix comú dels dos socis de comunicació.";
 
 /* Class = "UILabel"; text = "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER"; ObjectID = "EdT-Qp-2PC"; */
 "EdT-Qp-2PC.text" = "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER";
@@ -36,6 +42,9 @@
 
 /* Class = "UILabel"; text = "You can close this tutorial anytime with the Skip button."; ObjectID = "RKC-QV-5yv"; */
 "RKC-QV-5yv.text" = "You can close this tutorial anytime with the Skip button.";
+
+/* Class = "UILabel"; text = "The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:"; ObjectID = "rLc-J2-pmo"; */
+"rLc-J2-pmo.text" = "La icona de la barra superior reflecteix l'estat de privadesa del missatge, que és el denominador comú més baix més baix de tots els socis de comunicació d'aquest missatge, per exemple:";
 
 /* Class = "UILabel"; text = "With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact."; ObjectID = "rM7-ay-vaT"; */
 "rM7-ay-vaT.text" = "With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact.";

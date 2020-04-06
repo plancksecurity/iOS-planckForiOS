@@ -8,7 +8,7 @@
 "0uK-Ys-aO5.text" = "OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5";
 
 /* Class = "UILabel"; text = "In order to make communication Secure & Trusted, you will have to compare the Trustwords bellow with your communication partner."; ObjectID = "5xj-yI-46H"; */
-"5xj-yI-46H.text" = "In order to make communication Secure & Trusted, you will have to compare the Trustwords bellow with your communication partner.";
+"5xj-yI-46H.text" = "Afin de sécuriser la communication & authentique, vous devrez comparer les Trustwords avec votre partenaire de communication.";
 
 /* Class = "UIButton"; normalTitle = "Reset"; ObjectID = "6bf-Gd-X5g"; */
 "6bf-Gd-X5g.normalTitle" = "Reset";
@@ -26,7 +26,7 @@
 "cAK-ZW-JLu.accessibilityLabel" = "confirmButton";
 
 /* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "cAK-ZW-JLu"; */
-"cAK-ZW-JLu.normalTitle" = "Confirm";
+"cAK-ZW-JLu.normalTitle" = "Confirmer";
 
 /* Class = "UIButton"; accessibilityLabel = "wrongButton"; ObjectID = "cLm-E4-Lx2"; */
 "cLm-E4-Lx2.accessibilityLabel" = "wrongButton";
@@ -41,10 +41,10 @@
 "ETf-Fn-foo.normalTitle" = "Reset";
 
 /* Class = "UILabel"; text = "Mistrusted"; ObjectID = "Gxz-4i-XBu"; */
-"Gxz-4i-XBu.text" = "Mistrusted";
+"Gxz-4i-XBu.text" = "Suspect";
 
 /* Class = "UILabel"; text = "Your communication partner is mistrusted."; ObjectID = "HIb-Ji-yfV"; */
-"HIb-Ji-yfV.text" = "Your communication partner is mistrusted.";
+"HIb-Ji-yfV.text" = "Votre partenaire de communication est suspect.";
 
 /* Class = "UILabel"; text = "Reset all p≡p data for this comunication partner:"; ObjectID = "K85-bq-q6Q"; */
 "K85-bq-q6Q.text" = "Réinitialisez toutes les données p≡p pour ce partenaire de communication :";
@@ -56,7 +56,7 @@
 "Q7n-8c-O25.accessibilityLabel" = "confirmButton";
 
 /* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "Q7n-8c-O25"; */
-"Q7n-8c-O25.normalTitle" = "Confirm";
+"Q7n-8c-O25.normalTitle" = "Confirmer";
 
 /* Class = "UILabel"; text = "Hannibal Chew"; ObjectID = "S81-yN-lUE"; */
 "S81-yN-lUE.text" = "Hannibal Chew";
@@ -68,10 +68,10 @@
 "sVr-xT-f8t.normalTitle" = "Decline";
 
 /* Class = "UILabel"; text = "Reset all p≡p data for this comunication partner:"; ObjectID = "x6I-yN-Uyv"; */
-"x6I-yN-Uyv.text" = "Réinitialisez toutes les données pEp pour ce partenaire de communication:";
+"x6I-yN-Uyv.text" = "Réinitialisez toutes les données pEp pour ce partenaire de communication :";
 
 /* Class = "UILabel"; text = "Mistrusted"; ObjectID = "XAP-1X-nYK"; */
-"XAP-1X-nYK.text" = "Mistrusted";
+"XAP-1X-nYK.text" = "Méfiant";
 
 /* Class = "UIBarButtonItem"; title = "Options"; ObjectID = "zNZ-mq-ElZ"; */
 "zNZ-mq-ElZ.title" = "Options";
