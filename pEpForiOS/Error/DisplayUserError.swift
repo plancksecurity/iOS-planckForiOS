@@ -23,8 +23,6 @@ import MessageModel
 /// required.
 struct DisplayUserError: LocalizedError {
     enum ErrorType {
-        //The user cancel the action.
-        case userCancelled
 
         /// We could not login for some reason
         case authenticationFailed
@@ -61,8 +59,6 @@ struct DisplayUserError: LocalizedError {
                 #else
                     return false
                 #endif
-            case .userCancelled:
-                return false
             case .authenticationFailed,
                  .brokenServerConnectionImap,
                  .brokenServerConnectionSmtp,
@@ -313,7 +309,7 @@ struct DisplayUserError: LocalizedError {
         case .inconsistentAuthorizationResult:
             return .authenticationFailed
         case .userCancelled:
-            return .userCancelled
+            return .internalError
         }
     }
 
@@ -355,9 +351,6 @@ struct DisplayUserError: LocalizedError {
             return NSLocalizedString("Error",
                                      comment:
                 "Title of error alert shown to the user in case an unknown error occured.")
-        case .userCancelled:
-            // If the user cancel the action, non message has to be shown.
-            return nil
         }
     }
 
@@ -406,9 +399,6 @@ struct DisplayUserError: LocalizedError {
         case .clientCertificateError:
             return NSLocalizedString("The client certificate was rejected by the server",
                                      comment: "Error message shown to the user on problems with the client certificate")
-        case .userCancelled:
-            // If the user cancel the action, non message has to be shown.
-            return nil
         }
     }
 }
