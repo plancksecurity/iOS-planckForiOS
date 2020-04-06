@@ -16,7 +16,6 @@ import MessageModel
  */
 enum OAuth2AuthorizationError: Error {
     case inconsistentAuthorizationResult
-    case userCancelled
 }
 
 /**

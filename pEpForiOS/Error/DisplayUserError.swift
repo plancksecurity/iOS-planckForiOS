@@ -152,9 +152,8 @@ struct DisplayUserError: LocalizedError {
         else if let err = error as? LoginViewController.LoginError {
             type = .loginValidationError
             foreignDescription = err.localizedDescription
-        }
+        } else {
             // Unknown
-        else {
             foreignDescription = error.localizedDescription
             type = .unknownError
         }
@@ -307,8 +306,6 @@ struct DisplayUserError: LocalizedError {
     static private func type(forError error: OAuth2AuthorizationError) -> ErrorType {
         switch error {
         case .inconsistentAuthorizationResult:
-            return .authenticationFailed
-        case .userCancelled:
             return .internalError
         }
     }
