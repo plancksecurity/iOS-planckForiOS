@@ -35,7 +35,7 @@ extension String {
 
     public func markdownToHtml() -> String? { //!!!: ADAM: you made this dead code (and thus removed its required functionality)
         return (self as NSString)
-            .nsMarkdownToHtml()?
+            .nsMarkdownToHtml()? //!!!: //ADAM:
             .replacingOccurrencesOfPepSignatureWithHtmlVersion()
     }
 
