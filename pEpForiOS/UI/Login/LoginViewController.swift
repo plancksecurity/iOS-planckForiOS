@@ -59,11 +59,6 @@ final class LoginViewController: BaseViewController {
         }
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        manualConfigButton.titleLabel?.numberOfLines = 0
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setManualSetupButtonHidden(manualConfigButton.isHidden)
