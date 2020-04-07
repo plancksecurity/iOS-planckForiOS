@@ -170,7 +170,7 @@ extension BodyCellViewModel {
 // MARK: - HTML
 
 extension BodyCellViewModel {
-    private func createHtmlVersionAndInformDelegate(newAttributedText attrText: NSAttributedString) {
+    private func createHtmlVersionAndInformDelegate(newAttributedText attrText: NSAttributedString) { //!!!: ADAM: (I assume) you made this dead code
         resultDelegate?.bodyCellViewModel(self, bodyAttributedString: attrText)
     }
 }

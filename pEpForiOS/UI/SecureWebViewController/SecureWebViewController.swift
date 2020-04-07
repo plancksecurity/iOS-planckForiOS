@@ -27,32 +27,20 @@ protocol SecureWebViewUrlClickHandlerProtocol: class {
                                  didClickMailToUrlLink url: URL)
 }
 
+// WKContentRuleList is not available below iOS11, thus remote content would be loaded
+// which is considered as inaceptable for a secure web view.
+@available(iOS 11.0, *)
 /// Webview that does not:
 /// - excecute JS
 /// - load any remote content
 /// Note: It is insecure to use this class on iOS < 11. Thus it will intentionally take the
 /// emergency exit and crash when trying to use it running iOS < 11.
 class SecureWebViewController: UIViewController {
-    static let storyboardId = "SecureWebViewController"
+    static public let storyboardId = "SecureWebViewController"
 
-    weak var delegate: SecureWebViewControllerDelegate?
-    weak var urlClickHandler: SecureWebViewUrlClickHandlerProtocol?
-
-    var zoomingEnabled: Bool = true
+    // MARK: - Private Properties
 
     private var _userInteractionEnabled: Bool = true
-    var userInteractionEnabled: Bool {
-        get {
-            return _userInteractionEnabled
-        }
-        set {
-            _userInteractionEnabled = newValue
-            if let wv = webView {
-                wv.scrollView.isUserInteractionEnabled = _userInteractionEnabled
-            }
-        }
-    }
-
     private var _scrollingEnabled: Bool = false
     var scrollingEnabled: Bool {
         get {
@@ -65,31 +53,40 @@ class SecureWebViewController: UIViewController {
             }
         }
     }
-
-    static var isSaveToUseWebView: Bool {
-        if #available(iOS 11.0, *) {
-            return true
-        }
-        return false
-    }
-
     private var webView: WKWebView!
     private var sizeChangeObserver: NSKeyValueObservation?
-
     /// webview.scrollView.contentSize after html has finished loading and layouting
     private(set) var contentSize: CGSize?
-
     /// Assumed max time it can take to load a page.
     /// After this time content size changes are not reported any more.
     static private let maxLoadingTime: TimeInterval = 0.5
     /// Last time a size change has been reported to
     private var lastReportedSizeUpdate: Date?
+    private var htmlOptimizer = HtmlOptimizerUtil(minimumFontSize: 16.0)
+
+    weak public var delegate: SecureWebViewControllerDelegate?
+    weak public var urlClickHandler: SecureWebViewUrlClickHandlerProtocol?
+    public var minimumFontSize: CGFloat = 16.0
+    public var zoomingEnabled: Bool = true
+    public var userInteractionEnabled: Bool {
+        get {
+            return _userInteractionEnabled
+        }
+        set {
+            _userInteractionEnabled = newValue
+            if let wv = webView {
+                wv.scrollView.isUserInteractionEnabled = _userInteractionEnabled
+            }
+        }
+    }
 
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        htmlOptimizer = HtmlOptimizerUtil(minimumFontSize: minimumFontSize)
         webView.scrollView.isScrollEnabled = scrollingEnabled
+
         informDelegateAfterLoadingFinished()
     }
 
@@ -98,21 +95,16 @@ class SecureWebViewController: UIViewController {
     // This implementation is taken over from the Apple docs:
     // https://developer.apple.com/documentation/webkit/wkwebview#2560973
     override func loadView() {
-        guard #available(iOS 11.0, *) else {
-            // WKContentRuleList is not available below iOS11, thus remote content would be loaded
-            // which is considered as inaceptable for a secure web view.
-            // Emergency exit.
-            fatalError()
-        }
-        if webView != nil {
-            return
-        }
         let config = WKWebViewConfiguration()
-        let prefs = WKPreferences()
-        prefs.javaScriptEnabled = false
-        config.preferences = prefs
-        config.dataDetectorTypes =
-            [.link, .address, .calendarEvent, .phoneNumber, .trackingNumber, .flightNumber]
+
+
+        config.preferences = preferences()
+        config.dataDetectorTypes = [.link,
+                                    .address,
+                                    .calendarEvent,
+                                    .phoneNumber,
+                                    .trackingNumber,
+                                    .flightNumber]
         // This handler provides local content for cid: URLs
         CidHandler.setup(config: config)
         webView = WKWebView(frame: .zero, configuration: config)
@@ -121,6 +113,32 @@ class SecureWebViewController: UIViewController {
         webView.scrollView.isScrollEnabled = scrollingEnabled
         webView.scrollView.isUserInteractionEnabled = userInteractionEnabled
         view = webView
+    }
+
+    // MARK: - API
+
+    public func display(html: String) {
+        setupBlocklist() { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.htmlOptimizer.optimizeForDislaying(html: html) { processedHtml in
+                me.webView.loadHTMLString(processedHtml, baseURL: nil)
+            }
+        }
+    }
+}
+
+// MARK: - Private
+
+extension SecureWebViewController {
+
+    private func preferences(javaScriptEnabled: Bool = false) -> WKPreferences {
+        let createe  = WKPreferences()
+        createe.javaScriptEnabled = javaScriptEnabled
+        createe.minimumFontSize = minimumFontSize
+        return createe
     }
 
     // MARK: - WKContentRuleList (block loading of all remote content)
@@ -195,20 +213,20 @@ class SecureWebViewController: UIViewController {
     private var blockRulesJson: String {
         return """
         [{
-            "trigger": {
-                "url-filter": ".*"
-            },
-            "action": {
-                "type": "block"
-            }
+        "trigger": {
+        "url-filter": ".*"
+        },
+        "action": {
+        "type": "block"
+        }
         },
         {
-            "trigger": {
-                "url-filter": "cid"
-            },
-            "action": {
-                "type": "ignore-previous-rules"
-            }
+        "trigger": {
+        "url-filter": "cid"
+        },
+        "action": {
+        "type": "ignore-previous-rules"
+        }
         }]
         """
     }
@@ -252,8 +270,8 @@ class SecureWebViewController: UIViewController {
                     // The size change must be zooming triggered by user.
                     return
                 }
-                
-                
+
+
                 me.contentSize = contentSize
                 me.lastReportedSizeUpdate = Date()
                 me.delegate?.secureWebViewController(me, sizeChangedTo: contentSize)
@@ -275,102 +293,6 @@ class SecureWebViewController: UIViewController {
     ///             false: otherwize
     private func shouldIgnoreContentSizeChange(newSize: CGSize) -> Bool {
         return newSize.width == 0.0 || newSize == self.contentSize
-    }
-
-    // MARK: - HTML TWEAKS
-
-    /// Prepares the html string for displaying.
-    ///
-    /// - Parameter html: html to prepare
-    /// - Returns: html ready for displaying
-    private func preprocess(html: String) -> String {
-        var result = html
-        result = htmlTagsAssured(html: result)
-        result = tweakedHtml(inHtml: result)
-        return result
-    }
-
-    /// Returns a modified version of the given html, adjusted to:
-    /// - simulate "PageScaleToFit" layout behaviour
-    /// - responsive image size
-    /// - set default link color to pEp color
-    ///
-    /// - Parameter html: html string that should be tweaked for nicer display
-    /// - Returns: tweaked html
-    private func tweakedHtml(inHtml html: String) -> String {
-        var html = html
-        // Remove existing viewport definitions that are pontentially unsupported by WKWebview.
-        html.removeRegexMatches(of: "<meta name=\\\"viewport\\\".*?>")
-        // Define viewport WKWebview can deal with
-        let screenWidth = UIScreen.main.bounds.width
-        let scaleToFitHtml =
-        "<meta name=\"viewport\" content=\"width=\(screenWidth), shrink-to-fit=YES\"/>"
-        // Build HTML tweak
-        let styleResponsiveImageSize = """
-            img {
-                max-width: 100%;
-                height: auto;
-            }
-        """
-        let styleLinkStyle = """
-            a:link {
-                color:\(UIColor.pEpDarkGreenHex);
-                text-decoration: underline;
-        }
-        """
-        let tweak = """
-            \(scaleToFitHtml)
-            <style>
-                \(styleResponsiveImageSize)
-                \(styleLinkStyle)
-            </style>
-        """
-        // Inject tweak if appropriate
-        var result = html
-
-        if html.contains(find: "<head>") {
-            result = html.replacingOccurrences(of: "<head>", with:
-                """
-                <head>
-                \(tweak)
-                """)
-        } else if html.contains(find: "<html>") {
-            result = html.replacingOccurrences(of: "<html>", with:
-                """
-                <html>
-                    <head>
-                        \(tweak)
-                    </head>
-                """
-            )
-        }
-        return result
-    }
-
-    /// Assures a given string is wrapped in html tags (<html> givenString </html>).
-    ///
-    /// - Parameter html: string to assure its wrapped in html tags
-    /// - Returns: wrapped string
-    private func htmlTagsAssured(html: String) -> String {
-        let startHtml = "<html>"
-        let endHtml = "</html>"
-        var result = html
-        if !html.contains(find: startHtml) {
-            result = startHtml + html + endHtml
-        }
-        return result
-    }
-
-    // MARK: - API
-
-    func display(htmlString: String) {
-        guard #available(iOS 11.0, *) else {
-            return
-        }
-        let displayHtml = preprocess(html: htmlString)
-        setupBlocklist() {
-            self.webView.loadHTMLString(displayHtml, baseURL: nil)
-        }
     }
 }
 
@@ -405,6 +327,8 @@ extension SecureWebViewController: WKNavigationDelegate {
         case .backForward, .formResubmitted, .formSubmitted, .reload:
             // ignore
             break
+        @unknown default:
+            Log.shared.errorAndCrash("Unhandled case")
         }
         decisionHandler(.cancel)
     }
@@ -491,7 +415,7 @@ extension UISplitViewController {
             return
         } else {
             // Is not shown due to long-press on mailto: URL.
-            // Forward for custom handling.
+            // Forward for default handling.
             super.present(viewControllerToPresent, animated: flag, completion: completion)
         }
     }

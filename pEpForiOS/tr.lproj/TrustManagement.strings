@@ -19,6 +19,9 @@
 /* Class = "UILabel"; text = "OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5"; ObjectID = "82G-iU-EVg"; */
 "82G-iU-EVg.text" = "OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5";
 
+/* Class = "UILabel"; text = "Reset all p≡p data for this comunication partner:"; ObjectID = "aT5-52-Wck"; */
+"aT5-52-Wck.text" = "Bu iletişim ortağı için tüm p≡p verilerini sıfırla:";
+
 /* Class = "UIButton"; accessibilityLabel = "confirmButton"; ObjectID = "cAK-ZW-JLu"; */
 "cAK-ZW-JLu.accessibilityLabel" = "confirmButton";
 
@@ -43,6 +46,9 @@
 /* Class = "UILabel"; text = "Your communication partner is mistrusted."; ObjectID = "HIb-Ji-yfV"; */
 "HIb-Ji-yfV.text" = "Your communication partner is mistrusted.";
 
+/* Class = "UILabel"; text = "Reset all p≡p data for this comunication partner:"; ObjectID = "K85-bq-q6Q"; */
+"K85-bq-q6Q.text" = "Bu iletişim ortağı için tüm p≡p verilerini sıfırla:";
+
 /* Class = "UIButton"; normalTitle = "Reset"; ObjectID = "kDe-b5-usQ"; */
 "kDe-b5-usQ.normalTitle" = "Reset";
 
@@ -60,6 +66,9 @@
 
 /* Class = "UIButton"; normalTitle = "Decline"; ObjectID = "sVr-xT-f8t"; */
 "sVr-xT-f8t.normalTitle" = "Decline";
+
+/* Class = "UILabel"; text = "Reset all p≡p data for this comunication partner:"; ObjectID = "x6I-yN-Uyv"; */
+"x6I-yN-Uyv.text" = "Bu iletişim ortağı için tüm pEp verilerini sıfırla:";
 
 /* Class = "UILabel"; text = "Mistrusted"; ObjectID = "XAP-1X-nYK"; */
 "XAP-1X-nYK.text" = "Mistrusted";

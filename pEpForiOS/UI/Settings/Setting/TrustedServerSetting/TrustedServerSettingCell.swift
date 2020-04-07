@@ -9,8 +9,7 @@
 import UIKit
 
 protocol TrustedServerSettingCellDelegate: class {
-    func trustedServerSettingCell(sender: TrustedServerSettingCell,
-                                  didChangeSwitchValue newValue: Bool)
+    func trustedServerSettingCell(sender: TrustedServerSettingCell, didChangeSwitchValue newValue: Bool)
 }
 
 class TrustedServerSettingCell: UITableViewCell {

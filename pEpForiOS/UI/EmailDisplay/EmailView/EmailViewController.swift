@@ -92,7 +92,6 @@ class EmailViewController: BaseTableViewController {
      */
     private func htmlBody(message: Message?) ->  String? {
         guard
-            SecureWebViewController.isSaveToUseWebView,
             let m = message,
             let htmlBody = m.longMessageFormatted,
             !htmlBody.isEmpty else {
@@ -112,8 +111,7 @@ class EmailViewController: BaseTableViewController {
             contentCell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
             let displayHtml = appendInlinedPlainText(fromAttachmentsIn: m, to: htmlBody)
-            let displayNiceCitedDisplay = ReplyUtil.citedHtmlVisibleVerticalLineString(html: displayHtml)
-            htmlViewerViewController.display(htmlString: displayNiceCitedDisplay)
+            htmlViewerViewController.display(html: displayHtml)
         } else {
             // We do not have HTML content.
             // Remove the HTML view if we just stepped from an HTML mail to one without

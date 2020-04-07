@@ -23,7 +23,7 @@
 /* error message for .missingUsername */
 "A non-empty username is required" = "Gebruikersnaam is verplicht";
 
-/* KeySyncWizard introduction message */
+/* KeySyncWizard introduction message - two devices */
 "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Er is een tweede apparaat gedetecteerd. We kunnen een apparaatgroep vormen om al je privacy op beide apparaten te synchroniseren. Zullen we beginnen met synchroniseren?";
 
 /* error message for .invalidEmail
@@ -31,7 +31,7 @@
 "A valid email is required" = "Een geldig e-mailadres is vereist";
 
 /* Account settings
-   Account view title */
+   Title for manual account setup */
 "Account" = "Account";
 
 /* Title for manual account setup */
@@ -46,7 +46,7 @@
 /* account type selector title */
 "Account Select" = "Account Selectie";
 
-/* Tableview section  header: Accounts */
+/* Tableview section  header */
 "Accounts" = "Accounts";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
@@ -64,7 +64,7 @@
 /* Tutorial Fourth text */
 "And in the top bar when you open or write an email:" = "En in de bovenste balk wanneer u een e-mail opent of schrijft:";
 
-/* KeySyncWizard introduction message */
+/* KeySyncWizard introduction message - more than two devices */
 "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Er is een ander apparaat gedetecteerd. We kunnen het aan je apparaatgroep toevoegen om al je privacy op alle apparaten te synchroniseren. Zullen we beginnen met synchroniseren?";
 
 /* Archive button in slide-left menu */
@@ -99,26 +99,16 @@
 "Broken" = "Gebroken";
 
 /* alert action 3
-   Alert cancel button title before trusting an account
-   Back button for client cert managment
-   Cancel
-   Cancel button for client certificate password screen
-   Cancel button title for manual account setup
-   Cancel button title of pEp protection toggle action sheet
    Cancel for an alert view
-   Cancel in button in Login View
    Cancel reset account identity button title
    Cancel title button
-   Cancel trust change to be undone
    compose email cancel
-   Default cancel button text
    EmailList action title
-   EmailList: Cancel edit mode button title
-   keysync alert leave device group cancel
    keySyncWizard animation view cancel button title
+   Login NavigationBar canel button title
    Message actions
    MoveToFolderViewController NavigationBar canel button title
-   TrustManagementView: trustword language selector cancel button label
+   possible private status action
    UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
 "Cancel" = "Annuleren";
 
@@ -149,8 +139,7 @@
 /* Privacy status suggestion */
 "Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Voltooi een handdruk met je communicatiepartner. Een handdruk is slechts één keer per partner nodig en zorgt voor veilige en vertrouwde communicatie.";
 
-/* accept hand shake confirm button
-   Confirm correct trustwords/PGP fingerprint */
+/* accept hand shake sync button */
 "Confirm" = "Bevestigen";
 
 /* Confirm less secure answering message alert title */
@@ -166,7 +155,7 @@
 "Confirm Trustwords" = "Bevestig Trustwords";
 
 /* ResetTrustView title
-   TableView section header: Contacts */
+   TableView section header */
 "Contacts" = "Contacten";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title Copy Email */
@@ -178,15 +167,13 @@
 /* Error description detecting account settings */
 "Could not find servers. Please enter manually" = "Kan servers niet vinden. Voer handmatig in.";
 
-/* Credits view title
-   Settings: Cell (button) title to view app credits */
+/* Settings: Cell (button) title to view app credits */
 "Credits" = "Credits";
 
 /* Incorrect trustwords/PGP fingerprint */
 "Decline" = "Afwijzen";
 
 /* Default Account Setting Section Title
-   Default account view title
    Settings: Cell (button) title to view default account setting */
 "Default Account" = "Standaard Account";
 
@@ -206,8 +193,7 @@
 /* Leave device group confirmation */
 "Disable p≡p Sync" = "p≡p Sync Uitschakelen";
 
-/* Disable Protection
-   Disable Protection button title of pEp protection toggle action sheet */
+/* possible private status action */
 "Disable Protection" = "Bescherming uitschakelen";
 
 /* ComposeTableView: button to decide to discharge changes made on a drafted mail. */
@@ -236,14 +222,14 @@
 /* title for subject protection */
 "Enable Protected Subject" = "Beschermd Onderwerp Ingeschakeld";
 
-/* Enable Protection
-   Enable Protection button title of pEp protection toggle action sheet */
+/* possible private status action */
 "Enable Protection" = "Beveiliging Inschakelen";
 
 /* Tableview section header: Enterprise Features */
 "Enterprise Features" = "Enterprise Functies";
 
-/* Title of error alert shown to the user in case a message could not be sent
+/* Fail to update pEpSync value alert title
+   Title of error alert shown to the user in case a message could not be sent
    Title of error alert shown to the user in case an unknown error occured. */
 "Error" = "Fout";
 
@@ -287,10 +273,10 @@
 /* The 'Fwd:' that gets appended to the subject line */
 "Fwd: " = "Fwd: ";
 
-/* Tableview section header: Global Settings */
+/* Tableview section header */
 "Global Settings" = "Algemene Instellingen";
 
-/* Title of the view */
+/* possible privacy status action */
 "Handshake" = "Handdruk";
 
 /* Alert title for iCloud instructions */
@@ -311,7 +297,7 @@
 /* Alert: Leave device group confirmation comment */
 "If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?" = "Als je p≡p Sync uitschakelt, worden je accounts op je apparaten niet meer gesynchroniseerd. Weet je zeker dat je p≡p Sync wilt uitschakelen?";
 
-/* Title for manual account IMAP setup */
+/* Manual account setup */
 "IMAP" = "IMAP";
 
 /* Empty IMAP port server message */
@@ -387,7 +373,8 @@
 /* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
 "Keep in Outbox" = "Bewaar in Postvak Uit";
 
-/* keySyncWizard completion view leave button title */
+/* keySyncWizard completion view leave button title
+   Leave device group button title */
 "Leave" = "Verlaten";
 
 /* Settings: Cell (button) title for leaving device group */
@@ -399,8 +386,7 @@
 /* Log in button in Login View */
 "Log In" = "Inloggen";
 
-/* Title of error alert shown to the user for client certificate problems
-   Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed. */
+/* Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed. */
 "Login Failed" = "Inloggen Mislukt";
 
 /* FoldersView navigationbar title */
@@ -424,12 +410,14 @@
 /* EmailList action title */
 "Mark as Read" = "Markeer als gelezen";
 
-/* Email Detail View reply button menu - toggle seen state button text: unread
-   EmailList action title */
+/* EmailList action title */
 "Mark as unread" = "Als ongelezen markeren";
 
-/* Mistrusted - Step 1
-   Privacy status title */
+/* TrustManagementView Back Button Title */
+"Message" = "Bericht";
+
+/* Privacy status title
+   privacyStatusTitle red */
 "Mistrusted" = "Niet vertouwd";
 
 /* more button in slide-left menu */
@@ -453,9 +441,7 @@
 /* Title for notification show on lock screen for *one* new mail */
 "New message received" = "Nieuw bericht ontvangen";
 
-/* keySyncWizard intro view Next button title
-   Next button title for manual account IMAP setup
-   Next button title for manual account setup */
+/* keySyncWizard intro view Next button title */
 "Next" = "Volgende";
 
 /* Alert button while client certificate is importing: Try again? No */
@@ -480,7 +466,7 @@
    privacyStatusTitle no_color */
 "None" = "Geen";
 
-/* keySyncWizard error view Not Now button title */
+/* keySyncWizard error view NotNow button title */
 "Not now" = "Niet nu";
 
 /* keySyncWizard intro view Not Now button title
@@ -493,13 +479,11 @@
 /* Default message in detail view when nothing has been selected */
 "Nothing Selected" = "Niets Geselecteerd";
 
-/* Default positive button text
-   Filter accept text
+/* Filter accept text
    General alert positive button
    keySyncWizard completion view OK button title
-   OK (dismiss) button for iCloud instructions alert
-   OK button for client certificate password screen
    OK button for invalid accout settings user input alert
+   OK button for pEpSyncError alert
    UIAlertAction ok after error */
 "OK" = "OK";
 
@@ -525,8 +509,7 @@
 "p≡p sync" = "p≡p-synchronisatie";
 
 /* keySync handshake alert title
-   keySyncWizard animation view title
-   Settings: enable/disable p≡p Sync feature */
+   keySyncWizard animation view title */
 "p≡p Sync" = "p≡p Sync";
 
 /* Tutorial Second text */
@@ -535,8 +518,7 @@
 /* Passive mode title */
 "Passive mode" = "Passieve modus";
 
-/* Password placeholder for manual account setup
-   Password TextField Placeholder in Login Screen */
+/* password */
 "Password" = "Wachtwoord";
 
 /* Account settings title pEp Sync */
@@ -605,13 +587,13 @@
 /* Description for client certificate password screen */
 "Please enter the password of the certificate to import it:" = "Voer het wachtwoord van het certificaat in om het te importeren:";
 
-/* keySyncWizard animation view message while we sync your devices */
+/* keySyncWizard animation view message */
 "Please give us a moment while we sync your devices. This can take a minute or more." = "Geef ons een momentje om uw apparaten te synchroniseren. Dit kan een minuut of langer duren.";
 
-/* keySync handshake alert message for two devices in group */
+/* keySync handshake alert message - two devices */
 "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Zorg ervoor dat je beide apparaten bij elkaar hebt, zodat je de Vertrouwenswoorden op beide apparaten kunt vergelijken. Zijn de onderstaande Vertrouwenswoorden gelijk aan die op het andere apparaat?";
 
-/* keySync handshake alert message for more than two devices in group */
+/* keySync handshake alert message - more than two devices */
 "Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Zorg ervoor dat je de apparaten bij elkaar hebt, zodat je de Vertrouwenswoorden op de apparaten kunt vergelijken. Zijn onderstaande Vertrouwenswoorden gelijk aan die op het andere apparaat?";
 
 /* Validation error for set_own_key UI */
@@ -621,8 +603,7 @@
    Port placeholder for manual account SMTP setup */
 "Port" = "Port";
 
-/* action sheet title 1
-   Privacy Status Label */
+/* action sheet title 1 */
 "Privacy Status" = "Privacy Status";
 
 /* title for subject protection */
@@ -637,7 +618,7 @@
 /* read button in slide-left menu */
 "Read" = "Lezen";
 
-/* reject hand shake button */
+/* decline hand shake sync button */
 "Reject" = "Afwijzen";
 
 /* ComposeTableView: Label of swipe left. Removing of attachment. */
@@ -687,11 +668,11 @@
 "scroll-to-caret-on-edit" = "scroll-to-caret-on-edit";
 
 /* Privacy status title
-   Secure Label - Step 1 */
+   privacyStatusTitle yellow */
 "Secure" = "Veilig";
 
 /* Privacy status title
-   Secure & Trusted Label - Step 1 */
+   privacyStatusTitle green */
 "Secure & Trusted" = "Veilig & Vertrouwd";
 
 /* Alert title before trusting an account */
@@ -708,8 +689,7 @@
    Title of error alert shown to the user in case we can not connect to the SMTP server */
 "Server Unreachable" = "Server Onbereikbaar";
 
-/* Set Own Key title
-   Settings: Cell (button) title for entering fingerprints that are made own keys */
+/* Settings: Cell (button) title for entering fingerprints that are made own keys */
 "Set Own Key" = "Eigen Sleutel Instellen";
 
 /* acction sheet title 2
@@ -725,7 +705,7 @@
 /* Body for notifications show on lock screen for new mail(s) */
 "Slide for more" = "Slide voor meer";
 
-/* Title manual account SMTP setup */
+/* Manual account setup */
 "SMTP" = "SMTP";
 
 /* Empty SMTP port server message */
@@ -752,10 +732,10 @@
 /* Reply to unknown sender without date */
 "Someone wrote:" = "Iemand schreef:";
 
-/* keySyncWizard error view message when syncing devices */
+/* keySyncWizard error view message */
 "Something went wrong with syncing the devices. Please try again." = "Er is iets misgelopen bij het synchroniseren van de apparaten. Probeer het opnieuw.";
 
-/* AccountSettings viewModel: no account error */
+/* AccountSettings viewModel no account error */
 "Something went wrong, please try again later" = "Er is iets fout gegaan. Probeer het later opnieuw";
 
 /* Stop/trust button in handshake overview */
@@ -913,8 +893,7 @@
 /* Displayed attachment filename if unknown */
 "unknown" = "onbekend";
 
-/* Privacy status title
-   privacyStatusDescription no_color */
+/* Privacy status title */
 "Unknown" = "Onbekend";
 
 /* Privacy status explanation
