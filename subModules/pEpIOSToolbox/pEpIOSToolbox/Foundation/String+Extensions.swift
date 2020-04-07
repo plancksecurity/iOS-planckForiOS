@@ -21,6 +21,12 @@ extension String {
     static let fileExtensionRegex = try! NSRegularExpression(pattern: "^([^.]+)\\.([^.]+)$", options: [])
     static let emailRegex = try! NSRegularExpression(pattern: "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}", options: [])
 
+    private var firstLetterCapitalized: String {
+        if count > 0 {
+            return prefix(ofLength: 1).capitalized
+        }
+        return ""
+    }
 
     /**
      Trims whitespace from back and front.
@@ -387,7 +393,7 @@ extension String {
      - Returns: A list of words contained in that String. Primitively separates by
      delimiters like "-", or " ".
      */
-    func tokens() -> [String] {
+    fileprivate func tokens() -> [String] {
         let pattern = "[^A-Za-z0-9]"
         return components(separatedBy: CharacterSet(charactersIn: "- ")).map {
             return $0.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -400,18 +406,22 @@ extension String {
     /// If not possible, returns nil.
     public func initials() -> String? {
         var words = tokens()
-        words = words.filter{ !String.emailRegex.matchesWhole(string: $0) }
+        // Remove emails
+        words = words.filter { !String.emailRegex.matchesWhole(string: $0) }
+        //Non words, no initials
         if words.count == 0 {
             return nil
         }
+
+        //One word, take the first letter
         let word1 = words[0]
         if words.count == 1 {
-            return word1.prefix(ofLength: 1).capitalized
+            return word1.firstLetterCapitalized
         }
+
+        //More than one word, take the initials of the first and the last words
         let word2 = words[words.count - 1]
-        let prefix1 = word1.prefix(ofLength: 1)
-        let prefix2 = word2.prefix(ofLength: 1)
-        return "\(prefix1.capitalized)\(prefix2.capitalized)"
+        return "\(word1.firstLetterCapitalized)\(word2.firstLetterCapitalized)"
     }
 
     /**
