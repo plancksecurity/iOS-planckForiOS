@@ -18,16 +18,12 @@ extension UIFont {
     static private let medium = "SFUIText-Medium"
     static private let regular = "SFUIText-Regular"
     static private let semibold = "SFUIText-Semibold"
-
-    
-    
     
     /// Retrieves the font for the provided style and type
     /// - Parameters:
     ///   - style: The style of the font.
     ///   - weight: The weight of the font.
-    public static func pepFont(style: TextStyle,
-                               weight: UIFont.Weight) -> UIFont {
+    public static func pepFont(style: TextStyle, weight: UIFont.Weight) -> UIFont {
         guard let font = UIFont(name: getFontName(from: weight),
                                 size: preferredFontSize(for: style)) else {
                                     Log.shared.info("Missing custom font. System default font for specified style is used now.")
@@ -65,10 +61,9 @@ extension UIFont {
     }
 
     static private func getFontWeight(from font: UIFont) -> UIFont.Weight {
-        let familyName = font.fontDescriptor
-        if let fontName: String = font.fontDescriptor.fontAttributes[.visibleName] as? String {
+        if let fontName = font.fontDescriptor.fontAttributes[.visibleName] as? String {
             if fontName.lowercased().contains(medium.lowercased()) {
-                return UIFont.Weight.medium
+                return .medium
             } else if fontName.lowercased().contains(semibold.lowercased()) {
                 return .semibold
             }

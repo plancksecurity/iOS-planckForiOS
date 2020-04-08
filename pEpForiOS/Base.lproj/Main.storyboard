@@ -399,41 +399,8 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="mailingListCell" rowHeight="50" id="Hir-dS-fkg" customClass="MailinglistCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="72" width="896" height="50"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Hir-dS-fkg" id="0v8-u0-Fch">
-                                    <rect key="frame" x="44" y="0.0" width="808" height="50"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This email has been sent as part of a mailing list." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BjL-CL-0Cu">
-                                            <rect key="frame" x="15" y="5" width="306" height="16"/>
-                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWA-cC-IZF">
-                                            <rect key="frame" x="0.0" y="22" width="72" height="27"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <state key="normal" title="Unsubscribe"/>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="BjL-CL-0Cu" firstAttribute="leading" secondItem="0v8-u0-Fch" secondAttribute="leading" constant="15" id="4Il-z2-wbU"/>
-                                        <constraint firstItem="oWA-cC-IZF" firstAttribute="leading" secondItem="0v8-u0-Fch" secondAttribute="leading" id="A2p-Qr-UdG"/>
-                                        <constraint firstAttribute="trailing" secondItem="BjL-CL-0Cu" secondAttribute="trailing" priority="10" constant="10" id="MXz-cR-pkK"/>
-                                        <constraint firstItem="BjL-CL-0Cu" firstAttribute="top" secondItem="0v8-u0-Fch" secondAttribute="top" constant="5" id="OUM-cX-Qvi"/>
-                                        <constraint firstAttribute="bottom" secondItem="oWA-cC-IZF" secondAttribute="bottom" constant="1" id="Qkm-m7-duu"/>
-                                        <constraint firstAttribute="trailing" secondItem="oWA-cC-IZF" secondAttribute="trailing" priority="10" constant="10" id="nLh-FJ-GZf"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                <connections>
-                                    <outlet property="titleLabel" destination="BjL-CL-0Cu" id="m1J-dF-Lov"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderCell" rowHeight="72" id="kFd-Le-QvU" customClass="MessageSenderCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="122" width="896" height="72"/>
+                                <rect key="frame" x="0.0" y="72" width="896" height="72"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kFd-Le-QvU" id="dlZ-8o-1iE">
                                     <rect key="frame" x="44" y="0.0" width="808" height="72"/>
@@ -468,7 +435,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderSubjectCell" rowHeight="66" id="w8o-Py-AVt" customClass="MessageSubjectCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="194" width="896" height="66"/>
+                                <rect key="frame" x="0.0" y="144" width="896" height="66"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w8o-Py-AVt" id="0wZ-Iy-bZj">
                                     <rect key="frame" x="44" y="0.0" width="808" height="66"/>
@@ -515,7 +482,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderBodyCell" rowHeight="200" id="emX-Ao-r5Q" customClass="MessageContentCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="260" width="896" height="200"/>
+                                <rect key="frame" x="0.0" y="210" width="896" height="200"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="emX-Ao-r5Q" id="Tft-DN-iZy">
                                     <rect key="frame" x="44" y="0.0" width="808" height="200"/>
@@ -549,7 +516,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="attachmentsCell" id="wEk-G8-zwU" customClass="MessageAttachmentsCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="460" width="896" height="44"/>
+                                <rect key="frame" x="0.0" y="410" width="896" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wEk-G8-zwU" id="W8L-Sa-ksv">
                                     <rect key="frame" x="44" y="0.0" width="808" height="44"/>
@@ -966,9 +933,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="cRe-YG-393"/>
-        <segue reference="CKh-jT-ski"/>
-        <segue reference="Bs0-pZ-8nY"/>
+        <segue reference="RTR-We-Kc1"/>
+        <segue reference="mZj-Mg-VzM"/>
+        <segue reference="2fD-kL-Bvj"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="attachment-list-icon" width="14" height="15"/>
