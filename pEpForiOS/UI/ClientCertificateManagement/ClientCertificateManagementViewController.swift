@@ -73,8 +73,7 @@ extension ClientCertificateManagementViewController {
         addCertButton.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
         addCertButton.tintColor = UIColor.white
         
-        let backButtonTitle = NSLocalizedString("Cancel",
-                                                comment: "Back button for client cert managment")
+        let backButtonTitle = viewModel?.backButtonText()
         let newBackButton = UIBarButtonItem(title: backButtonTitle,
                                             style: .plain,
                                             target: self,
@@ -103,6 +102,7 @@ extension ClientCertificateManagementViewController: UITableViewDelegate {
         let select = vm.handleDidSelect(rowAt: indexPath)
         switch select {
         case .newAccount:
+            tableView.deselectRow(at: indexPath, animated: false)
             performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
         case .updateCertificate:
             navigationController?.popViewController(animated: true)
@@ -190,7 +190,7 @@ extension ClientCertificateManagementViewController: SwipeTableViewCellDelegate 
         }
         configure(action: deleteAction, with: swipeActionDescriptor)
         swipeActions.append(deleteAction)
-        return swipeActions
+        return (orientation == .right ?   swipeActions : nil)
     }
     
     func deleteAction(forCellAt: IndexPath) {
