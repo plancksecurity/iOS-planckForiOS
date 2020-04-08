@@ -36,20 +36,30 @@ extension ClientCertificateManagementViewModel {
 }
 
 final class ClientCertificateManagementViewModel {
-    private let clientCertificateUtil: ClientCertificateUtil
+    private let clientCertificateUtil: ClientCertificateUtilProtocol
     private var verifiableAccount: VerifiableAccountProtocol
     public weak var delegate: ClientCertificateManagementViewModelDelegate?
     public private(set) var rows = [Row]()
     public var accountToUpdate: Account?
 
     public init(verifiableAccount: VerifiableAccountProtocol? = nil,
-                clientCertificateUtil: ClientCertificateUtil = ClientCertificateUtil(),
+                clientCertificateUtil: ClientCertificateUtilProtocol = ClientCertificateUtil(),
                 account: Account? = nil) {
         self.clientCertificateUtil = clientCertificateUtil
         self.verifiableAccount = verifiableAccount ??
             VerifiableAccount.verifiableAccount(for: .clientCertificate)
         setup()
         accountToUpdate = account
+    }
+    
+    public func backButtonText() -> String {
+        if accountToUpdate != nil {
+            return NSLocalizedString("Cancel",
+                              comment: "Back button for client cert managment when shown from account")
+        } else {
+            return NSLocalizedString("Back",
+                              comment: "Back button for client cert managment when shown from login")
+        }
     }
 
     public func handleDidSelect(rowAt indexPath: IndexPath) -> ClientCertificateAction {
@@ -69,7 +79,7 @@ final class ClientCertificateManagementViewModel {
         return LoginViewModel(verifiableAccount: verifiableAccount)
     }
     public func deleteCertificate(indexPath: IndexPath) -> Bool{
-        let list = clientCertificateUtil.listCertificates()
+        let list = clientCertificateUtil.listCertificates(session: nil)
         do {
             try clientCertificateUtil.delete(clientCertificate: list[indexPath.row])
             rows.remove(at: indexPath.row)
@@ -91,6 +101,6 @@ final class ClientCertificateManagementViewModel {
 
 extension ClientCertificateManagementViewModel {
     private func setup() {
-        rows = clientCertificateUtil.listCertificates().map { Row(clientCertificate: $0) }
+        rows = clientCertificateUtil.listCertificates(session: nil).map { Row(clientCertificate: $0) }
     }
 }
