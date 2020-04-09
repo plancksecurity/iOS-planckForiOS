@@ -9,7 +9,6 @@
 import XCTest
 
 import MessageModel
-@testable import pEpForiOS
 import PEPObjCAdapterFramework
 
 class PepAdapterTests: XCTestCase {
