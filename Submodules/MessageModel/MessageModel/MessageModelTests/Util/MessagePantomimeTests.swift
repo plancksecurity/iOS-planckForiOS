@@ -13,7 +13,6 @@ import CoreData
 import PantomimeFramework
 import PEPObjCAdapterFramework
 
-//!!!: must be moved to MM
 class MessagePantomimeTests: CoreDataDrivenTestBase {
 
     func testPantomimeFlagsFromMessage() {
