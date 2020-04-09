@@ -10,7 +10,6 @@ import XCTest
 
 import MessageModel
 
-//!!!: must be moved to MM as the tested class is also in MM.
 class QualifyServerIsLocalServiceTest: XCTestCase {
 
     func testServerQualification() {
