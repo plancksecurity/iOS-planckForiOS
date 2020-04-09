@@ -238,6 +238,7 @@
 		4384D3FC243F3061006CCBA2 /* IOS-211_hi_there.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4384D3FB243F3061006CCBA2 /* IOS-211_hi_there.txt */; };
 		4384D3FE243F30BC006CCBA2 /* IOS-211-pdfEmail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4384D3FD243F30BC006CCBA2 /* IOS-211-pdfEmail.txt */; };
 		4384D400243F3456006CCBA2 /* PantomimeFolderAttribute+ExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D3FF243F3456006CCBA2 /* PantomimeFolderAttribute+ExtensionsTest.swift */; };
+		4384D402243F3626006CCBA2 /* MimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D401243F3626006CCBA2 /* MimeTests.swift */; };
 		4396230D23FD41C2007E9364 /* ClientCertificateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */; };
 		4396231023FD5079007E9364 /* ClientCertificateUtil+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */; };
 		439B16A222802A8700201DE5 /* VerifiableAccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */; };
@@ -698,6 +699,7 @@
 		4384D3FB243F3061006CCBA2 /* IOS-211_hi_there.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211_hi_there.txt"; sourceTree = "<group>"; };
 		4384D3FD243F30BC006CCBA2 /* IOS-211-pdfEmail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-pdfEmail.txt"; sourceTree = "<group>"; };
 		4384D3FF243F3456006CCBA2 /* PantomimeFolderAttribute+ExtensionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PantomimeFolderAttribute+ExtensionsTest.swift"; sourceTree = "<group>"; };
+		4384D401243F3626006CCBA2 /* MimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTests.swift; sourceTree = "<group>"; };
 		4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateUtil.swift; sourceTree = "<group>"; };
 		4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClientCertificateUtil+Internal.swift"; sourceTree = "<group>"; };
 		439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifiableAccountProtocol.swift; sourceTree = "<group>"; };
@@ -2122,6 +2124,7 @@
 				4355E4D6233C9DCF005772D5 /* PantomimeFromPEPMessageTest.swift */,
 				4384D3F7243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift */,
 				4384D3FF243F3456006CCBA2 /* PantomimeFolderAttribute+ExtensionsTest.swift */,
+				4384D401243F3626006CCBA2 /* MimeTests.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2872,6 +2875,7 @@
 				154D172D23732FF7001FDF78 /* SyncFlagsToServerOperationTest.swift in Sources */,
 				43607DE123FE870C00FA66B8 /* ClientCertificates+TestUtils.swift in Sources */,
 				154D173423732FF7001FDF78 /* FetchMessagesOperationTest.swift in Sources */,
+				4384D402243F3626006CCBA2 /* MimeTests.swift in Sources */,
 				37FED96E228328ED004C7804 /* MimeTypeUtilsTest.swift in Sources */,
 				B7FD55D92338D01F00C9FC55 /* IdentityQueryResultsTest.swift in Sources */,
 				152E3C9F231BE34100C1420B /* BackgroundTaskManagerTest.swift in Sources */,
