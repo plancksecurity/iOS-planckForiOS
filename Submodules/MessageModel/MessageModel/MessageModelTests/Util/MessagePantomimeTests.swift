@@ -13,7 +13,7 @@ import CoreData
 import PantomimeFramework
 import PEPObjCAdapterFramework
 
-class MessagePantomimeTests: CoreDataDrivenTestBase {
+class MessagePantomimeTests: PersistentStoreDrivenTestBase {
 
     func testPantomimeFlagsFromMessage() {
         let m = CdMessage(context: moc)
