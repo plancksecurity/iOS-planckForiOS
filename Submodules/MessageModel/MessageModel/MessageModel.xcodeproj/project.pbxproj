@@ -237,6 +237,7 @@
 		4384D3FA243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4384D3F9243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt */; };
 		4384D3FC243F3061006CCBA2 /* IOS-211_hi_there.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4384D3FB243F3061006CCBA2 /* IOS-211_hi_there.txt */; };
 		4384D3FE243F30BC006CCBA2 /* IOS-211-pdfEmail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4384D3FD243F30BC006CCBA2 /* IOS-211-pdfEmail.txt */; };
+		4384D400243F3456006CCBA2 /* PantomimeFolderAttribute+ExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D3FF243F3456006CCBA2 /* PantomimeFolderAttribute+ExtensionsTest.swift */; };
 		4396230D23FD41C2007E9364 /* ClientCertificateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */; };
 		4396231023FD5079007E9364 /* ClientCertificateUtil+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */; };
 		439B16A222802A8700201DE5 /* VerifiableAccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */; };
@@ -696,6 +697,7 @@
 		4384D3F9243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UnencryptedHTMLMail.txt; sourceTree = "<group>"; };
 		4384D3FB243F3061006CCBA2 /* IOS-211_hi_there.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211_hi_there.txt"; sourceTree = "<group>"; };
 		4384D3FD243F30BC006CCBA2 /* IOS-211-pdfEmail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-pdfEmail.txt"; sourceTree = "<group>"; };
+		4384D3FF243F3456006CCBA2 /* PantomimeFolderAttribute+ExtensionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PantomimeFolderAttribute+ExtensionsTest.swift"; sourceTree = "<group>"; };
 		4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateUtil.swift; sourceTree = "<group>"; };
 		4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClientCertificateUtil+Internal.swift"; sourceTree = "<group>"; };
 		439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifiableAccountProtocol.swift; sourceTree = "<group>"; };
@@ -2119,6 +2121,7 @@
 				152EC88622E73721001836F9 /* CdMessage+FakeTest.swift */,
 				4355E4D6233C9DCF005772D5 /* PantomimeFromPEPMessageTest.swift */,
 				4384D3F7243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift */,
+				4384D3FF243F3456006CCBA2 /* PantomimeFolderAttribute+ExtensionsTest.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2874,6 +2877,7 @@
 				152E3C9F231BE34100C1420B /* BackgroundTaskManagerTest.swift in Sources */,
 				B7E02ABF2227F49600741157 /* MessageQueryResultsSearchTest.swift in Sources */,
 				4358A06622A5011F00C49E43 /* MockNotifyHandshakeDelegate.swift in Sources */,
+				4384D400243F3456006CCBA2 /* PantomimeFolderAttribute+ExtensionsTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
