@@ -236,6 +236,7 @@
 		4384D3F8243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D3F7243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift */; };
 		4384D3FA243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4384D3F9243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt */; };
 		4384D3FC243F3061006CCBA2 /* IOS-211_hi_there.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4384D3FB243F3061006CCBA2 /* IOS-211_hi_there.txt */; };
+		4384D3FE243F30BC006CCBA2 /* IOS-211-pdfEmail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4384D3FD243F30BC006CCBA2 /* IOS-211-pdfEmail.txt */; };
 		4396230D23FD41C2007E9364 /* ClientCertificateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */; };
 		4396231023FD5079007E9364 /* ClientCertificateUtil+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */; };
 		439B16A222802A8700201DE5 /* VerifiableAccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */; };
@@ -694,6 +695,7 @@
 		4384D3F7243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PantomimeTest.swift"; sourceTree = "<group>"; };
 		4384D3F9243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UnencryptedHTMLMail.txt; sourceTree = "<group>"; };
 		4384D3FB243F3061006CCBA2 /* IOS-211_hi_there.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211_hi_there.txt"; sourceTree = "<group>"; };
+		4384D3FD243F30BC006CCBA2 /* IOS-211-pdfEmail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-pdfEmail.txt"; sourceTree = "<group>"; };
 		4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateUtil.swift; sourceTree = "<group>"; };
 		4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClientCertificateUtil+Internal.swift"; sourceTree = "<group>"; };
 		439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifiableAccountProtocol.swift; sourceTree = "<group>"; };
@@ -1726,6 +1728,7 @@
 				4331CE88229BEB7900DDDC65 /* IOS-1556_html_mail_with_html_attachments_mixed.txt */,
 				4384D3F9243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt */,
 				4384D3FB243F3061006CCBA2 /* IOS-211_hi_there.txt */,
+				4384D3FD243F30BC006CCBA2 /* IOS-211-pdfEmail.txt */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -2399,6 +2402,7 @@
 				43607DDF23FE81D300FA66B8 /* Certificate_003.p12 in Resources */,
 				15C7A88D2385C08100C47364 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */,
 				4331CE87229BEABF00DDDC65 /* IOS-1556_html_mail_with_html_attachment_inline.txt in Resources */,
+				4384D3FE243F30BC006CCBA2 /* IOS-211-pdfEmail.txt in Resources */,
 				4384D3FC243F3061006CCBA2 /* IOS-211_hi_there.txt in Resources */,
 				43607DD923FD84EE00FA66B8 /* Certificate_001.p12 in Resources */,
 				4331CE85229BDF0F00DDDC65 /* IOS-1556_html_mail_with_html_attachment.txt in Resources */,
