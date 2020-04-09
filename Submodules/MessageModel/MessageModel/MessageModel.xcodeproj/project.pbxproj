@@ -240,6 +240,7 @@
 		4384D400243F3456006CCBA2 /* PantomimeFolderAttribute+ExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D3FF243F3456006CCBA2 /* PantomimeFolderAttribute+ExtensionsTest.swift */; };
 		4384D402243F3626006CCBA2 /* MimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D401243F3626006CCBA2 /* MimeTests.swift */; };
 		4384D404243F3714006CCBA2 /* PGPMimeMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4384D403243F3714006CCBA2 /* PGPMimeMail.txt */; };
+		4384D406243F455A006CCBA2 /* MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D405243F455A006CCBA2 /* MiscTests.swift */; };
 		4396230D23FD41C2007E9364 /* ClientCertificateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */; };
 		4396231023FD5079007E9364 /* ClientCertificateUtil+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */; };
 		439B16A222802A8700201DE5 /* VerifiableAccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */; };
@@ -702,6 +703,7 @@
 		4384D3FF243F3456006CCBA2 /* PantomimeFolderAttribute+ExtensionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PantomimeFolderAttribute+ExtensionsTest.swift"; sourceTree = "<group>"; };
 		4384D401243F3626006CCBA2 /* MimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTests.swift; sourceTree = "<group>"; };
 		4384D403243F3714006CCBA2 /* PGPMimeMail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PGPMimeMail.txt; sourceTree = "<group>"; };
+		4384D405243F455A006CCBA2 /* MiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscTests.swift; sourceTree = "<group>"; };
 		4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateUtil.swift; sourceTree = "<group>"; };
 		4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClientCertificateUtil+Internal.swift"; sourceTree = "<group>"; };
 		439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifiableAccountProtocol.swift; sourceTree = "<group>"; };
@@ -2128,6 +2130,7 @@
 				4384D3F7243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift */,
 				4384D3FF243F3456006CCBA2 /* PantomimeFolderAttribute+ExtensionsTest.swift */,
 				4384D401243F3626006CCBA2 /* MimeTests.swift */,
+				4384D405243F455A006CCBA2 /* MiscTests.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2843,6 +2846,7 @@
 				37688A7523030AAD00A561C1 /* CdMessage+cloneTest.swift in Sources */,
 				15175EE322240FB400C91DB8 /* QueryResultsControllerTest.swift in Sources */,
 				4355E4D3233C9C4E005772D5 /* CdMessageIsAutoConsumeableTest.swift in Sources */,
+				4384D406243F455A006CCBA2 /* MiscTests.swift in Sources */,
 				490FF8141E79726300BC15F9 /* CdImapFields+ImapFlagsTests.swift in Sources */,
 				154D173923733189001FDF78 /* CdMessage+TestUtils.swift in Sources */,
 				4384D3F8243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift in Sources */,
