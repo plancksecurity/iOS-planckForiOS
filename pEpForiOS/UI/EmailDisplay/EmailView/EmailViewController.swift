@@ -288,7 +288,8 @@ extension EmailViewController: MessageAttachmentDelegate {
 // MARK: - SecureWebViewControllerDelegate
 
 extension EmailViewController: SecureWebViewControllerDelegate {
-    func secureWebViewController(_ webViewController: SecureWebViewController, sizeChangedTo size: CGSize) {
+    func secureWebViewController(_ webViewController: SecureWebViewController,
+                                 sizeChangedTo size: CGSize) {
         tableView.updateSize()
     }
 }
