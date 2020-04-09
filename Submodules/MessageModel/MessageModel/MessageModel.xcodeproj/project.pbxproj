@@ -232,6 +232,7 @@
 		43753CEE222D3A3E002EE98B /* CdAttachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CED222D3A3E002EE98B /* CdAttachment+Extension.swift */; };
 		437AA507224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437AA506224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift */; };
 		4383344423FD78BB004CC422 /* ClientCertificateUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4383344323FD78BB004CC422 /* ClientCertificateUtilTest.swift */; };
+		4384D3F4243F2B82006CCBA2 /* QualifyServerIsLocalServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D3F3243F2B82006CCBA2 /* QualifyServerIsLocalServiceTest.swift */; };
 		4396230D23FD41C2007E9364 /* ClientCertificateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */; };
 		4396231023FD5079007E9364 /* ClientCertificateUtil+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */; };
 		439B16A222802A8700201DE5 /* VerifiableAccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */; };
@@ -686,6 +687,7 @@
 		437AA506224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+NonOptionalConvenienceAccessors.swift"; sourceTree = "<group>"; };
 		4383344323FD78BB004CC422 /* ClientCertificateUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateUtilTest.swift; sourceTree = "<group>"; };
 		4383344623FD806D004CC422 /* Certificate_001.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Certificate_001.p12; sourceTree = "<group>"; };
+		4384D3F3243F2B82006CCBA2 /* QualifyServerIsLocalServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalServiceTest.swift; sourceTree = "<group>"; };
 		4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateUtil.swift; sourceTree = "<group>"; };
 		4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClientCertificateUtil+Internal.swift"; sourceTree = "<group>"; };
 		439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifiableAccountProtocol.swift; sourceTree = "<group>"; };
@@ -1787,6 +1789,14 @@
 			path = QualifyLocalServer;
 			sourceTree = "<group>";
 		};
+		4384D3F0243F2B04006CCBA2 /* QualifyLocalServer */ = {
+			isa = PBXGroup;
+			children = (
+				4384D3F3243F2B82006CCBA2 /* QualifyServerIsLocalServiceTest.swift */,
+			);
+			path = QualifyLocalServer;
+			sourceTree = "<group>";
+		};
 		4396230B23FD419B007E9364 /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
@@ -2177,6 +2187,7 @@
 				15679F032292CB2C0051DCC3 /* MessageModelObjects */,
 				37BC7AF72226DB540047267A /* MessageQueryResultsTest */,
 				4383344223FD7891004CC422 /* Certificates */,
+				4384D3F0243F2B04006CCBA2 /* QualifyLocalServer */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -2838,6 +2849,7 @@
 				158A6E042305C2F5006A9ECE /* PEPUtil+EncryptionTest.swift in Sources */,
 				154D173B237331FE001FDF78 /* ImapFlagsTests.swift in Sources */,
 				B7789CCF2225A5FE00AB08F4 /* MessageQueryResultsFilterTest.swift in Sources */,
+				4384D3F4243F2B82006CCBA2 /* QualifyServerIsLocalServiceTest.swift in Sources */,
 				154D172D23732FF7001FDF78 /* SyncFlagsToServerOperationTest.swift in Sources */,
 				43607DE123FE870C00FA66B8 /* ClientCertificates+TestUtils.swift in Sources */,
 				154D173423732FF7001FDF78 /* FetchMessagesOperationTest.swift in Sources */,
