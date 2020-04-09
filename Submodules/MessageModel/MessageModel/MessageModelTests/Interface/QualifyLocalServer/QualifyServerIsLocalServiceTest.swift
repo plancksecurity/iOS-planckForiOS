@@ -10,8 +10,6 @@ import XCTest
 
 import MessageModel
 
-@testable import pEpForiOS
-
 //!!!: must be moved to MM as the tested class is also in MM.
 class QualifyServerIsLocalServiceTest: XCTestCase {
 
