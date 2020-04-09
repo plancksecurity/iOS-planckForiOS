@@ -13,7 +13,7 @@ import PantomimeFramework
 @testable import MessageModel
 //!!!: move to MM
 
-class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
+class CdMessage_PantomimeTest: PersistentStoreDrivenTestBase {
     // MARK: - StoreCommandForFlagsToRemoved / Add
 
     func testStoreCommandForFlagsToRemove_someServerFlagsSet() {
