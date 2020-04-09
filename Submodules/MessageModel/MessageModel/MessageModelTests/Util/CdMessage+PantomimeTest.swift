@@ -11,7 +11,6 @@ import XCTest
 import CoreData
 import PantomimeFramework
 @testable import MessageModel
-@testable import pEpForiOS
 //!!!: move to MM
 
 class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
