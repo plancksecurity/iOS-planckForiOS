@@ -11,7 +11,6 @@ import CoreData
 
 @testable import MessageModel
 import PantomimeFramework
-import pEpForiOS
 import PEPObjCAdapterFramework
 
 //!!!: must be moved to MM
