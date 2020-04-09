@@ -903,6 +903,7 @@
 				439B16A022802A8700201DE5 /* VerifiableAccount */,
 				3705098C22DF2E4600CB73D6 /* PEPUtils */,
 				4396230B23FD419B007E9364 /* Certificates */,
+				4384D3EB243F29ED006CCBA2 /* QualifyLocalServer */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -1777,6 +1778,15 @@
 			path = ClientCertificateUtilTest;
 			sourceTree = "<group>";
 		};
+		4384D3EB243F29ED006CCBA2 /* QualifyLocalServer */ = {
+			isa = PBXGroup;
+			children = (
+				43C123DB223A7FCF00F6A9B2 /* QualifyServerIsLocalServiceProtocol.swift */,
+				43C123E0223A7FCF00F6A9B2 /* QualifyServerIsLocalService.swift */,
+			);
+			path = QualifyLocalServer;
+			sourceTree = "<group>";
+		};
 		4396230B23FD419B007E9364 /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
@@ -1859,9 +1869,7 @@
 		43C123D7223A7FCF00F6A9B2 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				43C123DB223A7FCF00F6A9B2 /* QualifyServerIsLocalServiceProtocol.swift */,
 				43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */,
-				43C123E0223A7FCF00F6A9B2 /* QualifyServerIsLocalService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
