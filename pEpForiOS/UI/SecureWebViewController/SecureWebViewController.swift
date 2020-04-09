@@ -54,7 +54,6 @@ class SecureWebViewController: UIViewController {
         }
     }
     private var webView: WKWebView!
-    private var sizeChangeObserver: NSKeyValueObservation?
     /// webview.scrollView.contentSize after html has finished loading and layouting
     private(set) var contentSize: CGSize?
     /// Assumed max time it can take to load a page.
@@ -94,7 +93,6 @@ class SecureWebViewController: UIViewController {
     // https://developer.apple.com/documentation/webkit/wkwebview#2560973
     override func loadView() {
         let config = WKWebViewConfiguration()
-
 
         config.preferences = preferences()
         config.dataDetectorTypes = [.link,
@@ -294,14 +292,16 @@ extension SecureWebViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         // UIView/UIScrollView needs some time to layout itself
-        // Unfortunately, WKWebView does not have the right method for this action.
+        // Unfortunately, WKWebView does not have the right method finishLoading or something like that.
         webView.scrollView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "contentSize" {
+            // Remove observer, because we don't need it anymore
             webView.scrollView.removeObserver(self, forKeyPath: "contentSize")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, qos: .userInteractive) { [weak self] in
+            // We are still waiting some time for webView "did layout subviews"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, qos: .userInteractive) { [weak self] in
                 guard let me = self else {
                     Log.shared.lostMySelf()
                     return
