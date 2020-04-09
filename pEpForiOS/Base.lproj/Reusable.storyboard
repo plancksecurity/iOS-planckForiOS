@@ -185,7 +185,7 @@
                                                         <subviews>
                                                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emU-WV-Kap">
                                                                 <rect key="frame" x="0.0" y="0.0" width="86" height="45"/>
-                                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
                                                                 <state key="normal" title="Button"/>
                                                                 <connections>
                                                                     <action selector="didPress:" destination="GZS-2u-rXb" eventType="touchUpInside" id="Qh9-Xn-6Jk"/>

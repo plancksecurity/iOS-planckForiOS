@@ -25,6 +25,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
     @IBOutlet weak var trustwordsLabel: UILabel! {
         didSet {
+            trustwordsLabel.font = UIFont.pepFont(style: .body, weight: .regular)
             trustwordsLabel.backgroundColor = .white
         }
     }
@@ -46,6 +47,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
     @IBOutlet weak var message: UILabel! {
         didSet {
+            message.font = UIFont.pepFont(style: .footnote, weight: .regular)
             message.text = viewModel.getMessage()
         }
     }
