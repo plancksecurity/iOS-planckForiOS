@@ -86,8 +86,6 @@ class SecureWebViewController: UIViewController {
         super.viewDidLoad()
         htmlOptimizer = HtmlOptimizerUtil(minimumFontSize: minimumFontSize)
         webView.scrollView.isScrollEnabled = scrollingEnabled
-
-        informDelegateAfterLoadingFinished()
     }
 
     // Due to an Apple bug (https://bugs.webkit.org/show_bug.cgi?id=137160),
@@ -243,45 +241,6 @@ extension SecureWebViewController {
         return false
     }
 
-    private func informDelegateAfterLoadingFinished() {
-        // code to run whenever the content(size) changes
-        let handler = {
-            [weak self] (scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
-                return
-            }
-
-            guard
-                let contentSize = change.newValue,
-                !me.shouldIgnoreContentSizeChange(newSize: contentSize) else {
-                    return
-            }
-
-            if contentSize.width == me.view.bounds.width {
-                // In case there is no zoom but the vertical size still changed
-                me.contentSize = contentSize
-                me.lastReportedSizeUpdate = Date()
-                me.delegate?.secureWebViewController(me, sizeChangedTo: contentSize)
-            }
-            else {
-                if me.isContentLoadedAndLayouted {
-                    // We assuem initial loading is done.
-                    // The size change must be zooming triggered by user.
-                    return
-                }
-
-
-                me.contentSize = contentSize
-                me.lastReportedSizeUpdate = Date()
-                me.delegate?.secureWebViewController(me, sizeChangedTo: contentSize)
-            }
-        }
-        sizeChangeObserver = webView.scrollView.observe(\UIScrollView.contentSize,
-                                                        options: [NSKeyValueObservingOptions.new],
-                                                        changeHandler: handler)
-    }
-
     // We ignore calls before html content has been loaded (zero size).
     // Also we do not want to bother the delegate if the size did not change (to
     // improve performance and to avoid endless loops inform delegate -> delegate
@@ -331,6 +290,27 @@ extension SecureWebViewController: WKNavigationDelegate {
             Log.shared.errorAndCrash("Unhandled case")
         }
         decisionHandler(.cancel)
+    }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        // UIView/UIScrollView needs some time to layout itself
+        // Unfortunately, WKWebView does not have the right method for this action.
+        webView.scrollView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "contentSize" {
+            webView.scrollView.removeObserver(self, forKeyPath: "contentSize")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, qos: .userInteractive) { [weak self] in
+                guard let me = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+                me.contentSize = me.webView.scrollView.contentSize
+                me.lastReportedSizeUpdate = Date()
+                me.delegate?.secureWebViewController(me, sizeChangedTo: me.webView.scrollView.contentSize)
+            }
+        }
     }
 }
 
