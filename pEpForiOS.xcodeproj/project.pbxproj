@@ -1215,20 +1215,12 @@
 		151F7202202A06D30057C74D /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				151F7203202A06E20057C74D /* IMAP */,
 				1574D07B2114694F00FEDC93 /* Extensions */,
 				150707DB21006CD000AA213F /* ComposeUtilTest.swift */,
 				43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */,
 				15A5368F2155136800CF6204 /* PEPUtilTest.swift */,
 			);
 			path = Util;
-			sourceTree = "<group>";
-		};
-		151F7203202A06E20057C74D /* IMAP */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = IMAP;
 			sourceTree = "<group>";
 		};
 		1521B78B241BDA66000EAE57 /* UIUtils */ = {
