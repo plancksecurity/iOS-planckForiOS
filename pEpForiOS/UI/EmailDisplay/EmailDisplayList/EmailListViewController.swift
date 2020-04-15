@@ -508,13 +508,14 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         }
 
         // Create swipe actions, taking the currently displayed folder into account
-        var swipeActions = [SwipeAction]()
+        var rightSwipeActions = [SwipeAction]()
 
         guard let model = viewModel else {
             Log.shared.errorAndCrash("Should have VM")
             return nil
         }
 
+        
         // Delete or Archive
         let destructiveAction = model.getDestructiveAction(forMessageAt: indexPath.row)
         let archiveAction =
@@ -530,7 +531,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
 
         }
         configure(action: archiveAction, with: destructiveAction)
-        swipeActions.append(archiveAction)
+        rightSwipeActions.append(archiveAction)
 
         // Flag
         let flagActionDescription = model.getFlagAction(forMessageAt: indexPath.row)
@@ -547,7 +548,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             flagAction.hidesWhenSelected = true
 
             configure(action: flagAction, with: flagActionDescription)
-            swipeActions.append(flagAction)
+            rightSwipeActions.append(flagAction)
         }
 
         // More (reply++)
@@ -565,9 +566,26 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             }
             moreAction.hidesWhenSelected = true
             configure(action: moreAction, with: moreActionDescription)
-            swipeActions.append(moreAction)
+            rightSwipeActions.append(moreAction)
         }
-        return (orientation == .right ?   swipeActions : nil)
+
+        var leftSwipeActions = [SwipeAction]()
+        // Read
+        if let readActionDescription = model.getReadAction(forMessageAt: indexPath.row) {
+            let readAction = SwipeAction(style: .default, title: "Read") {
+                [weak self] action, indexPath in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost MySelf")
+                    return
+                }
+                me.readAction(forCellAt: indexPath)
+            }
+            readAction.hidesWhenSelected = true
+            configure(action: readAction, with: readActionDescription)
+            leftSwipeActions.append(readAction)
+        }
+
+        return orientation == .right ? rightSwipeActions : leftSwipeActions
     }
 
     func tableView(_ tableView: UITableView,
@@ -1015,14 +1033,32 @@ extension EmailListViewController {
 
 extension EmailListViewController {
     private func createRowAction(image: UIImage?,
-                                 action: @escaping (UITableViewRowAction, IndexPath) -> Void
-    ) -> UITableViewRowAction {
+                                 action: @escaping (UITableViewRowAction, IndexPath) -> Void)
+        -> UITableViewRowAction {
         let rowAction = UITableViewRowAction(style: .normal, title: nil, handler: action)
         if let theImage = image {
             let iconColor = UIColor(patternImage: theImage)
             rowAction.backgroundColor = iconColor
         }
         return rowAction
+    }
+    
+    func readAction(forCellAt indexPath: IndexPath) {
+        guard let row = viewModel?.viewModel(for: indexPath.row) else {
+            Log.shared.errorAndCrash("No data for indexPath!")
+            return
+        }
+        guard let cell = self.tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
+            Log.shared.errorAndCrash("No cell for indexPath!")
+            return
+        }
+        if row.isSeen {
+            viewModel?.markAsUnread(indexPaths: [indexPath])
+            cell.isSeen = false
+        } else {
+            viewModel?.markAsRead(indexPaths: [indexPath])
+            cell.isSeen = true
+        }
     }
 
     func flagAction(forCellAt indexPath: IndexPath) {

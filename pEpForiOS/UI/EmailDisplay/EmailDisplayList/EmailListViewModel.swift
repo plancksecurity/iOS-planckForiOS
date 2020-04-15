@@ -141,6 +141,18 @@ class EmailListViewModel: EmailDisplayViewModel {
         }
     }
 
+    /// Returns the descriptor with the Read status (May be read or unread)
+    /// - Parameter index: The row index.
+    /// - Returns: action to trigger if user taps "read" button
+    public func getReadAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
+        let parentFolder = getParentFolder(forMessageAt: index)
+        if folderIsDraftsOrOutbox(parentFolder) {
+            return nil
+        }
+        let seen = messageQueryResults[index].imapFlags.seen
+        return seen ? .read : .unread
+    }
+    
     /// - returns: action to trigger if user clicks "more" button
     public func getMoreAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
         let parentFolder = getParentFolder(forMessageAt: index)
