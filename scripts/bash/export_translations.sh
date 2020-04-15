@@ -16,7 +16,16 @@ for lang in $languages
 do
   xcodebuild -exportLocalizations -project pEpForiOS.xcodeproj -exportLanguage $lang -localizationPath $appdir
 
-  cp "$appdir/$lang.xcloc/Localized Contents/$lang.xliff" $translationdir
+  if [ $lang = "en" ]
+  then
+    # Put en.xliff under base.xliff, correcting the language attributes
+    cp "$appdir/$lang.xcloc/Localized Contents/$lang.xliff" $translationdir/base.xliff
+    sed -i '' 's/source-language="en"/source-language="base"/' $translationdir/base.xliff
+    sed -i '' 's/target-language="en"/target-language="base"/' $translationdir/base.xliff
+  else
+    # Plain copy
+    cp "$appdir/$lang.xcloc/Localized Contents/$lang.xliff" $translationdir
+  fi
 done
 
 rm -fr $mytmpdir
