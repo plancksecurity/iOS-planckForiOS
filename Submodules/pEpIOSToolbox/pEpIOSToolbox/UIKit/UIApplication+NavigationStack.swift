@@ -36,6 +36,8 @@ extension UIApplication {
             return topViewController(inNavigationStackOf: primaryVc)
         } else if let presented = vc.presentedViewController {
             return topViewController(inNavigationStackOf: presented)
+        } else if let searchVc = vc as? UISearchController {
+            return searchVc.presentingViewController
         }
         return vc
     }
