@@ -259,7 +259,7 @@ extension SecureWebViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        // WKWebView has already content loaded (scripts, data) but scrollView doesn't have proper size yet
+        // WKWebView has just loaded its content (scripts, data) but scrollView doesn't have proper size yet
         // ScrollView needs some time to calculate own size.
         // The contentSize scrollView observer is needed to get an event
         // when the size of the scrollView content changes from CGSize.zero to final dimensions.
@@ -268,7 +268,7 @@ extension SecureWebViewController: WKNavigationDelegate {
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "contentSize" {
-            // ContentSize observer has already done its job.
+            // ContentSize observer has just done its job.
             webView.scrollView.removeObserver(self, forKeyPath: "contentSize")
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
