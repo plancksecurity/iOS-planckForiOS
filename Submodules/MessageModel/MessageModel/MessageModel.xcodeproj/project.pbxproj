@@ -270,6 +270,7 @@
 		43B2271424237131007EB91E /* OutlookO365SpecificInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2271324237131007EB91E /* OutlookO365SpecificInformation.swift */; };
 		43B6BE1923E43BCE00E3A60B /* ImapConnectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B6BE1823E43BCE00E3A60B /* ImapConnectionProtocol.swift */; };
 		43BBB4732448554100A88B39 /* HandshakeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BBB4722448554100A88B39 /* HandshakeTests.swift */; };
+		43BBB49524485AB800A88B39 /* HandshakeTests_mail_001.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43BBB49424485AB800A88B39 /* HandshakeTests_mail_001.txt */; };
 		43BC0E65235764D800125E01 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43BC0E63235764D800125E01 /* InfoPlist.strings */; };
 		43BC0E68235764D800125E01 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43BC0E66235764D800125E01 /* InfoPlist.strings */; };
 		43BC0E6B235764D800125E01 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43BC0E69235764D800125E01 /* Localizable.strings */; };
@@ -736,6 +737,7 @@
 		43B2271324237131007EB91E /* OutlookO365SpecificInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlookO365SpecificInformation.swift; sourceTree = "<group>"; };
 		43B6BE1823E43BCE00E3A60B /* ImapConnectionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImapConnectionProtocol.swift; sourceTree = "<group>"; };
 		43BBB4722448554100A88B39 /* HandshakeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeTests.swift; sourceTree = "<group>"; };
+		43BBB49424485AB800A88B39 /* HandshakeTests_mail_001.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HandshakeTests_mail_001.txt; sourceTree = "<group>"; };
 		43BC0E64235764D800125E01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		43BC0E67235764D800125E01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		43BC0E6A235764D800125E01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1744,6 +1746,7 @@
 				4384D3FB243F3061006CCBA2 /* IOS-211_hi_there.txt */,
 				4384D3FD243F30BC006CCBA2 /* IOS-211-pdfEmail.txt */,
 				4384D403243F3714006CCBA2 /* PGPMimeMail.txt */,
+				43BBB49424485AB800A88B39 /* HandshakeTests_mail_001.txt */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -2423,6 +2426,7 @@
 				43607DDF23FE81D300FA66B8 /* Certificate_003.p12 in Resources */,
 				15C7A88D2385C08100C47364 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */,
 				4331CE87229BEABF00DDDC65 /* IOS-1556_html_mail_with_html_attachment_inline.txt in Resources */,
+				43BBB49524485AB800A88B39 /* HandshakeTests_mail_001.txt in Resources */,
 				4384D3FE243F30BC006CCBA2 /* IOS-211-pdfEmail.txt in Resources */,
 				4384D404243F3714006CCBA2 /* PGPMimeMail.txt in Resources */,
 				4384D3FC243F3061006CCBA2 /* IOS-211_hi_there.txt in Resources */,
