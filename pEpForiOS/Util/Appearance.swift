@@ -64,9 +64,8 @@ class Appearance {
 
     /// Return custom pEp titleTextAttributes
     static private func titleTextAttributes() -> [NSAttributedString.Key : Any] {
-        return [.foregroundColor: UIColor.black,
-                .font: UIFont.pepFont(style: .body,
-                                      weight: .regular)]
+        return [.foregroundColor: UIColor.black, .font: UIFont.pepFont(style: .body, weight: .regular)
+        ]
     }
 
     // MARK: - iOS 13

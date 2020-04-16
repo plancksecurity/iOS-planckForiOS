@@ -18,15 +18,20 @@ extension UIFont {
     static private let medium = "SFUIText-Medium"
     static private let regular = "SFUIText-Regular"
     static private let semibold = "SFUIText-Semibold"
-
     
-    
+    @available(iOS 11, *)
+    public static func pepFont(style: TextStyle, weight: Weight) -> UIFont {
+        let metrics = UIFontMetrics(forTextStyle: style)
+        let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
+        let font = UIFont.systemFont(ofSize: desc.pointSize, weight: weight)
+        return metrics.scaledFont(for: font)
+    }
     
     /// Retrieves the font for the provided style and type
     /// - Parameters:
     ///   - style: The style of the font.
     ///   - weight: The weight of the font.
-    public static func pepFont(style: TextStyle,
+    public static func pepCustomFont(style: TextStyle,
                                weight: UIFont.Weight) -> UIFont {
         guard let font = UIFont(name: getFontName(from: weight),
                                 size: preferredFontSize(for: style)) else {
@@ -48,8 +53,8 @@ extension UIFont {
                 Log.shared.error("Missing UIFont.TextStyle")
                 return systemDynamicFont
         }
-        let customFont = UIFont.pepFont(style: UIFont.TextStyle.init(rawValue:textStyle),
-                                        weight: weight ?? defaultWeight)
+        let customFont = UIFont.pepCustomFont(style: UIFont.TextStyle.init(rawValue:textStyle),
+                                              weight: weight ?? defaultWeight)
         // We don't want to lose textStyle attribute in our custom fonts!
         customFont.fontDescriptor.addingAttributes([.textStyle : textStyle])
         customFont.fontDescriptor.addingAttributes([.family : getFontName(from: weight ?? defaultWeight)])
@@ -65,7 +70,6 @@ extension UIFont {
     }
 
     static private func getFontWeight(from font: UIFont) -> UIFont.Weight {
-        let familyName = font.fontDescriptor
         if let fontName: String = font.fontDescriptor.fontAttributes[.visibleName] as? String {
             if fontName.lowercased().contains(medium.lowercased()) {
                 return UIFont.Weight.medium
