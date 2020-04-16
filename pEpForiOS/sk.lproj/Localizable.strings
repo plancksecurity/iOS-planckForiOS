@@ -170,6 +170,9 @@
 /* Settings: Cell (button) title to view app credits */
 "Credits" = "Autori";
 
+/* Incorrect trustwords/PGP fingerprint */
+"Decline" = "Odmietnuť";
+
 /* Default Account Setting Section Title
    Settings: Cell (button) title to view default account setting */
 "Default Account" = "Predvolený účet";
@@ -607,7 +610,7 @@
 "Protect Message Subject" = "Chrániť predmet správy";
 
 /* passive mode description */
-"Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p." = "Verejný kľúč PGP bude pripojený k správe, iba ak p≡p zistí, že príjemca používa aj p≡p.";
+"Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p." = "Materiál verejného kľúča bude pripojený k správe, iba ak p≡p zistí, že príjemca používa aj p≡p.";
 
 /* Privacy status suggestion */
 "Re-establish the connection with your communication partner and try to complete another handshake." = "Obnovte spojenie s vašim komunikačným partnerom a skúste dokončiť ďalšie podanie ruky.";
@@ -634,7 +637,7 @@
    Account settings reset identity
    Reset account identity button title
    Settings: cell (button) title to view the trust contacts option */
-"Reset" = "Resetovať";
+"Reset" = "Obnoviť";
 
 /* Reset account identity button title
    Settings: Cell (button) title for reset all identities */

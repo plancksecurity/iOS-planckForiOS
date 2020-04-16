@@ -170,6 +170,9 @@
 /* Settings: Cell (button) title to view app credits */
 "Credits" = "Credits";
 
+/* Incorrect trustwords/PGP fingerprint */
+"Decline" = "Afwijzen";
+
 /* Default Account Setting Section Title
    Settings: Cell (button) title to view default account setting */
 "Default Account" = "Standaard Account";

@@ -20,8 +20,23 @@
 /* error message for .missingUsername */
 "A non-empty username is required" = "Username is required";
 
+/* keySync handshake alert message - two devices */
+"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?";
+
+/* keySync handshake alert message - more than two devices */
+"Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?";
+
 /* KeySyncWizard introduction message - two devices */
 "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?";
+
+/* KeySyncWizard introduction message - more than two devices */
+"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?";
+
+/* KeySyncWizard complete message - two devices */
+"We successfully created a device group. All your privacy is now synchronized." = "We successfully created a device group. All your privacy is now synchronized.";
+
+/* KeySyncWizard complete message - more than two devices */
+"The device is now member of your device group. All your privacy is now synchronized." = "The device is now member of your device group. All your privacy is now synchronized.";
 
 /* error message for .invalidEmail
    error message for .missingEmail */
@@ -51,9 +66,6 @@
 
 /* error message for .noConnectData */
 "An internal error occurred" = "An internal error occurred";
-
-/* KeySyncWizard introduction message - more than two devices */
-"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?";
 
 /* Archive button in slide-left menu */
 "Archive" = "Archive";
@@ -117,9 +129,6 @@
 /* Privacy status suggestion */
 "Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication.";
 
-/* accept hand shake sync button */
-"Confirm" = "Confirm";
-
 /* Confirm correct fingerprint (PGP, long version) */
 "Confirm Fingerprint" = "Confirm Fingerprint";
 
@@ -138,9 +147,6 @@
 
 /* Settings: Cell (button) title to view app credits */
 "Credits" = "Credits";
-
-/* Incorrect trustwords/PGP fingerprint */
-"Decline" = "Reject";
 
 /* Default Account Setting Section Title
    Settings: Cell (button) title to view default account setting */
@@ -430,12 +436,6 @@
 /* keySyncWizard animation view message */
 "Please give us a moment while we sync your devices. This can take a minute or more." = "Please give us a moment while we sync your devices. This can take a minute or more.";
 
-/* keySync handshake alert message - two devices */
-"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?";
-
-/* keySync handshake alert message - more than two devices */
-"Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?";
-
 /* Validation error for set_own_key UI */
 "Please provide an email and a fingerprint. The email must match an existing account." = "Please provide an email address and a fingerprint. The email address must match an existing account.";
 
@@ -450,9 +450,6 @@
 
 /* read button in slide-left menu */
 "Read" = "Read";
-
-/* decline hand shake sync button */
-"Reject" = "Reject";
 
 /* ComposeTableView: Label of swipe left. Removing of attachment. */
 "Remove" = "Remove";
@@ -549,11 +546,14 @@
 /* Compose field title */
 "Subject:" = "Subject:";
 
+/* accept hand shake sync button */
+"Confirm" = "Confirm";
+
+/* decline hand shake sync button */
+"Reject" = "Reject";
+
 /* error message for .accountExistence */
 "The account already exists" = "This account already exists";
-
-/* KeySyncWizard complete message - more than two devices */
-"The device is now member of your device group. All your privacy is now synchronized." = "The device is now member of your device group. All your privacy is now synchronized.";
 
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "The message could not be sent. Please try again later.";
@@ -669,9 +669,6 @@
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "We could not connect to the SMTP server.";
-
-/* KeySyncWizard complete message - two devices */
-"We successfully created a device group. All your privacy is now synchronized." = "We successfully created a device group. All your privacy is now synchronized.";
 
 /* Title for attachments filter */
 "With attachments" = "With attachments";

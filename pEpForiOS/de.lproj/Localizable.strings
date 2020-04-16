@@ -170,6 +170,9 @@
 /* Settings: Cell (button) title to view app credits */
 "Credits" = "Mitwirkung";
 
+/* Incorrect trustwords/PGP fingerprint */
+"Decline" = "Ablehnen";
+
 /* Default Account Setting Section Title
    Settings: Cell (button) title to view default account setting */
 "Default Account" = "Standard-Konto";
