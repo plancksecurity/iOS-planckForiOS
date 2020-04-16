@@ -75,7 +75,8 @@ class MailParsingTests: PersistentStoreDrivenTestBase {
         try! session.mySelf(pEpMySelfIdentity)
         XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
 
-        guard let cdMessage = TestUtil.cdMessage(fileName: "Undisplayable_HTML_Message.txt",
+        guard let cdMessage = TestUtil.cdMessage(testClass: MailParsingTests.self,
+                                                 fileName: "Undisplayable_HTML_Message.txt",
                                                  cdOwnAccount: cdAccount)
             else {
                 XCTFail()
