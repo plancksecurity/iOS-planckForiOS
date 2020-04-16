@@ -13,8 +13,9 @@ class SetOwnKeyViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var errorTextField: UILabel!
     @IBOutlet weak var setOwnKeyButton: UIButton!
+    @IBOutlet weak var fingerprintStackView: UIStackView!
+    @IBOutlet weak var emailStackView: UIStackView!
     
-
     override var collapsedBehavior: CollapsedSplitViewBehavior {
         return .needed
     }
@@ -29,6 +30,8 @@ class SetOwnKeyViewController: UIViewController {
         super.viewDidLoad()
         convertTopEp(button: setOwnKeyButton)
         setOwnKeyButton.titleLabel?.numberOfLines = 0
+        setOwnKeyButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        configureView(for: traitCollection)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -38,6 +41,20 @@ class SetOwnKeyViewController: UIViewController {
         title = NSLocalizedString("Set Own Key", comment: "Set Own Key title")
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+      super.traitCollectionDidChange(previousTraitCollection)
+      if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+        configureView(for: traitCollection)
+      }
+    }
+    
+    private func configureView(for traitCollection: UITraitCollection) {
+        let contentSize = traitCollection.preferredContentSizeCategory
+        let axis : NSLayoutConstraint.Axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
+        emailStackView.axis = axis
+        fingerprintStackView.axis = axis
+    }
+    
     // MARK: - Actions
 
     @IBAction func setOwnKeyButtonTapped(_ sender: Any) {
