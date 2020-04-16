@@ -42,7 +42,9 @@ extension MessageQueryResultsFilter {
             totalFilter += 1
         }
         if totalFilter > 1 {
-            return "\(totalFilter) " + NSLocalizedString("Filters", comment: "Filter Title")
+            return String(format: NSLocalizedString("%d filters",
+                                                    comment: "Number of filters instead of filter name"),
+                          totalFilter)
         }
         return finalString
     }
