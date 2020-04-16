@@ -28,6 +28,7 @@ class SetOwnKeyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         convertTopEp(button: setOwnKeyButton)
+        setOwnKeyButton.titleLabel?.numberOfLines = 0
     }
 
     override func viewWillAppear(_ animated: Bool) {

@@ -360,6 +360,7 @@
                             <constraint firstItem="lzc-xZ-iKm" firstAttribute="top" secondItem="WJx-kJ-kqt" secondAttribute="bottom" constant="10" id="Mef-XD-q3t"/>
                             <constraint firstItem="ujL-Pa-uXD" firstAttribute="top" secondItem="lzc-xZ-iKm" secondAttribute="bottom" constant="20" id="Plu-v2-mCq"/>
                             <constraint firstAttribute="trailing" secondItem="jey-z5-Oqb" secondAttribute="trailing" constant="10" id="dF8-68-D42"/>
+                            <constraint firstItem="lzc-xZ-iKm" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="miw-EI-6rT" secondAttribute="leading" constant="16" id="iEe-ek-pQ4"/>
                             <constraint firstItem="8ib-BO-jFp" firstAttribute="leading" secondItem="7Lp-ph-4lC" secondAttribute="leading" id="jKi-ly-2QZ"/>
                             <constraint firstItem="WJx-kJ-kqt" firstAttribute="firstBaseline" secondItem="8ib-BO-jFp" secondAttribute="firstBaseline" id="jYw-Wy-cJh"/>
                             <constraint firstItem="WJx-kJ-kqt" firstAttribute="trailing" secondItem="jey-z5-Oqb" secondAttribute="trailing" id="mrr-PA-Yjg"/>
@@ -379,7 +380,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pfo-Jp-fmH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="510" y="-1186"/>
+            <point key="canvasLocation" x="509.60000000000002" y="-1186.0569715142431"/>
         </scene>
         <!--Account Settings Table View Controller-->
         <scene sceneID="8yf-Dg-eGD">
