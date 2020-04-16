@@ -12,7 +12,7 @@ import CoreData
 @testable import MessageModel
 import PEPObjCAdapterFramework
 
-class MailParsingTests: CoreDataDrivenTestBase {
+class MailParsingTests: PersistentStoreDrivenTestBase {
     var fromIdent: PEPIdentity!
 
     override func setUp() {
