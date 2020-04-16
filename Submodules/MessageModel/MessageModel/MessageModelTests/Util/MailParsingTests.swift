@@ -113,7 +113,8 @@ class MailParsingTests: PersistentStoreDrivenTestBase {
         try! session.mySelf(pEpMySelfIdentity)
         XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
 
-        guard let cdMessage = TestUtil.cdMessage(fileName: "1364_Mail_missing_attached_image.txt",
+        guard let cdMessage = TestUtil.cdMessage(testClass: MailParsingTests.self,
+                                                 fileName: "1364_Mail_missing_attached_image.txt",
                                                  cdOwnAccount: cdAccount)
             else {
                 XCTFail()
