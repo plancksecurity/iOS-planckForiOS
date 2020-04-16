@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nothing Selected" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rk5-l1-Vt8">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nothing Selected" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rk5-l1-Vt8">
                                 <rect key="frame" x="124.5" y="435" width="165" height="26.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                 <color key="textColor" red="0.48627450979999998" green="0.54901960780000003" blue="0.56078431370000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -28,6 +28,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Rk5-l1-Vt8" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LDs-Yu-BHN" secondAttribute="leading" constant="16" id="NOj-q2-SUX"/>
                             <constraint firstItem="Rk5-l1-Vt8" firstAttribute="centerY" secondItem="Z1H-wx-ONQ" secondAttribute="centerY" id="RP8-NC-Ztd"/>
                             <constraint firstItem="Rk5-l1-Vt8" firstAttribute="centerX" secondItem="Z1H-wx-ONQ" secondAttribute="centerX" id="Z7h-dY-jdK"/>
                         </constraints>
