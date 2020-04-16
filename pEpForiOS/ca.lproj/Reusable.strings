@@ -73,6 +73,9 @@
 /* Class = "UIButton"; accessibilityLabel = "wrongButton"; ObjectID = "SUa-gz-P97"; */
 "SUa-gz-P97.accessibilityLabel" = "botó equivocat";
 
+/* Class = "UIButton"; normalTitle = "Decline"; ObjectID = "SUa-gz-P97"; */
+"SUa-gz-P97.normalTitle" = "Denegar";
+
 /* Class = "UILabel"; text = "With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact."; ObjectID = "uqG-OB-ggb"; */
 "uqG-OB-ggb.text" = "Amb aquest estat de privacitat, tota comunicació és segura, però per confirmar que el vostre contacte és realment la persona que coneixeu, haureu de comparar les paraules de confiança amb aquest contacte.";
 

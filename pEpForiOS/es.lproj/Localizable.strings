@@ -17,6 +17,9 @@
 /* Reply to single contact, without date. Placeholder: Name. */
 "%1$@ wrote:" = "%1$@ escribió:";
 
+/* Number of filters instead of filter name */
+"%d filters" = "% d filtros";
+
 /* error message for .missingPassword */
 "A non-empty password is required" = "Se necesita contraseña";
 
@@ -170,6 +173,9 @@
 /* Settings: Cell (button) title to view app credits */
 "Credits" = "Creditos";
 
+/* Incorrect trustwords/PGP fingerprint */
+"Decline" = "Rechazar";
+
 /* Default Account Setting Section Title
    Settings: Cell (button) title to view default account setting */
 "Default Account" = "Cuenta por Defecto";
@@ -241,6 +247,9 @@
 
 /* Extra Keys Editable */
 "Extra Keys Editable" = "Claves Extra Editable";
+
+/* 'Filter by' in formatted string, followed by the localized filter name */
+"Filter by: %@" = "Filtrado por: %@";
 
 /* Filter Title */
 "Filters" = "Filtros";
@@ -458,6 +467,9 @@
 
 /* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
 "No Permissions" = "No hay Permisos";
+
+/* empty mail filter (no filter at all) */
+"none" = "ninguna";
 
 /* privacyStatusDescription no_color
    privacyStatusTitle no_color */
