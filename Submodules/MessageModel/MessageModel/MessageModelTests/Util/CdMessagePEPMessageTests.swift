@@ -10,7 +10,7 @@ import XCTest
 
 @testable import MessageModel
 
-class CdMessagePEPMessageTests: CoreDataDrivenTestBase {
+class CdMessagePEPMessageTests: PersistentStoreDrivenTestBase {
     func testCdMessageToPEPMessage() {
         let  cdMsg = CdMessage(context: moc)
         cdMsg.from = cdAccount.identity
