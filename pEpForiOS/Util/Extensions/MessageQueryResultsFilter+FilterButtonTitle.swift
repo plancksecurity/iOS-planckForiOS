@@ -24,7 +24,8 @@ extension MessageQueryResultsFilter {
 
         if onlyEnabledAccounts.count != accountsEnabledStates.count {
             if onlyEnabledAccounts.count == 1 {
-                finalString = NSLocalizedString("some address", comment: "Title for address filter")
+                finalString = NSLocalizedString("some address",
+                                                comment: "Title for address filter")
             }
             totalFilter += onlyEnabledAccounts.count
         }
@@ -38,7 +39,8 @@ extension MessageQueryResultsFilter {
             totalFilter += 1
         }
         if mustContainAttachments ?? false {
-            finalString = NSLocalizedString("With attachments", comment: "Title for attachments filter")
+            finalString = NSLocalizedString("With attachments",
+                                            comment: "Title for attachments filter")
             totalFilter += 1
         }
         if totalFilter > 1 {
