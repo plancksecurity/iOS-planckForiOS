@@ -93,7 +93,7 @@ class MessagePantomimeTests: PersistentStoreDrivenTestBase {
         XCTAssertEqual(cdRefs.count, refs.count) // inReplyTo not taken into account anymore
 
         let pEpMsg = cdMsg.pEpMessage()
-        XCTAssertEqual(pEpMsg.references as? [String] ?? [], refs) // inReplyTo not taken into account anymore
+        XCTAssertEqual(pEpMsg.references ?? [], refs) // inReplyTo not taken into account anymore
 
         let cwMsg2 = PEPUtils.pantomime(pEpMessage: pEpMsg)
         XCTAssertEqual(cwMsg2.allReferences() as? [String] ?? [], allRefs)
