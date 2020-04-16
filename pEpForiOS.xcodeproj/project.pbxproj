@@ -308,7 +308,6 @@
 		438052891FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438052881FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift */; };
 		4380528B1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380528A1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift */; };
 		4388A0E22008F813008CB98D /* (null) in Sources */ = {isa = PBXBuildFile; };
-		438BA0F5214F89CD001A4A82 /* MailParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BA0F4214F89CC001A4A82 /* MailParsingTests.swift */; };
 		438F4EDF215F9C7B00168B5E /* Rick Deckard (EB50C250) – Private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 438F4EDE215F9C7B00168B5E /* Rick Deckard (EB50C250) – Private.asc */; };
 		438F4EE1215F9CB300168B5E /* SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt in Resources */ = {isa = PBXBuildFile; fileRef = 438F4EE0215F9CB300168B5E /* SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt */; };
 		438F4EE5215FAD0500168B5E /* Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 438F4EE4215FAD0500168B5E /* Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc */; };
@@ -874,7 +873,6 @@
 		438052881FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2AuthorizationProtocol.swift; sourceTree = "<group>"; };
 		4380528A1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2AuthorizationURLHandlerProtocol.swift; sourceTree = "<group>"; };
 		4388A0E02008AF61008CB98D /* public.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = public.xcconfig; sourceTree = "<group>"; };
-		438BA0F4214F89CC001A4A82 /* MailParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailParsingTests.swift; sourceTree = "<group>"; };
 		438F4EDE215F9C7B00168B5E /* Rick Deckard (EB50C250) – Private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Rick Deckard (EB50C250) – Private.asc"; sourceTree = "<group>"; };
 		438F4EE0215F9CB300168B5E /* SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt; sourceTree = "<group>"; };
 		438F4EE4215FAD0500168B5E /* Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc"; sourceTree = "<group>"; };
@@ -2102,7 +2100,6 @@
 				43257C851F50659200DDC7F0 /* StringHTMLExtensionTests.swift */,
 				5BC14AC823E47A55005F0AF3 /* TrustManagementViewModelTest.swift */,
 				1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */,
-				438BA0F4214F89CC001A4A82 /* MailParsingTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -3221,7 +3218,6 @@
 				4395CDEE20AAC909003FC5F1 /* UIImageExtensionsTests.swift in Sources */,
 				491116BD216E0DF4005A42D2 /* MessageViewModelTests.swift in Sources */,
 				153B2188219472A400497D3D /* BodyCellViewModelTest.swift in Sources */,
-				438BA0F5214F89CD001A4A82 /* MailParsingTests.swift in Sources */,
 				15A8B8FC20908D2300D2B0B6 /* Keychain+TestUtils.swift in Sources */,
 				0017CD1D2162614400F62F13 /* MoveToFolderCellViewModelTests.swift in Sources */,
 				37816549231035F000B967E3 /* PEPAlertViewModelTest.swift in Sources */,

@@ -273,6 +273,7 @@
 		43BBB49524485AB800A88B39 /* HandshakeTests_mail_001.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43BBB49424485AB800A88B39 /* HandshakeTests_mail_001.txt */; };
 		43BBB49724485EAF00A88B39 /* URL+MIME.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BBB49624485EAF00A88B39 /* URL+MIME.swift */; };
 		43BBB4992448676B00A88B39 /* CdMessagePEPMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BBB4982448676B00A88B39 /* CdMessagePEPMessageTests.swift */; };
+		43BBB49B244868B000A88B39 /* MailParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BBB49A244868B000A88B39 /* MailParsingTests.swift */; };
 		43BC0E65235764D800125E01 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43BC0E63235764D800125E01 /* InfoPlist.strings */; };
 		43BC0E68235764D800125E01 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43BC0E66235764D800125E01 /* InfoPlist.strings */; };
 		43BC0E6B235764D800125E01 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43BC0E69235764D800125E01 /* Localizable.strings */; };
@@ -742,6 +743,7 @@
 		43BBB49424485AB800A88B39 /* HandshakeTests_mail_001.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HandshakeTests_mail_001.txt; sourceTree = "<group>"; };
 		43BBB49624485EAF00A88B39 /* URL+MIME.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+MIME.swift"; sourceTree = "<group>"; };
 		43BBB4982448676B00A88B39 /* CdMessagePEPMessageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdMessagePEPMessageTests.swift; sourceTree = "<group>"; };
+		43BBB49A244868B000A88B39 /* MailParsingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailParsingTests.swift; sourceTree = "<group>"; };
 		43BC0E64235764D800125E01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		43BC0E67235764D800125E01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		43BC0E6A235764D800125E01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2149,6 +2151,7 @@
 				43BBB4722448554100A88B39 /* HandshakeTests.swift */,
 				43BBB49624485EAF00A88B39 /* URL+MIME.swift */,
 				43BBB4982448676B00A88B39 /* CdMessagePEPMessageTests.swift */,
+				43BBB49A244868B000A88B39 /* MailParsingTests.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2886,6 +2889,7 @@
 				4355E4D7233C9DD0005772D5 /* PantomimeFromPEPMessageTest.swift in Sources */,
 				430A2EF01E82758100878837 /* CdImapFields+TestHelper.swift in Sources */,
 				152E3CA9231C324000C1420B /* DecryptServiceTest.swift in Sources */,
+				43BBB49B244868B000A88B39 /* MailParsingTests.swift in Sources */,
 				4351723D229FD74000D92026 /* DecryptionTest.swift in Sources */,
 				43607DE423FE8D6F00FA66B8 /* ClientCertificateUtilTestInternal.swift in Sources */,
 				434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */,
