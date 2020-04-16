@@ -170,9 +170,6 @@
 /* Settings: Cell (button) title to view app credits */
 "Credits" = "Creditos";
 
-/* Incorrect trustwords/PGP fingerprint */
-"Decline" = "Rechazar";
-
 /* Default Account Setting Section Title
    Settings: Cell (button) title to view default account setting */
 "Default Account" = "Cuenta por Defecto";
