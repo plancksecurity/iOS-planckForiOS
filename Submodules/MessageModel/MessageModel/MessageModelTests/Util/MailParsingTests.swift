@@ -18,7 +18,7 @@ class MailParsingTests: PersistentStoreDrivenTestBase {
     override func setUp() {
         super.setUp()
 
-        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
+        let cdMyAccount = SecretTestData().createWorkingCdAccount(context: moc, number: 0)
         cdMyAccount.identity?.userName = "iOS Test 002"
         cdMyAccount.identity?.userID = "iostest002@peptest.ch_ID"
         cdMyAccount.identity?.address = "iostest002@peptest.ch"
