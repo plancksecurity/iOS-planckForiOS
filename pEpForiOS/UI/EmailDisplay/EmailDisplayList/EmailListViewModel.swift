@@ -82,6 +82,18 @@ class EmailListViewModel: EmailDisplayViewModel {
     }
 
     public func isSelectable(messageAt indexPath: IndexPath) -> Bool {
+        // Validate that indexPath.row is valid, return false if not.
+        do {
+            let resultCount = try messageQueryResults.count()
+            if indexPath.row >= resultCount {
+                Log.shared.errorAndCrash(message: "indexPath.row (\(indexPath.row)) out of bounds (\(resultCount)")
+                return false
+            }
+        } catch {
+            Log.shared.errorAndCrash(error: error)
+            return false
+        }
+
         let message = messageQueryResults[indexPath.row]
         if message.parent.folderType == .outbox {
             return false
