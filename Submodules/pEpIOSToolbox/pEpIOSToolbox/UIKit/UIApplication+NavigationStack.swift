@@ -37,6 +37,9 @@ extension UIApplication {
         } else if let presented = vc.presentedViewController {
             return topViewController(inNavigationStackOf: presented)
         } else if let searchVc = vc as? UISearchController {
+            //this situation happens when searchBar is in focus.
+            //it's needed to select the viewController that presents the searchbar
+            //as a topViewController.
             return searchVc.presentingViewController
         }
         return vc
