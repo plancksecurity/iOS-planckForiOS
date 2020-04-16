@@ -448,7 +448,7 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
                 txt += "..."
             }
             if txt.isEmpty {
-                txt = NSLocalizedString("none", comment: "empty mail filter (no filter at all)")
+                txt = "none"
             }
             textFilterButton.title = String(format: NSLocalizedString("Filter by: %@",
                                                                       comment: "'Filter by' in formatted string, followed by the localized filter name"),
