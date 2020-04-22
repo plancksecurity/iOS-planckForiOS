@@ -2133,6 +2133,7 @@
 				153E4E4E1F5039C00021CBD8 /* PersistentStoreDrivenTestBase.swift */,
 				15ECD7051F5430C1002889B8 /* Message+TestUtils.swift */,
 				43607DE023FE870C00FA66B8 /* ClientCertificates+TestUtils.swift */,
+				43F86BA124503E61008961DA /* Keychain+TestUtils.swift */,
 			);
 			path = TestUtils;
 			sourceTree = "<group>";
@@ -2163,7 +2164,6 @@
 				43BBB4982448676B00A88B39 /* CdMessagePEPMessageTests.swift */,
 				43BBB49A244868B000A88B39 /* MailParsingTests.swift */,
 				43F86BA224503E61008961DA /* KeyChainTest.swift */,
-				43F86BA124503E61008961DA /* Keychain+TestUtils.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
