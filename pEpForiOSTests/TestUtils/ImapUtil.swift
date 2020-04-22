@@ -1,18 +1,19 @@
+//IOS-2241 DOES NOT COMPILE
+////
+////  ImapUtil.swift
+////  pEpForiOSTests
+////
+////  Created by Dirk Zimmermann on 20.11.18.
+////  Copyright © 2018 p≡p Security S.A. All rights reserved.
+////
 //
-//  ImapUtil.swift
-//  pEpForiOSTests
+//import Foundation
 //
-//  Created by Dirk Zimmermann on 20.11.18.
-//  Copyright © 2018 p≡p Security S.A. All rights reserved.
+//import XCTest
+//import CoreData
 //
-
-import Foundation
-
-import XCTest
-import CoreData
-
-@testable import pEpForiOS
-@testable import MessageModel
+//@testable import pEpForiOS
+//@testable import MessageModel
 
 //!!!: must be moved to MM
 //extension XCTestCase {

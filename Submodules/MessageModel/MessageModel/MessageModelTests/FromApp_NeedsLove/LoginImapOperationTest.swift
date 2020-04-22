@@ -12,7 +12,7 @@ import CoreData
 @testable import MessageModel
 
 class LoginImapOperationTest: PersistentStoreDrivenTestBase {
-    
+
     /*
      *IOS-606 Login fails using Yahoo account*
      To assert the mentioned bug is fixed:
@@ -38,5 +38,5 @@ class LoginImapOperationTest: PersistentStoreDrivenTestBase {
         }
 
         XCTAssertFalse(imapLogin.hasErrors)
-    }    
+    }
 }
