@@ -88,9 +88,8 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
 
     func testHandleUserSelected_oneAccount_correct() {
         let firstRowIdx = 0
-        let pickedAccount = account
         assertUserSelection(selectIdx: firstRowIdx,
-                            accountToCompare: pickedAccount,
+                            accountToCompare: account,
                             mustEqualSelected: true)
     }
 

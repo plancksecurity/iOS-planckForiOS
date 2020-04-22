@@ -19,12 +19,11 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
     // MARK: - displayAccount
 
     func testDisplayAccount() {
-        let initialAccount = account
-        assert(initialAccount: initialAccount,
+        assert(initialAccount: account,
                accountChangedMustBeCalled: false,
                expectedAccount: nil)
         let testee = vm.displayAccount
-        XCTAssertEqual(testee, initialAccount.user.address)
+        XCTAssertEqual(testee, account.user.address)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -42,15 +41,14 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
     // MARK: - accountPickerViewModel(_:didSelect:)
 
     func testAccountPickerViewModelDidSelect_initialSet() {
-        let initialAccount = account
         let selectedAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
-        assert(initialAccount: initialAccount,
+        assert(initialAccount: account,
                accountChangedMustBeCalled: true,
                expectedAccount: selectedAccount)
         vm.accountPickerViewModel(TestAccountPickerViewModel(), didSelect: selectedAccount)
         let testee = vm.displayAccount
         XCTAssertEqual(testee, selectedAccount.user.address)
-        XCTAssertNotEqual(testee, initialAccount.user.address)
+        XCTAssertNotEqual(testee, account.user.address)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
