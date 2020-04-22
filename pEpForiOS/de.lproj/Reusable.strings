@@ -2,7 +2,7 @@
 "5Cq-ai-hYf.text" = "Wenn die Trustwords nicht korrekt sind, kann es zu einer man-in-the-middle Attacke kommen.";
 
 /* Class = "UILabel"; text = "p≡p uses a Privacy Status icon to indicate how secure your communication is"; ObjectID = "6p7-rU-UIJ"; */
-"6p7-rU-UIJ.text" = "p≡p verwendet ein Datenschutzstatus-Symbol, um anzuzeigen, wie sicher Ihre Kommunikation ist";
+"6p7-rU-UIJ.text" = "p≡p verwendet ein Datenschutzstatussymbol, um anzuzeigen, wie sicher Ihre Kommunikation ist";
 
 /* Class = "UILabel"; text = "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted. "; ObjectID = "7SL-dj-Z7j"; */
 "7SL-dj-Z7j.text" = "Wenn Sie bestätigen, dass die Trustwords Ihres Kommunikationspartners korrekt sind, ist Ihre Kommunikation vollständig Sicher & amp; Vertrauenswürdig. ";

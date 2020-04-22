@@ -17,9 +17,6 @@
 /* Reply to single contact, without date. Placeholder: Name. */
 "%1$@ wrote:" = "%1$@ schreef:";
 
-/* Number of filters instead of filter name */
-"%d filters" = "% d filters";
-
 /* error message for .missingPassword */
 "A non-empty password is required" = "Wachtwoord is verplicht";
 
@@ -173,9 +170,6 @@
 /* Settings: Cell (button) title to view app credits */
 "Credits" = "Credits";
 
-/* Incorrect trustwords/PGP fingerprint */
-"Decline" = "Afwijzen";
-
 /* Default Account Setting Section Title
    Settings: Cell (button) title to view default account setting */
 "Default Account" = "Standaard Account";
@@ -247,9 +241,6 @@
 
 /* Extra Keys Editable */
 "Extra Keys Editable" = "Extra Sleutels Bewerkbaar";
-
-/* 'Filter by' in formatted string, followed by the localized filter name */
-"Filter by: %@" = "Filteren op: %@";
 
 /* Filter Title */
 "Filters" = "Filters";
@@ -467,9 +458,6 @@
 
 /* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
 "No Permissions" = "Geen Toestemming";
-
-/* empty mail filter (no filter at all) */
-"none" = "geen";
 
 /* privacyStatusDescription no_color
    privacyStatusTitle no_color */

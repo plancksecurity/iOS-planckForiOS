@@ -32,7 +32,7 @@
 "cLm-E4-Lx2.accessibilityLabel" = "wrongButton";
 
 /* Class = "UIButton"; normalTitle = "Decline"; ObjectID = "cLm-E4-Lx2"; */
-"cLm-E4-Lx2.normalTitle" = "Odmietnuť";
+"cLm-E4-Lx2.normalTitle" = "Decline";
 
 /* Class = "UILabel"; text = "Hannibal Chew"; ObjectID = "eOu-ky-MME"; */
 "eOu-ky-MME.text" = "Hannibal Chew";
@@ -65,7 +65,7 @@
 "sVr-xT-f8t.accessibilityLabel" = "wrongButton";
 
 /* Class = "UIButton"; normalTitle = "Decline"; ObjectID = "sVr-xT-f8t"; */
-"sVr-xT-f8t.normalTitle" = "Odmietnuť";
+"sVr-xT-f8t.normalTitle" = "Decline";
 
 /* Class = "UILabel"; text = "Reset all p≡p data for this comunication partner:"; ObjectID = "x6I-yN-Uyv"; */
 "x6I-yN-Uyv.text" = "Reset all p≡p data for this comunication partner:";
