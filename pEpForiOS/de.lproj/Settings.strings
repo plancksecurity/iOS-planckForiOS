@@ -20,7 +20,7 @@
 "Ag8-Qj-N8l.text" = "Label  akjsfhaj ksfas fsdahfkajsdf kashf akjdhf jkasdf asf kjsfkasf ajshf ahkfs jashf kjasdhkf jakhf";
 
 /* Class = "UILabel"; text = "Password"; ObjectID = "aYO-l7-9iG"; */
-"aYO-l7-9iG.text" = "Passwort:";
+"aYO-l7-9iG.text" = "Passwort";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "azH-be-f3A"; */
 "azH-be-f3A.text" = "Benutzername";
@@ -35,7 +35,7 @@
 "daw-LF-EZF.text" = "Transportsicherheit:";
 
 /* Class = "UILabel"; text = "Transport Security"; ObjectID = "dpq-4F-9sG"; */
-"dpq-4F-9sG.text" = "Transportsicherheit:";
+"dpq-4F-9sG.text" = "Transportsicherheit";
 
 /* Class = "UILabel"; text = "Server"; ObjectID = "DQ0-sB-CRx"; */
 "DQ0-sB-CRx.text" = "Server:";
@@ -59,13 +59,13 @@
 "Ne5-6o-O4F.text" = "E-Mail:";
 
 /* Class = "UILabel"; text = "Email"; ObjectID = "o8M-bM-KZX"; */
-"o8M-bM-KZX.text" = "E-Mail:";
+"o8M-bM-KZX.text" = "E-Mail";
 
 /* Class = "UILabel"; text = "Server"; ObjectID = "oCE-8g-idG"; */
-"oCE-8g-idG.text" = "Server:";
+"oCE-8g-idG.text" = "Server";
 
 /* Class = "UILabel"; text = "Port"; ObjectID = "Osx-2y-29f"; */
-"Osx-2y-29f.text" = "Port:";
+"Osx-2y-29f.text" = "Port";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "Pdx-rN-QPm"; */
 "Pdx-rN-QPm.text" = "Titel";
@@ -77,7 +77,7 @@
 "RYB-AT-TSB.text" = "Benutzername";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "s9I-CU-fSE"; */
-"s9I-CU-fSE.text" = "Name:";
+"s9I-CU-fSE.text" = "Name";
 
 /* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "Tjb-uM-eUF"; */
 "Tjb-uM-eUF.text" = "p≡p Sync";
@@ -89,10 +89,10 @@
 "Tul-XU-PSw.text" = "Transportsicherheit:";
 
 /* Class = "UILabel"; text = "Port"; ObjectID = "U7P-zv-48U"; */
-"U7P-zv-48U.text" = "Port:";
+"U7P-zv-48U.text" = "Port";
 
 /* Class = "UILabel"; text = "set_own_key Error"; ObjectID = "ujL-Pa-uXD"; Note = "Don't localize this"; */
-"ujL-Pa-uXD.text" = "set_own_key Error";
+"ujL-Pa-uXD.text" = "set_own_key Fehler";
 
 /* Class = "UILabel"; text = "Port"; ObjectID = "Vdb-LS-4JH"; */
 "Vdb-LS-4JH.text" = "Port:";
@@ -113,7 +113,7 @@
 "X0Z-Ju-XOO.text" = "Beschriftung";
 
 /* Class = "UILabel"; text = "Server"; ObjectID = "x85-ha-uBw"; */
-"x85-ha-uBw.text" = "Server:";
+"x85-ha-uBw.text" = "Server";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "xiv-OD-YNL"; */
 "xiv-OD-YNL.text" = "Titel";

@@ -17,6 +17,9 @@
 /* Reply to single contact, without date. Placeholder: Name. */
 "%1$@ wrote:" = "%1$@ schrieb:";
 
+/* Number of filters instead of filter name */
+"%d filters" = "% d Filter";
+
 /* error message for .missingPassword */
 "A non-empty password is required" = "Passwort ist erforderlich";
 
@@ -237,13 +240,16 @@
 "Error casting" = "Fehler beim Casting";
 
 /* spearator string bewtween name and date */
-"Exp. date:" = "Ablaufdatum";
+"Exp. date:" = "Ablaufdatum:";
 
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Extra Schlüssel";
 
 /* Extra Keys Editable */
 "Extra Keys Editable" = "Extra Schlüssel bearbeitbar";
+
+/* 'Filter by' in formatted string, followed by the localized filter name */
+"Filter by: %@" = "Filtern nach: %@";
 
 /* Filter Title */
 "Filters" = "Filter";
@@ -461,6 +467,9 @@
 
 /* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
 "No Permissions" = "Keine Berechtigung";
+
+/* empty mail filter (no filter at all) */
+"none" = "keiner";
 
 /* privacyStatusDescription no_color
    privacyStatusTitle no_color */

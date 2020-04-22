@@ -17,6 +17,9 @@
 /* Reply to single contact, without date. Placeholder: Name. */
 "%1$@ wrote:" = "%1$@ a écrit :";
 
+/* Number of filters instead of filter name */
+"%d filters" = "% d filtres";
+
 /* error message for .missingPassword */
 "A non-empty password is required" = "Mot de passe requis";
 
@@ -245,6 +248,9 @@
 /* Extra Keys Editable */
 "Extra Keys Editable" = "Clés supplémentaires modifiables";
 
+/* 'Filter by' in formatted string, followed by the localized filter name */
+"Filter by: %@" = "Filtrer par : %@";
+
 /* Filter Title */
 "Filters" = "Filtres";
 
@@ -462,6 +468,9 @@
 /* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
 "No Permissions" = "Pas de permissions";
 
+/* empty mail filter (no filter at all) */
+"none" = "aucun";
+
 /* privacyStatusDescription no_color
    privacyStatusTitle no_color */
 "None" = "Aucun";
@@ -637,7 +646,7 @@
    Account settings reset identity
    Reset account identity button title
    Settings: cell (button) title to view the trust contacts option */
-"Reset" = "Reset";
+"Reset" = "Réinitialiser";
 
 /* Reset account identity button title
    Settings: Cell (button) title for reset all identities */
