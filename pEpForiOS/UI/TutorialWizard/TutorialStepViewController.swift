@@ -39,7 +39,7 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
         if isIpad {
             return UIFont.systemFont(ofSize: 25.0, weight: .regular)
         } else if Device.isIphone5 {
-            return UIFont.systemFont(ofSize: 12.0, weight: .regular)
+            return UIFont.systemFont(ofSize: 11.0, weight: .regular)
         }
         return UIFont.systemFont(ofSize: 14.0, weight: .regular)
     }
@@ -58,7 +58,7 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
         if isIpad {
             return UIFont.systemFont(ofSize: 45.0, weight: .regular)
         } else if Device.isIphone5 {
-            return UIFont.systemFont(ofSize: 21.0, weight: .regular)
+            return UIFont.systemFont(ofSize: 18.0, weight: .regular)
         }
         return UIFont.systemFont(ofSize: 28.0, weight: .regular)
     }
