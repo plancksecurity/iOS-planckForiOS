@@ -96,7 +96,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     func testSections_accountSelector() {
         let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: false)
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
+        let secondAccount = SecretTestData().createWorkingAccount(number: 1)
         secondAccount.save()
         assertSections(forVMIniitaliizedWith: testOriginalMessage,
                        expectBccWrapperSectionExists: true,
@@ -429,7 +429,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testAccountCellViewModelAccountChangedTo() {
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
+        let secondAccount = SecretTestData().createWorkingAccount(number: 1)
         secondAccount.save()
         assert(contentChangedMustBeCalled: true,
                focusSwitchedMustBeCalled: false,
@@ -1337,7 +1337,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     private func assertRecipientCellViewModelDidChangeRecipients(
         fieldType type: RecipientCellViewModel.FieldType) {
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
+        let secondAccount = SecretTestData().createWorkingAccount(number: 1)
         secondAccount.save()
         let om = draftMessage(bccSet: true, attachmentsSet: false)
         assert(originalMessage: om,

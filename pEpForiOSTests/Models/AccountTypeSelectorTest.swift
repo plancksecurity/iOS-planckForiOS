@@ -20,17 +20,12 @@ class AccountTypeSelectorTest: CoreDataDrivenTestBase {
         Account.all().forEach { (acc) in
             acc.delete()
         }
-        do {
-            try moc.save()
-        } catch {
-            XCTFail()
-        }
         XCTAssertFalse(vm.isThereAnAccount())
     }
     
     func testThereIsAPreviousAccount() {
         let account = SecretTestData().createWorkingAccount()
-        account?.save()
+        account.save()
         let vm = AccountTypeSelectorViewModel()
         XCTAssertTrue(vm.isThereAnAccount())
     }
@@ -58,7 +53,7 @@ class AccountTypeSelectorTest: CoreDataDrivenTestBase {
     
     func testAccountTypeSelectorNames() {
         let account = SecretTestData().createWorkingAccount()
-        account?.save()
+        account.save()
         let vm = AccountTypeSelectorViewModel()
         XCTAssertEqual(vm.fileNameOrText(provider: .clientCertificate), """
  Client

@@ -126,11 +126,10 @@ class TestDataBase {
             return id
         }
 
-        //!!!: very wrong. MMO + MOC
-        func account(context: NSManagedObjectContext) -> Account {
+        func account() -> Account {
             let id = Identity(address: idAddress,
                               userName: idUserName,
-                              session: Session(context: context))
+                              session: Session.main)
 
             let credSmtp = ServerCredentials(loginName: id.address,
                                              key: nil,
@@ -296,25 +295,15 @@ class TestDataBase {
     /**
      - Returns: A valid `Account`.
      */
-    func createWorkingAccount(number: Int = 0, context: NSManagedObjectContext) -> Account {
-        return createWorkingAccountSettings(number: number).account(context: context)
+    func createWorkingAccount(number: Int = 0) -> Account {
+        return createWorkingAccountSettings(number: number).account()
     }
 
     /**
      - Returns: A valid `Account`.
      */
-    func createWorkingAccount(number: Int = 0, session: Session? = Session.main) -> Account? {
-        guard let nonOptionalSession = session else {
-            Log.shared.errorAndCrash(message: "session was nil")
-            return nil
-        }
-        return createWorkingAccountSettings(number: number).account(context: nonOptionalSession.moc)
-    }
-    /**
-     - Returns: A valid `Account`.
-     */
     func createVerifiableAccount(number: Int = 0, context: NSManagedObjectContext) -> Account {
-        return createVerifiableAccountSettings(number: number).account(context: context)
+        return createVerifiableAccountSettings(number: number).account()
     }
 
     /**
@@ -360,15 +349,15 @@ class TestDataBase {
     /**
      - Returns: An `Account` around `createSmtpTimeOutAccountSettings`.
      */
-    func createSmtpTimeOutAccount(context: NSManagedObjectContext) -> Account {
-        return createSmtpTimeOutAccountSettings().account(context: context)
+    func createSmtpTimeOutAccount() -> Account {
+        return createSmtpTimeOutAccountSettings().account()
     }
 
     /**
      - Returns: An `Account` around `createImapTimeOutAccountSettings`.
      */
-    func createImapTimeOutAccount(context: NSManagedObjectContext) -> Account {
-        return createImapTimeOutAccountSettings().account(context: context)
+    func createImapTimeOutAccount() -> Account {
+        return createImapTimeOutAccountSettings().account()
     }
 
     func populateVerifiableAccount(number: Int = 0,

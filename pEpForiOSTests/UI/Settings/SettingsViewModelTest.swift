@@ -15,10 +15,7 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
     var settingsVM : SettingsViewModel!
 
     func givenThereAreTwoAccounts() {
-        guard let account = SecretTestData().createWorkingAccount() else {
-            XCTFail()
-            return
-        }
+        let account = SecretTestData().createWorkingAccount()
         account.save()
     }
 

@@ -194,7 +194,7 @@ extension TrustManagementViewModelTest {
         moc.saveAndLogErrors()
         
         if trustManagementViewModel == nil {
-            let account1 = SecretTestData().createWorkingAccount(context: moc)
+            let account1 = SecretTestData().createWorkingAccount()
             account1.save()
             let folder1 = Folder(name: "inbox", parent: nil, account: account1, folderType: .inbox)
             guard let from = identities.first else  {

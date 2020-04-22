@@ -27,12 +27,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
         Stack.shared.reset() //!!!: this should not be required. Rm after all tests use a propper base class!
         moc = Stack.shared.mainContext
 
-        guard let theAccount = SecretTestData().createWorkingAccount() else {
-            XCTFail()
-            return
-        }
-
-        self.account = theAccount
+        self.account = SecretTestData().createWorkingAccount()
     }
 
     override open func tearDown() {
