@@ -11,7 +11,7 @@
 "8Xq-lc-6Jt.accessibilityLabel" = "wrongButton";
 
 /* Class = "UIButton"; normalTitle = "Decline"; ObjectID = "8Xq-lc-6Jt"; */
-"8Xq-lc-6Jt.normalTitle" = "Decline";
+"8Xq-lc-6Jt.normalTitle" = "Odmietnuť";
 
 /* Class = "UILabel"; text = "This Privacy Status Icon is shown as an Icon the user's avatar"; ObjectID = "B9p-Ah-ajI"; */
 "B9p-Ah-ajI.text" = "Táto ikona Stavu súkromia sa zobrazuje ako ikona avatara používateľa";
