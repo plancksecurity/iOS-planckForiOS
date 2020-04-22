@@ -22,6 +22,7 @@ final class SettingsTableViewController: BaseTableViewController {
         setUp()
         viewModel.delegate = self
         UIHelper.variableCellHeightsTableView(tableView)
+        UIHelper.variableSectionHeaderHeightsTableView(tableView)
         addExtraKeysEditabilityToggleGesture()
     }
 
@@ -196,7 +197,7 @@ extension SettingsTableViewController {
         headerView.title = viewModel.section(for: section).title.uppercased()
         return headerView
     }
-
+    
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return viewModel.section(for: section).footer
     }

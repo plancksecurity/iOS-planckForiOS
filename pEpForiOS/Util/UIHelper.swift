@@ -14,6 +14,10 @@ class UIHelper {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
     }
+    static func variableSectionHeaderHeightsTableView(_ tableView: UITableView) {
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 25
+    }
 
     /**
      Put a String into a label. If the String is empty, hide the label.

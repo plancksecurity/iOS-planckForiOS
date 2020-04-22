@@ -40,11 +40,19 @@ final class pEpHeaderView: UITableViewHeaderFooterView {
 // MARK: - Private
 
 extension pEpHeaderView {
+    
     private func setUp() {
         contentView.addSubview(titleLabel)
+        configure(titleLabel: titleLabel)
         setFont(titleLabel: titleLabel)
         setConstraints(titleLabel: titleLabel)
     }
+
+    private func configure(titleLabel: UILabel) {
+        titleLabel.numberOfLines = 0
+        titleLabel.lineBreakMode = .byWordWrapping
+    }
+
     private func setFont(titleLabel: UILabel) {
         titleLabel.textColor = .pEpGreyText
         titleLabel.font = .pepFont(style: .subheadline, weight: .regular)
@@ -54,6 +62,8 @@ extension pEpHeaderView {
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo:
                    contentView.layoutMarginsGuide.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo:
+                   contentView.layoutMarginsGuide.trailingAnchor),
             titleLabel.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: Constant.Margin.top),
             titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -Constant.Margin.bottom)
         ])
