@@ -69,50 +69,6 @@ class TestDataBase {
             self.password = password
         }
 
-        func cdAccount(context: NSManagedObjectContext) -> CdAccount {
-            let id = CdIdentity(context: context)
-            id.address = idAddress
-            id.userName = idUserName
-            id.userID = UUID().uuidString
-
-            let acc = CdAccount(context: context)
-            acc.identity = id
-
-            //SMTP
-            let smtp = CdServer(context: context)
-            smtp.serverType = smtpServerType
-            smtp.port = Int16(smtpServerPort)
-            smtp.address = smtpServerAddress
-            smtp.transport = smtpServerTransport
-
-            let keySmtp = UUID().uuidString
-            CdServerCredentials.add(password: password, forKey: keySmtp)
-            let credSmtp = CdServerCredentials(context: context)
-            credSmtp.loginName = smtpLoginName ?? id.address
-            credSmtp.key = keySmtp
-            smtp.credentials = credSmtp
-
-            acc.addToServers(smtp)
-
-            //IMAP
-            let imap = CdServer(context: context)
-            imap.serverType = imapServerType
-            imap.port = Int16(imapServerPort)
-            imap.address = imapServerAddress
-            imap.transport = imapServerTransport
-
-            let keyImap = UUID().uuidString
-            CdServerCredentials.add(password: password, forKey: keyImap)
-            let credImap = CdServerCredentials(context: context)
-            credImap.loginName = imapLoginName ?? id.address
-            credImap.key = keyImap
-            imap.credentials = credImap
-
-            acc.addToServers(imap)
-
-            return acc
-        }
-
         func cdIdentityWithoutAccount(isMyself: Bool = false, context: NSManagedObjectContext) -> CdIdentity {
             let id = CdIdentity(context: context)
             id.address = idAddress
@@ -260,17 +216,6 @@ class TestDataBase {
     }
 
     /**
-     - Returns: A valid `CdAccount`.
-     */
-    @discardableResult
-    func createWorkingCdAccount(number: Int = 0, context: NSManagedObjectContext) -> CdAccount {
-        let result = createWorkingAccountSettings(number: number).cdAccount(context: context)
-        // The identity of an account is mySelf by definion.
-        result.identity?.userID = CdIdentity.pEpOwnUserID
-        return result
-    }
-
-    /**
      - Returns: A valid `CdIdentity` without parent account.
      */
     func createWorkingCdIdentity(number: Int = 0,
@@ -337,13 +282,6 @@ class TestDataBase {
         accountSettings.imapServerAddress = "localhost"
         accountSettings.imapServerPort = 2323
         return accountSettings
-    }
-
-    /**
-     - Returns: A `CdAccount` around `createSmtpTimeOutAccountSettings`.
-     */
-    func createSmtpTimeOutCdAccount(context: NSManagedObjectContext) -> CdAccount {
-        return createSmtpTimeOutAccountSettings().cdAccount(context: context)
     }
 
     /**
