@@ -236,23 +236,6 @@ class TestUtil {
         return msg
     }
 
-    // MARK: - SERVER
-
-    static func setServersTrusted(forCdAccount cdAccount: CdAccount, testCase: XCTestCase) {
-        guard let cdServers = cdAccount.servers?.allObjects as? [CdServer] else {
-            XCTFail("No Servers")
-            return
-        }
-        for server in cdServers {
-            server.automaticallyTrusted = true
-        }
-        guard let context = cdAccount.managedObjectContext else {
-            pEpForiOS.Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
-            return
-        }
-        context.saveAndLogErrors()
-    }
-
     // MARK: - ERROR
 
     class TestErrorContainer: ErrorContainerProtocol { //!!!: rm. AFAICS the implementation is copy & pasted from ErrorContainer. If so, why not use ErrorContainer?
