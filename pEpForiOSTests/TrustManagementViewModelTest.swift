@@ -25,10 +25,9 @@ class TrustManagementViewModelTest: CoreDataDrivenTestBase {
         // Note: The account is generated from test data row 0, so don't use this.
         for index in 1..<numberOfRowsToGenerate {
             let identity = SecretTestData().createPartnerIdentity(number: index)
+            identity.save()
             identities.append(identity)
         }
-        
-        moc.saveAndLogErrors()
     }
     
     override func tearDown() {
@@ -186,7 +185,6 @@ extension TrustManagementViewModelTest {
         let selfIdentity = SecretTestData().createWorkingAccount(number: selfNumber).user
         selfIdentity.fingerprint = "fingerprints"
         selfIdentity.save()
-        moc.saveAndLogErrors()
         
         if trustManagementViewModel == nil {
             let account1 = SecretTestData().createWorkingAccount()

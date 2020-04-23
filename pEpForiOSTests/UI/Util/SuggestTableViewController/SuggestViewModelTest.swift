@@ -146,8 +146,8 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
                 addressBookID: nil,
                 userName: "id\(i)")
             existingIdentities.append(id)
+            id.save()
         }
-        moc.saveAndLogErrors()
     }
 
     /// - Parameters:

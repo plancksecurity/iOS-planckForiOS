@@ -14,8 +14,6 @@ import CoreData
 import PEPObjCAdapterFramework
 
 open class CoreDataDrivenTestBase: XCTestCase {
-    var moc : NSManagedObjectContext!
-
     var account: Account!
 
     var session: PEPSession {
@@ -25,8 +23,6 @@ open class CoreDataDrivenTestBase: XCTestCase {
     override open func setUp() {
         super.setUp()
         Stack.shared.reset() //!!!: this should not be required. Rm after all tests use a propper base class!
-        moc = Stack.shared.mainContext
-
         self.account = SecretTestData().createWorkingAccount()
     }
 

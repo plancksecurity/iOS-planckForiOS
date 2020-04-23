@@ -48,7 +48,6 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         let inbox = acc.rootFolders.first
         let _ = Folder(name: "InsideInbox", parent: inbox, account: acc, folderType: .normal)
         let _ = Folder(name: "InsiDrafts", parent: drafts, account: acc, folderType: .normal)
-        moc.saveAndLogErrors()
         let expectedOrder : [FolderType] = [.inbox, .normal, .drafts, .normal, .sent, .spam, .trash, .outbox]
 
         //the test
