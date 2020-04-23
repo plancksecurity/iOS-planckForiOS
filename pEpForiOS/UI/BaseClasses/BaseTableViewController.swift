@@ -42,8 +42,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
 
                 // We have no config. Return nonsense.
                 let errorPropagator = ErrorPropagator()
-                return AppConfig(errorPropagator: errorPropagator,
-                                 oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider())
+                return AppConfig(oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider())
             }
             return safeConfig
         }
@@ -65,7 +64,6 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             }
             return
         }
-        appConfig.errorPropagator.subscriber = self
         self.navigationController?.title = title
         BaseTableViewController.setupCommonSettings(tableView: tableView)
     }

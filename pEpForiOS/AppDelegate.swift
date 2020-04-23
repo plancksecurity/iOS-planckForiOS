@@ -21,6 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /** The model */
     private var messageModelService: MessageModelServiceProtocol?
 
+    private var errorSubscriber = ErrorSubscriber()
+    
     /// Error Handler bubble errors up to the UI
     private var errorPropagator = ErrorPropagator()
 
@@ -61,14 +63,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
+        errorPropagator.subscriber = errorSubscriber
         let keySyncHandshakeService = KeySyncHandshakeService()
         messageModelService = MessageModelService(errorPropagator: errorPropagator,
                                                   cnContactsAccessPermissionProvider: AppSettings.shared,
                                                   keySyncServiceHandshakeHandler: KeySyncHandshakeService(),
                                                   keySyncStateProvider: AppSettings.shared)
 
-        appConfig = AppConfig(errorPropagator: errorPropagator,
-                              oauth2AuthorizationFactory: oauth2Provider)
+        appConfig = AppConfig(oauth2AuthorizationFactory: oauth2Provider)
 
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = appConfig
@@ -105,7 +107,7 @@ extension AppDelegate {
         }
 
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
-        Appearance.setup    ()
+        Appearance.setup()
         setupServices()
         askUserForNotificationPermissions()
         var result = setupInitialViewController()

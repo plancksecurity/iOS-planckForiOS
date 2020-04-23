@@ -59,7 +59,8 @@ extension ErrorPropagator {
 public class ErrorPropagator: ErrorContainerProtocol {
     private var errorContainer: ErrorContainerProtocol
     /// Is informed whenever an Error is added.
-    public weak var subscriber: ErrorPropagatorSubscriber?
+    public var subscriber: ErrorPropagatorSubscriber?
+    //?? weak removal is ok?
 
     public init(subscriber: ErrorPropagatorSubscriber? = nil,
                 errorContainer: ErrorContainerProtocol? = nil) {

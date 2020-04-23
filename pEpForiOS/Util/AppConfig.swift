@@ -14,14 +14,11 @@ import MessageModel
 class AppConfig {
     var showedAccountsError: [String:Bool]
 
-    let errorPropagator : ErrorPropagator
 
     ///For the views to kick off oauth2 requests.
     let oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol
 
-    init(errorPropagator: ErrorPropagator,
-         oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol) {
-        self.errorPropagator = errorPropagator
+    init(oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol) {
         self.oauth2AuthorizationFactory = oauth2AuthorizationFactory
         self.showedAccountsError = [:]
     }
