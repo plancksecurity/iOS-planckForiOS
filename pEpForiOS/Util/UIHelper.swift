@@ -10,13 +10,26 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 class UIHelper {
+    
+    /// Configures the table view to support dynamic cells height based on its content.
+    /// - Parameter tableView: The table view to configure
     static func variableCellHeightsTableView(_ tableView: UITableView) {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
     }
-    static func variableSectionHeaderHeightsTableView(_ tableView: UITableView) {
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 25
+
+    /// Configures the table view to support dynamic header height based on its content.
+    /// - Parameter tableView: The table view to configure
+    static func variableSectionHeadersHeightTableView(_ tableView: UITableView) {
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
+        tableView.estimatedSectionHeaderHeight = 25
+    }
+
+    /// Configures the table view to support dynamic footer height based on its content.
+    /// - Parameter tableView: The table view to configure
+    static func variableSectionFootersHeightTableView(_ tableView: UITableView) {
+        tableView.sectionFooterHeight = UITableView.automaticDimension
+        tableView.estimatedSectionFooterHeight = 25
     }
 
     /**

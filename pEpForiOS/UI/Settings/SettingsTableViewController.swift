@@ -22,7 +22,7 @@ final class SettingsTableViewController: BaseTableViewController {
         setUp()
         viewModel.delegate = self
         UIHelper.variableCellHeightsTableView(tableView)
-        UIHelper.variableSectionHeaderHeightsTableView(tableView)
+        UIHelper.variableSectionHeadersHeightTableView(tableView)
         addExtraKeysEditabilityToggleGesture()
     }
 
@@ -51,13 +51,10 @@ final class SettingsTableViewController: BaseTableViewController {
 // MARK: - Private
 
 extension SettingsTableViewController {
-    private struct Localized {
-        static let navigationTitle = NSLocalizedString("Settings", comment: "Settings view title")
-    }
+
     private func setUp() {
-        title = Localized.navigationTitle
-        tableView.register(pEpHeaderView.self,
-                           forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
+        title = NSLocalizedString("Settings", comment: "Settings view title")
+        tableView.register(pEpHeaderView.self, forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
     }
     /// Prepares and returns the swipe tableview cell, with the corresponding color and title.
     /// - Parameters:

@@ -12,13 +12,6 @@ final class pEpHeaderView: UITableViewHeaderFooterView {
 
     static let reuseIdentifier = "pEp Section Header"
 
-    private struct Constant {
-        struct Margin {
-            static let top: CGFloat = 36
-            static let bottom: CGFloat = 12
-        }
-    }
-
     private let titleLabel = UILabel()
 
     var title: String = "" {
@@ -33,7 +26,7 @@ final class pEpHeaderView: UITableViewHeaderFooterView {
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        setUp()
+        setup()
     }
 }
 
@@ -41,7 +34,7 @@ final class pEpHeaderView: UITableViewHeaderFooterView {
 
 extension pEpHeaderView {
     
-    private func setUp() {
+    private func setup() {
         contentView.addSubview(titleLabel)
         configure(titleLabel: titleLabel)
         setFont(titleLabel: titleLabel)
@@ -60,12 +53,10 @@ extension pEpHeaderView {
     }
     private func setConstraints(titleLabel: UILabel) {
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo:
-                   contentView.layoutMarginsGuide.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo:
-                   contentView.layoutMarginsGuide.trailingAnchor),
-            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: Constant.Margin.top),
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -Constant.Margin.bottom)
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.layoutMarginsGuide.trailingAnchor),
+            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.topAnchor),
+            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.layoutMarginsGuide.bottomAnchor)
         ])
     }
 }
