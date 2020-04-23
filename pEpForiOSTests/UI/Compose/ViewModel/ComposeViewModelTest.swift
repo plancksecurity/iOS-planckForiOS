@@ -11,6 +11,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 class ComposeViewModelTest: AccountDrivenTestBase {
     private var testDelegate: TestDelegate?
@@ -1432,7 +1433,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         ofType type: Attachment.ContentDispositionType = .attachment ) -> Attachment {
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard
-            let imageData = TestUtil.loadData(fileName: imageFileName),
+            let imageData = MiscUtil.loadData(fileName: imageFileName),
             let image = UIImage(data: imageData) else {
             XCTFail()
             return Attachment(data: nil, mimeType: "meh", contentDisposition: .attachment)

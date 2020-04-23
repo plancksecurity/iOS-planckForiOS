@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
+import pEpIOSToolbox
 
 class ComposeViewModel_InitDataTest: AccountDrivenTestBase {
     var inbox: Folder?
@@ -612,7 +613,7 @@ extension ComposeViewModel_InitDataTest {
     }
     private func getStandardJpgData() -> Data {
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
-        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
+        guard let imageData = MiscUtil.loadData(fileName: imageFileName) else {
             XCTFail("imageData is nil!")
             return Data()
         }
@@ -631,7 +632,7 @@ extension ComposeViewModel_InitDataTest {
             var attachments = [Attachment]()
             let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg" //IOS-1399: move to Utils
             guard
-                let imageData = TestUtil.loadData(fileName: imageFileName),
+                let imageData = MiscUtil.loadData(fileName: imageFileName),
                 let image = UIImage(data: imageData) else {
                     XCTFail("No img")
                     return []

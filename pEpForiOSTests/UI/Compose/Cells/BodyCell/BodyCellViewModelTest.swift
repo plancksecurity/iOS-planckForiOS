@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 import MessageModel
+import pEpIOSToolbox
 
 class BodyCellViewModelTest: XCTestCase {
     var vm: BodyCellViewModel!
@@ -592,7 +593,7 @@ class BodyCellViewModelTest: XCTestCase {
             var attachments = [Attachment]()
             let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg" //IOS-1399: move to Utils
             guard
-                let imageData = TestUtil.loadData(fileName: imageFileName),
+                let imageData = MiscUtil.loadData(fileName: imageFileName),
                 let image = UIImage(data: imageData) else {
                     XCTFail("No img")
                     return []

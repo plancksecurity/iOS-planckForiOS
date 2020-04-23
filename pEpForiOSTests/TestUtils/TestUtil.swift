@@ -47,20 +47,6 @@ class TestUtil {
     static var initialNumberOfRunningConnections = 0
     static var initialNumberOfServices = 0
 
-    //!!!: duplicated MM. Move to toolbox
-    static func loadData(fileName: String) -> Data? {
-        let testBundle = Bundle(for: self)
-        guard let keyPath = testBundle.path(forResource: fileName, ofType: nil) else {
-            XCTFail("Could not find file named \(fileName)")
-            return nil
-        }
-        guard let data = try? Data(contentsOf: URL(fileURLWithPath: keyPath)) else {
-            XCTFail("Could not load file named \(fileName)")
-            return nil
-        }
-        return data
-    }
-
     /**
      Dumps some diff between two NSDirectories to the console.
      */
@@ -159,10 +145,9 @@ class TestUtil {
     }
 
     static func createAttachment(inlined: Bool = true) -> Attachment {
-
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
-        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
-            XCTAssertTrue(false)
+        guard let imageData = MiscUtil.loadData(fileName: imageFileName) else {
+            XCTFail()
             return Attachment(data: nil, mimeType: "meh", contentDisposition: .attachment)
         }
 

@@ -11,6 +11,7 @@ import UIKit
 
 @testable import pEpForiOS
 @testable import MessageModel
+import pEpIOSToolbox
 
 // StringHTMLExtensionTests all tests are green on date 20200313
 
@@ -54,7 +55,7 @@ class StringHTMLExtensionTests: XCTestCase {
     func testToMarkdown() {
         let imgDelegate = TestMarkdownImageDelegate()
 
-        guard let data = TestUtil.loadData(fileName: "NSHTML_2017-08-09 15_40_53 +0000.html") else {
+        guard let data = MiscUtil.loadData(fileName: "NSHTML_2017-08-09 15_40_53 +0000.html") else {
             XCTFail()
             return
         }
