@@ -69,19 +69,6 @@ class TestDataBase {
             self.password = password
         }
 
-        func cdIdentityWithoutAccount(isMyself: Bool = false, context: NSManagedObjectContext) -> CdIdentity {
-            let id = CdIdentity(context: context)
-            id.address = idAddress
-            id.userName = idUserName
-
-            if isMyself {
-                id.userID = CdIdentity.pEpOwnUserID
-            } else {
-                id.userID = UUID().uuidString
-            }
-            return id
-        }
-
         /// Creates a partner identity, that is, a non-myself identity without an
         /// associated account, thereby ignoring the account data.
         /// - Returns: A partner identity
