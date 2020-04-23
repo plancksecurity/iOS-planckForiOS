@@ -17,6 +17,9 @@
 /* Reply to single contact, without date. Placeholder: Name. */
 "%1$@ wrote:" = "Napísal (-a)% 1 $ @:";
 
+/* Number of filters instead of filter name */
+"%d filters" = "% d filtre";
+
 /* error message for .missingPassword */
 "A non-empty password is required" = "Heslo je povinné";
 
@@ -245,6 +248,9 @@
 /* Extra Keys Editable */
 "Extra Keys Editable" = "Extra Kľúče je možné upravovať";
 
+/* 'Filter by' in formatted string, followed by the localized filter name */
+"Filter by: %@" = "Triediť podľa: %@";
+
 /* Filter Title */
 "Filters" = "Filtre";
 
@@ -462,6 +468,9 @@
 /* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
 "No Permissions" = "Žiadne povolenia";
 
+/* empty mail filter (no filter at all) */
+"none" = "nikto";
+
 /* privacyStatusDescription no_color
    privacyStatusTitle no_color */
 "None" = "Žiadne";
@@ -610,7 +619,7 @@
 "Protect Message Subject" = "Chrániť predmet správy";
 
 /* passive mode description */
-"Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p." = "Materiál verejného kľúča bude pripojený k správe, iba ak p≡p zistí, že príjemca používa aj p≡p.";
+"Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p." = "Verejný kľúč PGP bude pripojený k správe, iba ak p≡p zistí, že príjemca používa aj p≡p.";
 
 /* Privacy status suggestion */
 "Re-establish the connection with your communication partner and try to complete another handshake." = "Obnovte spojenie s vašim komunikačným partnerom a skúste dokončiť ďalšie podanie ruky.";
@@ -637,7 +646,7 @@
    Account settings reset identity
    Reset account identity button title
    Settings: cell (button) title to view the trust contacts option */
-"Reset" = "Obnoviť";
+"Reset" = "Resetovať";
 
 /* Reset account identity button title
    Settings: Cell (button) title for reset all identities */
