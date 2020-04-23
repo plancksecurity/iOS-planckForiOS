@@ -21,13 +21,11 @@ class TrustManagementViewModelTest: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
         identities = [Identity]()
-        // Generate rows to test the handshake feature
-        for index in 0..<numberOfRowsToGenerate {
-            let identity = SecretTestData().createWorkingCdIdentity(number: index,
-                                                                    isMyself: false,
-                                                                    context: moc)
-            let id = Identity(cdObject: identity, context: moc)
-            identities.append(id)
+        // Generate rows to test the handshake feature.
+        // Note: The account is generated from test data row 0, so don't use this.
+        for index in 1..<numberOfRowsToGenerate {
+            let identity = SecretTestData().createPartnerIdentity(number: index)
+            identities.append(identity)
         }
         
         moc.saveAndLogErrors()

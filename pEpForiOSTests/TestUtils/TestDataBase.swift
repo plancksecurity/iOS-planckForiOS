@@ -83,7 +83,7 @@ class TestDataBase {
         }
 
         /// Creates a partner identity, that is, a non-myself identity without an
-        /// associated account.
+        /// associated account, thereby ignoring the account data.
         /// - Returns: A partner identity
         func partnerIdentity() -> Identity {
             let id = Identity(address: idAddress,
@@ -239,6 +239,13 @@ class TestDataBase {
             createWorkingAccountSettings(number: number).cdIdentityWithoutAccount(isMyself: isMyself,
                                                                                   context: context)
         return result
+    }
+
+    /**
+     - Returns: A partner identity, that is one without an associated account.
+     */
+    func createPartnerIdentity(number: Int = 0) -> Identity {
+        return createWorkingAccountSettings(number: number).partnerIdentity()
     }
 
     func createWorkingAccountSettings(number: Int = 0) -> AccountSettings {
