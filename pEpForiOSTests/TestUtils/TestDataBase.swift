@@ -82,6 +82,18 @@ class TestDataBase {
             return id
         }
 
+        /// Creates a partner identity, that is, a non-myself identity without an
+        /// associated account.
+        /// - Returns: A partner identity
+        func partnerIdentity() -> Identity {
+            let id = Identity(address: idAddress,
+                              userID: "partner_\(idAddress)",
+                addressBookID: nil,
+                userName: idUserName,
+                session: nil)
+            return id
+        }
+
         func account() -> Account {
             let id = Identity(address: idAddress,
                               userID: CdIdentity.pEpOwnUserID,
