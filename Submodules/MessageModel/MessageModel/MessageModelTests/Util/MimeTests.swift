@@ -14,7 +14,7 @@ import pEpIOSToolbox
 class MimeTests: XCTestCase {
     func testPGPMimePantomime() {
         guard
-            let data = MiscUtil.loadData(fileName: "PGPMimeMail.txt"),
+            let data = MiscUtil.loadData(bundleClass: MimeTests.self, fileName: "PGPMimeMail.txt"),
             let cwMessage = CWMessage(data: data) else {
                 XCTAssertTrue(false)
                 return

@@ -91,7 +91,7 @@ extension UseFirstHTMLPartAsBodyTest {
 
 extension UseFirstHTMLPartAsBodyTest {
     static func loadData(fileName: String) -> Data? {
-        return MiscUtil.loadData(fileName: fileName)
+        return MiscUtil.loadData(bundleClass: self, fileName: fileName)
     }
 
     static func loadString(fileName: String) -> String? {

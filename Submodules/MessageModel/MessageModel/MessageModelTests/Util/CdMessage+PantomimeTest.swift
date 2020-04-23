@@ -147,7 +147,8 @@ class CdMessage_PantomimeTest: PersistentStoreDrivenTestBase {
         folder.name = ImapConnection.defaultInboxName
 
         guard
-            let data = MiscUtil.loadData(fileName: "UnencryptedHTMLMail.txt"),
+            let data = MiscUtil.loadData(bundleClass: CdMessage_PantomimeTest.self,
+                                         fileName: "UnencryptedHTMLMail.txt"),
             let message = CWIMAPMessage(data: data) else {
                 XCTAssertTrue(false)
                 return
@@ -171,7 +172,8 @@ class CdMessage_PantomimeTest: PersistentStoreDrivenTestBase {
         folder.name = ImapConnection.defaultInboxName
 
         guard
-            let messageWithKeyAndPdfAttached = MiscUtil.loadData(fileName: "IOS-211_hi_there.txt"),
+            let messageWithKeyAndPdfAttached = MiscUtil.loadData(bundleClass: CdMessage_PantomimeTest.self,
+                                                                 fileName: "IOS-211_hi_there.txt"),
             let message = CWIMAPMessage(data: messageWithKeyAndPdfAttached) else {
                 XCTAssertTrue(false)
                 return
@@ -207,7 +209,8 @@ class CdMessage_PantomimeTest: PersistentStoreDrivenTestBase {
         folder.name = ImapConnection.defaultInboxName
         
         guard
-            let messageWithKeyAndPdfAttached = MiscUtil.loadData(fileName: "IOS-211-pdfEmail.txt"),
+            let messageWithKeyAndPdfAttached = MiscUtil.loadData(bundleClass: CdMessage_PantomimeTest.self,
+                                                                 fileName: "IOS-211-pdfEmail.txt"),
             let message = CWIMAPMessage(data: messageWithKeyAndPdfAttached) else {
                 XCTAssertTrue(false)
                 return

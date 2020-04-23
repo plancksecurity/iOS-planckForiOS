@@ -146,7 +146,8 @@ class TestUtil {
 
     static func createAttachment(inlined: Bool = true) -> Attachment {
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
-        guard let imageData = MiscUtil.loadData(fileName: imageFileName) else {
+        guard let imageData = MiscUtil.loadData(bundleClass: TestUtil.self,
+                                                fileName: imageFileName) else {
             XCTFail()
             return Attachment(data: nil, mimeType: "meh", contentDisposition: .attachment)
         }

@@ -1433,7 +1433,8 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         ofType type: Attachment.ContentDispositionType = .attachment ) -> Attachment {
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard
-            let imageData = MiscUtil.loadData(fileName: imageFileName),
+            let imageData = MiscUtil.loadData(bundleClass: ComposeViewModelTest.self,
+                                              fileName: imageFileName),
             let image = UIImage(data: imageData) else {
             XCTFail()
             return Attachment(data: nil, mimeType: "meh", contentDisposition: .attachment)

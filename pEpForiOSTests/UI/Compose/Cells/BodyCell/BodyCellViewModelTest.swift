@@ -593,7 +593,8 @@ class BodyCellViewModelTest: XCTestCase {
             var attachments = [Attachment]()
             let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg" //IOS-1399: move to Utils
             guard
-                let imageData = MiscUtil.loadData(fileName: imageFileName),
+                let imageData = MiscUtil.loadData(bundleClass: BodyCellViewModelTest.self,
+                                                  fileName: imageFileName),
                 let image = UIImage(data: imageData) else {
                     XCTFail("No img")
                     return []

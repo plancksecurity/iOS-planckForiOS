@@ -508,7 +508,7 @@ extension TestUtil {
     }
 
     static func loadString(fileName: String) -> String? {
-        if let data = MiscUtil.loadData(fileName: fileName) {
+        if let data = MiscUtil.loadData(bundleClass: self, fileName: fileName) {
             guard let content = NSString(data: data, encoding: String.Encoding.ascii.rawValue)
                 else {
                     XCTAssertTrue(
