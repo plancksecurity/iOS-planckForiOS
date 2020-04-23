@@ -13,17 +13,36 @@ import pEpIOSToolbox
 final class AccountSettingsTableViewController: BaseTableViewController {
 
 // MARK: - IBOutlets
+    
+    @IBOutlet weak var smtpStackView: UIStackView!
+    
+    @IBOutlet weak var smtpUsernameLabel: UILabel!
+    @IBOutlet weak var smtpTransportSecurityLabel: UILabel!
+    @IBOutlet weak var smtpPortLabel: UILabel!
+    @IBOutlet weak var transportSecurityLabel: UILabel!
+    
+    @IBOutlet weak var imapUsernameLabel: UILabel!
 
+    
     //general account fields
+    @IBOutlet weak var oAuthReauthorizationLabel: UILabel!
+    @IBOutlet weak var certificateLabel: UILabel!
+    @IBOutlet weak var certificateTextfield: UITextField!
+    @IBOutlet weak var passwordLabel: UILabel!
+    
+    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var nameTextfield: UITextField!
+    @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var emailTextfield: UITextField!
     @IBOutlet weak var passwordTextfield: UITextField!
     @IBOutlet weak var resetIdentityLabel: UILabel!
     @IBOutlet weak var keySyncLabel: UILabel!
     @IBOutlet weak var keySyncSwitch: UISwitch!
-    @IBOutlet weak var certificateLabel: UITextField!
+    
     //imap fields
+    @IBOutlet weak var serverLabel: UILabel!
     @IBOutlet weak var imapServerTextfield: UITextField!
+    @IBOutlet weak var portLabel: UILabel!
     @IBOutlet weak var imapPortTextfield: UITextField!
     @IBOutlet weak var imapSecurityTextfield: UITextField!
     @IBOutlet weak var imapUsernameTextField: UITextField!
@@ -59,7 +78,9 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     private var resetIdentityIndexPath: IndexPath?
     private var certificateIndexPath: IndexPath?
 
-
+    @IBOutlet weak var smtpServerLabel: UILabel!
+    
+    
 // MARK: - Life Cycle
 
      override func viewDidLoad() {
@@ -67,7 +88,14 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
         tableView.register(pEpHeaderView.self,
                            forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
+        UIHelper.variableCellHeightsTableView(tableView)
+        UIHelper.variableSectionFootersHeightTableView(tableView)
+        UIHelper.variableSectionHeadersHeightTableView(tableView)
+
         viewModel?.delegate = self
+        configureView(for: traitCollection)
+
+        setFonts()
 
     }
 
@@ -271,7 +299,7 @@ extension AccountSettingsTableViewController {
         title = Localized.navigationTitle
         nameTextfield.text = viewModel?.account.user.userName
         emailTextfield.text = viewModel?.account.user.address
-        certificateLabel.text = viewModel?.certificateInfo()
+        certificateTextfield.text = viewModel?.certificateInfo()
         passwordTextfield.text = "JustAPassword"
         resetIdentityLabel.text = NSLocalizedString("Reset",
                                                     comment: "Account settings reset identity")
@@ -396,4 +424,87 @@ extension AccountSettingsTableViewController {
             self?.present(pepAlertViewController, animated: true)
         }
     }
+}
+
+//MARK : - Fonts
+
+extension AccountSettingsTableViewController {
+
+    
+    private func setFonts() {
+        
+        let font = UIFont.pepFont(style: .body, weight: .regular)
+        
+        //Name
+        nameLabel.font = font
+        nameTextfield.font = font
+        
+        //Email
+        emailLabel.font = font
+        emailTextfield.font = font
+
+        //Password
+        passwordLabel.font = font
+        passwordTextfield.font = font
+        
+        //Certificate
+        certificateLabel.font = font
+        certificateTextfield.font = font
+        
+        //Key sync
+        keySyncLabel.font = font
+        
+        //Reset Identity
+        resetIdentityLabel.font = font
+        
+        //OAuth Reauthorization
+        oAuthReauthorizationLabel.font = font
+
+        //Server
+        serverLabel.font = font
+        imapServerTextfield.font = font
+        
+        //Port
+        portLabel.font = font
+        imapPortTextfield.font = font
+
+        //Security
+        transportSecurityLabel.font = font
+        imapSecurityTextfield.font = font
+
+        //Username
+        imapUsernameLabel.font = font
+        imapUsernameTextField.font = font
+        
+        //SMTP Server
+        smtpServerLabel.font = font
+        smtpServerTextfield.font = font
+        
+        //SMTP Server Port
+        smtpPortLabel.font = font
+        smtpPortTextfield.font = font
+        
+        //SMTP Server Transport Security
+        smtpTransportSecurityLabel.font = font
+        smtpSecurityTextfield.font = font
+        
+        //SMTP Server Username
+        smtpUsernameLabel.font = font
+        smtpUsernameTextField.font = font
+    }
+    
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+      super.traitCollectionDidChange(previousTraitCollection)
+      if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+        configureView(for: traitCollection)
+      }
+    }
+    
+    private func configureView(for traitCollection: UITraitCollection) {
+        let contentSize = traitCollection.preferredContentSizeCategory
+        let axis : NSLayoutConstraint.Axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
+        smtpStackView.axis = axis
+    }
+
 }
