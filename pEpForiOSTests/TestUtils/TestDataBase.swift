@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 
 @testable import MessageModel
 import PEPObjCAdapterFramework
