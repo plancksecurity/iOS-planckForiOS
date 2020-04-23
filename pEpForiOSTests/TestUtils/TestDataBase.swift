@@ -230,18 +230,6 @@ class TestDataBase {
     }
 
     /**
-     - Returns: A valid `CdIdentity` without parent account.
-     */
-    func createWorkingCdIdentity(number: Int = 0,
-                                 isMyself: Bool = false,
-                                 context: NSManagedObjectContext) -> CdIdentity {
-        let result =
-            createWorkingAccountSettings(number: number).cdIdentityWithoutAccount(isMyself: isMyself,
-                                                                                  context: context)
-        return result
-    }
-
-    /**
      - Returns: A partner identity, that is one without an associated account.
      */
     func createPartnerIdentity(number: Int = 0) -> Identity {

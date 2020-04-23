@@ -183,10 +183,7 @@ extension TrustManagementViewModelTest {
         //Avoid collision with others identity numbers.
         let selfNumber = numberOfRowsToGenerate + 1
         
-        let cdIdentity: CdIdentity = SecretTestData().createWorkingCdIdentity(number:selfNumber,
-                                                                              isMyself: true,
-                                                                              context: moc)
-        let selfIdentity = Identity(cdObject: cdIdentity, context: moc)
+        let selfIdentity = SecretTestData().createWorkingAccount(number: selfNumber).user
         selfIdentity.fingerprint = "fingerprints"
         selfIdentity.save()
         moc.saveAndLogErrors()
