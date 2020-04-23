@@ -266,13 +266,6 @@ class TestDataBase {
     }
 
     /**
-     - Returns: A valid `Account`.
-     */
-    func createVerifiableAccount(number: Int = 0, context: NSManagedObjectContext) -> Account {
-        return createVerifiableAccountSettings(number: number).account()
-    }
-
-    /**
      - Returns: An `AccountSettings` object with an SMTP server that should yield a quick timeout.
      */
     func createSmtpTimeOutAccountSettings() -> AccountSettings {
