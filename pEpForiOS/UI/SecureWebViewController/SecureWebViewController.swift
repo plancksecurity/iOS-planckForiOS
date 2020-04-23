@@ -34,16 +34,17 @@ protocol SecureWebViewUrlClickHandlerProtocol: class {
 class SecureWebViewController: UIViewController {
     static public let storyboardId = "SecureWebViewController"
 
-    // MARK: - Private Properties
+    // MARK: - Public Properties
 
-    private var _userInteractionEnabled: Bool = true
-    private var _scrollingEnabled: Bool = false
-    var contentSize: CGSize {
+    public var contentSize: CGSize {
         get {
             return webView?.scrollView.contentSize ?? CGSize.zero
         }
     }
-    var scrollingEnabled: Bool {
+
+    // MARK: - Private Properties
+
+    private var scrollingEnabled: Bool {
         get {
             return _scrollingEnabled
         }
@@ -54,13 +55,7 @@ class SecureWebViewController: UIViewController {
             }
         }
     }
-    private var webView: WKWebView!
-    private var htmlOptimizer = HtmlOptimizerUtil(minimumFontSize: 16.0)
-    weak public var delegate: SecureWebViewControllerDelegate?
-    weak public var urlClickHandler: SecureWebViewUrlClickHandlerProtocol?
-    public var minimumFontSize: CGFloat = 16.0
-    public var zoomingEnabled: Bool = true
-    public var userInteractionEnabled: Bool {
+    private var userInteractionEnabled: Bool {
         get {
             return _userInteractionEnabled
         }
@@ -71,6 +66,17 @@ class SecureWebViewController: UIViewController {
             }
         }
     }
+
+    // MARK: - Variables
+
+    weak public var delegate: SecureWebViewControllerDelegate?
+    weak public var urlClickHandler: SecureWebViewUrlClickHandlerProtocol?
+    public var minimumFontSize: CGFloat = 16.0
+    public var zoomingEnabled: Bool = true
+    private var webView: WKWebView!
+    private var htmlOptimizer = HtmlOptimizerUtil(minimumFontSize: 16.0)
+    private var _userInteractionEnabled: Bool = true
+    private var _scrollingEnabled: Bool = false
 
     // MARK: - Life Cycle
 
