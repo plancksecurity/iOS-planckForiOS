@@ -145,7 +145,7 @@
 		158A56502403F043003C0D7E /* ClientCertificateManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A564F2403F043003C0D7E /* ClientCertificateManagementViewController.swift */; };
 		158A56522403F05B003C0D7E /* ClientCertificateManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A56512403F05B003C0D7E /* ClientCertificateManagementViewModel.swift */; };
 		158A6E2F230D53E3006A9ECE /* ExtraKeysSettingViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6E2E230D53E3006A9ECE /* ExtraKeysSettingViewModelTest.swift */; };
-		158BCFF024237FDB00E41F67 /* SecretTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158BCFEF24237FDB00E41F67 /* SecretTestData.swift */; };
+		158BCFF024237FDB00E41F67 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158BCFEF24237FDB00E41F67 /* TestData.swift */; };
 		15944A30239802D5006B133B /* EmailDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15944A2F239802D5006B133B /* EmailDetailViewController.swift */; };
 		15944A3223980C99006B133B /* EmailDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15944A3123980C99006B133B /* EmailDetailViewModel.swift */; };
 		15944A3523980FEC006B133B /* EmailDisplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15944A3423980FEC006B133B /* EmailDisplayViewModel.swift */; };
@@ -619,7 +619,7 @@
 		158A56722405236F003C0D7E /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		158A56732405236F003C0D7E /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		158A6E2E230D53E3006A9ECE /* ExtraKeysSettingViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtraKeysSettingViewModelTest.swift; sourceTree = "<group>"; };
-		158BCFEF24237FDB00E41F67 /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretTestData.swift; sourceTree = "<group>"; };
+		158BCFEF24237FDB00E41F67 /* TestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		15944A2F239802D5006B133B /* EmailDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailViewController.swift; sourceTree = "<group>"; };
 		15944A3123980C99006B133B /* EmailDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailViewModel.swift; sourceTree = "<group>"; };
 		15944A3423980FEC006B133B /* EmailDisplayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDisplayViewModel.swift; sourceTree = "<group>"; };
@@ -1110,7 +1110,7 @@
 		151F71EB202A06750057C74D /* TestUtils */ = {
 			isa = PBXGroup;
 			children = (
-				158BCFEF24237FDB00E41F67 /* SecretTestData.swift */,
+				158BCFEF24237FDB00E41F67 /* TestData.swift */,
 				154D173C2373327C001FDF78 /* CoreDataDrivenTestBase.swift */,
 				151F71F4202A06750057C74D /* Message+TestUtils.swift */,
 				151F71F0202A06750057C74D /* MockBackgrounder.swift */,
@@ -3102,7 +3102,7 @@
 				151F71F7202A06760057C74D /* TestDataBase.swift in Sources */,
 				1541D7F01FC81ED900D52A5D /* URL+ExtensionsTest.swift in Sources */,
 				00262056217DCCB200DDAFB5 /* TrustedServerSettingsViewModelTest.swift in Sources */,
-				158BCFF024237FDB00E41F67 /* SecretTestData.swift in Sources */,
+				158BCFF024237FDB00E41F67 /* TestData.swift in Sources */,
 				15BA536E20A095410090F126 /* UnifiedInboxTest.swift in Sources */,
 				B73123CA23D07739009EDC62 /* SettingsViewModelTest.swift in Sources */,
 				15D7D990219AD38B00A1A2B9 /* MediaAttachmentPickerProviderViewModelTest.swift in Sources */,

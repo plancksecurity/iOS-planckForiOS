@@ -84,7 +84,7 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
     }
 
     func testAccount_twoExisting() {
-        let account = SecretTestData().createWorkingAccount(number: 1)
+        let account = TestData().createWorkingAccount(number: 1)
         account.save()
         assertAccountSection()
     }

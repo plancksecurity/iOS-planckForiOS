@@ -23,7 +23,7 @@ class TrustManagementViewModelTest: CoreDataDrivenTestBase {
         // Generate rows to test the handshake feature.
         // Note: The account is generated from test data row 0, so don't use this.
         for index in 1..<numberOfRowsToGenerate {
-            let identity = SecretTestData().createPartnerIdentity(number: index)
+            let identity = TestData().createPartnerIdentity(number: index)
             identity.save()
             identities.append(identity)
         }
@@ -181,12 +181,12 @@ extension TrustManagementViewModelTest {
         //Avoid collision with others identity numbers.
         let selfNumber = numberOfRowsToGenerate + 1
         
-        let selfIdentity = SecretTestData().createWorkingAccount(number: selfNumber).user
+        let selfIdentity = TestData().createWorkingAccount(number: selfNumber).user
         selfIdentity.fingerprint = "fingerprints"
         selfIdentity.save()
         
         if trustManagementViewModel == nil {
-            let account1 = SecretTestData().createWorkingAccount()
+            let account1 = TestData().createWorkingAccount()
             account1.save()
             let folder1 = Folder(name: "inbox", parent: nil, account: account1, folderType: .inbox)
             guard let from = identities.first else  {

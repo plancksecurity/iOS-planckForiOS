@@ -39,7 +39,7 @@ final class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
     func testPEPSyncSectionIsShown() {
         // GIVEN
-        let _ = SecretTestData().createWorkingAccount(number: 1)
+        let _ = TestData().createWorkingAccount(number: 1)
 
         updateViewModelState()
         expected = State(isPEPSyncSectionShown: true)

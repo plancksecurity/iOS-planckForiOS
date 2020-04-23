@@ -22,7 +22,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
     override open func setUp() {
         super.setUp()
         Stack.shared.reset() //!!!: this should not be required. Rm after all tests use a propper base class!
-        self.account = SecretTestData().createWorkingAccount()
+        self.account = TestData().createWorkingAccount()
     }
 
     override open func tearDown() {
