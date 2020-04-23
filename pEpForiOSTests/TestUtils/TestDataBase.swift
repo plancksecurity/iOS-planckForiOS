@@ -84,6 +84,7 @@ class TestDataBase {
 
         func account() -> Account {
             let id = Identity(address: idAddress,
+                              userID: CdIdentity.pEpOwnUserID,
                               userName: idUserName,
                               session: Session.main)
 
