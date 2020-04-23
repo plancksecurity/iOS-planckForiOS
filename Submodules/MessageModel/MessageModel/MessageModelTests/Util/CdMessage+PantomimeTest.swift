@@ -7,10 +7,11 @@
 //
 
 import XCTest
-
 import CoreData
+
 import PantomimeFramework
 @testable import MessageModel
+import pEpIOSToolbox
 
 class CdMessage_PantomimeTest: PersistentStoreDrivenTestBase {
     // MARK: - StoreCommandForFlagsToRemoved / Add
@@ -146,7 +147,7 @@ class CdMessage_PantomimeTest: PersistentStoreDrivenTestBase {
         folder.name = ImapConnection.defaultInboxName
 
         guard
-            let data = TestUtil.loadData(fileName: "UnencryptedHTMLMail.txt"),
+            let data = MiscUtil.loadData(fileName: "UnencryptedHTMLMail.txt"),
             let message = CWIMAPMessage(data: data) else {
                 XCTAssertTrue(false)
                 return
@@ -170,7 +171,7 @@ class CdMessage_PantomimeTest: PersistentStoreDrivenTestBase {
         folder.name = ImapConnection.defaultInboxName
 
         guard
-            let messageWithKeyAndPdfAttached = TestUtil.loadData(fileName: "IOS-211_hi_there.txt"),
+            let messageWithKeyAndPdfAttached = MiscUtil.loadData(fileName: "IOS-211_hi_there.txt"),
             let message = CWIMAPMessage(data: messageWithKeyAndPdfAttached) else {
                 XCTAssertTrue(false)
                 return
@@ -206,7 +207,7 @@ class CdMessage_PantomimeTest: PersistentStoreDrivenTestBase {
         folder.name = ImapConnection.defaultInboxName
         
         guard
-            let messageWithKeyAndPdfAttached = TestUtil.loadData(fileName: "IOS-211-pdfEmail.txt"),
+            let messageWithKeyAndPdfAttached = MiscUtil.loadData(fileName: "IOS-211-pdfEmail.txt"),
             let message = CWIMAPMessage(data: messageWithKeyAndPdfAttached) else {
                 XCTAssertTrue(false)
                 return
