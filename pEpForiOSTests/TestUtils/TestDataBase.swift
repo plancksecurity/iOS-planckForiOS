@@ -273,17 +273,6 @@ class TestDataBase {
     }
 
     /**
-     - Returns: A valid `PEPIdentity`.
-     */
-    func createWorkingIdentity(number: Int = 0,
-                               isMyself: Bool = false,
-                               context: NSManagedObjectContext) -> PEPIdentity {
-        populateAccounts()
-        return createWorkingCdIdentity(number: number, isMyself: isMyself, context: context)
-            .pEpIdentity()
-    }
-
-    /**
      - Returns: An `AccountSettings` object with an SMTP server that should yield a quick timeout.
      */
     func createSmtpTimeOutAccountSettings() -> AccountSettings {
