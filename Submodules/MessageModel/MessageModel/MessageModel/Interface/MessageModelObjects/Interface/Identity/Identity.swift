@@ -149,7 +149,6 @@ extension Identity {
             return nil
         }
         return MessageModelObjectUtils.getIdentity(fromCdIdentity: id)
-        return nil
     }
 
     /// Finds an Identity whichs:

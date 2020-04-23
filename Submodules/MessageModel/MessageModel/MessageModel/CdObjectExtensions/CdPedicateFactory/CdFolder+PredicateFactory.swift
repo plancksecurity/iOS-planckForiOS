@@ -33,7 +33,7 @@ extension CdFolder {
 /// IMAP specific predicates (MessageModel should not be aware of)
 extension CdFolder.PredicateFactory {
 
-    static  func isSyncedWithServer() -> NSPredicate {
+    static func isSyncedWithServer() -> NSPredicate {
         return NSPredicate(format: "%K IN %@",
                            CdFolder.AttributeName.folderTypeRawValue,
                            FolderType.typesSyncedWithImapServerRawValues)
