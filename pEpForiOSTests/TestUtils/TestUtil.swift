@@ -82,26 +82,6 @@ class TestUtil {
         }
     }
 
-    /**
-     Makes the servers for this account unreachable, for tests that expects failure.
-     */
-    static func makeServersUnreachable(cdAccount: CdAccount) {
-        guard let cdServers = cdAccount.servers?.allObjects as? [CdServer] else {
-            XCTFail()
-            return
-        }
-
-        for cdServer in cdServers {
-            cdServer.address = "localhost"
-            cdServer.port = 2525
-        }
-        guard let context = cdAccount.managedObjectContext else {
-            pEpForiOS.Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
-            return
-        }
-        context.saveAndLogErrors()
-    }
-
     // MARK: - Sync Loop
 
     static public func syncAndWait(numAccountsToSync: Int = 1, testCase: XCTestCase) {
