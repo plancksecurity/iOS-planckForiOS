@@ -235,30 +235,7 @@ class TestUtil {
         return msg
     }
 
-    // MARK: - ERROR
-
-    //!!!: only used by MessagePantomimeTests & CdMessage_PantomimeTest. Move to MM with those tests
-    /**
-     Loads the given file by name and parses it into a pantomime message.
-     */
-    static func cwImapMessage(fileName: String) -> CWIMAPMessage? {
-        guard
-            var msgTxtData = TestUtil.loadData(
-                fileName: fileName)
-            else {
-                XCTFail()
-                return nil
-        }
-
-        // This is what pantomime does with everything it receives
-        msgTxtData = replacedCRLFWithLF(data: msgTxtData)
-
-        let pantomimeMail = CWIMAPMessage(data: msgTxtData, charset: "UTF-8")
-        pantomimeMail?.setUID(5) // some random UID out of nowhere
-        pantomimeMail?.setFolder(CWIMAPFolder(name: ImapConnection.defaultInboxName))
-
-        return pantomimeMail
-    }
+    // MARK: - MISC
 
     static func replacedCRLFWithLF(data: Data) -> Data {
         let mData = NSMutableData(data: data)
