@@ -11,7 +11,7 @@ import PantomimeFramework
 @testable import pEpForiOS
 @testable import MessageModel
 
-final class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
+final class AccountSettingsViewModelTest: AccountDrivenTestBase {
 
     var viewModel: AccountSettingsViewModel?
 

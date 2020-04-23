@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
+class ComposeViewModel_InitDataTest: AccountDrivenTestBase {
     var inbox: Folder?
     var drafts: Folder?
     var outbox: Folder?

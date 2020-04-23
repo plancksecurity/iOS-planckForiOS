@@ -11,7 +11,7 @@ import XCTest
 @testable import MessageModel
 
 
-class MoveToFolderCellViewModelTests: CoreDataDrivenTestBase {
+class MoveToFolderCellViewModelTests: AccountDrivenTestBase {
 
     var viewmodel: MoveToFolderCellViewModel!
 

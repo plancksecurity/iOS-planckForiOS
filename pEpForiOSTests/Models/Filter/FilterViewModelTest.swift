@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class FilterViewModelTest: CoreDataDrivenTestBase {
+class FilterViewModelTest: AccountDrivenTestBase {
 
     override func setUp() {
         super.setUp()

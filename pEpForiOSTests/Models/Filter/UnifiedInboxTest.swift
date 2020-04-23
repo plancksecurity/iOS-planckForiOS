@@ -12,7 +12,7 @@ import XCTest
 @testable import pEpForiOS
 import PEPObjCAdapterFramework
 
-class UnifiedInboxTest: CoreDataDrivenTestBase {
+class UnifiedInboxTest: AccountDrivenTestBase {
     let unifiedInbox = UnifiedInbox()
     let expectedMessages = 2
 

@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 
-class AccountPickerViewModelTest: CoreDataDrivenTestBase {
+class AccountPickerViewModelTest: AccountDrivenTestBase {
 
     // MARK: - numAccounts
 

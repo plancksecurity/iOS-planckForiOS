@@ -12,7 +12,7 @@ import XCTest
 @testable import MessageModel
 import PEPObjCAdapterFramework
 
-class ComposeViewModelTest: CoreDataDrivenTestBase {
+class ComposeViewModelTest: AccountDrivenTestBase {
     private var testDelegate: TestDelegate?
     var vm: ComposeViewModel?
     var outbox: Folder? {

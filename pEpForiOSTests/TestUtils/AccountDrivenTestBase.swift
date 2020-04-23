@@ -12,7 +12,8 @@ import XCTest
 @testable import MessageModel //FIXME:
 import PEPObjCAdapterFramework
 
-open class CoreDataDrivenTestBase: XCTestCase {
+/// Base class for tests that need an account set up.
+open class AccountDrivenTestBase: XCTestCase {
     var account: Account!
 
     var session: PEPSession {

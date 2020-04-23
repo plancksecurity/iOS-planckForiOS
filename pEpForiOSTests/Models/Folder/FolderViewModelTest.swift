@@ -10,7 +10,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class FolderViewModelTest: CoreDataDrivenTestBase {
+class FolderViewModelTest: AccountDrivenTestBase {
 
     var viewmodel: FolderViewModel!
     var folder: Folder!

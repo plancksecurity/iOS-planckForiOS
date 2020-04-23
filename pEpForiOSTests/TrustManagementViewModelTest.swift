@@ -10,7 +10,7 @@ import XCTest
 @testable import MessageModel
 @testable import pEpForiOS
 
-class TrustManagementViewModelTest: CoreDataDrivenTestBase {
+class TrustManagementViewModelTest: AccountDrivenTestBase {
     var selfIdentity : Identity?
     var trustManagementViewModel : TrustManagementViewModel?
     let numberOfRowsToGenerate = 1

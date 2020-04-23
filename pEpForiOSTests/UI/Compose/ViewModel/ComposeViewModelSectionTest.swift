@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
+class ComposeViewModelSectionTest: AccountDrivenTestBase {
     var state: ComposeViewModel.ComposeViewModelState?
 
     override func setUp() {

@@ -12,7 +12,7 @@ import XCTest
 @testable import MessageModel
 import CoreData
 
-class ExtraKeysSettingViewModelTest: CoreDataDrivenTestBase {
+class ExtraKeysSettingViewModelTest: AccountDrivenTestBase {
 
     // MARK: - numRows
 

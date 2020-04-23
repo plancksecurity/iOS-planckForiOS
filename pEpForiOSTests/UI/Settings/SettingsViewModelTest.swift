@@ -10,7 +10,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class SettingsViewModelTest: CoreDataDrivenTestBase {
+class SettingsViewModelTest: AccountDrivenTestBase {
 
     var settingsVM : SettingsViewModel!
 

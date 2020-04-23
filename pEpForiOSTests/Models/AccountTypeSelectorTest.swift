@@ -13,7 +13,7 @@ import PantomimeFramework
 import PEPObjCAdapterFramework
 
 
-class AccountTypeSelectorTest: CoreDataDrivenTestBase {
+class AccountTypeSelectorTest: AccountDrivenTestBase {
     
     func testNoPreviousAccount() {
         let vm = AccountTypeSelectorViewModel()
