@@ -238,24 +238,6 @@ class TestUtil {
 
     // MARK: - ERROR
 
-    class TestErrorContainer: ErrorContainerProtocol { //!!!: rm. AFAICS the implementation is copy & pasted from ErrorContainer. If so, why not use ErrorContainer?
-        var error: Error?
-
-        func addError(_ error: Error) {
-            if self.error == nil {
-                self.error = error
-            }
-        }
-
-        var hasErrors: Bool {
-            return error != nil
-        }
-
-        func reset() {
-            error = nil
-        }
-    }
-
     //!!!: only used by MessagePantomimeTests & CdMessage_PantomimeTest. Move to MM with those tests
     /**
      Loads the given file by name and parses it into a pantomime message.
@@ -277,29 +259,6 @@ class TestUtil {
         pantomimeMail?.setFolder(CWIMAPFolder(name: ImapConnection.defaultInboxName))
 
         return pantomimeMail
-    }
-
-    /**
-     Loads the given file by name, parses it with pantomime and creates a CdMessage from it.
-     */
-    static func cdMessage(fileName: String, cdOwnAccount: CdAccount) -> CdMessage? {
-        guard let pantomimeMail = cwImapMessage(fileName: fileName) else {
-            XCTFail()
-            return nil
-        }
-
-        let moc: NSManagedObjectContext = Stack.shared.mainContext
-        guard let cdMessage = CdMessage.insertOrUpdate(pantomimeMessage: pantomimeMail,
-                                                       account: cdOwnAccount,
-                                                       messageUpdate: CWMessageUpdate(),
-                                                       context: moc)
-            else {
-                XCTFail()
-                return nil
-        }
-        XCTAssertEqual(cdMessage.pEpRating, Int16(PEPRating.undefined.rawValue))
-
-        return cdMessage
     }
 
     static func replacedCRLFWithLF(data: Data) -> Data {
