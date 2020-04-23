@@ -14,7 +14,10 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
 // MARK: - IBOutlets
     
+    @IBOutlet weak var serverStackView: UIStackView!
     @IBOutlet weak var smtpStackView: UIStackView!
+    @IBOutlet weak var transportSecurityStackView: UIStackView!
+    @IBOutlet weak var portStackView: UIStackView!
     
     @IBOutlet weak var smtpUsernameLabel: UILabel!
     @IBOutlet weak var smtpTransportSecurityLabel: UILabel!
@@ -504,7 +507,19 @@ extension AccountSettingsTableViewController {
     private func configureView(for traitCollection: UITraitCollection) {
         let contentSize = traitCollection.preferredContentSizeCategory
         let axis : NSLayoutConstraint.Axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
-        smtpStackView.axis = axis
-    }
+        
+        let spacing : CGFloat = contentSize.isAccessibilityCategory ? 10.0 : 0.0
 
+        smtpStackView.axis = axis
+        smtpStackView.spacing = spacing
+
+        transportSecurityStackView.axis = axis
+        transportSecurityStackView.spacing = spacing
+
+        portStackView.axis = axis
+        portStackView.spacing = spacing
+        
+        serverStackView.axis = axis
+        serverStackView.spacing = spacing
+    }
 }
