@@ -130,7 +130,7 @@ struct DisplayUserError: LocalizedError {
             case .clientCertificateNotAccepted:
                 break
             }
-        } else if let oauthInternalError = error as? OAuth2AuthViewModelError {
+        } else if let oauthInternalError = error as? OAuthAuthorizerError {
             type = DisplayUserError.type(forError: oauthInternalError)
         } else if let oauthError = error as? OAuth2AuthorizationError {
             type = DisplayUserError.type(forError: oauthError)
@@ -294,7 +294,7 @@ struct DisplayUserError: LocalizedError {
 
     // MARK: OAuth2InternalError
 
-    static private func type(forError error: OAuth2AuthViewModelError) -> ErrorType {
+    static private func type(forError error: OAuthAuthorizerError) -> ErrorType {
         // All OAuth2InternalErrors are internal errors.
         switch error {
         default:
