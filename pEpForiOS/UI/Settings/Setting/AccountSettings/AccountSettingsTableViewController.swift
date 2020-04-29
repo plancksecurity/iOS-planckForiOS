@@ -337,11 +337,12 @@ extension AccountSettingsTableViewController {
     }
 
     private func handleOauth2Reauth() {
-        guard let address = viewModel?.account.user.address else {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(message: "A view model is required")
             return
         }
 
-        guard let accountType = viewModel?.account.accountType else {
+        guard let accountType = vm.account.accountType else {
             Log.shared.errorAndCrash(message: "Handling OAuth2 reauth requires an account with a known account type for determining the OAuth2 configuration")
             return
         }
@@ -354,7 +355,7 @@ extension AccountSettingsTableViewController {
         oauthViewModel.delegate = self
         oauthViewModel.authorize(
             authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
-            emailAddress: address,
+            emailAddress: vm.account.user.address,
             accountType: accountType,
             viewController: self)
     }
