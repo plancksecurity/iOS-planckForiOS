@@ -270,6 +270,7 @@
 		43C123F0223A7FCF00F6A9B2 /* FetchOlderImapMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123E4223A7FCF00F6A9B2 /* FetchOlderImapMessagesService.swift */; };
 		43C123F1223A7FCF00F6A9B2 /* FetchImapFoldersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123E5223A7FCF00F6A9B2 /* FetchImapFoldersService.swift */; };
 		43C12408223A9DEA00F6A9B2 /* CdAccount+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C12407223A9DEA00F6A9B2 /* CdAccount+pEp.swift */; };
+		43C7BFF12459C22200650053 /* OAuthAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C7BFF02459C22200650053 /* OAuthAuthorizer.swift */; };
 		43CB60911DA4EB4E0015281E /* IdentityTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB60901DA4EB4E0015281E /* IdentityTest.swift */; };
 		43CB60931DA4EB4E0015281E /* MessageModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 43CB60851DA4EB4E0015281E /* MessageModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		43CB60A51DA4EBB60015281E /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB609E1DA4EBB60015281E /* Folder.swift */; };
@@ -725,6 +726,7 @@
 		43C123E4223A7FCF00F6A9B2 /* FetchOlderImapMessagesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesService.swift; sourceTree = "<group>"; };
 		43C123E5223A7FCF00F6A9B2 /* FetchImapFoldersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchImapFoldersService.swift; sourceTree = "<group>"; };
 		43C12407223A9DEA00F6A9B2 /* CdAccount+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+pEp.swift"; sourceTree = "<group>"; };
+		43C7BFF02459C22200650053 /* OAuthAuthorizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthAuthorizer.swift; sourceTree = "<group>"; };
 		43CB60821DA4EB4E0015281E /* MessageModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MessageModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43CB60851DA4EB4E0015281E /* MessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
 		43CB60861DA4EB4E0015281E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2128,6 +2130,7 @@
 		5B88A19E2406C1A4003240B8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				43C7BFF02459C22200650053 /* OAuthAuthorizer.swift */,
 				5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */,
 			);
 			path = Util;
@@ -2732,6 +2735,7 @@
 				159AB56B23539CBA008AB1F3 /* CNContactsAccessPermissionProviderProtocol.swift in Sources */,
 				1522955A2302F8E700204FD3 /* ExtraKeys+Utils.swift in Sources */,
 				43123FB9225369660038D72C /* CdMessage+NonOptionalConvenienceAccessors.swift in Sources */,
+				43C7BFF12459C22200650053 /* OAuthAuthorizer.swift in Sources */,
 				43EA486E221E9518006E8F83 /* Message+IMAP.swift in Sources */,
 				43C123E9223A7FCF00F6A9B2 /* QualifyServerIsLocalServiceProtocol.swift in Sources */,
 				43AABD4120EF5D2E00FBD5D0 /* CdMessage+Util.swift in Sources */,
