@@ -898,6 +898,7 @@
 		15175E4C221D59DD00C91DB8 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				43E5C5492459C32900772BB9 /* OAuth */,
 				5B88A19E2406C1A4003240B8 /* Util */,
 				B7F6F47A234CDB2C003DF84A /* QueryResults */,
 				1543B68E22AAB06A002B59AB /* KeySync */,
@@ -1972,6 +1973,14 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
+		43E5C5492459C32900772BB9 /* OAuth */ = {
+			isa = PBXGroup;
+			children = (
+				43C7BFF02459C22200650053 /* OAuthAuthorizer.swift */,
+			);
+			path = OAuth;
+			sourceTree = "<group>";
+		};
 		43EA47E6221E9518006E8F83 /* NetworkService */ = {
 			isa = PBXGroup;
 			children = (
@@ -2130,7 +2139,6 @@
 		5B88A19E2406C1A4003240B8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				43C7BFF02459C22200650053 /* OAuthAuthorizer.swift */,
 				5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */,
 			);
 			path = Util;
