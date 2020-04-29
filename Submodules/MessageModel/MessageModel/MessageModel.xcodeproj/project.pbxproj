@@ -381,6 +381,7 @@
 		B7A6B7BA233BC18100CAC6E3 /* Identity+ResetTrust.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A6B7B9233BC18100CAC6E3 /* Identity+ResetTrust.swift */; };
 		B7BED3132254F75600CCF638 /* Folder+FoldersForType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BED3122254F75600CCF638 /* Folder+FoldersForType.swift */; };
 		B7BED3152254FAA700CCF638 /* Folder+DisplaybleFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BED3142254FAA700CCF638 /* Folder+DisplaybleFolder.swift */; };
+		B7C1F4EE2459B1EF00070DCC /* CdIdentityPredicateFactoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1F4ED2459B1EF00070DCC /* CdIdentityPredicateFactoryTest.swift */; };
 		B7C7E31823351092009ABFFE /* IdentityQueryResultsSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E31723351092009ABFFE /* IdentityQueryResultsSearch.swift */; };
 		B7C7E31A23351115009ABFFE /* IdentityQueryResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E31923351115009ABFFE /* IdentityQueryResults.swift */; };
 		B7DB7FA522147000003968DA /* pEpIOSToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DB7FA422147000003968DA /* pEpIOSToolbox.framework */; };
@@ -841,6 +842,7 @@
 		B7A6B7B9233BC18100CAC6E3 /* Identity+ResetTrust.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+ResetTrust.swift"; sourceTree = "<group>"; };
 		B7BED3122254F75600CCF638 /* Folder+FoldersForType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+FoldersForType.swift"; sourceTree = "<group>"; };
 		B7BED3142254FAA700CCF638 /* Folder+DisplaybleFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+DisplaybleFolder.swift"; sourceTree = "<group>"; };
+		B7C1F4ED2459B1EF00070DCC /* CdIdentityPredicateFactoryTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdIdentityPredicateFactoryTest.swift; sourceTree = "<group>"; };
 		B7C7E31723351092009ABFFE /* IdentityQueryResultsSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityQueryResultsSearch.swift; sourceTree = "<group>"; };
 		B7C7E31923351115009ABFFE /* IdentityQueryResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityQueryResults.swift; sourceTree = "<group>"; };
 		B7DB7FA422147000003968DA /* pEpIOSToolbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEpIOSToolbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1150,6 +1152,7 @@
 			isa = PBXGroup;
 			children = (
 				43B2271124236602007EB91E /* CdAccount+ProviderSpecificTest.swift */,
+				B7C1F4ED2459B1EF00070DCC /* CdIdentityPredicateFactoryTest.swift */,
 			);
 			path = CdObjectExtensions;
 			sourceTree = "<group>";
@@ -2818,6 +2821,7 @@
 				4351723D229FD74000D92026 /* DecryptionTest.swift in Sources */,
 				43607DE423FE8D6F00FA66B8 /* ClientCertificateUtilTestInternal.swift in Sources */,
 				434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */,
+				B7C1F4EE2459B1EF00070DCC /* CdIdentityPredicateFactoryTest.swift in Sources */,
 				15ECD7061F5430C1002889B8 /* Message+TestUtils.swift in Sources */,
 				B7A1152522C4B55E00FB6E91 /* PrepareAccountForSavingServiceTest.swift in Sources */,
 				154D17412373341B001FDF78 /* Message+FakeMessageTest.swift in Sources */,

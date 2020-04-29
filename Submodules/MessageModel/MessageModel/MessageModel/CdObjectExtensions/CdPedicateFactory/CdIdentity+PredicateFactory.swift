@@ -44,6 +44,10 @@ extension CdIdentity {
                                             CdIdentity.AttributeName.userName, searchTerm))
             return NSCompoundPredicate(orPredicateWithSubpredicates: orPredicates)
         }
+        
+        static func recipientSuggestions(for searchTerm: String) -> NSPredicate {
+            return NSPredicate()
+        }
 
         /// predicate to search all identities with the same userID
         ///
