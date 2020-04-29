@@ -11,11 +11,9 @@ import CoreData
 
 @testable import MessageModel
 import PantomimeFramework
-import pEpForiOS
 import PEPObjCAdapterFramework
 
-//!!!: must be moved to MM
-class MessagePantomimeTests: CoreDataDrivenTestBase {
+class MessagePantomimeTests: PersistentStoreDrivenTestBase {
 
     func testPantomimeFlagsFromMessage() {
         let m = CdMessage(context: moc)
@@ -92,10 +90,10 @@ class MessagePantomimeTests: CoreDataDrivenTestBase {
                 return
         }
         let cdRefs = cdMsg.references?.array as? [CdMessageReference] ?? []
-        XCTAssertEqual(cdRefs.count, refs.count + 1)
+        XCTAssertEqual(cdRefs.count, refs.count) // inReplyTo not taken into account anymore
 
         let pEpMsg = cdMsg.pEpMessage()
-        XCTAssertEqual(pEpMsg.references as? [String] ?? [], allRefs)
+        XCTAssertEqual(pEpMsg.references ?? [], refs) // inReplyTo not taken into account anymore
 
         let cwMsg2 = PEPUtils.pantomime(pEpMessage: pEpMsg)
         XCTAssertEqual(cwMsg2.allReferences() as? [String] ?? [], allRefs)

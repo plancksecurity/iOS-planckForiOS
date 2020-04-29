@@ -9,11 +9,10 @@
 import XCTest
 import CoreData
 
-@testable import pEpForiOS
 @testable import MessageModel //FIXME:
 import PEPObjCAdapterFramework
 
-class HandshakeTests: CoreDataDrivenTestBase {
+class HandshakeTests: PersistentStoreDrivenTestBase {
     var fromIdent: PEPIdentity!
 
     override func setUp() {
@@ -36,7 +35,8 @@ class HandshakeTests: CoreDataDrivenTestBase {
         try! session.mySelf(pEpMySelfIdentity)
         XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
 
-        guard let cdMessage = TestUtil.cdMessage(fileName: "HandshakeTests_mail_001.txt",
+        guard let cdMessage = TestUtil.cdMessage(testClass: HandshakeTests.self,
+                                                 fileName: "HandshakeTests_mail_001.txt",
                                                  cdOwnAccount: cdAccount) else {
                                                     XCTFail()
                                                     return

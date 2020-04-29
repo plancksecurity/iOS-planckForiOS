@@ -9,11 +9,12 @@
 import XCTest
 
 import PantomimeFramework
+import pEpIOSToolbox
 
 class MimeTests: XCTestCase {
     func testPGPMimePantomime() {
         guard
-            let data = TestUtil.loadData(fileName: "PGPMimeMail.txt"),
+            let data = MiscUtil.loadData(bundleClass: MimeTests.self, fileName: "PGPMimeMail.txt"),
             let cwMessage = CWMessage(data: data) else {
                 XCTAssertTrue(false)
                 return

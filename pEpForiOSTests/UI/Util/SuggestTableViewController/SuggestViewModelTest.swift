@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class SuggestViewModelTest: CoreDataDrivenTestBase {
+class SuggestViewModelTest: AccountDrivenTestBase {
     static let defaultNumExistingContacts = 5
     var existingIdentities = [Identity]()
     var viewModel: SuggestViewModel?
@@ -146,8 +146,8 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
                 addressBookID: nil,
                 userName: "id\(i)")
             existingIdentities.append(id)
+            id.save()
         }
-        moc.saveAndLogErrors()
     }
 
     /// - Parameters:

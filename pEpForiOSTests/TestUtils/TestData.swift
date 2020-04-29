@@ -1,6 +1,6 @@
 import MessageModel
 
-class SecretTestData: TestDataBase {
+class TestData: TestDataBase {
     override func populateAccounts() {
         addLocalTestAccount(userName: "test001")
         addLocalTestAccount(userName: "test002")

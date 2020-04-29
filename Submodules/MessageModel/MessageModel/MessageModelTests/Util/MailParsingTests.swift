@@ -9,17 +9,16 @@
 import XCTest
 import CoreData
 
-@testable import pEpForiOS
 @testable import MessageModel
 import PEPObjCAdapterFramework
 
-class MailParsingTests: CoreDataDrivenTestBase {
+class MailParsingTests: PersistentStoreDrivenTestBase {
     var fromIdent: PEPIdentity!
 
     override func setUp() {
         super.setUp()
 
-        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0, context: moc)
+        let cdMyAccount = SecretTestData().createWorkingCdAccount(context: moc, number: 0)
         cdMyAccount.identity?.userName = "iOS Test 002"
         cdMyAccount.identity?.userID = "iostest002@peptest.ch_ID"
         cdMyAccount.identity?.address = "iostest002@peptest.ch"
@@ -76,7 +75,8 @@ class MailParsingTests: CoreDataDrivenTestBase {
         try! session.mySelf(pEpMySelfIdentity)
         XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
 
-        guard let cdMessage = TestUtil.cdMessage(fileName: "Undisplayable_HTML_Message.txt",
+        guard let cdMessage = TestUtil.cdMessage(testClass: MailParsingTests.self,
+                                                 fileName: "Undisplayable_HTML_Message.txt",
                                                  cdOwnAccount: cdAccount)
             else {
                 XCTFail()
@@ -113,7 +113,8 @@ class MailParsingTests: CoreDataDrivenTestBase {
         try! session.mySelf(pEpMySelfIdentity)
         XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
 
-        guard let cdMessage = TestUtil.cdMessage(fileName: "1364_Mail_missing_attached_image.txt",
+        guard let cdMessage = TestUtil.cdMessage(testClass: MailParsingTests.self,
+                                                 fileName: "1364_Mail_missing_attached_image.txt",
                                                  cdOwnAccount: cdAccount)
             else {
                 XCTFail()

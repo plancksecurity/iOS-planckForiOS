@@ -8,7 +8,6 @@
 
 import XCTest
 
-@testable import pEpForiOS
 import pEpIOSToolbox
 import MessageModel
 

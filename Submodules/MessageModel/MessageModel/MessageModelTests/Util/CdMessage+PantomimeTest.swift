@@ -7,14 +7,13 @@
 //
 
 import XCTest
-
 import CoreData
+
 import PantomimeFramework
 @testable import MessageModel
-@testable import pEpForiOS
-//!!!: move to MM
+import pEpIOSToolbox
 
-class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
+class CdMessage_PantomimeTest: PersistentStoreDrivenTestBase {
     // MARK: - StoreCommandForFlagsToRemoved / Add
 
     func testStoreCommandForFlagsToRemove_someServerFlagsSet() {
@@ -148,7 +147,8 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         folder.name = ImapConnection.defaultInboxName
 
         guard
-            let data = TestUtil.loadData(fileName: "UnencryptedHTMLMail.txt"),
+            let data = MiscUtil.loadData(bundleClass: CdMessage_PantomimeTest.self,
+                                         fileName: "UnencryptedHTMLMail.txt"),
             let message = CWIMAPMessage(data: data) else {
                 XCTAssertTrue(false)
                 return
@@ -172,7 +172,8 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         folder.name = ImapConnection.defaultInboxName
 
         guard
-            let messageWithKeyAndPdfAttached = TestUtil.loadData(fileName: "IOS-211_hi_there.txt"),
+            let messageWithKeyAndPdfAttached = MiscUtil.loadData(bundleClass: CdMessage_PantomimeTest.self,
+                                                                 fileName: "IOS-211_hi_there.txt"),
             let message = CWIMAPMessage(data: messageWithKeyAndPdfAttached) else {
                 XCTAssertTrue(false)
                 return
@@ -208,7 +209,8 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         folder.name = ImapConnection.defaultInboxName
         
         guard
-            let messageWithKeyAndPdfAttached = TestUtil.loadData(fileName: "IOS-211-pdfEmail.txt"),
+            let messageWithKeyAndPdfAttached = MiscUtil.loadData(bundleClass: CdMessage_PantomimeTest.self,
+                                                                 fileName: "IOS-211-pdfEmail.txt"),
             let message = CWIMAPMessage(data: messageWithKeyAndPdfAttached) else {
                 XCTAssertTrue(false)
                 return
