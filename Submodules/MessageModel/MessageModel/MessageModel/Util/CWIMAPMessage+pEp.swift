@@ -80,6 +80,7 @@ extension CWIMAPMessage {
                 self.setContentTransferEncoding(PantomimeEncoding8bit)
                 self.setParameter(ContentTypeUtils.ContentType.pgpEncrypted, forKey: "protocol")
             } else {
+                setContentDisposition(PantomimeInlineDisposition)
                 self.setContentType(ContentTypeUtils.ContentType.multipartRelated)
                 self.setContentTransferEncoding(PantomimeEncoding8bit)
                 if let bodyPart = PEPUtils.bodyPart(pEpMessage: pEpMessage) {
