@@ -929,6 +929,7 @@
 		15175E4F221D5B3200C91DB8 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				43236E6624598F1800D8318D /* Account */,
 				15466131233B41E1008D2137 /* PredicateFactory */,
 				15795C0522C60E6100010938 /* Persistable */,
 				152D409B228986DC0035DAA7 /* SessionAware */,
@@ -946,7 +947,6 @@
 				1535D074223AB4BF008F0ACC /* ImapFlags.swift */,
 				15293835224E1C6D00CAE126 /* UnappendableArray.swift */,
 				43E9BC611DB5181800AD2352 /* FolderType.swift */,
-				3706B2F923CDCEF2002BB1B9 /* Account+TrustedServers.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -1687,6 +1687,14 @@
 				15C7A88323830BB600C47364 /* CdAccount+KeySync.swift */,
 			);
 			path = KeySync;
+			sourceTree = "<group>";
+		};
+		43236E6624598F1800D8318D /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				3706B2F923CDCEF2002BB1B9 /* Account+TrustedServers.swift */,
+			);
+			path = Account;
 			sourceTree = "<group>";
 		};
 		4327430F22F95F7900DE5E5F /* Operations */ = {
