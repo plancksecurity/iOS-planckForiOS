@@ -54,7 +54,8 @@ class OAuth2AuthViewModel {
                    accountType: VerifiableAccount.AccountType,
                    viewController: UIViewController) {
         currentAuthorizer = authorizer
-        if let theConfig = OAuth2Configuration.from(emailAddress: emailAddress) {
+        let oauthType = OAuth2Type(accountType: accountType)
+        if let theConfig = oauthType?.oauth2Config() {
             currentAuthorizer?.delegate = self
             currentAuthorizer?.startAuthorizationRequest(
                 viewController: viewController, oauth2Configuration: theConfig)
