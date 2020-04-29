@@ -46,7 +46,22 @@ extension CdIdentity {
         }
         
         static func recipientSuggestions(for searchTerm: String) -> NSPredicate {
-            return NSPredicate()
+            var orPredicates = [NSPredicate]()
+            orPredicates.append(NSPredicate(format: "%K BEGINSWITH[C] %@",
+                                            CdIdentity.AttributeName.userName, searchTerm))
+            orPredicates.append(NSPredicate(format: "%K BEGINSWITH[C] %@",
+                                            CdIdentity.AttributeName.address, searchTerm))
+            orPredicates.append(NSPredicate(format: "%K CONTAINS[C] %@",
+                                            CdIdentity.AttributeName.userName, " "+searchTerm))
+            orPredicates.append(NSPredicate(format: "%K CONTAINS[C] %@",
+                                            CdIdentity.AttributeName.address, "."+searchTerm))
+            orPredicates.append(NSPredicate(format: "%K CONTAINS[C] %@",
+                                            CdIdentity.AttributeName.address, "-"+searchTerm))
+            return NSCompoundPredicate(orPredicateWithSubpredicates: orPredicates)
+            
+            /*
+             Idea: Search for "BEGINSWITH searchTerm OR CONTAINS "."+searchTerm OR CONTAINS "-"+searchterm OR CONTAINS " "+searchterm (only pseudo code. Think what to use for address and what for name)
+             */
         }
 
         /// predicate to search all identities with the same userID
