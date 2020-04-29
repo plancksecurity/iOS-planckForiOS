@@ -99,6 +99,16 @@ extension UIImage {
 
         return newImage
     }
+    
+    /// Method that resize the image that invokes and returns a new one.
+    /// - Parameter percentage: The percentage of the size to create a new one
+    /// - Returns: The image resized.
+    public func resizeImage(percentage: CGFloat) -> UIImage? {
+        let targetWidth = size.width * percentage
+        let targetHeight = size.height * percentage
+        let targetSize = CGSize(width: targetWidth, height: targetHeight)
+        return resizeImage(targetSize: targetSize)
+    }
 }
 
 

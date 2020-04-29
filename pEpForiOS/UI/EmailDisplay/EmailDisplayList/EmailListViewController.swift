@@ -577,7 +577,8 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                    for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
         var options = SwipeTableOptions()
         options.transitionStyle = .border
-        options.buttonSpacing = 11
+        options.buttonSpacing = 3
+        options.buttonPadding = 5
         options.expansionStyle = .destructive(automaticallyDelete: false)
         return options
     }
@@ -663,6 +664,12 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         switch buttonStyle {
         case .backgroundColor:
             action.backgroundColor = descriptor.color
+            let twoLines = true
+            if (twoLines) {
+                action.font = .systemFont(ofSize: 11)
+                action.image = action.image?.resizeImage(percentage: 0.8)
+            }
+            
         case .circular:
             action.backgroundColor = .clear
             action.textColor = descriptor.color
