@@ -92,6 +92,7 @@ extension PEPUtils {
             part.setContent(t.data(using: String.Encoding.utf8) as NSObject?)
             part.setCharset("UTF-8")
             part.setContentTransferEncoding(PantomimeEncodingBase64)
+            part.setContentDisposition(PantomimeInlineDisposition)
             return part
         }
         return nil
