@@ -40,6 +40,7 @@ extension PEPUtils {
             return theBodyParts[0]
         } else if theBodyParts.count > 1 {
             let partAlt = CWPart()
+            partAlt.setContentDisposition(PantomimeInlineDisposition)
             partAlt.setContentType(ContentTypeUtils.ContentType.multipartAlternative)
             let partMulti = CWMIMEMultipart()
             for part in theBodyParts {
