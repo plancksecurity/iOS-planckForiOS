@@ -69,11 +69,11 @@ extension CWIMAPMessage {
             }
         }
 
+        setContentDisposition(PantomimeInlineDisposition)
+
         let attachmentDicts = pEpMessage.attachments ?? []
         if !attachmentDicts.isEmpty {
             let isEncrypted = PEPUtils.isProbablyPGPMime(pEpMessage: pEpMessage)
-
-            setContentDisposition(PantomimeInlineDisposition)
 
             // Create multipart mail
             let multiPart = CWMIMEMultipart()
