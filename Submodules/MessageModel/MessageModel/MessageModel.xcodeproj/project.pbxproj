@@ -183,6 +183,7 @@
 		43123FBD225374030038D72C /* CdFolder+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FBC225374030038D72C /* CdFolder+IMAP.swift */; };
 		43123FC2225388FB0038D72C /* CdMessage+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FC1225388FB0038D72C /* CdMessage+IMAP.swift */; };
 		431FD70522EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431FD70422EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift */; };
+		43236E6824598F4C00D8318D /* Account+AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43236E6724598F4C00D8318D /* Account+AccountType.swift */; };
 		4331CE75229BD7E100DDDC65 /* UseFirstHTMLPartAsBodyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4331CE74229BD7E100DDDC65 /* UseFirstHTMLPartAsBodyTest.swift */; };
 		4331CE7A229BDD0900DDDC65 /* PantomimeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4331CE79229BDD0900DDDC65 /* PantomimeFramework.framework */; };
 		4331CE85229BDF0F00DDDC65 /* IOS-1556_html_mail_with_html_attachment.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4331CE84229BDF0F00DDDC65 /* IOS-1556_html_mail_with_html_attachment.txt */; };
@@ -636,6 +637,7 @@
 		43123FBC225374030038D72C /* CdFolder+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+IMAP.swift"; sourceTree = "<group>"; };
 		43123FC1225388FB0038D72C /* CdMessage+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+IMAP.swift"; sourceTree = "<group>"; };
 		431FD70422EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+PredicateFactory+KeySync.swift"; sourceTree = "<group>"; };
+		43236E6724598F4C00D8318D /* Account+AccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+AccountType.swift"; sourceTree = "<group>"; };
 		4331CE74229BD7E100DDDC65 /* UseFirstHTMLPartAsBodyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseFirstHTMLPartAsBodyTest.swift; sourceTree = "<group>"; };
 		4331CE79229BDD0900DDDC65 /* PantomimeFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4331CE84229BDF0F00DDDC65 /* IOS-1556_html_mail_with_html_attachment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1556_html_mail_with_html_attachment.txt"; sourceTree = "<group>"; };
@@ -1693,6 +1695,7 @@
 			isa = PBXGroup;
 			children = (
 				3706B2F923CDCEF2002BB1B9 /* Account+TrustedServers.swift */,
+				43236E6724598F4C00D8318D /* Account+AccountType.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -2630,6 +2633,7 @@
 				37688A73230307D000A561C1 /* Message+clone.swift in Sources */,
 				155FE572228B526E003D3E68 /* CdMessage+Extensions.swift in Sources */,
 				43EA4898221E9518006E8F83 /* NetworkError.swift in Sources */,
+				43236E6824598F4C00D8318D /* Account+AccountType.swift in Sources */,
 				8BE4607D1DB7B2D4008D63C6 /* CdHeaderField.swift in Sources */,
 				43EA4848221E9518006E8F83 /* EmailConnectInfo.swift in Sources */,
 				155FE563228B4FE1003D3E68 /* CdKey.swift in Sources */,
