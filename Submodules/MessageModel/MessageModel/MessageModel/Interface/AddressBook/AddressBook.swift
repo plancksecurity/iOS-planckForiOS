@@ -67,7 +67,9 @@ public class AddressBook {
                     contacts.append(contact)
                 } else {
                     for email in contact.emailAddresses {
-                        if email.value.contains(lowercasedSerach) {
+                        if email.value.hasPrefix(lowercasedSerach) ||
+                            email.value.contains("."+lowercasedSerach) ||
+                            email.value.contains("-"+lowercasedSerach) {
                             contacts.append(contact)
                             break
                         }
