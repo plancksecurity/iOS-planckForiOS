@@ -14,6 +14,8 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
 // MARK: - IBOutlets
     
+    @IBOutlet weak var imapTransportSecurity: UIStackView!
+    @IBOutlet weak var imapUsernameStackView: UIStackView!
     @IBOutlet weak var serverStackView: UIStackView!
     @IBOutlet weak var smtpStackView: UIStackView!
     @IBOutlet weak var transportSecurityStackView: UIStackView!
@@ -521,5 +523,18 @@ extension AccountSettingsTableViewController {
         
         serverStackView.axis = axis
         serverStackView.spacing = spacing
+
+        imapUsernameStackView.axis = axis
+        imapUsernameStackView.spacing = spacing
+        
+        imapTransportSecurity.axis = axis
+        imapTransportSecurity.spacing = spacing
     }
 }
+
+//TODO:
+// - poner un iboutlet collection para las stackviews.
+// - Terminar las celdas que falten.
+// - Hacer lo mismo en las otras celdas.
+// Pasar settings a usar pepFont por código.
+// Chequear lo mismo en todas las vistas de settings.
