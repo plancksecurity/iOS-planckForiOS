@@ -49,7 +49,9 @@ class OAuth2AuthViewModel {
      */
     var currentAuthorizer: OAuth2AuthorizationProtocol?
 
-    func authorize(authorizer: OAuth2AuthorizationProtocol, emailAddress: String,
+    func authorize(authorizer: OAuth2AuthorizationProtocol,
+                   emailAddress: String,
+                   accountType: VerifiableAccount.AccountType,
                    viewController: UIViewController) {
         currentAuthorizer = authorizer
         if let theConfig = OAuth2Configuration.from(emailAddress: emailAddress) {

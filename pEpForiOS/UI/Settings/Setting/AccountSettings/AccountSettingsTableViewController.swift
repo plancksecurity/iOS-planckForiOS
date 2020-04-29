@@ -340,6 +340,12 @@ extension AccountSettingsTableViewController {
         guard let address = viewModel?.account.user.address else {
             return
         }
+
+        guard let accountType = viewModel?.account.accountType else {
+            Log.shared.errorAndCrash(message: "Handling OAuth2 reauth requires an account with a known account type for determining the OAuth2 configuration")
+            return
+        }
+
         oauth2ActivityIndicator.startAnimating()
 
         // don't accept errors form other places
@@ -349,6 +355,7 @@ extension AccountSettingsTableViewController {
         oauthViewModel.authorize(
             authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
             emailAddress: address,
+            accountType: accountType,
             viewController: self)
     }
 

@@ -82,6 +82,7 @@ final class LoginViewModel {
         oauth2Model.delegate = self
         oauth2Model.authorize(authorizer: oauth2Authorizer,
                               emailAddress: emailAddress,
+                              accountType: verifiableAccount.accountType,
                               viewController: viewController)
     }
 
