@@ -45,6 +45,9 @@ extension CdIdentity {
             return NSCompoundPredicate(orPredicateWithSubpredicates: orPredicates)
         }
         
+        /// Predicate to search for suggested identities
+        /// - Parameter searchTerm: String to make the search
+        /// - Returns: Predicate for identities that fit in the suggestion with the expected search term
         static func recipientSuggestions(for searchTerm: String) -> NSPredicate {
             var orPredicates = [NSPredicate]()
             orPredicates.append(NSPredicate(format: "%K BEGINSWITH[C] %@",
