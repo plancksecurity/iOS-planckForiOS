@@ -1153,8 +1153,8 @@
 		152E3C99231BDED500C1420B /* CdObjectExtensions */ = {
 			isa = PBXGroup;
 			children = (
+				B7C1F4F22459E48500070DCC /* CdPredicateFactory */,
 				43B2271124236602007EB91E /* CdAccount+ProviderSpecificTest.swift */,
-				B7C1F4ED2459B1EF00070DCC /* CdIdentityPredicateFactoryTest.swift */,
 			);
 			path = CdObjectExtensions;
 			sourceTree = "<group>";
@@ -2177,6 +2177,14 @@
 				4383344223FD7891004CC422 /* Certificates */,
 			);
 			path = Interface;
+			sourceTree = "<group>";
+		};
+		B7C1F4F22459E48500070DCC /* CdPredicateFactory */ = {
+			isa = PBXGroup;
+			children = (
+				B7C1F4ED2459B1EF00070DCC /* CdIdentityPredicateFactoryTest.swift */,
+			);
+			path = CdPredicateFactory;
 			sourceTree = "<group>";
 		};
 		B7C7E3162335106A009ABFFE /* IdentityQueryResults */ = {

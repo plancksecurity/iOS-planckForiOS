@@ -55,11 +55,11 @@ extension CdIdentity {
             orPredicates.append(NSPredicate(format: "%K BEGINSWITH[C] %@",
                                             CdIdentity.AttributeName.address, searchTerm))
             orPredicates.append(NSPredicate(format: "%K CONTAINS[C] %@",
-                                            CdIdentity.AttributeName.userName, " "+searchTerm))
+                                            CdIdentity.AttributeName.userName, " " + searchTerm))
             orPredicates.append(NSPredicate(format: "%K CONTAINS[C] %@",
-                                            CdIdentity.AttributeName.address, "."+searchTerm))
+                                            CdIdentity.AttributeName.address, "." + searchTerm))
             orPredicates.append(NSPredicate(format: "%K CONTAINS[C] %@",
-                                            CdIdentity.AttributeName.address, "-"+searchTerm))
+                                            CdIdentity.AttributeName.address, "-" + searchTerm))
             return NSCompoundPredicate(orPredicateWithSubpredicates: orPredicates)
         }
 
