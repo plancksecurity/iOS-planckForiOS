@@ -58,10 +58,6 @@ extension CdIdentity {
             orPredicates.append(NSPredicate(format: "%K CONTAINS[C] %@",
                                             CdIdentity.AttributeName.address, "-"+searchTerm))
             return NSCompoundPredicate(orPredicateWithSubpredicates: orPredicates)
-            
-            /*
-             Idea: Search for "BEGINSWITH searchTerm OR CONTAINS "."+searchTerm OR CONTAINS "-"+searchterm OR CONTAINS " "+searchterm (only pseudo code. Think what to use for address and what for name)
-             */
         }
 
         /// predicate to search all identities with the same userID
