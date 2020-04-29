@@ -1,5 +1,5 @@
 //
-//  OAuth2AuthViewModel.swift
+//  OAuthAuthorizer.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 26.02.18.
@@ -13,7 +13,7 @@ import MessageModel
 /**
  Errors that are not directly reported by the used OAuth2 lib, but detected internally.
  */
-enum OAuth2AuthViewModelError: Error {
+enum OAuthAuthorizerError: Error {
     /**
      No configuration available for running the oauth2 request.
      */
@@ -31,7 +31,7 @@ enum OAuth2AuthViewModelError: Error {
     case noParametersForVerification
 }
 
-protocol OAuth2AuthViewModelDelegate: class {
+protocol OAuthAuthorizerDelegate: class {
     /**
      Called to signal an OAuth2 error.
      */
@@ -41,8 +41,8 @@ protocol OAuth2AuthViewModelDelegate: class {
 /**
  Handles OAuth2 authorization, including re-authorization.
  */
-class OAuth2AuthViewModel {
-    weak var delegate: OAuth2AuthViewModelDelegate?
+class OAuthAuthorizer {
+    weak var delegate: OAuthAuthorizerDelegate?
 
     /**
      A strong reference is needed in order to guarantee the delegate will be called.
@@ -60,13 +60,13 @@ class OAuth2AuthViewModel {
             currentAuthorizer?.startAuthorizationRequest(
                 viewController: viewController, oauth2Configuration: theConfig)
         } else {
-            delegate?.didAuthorize(oauth2Error: OAuth2AuthViewModelError.noConfiguration,
+            delegate?.didAuthorize(oauth2Error: OAuthAuthorizerError.noConfiguration,
                                    accessToken: nil)
         }
     }
 }
 
-extension OAuth2AuthViewModel: OAuth2AuthorizationDelegateProtocol {
+extension OAuthAuthorizer: OAuth2AuthorizationDelegateProtocol {
     func authorizationRequestFinished(error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         delegate?.didAuthorize(oauth2Error: error, accessToken: accessToken)
     }
