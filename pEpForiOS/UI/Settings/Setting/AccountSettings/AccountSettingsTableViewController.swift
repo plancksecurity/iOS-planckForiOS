@@ -13,22 +13,15 @@ import pEpIOSToolbox
 final class AccountSettingsTableViewController: BaseTableViewController {
 
 // MARK: - IBOutlets
-    
-    @IBOutlet weak var imapTransportSecurity: UIStackView!
-    @IBOutlet weak var imapUsernameStackView: UIStackView!
-    @IBOutlet weak var serverStackView: UIStackView!
-    @IBOutlet weak var smtpStackView: UIStackView!
-    @IBOutlet weak var transportSecurityStackView: UIStackView!
-    @IBOutlet weak var portStackView: UIStackView!
-    
+        
+    @IBOutlet var stackViews: [UIStackView]!
+
     @IBOutlet weak var smtpUsernameLabel: UILabel!
     @IBOutlet weak var smtpTransportSecurityLabel: UILabel!
     @IBOutlet weak var smtpPortLabel: UILabel!
     @IBOutlet weak var transportSecurityLabel: UILabel!
-    
     @IBOutlet weak var imapUsernameLabel: UILabel!
 
-    
     //general account fields
     @IBOutlet weak var oAuthReauthorizationLabel: UILabel!
     @IBOutlet weak var certificateLabel: UILabel!
@@ -510,31 +503,15 @@ extension AccountSettingsTableViewController {
         let contentSize = traitCollection.preferredContentSizeCategory
         let axis : NSLayoutConstraint.Axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
         
-        let spacing : CGFloat = contentSize.isAccessibilityCategory ? 10.0 : 0.0
+        let spacing : CGFloat = contentSize.isAccessibilityCategory ? 10.0 : 5.0
 
-        smtpStackView.axis = axis
-        smtpStackView.spacing = spacing
-
-        transportSecurityStackView.axis = axis
-        transportSecurityStackView.spacing = spacing
-
-        portStackView.axis = axis
-        portStackView.spacing = spacing
-        
-        serverStackView.axis = axis
-        serverStackView.spacing = spacing
-
-        imapUsernameStackView.axis = axis
-        imapUsernameStackView.spacing = spacing
-        
-        imapTransportSecurity.axis = axis
-        imapTransportSecurity.spacing = spacing
+        stackViews.forEach {
+            $0.axis = axis
+            $0.spacing = spacing
+        }
     }
 }
 
 //TODO:
-// - poner un iboutlet collection para las stackviews.
-// - Terminar las celdas que falten.
-// - Hacer lo mismo en las otras celdas.
 // Pasar settings a usar pepFont por código.
 // Chequear lo mismo en todas las vistas de settings.
