@@ -33,4 +33,15 @@ open class MiscUtil {
     public static func isUnitTest() -> Bool {
         return ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
     }
+
+    public static func loadData(bundleClass: AnyClass, fileName: String) -> Data? {
+        let testBundle = Bundle(for: bundleClass)
+        guard let keyPath = testBundle.path(forResource: fileName, ofType: nil) else {
+            return nil
+        }
+        guard let data = try? Data(contentsOf: URL(fileURLWithPath: keyPath)) else {
+            return nil
+        }
+        return data
+    }
 }

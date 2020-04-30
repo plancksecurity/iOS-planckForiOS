@@ -41,7 +41,7 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var switchKeySyncCell: UITableViewCell!
 
 // MARK: - Variables
-    let oauthViewModel = OAuth2AuthViewModel()
+    let oauthViewModel = OAuthAuthorizer()
     /**
      When dealing with an OAuth2 account, this is the index path of the cell that
      should trigger the reauthorization.
@@ -239,9 +239,9 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
     }
 }
 
-// MARK: - OAuth2AuthViewModelDelegate
+// MARK: - OAuthAuthorizerDelegate
 
-extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
+extension AccountSettingsTableViewController: OAuthAuthorizerDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         oauth2ActivityIndicator.stopAnimating()
         shouldHandleErrors = true
@@ -251,7 +251,7 @@ extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
             return
         }
         guard let token = accessToken else {
-            showErrorAlert(error: OAuth2AuthViewModelError.noToken)
+            showErrorAlert(error: OAuthAuthorizerError.noToken)
             return
         }
         viewModel?.updateToken(accessToken: token)
@@ -337,9 +337,16 @@ extension AccountSettingsTableViewController {
     }
 
     private func handleOauth2Reauth() {
-        guard let address = viewModel?.account.user.address else {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(message: "A view model is required")
             return
         }
+
+        guard let accountType = vm.account.accountType else {
+            Log.shared.errorAndCrash(message: "Handling OAuth2 reauth requires an account with a known account type for determining the OAuth2 configuration")
+            return
+        }
+
         oauth2ActivityIndicator.startAnimating()
 
         // don't accept errors form other places
@@ -348,7 +355,8 @@ extension AccountSettingsTableViewController {
         oauthViewModel.delegate = self
         oauthViewModel.authorize(
             authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
-            emailAddress: address,
+            emailAddress: vm.account.user.address,
+            accountType: accountType,
             viewController: self)
     }
 
