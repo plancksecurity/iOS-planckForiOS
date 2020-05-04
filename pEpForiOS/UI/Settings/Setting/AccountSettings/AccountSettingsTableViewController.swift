@@ -13,14 +13,8 @@ import pEpIOSToolbox
 final class AccountSettingsTableViewController: BaseTableViewController {
 
 // MARK: - IBOutlets
-        
-    @IBOutlet var stackViews: [UIStackView]!
 
-    @IBOutlet weak var smtpUsernameLabel: UILabel!
-    @IBOutlet weak var smtpTransportSecurityLabel: UILabel!
-    @IBOutlet weak var smtpPortLabel: UILabel!
-    @IBOutlet weak var transportSecurityLabel: UILabel!
-    @IBOutlet weak var imapUsernameLabel: UILabel!
+    @IBOutlet var stackViews: [UIStackView]!
 
     //general account fields
     @IBOutlet weak var oAuthReauthorizationLabel: UILabel!
@@ -44,6 +38,8 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var imapPortTextfield: UITextField!
     @IBOutlet weak var imapSecurityTextfield: UITextField!
     @IBOutlet weak var imapUsernameTextField: UITextField!
+    @IBOutlet weak var imapUsernameLabel: UILabel!
+    
     //smtp account fields
     @IBOutlet weak var smtpServerTextfield: UITextField!
     @IBOutlet weak var smtpPortTextfield: UITextField!
@@ -56,6 +52,12 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var resetIdentityCell: UITableViewCell!
     @IBOutlet weak var switchKeySyncCell: UITableViewCell!
+
+    @IBOutlet weak var smtpUsernameLabel: UILabel!
+    @IBOutlet weak var smtpTransportSecurityLabel: UILabel!
+    @IBOutlet weak var smtpPortLabel: UILabel!
+    @IBOutlet weak var transportSecurityLabel: UILabel!
+    
 
 // MARK: - Variables
     let oauthViewModel = OAuth2AuthViewModel()
@@ -511,7 +513,3 @@ extension AccountSettingsTableViewController {
         }
     }
 }
-
-//TODO:
-// Pasar settings a usar pepFont por código.
-// Chequear lo mismo en todas las vistas de settings.
