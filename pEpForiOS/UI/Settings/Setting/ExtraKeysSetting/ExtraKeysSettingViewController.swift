@@ -29,6 +29,7 @@ class ExtraKeysSettingViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fpr.delegate = self
+        fpr.font = UIFont.pepFont(style: .callout, weight: .regular)
         subscribeForKeyboardNotifications()
     }
 
@@ -126,6 +127,7 @@ extension ExtraKeysSettingViewController: UITableViewDataSource {
         // Multi line to avoud truncation of FPRs
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.text = viewModel?[indexPath.row]
+        cell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
 
         return cell
     }
