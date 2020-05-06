@@ -125,52 +125,7 @@ class MessageModelTests: PersistentStoreDrivenTestBase {
         XCTAssertEqual(id1.userName, id2!.userName)
         XCTAssertEqual(id1, id2!)
     }
-
-    func testContextVisibility() {
-        let name = "theNAME"
-        
-        let td = SecretTestData()
-        let cdAccount = td.createWorkingCdAccount()
-        
-        let f1 = CdFolder(context: moc)
-        f1.account = cdAccount
-        f1.name = name
-
-        let f2 = CdFolder.by(name: name, account: cdAccount)
-        XCTAssertNotNil(f2)
-        let id = Identity(address: "wha@wawa.com", userName: "Another")
-        id.save()
-        
-        XCTAssertGreaterThan(Identity.all().count, 0)
-        
-        XCTAssertEqual(Identity.by(snippet: "xtes").count, 0)
-        XCTAssertEqual(Identity.by(snippet: "XtEs").count, 0)
-        XCTAssertEqual(Identity.by(snippet: "wha").count, 1)
-        XCTAssertEqual(Identity.by(snippet: "Ano").count, 1)
-        XCTAssertEqual(Identity.by(snippet: "ANO").count, 1)
-    }
-
-    func testAddressbook() {
-        let id1 = Identity(address: "none@test.com", userName: "Noone Particular")
-        id1.save()
-        let id2 = Identity(address: "hahaha1@test.com", userName: "Hahaha1")
-        id2.save()
-        let id3 = Identity(address: "hahaha2@test.com", userName: "Hahaha2")
-        id3.save()
-        let id4 = Identity(address: "uhum3@test.com", userName: "This Is Not")
-        id4.save()
-        
-        XCTAssertGreaterThan(Identity.all().count, 0)
-        XCTAssertEqual(Identity.by(snippet: "NONEAtyvAll").count, 0)
-        XCTAssertEqual(Identity.by(snippet: "NONE").count, 1)
-        XCTAssertEqual(Identity.by(snippet: "none").count, 1)
-        XCTAssertEqual(Identity.by(snippet: "hah").count, 2)
-        XCTAssertEqual(Identity.by(snippet: "hAHa2").count, 1)
-        XCTAssertEqual(Identity.by(snippet: "This is").count, 1)
-        XCTAssertEqual(Identity.by(snippet: "This").count, 1)
-        XCTAssertEqual(Identity.by(snippet: "test").count, 4)
-    }
-
+    
     func testAttachmentSearch() {
         let sameData = "Oh noes".data(using: .utf8)
         let nearlyIdentical1 = "Oh noes_1".data(using: .utf8)

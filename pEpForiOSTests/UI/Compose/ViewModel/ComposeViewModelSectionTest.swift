@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
+class ComposeViewModelSectionTest: AccountDrivenTestBase {
     var state: ComposeViewModel.ComposeViewModelState?
 
     override func setUp() {
@@ -84,7 +84,7 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
     }
 
     func testAccount_twoExisting() {
-        let account = SecretTestData().createWorkingAccount(number: 1, context: moc)
+        let account = TestData().createWorkingAccount(number: 1)
         account.save()
         assertAccountSection()
     }

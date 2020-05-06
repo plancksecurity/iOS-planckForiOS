@@ -11,7 +11,7 @@ import PantomimeFramework
 @testable import pEpForiOS
 @testable import MessageModel
 
-final class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
+final class AccountSettingsViewModelTest: AccountDrivenTestBase {
 
     var viewModel: AccountSettingsViewModel?
 
@@ -39,7 +39,7 @@ final class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
     func testPEPSyncSectionIsShown() {
         // GIVEN
-        SecretTestData().createWorkingCdAccount(number: 1, context: moc)
+        let _ = TestData().createWorkingAccount(number: 1)
 
         updateViewModelState()
         expected = State(isPEPSyncSectionShown: true)
