@@ -67,6 +67,12 @@ class Appearance {
         return [.foregroundColor: UIColor.black]
     }
 
+//    /// Return custom pEp titleTextAttributes
+//    static private func titleTextAttributes() -> [NSAttributedString.Key : Any] {
+//        return [.foregroundColor: UIColor.black, .font: UIFont.pepFont(style: .body, weight: .regular)
+//        ]
+//    }
+
     // MARK: - iOS 13
 
     /// Default appearance for navigation bars (iOS 13 and upwards).
