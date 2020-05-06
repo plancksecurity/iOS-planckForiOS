@@ -19,7 +19,7 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
     }
 }
 
-class LoginViewModelTests: CoreDataDrivenTestBase {
+class LoginViewModelTests: AccountDrivenTestBase {
     class TestVerifiableAccount: VerifiableAccountProtocol {
         var accountType: VerifiableAccount.AccountType = VerifiableAccount.AccountType.other
         var loginNameIMAP: String?
@@ -82,7 +82,7 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
     /// in TestData.createWorkingAccountSettings == Accountsettingsadapter recommended server settings.
     /// Otherwize the test always succeeds.
     func testBasic() {
-        let td = SecretTestData()
+        let td = TestData()
         let accountSettings = td.createVerifiableAccountSettings()
         guard let passw = accountSettings.password else {
             XCTFail("expecting password for account")

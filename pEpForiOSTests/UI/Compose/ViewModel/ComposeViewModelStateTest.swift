@@ -13,7 +13,7 @@ import XCTest
 @testable import MessageModel
 import PEPObjCAdapterFramework
 
-class ComposeViewModelStateTest: CoreDataDrivenTestBase {
+class ComposeViewModelStateTest: AccountDrivenTestBase {
     private var testDelegate: TestDelegate?
     var testee: ComposeViewModel.ComposeViewModelState?
     var draftedMessageAllButBccSet: Message?

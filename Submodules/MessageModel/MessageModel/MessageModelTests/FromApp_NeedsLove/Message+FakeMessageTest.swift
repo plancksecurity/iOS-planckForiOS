@@ -97,19 +97,18 @@ class Message_FakeMessageTest: PersistentStoreDrivenTestBase {
 
     // MARK: - saveFakeMessage
 
-    //!!!: crashing test
-//    func testSaveFakeMessage() {
-//        let folderType = FolderType.inbox
-//        guard let folder = Folder.by(account: account, folderType: folderType) else {
-//            XCTFail()
-//            return
-//        }
-//        let msg = Message(uuid: testUuid, parentFolder: folder)
-//        msg.from = account.user
-//        msg.createFakeMessage(in: folder)
-//        Session.main.commit()
-//        assureFakeMessageExistence(in: folder)
-//    }
+    func testSaveFakeMessage() {
+        let folderType = FolderType.inbox
+        guard let folder = Folder.by(account: account, folderType: folderType) else {
+            XCTFail()
+            return
+        }
+        let msg = Message(uuid: testUuid, parentFolder: folder)
+        msg.from = account.user
+        msg.createFakeMessage(in: folder)
+        Session.main.commit()
+        assureFakeMessageExistence(in: folder)
+    }
 
     // MARK: - Helper
 

@@ -413,7 +413,7 @@ extension LoginViewController {
         var title: String?
         var message: String?
 
-        if let oauthError = error as? OAuth2AuthViewModelError,
+        if let oauthError = error as? OAuthAuthorizerError,
             oauthError == .noConfiguration {
             title = NSLocalizedString("Invalid Address",
                                       comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")

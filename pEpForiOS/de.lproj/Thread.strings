@@ -1,11 +1,11 @@
 /* Class = "UILabel"; text = "Sender"; ObjectID = "1c8-rl-2Ng"; */
-"1c8-rl-2Ng.text" = "Sender";
+"1c8-rl-2Ng.text" = "Absender";
 
 /* Class = "UILabel"; text = "Date"; ObjectID = "bz8-dZ-9kk"; */
 "bz8-dZ-9kk.text" = "Datum";
 
 /* Class = "UILabel"; text = "Sender"; ObjectID = "hki-aE-Mre"; */
-"hki-aE-Mre.text" = "Sender";
+"hki-aE-Mre.text" = "Absender";
 
 /* Class = "UIBarButtonItem"; title = "p≡p"; ObjectID = "Kqn-gH-dsv"; */
 "Kqn-gH-dsv.title" = "p≡p";
