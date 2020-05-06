@@ -14,50 +14,49 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
 // MARK: - IBOutlets
 
-    @IBOutlet var stackViews: [UIStackView]!
+    @IBOutlet private var stackViews: [UIStackView]!
 
     //general account fields
-    @IBOutlet weak var oAuthReauthorizationLabel: UILabel!
-    @IBOutlet weak var certificateLabel: UILabel!
-    @IBOutlet weak var certificateTextfield: UITextField!
-    @IBOutlet weak var passwordLabel: UILabel!
-    
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var nameTextfield: UITextField!
-    @IBOutlet weak var emailLabel: UILabel!
-    @IBOutlet weak var emailTextfield: UITextField!
-    @IBOutlet weak var passwordTextfield: UITextField!
-    @IBOutlet weak var resetIdentityLabel: UILabel!
-    @IBOutlet weak var keySyncLabel: UILabel!
-    @IBOutlet weak var keySyncSwitch: UISwitch!
-    
+    @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet private weak var nameTextfield: UITextField!
+    @IBOutlet private weak var emailLabel: UILabel!
+    @IBOutlet private weak var emailTextfield: UITextField!
+    @IBOutlet private weak var passwordTextfield: UITextField!
+    @IBOutlet private weak var resetIdentityLabel: UILabel!
+    @IBOutlet private weak var keySyncLabel: UILabel!
+    @IBOutlet private weak var keySyncSwitch: UISwitch!
+
     //imap fields
-    @IBOutlet weak var serverLabel: UILabel!
-    @IBOutlet weak var imapServerTextfield: UITextField!
-    @IBOutlet weak var portLabel: UILabel!
-    @IBOutlet weak var imapPortTextfield: UITextField!
-    @IBOutlet weak var imapSecurityTextfield: UITextField!
-    @IBOutlet weak var imapUsernameTextField: UITextField!
-    @IBOutlet weak var imapUsernameLabel: UILabel!
-    
+    @IBOutlet private weak var serverLabel: UILabel!
+    @IBOutlet private weak var imapServerTextfield: UITextField!
+    @IBOutlet private weak var portLabel: UILabel!
+    @IBOutlet private weak var imapPortTextfield: UITextField!
+    @IBOutlet private weak var imapSecurityTextfield: UITextField!
+    @IBOutlet private weak var imapUsernameTextField: UITextField!
+    @IBOutlet private weak var imapUsernameLabel: UILabel!
+
     //smtp account fields
-    @IBOutlet weak var smtpServerTextfield: UITextField!
-    @IBOutlet weak var smtpPortTextfield: UITextField!
-    @IBOutlet weak var smtpSecurityTextfield: UITextField!
-    @IBOutlet weak var smtpUsernameTextField: UITextField!
+    @IBOutlet private weak var smtpServerTextfield: UITextField!
+    @IBOutlet private weak var smtpPortTextfield: UITextField!
+    @IBOutlet private weak var smtpSecurityTextfield: UITextField!
+    @IBOutlet private weak var smtpUsernameTextField: UITextField!
 
-    @IBOutlet weak var certificateTableViewCell: UITableViewCell!
-    @IBOutlet weak var passwordTableViewCell: UITableViewCell!
-    @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
-    @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var resetIdentityCell: UITableViewCell!
-    @IBOutlet weak var switchKeySyncCell: UITableViewCell!
+    @IBOutlet private weak var certificateTableViewCell: UITableViewCell!
+    @IBOutlet private weak var passwordTableViewCell: UITableViewCell!
+    @IBOutlet private weak var oauth2TableViewCell: UITableViewCell!
+    @IBOutlet private weak var oauth2ActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var resetIdentityCell: UITableViewCell!
+    @IBOutlet private weak var switchKeySyncCell: UITableViewCell!
 
-    @IBOutlet weak var smtpUsernameLabel: UILabel!
-    @IBOutlet weak var smtpTransportSecurityLabel: UILabel!
-    @IBOutlet weak var smtpPortLabel: UILabel!
-    @IBOutlet weak var transportSecurityLabel: UILabel!
-    
+    @IBOutlet private weak var smtpUsernameLabel: UILabel!
+    @IBOutlet private weak var smtpTransportSecurityLabel: UILabel!
+    @IBOutlet private weak var smtpPortLabel: UILabel!
+    @IBOutlet private weak var transportSecurityLabel: UILabel!
+
+    @IBOutlet private weak var oAuthReauthorizationLabel: UILabel!
+    @IBOutlet private weak var certificateLabel: UILabel!
+    @IBOutlet private weak var certificateTextfield: UITextField!
+    @IBOutlet private weak var passwordLabel: UILabel!
 
 // MARK: - Variables
     let oauthViewModel = OAuth2AuthViewModel()
@@ -91,12 +90,9 @@ final class AccountSettingsTableViewController: BaseTableViewController {
         UIHelper.variableCellHeightsTableView(tableView)
         UIHelper.variableSectionFootersHeightTableView(tableView)
         UIHelper.variableSectionHeadersHeightTableView(tableView)
-
         viewModel?.delegate = self
         configureView(for: traitCollection)
-
         setFonts()
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -432,13 +428,12 @@ extension AccountSettingsTableViewController {
 
     /// To support dynamic font with a font size limit we have set the font by code.
     private func setFonts() {
-        
         let font = UIFont.pepFont(style: .body, weight: .regular)
-        
+
         //Name
         nameLabel.font = font
         nameTextfield.font = font
-        
+
         //Email
         emailLabel.font = font
         emailTextfield.font = font
@@ -446,24 +441,24 @@ extension AccountSettingsTableViewController {
         //Password
         passwordLabel.font = font
         passwordTextfield.font = font
-        
+
         //Certificate
         certificateLabel.font = font
         certificateTextfield.font = font
-        
+
         //Key sync
         keySyncLabel.font = font
-        
+
         //Reset Identity
         resetIdentityLabel.font = font
-        
+
         //OAuth Reauthorization
         oAuthReauthorizationLabel.font = font
 
         //Server
         serverLabel.font = font
         imapServerTextfield.font = font
-        
+
         //Port
         portLabel.font = font
         imapPortTextfield.font = font
@@ -475,19 +470,19 @@ extension AccountSettingsTableViewController {
         //Username
         imapUsernameLabel.font = font
         imapUsernameTextField.font = font
-        
+
         //SMTP Server
         smtpServerLabel.font = font
         smtpServerTextfield.font = font
-        
+
         //SMTP Server Port
         smtpPortLabel.font = font
         smtpPortTextfield.font = font
-        
+
         //SMTP Server Transport Security
         smtpTransportSecurityLabel.font = font
         smtpSecurityTextfield.font = font
-        
+
         //SMTP Server Username
         smtpUsernameLabel.font = font
         smtpUsernameTextField.font = font
@@ -504,7 +499,6 @@ extension AccountSettingsTableViewController {
         let contentSize = traitCollection.preferredContentSizeCategory
         let axis : NSLayoutConstraint.Axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
         let spacing : CGFloat = contentSize.isAccessibilityCategory ? 10.0 : 5.0
-
         stackViews.forEach {
             $0.axis = axis
             $0.spacing = spacing
