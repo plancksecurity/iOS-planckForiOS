@@ -68,9 +68,10 @@ extension TrustedServerSettingsViewController : UITableViewDataSource {
 
     private func configure(cell : TrustedServerSettingCell, for traitCollection: UITraitCollection) {
         let contentSize = traitCollection.preferredContentSizeCategory
-        let axis : NSLayoutConstraint.Axis = contentSize.isAccessibilityCategory && !isLandscape ? .vertical : .horizontal
+        let axis : NSLayoutConstraint.Axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
+        let spacing : CGFloat = contentSize.isAccessibilityCategory ? 10.0 : 5.0
         cell.stackView.axis = axis
-        cell.stackView.spacing = 10
+        cell.stackView.spacing = spacing
     }
 }
 

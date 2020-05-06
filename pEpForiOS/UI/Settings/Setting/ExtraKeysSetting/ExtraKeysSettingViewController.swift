@@ -9,10 +9,10 @@
 class ExtraKeysSettingViewController: BaseViewController {
     static private let uiTableViewCellID = "ExtraKeysSettingCell"
 
-    @IBOutlet weak var addExtraKeyButton: UIButton!
-    @IBOutlet weak var addFprView: UIStackView!
-    @IBOutlet weak var fpr: UITextView!
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet private weak var addExtraKeyButton: UIButton!
+    @IBOutlet private weak var addFprView: UIStackView!
+    @IBOutlet private weak var fpr: UITextView!
+    @IBOutlet private weak var tableView: UITableView!
 
     private var viewModel: ExtraKeysSettingViewModel?
 

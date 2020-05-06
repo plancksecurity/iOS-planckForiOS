@@ -1605,7 +1605,7 @@
                                         <connections>
                                             <outlet property="address" destination="wy0-sZ-Zan" id="rWS-0a-b9K"/>
                                             <outlet property="onOfSwitch" destination="u4b-8V-sDX" id="oBa-eV-IM7"/>
-                                            <outlet property="stackView" destination="SRw-kQ-pDt" id="q43-fz-H7o"/>
+                                            <outlet property="stackView" destination="SRw-kQ-pDt" id="5r7-16-fqi"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

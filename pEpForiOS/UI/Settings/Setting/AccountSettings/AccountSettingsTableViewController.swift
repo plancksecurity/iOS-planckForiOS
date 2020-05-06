@@ -77,7 +77,7 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     private var resetIdentityIndexPath: IndexPath?
     private var certificateIndexPath: IndexPath?
 
-    @IBOutlet weak var smtpServerLabel: UILabel!
+    @IBOutlet private weak var smtpServerLabel: UILabel!
     
     
 // MARK: - Life Cycle
