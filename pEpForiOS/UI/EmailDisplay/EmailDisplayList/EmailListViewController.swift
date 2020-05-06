@@ -489,6 +489,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                 return cell
             }
             theCell.configure(for: viewModel)
+            configure(cell: theCell, for: traitCollection)
         } else {
             Log.shared.errorAndCrash("dequeued wrong cell")
         }
@@ -1215,5 +1216,25 @@ extension EmailListViewController: LoginViewControllerDelegate {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController) {
         // Setup model after initial account setup
         setup()
+    }
+}
+
+// MARK: - Accessibility
+
+extension EmailListViewController {
+
+    private func configure(cell: EmailListViewCell, for traitCollection: UITraitCollection) {
+        let contentSize = traitCollection.preferredContentSizeCategory
+        let axis : NSLayoutConstraint.Axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
+        let spacing : CGFloat = contentSize.isAccessibilityCategory ? 10.0 : 5.0
+        cell.firstLineStackView.axis = axis
+        cell.firstLineStackView.spacing = spacing
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+      super.traitCollectionDidChange(previousTraitCollection)
+      if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+        tableView.reloadData()
+      }
     }
 }

@@ -67,6 +67,8 @@ extension SuggestTableViewController {
         let row = viewModel[indexPath.row]
         cell.nameLabel.text = row.name
         cell.emailLabel.text = row.email
+        cell.nameLabel.font = UIFont.pepFont(style: .callout, weight: .regular)
+        cell.emailLabel.font = UIFont.pepFont(style: .footnote, weight: .regular)
         return cell
     }
 }

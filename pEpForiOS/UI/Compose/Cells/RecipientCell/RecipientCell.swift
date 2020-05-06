@@ -26,6 +26,8 @@ class RecipientCell: TextViewContainingTableViewCell {
 
         recipientTextView?.viewModel = self.viewModel?.recipientTextViewModel()
         title.text = viewModel.type.localizedTitle()
+        title.font = UIFont.pepFont(style: .footnote, weight: .regular)
+        recipientTextView?.font = UIFont.pepFont(style: .footnote, weight: .regular)
         recipientTextView?.setInitialText()
     }
 

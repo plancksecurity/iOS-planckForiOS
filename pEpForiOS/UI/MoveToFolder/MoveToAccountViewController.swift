@@ -66,6 +66,7 @@ extension MoveToAccountViewController: UITableViewDataSource {
         if let vm = viewModel?[indexPath.row] {
             cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
             cell.textLabel?.text = vm.title
+            cell.textLabel?.font = UIFont.pepFont(style: .callout, weight: .regular)
         }
         return cell
     }

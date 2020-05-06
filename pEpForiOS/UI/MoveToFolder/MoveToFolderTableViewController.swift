@@ -23,14 +23,13 @@ class MoveToFolderTableViewController: BaseTableViewController {
         return 0
     }
 
-
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         if let vm = viewModel?[indexPath.row] {
             cell.textLabel?.text = vm.title
             cell.imageView?.image = vm.icon
-
+            cell.textLabel?.font = UIFont.pepFont(style: .callout, weight: .regular)
             if !vm.isSelectable {
                 cell.isUserInteractionEnabled = false
                 cell.selectionStyle = .none
@@ -51,7 +50,7 @@ class MoveToFolderTableViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let vm = viewModel {
-            vm.moveMessagesTo(index: indexPath.row)
+            _ = vm.moveMessagesTo(index: indexPath.row)
             dismiss(animated: true)
         }
     }
