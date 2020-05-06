@@ -115,6 +115,8 @@ extension AppDelegate {
              result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
         }
 
+        testImportKeys()
+
         return result
     }
 
@@ -262,5 +264,29 @@ extension AppDelegate {
         vc.modalPresentationStyle = .fullScreen
         topVC.present(vc, animated: true)
         return true
+    }
+}
+
+// MARK: - Test importing keys
+
+extension AppDelegate {
+    private func testImportKeys() {
+        do {
+            let session = PEPSession()
+            let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            for theUrl in urls {
+                let fileUrls = try FileManager.default.contentsOfDirectory(at: theUrl,
+                                                                           includingPropertiesForKeys: nil,
+                                                                           options: [.skipsHiddenFiles])
+                for theFileUrl in fileUrls {
+                    Log.shared.info("Try to import file %@", theFileUrl.absoluteString)
+                    let string = try String(contentsOf: theFileUrl)
+                    let fprs = try session.importKey(string)
+                    Log.shared.info("Imported %@", fprs)
+                }
+            }
+        } catch {
+            Log.shared.errorAndCrash(error: error)
+        }
     }
 }
