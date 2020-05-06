@@ -34,23 +34,6 @@ extension UIFont {
         return metrics.scaledFont(for: font, maximumPointSize: 30)
     }
 
-//    /// Retrieves the font for the provided style and type
-//    /// - Parameters:
-//    ///   - style: The style of the font.
-//    ///   - weight: The weight of the font.
-//    public static func pepFont(style: TextStyle, weight: UIFont.Weight) -> UIFont {
-//        guard let font = UIFont(name: getFontName(from: weight),
-//                                size: preferredFontSize(for: style)) else {
-//                                    Log.shared.info("Missing custom font. System default font for specified style is used now.")
-//                                    return UIFont.systemFont(ofSize: preferredFontSize(for: style),
-//                                                             weight: weight)
-//        }
-//        // We don't want to lose textStyle attribute in our custom fonts!
-//        font.fontDescriptor.addingAttributes([.textStyle : style])
-//        font.fontDescriptor.addingAttributes([.family : getFontName(from: weight)])
-//        return font
-//    }
-
     /// Return font - custom typeface from given system default font (Dynamic Font Sizes - Accessibility)
     /// - Parameter systemDynamicFont: system font with specified Text Style
     @available(iOS 11, *)
