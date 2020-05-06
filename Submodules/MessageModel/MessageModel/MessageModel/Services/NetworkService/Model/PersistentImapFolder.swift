@@ -119,7 +119,8 @@ class PersistentImapFolder: CWIMAPFolder {
     override func allMessages() -> [Any] {
         var result = [Any]()
         privateMOC.performAndWait {
-            result = CdMessage.all(predicate: cdFolder.allMessagesIncludingDeletedPredicate(),
+            let p = CdMessage.PredicateFactory.allMessagesIncludingDeleted(parentFolder: cdFolder)
+            result = CdMessage.all(predicate: p,
                                    in: privateMOC) ?? []
         }
         return result

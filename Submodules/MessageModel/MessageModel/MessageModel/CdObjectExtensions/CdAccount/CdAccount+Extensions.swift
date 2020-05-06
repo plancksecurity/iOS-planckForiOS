@@ -39,7 +39,7 @@ extension CdAccount {
     static func searchAccount(withAddress address: String, //BUFF: that is very wrongin multiple ways: 1) predicate factory not used. 2) bad naming 3) I am sure we already have a mthod to get CdAccount by address 4) is in section PRIVATE
                               context: NSManagedObjectContext) -> CdAccount? {
         let moc = context
-        let p = NSPredicate(format: "identity.address like[c] %@", address)
+        let p = CdAccount.PredicateFactory.by(address: address)
         let cdAcc = CdAccount.first(predicate: p, in: moc)
 
         return cdAcc

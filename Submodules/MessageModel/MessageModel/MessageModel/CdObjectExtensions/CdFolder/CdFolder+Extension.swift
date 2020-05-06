@@ -32,53 +32,19 @@ extension CdFolder {
     }
 
     /**
-     - Returns: The predicate (for CdMessage) to get all (undeleted, not marked to move to another folder, valid)
-     messages contained in that folder.
-     */
-    public func allMessagesPredicate() -> NSPredicate {
-        let p1 = allMessagesIncludingDeletedPredicate(fakeMessagesIncluded: true)
-        let p2 = CdMessage.PredicateFactory.notImapFlagDeleted()
-        let p3 = CdMessage.PredicateFactory.notMarkedForMoveToFolder()
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2, p3])
-    }
-
-    /**
-     - Returns: The predicate (for CdMessage) to get all messages contained in that folder,
-     even the deleted ones, so we don't fetch them again from the server.
-     */
-    public func allMessagesIncludingDeletedPredicate(
-        fakeMessagesIncluded: Bool = false) -> NSPredicate {
-
-        let inParentFolder = NSPredicate(format: "%K = %@", CdMessage.RelationshipName.parent, self)
-        var p = [inParentFolder]
-        if !fakeMessagesIncluded {
-            let isNotFakeMessage = CdMessage.PredicateFactory.isNotFakeMessage()
-            p.append(isNotFakeMessage)
-        }
-
-        return NSCompoundPredicate(andPredicateWithSubpredicates: p)
-    }
-
-    /**
      - Returns: All (undeleted, valid) messages in that folder.
      */
     public func allMessages(context: NSManagedObjectContext) -> [CdMessage] {
-        if let msgs = CdMessage.all(predicate: allMessagesPredicate(), in: context) as? [CdMessage] {
+        let p = CdMessage.PredicateFactory.allMessagesPredicate(parentFolder: self)
+        if let msgs = CdMessage.all(predicate: p, in: context) as? [CdMessage] {
             return msgs
         }
         return []
     }
 
-    func allMessagesExistingOnServer() -> NSPredicate {
-        let p1 = allMessagesIncludingDeletedPredicate()
-        let p2 = NSPredicate(format: "%K != %d",
-                             CdMessage.AttributeName.uid,
-                             CdMessage.uidNeedsAppend)
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2])
-    }
-
     func firstUID(context: NSManagedObjectContext) -> UInt {
-        if let msg = CdMessage.first(predicate: allMessagesExistingOnServer(),
+        let p = CdMessage.PredicateFactory.allMessagesExistingOnServer(parentFolder: self)
+        if let msg = CdMessage.first(predicate: p,
                                      orderedBy: [NSSortDescriptor(key: "uid", ascending: true)],
                                      in: context) {
             return UInt(msg.uid)
@@ -87,7 +53,8 @@ extension CdFolder {
     }
 
     func lastUID(context: NSManagedObjectContext) -> UInt {
-        if let msg = CdMessage.first(predicate: allMessagesExistingOnServer(),
+        let p = CdMessage.PredicateFactory.allMessagesExistingOnServer(parentFolder: self)
+        if let msg = CdMessage.first(predicate: p,
                                      orderedBy: [NSSortDescriptor(key: "uid", ascending: false)],
                                      in: context) {
             return UInt(msg.uid)
@@ -148,30 +115,9 @@ extension CdFolder {
 }
 
 extension CdFolder {
-    public func message(byUID: UInt, context:  NSManagedObjectContext) -> CdMessage? {
-        let p = NSPredicate(format: "parent = %@ and uid = %d", self, byUID)
+    public func message(byUID: UInt, context: NSManagedObjectContext) -> CdMessage? {
+        let p = CdMessage.PredicateFactory.belongingToParentFolderAndWithUID(parentFolder: self,
+                                                                             byUID: byUID)
         return CdMessage.first(predicate: p, in: context)
     }
-
-    //!!!: obsolete (?)
-//    public static func by(folderName: String,
-//                          folderType: FolderType,
-//                          cdAccount: CdAccount) -> CdFolder? {
-//        //For IMAP the combination (name, account) assures uniqueness due to IMAPs folder
-//        // hierarchy naming ("Inbox.Subfolder")
-//        var predicates = [NSPredicate]()
-//        predicates.append(NSPredicate(format: "name = %@", folderName))
-//        predicates.append(NSPredicate(format: "account = %@", cdAccount))
-//        predicates.append(NSPredicate(format: "folderTypeRawValue = %i", folderType.rawValue))
-//        let compound = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-//
-//        guard let results = CdFolder.all(predicate: compound) else {
-//            return nil
-//        }
-//        if results.count > 1 {
-//            Log.shared.errorAndCrash(component: #function,
-//                                     errorString: "We found more than one folder where it hould be unique.")
-//        }
-//        return results.first as? CdFolder
-//    }
 }

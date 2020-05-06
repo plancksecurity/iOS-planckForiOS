@@ -71,6 +71,12 @@ extension CdMessage {
             return NSPredicate(format: "%K = %@", CdFolder.RelationshipName.parent, parentFolder)
         }
 
+        static func belongingToParentFolderAndWithUID(parentFolder: CdFolder, byUID: UInt) -> NSPredicate {
+            return NSPredicate(format: "parent = %@ and uid = %d",
+                               parentFolder,
+                               byUID)
+        }
+
         static func flagged(value: Bool) -> NSPredicate {
             return NSPredicate(format: "%K = %d",
                                     RelationshipKeyPath.cdMessage_imap_localFlags + "." +
@@ -205,6 +211,46 @@ extension CdMessage {
             predicates.append(isNotFakeMessage())
 
             return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        }
+
+        /**
+         - Returns: The predicate (for CdMessage) to get all messages contained in that folder,
+         even the deleted ones, so we don't fetch them again from the server.
+         */
+        static func allMessagesIncludingDeleted(parentFolder: CdFolder,
+                                                fakeMessagesIncluded: Bool = false) -> NSPredicate {
+
+            let inParentFolder = NSPredicate(format: "%K = %@",
+                                             CdMessage.RelationshipName.parent,
+                                             parentFolder)
+            var p = [inParentFolder]
+            if !fakeMessagesIncluded {
+                let isNotFakeMessage = CdMessage.PredicateFactory.isNotFakeMessage()
+                p.append(isNotFakeMessage)
+            }
+
+            return NSCompoundPredicate(andPredicateWithSubpredicates: p)
+        }
+
+        /**
+         - Returns: The predicate (for CdMessage) to get all (undeleted, not marked to move to another folder, valid)
+         messages contained in that folder.
+         */
+        static func allMessagesPredicate(parentFolder: CdFolder) -> NSPredicate {
+            let p1 = CdMessage.PredicateFactory
+                .allMessagesIncludingDeleted(parentFolder: parentFolder,
+                                             fakeMessagesIncluded: true)
+            let p2 = CdMessage.PredicateFactory.notImapFlagDeleted()
+            let p3 = CdMessage.PredicateFactory.notMarkedForMoveToFolder()
+            return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2, p3])
+        }
+
+        static func allMessagesExistingOnServer(parentFolder: CdFolder) -> NSPredicate {
+            let p1 = CdMessage.PredicateFactory.allMessagesIncludingDeleted(parentFolder: parentFolder)
+            let p2 = NSPredicate(format: "%K != %d",
+                                 CdMessage.AttributeName.uid,
+                                 CdMessage.uidNeedsAppend)
+            return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2])
         }
     }
 }

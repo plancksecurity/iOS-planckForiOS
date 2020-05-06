@@ -372,7 +372,7 @@ extension NSManagedObject {
                            value: Any,
                            orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                            in context: NSManagedObjectContext) -> [NSManagedObject]? {
-        let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
+        let predicate = Query.PredicateFactory.predicateForAttributes(key: attribute, value: value)
         return all(predicate: predicate, orderedBy: sortDescriptors, in: context)
     }
 
