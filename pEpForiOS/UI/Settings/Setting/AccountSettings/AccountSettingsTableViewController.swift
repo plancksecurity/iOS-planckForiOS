@@ -426,11 +426,11 @@ extension AccountSettingsTableViewController {
     }
 }
 
-//MARK : - Fonts
+//MARK : - Accessibility
 
 extension AccountSettingsTableViewController {
 
-    
+    /// To support dynamic font with a font size limit we have set the font by code.
     private func setFonts() {
         
         let font = UIFont.pepFont(style: .body, weight: .regular)
@@ -492,19 +492,17 @@ extension AccountSettingsTableViewController {
         smtpUsernameLabel.font = font
         smtpUsernameTextField.font = font
     }
-    
-    
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
       super.traitCollectionDidChange(previousTraitCollection)
       if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
         configureView(for: traitCollection)
       }
     }
-    
+
     private func configureView(for traitCollection: UITraitCollection) {
         let contentSize = traitCollection.preferredContentSizeCategory
         let axis : NSLayoutConstraint.Axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
-        
         let spacing : CGFloat = contentSize.isAccessibilityCategory ? 10.0 : 5.0
 
         stackViews.forEach {
