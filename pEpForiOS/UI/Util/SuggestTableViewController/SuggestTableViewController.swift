@@ -18,6 +18,11 @@ class SuggestTableViewController: BaseTableViewController {
             viewModel?.delegate = self
         }
     }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        UIHelper.variableCellHeightsTableView(self.tableView)
+    }
 }
 
 // MARK: - SuggestViewModelDelegate
