@@ -29,6 +29,7 @@ class SetOwnKeyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         convertTopEp(button: setOwnKeyButton)
+        setOwnKeyButton.titleLabel?.font = UIFont.pepFont(style: .callout, weight: .regular)
         setOwnKeyButton.titleLabel?.numberOfLines = 0
         setOwnKeyButton.titleLabel?.adjustsFontForContentSizeCategory = true
         configureView(for: traitCollection)

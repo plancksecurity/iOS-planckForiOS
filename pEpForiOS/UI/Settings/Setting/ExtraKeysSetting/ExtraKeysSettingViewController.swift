@@ -30,6 +30,7 @@ class ExtraKeysSettingViewController: BaseViewController {
         super.viewDidLoad()
         fpr.delegate = self
         fpr.font = UIFont.pepFont(style: .callout, weight: .regular)
+        addExtraKeyButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
         subscribeForKeyboardNotifications()
     }
 

@@ -93,7 +93,9 @@ extension TrustedServerSettingsViewController : UITableViewDelegate {
             Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
             return nil
         }
-        headerView.title = NSLocalizedString("If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!", comment: "Trusted Server Setting Section Footer")
+        let text = NSLocalizedString("If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!", comment: "Trusted Server Setting Section Footer")
+
+        headerView.title = text
         
         return headerView
     }
