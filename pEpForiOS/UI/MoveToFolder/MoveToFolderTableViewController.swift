@@ -49,9 +49,11 @@ class MoveToFolderTableViewController: BaseTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let vm = viewModel {
-            _ = vm.moveMessagesTo(index: indexPath.row)
-            dismiss(animated: true)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
         }
+        vm.moveMessagesTo(index: indexPath.row)
+        dismiss(animated: true)
     }
 }
