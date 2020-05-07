@@ -18,16 +18,13 @@ class RecipientCell: TextViewContainingTableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        setStyle(label: title)
+        setFonts()
     }
 
     public func setup(with viewModel: RecipientCellViewModel) {
         self.viewModel = viewModel
-
         recipientTextView?.viewModel = self.viewModel?.recipientTextViewModel()
         title.text = viewModel.type.localizedTitle()
-        title.font = UIFont.pepFont(style: .footnote, weight: .regular)
-        recipientTextView?.font = UIFont.pepFont(style: .footnote, weight: .regular)
         recipientTextView?.setInitialText()
     }
 
@@ -36,7 +33,8 @@ class RecipientCell: TextViewContainingTableViewCell {
         recipientTextView?.text = ""
     }
 
-    private func setStyle(label: UILabel) {
-        label.pEpSetFontFace(weight: .regular)
+    private func setFonts() {
+        title.font = UIFont.pepFont(style: .footnote, weight: .regular)
+        recipientTextView?.font = UIFont.pepFont(style: .footnote, weight: .regular)
     }
 }
