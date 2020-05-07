@@ -164,20 +164,29 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
                 createe[UIImagePickerController.InfoKey.originalImage] = img
             }
 
+            var result: (infoDict: [UIImagePickerController.InfoKey: Any],
+                forAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment,
+                session: Session)? = nil
+
             let session = Session()
 
-            let attachment = Attachment(data: data,
-                                        mimeType: "image/jpeg",
-                                        fileName:
-                "I have no idea what file name is actually expecdted, thus I ignore it in tests.",
-                                        image: img,
-                                        assetUrl: url,
-                                        contentDisposition: .inline,
-                                        session: session)
-            let mediaAttachment =
-                MediaAttachmentPickerProviderViewModel.MediaAttachment(type: mediaType,
-                                                                       attachment: attachment)
-            return (createe, mediaAttachment, session)
+            session.performAndWait {
+                let attachment = Attachment(data: data,
+                                            mimeType: "image/jpeg",
+                                            fileName:
+                    "I have no idea what file name is actually expecdted, thus I ignore it in tests.",
+                                            image: img,
+                                            assetUrl: url,
+                                            contentDisposition: .inline,
+                                            session: session)
+                let mediaAttachment =
+                    MediaAttachmentPickerProviderViewModel.MediaAttachment(type: mediaType,
+                                                                           attachment: attachment)
+
+                result = (createe, mediaAttachment, session)
+            }
+
+            return result
     }
 
     private class TestResultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate {
