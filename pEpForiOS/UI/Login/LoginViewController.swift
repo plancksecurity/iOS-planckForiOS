@@ -19,21 +19,22 @@ final class LoginViewController: BaseViewController {
 
     weak var delegate: LoginViewControllerDelegate?
 
-    @IBOutlet weak var user: AnimatedPlaceholderTextfield!
-    @IBOutlet weak var password: AnimatedPlaceholderTextfield!
-    @IBOutlet weak var emailAddress: AnimatedPlaceholderTextfield!
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var dismissButton: UIButton!
-    @IBOutlet weak var dismissButtonLeft: UIButton!
-    @IBOutlet weak var loginButtonIPadLandscape: UIButton!
-    @IBOutlet weak var manualConfigButton: UIButton!
-    @IBOutlet weak var mainContainerView: UIView!
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var scrollView: DynamicHeightScrollView!
-    @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
-    @IBOutlet weak var loginButtonConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pEpSyncSwitch: UISwitch!
+    @IBOutlet private weak var pepSyncLabel: UILabel!
+    @IBOutlet private weak var user: AnimatedPlaceholderTextfield!
+    @IBOutlet private weak var password: AnimatedPlaceholderTextfield!
+    @IBOutlet private weak var emailAddress: AnimatedPlaceholderTextfield!
+    @IBOutlet private weak var loginButton: UIButton!
+    @IBOutlet private weak var dismissButton: UIButton!
+    @IBOutlet private weak var dismissButtonLeft: UIButton!
+    @IBOutlet private weak var loginButtonIPadLandscape: UIButton!
+    @IBOutlet private weak var manualConfigButton: UIButton!
+    @IBOutlet private weak var mainContainerView: UIView!
+    @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private weak var scrollView: DynamicHeightScrollView!
+    @IBOutlet private weak var scrollViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var loginButtonConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var pEpSyncSwitch: UISwitch!
 
     var viewModel: LoginViewModel?
     var offerManualSetup = false
@@ -42,6 +43,11 @@ final class LoginViewController: BaseViewController {
         didSet {
             updateView()
         }
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setFonts()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -616,3 +622,28 @@ extension LoginViewController {
     }
 }
 
+// MARK: - Accessibility
+
+extension LoginViewController {
+
+    private func setFonts() {
+        emailAddress.font = UIFont.pepFont(style: .callout, weight: .regular)
+        emailAddress.adjustsFontForContentSizeCategory = true
+        password.font = UIFont.pepFont(style: .callout, weight: .regular)
+        password.adjustsFontForContentSizeCategory = true
+        user.font = UIFont.pepFont(style: .callout, weight: .regular)
+        user.adjustsFontForContentSizeCategory = true
+        loginButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        loginButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        dismissButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        dismissButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        manualConfigButton.titleLabel?.font = UIFont.pepFont(style: .callout, weight: .regular)
+        manualConfigButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        dismissButtonLeft.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        dismissButtonLeft.titleLabel?.adjustsFontForContentSizeCategory = true
+        loginButtonIPadLandscape.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        loginButtonIPadLandscape.titleLabel?.adjustsFontForContentSizeCategory = true
+        pepSyncLabel.font = UIFont.pepFont(style: .callout, weight: .regular)
+        pepSyncLabel.adjustsFontForContentSizeCategory = true
+    }
+}

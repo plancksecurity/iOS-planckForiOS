@@ -14,13 +14,21 @@ final class AccountTypeSelectorViewController: BaseViewController {
     var delegate: AccountTypeSelectorViewModelDelegate?
     var loginDelegate: LoginViewControllerDelegate?
 
-    @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet private weak var selectAccountTypeLabel: UILabel!
+    @IBOutlet private weak var welcomeToPepLabel: UILabel!
+    @IBOutlet private var collectionView: UICollectionView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.delegate = self
         collectionView.dataSource = self
         viewModel.delegate = self
+
+        welcomeToPepLabel.font = UIFont.pepFont(style: .largeTitle, weight: .regular)
+        welcomeToPepLabel.adjustsFontForContentSizeCategory = true
+
+        selectAccountTypeLabel.font = UIFont.pepFont(style: .callout, weight: .regular)
+        selectAccountTypeLabel.adjustsFontForContentSizeCategory = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -175,4 +183,3 @@ extension AccountTypeSelectorViewController: ClientCertificateImportViewControll
         collectionView.reloadData()
     }
 }
-
