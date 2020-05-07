@@ -15,10 +15,6 @@ import UIKit
 /// Usage example: let font = UIFont.pepFont(style: .body, weight: .regular)
 extension UIFont {
 
-    static private let medium = "SFUIText-Medium"
-    static private let regular = "SFUIText-Regular"
-    static private let semibold = "SFUIText-Semibold"
-
     /// Returns the system font used in p≡p configured with the text style and the weight,
     /// scaled for accessibility if needed at max 30 point size.
     ///
@@ -32,37 +28,5 @@ extension UIFont {
         let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
         let font = UIFont.systemFont(ofSize: desc.pointSize, weight: weight)
         return metrics.scaledFont(for: font, maximumPointSize: 30)
-    }
-    
-    static private func preferredFontSize(for textStyle: TextStyle) -> CGFloat {
-        let customFont = UIFont.preferredFont(forTextStyle: textStyle)
-        let pointSize = customFont.pointSize
-        // We don't want to lose textStyle attribute in our custom fonts!
-        customFont.fontDescriptor.addingAttributes([.textStyle : textStyle])
-        return pointSize
-    }
-
-    static private func getFontWeight(from font: UIFont) -> UIFont.Weight {
-        if let fontName = font.fontDescriptor.fontAttributes[.visibleName] as? String {
-            if fontName.lowercased().contains(medium.lowercased()) {
-                return .medium
-            } else if fontName.lowercased().contains(semibold.lowercased()) {
-                return .semibold
-            }
-        }
-        return .regular
-    }
-
-    static private func getFontName(from weight: UIFont.Weight) -> String {
-        switch weight {
-        case .medium:
-            return medium
-        case .regular:
-            return regular
-        case .semibold:
-            return semibold
-        default:
-            return regular
-        }
     }
 }
