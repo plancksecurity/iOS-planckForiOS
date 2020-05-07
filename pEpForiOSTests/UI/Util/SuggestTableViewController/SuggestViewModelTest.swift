@@ -76,67 +76,6 @@ class SuggestViewModelTest: AccountDrivenTestBase {
         assertResults(for: searchTerm, numExpectedResults: 0)
     }
 
-    // MARK: - User Action Tests
-
-    func testUserSelection_oneExists() {
-        let numSuggestionsExpected = 1
-        let selectRow = numSuggestionsExpected - 1
-        let existing = Identity(address: "testUserSelection@oneExists.security",
-                                userID: UUID().uuidString)
-        existing.save()
-        existingIdentities = [existing]
-        assertResults(for: existing.address,
-                      simulateUserSelectedRow: selectRow,
-                      numExpectedResults: numSuggestionsExpected,
-                      expectedSelection: existing,
-                      didToggleVisibilityMustBeCalled: true,
-                      expectedDidToggleVisibilityToValue: true)
-    }
-
-    func testUserSelection_selectLast() {
-        let numSuggestionsExpected = 2
-        let selectRow = numSuggestionsExpected - 1
-        let common = "testUserSelection@oneExists.security"
-
-        let existing1 = Identity(address: "\(common)1")
-        existing1.save()
-
-        let existing2 = Identity(address: "\(common)2")
-        existing2.save()
-
-        existingIdentities = dataBaseOrder(identities: [existing1, existing2])
-        XCTAssertEqual(existingIdentities.count, numSuggestionsExpected)
-
-        assertResults(for: common,
-                      simulateUserSelectedRow: selectRow,
-                      numExpectedResults: numSuggestionsExpected,
-                      expectedSelection: existingIdentities[selectRow],
-                      didToggleVisibilityMustBeCalled: true,
-                      expectedDidToggleVisibilityToValue: true)
-    }
-
-    func testUserSelection_selectFirst() {
-        let numSuggestionsExpected = 2
-        let selectRow = 0
-        let common = "testUserSelection@oneExists.security"
-
-        let existing1 = Identity(address: "\(common)1")
-        existing1.save()
-
-        let existing2 = Identity(address: "\(common)2")
-        existing2.save()
-
-        existingIdentities = dataBaseOrder(identities: [existing1, existing2])
-        XCTAssertEqual(existingIdentities.count, numSuggestionsExpected)
-
-        assertResults(for: common,
-                      simulateUserSelectedRow: selectRow,
-                      numExpectedResults: numSuggestionsExpected,
-                      expectedSelection: existingIdentities[selectRow],
-                      didToggleVisibilityMustBeCalled: true,
-                      expectedDidToggleVisibilityToValue: true)
-    }
-
     // MARK: - Helper
 
     private func setupContacts(numContacts: Int = SuggestViewModelTest.defaultNumExistingContacts) {
