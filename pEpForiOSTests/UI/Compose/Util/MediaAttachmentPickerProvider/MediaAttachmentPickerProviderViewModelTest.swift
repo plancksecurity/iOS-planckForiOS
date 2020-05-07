@@ -202,17 +202,19 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
                 return
             }
             exp.fulfill()
-            if let expected = expectedMediaAttachment{
-                if let _ = mediaAttachment.attachment.image {
-                    XCTAssertTrue(mediaAttachment.type == .image)
-                    XCTAssertEqual(mediaAttachment.attachment.image, expected.attachment.image)
-                } else {
-                    XCTAssertTrue(mediaAttachment.type == .movie)
-                    XCTAssertEqual(mediaAttachment.attachment.data, expected.attachment.data)
+            if let expected = expectedMediaAttachment {
+                session.perform {
+                    if let _ = mediaAttachment.attachment.image {
+                        XCTAssertTrue(mediaAttachment.type == .image)
+                        XCTAssertEqual(mediaAttachment.attachment.image, expected.attachment.image)
+                    } else {
+                        XCTAssertTrue(mediaAttachment.type == .movie)
+                        XCTAssertEqual(mediaAttachment.attachment.data, expected.attachment.data)
+                    }
+                    XCTAssertEqual(mediaAttachment.attachment.mimeType, expected.attachment.mimeType)
+                    //"I have no idea what file name is actually expecdted, thus I ignore it in tests."
+                    XCTAssertEqual(mediaAttachment.type, expected.type)
                 }
-                XCTAssertEqual(mediaAttachment.attachment.mimeType, expected.attachment.mimeType)
-                //"I have no idea what file name is actually expecdted, thus I ignore it in tests."
-                XCTAssertEqual(mediaAttachment.type, expected.type)
             }
         }
 
