@@ -18,12 +18,14 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     // MARK: - init & resultDelegate
 
     func testInitAndResultDelegate() {
+        let session = Session()
         let resultDelegate = TestResultDelegate(expDidSelectMediaAttachmentCalled: nil,
                                                 expectedMediaAttachment: nil,
-                                                expDidCancelCalled: nil)
+                                                expDidCancelCalled: nil,
+                                                session: session)
             as MediaAttachmentPickerProviderViewModelResultDelegate
         let testeeVM = MediaAttachmentPickerProviderViewModel(resultDelegate: resultDelegate,
-                                                              session: Session())
+                                                              session: session)
         XCTAssertNotNil(testeeVM)
         guard let testeeResultDelegate = testeeVM.resultDelegate else {
             XCTFail()
@@ -129,7 +131,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
         resultDelegate =
             TestResultDelegate(expDidSelectMediaAttachmentCalled: expDidSelectMediaAttachmentCalled,
                                expectedMediaAttachment: expectedMediaAttachment,
-                               expDidCancelCalled: expDidCancelCalled)
+                               expDidCancelCalled: expDidCancelCalled,
+                               session: session)
         vm = MediaAttachmentPickerProviderViewModel(resultDelegate: resultDelegate,
                                                     session: session)
     }
@@ -180,15 +183,17 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     private class TestResultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate {
         let expDidSelectMediaAttachmentCalled: XCTestExpectation?
         let expectedMediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment?
-
         let expDidCancelCalled: XCTestExpectation?
+        let session: Session
 
         init(expDidSelectMediaAttachmentCalled: XCTestExpectation?,
              expectedMediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment?,
-             expDidCancelCalled: XCTestExpectation?) {
+             expDidCancelCalled: XCTestExpectation?,
+             session: Session) {
             self.expDidSelectMediaAttachmentCalled  = expDidSelectMediaAttachmentCalled
             self.expectedMediaAttachment = expectedMediaAttachment
             self.expDidCancelCalled = expDidCancelCalled
+            self.session = session
         }
 
         func mediaAttachmentPickerProviderViewModel(_ vm: MediaAttachmentPickerProviderViewModel, didSelect mediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment) {
