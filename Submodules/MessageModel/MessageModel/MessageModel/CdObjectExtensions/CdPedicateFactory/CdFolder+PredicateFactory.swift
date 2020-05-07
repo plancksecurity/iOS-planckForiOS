@@ -27,6 +27,17 @@ extension CdFolder {
                                CdFolder.AttributeName.folderTypeRawValue,
                                type.rawValue)
         }
+
+        /// Predicate for fetching the pEp sync folder ("sync folder mode").
+        /// - Parameter cdAccount: The account to take the folder separator from,
+        /// and where to look for the folder.
+        static func syncFolder(cdAccount: CdAccount) -> NSPredicate {
+            return NSPredicate(format: "%K = %@ AND %K = %d",
+                               CdFolder.RelationshipName.account,
+                               cdAccount,
+                               CdFolder.AttributeName.folderTypeRawValue,
+                               FolderType.pEpSync.rawValue)
+        }
     }
 }
 

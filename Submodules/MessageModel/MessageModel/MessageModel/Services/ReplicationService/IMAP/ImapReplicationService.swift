@@ -198,7 +198,7 @@ extension ImapReplicationService {
                             CdFolder.AttributeName.folderTypeRawValue, FolderType.typesSyncedWithImapServerRawValues)
             let folderPredicate = NSCompoundPredicate(
                 orPredicateWithSubpredicates: [pInteresting,
-                                               CdFolder.pEpSyncFolderPredicate(cdAccount: cdAccount)])
+                                               CdFolder.PredicateFactory.syncFolder(cdAccount: cdAccount)])
             let folders = CdFolder.all(predicate: folderPredicate,
                                        in: privateMoc) as? [CdFolder] ?? []
 

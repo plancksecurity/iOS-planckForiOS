@@ -74,7 +74,7 @@ extension CdMessage {
             //filter fake msgs
             found = found.filter { $0.uid != -1 }
             if found.count > 1 {
-                Log.shared.errorAndCrash("ultiple messages with UUID %@ in folder %@. Messages: %@",
+                Log.shared.errorAndCrash("multiple messages with UUID %@ in folder %@. Messages: %@",
                                          uuid, folderName, found)
             }
         }
