@@ -38,7 +38,7 @@ class FilterViewModelTest: AccountDrivenTestBase {
 
     //MARK: Initialization
     func givenThereAreTwoAccounts() {
-        _ = SecretTestData().createWorkingCdAccount(number: 1)
-        moc.saveAndLogErrors()
+        let acc = TestData().createWorkingAccount(number: 1)
+        acc.save()
     }
 }
