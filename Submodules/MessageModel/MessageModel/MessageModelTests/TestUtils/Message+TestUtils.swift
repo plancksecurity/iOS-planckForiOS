@@ -16,12 +16,12 @@ extension Message {
         let fakeId = Identity(address: "unifiedInbox@fake.address.com",
                               userID: nil,
                               userName: "fakeName")
-        fakeId.save()
+        fakeId.session.commit()
         let fakeAccount = Account(user: fakeId, servers: [Server]())
-        fakeAccount.save()
+        fakeAccount.session.commit()
         print(Account.all())
         let fakeFolder = Folder(name: "Inbox", parent: nil, uuid: "fakeFolderUUID", account: fakeAccount, folderType: .inbox)
-        fakeFolder.save()
+        fakeFolder.session.commit()
         let message = Message(uuid: uuid, uid: uid, parentFolder: fakeFolder)
 
         return message

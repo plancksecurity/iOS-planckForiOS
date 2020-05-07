@@ -173,7 +173,7 @@ class Message_FakeMessageTest: PersistentStoreDrivenTestBase {
 
     private func createFakeMessage(in folder: Folder) {
         let fakeMsg = Message(uuid: UUID().uuidString + #function, parentFolder: folder).createFakeMessage(in: folder)
-        fakeMsg.save()
+        fakeMsg.session.commit()
     }
 
     private func deleteAllMessages() {

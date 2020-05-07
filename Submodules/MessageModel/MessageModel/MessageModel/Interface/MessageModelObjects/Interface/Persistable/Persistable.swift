@@ -6,7 +6,7 @@
 //  Copyright © 2019 pEp Security S.A. All rights reserved.
 //
 
-public protocol Persistable { //!!!: think! obj.save() actually saves the main session. That is not very clear.
+public protocol Persistable {
     /// Saves current Session
     func save()
     /// Deletes the object on the current session

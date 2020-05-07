@@ -83,7 +83,7 @@ class SuggestViewModelTest: AccountDrivenTestBase {
         let selectRow = numSuggestionsExpected - 1
         let existing = Identity(address: "testUserSelection@oneExists.security",
                                 userID: UUID().uuidString)
-        existing.save()
+        existing.session.commit()
         existingIdentities = [existing]
         assertResults(for: existing.address,
                       simulateUserSelectedRow: selectRow,
@@ -99,10 +99,10 @@ class SuggestViewModelTest: AccountDrivenTestBase {
         let common = "testUserSelection@oneExists.security"
 
         let existing1 = Identity(address: "\(common)1")
-        existing1.save()
+        existing1.session.commit()
 
         let existing2 = Identity(address: "\(common)2")
-        existing2.save()
+        existing2.session.commit()
 
         existingIdentities = dataBaseOrder(identities: [existing1, existing2])
         XCTAssertEqual(existingIdentities.count, numSuggestionsExpected)
@@ -121,10 +121,10 @@ class SuggestViewModelTest: AccountDrivenTestBase {
         let common = "testUserSelection@oneExists.security"
 
         let existing1 = Identity(address: "\(common)1")
-        existing1.save()
+        existing1.session.commit()
 
         let existing2 = Identity(address: "\(common)2")
-        existing2.save()
+        existing2.session.commit()
 
         existingIdentities = dataBaseOrder(identities: [existing1, existing2])
         XCTAssertEqual(existingIdentities.count, numSuggestionsExpected)
@@ -147,7 +147,7 @@ class SuggestViewModelTest: AccountDrivenTestBase {
                 addressBookID: nil,
                 userName: "id\(i)")
             existingIdentities.append(id)
-            id.save()
+            id.session.commit()
         }
     }
 
