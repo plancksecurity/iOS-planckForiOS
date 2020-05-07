@@ -753,25 +753,20 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashscreen" translatesAutoresizingMaskIntoConstraints="NO" id="Qvj-Kg-e68">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to p≡p" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YOK-e7-Ke7">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to p≡p" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YOK-e7-Ke7">
                                 <rect key="frame" x="390" y="28" width="244" height="41"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please select the type of account you would like to set up with p≡p" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fLS-EM-fbk">
-                                <rect key="frame" x="387" y="99" width="250" height="40.5"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="250" id="U4P-VQ-aoz">
-                                        <variation key="heightClass=compact-widthClass=compact" constant="500"/>
-                                    </constraint>
-                                </constraints>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please select the type of account you would like to set up with p≡p" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fLS-EM-fbk">
+                                <rect key="frame" x="269.5" y="99" width="485" height="19.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="qSY-an-Kw8">
-                                <rect key="frame" x="212" y="179.5" width="600" height="1146.5"/>
+                                <rect key="frame" x="212" y="158.5" width="600" height="1167.5"/>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="250" id="922-Vk-wOa">
@@ -854,11 +849,21 @@
                             <constraint firstItem="YOK-e7-Ke7" firstAttribute="centerX" secondItem="vCs-pa-EKN" secondAttribute="centerX" id="Vco-8i-FcX"/>
                             <constraint firstItem="qSY-an-Kw8" firstAttribute="centerX" secondItem="vCs-pa-EKN" secondAttribute="centerX" id="Z76-U1-jr2"/>
                             <constraint firstItem="4SX-0s-gq3" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="qSY-an-Kw8" secondAttribute="trailing" constant="5" id="bkW-Yy-fDm"/>
-                            <constraint firstItem="qSY-an-Kw8" firstAttribute="top" secondItem="fLS-EM-fbk" secondAttribute="bottom" constant="40" id="ceM-nr-qWS"/>
-                            <constraint firstItem="4SX-0s-gq3" firstAttribute="bottom" secondItem="qSY-an-Kw8" secondAttribute="bottom" constant="40" id="nge-dY-DKp"/>
+                            <constraint firstItem="qSY-an-Kw8" firstAttribute="top" secondItem="fLS-EM-fbk" secondAttribute="bottom" constant="40" id="ceM-nr-qWS">
+                                <variation key="heightClass=compact-widthClass=compact" constant="20"/>
+                            </constraint>
+                            <constraint firstItem="4SX-0s-gq3" firstAttribute="bottom" secondItem="qSY-an-Kw8" secondAttribute="bottom" constant="40" id="nge-dY-DKp">
+                                <variation key="heightClass=compact-widthClass=compact" constant="20"/>
+                            </constraint>
                             <constraint firstItem="Qvj-Kg-e68" firstAttribute="top" secondItem="vCs-pa-EKN" secondAttribute="top" id="pVV-sD-NCc"/>
-                            <constraint firstItem="YOK-e7-Ke7" firstAttribute="top" secondItem="4SX-0s-gq3" secondAttribute="top" constant="28" id="qJg-4z-rpE"/>
-                            <constraint firstItem="fLS-EM-fbk" firstAttribute="top" secondItem="YOK-e7-Ke7" secondAttribute="bottom" constant="30" id="s3O-uh-Rhh"/>
+                            <constraint firstItem="YOK-e7-Ke7" firstAttribute="top" secondItem="4SX-0s-gq3" secondAttribute="top" constant="28" id="qJg-4z-rpE">
+                                <variation key="heightClass=compact-widthClass=compact" constant="14"/>
+                            </constraint>
+                            <constraint firstItem="fLS-EM-fbk" firstAttribute="top" secondItem="YOK-e7-Ke7" secondAttribute="bottom" constant="30" id="s3O-uh-Rhh">
+                                <variation key="heightClass=compact-widthClass=compact" constant="14"/>
+                            </constraint>
+                            <constraint firstItem="fLS-EM-fbk" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4SX-0s-gq3" secondAttribute="leading" constant="8" id="s91-eC-Yyx"/>
+                            <constraint firstItem="YOK-e7-Ke7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4SX-0s-gq3" secondAttribute="leading" constant="8" id="tP3-PV-L4w"/>
                             <constraint firstItem="Qvj-Kg-e68" firstAttribute="trailing" secondItem="vCs-pa-EKN" secondAttribute="trailing" id="x7u-wD-nFa"/>
                             <constraint firstItem="fLS-EM-fbk" firstAttribute="centerX" secondItem="vCs-pa-EKN" secondAttribute="centerX" id="yvS-mc-uSj"/>
                         </constraints>

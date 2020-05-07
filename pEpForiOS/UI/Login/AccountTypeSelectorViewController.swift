@@ -39,6 +39,11 @@ final class AccountTypeSelectorViewController: BaseViewController {
         collectionView.reloadData()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        collectionView.reloadData()
+    }
+
     private func configureAppearance() {
         if #available(iOS 13, *) {
             Appearance.customiseForLogin(viewController: self)
