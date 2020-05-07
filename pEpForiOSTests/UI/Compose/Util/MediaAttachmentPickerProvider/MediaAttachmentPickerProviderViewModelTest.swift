@@ -37,7 +37,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     func testAssertHelperMethod() {
         assert(didSelectMediaAttachmentMustBeCalledCalled: nil,
                expectedMediaAttachment: nil,
-               didCancelMustBeCalled: nil)
+               didCancelMustBeCalled: nil,
+               session: Session())
         XCTAssertNotNil(vm)
         guard let testeeResultDelegate = vm?.resultDelegate else {
             XCTFail()
@@ -57,7 +58,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
         }
         assert(didSelectMediaAttachmentMustBeCalledCalled: true,
                expectedMediaAttachment: forAttachment,
-               didCancelMustBeCalled: false)
+               didCancelMustBeCalled: false,
+               session: Session())
         vm?.handleDidFinishPickingMedia(info: infoDict)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -65,7 +67,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     func testHandleDidFinishPickingMedia_photo_notCalled() {
         assert(didSelectMediaAttachmentMustBeCalledCalled: false,
                expectedMediaAttachment: nil,
-               didCancelMustBeCalled: false)
+               didCancelMustBeCalled: false,
+               session: Session())
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -78,7 +81,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
         }
         assert(didSelectMediaAttachmentMustBeCalledCalled: true,
                expectedMediaAttachment: forAttachment,
-               didCancelMustBeCalled: false)
+               didCancelMustBeCalled: false,
+               session: Session())
         vm?.handleDidFinishPickingMedia(info: infoDict)
         waitForExpectations(timeout: 0.5) // Async file access
     }
@@ -88,7 +92,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     func testHandleDidCancel() {
         assert(didSelectMediaAttachmentMustBeCalledCalled: false,
                expectedMediaAttachment: nil,
-               didCancelMustBeCalled: true)
+               didCancelMustBeCalled: true,
+               session: Session())
         vm?.handleDidCancel()
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -96,7 +101,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     func testHandleDidCancel_notCalled() {
         assert(didSelectMediaAttachmentMustBeCalledCalled: false,
                expectedMediaAttachment: nil,
-               didCancelMustBeCalled: false)
+               didCancelMustBeCalled: false,
+               session: Session())
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -104,7 +110,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
 
     private func assert(didSelectMediaAttachmentMustBeCalledCalled: Bool?,
                         expectedMediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment?,
-                        didCancelMustBeCalled: Bool?) {
+                        didCancelMustBeCalled: Bool?,
+                        session: Session) {
         var expDidSelectMediaAttachmentCalled: XCTestExpectation? = nil
         if let mustBeCalled = didSelectMediaAttachmentMustBeCalledCalled {
             expDidSelectMediaAttachmentCalled =
@@ -124,7 +131,7 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
                                expectedMediaAttachment: expectedMediaAttachment,
                                expDidCancelCalled: expDidCancelCalled)
         vm = MediaAttachmentPickerProviderViewModel(resultDelegate: resultDelegate,
-                                                    session: Session())
+                                                    session: session)
     }
 
     private func infoDict(mediaType: MediaAttachmentPickerProviderViewModel.MediaAttachment.MediaAttachmentType)
