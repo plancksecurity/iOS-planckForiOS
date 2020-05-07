@@ -212,7 +212,7 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
             }
             exp.fulfill()
             if let expected = expectedMediaAttachment {
-                session.perform {
+                session.performAndWait {
                     if let _ = mediaAttachment.attachment.image {
                         XCTAssertTrue(mediaAttachment.type == .image)
                         XCTAssertEqual(mediaAttachment.attachment.image, expected.attachment.image)
