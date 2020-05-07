@@ -141,7 +141,7 @@ extension PEPAlertViewController {
         case .pEpSyncWizard:
             alertButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .semibold)
         case .pEpDefault:
-            alertButton.titleLabel?.font = .boldSystemFont(ofSize: 15) // ??? Dynamic font?
+            alertButton.titleLabel?.font = UIFont.pepFont(style: .callout, weight: .semibold)
             break
         }
     }
