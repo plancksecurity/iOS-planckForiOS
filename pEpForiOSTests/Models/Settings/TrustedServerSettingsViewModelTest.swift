@@ -10,12 +10,11 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class TrustedServerSettingsViewModelTest: CoreDataDrivenTestBase {
+class TrustedServerSettingsViewModelTest: AccountDrivenTestBase {
 
     var viewModel: TrustedServerSettingsViewModel!
 
     public func testSetStoreSecurely() {
-        let account = cdAccount.account()
         setUpViewModel()
 
         guard let indexPath = indexPath(account: account) else {

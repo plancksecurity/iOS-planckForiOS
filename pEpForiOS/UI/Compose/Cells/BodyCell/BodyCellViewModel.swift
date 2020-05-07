@@ -56,7 +56,8 @@ class BodyCellViewModel: CellViewModel {
 
     public func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
         if plaintext.isEmpty {
-            plaintext.append(.pepSignature)
+            // commented out until IOS-1124 is done.
+//            plaintext.append(.pepSignature)
         }
         attributedText?.assureMaxTextAttachmentImageWidth(maxTextattachmentWidth)
         return (plaintext, attributedText)
