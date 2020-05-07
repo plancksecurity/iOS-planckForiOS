@@ -51,7 +51,7 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     // MARK: Photo
 
     func testHandleDidFinishPickingMedia_photo() {
-        guard let (infoDict, forAttachment) = infoDict(mediaType: .image) else {
+        guard let (infoDict, forAttachment, session) = infoDict(mediaType: .image) else {
             XCTFail()
             return
         }
@@ -72,7 +72,7 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     // MARK: Video
 
     func testHandleDidFinishPickingMedia_movie() {
-        guard let (infoDict, forAttachment) = infoDict(mediaType: .movie) else {
+        guard let (infoDict, forAttachment, session) = infoDict(mediaType: .movie) else {
             XCTFail()
             return
         }
@@ -128,7 +128,9 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     }
 
     private func infoDict(mediaType: MediaAttachmentPickerProviderViewModel.MediaAttachment.MediaAttachmentType)
-        -> (infoDict: [UIImagePickerController.InfoKey: Any], forAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment)? {
+        -> (infoDict: [UIImagePickerController.InfoKey: Any],
+        forAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment,
+        session: Session)? {
             var createe = [UIImagePickerController.InfoKey:Any]()
             let testBundle = Bundle(for: type(of:self))
             let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
@@ -151,17 +153,21 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
                 createe[UIImagePickerController.InfoKey.referenceURL] = url
                 createe[UIImagePickerController.InfoKey.originalImage] = img
             }
+
+            let session = Session()
+
             let attachment = Attachment(data: data,
                                         mimeType: "image/jpeg",
                                         fileName:
                 "I have no idea what file name is actually expecdted, thus I ignore it in tests.",
                                         image: img,
                                         assetUrl: url,
-                                        contentDisposition: .inline)
+                                        contentDisposition: .inline,
+                                        session: session)
             let mediaAttachment =
                 MediaAttachmentPickerProviderViewModel.MediaAttachment(type: mediaType,
                                                                        attachment: attachment)
-            return (createe, mediaAttachment)
+            return (createe, mediaAttachment, session)
     }
 
     private class TestResultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate {
