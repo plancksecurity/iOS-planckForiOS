@@ -12,18 +12,19 @@ import XCTest
 @testable import MessageModel
 
 class FilterViewModelTest: AccountDrivenTestBase {
+    var accounts = [Account]()
+
     override func setUp() {
         super.setUp()
     }
 
-    //!!!: this has to be redone when FilterViewModel is done
     func testCreateCorrectAccountCell() {
         givenThereAreTwoAccounts()
-        let accountNumber = 2
-        let viewmodel = FilterViewModel(type: .accouts)
-        XCTAssertEqual(accountNumber, viewmodel.count)
+        let viewmodel = FilterViewModel(filter: MessageQueryResultsFilter(accounts: accounts))
+        XCTAssertEqual(accounts.count, viewmodel[0].count)
     }
 
+    /*
     func testCreateCorrectIncludeCells() {
         let includeFilters = [UnreadFilter.self, FlaggedFilter.self]
         let viewmodel = FilterViewModel(type: .include)
@@ -35,10 +36,15 @@ class FilterViewModelTest: AccountDrivenTestBase {
         let viewmodel = FilterViewModel(type: .other)
         XCTAssertEqual(otherFilters.count, viewmodel.count)
     }
+     */
 
     //MARK: Initialization
     func givenThereAreTwoAccounts() {
-        let acc = TestData().createWorkingAccount(number: 1)
-        acc.save()
+        let acc1 = TestData().createWorkingAccount(number: 0)
+        acc1.save()
+        let acc2 = TestData().createWorkingAccount(number: 1)
+        acc2.save()
+        accounts.removeAll()
+        accounts.append(contentsOf: [acc1, acc2])
     }
 }
