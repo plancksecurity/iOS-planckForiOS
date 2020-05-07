@@ -170,6 +170,10 @@ class SuggestViewModelTest: AccountDrivenTestBase {
             shouldCallDidSelectContact = true
         }
         let expectationDidResetCalled = expectation(description: "expectationDidResetCalled")
+        if numExpectedResults > 0 {
+            // If there are contacts in the DB already, SuggestViewModel fires 2 times
+            expectationDidResetCalled.expectedFulfillmentCount = 2
+        }
 
         var expectationDidToggleVisibilityToCalled: XCTestExpectation? = nil
         if let mustBeCalled = didToggleVisibilityMustBeCalled {
