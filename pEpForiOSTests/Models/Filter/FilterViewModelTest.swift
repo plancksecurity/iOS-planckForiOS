@@ -21,16 +21,19 @@ class FilterViewModelTest: AccountDrivenTestBase {
     func testCreateCorrectAccountCell() {
         givenThereAreTwoAccounts()
         let viewmodel = FilterViewModel(filter: MessageQueryResultsFilter(accounts: accounts))
-        XCTAssertEqual(accounts.count, viewmodel[0].count)
+        XCTAssertEqual(viewmodel[0].count, accounts.count)
+    }
+
+    func testCreateCorrectIncludeCells() {
+        givenThereAreTwoAccounts()
+        let viewmodel = FilterViewModel(filter: MessageQueryResultsFilter(mustBeFlagged: true,
+                                                                          mustBeUnread: true,
+                                                                          mustContainAttachments: nil,
+                                                                          accounts: accounts))
+        XCTAssertEqual(viewmodel[0].count, accounts.count)
     }
 
     /*
-    func testCreateCorrectIncludeCells() {
-        let includeFilters = [UnreadFilter.self, FlaggedFilter.self]
-        let viewmodel = FilterViewModel(type: .include)
-        XCTAssertEqual(includeFilters.count, viewmodel.count)
-    }
-
     func testCreateCorrectOtherCells() {
         let otherFilters = [AttachmentFilterTest.self]
         let viewmodel = FilterViewModel(type: .other)
