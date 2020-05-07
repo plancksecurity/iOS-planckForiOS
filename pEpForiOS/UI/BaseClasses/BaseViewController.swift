@@ -11,7 +11,7 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
+class BaseViewController: UIViewController {
     private var _appConfig: AppConfig?
 
     /// Indicates when the navigation bar tint color must be white.
@@ -64,7 +64,7 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
 
     // MARK: - ErrorPropagatorSubscriber
 
-    var shouldHandleErrors: Bool = true
+    /*var shouldHandleErrors: Bool = true
 
     func error(propagator: ErrorPropagator, error: Error) {
         if shouldHandleErrors {
@@ -129,7 +129,7 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
                 appConfig.showedAccountsError[extraInfo] = true
             }
         }
-    }
+    }*/
 }
 
 // MARK: - Stuff copy & pasted from BaseTableViewController.

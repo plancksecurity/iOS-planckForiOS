@@ -244,7 +244,8 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
 extension AccountSettingsTableViewController: OAuthAuthorizerDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         oauth2ActivityIndicator.stopAnimating()
-        shouldHandleErrors = true
+        //shouldHandleErrors = true
+        //!!!: this comment should be temporal
 
         if let error = oauth2Error {
             showErrorAlert(error: error)
@@ -350,7 +351,8 @@ extension AccountSettingsTableViewController {
         oauth2ActivityIndicator.startAnimating()
 
         // don't accept errors form other places
-        shouldHandleErrors = false
+        //shouldHandleErrors = false
+        //!!!: this comment is temporal
 
         oauthViewModel.delegate = self
         oauthViewModel.authorize(

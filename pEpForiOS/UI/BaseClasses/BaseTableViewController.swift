@@ -11,7 +11,7 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber {
+class BaseTableViewController: UITableViewController {
 
     /// Indicates when the navigation bar tint color must be white.
     /// As in iOS 13 the property to set that color changed, we use this flag to set it properly.
@@ -122,7 +122,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         }
     }
 
-    // MARK: - ErrorPropagatorSubscriber
+    /*// MARK: - ErrorPropagatorSubscriber
 
     var shouldHandleErrors: Bool = true
 
@@ -189,5 +189,5 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                 appConfig.showedAccountsError[extraInfo] = true
             }
         }
-    }
+    }*/
 }

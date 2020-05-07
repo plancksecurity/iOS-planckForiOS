@@ -10,11 +10,18 @@ import Foundation
 import MessageModel
 
 public class ErrorSubscriber {
+    var showedAccountsError = [String:Bool]()
+    public func errorShouldBeDisplayed(error: Error) -> Bool{
+        return true
+    }
     
 }
 
 extension ErrorSubscriber: ErrorPropagatorSubscriber {
+    
     public func error(propagator: ErrorPropagator, error: Error) {
-        UIUtils.show(error: error)
+        if errorShouldBeDisplayed(error: error) {
+            UIUtils.show(error: error)
+        }
     }
 }

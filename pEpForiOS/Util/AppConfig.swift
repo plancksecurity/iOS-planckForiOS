@@ -12,14 +12,10 @@ import MessageModel
  Some cross cutting concerns, like core data access, networking, etc.
  */
 class AppConfig {
-    var showedAccountsError: [String:Bool]
-
-
     ///For the views to kick off oauth2 requests.
     let oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol
 
     init(oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol) {
         self.oauth2AuthorizationFactory = oauth2AuthorizationFactory
-        self.showedAccountsError = [:]
     }
 }
