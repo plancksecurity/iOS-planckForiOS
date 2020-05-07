@@ -1,16 +1,16 @@
 //
-//  pEpHeaderView.swift
+//  pEpFooterView.swift
 //  pEp
 //
-//  Created by Adam Kowalski on 17/02/2020.
+//  Created by Martin Brude on 22/04/2020.
 //  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
 import UIKit
 
-final class pEpHeaderView: UITableViewHeaderFooterView {
+final class pEpFooterView: UITableViewHeaderFooterView {
 
-    static let reuseIdentifier = "pEp Section Header"
+    static let reuseIdentifier = "pEp Section Footer"
 
     private let titleLabel = UILabel()
 
@@ -32,7 +32,7 @@ final class pEpHeaderView: UITableViewHeaderFooterView {
 
 // MARK: - Private
 
-extension pEpHeaderView {
+extension pEpFooterView {
     
     private func setup() {
         contentView.addSubview(titleLabel)
@@ -48,15 +48,16 @@ extension pEpHeaderView {
 
     private func setFont(titleLabel: UILabel) {
         titleLabel.textColor = .pEpGreyText
-        titleLabel.font = .pepFont(style: .subheadline, weight: .regular)
+        titleLabel.font = .pepFont(style: .caption2, weight: .regular)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
     }
     private func setConstraints(titleLabel: UILabel) {
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.layoutMarginsGuide.trailingAnchor),
-            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.topAnchor),
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.layoutMarginsGuide.bottomAnchor)
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor)
         ])
     }
 }
+

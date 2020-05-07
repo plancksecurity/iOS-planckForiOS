@@ -14,6 +14,8 @@ protocol TrustedServerSettingCellDelegate: class {
 
 class TrustedServerSettingCell: UITableViewCell {
    static let storyboardId = "TrustedServerSettingCell"
+    
+    @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var address: UILabel!
     @IBOutlet weak var onOfSwitch: UISwitch!
 
