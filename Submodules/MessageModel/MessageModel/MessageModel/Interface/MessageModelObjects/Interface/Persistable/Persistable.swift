@@ -7,11 +7,9 @@
 //
 
 public protocol Persistable {
-    /// Saves current Session
-    func save()
     /// Deletes the object on the current session
     func delete()
 
-    /// True if the the object you are calling this on has been deleted in the database.
+    /// True if the the object you are calling this on has been deleted.
     var isDeleted: Bool { get }
 }
