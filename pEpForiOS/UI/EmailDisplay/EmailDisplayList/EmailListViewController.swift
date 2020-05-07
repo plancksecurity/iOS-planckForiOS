@@ -55,7 +55,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         edgesForExtendedLayout = .all
-        navigationController?.navigationBar.prefersLargeTitles = true
 
         doOnce = { [weak self] in
             guard let me = self else {
