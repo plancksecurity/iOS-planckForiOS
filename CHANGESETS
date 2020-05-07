@@ -6,8 +6,8 @@ libAccountSettings: 6f80e12e0379
 libetpan: c76daba0153eed0003d6990a5adadba8d561b8fa
 pEp-Translate: 896f15bb261c59d56bdda97d7d5b2e80300379ce
 pEpEngine: b5ce496201c0
-pEpObjCAdapter: 76b4766ebb92
-pEp_for_iOS: a0b4c65888bc+
+pEpObjCAdapter: c8a55f65cab4
+pEp_for_iOS: 2452398d645a+
 pEp_for_iOS_intern: fe7c80780efc+
 pantomime-iOS: f0c7ea656030
 sequoia4ios: 3f58a85b1901967eaf66467371689aec24e9246a
