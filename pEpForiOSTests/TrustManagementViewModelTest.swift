@@ -1,3 +1,4 @@
+//IOS-2241 DOES NOT COMPILE
 //
 //  TrustManagementViewModelTest.swift
 //  pEpForiOSTests
@@ -7,11 +8,10 @@
 //
 
 import XCTest
-import CoreData
 @testable import MessageModel
 @testable import pEpForiOS
 
-class TrustManagementViewModelTest: CoreDataDrivenTestBase {
+class TrustManagementViewModelTest: AccountDrivenTestBase {
     var selfIdentity : Identity?
     var trustManagementViewModel : TrustManagementViewModel?
     let numberOfRowsToGenerate = 1
@@ -21,16 +21,13 @@ class TrustManagementViewModelTest: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
         identities = [Identity]()
-        // Generate rows to test the handshake feature
-        for index in 0..<numberOfRowsToGenerate {
-            let identity = SecretTestData().createWorkingCdIdentity(number: index,
-                                                                    isMyself: false,
-                                                                    context: moc)
-            let id = Identity(cdObject: identity, context: moc)
-            identities.append(id)
+        // Generate rows to test the handshake feature.
+        // Note: The account is generated from test data row 0, so don't use this.
+        for index in 1..<numberOfRowsToGenerate {
+            let identity = TestData().createPartnerIdentity(number: index)
+            identity.save()
+            identities.append(identity)
         }
-        
-        moc.saveAndLogErrors()
     }
     
     override func tearDown() {
@@ -185,16 +182,12 @@ extension TrustManagementViewModelTest {
         //Avoid collision with others identity numbers.
         let selfNumber = numberOfRowsToGenerate + 1
         
-        let cdIdentity: CdIdentity = SecretTestData().createWorkingCdIdentity(number:selfNumber,
-                                                                              isMyself: true,
-                                                                              context: moc)
-        let selfIdentity = Identity(cdObject: cdIdentity, context: moc)
+        let selfIdentity = TestData().createWorkingAccount(number: selfNumber).user
         selfIdentity.fingerprint = "fingerprints"
         selfIdentity.save()
-        moc.saveAndLogErrors()
         
         if trustManagementViewModel == nil {
-            let account1 = SecretTestData().createWorkingAccount(context: moc)
+            let account1 = TestData().createWorkingAccount()
             account1.save()
             let folder1 = Folder(name: "inbox", parent: nil, account: account1, folderType: .inbox)
             guard let from = identities.first else  {

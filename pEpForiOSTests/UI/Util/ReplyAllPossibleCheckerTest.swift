@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
+class ReplyAllPossibleCheckerTest: AccountDrivenTestBase {
     var inbox: Folder!
     var sent: Folder!
     var draft: Folder!

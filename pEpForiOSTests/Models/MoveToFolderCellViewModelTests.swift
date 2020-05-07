@@ -11,7 +11,7 @@ import XCTest
 @testable import MessageModel
 
 
-class MoveToFolderCellViewModelTests: CoreDataDrivenTestBase {
+class MoveToFolderCellViewModelTests: AccountDrivenTestBase {
 
     var viewmodel: MoveToFolderCellViewModel!
 
@@ -34,7 +34,7 @@ class MoveToFolderCellViewModelTests: CoreDataDrivenTestBase {
         let folder =
             Folder(name: "inbox",
                    parent: nil,
-                   account: cdAccount.account(),
+                   account: account,
                    folderType: .inbox,
                    selectable: true)
         folder.save()
@@ -45,14 +45,14 @@ class MoveToFolderCellViewModelTests: CoreDataDrivenTestBase {
         let folder =
             Folder(name: "inbox",
                    parent: nil,
-                   account: cdAccount.account(),
+                   account: account,
                    folderType: .inbox,
                    selectable: true)
         folder.save()
         let drafts =
             Folder(name: "drafts",
                    parent: folder,
-                   account: cdAccount.account(),
+                   account: account,
                    folderType: .drafts,
                    selectable: true)
         drafts.save()
@@ -63,14 +63,14 @@ class MoveToFolderCellViewModelTests: CoreDataDrivenTestBase {
         let folder =
             Folder(name: "inbox",
                    parent: nil,
-                   account: cdAccount.account(),
+                   account: account,
                    folderType: .inbox,
                    selectable: true)
         folder.save()
         let sent =
             Folder(name: "sent",
                    parent: folder,
-                   account: cdAccount.account(),
+                   account: account,
                    folderType: .sent,
                    selectable: true)
         sent.save()

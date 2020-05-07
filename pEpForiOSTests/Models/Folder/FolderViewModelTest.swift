@@ -10,7 +10,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class FolderViewModelTest: CoreDataDrivenTestBase {
+class FolderViewModelTest: AccountDrivenTestBase {
 
     var viewmodel: FolderViewModel!
     var folder: Folder!
@@ -48,7 +48,6 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         let inbox = acc.rootFolders.first
         let _ = Folder(name: "InsideInbox", parent: inbox, account: acc, folderType: .normal)
         let _ = Folder(name: "InsiDrafts", parent: drafts, account: acc, folderType: .normal)
-        moc.saveAndLogErrors()
         let expectedOrder : [FolderType] = [.inbox, .normal, .drafts, .normal, .sent, .spam, .trash, .outbox]
 
         //the test
@@ -101,7 +100,7 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         var accounts = [Account]()
 
         for i in 0..<numberOfAccounts {
-            let account = SecretTestData().createWorkingAccount(number: i, context: moc)
+            let account = TestData().createWorkingAccount(number: i)
             accounts.append(account)
         }
 

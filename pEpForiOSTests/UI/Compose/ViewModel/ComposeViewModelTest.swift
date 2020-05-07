@@ -11,8 +11,9 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
-class ComposeViewModelTest: CoreDataDrivenTestBase {
+class ComposeViewModelTest: AccountDrivenTestBase {
     private var testDelegate: TestDelegate?
     var vm: ComposeViewModel?
     var outbox: Folder? {
@@ -96,7 +97,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     func testSections_accountSelector() {
         let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: false)
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
+        let secondAccount = TestData().createWorkingAccount(number: 1)
         secondAccount.save()
         assertSections(forVMIniitaliizedWith: testOriginalMessage,
                        expectBccWrapperSectionExists: true,
@@ -429,7 +430,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testAccountCellViewModelAccountChangedTo() {
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
+        let secondAccount = TestData().createWorkingAccount(number: 1)
         secondAccount.save()
         assert(contentChangedMustBeCalled: true,
                focusSwitchedMustBeCalled: false,
@@ -1337,7 +1338,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     private func assertRecipientCellViewModelDidChangeRecipients(
         fieldType type: RecipientCellViewModel.FieldType) {
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
+        let secondAccount = TestData().createWorkingAccount(number: 1)
         secondAccount.save()
         let om = draftMessage(bccSet: true, attachmentsSet: false)
         assert(originalMessage: om,
@@ -1432,7 +1433,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         ofType type: Attachment.ContentDispositionType = .attachment ) -> Attachment {
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard
-            let imageData = TestUtil.loadData(fileName: imageFileName),
+            let imageData = MiscUtil.loadData(bundleClass: ComposeViewModelTest.self,
+                                              fileName: imageFileName),
             let image = UIImage(data: imageData) else {
             XCTFail()
             return Attachment(data: nil, mimeType: "meh", contentDisposition: .attachment)
