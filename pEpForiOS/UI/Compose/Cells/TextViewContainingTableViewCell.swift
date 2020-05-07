@@ -20,6 +20,7 @@ class TextViewContainingTableViewCell: UITableViewCell, TextViewContainingTableV
     override func awakeFromNib() {
         super.awakeFromNib()
         textView.delegate = self
+        textView.adjustsFontForContentSizeCategory = true
     }
 
     func setFocus() {

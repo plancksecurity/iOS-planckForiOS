@@ -63,10 +63,13 @@ extension MoveToAccountViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        if let vm = viewModel?[indexPath.row] {
-            cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
-            cell.textLabel?.text = vm.title
+        guard let vm = viewModel?[indexPath.row] else {
+            Log.shared.errorAndCrash("VM not found.")
+            return UITableViewCell()
         }
+        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.text = vm.title
+        cell.textLabel?.font = UIFont.pepFont(style: .callout, weight: .regular)
         return cell
     }
 }
