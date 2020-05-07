@@ -61,7 +61,7 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
         assert(didSelectMediaAttachmentMustBeCalledCalled: true,
                expectedMediaAttachment: forAttachment,
                didCancelMustBeCalled: false,
-               session: Session())
+               session: session)
         vm?.handleDidFinishPickingMedia(info: infoDict)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -84,7 +84,7 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
         assert(didSelectMediaAttachmentMustBeCalledCalled: true,
                expectedMediaAttachment: forAttachment,
                didCancelMustBeCalled: false,
-               session: Session())
+               session: session)
         vm?.handleDidFinishPickingMedia(info: infoDict)
         waitForExpectations(timeout: 0.5) // Async file access
     }
