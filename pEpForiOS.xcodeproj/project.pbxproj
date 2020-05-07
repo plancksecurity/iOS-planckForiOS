@@ -349,6 +349,7 @@
 		5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */; };
 		5B3C13BF23D8AF2E00FC0A53 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */; };
 		5B41C6082418F15100C268CE /* TutorialStep3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C6072418F15100C268CE /* TutorialStep3ViewController.swift */; };
+		5B70B1F724507B8A0010AED7 /* pEpFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */; };
 		5B71016E243619CF00BAE405 /* TrustedServerSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */; };
 		5BC14ABF23E2EE78005F0AF3 /* TrustManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */; };
 		5BC14AC923E47A55005F0AF3 /* TrustManagementViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14AC823E47A55005F0AF3 /* TrustManagementViewModelTest.swift */; };
@@ -923,6 +924,7 @@
 		5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCell.swift; sourceTree = "<group>"; };
 		5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		5B41C6072418F15100C268CE /* TutorialStep3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep3ViewController.swift; sourceTree = "<group>"; };
+		5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpFooterView.swift; sourceTree = "<group>"; };
 		5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingsViewController.swift; sourceTree = "<group>"; };
 		5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewModel.swift; sourceTree = "<group>"; };
 		5BC14AC823E47A55005F0AF3 /* TrustManagementViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewModelTest.swift; sourceTree = "<group>"; };
@@ -1787,6 +1789,7 @@
 			isa = PBXGroup;
 			children = (
 				3A085A6D23FAF4D50013C63E /* pEpHeaderView.swift */,
+				5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */,
 			);
 			path = Reusable;
 			sourceTree = "<group>";
@@ -2849,6 +2852,7 @@
 				43ED53791CC77F95006AB156 /* UserInfoViewController.swift in Sources */,
 				43EC75AC2164C26100048CFE /* SetOwnKeyViewController.swift in Sources */,
 				B7F676BD227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift in Sources */,
+				5B70B1F724507B8A0010AED7 /* pEpFooterView.swift in Sources */,
 				B7A50746224CD27A007B988F /* FilterViewModel.swift in Sources */,
 				220DCE2E1E0AB544002FE716 /* MessageCell.swift in Sources */,
 				B7DB7FD8221AD3BB003968DA /* UITableView+Extension.swift in Sources */,
