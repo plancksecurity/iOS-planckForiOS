@@ -16,7 +16,7 @@ class SettingsViewModelTest: AccountDrivenTestBase {
 
     func givenThereAreTwoAccounts() {
         let account = TestData().createWorkingAccount()
-        account.save()
+        account.session.commit()
     }
 
     //Number of sections corresponding to SettingsViewModelV2.SectionType count

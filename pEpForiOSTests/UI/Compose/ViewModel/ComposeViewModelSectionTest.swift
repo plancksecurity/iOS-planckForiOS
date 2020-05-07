@@ -85,7 +85,7 @@ class ComposeViewModelSectionTest: AccountDrivenTestBase {
 
     func testAccount_twoExisting() {
         let account = TestData().createWorkingAccount(number: 1)
-        account.save()
+        account.session.commit()
         assertAccountSection()
     }
 
@@ -208,7 +208,7 @@ class ComposeViewModelSectionTest: AccountDrivenTestBase {
                                   bccRecipients: [Identity] = [],
                                   isWapped: Bool = true) -> ComposeViewModel.ComposeViewModelState {
         let drafts = Folder(name: "Inbox", parent: nil, account: account, folderType: .drafts)
-        drafts.save()
+        drafts.session.commit()
         let msg = Message(uuid: UUID().uuidString, parentFolder: drafts)
         msg.from = account.user
         msg.replaceTo(with: toRecipients)
@@ -218,7 +218,7 @@ class ComposeViewModelSectionTest: AccountDrivenTestBase {
         msg.longMessage = "longMessage"
         msg.longMessageFormatted = "longMessageFormatted"
         msg.replaceAttachments(with: [])
-        msg.save()
+        msg.session.commit()
         let initData = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
                                                  orForOriginalMessage: msg,
                                                  composeMode: .normal)

@@ -33,7 +33,7 @@ class MergeConflictTests: PersistentStoreDrivenTestBase {
         cdMsg.uid = Int32(msgUID)
         cdMsg.uuid = msgUUID
 
-        messageBuilder.save()
+        messageBuilder.session.commit()
     }
 
     func testPotentialMergeConflict() {

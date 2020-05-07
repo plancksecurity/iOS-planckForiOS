@@ -25,7 +25,7 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
         super.setUp()
         someone = Identity(address: "someone@someone.someone")
         let drafts = Folder(name: "Inbox", parent: nil, account: account, folderType: .drafts)
-        drafts.save()
+        drafts.session.commit()
         let msg = Message(uuid: UUID().uuidString, parentFolder: drafts)
         msg.from = account.user
         msg.replaceTo(with: [account.user, someone])
@@ -39,7 +39,7 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
         msg.appendToAttachments(Attachment(data: Data(),
                                            mimeType: "image/jpg",
                                            contentDisposition: .inline))
-        msg.save()
+        msg.session.commit()
         draftedMessageAllButBccSet = msg
 
         setupSimpleTestee()

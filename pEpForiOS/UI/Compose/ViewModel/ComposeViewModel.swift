@@ -170,7 +170,7 @@ class ComposeViewModel {
                 return
             }
             msg.sent = Date()
-            msg.save()
+            msg.session.commit()
 
             guard let data = me.state.initData else {
                 Log.shared.errorAndCrash("No data")

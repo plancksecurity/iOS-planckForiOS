@@ -38,7 +38,7 @@
 ////        // Update password ...
 ////        let newPass = "newPass"
 ////        testCredetials.password = newPass
-////        account.save()
+////        account.session.commit()
 ////        // ... and assure it has been updated in Core Data, Message Model and KeyChain correctly.
 ////        XCTAssertNotNil(testCredetials.key)
 ////        XCTAssertEqual(testCredetials.key, key)
