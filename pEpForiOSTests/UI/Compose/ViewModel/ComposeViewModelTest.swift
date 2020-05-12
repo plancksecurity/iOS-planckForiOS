@@ -11,8 +11,9 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
-class ComposeViewModelTest: CoreDataDrivenTestBase {
+class ComposeViewModelTest: AccountDrivenTestBase {
     private var testDelegate: TestDelegate?
     var vm: ComposeViewModel?
     var outbox: Folder? {
@@ -96,8 +97,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     func testSections_accountSelector() {
         let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: false)
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
-        secondAccount.save()
+        let secondAccount = TestData().createWorkingAccount(number: 1)
+        secondAccount.session.commit()
         assertSections(forVMIniitaliizedWith: testOriginalMessage,
                        expectBccWrapperSectionExists: true,
                        expectAccountSectionExists: true,
@@ -429,8 +430,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testAccountCellViewModelAccountChangedTo() {
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
-        secondAccount.save()
+        let secondAccount = TestData().createWorkingAccount(number: 1)
+        secondAccount.session.commit()
         assert(contentChangedMustBeCalled: true,
                focusSwitchedMustBeCalled: false,
                validatedStateChangedMustBeCalled: true,
@@ -582,7 +583,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         let msg = message()
         assert(originalMessage: msg)
         let idet = Identity(address: "testShow@Cancel.Actions")
-        idet.save()
+        idet.session.commit()
         vm?.state.toRecipients = [idet]
         guard let testee = vm?.showCancelActions else {
             XCTFail()
@@ -916,7 +917,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     func testHandleRemovedRow_removeAttachment() {
         let msgWithAttachments = draftMessage(attachmentsSet: true)
         msgWithAttachments.appendToAttachments(attachment(ofType: .attachment))
-        msgWithAttachments.save()
+        msgWithAttachments.session.commit()
         assert(originalMessage: msgWithAttachments)
         vm?.state.nonInlinedAttachments = msgWithAttachments.attachments.array
         guard
@@ -969,7 +970,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 //        let originalMessage = draftMessage()
 //        originalMessage.messageID = testMessageId
 //        originalMessage.from = account.user
-//        originalMessage.save()
+//        originalMessage.session.commit()
 //        XCTAssertNotNil(Message.by(uid: originalMessage.uid,
 //                                   uuid: originalMessage.uuid,
 //                                   folderName: originalMessage.parent.name,
@@ -999,7 +1000,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 //        let originalMessage = message(inFolderOfType: .outbox)
 //        originalMessage.messageID = testMessageId
 //        originalMessage.from = account.user
-//        originalMessage.save()
+//        originalMessage.session.commit()
 //        XCTAssertNotNil(Message.by(uid: originalMessage.uid,
 //                                   uuid: originalMessage.uuid,
 //                                   folderName: originalMessage.parent.name,
@@ -1203,7 +1204,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     func testInitialFocus_emptyTo() {
         let originalMessage = draftMessage()
         originalMessage.replaceTo(with: [])
-        originalMessage.save()
+        originalMessage.session.commit()
         assert(originalMessage: originalMessage,
                contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -1232,7 +1233,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     func testInitialFocus_toSet() {
         let originalMessage = draftMessage()
         originalMessage.replaceTo(with: [account.user])
-        originalMessage.save()
+        originalMessage.session.commit()
         assert(originalMessage: originalMessage,
                contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -1285,7 +1286,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     private func assureOutboxExists() {
         if outbox == nil {
             let createe = Folder(name: "outbox", parent: nil, account: account, folderType: .outbox)
-            createe.save()
+            createe.session.commit()
         }
         XCTAssertNotNil(outbox)
     }
@@ -1296,7 +1297,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                  parent: nil,
                                  account: account,
                                  folderType: .drafts)
-            createe.save()
+            createe.session.commit()
         }
         XCTAssertNotNil(drafts)
     }
@@ -1307,7 +1308,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                  parent: nil,
                                  account: account,
                                  folderType: .sent)
-            createe.save()
+            createe.session.commit()
         }
         XCTAssertNotNil(sent)
     }
@@ -1337,8 +1338,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     private func assertRecipientCellViewModelDidChangeRecipients(
         fieldType type: RecipientCellViewModel.FieldType) {
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
-        secondAccount.save()
+        let secondAccount = TestData().createWorkingAccount(number: 1)
+        secondAccount.session.commit()
         let om = draftMessage(bccSet: true, attachmentsSet: false)
         assert(originalMessage: om,
                contentChangedMustBeCalled: false,
@@ -1415,7 +1416,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             parent: parentType == .inbox ? nil : account.firstFolder(ofType: .inbox),
             account: account,
             folderType: parentType)
-        folder.save()
+        folder.session.commit()
         let createe = Message(uuid: UUID().uuidString, parentFolder: folder)
         if bccSet {
             createe.replaceBcc(with: [account.user])
@@ -1424,7 +1425,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             let att = attachment()
             createe.replaceAttachments(with: [att])
         }
-        createe.save()
+        createe.session.commit()
         return createe
     }
 
@@ -1432,7 +1433,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         ofType type: Attachment.ContentDispositionType = .attachment ) -> Attachment {
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard
-            let imageData = TestUtil.loadData(fileName: imageFileName),
+            let imageData = MiscUtil.loadData(bundleClass: ComposeViewModelTest.self,
+                                              fileName: imageFileName),
             let image = UIImage(data: imageData) else {
             XCTFail()
             return Attachment(data: nil, mimeType: "meh", contentDisposition: .attachment)

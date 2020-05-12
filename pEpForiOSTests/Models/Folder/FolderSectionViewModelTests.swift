@@ -10,7 +10,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class FolderSectionViewModelTests: CoreDataDrivenTestBase {
+class FolderSectionViewModelTests: AccountDrivenTestBase {
     
     var viewModel: FolderSectionViewModel!
     var folder: Folder!
@@ -18,7 +18,7 @@ class FolderSectionViewModelTests: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
         self.folder = Folder(name: "Escafoides", parent: nil, account: account, folderType: .inbox)
-        self.folder.save()
+        self.folder.session.commit()
     }
     
     func testHiddenWhenUnifiedInbox() {
@@ -37,7 +37,7 @@ class FolderSectionViewModelTests: CoreDataDrivenTestBase {
     }
     
     func testUserNameWithAccount() {
-        let account = SecretTestData().createWorkingAccount(context: moc)
+        let account = TestData().createWorkingAccount()
         givenThereIsAViewModel(withUnifiedInbox: true, and: account)
         let userName = viewModel.userName
         guard let accountUserName = account.user.userName else {
@@ -48,7 +48,7 @@ class FolderSectionViewModelTests: CoreDataDrivenTestBase {
     }
     
     func testUserAddressWithAccount() {
-        let account = SecretTestData().createWorkingAccount(context: moc)
+        let account = TestData().createWorkingAccount()
         givenThereIsAViewModel(withUnifiedInbox: true, and: account)
         let userAddress = viewModel.userAddress
         let accountUserAddress = account.user.address

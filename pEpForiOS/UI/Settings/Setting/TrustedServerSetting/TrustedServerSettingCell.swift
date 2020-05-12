@@ -9,12 +9,13 @@
 import UIKit
 
 protocol TrustedServerSettingCellDelegate: class {
-    func trustedServerSettingCell(sender: TrustedServerSettingCell,
-                                  didChangeSwitchValue newValue: Bool)
+    func trustedServerSettingCell(sender: TrustedServerSettingCell, didChangeSwitchValue newValue: Bool)
 }
 
 class TrustedServerSettingCell: UITableViewCell {
    static let storyboardId = "TrustedServerSettingCell"
+    
+    @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var address: UILabel!
     @IBOutlet weak var onOfSwitch: UISwitch!
 

@@ -15,11 +15,9 @@ class DecryptionTest: PersistentStoreDrivenTestBase {
     /// See IOS-1432. The message itself is reliable, but at least one of its extra
     /// keys has an undefined rating, which the message inherits.
     func testLoadAndDecryptOutlookMessage() {
-        guard let keyString = TestUtil.loadString(
-            testClass: DecryptionTest.self,
-            fileName: "IOS-1432_keypair.asc") else {
-                XCTFail()
-                return
+        guard let keyString = TestUtil.loadString(fileName: "IOS-1432_keypair.asc") else {
+            XCTFail()
+            return
         }
 
         let session = PEPSession()

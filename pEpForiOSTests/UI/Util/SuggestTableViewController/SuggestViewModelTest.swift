@@ -1,3 +1,4 @@
+//IOS-2241 CRASHES
 //
 //  SuggestViewModelTest.swift
 //  pEpForiOSTests
@@ -11,7 +12,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class SuggestViewModelTest: CoreDataDrivenTestBase {
+class SuggestViewModelTest: AccountDrivenTestBase {
     static let defaultNumExistingContacts = 5
     var existingIdentities = [Identity]()
     var viewModel: SuggestViewModel?
@@ -82,7 +83,7 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
         let selectRow = numSuggestionsExpected - 1
         let existing = Identity(address: "testUserSelection@oneExists.security",
                                 userID: UUID().uuidString)
-        existing.save()
+        existing.session.commit()
         existingIdentities = [existing]
         assertResults(for: existing.address,
                       simulateUserSelectedRow: selectRow,
@@ -98,10 +99,10 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
         let common = "testUserSelection@oneExists.security"
 
         let existing1 = Identity(address: "\(common)1")
-        existing1.save()
+        existing1.session.commit()
 
         let existing2 = Identity(address: "\(common)2")
-        existing2.save()
+        existing2.session.commit()
 
         existingIdentities = dataBaseOrder(identities: [existing1, existing2])
         XCTAssertEqual(existingIdentities.count, numSuggestionsExpected)
@@ -120,10 +121,10 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
         let common = "testUserSelection@oneExists.security"
 
         let existing1 = Identity(address: "\(common)1")
-        existing1.save()
+        existing1.session.commit()
 
         let existing2 = Identity(address: "\(common)2")
-        existing2.save()
+        existing2.session.commit()
 
         existingIdentities = dataBaseOrder(identities: [existing1, existing2])
         XCTAssertEqual(existingIdentities.count, numSuggestionsExpected)
@@ -146,8 +147,8 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
                 addressBookID: nil,
                 userName: "id\(i)")
             existingIdentities.append(id)
+            id.session.commit()
         }
-        moc.saveAndLogErrors()
     }
 
     /// - Parameters:

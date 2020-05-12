@@ -70,7 +70,7 @@ extension TrustedServerSettingsViewModel {
 
     private func setStoreSecurely(forAccount account: Account, toValue newValue: Bool) {
         account.imapServer?.manuallyTrusted = !newValue
-        account.save()
+        account.session.commit()
     }
 
     mutating private func updateRowData(indexPath: IndexPath, toValue newValue: Bool) {
