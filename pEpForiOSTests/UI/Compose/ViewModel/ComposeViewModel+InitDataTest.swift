@@ -27,13 +27,13 @@ class ComposeViewModel_InitDataTest: AccountDrivenTestBase {
 
         // Folders
         let inbox = Folder(name: "Inbox", parent: nil, account: account, folderType: .inbox)
-        inbox.save()
+        inbox.session.commit()
         self.inbox = inbox
         let drafts = Folder(name: "Drafts", parent: nil, account: account, folderType: .drafts)
-        drafts.save()
+        drafts.session.commit()
         self.drafts = drafts
         let outbox = Folder(name: "Outbox", parent: nil, account: account, folderType: .outbox)
-        outbox.save()
+        outbox.session.commit()
         self.outbox = outbox
         let message = createMessage(inFolder: inbox,
                                     from: account.user,
@@ -49,9 +49,9 @@ class ComposeViewModel_InitDataTest: AccountDrivenTestBase {
                                     uid: nil)
 
 //        message.appendToAttachments(createTestAttachments())
-        message.save()
+        message.session.commit()
         messageAllButBccSet = message
-        someone.save()
+        someone.session.commit()
     }
 
     override func tearDown() {

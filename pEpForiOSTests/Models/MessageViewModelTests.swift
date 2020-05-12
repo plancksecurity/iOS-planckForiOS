@@ -58,7 +58,7 @@
 //        super.setUp()
 //        let account = SecretTestData().createWorkingAccount()
 //        folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
-//        folder.save()
+//        folder.session.commit()
 //    }
 //
 //    //PRAGMA - MARK: TESTS
@@ -373,7 +373,7 @@
 //
 //    private func givenThereIsAOneRecipientMessage() -> Message {
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, tos: [Defaults.Inputs.toIdentity])
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //
@@ -381,43 +381,43 @@
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity)
 //        message.imapFlags.seen = true
 //        message.imapFlags.flagged = true
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //
 //    private func givenThereIsAMessageWithSubjectAndBody() -> Message {
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, shortMessage: Defaults.Inputs.shortMessage, longMessage: Defaults.Inputs.longMessage)
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //
 //    private func givenThereIsAMessageWithSubjectAndLongBody() -> Message {
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, shortMessage: Defaults.Inputs.shortMessage, longMessage: Defaults.Inputs.longlongMessage)
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //
 //    private func givenThereIsAmessageWithFormattedBody() -> Message {
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, shortMessage: Defaults.Inputs.shortMessage, longMessageFormatted: Defaults.Inputs.longMessageFormated)
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //
 //    private func givenThereIsAMessageWithASentDate() -> Message {
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, dateSent: Defaults.Inputs.sentDate)
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //
 //    private func givenThereIsAMultipleRecipientMessage() -> Message {
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, tos: Defaults.Inputs.toIdentities)
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //
 //    private func givenThereIsAMessageWithAttachments() -> Message {
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, attachments: Defaults.Inputs.numberOfAttachments)
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //

@@ -22,6 +22,7 @@ final class SettingsTableViewController: BaseTableViewController {
         setUp()
         viewModel.delegate = self
         UIHelper.variableCellHeightsTableView(tableView)
+        UIHelper.variableSectionHeadersHeightTableView(tableView)
         addExtraKeysEditabilityToggleGesture()
     }
 
@@ -50,13 +51,10 @@ final class SettingsTableViewController: BaseTableViewController {
 // MARK: - Private
 
 extension SettingsTableViewController {
-    private struct Localized {
-        static let navigationTitle = NSLocalizedString("Settings", comment: "Settings view title")
-    }
+
     private func setUp() {
-        title = Localized.navigationTitle
-        tableView.register(pEpHeaderView.self,
-                           forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
+        title = NSLocalizedString("Settings", comment: "Settings view title")
+        tableView.register(pEpHeaderView.self, forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
     }
     /// Prepares and returns the swipe tableview cell, with the corresponding color and title.
     /// - Parameters:
@@ -69,6 +67,7 @@ extension SettingsTableViewController {
         }
         cell.textLabel?.text = row.title
         cell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
+        cell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
         cell.detailTextLabel?.text = nil
         cell.delegate = self
         return cell
@@ -80,6 +79,7 @@ extension SettingsTableViewController {
     ///   - row: the row with the information to configure the cell
     private func prepareActionCell(_ dequeuedCell: UITableViewCell, for row: SettingsRowProtocol) -> UITableViewCell {
         dequeuedCell.textLabel?.text = row.title
+        dequeuedCell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
         dequeuedCell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
         dequeuedCell.detailTextLabel?.text = nil
         Appearance.configureSelectedBackgroundViewForPep(tableViewCell: dequeuedCell)
@@ -96,6 +96,7 @@ extension SettingsTableViewController {
             return SettingSwitchTableViewCell()
         }
         cell.switchDescription.text = row.title
+        cell.switchDescription.font = UIFont.pepFont(style: .body, weight: .regular)
         cell.switchDescription.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
         cell.delegate = self
         cell.selectionStyle = .none
@@ -124,7 +125,10 @@ extension SettingsTableViewController {
             }
             dequeuedCell.textLabel?.text = row.title
             dequeuedCell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
+            dequeuedCell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+
             dequeuedCell.detailTextLabel?.text = row.subtitle
+            dequeuedCell.detailTextLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
             return dequeuedCell
         case .passiveMode, .protectMessageSubject, .pEpSync, .unsecureReplyWarningEnabled:
             guard let row = row as? SettingsViewModel.SwitchRow else {
@@ -196,7 +200,7 @@ extension SettingsTableViewController {
         headerView.title = viewModel.section(for: section).title.uppercased()
         return headerView
     }
-
+    
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return viewModel.section(for: section).footer
     }

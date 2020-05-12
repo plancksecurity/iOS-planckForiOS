@@ -18,10 +18,10 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
 
     func testPEPConversion() {
         let account = SecretTestData().createWorkingAccount(context: moc)
-        account.save()
+        account.session.commit()
 
         let folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
-        folder.save()
+        folder.session.commit()
 
         let uuid = UUID().uuidString
         let message = Message(uuid: uuid, parentFolder: folder)
@@ -33,7 +33,7 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
         message.replaceCc(with: [account.user])
         message.parent = folder
         message.sent = Date()
-        message.save()
+        message.session.commit()
         let session = PEPSession()
         guard let first = CdMessage.first(in: moc) else {
             XCTFail("No messages ...")
