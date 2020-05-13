@@ -164,7 +164,6 @@ extension Identity {
     /// - Returns: Found Identity if any, nil otherwize
     public static func by(snippet: String, session: Session? = Session.main) -> [Identity] {
         let moc = session?.moc ?? Session.main.moc
-        // TODO: - AK
         let p = NSPredicate(format: "address != nil and address != \"\" and " + //!!!: //IOS-1363: That should not be required. Maybe it works around some CD issue?
             "(address contains[cd] %@ or userName contains[cd] %@)",
                             snippet, snippet)
