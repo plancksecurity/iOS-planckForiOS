@@ -25,7 +25,7 @@ public class FileBrowser {
     }
 
     /// Retrieves an array of file URLs found in the documents directories,
-    /// without recursion.
+    /// _without recursion_.
     /// - Parameter fileTypes: An array of file types, which translates to a set of
     /// desired file extensions.
     /// - Throws: Exceptions by FileManager methods.
