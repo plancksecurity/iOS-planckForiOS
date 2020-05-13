@@ -30,14 +30,14 @@ class FileBrowserTest: XCTestCase {
     }
 
     func test1Key() throws {
-        createTestfile(fileType: .key)
+        try createTestfile(fileType: .key)
         let urls = try FileBrowser.listFileUrls(fileTypes: [.key])
         XCTAssertFalse(urls.isEmpty)
     }
 
     // MARK: - Private
 
-    private func createTestfile(fileType: FileBrowser.FileType) {
+    private func createTestfile(fileType: FileBrowser.FileType) throws {
         guard let url = FileManager.default.urls(for: .documentDirectory,
                                                  in: .userDomainMask).first else {
                                                     XCTFail()
@@ -51,8 +51,6 @@ class FileBrowserTest: XCTestCase {
 
         let newUrl = url.appendingPathComponent("somefile",
                                                 isDirectory: false).appendingPathExtension(ext)
-        XCTAssertTrue(FileManager.default.createFile(atPath: newUrl.absoluteString,
-                                                     contents: Data(base64Encoded: "somedata"),
-                                                     attributes: nil))
+        try Data(base64Encoded: "somedata")?.write(to: newUrl)
     }
 }
