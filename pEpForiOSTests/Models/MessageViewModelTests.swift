@@ -30,9 +30,9 @@ class MessageViewModelTests: AccountDrivenTestBase {
             static let fromAddress = "miguel@helm.cat"
             static let toAddresses = ["borja@helm.cat", "borja@pep-project.org", "miguel@pep-project.org"]
             static let toAddress = toAddresses[0]
-            static let fromIdentity = Identity.create(address: fromAddress)
-            static let toIdentities = toAddresses.map { Identity.create(address: $0) }
-            static let toIdentity = Identity.create(address: toAddress)
+            static let fromIdentity = Identity(address: fromAddress)
+            static let toIdentities = toAddresses.map { Identity(address: $0) }
+            static let toIdentity = Identity(address: toAddress)
             static let shortMessage = "Hey Borja"
             static let longMessage = "Hey Borja, How is it going?"
             static let longlongMessage = """
