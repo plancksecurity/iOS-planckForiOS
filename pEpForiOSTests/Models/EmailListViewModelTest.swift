@@ -303,30 +303,6 @@ class EmailListViewModelTest: AccountDrivenTestBase {
     //        XCTAssertEqual(filterEnabled, emailListVM.isFilterEnabled)
     //    }
 
-    func testNewMessageReceivedAndDisplayedInTheCorrectPosition() {
-        var messages = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
-        setupViewModel()
-        emailListVM.startMonitoring()
-        XCTAssertEqual(emailListVM.rowCount, messages.count)
-        setUpViewModelExpectations(expectationDidInsertDataAt: true)
-        let msg = TestUtil.createMessage(inFolder: inbox, from: inbox.account.user)
-        messages.append(msg)
-        Session.main.commit()
-        waitForExpectations(timeout: TestUtil.waitTime)
-        XCTAssertEqual(emailListVM.rowCount, messages.count)
-
-        guard let firstMsgVM = emailListVM.viewModel(for: 0) else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual(firstMsgVM.message, msg)
-
-        // Create a message that must not be shown
-        _ = TestUtil.createMessage(inFolder: trashFolder, from: inbox.account.user)
-        Session.main.commit()
-        XCTAssertEqual(emailListVM.rowCount, messages.count)
-    }
-
     func testNewMessageUpdateReceivedAndDisplayed() {
         let messages = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
         Session.main.commit()
