@@ -325,30 +325,10 @@ class MessageViewModelTests: AccountDrivenTestBase {
         viewModel = givenAViewModelWith(operationQueue: operationQueue)
     }
 
-    private func givenViewModelHasACancellingExpectationOperationQueue() {
-        viewModel = givenAViewModelRepresentingUnflaggedMessage()
-        let cancelAllExpectation = expectation(description: OperationQueueSpy.CANCEL_ALL_EXPECTATION_DESCRIPTION)
-        let operationQueue = OperationQueueSpy(cancelAllExpectation: cancelAllExpectation)
-        viewModel.queue = operationQueue
-    }
-
-    private func givenViewModelHasAnAddingExpectationOperationQueue() {
-        viewModel = givenAViewModelRepresentingUnflaggedMessage()
-        let addOperationExpectation = expectation(description: OperationQueueSpy.ADD_OPERATION_EXPECTATION_DESCRIPTION)
-        let operationQueue = OperationQueueSpy(addOperationExpectation: addOperationExpectation)
-        viewModel.queue = operationQueue
-    }
-
     private func givenAViewModelRepresentingUnflaggedMessage() -> MessageViewModel {
         let message = givenThereIsAOneRecipientMessage()
         return MessageViewModel(with: message)
     }
-
-    private func givenAViewModelWith(operationQueue: OperationQueue) -> MessageViewModel {
-        let message = givenThereIsAOneRecipientMessage()
-        return MessageViewModel(with: message, operationQueue: operationQueue)
-    }
-
 
     //PRAGMA MARK: Messages
 
