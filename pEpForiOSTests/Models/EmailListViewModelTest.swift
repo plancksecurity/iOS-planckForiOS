@@ -1,6 +1,3 @@
-//!!!crashing test:
-//!!!: is WIP (IOS-1495), ignore failing tests for now.
-
 //
 //  EmailListViewModelTest.swift
 //  pEpForiOSTests
