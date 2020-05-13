@@ -310,7 +310,6 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, messages.count)
 
-
         setUpViewModelExpectations(expectationDidDeleteDataAt: true)
 
         let numDelete = 1
@@ -459,7 +458,8 @@ extension EmailListViewModelTest {
         masterViewController.expectationUpdateViewCalled = updateViewExpectation
     }
 
-    private func createViewModelWithExpectations(forFolder folder: DisplayableFolderProtocol, expectedUpdateView: Bool) {
+    private func createViewModelWithExpectations(forFolder folder: DisplayableFolderProtocol,
+                                                 expectedUpdateView: Bool) {
         let viewModelTestDelegate = TestMasterViewController()
         masterViewController = viewModelTestDelegate
         setUpViewModel(forFolder: folder, masterViewController: viewModelTestDelegate)
@@ -530,7 +530,8 @@ private class TestMasterViewController: EmailListViewModelDelegate {
         XCTFail()
     }
 
-    func emailListViewModel(viewModel: EmailDisplayViewModel, didInsertDataAt indexPaths: [IndexPath]) {
+    func emailListViewModel(viewModel: EmailDisplayViewModel,
+                            didInsertDataAt indexPaths: [IndexPath]) {
         if let excpectationDidInsertDataAtCalled = excpectationDidInsertDataAtCalled {
             excpectationDidInsertDataAtCalled.fulfill()
         } else {
@@ -538,7 +539,8 @@ private class TestMasterViewController: EmailListViewModelDelegate {
         }
     }
 
-    func emailListViewModel(viewModel: EmailDisplayViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
+    func emailListViewModel(viewModel: EmailDisplayViewModel,
+                            didUpdateDataAt indexPaths: [IndexPath]) {
         if let expectationDidUpdateDataAtCalled = expectationDidUpdateDataAtCalled {
             expectationDidUpdateDataAtCalled.fulfill()
         } else {
@@ -546,7 +548,8 @@ private class TestMasterViewController: EmailListViewModelDelegate {
         }
     }
 
-    func emailListViewModel(viewModel: EmailDisplayViewModel, didRemoveDataAt indexPaths: [IndexPath]) {
+    func emailListViewModel(viewModel: EmailDisplayViewModel,
+                            didRemoveDataAt indexPaths: [IndexPath]) {
         if let expectationDidRemoveDataAtCalled = expectationDidRemoveDataAtCalled {
             expectationDidRemoveDataAtCalled.fulfill()
         } else {
