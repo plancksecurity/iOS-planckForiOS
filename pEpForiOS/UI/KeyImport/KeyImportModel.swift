@@ -43,8 +43,17 @@ extension KeyImportModel {
 extension KeyImportModel {
     /// Errors that can occur when importing a key, and setting it as own key
     public enum KeyImportError: Error {
-        // TODO
-        case keyMalformed
+        /// The key could not even be loaded
+        case cannotLoadKey
+
+        /// The key could be loadad, but not processed
+        case malformedKey
+
+        /// No matching account could be found
+        case noMatchingAccount
+
+        /// The key could not be set as an own key
+        case cannotSetOwnKey
     }
 }
 
