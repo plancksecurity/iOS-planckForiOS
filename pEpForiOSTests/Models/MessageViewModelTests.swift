@@ -244,7 +244,7 @@ class MessageViewModelTests: AccountDrivenTestBase {
     func testMessageIsTheSame() {
         let message = givenThereIsAOneRecipientMessage()
         viewModel = MessageViewModel(with: message)
-        let retrievedMessage = viewModel.message()!
+        let retrievedMessage = viewModel.message
         XCTAssertEqual(message, retrievedMessage)
     }
 
@@ -317,12 +317,6 @@ class MessageViewModelTests: AccountDrivenTestBase {
         viewModel = givenAViewModelRepresentingUnflaggedMessage()
         let securityBadgeExpectation = expectation(description: PepProfilePictureComposerSpy.SECURITY_BADGE_EXPECTATION_DESCRIPTION)
         viewModel.profilePictureComposer = PepProfilePictureComposerSpy(securityBadgeExpectation: securityBadgeExpectation)
-    }
-
-    private func givenViewModelHasAnInitialAddingExpectationOperationQueue() {
-        let addOperationExpectation = expectation(description: OperationQueueSpy.ADD_OPERATION_EXPECTATION_DESCRIPTION)
-        let operationQueue = OperationQueueSpy(addOperationExpectation: addOperationExpectation)
-        viewModel = givenAViewModelWith(operationQueue: operationQueue)
     }
 
     private func givenAViewModelRepresentingUnflaggedMessage() -> MessageViewModel {
