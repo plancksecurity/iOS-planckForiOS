@@ -22,6 +22,15 @@ class FileBrowserTest: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        for pathUrl in urls {
+            let files = try FileManager.default.contentsOfDirectory(at: pathUrl,
+                                                                    includingPropertiesForKeys: nil,
+                                                                    options: [])
+            for deleteUrl in files {
+                try FileManager.default.removeItem(at: deleteUrl)
+            }
+        }
     }
 
     func testNoFiles() throws {
