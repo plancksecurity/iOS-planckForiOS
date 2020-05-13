@@ -13,6 +13,12 @@ import pEpIOSToolbox
 class FileBrowserTest: XCTestCase {
 
     override func setUpWithError() throws {
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        for pathUrl in urls {
+            try FileManager.default.createDirectory(at: pathUrl,
+                                                    withIntermediateDirectories: true,
+                                                    attributes: nil)
+        }
     }
 
     override func tearDownWithError() throws {
