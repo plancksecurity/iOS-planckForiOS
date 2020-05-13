@@ -43,7 +43,7 @@ final class LoginViewModel {
     /// An OAuth2 process lives longer than the method call, so this object needs to survive.
     var currentOauth2Authorizer: OAuth2AuthorizationProtocol?
     /// Helper model to handle most of the OAuth2 authorization.
-    var oauth2Model = OAuth2AuthViewModel()
+    var oauthAuthorizer = OAuthAuthorizer()
     var isAccountPEPSyncEnable = true {
         didSet {
             verifiableAccount.keySyncEnable = isAccountPEPSyncEnable
@@ -79,10 +79,11 @@ final class LoginViewModel {
         lastOAuth2Parameters = OAuth2Parameters(emailAddress: emailAddress,
                                                 userName: userName)
 
-        oauth2Model.delegate = self
-        oauth2Model.authorize(authorizer: oauth2Authorizer,
-                              emailAddress: emailAddress,
-                              viewController: viewController)
+        oauthAuthorizer.delegate = self
+        oauthAuthorizer.authorize(authorizer: oauth2Authorizer,
+                                  emailAddress: emailAddress,
+                                  accountType: verifiableAccount.accountType,
+                                  viewController: viewController)
     }
 
     /// Depending on `VerifiableAccountProtocol.containsCompleteServerInfo`,
@@ -235,9 +236,9 @@ extension LoginViewModel {
     }
 }
 
-// MARK: - OAuth2AuthViewModelDelegate
+// MARK: - OAuthAuthorizerDelegate
 
-extension LoginViewModel: OAuth2AuthViewModelDelegate {
+extension LoginViewModel: OAuthAuthorizerDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         if let err = oauth2Error {
             loginViewModelOAuth2ErrorDelegate?.handle(oauth2Error: err)
@@ -245,7 +246,7 @@ extension LoginViewModel: OAuth2AuthViewModelDelegate {
             if let token = accessToken {
                 guard let oauth2Params = lastOAuth2Parameters else {
                     loginViewModelOAuth2ErrorDelegate?.handle(
-                        oauth2Error: OAuth2AuthViewModelError.noParametersForVerification)
+                        oauth2Error: OAuthAuthorizerError.noParametersForVerification)
                     return
                 }
                 login(emailAddress: oauth2Params.emailAddress,
@@ -253,7 +254,7 @@ extension LoginViewModel: OAuth2AuthViewModelDelegate {
                       accessToken: token)
             } else {
                 loginViewModelOAuth2ErrorDelegate?.handle(
-                    oauth2Error: OAuth2AuthViewModelError.noToken)
+                    oauth2Error: OAuthAuthorizerError.noToken)
             }
         }
         lastOAuth2Parameters = nil

@@ -117,7 +117,7 @@ class SuggestViewModel {
             informDelegatesModelChanged()
             return
         }
-        let identities = Identity.by(snippet: searchString)
+        let identities = Identity.recipientsSuggestions(for: searchString)
         if identities.count > 0 {
             // We found matching Identities in the DB.
             // Show them to the user imediatelly and update the list later when Contacts are

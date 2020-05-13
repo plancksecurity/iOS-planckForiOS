@@ -11,7 +11,7 @@ import MessageModel
 
 final class EditableAccountSettingsViewController: BaseViewController {
 
-    @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet private weak var saveButton: UIBarButtonItem!
 
     var viewModel: EditableAccountSettingsViewModel?
 

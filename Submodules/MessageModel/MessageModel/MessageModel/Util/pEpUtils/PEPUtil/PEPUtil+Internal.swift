@@ -40,6 +40,7 @@ extension PEPUtils {
             return theBodyParts[0]
         } else if theBodyParts.count > 1 {
             let partAlt = CWPart()
+            partAlt.setContentDisposition(PantomimeInlineDisposition)
             partAlt.setContentType(ContentTypeUtils.ContentType.multipartAlternative)
             let partMulti = CWMIMEMultipart()
             for part in theBodyParts {
@@ -92,6 +93,7 @@ extension PEPUtils {
             part.setContent(t.data(using: String.Encoding.utf8) as NSObject?)
             part.setCharset("UTF-8")
             part.setContentTransferEncoding(PantomimeEncodingBase64)
+            part.setContentDisposition(PantomimeInlineDisposition)
             return part
         }
         return nil

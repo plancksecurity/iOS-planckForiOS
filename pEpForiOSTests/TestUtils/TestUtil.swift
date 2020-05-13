@@ -8,7 +8,6 @@
 
 import Foundation
 import XCTest
-import CoreData
 
 @testable import pEpForiOS
 @testable import MessageModel
@@ -48,20 +47,6 @@ class TestUtil {
     static var initialNumberOfRunningConnections = 0
     static var initialNumberOfServices = 0
 
-    //!!!: duplicated MM. Move to toolbox
-    static func loadData(fileName: String) -> Data? {
-        let testBundle = Bundle(for: self)
-        guard let keyPath = testBundle.path(forResource: fileName, ofType: nil) else {
-            XCTFail("Could not find file named \(fileName)")
-            return nil
-        }
-        guard let data = try? Data(contentsOf: URL(fileURLWithPath: keyPath)) else {
-            XCTFail("Could not load file named \(fileName)")
-            return nil
-        }
-        return data
-    }
-
     /**
      Dumps some diff between two NSDirectories to the console.
      */
@@ -80,26 +65,6 @@ class TestUtil {
                 print("Only in dict2: \(k)")
             }
         }
-    }
-
-    /**
-     Makes the servers for this account unreachable, for tests that expects failure.
-     */
-    static func makeServersUnreachable(cdAccount: CdAccount) {
-        guard let cdServers = cdAccount.servers?.allObjects as? [CdServer] else {
-            XCTFail()
-            return
-        }
-
-        for cdServer in cdServers {
-            cdServer.address = "localhost"
-            cdServer.port = 2525
-        }
-        guard let context = cdAccount.managedObjectContext else {
-            pEpForiOS.Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
-            return
-        }
-        context.saveAndLogErrors()
     }
 
     // MARK: - Sync Loop
@@ -124,7 +89,7 @@ class TestUtil {
                                     engineProccesed: engineProccesed,
                                     uid: uid)
             messages.append(msg)
-            msg.save()
+            msg.session.commit()
         }
         return messages
     }
@@ -180,10 +145,10 @@ class TestUtil {
     }
 
     static func createAttachment(inlined: Bool = true) -> Attachment {
-
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
-        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
-            XCTAssertTrue(false)
+        guard let imageData = MiscUtil.loadData(bundleClass: TestUtil.self,
+                                                fileName: imageFileName) else {
+            XCTFail()
             return Attachment(data: nil, mimeType: "meh", contentDisposition: .attachment)
         }
 
@@ -251,216 +216,12 @@ class TestUtil {
         msg.replaceTo(with: [receiver])
         msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
         msg.sent = Date(timeIntervalSince1970: Double(number))
-        msg.save()
+        msg.session.commit()
 
         return msg
     }
 
-    /// Determines the highest UID of _all_ the messages currently in the DB.
-    static func highestUid(context: NSManagedObjectContext) -> Int {
-        var theHighestUid: Int32 = 0
-        if let allCdMessages = CdMessage.all(in: context) as? [CdMessage] {
-            for cdMsg in allCdMessages {
-                if cdMsg.uid > theHighestUid {
-                    theHighestUid = cdMsg.uid
-                }
-            }
-        }
-        return Int(theHighestUid)
-    }
-
-    /**
-     - Returns: `highestUid()` + 1
-     */
-    static func nextUid(context: NSManagedObjectContext) -> Int {
-        return highestUid(context: context) + 1
-    }
-
-    // MARK: - SERVER
-
-    static func setServersTrusted(forCdAccount cdAccount: CdAccount, testCase: XCTestCase) {
-        guard let cdServers = cdAccount.servers?.allObjects as? [CdServer] else {
-            XCTFail("No Servers")
-            return
-        }
-        for server in cdServers {
-            server.automaticallyTrusted = true
-        }
-        guard let context = cdAccount.managedObjectContext else {
-            pEpForiOS.Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
-            return
-        }
-        context.saveAndLogErrors()
-    }
-
-    // MARK: - ERROR
-
-    class TestErrorContainer: ErrorContainerProtocol { //!!!: rm. AFAICS the implementation is copy & pasted from ErrorContainer. If so, why not use ErrorContainer?
-        var error: Error?
-
-        func addError(_ error: Error) {
-            if self.error == nil {
-                self.error = error
-            }
-        }
-
-        var hasErrors: Bool {
-            return error != nil
-        }
-
-        func reset() {
-            error = nil
-        }
-    }
-
-    /**
-     Does the following steps:
-
-     * Loads an Email from the given path
-     * Creates a self-Identity according to the receiver of the mail
-     * Decrypts the mail, which should import the key
-
-     After this function, you should have a self with generated key, and a partner ID
-     you can do handshakes on.
-     */
-    static func cdMessageAndSetUpPepFromMail(emailFilePath: String,
-                                             context: NSManagedObjectContext = Stack.shared.mainContext)
-        -> (mySelf: CdIdentity, partner: CdIdentity, message: CdMessage)? {
-            guard let pantomimeMail = cwImapMessage(fileName: emailFilePath) else {
-                XCTFail()
-                return nil
-            }
-
-            guard let recipients = pantomimeMail.recipients() as? [CWInternetAddress] else {
-                XCTFail("Expected array of recipients")
-                return nil
-            }
-            var mySelfIdentityOpt: CdIdentity?
-            for rec in recipients {
-                if rec.type() == .toRecipient {
-                    mySelfIdentityOpt = rec.cdIdentity(userID: CdIdentity.pEpOwnUserID, context: context)
-                }
-            }
-            guard let safeOptId = mySelfIdentityOpt else {
-                XCTFail("Could not derive own identity from message")
-                return nil
-            }
-
-            context.saveAndLogErrors()
-
-            let cdMySelfIdentity = safeOptId
-            XCTAssertNotNil(cdMySelfIdentity)
-
-            let cdMyAccount = CdAccount(context: context)
-            cdMyAccount.identity = cdMySelfIdentity
-
-            let cdInbox = CdFolder(context: context)
-            cdInbox.name = ImapConnection.defaultInboxName
-            cdInbox.account = cdMyAccount
-
-            guard let pantFrom = pantomimeMail.from() else {
-                XCTFail("Expected the mail to have a sender")
-                return nil
-            }
-            let partnerID = pantFrom.cdIdentity(userID: "THE PARTNER ID", context: context)
-
-            context.saveAndLogErrors()
-
-            let session = PEPSession()
-            let mySelfIdentity = cdMySelfIdentity.pEpIdentity()
-            try! session.mySelf(mySelfIdentity)
-            XCTAssertNotNil(mySelfIdentity.fingerPrint)
-            XCTAssertTrue(try! mySelfIdentity.isPEPUser(session).boolValue)
-
-            guard let cdMessage = CdMessage.insertOrUpdate(pantomimeMessage: pantomimeMail,
-                                                           account: cdMyAccount,
-                                                           messageUpdate: CWMessageUpdate(),
-                                                           context: context) else {
-                                                            XCTFail()
-                                                            return nil
-            }
-            XCTAssertEqual(cdMessage.pEpRating, Int16(PEPRating.undefined.rawValue))
-
-            guard let cdM = CdMessage.first(in: context) else {
-                XCTFail("Expected the one message in the DB that we imported")
-                return nil
-            }
-            XCTAssertEqual(cdM.messageID, pantomimeMail.messageID())
-
-            let errorContainer = TestErrorContainer()
-            let decOp = DecryptMessageOperation(cdMessageToDecryptObjectId: cdM.objectID,
-                                                errorContainer: errorContainer)
-
-            let bgQueue = OperationQueue()
-            bgQueue.addOperation(decOp)
-            bgQueue.waitUntilAllOperationsAreFinished()
-            XCTAssertFalse(errorContainer.hasErrors)
-
-            return (mySelf: cdMySelfIdentity, partner: partnerID, message: cdMessage)
-    }
-
-    /**
-     Uses 'cdMessageAndSetUpPepFromMail', but returns the message as 'Message'.
-     */
-    static func setUpPepFromMail(emailFilePath: String)
-        -> (mySelf: Identity, partner: Identity, message: Message)? {
-            guard
-                let (mySelfID, partnerID, cdMessage) =
-                cdMessageAndSetUpPepFromMail(emailFilePath: emailFilePath)
-                else {
-                    return nil
-            }
-            let mySelf = MessageModelObjectUtils.getIdentity(fromCdIdentity: mySelfID)
-            let partner = MessageModelObjectUtils.getIdentity(fromCdIdentity: partnerID)
-            let msg = MessageModelObjectUtils.getMessage(fromCdMessage: cdMessage)
-            return (mySelf: mySelf, partner: partner, message: msg)
-    }
-
-    //!!!: only used by MessagePantomimeTests & CdMessage_PantomimeTest. Move to MM with those tests
-    /**
-     Loads the given file by name and parses it into a pantomime message.
-     */
-    static func cwImapMessage(fileName: String) -> CWIMAPMessage? {
-        guard
-            var msgTxtData = TestUtil.loadData(
-                fileName: fileName)
-            else {
-                XCTFail()
-                return nil
-        }
-
-        // This is what pantomime does with everything it receives
-        msgTxtData = replacedCRLFWithLF(data: msgTxtData)
-
-        let pantomimeMail = CWIMAPMessage(data: msgTxtData, charset: "UTF-8")
-        pantomimeMail?.setUID(5) // some random UID out of nowhere
-        pantomimeMail?.setFolder(CWIMAPFolder(name: ImapConnection.defaultInboxName))
-
-        return pantomimeMail
-    }
-
-    /**
-     Loads the given file by name, parses it with pantomime and creates a CdMessage from it.
-     */
-    static func cdMessage(fileName: String, cdOwnAccount: CdAccount) -> CdMessage? {
-        guard let pantomimeMail = cwImapMessage(fileName: fileName) else {
-            XCTFail()
-            return nil
-        }
-
-        let moc: NSManagedObjectContext = Stack.shared.mainContext
-        guard let cdMessage = CdMessage.insertOrUpdate(pantomimeMessage: pantomimeMail,
-                                                       account: cdOwnAccount,
-                                                       messageUpdate: CWMessageUpdate(),
-                                                       context: moc)
-            else {
-                XCTFail()
-                return nil
-        }
-        XCTAssertEqual(cdMessage.pEpRating, Int16(PEPRating.undefined.rawValue))
-
-        return cdMessage
-    }
+    // MARK: - MISC
 
     static func replacedCRLFWithLF(data: Data) -> Data {
         let mData = NSMutableData(data: data)

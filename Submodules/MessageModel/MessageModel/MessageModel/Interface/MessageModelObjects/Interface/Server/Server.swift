@@ -144,7 +144,7 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
                                  manuallyTrusted: manuallyTrusted,
                                  credentials: credentials)
         if toPersist {
-            server.save() //!!!: needs rethink. Topic: probaly Verifyable Account
+            server.session.commit() //!!!: needs rethink. Topic: probaly Verifyable Account
         } else {
             // OAuth depends on having the accessToken saved in the Keychain.
             let key = credentials.cdObject.key ?? UUID().uuidString

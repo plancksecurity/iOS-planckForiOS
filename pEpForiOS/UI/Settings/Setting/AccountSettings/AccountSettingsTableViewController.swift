@@ -14,34 +14,52 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
 // MARK: - IBOutlets
 
-    //general account fields
-    @IBOutlet weak var nameTextfield: UITextField!
-    @IBOutlet weak var emailTextfield: UITextField!
-    @IBOutlet weak var passwordTextfield: UITextField!
-    @IBOutlet weak var resetIdentityLabel: UILabel!
-    @IBOutlet weak var keySyncLabel: UILabel!
-    @IBOutlet weak var keySyncSwitch: UISwitch!
-    @IBOutlet weak var certificateLabel: UITextField!
-    //imap fields
-    @IBOutlet weak var imapServerTextfield: UITextField!
-    @IBOutlet weak var imapPortTextfield: UITextField!
-    @IBOutlet weak var imapSecurityTextfield: UITextField!
-    @IBOutlet weak var imapUsernameTextField: UITextField!
-    //smtp account fields
-    @IBOutlet weak var smtpServerTextfield: UITextField!
-    @IBOutlet weak var smtpPortTextfield: UITextField!
-    @IBOutlet weak var smtpSecurityTextfield: UITextField!
-    @IBOutlet weak var smtpUsernameTextField: UITextField!
+    @IBOutlet private var stackViews: [UIStackView]!
 
-    @IBOutlet weak var certificateTableViewCell: UITableViewCell!
-    @IBOutlet weak var passwordTableViewCell: UITableViewCell!
-    @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
-    @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var resetIdentityCell: UITableViewCell!
-    @IBOutlet weak var switchKeySyncCell: UITableViewCell!
+    //general account fields
+    @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet private weak var nameTextfield: UITextField!
+    @IBOutlet private weak var emailLabel: UILabel!
+    @IBOutlet private weak var emailTextfield: UITextField!
+    @IBOutlet private weak var passwordTextfield: UITextField!
+    @IBOutlet private weak var resetIdentityLabel: UILabel!
+    @IBOutlet private weak var keySyncLabel: UILabel!
+    @IBOutlet private weak var keySyncSwitch: UISwitch!
+
+    //imap fields
+    @IBOutlet private weak var serverLabel: UILabel!
+    @IBOutlet private weak var imapServerTextfield: UITextField!
+    @IBOutlet private weak var portLabel: UILabel!
+    @IBOutlet private weak var imapPortTextfield: UITextField!
+    @IBOutlet private weak var imapSecurityTextfield: UITextField!
+    @IBOutlet private weak var imapUsernameTextField: UITextField!
+    @IBOutlet private weak var imapUsernameLabel: UILabel!
+
+    //smtp account fields
+    @IBOutlet private weak var smtpServerTextfield: UITextField!
+    @IBOutlet private weak var smtpPortTextfield: UITextField!
+    @IBOutlet private weak var smtpSecurityTextfield: UITextField!
+    @IBOutlet private weak var smtpUsernameTextField: UITextField!
+
+    @IBOutlet private weak var certificateTableViewCell: UITableViewCell!
+    @IBOutlet private weak var passwordTableViewCell: UITableViewCell!
+    @IBOutlet private weak var oauth2TableViewCell: UITableViewCell!
+    @IBOutlet private weak var oauth2ActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var resetIdentityCell: UITableViewCell!
+    @IBOutlet private weak var switchKeySyncCell: UITableViewCell!
+
+    @IBOutlet private weak var smtpUsernameLabel: UILabel!
+    @IBOutlet private weak var smtpTransportSecurityLabel: UILabel!
+    @IBOutlet private weak var smtpPortLabel: UILabel!
+    @IBOutlet private weak var transportSecurityLabel: UILabel!
+
+    @IBOutlet private weak var oAuthReauthorizationLabel: UILabel!
+    @IBOutlet private weak var certificateLabel: UILabel!
+    @IBOutlet private weak var certificateTextfield: UITextField!
+    @IBOutlet private weak var passwordLabel: UILabel!
 
 // MARK: - Variables
-    let oauthViewModel = OAuth2AuthViewModel()
+    let oauthViewModel = OAuthAuthorizer()
     /**
      When dealing with an OAuth2 account, this is the index path of the cell that
      should trigger the reauthorization.
@@ -59,7 +77,9 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     private var resetIdentityIndexPath: IndexPath?
     private var certificateIndexPath: IndexPath?
 
-
+    @IBOutlet private weak var smtpServerLabel: UILabel!
+    
+    
 // MARK: - Life Cycle
 
      override func viewDidLoad() {
@@ -67,8 +87,12 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
         tableView.register(pEpHeaderView.self,
                            forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
+        UIHelper.variableCellHeightsTableView(tableView)
+        UIHelper.variableSectionFootersHeightTableView(tableView)
+        UIHelper.variableSectionHeadersHeightTableView(tableView)
         viewModel?.delegate = self
-
+        configureView(for: traitCollection)
+        setFonts()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -239,9 +263,9 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
     }
 }
 
-// MARK: - OAuth2AuthViewModelDelegate
+// MARK: - OAuthAuthorizerDelegate
 
-extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
+extension AccountSettingsTableViewController: OAuthAuthorizerDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         oauth2ActivityIndicator.stopAnimating()
         shouldHandleErrors = true
@@ -251,7 +275,7 @@ extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
             return
         }
         guard let token = accessToken else {
-            showErrorAlert(error: OAuth2AuthViewModelError.noToken)
+            showErrorAlert(error: OAuthAuthorizerError.noToken)
             return
         }
         viewModel?.updateToken(accessToken: token)
@@ -271,7 +295,7 @@ extension AccountSettingsTableViewController {
         title = Localized.navigationTitle
         nameTextfield.text = viewModel?.account.user.userName
         emailTextfield.text = viewModel?.account.user.address
-        certificateLabel.text = viewModel?.certificateInfo()
+        certificateTextfield.text = viewModel?.certificateInfo()
         passwordTextfield.text = "JustAPassword"
         resetIdentityLabel.text = NSLocalizedString("Reset",
                                                     comment: "Account settings reset identity")
@@ -337,9 +361,16 @@ extension AccountSettingsTableViewController {
     }
 
     private func handleOauth2Reauth() {
-        guard let address = viewModel?.account.user.address else {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(message: "A view model is required")
             return
         }
+
+        guard let accountType = vm.account.accountType else {
+            Log.shared.errorAndCrash(message: "Handling OAuth2 reauth requires an account with a known account type for determining the OAuth2 configuration")
+            return
+        }
+
         oauth2ActivityIndicator.startAnimating()
 
         // don't accept errors form other places
@@ -348,7 +379,8 @@ extension AccountSettingsTableViewController {
         oauthViewModel.delegate = self
         oauthViewModel.authorize(
             authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
-            emailAddress: address,
+            emailAddress: vm.account.user.address,
+            accountType: accountType,
             viewController: self)
     }
 
@@ -394,6 +426,90 @@ extension AccountSettingsTableViewController {
 
         DispatchQueue.main.async { [weak self] in
             self?.present(pepAlertViewController, animated: true)
+        }
+    }
+}
+
+//MARK : - Accessibility
+
+extension AccountSettingsTableViewController {
+
+    /// To support dynamic font with a font size limit we have set the font by code.
+    private func setFonts() {
+        let font = UIFont.pepFont(style: .body, weight: .regular)
+
+        //Name
+        nameLabel.font = font
+        nameTextfield.font = font
+
+        //Email
+        emailLabel.font = font
+        emailTextfield.font = font
+
+        //Password
+        passwordLabel.font = font
+        passwordTextfield.font = font
+
+        //Certificate
+        certificateLabel.font = font
+        certificateTextfield.font = font
+
+        //Key sync
+        keySyncLabel.font = font
+
+        //Reset Identity
+        resetIdentityLabel.font = font
+
+        //OAuth Reauthorization
+        oAuthReauthorizationLabel.font = font
+
+        //Server
+        serverLabel.font = font
+        imapServerTextfield.font = font
+
+        //Port
+        portLabel.font = font
+        imapPortTextfield.font = font
+
+        //Security
+        transportSecurityLabel.font = font
+        imapSecurityTextfield.font = font
+
+        //Username
+        imapUsernameLabel.font = font
+        imapUsernameTextField.font = font
+
+        //SMTP Server
+        smtpServerLabel.font = font
+        smtpServerTextfield.font = font
+
+        //SMTP Server Port
+        smtpPortLabel.font = font
+        smtpPortTextfield.font = font
+
+        //SMTP Server Transport Security
+        smtpTransportSecurityLabel.font = font
+        smtpSecurityTextfield.font = font
+
+        //SMTP Server Username
+        smtpUsernameLabel.font = font
+        smtpUsernameTextField.font = font
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+      super.traitCollectionDidChange(previousTraitCollection)
+      if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+        configureView(for: traitCollection)
+      }
+    }
+
+    private func configureView(for traitCollection: UITraitCollection) {
+        let contentSize = traitCollection.preferredContentSizeCategory
+        let axis : NSLayoutConstraint.Axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
+        let spacing : CGFloat = contentSize.isAccessibilityCategory ? 10.0 : 5.0
+        stackViews.forEach {
+            $0.axis = axis
+            $0.spacing = spacing
         }
     }
 }

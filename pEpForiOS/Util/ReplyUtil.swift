@@ -17,20 +17,27 @@ public struct ReplyUtil {
      Gets the quoted message body for the given `Message`.
      */
     public static func quotedMessageText(message: Message, replyAll: Bool) -> NSAttributedString {
-
-        let footerPlainText = footer()
+        // commented out until IOS-1124 is done.
+//        let footerPlainText = footer()
 
         guard let quotedText = quotedText(for: message) else {
-            return "\n\n\(footerPlainText)".attribString()
+            // commented out until IOS-1124 is done.
+//            return "\n\n\(footerPlainText)".attribString()
+            return "".attribString()
         }
         let citationPlainText = citationHeaderForMessage(message)
 
+        // commented out until IOS-1124 is done.
+//        return "\n\n".attribString()
+//            + footer().attribString()
+//            + "\n\n"
+//            + citationPlainText.attribString()
+//            + "\n\n"
+//            + quotedText
         return "\n\n".attribString()
-            + footer().attribString()
-            + "\n\n"
-            + citationPlainText.attribString()
-            + "\n\n"
-            + quotedText
+        + citationPlainText.attribString()
+        + "\n\n"
+        + quotedText
     }
 
     /// Adds citation header with data of a given message to a given text.
@@ -41,7 +48,9 @@ public struct ReplyUtil {
     /// - Returns: text with citation header and "send by pEp" footer
     static func citedMessageText(textToCite: String, fromMessage msg: Message) -> String {
         let citation = citationHeaderForMessage(msg)
-        return "\n\n\(footer())\n\n\(citation)\n\n\(citedTextWithNewLines(textToCite: textToCite))"
+        // commented out until IOS-1124 is done.
+//        return "\n\n\(footer())\n\n\(citation)\n\n\(citedTextWithNewLines(textToCite: textToCite))"
+        return "\n\n\(citation)\n\n\(citedTextWithNewLines(textToCite: textToCite))"
     }
 
     public static func citedTextWithNewLines(textToCite: String) -> String {
@@ -74,8 +83,12 @@ public struct ReplyUtil {
                                         fromMessage msg: Message) -> NSAttributedString {
         let citation = citationHeaderForMessage(msg)
         let defaultFont = UIFont.preferredFont(forTextStyle: .body)
-        let result = NSAttributedString(string: "\n\n\(footer())\n\n\(citation)\n\n",
-            attributes: [NSAttributedString.Key(rawValue: "NSFont"): defaultFont])
+        // commented out until IOS-1124 is done.
+//        let result = NSAttributedString(string: "\n\n\(footer())\n\n\(citation)\n\n",
+//            attributes: [NSAttributedString.Key(rawValue: "NSFont"): defaultFont])
+        let result = NSAttributedString(string: "\n\n\(citation)\n\n",
+        attributes: [NSAttributedString.Key(rawValue: "NSFont"): defaultFont])
+
         return result + textToCite.toCitation(addCitationLevel: true)
     }
 

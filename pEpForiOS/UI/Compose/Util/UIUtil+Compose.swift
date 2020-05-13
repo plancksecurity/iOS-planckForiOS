@@ -56,7 +56,7 @@ extension UIUtils {
         var prefilledTo: Identity? = nil
         if let address = address {
             let to = Identity(address: address)
-            to.save()
+            to.session.commit()
             prefilledTo = to
         }
         let composeVM = ComposeViewModel(composeMode: .normal,

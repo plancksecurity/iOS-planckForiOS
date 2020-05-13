@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
+class ReplyAllPossibleCheckerTest: AccountDrivenTestBase {
     var inbox: Folder!
     var sent: Folder!
     var draft: Folder!
@@ -50,13 +50,13 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                                    userName: "user3")
 
         inbox = Folder(name: "INBOX", parent: nil, account: account, folderType: .inbox)
-        inbox.save()
+        inbox.session.commit()
 
         sent = Folder(name: "the_sent_folder", parent: nil, account: account, folderType: .sent)
-        sent.save()
+        sent.session.commit()
 
         draft = Folder(name: "DRAFTS", parent: nil, account: account, folderType: .drafts)
-        draft.save()
+        draft.session.commit()
 
         let msg = Message.init(uuid: "\(666)", uid: 666, parentFolder: inbox)
 

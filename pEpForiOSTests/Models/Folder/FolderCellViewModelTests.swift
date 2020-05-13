@@ -10,7 +10,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class FolderCellViewModelTests: CoreDataDrivenTestBase {
+class FolderCellViewModelTests: AccountDrivenTestBase {
     var viewModel: FolderCellViewModel!
     
     var folder : Folder!
@@ -23,7 +23,7 @@ class FolderCellViewModelTests: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
         folder = Folder(name: Input.folderName, parent: nil, account: account, folderType: .inbox)
-        folder.save()
+        folder.session.commit()
     }
     
     func testTitle() {

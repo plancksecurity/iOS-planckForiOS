@@ -1,4 +1,5 @@
-//!!!crashing test:
+//IOS-2241 DOES NOT COMPILE
+////!!!crashing test:
 ////!!!: is WIP (IOS-1495), ignore failing tests for now.
 //
 ////
@@ -148,7 +149,7 @@
 //        XCTAssertEqual(moreAction, .more)
 //
 //        messages[0].imapFlags.flagged = true
-//        messages[0].save()
+//        messages[0].session.commit()
 //
 //        flagAction = emailListVM.getFlagAction(forMessageAt: 0)
 //
@@ -219,15 +220,15 @@
 //        TestUtil.createMessage(inFolder: inbox,
 //                               from: Identity(address: textToSearch),
 //                               tos: [inbox.account.user],
-//                               uid: 666).save()
+//                               uid: 666).session.commit()
 //        TestUtil.createMessage(inFolder: inbox,
 //                               from: Identity(address: textToSearch),
 //                               tos: [inbox.account.user],
-//                               uid: 667).save()
+//                               uid: 667).session.commit()
 //        TestUtil.createMessage(inFolder: inbox,
 //                               from: Identity(address: textToSearch),
 //                               tos: [inbox.account.user],
-//                               uid: 668).save()
+//                               uid: 668).session.commit()
 //        setupViewModel()
 //        emailListVM.startMonitoring()
 //        XCTAssertEqual(emailListVM.rowCount, 13)
@@ -242,7 +243,7 @@
 //                               from: Identity(address: "mail@mail.com"),
 //                               tos: [inbox.account.user],
 //                               shortMessage: textToSearch,
-//                               uid: 666).save()
+//                               uid: 666).session.commit()
 //        setupViewModel()
 //        emailListVM.startMonitoring()
 //        XCTAssertEqual(emailListVM.rowCount, 11)
@@ -257,12 +258,12 @@
 //        TestUtil.createMessage(inFolder: inbox,
 //                               from: Identity(address: "mail@mail.com"),
 //                               shortMessage: textToSearch,
-//                               uid: 666).save()
+//                               uid: 666).session.commit()
 //        TestUtil.createMessage(inFolder: inbox,
 //                               from: Identity(address: "mail@mail.com"),
 //                               tos: [inbox.account.user],
 //                               longMessage: longText,
-//                               uid: 667).save()
+//                               uid: 667).session.commit()
 //        setupViewModel()
 //        emailListVM.startMonitoring()
 //        XCTAssertEqual(emailListVM.rowCount, 12)
@@ -285,7 +286,7 @@
 //
 //    func testViewModel() {
 //        let msg = TestUtil.createMessage(inFolder: inbox, from: inbox.account.user, uid: 1)
-//        msg.save()
+//        msg.session.commit()
 //        setupViewModel()
 //        emailListVM.startMonitoring()
 //        let indexOfTheOneAndOnlyMsg = 0
@@ -554,7 +555,7 @@
 //
 //    private func givenThereIsA(folderType: FolderType) {
 //        inbox = Folder(name: "-", parent: inbox, account: account, folderType: folderType)
-//        inbox.save()
+//        inbox.session.commit()
 //    }
 //
 //    @discardableResult private func givenThereIsAMessageIn(folderType: FolderType) -> Message? {

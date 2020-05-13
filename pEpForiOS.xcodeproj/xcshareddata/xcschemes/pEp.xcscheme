@@ -256,6 +256,26 @@
                ReferencedContainer = "container:../pantomime-iOS/PantomimeFramework/PantomimeFramework.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43980E441CBD0BCA00A7FC3C"
+               BuildableName = "pEpForiOSUITests.xctest"
+               BlueprintName = "pEpForiOSUITests"
+               ReferencedContainer = "container:pEpForiOS.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43CB608A1DA4EB4E0015281E"
+               BuildableName = "MessageModelTests.xctest"
+               BlueprintName = "MessageModelTests"
+               ReferencedContainer = "container:Submodules/MessageModel/MessageModel/MessageModel.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

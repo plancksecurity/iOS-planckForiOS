@@ -13,11 +13,17 @@ import MessageModel
 class FolderTableViewController: BaseTableViewController {
     var folderVM: FolderViewModel?
     var showNext: Bool = true
+
+    @IBOutlet private weak var addAccountButton: UIButton!
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         initialConfig()
+        addAccountButton.titleLabel?.numberOfLines = 0
+        addAccountButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        addAccountButton.titleLabel?.adjustsFontForContentSizeCategory = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
