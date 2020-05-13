@@ -41,6 +41,14 @@ extension KeyImportModel {
 }
 
 extension KeyImportModel {
+    /// Errors that can occur when importing a key, and setting it as own key
+    public enum KeyImportError: Error {
+        // TODO
+        case keyMalformed
+    }
+}
+
+extension KeyImportModel {
     private func loadRows() {
         do {
             let urls = try FileBrowser.listFileUrls(fileTypes: [.key])
