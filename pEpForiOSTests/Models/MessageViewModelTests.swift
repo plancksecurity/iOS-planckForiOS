@@ -404,8 +404,7 @@ class MessageViewModelTests: AccountDrivenTestBase {
 
     //PRAGMA MARK: Mocks
 
-    struct PepProfilePictureComposerSpy: ProfilePictureComposer {
-
+    struct PepProfilePictureComposerSpy: ProfilePictureComposerProtocol {
         static let PROFILE_PICTURE_EXPECTATION_DESCRIPTION = "PROFILE_PICTURE_CALLED"
         static let SECURITY_BADGE_EXPECTATION_DESCRIPTION = "SECURITY_BADGE_CALLED"
 
@@ -417,11 +416,9 @@ class MessageViewModelTests: AccountDrivenTestBase {
             self.securityBadgeExpectation = securityBadgeExpectation
         }
 
-
-        func profilePicture(for identity: Identity, completion: @escaping (UIImage?) -> ()) {
+        func profilePicture(for identityKey: IdentityImageTool.IdentityKey) -> UIImage? {
             guard let safeProfilePictureExpectation = profilePictureExpectation else {
                 XCTFail()
-                return
             }
             safeProfilePictureExpectation.fulfill()
         }
