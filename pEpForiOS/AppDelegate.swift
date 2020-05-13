@@ -281,8 +281,8 @@ extension AppDelegate {
                 for theFileUrl in fileUrls {
                     Log.shared.info("Try to import file %@", theFileUrl.absoluteString)
                     let string = try String(contentsOf: theFileUrl)
-                    let fprs = try session.importKey(string)
-                    Log.shared.info("Imported %@", fprs)
+                    let identities = try session.importKey(string)
+                    Log.shared.info("Imported %@", identities)
                 }
             }
         } catch {
