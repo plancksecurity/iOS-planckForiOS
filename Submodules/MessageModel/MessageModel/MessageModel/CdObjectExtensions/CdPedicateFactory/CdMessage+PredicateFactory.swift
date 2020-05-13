@@ -71,10 +71,36 @@ extension CdMessage {
             return NSPredicate(format: "%K = %@", CdFolder.RelationshipName.parent, parentFolder)
         }
 
-        static func belongingToParentFolderAndWithUID(parentFolder: CdFolder, byUID: UInt) -> NSPredicate {
+        static func allMessagesBetweenUids(firstUid: UInt,
+                                           lastUid: UInt) -> NSPredicate {
+            return NSPredicate(format: "%K >= %d and %K <= %d",
+                               CdMessage.AttributeName.uid, firstUid,
+                               CdMessage.AttributeName.uid, lastUid)
+        }
+
+        static func belongingToParentFolderAndWithUID(parentFolder: CdFolder,
+                                                      byUID: UInt) -> NSPredicate {
             return NSPredicate(format: "parent = %@ and uid = %d",
                                parentFolder,
                                byUID)
+        }
+
+        static func belongingToFolderAndWithUID(cdFolder: CdFolder,
+                                                      theOneAndOnlyUid: Int) -> NSPredicate {
+            return NSPredicate(format: "%K = %@ AND %K = %d",
+                               CdMessage.RelationshipName.parent, cdFolder,
+                               CdMessage.AttributeName.uid, theOneAndOnlyUid)
+        }
+
+        static func belongingToUidAndUuidAndParentFolderAndAccount(uid: Int32,
+                                                             uuid: MessageID,
+                                                             folderName: String,
+                                                             account: CdAccount) -> NSPredicate {
+            return NSPredicate(format: "uid = %d AND uuid = %@ AND parent.name = %@ AND parent.account = %@",
+                               uid,
+                               uuid,
+                               folderName,
+                               account)
         }
 
         static func flagged(value: Bool) -> NSPredicate {

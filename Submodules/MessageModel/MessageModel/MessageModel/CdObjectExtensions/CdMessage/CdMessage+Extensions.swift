@@ -84,16 +84,14 @@ extension CdMessage {
                            folderName: String,
                            account: CdAccount,
                            context: NSManagedObjectContext) -> CdMessage? {
-        let predicate =
-            NSPredicate(format: "uid = %d AND uuid = %@ AND parent.name = %@ AND parent.account = %@",
-                        uid,
-                        uuid,
-                        folderName,
-                        account)
-        guard
-            let messages = CdMessage.all(predicate: predicate, in: context) as? [CdMessage]
-            else {
-                return nil
+        let predicate = CdMessage.PredicateFactory
+            .belongingToUidAndUuidAndParentFolderAndAccount(uid: uid,
+                                                            uuid: uuid,
+                                                            folderName:folderName,
+                                                            account: account)
+        guard let messages = CdMessage.all(predicate: predicate,
+                                           in: context) as? [CdMessage] else {
+                                            return nil
         }
         let msgsExistingOnServer = messages.filter { $0.uid > 0 }
         if msgsExistingOnServer.count > 1 {

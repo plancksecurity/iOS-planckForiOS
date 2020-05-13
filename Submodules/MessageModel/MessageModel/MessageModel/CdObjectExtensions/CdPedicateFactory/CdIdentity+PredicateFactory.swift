@@ -74,7 +74,7 @@ extension CdIdentity {
 
         /// predicate to search all identities with the same userID
         ///
-        /// - Parameter value: usearID to search
+        /// - Parameter value: userID to search
         /// - Returns: Predicate for identities with the same userID in the given parameter
         static func sameUserID(value: String) -> NSPredicate {
             return NSPredicate(format: "%K == %@", CdIdentity.AttributeName.userID, value)
