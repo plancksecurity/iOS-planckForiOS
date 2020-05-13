@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="landscape" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -67,7 +67,7 @@
                                                 <accessibility key="accessibilityConfiguration" label="wrongButton">
                                                     <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
                                                 </accessibility>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <state key="normal" title="Decline"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="4fD-jL-4Gx" userLabel="ConfirmButton">
@@ -75,7 +75,7 @@
                                                 <accessibility key="accessibilityConfiguration" label="confirmButton">
                                                     <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
                                                 </accessibility>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <state key="normal" title="Confirm"/>
                                             </button>
                                         </subviews>
@@ -422,7 +422,6 @@
                                 <exclude reference="qFg-e7-nlJ"/>
                                 <exclude reference="Gw3-Af-We7"/>
                                 <exclude reference="t2A-k1-CaL"/>
-                                <exclude reference="3UK-f1-Rsj"/>
                                 <exclude reference="1Pa-6H-avv"/>
                                 <exclude reference="J2K-du-E0D"/>
                                 <exclude reference="hKh-6F-csZ"/>
@@ -433,6 +432,7 @@
                                 <exclude reference="MS1-XZ-VhU"/>
                                 <exclude reference="VAp-d8-7hj"/>
                                 <exclude reference="s6u-pb-jBv"/>
+                                <exclude reference="3UK-f1-Rsj"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact-widthClass=compact">
@@ -452,7 +452,6 @@
                                 <exclude reference="dOy-ft-D9A"/>
                                 <exclude reference="f8a-Ye-P6H"/>
                                 <include reference="t2A-k1-CaL"/>
-                                <include reference="3UK-f1-Rsj"/>
                                 <exclude reference="WvA-uW-4Qb"/>
                                 <include reference="q0F-vt-SQT"/>
                                 <include reference="wmk-gG-zBz"/>
@@ -461,6 +460,7 @@
                                 <include reference="MS1-XZ-VhU"/>
                                 <exclude reference="mgS-Qv-8LE"/>
                                 <exclude reference="mp1-Oi-yyk"/>
+                                <include reference="3UK-f1-Rsj"/>
                                 <exclude reference="hzy-F1-Opq"/>
                             </mask>
                         </variation>
@@ -501,10 +501,10 @@
                                 <include reference="bRv-qP-Fd6"/>
                                 <exclude reference="oPK-An-ZaY"/>
                                 <exclude reference="dOy-ft-D9A"/>
-                                <exclude reference="3UK-f1-Rsj"/>
                                 <include reference="hKh-6F-csZ"/>
                                 <include reference="1K7-r3-AOS"/>
                                 <exclude reference="mp1-Oi-yyk"/>
+                                <exclude reference="3UK-f1-Rsj"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -528,13 +528,13 @@
                                 <exclude reference="dOy-ft-D9A"/>
                                 <exclude reference="f8a-Ye-P6H"/>
                                 <include reference="t2A-k1-CaL"/>
-                                <include reference="3UK-f1-Rsj"/>
                                 <include reference="1Pa-6H-avv"/>
                                 <exclude reference="WvA-uW-4Qb"/>
                                 <include reference="wmk-gG-zBz"/>
                                 <include reference="BgP-yO-oKN"/>
                                 <exclude reference="FVf-d8-32H"/>
                                 <exclude reference="mp1-Oi-yyk"/>
+                                <include reference="3UK-f1-Rsj"/>
                             </mask>
                         </variation>
                     </view>
@@ -845,7 +845,7 @@
                                         </constraints>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" image="pEp-status-msg-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="d7r-hM-zxS" userLabel="Privacy Status Image View">
-                                        <rect key="frame" x="345.5" y="65.5" width="57" height="21"/>
+                                        <rect key="frame" x="344" y="65" width="60" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="d7r-hM-zxS" secondAttribute="height" multiplier="19:7" id="3GQ-vg-oVB"/>
                                             <constraint firstAttribute="width" constant="38" id="uJH-lX-ZtV"/>
@@ -976,7 +976,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="pEp-status-msg-yellow" width="56" height="21"/>
+        <image name="pEp-status-msg-yellow" width="60" height="21"/>
         <image name="pEpForIOS-Asset-Tutorial-1a" width="58" height="58"/>
         <image name="pEpForIOS-Asset-Tutorial-1b" width="334" height="59"/>
         <image name="pEpForIOS-Asset-Tutorial-2a" width="40" height="40"/>
