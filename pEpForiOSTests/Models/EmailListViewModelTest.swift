@@ -322,13 +322,13 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(firstMsgVM.message, msg)
 
         // Create a message that must not be shown
-        TestUtil.createMessage(inFolder: trashFolder, from: inbox.account.user)
+        _ = TestUtil.createMessage(inFolder: trashFolder, from: inbox.account.user)
         Session.main.commit()
         XCTAssertEqual(emailListVM.rowCount, messages.count)
     }
 
     func testNewMessageUpdateReceivedAndDisplayed() {
-        var messages = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
+        let messages = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
         Session.main.commit()
         setupViewModel()
         emailListVM.startMonitoring()
@@ -345,7 +345,7 @@ class EmailListViewModelTest: AccountDrivenTestBase {
     }
 
     func testNewMessageDeleteReceivedAndDisplayed() {
-        var messages = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
+        let messages = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
         Session.main.commit()
         setupViewModel()
         emailListVM.startMonitoring()
