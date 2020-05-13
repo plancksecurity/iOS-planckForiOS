@@ -93,6 +93,16 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
             return ServerCredentials(cdObject: cdObject.credentials!, context: moc)
         }
     }
+    
+    public var dateLastAuthenticationErrorShown: Date? {
+        get {
+            return cdObject.dateLastAuthenticationErrorShown
+        }
+        
+        set {
+            cdObject.dateLastAuthenticationErrorShown = newValue
+        }
+    }
 
     //!!!: needs refactor. Topic: Verifyable account...
     // Used in test and in UI Account Setup
