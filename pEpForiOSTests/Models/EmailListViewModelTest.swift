@@ -146,7 +146,7 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(moreAction, .more)
 
         messages[0].imapFlags.flagged = true
-        messages[0].save()
+        messages[0].session.commit()
 
         flagAction = emailListVM.getFlagAction(forMessageAt: 0)
 
@@ -217,15 +217,15 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         TestUtil.createMessage(inFolder: inbox,
                                from: Identity(address: textToSearch),
                                tos: [inbox.account.user],
-                               uid: 666).save()
+                               uid: 666).session.commit()
         TestUtil.createMessage(inFolder: inbox,
                                from: Identity(address: textToSearch),
                                tos: [inbox.account.user],
-                               uid: 667).save()
+                               uid: 667).session.commit()
         TestUtil.createMessage(inFolder: inbox,
                                from: Identity(address: textToSearch),
                                tos: [inbox.account.user],
-                               uid: 668).save()
+                               uid: 668).session.commit()
         setupViewModel()
         emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 13)
@@ -240,7 +240,7 @@ class EmailListViewModelTest: AccountDrivenTestBase {
                                from: Identity(address: "mail@mail.com"),
                                tos: [inbox.account.user],
                                shortMessage: textToSearch,
-                               uid: 666).save()
+                               uid: 666).session.commit()
         setupViewModel()
         emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 11)
@@ -255,12 +255,12 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         TestUtil.createMessage(inFolder: inbox,
                                from: Identity(address: "mail@mail.com"),
                                shortMessage: textToSearch,
-                               uid: 666).save()
+                               uid: 666).session.commit()
         TestUtil.createMessage(inFolder: inbox,
                                from: Identity(address: "mail@mail.com"),
                                tos: [inbox.account.user],
                                longMessage: longText,
-                               uid: 667).save()
+                               uid: 667).session.commit()
         setupViewModel()
         emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 12)
@@ -283,7 +283,7 @@ class EmailListViewModelTest: AccountDrivenTestBase {
 
     func testViewModel() {
         let msg = TestUtil.createMessage(inFolder: inbox, from: inbox.account.user, uid: 1)
-        msg.save()
+        msg.session.commit()
         setupViewModel()
         emailListVM.startMonitoring()
         let indexOfTheOneAndOnlyMsg = 0
@@ -379,7 +379,7 @@ class EmailListViewModelTest: AccountDrivenTestBase {
 
     func testMessageInOutboxAreNonEditableAndNonSelectable() {
         let msg = TestUtil.createMessage(uid: 1, inFolder: outboxFolder)
-        msg.save()
+        msg.session.commit()
         setupViewModel(forfolder: outboxFolder)
         emailListVM.startMonitoring()
         XCTAssertEqual(1, emailListVM.rowCount)
@@ -391,7 +391,7 @@ class EmailListViewModelTest: AccountDrivenTestBase {
 
     func testMessageInInboxAreOnlySelectable() {
         let msg = TestUtil.createMessage(uid: 1, inFolder: inbox)
-        msg.save()
+        msg.session.commit()
         setupViewModel()
         emailListVM.startMonitoring()
         XCTAssertEqual(1, emailListVM.rowCount)
@@ -403,7 +403,7 @@ class EmailListViewModelTest: AccountDrivenTestBase {
 
     func testMessageInDraftsAreEditableAndSelectable() {
         let msg = TestUtil.createMessage(uid: 1, inFolder: draftsFolder)
-        msg.save()
+        msg.session.commit()
         setupViewModel(forfolder: draftsFolder)
         emailListVM.startMonitoring()
         XCTAssertEqual(1, emailListVM.rowCount)
@@ -437,11 +437,12 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(composeVM.state.from, expectedFrom)
     }
 
+    /*
     func testPullToRefreshAction() {
         let pullToRefreshExpectation = expectation(description: "pullToRefreshExpectation")
         let message = TestUtil.createMessage(uid: 0, inFolder: inbox)
         message.pEpProtected = false
-        message.save()
+        message.session.commit()
         let uuid = message.uuid
         TestUtil.syncAndWait(testCase: self)
         let cdMessages = CdMessage.all()
@@ -459,8 +460,7 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         let messagesAfterFetch = emailListVM.message(representedByRowAt: IndexPath(item: 0, section: 0))//get the first message which is te one we append
         XCTAssertEqual(messagesAfterFetch?.uuid, uuid)
         XCTAssertNotEqual(messagesAfterFetch?.uid, Message.uidNeedsAppend)
-    }
-
+    }*/
 }
 
 // MARK: - HELPER
@@ -469,7 +469,7 @@ extension EmailListViewModelTest {
 
     private func setUpViewModel(forFolder folder: DisplayableFolderProtocol,
                                 masterViewController: TestMasterViewController) {
-        self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController,
+        self.emailListVM = EmailListViewModel(delegate: masterViewController,
                                               folderToShow: folder)
     }
 
@@ -538,7 +538,7 @@ extension EmailListViewModelTest {
                                      expectationDidInsertDataAt: excpectationDidInsertDataAtCalled,
                                      expectationDidUpdateDataAt: excpectationDidUpdateDataAtCalled,
                                      expectationDidRemoveDataAt: excpectationDidDeleteDataAtCalled)
-        emailListVM.emailListViewModelDelegate = masterViewController
+        emailListVM.delegate = masterViewController
     }
 
     private func getSafeLastLookAt() -> Date {
@@ -551,7 +551,7 @@ extension EmailListViewModelTest {
 
     private func givenThereIsA(folderType: FolderType) {
         inbox = Folder(name: "-", parent: inbox, account: account, folderType: folderType)
-        inbox.save()
+        inbox.session.commit()
     }
 
     @discardableResult private func givenThereIsAMessageIn(folderType: FolderType) -> Message? {
@@ -563,6 +563,56 @@ extension EmailListViewModelTest {
 }
 
 private class TestMasterViewController: EmailListViewModelDelegate {
+    func setToolbarItemsEnabledState(to newValue: Bool) {
+        XCTFail()
+    }
+
+    func select(itemAt indexPath: IndexPath) {
+        XCTFail()
+    }
+
+    func emailListViewModel(viewModel: EmailDisplayViewModel, didInsertDataAt indexPaths: [IndexPath]) {
+        if let excpectationDidInsertDataAtCalled = excpectationDidInsertDataAtCalled {
+            excpectationDidInsertDataAtCalled.fulfill()
+        } else {
+            XCTFail()
+        }
+    }
+
+    func emailListViewModel(viewModel: EmailDisplayViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
+        if let expectationDidUpdateDataAtCalled = expectationDidUpdateDataAtCalled {
+            expectationDidUpdateDataAtCalled.fulfill()
+        } else {
+            XCTFail()
+        }
+    }
+
+    func emailListViewModel(viewModel: EmailDisplayViewModel, didRemoveDataAt indexPaths: [IndexPath]) {
+        if let expectationDidRemoveDataAtCalled = expectationDidRemoveDataAtCalled {
+            expectationDidRemoveDataAtCalled.fulfill()
+        } else {
+            XCTFail()
+        }
+    }
+
+    func emailListViewModel(viewModel: EmailDisplayViewModel,
+                            didMoveData atIndexPath: IndexPath,
+                            toIndexPath: IndexPath) {
+        XCTFail()
+    }
+
+    func willReceiveUpdates(viewModel: EmailDisplayViewModel) {
+        //not yet defined
+    }
+
+    func allUpdatesReceived(viewModel: EmailDisplayViewModel) {
+        //not yet defined
+    }
+
+    func reloadData(viewModel: EmailDisplayViewModel) {
+        //not yet defined
+    }
+
     var expectationUpdateViewCalled: XCTestExpectation?
     var excpectationDidInsertDataAtCalled: XCTestExpectation?
     var expectationDidUpdateDataAtCalled: XCTestExpectation?
@@ -578,58 +628,9 @@ private class TestMasterViewController: EmailListViewModelDelegate {
         self.expectationDidRemoveDataAtCalled = expectationDidRemoveDataAt
     }
 
-    func willReceiveUpdates(viewModel: EmailListViewModel) {
-        //not yet defined
-    }
-
-    func allUpdatesReceived(viewModel: EmailListViewModel) {
-        //not yet defined
-    }
-
-    func reloadData(viewModel: EmailListViewModel) {
-        //not yet defined
-    }
-
-
-    func emailListViewModel(viewModel: EmailListViewModel,
-                            didInsertDataAt indexPaths: [IndexPath]) {
-        if let excpectationDidInsertDataAtCalled = excpectationDidInsertDataAtCalled {
-            excpectationDidInsertDataAtCalled.fulfill()
-        } else {
-            XCTFail()
-        }
-    }
-
-    func emailListViewModel(viewModel: EmailListViewModel,
-                            didUpdateDataAt indexPaths: [IndexPath]) {
-        if let expectationDidUpdateDataAtCalled = expectationDidUpdateDataAtCalled {
-            expectationDidUpdateDataAtCalled.fulfill()
-        } else {
-            XCTFail()
-        }
-    }
-
-    func emailListViewModel(viewModel: EmailListViewModel,
-                            didRemoveDataAt indexPaths: [IndexPath]) {
-        if let expectationDidRemoveDataAtCalled = expectationDidRemoveDataAtCalled {
-            expectationDidRemoveDataAtCalled.fulfill()
-        } else {
-            XCTFail()
-        }
-    }
-
-    func emailListViewModel(viewModel: EmailListViewModel,
-                            didMoveData atIndexPath: IndexPath,
-                            toIndexPath: IndexPath) {
-        XCTFail()
-    }
     //not exist anymore
     func emailListViewModel(viewModel: EmailListViewModel,
                             didUpdateUndisplayedMessage message: Message) {
-        XCTFail()
-    }
-
-    func toolbarIs(enabled: Bool) {
         XCTFail()
     }
 
