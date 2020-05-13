@@ -23,7 +23,7 @@ class FolderCellViewModelTests: AccountDrivenTestBase {
     override func setUp() {
         super.setUp()
         folder = Folder(name: Input.folderName, parent: nil, account: account, folderType: .inbox)
-        folder.save()
+        folder.session.commit()
     }
     
     func testTitle() {

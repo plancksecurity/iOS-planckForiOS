@@ -25,7 +25,7 @@ class AccountTypeSelectorTest: AccountDrivenTestBase {
     
     func testThereIsAPreviousAccount() {
         let account = TestData().createWorkingAccount()
-        account.save()
+        account.session.commit()
         let vm = AccountTypeSelectorViewModel()
         XCTAssertTrue(vm.isThereAnAccount())
     }
@@ -53,7 +53,7 @@ class AccountTypeSelectorTest: AccountDrivenTestBase {
     
     func testAccountTypeSelectorNames() {
         let account = TestData().createWorkingAccount()
-        account.save()
+        account.session.commit()
         let vm = AccountTypeSelectorViewModel()
         XCTAssertEqual(vm.fileNameOrText(provider: .clientCertificate), """
  Client

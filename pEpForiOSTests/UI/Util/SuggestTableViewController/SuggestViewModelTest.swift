@@ -86,7 +86,7 @@ class SuggestViewModelTest: AccountDrivenTestBase {
                 addressBookID: nil,
                 userName: "id\(i)")
             existingIdentities.append(id)
-            id.save()
+            id.session.commit()
         }
     }
 

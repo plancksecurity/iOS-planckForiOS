@@ -98,7 +98,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
     func testSections_accountSelector() {
         let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: false)
         let secondAccount = TestData().createWorkingAccount(number: 1)
-        secondAccount.save()
+        secondAccount.session.commit()
         assertSections(forVMIniitaliizedWith: testOriginalMessage,
                        expectBccWrapperSectionExists: true,
                        expectAccountSectionExists: true,
@@ -431,7 +431,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
     func testAccountCellViewModelAccountChangedTo() {
         let secondAccount = TestData().createWorkingAccount(number: 1)
-        secondAccount.save()
+        secondAccount.session.commit()
         assert(contentChangedMustBeCalled: true,
                focusSwitchedMustBeCalled: false,
                validatedStateChangedMustBeCalled: true,
@@ -583,7 +583,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         let msg = message()
         assert(originalMessage: msg)
         let idet = Identity(address: "testShow@Cancel.Actions")
-        idet.save()
+        idet.session.commit()
         vm?.state.toRecipients = [idet]
         guard let testee = vm?.showCancelActions else {
             XCTFail()
@@ -917,7 +917,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
     func testHandleRemovedRow_removeAttachment() {
         let msgWithAttachments = draftMessage(attachmentsSet: true)
         msgWithAttachments.appendToAttachments(attachment(ofType: .attachment))
-        msgWithAttachments.save()
+        msgWithAttachments.session.commit()
         assert(originalMessage: msgWithAttachments)
         vm?.state.nonInlinedAttachments = msgWithAttachments.attachments.array
         guard
@@ -970,7 +970,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 //        let originalMessage = draftMessage()
 //        originalMessage.messageID = testMessageId
 //        originalMessage.from = account.user
-//        originalMessage.save()
+//        originalMessage.session.commit()
 //        XCTAssertNotNil(Message.by(uid: originalMessage.uid,
 //                                   uuid: originalMessage.uuid,
 //                                   folderName: originalMessage.parent.name,
@@ -1000,7 +1000,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 //        let originalMessage = message(inFolderOfType: .outbox)
 //        originalMessage.messageID = testMessageId
 //        originalMessage.from = account.user
-//        originalMessage.save()
+//        originalMessage.session.commit()
 //        XCTAssertNotNil(Message.by(uid: originalMessage.uid,
 //                                   uuid: originalMessage.uuid,
 //                                   folderName: originalMessage.parent.name,
@@ -1204,7 +1204,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
     func testInitialFocus_emptyTo() {
         let originalMessage = draftMessage()
         originalMessage.replaceTo(with: [])
-        originalMessage.save()
+        originalMessage.session.commit()
         assert(originalMessage: originalMessage,
                contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -1233,7 +1233,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
     func testInitialFocus_toSet() {
         let originalMessage = draftMessage()
         originalMessage.replaceTo(with: [account.user])
-        originalMessage.save()
+        originalMessage.session.commit()
         assert(originalMessage: originalMessage,
                contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -1286,7 +1286,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
     private func assureOutboxExists() {
         if outbox == nil {
             let createe = Folder(name: "outbox", parent: nil, account: account, folderType: .outbox)
-            createe.save()
+            createe.session.commit()
         }
         XCTAssertNotNil(outbox)
     }
@@ -1297,7 +1297,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
                                  parent: nil,
                                  account: account,
                                  folderType: .drafts)
-            createe.save()
+            createe.session.commit()
         }
         XCTAssertNotNil(drafts)
     }
@@ -1308,7 +1308,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
                                  parent: nil,
                                  account: account,
                                  folderType: .sent)
-            createe.save()
+            createe.session.commit()
         }
         XCTAssertNotNil(sent)
     }
@@ -1339,7 +1339,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
     private func assertRecipientCellViewModelDidChangeRecipients(
         fieldType type: RecipientCellViewModel.FieldType) {
         let secondAccount = TestData().createWorkingAccount(number: 1)
-        secondAccount.save()
+        secondAccount.session.commit()
         let om = draftMessage(bccSet: true, attachmentsSet: false)
         assert(originalMessage: om,
                contentChangedMustBeCalled: false,
@@ -1416,7 +1416,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             parent: parentType == .inbox ? nil : account.firstFolder(ofType: .inbox),
             account: account,
             folderType: parentType)
-        folder.save()
+        folder.session.commit()
         let createe = Message(uuid: UUID().uuidString, parentFolder: folder)
         if bccSet {
             createe.replaceBcc(with: [account.user])
@@ -1425,7 +1425,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             let att = attachment()
             createe.replaceAttachments(with: [att])
         }
-        createe.save()
+        createe.session.commit()
         return createe
     }
 

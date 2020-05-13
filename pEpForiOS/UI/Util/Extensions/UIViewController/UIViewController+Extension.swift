@@ -19,6 +19,9 @@ extension UIViewController {
     var isModalViewCurrentlyShown: Bool {
         return presentedViewController != nil
     }
+    var usesAccessibilityFont : Bool {
+        return traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    }
 
     // As this screen might be rendered in a split view, the title view is not centered to the device
     // width but the view controller's width. That's why we need to adjust the title view position
