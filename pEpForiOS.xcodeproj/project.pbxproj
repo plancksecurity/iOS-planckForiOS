@@ -248,6 +248,7 @@
 		431D60DB1E93BB2D001266D7 /* AttachmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431D60DA1E93BB2D001266D7 /* AttachmentsView.swift */; };
 		431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431D60DC1E93D580001266D7 /* MessageAttachmentsCell.swift */; };
 		431E65631EEAE65200B8BBFC /* HandshakeUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E65621EEAE65200B8BBFC /* HandshakeUITest.swift */; };
+		431E68B3246C267A00B3A977 /* KeyImportModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68B2246C267A00B3A977 /* KeyImportModel.swift */; };
 		431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */; };
 		4322E82F1F9DE8260011FC55 /* Microsoft_Outlook_Probing_Message_001.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4322E82E1F9DE8260011FC55 /* Microsoft_Outlook_Probing_Message_001.txt */; };
 		43236E652459891B00D8318D /* OAuth2Type+VerifiableAccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43236E642459891B00D8318D /* OAuth2Type+VerifiableAccountType.swift */; };
@@ -805,6 +806,7 @@
 		431D60DA1E93BB2D001266D7 /* AttachmentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsView.swift; sourceTree = "<group>"; };
 		431D60DC1E93D580001266D7 /* MessageAttachmentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAttachmentsCell.swift; sourceTree = "<group>"; };
 		431E65621EEAE65200B8BBFC /* HandshakeUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeUITest.swift; sourceTree = "<group>"; };
+		431E68B2246C267A00B3A977 /* KeyImportModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportModel.swift; sourceTree = "<group>"; };
 		431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
 		4322E82E1F9DE8260011FC55 /* Microsoft_Outlook_Probing_Message_001.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Microsoft_Outlook_Probing_Message_001.txt; sourceTree = "<group>"; };
 		43236E642459891B00D8318D /* OAuth2Type+VerifiableAccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2Type+VerifiableAccountType.swift"; sourceTree = "<group>"; };
@@ -1927,6 +1929,14 @@
 			path = Background;
 			sourceTree = "<group>";
 		};
+		431E68B1246C266800B3A977 /* KeyImport */ = {
+			isa = PBXGroup;
+			children = (
+				431E68B2246C267A00B3A977 /* KeyImportModel.swift */,
+			);
+			path = KeyImport;
+			sourceTree = "<group>";
+		};
 		4323FE871E83E502006785E1 /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -2331,6 +2341,7 @@
 		43ED53611CC77F95006AB156 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				431E68B1246C266800B3A977 /* KeyImport */,
 				B706C0EF1EA8C378006B2F6C /* StoryboardFiles */,
 				158A564E2403F00A003C0D7E /* ClientCertificateManagement */,
 				15146C8F237F030A00D69495 /* BaseClasses */,
@@ -3070,6 +3081,7 @@
 				159AB56D23539D67008AB1F3 /* AppSettings+CNContactsAccessPermissionProvider.swift in Sources */,
 				43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */,
 				15146C8C237F006F00D69495 /* KeySyncWizardViewController.swift in Sources */,
+				431E68B3246C267A00B3A977 /* KeyImportModel.swift in Sources */,
 				B70A3A63220065F600EDCE61 /* String+pEp.swift in Sources */,
 				5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */,
 				15874BC12127493E00A3A4A6 /* SettingSwitchTableViewCell.swift in Sources */,
