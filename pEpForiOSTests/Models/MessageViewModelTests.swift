@@ -56,7 +56,7 @@ class MessageViewModelTests: AccountDrivenTestBase {
 
     override func setUp() {
         super.setUp()
-        let account = SecretTestData().createWorkingAccount()
+        let account = TestData().createWorkingAccount()
         folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
         folder.session.commit()
     }
@@ -141,17 +141,6 @@ class MessageViewModelTests: AccountDrivenTestBase {
         let expectation = XCTestExpectation(description: "body Peek is received")
         viewModel.bodyPeekCompletion = { bodyPeek in
             XCTAssertEqual(bodyPeek, Defaults.Outputs.longLongMessage)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: specificWaitTime)
-    }
-
-    func testMessageCountIsReceived() {
-        givenViewModelRepresentsASubjectAndBodyMessage()
-        let specificWaitTime = UnitTestUtils.waitTime * 5000
-        let expectation = XCTestExpectation(description: "Message count is received")
-        viewModel.messageCount { (numberOfMessages) in
-            XCTAssertEqual(numberOfMessages, Defaults.Outputs.expectedNumberOfMessages)
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: specificWaitTime)
