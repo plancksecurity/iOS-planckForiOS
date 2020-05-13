@@ -360,8 +360,10 @@ class MessageViewModelTests: AccountDrivenTestBase {
         func profilePicture(for identityKey: IdentityImageTool.IdentityKey) -> UIImage? {
             guard let safeProfilePictureExpectation = profilePictureExpectation else {
                 XCTFail()
+                return nil
             }
             safeProfilePictureExpectation.fulfill()
+            return nil
         }
     }
 
