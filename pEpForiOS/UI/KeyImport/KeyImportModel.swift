@@ -26,8 +26,35 @@ class KeyImportModel {
             Log.shared.errorAndCrash("indexPath out of bounds: %d", indexPath.row)
             return
         }
+        importKeyAndSetOwn(url: row.fileUrl)
+    }
+}
+
+extension KeyImportModel {
+    struct Row {
+        public let fileUrl: URL
+
+        public var fileName: String {
+            fileUrl.fileName(includingExtension: true)
+        }
+    }
+}
+
+extension KeyImportModel {
+    private func loadRows() {
         do {
-            let dataString = try String(contentsOf: row.fileUrl)
+            let urls = try FileBrowser.listFileUrls(fileTypes: [.key])
+            rows = urls.map { Row(fileUrl: $0) }
+        } catch {
+            // developer error
+            Log.shared.errorAndCrash(error: error)
+            rows = []
+        }
+    }
+
+    private func importKeyAndSetOwn(url: URL) {
+        do {
+            let dataString = try String(contentsOf: url)
 
             let session = PEPSession()
 
@@ -51,29 +78,6 @@ class KeyImportModel {
             try account.user.setOwnKey(fingerprint: fingerprint)
         } catch {
             // TODO: Signal error
-        }
-    }
-}
-
-extension KeyImportModel {
-    struct Row {
-        public let fileUrl: URL
-
-        public var fileName: String {
-            fileUrl.fileName(includingExtension: true)
-        }
-    }
-}
-
-extension KeyImportModel {
-    private func loadRows() {
-        do {
-            let urls = try FileBrowser.listFileUrls(fileTypes: [.key])
-            rows = urls.map { Row(fileUrl: $0) }
-        } catch {
-            // developer error
-            Log.shared.errorAndCrash(error: error)
-            rows = []
         }
     }
 }
