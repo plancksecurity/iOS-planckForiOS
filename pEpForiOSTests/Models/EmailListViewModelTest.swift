@@ -341,18 +341,6 @@ extension EmailListViewModelTest {
         createViewModelWithExpectations(forFolder: folderToUse, expectedUpdateView: true)
     }
 
-    /*private func setSearchFilter(text: String) {
-     setNewUpdateViewExpectation()
-     emailListVM.setSearchFilter(forSearchText: text)
-     waitForExpectations(timeout: TestUtil.waitTime)
-     }
-
-     private func removeSearchFilter() {
-     setNewUpdateViewExpectation()
-     emailListVM.removeSearchFilter()
-     waitForExpectations(timeout: TestUtil.waitTime)
-     }*/
-
     private func setNewUpdateViewExpectation() {
         let updateViewExpectation = expectation(description: "UpdateViewCalled")
         masterViewController.expectationUpdateViewCalled = updateViewExpectation
