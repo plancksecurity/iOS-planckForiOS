@@ -27,6 +27,7 @@
 		3A0CBAAB23F582B900AE200C /* UITextView+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0CBAAA23F582B900AE200C /* UITextView+Font.swift */; };
 		3AC1987D23F56B7300E71D43 /* UILabel+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC1987C23F56B7300E71D43 /* UILabel+Font.swift */; };
 		431E68AC246C00F200B3A977 /* FileBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68AB246C00F200B3A977 /* FileBrowser.swift */; };
+		431E68B0246C0FFC00B3A977 /* FileBrowserTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68AF246C0FFC00B3A977 /* FileBrowserTest.swift */; };
 		5B2F7E5F240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */; };
 		5B2F7E61240D0EA8004DDFA2 /* RangeExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E60240D0EA8004DDFA2 /* RangeExpression+Extension.swift */; };
 		5B87D79423F2C5CE009DACAA /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */; };
@@ -91,6 +92,7 @@
 		3A0CBAAA23F582B900AE200C /* UITextView+Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UITextView+Font.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/UIKit/UITextView+Font.swift"; sourceTree = "<group>"; };
 		3AC1987C23F56B7300E71D43 /* UILabel+Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UILabel+Font.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/UIKit/UILabel+Font.swift"; sourceTree = "<group>"; };
 		431E68AB246C00F200B3A977 /* FileBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FileBrowser.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Other/FileBrowser.swift; sourceTree = "<group>"; };
+		431E68AF246C0FFC00B3A977 /* FileBrowserTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FileBrowserTest.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Other/FileBrowserTest.swift; sourceTree = "<group>"; };
 		5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "StringProtocol+NSRanges.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/StringProtocol+NSRanges.swift"; sourceTree = "<group>"; };
 		5B2F7E60240D0EA8004DDFA2 /* RangeExpression+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "RangeExpression+Extension.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/RangeExpression+Extension.swift"; sourceTree = "<group>"; };
 		5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 			children = (
 				37904566223FA52B006DAB3B /* ReachabilityUtilsTest */,
 				B7DB7F8322144E4E003968DA /* SortedSetTest.swift */,
+				431E68AF246C0FFC00B3A977 /* FileBrowserTest.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -499,6 +502,7 @@
 				378B76552240F93A00D6662C /* TestUtils.swift in Sources */,
 				B7371AA1230175B7007B37A3 /* String+ExtensionsTest.swift in Sources */,
 				1522956623044FD000204FD3 /* String+FPRTest.swift in Sources */,
+				431E68B0246C0FFC00B3A977 /* FileBrowserTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
