@@ -407,6 +407,21 @@ extension EmailListViewModelTest {
 }
 
 private class TestMasterViewController: EmailListViewModelDelegate {
+    var expectationUpdateViewCalled: XCTestExpectation?
+    var excpectationDidInsertDataAtCalled: XCTestExpectation?
+    var expectationDidUpdateDataAtCalled: XCTestExpectation?
+    var expectationDidRemoveDataAtCalled: XCTestExpectation?
+
+    init(expectationUpdateView: XCTestExpectation? = nil,
+         expectationDidInsertDataAt: XCTestExpectation? = nil,
+         expectationDidUpdateDataAt: XCTestExpectation? = nil,
+         expectationDidRemoveDataAt: XCTestExpectation? = nil) {
+        self.expectationUpdateViewCalled = expectationUpdateView
+        self.excpectationDidInsertDataAtCalled = expectationDidInsertDataAt
+        self.expectationDidUpdateDataAtCalled = expectationDidUpdateDataAt
+        self.expectationDidRemoveDataAtCalled = expectationDidRemoveDataAt
+    }
+
     func setToolbarItemsEnabledState(to newValue: Bool) {
         XCTFail()
     }
@@ -458,21 +473,6 @@ private class TestMasterViewController: EmailListViewModelDelegate {
 
     func reloadData(viewModel: EmailDisplayViewModel) {
         //not yet defined
-    }
-
-    var expectationUpdateViewCalled: XCTestExpectation?
-    var excpectationDidInsertDataAtCalled: XCTestExpectation?
-    var expectationDidUpdateDataAtCalled: XCTestExpectation?
-    var expectationDidRemoveDataAtCalled: XCTestExpectation?
-
-    init(expectationUpdateView: XCTestExpectation? = nil,
-         expectationDidInsertDataAt: XCTestExpectation? = nil,
-         expectationDidUpdateDataAt: XCTestExpectation? = nil,
-         expectationDidRemoveDataAt: XCTestExpectation? = nil) {
-        self.expectationUpdateViewCalled = expectationUpdateView
-        self.excpectationDidInsertDataAtCalled = expectationDidInsertDataAt
-        self.expectationDidUpdateDataAtCalled = expectationDidUpdateDataAt
-        self.expectationDidRemoveDataAtCalled = expectationDidRemoveDataAt
     }
 
     //not exist anymore
