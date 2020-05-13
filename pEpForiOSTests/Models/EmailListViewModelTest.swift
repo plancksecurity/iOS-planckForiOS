@@ -303,25 +303,6 @@ class EmailListViewModelTest: AccountDrivenTestBase {
     //        XCTAssertEqual(filterEnabled, emailListVM.isFilterEnabled)
     //    }
 
-    func testNewMessageDeleteReceivedAndDisplayed() {
-        let messages = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
-        Session.main.commit()
-        setupViewModel()
-        emailListVM.startMonitoring()
-        XCTAssertEqual(emailListVM.rowCount, messages.count)
-
-        setUpViewModelExpectations(expectationDidDeleteDataAt: true)
-
-        let numDelete = 1
-        for i in 0..<numDelete {
-            messages[i].cdMessage()?.imapFields().localFlags?.flagDeleted = true
-        }
-        Session.main.commit()
-        waitForExpectations(timeout: TestUtil.waitTime)
-
-        XCTAssertEqual(emailListVM.rowCount, messages.count - numDelete)
-    }
-
     func testgetMoveToFolderViewModel() {
         TestUtil.createMessages(number: 4, inFolder: inbox)
         let index: [IndexPath] = [IndexPath(row: 0, section: 1),
