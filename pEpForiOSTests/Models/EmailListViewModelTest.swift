@@ -270,16 +270,6 @@ class EmailListViewModelTest: AccountDrivenTestBase {
 
 
     // MARK: - cell for row
-    /*
-     func testIndexFromMessage() {
-     let msgs = TestUtil.createMessages(number: 10, inFolder: folder)
-     setupViewModel()
-     emailListVM.startMonitoring()
-     var index = emailListVM.index(of: msgs[0])
-     XCTAssertEqual(index, 9)
-     index = emailListVM.index(of: msgs[9])
-     XCTAssertEqual(index, 0)
-     }*/
 
     func testViewModel() {
         let msg = TestUtil.createMessage(inFolder: inbox, from: inbox.account.user, uid: 1)
