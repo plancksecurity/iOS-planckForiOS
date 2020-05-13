@@ -21,7 +21,7 @@ class PantomimeStore: CWIMAPStore {
     }
 
     override func folder(withName name: String) -> CWIMAPFolder? {
-        return PersistentImapFolder(name: name,
+        return CwImapFolderToCdFolderMapper(name: name,
                                     accountID: connectInfo.accountObjectID)
     }
 }
