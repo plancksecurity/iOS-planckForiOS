@@ -16,7 +16,7 @@ import XCTest
 @testable import MessageModel
 
 
-class MessageViewModelTests: CoreDataDrivenTestBase {
+class MessageViewModelTests: AccountDrivenTestBase {
 
     //SUT
     var viewModel: MessageViewModel!
