@@ -292,17 +292,6 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(vm?.subject, msg.shortMessage)
     }
 
-    //    func testSetUpFilterViewModel() {
-    //        var filterEnabled = false
-    //        setupViewModel()
-    //        XCTAssertEqual(filterEnabled, emailListVM.isFilterEnabled)
-    //        filterEnabled = true
-    //        setUpViewModelExpectations(expectedUpdateView: true)
-    //        emailListVM.isFilterEnabled = filterEnabled
-    //        waitForExpectations(timeout: TestUtil.waitTime)
-    //        XCTAssertEqual(filterEnabled, emailListVM.isFilterEnabled)
-    //    }
-
     func testgetMoveToFolderViewModel() {
         TestUtil.createMessages(number: 4, inFolder: inbox)
         let index: [IndexPath] = [IndexPath(row: 0, section: 1),
