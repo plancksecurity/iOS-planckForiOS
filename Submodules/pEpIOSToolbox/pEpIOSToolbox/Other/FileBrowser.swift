@@ -30,7 +30,7 @@ public class FileBrowser {
     /// desired file extensions.
     /// - Throws: Exceptions by FileManager methods.
     /// - Returns: An array of file URLs that match the given file type.
-    public func listFileUrls(fileTypes: [FileType]) throws -> [URL] {
+    static public func listFileUrls(fileTypes: [FileType]) throws -> [URL] {
         var resultUrls = [URL]()
 
         var allExtensions = Set<String>()
