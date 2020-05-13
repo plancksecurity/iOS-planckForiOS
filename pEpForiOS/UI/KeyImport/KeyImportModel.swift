@@ -9,6 +9,8 @@
 import Foundation
 
 import pEpIOSToolbox
+import PEPObjCAdapterFramework
+import MessageModel
 
 /// Model for importing keys from the filesystem, and setting them as own keys.
 class KeyImportModel {
@@ -16,6 +18,40 @@ class KeyImportModel {
 
     init() {
         loadRows()
+    }
+
+    public func handleDidSelect(rowAt indexPath: IndexPath) {
+        guard let row = rows[safe: indexPath.row] else {
+            // developer error
+            Log.shared.errorAndCrash("indexPath out of bounds: %d", indexPath.row)
+            return
+        }
+        do {
+            let dataString = try String(contentsOf: row.fileUrl)
+
+            let session = PEPSession()
+
+            let identities = try session.importKey(dataString)
+
+            guard let firstIdentity = identities.first else {
+                // TODO: Signal error
+                return
+            }
+
+            guard let fingerprint = firstIdentity.fingerPrint else {
+                // TODO: Signal error
+                return
+            }
+
+            guard let account = Account.by(address: firstIdentity.address) else {
+                // TODO: Signal error
+                return
+            }
+
+            try account.user.setOwnKey(fingerprint: fingerprint)
+        } catch {
+            // TODO: Signal error
+        }
     }
 }
 
@@ -35,6 +71,7 @@ extension KeyImportModel {
             let urls = try FileBrowser.listFileUrls(fileTypes: [.key])
             rows = urls.map { Row(fileUrl: $0) }
         } catch {
+            // developer error
             Log.shared.errorAndCrash(error: error)
             rows = []
         }
