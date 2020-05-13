@@ -303,23 +303,6 @@ class EmailListViewModelTest: AccountDrivenTestBase {
     //        XCTAssertEqual(filterEnabled, emailListVM.isFilterEnabled)
     //    }
 
-    func testNewMessageUpdateReceivedAndDisplayed() {
-        let messages = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
-        Session.main.commit()
-        setupViewModel()
-        emailListVM.startMonitoring()
-        XCTAssertEqual(emailListVM.rowCount, messages.count)
-        waitForExpectations(timeout: TestUtil.waitTime) //!!!: rm? Which expectation to wait for?
-
-        let numFlagged = 2
-        for i in 0..<numFlagged {
-            messages[i].imapFlags.flagged = true
-        }
-        Session.main.commit()
-
-        XCTAssertEqual(emailListVM.rowCount, messages.count - numFlagged)
-    }
-
     func testNewMessageDeleteReceivedAndDisplayed() {
         let messages = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: inbox)
         Session.main.commit()
