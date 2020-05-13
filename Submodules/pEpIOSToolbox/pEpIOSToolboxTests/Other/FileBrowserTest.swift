@@ -19,5 +19,7 @@ class FileBrowserTest: XCTestCase {
     }
 
     func testNoFiles() throws {
+        let urls = try FileBrowser.listFileUrls(fileTypes: [.key])
+        XCTAssertTrue(urls.isEmpty)
     }
 }
