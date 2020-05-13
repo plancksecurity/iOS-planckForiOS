@@ -200,14 +200,6 @@ class MessageViewModelTests: AccountDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
-    func testMessageCountIsAddedToQueue() {
-        givenViewModelHasAnAddingExpectationOperationQueue()
-        viewModel.messageCount { _ in
-            //do nothing
-        }
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     func testQueueCancelledWhenStoppingUpdates() {
         givenViewModelHasACancellingExpectationOperationQueue()
         viewModel.unsubscribeForUpdates()
