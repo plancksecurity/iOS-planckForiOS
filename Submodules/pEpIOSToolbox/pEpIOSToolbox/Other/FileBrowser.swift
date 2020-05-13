@@ -14,4 +14,25 @@ public class FileBrowser {
         /// ASCII-armored public/private keys
         case keys
     }
+
+    /// Retrieves an array of file URLs found in the documents directories,
+    /// without recursion.
+    /// - Parameter fileTypes: An array of file types, which translates to a set of
+    /// desired file extensions.
+    /// - Throws: Exceptions by FileManager methods.
+    /// - Returns: An array of file URLs that match the given file type.
+    public func listFileUrls(fileTypes: [FileType]) throws -> [URL] {
+        var resultUrls = [URL]()
+
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        for theUrl in urls {
+            let fileUrls = try FileManager.default.contentsOfDirectory(at: theUrl,
+                                                                       includingPropertiesForKeys: nil,
+                                                                       options: [.skipsHiddenFiles])
+            for theFileUrl in fileUrls {
+            }
+        }
+
+        return resultUrls
+    }
 }
