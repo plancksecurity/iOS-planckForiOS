@@ -216,9 +216,7 @@ class MessageViewModelTests: AccountDrivenTestBase {
 
     func testSecurityBadgeIsCalled() {
         givenViewModelHasASecurityBadgePictureComposer()
-        viewModel.getSecurityBadge { _ in
-            //do nothing
-        }
+        let _ = viewModel.getSecurityBadge
         waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
