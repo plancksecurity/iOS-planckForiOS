@@ -100,41 +100,6 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         XCTAssertFalse(showToolbarButtons)
     }
 
-    /*
-    func testDefaultFilterActiveIsUnread() {
-        let messages = TestUtil.createMessages(number: 20, engineProccesed: true, inFolder: inbox)
-        messages.forEach { (msg) in
-            msg.imapFlags.seen = true
-        }
-        messages[0].imapFlags.seen = false
-        messages[2].imapFlags.seen = false
-        messages[4].imapFlags.seen = false
-        messages[6].imapFlags.seen = false
-        messages[8].imapFlags.seen = false
-
-        setupViewModel()
-        emailListVM.startMonitoring()
-
-        var unreadActive = emailListVM.unreadFilterEnabled
-        XCTAssertFalse(unreadActive)
-
-        XCTAssertEqual(20, emailListVM.rowCount)
-        emailListVM.isFilterEnabled = true
-        XCTAssertEqual(5, emailListVM.rowCount)
-        setUpViewModelExpectations(expectationDidDeleteDataAt: true)
-        let imap = ImapFlags()
-        imap.seen = true
-        messages[0].imapFlags = imap
-
-        waitForExpectations(timeout: TestUtil.waitTime)
-
-        XCTAssertEqual(4, emailListVM.rowCount)
-        unreadActive = emailListVM.unreadFilterEnabled()
-        XCTAssertTrue(unreadActive)
-        emailListVM.isFilterEnabled = false
-        XCTAssertEqual(20, emailListVM.rowCount)
-    }*/
-
     func testGetFlagAndMoreAction() {
         let messages = TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox)
         setupViewModel()
