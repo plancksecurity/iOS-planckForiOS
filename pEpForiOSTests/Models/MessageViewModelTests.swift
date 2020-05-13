@@ -15,7 +15,6 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-
 class MessageViewModelTests: AccountDrivenTestBase {
 
     //SUT
@@ -174,36 +173,6 @@ class MessageViewModelTests: AccountDrivenTestBase {
         givenViewModelRepresentsASubjectAndBodyMessage()
         let shouldShowAttachmentIcon = viewModel.showAttchmentIcon
         XCTAssertFalse(shouldShowAttachmentIcon)
-    }
-
-    func testSecurityBadgeIsAddedToQueue() {
-        givenViewModelHasAnAddingExpectationOperationQueue()
-        viewModel.getSecurityBadge { _ in
-            //do nothing
-        }
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
-    func testBodyPeekIsAddedToQueue() {
-        givenViewModelHasAnInitialAddingExpectationOperationQueue()
-        viewModel.bodyPeekCompletion = { _ in
-            //do nothing
-        }
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
-    func testProfilePictureIsAddedToQueue() {
-        givenViewModelHasAnAddingExpectationOperationQueue()
-        viewModel.getProfilePicture { _ in
-            //do nothing
-        }
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
-    func testQueueCancelledWhenStoppingUpdates() {
-        givenViewModelHasACancellingExpectationOperationQueue()
-        viewModel.unsubscribeForUpdates()
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     func testProfilePictureIsCalled() {
