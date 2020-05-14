@@ -24,6 +24,19 @@ extension KeyImportUtil {
     }
 }
 
+extension KeyImportUtil {
+    /// Errors that can occur when setting an (already imported) key as own key.
+    public enum SetOwnKeyError: Error {
+        /// No matching account could be found
+        case noMatchingAccount
+
+        /// The key could not be set as an own key for other reasons,
+        /// e.g. there was an error in the engine
+        case cannotSetOwnKey
+    }
+
+}
+
 extension KeyImportUtil: KeyImportUtilProtocol {
     public func importKey(url: URL) throws -> KeyImportUtilProtocolKeyData {
         guard let dataString = try? String(contentsOf: url) else {
@@ -49,14 +62,14 @@ extension KeyImportUtil: KeyImportUtilProtocol {
 
     public func setOwnKey(keyData: KeyImportUtilProtocolKeyData) throws {
         guard let account = Account.by(address: keyData.address) else {
-            throw KeyImportUtilProtocolSetOwnKeyError.noMatchingAccount
+            throw SetOwnKeyError.noMatchingAccount
         }
 
         do {
             try account.user.setOwnKey(fingerprint: keyData.fingerprint)
         } catch {
             Log.shared.log(error: error)
-            throw KeyImportUtilProtocolSetOwnKeyError.cannotSetOwnKey
+            throw SetOwnKeyError.cannotSetOwnKey
         }
     }
 }

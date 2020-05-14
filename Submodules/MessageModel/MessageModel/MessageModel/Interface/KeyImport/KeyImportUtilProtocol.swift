@@ -8,16 +8,6 @@
 
 import Foundation
 
-/// Errors that can occur when setting an (already imported) key as own key.
-public enum KeyImportUtilProtocolSetOwnKeyError: Error {
-    /// No matching account could be found
-    case noMatchingAccount
-
-    /// The key could not be set as an own key for other reasons,
-    /// e.g. there was an error in the engine
-    case cannotSetOwnKey
-}
-
 public struct KeyImportUtilProtocolKeyData {
     let address: String
     let fingerprint: String
@@ -33,6 +23,6 @@ public protocol KeyImportUtilProtocol {
 
     /// Sets the given key as own key.
     /// - Parameter keyData: The key data for the key to be set as own key
-    /// - Throws: KeyImportUtilProtocolSetOwnKeyError
+    /// - Throws: SetOwnKeyError
     func setOwnKey(keyData: KeyImportUtilProtocolKeyData) throws
 }
