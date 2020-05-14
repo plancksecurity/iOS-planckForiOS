@@ -12,11 +12,11 @@ public protocol KeyImportUtilProtocol {
     /// Imports a key from a local file URL.
     /// - Note: The caller is responsible to execute this asynchronously, if needed.
     /// - Parameter url: The URL to interpret as ASCII-armored key data
-    /// - Throws: ImportError
+    /// - Throws: KeyImportUtil.ImportError
     func importKey(url: URL) throws -> KeyImportUtil.KeyData
 
     /// Sets the given key as own key.
     /// - Parameter keyData: The key data for the key to be set as own key
-    /// - Throws: SetOwnKeyError
+    /// - Throws: KeyImportUtil.SetOwnKeyError
     func setOwnKey(keyData: KeyImportUtil.KeyData) throws
 }
