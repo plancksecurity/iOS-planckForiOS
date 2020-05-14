@@ -9,7 +9,7 @@
 import Foundation
 
 /// Errors that can occur when importing a key.
-enum KeyImportUtilProtocolImportError: Error {
+public enum KeyImportUtilProtocolImportError: Error {
     /// The key could not even be loaded
     case cannotLoadKey
 
@@ -18,7 +18,7 @@ enum KeyImportUtilProtocolImportError: Error {
 }
 
 /// Errors that can occur when setting an (already imported) key as own key.
-enum KeyImportUtilProtocolSetOwnKeyError: Error {
+public enum KeyImportUtilProtocolSetOwnKeyError: Error {
     /// No matching account could be found
     case noMatchingAccount
 
@@ -27,13 +27,13 @@ enum KeyImportUtilProtocolSetOwnKeyError: Error {
     case cannotSetOwnKey
 }
 
-struct KeyImportUtilProtocolKeyData {
+public struct KeyImportUtilProtocolKeyData {
     let address: String
     let fingerprint: String
     let keyData: Data
 }
 
-protocol KeyImportUtilProtocol {
+public protocol KeyImportUtilProtocol {
     /// Imports a key from a local file URL.
     /// - Note: The caller is responsible to execute this asynchronously, if needed.
     /// - Parameter url: The URL to interpret as ASCII-armored key data
