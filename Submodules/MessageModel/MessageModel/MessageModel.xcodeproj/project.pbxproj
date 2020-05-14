@@ -183,6 +183,7 @@
 		43123FBD225374030038D72C /* CdFolder+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FBC225374030038D72C /* CdFolder+IMAP.swift */; };
 		43123FC2225388FB0038D72C /* CdMessage+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FC1225388FB0038D72C /* CdMessage+IMAP.swift */; };
 		431BAE34246D4F330043490F /* KeyImportUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431BAE33246D4F330043490F /* KeyImportUtil.swift */; };
+		431BAE39246D5BEF0043490F /* KeyImportUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431BAE38246D5BEF0043490F /* KeyImportUtilTest.swift */; };
 		431E68AA246BFE0F00B3A977 /* Identity+SetOwnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68A9246BFE0F00B3A977 /* Identity+SetOwnKey.swift */; };
 		431FD70522EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431FD70422EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift */; };
 		43236E6824598F4C00D8318D /* Account+AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43236E6724598F4C00D8318D /* Account+AccountType.swift */; };
@@ -642,6 +643,7 @@
 		43123FBC225374030038D72C /* CdFolder+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+IMAP.swift"; sourceTree = "<group>"; };
 		43123FC1225388FB0038D72C /* CdMessage+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+IMAP.swift"; sourceTree = "<group>"; };
 		431BAE33246D4F330043490F /* KeyImportUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportUtil.swift; sourceTree = "<group>"; };
+		431BAE38246D5BEF0043490F /* KeyImportUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportUtilTest.swift; sourceTree = "<group>"; };
 		431E68A9246BFE0F00B3A977 /* Identity+SetOwnKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+SetOwnKey.swift"; sourceTree = "<group>"; };
 		431FD70422EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+PredicateFactory+KeySync.swift"; sourceTree = "<group>"; };
 		43236E6724598F4C00D8318D /* Account+AccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+AccountType.swift"; sourceTree = "<group>"; };
@@ -1705,6 +1707,14 @@
 			path = KeySync;
 			sourceTree = "<group>";
 		};
+		431BAE37246D5BD10043490F /* KeyImport */ = {
+			isa = PBXGroup;
+			children = (
+				431BAE38246D5BEF0043490F /* KeyImportUtilTest.swift */,
+			);
+			path = KeyImport;
+			sourceTree = "<group>";
+		};
 		43236E6624598F1800D8318D /* Account */ = {
 			isa = PBXGroup;
 			children = (
@@ -2203,6 +2213,7 @@
 				15679F032292CB2C0051DCC3 /* MessageModelObjects */,
 				37BC7AF72226DB540047267A /* MessageQueryResultsTest */,
 				4383344223FD7891004CC422 /* Certificates */,
+				431BAE37246D5BD10043490F /* KeyImport */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -2843,6 +2854,7 @@
 				154D172C23732FF7001FDF78 /* FetchNumberOfNewMailsServiceTest.swift in Sources */,
 				4351723A229FD4AA00D92026 /* TestUtil+LoadData.swift in Sources */,
 				439B16B222802D3800201DE5 /* VerifiableAccountTest.swift in Sources */,
+				431BAE39246D5BEF0043490F /* KeyImportUtilTest.swift in Sources */,
 				37688A7523030AAD00A561C1 /* CdMessage+cloneTest.swift in Sources */,
 				15175EE322240FB400C91DB8 /* QueryResultsControllerTest.swift in Sources */,
 				4355E4D3233C9C4E005772D5 /* CdMessageIsAutoConsumeableTest.swift in Sources */,
