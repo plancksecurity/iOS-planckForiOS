@@ -43,7 +43,10 @@ extension KeyImportViewModel {
 class KeyImportViewModel {
     public private(set) var rows = [Row]()
 
-    init() {
+    init(documentsBrowser: DocumentsDirectoryBrowserProtocol, keyImporter: KeyImportUtilProtocol) {
+        self.documentsBrowser = documentsBrowser
+        self.keyImporter = keyImporter
+
         loadRows()
     }
 
@@ -54,6 +57,9 @@ class KeyImportViewModel {
         }
         importKeyAndSetOwn(url: row.fileUrl)
     }
+
+    private let documentsBrowser: DocumentsDirectoryBrowserProtocol
+    private let keyImporter: KeyImportUtilProtocol
 }
 
 // MARK: - Private
