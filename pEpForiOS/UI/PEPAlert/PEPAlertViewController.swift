@@ -105,7 +105,8 @@ extension PEPAlertViewController {
 
     private func setUp(title: String?, paintPEPInTitle: Bool, message: String?) {
         alertMessage.text = message
-
+        alertMessage.font = UIFont.pepFont(style: .footnote, weight: .regular)
+        alertTitle.font = UIFont.pepFont(style: .body, weight: .semibold)
         if paintPEPInTitle {
             alertTitle.attributedText = title?.paintPEPToPEPColour()
         } else {
@@ -140,7 +141,7 @@ extension PEPAlertViewController {
         case .pEpSyncWizard:
             alertButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .semibold)
         case .pEpDefault:
-            alertButton.titleLabel?.font = .boldSystemFont(ofSize: 15) // ??? Dynamic font?
+            alertButton.titleLabel?.font = UIFont.pepFont(style: .callout, weight: .semibold)
             break
         }
     }
