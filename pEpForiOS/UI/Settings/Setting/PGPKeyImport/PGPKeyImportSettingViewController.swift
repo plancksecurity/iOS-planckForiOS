@@ -10,7 +10,11 @@ import Foundation
 
 class PGPKeyImportSettingViewController: BaseViewController {
     static private let cellID = "PGPKeyImportSettingTableViewCell"
-    public var viewModel: PGPKeyImportSettingViewModel?
+    public var viewModel: PGPKeyImportSettingViewModel? {
+        didSet {
+            viewModel?.delegate = self
+        }
+    }
     @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
@@ -120,4 +124,18 @@ extension PGPKeyImportSettingViewController {
         }
     }
 
+}
+
+// MARK: - PGPKeyImportSettingViewModelDelegate
+
+extension PGPKeyImportSettingViewController: PGPKeyImportSettingViewModelDelegate {
+    func showSetPgpKeyImportScene() {
+        performSegue(withIdentifier: SegueIdentifier.segueImportKeyFromDocuments.rawValue,
+                     sender: nil)
+    }
+
+    func showSetOwnKeyScene() {
+        performSegue(withIdentifier: SegueIdentifier.segueSetOwnKey.rawValue,
+                     sender: nil)
+    }
 }

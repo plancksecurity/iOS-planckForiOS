@@ -35,11 +35,11 @@ class PGPKeyImportSettingViewModel {
     }
 
     public func handleDidSelect(rowAt indexpath: IndexPath) {
-        switch indexpath.row {
+        switch indexpath.section {
         case 0: // Import PGP Key from Documents directory
             delegate?.showSetPgpKeyImportScene()
         case 1: // SetOwnKey
-            delegate?.showSetPgpKeyImportScene()
+            delegate?.showSetOwnKeyScene()
         default:
             Log.shared.errorAndCrash("Unhandled case")
         }
