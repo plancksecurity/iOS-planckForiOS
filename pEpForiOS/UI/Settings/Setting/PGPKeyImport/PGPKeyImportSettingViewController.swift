@@ -40,7 +40,6 @@ extension PGPKeyImportSettingViewController: UITableViewDelegate {
         }
         vm.handleDidSelect(rowAt: indexPath)
     }
-
 }
 
 // MARK: - UITableViewDataSource
@@ -86,8 +85,6 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
     }
 }
 
-//segueSetOwnKey
-
 // MARK: - Segue
 
 extension PGPKeyImportSettingViewController {
@@ -105,19 +102,10 @@ extension PGPKeyImportSettingViewController {
 
         switch SegueIdentifier(rawValue: segueIdentifier) {
         case .segueSetOwnKey:
-//            guard
-//                let destination = segue.destination as? AccountSettingsTableViewController,
-//                let indexPath = sender as? IndexPath
-//                else {
-//                    Log.shared.errorAndCrash("Requirements not met.")
-//                    return
-//            }
-//            destination.appConfig = appConfig
-//            destination.viewModel = viewModel.accountSettingsViewModel(forAccountAt: indexPath)
+            // SetOwnKeyViewController does not need any preparation
             break
         case .segueImportKeyFromDocuments:
-//            guard let destination = segue.destination as? BaseTableViewController else { return }
-//            destination.appConfig = self.appConfig
+            fatalError("VC does not exist yet")
             break
         case .none:
             Log.shared.errorAndCrash("No segue")
