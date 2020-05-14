@@ -8,15 +8,6 @@
 
 import Foundation
 
-/// Errors that can occur when importing a key.
-public enum KeyImportUtilProtocolImportError: Error {
-    /// The key could not even be loaded
-    case cannotLoadKey
-
-    /// The key could be loadad, but not processed
-    case malformedKey
-}
-
 /// Errors that can occur when setting an (already imported) key as own key.
 public enum KeyImportUtilProtocolSetOwnKeyError: Error {
     /// No matching account could be found
@@ -37,7 +28,7 @@ public protocol KeyImportUtilProtocol {
     /// Imports a key from a local file URL.
     /// - Note: The caller is responsible to execute this asynchronously, if needed.
     /// - Parameter url: The URL to interpret as ASCII-armored key data
-    /// - Throws: KeyImportUtilProtocolImportError
+    /// - Throws: ImportError
     func importKey(url: URL) throws -> KeyImportUtilProtocolKeyData
 
     /// Sets the given key as own key.

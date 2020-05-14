@@ -13,10 +13,21 @@ import PEPObjCAdapterFramework
 public class KeyImportUtil {
 }
 
+extension KeyImportUtil {
+    /// Errors that can occur when importing a key.
+    public enum ImportError: Error {
+        /// The key could not even be loaded
+        case cannotLoadKey
+
+        /// The key could be loadad, but not processed
+        case malformedKey
+    }
+}
+
 extension KeyImportUtil: KeyImportUtilProtocol {
     public func importKey(url: URL) throws -> KeyImportUtilProtocolKeyData {
         guard let dataString = try? String(contentsOf: url) else {
-            throw KeyImportUtilProtocolImportError.cannotLoadKey
+            throw ImportError.cannotLoadKey
         }
 
         let session = PEPSession()
@@ -24,11 +35,11 @@ extension KeyImportUtil: KeyImportUtilProtocol {
         let identities = try session.importKey(dataString)
 
         guard let firstIdentity = identities.first else {
-            throw KeyImportUtilProtocolImportError.malformedKey
+            throw ImportError.malformedKey
         }
 
         guard let fingerprint = firstIdentity.fingerPrint else {
-            throw KeyImportUtilProtocolImportError.malformedKey
+            throw ImportError.malformedKey
         }
 
         return KeyImportUtilProtocolKeyData(address: firstIdentity.address,
