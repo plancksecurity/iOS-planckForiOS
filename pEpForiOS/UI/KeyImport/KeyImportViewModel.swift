@@ -16,7 +16,8 @@ import MessageModel
 class KeyImportViewModel {
     public private(set) var rows = [Row]()
 
-    init() {
+    init(documentsBrowser: DocumentsDirectoryBrowserProtocol) {
+        self.documentsBrowser = documentsBrowser
         loadRows()
     }
 
@@ -28,6 +29,8 @@ class KeyImportViewModel {
         }
         importKeyAndSetOwn(url: row.fileUrl)
     }
+
+    private let documentsBrowser: DocumentsDirectoryBrowserProtocol
 }
 
 extension KeyImportViewModel {
@@ -60,7 +63,7 @@ extension KeyImportViewModel {
 extension KeyImportViewModel {
     private func loadRows() {
         do {
-            let urls = try DocumentsDirectoryBrowser.listFileUrls(fileTypes: [.key])
+            let urls = try documentsBrowser.listFileUrls(fileTypes: [.key])
             rows = urls.map { Row(fileUrl: $0) }
         } catch {
             // developer error
