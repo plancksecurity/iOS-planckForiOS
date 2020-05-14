@@ -10,27 +10,16 @@ import Foundation
 
 /// Methods for listing files in the app's documents directory.
 public class DocumentsDirectoryBrowser {
-    public enum FileType {
-        /// ASCII-armored public/private keys
-        case key
+}
 
-        /// Supported file extensions (minus the dot).
-        /// - Returns: The file extensions for a file type.
-        public func fileExtensions() -> Set<String> {
-            switch self {
-            case .key:
-                return Set(["asc"])
-            }
-        }
-    }
-
+extension DocumentsDirectoryBrowser: DocumentsDirectoryBrowserProtocol {
     /// Retrieves an array of file URLs found in the documents directories,
     /// _without recursion_.
     /// - Parameter fileTypes: An array of file types, which translates to a set of
     /// desired file extensions.
     /// - Throws: Exceptions by FileManager methods.
     /// - Returns: An array of file URLs that match the given file type.
-    static public func listFileUrls(fileTypes: [FileType]) throws -> [URL] {
+    public func listFileUrls(fileTypes: [DocumentsDirectoryBrowserFileType]) throws -> [URL] {
         var resultUrls = [URL]()
 
         var allExtensions = Set<String>()
