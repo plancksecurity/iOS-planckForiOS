@@ -47,7 +47,7 @@ class DocumentsDirectoryBrowserTest: XCTestCase {
 
     // MARK: - Private
 
-    private func createTestfile(fileType: DocumentsDirectoryBrowser.FileType) throws {
+    private func createTestfile(fileType: DocumentsDirectoryBrowserFileType) throws {
         guard let url = FileManager.default.urls(for: .documentDirectory,
                                                  in: .userDomainMask).first else {
                                                     XCTFail()
