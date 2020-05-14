@@ -42,6 +42,12 @@ extension KeyImportUtil {
         public let address: String
         public let fingerprint: String
         private let keyDataString: String
+
+        public init(address: String, fingerprint: String, keyDataString: String) {
+            self.address = address
+            self.fingerprint = fingerprint
+            self.keyDataString = keyDataString
+        }
     }
 }
 
