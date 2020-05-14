@@ -34,11 +34,18 @@ extension KeyImportUtil {
         /// e.g. there was an error in the engine
         case cannotSetOwnKey
     }
+}
 
+extension KeyImportUtil {
+    public struct KeyData {
+        let address: String
+        let fingerprint: String
+        let keyDataString: String
+    }
 }
 
 extension KeyImportUtil: KeyImportUtilProtocol {
-    public func importKey(url: URL) throws -> KeyImportUtilProtocolKeyData {
+    public func importKey(url: URL) throws -> KeyData {
         guard let dataString = try? String(contentsOf: url) else {
             throw ImportError.cannotLoadKey
         }
@@ -55,12 +62,12 @@ extension KeyImportUtil: KeyImportUtilProtocol {
             throw ImportError.malformedKey
         }
 
-        return KeyImportUtilProtocolKeyData(address: firstIdentity.address,
-                                            fingerprint: fingerprint,
-                                            keyDataString: dataString)
+        return KeyData(address: firstIdentity.address,
+                       fingerprint: fingerprint,
+                       keyDataString: dataString)
     }
 
-    public func setOwnKey(keyData: KeyImportUtilProtocolKeyData) throws {
+    public func setOwnKey(keyData: KeyData) throws {
         guard let account = Account.by(address: keyData.address) else {
             throw SetOwnKeyError.noMatchingAccount
         }
