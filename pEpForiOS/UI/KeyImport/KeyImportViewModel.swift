@@ -16,8 +16,10 @@ import MessageModel
 class KeyImportViewModel {
     public private(set) var rows = [Row]()
 
-    init(documentsBrowser: DocumentsDirectoryBrowserProtocol) {
+    init(documentsBrowser: DocumentsDirectoryBrowserProtocol, keyImporter: KeyImportUtilProtocol) {
         self.documentsBrowser = documentsBrowser
+        self.keyImporter = keyImporter
+
         loadRows()
     }
 
@@ -31,6 +33,7 @@ class KeyImportViewModel {
     }
 
     private let documentsBrowser: DocumentsDirectoryBrowserProtocol
+    private let keyImporter: KeyImportUtilProtocol
 }
 
 extension KeyImportViewModel {
