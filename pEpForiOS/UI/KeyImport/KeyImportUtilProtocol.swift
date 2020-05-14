@@ -39,4 +39,9 @@ protocol KeyImportUtilProtocol {
     /// - Parameter url: The URL to interpret as ASCII-armored key data
     /// - Throws: KeyImportUtilProtocolImportError
     func importKey(url: URL) throws -> KeyImportUtilProtocolKeyData
+
+    /// Sets the given key as own key.
+    /// - Parameter keyData: The key data for the key to be set as own key
+    /// - Throws: KeyImportUtilProtocolSetOwnKeyError
+    func setOwnKey(keyData: KeyImportUtilProtocolKeyData) throws
 }
