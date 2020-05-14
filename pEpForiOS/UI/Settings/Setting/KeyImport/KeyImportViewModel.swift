@@ -12,6 +12,27 @@ import pEpIOSToolbox
 import PEPObjCAdapterFramework
 import MessageModel
 
+protocol KeyImportViewModelDelegate {
+    /// The key was successfully imported.
+    /// - Parameter row: Model information about the imported key
+    /// - Parameter keyData: Key details (e.g. address)
+    func keyImportedSucceeded(row: KeyImportViewModel.Row, keyData: KeyImportUtil.KeyData)
+
+    /// The key import failed.
+    /// - Parameter row: Model information about the imported key
+    /// - Parameter error: The error that ocurred
+    func keyImportFailed(row: KeyImportViewModel.Row, error: KeyImportUtil.ImportError)
+
+    /// The key was successfully installed as own key for the matching account
+    /// - Parameter keyData: Key details (e.g. address)
+    func setOwnKeySucceeded(keyData: KeyImportUtil.KeyData)
+
+    /// The key was successfully installed as own key for the matching account
+    /// - Parameter keyData: Key details (e.g. address)
+    /// - Parameter error: The error that ocurred
+    func setOwnKeyFailed(keyData: KeyImportUtil.KeyData, error: KeyImportUtil.SetOwnKeyError)
+}
+
 extension KeyImportViewModel {
     struct Row {
         public var fileName: String {
