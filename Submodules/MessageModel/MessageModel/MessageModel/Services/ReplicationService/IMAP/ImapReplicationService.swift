@@ -191,11 +191,9 @@ extension ImapReplicationService {
         if pollingMode != .fastPolling {
             let earlierTimestamp = Date(
                 timeIntervalSinceNow: -ImapReplicationService.timeIntervalForInterestingFolders)
-            let pInteresting =
-                NSPredicate(format: "%K = %@ AND %K > %@ AND %K IN %@",
-                            CdFolder.RelationshipName.account, cdAccount,
-                            CdFolder.AttributeName.lastLookedAt, earlierTimestamp as CVarArg,
-                            CdFolder.AttributeName.folderTypeRawValue, FolderType.typesSyncedWithImapServerRawValues)
+            let pInteresting = CdFolder.PredicateFactory
+                .belongingToAccountAndLastLookedAndSyncedWithImap(for: cdAccount,
+                                                                  earlierTimestamp: earlierTimestamp)
             let folderPredicate = NSCompoundPredicate(
                 orPredicateWithSubpredicates: [pInteresting,
                                                CdFolder.PredicateFactory.syncFolder(cdAccount: cdAccount)])

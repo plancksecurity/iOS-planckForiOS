@@ -38,6 +38,14 @@ extension CdFolder {
                                CdFolder.AttributeName.folderTypeRawValue,
                                FolderType.pEpSync.rawValue)
         }
+
+        static func belongingToAccountAndLastLookedAndSyncedWithImap(for cdAccount: CdAccount,
+                                                                  earlierTimestamp: Date) -> NSPredicate {
+            return NSPredicate(format: "%K = %@ AND %K > %@ AND %K IN %@",
+                               CdFolder.RelationshipName.account, cdAccount,
+                               CdFolder.AttributeName.lastLookedAt, earlierTimestamp as CVarArg,
+                               CdFolder.AttributeName.folderTypeRawValue, FolderType.typesSyncedWithImapServerRawValues)
+        }
     }
 }
 
