@@ -12,27 +12,9 @@ import pEpIOSToolbox
 import PEPObjCAdapterFramework
 import MessageModel
 
-/// Model for importing keys from the filesystem, and setting them as own keys.
-class KeyImportModel {
-    public private(set) var rows = [Row]()
-
-    init() {
-        loadRows()
-    }
-
-    public func handleDidSelect(rowAt indexPath: IndexPath) {
-        guard let row = rows[safe: indexPath.row] else {
-            // developer error
-            Log.shared.errorAndCrash("indexPath out of bounds: %d", indexPath.row)
-            return
-        }
-        importKeyAndSetOwn(url: row.fileUrl)
-    }
-}
-
-extension KeyImportModel {
+extension KeyImportViewModel {
     struct Row {
-        public let fileUrl: URL
+        fileprivate let fileUrl: URL
 
         public var fileName: String {
             fileUrl.fileName(includingExtension: true)
@@ -40,7 +22,7 @@ extension KeyImportModel {
     }
 }
 
-extension KeyImportModel {
+extension KeyImportViewModel {
     /// Errors that can occur when importing a key, and setting it as own key
     public enum KeyImportError: Error {
         /// The key could not even be loaded
@@ -57,13 +39,31 @@ extension KeyImportModel {
     }
 }
 
-extension KeyImportModel {
+/// ViewModel for importing keys from the filesystem, and setting them as own keys (PGPKeyImport).
+class KeyImportViewModel {
+    public private(set) var rows = [Row]()
+
+    init() {
+        loadRows()
+    }
+
+    public func handleDidSelect(rowAt indexPath: IndexPath) {
+        guard let row = rows[safe: indexPath.row] else {
+            Log.shared.errorAndCrash("indexPath out of bounds: %d", indexPath.row)
+            return
+        }
+        importKeyAndSetOwn(url: row.fileUrl)
+    }
+}
+
+// MARK: - Private
+
+extension KeyImportViewModel {
     private func loadRows() {
         do {
             let urls = try FileBrowser.listFileUrls(fileTypes: [.key])
             rows = urls.map { Row(fileUrl: $0) }
         } catch {
-            // developer error
             Log.shared.errorAndCrash(error: error)
             rows = []
         }
@@ -94,7 +94,7 @@ extension KeyImportModel {
 
             try account.user.setOwnKey(fingerprint: fingerprint)
         } catch {
-            // TODO: Signal error
+            //!!!: TODO: Signal error
         }
     }
 }
