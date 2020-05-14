@@ -30,7 +30,7 @@ public enum KeyImportUtilProtocolSetOwnKeyError: Error {
 public struct KeyImportUtilProtocolKeyData {
     let address: String
     let fingerprint: String
-    let keyData: Data
+    let keyDataString: String
 }
 
 public protocol KeyImportUtilProtocol {
