@@ -39,9 +39,9 @@ extension KeyImportUtil {
 
 extension KeyImportUtil {
     public struct KeyData {
-        let address: String
-        let fingerprint: String
-        let keyDataString: String
+        public let address: String
+        public let fingerprint: String
+        private let keyDataString: String
     }
 }
 
