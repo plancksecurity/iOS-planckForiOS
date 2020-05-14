@@ -60,7 +60,7 @@ extension KeyImportViewModel {
 extension KeyImportViewModel {
     private func loadRows() {
         do {
-            let urls = try FileBrowser.listFileUrls(fileTypes: [.key])
+            let urls = try DocumentsDirectoryBrowser.listFileUrls(fileTypes: [.key])
             rows = urls.map { Row(fileUrl: $0) }
         } catch {
             // developer error

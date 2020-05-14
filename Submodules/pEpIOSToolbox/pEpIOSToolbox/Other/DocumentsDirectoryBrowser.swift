@@ -9,7 +9,7 @@
 import Foundation
 
 /// Methods for listing files in the app's documents directory.
-public class FileBrowser {
+public class DocumentsDirectoryBrowser {
     public enum FileType {
         /// ASCII-armored public/private keys
         case key
