@@ -34,6 +34,12 @@ class KeyImportViewModel {
         importKeyAndSetOwn(url: row.fileUrl)
     }
 
+    /// After the user has indicate the will to set this key as an own key,
+    /// call this method, which asynchronously sets the key as own key
+    /// and calls the delegate to inform about success or errors.
+    public func setOwn(keyData: KeyImportUtilProtocolKeyData) {
+    }
+
     private let documentsBrowser: DocumentsDirectoryBrowserProtocol
     private let keyImporter: KeyImportUtilProtocol
 }
