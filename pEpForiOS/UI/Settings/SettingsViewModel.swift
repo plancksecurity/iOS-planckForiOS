@@ -48,6 +48,12 @@ final class SettingsViewModel {
         }
     }
 
+    /// Constructor for SettingsViewModel
+    public init(delegate: SettingsViewModelDelegate) {
+        self.delegate = delegate
+        setup()
+    }
+
     /// Access method to get the sections
     /// - Parameter indexPath: IndexPath of the requested section
     public func section(for indexPath: IndexPath) -> Section {
@@ -75,12 +81,6 @@ final class SettingsViewModel {
         }
     }
 
-    /// Constructor for SettingsViewModel
-    public init(delegate: SettingsViewModelDelegate) {
-        self.delegate = delegate
-        setup()
-    }
-    
     /// Wrapper method to know if there is no accounts associated.
     /// Returns: True if there are no accounts.
     public func noAccounts() -> Bool {
