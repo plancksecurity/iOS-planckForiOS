@@ -111,7 +111,6 @@ extension PGPKeyImportSettingViewController {
             Log.shared.errorAndCrash("No segue")
         }
     }
-
 }
 
 // MARK: - PGPKeyImportSettingViewModelDelegate

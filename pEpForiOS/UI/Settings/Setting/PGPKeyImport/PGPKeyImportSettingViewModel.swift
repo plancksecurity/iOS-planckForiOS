@@ -51,13 +51,17 @@ class PGPKeyImportSettingViewModel {
 extension PGPKeyImportSettingViewModel {
     private func setupSections() {
         // pgpkeyImportSection
+        let pgpKeyImportTitle = NSLocalizedString("To import an existing PGP private key, you first need to transfer it from your computer. Click here for more information. Once the private key has been transferred to the device, you can import it here.",
+                                                  comment: "PGPKeyImportSetting row title")
         let pgpKeyImportRow = Row(title: "PGP Key Import")
         let pgpkeyImportSection = Section(rows: [pgpKeyImportRow],
-                                          title: "To import an existing PGP private key, you first need to transfer it from your computer. Click here for more information. Once the private key has been transferred to the device, you can import it here.")
+                                          title: pgpKeyImportTitle)
         // setOwnKeySection
+        let setOwnKeyRowTitle = NSLocalizedString("ADVANCED",
+                                                  comment: "setOwnKeyRowTitle row title")
         let setOwnKeyRow = Row(title: "Set Own Key")
         let setOwnKeySection = Section(rows: [setOwnKeyRow],
-                                       title: "ADVANCED")
+                                       title: setOwnKeyRowTitle)
 
         sections = [pgpkeyImportSection, setOwnKeySection]
     }
