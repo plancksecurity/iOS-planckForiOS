@@ -10,11 +10,11 @@ import Foundation
 
 import PEPObjCAdapterFramework
 
-class KeyImportUtil {
+public class KeyImportUtil {
 }
 
 extension KeyImportUtil: KeyImportUtilProtocol {
-    func importKey(url: URL) throws -> KeyImportUtilProtocolKeyData {
+    public func importKey(url: URL) throws -> KeyImportUtilProtocolKeyData {
         guard let dataString = try? String(contentsOf: url) else {
             throw KeyImportUtilProtocolImportError.cannotLoadKey
         }
@@ -36,7 +36,7 @@ extension KeyImportUtil: KeyImportUtilProtocol {
                                             keyDataString: dataString)
     }
 
-    func setOwnKey(keyData: KeyImportUtilProtocolKeyData) throws {
+    public func setOwnKey(keyData: KeyImportUtilProtocolKeyData) throws {
         guard let account = Account.by(address: keyData.address) else {
             throw KeyImportUtilProtocolSetOwnKeyError.noMatchingAccount
         }
