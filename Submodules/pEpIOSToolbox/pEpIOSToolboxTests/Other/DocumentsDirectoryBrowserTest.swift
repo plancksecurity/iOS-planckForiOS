@@ -11,6 +11,7 @@ import XCTest
 import pEpIOSToolbox
 
 class DocumentsDirectoryBrowserTest: XCTestCase {
+    let documentsBrowser: DocumentsDirectoryBrowserProtocol = DocumentsDirectoryBrowser()
 
     override func setUpWithError() throws {
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -34,13 +35,13 @@ class DocumentsDirectoryBrowserTest: XCTestCase {
     }
 
     func testNoFiles() throws {
-        let urls = try DocumentsDirectoryBrowser.listFileUrls(fileTypes: [.key])
+        let urls = try documentsBrowser.listFileUrls(fileTypes: [.key])
         XCTAssertTrue(urls.isEmpty)
     }
 
     func test1Key() throws {
         try createTestfile(fileType: .key)
-        let urls = try DocumentsDirectoryBrowser.listFileUrls(fileTypes: [.key])
+        let urls = try documentsBrowser.listFileUrls(fileTypes: [.key])
         XCTAssertFalse(urls.isEmpty)
     }
 

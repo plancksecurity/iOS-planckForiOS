@@ -10,6 +10,7 @@ import Foundation
 
 /// Methods for listing files in the app's documents directory.
 public class DocumentsDirectoryBrowser {
+    public init() {} // Make it usable from other modules
 }
 
 extension DocumentsDirectoryBrowser: DocumentsDirectoryBrowserProtocol {

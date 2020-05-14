@@ -22,6 +22,6 @@ public enum DocumentsDirectoryBrowserFileType {
     }
 }
 
-protocol DocumentsDirectoryBrowserProtocol {
+public protocol DocumentsDirectoryBrowserProtocol {
     func listFileUrls(fileTypes: [DocumentsDirectoryBrowserFileType]) throws -> [URL]
 }
