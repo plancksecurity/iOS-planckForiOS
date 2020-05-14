@@ -31,6 +31,8 @@ extension CdMessage {
         return uuid
     }
 
+    //!!!: Maybe it is unused code. Only tests need this methods
+
     static func by(uuid: MessageID,
                    account: CdAccount,
                    context: NSManagedObjectContext) -> [CdMessage] {
@@ -42,6 +44,8 @@ extension CdMessage {
                                    account), in: context) as? [CdMessage] ?? []
     }
 
+    //!!!: Maybe it is unused code. Only tests need this methods
+
     static func by(uuid: MessageID,
                    uid: UInt,
                    account: CdAccount,
@@ -51,6 +55,8 @@ extension CdMessage {
                         uuid, uid, account.identity!.address!),
                                in: context)
     }
+
+    //!!!: Maybe it is unused code. Only tests need this methods
 
     static func by(uuid: MessageID,
                    folderName: String,
@@ -80,6 +86,8 @@ extension CdMessage {
         }
         return found.first
     }
+
+    //!!!: Maybe it is unused code. Only tests need this methods
 
     /// Calls:
     /// search(uid: Uid?, uuid theUuid: String?, folderName folder: String?,
