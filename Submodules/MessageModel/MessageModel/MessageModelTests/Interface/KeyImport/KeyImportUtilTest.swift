@@ -27,4 +27,21 @@ class KeyImportUtilTest: XCTestCase {
             XCTFail()
         }
     }
+
+    func testSuccessfulImportButNoAccount() throws {
+        let keyImport = KeyImportUtil()
+
+        guard let url = Bundle.main.url(forResource: "IOS-1432_keypair.asc", withExtension: nil) else {
+            XCTFail()
+            return
+        }
+
+        let keyData = try keyImport.importKey(url: url)
+
+        do {
+            try keyImport.setOwnKey(keyData: keyData)
+        } catch KeyImportUtil.SetOwnKeyError.noMatchingAccount {
+            // expected
+        }
+    }
 }
