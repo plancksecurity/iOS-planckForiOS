@@ -31,6 +31,74 @@ extension CdMessage {
         return uuid
     }
 
+    static func by(uuid: MessageID,
+                   account: CdAccount,
+                   context: NSManagedObjectContext) -> [CdMessage] {
+        return CdMessage.all(
+            predicate: NSPredicate(format: "%K = %@ AND %K = %@",
+                                   CdMessage.AttributeName.uuid,
+                                   uuid,
+                                   RelationshipKeyPath.cdMessage_parent_account,
+                                   account), in: context) as? [CdMessage] ?? []
+    }
+
+    static func by(uuid: MessageID,
+                   uid: UInt,
+                   account: CdAccount,
+                   context: NSManagedObjectContext) -> CdMessage? {
+        return CdMessage.first(predicate:
+            NSPredicate(format: "uuid = %@ AND uid = %d AND parent.account.identity.address = %@",
+                        uuid, uid, account.identity!.address!),
+                               in: context)
+    }
+
+    static func by(uuid: MessageID,
+                   folderName: String,
+                   account: CdAccount,
+                   includingDeleted: Bool = true,
+                   context: NSManagedObjectContext) -> CdMessage? {
+        let p = NSPredicate(format: "uuid = %@ and parent.name = %@ AND parent.account = %@",
+                            uuid, folderName, account)
+        guard
+            let messages = CdMessage.all(predicate: p,
+                                         in: context) as? [CdMessage]
+            else {
+                return nil
+        }
+        var found = messages
+        if !includingDeleted {
+            found = found.filter { $0.imapFields(context: context).imapFlags().deleted == false }
+        }
+
+        if found.count > 1 {
+            //filter fake msgs
+            found = found.filter { $0.uid != -1 }
+            if found.count > 1 {
+                Log.shared.errorAndCrash("ultiple messages with UUID %@ in folder %@. Messages: %@",
+                                         uuid, folderName, found)
+            }
+        }
+        return found.first
+    }
+
+    /// Calls:
+    /// search(uid: Uid?, uuid theUuid: String?, folderName folder: String?,
+    ///                                         inAccount account: CdAccount) -> CdMessage?
+    ///
+    /// - Parameter message: message to search for
+    /// - Returns: existing message if found, nil otherwize
+    public static func search(message: Message) -> CdMessage? {
+        guard  let cdAccount = message.cdObject.parent?.account else {
+            Log.shared.errorAndCrash("Account not found?")
+            return nil
+        }
+        return search(uid: Int32(message.uid),
+                      uuid: message.uuid,
+                      folderName: message.parent.name,
+                      inAccount: cdAccount,
+                      context: message.session.moc)
+    }
+
     /// Searches message by UID + UUID + foldername + parentFolder.account.
     /// - Parameter message: message to search for
     /// - Returns: existing message if found, nil otherwize
@@ -84,14 +152,16 @@ extension CdMessage {
                            folderName: String,
                            account: CdAccount,
                            context: NSManagedObjectContext) -> CdMessage? {
-        let predicate = CdMessage.PredicateFactory
-            .belongingToUidAndUuidAndParentFolderAndAccount(uid: uid,
-                                                            uuid: uuid,
-                                                            folderName:folderName,
-                                                            account: account)
-        guard let messages = CdMessage.all(predicate: predicate,
-                                           in: context) as? [CdMessage] else {
-                                            return nil
+        let predicate =
+            NSPredicate(format: "uid = %d AND uuid = %@ AND parent.name = %@ AND parent.account = %@",
+                        uid,
+                        uuid,
+                        folderName,
+                        account)
+        guard
+            let messages = CdMessage.all(predicate: predicate, in: context) as? [CdMessage]
+            else {
+                return nil
         }
         let msgsExistingOnServer = messages.filter { $0.uid > 0 }
         if msgsExistingOnServer.count > 1 {
