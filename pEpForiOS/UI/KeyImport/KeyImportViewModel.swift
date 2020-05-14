@@ -67,31 +67,5 @@ extension KeyImportViewModel {
     }
 
     private func importKeyAndSetOwn(url: URL) {
-        do {
-            let dataString = try String(contentsOf: url)
-
-            let session = PEPSession()
-
-            let identities = try session.importKey(dataString)
-
-            guard let firstIdentity = identities.first else {
-                // TODO: Signal error
-                return
-            }
-
-            guard let fingerprint = firstIdentity.fingerPrint else {
-                // TODO: Signal error
-                return
-            }
-
-            guard let account = Account.by(address: firstIdentity.address) else {
-                // TODO: Signal error
-                return
-            }
-
-            try account.user.setOwnKey(fingerprint: fingerprint)
-        } catch {
-            // TODO: Signal error
-        }
     }
 }
