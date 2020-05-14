@@ -42,13 +42,12 @@ extension PGPKeyImportSettingViewController: UITableViewDelegate {
 // MARK: - UITableViewDataSource
 
 extension PGPKeyImportSettingViewController: UITableViewDataSource {
-
-    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
-            return []
+            return nil
         }
-        return vm.sections.map { $0.title }
+        return vm.sections[section].title
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -81,4 +80,44 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
 
         return cell
     }
+}
+
+//segueSetOwnKey
+
+// MARK: - Segue
+
+extension PGPKeyImportSettingViewController {
+
+    enum SegueIdentifier: String {
+        case segueSetOwnKey
+        case segueImportKeyFromDocuments
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let segueIdentifier = segue.identifier else {
+            Log.shared.errorAndCrash("No Segue ID")
+            return
+        }
+
+        switch SegueIdentifier(rawValue: segueIdentifier) {
+        case .segueSetOwnKey:
+//            guard
+//                let destination = segue.destination as? AccountSettingsTableViewController,
+//                let indexPath = sender as? IndexPath
+//                else {
+//                    Log.shared.errorAndCrash("Requirements not met.")
+//                    return
+//            }
+//            destination.appConfig = appConfig
+//            destination.viewModel = viewModel.accountSettingsViewModel(forAccountAt: indexPath)
+            break
+        case .segueImportKeyFromDocuments:
+//            guard let destination = segue.destination as? BaseTableViewController else { return }
+//            destination.appConfig = self.appConfig
+            break
+        case .none:
+            Log.shared.errorAndCrash("No segue")
+        }
+    }
+
 }

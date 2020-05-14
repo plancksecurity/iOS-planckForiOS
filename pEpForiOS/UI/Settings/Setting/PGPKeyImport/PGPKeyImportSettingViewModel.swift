@@ -8,6 +8,11 @@
 
 import Foundation
 
+protocol PGPKeyImportSettingViewModelDelegate: class {
+    func showSetPgpKeyImportScene()
+    func showSetOwnKeyScene()
+}
+
 extension PGPKeyImportSettingViewModel {
 
     public struct Row {
@@ -21,16 +26,23 @@ extension PGPKeyImportSettingViewModel {
 }
 
 class PGPKeyImportSettingViewModel {
+    weak public var delegate: PGPKeyImportSettingViewModelDelegate?
     public private(set) var sections = [Section]()
 
-    public init() {
+    public init(delegate: PGPKeyImportSettingViewModelDelegate? = nil) {
+        self.delegate = delegate
         setupSections()
     }
 
     public func handleDidSelect(rowAt indexpath: IndexPath) {
-        fatalError("unimplemented stub")
-        // show KeyImportVC
-        // Show SetOwnKey
+        switch indexpath.row {
+        case 0: // Import PGP Key from Documents directory
+            delegate?.showSetPgpKeyImportScene()
+        case 1: // SetOwnKey
+            delegate?.showSetPgpKeyImportScene()
+        default:
+            Log.shared.errorAndCrash("Unhandled case")
+        }
     }
 }
 
