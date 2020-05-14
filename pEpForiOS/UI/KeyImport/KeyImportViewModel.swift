@@ -13,7 +13,7 @@ import PEPObjCAdapterFramework
 import MessageModel
 
 /// Model for importing keys from the filesystem, and setting them as own keys.
-class KeyImportModel {
+class KeyImportViewModel {
     public private(set) var rows = [Row]()
 
     init() {
@@ -30,7 +30,7 @@ class KeyImportModel {
     }
 }
 
-extension KeyImportModel {
+extension KeyImportViewModel {
     struct Row {
         public let fileUrl: URL
 
@@ -40,7 +40,7 @@ extension KeyImportModel {
     }
 }
 
-extension KeyImportModel {
+extension KeyImportViewModel {
     /// Errors that can occur when importing a key, and setting it as own key
     public enum KeyImportError: Error {
         /// The key could not even be loaded
@@ -57,7 +57,7 @@ extension KeyImportModel {
     }
 }
 
-extension KeyImportModel {
+extension KeyImportViewModel {
     private func loadRows() {
         do {
             let urls = try FileBrowser.listFileUrls(fileTypes: [.key])
