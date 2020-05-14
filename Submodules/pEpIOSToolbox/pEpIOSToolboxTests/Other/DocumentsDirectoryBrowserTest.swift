@@ -1,5 +1,5 @@
 //
-//  FileBrowserTest.swift
+//  DocumentsDirectoryBrowserTest.swift
 //  pEpIOSToolboxTests
 //
 //  Created by Dirk Zimmermann on 13.05.20.
@@ -10,7 +10,7 @@ import XCTest
 
 import pEpIOSToolbox
 
-class FileBrowserTest: XCTestCase {
+class DocumentsDirectoryBrowserTest: XCTestCase {
 
     override func setUpWithError() throws {
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -34,13 +34,13 @@ class FileBrowserTest: XCTestCase {
     }
 
     func testNoFiles() throws {
-        let urls = try FileBrowser.listFileUrls(fileTypes: [.key])
+        let urls = try DocumentsDirectoryBrowser.listFileUrls(fileTypes: [.key])
         XCTAssertTrue(urls.isEmpty)
     }
 
     func test1Key() throws {
         try createTestfile(fileType: .key)
-        let urls = try FileBrowser.listFileUrls(fileTypes: [.key])
+        let urls = try DocumentsDirectoryBrowser.listFileUrls(fileTypes: [.key])
         XCTAssertFalse(urls.isEmpty)
     }
 
