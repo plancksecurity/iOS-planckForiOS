@@ -12,6 +12,16 @@ import pEpIOSToolbox
 import PEPObjCAdapterFramework
 import MessageModel
 
+extension KeyImportViewModel {
+    struct Row {
+        public var fileName: String {
+            fileUrl.fileName(includingExtension: true)
+        }
+
+        fileprivate let fileUrl: URL
+    }
+}
+
 /// Model for importing keys from the filesystem, and setting them as own keys.
 class KeyImportViewModel {
     public private(set) var rows = [Row]()
@@ -42,18 +52,6 @@ class KeyImportViewModel {
 
     private let documentsBrowser: DocumentsDirectoryBrowserProtocol
     private let keyImporter: KeyImportUtilProtocol
-}
-
-extension KeyImportViewModel {
-    struct Row {
-        public var fileName: String {
-            fileUrl.fileName(includingExtension: true)
-        }
-
-        // TODO: This violates our coding guidelines
-        // ("In the app target, the visibility MUST be private or public")
-        let fileUrl: URL
-    }
 }
 
 extension KeyImportViewModel {
