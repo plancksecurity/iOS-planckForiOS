@@ -67,12 +67,8 @@ class KeyImportUtilTest: XCTestCase {
                              userName: "some name",
                              session: nil)
 
-        let account = Account(user: ident, servers: [])
+        let _ = Account(user: ident, servers: [])
 
-        do {
-            try keyImport.setOwnKey(keyData: keyData)
-        } catch KeyImportUtil.SetOwnKeyError.noMatchingAccount {
-            // expected
-        }
+        try keyImport.setOwnKey(keyData: keyData)
     }
 }
