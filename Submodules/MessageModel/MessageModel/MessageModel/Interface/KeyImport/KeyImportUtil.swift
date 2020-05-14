@@ -11,6 +11,7 @@ import Foundation
 import PEPObjCAdapterFramework
 
 public class KeyImportUtil {
+    public init() {}
 }
 
 extension KeyImportUtil {
