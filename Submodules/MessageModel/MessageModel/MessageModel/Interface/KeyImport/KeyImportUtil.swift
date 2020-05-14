@@ -37,5 +37,15 @@ extension KeyImportUtil: KeyImportUtilProtocol {
     }
 
     func setOwnKey(keyData: KeyImportUtilProtocolKeyData) throws {
+        guard let account = Account.by(address: keyData.address) else {
+            throw KeyImportUtilProtocolSetOwnKeyError.noMatchingAccount
+        }
+
+        do {
+            try account.user.setOwnKey(fingerprint: keyData.fingerprint)
+        } catch {
+            Log.shared.log(error: error)
+            throw KeyImportUtilProtocolSetOwnKeyError.cannotSetOwnKey
+        }
     }
 }
