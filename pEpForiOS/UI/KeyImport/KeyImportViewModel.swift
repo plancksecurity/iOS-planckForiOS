@@ -23,6 +23,8 @@ class KeyImportViewModel {
         loadRows()
     }
 
+    /// The user has tapped a row, which starts loading (importing) the underlying key
+    /// asynchronously and informs the delegate about success.
     public func handleDidSelect(rowAt indexPath: IndexPath) {
         guard let row = rows[safe: indexPath.row] else {
             // developer error
