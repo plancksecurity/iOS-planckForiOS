@@ -11,11 +11,8 @@ import XCTest
 import MessageModel
 
 class KeyImportUtilTest: XCTestCase {
-    override func setUpWithError() throws {
-    }
-
-    override func tearDownWithError() throws {
-    }
+    /// A key pair that can be imported. Gets loaded from the test bundle.
+    let keyResourceName = "IOS-1432_keypair.asc"
 
     func testImportNonExistentKey() throws {
         do {
@@ -33,7 +30,7 @@ class KeyImportUtilTest: XCTestCase {
 
         let testBundle = Bundle(for: KeyImportUtilTest.self)
 
-        guard let url = testBundle.url(forResource: "IOS-1432_keypair.asc",
+        guard let url = testBundle.url(forResource: keyResourceName,
                                        withExtension: nil) else {
                                         XCTFail()
                                         return
@@ -53,7 +50,7 @@ class KeyImportUtilTest: XCTestCase {
 
         let testBundle = Bundle(for: KeyImportUtilTest.self)
 
-        guard let url = testBundle.url(forResource: "IOS-1432_keypair.asc",
+        guard let url = testBundle.url(forResource: keyResourceName,
                                        withExtension: nil) else {
                                         XCTFail()
                                         return
