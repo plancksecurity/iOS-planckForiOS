@@ -71,7 +71,7 @@ final class SettingsViewModel {
     public func cellIdentifier(for indexPath: IndexPath) -> String {
         let row = section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
-        case .account, .defaultAccount, .setOwnKey, .credits, .extraKeys, .trustedServer,
+        case .account, .defaultAccount, .pgpKeyImport, .credits, .extraKeys, .trustedServer,
              .resetTrust:
             return "SettingsCell"
         case .resetAccounts:
@@ -104,16 +104,6 @@ final class SettingsViewModel {
         }
     }
 
-    /// Returns the account setted at the the row of the provided indexPath
-    /// - Parameter indexPath: The index path to get the account
-    public func account(at indexPath : IndexPath) -> Account? {
-        let accounts = Account.all()
-        if accounts.count > indexPath.row {
-            return accounts[indexPath.row]
-        }
-        return nil
-    }
-
     /// Deletes the row at the passed index Path
     /// - Parameter indexPath: The index Path to
     public func deleteRowAt(_ indexPath: IndexPath) {
@@ -126,6 +116,14 @@ final class SettingsViewModel {
         AppSettings.shared.extraKeysEditable = newValue
         
         delegate?.showExtraKeyEditabilityStateChangeAlert(newValue: newValue ? "ON" : "OFF")
+    }
+
+    public func accountSettingsViewModel(forAccountAt indexPath: IndexPath) -> AccountSettingsViewModel {
+        return AccountSettingsViewModel(account: account(at: indexPath))
+    }
+
+    public func pgpKeyImportSettingViewModel() -> PGPKeyImportSettingViewModel {
+        return PGPKeyImportSettingViewModel()
     }
 }
 
@@ -207,7 +205,7 @@ extension SettingsViewModel {
             rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
             rows.append(generateNavigationRow(type: .credits, isDangerous: false))
             rows.append(generateNavigationRow(type: .trustedServer, isDangerous: false))
-            rows.append(generateNavigationRow(type: .setOwnKey, isDangerous: false))
+            rows.append(generateNavigationRow(type: .pgpKeyImport, isDangerous: false))
             rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
                                           isDangerous: false,
                                           isOn: AppSettings.shared.unsecureReplyWarningEnabled) {
@@ -344,9 +342,9 @@ extension SettingsViewModel {
         case .trustedServer:
             return NSLocalizedString("Store Messages Securely",
                                      comment: "Settings: Cell (button) title to view default account setting")
-        case .setOwnKey:
-            return NSLocalizedString("Set Own Key",
-                                     comment: "Settings: Cell (button) title for entering fingerprints that are made own keys")
+        case .pgpKeyImport:
+            return NSLocalizedString("PGP Key Import",
+                                     comment: "Settings: Cell (button) title for importing and using private PGP keys")
         case .extraKeys:
             return NSLocalizedString("Extra Keys",
                                      comment: "Settings: Cell (button) title to view Extra Keys setting")
@@ -376,7 +374,7 @@ extension SettingsViewModel {
         case .defaultAccount:
             return AppSettings.shared.defaultAccount
         case .account, .credits, .extraKeys, .passiveMode, .pEpSync,
-             .protectMessageSubject, .resetAccounts, .resetTrust, .setOwnKey, .trustedServer,
+             .protectMessageSubject, .resetAccounts, .resetTrust, .pgpKeyImport, .trustedServer,
              .unsecureReplyWarningEnabled:
             return nil
         }
@@ -440,6 +438,13 @@ extension SettingsViewModel {
             }
         }
     }
+
+    /// Returns the account setted at the the row of the provided indexPath
+    /// - Parameter indexPath: The index path to get the account
+    private func account(at indexPath : IndexPath) -> Account {
+        let accounts = Account.all()
+        return accounts[indexPath.row]
+    }
 }
 
 // MARK: - Public enums & structs
@@ -461,7 +466,7 @@ extension SettingsViewModel {
         case defaultAccount
         case credits
         case trustedServer
-        case setOwnKey
+        case pgpKeyImport
         case passiveMode
         case protectMessageSubject
         case unsecureReplyWarningEnabled
