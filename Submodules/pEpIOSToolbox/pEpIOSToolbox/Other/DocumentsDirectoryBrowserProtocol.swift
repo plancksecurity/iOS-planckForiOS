@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// An enum of file types for `DocumentsDirectoryBrowserProtocol`,
+/// where every type translates to a set of extensions for this file type.
 public enum DocumentsDirectoryBrowserFileType {
     /// ASCII-armored public/private keys
     case key
@@ -23,5 +25,10 @@ public enum DocumentsDirectoryBrowserFileType {
 }
 
 public protocol DocumentsDirectoryBrowserProtocol {
+    /// List the URLs of files from the documents directories.
+    /// - Parameter fileTypes: The file types that should be listed, which translates
+    /// to a list of file extensions to check for.
+    /// - Note: The search does not recurse into subdirectories.
+    /// - Throws: All `FileManager` related errors.
     func listFileUrls(fileTypes: [DocumentsDirectoryBrowserFileType]) throws -> [URL]
 }

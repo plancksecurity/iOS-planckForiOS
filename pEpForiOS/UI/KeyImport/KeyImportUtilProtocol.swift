@@ -34,7 +34,8 @@ struct KeyImportUtilProtocolKeyData {
 
 protocol KeyImportUtilProtocol {
     /// Imports a key from a local file URL.
-    /// - Throws:KeyImportUtilProtocolImportError
+    /// - Note: The caller is responsible to execute this asynchronously, if needed.
     /// - Parameter url: The URL to interpret as ASCII-armored key data
+    /// - Throws: KeyImportUtilProtocolImportError
     func importKey(url: URL) throws -> KeyImportUtilProtocolKeyData
 }
