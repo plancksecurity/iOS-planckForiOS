@@ -14,15 +14,11 @@ import MessageModel
 
 extension KeyImportViewModel {
     struct Row {
-        fileprivate let fileUrl: URL
-
         public var fileName: String {
             fileUrl.fileName(includingExtension: true)
         }
 
-        // TODO: This violates our coding guidelines
-        // ("In the app target, the visibility MUST be private or public")
-        let fileUrl: URL
+        fileprivate let fileUrl: URL
     }
 }
 
