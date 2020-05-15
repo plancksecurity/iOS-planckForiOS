@@ -44,8 +44,10 @@ extension KeyImportViewController: UITableViewDelegate {
 // MARK: - UITableViewDataSource
 
 extension KeyImportViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        // Suppress seperator lines for empty cells
+        return UIView(frame: CGRect.zero)
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
