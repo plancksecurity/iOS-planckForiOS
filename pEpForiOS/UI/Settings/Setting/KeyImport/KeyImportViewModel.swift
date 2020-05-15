@@ -77,6 +77,7 @@ class KeyImportViewModel {
 
 extension KeyImportViewModel {
     private func loadRows() {
+        // TODO: Make async
         do {
             let urls = try documentsBrowser.listFileUrls(fileTypes: [.key])
             rows = urls.map { Row(fileUrl: $0) }
@@ -88,8 +89,8 @@ extension KeyImportViewModel {
     }
 
     private func importKeyAndSetOwn(url: URL) {
+        // TODO: Make async
         do {
-            // TODO: Make async
             let keyData = try keyImporter.importKey(url: url)
             checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
                                                                   fingerprint: keyData.fingerprint))
