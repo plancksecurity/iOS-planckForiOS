@@ -235,7 +235,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LCO-IG-Rwh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="511" y="-1952"/>
+            <point key="canvasLocation" x="207" y="-2068"/>
         </scene>
         <!--Reset Trust View Controller-->
         <scene sceneID="lLJ-n0-lb9">
@@ -295,7 +295,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Sv-m8-kZO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-388" y="-1951.5742128935533"/>
+            <point key="canvasLocation" x="-490" y="-2067"/>
         </scene>
         <!--Set Own Key View Controller-->
         <scene sceneID="k12-LM-gr9">
@@ -379,7 +379,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pfo-Jp-fmH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="911" y="-1179"/>
+            <point key="canvasLocation" x="982" y="-1728"/>
         </scene>
         <!--Key Import Setting View Controller-->
         <scene sceneID="IHz-YZ-Imr">
@@ -432,7 +432,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WDs-SN-l2l" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-44" y="-1179"/>
+            <point key="canvasLocation" x="-52" y="-1215"/>
         </scene>
         <!--Account Settings Table View Controller-->
         <scene sceneID="8yf-Dg-eGD">
