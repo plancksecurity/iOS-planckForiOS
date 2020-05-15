@@ -130,7 +130,11 @@ extension PGPKeyImportSettingViewController {
             // SetOwnKeyViewController does not need any preparation
             break
         case .segueImportKeyFromDocuments:
-            fatalError("VC does not exist yet")
+            guard let vc = segue.destination as? KeyImportViewController else {
+                Log.shared.errorAndCrash("No KeyImportViewController as segue destination")
+                return
+            }
+            // TODO
             break
         case .none:
             Log.shared.errorAndCrash("No segue")
