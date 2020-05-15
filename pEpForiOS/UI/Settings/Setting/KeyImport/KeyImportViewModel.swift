@@ -48,7 +48,8 @@ class KeyImportViewModel {
 
     public private(set) var rows = [Row]()
 
-    init(documentsBrowser: DocumentsDirectoryBrowserProtocol, keyImporter: KeyImportUtilProtocol) {
+    init(documentsBrowser: DocumentsDirectoryBrowserProtocol = DocumentsDirectoryBrowser(),
+         keyImporter: KeyImportUtilProtocol = KeyImportUtil()) {
         self.documentsBrowser = documentsBrowser
         self.keyImporter = keyImporter
 
