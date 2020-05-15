@@ -96,7 +96,7 @@ extension KeyImportViewModel {
                                                                   fingerprint: keyData.fingerprint))
         } catch {
             // One message to rule them all
-            let message = NSLocalizedString("Error occurred. No key imported",
+            let message = NSLocalizedString("Error occurred. No key imported.",
                                             comment: "Generic error message on trying to import a key")
 
             if let theError = error as? KeyImportUtil.ImportError {
