@@ -33,7 +33,6 @@ class KeyImportViewController: BaseViewController {
 // MARK: - UITableViewDelegate
 
 extension KeyImportViewController: UITableViewDelegate {
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.handleDidSelect(rowAt: indexPath)
     }
