@@ -41,12 +41,10 @@ extension KeyImportUtil {
     public struct KeyData {
         public let address: String
         public let fingerprint: String
-        private let keyDataString: String
 
-        fileprivate init(address: String, fingerprint: String, keyDataString: String) {
+        fileprivate init(address: String, fingerprint: String) {
             self.address = address
             self.fingerprint = fingerprint
-            self.keyDataString = keyDataString
         }
     }
 }
@@ -76,8 +74,7 @@ extension KeyImportUtil: KeyImportUtilProtocol {
         }
 
         return KeyData(address: firstIdentity.address,
-                       fingerprint: fingerprint,
-                       keyDataString: dataString)
+                       fingerprint: fingerprint)
     }
 
     public func setOwnKey(keyData: KeyData) throws {
