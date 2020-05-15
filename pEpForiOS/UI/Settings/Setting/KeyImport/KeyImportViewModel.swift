@@ -88,9 +88,20 @@ extension KeyImportViewModel {
 
     private func importKeyAndSetOwn(url: URL) {
         do {
+            // TODO: Make async
             let keyData = try keyImporter.importKey(url: url)
+            checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
+                                                                  fingerprint: keyData.fingerprint))
         } catch {
-
+            // TODO
         }
+    }
+
+    private func checkDelegate() -> KeyImportViewModelDelegate? {
+        guard let theDelegate = delegate else {
+            Log.shared.errorAndCrash(message: "No delegate")
+            return nil
+        }
+        return theDelegate
     }
 }
