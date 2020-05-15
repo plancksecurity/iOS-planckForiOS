@@ -63,11 +63,11 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
             Log.shared.errorAndCrash("No VM")
             return nil
         }
+
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: PEPHeaderView.reuseIdentifier) as? PEPHeaderView else {
             Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
             return nil
         }
-        headerView.isUserInteractionEnabled = true
         headerView.attributedTitle = vm.sections[section].title
         return headerView
     }
