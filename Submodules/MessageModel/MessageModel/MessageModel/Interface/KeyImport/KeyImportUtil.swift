@@ -59,7 +59,13 @@ extension KeyImportUtil: KeyImportUtilProtocol {
 
         let session = PEPSession()
 
-        let identities = try session.importKey(dataString)
+        var identities = [PEPIdentity]()
+
+        do {
+            identities = try session.importKey(dataString)
+        } catch {
+            throw ImportError.malformedKey
+        }
 
         guard let firstIdentity = identities.first else {
             throw ImportError.malformedKey
