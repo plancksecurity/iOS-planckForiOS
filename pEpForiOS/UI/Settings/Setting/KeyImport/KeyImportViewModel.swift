@@ -13,24 +13,14 @@ import PEPObjCAdapterFramework
 import MessageModel
 
 protocol KeyImportViewModelDelegate {
-    /// The key was successfully imported.
-    /// - Parameter row: Model information about the imported key
-    /// - Parameter keyData: Key details (e.g. address)
-    func keyImportedSucceeded(row: KeyImportViewModel.Row, keyData: KeyImportUtil.KeyData)
+    /// The key was successfully imported, ask for permission to set it as an own key.
+    func showConfirmSetOwnKey(address: String, fingerprint: String)
 
-    /// The key import failed.
-    /// - Parameter row: Model information about the imported key
-    /// - Parameter error: The error that ocurred
-    func keyImportFailed(row: KeyImportViewModel.Row, error: KeyImportUtil.ImportError)
+    /// An error ocurred, either during key import or set own key.
+    func showError(with title: String, message: String)
 
-    /// The key was successfully installed as own key for the matching account
-    /// - Parameter keyData: Key details (e.g. address)
-    func setOwnKeySucceeded(keyData: KeyImportUtil.KeyData)
-
-    /// The key was successfully installed as own key for the matching account
-    /// - Parameter keyData: Key details (e.g. address)
-    /// - Parameter error: The error that ocurred
-    func setOwnKeyFailed(keyData: KeyImportUtil.KeyData, error: KeyImportUtil.SetOwnKeyError)
+    /// The key was successfully set as own key
+    func showSetOwnKeySuccess()
 }
 
 extension KeyImportViewModel {
@@ -40,6 +30,15 @@ extension KeyImportViewModel {
         }
 
         fileprivate let fileUrl: URL
+    }
+}
+
+extension KeyImportViewModel {
+    /// Passed between VM and VC to provide the user with data and uniquely identify
+    /// keys to operate on.
+    struct KeyDetails {
+        public let address: String
+        public let fingerprint: String
     }
 }
 
