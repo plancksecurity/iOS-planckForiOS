@@ -14,7 +14,7 @@ import MessageModel
 
 protocol KeyImportViewModelDelegate {
     /// The key was successfully imported, ask for permission to set it as an own key.
-    func showConfirmSetOwnKey(address: String, fingerprint: String)
+    func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails)
 
     /// An error ocurred, either during key import or set own key.
     func showError(with title: String, message: String)
