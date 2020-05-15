@@ -20,6 +20,12 @@ final class PEPHeaderView: UITableViewHeaderFooterView {
     }
 
     private let titleLabel = UILabel()
+    // numberOfLines property of the contained UILabel. See UILabel docs for details.
+    public var numberOfLines = 0 {
+        didSet {
+            titleLabel.numberOfLines = numberOfLines
+        }
+    }
 
     var title: String = "" {
         didSet {
@@ -44,6 +50,7 @@ extension PEPHeaderView {
         contentView.addSubview(titleLabel)
         setFont(titleLabel: titleLabel)
         setConstraints(titleLabel: titleLabel)
+        titleLabel.numberOfLines = numberOfLines
     }
     private func setFont(titleLabel: UILabel) {
         titleLabel.textColor = .pEpGreyText
@@ -52,10 +59,12 @@ extension PEPHeaderView {
     }
     private func setConstraints(titleLabel: UILabel) {
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo:
-                   contentView.layoutMarginsGuide.leadingAnchor),
-            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: Constant.Margin.top),
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -Constant.Margin.bottom)
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor,
+                                            constant: Constant.Margin.top),
+            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
+                                               constant: -Constant.Margin.bottom)
         ])
     }
 }
