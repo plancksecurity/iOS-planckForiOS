@@ -11,9 +11,9 @@ import Foundation
 class KeyImportViewController: BaseViewController {
     static private let cellID = "KeyImportTableViewCell"
 
-    public var viewModel: KeyImportViewModel? {
+    public var viewModel = KeyImportViewModel() {
         didSet {
-            viewModel?.delegate = self
+            viewModel.delegate = self
         }
     }
 
@@ -36,11 +36,7 @@ class KeyImportViewController: BaseViewController {
 extension KeyImportViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-        vm.handleDidSelect(rowAt: indexPath)
+        viewModel.handleDidSelect(rowAt: indexPath)
     }
 }
 
@@ -52,27 +48,17 @@ extension KeyImportViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return 0
-        }
-
-        return vm.rows.count
+        return viewModel.rows.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return UITableViewCell()
-        }
-
         guard
             let cell = tableView.dequeueReusableCell(withIdentifier: KeyImportViewController.cellID)
             else {
                 return UITableViewCell()
         }
 
-        cell.textLabel?.text = vm.rows[indexPath.row].fileName
+        cell.textLabel?.text = viewModel.rows[indexPath.row].fileName
 
         return cell
     }
