@@ -11,16 +11,15 @@ import Foundation
 class KeyImportViewController: BaseViewController {
     static private let cellID = "KeyImportTableViewCell"
 
-    public var viewModel = KeyImportViewModel() {
-        didSet {
-            viewModel.delegate = self
-        }
-    }
+    public let viewModel = KeyImportViewModel()
 
     @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
         super .viewDidLoad()
+
+        viewModel.delegate = self
+
         tableView.delegate = self
         tableView.dataSource = self
     }
