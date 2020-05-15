@@ -27,6 +27,16 @@ final class PEPHeaderView: UITableViewHeaderFooterView {
         }
     }
 
+    public override var backgroundColor: UIColor? {
+        set {
+            super.backgroundColor = newValue
+            setBackgroundColor(color: newValue)
+        }
+        get {
+            return super.backgroundColor
+        }
+    }
+
     var title: String = "" {
         didSet {
             titleLabel.text = title
@@ -47,17 +57,27 @@ final class PEPHeaderView: UITableViewHeaderFooterView {
 
 extension PEPHeaderView {
     private func setUp() {
+        backgroundColor = .groupTableViewBackground
         contentView.addSubview(titleLabel)
-        setFont(titleLabel: titleLabel)
-        setConstraints(titleLabel: titleLabel)
+        setFont()
+        setConstraints()
         titleLabel.numberOfLines = numberOfLines
     }
-    private func setFont(titleLabel: UILabel) {
+
+    private func setBackgroundColor(color: UIColor?) {
+        super.backgroundColor = color
+        contentView.backgroundColor = color
+        titleLabel.backgroundColor = color
+    }
+
+
+    private func setFont() {
         titleLabel.textColor = .pEpGreyText
         titleLabel.font = .pepFont(style: .subheadline, weight: .regular)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
     }
-    private func setConstraints(titleLabel: UILabel) {
+
+    private func setConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
