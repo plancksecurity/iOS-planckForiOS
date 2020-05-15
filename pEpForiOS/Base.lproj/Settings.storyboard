@@ -379,7 +379,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pfo-Jp-fmH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="982" y="-1728"/>
+            <point key="canvasLocation" x="1962" y="-1850"/>
         </scene>
         <!--Key Import Setting View Controller-->
         <scene sceneID="IHz-YZ-Imr">
@@ -428,11 +428,31 @@
                     <connections>
                         <outlet property="tableView" destination="5nE-qx-StC" id="cWA-zc-hIe"/>
                         <segue destination="cMW-fr-EKn" kind="show" identifier="segueSetOwnKey" id="voI-Bz-LUT"/>
+                        <segue destination="hLs-zl-i7t" kind="show" identifier="segueImportKeyFromDocuments" id="Btd-WZ-b17"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WDs-SN-l2l" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-52" y="-1215"/>
+            <point key="canvasLocation" x="1185" y="-1215"/>
+        </scene>
+        <!--Key Import View Controller-->
+        <scene sceneID="RYO-eZ-7yr">
+            <objects>
+                <viewController id="hLs-zl-i7t" customClass="KeyImportViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Lzj-ng-Qyu"/>
+                        <viewControllerLayoutGuide type="bottom" id="Kh4-N4-wiZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7jM-h4-xhb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="kOk-h1-pkL"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ovu-A9-Syq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1962" y="-1106"/>
         </scene>
         <!--Account Settings Table View Controller-->
         <scene sceneID="8yf-Dg-eGD">
