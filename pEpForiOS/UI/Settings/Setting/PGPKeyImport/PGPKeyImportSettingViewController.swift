@@ -23,6 +23,11 @@ class PGPKeyImportSettingViewController: BaseViewController {
                                   comment: "PGPKeyImportSettingViewController Navigationbar title")
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.backgroundColor = .groupTableViewBackground
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
+        tableView.estimatedSectionHeaderHeight = 100
+        tableView.register(PEPHeaderView.self,
+                           forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -49,29 +54,21 @@ extension PGPKeyImportSettingViewController: UITableViewDelegate {
 extension PGPKeyImportSettingViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView()
+        // Suppresses seperator lines for empty cells
+        return UIView(frame: CGRect.zero)
     }
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        guard let vm = viewModel else {
-//            Log.shared.errorAndCrash("No VM")
-//            return nil
-//        }
-//        return vm.sections[section].title
-//    }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return nil
         }
-        let view = UIView()
-        let label = UILabel()
-        label.numberOfLines = 0
-        view.addSubview(label)
-        label.fullSizeInSuperView()
-        label.text = vm.sections[section].title
-
-        return view
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: PEPHeaderView.reuseIdentifier) as? PEPHeaderView else {
+            Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
+            return nil
+        }
+        headerView.title = vm.sections[section].title
+        return headerView
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
