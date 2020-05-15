@@ -22,6 +22,9 @@ class KeyImportViewController: BaseViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
+
+        title = NSLocalizedString("Available Keys",
+                                  comment: "Title of the view for choosing installed keys to import")
     }
 
     override func viewWillAppear(_ animated: Bool) {
