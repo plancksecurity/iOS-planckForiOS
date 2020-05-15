@@ -19,6 +19,8 @@ class PGPKeyImportSettingViewController: BaseViewController {
 
     override func viewDidLoad() {
         super .viewDidLoad()
+        title = NSLocalizedString("PGP Key Import",
+                                  comment: "PGPKeyImportSettingViewController Navigationbar title")
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -45,12 +47,31 @@ extension PGPKeyImportSettingViewController: UITableViewDelegate {
 // MARK: - UITableViewDataSource
 
 extension PGPKeyImportSettingViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        guard let vm = viewModel else {
+//            Log.shared.errorAndCrash("No VM")
+//            return nil
+//        }
+//        return vm.sections[section].title
+//    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return nil
         }
-        return vm.sections[section].title
+        let view = UIView()
+        let label = UILabel()
+        label.numberOfLines = 0
+        view.addSubview(label)
+        label.fullSizeInSuperView()
+        label.text = vm.sections[section].title
+
+        return view
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -79,7 +100,11 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
             else {
                 return UITableViewCell()
         }
-        cell.textLabel?.text = vm.sections[indexPath.section].rows[indexPath.row].title
+        let row = vm.sections[indexPath.section].rows[indexPath.row]
+        cell.textLabel?.text = row.title
+        if row.type == .setOwnKey {
+            cell.accessoryType = .disclosureIndicator
+        }
 
         return cell
     }

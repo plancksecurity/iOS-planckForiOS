@@ -14,8 +14,13 @@ protocol PGPKeyImportSettingViewModelDelegate: class {
 }
 
 extension PGPKeyImportSettingViewModel {
+    public enum RowType {
+        case pgpKeyImport
+        case setOwnKey
+    }
 
     public struct Row {
+        public let type: RowType
         public let title: String
     }
 
@@ -53,13 +58,13 @@ extension PGPKeyImportSettingViewModel {
         // pgpkeyImportSection
         let pgpKeyImportTitle = NSLocalizedString("To import an existing PGP private key, you first need to transfer it from your computer. Click here for more information. Once the private key has been transferred to the device, you can import it here.",
                                                   comment: "PGPKeyImportSetting row title")
-        let pgpKeyImportRow = Row(title: "PGP Key Import")
+        let pgpKeyImportRow = Row(type: .pgpKeyImport, title: "PGP Key Import")
         let pgpkeyImportSection = Section(rows: [pgpKeyImportRow],
                                           title: pgpKeyImportTitle)
         // setOwnKeySection
         let setOwnKeyRowTitle = NSLocalizedString("ADVANCED",
                                                   comment: "setOwnKeyRowTitle row title")
-        let setOwnKeyRow = Row(title: "Set Own Key")
+        let setOwnKeyRow = Row(type: .setOwnKey, title: "Set Own Key")
         let setOwnKeySection = Section(rows: [setOwnKeyRow],
                                        title: setOwnKeyRowTitle)
 
