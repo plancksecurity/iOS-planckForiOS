@@ -1949,8 +1949,8 @@
 		431E68B1246C266800B3A977 /* KeyImport */ = {
 			isa = PBXGroup;
 			children = (
-				431E68B2246C267A00B3A977 /* KeyImportViewModel.swift */,
 				43038EA1246D897F008FC36E /* KeyImportViewController.swift */,
+				431E68B2246C267A00B3A977 /* KeyImportViewModel.swift */,
 			);
 			path = KeyImport;
 			sourceTree = "<group>";
