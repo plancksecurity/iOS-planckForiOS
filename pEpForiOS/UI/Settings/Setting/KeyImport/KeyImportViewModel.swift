@@ -95,19 +95,20 @@ extension KeyImportViewModel {
             checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
                                                                   fingerprint: keyData.fingerprint))
         } catch {
+            // One message to rule them all
+            let message = NSLocalizedString("Error occurred. No key imported",
+                                            comment: "Generic error message on trying to import a key")
+
             if let theError = error as? KeyImportUtil.ImportError {
                 switch theError {
                 case .cannotLoadKey:
-                    checkDelegate()?.showError(message: NSLocalizedString("Can not load key from file",
-                                                                          comment: "Error when not being able to import key"))
+                    checkDelegate()?.showError(message: message)
                 case .malformedKey:
-                    checkDelegate()?.showError(message: NSLocalizedString("Key is corrupt",
-                                                                          comment: "Error when not being able to import key"))
+                    checkDelegate()?.showError(message: message)
                 }
             } else {
-                Log.shared.errorAndCrash(message: "Unhandled error")
-                checkDelegate()?.showError(message: NSLocalizedString("Can not load key from file",
-                                                                      comment: "Error when not being able to import key"))
+                Log.shared.errorAndCrash(message: "Unhandled error. Check all possible cases.")
+                checkDelegate()?.showError(message: message)
             }
         }
     }
