@@ -426,7 +426,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="tableView" destination="5nE-qx-StC" id="cWA-zc-hIe"/>
+                        <outlet property="tableView" destination="5nE-qx-StC" id="eo9-oV-L9l"/>
                         <segue destination="cMW-fr-EKn" kind="show" identifier="segueSetOwnKey" id="voI-Bz-LUT"/>
                         <segue destination="hLs-zl-i7t" kind="show" identifier="segueImportKeyFromDocuments" id="Btd-WZ-b17"/>
                     </connections>
@@ -446,9 +446,24 @@
                     <view key="view" contentMode="scaleToFill" id="7jM-h4-xhb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mRe-iw-UnW">
+                                <rect key="frame" x="16" y="0.0" width="343" height="647"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="mRe-iw-UnW" secondAttribute="trailing" id="2kn-3T-nVw"/>
+                            <constraint firstItem="mRe-iw-UnW" firstAttribute="top" secondItem="Lzj-ng-Qyu" secondAttribute="bottom" id="WMr-iJ-V9m"/>
+                            <constraint firstItem="Kh4-N4-wiZ" firstAttribute="top" secondItem="mRe-iw-UnW" secondAttribute="bottom" id="vN2-Rg-GZe"/>
+                            <constraint firstItem="mRe-iw-UnW" firstAttribute="leading" secondItem="7jM-h4-xhb" secondAttribute="leadingMargin" id="viN-c4-oRb"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="kOk-h1-pkL"/>
+                    <connections>
+                        <outlet property="tableView" destination="mRe-iw-UnW" id="nsB-Mj-onS"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ovu-A9-Syq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
