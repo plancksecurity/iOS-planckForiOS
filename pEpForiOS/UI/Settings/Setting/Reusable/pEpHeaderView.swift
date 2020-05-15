@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class pEpHeaderView: UITableViewHeaderFooterView {
+final class PEPHeaderView: UITableViewHeaderFooterView {
 
     static let reuseIdentifier = "pEp Section Header"
 
@@ -39,7 +39,7 @@ final class pEpHeaderView: UITableViewHeaderFooterView {
 
 // MARK: - Private
 
-extension pEpHeaderView {
+extension PEPHeaderView {
     private func setUp() {
         contentView.addSubview(titleLabel)
         setFont(titleLabel: titleLabel)

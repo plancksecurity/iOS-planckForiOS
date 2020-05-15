@@ -56,8 +56,8 @@ extension SettingsTableViewController {
     }
     private func setUp() {
         title = Localized.navigationTitle
-        tableView.register(pEpHeaderView.self,
-                           forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
+        tableView.register(PEPHeaderView.self,
+                           forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
     }
     /// Prepares and returns the swipe tableview cell, with the corresponding color and title.
     /// - Parameters:
@@ -188,7 +188,7 @@ extension SettingsTableViewController {
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 
-        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: pEpHeaderView.reuseIdentifier) as? pEpHeaderView else {
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: PEPHeaderView.reuseIdentifier) as? PEPHeaderView else {
             Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
             return nil
         }
