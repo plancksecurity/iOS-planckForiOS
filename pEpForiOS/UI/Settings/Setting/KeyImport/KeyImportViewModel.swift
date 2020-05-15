@@ -69,10 +69,24 @@ class KeyImportViewModel {
 
     /// Sets the given key as own and informs the delegate about success or error.
     func setOwnKey(key: KeyImportViewModel.KeyDetails) {
+        // TODO: Make async
+        do {
+            try keyImporter.setOwnKey(address: key.address, fingerprint: key.fingerprint)
+        } catch {
+            guard let _ = error as? KeyImportUtil.SetOwnKeyError else {
+                Log.shared.errorAndCrash(message: "Unexpected error have to handle it: \(error)")
+                return
+            }
+            checkDelegate()?.showError(message: keyImportErrorMessage)
+        }
     }
 
     private let documentsBrowser: DocumentsDirectoryBrowserProtocol
     private let keyImporter: KeyImportUtilProtocol
+
+    // One message to rule them all
+    let keyImportErrorMessage = NSLocalizedString("Error occurred. No key imported.",
+                                                  comment: "Generic error message on trying to import a key")
 }
 
 extension KeyImportViewModel {
@@ -95,20 +109,16 @@ extension KeyImportViewModel {
             checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
                                                                   fingerprint: keyData.fingerprint))
         } catch {
-            // One message to rule them all
-            let message = NSLocalizedString("Error occurred. No key imported.",
-                                            comment: "Generic error message on trying to import a key")
-
             if let theError = error as? KeyImportUtil.ImportError {
                 switch theError {
                 case .cannotLoadKey:
-                    checkDelegate()?.showError(message: message)
+                    checkDelegate()?.showError(message: keyImportErrorMessage)
                 case .malformedKey:
-                    checkDelegate()?.showError(message: message)
+                    checkDelegate()?.showError(message: keyImportErrorMessage)
                 }
             } else {
                 Log.shared.errorAndCrash(message: "Unhandled error. Check all possible cases.")
-                checkDelegate()?.showError(message: message)
+                checkDelegate()?.showError(message: keyImportErrorMessage)
             }
         }
     }
