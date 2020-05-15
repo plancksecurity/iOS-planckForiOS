@@ -68,6 +68,9 @@ extension KeyImportViewController: UITableViewDataSource {
 // MARK: - KeyImportViewModelDelegate
 
 extension KeyImportViewController: KeyImportViewModelDelegate {
+    static private let alertTitle = NSLocalizedString("PGP Key Import",
+                                                      comment: "Title for alert when trying to import a key")
+
     func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails) {
         func userAccepted() {
             viewModel.setOwnKey(key: key)
@@ -77,8 +80,6 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
             // nothing to do
         }
 
-        let title = NSLocalizedString("PGP Key Import",
-                                      comment: "Title for alert when trying to import a key")
         let yesMessage = NSLocalizedString("Yes",
                                            comment: "Title for yes button when trying to import a key")
         let noMessage = NSLocalizedString("No",
@@ -88,7 +89,7 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
                                                        key.address,
                                                        key.fingerprint)
 
-        UIUtils.showTwoButtonAlert(withTitle: title,
+        UIUtils.showTwoButtonAlert(withTitle: KeyImportViewController.alertTitle,
                                    message: message,
                                    cancelButtonText: noMessage,
                                    positiveButtonText: yesMessage,
@@ -97,7 +98,8 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
     }
 
     func showError(with title: String, message: String) {
-        // TODO
+        UIUtils.showAlertWithOnlyPositiveButton(title: KeyImportViewController.alertTitle,
+                                                message: message)
     }
 
     func showSetOwnKeySuccess() {
