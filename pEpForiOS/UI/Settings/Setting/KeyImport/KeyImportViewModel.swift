@@ -17,7 +17,7 @@ protocol KeyImportViewModelDelegate: class {
     func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails)
 
     /// An error ocurred, either during key import or set own key.
-    func showError(with title: String, message: String)
+    func showError(message: String)
 
     /// The key was successfully set as own key
     func showSetOwnKeySuccess()
@@ -95,24 +95,18 @@ extension KeyImportViewModel {
             checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
                                                                   fingerprint: keyData.fingerprint))
         } catch {
-            let title = NSLocalizedString("Can not load key",
-                                          comment: "Error when not being able to import key")
-
             if let theError = error as? KeyImportUtil.ImportError {
                 switch theError {
                 case .cannotLoadKey:
-                    checkDelegate()?.showError(with: title,
-                                               message: NSLocalizedString("Can not load key from file",
+                    checkDelegate()?.showError(message: NSLocalizedString("Can not load key from file",
                                                                           comment: "Error when not being able to import key"))
                 case .malformedKey:
-                    checkDelegate()?.showError(with: title,
-                                               message: NSLocalizedString("Key is corrupt",
+                    checkDelegate()?.showError(message: NSLocalizedString("Key is corrupt",
                                                                           comment: "Error when not being able to import key"))
                 }
             } else {
                 Log.shared.errorAndCrash(message: "Unhandled error")
-                checkDelegate()?.showError(with: title,
-                                           message: NSLocalizedString("Can not load key from file",
+                checkDelegate()?.showError(message: NSLocalizedString("Can not load key from file",
                                                                       comment: "Error when not being able to import key"))
             }
         }

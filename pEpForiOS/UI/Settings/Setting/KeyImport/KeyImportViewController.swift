@@ -97,7 +97,7 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
                                    positiveButtonAction: userAccepted)
     }
 
-    func showError(with title: String, message: String) {
+    func showError(message: String) {
         UIUtils.showAlertWithOnlyPositiveButton(title: KeyImportViewController.alertTitle,
                                                 message: message)
     }
