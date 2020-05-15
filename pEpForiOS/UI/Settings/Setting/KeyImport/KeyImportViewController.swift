@@ -103,6 +103,9 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
     }
 
     func showSetOwnKeySuccess() {
-        // TODO
+        let message = NSLocalizedString("Key successfully imported.",
+                                        comment: "Success message when importing the key")
+        UIUtils.showAlertWithOnlyPositiveButton(title: KeyImportViewController.alertTitle,
+                                                message: message)
     }
 }
