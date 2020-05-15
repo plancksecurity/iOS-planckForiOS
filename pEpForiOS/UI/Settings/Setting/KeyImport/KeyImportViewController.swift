@@ -9,4 +9,87 @@
 import Foundation
 
 class KeyImportViewController: BaseViewController {
+    static private let cellID = "KeyImportTableViewCell"
+
+    public var viewModel: KeyImportViewModel? {
+        didSet {
+            viewModel?.delegate = self
+        }
+    }
+
+    @IBOutlet weak var tableView: UITableView!
+
+    override func viewDidLoad() {
+        super .viewDidLoad()
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension KeyImportViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        vm.handleDidSelect(rowAt: indexPath)
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension KeyImportViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return 0
+        }
+
+        return vm.rows.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return UITableViewCell()
+        }
+
+        guard
+            let cell = tableView.dequeueReusableCell(withIdentifier: KeyImportViewController.cellID)
+            else {
+                return UITableViewCell()
+        }
+
+        cell.textLabel?.text = vm.rows[indexPath.row].fileName
+
+        return cell
+    }
+}
+
+// MARK: - KeyImportViewModelDelegate
+
+extension KeyImportViewController: KeyImportViewModelDelegate {
+    func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails) {
+        // TODO
+    }
+
+    func showError(with title: String, message: String) {
+        // TODO
+    }
+
+    func showSetOwnKeySuccess() {
+        // TODO
+    }
 }
