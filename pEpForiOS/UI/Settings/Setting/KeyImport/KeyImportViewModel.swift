@@ -85,5 +85,10 @@ extension KeyImportViewModel {
     }
 
     private func importKeyAndSetOwn(url: URL) {
+        do {
+            let keyData = try keyImporter.importKey(url: url)
+        } catch {
+            
+        }
     }
 }
