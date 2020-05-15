@@ -12,7 +12,7 @@ import pEpIOSToolbox
 import PEPObjCAdapterFramework
 import MessageModel
 
-protocol KeyImportViewModelDelegate {
+protocol KeyImportViewModelDelegate: class {
     /// The key was successfully imported, ask for permission to set it as an own key.
     func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails)
 
@@ -44,6 +44,8 @@ extension KeyImportViewModel {
 
 /// Model for importing keys from the filesystem, and setting them as own keys.
 class KeyImportViewModel {
+    weak public var delegate: KeyImportViewModelDelegate?
+
     public private(set) var rows = [Row]()
 
     init(documentsBrowser: DocumentsDirectoryBrowserProtocol, keyImporter: KeyImportUtilProtocol) {
@@ -88,7 +90,7 @@ extension KeyImportViewModel {
         do {
             let keyData = try keyImporter.importKey(url: url)
         } catch {
-            
+
         }
     }
 }
