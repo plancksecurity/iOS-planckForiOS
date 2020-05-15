@@ -22,6 +22,14 @@ extension PGPKeyImportSettingViewModel {
     public struct Row {
         public let type: RowType
         public let title: String
+        // If nil, do not set
+        public let titleFontColor: UIColor?
+
+        init(type: RowType, title: String, titleFontColor: UIColor? = nil) {
+            self.type = type
+            self.title = title
+            self.titleFontColor = titleFontColor
+        }
     }
 
     public struct Section {
@@ -58,7 +66,7 @@ extension PGPKeyImportSettingViewModel {
         // pgpkeyImportSection
         let pgpKeyImportTitle = NSLocalizedString("To import an existing PGP private key, you first need to transfer it from your computer. Click here for more information. Once the private key has been transferred to the device, you can import it here.",
                                                   comment: "PGPKeyImportSetting row title")
-        let pgpKeyImportRow = Row(type: .pgpKeyImport, title: "PGP Key Import")
+        let pgpKeyImportRow = Row(type: .pgpKeyImport, title: "PGP Key Import", titleFontColor: .pEpGreen)
         let pgpkeyImportSection = Section(rows: [pgpKeyImportRow],
                                           title: pgpKeyImportTitle)
         // setOwnKeySection
