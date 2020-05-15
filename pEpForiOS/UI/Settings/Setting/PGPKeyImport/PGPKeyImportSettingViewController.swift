@@ -134,7 +134,7 @@ extension PGPKeyImportSettingViewController {
                 Log.shared.errorAndCrash("No KeyImportViewController as segue destination")
                 return
             }
-            // TODO
+            vc.appConfig = appConfig
             break
         case .none:
             Log.shared.errorAndCrash("No segue")
