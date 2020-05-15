@@ -69,7 +69,31 @@ extension KeyImportViewController: UITableViewDataSource {
 
 extension KeyImportViewController: KeyImportViewModelDelegate {
     func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails) {
-        // TODO
+        func userAccepted() {
+            viewModel.setOwnKey(key: key)
+        }
+
+        func userCanceled() {
+            // nothing to do
+        }
+
+        let title = NSLocalizedString("PGP Key Import",
+                                      comment: "Title for alert when trying to import a key")
+        let yesMessage = NSLocalizedString("Yes",
+                                           comment: "Title for yes button when trying to import a key")
+        let noMessage = NSLocalizedString("No",
+                                           comment: "Title for no button (cancel) when trying to import a key")
+        let message = String.localizedStringWithFormat(NSLocalizedString("You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?",
+                                                                         comment: "Message when asking user for confirmation about importing a key"),
+                                                       key.address,
+                                                       key.fingerprint)
+
+        UIUtils.showTwoButtonAlert(withTitle: title,
+                                   message: message,
+                                   cancelButtonText: noMessage,
+                                   positiveButtonText: yesMessage,
+                                   cancelButtonAction: userCanceled,
+                                   positiveButtonAction: userAccepted)
     }
 
     func showError(with title: String, message: String) {
