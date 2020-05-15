@@ -43,6 +43,19 @@ final class PEPHeaderView: UITableViewHeaderFooterView {
         }
     }
 
+    var attributedTitle: NSAttributedString = NSAttributedString(string: "") {
+        didSet {
+            titleLabel.attributedText = attributedTitle
+        }
+    }
+
+    override var isUserInteractionEnabled: Bool {
+        didSet {
+            titleLabel.isUserInteractionEnabled = isUserInteractionEnabled
+            super.isUserInteractionEnabled = isUserInteractionEnabled
+        }
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

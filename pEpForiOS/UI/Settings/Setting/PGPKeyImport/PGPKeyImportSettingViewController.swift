@@ -67,7 +67,8 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
             Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
             return nil
         }
-        headerView.title = vm.sections[section].title
+        headerView.isUserInteractionEnabled = true
+        headerView.attributedTitle = vm.sections[section].title
         return headerView
     }
 
