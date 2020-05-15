@@ -16,7 +16,8 @@ public protocol KeyImportUtilProtocol {
     func importKey(url: URL) throws -> KeyImportUtil.KeyData
 
     /// Sets the given key as own key.
-    /// - Parameter keyData: The key data for the key to be set as own key
+    /// - Parameter address: The address to set this key as own key to
+    /// - Parameter fingerprint: The fingerprint to identify the (already imported) key
     /// - Throws: KeyImportUtil.SetOwnKeyError
-    func setOwnKey(keyData: KeyImportUtil.KeyData) throws
+    func setOwnKey(address: String, fingerprint: String) throws
 }

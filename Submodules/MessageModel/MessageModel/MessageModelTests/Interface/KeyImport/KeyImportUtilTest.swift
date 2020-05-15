@@ -39,7 +39,7 @@ class KeyImportUtilTest: XCTestCase {
         let keyData = try keyImport.importKey(url: url)
 
         do {
-            try keyImport.setOwnKey(keyData: keyData)
+            try keyImport.setOwnKey(address: keyData.address, fingerprint: keyData.fingerprint)
         } catch KeyImportUtil.SetOwnKeyError.noMatchingAccount {
             // expected
         }
@@ -66,6 +66,6 @@ class KeyImportUtilTest: XCTestCase {
 
         let _ = Account(user: ident, servers: [])
 
-        try keyImport.setOwnKey(keyData: keyData)
+        try keyImport.setOwnKey(address: keyData.address, fingerprint: keyData.fingerprint)
     }
 }

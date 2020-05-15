@@ -77,13 +77,13 @@ extension KeyImportUtil: KeyImportUtilProtocol {
                        fingerprint: fingerprint)
     }
 
-    public func setOwnKey(keyData: KeyData) throws {
-        guard let account = Account.by(address: keyData.address) else {
+    public func setOwnKey(address: String, fingerprint: String) throws {
+        guard let account = Account.by(address: address) else {
             throw SetOwnKeyError.noMatchingAccount
         }
 
         do {
-            try account.user.setOwnKey(fingerprint: keyData.fingerprint)
+            try account.user.setOwnKey(fingerprint: fingerprint)
         } catch {
             Log.shared.log(error: error)
             throw SetOwnKeyError.cannotSetOwnKey
