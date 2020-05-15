@@ -40,16 +40,13 @@ final class PEPHeaderView: UITableViewHeaderFooterView {
     var title: String = "" {
         didSet {
             titleTextView.text = title
-            titleTextView.sizeToFit()
         }
     }
 
     var attributedTitle: NSAttributedString = NSAttributedString(string: "") {
         didSet {
-            let font = UIFont.pepFont(style: .subheadline, weight: .regular)
-            let mutable = NSMutableAttributedString(attributedString: attributedTitle)
-            mutable.replaceFont(with: font)
-            titleTextView.attributedText = mutable
+            titleTextView.attributedText = attributedTitle
+            setFont()
         }
     }
 
@@ -82,8 +79,14 @@ extension PEPHeaderView {
 
 
     private func setFont() {
+        let font = UIFont.pepFont(style: .subheadline, weight: .regular)
+
         titleTextView.textColor = .pEpGreyText
-        titleTextView.font = .pepFont(style: .subheadline, weight: .regular)
+        titleTextView.font = font
+
+        let mutableAttributedTitle = NSMutableAttributedString(attributedString: titleTextView.attributedText)
+        mutableAttributedTitle.replaceFont(with: font)
+        titleTextView.attributedText = mutableAttributedTitle
     }
 
     private func setConstraints() {
