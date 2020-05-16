@@ -132,23 +132,30 @@ extension KeyImportViewModel {
     }
 
     private func importKey(url: URL) {
-        // TODO: Make async
-        do {
-            let keyData = try keyImporter.importKey(url: url)
-            checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
-                                                                  fingerprint: keyData.fingerprint,
-                                                                  userName: keyData.userName))
-        } catch {
-            if let theError = error as? KeyImportUtil.ImportError {
-                switch theError {
-                case .cannotLoadKey:
-                    checkDelegate()?.showError(message: keyImportErrorMessage)
-                case .malformedKey:
-                    checkDelegate()?.showError(message: keyImportErrorMessage)
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+            guard let me = self else {
+                return // The handling VC can go out of scope
+            }
+
+            do {
+                let keyData = try me.keyImporter.importKey(url: url)
+                me.checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
+                                                                      fingerprint: keyData.fingerprint,
+                                                                      userName: keyData.userName))
+            } catch {
+                DispatchQueue.main.async {
+                    if let theError = error as? KeyImportUtil.ImportError {
+                        switch theError {
+                        case .cannotLoadKey:
+                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                        case .malformedKey:
+                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                        }
+                    } else {
+                        Log.shared.errorAndCrash(message: "Unhandled error. Check all possible cases.")
+                        me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                    }
                 }
-            } else {
-                Log.shared.errorAndCrash(message: "Unhandled error. Check all possible cases.")
-                checkDelegate()?.showError(message: keyImportErrorMessage)
             }
         }
     }
