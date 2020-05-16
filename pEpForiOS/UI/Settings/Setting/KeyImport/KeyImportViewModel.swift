@@ -39,6 +39,9 @@ extension KeyImportViewModel {
     struct KeyDetails {
         public let address: String
         public let fingerprint: String
+
+        /// This is not needed for setting an key as own, but may be displayed to the user
+        public let userName: String?
     }
 }
 
@@ -107,7 +110,8 @@ extension KeyImportViewModel {
         do {
             let keyData = try keyImporter.importKey(url: url)
             checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
-                                                                  fingerprint: keyData.fingerprint))
+                                                                  fingerprint: keyData.fingerprint,
+                                                                  userName: keyData.userName))
         } catch {
             if let theError = error as? KeyImportUtil.ImportError {
                 switch theError {

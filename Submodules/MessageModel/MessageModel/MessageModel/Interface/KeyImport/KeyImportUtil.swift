@@ -42,9 +42,13 @@ extension KeyImportUtil {
         public let address: String
         public let fingerprint: String
 
-        fileprivate init(address: String, fingerprint: String) {
+        /// This is not needed for setting an key as own, but may be displayed to the user
+        public let userName: String?
+
+        fileprivate init(address: String, fingerprint: String, userName: String?) {
             self.address = address
             self.fingerprint = fingerprint
+            self.userName = userName
         }
     }
 }
@@ -74,7 +78,8 @@ extension KeyImportUtil: KeyImportUtilProtocol {
         }
 
         return KeyData(address: firstIdentity.address,
-                       fingerprint: fingerprint)
+                       fingerprint: fingerprint,
+                       userName: firstIdentity.userName)
     }
 
     public func setOwnKey(address: String, fingerprint: String) throws {
