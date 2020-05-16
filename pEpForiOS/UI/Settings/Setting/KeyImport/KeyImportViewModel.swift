@@ -42,6 +42,16 @@ extension KeyImportViewModel {
 
         /// This is not needed for setting an key as own, but may be displayed to the user
         public let userName: String?
+
+        /// - Returns: A string representing user name (if set) and email of this key,
+        /// as in "user ID" of GPG/PGP.
+        public func presentableUserId() -> String {
+            if let theUserName = userName {
+                return "\(theUserName) <\(address)>"
+            } else {
+                return address
+            }
+        }
     }
 }
 
