@@ -88,7 +88,7 @@ extension KeyImportUtil: KeyImportUtilProtocol {
         let session = Session()
 
         session.performAndWait {
-            guard let account = Account.by(address: address) else {
+            guard let account = Account.by(address: address, in: session) else {
                 thrown = SetOwnKeyError.noMatchingAccount
                 return
             }
