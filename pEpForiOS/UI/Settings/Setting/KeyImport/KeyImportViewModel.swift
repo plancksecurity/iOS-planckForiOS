@@ -139,9 +139,11 @@ extension KeyImportViewModel {
 
             do {
                 let keyData = try me.keyImporter.importKey(url: url)
-                me.checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
-                                                                      fingerprint: keyData.fingerprint,
-                                                                      userName: keyData.userName))
+                DispatchQueue.main.async {
+                    me.checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
+                                                                             fingerprint: keyData.fingerprint,
+                                                                             userName: keyData.userName))
+                }
             } catch {
                 DispatchQueue.main.async {
                     if let theError = error as? KeyImportUtil.ImportError {
