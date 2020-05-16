@@ -86,6 +86,7 @@ class KeyImportViewModel {
         // TODO: Make async
         do {
             try keyImporter.setOwnKey(address: key.address, fingerprint: key.fingerprint)
+            checkDelegate()?.showSetOwnKeySuccess()
         } catch {
             guard let _ = error as? KeyImportUtil.SetOwnKeyError else {
                 Log.shared.errorAndCrash(message: "Unexpected error have to handle it: \(error)")
