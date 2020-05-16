@@ -83,15 +83,27 @@ extension KeyImportUtil: KeyImportUtilProtocol {
     }
 
     public func setOwnKey(address: String, fingerprint: String) throws {
-        guard let account = Account.by(address: address) else {
-            throw SetOwnKeyError.noMatchingAccount
+        var thrown: Error?
+
+        let session = Session()
+
+        session.performAndWait {
+            guard let account = Account.by(address: address) else {
+                thrown = SetOwnKeyError.noMatchingAccount
+                return
+            }
+
+            do {
+                try account.user.setOwnKey(fingerprint: fingerprint)
+            } catch {
+                Log.shared.log(error: error)
+                thrown = SetOwnKeyError.cannotSetOwnKey
+                return
+            }
         }
 
-        do {
-            try account.user.setOwnKey(fingerprint: fingerprint)
-        } catch {
-            Log.shared.log(error: error)
-            throw SetOwnKeyError.cannotSetOwnKey
+        if let somethingThrown = thrown {
+            throw somethingThrown
         }
     }
 }
