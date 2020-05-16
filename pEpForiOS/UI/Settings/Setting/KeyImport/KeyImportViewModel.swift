@@ -115,14 +115,19 @@ class KeyImportViewModel {
 
 extension KeyImportViewModel {
     private func loadRows() {
-        // TODO: Make async
-        do {
-            let urls = try documentsBrowser.listFileUrls(fileTypes: [.key])
-            rows = urls.map { Row(fileUrl: $0) }
-        } catch {
-            // developer error
-            Log.shared.errorAndCrash(error: error)
-            rows = []
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+            guard let me = self else {
+                return // The handling VC can go out of scope
+            }
+
+            do {
+                let urls = try me.documentsBrowser.listFileUrls(fileTypes: [.key])
+                me.rows = urls.map { Row(fileUrl: $0) }
+            } catch {
+                // developer error
+                Log.shared.errorAndCrash(error: error)
+                me.rows = []
+            }
         }
     }
 
