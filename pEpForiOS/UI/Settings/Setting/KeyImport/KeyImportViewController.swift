@@ -73,6 +73,10 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
     static private let alertTitle = NSLocalizedString("PGP Key Import",
                                                       comment: "Title for alert when trying to import a key")
 
+    func rowsLoaded() {
+        // TODO
+    }
+
     func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails) {
         func userAccepted() {
             viewModel.setOwnKey(key: key)

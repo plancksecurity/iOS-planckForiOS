@@ -13,6 +13,9 @@ import PEPObjCAdapterFramework
 import MessageModel
 
 protocol KeyImportViewModelDelegate: class {
+    /// The rows have been loadad.
+    func rowsLoaded()
+
     /// The key was successfully imported, ask for permission to set it as an own key.
     func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails)
 
