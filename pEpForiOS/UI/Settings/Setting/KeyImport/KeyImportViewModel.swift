@@ -43,9 +43,6 @@ extension KeyImportViewModel {
         public let address: String
         public let fingerprint: String
 
-        /// This is not needed for setting an key as own, but may be displayed to the user
-        public let userName: String?
-
         /// - Returns: A string representing user name (if set) and email of this key,
         /// as in "user ID" of GPG/PGP, e.g. "Eldon Tyrell <eldon.tyrell@tyrell.corp>"
         /// or "eldon.tyrell@tyrell.corp" if the user name is missing.
@@ -55,6 +52,14 @@ extension KeyImportViewModel {
             } else {
                 return address
             }
+        }
+
+        private let userName: String?
+
+        fileprivate init(address: String, fingerprint: String, userName: String?) {
+            self.address = address
+            self.fingerprint = fingerprint
+            self.userName = userName
         }
     }
 }
