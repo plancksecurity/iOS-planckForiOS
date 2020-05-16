@@ -44,8 +44,9 @@ extension KeyImportViewModel {
         public let userName: String?
 
         /// - Returns: A string representing user name (if set) and email of this key,
-        /// as in "user ID" of GPG/PGP.
-        public func presentableUserId() -> String {
+        /// as in "user ID" of GPG/PGP, e.g. "Eldon Tyrell <eldon.tyrell@tyrell.corp>"
+        /// or "eldon.tyrell@tyrell.corp" if the user name is missing.
+        public func userPresentableNameAndAddress() -> String {
             if let theUserName = userName {
                 return "\(theUserName) <\(address)>"
             } else {
