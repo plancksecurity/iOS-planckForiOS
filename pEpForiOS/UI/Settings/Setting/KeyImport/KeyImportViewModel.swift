@@ -83,16 +83,25 @@ class KeyImportViewModel {
 
     /// Sets the given key as own and informs the delegate about success or error.
     func setOwnKey(key: KeyImportViewModel.KeyDetails) {
-        // TODO: Make async
-        do {
-            try keyImporter.setOwnKey(address: key.address, fingerprint: key.fingerprint)
-            checkDelegate()?.showSetOwnKeySuccess()
-        } catch {
-            guard let _ = error as? KeyImportUtil.SetOwnKeyError else {
-                Log.shared.errorAndCrash(message: "Unexpected error have to handle it: \(error)")
-                return
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+            guard let me = self else {
+                return // The handling VC can go out of scope
             }
-            checkDelegate()?.showError(message: keyImportErrorMessage)
+
+            do {
+                try me.keyImporter.setOwnKey(address: key.address, fingerprint: key.fingerprint)
+                DispatchQueue.main.async {
+                    me.checkDelegate()?.showSetOwnKeySuccess()
+                }
+            } catch {
+                guard let _ = error as? KeyImportUtil.SetOwnKeyError else {
+                    Log.shared.errorAndCrash(message: "Unexpected error have to handle it: \(error)")
+                    return
+                }
+                DispatchQueue.main.async {
+                    me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                }
+            }
         }
     }
 
