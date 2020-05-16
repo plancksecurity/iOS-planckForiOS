@@ -64,7 +64,7 @@ class KeyImportViewModel {
             Log.shared.errorAndCrash("indexPath out of bounds: %d", indexPath.row)
             return
         }
-        importKeyAndSetOwn(url: row.fileUrl)
+        importKey(url: row.fileUrl)
     }
 
     /// Sets the given key as own and informs the delegate about success or error.
@@ -102,7 +102,7 @@ extension KeyImportViewModel {
         }
     }
 
-    private func importKeyAndSetOwn(url: URL) {
+    private func importKey(url: URL) {
         // TODO: Make async
         do {
             let keyData = try keyImporter.importKey(url: url)
