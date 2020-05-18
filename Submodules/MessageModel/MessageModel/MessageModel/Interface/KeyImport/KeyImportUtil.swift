@@ -45,7 +45,7 @@ extension KeyImportUtil {
         /// This is not needed for setting an key as own, but may be displayed to the user
         public let userName: String?
 
-        fileprivate init(address: String, fingerprint: String, userName: String?) {
+        init(address: String, fingerprint: String, userName: String?) {
             self.address = address
             self.fingerprint = fingerprint
             self.userName = userName
