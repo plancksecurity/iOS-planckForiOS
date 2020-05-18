@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 import pEpIOSToolbox
 
 class KeyImportViewModelTest: XCTestCase {
@@ -67,6 +67,32 @@ class KeyImportViewModelTest: XCTestCase {
 
         wait(for: [showErrorExpectation], timeout: TestUtil.waitTimeLocal)
     }
+
+    func testImportKey() {
+        let keyData = KeyImportUtil.KeyData(address: "address", fingerprint: "fpr", userName: nil)
+        let keyImporter = KeyImporterMock(importKeyErrorToThrow: nil,
+                                          importKeyData: keyData)
+
+        let documentsBrowser = DocumentsDirectoryBrowserMock(urls: [URL(fileURLWithPath: "file:///someFake")])
+        let vm = KeyImportViewModel(documentsBrowser: documentsBrowser,
+                                    keyImporter: keyImporter)
+
+        let showConfirmSetOwnKeyExpectation = expectation(description: "showConfirmSetOwnKeyExpectation")
+
+        let rowsLoadedExpectation = expectation(description: "rowsLoadedExpectation")
+        let delegate = KeyImportViewModelDelegateMock(rowsLoadedExpectation: rowsLoadedExpectation,
+                                                      showErrorExpectation: nil,
+                                                      showConfirmSetOwnKeyExpectation: showConfirmSetOwnKeyExpectation)
+        vm.delegate = delegate
+
+        vm.loadRows()
+
+        wait(for: [rowsLoadedExpectation], timeout: TestUtil.waitTimeLocal)
+
+        vm.handleDidSelect(rowAt: IndexPath(row: 0, section: 0))
+
+        wait(for: [showConfirmSetOwnKeyExpectation], timeout: TestUtil.waitTimeLocal)
+    }
 }
 
 // MARK: - DocumentsDirectoryBrowserMock
@@ -92,7 +118,7 @@ class KeyImporterMock: KeyImportUtilProtocol {
     init(importKeyErrorToThrow: KeyImportUtil.ImportError? = nil,
          importKeyData: KeyImportUtil.KeyData? = nil) {
         self.importKeyErrorToThrow = importKeyErrorToThrow
-        self.importKeyData = nil
+        self.importKeyData = importKeyData
     }
 
     func importKey(url: URL) throws -> KeyImportUtil.KeyData {
