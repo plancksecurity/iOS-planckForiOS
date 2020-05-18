@@ -52,6 +52,4 @@ class KeyImporterMock: KeyImportUtilProtocol {
     func setOwnKey(address: String, fingerprint: String) throws {
         throw KeyImportUtil.SetOwnKeyError.cannotSetOwnKey
     }
-    
-
 }
