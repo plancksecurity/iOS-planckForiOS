@@ -55,6 +55,9 @@
 /* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
 "Add to Contacts" = "Añadir a Contactos";
 
+/* setOwnKeyRowTitle row title */
+"ADVANCED" = "AVANZADO";
+
 /* Name of unified inbox (showing messages of all accoounts */
 "All" = "Todos";
 
@@ -90,6 +93,9 @@
 
 /* title attachments filter cell */
 "Attachments" = "Adjuntos";
+
+/* Title of the view for choosing installed keys to import */
+"Available Keys" = "Claves disponibles";
 
 /* Cancel button title for manual account IMAP setup
    Cancel button title for manual account SMTP setup */
@@ -239,6 +245,9 @@
 /* No comment provided by engineer. */
 "Error casting" = "Error al lanzar";
 
+/* Generic error message on trying to import a key */
+"Error occurred. No key imported." = "Se ha producido un error y no se ha importado ninguna clave.";
+
 /* spearator string bewtween name and date */
 "Exp. date:" = "Exp. fecha:";
 
@@ -284,6 +293,9 @@
 
 /* possible privacy status action */
 "Handshake" = "Handshake";
+
+/* PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...) */
+"here" = "aquí";
 
 /* Alert title for iCloud instructions */
 "iCloud" = "iCloud";
@@ -450,7 +462,8 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "Siguiente";
 
-/* Alert button while client certificate is importing: Try again? No */
+/* Alert button while client certificate is importing: Try again? No
+   Title for no button (cancel) when trying to import a key */
 "No" = "No";
 
 /* Error when no account found for set_own_key UI */
@@ -575,6 +588,12 @@
 /* Tableview section header */
 "PGP Compatibility" = "Compatibilidad PGP";
 
+/* PGPKeyImportSetting pgpKeyImportRowTitle
+   PGPKeyImportSettingViewController Navigationbar title
+   Settings: Cell (button) title for importing and using private PGP keys
+   Title for alert when trying to import a key */
+"PGP Key Import" = "Importación de clave PGP";
+
 /* Privacy status suggestion */
 "Please add the necessary information." = "Por favor agregue la información necesaria.";
 
@@ -614,6 +633,9 @@
 
 /* action sheet title 1 */
 "Privacy Status" = "Grado de privacidad";
+
+/* Success message when importing the key */
+"Private key successfully imported." = "La clave privada ha sido importada con éxito.";
 
 /* title for subject protection */
 "Protect Message Subject" = "Proteger Asunto del Mensaje";
@@ -856,6 +878,9 @@
 /* settings, enable thread view or not */
 "Thread Messages" = "Mensajes de Hilo";
 
+/* PGPKeyImportSetting row title */
+"To import an existing PGP private key, you first need to transfer it from your computer.\n\nClick here for more information. Once the private key has been transferred to the device, you can import it here." = "Para importar una clave privada PGP existente, primero debe transferirla desde su computadora.\n\nHaga clic aquí para más información. Una vez que la clave privada ha sido transferida al dispositivo, puede importarla aquí.";
+
 /* Compose field title */
 "To:" = "Para:";
 
@@ -984,7 +1009,8 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Trustwords incorrectas";
 
-/* Alert button while client certificate is importing: Try again? Yes */
+/* Alert button while client certificate is importing: Try again? Yes
+   Title for yes button when trying to import a key */
 "Yes" = "Si";
 
 /* Confirm less secure answer message alert body */

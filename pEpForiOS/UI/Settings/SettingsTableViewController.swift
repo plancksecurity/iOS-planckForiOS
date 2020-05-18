@@ -32,7 +32,7 @@ final class SettingsTableViewController: BaseTableViewController {
                                                                    comment: "No setting has been selected yet in the settings VC"))
     }
 
-// MARK: - Extra Keys
+    // MARK: - Extra Keys
     /// Adds easter egg gesture to [en|dis]able the editability of extra keys
     private func addExtraKeysEditabilityToggleGesture() {
         let gestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(extraKeysEditabilityToggleGestureTriggered))
@@ -52,12 +52,12 @@ final class SettingsTableViewController: BaseTableViewController {
 extension SettingsTableViewController {
     private struct Localized {
         static let navigationTitle = NSLocalizedString("Settings",
-        comment: "Settings view title")
+                                                       comment: "Settings view title")
     }
     private func setUp() {
         title = Localized.navigationTitle
-        tableView.register(pEpHeaderView.self,
-                           forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
+        tableView.register(PEPHeaderView.self,
+                           forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
     }
     /// Prepares and returns the swipe tableview cell, with the corresponding color and title.
     /// - Parameters:
@@ -117,7 +117,7 @@ extension SettingsTableViewController {
             return prepareSwipeTableViewCell(dequeuedCell, for: row)
         case .resetAccounts, .resetTrust:
             return prepareActionCell(dequeuedCell, for: row)
-        case .defaultAccount, .setOwnKey, .credits, .trustedServer, .extraKeys:
+        case .defaultAccount, .pgpKeyImport, .credits, .trustedServer, .extraKeys:
             guard let row = row as? SettingsViewModel.NavigationRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -188,7 +188,7 @@ extension SettingsTableViewController {
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 
-        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: pEpHeaderView.reuseIdentifier) as? pEpHeaderView else {
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: PEPHeaderView.reuseIdentifier) as? PEPHeaderView else {
             Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
             return nil
         }
@@ -300,7 +300,7 @@ extension SettingsTableViewController {
         case sequeShowCredits
         case segueShowSettingTrustedServers
         case segueExtraKeys
-        case segueSetOwnKey
+        case seguePgpKeyImport
         case noAccounts
         case ResetTrustSplitView
         case ResetTrust
@@ -326,8 +326,8 @@ extension SettingsTableViewController {
             return .sequeShowCredits
         case .trustedServer:
             return .segueShowSettingTrustedServers
-        case .setOwnKey:
-            return .segueSetOwnKey
+        case .pgpKeyImport:
+            return .seguePgpKeyImport
         case .resetTrust:
             return .ResetTrust
         case .extraKeys:
@@ -350,14 +350,15 @@ extension SettingsTableViewController {
 
         switch SegueIdentifier(rawValue: segueIdentifier) {
         case .segueEditAccount:
-            guard let destination = segue.destination as? AccountSettingsTableViewController,
-                let indexPath = sender as? IndexPath,
-                let account = viewModel.account(at: indexPath) else {
-                    Log.shared.error("SegueIdentifier: segueEditAccount - Early quit! Requirements not met.")
+            guard
+                let destination = segue.destination as? AccountSettingsTableViewController,
+                let indexPath = sender as? IndexPath
+                else {
+                    Log.shared.errorAndCrash("Requirements not met.")
                     return
             }
             destination.appConfig = appConfig
-            destination.viewModel = AccountSettingsViewModel(account: account)
+            destination.viewModel = viewModel.accountSettingsViewModel(forAccountAt: indexPath)
         case .segueShowSettingDefaultAccount,
              .segueShowSettingTrustedServers:
             guard let destination = segue.destination as? BaseTableViewController else { return }
@@ -371,15 +372,21 @@ extension SettingsTableViewController {
             destination.appConfig = self.appConfig
         case .none:
             break
-        case .segueSetOwnKey,
-             .ResetTrustSplitView,
+        case .seguePgpKeyImport:
+            guard let destination = segue.destination as? PGPKeyImportSettingViewController else {
+                Log.shared.errorAndCrash("No DVC")
+                return
+            }
+            destination.appConfig = appConfig
+            destination.viewModel = viewModel.pgpKeyImportSettingViewModel()
+        case .ResetTrustSplitView,
              .noSegue,
              .passiveMode,
              .protectMessageSubject,
              .pEpSync,
              .resetAccounts,
              .unsecureReplyWarningEnabled:
-            // It's all rows that never segue sanywhere (e.g. SwitchRow).
+            // It's all rows that never segue anywhere (e.g. SwitchRow).
             break
         }
     }
