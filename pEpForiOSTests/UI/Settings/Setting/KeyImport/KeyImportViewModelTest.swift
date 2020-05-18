@@ -94,6 +94,30 @@ class KeyImportViewModelTest: XCTestCase {
         wait(for: [showConfirmSetOwnKeyExpectation], timeout: TestUtil.waitTimeLocal)
     }
 
+    func testSetOwnKeyError() {
+        let keyData = KeyImportUtil.KeyData(address: "address", fingerprint: "fpr", userName: nil)
+        let keyImporter = KeyImporterMock(importKeyErrorToThrow: nil,
+                                          importKeyData: keyData,
+                                          setOwnKeyErrorToThrow: KeyImportUtil.SetOwnKeyError.noMatchingAccount)
+
+        let documentsBrowser = DocumentsDirectoryBrowserMock(urls: [URL(fileURLWithPath: "file:///someFake")])
+        let vm = KeyImportViewModel(documentsBrowser: documentsBrowser,
+                                    keyImporter: keyImporter)
+
+        let showErrorExpectation = expectation(description: "showErrorExpectation")
+        let delegate = KeyImportViewModelDelegateMock(rowsLoadedExpectation: nil,
+                                                      showErrorExpectation: showErrorExpectation,
+                                                      showConfirmSetOwnKeyExpectation: nil,
+                                                      showSetOwnKeySuccessExpectation: nil)
+        vm.delegate = delegate
+
+        vm.setOwnKey(key: KeyImportViewModel.KeyDetails(address: "address",
+                                                        fingerprint: "fingerprint",
+                                                        userName: nil))
+
+        wait(for: [showErrorExpectation], timeout: TestUtil.waitTimeLocal)
+    }
+
     func testSetOwnKeySuccess() {
         let keyData = KeyImportUtil.KeyData(address: "address", fingerprint: "fpr", userName: nil)
         let keyImporter = KeyImporterMock(importKeyErrorToThrow: nil,
