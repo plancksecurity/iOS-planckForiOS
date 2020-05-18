@@ -450,7 +450,8 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "Siguiente";
 
-/* Alert button while client certificate is importing: Try again? No */
+/* Alert button while client certificate is importing: Try again? No
+   Title for no button (cancel) when trying to import a key */
 "No" = "No";
 
 /* Error when no account found for set_own_key UI */
@@ -984,7 +985,8 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Trustwords incorrectas";
 
-/* Alert button while client certificate is importing: Try again? Yes */
+/* Alert button while client certificate is importing: Try again? Yes
+   Title for yes button when trying to import a key */
 "Yes" = "Si";
 
 /* Confirm less secure answer message alert body */
