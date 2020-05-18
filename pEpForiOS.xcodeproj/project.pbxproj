@@ -213,7 +213,11 @@
 		3A796BAD242E5CFC00083BB5 /* String+NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BAC242E5CFC00083BB5 /* String+NSAttributedString.swift */; };
 		3A7FA1EF246F04FE003F9565 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7FA1EE246F04FE003F9565 /* ShareViewController.swift */; };
 		3A7FA1F2246F04FE003F9565 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A7FA1F0246F04FE003F9565 /* MainInterface.storyboard */; };
-		3A7FA1F7246F04FE003F9565 /* pEp-share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3A7FA1EC246F04FD003F9565 /* pEp-share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3A7FA1F7246F04FE003F9565 /* p≡p.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3A7FA1EC246F04FD003F9565 /* p≡p.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3A7FA1FC2472E083003F9565 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69E3981E30F80E0022959E /* Appearance.swift */; };
+		3A7FA2002472E189003F9565 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7FA1FF2472E189003F9565 /* UIColor+Extension.swift */; };
+		3A7FA2012472E189003F9565 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7FA1FF2472E189003F9565 /* UIColor+Extension.swift */; };
+		3A7FA2032472F989003F9565 /* ComposeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7FA2022472F989003F9565 /* ComposeTableViewController.swift */; };
 		3A928C86242259E300FEFA4C /* HtmlTagParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A928C85242259E200FEFA4C /* HtmlTagParser.swift */; };
 		3AC2B843240E5FD900E08EB3 /* ClientCertificateImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B842240E5FD900E08EB3 /* ClientCertificateImportViewController.swift */; };
 		3AC2B845240E692600E08EB3 /* ClientCertificateImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B844240E692600E08EB3 /* ClientCertificateImportViewModel.swift */; };
@@ -445,7 +449,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				3A7FA1F7246F04FE003F9565 /* pEp-share.appex in Embed App Extensions */,
+				3A7FA1F7246F04FE003F9565 /* p≡p.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -729,10 +733,13 @@
 		3A796BA8242CC26100083BB5 /* HtmlConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlConversions.swift; sourceTree = "<group>"; };
 		3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Html.swift"; sourceTree = "<group>"; };
 		3A796BAC242E5CFC00083BB5 /* String+NSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+NSAttributedString.swift"; sourceTree = "<group>"; };
-		3A7FA1EC246F04FD003F9565 /* pEp-share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "pEp-share.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A7FA1EC246F04FD003F9565 /* p≡p.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "p≡p.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A7FA1EE246F04FE003F9565 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		3A7FA1F1246F04FE003F9565 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		3A7FA1F3246F04FE003F9565 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3A7FA1FB24729E32003F9565 /* pEp-share.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "pEp-share.entitlements"; sourceTree = "<group>"; };
+		3A7FA1FF2472E189003F9565 /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		3A7FA2022472F989003F9565 /* ComposeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController.swift; sourceTree = "<group>"; };
 		3A928C85242259E200FEFA4C /* HtmlTagParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlTagParser.swift; sourceTree = "<group>"; };
 		3AC2B842240E5FD900E08EB3 /* ClientCertificateImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateImportViewController.swift; sourceTree = "<group>"; };
 		3AC2B844240E692600E08EB3 /* ClientCertificateImportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateImportViewModel.swift; sourceTree = "<group>"; };
@@ -1825,9 +1832,11 @@
 		3A7FA1ED246F04FE003F9565 /* pEp-share */ = {
 			isa = PBXGroup;
 			children = (
+				3A7FA1FB24729E32003F9565 /* pEp-share.entitlements */,
 				3A7FA1EE246F04FE003F9565 /* ShareViewController.swift */,
 				3A7FA1F0246F04FE003F9565 /* MainInterface.storyboard */,
 				3A7FA1F3246F04FE003F9565 /* Info.plist */,
+				3A7FA2022472F989003F9565 /* ComposeTableViewController.swift */,
 			);
 			path = "pEp-share";
 			sourceTree = "<group>";
@@ -1958,6 +1967,7 @@
 		4362398D1EAE08F400BD2EB9 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				3A7FA1FF2472E189003F9565 /* UIColor+Extension.swift */,
 				B70A3A62220065F500EDCE61 /* String+pEp.swift */,
 				43E657D01F3C33C30014CBEC /* String+HTML.swift */,
 				430E0BE61EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift */,
@@ -2015,7 +2025,7 @@
 				43980E231CBD0BC900A7FC3C /* pEp.app */,
 				43980E3A1CBD0BCA00A7FC3C /* pEpForiOSTests.xctest */,
 				43980E451CBD0BCA00A7FC3C /* pEpForiOSUITests.xctest */,
-				3A7FA1EC246F04FD003F9565 /* pEp-share.appex */,
+				3A7FA1EC246F04FD003F9565 /* p≡p.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2581,7 +2591,7 @@
 			);
 			name = "pEp-share";
 			productName = "pEp-share";
-			productReference = 3A7FA1EC246F04FD003F9565 /* pEp-share.appex */;
+			productReference = 3A7FA1EC246F04FD003F9565 /* p≡p.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		43980E221CBD0BC900A7FC3C /* pEp */ = {
@@ -2850,7 +2860,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A7FA2032472F989003F9565 /* ComposeTableViewController.swift in Sources */,
 				3A7FA1EF246F04FE003F9565 /* ShareViewController.swift in Sources */,
+				3A7FA1FC2472E083003F9565 /* Appearance.swift in Sources */,
+				3A7FA2012472E189003F9565 /* UIColor+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3028,6 +3041,7 @@
 				15874BD12127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift in Sources */,
 				4351C2DC1F4441190053381F /* xml.c in Sources */,
 				430E0BE71EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift in Sources */,
+				3A7FA2002472E189003F9565 /* UIColor+Extension.swift in Sources */,
 				152A39D921905C3E00D9F8E4 /* NSAttributedString+BodyTextUtils.swift in Sources */,
 				152A39E421905C3E00D9F8E4 /* NSAttributedString+RecipientTextUtils.swift in Sources */,
 				00EB89AD20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift in Sources */,
@@ -3472,18 +3486,20 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "pEp-share/pEp-share.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "pEp-share/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.1.010;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "security.pEp.pEp-share";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "p≡p";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.0;
@@ -3499,17 +3515,19 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "pEp-share/pEp-share.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "pEp-share/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.1.010;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "security.pEp.pEp-share";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "p≡p";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

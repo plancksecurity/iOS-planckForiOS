@@ -9,12 +9,11 @@
 import UIKit
 
 extension String {
-    public func paintPEPToPEPColour() -> NSAttributedString {
+    public func paintPEPToColor(pEpColor: UIColor) -> NSAttributedString {
         let range = (self as NSString).range(of: "p≡p")
         let paintedText = NSMutableAttributedString(string: self)
-
-        paintedText.addAttribute(
-            NSAttributedString.Key.foregroundColor, value: UIColor.pEpGreen, range: range)
+        paintedText.addAttribute(NSAttributedString.Key.foregroundColor,
+                                 value: pEpColor, range: range)
         return paintedText
     }
 }

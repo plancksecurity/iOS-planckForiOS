@@ -108,7 +108,7 @@ extension PEPAlertViewController {
         alertMessage.font = UIFont.pepFont(style: .footnote, weight: .regular)
         alertTitle.font = UIFont.pepFont(style: .body, weight: .semibold)
         if paintPEPInTitle {
-            alertTitle.attributedText = title?.paintPEPToPEPColour()
+            alertTitle.attributedText = title?.paintPEPToColor(pEpColor: .pEpGreen)
         } else {
             alertTitle.text = title
         }

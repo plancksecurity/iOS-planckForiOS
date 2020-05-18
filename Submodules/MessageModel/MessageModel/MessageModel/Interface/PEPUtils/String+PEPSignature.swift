@@ -15,7 +15,8 @@ extension String {
 
     public static var pEpSignatureHtml: String {
         let pEpSignatureTrimmed = String.pepSignature.trimmed()
-        return "<a href=\"https://pep.software\" style=\"color:\(UIColor.pEpDarkGreenHex); text-decoration: none;\">\(pEpSignatureTrimmed)</a>"
+        let pEpDarkGreenHex = "#1AAA50" // !!! This value MUST BE in one place with different pEp colors
+        return "<a href=\"https://pep.software\" style=\"color:\(pEpDarkGreenHex); text-decoration: none;\">\(pEpSignatureTrimmed)</a>"
     }
 
     public func replacingOccurrencesOfPepSignatureWithHtmlVersion() -> String {
