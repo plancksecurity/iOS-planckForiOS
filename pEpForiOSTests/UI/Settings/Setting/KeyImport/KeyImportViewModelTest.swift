@@ -25,6 +25,9 @@ class KeyImportViewModelTest: XCTestCase {
         let documentsBrowser = DocumentsDirectoryBrowserMock(urls: [URL(fileURLWithPath: "file:///someFake")])
         let vm = KeyImportViewModel(documentsBrowser: documentsBrowser,
                                     keyImporter: KeyImporterMock())
+
+        let rowsLoadedExpectation = expectation(description: "rowsLoadedExpectation")
+        let delegate = KeyImportViewModelDelegateMock(rowsLoadedExpectation: rowsLoadedExpectation)
     }
 }
 
