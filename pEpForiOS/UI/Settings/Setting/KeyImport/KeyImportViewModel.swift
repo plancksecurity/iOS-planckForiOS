@@ -70,7 +70,7 @@ class KeyImportViewModel {
 
     public private(set) var rows = [Row]()
 
-    init(documentsBrowser: DocumentsDirectoryBrowserProtocol = DocumentsDirectoryBrowser(),
+    public init(documentsBrowser: DocumentsDirectoryBrowserProtocol = DocumentsDirectoryBrowser(),
          keyImporter: KeyImportUtilProtocol = KeyImportUtil()) {
         self.documentsBrowser = documentsBrowser
         self.keyImporter = keyImporter
@@ -117,8 +117,8 @@ class KeyImportViewModel {
     private let keyImporter: KeyImportUtilProtocol
 
     // One message to rule them all
-    let keyImportErrorMessage = NSLocalizedString("Error occurred. No key imported.",
-                                                  comment: "Generic error message on trying to import a key")
+    fileprivate let keyImportErrorMessage = NSLocalizedString("Error occurred. No key imported.",
+                                                              comment: "Generic error message on trying to import a key")
 }
 
 extension KeyImportViewModel {
