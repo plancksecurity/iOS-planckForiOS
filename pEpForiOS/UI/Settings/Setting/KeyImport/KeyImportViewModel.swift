@@ -74,8 +74,24 @@ class KeyImportViewModel {
          keyImporter: KeyImportUtilProtocol = KeyImportUtil()) {
         self.documentsBrowser = documentsBrowser
         self.keyImporter = keyImporter
+    }
 
-        loadRows()
+    /// Search for key file URLs and list them.
+    public func loadRows() {
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+            guard let me = self else {
+                return // The handling VC can go out of scope
+            }
+
+            do {
+                let urls = try me.documentsBrowser.listFileUrls(fileTypes: [.key])
+                me.rows = urls.map { Row(fileUrl: $0) }
+            } catch {
+                // developer error
+                Log.shared.errorAndCrash(error: error)
+                me.rows = []
+            }
+        }
     }
 
     /// The user has tapped a row, which starts loading (importing) the underlying key
@@ -122,23 +138,6 @@ class KeyImportViewModel {
 }
 
 extension KeyImportViewModel {
-    private func loadRows() {
-        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            guard let me = self else {
-                return // The handling VC can go out of scope
-            }
-
-            do {
-                let urls = try me.documentsBrowser.listFileUrls(fileTypes: [.key])
-                me.rows = urls.map { Row(fileUrl: $0) }
-            } catch {
-                // developer error
-                Log.shared.errorAndCrash(error: error)
-                me.rows = []
-            }
-        }
-    }
-
     private func importKey(url: URL) {
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let me = self else {
