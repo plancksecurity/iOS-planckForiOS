@@ -8,7 +8,7 @@
 
 import XCTest
 
-import pEpForiOS
+@testable import pEpForiOS
 import MessageModel
 import pEpIOSToolbox
 
@@ -19,6 +19,12 @@ class KeyImportViewModelTest: XCTestCase {
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+
+    func testLoadKeys() {
+        let documentsBrowser = DocumentsDirectoryBrowserMock(urls: [URL(fileURLWithPath: "file:///someFake")])
+        let vm = KeyImportViewModel(documentsBrowser: documentsBrowser,
+                                    keyImporter: KeyImporterMock())
     }
 }
 
