@@ -55,6 +55,9 @@
 /* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
 "Add to Contacts" = "Zu Kontakten hinzufügen";
 
+/* setOwnKeyRowTitle row title */
+"ADVANCED" = "ERWEITERT";
+
 /* Name of unified inbox (showing messages of all accoounts */
 "All" = "Alle";
 
@@ -90,6 +93,9 @@
 
 /* title attachments filter cell */
 "Attachments" = "Anhänge";
+
+/* Title of the view for choosing installed keys to import */
+"Available Keys" = "Verfügbare Schlüssel";
 
 /* Cancel button title for manual account IMAP setup
    Cancel button title for manual account SMTP setup */
@@ -239,6 +245,9 @@
 /* No comment provided by engineer. */
 "Error casting" = "Fehler beim Casting";
 
+/* Generic error message on trying to import a key */
+"Error occurred. No key imported." = "Es ist ein Fehler aufgetreten und der Schlüssel konnte nicht importiert werden.";
+
 /* spearator string bewtween name and date */
 "Exp. date:" = "Ablaufdatum:";
 
@@ -284,6 +293,9 @@
 
 /* possible privacy status action */
 "Handshake" = "Handshake";
+
+/* PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...) */
+"here" = "Hier";
 
 /* Alert title for iCloud instructions */
 "iCloud" = "iCloud";
@@ -576,6 +588,12 @@
 /* Tableview section header */
 "PGP Compatibility" = "Kompatibilität zu PGP";
 
+/* PGPKeyImportSetting pgpKeyImportRowTitle
+   PGPKeyImportSettingViewController Navigationbar title
+   Settings: Cell (button) title for importing and using private PGP keys
+   Title for alert when trying to import a key */
+"PGP Key Import" = "PGP-Schlüsselimport";
+
 /* Privacy status suggestion */
 "Please add the necessary information." = "Bitte fügen Sie die notwendigen Informationen hinzu.";
 
@@ -615,6 +633,9 @@
 
 /* action sheet title 1 */
 "Privacy Status" = "Datenschutzstatus";
+
+/* Success message when importing the key */
+"Private key successfully imported." = "Der private Schlüssel wurde erfolgreich importiert.";
 
 /* title for subject protection */
 "Protect Message Subject" = "Betreff der Nachricht schützen";
@@ -856,6 +877,9 @@
 
 /* settings, enable thread view or not */
 "Thread Messages" = "Nachrichten als Konversation anzeigen";
+
+/* PGPKeyImportSetting row title */
+"To import an existing PGP private key, you first need to transfer it from your computer.\n\nClick here for more information. Once the private key has been transferred to the device, you can import it here." = "Um einen vorhandenen privaten PGP-Schlüssel zu importieren, müssen Sie ihn zuerst von Ihrem Computer übertragen.\n\nKlicken Sie hier für weitere Informationen. Nachdem der private Schlüssel auf das Gerät übertragen wurde, können Sie ihn hier importieren.";
 
 /* Compose field title */
 "To:" = "An:";
