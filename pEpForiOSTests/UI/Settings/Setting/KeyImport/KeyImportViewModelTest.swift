@@ -9,6 +9,7 @@
 import XCTest
 
 import pEpForiOS
+import MessageModel
 import pEpIOSToolbox
 
 class KeyImportViewModelTest: XCTestCase {
@@ -33,4 +34,18 @@ class DocumentsDirectoryBrowserMock: DocumentsDirectoryBrowserProtocol {
     func listFileUrls(fileTypes: [DocumentsDirectoryBrowserFileType]) throws -> [URL] {
         return urls
     }
+}
+
+// MARK: - KeyImporterMock
+
+class KeyImporterMock: KeyImportUtilProtocol {
+    func importKey(url: URL) throws -> KeyImportUtil.KeyData {
+        throw KeyImportUtil.ImportError.cannotLoadKey
+    }
+    
+    func setOwnKey(address: String, fingerprint: String) throws {
+        throw KeyImportUtil.SetOwnKeyError.cannotSetOwnKey
+    }
+    
+
 }
