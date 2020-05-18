@@ -179,7 +179,7 @@ class KeyImporterMock: KeyImportUtilProtocol {
         }
         throw KeyImportUtil.ImportError.cannotLoadKey
     }
-    
+
     func setOwnKey(address: String, fingerprint: String) throws {
         if let err = setOwnKeyErrorToThrow {
             throw err
