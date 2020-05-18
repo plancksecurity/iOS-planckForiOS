@@ -92,6 +92,8 @@ class KeyImportViewModelTest: XCTestCase {
         vm.handleDidSelect(rowAt: IndexPath(row: 0, section: 0))
 
         wait(for: [showConfirmSetOwnKeyExpectation], timeout: TestUtil.waitTimeLocal)
+
+        vm.setOwnKey(key: KeyImportViewModel.KeyDetails())
     }
 }
 

@@ -56,7 +56,7 @@ extension KeyImportViewModel {
 
         private let userName: String?
 
-        fileprivate init(address: String, fingerprint: String, userName: String?) {
+        init(address: String, fingerprint: String, userName: String?) {
             self.address = address
             self.fingerprint = fingerprint
             self.userName = userName
