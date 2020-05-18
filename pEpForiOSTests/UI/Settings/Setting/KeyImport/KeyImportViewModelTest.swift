@@ -114,11 +114,14 @@ class KeyImporterMock: KeyImportUtilProtocol {
 class KeyImportViewModelDelegateMock: KeyImportViewModelDelegate {
     let rowsLoadedExpectation: XCTestExpectation?
     let showErrorExpectation: XCTestExpectation?
+    let showConfirmSetOwnKeyExpectation: XCTestExpectation?
 
     init(rowsLoadedExpectation: XCTestExpectation? = nil,
-         showErrorExpectation: XCTestExpectation? = nil) {
+         showErrorExpectation: XCTestExpectation? = nil,
+         showConfirmSetOwnKeyExpectation: XCTestExpectation? = nil) {
         self.rowsLoadedExpectation = rowsLoadedExpectation
         self.showErrorExpectation = showErrorExpectation
+        self.showConfirmSetOwnKeyExpectation = showConfirmSetOwnKeyExpectation
     }
 
     func rowsLoaded() {
@@ -128,6 +131,9 @@ class KeyImportViewModelDelegateMock: KeyImportViewModelDelegate {
     }
 
     func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails) {
+        if let exp = showConfirmSetOwnKeyExpectation {
+            exp.fulfill()
+        }
     }
 
     func showError(message: String) {
