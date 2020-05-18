@@ -70,7 +70,7 @@ extension PGPKeyImportSettingViewModel {
                                                           attributes: nil)
         // // Setup link
         let linkString = NSLocalizedString("here",
-                                           comment: "PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page")
+                                           comment: "PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...)")
         let linkRange = pgpKeyImportSectionHeaderTitle.mutableString.range(of: linkString)
         pgpKeyImportSectionHeaderTitle.addAttribute(NSAttributedString.Key.link,
                                        value: "https://pep.security/docs/ios.html#pgp-key-import",
