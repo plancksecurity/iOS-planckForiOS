@@ -53,3 +53,28 @@ class KeyImporterMock: KeyImportUtilProtocol {
         throw KeyImportUtil.SetOwnKeyError.cannotSetOwnKey
     }
 }
+
+// MARK: - KeyImportViewModelDelegateMock
+
+class KeyImportViewModelDelegateMock: KeyImportViewModelDelegate {
+    let rowsLoadedExpectation: XCTestExpectation?
+
+    init(rowsLoadedExpectation: XCTestExpectation?) {
+        self.rowsLoadedExpectation = rowsLoadedExpectation
+    }
+
+    func rowsLoaded() {
+        if let exp = rowsLoadedExpectation {
+            exp.fulfill()
+        }
+    }
+
+    func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails) {
+    }
+
+    func showError(message: String) {
+    }
+
+    func showSetOwnKeySuccess() {
+    }
+}
