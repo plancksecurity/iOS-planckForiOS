@@ -43,6 +43,26 @@ class KeyImportViewModelTest: XCTestCase {
             rowIndex = rowIndex + 1
         }
     }
+
+    func testImportNoneKey() {
+        let keyImporter = KeyImporterMock(importKeyErrorToThrow: .cannotLoadKey,
+                                          importKeyData: nil)
+
+        let documentsBrowser = DocumentsDirectoryBrowserMock(urls: [URL(fileURLWithPath: "file:///someFake")])
+        let vm = KeyImportViewModel(documentsBrowser: documentsBrowser,
+                                    keyImporter: keyImporter)
+
+        let showErrorExpectation = expectation(description: "showErrorExpectation")
+
+        let delegate = KeyImportViewModelDelegateMock(showErrorExpectation: showErrorExpectation)
+        vm.delegate = delegate
+
+        vm.loadRows()
+
+        vm.handleDidSelect(rowAt: IndexPath(row: 0, section: 0))
+
+        wait(for: [showErrorExpectation], timeout: TestUtil.waitTimeLocal)
+    }
 }
 
 // MARK: - DocumentsDirectoryBrowserMock
@@ -62,6 +82,15 @@ class DocumentsDirectoryBrowserMock: DocumentsDirectoryBrowserProtocol {
 // MARK: - KeyImporterMock
 
 class KeyImporterMock: KeyImportUtilProtocol {
+    let importKeyErrorToThrow: KeyImportUtil.ImportError?
+    let importKeyData: KeyImportUtil.KeyData?
+
+    init(importKeyErrorToThrow: KeyImportUtil.ImportError? = nil,
+         importKeyData: KeyImportUtil.KeyData? = nil) {
+        self.importKeyErrorToThrow = importKeyErrorToThrow
+        self.importKeyData = nil
+    }
+
     func importKey(url: URL) throws -> KeyImportUtil.KeyData {
         throw KeyImportUtil.ImportError.cannotLoadKey
     }
@@ -75,9 +104,12 @@ class KeyImporterMock: KeyImportUtilProtocol {
 
 class KeyImportViewModelDelegateMock: KeyImportViewModelDelegate {
     let rowsLoadedExpectation: XCTestExpectation?
+    let showErrorExpectation: XCTestExpectation?
 
-    init(rowsLoadedExpectation: XCTestExpectation?) {
+    init(rowsLoadedExpectation: XCTestExpectation? = nil,
+         showErrorExpectation: XCTestExpectation? = nil) {
         self.rowsLoadedExpectation = rowsLoadedExpectation
+        self.showErrorExpectation = showErrorExpectation
     }
 
     func rowsLoaded() {
