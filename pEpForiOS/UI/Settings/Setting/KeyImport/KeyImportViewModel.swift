@@ -85,7 +85,10 @@ class KeyImportViewModel {
 
             do {
                 let urls = try me.documentsBrowser.listFileUrls(fileTypes: [.key])
-                me.rows = urls.map { Row(fileUrl: $0) }
+                DispatchQueue.main.async {
+                    me.rows = urls.map { Row(fileUrl: $0) }
+                    me.checkDelegate()?.rowsLoaded()
+                }
             } catch {
                 // developer error
                 Log.shared.errorAndCrash(error: error)
