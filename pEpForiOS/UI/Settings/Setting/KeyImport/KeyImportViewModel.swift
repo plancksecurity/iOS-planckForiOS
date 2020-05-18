@@ -90,7 +90,7 @@ class KeyImportViewModel {
     }
 
     /// Sets the given key as own and informs the delegate about success or error.
-    func setOwnKey(key: KeyImportViewModel.KeyDetails) {
+    public func setOwnKey(key: KeyImportViewModel.KeyDetails) {
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let me = self else {
                 return // The handling VC can go out of scope
