@@ -54,10 +54,14 @@ class KeyImportViewModelTest: XCTestCase {
 
         let showErrorExpectation = expectation(description: "showErrorExpectation")
 
-        let delegate = KeyImportViewModelDelegateMock(showErrorExpectation: showErrorExpectation)
+        let rowsLoadedExpectation = expectation(description: "rowsLoadedExpectation")
+        let delegate = KeyImportViewModelDelegateMock(rowsLoadedExpectation: rowsLoadedExpectation,
+                                                      showErrorExpectation: showErrorExpectation)
         vm.delegate = delegate
 
         vm.loadRows()
+
+        wait(for: [rowsLoadedExpectation], timeout: TestUtil.waitTimeLocal)
 
         vm.handleDidSelect(rowAt: IndexPath(row: 0, section: 0))
 
@@ -92,6 +96,11 @@ class KeyImporterMock: KeyImportUtilProtocol {
     }
 
     func importKey(url: URL) throws -> KeyImportUtil.KeyData {
+        if let theData = importKeyData {
+            return theData
+        } else if let theImportError = importKeyErrorToThrow {
+            throw theImportError
+        }
         throw KeyImportUtil.ImportError.cannotLoadKey
     }
     
@@ -122,6 +131,9 @@ class KeyImportViewModelDelegateMock: KeyImportViewModelDelegate {
     }
 
     func showError(message: String) {
+        if let exp = showErrorExpectation {
+            exp.fulfill()
+        }
     }
 
     func showSetOwnKeySuccess() {
