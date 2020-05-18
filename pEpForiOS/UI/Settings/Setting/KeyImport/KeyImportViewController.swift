@@ -74,7 +74,7 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
                                                       comment: "Title for alert when trying to import a key")
 
     func rowsLoaded() {
-        // TODO
+        tableView.reloadData()
     }
 
     func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails) {
