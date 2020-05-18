@@ -338,6 +338,7 @@
 		439817692418EDB200C8AB84 /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4398176B2418EDB200C8AB84 /* Tutorial.storyboard */; };
 		43985D0A2044296D0080FA9A /* OAuthAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43985D092044296D0080FA9A /* OAuthAuthorizer.swift */; };
 		43985D0E204438480080FA9A /* AccountSettingsProtocol+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43985D0D204438480080FA9A /* AccountSettingsProtocol+Extension.swift */; };
+		439EA1542472797B005D6C9A /* KeyImportViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439EA1532472797B005D6C9A /* KeyImportViewModelTest.swift */; };
 		43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */; };
 		43A384812153E4BF006AC8F8 /* 8B691AD204E22FD1BF018E0D6C9EAD5A798018D1_pub_sec.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43A384802153E4BF006AC8F8 /* 8B691AD204E22FD1BF018E0D6C9EAD5A798018D1_pub_sec.txt */; };
 		43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */; };
@@ -963,6 +964,7 @@
 		43985D092044296D0080FA9A /* OAuthAuthorizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthAuthorizer.swift; sourceTree = "<group>"; };
 		43985D0D204438480080FA9A /* AccountSettingsProtocol+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountSettingsProtocol+Extension.swift"; sourceTree = "<group>"; };
 		43993C2F2357587700FE311E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		439EA1532472797B005D6C9A /* KeyImportViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportViewModelTest.swift; sourceTree = "<group>"; };
 		43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyUtilTests.swift; sourceTree = "<group>"; };
 		43A384802153E4BF006AC8F8 /* 8B691AD204E22FD1BF018E0D6C9EAD5A798018D1_pub_sec.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 8B691AD204E22FD1BF018E0D6C9EAD5A798018D1_pub_sec.txt; sourceTree = "<group>"; };
 		43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSwipeTableViewCell.swift; sourceTree = "<group>"; };
@@ -1655,6 +1657,7 @@
 		158A6E2C230D53C0006A9ECE /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				439EA15224727966005D6C9A /* KeyImport */,
 				37A710E2233B7A96001FEAF0 /* AccountSettings */,
 				37F272ED237075A8005C51AA /* EditableAccountSettings */,
 				37F272EE237075B9005C51AA /* EditableAccountSettingsTableViewModel */,
@@ -2226,6 +2229,14 @@
 				43800D981D112A2A00821E34 /* libxml2.tbd */,
 			);
 			name = Raw;
+			sourceTree = "<group>";
+		};
+		439EA15224727966005D6C9A /* KeyImport */ = {
+			isa = PBXGroup;
+			children = (
+				439EA1532472797B005D6C9A /* KeyImportViewModelTest.swift */,
+			);
+			path = KeyImport;
 			sourceTree = "<group>";
 		};
 		43AA82511E9B925000ABD5A8 /* Util */ = {
@@ -3330,6 +3341,7 @@
 				151AD7AD219D74C700FC36FF /* ComposeViewModelTest.swift in Sources */,
 				3AC2B847241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift in Sources */,
 				00227E6A21635DED000D9BDB /* FilterViewModelTest.swift in Sources */,
+				439EA1542472797B005D6C9A /* KeyImportViewModelTest.swift in Sources */,
 				437795C82154D6FD00CC62C2 /* PEPMessage+TestExtension.swift in Sources */,
 				151F71F7202A06760057C74D /* TestDataBase.swift in Sources */,
 				1541D7F01FC81ED900D52A5D /* URL+ExtensionsTest.swift in Sources */,
