@@ -87,10 +87,11 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
         }
 
         var theFingerprint = key.fingerprint
-        let fprLen = theFingerprint.count
+        let fprDist = theFingerprint.distance(from: theFingerprint.startIndex,
+                                              to: theFingerprint.endIndex)
 
         var index = theFingerprint.startIndex
-        for _ in 1...fprLen/2 {
+        for _ in 1...fprDist/2 {
             index = theFingerprint.index(after: index)
         }
         theFingerprint.insert("\n", at: index)
