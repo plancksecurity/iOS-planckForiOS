@@ -1,5 +1,5 @@
 //
-//  FileBrowser.swift
+//  DocumentsDirectoryBrowser.swift
 //  pEpIOSToolbox
 //
 //  Created by Dirk Zimmermann on 13.05.20.
