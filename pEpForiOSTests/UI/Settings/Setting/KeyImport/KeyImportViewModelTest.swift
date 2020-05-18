@@ -21,13 +21,27 @@ class KeyImportViewModelTest: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testLoadKeys() {
-        let documentsBrowser = DocumentsDirectoryBrowserMock(urls: [URL(fileURLWithPath: "file:///someFake")])
+    func testLoadRows() {
+        let fileUrls = [URL(fileURLWithPath: "file:///someFake")]
+
+        let documentsBrowser = DocumentsDirectoryBrowserMock(urls: fileUrls)
         let vm = KeyImportViewModel(documentsBrowser: documentsBrowser,
                                     keyImporter: KeyImporterMock())
 
         let rowsLoadedExpectation = expectation(description: "rowsLoadedExpectation")
         let delegate = KeyImportViewModelDelegateMock(rowsLoadedExpectation: rowsLoadedExpectation)
+        vm.delegate = delegate
+
+        vm.loadRows()
+
+        wait(for: [rowsLoadedExpectation], timeout: TestUtil.waitTimeLocal)
+
+        XCTAssertEqual(vm.rows.count, fileUrls.count)
+        var rowIndex = 0
+        for row in vm.rows {
+            XCTAssertEqual(row.fileName, fileUrls[rowIndex].fileName())
+            rowIndex = rowIndex + 1
+        }
     }
 }
 
