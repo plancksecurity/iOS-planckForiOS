@@ -54,6 +54,11 @@ extension PGPKeyImportSettingViewController: UITableViewDelegate {
 
 extension PGPKeyImportSettingViewController: UITableViewDataSource {
 
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        // Makes sure the footer added to suppresse seperator lines does not alter the layout.
+        return 0.0
+    }
+
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         // Suppresses seperator lines for empty cells
         return UIView(frame: CGRect.zero)
