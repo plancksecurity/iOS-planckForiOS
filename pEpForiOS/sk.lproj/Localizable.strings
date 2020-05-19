@@ -1019,6 +1019,9 @@
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Chystáte sa poslať zabezpečenú správu ako nezabezpečenú. Ak sa rozhodnete pokračovať, môže dôjsť k úniku dôverných informácií, čo vás a vašich komunikačných partnerov ohrozí. Ste si istý, že chcete pokračovať?";
 
+/* Message when asking user for confirmation about importing a key */
+"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Chystáte sa importovať nasledujúci kľúč:\n\nMeno: %1$@\nOdtlačok prsta PGP: %2$@\n\nNaozaj chcete importovať a používať tento kľúč?";
+
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Túto príručku môžete kedykoľvek zavrieť pomocou tlačidla Preskočiť.";
 
