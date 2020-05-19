@@ -93,6 +93,7 @@
 		15865A8420318E2D00F7A4B5 /* CdMessage+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15865A8320318E2D00F7A4B5 /* CdMessage+PredicateFactory.swift */; };
 		1587D137204570BB002C2157 /* MessageModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1587D135204570BA002C2157 /* MessageModel.xcdatamodeld */; };
 		1587D167204DA3C3002C2157 /* KeyChain+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D166204DA3C2002C2157 /* KeyChain+Extensions.swift */; };
+		1587E8D62474152D00F4630A /* Message+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587E8D52474152D00F4630A /* Message+Internal.swift */; };
 		158A569824058E5D003C0D7E /* ClientCertificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A569724058E5D003C0D7E /* ClientCertificate.swift */; };
 		158A569A24059026003C0D7E /* ClientCertificcate+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A569924059026003C0D7E /* ClientCertificcate+SessionAware.swift */; };
 		158A5E3A23521756002277A6 /* ServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A5E3923521756002277A6 /* ServiceProtocol.swift */; };
@@ -544,6 +545,7 @@
 		15865A8320318E2D00F7A4B5 /* CdMessage+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+PredicateFactory.swift"; sourceTree = "<group>"; };
 		1587D136204570BA002C2157 /* pEpForiOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = pEpForiOS.xcdatamodel; sourceTree = "<group>"; };
 		1587D166204DA3C2002C2157 /* KeyChain+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyChain+Extensions.swift"; sourceTree = "<group>"; };
+		1587E8D52474152D00F4630A /* Message+Internal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+Internal.swift"; sourceTree = "<group>"; };
 		158A567424052401003C0D7E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		158A567524052401003C0D7E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		158A567624052401003C0D7E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1018,6 +1020,7 @@
 				15F835251F386DE400FCE887 /* CdServer+Extensions.swift */,
 				151645A52239183B009532BE /* MessageModelObjectProtocol.swift */,
 				151645A722391871009532BE /* ManagedObjectWrapperProtocol.swift */,
+				1587E8D52474152D00F4630A /* Message+Internal.swift */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
@@ -2847,6 +2850,7 @@
 				15175EC6221D88B900C91DB8 /* QueryResultsController.swift in Sources */,
 				43E3A244224E2BED004CAC84 /* CdMessage+Clone.swift in Sources */,
 				4396230D23FD41C2007E9364 /* ClientCertificateUtil.swift in Sources */,
+				1587E8D62474152D00F4630A /* Message+Internal.swift in Sources */,
 				4358D1181DC5F6BF00385CC5 /* NSOrderedSet+Extension.swift in Sources */,
 				15A3B4E4235877F800DB9135 /* ImapReplicationService.swift in Sources */,
 				1521051423562DDB00F30B51 /* ReplicationService.swift in Sources */,

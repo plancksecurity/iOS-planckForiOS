@@ -46,6 +46,15 @@ extension CdMessage {
 
         /// Predicate to fetch CdMessages that belong to a given account
         ///
+        /// - Parameter cdAccount: account found messages belong to
+        /// - Returns: predicate for messages that belong to the given account
+        static func belongingToAccount(cdAccount: CdAccount) -> NSPredicate {
+            return NSPredicate(format: "%K = %@",
+                                    RelationshipKeyPath.cdMessage_parent_account, cdAccount)
+        }
+
+        /// Predicate to fetch CdMessages that belong to a given account
+        ///
         /// - Parameter address: address of the user or the acccount
         /// - Returns: predicate for messages that belong to the given account
         static func belongingToAccountWithAddress(address:String) -> NSPredicate {

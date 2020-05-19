@@ -141,7 +141,6 @@
                         <segue destination="1at-88-jou" kind="unwind" identifier="noAccounts" unwindAction="segueUnwindLastAccountDeletedWithSegue:" id="dbj-Gx-Exo"/>
                         <segue destination="pQb-5p-QId" kind="showDetail" identifier="segueShowSettingDefaultAccount" id="qiY-7g-nll"/>
                         <segue destination="cMW-fr-EKn" kind="showDetail" identifier="segueSetOwnKey" id="D3B-Zt-U43"/>
-                        <segue destination="95U-QI-nlr" kind="showDetail" identifier="segueShowSettingTrustedServers" id="tvG-bN-ITt"/>
                         <segue destination="4fP-ku-UtU" kind="showDetail" identifier="segueExtraKeys" id="DPP-UI-qfC"/>
                         <segue destination="tfJ-nw-QBg" kind="showDetail" identifier="ResetTrust" id="sr5-ig-b4W"/>
                         <segue destination="Eri-pJ-T3J" kind="showDetail" identifier="segueEditAccount" id="Flj-eg-anX"/>
@@ -1758,4 +1757,7 @@
             <point key="canvasLocation" x="334" y="-392"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="voI-Bz-LUT"/>
+    </inferredMetricsTieBreakers>
 </document>
