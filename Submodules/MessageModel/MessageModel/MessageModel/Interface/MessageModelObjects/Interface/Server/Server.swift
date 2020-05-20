@@ -96,7 +96,7 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
     
     public var dateLastAuthenticationErrorShown: Date? {
         get {
-            return cdObject.dateLastAuthenticationErrorShown
+            return cdObject.dateLastAuthenticationErrorShown    
         }
         
         set {

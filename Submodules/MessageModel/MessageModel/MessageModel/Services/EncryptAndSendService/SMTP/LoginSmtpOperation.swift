@@ -43,9 +43,11 @@ extension LoginSmtpOperation: SmtpConnectionDelegate {
     }
 
     public func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
-        addError(SmtpSendError.authenticationFailed(
-            #function,
-            smtpConnection.accountAddress))
+        let server = CdServer.first(predicate: CdServer.PredicateFactory.smtpServerForAccount(account: smtpConnection.accountAddress),
+                                    in: Session.main.moc)
+            addError(SmtpSendError.authenticationFailed(
+                #function,
+                smtpConnection.accountAddress))
         waitForBackgroundTasksAndFinish()
     }
 
