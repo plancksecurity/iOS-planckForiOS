@@ -182,8 +182,6 @@ class MessageViewModelTests: AccountDrivenTestBase {
     }
 
     //PRAGMA - MARK: BUSINESS
-    //business public methods (should be private in the future or moved to another component but
-    //some refactor would be needed)
 
     func testFlagsDiffer() {
         givenViewModelRepresentsOneFlaggedAndSeenMessage()
