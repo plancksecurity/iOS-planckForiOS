@@ -16,7 +16,6 @@ import XCTest
 @testable import MessageModel
 
 class MessageViewModelTests: AccountDrivenTestBase {
-
     //SUT
     var viewModel: MessageViewModel!
 
@@ -24,14 +23,13 @@ class MessageViewModelTests: AccountDrivenTestBase {
     var folder: Folder!
 
     struct Defaults {
-
         struct Inputs {
             static let fromAddress = "miguel@helm.cat"
             static let toAddresses = ["borja@helm.cat", "borja@pep-project.org", "miguel@pep-project.org"]
             static let toAddress = toAddresses[0]
-            static let fromIdentity = Identity(address: fromAddress)
-            static let toIdentities = toAddresses.map { Identity(address: $0) }
-            static let toIdentity = Identity(address: toAddress)
+            let fromIdentity = Identity(address: fromAddress)
+            let toIdentities = toAddresses.map { Identity(address: $0) }
+            let toIdentity = Identity(address: toAddress)
             static let shortMessage = "Hey Borja"
             static let longMessage = "Hey Borja, How is it going?"
             static let longlongMessage = """
@@ -294,13 +292,15 @@ class MessageViewModelTests: AccountDrivenTestBase {
     //PRAGMA MARK: Messages
 
     private func givenThereIsAOneRecipientMessage() -> Message {
-        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, tos: [Defaults.Inputs.toIdentity])
+        let message = TestUtil.createMessage(inFolder: folder,
+                                             from: Defaults.Inputs().fromIdentity,
+                                             tos: [Defaults.Inputs().toIdentity])
         message.session.commit()
         return message
     }
 
     private func givenThereIsAFlaggedAndSeenMessage() -> Message {
-        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity)
+        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs().fromIdentity)
         message.imapFlags.seen = true
         message.imapFlags.flagged = true
         message.session.commit()
@@ -308,37 +308,52 @@ class MessageViewModelTests: AccountDrivenTestBase {
     }
 
     private func givenThereIsAMessageWithSubjectAndBody() -> Message {
-        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, shortMessage: Defaults.Inputs.shortMessage, longMessage: Defaults.Inputs.longMessage)
+        let message = TestUtil.createMessage(inFolder: folder,
+                                             from: Defaults.Inputs().fromIdentity,
+                                             shortMessage: Defaults.Inputs.shortMessage,
+                                             longMessage: Defaults.Inputs.longMessage)
         message.session.commit()
         return message
     }
 
     private func givenThereIsAMessageWithSubjectAndLongBody() -> Message {
-        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, shortMessage: Defaults.Inputs.shortMessage, longMessage: Defaults.Inputs.longlongMessage)
+        let message = TestUtil.createMessage(inFolder: folder,
+                                             from: Defaults.Inputs().fromIdentity,
+                                             shortMessage: Defaults.Inputs.shortMessage,
+                                             longMessage: Defaults.Inputs.longlongMessage)
         message.session.commit()
         return message
     }
 
     private func givenThereIsAmessageWithFormattedBody() -> Message {
-        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, shortMessage: Defaults.Inputs.shortMessage, longMessageFormatted: Defaults.Inputs.longMessageFormated)
+        let message = TestUtil.createMessage(inFolder: folder,
+                                             from: Defaults.Inputs().fromIdentity,
+                                             shortMessage: Defaults.Inputs.shortMessage,
+                                             longMessageFormatted: Defaults.Inputs.longMessageFormated)
         message.session.commit()
         return message
     }
 
     private func givenThereIsAMessageWithASentDate() -> Message {
-        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, dateSent: Defaults.Inputs.sentDate)
+        let message = TestUtil.createMessage(inFolder: folder,
+                                             from: Defaults.Inputs().fromIdentity,
+                                             dateSent: Defaults.Inputs.sentDate)
         message.session.commit()
         return message
     }
 
     private func givenThereIsAMultipleRecipientMessage() -> Message {
-        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, tos: Defaults.Inputs.toIdentities)
+        let message = TestUtil.createMessage(inFolder: folder,
+                                             from: Defaults.Inputs().fromIdentity,
+                                             tos: Defaults.Inputs().toIdentities)
         message.session.commit()
         return message
     }
 
     private func givenThereIsAMessageWithAttachments() -> Message {
-        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, attachments: Defaults.Inputs.numberOfAttachments)
+        let message = TestUtil.createMessage(inFolder: folder,
+                                             from: Defaults.Inputs().fromIdentity,
+                                             attachments: Defaults.Inputs.numberOfAttachments)
         message.session.commit()
         return message
     }
