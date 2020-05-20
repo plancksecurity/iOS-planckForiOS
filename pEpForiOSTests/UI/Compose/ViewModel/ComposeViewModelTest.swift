@@ -537,7 +537,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
     func testRecipientCellViewModelTextChanged() {
         assert(contentChangedMustBeCalled: true,
                focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: true,
+               validatedStateChangedMustBeCalled: false, // only gets triggered when ids change
                modelChangedMustBeCalled: false,
                sectionChangedMustBeCalled: false,
                colorBatchNeedsUpdateMustBeCalled: false,
