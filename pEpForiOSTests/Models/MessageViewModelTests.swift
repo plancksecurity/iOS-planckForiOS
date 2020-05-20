@@ -1,7 +1,3 @@
-//IOS-2241 DOES NOT COMPILE
-//!!!: No cras, but: "Illegal attempt to establish a relationship 'from' between objects in different contexts...!
-// /Users/buff/workspace/pEp/src/pEp_for_iOS/pEpForiOSTests/TestUtils/TestUtil.swift:454: error: -[pEpForiOSTests.MessageViewModelTests testBodyPeekIsAddedToQueue] : failed: caught "NSInvalidArgumentException", "Illegal attempt to establish a relationship 'from' between objects in different contexts (source = <CdMessage: 0x6070007f2d20> (entity: CdMessage;
-
 //
 //  MessageViewModelTests.swift
 //  pEpForiOSTests
