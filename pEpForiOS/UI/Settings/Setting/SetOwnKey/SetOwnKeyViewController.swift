@@ -9,6 +9,8 @@
 import UIKit
 
 class SetOwnKeyViewController: UIViewController {
+    private let viewModel = SetOwnKeyViewModel()
+
     @IBOutlet weak var fingerprintTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var errorTextField: UILabel!
@@ -66,8 +68,6 @@ class SetOwnKeyViewController: UIViewController {
     }
 
     // MARK: - Private
-
-    private let viewModel = SetOwnKeyViewModel()
 
     private func convertTopEp(button: UIButton) {
         button.backgroundColor = .white
