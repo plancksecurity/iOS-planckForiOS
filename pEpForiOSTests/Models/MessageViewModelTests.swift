@@ -181,12 +181,6 @@ class MessageViewModelTests: AccountDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
-    func testSecurityBadgeIsCalled() {
-        givenViewModelHasASecurityBadgePictureComposer()
-        let _ = viewModel.getSecurityBadge
-        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-    }
-
     //PRAGMA - MARK: BUSINESS
     //business public methods (should be private in the future or moved to another component but
     //some refactor would be needed)
@@ -278,12 +272,6 @@ class MessageViewModelTests: AccountDrivenTestBase {
         viewModel.profilePictureComposer = PepProfilePictureComposerSpy(profilePictureExpectation: profilePictureExpectation)
     }
 
-    private func givenViewModelHasASecurityBadgePictureComposer() {
-        viewModel = givenAViewModelRepresentingUnflaggedMessage()
-        let securityBadgeExpectation = expectation(description: PepProfilePictureComposerSpy.SECURITY_BADGE_EXPECTATION_DESCRIPTION)
-        viewModel.profilePictureComposer = PepProfilePictureComposerSpy(securityBadgeExpectation: securityBadgeExpectation)
-    }
-
     private func givenAViewModelRepresentingUnflaggedMessage() -> MessageViewModel {
         let message = givenThereIsAOneRecipientMessage()
         return MessageViewModel(with: message)
@@ -362,14 +350,11 @@ class MessageViewModelTests: AccountDrivenTestBase {
 
     struct PepProfilePictureComposerSpy: ProfilePictureComposerProtocol {
         static let PROFILE_PICTURE_EXPECTATION_DESCRIPTION = "PROFILE_PICTURE_CALLED"
-        static let SECURITY_BADGE_EXPECTATION_DESCRIPTION = "SECURITY_BADGE_CALLED"
 
         let profilePictureExpectation: XCTestExpectation?
-        let securityBadgeExpectation: XCTestExpectation?
 
-        init(profilePictureExpectation: XCTestExpectation? = nil, securityBadgeExpectation: XCTestExpectation? = nil) {
+        init(profilePictureExpectation: XCTestExpectation? = nil) {
             self.profilePictureExpectation = profilePictureExpectation
-            self.securityBadgeExpectation = securityBadgeExpectation
         }
 
         func profilePicture(for identityKey: IdentityImageTool.IdentityKey) -> UIImage? {
