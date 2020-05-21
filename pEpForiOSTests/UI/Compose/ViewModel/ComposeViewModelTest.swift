@@ -1161,16 +1161,11 @@ class ComposeViewModelTest: AccountDrivenTestBase {
                didComposeNewMailMustBeCalled: false,
                didModifyMessageMustBeCalled: false,
                didDeleteMessageMustBeCalled: false)
-        guard
-            let testee = vm?.initialFocus(),
-            let bodyVM = vm?.bodyVM,
-            let bodyIndexPath = indexPath(for: bodyVM)
-            else {
-                XCTFail()
-                return
+        guard let testee = vm?.initialFocus() else {
+            XCTFail()
+            return
         }
         let toRecipientsIndexPath = IndexPath(row: 0, section: 0)
-        XCTAssertEqual(testee, bodyIndexPath)
         XCTAssertNotEqual(testee, toRecipientsIndexPath)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
