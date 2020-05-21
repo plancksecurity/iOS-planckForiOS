@@ -721,7 +721,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
-// MARK: - ComposeViewModelStateDelegate Handling
+    // MARK: - ComposeViewModelStateDelegate Handling
 
     func testComposeViewModelStateDidChangeValidationStateTo() {
         let expectedIsValid = true
