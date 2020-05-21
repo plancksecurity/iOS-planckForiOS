@@ -930,35 +930,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         XCTAssertGreaterThan(outMsgsAfter, 0)
     }
 
-//    func testHandleUserClickedSendButton_origDraft() {
-//        let testMessageId = UUID().uuidString + #function
-//        let originalMessage = draftMessage()
-//        originalMessage.messageID = testMessageId
-//        originalMessage.from = account.user
-//        originalMessage.session.commit()
-//        XCTAssertNotNil(Message.by(uid: originalMessage.uid,
-//                                   uuid: originalMessage.uuid,
-//                                   folderName: originalMessage.parent.name,
-//                                   accountAddress: account.user.address))
-//        assert(originalMessage: originalMessage)
-//        let toRecipient = Identity(address: "testHandleUserClickedSend@Butt.on")
-//        vm?.state.toRecipients = [toRecipient]
-//        vm?.state.from = account.user
-//        vm?.handleUserClickedSendButton()
-//        guard
-//            let originalDraftedMessageDeleted =
-//            Message.by(uid: originalMessage.uid,
-//                       uuid: originalMessage.uuid,
-//                       folderName: originalMessage.parent.name,
-//                       accountAddress: account.user.address)?.imapFlags.deleted
-//            else {
-//                XCTFail()
-//                return
-//        }
-//        XCTAssertTrue(originalDraftedMessageDeleted,
-//                      "original drafted message must be flagged deleted")
-//    }
-
     //!!!: crash
 //    func testHandleUserClickedSendButton_origOutbox() {
 //        let testMessageId = UUID().uuidString + #function
