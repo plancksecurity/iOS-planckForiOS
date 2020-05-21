@@ -87,18 +87,11 @@ extension CdMessage {
                                CdMessage.AttributeName.uid, lastUid)
         }
 
-        static func belongingToParentFolderAndWithUID(parentFolder: CdFolder,
-                                                      byUID: UInt) -> NSPredicate {
+        static func parentFolder(_ parent: CdFolder,
+                                 uid: UInt) -> NSPredicate {
             return NSPredicate(format: "parent = %@ and uid = %d",
-                               parentFolder,
-                               byUID)
-        }
-
-        static func belongingToFolderAndWithUID(cdFolder: CdFolder,
-                                                      theOneAndOnlyUid: Int) -> NSPredicate {
-            return NSPredicate(format: "%K = %@ AND %K = %d",
-                               CdMessage.RelationshipName.parent, cdFolder,
-                               CdMessage.AttributeName.uid, theOneAndOnlyUid)
+                               parent,
+                               uid)
         }
 
         static func belongingToUidAndUuidAndParentFolderAndAccount(uid: Int32,
@@ -271,7 +264,7 @@ extension CdMessage {
          - Returns: The predicate (for CdMessage) to get all (undeleted, not marked to move to another folder, valid)
          messages contained in that folder.
          */
-        static func allMessagesPredicate(parentFolder: CdFolder) -> NSPredicate {
+        static func allMessages(parentFolder: CdFolder) -> NSPredicate {
             let p1 = CdMessage.PredicateFactory
                 .allMessagesIncludingDeleted(parentFolder: parentFolder,
                                              fakeMessagesIncluded: true)

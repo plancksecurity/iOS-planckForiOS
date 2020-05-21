@@ -35,7 +35,7 @@ extension CdFolder {
      - Returns: All (undeleted, valid) messages in that folder.
      */
     public func allMessages(context: NSManagedObjectContext) -> [CdMessage] {
-        let p = CdMessage.PredicateFactory.allMessagesPredicate(parentFolder: self)
+        let p = CdMessage.PredicateFactory.allMessages(parentFolder: self)
         if let msgs = CdMessage.all(predicate: p, in: context) as? [CdMessage] {
             return msgs
         }
@@ -116,8 +116,7 @@ extension CdFolder {
 
 extension CdFolder {
     public func message(byUID: UInt, context: NSManagedObjectContext) -> CdMessage? {
-        let p = CdMessage.PredicateFactory.belongingToParentFolderAndWithUID(parentFolder: self,
-                                                                             byUID: byUID)
+        let p = CdMessage.PredicateFactory.parentFolder(self, uid: byUID)
         return CdMessage.first(predicate: p, in: context)
     }
 }

@@ -15,7 +15,7 @@ extension CdFolder {
 
     /// Tries to fetch the pEp sync folder for the given account.
     static func pEpSyncFolder(in moc: NSManagedObjectContext, cdAccount: CdAccount) -> CdFolder? {
-        let p = CdFolder.PredicateFactory.syncFolder(cdAccount: cdAccount)
+        let p = CdFolder.PredicateFactory.pEpSyncFolder(cdAccount: cdAccount)
         return CdFolder.first(predicate: p, in: moc)
     }
 }

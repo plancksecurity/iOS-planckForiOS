@@ -31,7 +31,7 @@ extension CdFolder {
         /// Predicate for fetching the pEp sync folder ("sync folder mode").
         /// - Parameter cdAccount: The account to take the folder separator from,
         /// and where to look for the folder.
-        static func syncFolder(cdAccount: CdAccount) -> NSPredicate {
+        static func pEpSyncFolder(cdAccount: CdAccount) -> NSPredicate {
             return NSPredicate(format: "%K = %@ AND %K = %d",
                                CdFolder.RelationshipName.account,
                                cdAccount,
@@ -39,11 +39,10 @@ extension CdFolder {
                                FolderType.pEpSync.rawValue)
         }
 
-        static func belongingToAccountAndLastLookedAndSyncedWithImap(for cdAccount: CdAccount,
-                                                                  earlierTimestamp: Date) -> NSPredicate {
+        static func messagesFromInboxImap(for cdAccount: CdAccount, earlierThan timestamp: Date) -> NSPredicate {
             return NSPredicate(format: "%K = %@ AND %K > %@ AND %K IN %@",
                                CdFolder.RelationshipName.account, cdAccount,
-                               CdFolder.AttributeName.lastLookedAt, earlierTimestamp as CVarArg,
+                               CdFolder.AttributeName.lastLookedAt, timestamp as CVarArg,
                                CdFolder.AttributeName.folderTypeRawValue, FolderType.typesSyncedWithImapServerRawValues)
         }
     }

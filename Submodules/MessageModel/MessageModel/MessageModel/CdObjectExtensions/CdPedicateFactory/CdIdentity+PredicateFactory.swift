@@ -68,7 +68,7 @@ extension CdIdentity {
         ///
         /// - Parameter address: string to search
         /// - Returns: Predicate for identities that contains the given search term in the address
-        static func searchAddressLike(address: String) -> NSPredicate {
+        static func addressLike(address: String) -> NSPredicate {
             return NSPredicate(format: "address like[c] %@", address)
         }
 
@@ -76,8 +76,8 @@ extension CdIdentity {
         ///
         /// - Parameter value: userID to search
         /// - Returns: Predicate for identities with the same userID in the given parameter
-        static func sameUserID(value: String) -> NSPredicate {
-            return NSPredicate(format: "%K == %@", CdIdentity.AttributeName.userID, value)
+        static func with(userId: String) -> NSPredicate {
+            return NSPredicate(format: "%K == %@", CdIdentity.AttributeName.userID, userId)
         }
     }
 

@@ -113,13 +113,13 @@ extension FetchNumberOfNewMailsOperation {
                 Log.shared.errorAndCrash("No folder")
                 return
             }
-            guard let theOneAndOnlyUid = uids?.first else {
+            guard let uid = uids?.first,
+                uid >= 0 else {
                 // There are zero mails on server.
                 return
             }
-            let messageForUidPredicate = CdMessage.PredicateFactory
-                .belongingToFolderAndWithUID(cdFolder: cdFolderToOpen,
-                                             theOneAndOnlyUid: theOneAndOnlyUid)
+            let messageForUidPredicate = CdMessage.PredicateFactory.parentFolder(cdFolderToOpen,
+                                                                                 uid: UInt(uid))
             if let _ = CdMessage.all(predicate: messageForUidPredicate, in: me.privateMOC) {
                 // A message with the given UID exists, thus the server response means
                 // that "there are no new messages". In other words, the server returns the last

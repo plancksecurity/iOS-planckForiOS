@@ -232,8 +232,9 @@ extension NSManagedObject {
         predicateType: NSCompoundPredicate.LogicalType = NSManagedObject.defaultPredicateType) -> NSPredicate {
 
         var predicates = [NSPredicate]()
-        attributes.forEach { predicates.append(Query.PredicateFactory.predicateForAttributes(key: $0.key,
-                                                                                             value: $0.value)) }
+        for (attribute, value) in attributes {
+            predicates.append(NSPredicate(format: "%K = %@", argumentArray: [attribute, value]))
+        }
         let compoundPredicate = NSCompoundPredicate(type: predicateType, subpredicates: predicates)
         return compoundPredicate
     }
@@ -372,7 +373,7 @@ extension NSManagedObject {
                            value: Any,
                            orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                            in context: NSManagedObjectContext) -> [NSManagedObject]? {
-        let predicate = Query.PredicateFactory.predicateForAttributes(key: attribute, value: value)
+        let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
         return all(predicate: predicate, orderedBy: sortDescriptors, in: context)
     }
 
@@ -430,7 +431,7 @@ extension NSManagedObject {
     @available(*, deprecated, message: "Use the version with predicate instead.")
     class func first(attribute: String, value: Any, orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                      in context: NSManagedObjectContext) -> Self? {
-        let predicate = Query.PredicateFactory.predicateForAttributes(key: attribute, value: value)
+        let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
         return first(predicate: predicate, orderedBy: sortDescriptors, in: context)
     }
 

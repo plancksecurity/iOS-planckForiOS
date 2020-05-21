@@ -31,64 +31,6 @@ extension CdMessage {
         return uuid
     }
 
-    //!!!: Maybe it is unused code. Only tests need this methods
-
-    static func by(uuid: MessageID,
-                   account: CdAccount,
-                   context: NSManagedObjectContext) -> [CdMessage] {
-        return CdMessage.all(
-            predicate: NSPredicate(format: "%K = %@ AND %K = %@",
-                                   CdMessage.AttributeName.uuid,
-                                   uuid,
-                                   RelationshipKeyPath.cdMessage_parent_account,
-                                   account), in: context) as? [CdMessage] ?? []
-    }
-
-    //!!!: Maybe it is unused code. Only tests need this methods
-
-    static func by(uuid: MessageID,
-                   uid: UInt,
-                   account: CdAccount,
-                   context: NSManagedObjectContext) -> CdMessage? {
-        return CdMessage.first(predicate:
-            NSPredicate(format: "uuid = %@ AND uid = %d AND parent.account.identity.address = %@",
-                        uuid, uid, account.identity!.address!),
-                               in: context)
-    }
-
-    //!!!: Maybe it is unused code. Only tests need this methods
-
-    static func by(uuid: MessageID,
-                   folderName: String,
-                   account: CdAccount,
-                   includingDeleted: Bool = true,
-                   context: NSManagedObjectContext) -> CdMessage? {
-        let p = NSPredicate(format: "uuid = %@ and parent.name = %@ AND parent.account = %@",
-                            uuid, folderName, account)
-        guard
-            let messages = CdMessage.all(predicate: p,
-                                         in: context) as? [CdMessage]
-            else {
-                return nil
-        }
-        var found = messages
-        if !includingDeleted {
-            found = found.filter { $0.imapFields(context: context).imapFlags().deleted == false }
-        }
-
-        if found.count > 1 {
-            //filter fake msgs
-            found = found.filter { $0.uid != -1 }
-            if found.count > 1 {
-                Log.shared.errorAndCrash("ultiple messages with UUID %@ in folder %@. Messages: %@",
-                                         uuid, folderName, found)
-            }
-        }
-        return found.first
-    }
-
-    //!!!: Maybe it is unused code. Only tests need this methods
-
     /// Calls:
     /// search(uid: Uid?, uuid theUuid: String?, folderName folder: String?,
     ///                                         inAccount account: CdAccount) -> CdMessage?
@@ -200,7 +142,7 @@ extension CdMessage {
 extension CdMessage {
 
     /// - Returns: The CdImapFields for this message, created newly if not existed previously.
-    func imapFields(context: NSManagedObjectContext? = nil) -> CdImapFields {
+    public func imapFields(context: NSManagedObjectContext? = nil) -> CdImapFields {
         guard let moc = context ?? managedObjectContext else {
             Log.shared.errorAndCrash("No Context!")
             let mainContext: NSManagedObjectContext = Stack.shared.mainContext
