@@ -912,41 +912,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
                       "Last row in last section must be attachment")
     }
 
-    // MARK: - handleRemovedRow
-
-    func testHandleRemovedRow_removeAttachment() {
-        let msgWithAttachments = draftMessage(attachmentsSet: true)
-        msgWithAttachments.appendToAttachments(attachment(ofType: .attachment))
-        msgWithAttachments.session.commit()
-        assert(originalMessage: msgWithAttachments)
-        vm?.state.nonInlinedAttachments = msgWithAttachments.attachments.array
-        guard
-            let lastSectionBefore = vm?.sections.last,
-            let numSectionsBefore = vm?.sections.count,
-            let numNonIlinedAttachmentsBefore = vm?.state.nonInlinedAttachments.count
-            else {
-                XCTFail()
-                return
-        }
-        let numRowsBefore  = lastSectionBefore.rows.count
-        let attachmentIdxPath = IndexPath(row: numRowsBefore - 1,
-                                          section: numSectionsBefore - 1)
-        // Test
-        vm?.handleRemovedRow(at: attachmentIdxPath)
-        guard
-            let lastSectionAfter = vm?.sections.last,
-            let numSectionsAfter = vm?.sections.count,
-            let numNonIlinedAttachmentsAfter = vm?.state.nonInlinedAttachments.count
-            else {
-                XCTFail()
-                return
-        }
-        let numRowsAfter = lastSectionAfter.rows.count
-        XCTAssertEqual(numNonIlinedAttachmentsAfter, numNonIlinedAttachmentsBefore - 1)
-        XCTAssertEqual(numSectionsAfter, numSectionsBefore)
-        XCTAssertEqual(numRowsAfter, numRowsBefore - 1, "Attachment is removed")
-    }
-
     // MARK: - handleUserClickedSendButton
 
 //    func testHandleUserClickedSendButton() {
