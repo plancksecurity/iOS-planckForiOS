@@ -930,31 +930,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         XCTAssertGreaterThan(outMsgsAfter, 0)
     }
 
-    //!!!: crash
-//    func testHandleUserClickedSendButton_origOutbox() {
-//        let testMessageId = UUID().uuidString + #function
-//        let originalMessage = message(inFolderOfType: .outbox)
-//        originalMessage.messageID = testMessageId
-//        originalMessage.from = account.user
-//        originalMessage.session.commit()
-//        XCTAssertNotNil(Message.by(uid: originalMessage.uid,
-//                                   uuid: originalMessage.uuid,
-//                                   folderName: originalMessage.parent.name,
-//                                   accountAddress: account.user.address))
-//        assert(originalMessage: originalMessage)
-//        let toRecipient = Identity(address: "testHandleUserClickedSend@Butt.on")
-//        vm?.state.toRecipients = [toRecipient]
-//        vm?.state.from = account.user
-//        vm?.handleUserClickedSendButton()
-//        if let _ = Message.by(uid: originalMessage.uid,
-//                              uuid: originalMessage.uuid,
-//                              folderName: originalMessage.parent.name,
-//                              accountAddress: account.user.address) {
-//            XCTFail("original message must not exist (must be deleted)")
-//            return
-//        }
-//    }
-
     // MARK: - handleUserChangedProtectionStatus
 
     func testHandleUserChangedProtectionStatus_change() {
