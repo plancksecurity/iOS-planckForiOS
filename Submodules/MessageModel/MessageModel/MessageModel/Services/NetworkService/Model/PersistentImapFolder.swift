@@ -126,29 +126,6 @@ class PersistentImapFolder: CWIMAPFolder {
         return result
     }
 
-    /**
-     This implementation assumes that the index is typically referred to by pantomime
-     as the messageNumber.
-     Relying on that is dangerous and should be avoided.
-     */
-    override func message(at theIndex: UInt) -> CWMessage? {
-        var result: CWMessage?
-        privateMOC.performAndWait{ [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            let isNotFake = CdMessage.PredicateFactory.isNotFakeMessage()
-            let msgAtIdx = NSPredicate(format: "parent = %@ and imap.messageNumber = %d",
-                                       me.cdFolder,
-                                       theIndex)
-            let p = NSCompoundPredicate(andPredicateWithSubpredicates: [isNotFake, msgAtIdx])
-            let msg = CdMessage.first(predicate: p, in: me.privateMOC)
-            result = msg?.pantomimeQuick(folder: me)
-        }
-        return result
-    }
-
     override func count() -> UInt {
         var count: Int = 0
         privateMOC.performAndWait { [weak self] in
@@ -200,14 +177,12 @@ class PersistentImapFolder: CWIMAPFolder {
         return uid
     }
 
-    private func cdMessage(withUID theUID: UInt) -> CdMessage? {
-        let pUid = NSPredicate(format: "%K = %d", CdMessage.AttributeName.uid, theUID)
-        let pFolder = NSPredicate(format: "%K = %@", CdMessage.RelationshipName.parent, cdFolder)
-        let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pUid, pFolder])
+    private func cdMessage(withUID uid: UInt) -> CdMessage? {
 
-        let message = CdMessage.first(predicate: p, in: privateMOC)
+        let p = CdMessage.PredicateFactory.parentFolder(cdFolder,
+                                                        uid: uid)
 
-        return message
+        return CdMessage.first(predicate: p, in: privateMOC)
     }
 
     private func cwMessage(withUID theUID: UInt) -> CWIMAPMessage? {
