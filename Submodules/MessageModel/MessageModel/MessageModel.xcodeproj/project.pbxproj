@@ -169,7 +169,6 @@
 		37FED96E228328ED004C7804 /* MimeTypeUtilsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FED96D228328ED004C7804 /* MimeTypeUtilsTest.swift */; };
 		37FED9712283354B004C7804 /* jsonMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = 37FED9702283354A004C7804 /* jsonMimeType.txt */; };
 		3A318597246C308A00EE3D4D /* CdClientCertificate+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A318596246C308A00EE3D4D /* CdClientCertificate+PredicateFactory.swift */; };
-		3A3FAC862451B01D00239FFC /* PersistentImapFolder+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FAC852451B01D00239FFC /* PersistentImapFolder+PredicateFactory.swift */; };
 		3A3FAC892451CB1000239FFC /* Query+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FAC882451CB1000239FFC /* Query+PredicateFactory.swift */; };
 		3A798E0A2476754200510B02 /* CdMessage+TestPredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A798E092476754200510B02 /* CdMessage+TestPredicateFactory.swift */; };
 		3AECFB772462B93C004842D6 /* CdAccount+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECFB762462B93C004842D6 /* CdAccount+PredicateFactory.swift */; };
@@ -659,7 +658,6 @@
 		37FED96D228328ED004C7804 /* MimeTypeUtilsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MimeTypeUtilsTest.swift; sourceTree = "<group>"; };
 		37FED9702283354A004C7804 /* jsonMimeType.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jsonMimeType.txt; sourceTree = "<group>"; };
 		3A318596246C308A00EE3D4D /* CdClientCertificate+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdClientCertificate+PredicateFactory.swift"; sourceTree = "<group>"; };
-		3A3FAC852451B01D00239FFC /* PersistentImapFolder+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersistentImapFolder+PredicateFactory.swift"; sourceTree = "<group>"; };
 		3A3FAC882451CB1000239FFC /* Query+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Query+PredicateFactory.swift"; sourceTree = "<group>"; };
 		3A798E092476754200510B02 /* CdMessage+TestPredicateFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+TestPredicateFactory.swift"; sourceTree = "<group>"; };
 		3AECFB762462B93C004842D6 /* CdAccount+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+PredicateFactory.swift"; sourceTree = "<group>"; };
@@ -1761,14 +1759,6 @@
 			path = MessageQueryResultsTest;
 			sourceTree = "<group>";
 		};
-		3A3FAC872451B02200239FFC /* PredicateFactory */ = {
-			isa = PBXGroup;
-			children = (
-				3A3FAC852451B01D00239FFC /* PersistentImapFolder+PredicateFactory.swift */,
-			);
-			path = PredicateFactory;
-			sourceTree = "<group>";
-		};
 		430CD9AA22929D2000AAC37F /* KeySync */ = {
 			isa = PBXGroup;
 			children = (
@@ -2039,7 +2029,6 @@
 				15175E4E221D5A4500C91DB8 /* Submodule */,
 				B718EF291F866FF6000CFB71 /* Filter */,
 				43CB60AB1DA4EBBF0015281E /* Util */,
-				3A3FAC872451B02200239FFC /* PredicateFactory */,
 				1574390E229EA4D100E1C337 /* Services */,
 				15C7A88E2387EF6500C47364 /* Pantomime */,
 				1587D135204570BA002C2157 /* MessageModel.xcdatamodeld */,
@@ -2706,7 +2695,6 @@
 				154660CA2333CCD4008D2137 /* DecryptService.swift in Sources */,
 				43E5A91A23A298DE007ABAAE /* ImapExpungeOperation.swift in Sources */,
 				B7A1152322C3CA3F00FB6E91 /* PrepareAccountForSavingService.swift in Sources */,
-				3A3FAC862451B01D00239FFC /* PersistentImapFolder+PredicateFactory.swift in Sources */,
 				43EA4880221E9518006E8F83 /* MoveToFolderOperation.swift in Sources */,
 				43AE48F81EF01EE900B92BB6 /* NSManagedObject+Extension.swift in Sources */,
 				155FE574228B52D4003D3E68 /* CdServerCredentials+KeyChain.swift in Sources */,

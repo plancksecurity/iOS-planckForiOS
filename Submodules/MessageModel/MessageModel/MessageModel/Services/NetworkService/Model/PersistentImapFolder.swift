@@ -139,8 +139,9 @@ class PersistentImapFolder: CWIMAPFolder {
                 return
             }
             let isNotFake = CdMessage.PredicateFactory.isNotFakeMessage()
-            let msgAtIdx = PersistentImapFolder.PredicateFactory.messageWithImapMessageNumber(messageNumber: theIndex,
-                                                                                              folder: me.cdFolder)
+            let msgAtIdx = NSPredicate(format: "parent = %@ and imap.messageNumber = %d",
+                                       me.cdFolder,
+                                       theIndex)
             let p = NSCompoundPredicate(andPredicateWithSubpredicates: [isNotFake, msgAtIdx])
             let msg = CdMessage.first(predicate: p, in: me.privateMOC)
             result = msg?.pantomimeQuick(folder: me)
@@ -200,11 +201,13 @@ class PersistentImapFolder: CWIMAPFolder {
     }
 
     private func cdMessage(withUID theUID: UInt) -> CdMessage? {
-        let pUid = PersistentImapFolder.PredicateFactory.messageWithUid(uid: theUID)
-        let pFolder = PersistentImapFolder.PredicateFactory.parentFolder(cdFolder: cdFolder)
+        let pUid = NSPredicate(format: "%K = %d", CdMessage.AttributeName.uid, theUID)
+        let pFolder = NSPredicate(format: "%K = %@", CdMessage.RelationshipName.parent, cdFolder)
         let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pUid, pFolder])
 
-        return CdMessage.first(predicate: p, in: privateMOC)
+        let message = CdMessage.first(predicate: p, in: privateMOC)
+
+        return message
     }
 
     private func cwMessage(withUID theUID: UInt) -> CWIMAPMessage? {
@@ -289,8 +292,9 @@ extension PersistentImapFolder: CWIMAPCache {
                 Log.shared.errorAndCrash("I _think_ this is not a valid case. It was failing silently before implementing the guard though. If you figure this is a valid case, lower the log to not crash and leave a comment describing why this is a valid case.")
                 return
             }
-            let p1 = PersistentImapFolder.PredicateFactory.messagesWithGreaterThanMessageNumber(messageNumber: theMsn,
-                                                                                                folder: theCdFolder)
+            let p1 = NSPredicate(format: "%K = %@ and %K > %d",
+                                 CdMessage.RelationshipName.parent, theCdFolder,
+                                 RelationshipKeyPath.cdMessage_imap_messageNum, theMsn)
             let cdMsgs = CdMessage.all(predicate: p1, in: me.privateMOC) as? [CdMessage] ?? []
             for aCdMsg in cdMsgs {
                 let oldMsn = aCdMsg.imapFields(context: me.privateMOC).messageNumber
