@@ -1001,19 +1001,19 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
-//    func testViewModelForIndexPath_notAlwaysWrapper() {
-//        assert()
-//        guard let wrapperVM = viewmodel(ofType: WrappedBccViewModel.self) else {
-//                XCTFail("No VM")
-//                return
-//        }
-//        let toRecipientsIdxPath = IndexPath(row: 0, section: 0)
-//        guard let testee = vm?.viewModel(for: toRecipientsIdxPath) else {
-//            XCTFail()
-//            return
-//        }
-//        XCTAssertFalse(testee === wrapperVM)
-//    }
+    func testViewModelForIndexPath_notAlwaysWrapper() {
+        assert()
+        guard let wrapperVM = viewmodel(ofType: WrappedBccViewModel.self) else {
+                XCTFail("No VM")
+                return
+        }
+        let toRecipientsIdxPath = IndexPath(row: 0, section: 0)
+        guard let testee = vm?.viewModel(for: toRecipientsIdxPath) else {
+            XCTFail()
+            return
+        }
+        XCTAssertFalse(testee === wrapperVM)
+    }
 
     // MARK: - beforePickerFocus
 
