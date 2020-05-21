@@ -914,21 +914,21 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
     // MARK: - handleUserClickedSendButton
 
-//    func testHandleUserClickedSendButton() {
-//        assert()
-//        let toRecipient = Identity(address: "testHandleUserClickedSend@Butt.on")
-//        vm?.state.toRecipients = [toRecipient]
-//        vm?.state.from = account.user
-//        let outMsgsBefore = Folder.by(account: account, folderType: .outbox)?
-//            .allMessagesNonThreaded()
-//            .count ?? -1
-//        vm?.handleUserClickedSendButton()
-//        let outMsgsAfter = Folder.by(account: account, folderType: .outbox)?
-//            .allMessagesNonThreaded()
-//            .count ?? -1
-//        XCTAssertEqual(outMsgsAfter, outMsgsBefore + 1)
-//        XCTAssertGreaterThan(outMsgsAfter, 0)
-//    }
+    func testHandleUserClickedSendButton() {
+        assert()
+        let toRecipient = Identity(address: "testHandleUserClickedSend@Butt.on")
+        vm?.state.toRecipients = [toRecipient]
+        vm?.state.from = account.user
+        let outMsgsBefore = Folder.by(account: account, folderType: .outbox)?
+            .allMessages()
+            .count ?? -1
+        vm?.handleUserClickedSendButton()
+        let outMsgsAfter = Folder.by(account: account, folderType: .outbox)?
+            .allMessages()
+            .count ?? -1
+        XCTAssertEqual(outMsgsAfter, outMsgsBefore + 1)
+        XCTAssertGreaterThan(outMsgsAfter, 0)
+    }
 
 //    func testHandleUserClickedSendButton_origDraft() {
 //        let testMessageId = UUID().uuidString + #function
