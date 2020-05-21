@@ -295,7 +295,7 @@
 "Handshake" = "Handshake";
 
 /* PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...) */
-"here" = "Hier";
+"here" = "hier";
 
 /* Alert title for iCloud instructions */
 "iCloud" = "iCloud";
@@ -1018,6 +1018,9 @@
 
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Sie sind dabei, eine sichere Nachricht als unsicher weiterzuleiten. Wenn Sie fortfahren, können vertrauliche Informationen verloren gehen, die Sie und Ihre Kommunikationspartner gefährden. Sind Sie sicher, dass Sie fortfahren wollen?";
+
+/* Message when asking user for confirmation about importing a key */
+"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Sie importieren den folgenden Schlüssel:\n\nName: %1$@\nFingerabdruck: %2$@\n\nMöchten Sie diesen Schlüssel wirklich importieren und verwenden?";
 
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Sie können dieses Tutorial jederzeit mit der Schaltfläche Überspringen schließen.";

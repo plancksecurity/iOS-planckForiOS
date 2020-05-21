@@ -1019,6 +1019,9 @@
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Vous êtes sur le point de transférer un message sécurisé de façon non-securisée. Si vous décidez de continuer, vous prenez le risque de divulguer des informations confidentielles. Êtes-vous sûr de vouloir continuer ?";
 
+/* Message when asking user for confirmation about importing a key */
+"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Vous êtes sur le point d'importer la clé suivante:\n\nNom:% 1 $ @\nEmpreinte digitale:% 2 $ @\n\nVoulez-vous vraiment importer et utiliser cette clé?";
+
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Vous pouvez fermer ce didacticiel à tout moment avec le bouton Ignorer.";
 
