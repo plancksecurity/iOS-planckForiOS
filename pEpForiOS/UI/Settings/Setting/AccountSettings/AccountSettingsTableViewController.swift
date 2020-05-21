@@ -85,8 +85,8 @@ final class AccountSettingsTableViewController: BaseTableViewController {
      override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.register(pEpHeaderView.self,
-                           forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
+        tableView.register(PEPHeaderView.self,
+                           forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
         UIHelper.variableCellHeightsTableView(tableView)
         UIHelper.variableSectionFootersHeightTableView(tableView)
         UIHelper.variableSectionHeadersHeightTableView(tableView)
@@ -126,7 +126,7 @@ extension AccountSettingsTableViewController {
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 
-        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: pEpHeaderView.reuseIdentifier) as? pEpHeaderView else {
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: PEPHeaderView.reuseIdentifier) as? PEPHeaderView else {
             Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
             return nil
         }

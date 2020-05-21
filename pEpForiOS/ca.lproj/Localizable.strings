@@ -55,6 +55,9 @@
 /* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
 "Add to Contacts" = "Afegir a contactes";
 
+/* setOwnKeyRowTitle row title */
+"ADVANCED" = "AVANÇAT";
+
 /* Name of unified inbox (showing messages of all accoounts */
 "All" = "Tots";
 
@@ -90,6 +93,9 @@
 
 /* title attachments filter cell */
 "Attachments" = "Adjunts";
+
+/* Title of the view for choosing installed keys to import */
+"Available Keys" = "Claus disponibles";
 
 /* Cancel button title for manual account IMAP setup
    Cancel button title for manual account SMTP setup */
@@ -239,6 +245,9 @@
 /* No comment provided by engineer. */
 "Error casting" = "S'ha produït un error en emetre";
 
+/* Generic error message on trying to import a key */
+"Error occurred. No key imported." = "S'ha produït un error. No s’ha importat cap clau.";
+
 /* spearator string bewtween name and date */
 "Exp. date:" = "Exp. data:";
 
@@ -284,6 +293,9 @@
 
 /* possible privacy status action */
 "Handshake" = "Handshake";
+
+/* PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...) */
+"here" = "aquí";
 
 /* Alert title for iCloud instructions */
 "iCloud" = "iCloud";
@@ -450,7 +462,8 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "Següent";
 
-/* Alert button while client certificate is importing: Try again? No */
+/* Alert button while client certificate is importing: Try again? No
+   Title for no button (cancel) when trying to import a key */
 "No" = "No";
 
 /* Error when no account found for set_own_key UI */
@@ -575,6 +588,12 @@
 /* Tableview section header */
 "PGP Compatibility" = "Compatibilitat PGP";
 
+/* PGPKeyImportSetting pgpKeyImportRowTitle
+   PGPKeyImportSettingViewController Navigationbar title
+   Settings: Cell (button) title for importing and using private PGP keys
+   Title for alert when trying to import a key */
+"PGP Key Import" = "Importació de clau PGP";
+
 /* Privacy status suggestion */
 "Please add the necessary information." = "Afegiu la informació necessària.";
 
@@ -614,6 +633,9 @@
 
 /* action sheet title 1 */
 "Privacy Status" = "Grau de privadesa";
+
+/* Success message when importing the key */
+"Private key successfully imported." = "La clau privada s'ha importat correctament.";
 
 /* title for subject protection */
 "Protect Message Subject" = "Protegir l'assumpte del missatge";
@@ -856,6 +878,9 @@
 /* settings, enable thread view or not */
 "Thread Messages" = "Fil de missatges";
 
+/* PGPKeyImportSetting row title */
+"To import an existing PGP private key, you first need to transfer it from your computer.\n\nClick here for more information. Once the private key has been transferred to the device, you can import it here." = "Per importar una clau privada PGP existent, primer cal transferir-la des del vostre ordinador.\n\nFeu clic aquí per obtenir més informació. Un cop transferida la clau privada al dispositiu, podeu importar-la aquí.";
+
 /* Compose field title */
 "To:" = "A:";
 
@@ -984,7 +1009,8 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Trustwords incorrectes";
 
-/* Alert button while client certificate is importing: Try again? Yes */
+/* Alert button while client certificate is importing: Try again? Yes
+   Title for yes button when trying to import a key */
 "Yes" = "Sí";
 
 /* Confirm less secure answer message alert body */
@@ -992,6 +1018,9 @@
 
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Esteu a punt de reenviar un missatge segur com no segur. Si decidiu continuar, es podria filtrar informació confidencial, posant en risc vosaltres i els vostres col·laboradors de comunicació. Estàs segur que vols continuar?";
+
+/* Message when asking user for confirmation about importing a key */
+"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Esteu a punt d’importar la següent clau:\n\nNom:% 1 $ @\nEmpremta digital:% 2 $ @\n\nEsteu segur que voleu importar i utilitzar aquesta clau?";
 
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Podeu tancar aquest tutorial en qualsevol moment amb el botó Saltar.";

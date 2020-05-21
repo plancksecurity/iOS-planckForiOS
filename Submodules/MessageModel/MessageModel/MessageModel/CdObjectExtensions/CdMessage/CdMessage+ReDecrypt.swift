@@ -32,12 +32,26 @@ extension CdMessage {
         return hasBeenMarked
     }
 
-    static func markAllUndecryptableMessagesForRetryDecrypt(context: NSManagedObjectContext) {
-        let pUndecryptable = CdMessage.PredicateFactory.undecryptable()
-        guard let allUndecryptableMsgs = all(predicate: pUndecryptable, in: context) as? [CdMessage] else {
-            // No undecyptable messages exist.
-            // Do nothing
-            return
+    /// Marks all yet undecryptable message in the DB for retry decrypt. Use after getting new
+    /// private key(s).
+    /// - Parameters:
+    ///   - cdAccount:   account whichs messages should be marked for redecrypt. If nil, all
+    ///                     undecryptatble messges in the database are marked.
+    ///   - context: context to work on
+    static func markAllUndecryptableMessagesForRetryDecrypt(for cdAccount: CdAccount? = nil,
+                                                            context: NSManagedObjectContext) {
+        var predicate = CdMessage.PredicateFactory.undecryptable()
+        if let account = cdAccount {
+            let belongsToAccount = CdMessage.PredicateFactory.belongingToAccount(cdAccount: account)
+            predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate,
+                                                                            belongsToAccount])
+        }
+        guard
+            let allUndecryptableMsgs = all(predicate: predicate, in: context) as? [CdMessage]
+            else {
+                // No undecyptable messages exist.
+                // Do nothing
+                return
         }
         allUndecryptableMsgs.forEach { $0.needsDecrypt = true }
     }

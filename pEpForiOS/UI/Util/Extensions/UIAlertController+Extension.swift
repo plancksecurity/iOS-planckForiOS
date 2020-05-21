@@ -15,9 +15,7 @@ extension UIAlertController {
                        _ style: UIAlertAction.Style = .default,
                        _ closure: (() -> ())? = nil) ->  UIAlertAction {
         return UIAlertAction(title: title, style: style) { (action) in
-            if let clos = closure {
-                clos()
-            }
+            closure?()
         }
     }
 

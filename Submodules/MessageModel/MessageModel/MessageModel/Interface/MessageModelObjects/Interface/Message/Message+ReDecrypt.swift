@@ -19,14 +19,4 @@ extension Message {
     public func markForRetryDecryptIfUndecryptable() -> Bool {
         return cdObject.markForRetryDecryptIfUndecryptable()
     }
-
-    /// Marks all yet undecryptable messages for retryToDecrypt.
-    /// Use after we got new keys.
-    static public func tryRedecryptYetUndecryptableMessages() {
-        let moc = Stack.shared.newPrivateConcurrentContext
-        moc.performAndWait {
-            CdMessage.markAllUndecryptableMessagesForRetryDecrypt(context: moc)
-            moc.saveAndLogErrors()
-        }
-    }
 }
