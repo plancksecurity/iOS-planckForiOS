@@ -682,33 +682,31 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         XCTAssertTrue(testee?.resultDelegate === vm)
     }
 
-    // showSuggestions and hideSuggestions are tested altering recipients
-
-    //!!!: crash
-//    func testShowSuggestionsScrollFocus_nonEmpty() {
-//        let expectedSuggestionsVisibility = true
-//        assert(contentChangedMustBeCalled: false,
-//               focusSwitchedMustBeCalled: false,
-//               validatedStateChangedMustBeCalled: false,
-//               expectedIsValidated: nil,
-//               modelChangedMustBeCalled: false,
-//               sectionChangedMustBeCalled: false,
-//               colorBatchNeedsUpdateMustBeCalled: false,
-//               hideSuggestionsMustBeCalled: false,
-//               showSuggestionsMustBeCalled: false,
-//               suggestionsScrollFocusChangedMustBeCalled: true,
-//               expectedNewSuggestionsScrollFocusIsVisible: expectedSuggestionsVisibility,
-//               showMediaAttachmentPickerMustBeCalled: false,
-//               hideMediaAttachmentPickerMustBeCalled: false,
-//               showDocumentAttachmentPickerMustBeCalled: false,
-//               documentAttachmentPickerDonePickerCalled: false,
-//               didComposeNewMailMustBeCalled: false,
-//               didModifyMessageMustBeCalled: false,
-//               didDeleteMessageMustBeCalled: false)
-//        let _ = vm?.suggestViewModel(SuggestViewModel(),
-//                                     didToggleVisibilityTo: expectedSuggestionsVisibility)
-//        waitForExpectations(timeout: UnitTestUtils.waitTime)
-//    }
+    /// showSuggestions and hideSuggestions are tested altering recipients
+    func testShowSuggestionsScrollFocus_nonEmpty() {
+        let expectedSuggestionsVisibility = true
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               expectedIsValidated: nil,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               suggestionsScrollFocusChangedMustBeCalled: true,
+               expectedNewSuggestionsScrollFocusIsVisible: expectedSuggestionsVisibility,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let _ = vm?.suggestViewModel(SuggestViewModel(),
+                                     didToggleVisibilityTo: expectedSuggestionsVisibility)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
 //    func testShowSuggestionsScrollFocus_empty() {
 //        let expectedSuggestionsVisibility = false
