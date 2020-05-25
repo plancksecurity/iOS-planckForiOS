@@ -20,7 +20,7 @@ import MessageModel
 /// this to the client.
 class ImapIdleOperation: ImapSyncOperation {
 
-    var syncDelegate: ImapIdleDelegate?
+//    var syncDelegate: ImapIdleDelegate?
     var changedMessageIDs = [NSManagedObjectID]()
     //    weak var delegate: ImapIdleOperationDelegate?
 
@@ -30,13 +30,11 @@ class ImapIdleOperation: ImapSyncOperation {
     }
 
     override func main() {
-        if !shouldRun() {
-            return
-        }
         if !checkImapSync() {
+            waitForBackgroundTasksAndFinish()
             return
         }
-        if !imapSyncData.supportsIdle {
+        if !imapConnection.supportsIdle {
             markAsFinished()
             return
         }
@@ -93,49 +91,93 @@ class ImapIdleOperation: ImapSyncOperation {
 
 // MARK: - ImapIdleDelegate (actual delegate)
 
-class ImapIdleDelegate: DefaultImapSyncDelegate {
-    public override func authenticationFailed(_ sync: ImapSync, notification: Notification?) {
-        errorHandler?.handle(error: ImapSyncError.illegalState(#function))
+class ImapIdleDelegate: DefaultImapConnectionDelegate {
+    
+    override func authenticationFailed(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
+        errorHandler?.handle(error: ImapSyncOperationError.illegalState(#function))
         imapIdleOp()?.handleError()
     }
 
-    public override func connectionLost(_ sync: ImapSync, notification: Notification?) {
+//    public override func authenticationFailed(_ sync: ImapSync, notification: Notification?) {
+//        errorHandler?.handle(error: ImapSyncError.illegalState(#function))
+//        imapIdleOp()?.handleError()
+//    }
+
+    override func connectionLost(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
         imapIdleOp()?.handleError()
     }
 
-    public override func connectionTerminated(_ sync: ImapSync, notification: Notification?) {
+//    public override func connectionLost(_ sync: ImapSync, notification: Notification?) {
+//        imapIdleOp()?.handleError()
+//    }
+
+    override func connectionTerminated(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
         imapIdleOp()?.handleError()
     }
 
-    public override func connectionTimedOut(_ sync: ImapSync, notification: Notification?) {
+//    public override func connectionTerminated(_ sync: ImapSync, notification: Notification?) {
+//        imapIdleOp()?.handleError()
+//    }
+
+    override func connectionTimedOut(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
         imapIdleOp()?.handleError()
     }
 
-    public override func badResponse(_ sync: ImapSync, response: String?) {
+//    public override func connectionTimedOut(_ sync: ImapSync, notification: Notification?) {
+//        imapIdleOp()?.handleError()
+//    }
+
+    override func badResponse(_ imapConection: ImapConnectionProtocol, response: String?) {
         imapIdleOp()?.handleError()
     }
 
-    public override func actionFailed(_ sync: ImapSync, response: String?) {
-        imapIdleOp()?.handleError()
+//    public override func badResponse(_ sync: ImapSync, response: String?) {
+//        imapIdleOp()?.handleError()
+//    }
+
+    override func actionFailed(_ imapConection: ImapConnectionProtocol, response: String?) {
+        imapIdleOp()?.handleError() //BUFF: double check all error handling. We do not want to inform the user if idle fails but keep on replicating
     }
 
-    override func idleEntered(_ sync: ImapSync, notification: Notification?) {
+//    public override func actionFailed(_ sync: ImapSync, response: String?) {
+//        imapIdleOp()?.handleError()
+//    }
+
+    override func idleEntered(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
         // Do nothing, keep idleing
     }
-    
-    override func idleNewMessages(_ sync: ImapSync, notification: Notification?) {
+
+//    override func idleEntered(_ sync: ImapSync, notification: Notification?) {
+//        // Do nothing, keep idleing
+//    }
+
+    override func idleNewMessages(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
         imapIdleOp()?.handleIdleNewMessages()
     }
     
-    override func idleFinished(_ sync: ImapSync, notification: Notification?) {
+//    override func idleNewMessages(_ sync: ImapSync, notification: Notification?) {
+//        imapIdleOp()?.handleIdleNewMessages()
+//    }
+
+    override func idleFinished(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
         imapIdleOp()?.handleIdleFinished()
     }
+    
+//    override func idleFinished(_ sync: ImapSync, notification: Notification?) {
+//        imapIdleOp()?.handleIdleFinished()
+//    }
 
     /// We did stop ideling by sending DONE, so the server returns the actual changes.
     /// We are currently ignoring those reports and signal to our client that ideling finished.
-    override func messageChanged(_ sync: ImapSync, notification: Notification?) {
-        imapIdleOp()?.handleIdleFinished()
+    override func messageChanged(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
+        imapIdleOp()?.handleIdleFinished() //BUFF: read RFC. What do we get here?
     }
+
+//    /// We did stop ideling by sending DONE, so the server returns the actual changes.
+//    /// We are currently ignoring those reports and signal to our client that ideling finished.
+//    override func messageChanged(_ sync: ImapSync, notification: Notification?) {
+//        imapIdleOp()?.handleIdleFinished()
+//    }
 
     // MARK: - Helper 
 
