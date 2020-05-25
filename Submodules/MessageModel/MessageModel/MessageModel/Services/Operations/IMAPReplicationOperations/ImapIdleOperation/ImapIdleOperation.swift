@@ -45,13 +45,13 @@ class ImapIdleOperation: ImapSyncOperation {
 
     private func process() {
         syncDelegate = ImapIdleDelegate(errorHandler: self)
-        imapSyncData.sync?.delegate = syncDelegate
+        imapConnection.delegate = syncDelegate
 
         startIdle(context: self.privateMOC)
     }
 
     private func startIdle(context: NSManagedObjectContext) {
-        requestIdle()
+        imapConnection.sendIdle()
     }
 
     override func markAsFinished() {
@@ -59,20 +59,8 @@ class ImapIdleOperation: ImapSyncOperation {
         super.markAsFinished()
     }
 
-    private func requestIdle() {
-        guard let imapStore = imapSyncData.sync?.imapStore else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No store!?")
-            return
-        }
-        imapStore.send(IMAP_IDLE, info: nil, string: "IDLE")
-    }
-
     private func sendDone() {
-        guard let imapStore = imapSyncData.sync?.imapStore else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No store!?")
-            return
-        }
-        imapStore.exitIDLE()
+       imapConnection.exitIdle()
     }
 
     fileprivate func handleIdleNewMessages() {
@@ -84,8 +72,7 @@ class ImapIdleOperation: ImapSyncOperation {
     }
 
     fileprivate func handleError() {
-        Log.shared.info(component: #function, content: "We intentionally ignore an error here.")
-        markAsFinished()
+        Log.shared.info("We intentionally ignore an error here.")
     }
 }
 
