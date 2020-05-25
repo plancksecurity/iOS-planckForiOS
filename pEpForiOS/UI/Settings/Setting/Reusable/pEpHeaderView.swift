@@ -24,8 +24,21 @@ final class PEPHeaderView: UITableViewHeaderFooterView {
         let createe = UITextView()
         createe.translatesAutoresizingMaskIntoConstraints = false
         createe.isScrollEnabled = false
+        createe.isUserInteractionEnabled = false
+        createe.isEditable = false
         return createe
     }()
+
+    override var isUserInteractionEnabled: Bool {
+        set {
+            titleTextView.isUserInteractionEnabled = newValue
+            super.isUserInteractionEnabled = newValue
+
+        }
+        get {
+            return super.isUserInteractionEnabled
+        }
+    }
 
     public override var backgroundColor: UIColor? {
         set {
