@@ -142,21 +142,7 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
         ///Verify reset has been called only once.
         waitForExpectations(timeout: TestUtil.waitTime)
     }
-    
-//    //Test the Select language is being called
-//    func testDidSelectLanguage() {
-//        setupViewModel()
-//        let didSelectLanguageExp = expectation(description: "didSelectLanguageExp")
-//        let mockDelegate = MockTrustManagementViewModelHandler(didSelectLanguageExpectation: didSelectLanguageExp)
-//        trustManagementViewModel?.delegate = mockDelegate
-//        let catalan = "ca"
-//        let firstItemPosition = IndexPath(item: 0, section: 0)
-//        XCTAssertNotEqual(catalan, trustManagementViewModel?.rows[firstItemPosition.row].language)
-//        trustManagementViewModel?.handleDidSelecteLanguage(forRowAt: firstItemPosition, language: catalan)
-//        XCTAssertEqual(catalan, trustManagementViewModel?.rows[firstItemPosition.row].language)
-//        waitForExpectations(timeout: TestUtil.waitTime)
-//    }
-    
+
     func testDidToogleLongTrustwords() {
         let firstItemPosition = IndexPath(item: 0, section: 0)
 
