@@ -296,11 +296,6 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
 
 /// Use this mock class to verify the calls on the delegate are being performed
 class MockTrustManagementViewModelHandler : TrustManagementViewModelDelegate {
-    func dataChanged(forRowAt indexPath: IndexPath) {
-        //MARTIN: take care
-    }
-
-    
     var didEndShakeMotionExpectation: XCTestExpectation?
     var didResetHandshakeExpectation: XCTestExpectation?
     var didConfirmHandshakeExpectation: XCTestExpectation?
@@ -308,6 +303,7 @@ class MockTrustManagementViewModelHandler : TrustManagementViewModelDelegate {
     var didChangeProtectionStatusExpectation: XCTestExpectation?
     var didSelectLanguageExpectation: XCTestExpectation?
     var didToogleLongTrustwordsExpectation: XCTestExpectation?
+
     init(didEndShakeMotionExpectation: XCTestExpectation? = nil,
          didResetHandshakeExpectation: XCTestExpectation? = nil,
          didConfirmHandshakeExpectation: XCTestExpectation? = nil,
@@ -323,7 +319,16 @@ class MockTrustManagementViewModelHandler : TrustManagementViewModelDelegate {
         self.didSelectLanguageExpectation = didSelectLanguageExpectation
         self.didToogleLongTrustwordsExpectation = didToogleLongTrustwordsExpectation
     }
+
+    func dataChanged(forRowAt indexPath: IndexPath) {
+        fireReloadOrDidChangeExpectations()
+    }
+
     func reload() {
+        fireReloadOrDidChangeExpectations()
+    }
+
+    private func fireReloadOrDidChangeExpectations() {
         if didEndShakeMotionExpectation != nil {
             didEndShakeMotionExpectation?.fulfill()
             didEndShakeMotionExpectation = nil
