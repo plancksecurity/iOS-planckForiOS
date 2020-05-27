@@ -29,16 +29,21 @@ class FetchMessagesOperationTest: PersistentStoreDrivenTestBase {
         let syncFoldersOp = SyncFoldersFromServerOperation(parentName: #function,
                                                            imapConnection: imapConection)
         syncFoldersOp.addDependency(imapLogin)
+
         syncFoldersOp.completionBlock = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
             syncFoldersOp.completionBlock = nil
-            guard let _ = CdFolder.all(in: me.moc) as? [CdFolder] else {
-                XCTFail("No folders?")
-                return
+
+            me.moc.performAndWait {
+                guard let _ = CdFolder.all(in: me.moc) as? [CdFolder] else {
+                    XCTFail("No folders?")
+                    return
+                }
             }
+
             expFoldersFetched.fulfill()
         }
 
@@ -51,10 +56,14 @@ class FetchMessagesOperationTest: PersistentStoreDrivenTestBase {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            guard let _ = CdFolder.all(in: me.moc) as? [CdFolder] else {
-                XCTFail("No folders?")
-                return
+
+            me.moc.performAndWait {
+                guard let _ = CdFolder.all(in: me.moc) as? [CdFolder] else {
+                    XCTFail("No folders?")
+                    return
+                }
             }
+
             expFoldersCreated.fulfill()
         }
 
@@ -80,12 +89,17 @@ class FetchMessagesOperationTest: PersistentStoreDrivenTestBase {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            guard let _ = CdMessage.all(in: me.moc) as? [CdMessage] else {
-                XCTFail("No messages?")
-                return
+
+            me.moc.performAndWait {
+                guard let _ = CdMessage.all(in: me.moc) as? [CdMessage] else {
+                    XCTFail("No messages?")
+                    return
+                }
+
+                // ... remember count ...
+                msgCountBefore = CdMessage.all(in: me.moc)?.count
             }
-            // ... remember count ...
-            msgCountBefore = CdMessage.all(in: me.moc)?.count
+
             expMessagesSynced.fulfill()
         }
         queue.addOperation(fetchOp)
@@ -99,13 +113,18 @@ class FetchMessagesOperationTest: PersistentStoreDrivenTestBase {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            guard let _ = CdMessage.all(in: me.moc) as? [CdMessage] else {
-                XCTFail("No messages?")
-                return
+
+            me.moc.performAndWait {
+                guard let _ = CdMessage.all(in: me.moc) as? [CdMessage] else {
+                    XCTFail("No messages?")
+                    return
+                }
+
+                let msgCountAfter = CdMessage.all(in: me.moc)?.count
+                // no mail should no have been dupliccated
+                XCTAssertEqual(msgCountBefore, msgCountAfter)
             }
-            let msgCountAfter = CdMessage.all(in: me.moc)?.count
-            // no mail should no have been dupliccated
-            XCTAssertEqual(msgCountBefore, msgCountAfter)
+
             expMessagesSynced2.fulfill()
         }
         fetch2Op.addDependency(fetchOp)
