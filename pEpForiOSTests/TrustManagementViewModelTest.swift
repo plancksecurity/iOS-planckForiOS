@@ -8,6 +8,7 @@
 //
 
 import XCTest
+
 @testable import MessageModel
 @testable import pEpForiOS
 
@@ -183,7 +184,6 @@ extension TrustManagementViewModelTest {
         }
     }
 }
-
 
 ///MARK: - Mock Util Classes
 
