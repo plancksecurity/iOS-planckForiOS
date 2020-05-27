@@ -142,19 +142,6 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
         ///Verify reset has been called only once.
         waitForExpectations(timeout: TestUtil.waitTime)
     }
-    //MARTIN:
-//    /// Test get trustwords is being called.
-//    func testGetTrustwords() {
-//        let getTrustwordsExpectation = expectation(description: "Get Trustwords Expectation")
-//        let firstItemPosition = IndexPath(item: 0, section: 0)
-//        let handshakeMock = TrustManagementUtilMock(getTrustwordsExpectation: getTrustwordsExpectation)
-//        setupViewModel(util: handshakeMock)
-//
-//        trustManagementViewModel?.generateTrustwords(forRowAt: firstItemPosition, completion: { trustwords in
-//            XCTAssertEqual(trustwords, TrustManagementUtilMock.someTrustWords)
-//        })
-//        waitForExpectations(timeout: TestUtil.waitTime)
-//    }
     
 //    //Test the Select language is being called
 //    func testDidSelectLanguage() {
