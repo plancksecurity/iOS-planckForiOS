@@ -33,14 +33,6 @@ class ComposeUtilTest: AccountDrivenTestBase {
 
     let noRecipients = [Identity]()
 
-    var meSomeUnusedAccount: Identity!
-
-    override func setUp() {
-        super.setUp()
-        cdAccount.createRequiredFoldersAndWait(testCase: self)
-        meSomeUnusedAccount = SecretTestData().createWorkingAccount(number: 1).user
-    }
-
     // MARK: - REPLY
 
     // MARK: FolderType !~ [.sent, .draft]
