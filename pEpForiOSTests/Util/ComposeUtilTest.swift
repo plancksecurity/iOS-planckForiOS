@@ -35,14 +35,14 @@ class ComposeUtilTest: AccountDrivenTestBase {
 
     override func setUp() {
         super.setUp()
-        let _ = Folder(name: "Inbox",
-                       parent: nil,
-                       account: account,
-                       folderType: .inbox)
-        let _ = Folder(name: "Drafts",
-                       parent: nil,
-                       account: account,
-                       folderType: .drafts)
+
+        let folderTypesToCreate: [FolderType] = [.inbox, .drafts, .sent]
+        for ft in folderTypesToCreate {
+            let _ = Folder(name: ft.folderName(),
+                           parent: nil,
+                           account: account,
+                           folderType: ft)
+        }
     }
 
     // MARK: - REPLY
