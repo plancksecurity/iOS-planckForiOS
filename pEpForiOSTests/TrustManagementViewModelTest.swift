@@ -294,14 +294,6 @@ class MockTrustManagementViewModelHandler : TrustManagementViewModelDelegate {
     }
 
     func dataChanged(forRowAt indexPath: IndexPath) {
-        fireReloadOrDidChangeExpectations()
-    }
-
-    func reload() {
-        fireReloadOrDidChangeExpectations()
-    }
-
-    private func fireReloadOrDidChangeExpectations() {
         if didEndShakeMotionExpectation != nil {
             didEndShakeMotionExpectation?.fulfill()
             didEndShakeMotionExpectation = nil
@@ -326,6 +318,9 @@ class MockTrustManagementViewModelHandler : TrustManagementViewModelDelegate {
             didToogleLongTrustwordsExpectation?.fulfill()
             didToogleLongTrustwordsExpectation = nil
         }
+    }
+
+    func reload() {
     }
 
     func didToogleProtection(forRowAt indexPath: IndexPath) {
