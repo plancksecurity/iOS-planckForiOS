@@ -10,7 +10,6 @@ import Foundation
 import MessageModel
 
 public class ErrorSubscriber {
-    var showedAccountsError = [String:Bool]()
     public func errorShouldBeDisplayed(error: Error) -> Bool{
         return true
     }
@@ -25,3 +24,28 @@ extension ErrorSubscriber: ErrorPropagatorSubscriber {
         }
     }
 }
+
+/*
+ let moc = Session.main.moc
+ let actualDate = Date()
+ let server = CdServer.first(predicate: CdServer.PredicateFactory.smtpServerForAccount(account: smtpConnection.accountAddress), in: moc)
+ guard let lastErrorShownDate = server?.dateLastAuthenticationErrorShown,
+ let minimumDateBeforeShowinAnotherError = Calendar.current.date(byAdding: .minute,
+ value: 2,
+ to: lastErrorShownDate)
+ else {
+ addError(SmtpSendError.authenticationFailed(
+ #function,
+ smtpConnection.accountAddress))
+ waitForBackgroundTasksAndFinish()
+ return
+ }
+ if actualDate > minimumDateBeforeShowinAnotherError {
+ addError(SmtpSendError.authenticationFailed(
+ #function,
+ smtpConnection.accountAddress))
+ waitForBackgroundTasksAndFinish()
+ server?.dateLastAuthenticationErrorShown = actualDate
+ moc.saveAndLogErrors()
+ }
+ */
