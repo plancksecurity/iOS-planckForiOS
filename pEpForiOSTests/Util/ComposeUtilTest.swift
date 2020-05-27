@@ -10,8 +10,8 @@
 //
 
 import XCTest
-import MessageModel
 
+@testable import MessageModel
 @testable import pEpForiOS
 
 class ComposeUtilTest: AccountDrivenTestBase {
@@ -32,6 +32,14 @@ class ComposeUtilTest: AccountDrivenTestBase {
     }
 
     let noRecipients = [Identity]()
+
+    override func setUp() {
+        super.setUp()
+        let _ = Folder(name: "Drafts",
+                       parent: nil,
+                       account: account,
+                       folderType: .drafts)
+    }
 
     // MARK: - REPLY
 
