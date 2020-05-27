@@ -53,10 +53,10 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
     
     //Test Reject Handshake Pressed
     func testHandleRejectHandshakePressed() {
-        let didDenyExpectation = expectation(description: "didDenyExpectation")
+        let didDenyHandshakeExpectation = expectation(description: "didDenyHandshakeExpectation")
         let denyExpectation = expectation(description: "denyExpectation")
         let util = TrustManagementUtilMock(denyExpectation: denyExpectation)
-        let mockDelegate = MockTrustManagementViewModelHandler(didDenyHandshakeExpectation: didDenyExpectation)
+        let mockDelegate = MockTrustManagementViewModelHandler(didDenyHandshakeExpectation: didDenyHandshakeExpectation)
         
         setupViewModel(util: util)
         trustManagementViewModel?.delegate = mockDelegate
