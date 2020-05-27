@@ -10,7 +10,7 @@ import Foundation
 
 extension CdClientCertificate {
     struct PredicateFactory {
-        static public func searchLabelInKeychain(label: String,
+        static func searchLabelInKeychain(label: String,
                                                  keychainUuid: String) -> NSPredicate {
             return NSPredicate(format: "%K = %@ and %K = %@",
             CdClientCertificate.AttributeName.label,

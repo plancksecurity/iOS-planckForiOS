@@ -10,7 +10,7 @@ import CoreData
 
 extension CdAccount {
 
-    public func server(type: Server.ServerType) -> CdServer? {
+    func server(type: Server.ServerType) -> CdServer? {
         guard let servs = servers?.allObjects as? [CdServer] else {
             return nil
         }
@@ -28,7 +28,7 @@ extension CdAccount {
         return serversWithType.first
     }
 
-    public func account() -> Account {
+    func account() -> Account {
       return MessageModelObjectUtils.getAccount(fromCdAccount: self)
     }
 }

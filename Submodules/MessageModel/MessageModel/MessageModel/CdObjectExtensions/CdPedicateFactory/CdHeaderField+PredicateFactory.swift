@@ -10,7 +10,7 @@ import Foundation
 
 extension CdHeaderField {
     struct PredicateFactory {
-        static public func itemsWithoutAnyRelationshipMessage() -> NSPredicate {
+        static func itemsWithoutAnyRelationshipMessage() -> NSPredicate {
             return NSPredicate(format: "%K = nil",
                                CdHeaderField.RelationshipName.message)
         }

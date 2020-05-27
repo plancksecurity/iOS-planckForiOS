@@ -27,6 +27,7 @@ extension CdMessage {
     func addMessageReference(messageID: String,
                              referenceType: MessageReferenceType,
                              context: NSManagedObjectContext) -> CdMessageReference {
+
         let predicate = NSPredicate(format: "%K = %@",
                                     CdMessageReference.AttributeName.reference,
                                     messageID)

@@ -22,7 +22,7 @@ extension CdIdentity {
         /// Predicate to fetch CdIdentities that represents the user
         ///
         /// - Returns: predicate for not own identities
-        static public func isNotMySelf() -> NSPredicate {
+        static func isNotMySelf() -> NSPredicate {
             return NSPredicate(format: "%K != %@", CdIdentity.AttributeName.userID, CdIdentity.pEpOwnUserID)
         }
 

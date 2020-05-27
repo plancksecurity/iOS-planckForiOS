@@ -10,13 +10,13 @@ import Foundation
 
 extension CdAccount {
     struct PredicateFactory {
-        static public func belongingToIdentity(identity: CdIdentity) -> NSPredicate {
+        static func belongingToIdentity(identity: CdIdentity) -> NSPredicate {
             return NSPredicate(format: "%K = %@",
                                CdAccount.RelationshipName.identity,
                                identity)
         }
         /// Get CdAccount by address
-        static public func by(address: String) -> NSPredicate {
+        static func by(address: String) -> NSPredicate {
             return NSPredicate(format: "identity.address like[c] %@", address)
         }
     }

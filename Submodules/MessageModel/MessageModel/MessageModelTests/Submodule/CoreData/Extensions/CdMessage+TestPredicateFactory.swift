@@ -38,35 +38,4 @@ extension CdMessage {
                                in: context)
     }
 
-    static func by(uuid: MessageID,
-                   folderName: String,
-                   account: CdAccount,
-                   includingDeleted: Bool = true,
-                   context: NSManagedObjectContext) -> CdMessage? {
-        let p = NSPredicate(format: "uuid = %@ and parent.name = %@ AND parent.account = %@",
-                            uuid, folderName, account)
-        guard
-            let messages = CdMessage.all(predicate: p,
-                                         in: context) as? [CdMessage]
-            else {
-                return nil
-        }
-        var found = messages
-        if !includingDeleted {
-            found = found.filter { $0.imapFields(context: context).imapFlags().deleted == false }
-        }
-
-        if found.count > 1 {
-            //filter fake msgs
-            found = found.filter { $0.uid != -1 }
-            if found.count > 1 {
-                let failureMessage = String(format: "multiple messages with UUID %@ in folder %@. Messages: %@",
-                                            uuid,
-                                            folderName,
-                                            found)
-                assertionFailure(failureMessage)
-            }
-        }
-        return found.first
-    }
 }

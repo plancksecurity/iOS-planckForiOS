@@ -13,7 +13,7 @@ import CoreData
 extension CdIdentity {
 
     //!!!: Docs re context
-    public static func search(address: String,
+    static func search(address: String,
                               context: NSManagedObjectContext) -> CdIdentity? {
         let predicate = CdIdentity.PredicateFactory.addressLike(address: address)
         let cdIdent = CdIdentity.first(predicate: predicate, in: context)

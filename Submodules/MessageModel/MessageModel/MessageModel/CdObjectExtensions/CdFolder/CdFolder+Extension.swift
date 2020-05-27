@@ -15,14 +15,14 @@ import pEpIOSToolbox
 extension CdFolder {
     @nonobjc static let comp = "CdFolder"
 
-    public static func by(folderType: FolderType,
+    static func by(folderType: FolderType,
                           account: CdAccount,
                           context: NSManagedObjectContext? = nil) -> CdFolder? {
         return CdFolder.first(attributes: ["folderTypeRawValue": folderType.rawValue, "account": account],
                               in: context)
     }
 
-    public static func by(name: String,
+    static func by(name: String,
                           account: CdAccount,
                           context: NSManagedObjectContext? = nil) -> CdFolder? {
         if name.isInboxFolderName() {
@@ -34,7 +34,7 @@ extension CdFolder {
     /**
      - Returns: All (undeleted, valid) messages in that folder.
      */
-    public func allMessages(context: NSManagedObjectContext) -> [CdMessage] {
+    func allMessages(context: NSManagedObjectContext) -> [CdMessage] {
         let p = CdMessage.PredicateFactory.allMessages(parentFolder: self)
         if let msgs = CdMessage.all(predicate: p, in: context) as? [CdMessage] {
             return msgs
@@ -67,7 +67,7 @@ extension CdFolder {
 
 //!!!: move to own file
 extension CdFolder {
-    public var folderType: FolderType {
+    var folderType: FolderType {
         get {
             guard let type = FolderType(rawValue: self.folderTypeRawValue) else {
                 Log.shared.errorAndCrash("No type?!")
@@ -84,12 +84,12 @@ extension CdFolder {
 extension CdFolder {
 
     ///!!!: test only. maybe move
-    public static func countBy(predicate: NSPredicate, context: NSManagedObjectContext) -> Int {
+    static func countBy(predicate: NSPredicate, context: NSManagedObjectContext) -> Int {
         let objs = CdFolder.all(predicate: predicate, in: context)
         return objs?.count ?? 0
     }
 
-    public func folder() -> Folder {
+    func folder() -> Folder {
         let moc: NSManagedObjectContext = managedObjectContext ?? Stack.shared.mainContext
         return MessageModelObjectUtils.getFolder(fromCdObject: self, context: moc)
     }
@@ -97,7 +97,7 @@ extension CdFolder {
 
 //!!!: move?!
 extension CdFolder {
-    public static func folderSeparatorAsString(cdAccount: CdAccount) -> String? {
+    static func folderSeparatorAsString(cdAccount: CdAccount) -> String? {
         for cdF in cdAccount.folders?.array as? [CdFolder] ?? [] {
             if let fs = cdF.folderSeparatorAsString() {
                 return fs
@@ -106,7 +106,7 @@ extension CdFolder {
         return nil
     }
 
-    public func folderSeparatorAsString() -> String? {
+    func folderSeparatorAsString() -> String? {
         if folderSeparator == 0 {
             return nil
         }
@@ -115,7 +115,7 @@ extension CdFolder {
 }
 
 extension CdFolder {
-    public func message(byUID: UInt, context: NSManagedObjectContext) -> CdMessage? {
+    func message(byUID: UInt, context: NSManagedObjectContext) -> CdMessage? {
         let p = CdMessage.PredicateFactory.parentFolder(self, uid: byUID)
         return CdMessage.first(predicate: p, in: context)
     }

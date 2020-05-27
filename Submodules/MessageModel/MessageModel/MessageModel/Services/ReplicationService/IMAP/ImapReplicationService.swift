@@ -192,7 +192,7 @@ extension ImapReplicationService {
             let earlierTimestamp = Date(
                 timeIntervalSinceNow: -ImapReplicationService.timeIntervalForInterestingFolders)
             let pInteresting = CdFolder.PredicateFactory
-                .messagesFromInboxImap(for: cdAccount,
+                .foldersFromInboxImap(for: cdAccount,
                                        earlierThan: earlierTimestamp)
             let folderPredicate = NSCompoundPredicate(
                 orPredicateWithSubpredicates: [pInteresting,
