@@ -35,4 +35,8 @@ extension CdServer {
             self.transportRawValue = newValue.rawValue
         }
     }
+    
+    public func server() -> Server {
+        return MessageModelObjectUtils.getServer(fromCdObject: self)
+    }
 }
