@@ -463,8 +463,7 @@ class ComposeUtilTest: AccountDrivenTestBase {
         let createe = Identity(address: id + "@" + id + ".com",
                                userID: "TEST_ID_" + id,
                                addressBookID: nil,
-                               userName: "TEST_USER_NAME_" + id,
-                               isMySelf: false)
+                               userName: "TEST_USER_NAME_" + id)
         return createe
     }
 
