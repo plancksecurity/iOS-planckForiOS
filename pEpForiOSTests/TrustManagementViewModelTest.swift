@@ -15,18 +15,18 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
     var selfIdentity : Identity?
     var trustManagementViewModel : TrustManagementViewModel?
     let numberOfRowsToGenerate = 1
-    var identities = [Identity]()
+    var partnerIdentities = [Identity]()
     let delegate = MockTrustManagementViewModelHandler()
     
     override func setUp() {
         super.setUp()
-        identities = [Identity]()
+        partnerIdentities = [Identity]()
         // Generate rows to test the handshake feature.
         // Note: The account is generated from test data row 0, so don't use this.
         for index in 0..<numberOfRowsToGenerate {
             let identity = TestData().createPartnerIdentity(number: index)
             identity.session.commit()
-            identities.append(identity)
+            partnerIdentities.append(identity)
         }
     }
     
@@ -190,7 +190,7 @@ extension TrustManagementViewModelTest {
             let account1 = TestData().createWorkingAccount()
             account1.session.commit()
             let folder1 = Folder(name: "inbox", parent: nil, account: account1, folderType: .inbox)
-            guard let from = identities.first else  {
+            guard let from = partnerIdentities.first else  {
                 XCTFail()
                 return
             }
