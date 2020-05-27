@@ -15,6 +15,10 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
     var selfIdentity : Identity?
     var trustManagementViewModel : TrustManagementViewModel?
     let numberOfRowsToGenerate = 1
+
+    /// The row index available after the own account identity and parter identities
+    var firstAccountIndexAvailable = 0
+
     var partnerIdentities = [Identity]()
     let delegate = MockTrustManagementViewModelHandler()
     
@@ -28,6 +32,8 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
             identity.session.commit()
             partnerIdentities.append(identity)
         }
+
+        firstAccountIndexAvailable = numberOfRowsToGenerate + 1
     }
     
     override func tearDown() {
@@ -179,8 +185,8 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
 
 extension TrustManagementViewModelTest {
     private func setupViewModel(util : TrustManagementUtilProtocol? = nil) {
-        //Avoid collision with others identity numbers.
-        let selfNumber = numberOfRowsToGenerate
+        // Avoid collision with other identities (own account plus created partner identities).
+        let selfNumber = firstAccountIndexAvailable
         
         let selfIdentity = TestData().createWorkingAccount(number: selfNumber).user
         selfIdentity.fingerprint = "fingerprints"
