@@ -201,4 +201,13 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
                   manuallyTrusted: server.manuallyTrusted,
                   credentials: ServerCredentials(withDataFrom: server.credentials))
     }
+    
+    public static func by(account: Account, serverType: ServerType) -> Server? {
+        let cdAccount = account.cdObject
+        guard var cdServer = cdAccount.server(type: serverType) else {
+            return nil
+        }
+        
+        return cdServer.server()
+    }
 }
