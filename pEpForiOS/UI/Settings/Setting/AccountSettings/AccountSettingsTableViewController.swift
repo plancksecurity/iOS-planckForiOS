@@ -84,15 +84,22 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
      override func viewDidLoad() {
         super.viewDidLoad()
-
-        tableView.register(pEpHeaderView.self,
-                           forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
+        tableView.register(pEpHeaderView.self, forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
         UIHelper.variableCellHeightsTableView(tableView)
         UIHelper.variableSectionFootersHeightTableView(tableView)
         UIHelper.variableSectionHeadersHeightTableView(tableView)
         viewModel?.delegate = self
         configureView(for: traitCollection)
         setFonts()
+
+        let storyboard = UIStoryboard(name: "Settings", bundle: .main)
+        guard let accountSettingsViewController = storyboard.instantiateViewController(withIdentifier: "AccountSettingsViewController") as? AccountSettingsViewController else {
+                    Log.shared.errorAndCrash("Fail to instantiateViewController AccountSettingsViewController")
+                    return
+        }
+        accountSettingsViewController.viewModel = AccountSettingsViewModel2(account: viewModel!.account)
+        accountSettingsViewController.appConfig = appConfig
+        navigationController?.pushViewController(accountSettingsViewController, animated: true)
     }
 
     override func viewWillAppear(_ animated: Bool) {

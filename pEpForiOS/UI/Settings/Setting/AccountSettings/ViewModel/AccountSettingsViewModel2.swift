@@ -251,8 +251,8 @@ extension AccountSettingsViewModel2 {
     /// Must be called once, at the initialization.
     private func generateSections() {
         sections.append(generateSection(type: .account))
-        sections.append(generateSection(type: .imap))
-        sections.append(generateSection(type: .smtp))
+//        sections.append(generateSection(type: .imap))
+//        sections.append(generateSection(type: .smtp))
     }
 
     /// Generates and retrieves a section
@@ -305,7 +305,7 @@ extension AccountSettingsViewModel2 {
     }
 
     private struct CellsIdentifiers {
-        static let displayCell = "displayCell"
+        static let displayCell = "KeyValueTableViewCell"
         static let switchCell = "switchCell"
         static let settingsCell = "settingsCell"
     }
@@ -341,7 +341,7 @@ extension AccountSettingsViewModel2 {
             // password
             let fakePassword = "JustAPassword"
             let passwordRow = DisplayRow(type: .password,
-                                         title: rowTitle(for: .pepSync),
+                                         title: rowTitle(for: .password),
                                          text: fakePassword,
                                          cellIdentifier: CellsIdentifiers.displayCell)
             rows.append(passwordRow)
@@ -374,7 +374,6 @@ extension AccountSettingsViewModel2 {
             rows.append(resetRow)
 
         case .imap:
-
             guard let imapServer = account.imapServer else {
                 Log.shared.errorAndCrash("Account without IMAP server")
                 return rows

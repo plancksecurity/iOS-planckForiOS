@@ -19,12 +19,12 @@ class AccountSettingsViewModel2Test: AccountDrivenTestBase {
     var actual: State?
     var expected: State?
 
-
     //Number of sections corresponding to AccountSettingsViewModel's Section Types
     let numberOfSections = 3
 
     override func setUp() {
         super.setUp()
+        //let clientCertificateUtil = ClientCertificateUtilMockTest()
         viewModel = AccountSettingsViewModel2(account: account)
     }
 
@@ -34,6 +34,7 @@ class AccountSettingsViewModel2Test: AccountDrivenTestBase {
 
     // MARK: - Actions
 
+    //Fails
     func testHandleResetIdentity() {
         let state = State(didCallShowLoadingView: true, didCallHideLoadingView: true)
         let delegate = MockedAccountSettingsViewModelDelegate(testCase: self, expected: state)
@@ -49,15 +50,6 @@ class AccountSettingsViewModel2Test: AccountDrivenTestBase {
         boolValue = false
         viewModel.pEpSync(enable: boolValue)
         XCTAssertEqual(viewModel.pEpSync, boolValue)
-    }
-
-    //MARK: - Layout
-
-    func testisPEPSyncSwitchGreyedOut() {
-        let previousValue = KeySyncUtil.isKeySyncEnabled
-
-        let newPEPSyncStatus = KeySyncUtil.isKeySyncEnabled
-        XCTAssert(previousValue != newPEPSyncStatus)
     }
 
     // MARK: - OAuthAuthorizerDelegate
@@ -129,5 +121,3 @@ class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate 
         hideLoadingViewExpectation?.fulfill()
     }
 }
-
-
