@@ -23,7 +23,16 @@ class TrustedServerSettingsViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.register(PEPHeaderView.self, forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
+        tableView.register(pEpFooterView.self, forHeaderFooterViewReuseIdentifier: pEpFooterView.reuseIdentifier)
+        tableView.contentInsetAdjustmentBehavior = .always
+        UIHelper.variableCellHeightsTableView(tableView)
+        UIHelper.variableSectionFootersHeightTableView(tableView)
+        UIHelper.variableSectionHeadersHeightTableView(tableView)
+
         tableView.dataSource = self
+        tableView.delegate = self
+
         viewModel.delegate = self
     }
 }
@@ -48,19 +57,47 @@ extension TrustedServerSettingsViewController : UITableViewDataSource {
         let row = viewModel.rows[indexPath.row]
         cell.address.text = row.address
         cell.onOfSwitch.setOn(row.storeMessagesSecurely, animated: false)
-
+        configure(cell: cell, for: traitCollection)
         return cell
     }
-
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return NSLocalizedString("Store Messages Securely",
-                                 comment: "Trusted Server Setting Section Title")
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        tableView.reloadData()
     }
 
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return NSLocalizedString(
-            "If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!",
-            comment: "Trusted Server Setting Section Footer")
+    private func configure(cell : TrustedServerSettingCell, for traitCollection: UITraitCollection) {
+        let contentSize = traitCollection.preferredContentSizeCategory
+        let axis : NSLayoutConstraint.Axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
+        let spacing : CGFloat = contentSize.isAccessibilityCategory ? 10.0 : 5.0
+        cell.stackView.axis = axis
+        cell.stackView.spacing = spacing
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension TrustedServerSettingsViewController : UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: PEPHeaderView.reuseIdentifier) as? PEPHeaderView else {
+            Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
+            return nil
+        }
+        headerView.title = NSLocalizedString("Store Messages Securely", comment: "Trusted Server Setting Section Title")
+        return headerView
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: pEpFooterView.reuseIdentifier) as? pEpFooterView else {
+            Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
+            return nil
+        }
+        let text = NSLocalizedString("If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!", comment: "Trusted Server Setting Section Footer")
+
+        headerView.title = text
+        
+        return headerView
     }
 }
 

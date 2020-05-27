@@ -18,7 +18,7 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
     override func setUp() {
         super.setUp()
         self.folder = Folder(name: "Escafoides", parent: nil, account: account, folderType: .inbox)
-        self.folder.save()
+        self.folder.session.commit()
     }
     
     func testHiddenWhenUnifiedInbox() {

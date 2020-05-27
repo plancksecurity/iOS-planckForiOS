@@ -89,7 +89,7 @@ class TestUtil {
                                     engineProccesed: engineProccesed,
                                     uid: uid)
             messages.append(msg)
-            msg.save()
+            msg.session.commit()
         }
         return messages
     }
@@ -216,7 +216,7 @@ class TestUtil {
         msg.replaceTo(with: [receiver])
         msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
         msg.sent = Date(timeIntervalSince1970: Double(number))
-        msg.save()
+        msg.session.commit()
 
         return msg
     }

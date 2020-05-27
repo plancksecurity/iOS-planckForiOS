@@ -18,13 +18,12 @@ final class SubjectCell: TextViewContainingTableViewCell {
     public func setup(with viewModel: SubjectCellViewModel) {
         self.viewModel = viewModel
         setStyle()
-        if viewModel.content != nil {
-            self.textView.text = viewModel.content
-        }
+        textView.text = viewModel.content
     }
 
     private func setStyle() {
-        subjectLabel.pEpSetFontFace(weight: .regular)
+        textView.font = UIFont.pepFont(style: .footnote, weight: .regular)
+        subjectLabel.font = UIFont.pepFont(style: .footnote, weight: .regular)
     }
 }
 

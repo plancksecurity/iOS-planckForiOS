@@ -105,7 +105,7 @@ class TestDataBase {
                                      credentials:credImap)
             
             let acc = Account(user: id, servers: [smtp, imap])
-            acc.save()
+            acc.session.commit()
 
             return acc
         }

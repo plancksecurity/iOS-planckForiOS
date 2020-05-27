@@ -733,7 +733,6 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
 // MARK: - EmailViewControllerDelegate
 
 extension EmailDetailViewController: EmailViewControllerDelegate {
-
     func showPdfPreview(forPdfAt url: URL) {
         pdfPreviewUrl = url
         let previewController = QLPreviewController()
