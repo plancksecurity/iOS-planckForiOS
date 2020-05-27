@@ -23,7 +23,7 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
         identities = [Identity]()
         // Generate rows to test the handshake feature.
         // Note: The account is generated from test data row 0, so don't use this.
-        for index in 1..<numberOfRowsToGenerate {
+        for index in 0..<numberOfRowsToGenerate {
             let identity = TestData().createPartnerIdentity(number: index)
             identity.session.commit()
             identities.append(identity)
@@ -180,7 +180,7 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
 extension TrustManagementViewModelTest {
     private func setupViewModel(util : TrustManagementUtilProtocol? = nil) {
         //Avoid collision with others identity numbers.
-        let selfNumber = numberOfRowsToGenerate + 1
+        let selfNumber = numberOfRowsToGenerate
         
         let selfIdentity = TestData().createWorkingAccount(number: selfNumber).user
         selfIdentity.fingerprint = "fingerprints"
