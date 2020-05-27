@@ -210,7 +210,6 @@ extension TrustManagementViewModelTest {
 
 class TrustManagementUtilMock: TrustManagementUtilProtocol {
     func handshakeCombinations(message: Message) -> [TrustManagementUtil.HandshakeCombination] {
-        message.allIdentities.filter { $0.isMySelf }.first
         if  let own = (message.allIdentities.filter { $0.isMySelf }.first),
             let other = (message.allIdentities.filter { !$0.isMySelf }.first) {
             return [TrustManagementUtil.HandshakeCombination(ownIdentity:own, partnerIdentity: other)]
