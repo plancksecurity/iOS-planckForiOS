@@ -14,7 +14,7 @@ import PantomimeFramework
 /// This class bridges calls from Pantomime CWIMAPFolder to our persistant layer.
 /// All public methods are called from pantomime.
 /// This class allows Pantomime get messages, count them, remove them, or persist them, among other operations.
-class CwImapFolderToCdFolderMapper: CWIMAPFolder {
+class CoreDataPantomimeAdapter: CWIMAPFolder {
     private let accountID: NSManagedObjectID
 
     /** The underlying core data object. Only use from the internal context. */
@@ -83,7 +83,7 @@ class CwImapFolderToCdFolderMapper: CWIMAPFolder {
         self.accountID = accountID
         privateMOC = Stack.shared.newPrivateConcurrentContext
 
-        if let f = CwImapFolderToCdFolderMapper.setupCdFolder(name: name,
+        if let f = CoreDataPantomimeAdapter.setupCdFolder(name: name,
                                                       parentAccountID: accountID,
                                                       context: privateMOC) {
             cdFolder = f
@@ -246,7 +246,7 @@ class CwImapFolderToCdFolderMapper: CWIMAPFolder {
 //MARK: - CWCache
 
 // Dummy implementations.
-extension CwImapFolderToCdFolderMapper: CWCache {
+extension CoreDataPantomimeAdapter: CWCache {
     func invalidate() {
         // do nothing.
     }
@@ -258,7 +258,7 @@ extension CwImapFolderToCdFolderMapper: CWCache {
 
 //MARK: - CWIMAPCache
 
-extension CwImapFolderToCdFolderMapper: CWIMAPCache {
+extension CoreDataPantomimeAdapter: CWIMAPCache {
 
     func message(withUID theUID: UInt) -> CWIMAPMessage? {
         var result: CWIMAPMessage?
