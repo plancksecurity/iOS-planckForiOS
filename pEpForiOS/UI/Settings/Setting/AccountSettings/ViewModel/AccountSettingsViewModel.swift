@@ -21,7 +21,9 @@ final class AccountSettingsViewModel {
     let isOAuth2: Bool
 
     var account: Account
-    var count: Int { return headers.count }
+    var count: Int {
+
+        return headers.count }
 
     weak var delegate: AccountSettingsViewModelDelegate?
 
@@ -67,7 +69,8 @@ final class AccountSettingsViewModel {
 
         pEpSync = (try? account.isKeySyncEnabled()) ?? false
     }
-    
+
+    // ??
     public func rowShouldBeHidden(indexPath: IndexPath) -> Bool {
         if indexPath.section == 0 && indexPath.row == 3 {
             if account.imapServer?.credentials.clientCertificate != nil {
@@ -138,3 +141,4 @@ extension AccountSettingsViewModel {
         return section >= 0 && section < headers.count
     }
 }
+

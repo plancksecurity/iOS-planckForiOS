@@ -441,7 +441,7 @@ extension SettingsTableViewController {
         return alert
     }
 
-    func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
+    private func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
         let title = NSLocalizedString("Disable p≡p Sync",
                                       comment: "Leave device group confirmation")
         let comment = NSLocalizedString("If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?",
