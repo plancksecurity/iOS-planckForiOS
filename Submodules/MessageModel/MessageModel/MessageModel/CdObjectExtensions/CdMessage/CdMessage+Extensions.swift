@@ -9,7 +9,7 @@
 import CoreData
 
 extension CdMessage {
-    public typealias Uid = Int32
+    typealias Uid = Int32
 }
 
 // MARK: - Validation
@@ -27,7 +27,7 @@ extension CdMessage {
 
 extension CdMessage {
     //!!!: rename in DB
-    public var messageID: String? {
+    var messageID: String? {
         return uuid
     }
 
@@ -37,7 +37,7 @@ extension CdMessage {
     ///
     /// - Parameter message: message to search for
     /// - Returns: existing message if found, nil otherwize
-    public static func search(message: Message) -> CdMessage? {
+    static func search(message: Message) -> CdMessage? {
         guard  let cdAccount = message.cdObject.parent?.account else {
             Log.shared.errorAndCrash("Account not found?")
             return nil
@@ -52,7 +52,7 @@ extension CdMessage {
     /// Searches message by UID + UUID + foldername + parentFolder.account.
     /// - Parameter message: message to search for
     /// - Returns: existing message if found, nil otherwize
-    static public func search(uid: Uid?,
+    static func search(uid: Uid?,
                               uuid: String,
                               folderName folder: String?,
                               inAccount account: CdAccount,
@@ -88,7 +88,7 @@ extension CdMessage {
         }
     }
 
-    public func replace(referenceStrings: [String], context: NSManagedObjectContext) {
+    func replace(referenceStrings: [String], context: NSManagedObjectContext) {
         let refs = referenceStrings.map {
             addMessageReference(messageID: $0, referenceType: .reference, context: context)
         }
@@ -129,11 +129,11 @@ extension CdMessage {
  */
 extension CdMessage {
     @available(*, deprecated, message: "Use MessageModelObjectUtils.getMessage(fromCdMessage:)")
-    public func message() -> Message? {
+    func message() -> Message? {
         return MessageModelObjectUtils.getMessage(fromCdMessage: self)
     }
 
-    public func delete(context: NSManagedObjectContext) {
+    func delete(context: NSManagedObjectContext) {
         context.delete(self)
         CdHeaderField.deleteOrphans(context: context)
     }
@@ -142,7 +142,7 @@ extension CdMessage {
 extension CdMessage {
 
     /// - Returns: The CdImapFields for this message, created newly if not existed previously.
-    public func imapFields(context: NSManagedObjectContext? = nil) -> CdImapFields {
+    func imapFields(context: NSManagedObjectContext? = nil) -> CdImapFields {
         guard let moc = context ?? managedObjectContext else {
             Log.shared.errorAndCrash("No Context!")
             let mainContext: NSManagedObjectContext = Stack.shared.mainContext
