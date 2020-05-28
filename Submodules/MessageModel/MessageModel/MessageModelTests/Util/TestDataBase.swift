@@ -89,8 +89,6 @@ class TestDataBase {
             credSmtp.loginName = smtpLoginName ?? id.address
             credSmtp.key = keySmtp
 
-            acc.addToServers(smtp)
-
             //IMAP
             let imap = CdServer(context: context)
             imap.serverType = imapServerType
@@ -104,10 +102,11 @@ class TestDataBase {
             credImap.loginName = imapLoginName ?? id.address
             credImap.key = keyImap
 
-            acc.addToServers(imap)
-
             credImap.addToServers(imap)
             credSmtp.addToServers(smtp)
+
+            acc.addToServers(imap)
+            acc.addToServers(smtp)
 
             return acc
         }
