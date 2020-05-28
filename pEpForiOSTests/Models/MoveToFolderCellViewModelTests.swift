@@ -37,7 +37,7 @@ class MoveToFolderCellViewModelTests: AccountDrivenTestBase {
                    account: account,
                    folderType: .inbox,
                    selectable: true)
-        folder.save()
+        folder.session.commit()
         viewmodel = MoveToFolderCellViewModel(folder: folder, level: 0)
     }
     
@@ -48,14 +48,14 @@ class MoveToFolderCellViewModelTests: AccountDrivenTestBase {
                    account: account,
                    folderType: .inbox,
                    selectable: true)
-        folder.save()
+        folder.session.commit()
         let drafts =
             Folder(name: "drafts",
                    parent: folder,
                    account: account,
                    folderType: .drafts,
                    selectable: true)
-        drafts.save()
+        drafts.session.commit()
         viewmodel = MoveToFolderCellViewModel(folder: drafts, level: 1)
     }
 
@@ -66,14 +66,14 @@ class MoveToFolderCellViewModelTests: AccountDrivenTestBase {
                    account: account,
                    folderType: .inbox,
                    selectable: true)
-        folder.save()
+        folder.session.commit()
         let sent =
             Folder(name: "sent",
                    parent: folder,
                    account: account,
                    folderType: .sent,
                    selectable: true)
-        sent.save()
+        sent.session.commit()
         viewmodel = MoveToFolderCellViewModel(folder: sent, level: 1)
     }
 

@@ -64,8 +64,7 @@ class Appearance {
 
     /// Return custom pEp titleTextAttributes
     static private func titleTextAttributes() -> [NSAttributedString.Key : Any] {
-        return [.foregroundColor: UIColor.black, .font: UIFont.pepFont(style: .body, weight: .regular)
-        ]
+        return [.foregroundColor: UIColor.black]
     }
 
     // MARK: - iOS 13
@@ -75,9 +74,8 @@ class Appearance {
     static private func navigationBarAppearanceDefault(color: UIColor) -> UINavigationBarAppearance {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        let font = UIFont.pepFont(style: .headline, weight: .medium)
+        
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: color,
-                                                                   .font: font,
                                                                    .baselineOffset: 2]
         let buttonsAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.pEpGreen]
         appearance.buttonAppearance.normal.titleTextAttributes = buttonsAttributes
