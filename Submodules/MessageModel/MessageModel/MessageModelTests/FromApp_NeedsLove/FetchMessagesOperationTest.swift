@@ -17,17 +17,16 @@ class FetchMessagesOperationTest: PersistentStoreDrivenTestBase {
     // IOS-615 (Only) the first email in an Yahoo account gets duplicated locally
     // on every sync cycle
     func testMailsNotDuplicated() {
-        let imapConection = ImapConnection(connectInfo: imapConnectInfo)
         let errorContainer = ErrorPropagator()
 
         // fetch emails in inbox ...
         let imapLogin = LoginImapOperation(parentName: #function,
                                            errorContainer: errorContainer,
-                                           imapConnection: imapConection)
+                                           imapConnection: imapConnection)
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
         let syncFoldersOp = SyncFoldersFromServerOperation(parentName: #function,
-                                                           imapConnection: imapConection)
+                                                           imapConnection: imapConnection)
         syncFoldersOp.addDependency(imapLogin)
 
         syncFoldersOp.completionBlock = { [weak self] in
@@ -49,7 +48,7 @@ class FetchMessagesOperationTest: PersistentStoreDrivenTestBase {
 
         let expFoldersCreated = expectation(description: "expFoldersCreated")
         let createRequiredFoldersOp = CreateRequiredFoldersOperation(parentName: #function,
-                                                                     imapConnection: imapConection)
+                                                                     imapConnection: imapConnection)
         createRequiredFoldersOp.addDependency(syncFoldersOp)
         createRequiredFoldersOp.completionBlock = { [weak self] in
             guard let me = self else {
@@ -83,7 +82,7 @@ class FetchMessagesOperationTest: PersistentStoreDrivenTestBase {
         // fetch messages
         let expMessagesSynced = expectation(description: "expMessagesSynced")
         let fetchOp = FetchMessagesInImapFolderOperation(parentName: #function,
-                                                         imapConnection: imapConection)
+                                                         imapConnection: imapConnection)
         fetchOp.completionBlock = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -107,7 +106,7 @@ class FetchMessagesOperationTest: PersistentStoreDrivenTestBase {
         // ... and fetch again.
         let expMessagesSynced2 = expectation(description: "expMessagesSynced2")
         let fetch2Op = FetchMessagesInImapFolderOperation(parentName: #function,
-                                                          imapConnection: imapConection)
+                                                          imapConnection: imapConnection)
         fetch2Op.completionBlock = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
