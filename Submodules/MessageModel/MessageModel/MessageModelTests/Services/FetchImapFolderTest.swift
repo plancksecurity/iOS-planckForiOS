@@ -7,6 +7,7 @@
 //
 
 import XCTest
+
 @testable import MessageModel
 
 class FetchImapFolderTest: PersistentStoreDrivenTestBase {
