@@ -251,8 +251,8 @@ extension AccountSettingsViewModel2 {
     /// Must be called once, at the initialization.
     private func generateSections() {
         sections.append(generateSection(type: .account))
-//        sections.append(generateSection(type: .imap))
-//        sections.append(generateSection(type: .smtp))
+        sections.append(generateSection(type: .imap))
+        sections.append(generateSection(type: .smtp))
     }
 
     /// Generates and retrieves a section
@@ -306,7 +306,8 @@ extension AccountSettingsViewModel2 {
 
     private struct CellsIdentifiers {
         static let displayCell = "KeyValueTableViewCell"
-        static let switchCell = "switchCell"
+        static let switchCell = "SwitchTableViewCell"
+        static let dangerousCell = "DangerousTableViewCell"
         static let settingsCell = "settingsCell"
     }
 
@@ -356,7 +357,6 @@ extension AccountSettingsViewModel2 {
                                                 Log.shared.error("Lost myself")
                                                 return
                                             }
-
                                             try me.account.setKeySyncEnabled(enable: enable)
                                         } catch {
                                             guard let me = self else {
@@ -370,7 +370,7 @@ extension AccountSettingsViewModel2 {
             rows.append(switchRow)
 
             // reset
-            let resetRow = ActionRow(type: .reset, title: rowTitle(for: .reset), cellIdentifier: CellsIdentifiers.displayCell)
+            let resetRow = ActionRow(type: .reset, title: rowTitle(for: .reset), cellIdentifier: CellsIdentifiers.dangerousCell)
             rows.append(resetRow)
 
         case .imap:
@@ -385,13 +385,13 @@ extension AccountSettingsViewModel2 {
                                        cellIdentifier: CellsIdentifiers.displayCell)
             rows.append(serverRow)
 
-            let resetRow = DisplayRow(type: .reset,
+            let resetRow = DisplayRow(type: .port,
                                       title: rowTitle(for: .port),
                                       text: String(imapServer.port),
                                       cellIdentifier: CellsIdentifiers.displayCell)
             rows.append(resetRow)
 
-            let transportSecurityRow = DisplayRow(type: .reset,
+            let transportSecurityRow = DisplayRow(type: .tranportSecurity,
                                                   title: rowTitle(for: .tranportSecurity),
                                                   text: imapServer.transport.asString(),
                                                   cellIdentifier: CellsIdentifiers.displayCell)
@@ -413,13 +413,13 @@ extension AccountSettingsViewModel2 {
                                        cellIdentifier: CellsIdentifiers.displayCell)
             rows.append(serverRow)
 
-            let resetRow = DisplayRow(type: .reset,
+            let resetRow = DisplayRow(type: .port,
                                       title: rowTitle(for: .port),
                                       text: String(smtpServer.port),
                                       cellIdentifier: CellsIdentifiers.displayCell)
             rows.append(resetRow)
 
-            let transportSecurityRow = DisplayRow(type: .reset,
+            let transportSecurityRow = DisplayRow(type: .tranportSecurity,
                                                   title: rowTitle(for: .tranportSecurity),
                                                   text: smtpServer.transport.asString(),
                                                   cellIdentifier: CellsIdentifiers.displayCell)

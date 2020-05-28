@@ -354,14 +354,23 @@ extension SettingsTableViewController {
 
         switch SegueIdentifier(rawValue: segueIdentifier) {
         case .segueEditAccount:
-            guard let destination = segue.destination as? AccountSettingsTableViewController,
+            guard let destination = segue.destination as? AccountSettingsViewController,
                 let indexPath = sender as? IndexPath,
                 let account = viewModel.account(at: indexPath) else {
                     Log.shared.error("SegueIdentifier: segueEditAccount - Early quit! Requirements not met.")
                     return
             }
             destination.appConfig = appConfig
-            destination.viewModel = AccountSettingsViewModel(account: account)
+            destination.viewModel = AccountSettingsViewModel2(account: account)
+
+//            guard let destination = segue.destination as? AccountSettingsTableViewController,
+//                let indexPath = sender as? IndexPath,
+//                let account = viewModel.account(at: indexPath) else {
+//                    Log.shared.error("SegueIdentifier: segueEditAccount - Early quit! Requirements not met.")
+//                    return
+//            }
+//            destination.appConfig = appConfig
+//            destination.viewModel = AccountSettingsViewModel(account: account)
         case .segueShowSettingDefaultAccount:
             guard let destination = segue.destination as? BaseTableViewController else { return }
             destination.appConfig = self.appConfig

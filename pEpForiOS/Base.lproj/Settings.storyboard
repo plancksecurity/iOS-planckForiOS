@@ -12,8 +12,8 @@
             <objects>
                 <viewController id="9LH-QE-79O" customClass="CreditsViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="8aO-3d-WS9"/>
-                        <viewControllerLayoutGuide type="bottom" id="kh8-Xi-wkE"/>
+                        <viewControllerLayoutGuide type="top" id="ky8-zb-4KM"/>
+                        <viewControllerLayoutGuide type="bottom" id="pbu-k6-Nlh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="QiT-Mr-baO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
@@ -143,8 +143,9 @@
                         <segue destination="cMW-fr-EKn" kind="showDetail" identifier="segueSetOwnKey" id="D3B-Zt-U43"/>
                         <segue destination="4fP-ku-UtU" kind="showDetail" identifier="segueExtraKeys" id="DPP-UI-qfC"/>
                         <segue destination="tfJ-nw-QBg" kind="showDetail" identifier="ResetTrust" id="sr5-ig-b4W"/>
-                        <segue destination="Eri-pJ-T3J" kind="showDetail" identifier="segueEditAccount" id="Flj-eg-anX"/>
+                        <segue destination="Eri-pJ-T3J" kind="showDetail" identifier="segueEditAccount2" id="Flj-eg-anX"/>
                         <segue destination="wka-er-mvR" kind="showDetail" identifier="segueShowSettingTrustedServers" id="i5L-Ua-Oj4"/>
+                        <segue destination="H5z-pr-myk" kind="showDetail" identifier="segueEditAccount" id="wHP-nV-aBn"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -157,8 +158,8 @@
             <objects>
                 <viewController title="Extra Keys" id="4fP-ku-UtU" customClass="ExtraKeysSettingViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Vlu-NT-6w2"/>
-                        <viewControllerLayoutGuide type="bottom" id="2Mk-Fx-KbS"/>
+                        <viewControllerLayoutGuide type="top" id="oK5-Gf-3Wt"/>
+                        <viewControllerLayoutGuide type="bottom" id="Cgz-Tu-1DY"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="MFw-tL-ska">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
@@ -243,8 +244,8 @@
             <objects>
                 <viewController id="tfJ-nw-QBg" customClass="ResetTrustViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Hyi-1u-gol"/>
-                        <viewControllerLayoutGuide type="bottom" id="a4w-4e-E5x"/>
+                        <viewControllerLayoutGuide type="top" id="Try-wI-rOf"/>
+                        <viewControllerLayoutGuide type="bottom" id="kid-Z2-Dax"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="uT5-Zf-g2y">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
@@ -285,8 +286,8 @@
                         <constraints>
                             <constraint firstItem="QbB-pS-PJb" firstAttribute="leading" secondItem="uT5-Zf-g2y" secondAttribute="leading" id="H03-Fg-8PJ"/>
                             <constraint firstAttribute="trailing" secondItem="QbB-pS-PJb" secondAttribute="trailing" id="MpV-hJ-uMa"/>
-                            <constraint firstItem="QbB-pS-PJb" firstAttribute="top" secondItem="Hyi-1u-gol" secondAttribute="bottom" id="gnj-td-rxM"/>
-                            <constraint firstItem="a4w-4e-E5x" firstAttribute="top" secondItem="QbB-pS-PJb" secondAttribute="bottom" id="kzd-tM-jaJ"/>
+                            <constraint firstItem="QbB-pS-PJb" firstAttribute="top" secondItem="Try-wI-rOf" secondAttribute="bottom" id="gnj-td-rxM"/>
+                            <constraint firstItem="kid-Z2-Dax" firstAttribute="top" secondItem="QbB-pS-PJb" secondAttribute="bottom" id="kzd-tM-jaJ"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Uc0-Oa-PEn"/>
@@ -303,8 +304,8 @@
             <objects>
                 <viewController id="cMW-fr-EKn" customClass="SetOwnKeyViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="fJ0-1d-tgq"/>
-                        <viewControllerLayoutGuide type="bottom" id="2Nb-z4-kAp"/>
+                        <viewControllerLayoutGuide type="top" id="JO2-n5-yDP"/>
+                        <viewControllerLayoutGuide type="bottom" id="fGl-JD-GDK"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="miw-EI-6rT">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
@@ -362,11 +363,11 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="p0I-we-pzx" firstAttribute="top" secondItem="fJ0-1d-tgq" secondAttribute="bottom" constant="20" id="3Le-ff-uKG"/>
+                            <constraint firstItem="p0I-we-pzx" firstAttribute="top" secondItem="JO2-n5-yDP" secondAttribute="bottom" constant="20" id="3Le-ff-uKG"/>
                             <constraint firstItem="lzc-xZ-iKm" firstAttribute="centerX" secondItem="miw-EI-6rT" secondAttribute="centerX" id="An8-8P-yFd"/>
                             <constraint firstItem="ujL-Pa-uXD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="miw-EI-6rT" secondAttribute="leading" constant="10" id="MBD-Oa-hvt"/>
                             <constraint firstItem="ujL-Pa-uXD" firstAttribute="top" secondItem="lzc-xZ-iKm" secondAttribute="bottom" priority="750" constant="20" id="Plu-v2-mCq"/>
-                            <constraint firstItem="2Nb-z4-kAp" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ujL-Pa-uXD" secondAttribute="bottom" priority="750" constant="8" id="Sdb-hR-8b5"/>
+                            <constraint firstItem="fGl-JD-GDK" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ujL-Pa-uXD" secondAttribute="bottom" priority="750" constant="8" id="Sdb-hR-8b5"/>
                             <constraint firstItem="1KA-Cp-nBi" firstAttribute="leading" secondItem="p0I-we-pzx" secondAttribute="leading" id="X6h-gj-EfV"/>
                             <constraint firstAttribute="trailing" secondItem="p0I-we-pzx" secondAttribute="trailing" constant="10" id="XpR-c1-YIJ"/>
                             <constraint firstItem="lzc-xZ-iKm" firstAttribute="top" secondItem="1KA-Cp-nBi" secondAttribute="bottom" constant="20" id="c2N-uE-5CG"/>
@@ -985,7 +986,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Hi-lO-EOj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1306.4000000000001" y="-391.75412293853077"/>
+            <point key="canvasLocation" x="-2810" y="1004"/>
         </scene>
         <!--Setting Default Account Table View Controller-->
         <scene sceneID="26G-EO-g0Z">
@@ -1029,15 +1030,15 @@
             <objects>
                 <viewController storyboardIdentifier="AccountSettingsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="H5z-pr-myk" customClass="AccountSettingsViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Eym-YB-0Kp"/>
-                        <viewControllerLayoutGuide type="bottom" id="0jy-J6-fzK"/>
+                        <viewControllerLayoutGuide type="top" id="fqK-pm-riP"/>
+                        <viewControllerLayoutGuide type="bottom" id="4Cd-Ff-OKx"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="2dw-z2-o49">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="1" contentViewInsetsToSafeArea="NO" id="q7V-ha-dcs">
-                                <rect key="frame" x="0.0" y="10" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="10" width="375" height="627"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
@@ -1081,7 +1082,7 @@
                                             <outlet property="valueTextfield" destination="j6h-lS-2nG" id="Crb-Kq-me2"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SwitchTableViewCell" id="frb-Od-eQC" userLabel="Switch Table View Cell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SwitchTableViewCell" id="frb-Od-eQC" userLabel="Switch Table View Cell" customClass="AccountSettingsSwitchTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="92" width="375" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="frb-Od-eQC" id="0um-iZ-AG8">
@@ -1113,8 +1114,12 @@
                                                 <constraint firstItem="ctb-0m-7I4" firstAttribute="top" secondItem="0um-iZ-AG8" secondAttribute="topMargin" constant="1" id="zeV-pO-urK"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="switchItem" destination="v8f-P8-9oR" id="tXl-xu-P3R"/>
+                                            <outlet property="titleLabel" destination="ctb-0m-7I4" id="r1q-ok-cB6"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DangerousTableViewCell" id="Lta-AU-yg7" userLabel="Dangerous Table View Cell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DangerousTableViewCell" id="Lta-AU-yg7" userLabel="Dangerous Table View Cell" customClass="AccountSettingsDangerousTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="137" width="375" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Lta-AU-yg7" id="omY-xS-Rtf">
@@ -1124,7 +1129,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ufp-rz-rzb">
                                                     <rect key="frame" x="20" y="12" width="43.5" height="21"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <nil key="textColor"/>
+                                                    <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -1136,6 +1141,9 @@
                                                 <constraint firstItem="ufp-rz-rzb" firstAttribute="leading" secondItem="omY-xS-Rtf" secondAttribute="leading" constant="20" id="uGk-ew-6bS"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="ufp-rz-rzb" id="UJE-G7-igq"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <sections/>
@@ -1147,6 +1155,11 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="zgO-zJ-DuF">
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="SzP-hL-ySo"/>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="q7V-ha-dcs" id="F1F-Hq-2cv"/>
                     </connections>
@@ -1160,8 +1173,8 @@
             <objects>
                 <viewController id="r1W-BL-sFX" customClass="EditableAccountSettingsViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Kto-7f-CT9"/>
-                        <viewControllerLayoutGuide type="bottom" id="0vp-az-Ica"/>
+                        <viewControllerLayoutGuide type="top" id="RcE-gw-Xnb"/>
+                        <viewControllerLayoutGuide type="bottom" id="s4W-q8-JEU"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="i60-v8-zoo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
@@ -1177,9 +1190,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="EC5-YV-DuZ" firstAttribute="leading" secondItem="i60-v8-zoo" secondAttribute="leading" id="54f-ka-EgW"/>
-                            <constraint firstItem="EC5-YV-DuZ" firstAttribute="top" secondItem="Kto-7f-CT9" secondAttribute="bottom" id="El9-lc-3Ov"/>
+                            <constraint firstItem="EC5-YV-DuZ" firstAttribute="top" secondItem="RcE-gw-Xnb" secondAttribute="bottom" id="El9-lc-3Ov"/>
                             <constraint firstAttribute="trailing" secondItem="EC5-YV-DuZ" secondAttribute="trailing" id="v6g-Ye-c4q"/>
-                            <constraint firstItem="0vp-az-Ica" firstAttribute="top" secondItem="EC5-YV-DuZ" secondAttribute="bottom" id="vvh-jt-8UC"/>
+                            <constraint firstItem="s4W-q8-JEU" firstAttribute="top" secondItem="EC5-YV-DuZ" secondAttribute="bottom" id="vvh-jt-8UC"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="QH1-bT-Kek">
@@ -1710,8 +1723,8 @@
             <objects>
                 <viewController id="wka-er-mvR" customClass="TrustedServerSettingsViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="7If-Rd-NQ5"/>
-                        <viewControllerLayoutGuide type="bottom" id="n9d-Iz-njf"/>
+                        <viewControllerLayoutGuide type="top" id="87f-CF-fvt"/>
+                        <viewControllerLayoutGuide type="bottom" id="peI-Mp-cow"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Rpy-ML-xeV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
@@ -1764,8 +1777,8 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="n9d-Iz-njf" firstAttribute="top" secondItem="8iR-ew-2W9" secondAttribute="bottom" id="AqA-Ae-U6t"/>
-                            <constraint firstItem="8iR-ew-2W9" firstAttribute="top" secondItem="7If-Rd-NQ5" secondAttribute="bottom" id="NIZ-Al-bkL"/>
+                            <constraint firstItem="peI-Mp-cow" firstAttribute="top" secondItem="8iR-ew-2W9" secondAttribute="bottom" id="AqA-Ae-U6t"/>
+                            <constraint firstItem="8iR-ew-2W9" firstAttribute="top" secondItem="87f-CF-fvt" secondAttribute="bottom" id="NIZ-Al-bkL"/>
                             <constraint firstItem="8iR-ew-2W9" firstAttribute="leading" secondItem="Rpy-ML-xeV" secondAttribute="leading" id="j1z-dw-dGx"/>
                             <constraint firstAttribute="trailing" secondItem="8iR-ew-2W9" secondAttribute="trailing" id="kVL-mj-Xe5"/>
                         </constraints>

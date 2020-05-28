@@ -32,14 +32,10 @@ final class AccountSettingsViewController : BaseViewController {
      override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(pEpHeaderView.self, forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
-//        tableView.register(AccountSettingsKeyValueTableViewCell.self, forCellReuseIdentifier: AccountSettingsKeyValueTableViewCell.identifier)
-        UIHelper.variableCellHeightsTableView(tableView)
-        UIHelper.variableSectionFootersHeightTableView(tableView)
-        UIHelper.variableSectionHeadersHeightTableView(tableView)
+        UIHelper.variableContentHeight(tableView)
         viewModel?.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-
         configureView(for: traitCollection)
     }
 
@@ -48,18 +44,6 @@ final class AccountSettingsViewController : BaseViewController {
         showNavigationBar()
         title = NSLocalizedString("Account", comment: "Account view title")
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
-        //Work around async old stack context merge behaviour
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            me.setupView()
-        }
-    }
-
-    private func setupView() {
-        title = NSLocalizedString("Account", comment: "Account settings")
     }
 }
 
@@ -133,31 +117,56 @@ extension AccountSettingsViewController : UITableViewDataSource {
         }
 
         let row = sections[indexPath.section].rows[indexPath.row]
-        let dequeuedCell = UITableViewCell()
-
-//        Appearance.configureSelectedBackgroundViewForPep(tableViewCell: dequeuedCell)
-
         switch row.type {
-        case .name, .email, .password, .server, .port, .tranportSecurity, .username:
-            if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier) as? AccountSettingsKeyValueTableViewCell {
+        case .name, .email, .password,
+             .server, .port, .tranportSecurity, .username:
+            if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
+                as? AccountSettingsKeyValueTableViewCell {
                 guard let row = row as? AccountSettingsViewModel2.DisplayRow else {
                     Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                     return UITableViewCell()
                 }
-                dequeuedCell.keyLabel.text = row.title
-                dequeuedCell.valueTextfield.text = row.text
-                dequeuedCell.configure()
+                dequeuedCell.configure(with: row)
                 return dequeuedCell
             }
         case .pepSync:
-            return dequeuedCell
-//            dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier, for: indexPath)
+            if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
+                as? AccountSettingsSwitchTableViewCell {
+                guard let row = row as? AccountSettingsViewModel2.SwitchRow else {
+                    Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+                    return UITableViewCell()
+                }
+                dequeuedCell.configure(with: row)
+                return dequeuedCell
+            }
         case .reset:
-//            dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier, for: indexPath)
-            return dequeuedCell
+            if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
+                as? AccountSettingsDangerousTableViewCell {
+                guard let row = row as? AccountSettingsViewModel2.ActionRow else {
+                    Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+                    return UITableViewCell()
+                }
+                //Appearance.configureSelectedBackgroundViewForPep(tableViewCell: dequeuedCell)
+                dequeuedCell.configure(with: row)
+                return dequeuedCell
+            }
+        }
+        Log.shared.errorAndCrash(message: "We should never return an empty UITableViewCell.")
+        return UITableViewCell()
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: pEpHeaderView.reuseIdentifier) as? pEpHeaderView else {
+            Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
+            return nil
+        }
+        guard let sections = viewModel?.sections else {
+            Log.shared.errorAndCrash("Without sections there is no table view.")
+            return nil
         }
 
-        return dequeuedCell
+        headerView.title = sections[section].title.uppercased()
+        return headerView
     }
 
     private enum CellType {
@@ -165,4 +174,5 @@ extension AccountSettingsViewController : UITableViewDataSource {
         case switchCell
         case dangerousCell
     }
+
 }
