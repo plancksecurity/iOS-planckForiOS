@@ -35,5 +35,7 @@ final class AccountSettingsKeyValueTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         configure()
+        keyLabel.font = UIFont.pepFont(style: .body, weight: .regular)
+        valueTextfield.font = UIFont.pepFont(style: .body, weight: .regular)
     }
 }

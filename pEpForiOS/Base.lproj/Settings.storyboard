@@ -1157,7 +1157,11 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="zgO-zJ-DuF">
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="SzP-hL-ySo"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="SzP-hL-ySo">
+                            <connections>
+                                <segue destination="r1W-BL-sFX" kind="show" id="tmS-FF-4MF"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -1166,7 +1170,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tXe-eN-NFN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2242" y="385"/>
+            <point key="canvasLocation" x="-1306" y="-391"/>
         </scene>
         <!--Editable Account Settings View Controller-->
         <scene sceneID="GDI-yq-B0C">
@@ -1792,4 +1796,7 @@
             <point key="canvasLocation" x="334" y="-392"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="7xR-BQ-yxm"/>
+    </inferredMetricsTieBreakers>
 </document>

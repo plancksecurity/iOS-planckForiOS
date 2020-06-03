@@ -19,4 +19,9 @@ final class AccountSettingsDangerousTableViewCell: UITableViewCell {
         }
         titleLabel.text = row.title
     }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        titleLabel.font = UIFont.pepFont(style: .body, weight: .regular)
+    }
 }

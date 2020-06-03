@@ -22,4 +22,10 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
         titleLabel.text = row.title
         switchItem.isOn = row.isOn
     }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        titleLabel.font = UIFont.pepFont(style: .body, weight: .regular)
+    }
+
 }
