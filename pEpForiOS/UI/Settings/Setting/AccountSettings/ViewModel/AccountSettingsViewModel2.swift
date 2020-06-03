@@ -35,8 +35,17 @@ protocol AccountSettingsRowProtocol2 {
 
 /// View Model for Account Settings View Controller
 final class AccountSettingsViewModel2 {
+
+    /// If there was OAUTH2 for this account, here is a current token.
+    /// This trumps both the `originalPassword` and a password given by the user
+    /// via the UI.
+    /// - Note: For logins that require it, there must be an up-to-date token
+    ///         for the verification be able to succeed.
+    ///         It is extracted from the existing server credentials on `init`.
+    private var accessToken: OAuth2AccessTokenProtocol?
+
     private(set) var pEpSync: Bool
-    private var account: Account
+    private(set) var account: Account
     weak var delegate: AccountSettingsViewModelDelegate?
     /// Items to be displayed in a Account Settings View Controller
     private(set) var sections: [Section] = [Section]()
@@ -221,25 +230,9 @@ extension AccountSettingsViewModel2 {
 
 // MARK: - OAuthAuthorizerDelegate
 
-extension AccountSettingsViewModel : OAuthAuthorizerDelegate {
-
-    /// This method is called when there is an error on the 0Auth's authorize or when
-    /// the authorization request finished.
-    ///
-    /// - Parameters:
-    ///   - oauth2Error: Error received from the authorization. Nil if authorization succeed.
-    ///   - accessToken: The token received from the authorization.
-    public func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
-        delegate?.hideLoadingView()
-        if let error = oauth2Error {
-            delegate?.showErrorAlert(error: error)
-            return
-        }
-        guard let token = accessToken else {
-            delegate?.showErrorAlert(error: OAuthAuthorizerError.noToken)
-            return
-        }
-        updateToken(accessToken: token)
+extension AccountSettingsViewModel2 {
+    public func updateToken(accessToken: OAuth2AccessTokenProtocol) {
+        self.accessToken = accessToken
     }
 }
 

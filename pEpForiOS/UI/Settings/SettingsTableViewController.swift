@@ -246,7 +246,6 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
         case .passiveMode, .pEpSync, .protectMessageSubject, .unsecureReplyWarningEnabled:
             return
         case .resetAccounts:
-            
             guard let row = viewModel.section(for: indexPath).rows[indexPath.row] as? SettingsViewModel.ActionRow, let action = row.action,
                 let alert = getResetAllIdentityAlertController(action: action) else {
                     return

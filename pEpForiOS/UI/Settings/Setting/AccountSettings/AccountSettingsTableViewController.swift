@@ -334,27 +334,27 @@ extension AccountSettingsTableViewController {
         smtpUsernameTextField.text = smtpServer.credentials.loginName
     }
 
-    private func informUser(about error:Error) {
-        let alert = UIAlertController.pEpAlertController(
-            title: NSLocalizedString(
-                "Invalid Input",
-                comment: "Title of invalid accout settings user input alert"),
-            message: error.localizedDescription,
-            preferredStyle: .alert)
-
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("OK",
-                                     comment: "OK button for invalid accout settings user input alert"),
-            style: .cancel, handler: nil)
-
-        alert.addAction(cancelAction)
-        present(alert, animated: true)
-    }
-
-    private func popViewController() {
-        //!!!: see IOS-1608 this is a patch as we have 2 navigationControllers and need to pop to the previous view.
-        (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
-    }
+//    private func informUser(about error:Error) {
+//        let alert = UIAlertController.pEpAlertController(
+//            title: NSLocalizedString(
+//                "Invalid Input",
+//                comment: "Title of invalid accout settings user input alert"),
+//            message: error.localizedDescription,
+//            preferredStyle: .alert)
+//
+//        let cancelAction = UIAlertAction(
+//            title: NSLocalizedString("OK",
+//                                     comment: "OK button for invalid accout settings user input alert"),
+//            style: .cancel, handler: nil)
+//
+//        alert.addAction(cancelAction)
+//        present(alert, animated: true)
+//    }
+//
+//    private func popViewController() {
+//        //!!!: see IOS-1608 this is a patch as we have 2 navigationControllers and need to pop to the previous view.
+//        (navigationController?.parent as? UINavigationController)?.popViewController(animated: true)
+//    }
     
     private func handleCertificate() {
         guard let vc = UIStoryboard.init(name: "AccountCreation", bundle: nil).instantiateViewController(withIdentifier: "ClientCertificateManagementViewController") as? ClientCertificateManagementViewController else {
