@@ -9,7 +9,7 @@
 import Foundation
 
 extension String {
-    public func fixedFontSizeReplacer() -> String {
+    public func fixedFontSizeRemover() -> String {
 
         guard let startIndex = self.range(of: "<style"),
             let endIndex = self.range(of: "</style>"),
@@ -18,11 +18,9 @@ extension String {
                 return self
         }
 
-        let range = startIndex.lowerBound...endIndex.upperBound
-
-        let interestedString = String(self[range])
-
-        let components = interestedString.components(separatedBy: ";")
+        let styleTagsRange = startIndex.lowerBound...endIndex.upperBound
+        let styleTags = String(self[styleTagsRange])
+        let components = styleTags.components(separatedBy: ";")
 
         var replaceTo = ""
 
@@ -31,9 +29,14 @@ extension String {
 
             for match in c.find(pattern: "font(.*):(.*?)px") {
                 if let newFontSize = removeOrReplaceFixedFont(fontSize: match) {
-                    line = line.replacingOccurrences(of: match, with: match.replacingOccurrences(of: match, with: newFontSize))
+                    line = line
+                        .replacingOccurrences(of: match,
+                                              with: match.replacingOccurrences(of: match,
+                                                                               with: newFontSize))
                 } else {
-                    line = line.replacingOccurrences(of: match, with: "")
+                    line = line
+                        .replacingOccurrences(of: match,
+                                              with: "")
                 }
             }
             replaceTo = replaceTo + line + ";"
@@ -42,7 +45,7 @@ extension String {
         replaceTo.removeLast()
 
         var newString = self
-        newString.removeSubrange(range)
+        newString.removeSubrange(styleTagsRange)
         newString.insert(contentsOf: replaceTo, at: startIndex.lowerBound)
 
         return newString
@@ -51,11 +54,14 @@ extension String {
     private func removeOrReplaceFixedFont(fontSize: String) -> String? {
 
         guard let separatorIndex = fontSize.firstIndex(of: ":"),
-            let dotSeparator = fontSize.firstIndex(of: ".") else { return fontSize }
+            let dotSeparator = fontSize.firstIndex(of: ".") else {
+                Log.shared.errorAndCrash(message: "Index is wrong!")
+                return fontSize
+        }
 
         let spaceIndex = fontSize.index(separatorIndex, offsetBy: 1)
 
-        let firstSegment = fontSize[fontSize.startIndex...separatorIndex]
+        let firstSegment = fontSize[fontSize.startIndex...spaceIndex]
         let size = String(fontSize[spaceIndex..<dotSeparator])
 
         var newSize: String?
@@ -63,22 +69,20 @@ extension String {
         if let number = Int(size.trimmingCharacters(in: .whitespacesAndNewlines)) {
             switch number {
             case 0..<13:
-                newSize = firstSegment + " -2"
+                newSize = firstSegment + "-2"
             case 13...16:
-                newSize = firstSegment + " -1"
+                newSize = firstSegment + "-1"
             case 14...17:
                 newSize = nil
             case 18...21:
-                newSize = firstSegment + " +1"
+                newSize = firstSegment + "+1"
             case 22...25:
-                newSize = firstSegment + " +2"
+                newSize = firstSegment + "+2"
             case 26...38:
-                newSize = firstSegment + " +3"
+                newSize = firstSegment + "+3"
             default:
                 newSize = nil
             }
-        } else {
-            fatalError()
         }
 
         return newSize
