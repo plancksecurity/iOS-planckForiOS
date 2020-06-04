@@ -167,7 +167,6 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("accountType is invalid")
                 return
             }
-            vc.appConfig = appConfig
             vc.viewModel = viewModel.loginViewModel()
             vc.delegate = loginDelegate
         case .clientCertManagementSegue:
@@ -175,7 +174,6 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("Invalid state")
                 return
             }
-            dvc.appConfig = appConfig
             dvc.viewModel = viewModel.clientCertificateManagementViewModel()
         }
     }

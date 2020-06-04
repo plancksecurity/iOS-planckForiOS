@@ -52,12 +52,17 @@ public class ErrorSubscriber {
         }
         return true
     }
+    
     private enum serverError {
         case smtp, imap
     }
     
     private func accountErrorShouldBeShown(account: String, serverType: serverError) -> Bool {
-        guard let account = Account.by(address: account) else {
+        let accounts = Account.all()
+        let firstAccount = accounts.first { (acc) -> Bool in
+            return acc.user.address == account
+        }
+        guard let account = firstAccount else {
             return true
         }
         var server: Server
@@ -75,11 +80,16 @@ public class ErrorSubscriber {
             }
             server = smtpServer
         }
+        
         let actualDate = Date()
-        guard let lastErrorShownDate = server.dateLastAuthenticationErrorShown,
-        let minimumDateBeforeShowinAnotherError = Calendar.current.date(byAdding: .minute,
-                                                                        value: 2,
-                                                                        to: lastErrorShownDate)
+        let lastErrorShownDate = server.dateLastAuthenticationErrorShown
+        
+        if lastErrorShownDate == nil {
+            server.dateLastAuthenticationErrorShown = actualDate
+            Session.main.commit()
+            return true
+        }
+        guard let lastErrorShown = lastErrorShownDate, let minimumDateBeforeShowinAnotherError = Calendar.current.date(byAdding: .minute, value: 2, to: lastErrorShown)
             else {
                 return true
         }
@@ -96,8 +106,14 @@ public class ErrorSubscriber {
 extension ErrorSubscriber: ErrorPropagatorSubscriber {
     
     public func error(propagator: ErrorPropagator, error: Error) {
-        if errorShouldBeDisplayed(error: error) {
-            UIUtils.show(error: error)
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("lost myself")
+                return
+            }
+            if me.errorShouldBeDisplayed(error: error) {
+                UIUtils.show(error: error)
+            }
         }
     }
 }

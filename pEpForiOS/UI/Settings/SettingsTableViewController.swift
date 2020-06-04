@@ -365,11 +365,9 @@ extension SettingsTableViewController {
                     Log.shared.errorAndCrash("Requirements not met.")
                     return
             }
-            destination.appConfig = appConfig
             destination.viewModel = viewModel.accountSettingsViewModel(forAccountAt: indexPath)
         case .segueShowSettingDefaultAccount:
             guard let destination = segue.destination as? BaseTableViewController else { return }
-            destination.appConfig = self.appConfig
         case .noAccounts,
              .segueAddNewAccount,
              .sequeShowCredits,
@@ -377,7 +375,6 @@ extension SettingsTableViewController {
              .segueExtraKeys,
              .segueShowSettingTrustedServers:
             guard let destination = segue.destination as? BaseViewController else { return }
-            destination.appConfig = self.appConfig
         case .none:
             break
         case .seguePgpKeyImport:
@@ -385,7 +382,6 @@ extension SettingsTableViewController {
                 Log.shared.errorAndCrash("No DVC")
                 return
             }
-            destination.appConfig = appConfig
             destination.viewModel = viewModel.pgpKeyImportSettingViewModel()
         case .ResetTrustSplitView,
              .noSegue,

@@ -31,27 +31,9 @@ extension CdServer {
                                CdServer.AttributeName.serverTypeRawValue,
                                Server.ServerType.smtp.rawValue)
         }
-
+        
         static func notAutomaticallyTrusted() -> NSPredicate {
             return NSPredicate(format: "%K = false", CdServer.AttributeName.automaticallyTrusted)
-        }
-        
-        static func imapServerForAccount(account: String) -> NSPredicate{
-            let isImapPredicate = isImap()
-            let accountPredicate = NSPredicate(format: "%K = %d",
-                                               CdServer.AttributeName.address,
-                                               account)
-            return NSCompoundPredicate(orPredicateWithSubpredicates: [isImapPredicate,
-                                                                      accountPredicate])
-        }
-        
-        static func smtpServerForAccount(account: String) -> NSPredicate{
-            let isImapPredicate = isSmtp()
-            let accountPredicate = NSPredicate(format: "%K = %d",
-                                               CdServer.AttributeName.address,
-                                               account)
-            return NSCompoundPredicate(orPredicateWithSubpredicates: [isImapPredicate,
-                                                                      accountPredicate])
         }
     }
 }

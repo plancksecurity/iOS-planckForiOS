@@ -80,7 +80,6 @@ class ComposeTableViewController: BaseTableViewController {
                 return
         }
         suggestionsChildViewController = suggestVc
-        suggestionsChildViewController?.appConfig = appConfig
         suggestionsChildViewController?.viewModel = vm.suggestViewModel()
         addChild(suggestVc)
         suggestView.isHidden = true
@@ -321,8 +320,6 @@ extension ComposeTableViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("No vm")
                 return
             }
-
-            destination.appConfig = appConfig
             guard let trustManagementViewModel = vm.trustManagementViewModel() else {
                 Log.shared.error("Message not found")
                 return

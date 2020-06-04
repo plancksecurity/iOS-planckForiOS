@@ -34,36 +34,12 @@ class BaseTableViewController: UITableViewController {
         }
     }
 
-    private var _appConfig: AppConfig?
-    var appConfig: AppConfig {
-        get {
-            guard let safeConfig = _appConfig else {
-                Log.shared.errorAndCrash("No appConfig?")
-
-                // We have no config. Return nonsense.
-                let errorPropagator = ErrorPropagator()
-                return AppConfig(oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider())
-            }
-            return safeConfig
-        }
-        set {
-            _appConfig = newValue
-            didSetAppConfig()
-        }
-    }
-
     func didSetAppConfig() {
         // Do nothing. Meant to override in subclasses.
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        guard _appConfig != nil else {
-            if !MiscUtil.isUnitTest() {
-                Log.shared.errorAndCrash("AppConfig is nil in viewWillAppear!")
-            }
-            return
-        }
         self.navigationController?.title = title
         BaseTableViewController.setupCommonSettings(tableView: tableView)
     }

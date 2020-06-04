@@ -186,7 +186,6 @@ extension UserInfoViewController: SegueHandlerType {
         view.endEditing(true)
         switch segue.destination {
         case let iMAPSettingsViewController as IMAPSettingsViewController:
-            iMAPSettingsViewController.appConfig = appConfig
             iMAPSettingsViewController.verifiableAccount = verifiableAccount
         default:
             break
@@ -195,7 +194,6 @@ extension UserInfoViewController: SegueHandlerType {
         switch segueIdentifier(for: segue) {
         case .IMAPSettings:
             if let destination = segue.destination as? IMAPSettingsViewController {
-                destination.appConfig = appConfig
                 destination.verifiableAccount = verifiableAccount
             }
             break

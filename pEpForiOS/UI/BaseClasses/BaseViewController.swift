@@ -12,8 +12,7 @@ import pEpIOSToolbox
 import MessageModel
 
 class BaseViewController: UIViewController {
-    private var _appConfig: AppConfig?
-
+    
     /// Indicates when the navigation bar tint color must be white.
     /// As in iOS 13 the property to set that color changed, we use this flag to set it properly.
     /// Use it if for an specific view, the navigation bar tint color must be white.
@@ -32,20 +31,6 @@ class BaseViewController: UIViewController {
                 //Keep the values of navigation navigationBar's tintColor and barTintColor to support the first loading.
                 UINavigationBar.appearance().tintColor = .pEpGreen
             }
-        }
-    }
-
-    var appConfig: AppConfig! {
-        get {
-            guard _appConfig != nil else {
-                Log.shared.errorAndCrash("No appConfig?")
-                return nil
-            }
-            return _appConfig
-        }
-        set {
-            _appConfig = newValue
-            didSetAppConfig()
         }
     }
 

@@ -187,7 +187,6 @@ extension AccountSettingsTableViewController {
                 Log.shared.errorAndCrash("No VM")
                 return
             }
-            editableAccountSettingsViewController.appConfig = appConfig
             editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account)
         default:
             break
@@ -354,7 +353,6 @@ extension AccountSettingsTableViewController {
         guard let vc = UIStoryboard.init(name: "AccountCreation", bundle: nil).instantiateViewController(withIdentifier: "ClientCertificateManagementViewController") as? ClientCertificateManagementViewController else {
             return
         }
-        vc.appConfig = appConfig
         let nextViewModel = viewModel?.clientCertificateViewModel()
         nextViewModel?.delegate = vc
         vc.viewModel = nextViewModel
@@ -380,7 +378,7 @@ extension AccountSettingsTableViewController {
 
         oauthViewModel.delegate = self
         oauthViewModel.authorize(
-            authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
+            authorizer: OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer(),
             emailAddress: vm.account.user.address,
             accountType: accountType,
             viewController: self)

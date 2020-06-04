@@ -171,7 +171,6 @@ extension ClientCertificateManagementViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("No DVC")
                     return
             }
-            dvc.appConfig = appConfig
             let dvm = vm.loginViewModel()
             dvc.viewModel = dvm
         }
