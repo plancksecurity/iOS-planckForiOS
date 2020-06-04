@@ -74,6 +74,12 @@ extension AccountSettingsViewController : UITableViewDelegate {
         if row.type == .reset {
             handleResetIdentity()
         }
+        if row.type == .oauth2Reauth {
+            handleOauth2Reauth()
+        }
+        if row.type == .certificate {
+            handleCertificate()
+        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -99,14 +105,21 @@ extension AccountSettingsViewController : UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let sections = viewModel?.sections else {
-            Log.shared.errorAndCrash("Without sections there is no table view.")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("Without VM there is no table view.")
             return UITableViewCell()
         }
 
-        let row = sections[indexPath.section].rows[indexPath.row]
+        let row = vm.sections[indexPath.section].rows[indexPath.row]
         switch row.type {
-        case .name, .email, .password,
+
+        case .password:
+            if vm.isOAuth2 {
+
+//                return oauth2TableViewCell
+            }
+
+        case .name, .email,
              .server, .port, .tranportSecurity, .username:
             if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
                 as? AccountSettingsKeyValueTableViewCell {
@@ -139,6 +152,10 @@ extension AccountSettingsViewController : UITableViewDataSource {
                 dequeuedCell.configure(with: row)
                 return dequeuedCell
             }
+        case .oauth2Reauth:
+            fatalError("Implement me!")
+        case .certificate:
+            fatalError("Implement me!")
         }
         Log.shared.errorAndCrash(message: "We should never return an empty UITableViewCell.")
         return UITableViewCell()
@@ -153,7 +170,6 @@ extension AccountSettingsViewController : UITableViewDataSource {
             Log.shared.errorAndCrash("Without sections there is no table view.")
             return nil
         }
-
         headerView.title = sections[section].title.uppercased()
         return headerView
     }
@@ -163,12 +179,14 @@ extension AccountSettingsViewController : UITableViewDataSource {
         case switchCell
         case dangerousCell
     }
-
 }
 
 //MARK : - ViewModel Delegate
 
 extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
+
+    /// Shows an alert if an error happens
+    /// - Parameter error: The error
     func showErrorAlert(error: Error) {
         Log.shared.error("%@", "\(error)")
         UIUtils.show(error: error)
@@ -259,9 +277,7 @@ extension AccountSettingsViewController {
                                                     Log.shared.errorAndCrash("Fail to init PEPAlertViewController")
                                                     return
         }
-
-        let cancelTitle = NSLocalizedString("Cancel",
-                                            comment: "Cancel reset account identity button title")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
         let cancelAction = PEPUIAlertAction(title: cancelTitle,
                                             style: .pEpGray,
                                             handler: { _ in
@@ -269,19 +285,20 @@ extension AccountSettingsViewController {
                                                                                completion: nil)
         })
         pepAlertViewController.add(action: cancelAction)
-
-        let resetTitle = NSLocalizedString("Reset",
-                                           comment: "Reset account identity button title")
+        let resetTitle = NSLocalizedString("Reset", comment: "Reset account identity button title")
         let resetAction = PEPUIAlertAction(title: resetTitle,
                                            style: .pEpRed,
                                            handler: { [weak self] _ in
-                                            pepAlertViewController.dismiss(animated: true,
-                                                                           completion: nil)
+                                            pepAlertViewController.dismiss(animated: true, completion: nil)
                                             guard let me = self else {
                                                 Log.shared.lostMySelf()
                                                 return
                                             }
-                                            me.viewModel?.handleResetIdentity()
+                                            guard let vm = me.viewModel else {
+                                                Log.shared.errorAndCrash(message: "A view model is required")
+                                                return
+                                            }
+                                            vm.handleResetIdentity()
         })
         pepAlertViewController.add(action: resetAction)
         pepAlertViewController.modalPresentationStyle = .overFullScreen

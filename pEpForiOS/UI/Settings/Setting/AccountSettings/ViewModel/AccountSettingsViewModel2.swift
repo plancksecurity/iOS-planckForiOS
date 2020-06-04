@@ -44,6 +44,7 @@ final class AccountSettingsViewModel2 {
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
     private(set) var pEpSync: Bool
+    let isOAuth2: Bool
     private(set) var account: Account
     weak var delegate: AccountSettingsViewModelDelegate?
     /// Items to be displayed in a Account Settings View Controller
@@ -57,6 +58,7 @@ final class AccountSettingsViewModel2 {
         self.account = account
         self.delegate = delegate
         pEpSync = (try? account.isKeySyncEnabled()) ?? false
+        isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.generateSections()
     }
 }
@@ -78,6 +80,8 @@ extension AccountSettingsViewModel2 {
         case port
         case tranportSecurity
         case username
+        case oauth2Reauth
+        case certificate
     }
 
     /// Identifies the section in the table view.
@@ -313,6 +317,12 @@ extension AccountSettingsViewModel2 {
         case .tranportSecurity:
             return NSLocalizedString("Transport Security", comment: "\(type.rawValue) field")
         case .username:
+            return NSLocalizedString("Username", comment: "\(type.rawValue) field")
+        case .oauth2Reauth:
+            fatalError("Implement me!")
+            return NSLocalizedString("Username", comment: "\(type.rawValue) field")
+        case .certificate:
+            fatalError("Implement me!")
             return NSLocalizedString("Username", comment: "\(type.rawValue) field")
         }
     }
