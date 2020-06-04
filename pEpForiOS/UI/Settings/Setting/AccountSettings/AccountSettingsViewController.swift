@@ -75,6 +75,11 @@ extension AccountSettingsViewController : UITableViewDelegate {
             handleResetIdentity()
         }
         if row.type == .oauth2Reauth {
+            guard let cell = tableView.cellForRow(at: indexPath) as?
+                AccountSettingsOAuthTableViewCell else {
+                return
+            }
+            cell.activityIndicator.startAnimating()
             handleOauth2Reauth()
         }
         if row.type == .certificate {
@@ -112,48 +117,69 @@ extension AccountSettingsViewController : UITableViewDataSource {
 
         let row = vm.sections[indexPath.section].rows[indexPath.row]
         switch row.type {
-
         case .password:
-            if vm.isOAuth2 {
-
-//                return oauth2TableViewCell
+            guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
+                as? AccountSettingsKeyValueTableViewCell else {
+                    return UITableViewCell()
             }
+            guard let row = row as? AccountSettingsViewModel2.DisplayRow else {
+                Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+                return UITableViewCell()
+            }
+            dequeuedCell.configure(with: row, for: traitCollection)
+            return dequeuedCell
 
         case .name, .email,
              .server, .port, .tranportSecurity, .username:
-            if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
-                as? AccountSettingsKeyValueTableViewCell {
-                guard let row = row as? AccountSettingsViewModel2.DisplayRow else {
-                    Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+            guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
+                as? AccountSettingsKeyValueTableViewCell else {
+                    Log.shared.errorAndCrash(message: "Cell can't be dequeued")
                     return UITableViewCell()
-                }
-                dequeuedCell.configure(with: row, for: traitCollection)
-                return dequeuedCell
             }
+            guard let row = row as? AccountSettingsViewModel2.DisplayRow else {
+                Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+                return UITableViewCell()
+            }
+            dequeuedCell.configure(with: row, for: traitCollection)
+            return dequeuedCell
         case .pepSync:
-            if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
-                as? AccountSettingsSwitchTableViewCell {
-                guard let row = row as? AccountSettingsViewModel2.SwitchRow else {
-                    Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+            guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
+                as? AccountSettingsSwitchTableViewCell else {
+                    Log.shared.errorAndCrash(message: "Cell can't be dequeued")
                     return UITableViewCell()
-                }
-                dequeuedCell.configure(with: row)
-                dequeuedCell.delegate = self
-                return dequeuedCell
             }
+            guard let row = row as? AccountSettingsViewModel2.SwitchRow else {
+                Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+                return UITableViewCell()
+            }
+            dequeuedCell.configure(with: row)
+            dequeuedCell.delegate = self
+            return dequeuedCell
         case .reset:
-            if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
-                as? AccountSettingsDangerousTableViewCell {
-                guard let row = row as? AccountSettingsViewModel2.ActionRow else {
-                    Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+            guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
+                as? AccountSettingsDangerousTableViewCell else {
+                    Log.shared.errorAndCrash(message: "Cell can't be dequeued")
                     return UITableViewCell()
-                }
-                //Appearance.configureSelectedBackgroundViewForPep(tableViewCell: dequeuedCell)
-                dequeuedCell.configure(with: row)
-                return dequeuedCell
             }
+            guard let row = row as? AccountSettingsViewModel2.ActionRow else {
+                Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+                return UITableViewCell()
+            }
+            //Appearance.configureSelectedBackgroundViewForPep(tableViewCell: dequeuedCell)
+            dequeuedCell.configure(with: row)
+            return dequeuedCell
         case .oauth2Reauth:
-            fatalError("Implement me!")
+            guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
+                as? AccountSettingsOAuthTableViewCell else {
+                    return UITableViewCell()
+            }
+            guard let row = row as? AccountSettingsViewModel2.DisplayRow else {
+                Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+                return UITableViewCell()
+            }
+
+            dequeuedCell.configure(with: row)
+            return dequeuedCell
         case .certificate:
             fatalError("Implement me!")
         }
@@ -325,7 +351,20 @@ extension AccountSettingsViewController {
 
 extension AccountSettingsViewController: OAuthAuthorizerDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
-        //oauth2ActivityIndicator.stopAnimating()
+        guard let sections = viewModel?.sections else {
+            Log.shared.errorAndCrash("Without sections there is no table view.")
+            return
+        }
+        let sectionIndex = (sections.firstIndex(where: { $0.type == .account }) ?? 0) as Int
+        let rows = sections[sectionIndex].rows
+        let rowIndex = (rows.firstIndex(where: { $0.type == .oauth2Reauth }) ?? 0) as Int
+        let indexPath = IndexPath(row: rowIndex, section: sectionIndex)
+        guard let cell = tableView.cellForRow(at: indexPath) as?
+            AccountSettingsOAuthTableViewCell else {
+            return
+        }
+        cell.activityIndicator.stopAnimating()
+
         shouldHandleErrors = true
 
         if let error = oauth2Error {

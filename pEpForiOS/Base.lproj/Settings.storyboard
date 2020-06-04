@@ -1041,8 +1041,40 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="oAuthTableViewCell" id="jCq-EF-nnT" userLabel="Auth Table View Cell" customClass="AccountSettingsOAuthTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="45"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jCq-EF-nnT" id="vte-h1-QLX">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="SEq-fb-nkv">
+                                                    <rect key="frame" x="336" y="12.5" width="20" height="20"/>
+                                                </activityIndicatorView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OAuth2 Reauthorization" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kEv-bj-PSg">
+                                                    <rect key="frame" x="20" y="12" width="182" height="21"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="kEv-bj-PSg" firstAttribute="centerY" secondItem="vte-h1-QLX" secondAttribute="centerY" id="JIZ-4a-euQ"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="kEv-bj-PSg" secondAttribute="bottom" constant="1" id="JRT-fe-27g"/>
+                                                <constraint firstItem="kEv-bj-PSg" firstAttribute="leading" secondItem="vte-h1-QLX" secondAttribute="leading" constant="20" id="OzE-du-7bS"/>
+                                                <constraint firstItem="SEq-fb-nkv" firstAttribute="centerY" secondItem="kEv-bj-PSg" secondAttribute="centerY" id="TBa-4t-VoU"/>
+                                                <constraint firstItem="kEv-bj-PSg" firstAttribute="top" secondItem="vte-h1-QLX" secondAttribute="topMargin" constant="1" id="hkb-Ur-wYr"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="SEq-fb-nkv" secondAttribute="trailing" constant="4" id="sOC-W6-Zy7"/>
+                                                <constraint firstItem="SEq-fb-nkv" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kEv-bj-PSg" secondAttribute="trailing" constant="8" id="xe1-Kg-Ci9"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="activityIndicator" destination="SEq-fb-nkv" id="YE8-sE-QNw"/>
+                                            <outlet property="oauthLabel" destination="kEv-bj-PSg" id="dnx-0B-haD"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="KeyValueTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="KeyValueTableViewCell" id="bCS-eQ-vbW" userLabel="Key Value Table View Cell" customClass="AccountSettingsKeyValueTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="375" height="36.5"/>
+                                        <rect key="frame" x="0.0" y="100.5" width="375" height="36.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bCS-eQ-vbW" id="hwe-BN-mIh">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="36.5"/>
@@ -1082,7 +1114,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SwitchTableViewCell" id="frb-Od-eQC" userLabel="Switch Table View Cell" customClass="AccountSettingsSwitchTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="375" height="45"/>
+                                        <rect key="frame" x="0.0" y="137" width="375" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="frb-Od-eQC" id="0um-iZ-AG8">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
@@ -1120,7 +1152,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DangerousTableViewCell" id="Lta-AU-yg7" userLabel="Dangerous Table View Cell" customClass="AccountSettingsDangerousTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="137" width="375" height="45"/>
+                                        <rect key="frame" x="0.0" y="182" width="375" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Lta-AU-yg7" id="omY-xS-Rtf">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
@@ -1181,11 +1213,11 @@
                         <viewControllerLayoutGuide type="bottom" id="s4W-q8-JEU"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="i60-v8-zoo">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EC5-YV-DuZ">
-                                <rect key="frame" x="0.0" y="44" width="375" height="574"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="598"/>
                                 <connections>
                                     <segue destination="a1y-j3-omP" kind="embed" identifier="EditableAccountTableViewControllerEmbed" id="oMT-qb-PGX"/>
                                 </connections>
@@ -1224,7 +1256,7 @@
             <objects>
                 <tableViewController id="a1y-j3-omP" customClass="EditableAccountSettingsTableViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="50" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="1" id="ACY-84-B35">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="598"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -1797,6 +1829,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="7xR-BQ-yxm"/>
+        <segue reference="tmS-FF-4MF"/>
     </inferredMetricsTieBreakers>
 </document>

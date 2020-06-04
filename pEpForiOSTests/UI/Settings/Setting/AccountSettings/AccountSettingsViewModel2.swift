@@ -52,12 +52,6 @@ class AccountSettingsViewModel2Test: AccountDrivenTestBase {
         XCTAssertEqual(viewModel.pEpSync, boolValue)
     }
 
-    // MARK: - OAuthAuthorizerDelegate
-
-    func testDidAuthorize() {
-
-    }
-
     // MARK: - Client Certificate
 
     func testHasCertificate() {
@@ -73,7 +67,6 @@ class AccountSettingsViewModel2Test: AccountDrivenTestBase {
     }
 }
 
-//??
 struct State: Equatable {
     var isPEPSyncSectionShown: Bool = false
     var didCallShowErrorAlert: Bool = false
@@ -110,7 +103,7 @@ class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate 
     }
 
     func undoPEPSyncToggle() {
-
+        undoPEPSyncToggleExpectation?.fulfill()
     }
 
     func showLoadingView() {

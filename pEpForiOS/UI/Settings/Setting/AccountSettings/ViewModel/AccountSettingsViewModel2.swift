@@ -248,6 +248,7 @@ extension AccountSettingsViewModel2 {
 extension AccountSettingsViewModel2 {
 
     private struct CellsIdentifiers {
+        static let oAuthCell = "oAuthTableViewCell"
         static let displayCell = "KeyValueTableViewCell"
         static let switchCell = "SwitchTableViewCell"
         static let dangerousCell = "DangerousTableViewCell"
@@ -319,8 +320,7 @@ extension AccountSettingsViewModel2 {
         case .username:
             return NSLocalizedString("Username", comment: "\(type.rawValue) field")
         case .oauth2Reauth:
-            fatalError("Implement me!")
-            return NSLocalizedString("Username", comment: "\(type.rawValue) field")
+            return NSLocalizedString("OAuth2 Reauthorization", comment: "\(type.rawValue) field")
         case .certificate:
             fatalError("Implement me!")
             return NSLocalizedString("Username", comment: "\(type.rawValue) field")
@@ -355,13 +355,23 @@ extension AccountSettingsViewModel2 {
                                       cellIdentifier: CellsIdentifiers.displayCell)
             rows.append(emailRow)
 
-            // password
-            let fakePassword = "JustAPassword"
-            let passwordRow = DisplayRow(type: .password,
-                                         title: rowTitle(for: .password),
-                                         text: fakePassword,
-                                         cellIdentifier: CellsIdentifiers.displayCell)
-            rows.append(passwordRow)
+            // OAuth
+            if isOAuth2 {
+                let oAuthRow = DisplayRow(type: .oauth2Reauth,
+                                          title: rowTitle(for: .oauth2Reauth),
+                                          text: "",
+                                          cellIdentifier: CellsIdentifiers.oAuthCell)
+                rows.append(oAuthRow)
+
+            } else {
+                // password
+                let fakePassword = "JustAPassword"
+                let passwordRow = DisplayRow(type: .password,
+                                             title: rowTitle(for: .password),
+                                             text: fakePassword,
+                                             cellIdentifier: CellsIdentifiers.displayCell)
+                rows.append(passwordRow)
+            }
 
             // pepSync
             let switchRow = SwitchRow(type: .pepSync,
