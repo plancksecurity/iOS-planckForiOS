@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol AccountSettingsSwitchTableViewCellDelegate: class {
+    func switchValueChanged(of rowType: AccountSettingsViewModel2.RowType, to newValue: Bool)
+}
+
 final class AccountSettingsSwitchTableViewCell: UITableViewCell {
 
     static let identifier = "SwitchTableViewCell"
@@ -15,17 +19,28 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
     @IBOutlet private weak var switchItem: UISwitch!
     @IBOutlet private weak var titleLabel: UILabel!
 
-    public func configure(with row : AccountSettingsViewModel2.SwitchRow? = nil) {
-        guard let row = row else {
-            return
-        }
+    private var row : AccountSettingsViewModel2.SwitchRow?
+
+    weak var delegate : AccountSettingsSwitchTableViewCellDelegate?
+
+    public func configure(with row : AccountSettingsViewModel2.SwitchRow) {
+        self.row = row
         titleLabel.text = row.title
         switchItem.isOn = row.isOn
+    }
+
+    @IBAction func switchChanged(_ sender: UISwitch) {
+        guard let row = row else {
+            //This should never happen
+            Log.shared.error("Without a row the action cant be performed")
+            sender.setOn(!sender.isOn, animated: true)
+            return
+        }
+        delegate?.switchValueChanged(of: row.type, to: sender.isOn)
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         titleLabel.font = UIFont.pepFont(style: .body, weight: .regular)
     }
-
 }

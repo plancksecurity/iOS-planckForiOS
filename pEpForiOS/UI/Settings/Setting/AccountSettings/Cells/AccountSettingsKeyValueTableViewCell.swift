@@ -18,13 +18,17 @@ final class AccountSettingsKeyValueTableViewCell: UITableViewCell {
     @IBOutlet private weak var stackView: UIStackView!
 
     /// Configure the cell according to the current trait collection
-    public func configure(with row : AccountSettingsViewModel2.DisplayRow? = nil) {
+    public func configure(with row : AccountSettingsViewModel2.DisplayRow? = nil, for traitCollection : UITraitCollection? = nil) {
+        guard let traitCollection = traitCollection else {
+            //This is a valid case
+            return
+        }
         let contentSize = traitCollection.preferredContentSizeCategory
         stackView.axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
         stackView.spacing = contentSize.isAccessibilityCategory ? 10.0 : 5.0
 
         guard let row = row else {
-            //This is a valid case
+            Log.shared.errorAndCrash("Without row the cell can not be configured")
             return
         }
         keyLabel.text = row.title

@@ -29,14 +29,13 @@ final class AccountSettingsViewController : BaseViewController {
 
     // MARK: - Life Cycle
 
-     override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(pEpHeaderView.self, forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
         UIHelper.variableContentHeight(tableView)
         viewModel?.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-        configureView(for: traitCollection)
         oauthViewModel.delegate = self
     }
 
@@ -47,6 +46,24 @@ final class AccountSettingsViewController : BaseViewController {
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.destination {
+        case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
+            guard let account = viewModel?.account else {
+                Log.shared.errorAndCrash("No VM")
+                return
+            }
+            editableAccountSettingsViewController.appConfig = appConfig
+            editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account)
+        default:
+            break
+        }
+    }
+}
+
+//MARK : - UITableViewDelegate
+
+extension AccountSettingsViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let sections = viewModel?.sections else {
             Log.shared.errorAndCrash("Without sections there is no table view.")
@@ -57,24 +74,134 @@ final class AccountSettingsViewController : BaseViewController {
         if row.type == .reset {
             handleResetIdentity()
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
+//MARK : - UITableViewDataSource
+
+extension AccountSettingsViewController : UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        guard let numberOfSections = viewModel?.sections.count else {
+            Log.shared.errorAndCrash("Without sections there is no table view.")
+            return 0
+        }
+        return numberOfSections
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let sections = viewModel?.sections else {
+            Log.shared.errorAndCrash("Without sections there is no table view.")
+            return 0
+        }
+        return sections[section].rows.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let sections = viewModel?.sections else {
+            Log.shared.errorAndCrash("Without sections there is no table view.")
+            return UITableViewCell()
+        }
+
+        let row = sections[indexPath.section].rows[indexPath.row]
+        switch row.type {
+        case .name, .email, .password,
+             .server, .port, .tranportSecurity, .username:
+            if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
+                as? AccountSettingsKeyValueTableViewCell {
+                guard let row = row as? AccountSettingsViewModel2.DisplayRow else {
+                    Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+                    return UITableViewCell()
+                }
+                dequeuedCell.configure(with: row, for: traitCollection)
+                return dequeuedCell
+            }
+        case .pepSync:
+            if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
+                as? AccountSettingsSwitchTableViewCell {
+                guard let row = row as? AccountSettingsViewModel2.SwitchRow else {
+                    Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+                    return UITableViewCell()
+                }
+                dequeuedCell.configure(with: row)
+                dequeuedCell.delegate = self
+                return dequeuedCell
+            }
+        case .reset:
+            if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
+                as? AccountSettingsDangerousTableViewCell {
+                guard let row = row as? AccountSettingsViewModel2.ActionRow else {
+                    Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+                    return UITableViewCell()
+                }
+                //Appearance.configureSelectedBackgroundViewForPep(tableViewCell: dequeuedCell)
+                dequeuedCell.configure(with: row)
+                return dequeuedCell
+            }
+        }
+        Log.shared.errorAndCrash(message: "We should never return an empty UITableViewCell.")
+        return UITableViewCell()
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: pEpHeaderView.reuseIdentifier) as? pEpHeaderView else {
+            Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
+            return nil
+        }
+        guard let sections = viewModel?.sections else {
+            Log.shared.errorAndCrash("Without sections there is no table view.")
+            return nil
+        }
+
+        headerView.title = sections[section].title.uppercased()
+        return headerView
+    }
+
+    private enum CellType {
+        case keyValueCell
+        case switchCell
+        case dangerousCell
+    }
+
+}
+
+//MARK : - ViewModel Delegate
+
 extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
     func showErrorAlert(error: Error) {
-
+        Log.shared.error("%@", "\(error)")
+        UIUtils.show(error: error)
     }
 
+    /// Undo the pEp sync state
     func undoPEPSyncToggle() {
-
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            guard let vm = me.viewModel else {
+                Log.shared.errorAndCrash("VM is nil")
+                return
+            }
+            vm.pEpSync(enable: !vm.pEpSync)
+            me.tableView.reloadData()
+        }
     }
 
+    /// Show loading.
     func showLoadingView() {
-
+        DispatchQueue.main.async {
+            LoadingInterface.showLoadingInterface()
+        }
     }
 
+    /// Hide loading.
     func hideLoadingView() {
-
+        DispatchQueue.main.async {
+            LoadingInterface.removeLoadingInterface()
+        }
     }
 }
 
@@ -165,116 +292,16 @@ extension AccountSettingsViewController {
     }
 }
 
-
 //MARK : - Accessibility
 
 extension AccountSettingsViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
       super.traitCollectionDidChange(previousTraitCollection)
-      if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-        configureView(for: traitCollection)
-      }
-    }
-
-    /// Setup the layout according to the current trait collection.
-    /// - Parameter traitCollection: The current trait collection.
-    private func configureView(for traitCollection: UITraitCollection) {
-        let contentSize = traitCollection.preferredContentSizeCategory
-        let axis : NSLayoutConstraint.Axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
-        let spacing : CGFloat = contentSize.isAccessibilityCategory ? 10.0 : 5.0
-        print(axis)
-        print(spacing)
-    }
-}
-
-extension AccountSettingsViewController : UITableViewDelegate {
-
-}
-
-extension AccountSettingsViewController : UITableViewDataSource {
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        guard let numberOfSections = viewModel?.sections.count else {
-            Log.shared.errorAndCrash("Without sections there is no table view.")
-            return 0
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            tableView.reloadData()
         }
-        return numberOfSections
     }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sections = viewModel?.sections else {
-            Log.shared.errorAndCrash("Without sections there is no table view.")
-            return 0
-        }
-        return sections[section].rows.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let sections = viewModel?.sections else {
-            Log.shared.errorAndCrash("Without sections there is no table view.")
-            return UITableViewCell()
-        }
-
-        let row = sections[indexPath.section].rows[indexPath.row]
-        switch row.type {
-        case .name, .email, .password,
-             .server, .port, .tranportSecurity, .username:
-            if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
-                as? AccountSettingsKeyValueTableViewCell {
-                guard let row = row as? AccountSettingsViewModel2.DisplayRow else {
-                    Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
-                    return UITableViewCell()
-                }
-                dequeuedCell.configure(with: row)
-                return dequeuedCell
-            }
-        case .pepSync:
-            if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
-                as? AccountSettingsSwitchTableViewCell {
-                guard let row = row as? AccountSettingsViewModel2.SwitchRow else {
-                    Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
-                    return UITableViewCell()
-                }
-                dequeuedCell.configure(with: row)
-                return dequeuedCell
-            }
-        case .reset:
-            if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
-                as? AccountSettingsDangerousTableViewCell {
-                guard let row = row as? AccountSettingsViewModel2.ActionRow else {
-                    Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
-                    return UITableViewCell()
-                }
-                //Appearance.configureSelectedBackgroundViewForPep(tableViewCell: dequeuedCell)
-                dequeuedCell.configure(with: row)
-                return dequeuedCell
-            }
-        }
-        Log.shared.errorAndCrash(message: "We should never return an empty UITableViewCell.")
-        return UITableViewCell()
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: pEpHeaderView.reuseIdentifier) as? pEpHeaderView else {
-            Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
-            return nil
-        }
-        guard let sections = viewModel?.sections else {
-            Log.shared.errorAndCrash("Without sections there is no table view.")
-            return nil
-        }
-
-        headerView.title = sections[section].title.uppercased()
-        return headerView
-    }
-
-    private enum CellType {
-        case keyValueCell
-        case switchCell
-        case dangerousCell
-    }
-
 }
 
 // MARK: - OAuthAuthorizerDelegate
@@ -293,5 +320,19 @@ extension AccountSettingsViewController: OAuthAuthorizerDelegate {
             return
         }
         viewModel?.updateToken(accessToken: token)
+    }
+}
+
+// MARK: - AccountSettingsSwitchTableViewCellDelegate
+
+extension AccountSettingsViewController: AccountSettingsSwitchTableViewCellDelegate {
+    func switchValueChanged(of rowType: AccountSettingsViewModel2.RowType, to newValue: Bool) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(message: "A view model is required")
+            return
+        }
+        if rowType == .pepSync {
+            vm.pEpSync(enable: newValue)
+        }
     }
 }

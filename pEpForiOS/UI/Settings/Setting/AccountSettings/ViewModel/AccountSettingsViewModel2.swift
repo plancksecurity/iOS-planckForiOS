@@ -43,7 +43,6 @@ final class AccountSettingsViewModel2 {
     ///         for the verification be able to succeed.
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
-
     private(set) var pEpSync: Bool
     private(set) var account: Account
     weak var delegate: AccountSettingsViewModelDelegate?
@@ -65,11 +64,11 @@ final class AccountSettingsViewModel2 {
 // MARK: -  enums & structs
 
 extension AccountSettingsViewModel2 {
-    typealias SwitchBlock = ((Bool) -> Void)
-    typealias AlertActionBlock = (() -> ())
+    public typealias SwitchBlock = ((Bool) -> Void)
+    public typealias AlertActionBlock = (() -> ())
 
     /// Identifies semantically the type of row.
-    enum RowType : String {
+    public enum RowType : String {
         case name
         case email
         case password
@@ -82,14 +81,14 @@ extension AccountSettingsViewModel2 {
     }
 
     /// Identifies the section in the table view.
-     enum SectionType : String {
+     public enum SectionType : String {
         case account
         case imap
         case smtp
     }
 
     /// Struct that represents a section in Account Settings View Controller
-     struct Section: Equatable {
+     public struct Section: Equatable {
         /// Title of the section
         var title: String
         /// list of rows in the section
@@ -104,7 +103,7 @@ extension AccountSettingsViewModel2 {
 
     /// Struct that is used to show and interact with a switch.
     /// Represents a SwitchRow in Account Settings View Controller
-    struct SwitchRow: AccountSettingsRowProtocol2 {
+    public struct SwitchRow: AccountSettingsRowProtocol2 {
         /// Indicates if the action to be performed is dangerous
         var isDangerous: Bool = false
         /// The row type
@@ -120,7 +119,7 @@ extension AccountSettingsViewModel2 {
     }
 
     /// Struct that is used to display information in Account Settings View Controller
-     struct DisplayRow: AccountSettingsRowProtocol2 {
+     public struct DisplayRow: AccountSettingsRowProtocol2 {
         /// The row type
         var type: AccountSettingsViewModel2.RowType
         /// The title of the row
@@ -135,7 +134,7 @@ extension AccountSettingsViewModel2 {
 
     /// Struct that is used to perform an action.
     /// Represents a ActionRow in in Account Settings View Controller
-     struct ActionRow: AccountSettingsRowProtocol2 {
+     public struct ActionRow: AccountSettingsRowProtocol2 {
         /// The type of the row.
         var type: AccountSettingsViewModel2.RowType
         /// Title of the action row
@@ -152,6 +151,7 @@ extension AccountSettingsViewModel2 {
 //MARK: - Layout
 
 extension AccountSettingsViewModel2 {
+
     /// Indicates if the device is in a group.
     /// - Returns: True if the device is in a group.
     public func isPEPSyncSwitchGreyedOut() -> Bool {
@@ -228,9 +228,12 @@ extension AccountSettingsViewModel2 {
     }
 }
 
-// MARK: - OAuthAuthorizerDelegate
+// MARK: - OAuthAuthorizer
 
 extension AccountSettingsViewModel2 {
+
+    /// Update the OAuth token
+    /// - Parameter accessToken: the new token.
     public func updateToken(accessToken: OAuth2AccessTokenProtocol) {
         self.accessToken = accessToken
     }
@@ -239,6 +242,23 @@ extension AccountSettingsViewModel2 {
 // MARK: - Private
 
 extension AccountSettingsViewModel2 {
+
+    private struct CellsIdentifiers {
+        static let displayCell = "KeyValueTableViewCell"
+        static let switchCell = "SwitchTableViewCell"
+        static let dangerousCell = "DangerousTableViewCell"
+        static let settingsCell = "settingsCell"
+    }
+
+    private enum AccountSettingsError: Error, LocalizedError {
+        case accountNotFound, failToModifyAccountPEPSync
+        var errorDescription: String? {
+            switch self {
+            case .accountNotFound, .failToModifyAccountPEPSync:
+                return NSLocalizedString("Something went wrong, please try again later", comment: "AccountSettings viewModel: no account error")
+            }
+        }
+    }
 
     /// This method generates the sections of the account settings view.
     /// Must be called once, at the initialization.
@@ -295,13 +315,6 @@ extension AccountSettingsViewModel2 {
         case .username:
             return NSLocalizedString("Username", comment: "\(type.rawValue) field")
         }
-    }
-
-    private struct CellsIdentifiers {
-        static let displayCell = "KeyValueTableViewCell"
-        static let switchCell = "SwitchTableViewCell"
-        static let dangerousCell = "DangerousTableViewCell"
-        static let settingsCell = "settingsCell"
     }
 
     /// This method generates all the rows for the section type passed
@@ -426,15 +439,5 @@ extension AccountSettingsViewModel2 {
         }
         return rows
 
-    }
-
-    private enum AccountSettingsError: Error, LocalizedError {
-        case accountNotFound, failToModifyAccountPEPSync
-        var errorDescription: String? {
-            switch self {
-            case .accountNotFound, .failToModifyAccountPEPSync:
-                return NSLocalizedString("Something went wrong, please try again later", comment: "AccountSettings viewModel: no account error")
-            }
-        }
     }
 }
