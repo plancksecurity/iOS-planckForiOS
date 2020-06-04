@@ -72,7 +72,7 @@ final class SettingsViewModel {
         let row = section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
         case .account, .defaultAccount, .pgpKeyImport, .credits, .extraKeys, .trustedServer,
-             .resetTrust:
+             .resetTrust, .tutorial:
             return "SettingsCell"
         case .resetAccounts:
             return "SettingsActionCell"
@@ -148,7 +148,13 @@ extension SettingsViewModel {
                              footer: sectionFooter(type: .globalSettings),
                              rows: generateRows(type: .globalSettings),
                              type: .globalSettings))
-        
+
+        items.append(Section(title: sectionTitle(type: .tutorial),
+                             footer: sectionFooter(type: .tutorial),
+                             rows: generateRows(type: .tutorial),
+                             type: .tutorial))
+
+
         items.append(Section(title: sectionTitle(type: .pEpSync),
                              footer: sectionFooter(type: .pEpSync),
                              rows: generateRows(type: .pEpSync),
@@ -235,6 +241,8 @@ extension SettingsViewModel {
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
         case .companyFeatures:
             rows.append(generateNavigationRow(type: .extraKeys, isDangerous: false))
+        case .tutorial:
+            rows.append(generateNavigationRow(type: .tutorial, isDangerous: false))
         }
         return rows
     }
@@ -301,6 +309,8 @@ extension SettingsViewModel {
         case .companyFeatures:
             return NSLocalizedString("Enterprise Features",
                                      comment: "Tableview section header: Enterprise Features")
+        case .tutorial:
+            return NSLocalizedString("Tutorial", comment: "Tableview section header: Tutorial")
         }
     }
 
@@ -309,7 +319,7 @@ extension SettingsViewModel {
     /// - Returns: The title of the footer. If the section is an account, a pepSync or the company features, it will be nil because there is no footer.
     private func sectionFooter(type: SectionType) -> String? {
         switch type {
-        case .pEpSync, .companyFeatures:
+        case .pEpSync, .companyFeatures, .tutorial:
             return nil
         case .accounts:
             return NSLocalizedString("Performs a reset of the privacy settings of your account(s)",
@@ -318,8 +328,7 @@ extension SettingsViewModel {
             return NSLocalizedString("Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p.",
                                      comment: "passive mode description")
         case .contacts:
-            return NSLocalizedString("Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.",
-                                     comment: "TableView Contacts section footer")
+            return NSLocalizedString("Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.", comment: "TableView Contacts section footer")
         }
     }
 
@@ -363,6 +372,8 @@ extension SettingsViewModel {
         case .unsecureReplyWarningEnabled:
             return NSLocalizedString("Unsecure reply warning",
                                      comment: "setting row title: Unsecure reply warning")
+        case .tutorial:
+            return NSLocalizedString("Tutorial", comment: "setting row title: Tutorial")
         }
     }
 
@@ -375,7 +386,7 @@ extension SettingsViewModel {
             return AppSettings.shared.defaultAccount
         case .account, .credits, .extraKeys, .passiveMode, .pEpSync,
              .protectMessageSubject, .resetAccounts, .resetTrust, .pgpKeyImport, .trustedServer,
-             .unsecureReplyWarningEnabled:
+             .unsecureReplyWarningEnabled, .tutorial:
             return nil
         }
     }
@@ -454,6 +465,7 @@ extension SettingsViewModel {
     public enum SectionType {
         case accounts
         case globalSettings
+        case tutorial
         case pEpSync
         case contacts
         case companyFeatures
@@ -473,6 +485,7 @@ extension SettingsViewModel {
         case pEpSync
         case resetTrust
         case extraKeys
+        case tutorial
     }
 
     /// Struct that represents a section in SettingsTableViewController
