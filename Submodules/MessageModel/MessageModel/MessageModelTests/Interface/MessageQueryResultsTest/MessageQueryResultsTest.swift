@@ -1,4 +1,3 @@
-//IOS-2241 CRASHES
 //
 //  MessageQueryResultsTest.swift
 //  MessageModelTests
