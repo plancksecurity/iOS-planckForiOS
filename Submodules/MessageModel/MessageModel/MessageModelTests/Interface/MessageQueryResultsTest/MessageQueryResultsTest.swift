@@ -360,7 +360,7 @@ class MessageQueryResultsTest: PersistentStoreDrivenTestBase {
 
 // MARK: - Helper
 
-extension MessageQueryResultTest {
+extension MessageQueryResultsTest {
 
     @discardableResult
     private func createCdMessages(numMessages: Int = 1,
