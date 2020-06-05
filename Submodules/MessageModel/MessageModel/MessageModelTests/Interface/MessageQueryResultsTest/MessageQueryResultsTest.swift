@@ -13,7 +13,7 @@ import CoreData
 @testable import MessageModel
 import PEPObjCAdapterFramework
 
-class MessageQueryResultTest: PersistentStoreDrivenTestBase {
+class MessageQueryResultsTest: PersistentStoreDrivenTestBase {
     var messageQueryResults: MessageQueryResults?
     var account1: CdAccount!
     var account2: CdAccount!
