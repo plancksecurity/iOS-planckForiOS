@@ -164,21 +164,6 @@ class MessageQueryResultTest: PersistentStoreDrivenTestBase {
         XCTAssertEqual(try? messageQueryResults.count(), expectedMessagesCount)
     }
 
-    func testCountWithoutStartMonitoring() {
-        // Given
-        guard let messageQueryResults = messageQueryResults else {
-            XCTFail()
-            return
-        }
-
-        // When
-        createCdMessages(numMessages: 20, cdFolder: cdFolder1, context: moc)
-
-        // Then
-        XCTAssertThrowsError(try messageQueryResults.count(),
-                    QueryResultsController.InvalidStateError.notMonitoring.localizedDescription)
-    }
-
     func testSubscript() {
         // Given
         guard let messageQueryResults = messageQueryResults else {
