@@ -10,7 +10,9 @@
 import XCTest
 
 import CoreData
+
 @testable import MessageModel
+import PEPObjCAdapterFramework
 
 class MessageQueryResultTest: PersistentStoreDrivenTestBase {
     var messageQueryResults: MessageQueryResults?
@@ -421,7 +423,7 @@ extension MessageQueryResultTest {
         createes.forEach {
             uid += 1
             $0.uid = Int32(uid)
-            $0.pEpRating = Int16(0)
+            $0.pEpRating = Int16(PEPRating.unencrypted.rawValue)
         }
         return createes
     }
