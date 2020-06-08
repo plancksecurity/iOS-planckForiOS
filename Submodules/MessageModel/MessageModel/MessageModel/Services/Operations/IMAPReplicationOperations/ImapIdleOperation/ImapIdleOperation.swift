@@ -7,17 +7,16 @@
 //
 
 import CoreData
-import MessageModel
 
 /// Sets and keeps an account in IDLE mode 
 /// if:
-///     - IDLE is supported by server
+///     * IDLE is supported by server
 /// while:
-///     - No errors occure
-///     - The server does not report any changes
+///     * No errors occure
+///     * The server does not report any changes
+///     * There are no local changes made by the user
 ///
-/// In case an error occurs or changes on server site are reported, we simple finish the operation to signal 
-/// this to the client.
+/// In other words Idle mode is stopped in case an error occurs, changes on server site are reported or the user made changes.
 class ImapIdleOperation: ImapSyncOperation {
 
 //    var syncDelegate: ImapIdleDelegate?
@@ -76,8 +75,9 @@ class ImapIdleOperation: ImapSyncOperation {
     }
 }
 
-// MARK: - ImapIdleDelegate (actual delegate)
+// MARK: - ImapIdleDelegate
 
+//BUFF: cleanup
 class ImapIdleDelegate: DefaultImapConnectionDelegate {
     
     override func authenticationFailed(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
