@@ -59,6 +59,7 @@ class ImapIdleOperation: ImapSyncOperation {
     }
 
     private func sendDone() {
+        Log.shared.info("Stopping IDLE mode")
        imapConnection.exitIdle()
     }
 
@@ -131,6 +132,7 @@ class ImapIdleDelegate: DefaultImapConnectionDelegate {
 //    }
 
     override func idleEntered(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
+        Log.shared.info("IDLE mode entered")
         // Do nothing, keep idleing
     }
 
@@ -147,6 +149,7 @@ class ImapIdleDelegate: DefaultImapConnectionDelegate {
 //    }
 
     override func idleFinished(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
+        Log.shared.info("IDLE mode finished")
         imapIdleOp()?.handleIdleFinished()
     }
     
