@@ -190,7 +190,8 @@ class DefaultImapConnectionDelegate: ImapConnectionDelegate {
     }
 
     func idleFinished(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
-        forceErrorDelegate().handle(error: ImapSyncOperationError.illegalState(#function))
+//        forceErrorDelegate().handle(error: ImapSyncOperationError.illegalState(#function)) //BUFF:
+        Log.shared.info("DefaultImapConnectionDelegate: unhandled call to idleFinished")
     }
 
     func folderExpungeCompleted(_ imapConection: ImapConnectionProtocol, notification: Notification?) {

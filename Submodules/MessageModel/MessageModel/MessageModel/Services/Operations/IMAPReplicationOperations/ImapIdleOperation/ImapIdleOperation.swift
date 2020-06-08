@@ -12,20 +12,50 @@ import CoreData
 /// if:
 ///     * IDLE is supported by server
 /// while:
-///     * No errors occure
+///     * No errors occur
 ///     * The server does not report any changes
 ///     * There are no local changes made by the user
 ///
 /// In other words Idle mode is stopped in case an error occurs, changes on server site are reported or the user made changes.
 class ImapIdleOperation: ImapSyncOperation {
+    /// MOC to use with FRC
+    private let frcMoc: NSManagedObjectContext = Stack.shared.changePropagatorContext
+    /// Monitiors all messages of the 
+    private var frc: NSFetchedResultsController<CdMessage> = NSFetchedResultsController() // Dummy FRC to be able to initialize in init(). Do NOT use this.
 
-//    var syncDelegate: ImapIdleDelegate?
+    //    var syncDelegate: ImapIdleDelegate?
     var changedMessageIDs = [NSManagedObjectID]()
     //    weak var delegate: ImapIdleOperationDelegate?
 
-    override func cancel() {
-        super.cancel()
-        markAsFinished()
+    override init(parentName: String = #function,
+                  context: NSManagedObjectContext? = nil,
+                  errorContainer: ErrorContainerProtocol = ErrorPropagator(),
+                  imapConnection: ImapConnectionProtocol) {
+        super.init(parentName: parentName,
+                   context: context,
+                   errorContainer: errorContainer,
+                   imapConnection: imapConnection)
+
+        frcMoc.performAndWait {
+            let fetchRequest = NSFetchRequest<CdMessage>()
+            fetchRequest.sortDescriptors = []
+            fetchRequest.entity = CdMessage.entity()
+            if let cdAccount = imapConnection.cdAccount(moc: frcMoc) {
+                fetchRequest.predicate = CdMessage.PredicateFactory.belongingToAccount(cdAccount: cdAccount)
+            } else {
+                Log.shared.errorAndCrash("No CdAccount")
+            }
+
+            frc = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                             managedObjectContext: frcMoc,
+                                             sectionNameKeyPath: nil,
+                                             cacheName: nil)
+            frc.delegate = self
+        }
+    }
+
+    func stopIdle() { //BUFF:
+        sendDone()
     }
 
     override func main() {
@@ -37,8 +67,17 @@ class ImapIdleOperation: ImapSyncOperation {
             markAsFinished()
             return
         }
-        privateMOC.perform() {
-            self.process()
+        frcMoc.perform { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            do {
+                try me.frc.performFetch()
+            } catch {
+                Log.shared.errorAndCrash("Error fetching: %@", error.localizedDescription)
+            }
+            me.process()
         }
     }
 
@@ -73,6 +112,13 @@ class ImapIdleOperation: ImapSyncOperation {
 
     fileprivate func handleError() {
         Log.shared.info("We intentionally ignore an error here.")
+    }
+
+    fileprivate func handleLocalChangeHappened() {
+        // The user changes a message (delted, flagged, moved, ...).
+        // Exit idle mode to sync those changes to the IMAP server.
+        Log.shared.info("%@: Local change reported", type(of: self).description())
+        sendDone()
     }
 }
 
@@ -176,5 +222,20 @@ class ImapIdleDelegate: DefaultImapConnectionDelegate {
             return nil
         }
         return imapIdleOp
+    }
+}
+
+// MARK: - NSFetchedResultsControllerDelegate
+
+extension ImapIdleOperation: NSFetchedResultsControllerDelegate {
+
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        // We are using a trivial implementation until we need somthing more sofisticated.
+        // Any change on any CdMessage will stop idle mode.
+        handleLocalChangeHappened()
+    }
+
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        // do nothing
     }
 }
