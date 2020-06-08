@@ -21,7 +21,7 @@ extension ImapReplicationService {
 class ImapReplicationService: OperationBasedService {
     private var pollingMode: PollingMode {
         didSet {
-            //!!!: stop idle when implemented!
+            //BUFF: !!!: stop idle when implemented!
         }
     }
     /// Amount of time to "sleep" between polling cycles
@@ -66,33 +66,33 @@ class ImapReplicationService: OperationBasedService {
                     return
             }
 
-            let imapSyncData = me.imapConnectionCache.imapConnection(for: imapConnectInfo)
+            let imapConnection = me.imapConnectionCache.imapConnection(for: imapConnectInfo)
 
             // login IMAP
             let opImapLogin = LoginImapOperation(errorContainer: me.errorPropagator,
-                                                 imapConnection: imapSyncData)
+                                                 imapConnection: imapConnection)
             createes.append(opImapLogin)
 
             if me.pollingMode != .fastPolling {
                 // Fetch current list of interesting mailboxes
                 let opSyncFolders = SyncFoldersFromServerOperation(errorContainer: me.errorPropagator,
-                                                                   imapConnection: imapSyncData)
+                                                                   imapConnection: imapConnection)
                 createes.append(opSyncFolders)
             }
             if me.pollingMode != .fastPolling {
                 let opRequiredFolders = CreateRequiredFoldersOperation(errorContainer: me.errorPropagator,
-                                                                       imapConnection: imapSyncData)
+                                                                       imapConnection: imapConnection)
                 createes.append(opRequiredFolders)
             }
 
             // Client-to-server synchronization (IMAP)
             let appendOp = AppendMailsOperation(errorContainer: me.errorPropagator,
-                                                imapConnection: imapSyncData)
+                                                imapConnection: imapConnection)
             createes.append(appendOp)
 
             if me.pollingMode != .fastPolling {
                 let moveToFolderOp = ImapMoveOperation(errorContainer: me.errorPropagator,
-                                                       imapConnection: imapSyncData)
+                                                       imapConnection: imapConnection)
                 createes.append(moveToFolderOp)
             }
 
@@ -101,31 +101,39 @@ class ImapReplicationService: OperationBasedService {
             // Server-to-client synchronization (IMAP)
             // fetch new messages
             let fetchMessagesOp = FetchMessagesOperation(errorContainer: me.errorPropagator,
-                                                         imapConnection: imapSyncData,
+                                                         imapConnection: imapConnection,
                                                          folderInfos: folderInfos)
             createes.append(fetchMessagesOp)
 
             if me.pollingMode != .fastPolling {
                 // Send EXPUNGEs, if necessary
                 let expungeOP = ImapExpungeOperation(errorContainer: me.errorPropagator,
-                                                     imapConnection: imapSyncData)
+                                                     imapConnection: imapConnection)
                 createes.append(expungeOP)
 
                 // sync existing messages
                 let syncExistingOP = SyncMessagesOperation(errorContainer: me.errorPropagator,
-                                                           imapConnection: imapSyncData,
+                                                           imapConnection: imapConnection,
                                                            folderInfos: folderInfos)
                 createes.append(syncExistingOP)
 
                 let syncFlagsToServer = SyncFlagsToServerOperation(errorContainer: me.errorPropagator,
-                                                                   imapConnection: imapSyncData,
+                                                                   imapConnection: imapConnection,
                                                                    folderInfos: folderInfos)
                 createes.append(syncFlagsToServer)
             }
-
-            createes.append(me.pollingPausingOp(errorContainer: me.errorPropagator))
+            var willIdle = false
+            if me.pollingMode != .fastPolling && imapConnection.supportsIdle {
+                let idleOP = ImapIdleOperation(errorContainer: me.errorPropagator,
+                                               imapConnection: imapConnection)
+                createes.append(idleOP)
+                willIdle = true
+            }
+            if !willIdle {
+                //            else if !imapConnection.supportsIdle { //BUFF:
+                createes.append(me.pollingPausingOp(errorContainer: me.errorPropagator))
+            }
             createes.append(me.errorHandlerOp())
-
         }
         return createes
     }
