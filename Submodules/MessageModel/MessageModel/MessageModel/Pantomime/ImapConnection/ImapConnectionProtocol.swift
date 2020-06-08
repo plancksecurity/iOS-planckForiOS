@@ -82,7 +82,7 @@ protocol ImapConnectionProtocol {
 
     // MARK: - FOLDERS
 
-    func createFolderWithName(_ folderName: String)
+    func createFolderNamed(_ folderName: String)
 
     func deleteFolderWithName(_ folderName: String)
 

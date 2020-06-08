@@ -197,7 +197,7 @@ class CreateRequiredFoldersOperation: ImapSyncOperation {
     }
 
     private func startFolderCreation(folderToCreate: FolderToCreate) {
-        imapConnection.createFolderWithName(folderToCreate.folderName)
+        imapConnection.createFolderNamed(folderToCreate.folderName)
     }
 
     private func createLocal(folderToCreate: FolderToCreate) {

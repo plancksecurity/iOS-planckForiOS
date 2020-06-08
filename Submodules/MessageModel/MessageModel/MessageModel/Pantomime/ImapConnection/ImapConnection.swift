@@ -214,7 +214,7 @@ class ImapConnection: ImapConnectionProtocol {
 
     // MARK: - FOLDERS
 
-    func createFolderWithName(_ folderName: String) {
+    func createFolderNamed(_ folderName: String) {
         // The only relevant parameter here is folderName, all others are
         // ignored by pantomime.
         imapStore.createFolder(withName: folderName, type: PantomimeFormatFolder,
