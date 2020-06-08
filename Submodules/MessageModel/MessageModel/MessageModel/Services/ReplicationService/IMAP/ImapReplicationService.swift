@@ -28,6 +28,7 @@ class ImapReplicationService: OperationBasedService {
     private var sleepTimeInSeconds = MiscUtil.isUnitTest() ? 1.0 : 10.0
     private var cdAccount: CdAccount? = nil
     private var imapConnectionCache = ImapConnectionCache()
+    private var idleOperation: ImapIdleOperation?
 
     /// - Parameters:
     ///   - backgroundTaskManager: see Service.init for docs
@@ -48,6 +49,19 @@ class ImapReplicationService: OperationBasedService {
     }
 
     // MARK: - Overrides
+
+
+    override func finish() {
+        idleOperation?.stopIdling()
+        idleOperation = nil
+        super.finish()
+    }
+
+    override func stop() {
+        idleOperation?.stopIdling()
+        idleOperation = nil
+        super.stop()
+    }
 
     override func operations() -> [Operation] {
         var createes = [Operation]()
@@ -127,6 +141,7 @@ class ImapReplicationService: OperationBasedService {
                 let idleOP = ImapIdleOperation(errorContainer: me.errorPropagator,
                                                imapConnection: imapConnection)
                 createes.append(idleOP)
+                me.idleOperation = idleOP
                 willIdle = true
             }
             if !willIdle {

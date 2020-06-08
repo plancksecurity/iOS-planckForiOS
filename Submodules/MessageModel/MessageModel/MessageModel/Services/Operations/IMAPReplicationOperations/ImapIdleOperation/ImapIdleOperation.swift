@@ -54,8 +54,12 @@ class ImapIdleOperation: ImapSyncOperation {
         }
     }
 
-    func stopIdle() { //BUFF:
-        sendDone()
+    func stopIdling() { //BUFF:
+        if imapConnection.isIdling {
+            sendDone()
+        } else {
+            cancel()
+        }
     }
 
     override func main() {
