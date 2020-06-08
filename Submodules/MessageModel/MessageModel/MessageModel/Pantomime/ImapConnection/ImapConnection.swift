@@ -232,7 +232,8 @@ class ImapConnection: ImapConnectionProtocol {
             state.currentFolder == nil {
             return
         }
-        imapStore.send(IMAP_IDLE, info: nil, string: "IDLE")
+        imapStore.sendIdle()
+//        imapStore.send(IMAP_IDLE, info: nil, string: "IDLE") //BUFF
     }
 
     func exitIdle() {
