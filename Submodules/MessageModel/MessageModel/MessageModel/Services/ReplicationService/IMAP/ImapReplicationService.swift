@@ -19,11 +19,7 @@ extension ImapReplicationService {
 
 /// Replicates the state of an IMAP server (for one account).
 class ImapReplicationService: OperationBasedService {
-    private var pollingMode: PollingMode {
-        didSet {
-            //BUFF: !!!: stop idle when implemented!
-        }
-    }
+    private var pollingMode: PollingMode
     /// Amount of time to "sleep" between polling cycles
     private var sleepTimeInSeconds = MiscUtil.isUnitTest() ? 1.0 : 10.0
     private var cdAccount: CdAccount? = nil
