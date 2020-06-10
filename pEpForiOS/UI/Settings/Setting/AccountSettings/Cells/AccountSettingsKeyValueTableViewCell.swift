@@ -18,7 +18,7 @@ final class AccountSettingsKeyValueTableViewCell: UITableViewCell {
     @IBOutlet private weak var stackView: UIStackView!
 
     /// Configure the cell according to the current trait collection
-    public func configure(with row : AccountSettingsViewModel2.DisplayRow? = nil, for traitCollection : UITraitCollection? = nil) {
+    public func configure(with row : AccountSettingsViewModel.DisplayRow? = nil, for traitCollection : UITraitCollection? = nil) {
         guard let traitCollection = traitCollection else {
             //This is a valid case
             return

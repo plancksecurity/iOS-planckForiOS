@@ -14,7 +14,7 @@ import Foundation
 
 class AccountSettingsViewModel2Test: AccountDrivenTestBase {
 
-    var viewModel : AccountSettingsViewModel2!
+    var viewModel : AccountSettingsViewModel!
     var delegate : MockedAccountSettingsViewModelDelegate?
     var actual: State?
     var expected: State?
@@ -25,7 +25,7 @@ class AccountSettingsViewModel2Test: AccountDrivenTestBase {
     override func setUp() {
         super.setUp()
         //let clientCertificateUtil = ClientCertificateUtilMockTest()
-        viewModel = AccountSettingsViewModel2(account: account)
+        viewModel = AccountSettingsViewModel(account: account)
     }
 
     func testNumberOfSections() throws {
@@ -38,7 +38,7 @@ class AccountSettingsViewModel2Test: AccountDrivenTestBase {
     func testHandleResetIdentity() {
         let state = State(didCallShowLoadingView: true, didCallHideLoadingView: true)
         let delegate = MockedAccountSettingsViewModelDelegate(testCase: self, expected: state)
-        viewModel = AccountSettingsViewModel2(account: account, delegate: delegate)
+        viewModel = AccountSettingsViewModel(account: account, delegate: delegate)
         viewModel.handleResetIdentity()
     }
 

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol AccountSettingsSwitchTableViewCellDelegate: class {
-    func switchValueChanged(of rowType: AccountSettingsViewModel2.RowType, to newValue: Bool)
+    func switchValueChanged(of rowType: AccountSettingsViewModel.RowType, to newValue: Bool)
 }
 
 final class AccountSettingsSwitchTableViewCell: UITableViewCell {
@@ -19,11 +19,11 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
     @IBOutlet private weak var switchItem: UISwitch!
     @IBOutlet private weak var titleLabel: UILabel!
 
-    private var row : AccountSettingsViewModel2.SwitchRow?
+    private var row : AccountSettingsViewModel.SwitchRow?
 
     weak var delegate : AccountSettingsSwitchTableViewCellDelegate?
 
-    public func configure(with row : AccountSettingsViewModel2.SwitchRow) {
+    public func configure(with row : AccountSettingsViewModel.SwitchRow) {
         self.row = row
         titleLabel.text = row.title
         switchItem.isOn = row.isOn

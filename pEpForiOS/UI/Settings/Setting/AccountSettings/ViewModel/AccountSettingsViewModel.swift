@@ -11,7 +11,7 @@ import MessageModel
 import pEpIOSToolbox
 
 ///Delegate protocol to communicate to the Account Settings View Controller
-protocol AccountSettingsViewModel2Delegate: class {
+protocol AccountSettingsViewModelDelegate: class {
     //Changes loading view visibility
     func setLoadingView(visible: Bool)
     /// Shows an alert
@@ -23,7 +23,7 @@ protocol AccountSettingsViewModel2Delegate: class {
 /// Protocol that represents the basic data in a row.
 protocol AccountSettingsRowProtocol {
     // The type of the row
-    var type : AccountSettingsViewModel2.RowType { get }
+    var type : AccountSettingsViewModel.RowType { get }
     /// The title of the row.
     var title: String { get }
     /// Indicates if the row action is dangerous.
@@ -34,7 +34,7 @@ protocol AccountSettingsRowProtocol {
 }
 
 /// View Model for Account Settings View Controller
-final class AccountSettingsViewModel2 {
+final class AccountSettingsViewModel {
 
     /// If there was OAUTH2 for this account, here is a current token.
     /// This trumps both the `originalPassword` and a password given by the user
@@ -46,7 +46,7 @@ final class AccountSettingsViewModel2 {
     private(set) var pEpSync: Bool
     let isOAuth2: Bool
     private(set) var account: Account
-    weak var delegate: AccountSettingsViewModel2Delegate?
+    weak var delegate: AccountSettingsViewModelDelegate?
     /// Items to be displayed in a Account Settings View Controller
     private(set) var sections: [Section] = [Section]()
 
@@ -54,7 +54,7 @@ final class AccountSettingsViewModel2 {
     /// - Parameters:
     ///   - account: The account to configure the account settings view model.
     ///   - delegate: The delegate to communicate to the View Controller.
-    init(account: Account, delegate: AccountSettingsViewModel2Delegate? = nil) {
+    init(account: Account, delegate: AccountSettingsViewModelDelegate? = nil) {
         self.account = account
         self.delegate = delegate
         pEpSync = (try? account.isKeySyncEnabled()) ?? false
@@ -65,7 +65,7 @@ final class AccountSettingsViewModel2 {
 
 // MARK: -  enums & structs
 
-extension AccountSettingsViewModel2 {
+extension AccountSettingsViewModel {
     public typealias SwitchBlock = ((Bool) -> Void)
     public typealias AlertActionBlock = (() -> ())
 
@@ -110,7 +110,7 @@ extension AccountSettingsViewModel2 {
         /// Indicates if the action to be performed is dangerous
         var isDangerous: Bool = false
         /// The row type
-        var type: AccountSettingsViewModel2.RowType
+        var type: AccountSettingsViewModel.RowType
         /// The title of the swith row
         var title: String
         /// Value of the switch
@@ -124,7 +124,7 @@ extension AccountSettingsViewModel2 {
     /// Struct that is used to display information in Account Settings View Controller
      public struct DisplayRow: AccountSettingsRowProtocol {
         /// The row type
-        var type: AccountSettingsViewModel2.RowType
+        var type: AccountSettingsViewModel.RowType
         /// The title of the row
         var title: String
         /// The text of the row
@@ -139,7 +139,7 @@ extension AccountSettingsViewModel2 {
     /// Represents a ActionRow in in Account Settings View Controller
      public struct ActionRow: AccountSettingsRowProtocol {
         /// The type of the row.
-        var type: AccountSettingsViewModel2.RowType
+        var type: AccountSettingsViewModel.RowType
         /// Title of the action row
         var title: String
         /// Indicates if the action to be performed is dangerous.
@@ -153,7 +153,7 @@ extension AccountSettingsViewModel2 {
 
 //MARK: - Layout
 
-extension AccountSettingsViewModel2 {
+extension AccountSettingsViewModel {
 
     /// Indicates if the device is in a group.
     /// - Returns: True if the device is in a group.
@@ -164,7 +164,7 @@ extension AccountSettingsViewModel2 {
 
 // MARK: - Client Certificate
 
-extension AccountSettingsViewModel2 {
+extension AccountSettingsViewModel {
     /// Provides information about the certificate
     /// - Returns: Certificate's name and date.
     /// If fails, returns empty string.
@@ -193,7 +193,7 @@ extension AccountSettingsViewModel2 {
 
 // MARK: - Actions
 
-extension AccountSettingsViewModel2 {
+extension AccountSettingsViewModel {
 
     /// Handle the Reset Identity action
     /// This resets all the keys of the current account and informs if it fails.
@@ -233,7 +233,7 @@ extension AccountSettingsViewModel2 {
 
 // MARK: - OAuthAuthorizer
 
-extension AccountSettingsViewModel2 {
+extension AccountSettingsViewModel {
 
     /// Update the OAuth token
     /// - Parameter accessToken: the new token.
@@ -244,7 +244,7 @@ extension AccountSettingsViewModel2 {
 
 // MARK: - Private
 
-extension AccountSettingsViewModel2 {
+extension AccountSettingsViewModel {
 
     private struct CellsIdentifiers {
         static let oAuthCell = "oAuthTableViewCell"

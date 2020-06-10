@@ -13,7 +13,7 @@ final class AccountSettingsDangerousTableViewCell: UITableViewCell {
 
     @IBOutlet private weak var titleLabel: UILabel!
 
-    public func configure(with row : AccountSettingsViewModel2.ActionRow? = nil) {
+    public func configure(with row : AccountSettingsViewModel.ActionRow? = nil) {
         guard let row = row else {
             return
         }

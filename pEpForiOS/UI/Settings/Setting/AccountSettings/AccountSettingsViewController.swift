@@ -17,7 +17,7 @@ final class AccountSettingsViewController : BaseViewController {
     // MARK: - Variables
     private let oauthViewModel = OAuthAuthorizer()
 
-    var viewModel: AccountSettingsViewModel2? = nil
+    var viewModel: AccountSettingsViewModel? = nil
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {
         return .needed
@@ -119,7 +119,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
                 as? AccountSettingsKeyValueTableViewCell else {
                     return UITableViewCell()
             }
-            guard let row = row as? AccountSettingsViewModel2.DisplayRow else {
+            guard let row = row as? AccountSettingsViewModel.DisplayRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
@@ -133,7 +133,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
                     Log.shared.errorAndCrash(message: "Cell can't be dequeued")
                     return UITableViewCell()
             }
-            guard let row = row as? AccountSettingsViewModel2.DisplayRow else {
+            guard let row = row as? AccountSettingsViewModel.DisplayRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
@@ -145,7 +145,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
                     Log.shared.errorAndCrash(message: "Cell can't be dequeued")
                     return UITableViewCell()
             }
-            guard let row = row as? AccountSettingsViewModel2.SwitchRow else {
+            guard let row = row as? AccountSettingsViewModel.SwitchRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
@@ -158,7 +158,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
                     Log.shared.errorAndCrash(message: "Cell can't be dequeued")
                     return UITableViewCell()
             }
-            guard let row = row as? AccountSettingsViewModel2.ActionRow else {
+            guard let row = row as? AccountSettingsViewModel.ActionRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
@@ -170,11 +170,10 @@ extension AccountSettingsViewController : UITableViewDataSource {
                 as? AccountSettingsOAuthTableViewCell else {
                     return UITableViewCell()
             }
-            guard let row = row as? AccountSettingsViewModel2.DisplayRow else {
+            guard let row = row as? AccountSettingsViewModel.DisplayRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
-
             dequeuedCell.configure(with: row)
             return dequeuedCell
         }
@@ -202,7 +201,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
 
 //MARK : - ViewModel Delegate
 
-extension AccountSettingsViewController : AccountSettingsViewModel2Delegate {
+extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
     func setLoadingView(visible: Bool) {
         DispatchQueue.main.async {
             if visible {
@@ -235,24 +234,9 @@ extension AccountSettingsViewController : AccountSettingsViewModel2Delegate {
     }
 }
 
-//MARK : - Certificate
+//MARK : - Identity
 
 extension AccountSettingsViewController {
-
-    /// TODO: call this.
-    /// Present Client Certificate view
-    private func handleCertificate() {
-        guard let vc = UIStoryboard.init(name: "AccountCreation", bundle: nil).instantiateViewController(withIdentifier: "ClientCertificateManagementViewController") as? ClientCertificateManagementViewController,
-            let vm = viewModel else {
-            Log.shared.errorAndCrash("AccountSettingsViewModel or ClientCertificateManagementViewController not found")
-            return
-        }
-        vc.appConfig = appConfig
-        let nextViewModel = vm.clientCertificateViewModel()
-        nextViewModel.delegate = vc
-        vc.viewModel = nextViewModel
-        navigationController?.pushViewController(vc, animated: true)
-    }
 
     private func handleOauth2Reauth() {
         guard let vm = viewModel else {
@@ -365,7 +349,7 @@ extension AccountSettingsViewController: OAuthAuthorizerDelegate {
 // MARK: - AccountSettingsSwitchTableViewCellDelegate
 
 extension AccountSettingsViewController: AccountSettingsSwitchTableViewCellDelegate {
-    func switchValueChanged(of rowType: AccountSettingsViewModel2.RowType, to newValue: Bool) {
+    func switchValueChanged(of rowType: AccountSettingsViewModel.RowType, to newValue: Bool) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash(message: "A view model is required")
             return

@@ -13,7 +13,7 @@ final class AccountSettingsOAuthTableViewCell: UITableViewCell {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var oauthLabel: UILabel!
 
-    public func configure(with row : AccountSettingsViewModel2.DisplayRow? = nil) {
+    public func configure(with row : AccountSettingsViewModel.DisplayRow? = nil) {
         guard let row = row else {
             return
         }
