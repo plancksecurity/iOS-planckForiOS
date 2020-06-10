@@ -12,7 +12,6 @@ import CoreData
 extension NSManagedObject {
     public struct Query {
         public struct PredicateFactory {
-            // WIP: - TODO: AK
             static public func predicateForAttributes(key: AnyHashable,
                                                       value: Any) -> NSPredicate {
                 return NSPredicate(format: "%K = %@", argumentArray: [key, value])
