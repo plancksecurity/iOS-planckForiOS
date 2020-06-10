@@ -33,7 +33,7 @@ final class SettingsTableViewController: BaseTableViewController {
                                                                    comment: "No setting has been selected yet in the settings VC"))
     }
 
-// MARK: - Extra Keys
+    // MARK: - Extra Keys
     /// Adds easter egg gesture to [en|dis]able the editability of extra keys
     private func addExtraKeysEditabilityToggleGesture() {
         let gestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(extraKeysEditabilityToggleGestureTriggered))
@@ -51,10 +51,14 @@ final class SettingsTableViewController: BaseTableViewController {
 // MARK: - Private
 
 extension SettingsTableViewController {
-
+    private struct Localized {
+        static let navigationTitle = NSLocalizedString("Settings",
+                                                       comment: "Settings view title")
+    }
     private func setUp() {
-        title = NSLocalizedString("Settings", comment: "Settings view title")
-        tableView.register(pEpHeaderView.self, forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
+        title = Localized.navigationTitle
+        tableView.register(PEPHeaderView.self,
+                           forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
     }
     /// Prepares and returns the swipe tableview cell, with the corresponding color and title.
     /// - Parameters:
@@ -118,7 +122,7 @@ extension SettingsTableViewController {
             return prepareSwipeTableViewCell(dequeuedCell, for: row)
         case .resetAccounts, .resetTrust:
             return prepareActionCell(dequeuedCell, for: row)
-        case .defaultAccount, .setOwnKey, .credits, .trustedServer, .extraKeys:
+        case .defaultAccount, .pgpKeyImport, .credits, .trustedServer, .extraKeys, .tutorial:
             guard let row = row as? SettingsViewModel.NavigationRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -192,7 +196,7 @@ extension SettingsTableViewController {
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 
-        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: pEpHeaderView.reuseIdentifier) as? pEpHeaderView else {
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: PEPHeaderView.reuseIdentifier) as? PEPHeaderView else {
             Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
             return nil
         }
@@ -243,9 +247,14 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let identifier = segueIdentifier(for: indexPath)
         switch identifier {
+        case .tutorial:
+            TutorialWizardViewController.presentTutorialWizard(viewController: self)
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
         case .passiveMode, .pEpSync, .protectMessageSubject, .unsecureReplyWarningEnabled:
             return
         case .resetAccounts:
+            
             guard let row = viewModel.section(for: indexPath).rows[indexPath.row] as? SettingsViewModel.ActionRow, let action = row.action,
                 let alert = getResetAllIdentityAlertController(action: action) else {
                     return
@@ -303,7 +312,7 @@ extension SettingsTableViewController {
         case sequeShowCredits
         case segueShowSettingTrustedServers
         case segueExtraKeys
-        case segueSetOwnKey
+        case seguePgpKeyImport
         case noAccounts
         case ResetTrustSplitView
         case ResetTrust
@@ -313,6 +322,7 @@ extension SettingsTableViewController {
         case pEpSync
         case resetAccounts
         case unsecureReplyWarningEnabled
+        case tutorial
     }
 
     /// Provides the segue identifier for the cell in the passed index path
@@ -329,8 +339,8 @@ extension SettingsTableViewController {
             return .sequeShowCredits
         case .trustedServer:
             return .segueShowSettingTrustedServers
-        case .setOwnKey:
-            return .segueSetOwnKey
+        case .pgpKeyImport:
+            return .seguePgpKeyImport
         case .resetTrust:
             return .ResetTrust
         case .extraKeys:
@@ -345,6 +355,8 @@ extension SettingsTableViewController {
             return .resetAccounts
         case .unsecureReplyWarningEnabled:
             return .unsecureReplyWarningEnabled
+        case .tutorial:
+            return .tutorial
         }
     }
 
@@ -375,15 +387,23 @@ extension SettingsTableViewController {
             destination.appConfig = self.appConfig
         case .none:
             break
-        case .segueSetOwnKey,
-             .ResetTrustSplitView,
+        case .seguePgpKeyImport:
+            guard let destination = segue.destination as? PGPKeyImportSettingViewController else {
+                Log.shared.errorAndCrash("No DVC")
+                return
+            }
+            destination.appConfig = appConfig
+            destination.viewModel = viewModel.pgpKeyImportSettingViewModel()
+        case .ResetTrustSplitView,
              .noSegue,
              .passiveMode,
              .protectMessageSubject,
              .pEpSync,
              .resetAccounts,
              .unsecureReplyWarningEnabled:
-            // It's all rows that never segue sanywhere (e.g. SwitchRow).
+            // It's all rows that never segue anywhere (e.g. SwitchRow).
+            break
+        case .tutorial:
             break
         }
     }
@@ -441,7 +461,7 @@ extension SettingsTableViewController {
         return alert
     }
 
-    private func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
+    func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
         let title = NSLocalizedString("Disable p≡p Sync",
                                       comment: "Leave device group confirmation")
         let comment = NSLocalizedString("If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?",

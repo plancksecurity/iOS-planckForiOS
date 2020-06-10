@@ -55,6 +55,9 @@
 /* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
 "Add to Contacts" = "Pridať z kontaktov";
 
+/* setOwnKeyRowTitle row title */
+"ADVANCED" = "POKROČILÉ";
+
 /* Name of unified inbox (showing messages of all accoounts */
 "All" = "Všetky";
 
@@ -90,6 +93,9 @@
 
 /* title attachments filter cell */
 "Attachments" = "Prílohy";
+
+/* Title of the view for choosing installed keys to import */
+"Available Keys" = "Dostupné klávesy";
 
 /* Cancel button title for manual account IMAP setup
    Cancel button title for manual account SMTP setup */
@@ -239,6 +245,9 @@
 /* No comment provided by engineer. */
 "Error casting" = "Chyba pri odovzdávaní";
 
+/* Generic error message on trying to import a key */
+"Error occurred. No key imported." = "Vyskytla sa chyba. Nebol importovaný žiadny kľúč.";
+
 /* spearator string bewtween name and date */
 "Exp. date:" = "Exp. dátum:";
 
@@ -284,6 +293,9 @@
 
 /* possible privacy status action */
 "Handshake" = "Handshake";
+
+/* PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...) */
+"here" = "tu";
 
 /* Alert title for iCloud instructions */
 "iCloud" = "iCloud";
@@ -450,7 +462,8 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "Ďalej";
 
-/* Alert button while client certificate is importing: Try again? No */
+/* Alert button while client certificate is importing: Try again? No
+   Title for no button (cancel) when trying to import a key */
 "No" = "Nie";
 
 /* Error when no account found for set_own_key UI */
@@ -575,6 +588,12 @@
 /* Tableview section header */
 "PGP Compatibility" = "Kompatibilita PGP";
 
+/* PGPKeyImportSetting pgpKeyImportRowTitle
+   PGPKeyImportSettingViewController Navigationbar title
+   Settings: Cell (button) title for importing and using private PGP keys
+   Title for alert when trying to import a key */
+"PGP Key Import" = "Import kľúča PGP";
+
 /* Privacy status suggestion */
 "Please add the necessary information." = "Pridajte potrebné informácie.";
 
@@ -614,6 +633,9 @@
 
 /* action sheet title 1 */
 "Privacy Status" = "Stav súkromia";
+
+/* Success message when importing the key */
+"Private key successfully imported." = "Súkromný kľúč bol úspešne importovaný.";
 
 /* title for subject protection */
 "Protect Message Subject" = "Chrániť predmet správy";
@@ -856,6 +878,9 @@
 /* settings, enable thread view or not */
 "Thread Messages" = "Vláknové správy";
 
+/* PGPKeyImportSetting row title */
+"To import an existing PGP private key, you first need to transfer it from your computer.\n\nClick here for more information. Once the private key has been transferred to the device, you can import it here." = "Ak chcete importovať existujúci súkromný kľúč PGP, musíte ho najprv preniesť z počítača.\n\nKliknite sem pre viac informácií. Po prenose súkromného kľúča do zariadenia ho môžete importovať tu.";
+
 /* Compose field title */
 "To:" = "Komu:";
 
@@ -984,7 +1009,8 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Chybné Trustwords";
 
-/* Alert button while client certificate is importing: Try again? Yes */
+/* Alert button while client certificate is importing: Try again? Yes
+   Title for yes button when trying to import a key */
 "Yes" = "Áno";
 
 /* Confirm less secure answer message alert body */
@@ -992,6 +1018,9 @@
 
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Chystáte sa poslať zabezpečenú správu ako nezabezpečenú. Ak sa rozhodnete pokračovať, môže dôjsť k úniku dôverných informácií, čo vás a vašich komunikačných partnerov ohrozí. Ste si istý, že chcete pokračovať?";
+
+/* Message when asking user for confirmation about importing a key */
+"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Chystáte sa importovať nasledujúci kľúč:\n\nMeno: %1$@\nOdtlačok prsta PGP: %2$@\n\nNaozaj chcete importovať a používať tento kľúč?";
 
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Túto príručku môžete kedykoľvek zavrieť pomocou tlačidla Preskočiť.";

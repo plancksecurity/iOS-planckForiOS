@@ -65,8 +65,8 @@ final class SettingsViewModel {
     public func cellIdentifier(for indexPath: IndexPath) -> String {
         let row = section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
-        case .account, .defaultAccount, .setOwnKey, .credits, .extraKeys, .trustedServer,
-             .resetTrust:
+        case .account, .defaultAccount, .pgpKeyImport, .credits, .extraKeys, .trustedServer,
+             .resetTrust, .tutorial:
             return "SettingsCell"
         case .resetAccounts:
             return "SettingsActionCell"
@@ -126,6 +126,10 @@ final class SettingsViewModel {
         AppSettings.shared.extraKeysEditable = newValue
 
         delegate?.showExtraKeyEditabilityStateChangeAlert(newValue: newValue ? "ON" : "OFF")
+    }
+
+    public func pgpKeyImportSettingViewModel() -> PGPKeyImportSettingViewModel {
+        return PGPKeyImportSettingViewModel()
     }
 }
 
@@ -207,7 +211,7 @@ extension SettingsViewModel {
             rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
             rows.append(generateNavigationRow(type: .credits, isDangerous: false))
             rows.append(generateNavigationRow(type: .trustedServer, isDangerous: false))
-            rows.append(generateNavigationRow(type: .setOwnKey, isDangerous: false))
+            rows.append(generateNavigationRow(type: .pgpKeyImport, isDangerous: false))
             rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
                                           isDangerous: false,
                                           isOn: AppSettings.shared.unsecureReplyWarningEnabled) {
@@ -325,7 +329,7 @@ extension SettingsViewModel {
         }
     }
 
-    /// Thie method provides the title for each cell, regarding its type.
+    /// This method provides the title for each cell, regarding its type.
     /// - Parameter type: The row type to get the proper title
     /// - Returns: The title of the row. If it's an account row, it will be nil and the name of the account should be used.
     private func rowTitle(type : Row) -> String? {
@@ -344,9 +348,9 @@ extension SettingsViewModel {
         case .trustedServer:
             return NSLocalizedString("Store Messages Securely",
                                      comment: "Settings: Cell (button) title to view default account setting")
-        case .setOwnKey:
-            return NSLocalizedString("Set Own Key",
-                                     comment: "Settings: Cell (button) title for entering fingerprints that are made own keys")
+        case .pgpKeyImport:
+            return NSLocalizedString("PGP Key Import",
+                                     comment: "Settings: Cell (button) title for importing and using private PGP keys")
         case .extraKeys:
             return NSLocalizedString("Extra Keys",
                                      comment: "Settings: Cell (button) title to view Extra Keys setting")
@@ -365,10 +369,12 @@ extension SettingsViewModel {
         case .unsecureReplyWarningEnabled:
             return NSLocalizedString("Unsecure reply warning",
                                      comment: "setting row title: Unsecure reply warning")
+        case .tutorial:
+            return NSLocalizedString("Tutorial", comment: "setting row title: Tutorial")
         }
     }
 
-    /// Thie method provides the subtitle if needed.
+    /// This method provides the subtitle if needed.
     /// - Parameter type: The row type to get the proper title
     /// - Returns: The subtitle of the row.
     private func rowSubtitle(type : Row) -> String? {
@@ -376,8 +382,8 @@ extension SettingsViewModel {
         case .defaultAccount:
             return AppSettings.shared.defaultAccount
         case .account, .credits, .extraKeys, .passiveMode, .pEpSync,
-             .protectMessageSubject, .resetAccounts, .resetTrust, .setOwnKey, .trustedServer,
-             .unsecureReplyWarningEnabled:
+             .protectMessageSubject, .resetAccounts, .resetTrust, .pgpKeyImport, .trustedServer,
+             .unsecureReplyWarningEnabled, .tutorial:
             return nil
         }
     }
@@ -461,13 +467,14 @@ extension SettingsViewModel {
         case defaultAccount
         case credits
         case trustedServer
-        case setOwnKey
+        case pgpKeyImport
         case passiveMode
         case protectMessageSubject
         case unsecureReplyWarningEnabled
         case pEpSync
         case resetTrust
         case extraKeys
+        case tutorial
     }
 
     /// Struct that represents a section in SettingsTableViewController

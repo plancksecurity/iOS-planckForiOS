@@ -22,11 +22,9 @@ class TutorialStep2ViewController: TutorialStepViewController {
 
     // We manipulate constraints to support iPad orientations as this inherits from CustomTraitCollectionViewController,
     @IBOutlet private weak var containerLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var distanceBetweenTitleAndContainerView: NSLayoutConstraint!
     @IBOutlet weak var secureCenterX: NSLayoutConstraint!
     @IBOutlet weak var distanceBetweenLabels: NSLayoutConstraint!
 
-    
     public override func configureView() {
         setupHandshakeTitle()
         setupPrivacyStatusExplanationLabel()
@@ -42,7 +40,6 @@ class TutorialStep2ViewController: TutorialStepViewController {
         adjustConstraintsIfNeeded()
     }
 }
-
 
 // MARK: - Private - Setup View
 

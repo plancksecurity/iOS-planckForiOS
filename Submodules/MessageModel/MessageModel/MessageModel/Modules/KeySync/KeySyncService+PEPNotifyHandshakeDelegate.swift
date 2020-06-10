@@ -120,10 +120,12 @@ extension KeySyncService {
     /// Marks all yet undecryptable messages to retry decryption.
     /// Use after we got new keys.
     private func tryRedecryptYetUndecryptableMessages() {
-        let moc = Stack.shared.newPrivateConcurrentContext
-        moc.performAndWait {
-            CdMessage.markAllUndecryptableMessagesForRetryDecrypt(context: moc)
-            moc.saveAndLogErrors()
+        DispatchQueue.global(qos: .userInitiated).async {
+            let moc = Stack.shared.newPrivateConcurrentContext
+            moc.performAndWait {
+                CdMessage.markAllUndecryptableMessagesForRetryDecrypt(context: moc)
+                moc.saveAndLogErrors()
+            }
         }
     }
 }
