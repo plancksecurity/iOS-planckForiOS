@@ -11,7 +11,7 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-final class AccountSettingsViewController : BaseViewController {
+final class AccountSettingsViewController: BaseViewController {
     @IBOutlet private var tableView: UITableView!
 
     // MARK: - Variables
@@ -54,7 +54,7 @@ final class AccountSettingsViewController : BaseViewController {
                 return
             }
             editableAccountSettingsViewController.appConfig = appConfig
-            editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account)
+            editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account, editableAccountSettingsDelegate: self)
         default:
             break
         }
@@ -357,5 +357,14 @@ extension AccountSettingsViewController: AccountSettingsSwitchTableViewCellDeleg
         if rowType == .pepSync {
             vm.pEpSync(enable: newValue)
         }
+    }
+}
+
+extension AccountSettingsViewController: EditableAccountSettingsDelegate {
+    func didChange() {
+        let account = Account.all().filter { $0 == self.viewModel?.account }
+        print(account)
+//        self.viewModel = AccountSettingsViewModel(account: account)
+//        tableView.reloadData()
     }
 }

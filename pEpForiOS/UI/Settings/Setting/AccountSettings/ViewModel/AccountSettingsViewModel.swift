@@ -340,14 +340,9 @@ extension AccountSettingsViewModel {
             rows.append(nameRow)
 
             // email
-            guard let mail = account.user.userName else {
-                Log.shared.errorAndCrash("Name not found")
-                return rows
-            }
-
             let emailRow = DisplayRow(type: .email,
                                       title: rowTitle(for: .email),
-                                      text: mail,
+                                      text: account.user.address,
                                       cellIdentifier: CellsIdentifiers.displayCell)
             rows.append(emailRow)
 
