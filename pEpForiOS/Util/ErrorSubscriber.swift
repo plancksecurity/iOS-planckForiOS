@@ -15,17 +15,12 @@ public class ErrorSubscriber {
             switch smtpError {
             case .authenticationFailed( _, let account):
                 return accountErrorShouldBeShown(account: account, serverType: .smtp)
-            case .illegalState(_):
-                break
-            case .connectionLost(_):
-                break
-            case .connectionTerminated(_):
-                break
-            case .connectionTimedOut(_):
-                break
-            case .badResponse(_):
-                break
-            case .clientCertificateNotAccepted:
+            case .illegalState(_),
+                 .connectionLost(_),
+                 .connectionTerminated(_),
+                 .connectionTimedOut(_),
+                 .badResponse(_),
+                 .clientCertificateNotAccepted:
                 break
             }
         } else if let imapError = error as? ImapSyncOperationError {
