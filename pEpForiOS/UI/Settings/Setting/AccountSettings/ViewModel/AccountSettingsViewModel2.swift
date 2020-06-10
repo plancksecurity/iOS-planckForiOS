@@ -81,7 +81,6 @@ extension AccountSettingsViewModel2 {
         case tranportSecurity
         case username
         case oauth2Reauth
-        case certificate
     }
 
     /// Identifies the section in the table view.
@@ -321,9 +320,6 @@ extension AccountSettingsViewModel2 {
             return NSLocalizedString("Username", comment: "\(type.rawValue) field")
         case .oauth2Reauth:
             return NSLocalizedString("OAuth2 Reauthorization", comment: "\(type.rawValue) field")
-        case .certificate:
-            fatalError("Implement me!")
-            return NSLocalizedString("Username", comment: "\(type.rawValue) field")
         }
     }
 

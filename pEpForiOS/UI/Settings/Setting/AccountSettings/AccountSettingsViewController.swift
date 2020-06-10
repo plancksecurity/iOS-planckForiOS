@@ -82,9 +82,7 @@ extension AccountSettingsViewController : UITableViewDelegate {
             cell.activityIndicator.startAnimating()
             handleOauth2Reauth()
         }
-        if row.type == .certificate {
-            handleCertificate()
-        }
+
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -114,7 +112,6 @@ extension AccountSettingsViewController : UITableViewDataSource {
             Log.shared.errorAndCrash("Without VM there is no table view.")
             return UITableViewCell()
         }
-
         let row = vm.sections[indexPath.section].rows[indexPath.row]
         switch row.type {
         case .password:
@@ -180,11 +177,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
 
             dequeuedCell.configure(with: row)
             return dequeuedCell
-        case .certificate:
-            fatalError("Implement me!")
         }
-        Log.shared.errorAndCrash(message: "We should never return an empty UITableViewCell.")
-        return UITableViewCell()
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -279,8 +272,6 @@ extension AccountSettingsViewController {
             return
         }
 
-//        oauth2ActivityIndicator.startAnimating()
-
         // don't accept errors form other places
         shouldHandleErrors = false
 
@@ -364,7 +355,6 @@ extension AccountSettingsViewController: OAuthAuthorizerDelegate {
             return
         }
         cell.activityIndicator.stopAnimating()
-
         shouldHandleErrors = true
 
         if let error = oauth2Error {
