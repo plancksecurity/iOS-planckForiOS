@@ -9,6 +9,13 @@
 import Foundation
 
 extension String {
+
+
+    /// Removes fixed font size and replace to relative font size
+    ///
+    /// This function only changes the font size between <style> </style> tags.
+    /// The rest of HTML is ignored.
+    /// - Returns: HTML string with relative font size (+1, +2, -1)
     public func fixedFontSizeRemover() -> String {
 
         guard let startIndex = self.range(of: "<style"),
@@ -20,14 +27,14 @@ extension String {
 
         let styleTagsRange = startIndex.lowerBound...endIndex.upperBound
         let styleTags = String(self[styleTagsRange])
-        let components = styleTags.components(separatedBy: ";")
+        let attributes = styleTags.components(separatedBy: ";")
 
-        var replaceTo = ""
+        var htmlWithRelativeFontSize = ""
 
-        for c in components {
-            var line = c
+        for partOfAttributes in attributes {
+            var line = partOfAttributes
 
-            for match in c.find(pattern: "font(.*):(.*?)px") {
+            for match in partOfAttributes.find(pattern: "font(.*):(.*?)px") {
                 if let newFontSize = removeOrReplaceFixedFont(fontSize: match) {
                     line = line
                         .replacingOccurrences(of: match,
@@ -39,16 +46,17 @@ extension String {
                                               with: "")
                 }
             }
-            replaceTo = replaceTo + line + ";"
+            htmlWithRelativeFontSize = htmlWithRelativeFontSize + line + ";"
         }
 
-        replaceTo.removeLast()
+        htmlWithRelativeFontSize.removeLast()
 
-        var newString = self
-        newString.removeSubrange(styleTagsRange)
-        newString.insert(contentsOf: replaceTo, at: startIndex.lowerBound)
+        var completeHtmlStringAfterConversion = self
+        completeHtmlStringAfterConversion.removeSubrange(styleTagsRange)
+        completeHtmlStringAfterConversion.insert(contentsOf: htmlWithRelativeFontSize,
+                                                 at: startIndex.lowerBound)
 
-        return newString
+        return completeHtmlStringAfterConversion
     }
 
     private func removeOrReplaceFixedFont(fontSize: String) -> String? {
@@ -64,27 +72,27 @@ extension String {
         let firstSegment = fontSize[fontSize.startIndex...spaceIndex]
         let size = String(fontSize[spaceIndex..<dotSeparator])
 
-        var newSize: String?
+        var relativeFontSize: String?
 
         if let number = Int(size.trimmingCharacters(in: .whitespacesAndNewlines)) {
             switch number {
             case 0..<13:
-                newSize = firstSegment + "-2"
+                relativeFontSize = firstSegment + "-2"
             case 13...16:
-                newSize = firstSegment + "-1"
+                relativeFontSize = firstSegment + "-1"
             case 14...17:
-                newSize = nil
+                relativeFontSize = nil
             case 18...21:
-                newSize = firstSegment + "+1"
+                relativeFontSize = firstSegment + "+1"
             case 22...25:
-                newSize = firstSegment + "+2"
+                relativeFontSize = firstSegment + "+2"
             case 26...38:
-                newSize = firstSegment + "+3"
+                relativeFontSize = firstSegment + "+3"
             default:
-                newSize = nil
+                relativeFontSize = nil
             }
         }
 
-        return newSize
+        return relativeFontSize
     }
 }
