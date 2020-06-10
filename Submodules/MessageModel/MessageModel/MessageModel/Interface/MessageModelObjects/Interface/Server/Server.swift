@@ -208,6 +208,6 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
             Log.shared.errorAndCrash("Server not found")
             return nil
         }
-        return cdServer.server()
+        return MessageModelObjectUtils.getServer(fromCdObject: cdServer)
     }
 }
