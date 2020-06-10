@@ -78,15 +78,15 @@ extension String {
             switch number {
             case 0..<13:
                 relativeFontSize = firstSegment + "-2"
-            case 13...16:
+            case 13...14:
                 relativeFontSize = firstSegment + "-1"
-            case 14...17:
+            case 15...17:
                 relativeFontSize = nil
             case 18...21:
                 relativeFontSize = firstSegment + "+1"
             case 22...25:
                 relativeFontSize = firstSegment + "+2"
-            case 26...38:
+            case 26...80:
                 relativeFontSize = firstSegment + "+3"
             default:
                 relativeFontSize = nil
