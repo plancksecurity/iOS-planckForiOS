@@ -106,7 +106,7 @@ class ImapReplicationService: OperationBasedService {
                 createes.append(moveToFolderOp)
             }
 
-            let folderInfos = me.determineInterestingFolders(for: cdAccount) //BUFF: move own util?
+            let folderInfos = me.determineInterestingFolders(for: cdAccount)
 
             // Server-to-client synchronization (IMAP)
             // fetch new messages
@@ -141,7 +141,6 @@ class ImapReplicationService: OperationBasedService {
                 willIdle = true
             }
             if !willIdle {
-                //            else if !imapConnection.supportsIdle { //BUFF:
                 createes.append(me.pollingPausingOp(errorContainer: me.errorPropagator))
             }
             createes.append(me.errorHandlerOp())
@@ -189,9 +188,6 @@ extension ImapReplicationService {
         }
         return pauseOp
     }
-
-    //BUFF:  Must be moved to use in OPs?
-    //BUFF: when IDLE is in, make all important folders interesting
 
     /// Folders (other than inbox) that the user looked at in the last
     /// `timeIntervalForInterestingFolders` are considered sync-worthy.

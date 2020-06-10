@@ -54,7 +54,7 @@ class ImapIdleOperation: ImapSyncOperation {
         }
     }
 
-    func stopIdling() { //BUFF:
+    func stopIdling() {
         if imapConnection.isIdling {
             sendDone()
         } else {
@@ -63,7 +63,7 @@ class ImapIdleOperation: ImapSyncOperation {
     }
 
     override func main() {
-        if !checkImapSync() {
+        if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
         }
@@ -136,88 +136,45 @@ class ImapIdleDelegate: DefaultImapConnectionDelegate {
         imapIdleOp()?.handleError()
     }
 
-//    public override func authenticationFailed(_ sync: ImapSync, notification: Notification?) {
-//        errorHandler?.handle(error: ImapSyncError.illegalState(#function))
-//        imapIdleOp()?.handleError()
-//    }
-
     override func connectionLost(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
         imapIdleOp()?.handleError()
     }
-
-//    public override func connectionLost(_ sync: ImapSync, notification: Notification?) {
-//        imapIdleOp()?.handleError()
-//    }
 
     override func connectionTerminated(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
         imapIdleOp()?.handleError()
     }
 
-//    public override func connectionTerminated(_ sync: ImapSync, notification: Notification?) {
-//        imapIdleOp()?.handleError()
-//    }
-
     override func connectionTimedOut(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
         imapIdleOp()?.handleError()
     }
-
-//    public override func connectionTimedOut(_ sync: ImapSync, notification: Notification?) {
-//        imapIdleOp()?.handleError()
-//    }
 
     override func badResponse(_ imapConection: ImapConnectionProtocol, response: String?) {
         imapIdleOp()?.handleError()
     }
 
-//    public override func badResponse(_ sync: ImapSync, response: String?) {
-//        imapIdleOp()?.handleError()
-//    }
-
     override func actionFailed(_ imapConection: ImapConnectionProtocol, response: String?) {
-        imapIdleOp()?.handleError() //BUFF: double check all error handling. We do not want to inform the user if idle fails but keep on replicating
+        imapIdleOp()?.handleError()
     }
-
-//    public override func actionFailed(_ sync: ImapSync, response: String?) {
-//        imapIdleOp()?.handleError()
-//    }
 
     override func idleEntered(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
         Log.shared.info("IDLE mode entered")
         // Do nothing, keep idleing
     }
 
-//    override func idleEntered(_ sync: ImapSync, notification: Notification?) {
-//        // Do nothing, keep idleing
-//    }
-
     override func idleNewMessages(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
         imapIdleOp()?.handleIdleNewMessages()
     }
-    
-//    override func idleNewMessages(_ sync: ImapSync, notification: Notification?) {
-//        imapIdleOp()?.handleIdleNewMessages()
-//    }
 
     override func idleFinished(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
         Log.shared.info("IDLE mode finished")
         imapIdleOp()?.handleIdleFinished()
     }
-    
-//    override func idleFinished(_ sync: ImapSync, notification: Notification?) {
-//        imapIdleOp()?.handleIdleFinished()
-//    }
 
     /// We did stop ideling by sending DONE, so the server returns the actual changes.
     /// We are currently ignoring those reports and signal to our client that ideling finished.
     override func messageChanged(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
-        imapIdleOp()?.handleIdleFinished() //BUFF: read RFC. What do we get here?
+        imapIdleOp()?.handleIdleFinished()
     }
-
-//    /// We did stop ideling by sending DONE, so the server returns the actual changes.
-//    /// We are currently ignoring those reports and signal to our client that ideling finished.
-//    override func messageChanged(_ sync: ImapSync, notification: Notification?) {
-//        imapIdleOp()?.handleIdleFinished()
-//    }
 
     // MARK: - Helper 
 

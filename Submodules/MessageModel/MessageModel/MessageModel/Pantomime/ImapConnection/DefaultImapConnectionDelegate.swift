@@ -190,6 +190,7 @@ class DefaultImapConnectionDelegate: ImapConnectionDelegate {
     }
 
     func idleFinished(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
+        // I consider it OK to ignore this in all OPs but IDLE-OP. Comment in in case of problems.
 //        forceErrorDelegate().handle(error: ImapSyncOperationError.illegalState(#function)) //BUFF:
         Log.shared.info("DefaultImapConnectionDelegate: unhandled call to idleFinished")
     }

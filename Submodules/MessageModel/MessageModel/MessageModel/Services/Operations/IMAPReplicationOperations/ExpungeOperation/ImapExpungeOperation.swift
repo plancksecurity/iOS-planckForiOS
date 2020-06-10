@@ -26,7 +26,7 @@ class ImapExpungeOperation: ImapSyncOperation {
     }
 
     public override func main() {
-        if !checkImapSync() || isCancelled {
+        if !checkImapConnection() || isCancelled {
             waitForBackgroundTasksAndFinish()
             return
         }
