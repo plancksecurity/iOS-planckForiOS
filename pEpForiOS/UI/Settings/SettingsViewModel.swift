@@ -139,36 +139,20 @@ extension SettingsViewModel {
 
     /// This method generates all the sections for the settings view.
     private func generateSections() {
-        items.append(Section(title: sectionTitle(type: .accounts),
-                             footer: sectionFooter(type: .accounts),
-                             rows: generateRows(type: .accounts),
-                             type: .accounts))
-        
-        items.append(Section(title: sectionTitle(type: .globalSettings),
-                             footer: sectionFooter(type: .globalSettings),
-                             rows: generateRows(type: .globalSettings),
-                             type: .globalSettings))
+        let sections: [SectionType] = [.accounts, .globalSettings, .pEpSync,
+                                        .companyFeatures, .tutorial, .contacts]
+        sections.forEach { (type) in
+            generateSection(type: type)
+        }
+    }
 
-        items.append(Section(title: sectionTitle(type: .tutorial),
-                             footer: sectionFooter(type: .tutorial),
-                             rows: generateRows(type: .tutorial),
-                             type: .tutorial))
-
-
-        items.append(Section(title: sectionTitle(type: .pEpSync),
-                             footer: sectionFooter(type: .pEpSync),
-                             rows: generateRows(type: .pEpSync),
-                             type: .pEpSync))
-        
-        items.append(Section(title: sectionTitle(type: .contacts),
-                             footer: sectionFooter(type: .contacts),
-                             rows: generateRows(type: .contacts),
-                             type: .contacts))
-        
-        items.append(Section(title: sectionTitle(type: .companyFeatures),
-                             footer: sectionFooter(type: .companyFeatures),
-                             rows: generateRows(type: .companyFeatures),
-                             type: .companyFeatures))
+    /// This method generates the section passed by parameter
+    /// - Parameter type: The type of section to generate.
+    private func generateSection(type : SectionType) {
+        items.append(Section(title: sectionTitle(type: type),
+                             footer: sectionFooter(type: type),
+                             rows: generateRows(type: type),
+                             type: type))
     }
 
     /// This method generates all the rows for the section type passed
