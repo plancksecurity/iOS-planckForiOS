@@ -23,10 +23,6 @@ class ImapIdleOperation: ImapSyncOperation {
     /// Monitiors all messages of the 
     private var frc: NSFetchedResultsController<CdMessage> = NSFetchedResultsController() // Dummy FRC to be able to initialize in init(). Do NOT use this.
 
-    //    var syncDelegate: ImapIdleDelegate?
-    var changedMessageIDs = [NSManagedObjectID]()
-    //    weak var delegate: ImapIdleOperationDelegate?
-
     override init(parentName: String = #function,
                   context: NSManagedObjectContext? = nil,
                   errorContainer: ErrorContainerProtocol = ErrorPropagator(),
