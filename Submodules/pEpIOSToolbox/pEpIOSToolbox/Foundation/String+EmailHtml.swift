@@ -10,7 +10,6 @@ import Foundation
 
 extension String {
 
-
     /// Removes fixed font size and replace to relative font size
     ///
     /// This function only changes the font size between <style> </style> tags.

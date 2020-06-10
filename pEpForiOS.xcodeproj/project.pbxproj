@@ -226,8 +226,7 @@
 		3A2119DF2412515D0030C3E4 /* DynamicHeightScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2119DE2412515D0030C3E4 /* DynamicHeightScrollView.swift */; };
 		3A2119E1241251A80030C3E4 /* ClientCertificateManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2119E0241251A70030C3E4 /* ClientCertificateManagementTableViewCell.swift */; };
 		3A2119E424125AC60030C3E4 /* Certificates.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A2119E624125AC60030C3E4 /* Certificates.storyboard */; };
-		3A48CAA724893D6D007C9EB1 /* String+HtmlTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A48CAA624893D6C007C9EB1 /* String+HtmlTest.swift */; };
-		3A48CAAC24897B56007C9EB1 /* String+EmailHtml.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A48CAAA248978CC007C9EB1 /* String+EmailHtml.swift */; };
+		3A7400BC249135F200AE6A79 /* AttributedString+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7400BB249135F200AE6A79 /* AttributedString+HTML.swift */; };
 		3A796BA9242CC26100083BB5 /* HtmlConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BA8242CC26100083BB5 /* HtmlConversions.swift */; };
 		3A796BAB242CC31F00083BB5 /* NSAttributedString+Html.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */; };
 		3A796BAD242E5CFC00083BB5 /* String+NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BAC242E5CFC00083BB5 /* String+NSAttributedString.swift */; };
@@ -782,8 +781,7 @@
 		3A2119F024125AD60030C3E4 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Certificates.strings; sourceTree = "<group>"; };
 		3A2119F224125AD70030C3E4 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Certificates.strings; sourceTree = "<group>"; };
 		3A2119F424125AD80030C3E4 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Certificates.strings; sourceTree = "<group>"; };
-		3A48CAA624893D6C007C9EB1 /* String+HtmlTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+HtmlTest.swift"; sourceTree = "<group>"; };
-		3A48CAAA248978CC007C9EB1 /* String+EmailHtml.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+EmailHtml.swift"; sourceTree = "<group>"; };
+		3A7400BB249135F200AE6A79 /* AttributedString+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttributedString+HTML.swift"; sourceTree = "<group>"; };
 		3A796BA8242CC26100083BB5 /* HtmlConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlConversions.swift; sourceTree = "<group>"; };
 		3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Html.swift"; sourceTree = "<group>"; };
 		3A796BAC242E5CFC00083BB5 /* String+NSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+NSAttributedString.swift"; sourceTree = "<group>"; };
@@ -1519,6 +1517,7 @@
 			children = (
 				4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */,
 				1574D07C2114696B00FEDC93 /* URL+MailToTest.swift */,
+				3A7400BB249135F200AE6A79 /* AttributedString+HTML.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2092,7 +2091,6 @@
 				B79288992302D3DE00D2C68B /* Array+Extension.swift */,
 				3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */,
 				3A796BAC242E5CFC00083BB5 /* String+NSAttributedString.swift */,
-				3A48CAAA248978CC007C9EB1 /* String+EmailHtml.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2173,7 +2171,6 @@
 				150707DD21006D0200AA213F /* UI */,
 				151F7202202A06D30057C74D /* Util */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
-				3A48CAA624893D6C007C9EB1 /* String+HtmlTest.swift */,
 				438D253B1D4B9E7500BFF7AA /* MimeTests.swift */,
 				43C7B9D01CEC4DDF007A612F /* MiscTests.swift */,
 				430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */,
@@ -3118,7 +3115,6 @@
 				5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */,
 				15874BC12127493E00A3A4A6 /* SettingSwitchTableViewCell.swift in Sources */,
 				152A39E721905C3E00D9F8E4 /* RecipientTextViewModel.swift in Sources */,
-				3A48CAAC24897B56007C9EB1 /* String+EmailHtml.swift in Sources */,
 				4351C2D41F4441190053381F /* iterator.c in Sources */,
 				43AA825B1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift in Sources */,
 				5B3C13BF23D8AF2E00FC0A53 /* SettingsTableViewController.swift in Sources */,
@@ -3396,7 +3392,7 @@
 				43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */,
 				B78602B12412B6380027132B /* AccountTypeSelectorTest.swift in Sources */,
 				375643502371BC4600FB354D /* EditableAccountSettingsTableViewModelTest.swift in Sources */,
-				3A48CAA724893D6D007C9EB1 /* String+HtmlTest.swift in Sources */,
+				3A7400BC249135F200AE6A79 /* AttributedString+HTML.swift in Sources */,
 				5BC14AC923E47A55005F0AF3 /* TrustManagementViewModelTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

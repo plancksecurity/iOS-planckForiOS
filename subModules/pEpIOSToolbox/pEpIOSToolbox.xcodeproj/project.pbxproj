@@ -25,6 +25,8 @@
 		3790456A223FA52B006DAB3B /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904568223FA52B006DAB3B /* ReachabilityTests.swift */; };
 		37954C6E227C90C10099B8D8 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37954C6D227C90C10099B8D8 /* Log.swift */; };
 		3A0CBAAB23F582B900AE200C /* UITextView+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0CBAAA23F582B900AE200C /* UITextView+Font.swift */; };
+		3AD98EA1249128B00059FA59 /* String+EmailHtml.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD98EA0249128B00059FA59 /* String+EmailHtml.swift */; };
+		3AD98EA324912D670059FA59 /* String+HtmlTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD98EA224912D670059FA59 /* String+HtmlTest.swift */; };
 		431E68AC246C00F200B3A977 /* DocumentsDirectoryBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68AB246C00F200B3A977 /* DocumentsDirectoryBrowser.swift */; };
 		431E68B0246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68AF246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift */; };
 		43BE66D2246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */; };
@@ -90,6 +92,8 @@
 		37904568223FA52B006DAB3B /* ReachabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityTests.swift; sourceTree = "<group>"; };
 		37954C6D227C90C10099B8D8 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		3A0CBAAA23F582B900AE200C /* UITextView+Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UITextView+Font.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/UIKit/UITextView+Font.swift"; sourceTree = "<group>"; };
+		3AD98EA0249128B00059FA59 /* String+EmailHtml.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+EmailHtml.swift"; sourceTree = "<group>"; };
+		3AD98EA224912D670059FA59 /* String+HtmlTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+HtmlTest.swift"; sourceTree = "<group>"; };
 		431E68AB246C00F200B3A977 /* DocumentsDirectoryBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsDirectoryBrowser.swift; sourceTree = "<group>"; };
 		431E68AF246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DocumentsDirectoryBrowserTest.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Other/DocumentsDirectoryBrowserTest.swift; sourceTree = "<group>"; };
 		43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsDirectoryBrowserProtocol.swift; sourceTree = "<group>"; };
@@ -151,6 +155,7 @@
 		15175ED8221E9F3800C91DB8 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				3AD98EA224912D670059FA59 /* String+HtmlTest.swift */,
 				B7371AA0230175B7007B37A3 /* String+ExtensionsTest.swift */,
 				1522956523044FD000204FD3 /* String+FPRTest.swift */,
 			);
@@ -229,6 +234,7 @@
 				5B2F7E60240D0EA8004DDFA2 /* RangeExpression+Extension.swift */,
 				5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */,
 				B7A46C57220DA6190027CCB5 /* String+Email.swift */,
+				3AD98EA0249128B00059FA59 /* String+EmailHtml.swift */,
 				B7A46C55220DA5EA0027CCB5 /* Substring+Email.swift */,
 				B7A46C61220DCEA80027CCB5 /* NSAttributedString+Parsing.swift */,
 				B7936E3C220DD8F5003B39E6 /* NSAttributedString+Extensions.swift */,
@@ -462,6 +468,7 @@
 				B7A46C58220DA6190027CCB5 /* String+Email.swift in Sources */,
 				37904565223FA486006DAB3B /* ReachabilityProtocol.swift in Sources */,
 				37954C6E227C90C10099B8D8 /* Log.swift in Sources */,
+				3AD98EA1249128B00059FA59 /* String+EmailHtml.swift in Sources */,
 				B7A46C62220DCEA80027CCB5 /* NSAttributedString+Parsing.swift in Sources */,
 				1505C5152316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift in Sources */,
 				B7465DE72211E969008A1708 /* CGRect+Util.swift in Sources */,
@@ -513,6 +520,7 @@
 				B7371AA1230175B7007B37A3 /* String+ExtensionsTest.swift in Sources */,
 				1522956623044FD000204FD3 /* String+FPRTest.swift in Sources */,
 				431E68B0246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift in Sources */,
+				3AD98EA324912D670059FA59 /* String+HtmlTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -661,7 +669,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = pEpIOSToolbox/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -687,7 +695,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = pEpIOSToolbox/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -707,7 +715,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				INFOPLIST_FILE = pEpIOSToolboxTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -726,7 +734,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				INFOPLIST_FILE = pEpIOSToolboxTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
