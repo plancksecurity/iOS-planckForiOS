@@ -202,11 +202,18 @@ extension AccountSettingsViewController : UITableViewDataSource {
 
 //MARK : - ViewModel Delegate
 
-extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
+extension AccountSettingsViewController : AccountSettingsViewModel2Delegate {
+    func setLoadingView(visible: Bool) {
+        DispatchQueue.main.async {
+            if visible {
+                LoadingInterface.showLoadingInterface()
+            } else {
+                LoadingInterface.removeLoadingInterface()
+            }
+        }
+    }
 
-    /// Shows an alert if an error happens
-    /// - Parameter error: The error
-    func showErrorAlert(error: Error) {
+    func showAlert(error: Error) {
         Log.shared.error("%@", "\(error)")
         UIUtils.show(error: error)
     }
@@ -224,20 +231,6 @@ extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
             }
             vm.pEpSync(enable: !vm.pEpSync)
             me.tableView.reloadData()
-        }
-    }
-
-    /// Show loading.
-    func showLoadingView() {
-        DispatchQueue.main.async {
-            LoadingInterface.showLoadingInterface()
-        }
-    }
-
-    /// Hide loading.
-    func hideLoadingView() {
-        DispatchQueue.main.async {
-            LoadingInterface.removeLoadingInterface()
         }
     }
 }
@@ -358,11 +351,11 @@ extension AccountSettingsViewController: OAuthAuthorizerDelegate {
         shouldHandleErrors = true
 
         if let error = oauth2Error {
-            showErrorAlert(error: error)
+            showAlert(error: error)
             return
         }
         guard let token = accessToken else {
-            showErrorAlert(error: OAuthAuthorizerError.noToken)
+            showAlert(error: OAuthAuthorizerError.noToken)
             return
         }
         viewModel?.updateToken(accessToken: token)
