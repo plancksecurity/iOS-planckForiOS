@@ -9,7 +9,6 @@
 import XCTest
 @testable import pEpIOSToolbox
 
-
 class ReachabilityTests: XCTestCase {
     
     private var yesReachability: Reachability?
