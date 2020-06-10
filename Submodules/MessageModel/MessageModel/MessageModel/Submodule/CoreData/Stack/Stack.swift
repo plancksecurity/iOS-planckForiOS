@@ -62,7 +62,7 @@ class Stack {
         defer { objc_sync_exit(self) }
 
         let createe = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        createe.parent = changePropagatorContext
+        createe.parent = mainContext
         createe.name = "privateQueueConcurrent context created on \(Date())"
         createe.automaticallyMergesChangesFromParent = true
         createe.undoManager = nil
