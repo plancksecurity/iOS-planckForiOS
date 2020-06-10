@@ -17,7 +17,7 @@ class TutorialStep1ViewController: TutorialStepViewController {
     @IBOutlet private weak var mistrustedDescription: UILabel!
     
     // We manipulate constraints to support iPad orientations as this inherits from CustomTraitCollectionViewController,
-    @IBOutlet weak var centerY: NSLayoutConstraint!
+//    @IBOutlet weak var centerY: NSLayoutConstraint!
     
     public override func configureView() {
         setupSecureLabel()
