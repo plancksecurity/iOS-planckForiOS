@@ -204,10 +204,10 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
     
     public static func by(account: Account, serverType: ServerType) -> Server? {
         let cdAccount = account.cdObject
-        guard var cdServer = cdAccount.server(type: serverType) else {
+        guard let cdServer = cdAccount.server(type: serverType) else {
+            Log.shared.errorAndCrash("Server not found")
             return nil
         }
-        
         return cdServer.server()
     }
 }

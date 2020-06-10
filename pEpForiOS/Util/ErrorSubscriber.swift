@@ -10,7 +10,7 @@ import Foundation
 import MessageModel
 
 public class ErrorSubscriber {
-    public func errorShouldBeDisplayed(error: Error) -> Bool{
+    private func errorShouldBeDisplayed(error: Error) -> Bool{
         if let smtpError = error as? SmtpSendError {
             switch smtpError {
             case .authenticationFailed( _, let account):
@@ -32,21 +32,14 @@ public class ErrorSubscriber {
             switch imapError {
             case .authenticationFailed(_, let account):
                 return accountErrorShouldBeShown(account: account, serverType: .imap)
-            case .illegalState(_):
-                break
-            case .connectionLost(_):
-                break
-            case .connectionTerminated(_):
-                break
-            case .connectionTimedOut(_):
-                break
-            case .folderAppendFailed:
-                break
-            case .badResponse(_):
-                break
-            case .actionFailed:
-                break
-            case .clientCertificateNotAccepted:
+            case .illegalState(_),
+                 .connectionLost(_),
+                 .connectionTerminated(_),
+                 .connectionTimedOut(_),
+                 .folderAppendFailed,
+                 .badResponse(_),
+                 .actionFailed,
+                 .clientCertificateNotAccepted:
                 break
             }
         }
