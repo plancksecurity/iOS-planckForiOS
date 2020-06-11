@@ -942,10 +942,10 @@
 		5BC4E600240FF155008C01ED /* TutorialStep1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep1ViewController.swift; sourceTree = "<group>"; };
 		5BC4E60624113659008C01ED /* TutorialStep2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep2ViewController.swift; sourceTree = "<group>"; };
 		5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsViewController.swift; path = Setting/AccountSettings/AccountSettingsViewController.swift; sourceTree = "<group>"; };
-		5BE35A9B24913A1700AC605C /* AccountSettingsOAuthTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsOAuthTableViewCell.swift; path = Setting/AccountSettings/Cells/AccountSettingsOAuthTableViewCell.swift; sourceTree = "<group>"; };
-		5BE35A9C24913A1800AC605C /* AccountSettingsDangerousTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsDangerousTableViewCell.swift; path = Setting/AccountSettings/Cells/AccountSettingsDangerousTableViewCell.swift; sourceTree = "<group>"; };
-		5BE35A9D24913A1800AC605C /* AccountSettingsKeyValueTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsKeyValueTableViewCell.swift; path = Setting/AccountSettings/Cells/AccountSettingsKeyValueTableViewCell.swift; sourceTree = "<group>"; };
-		5BE35AA124913A1F00AC605C /* AccountSettingsSwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsSwitchTableViewCell.swift; path = Setting/AccountSettings/Cells/AccountSettingsSwitchTableViewCell.swift; sourceTree = "<group>"; };
+		5BE35A9B24913A1700AC605C /* AccountSettingsOAuthTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsOAuthTableViewCell.swift; sourceTree = "<group>"; };
+		5BE35A9C24913A1800AC605C /* AccountSettingsDangerousTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsDangerousTableViewCell.swift; sourceTree = "<group>"; };
+		5BE35A9D24913A1800AC605C /* AccountSettingsKeyValueTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsKeyValueTableViewCell.swift; sourceTree = "<group>"; };
+		5BE35AA124913A1F00AC605C /* AccountSettingsSwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsSwitchTableViewCell.swift; sourceTree = "<group>"; };
 		5BE35AA324913B4700AC605C /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		5BF449F3240827F500B23E50 /* TutorialStep0ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep0ViewController.swift; sourceTree = "<group>"; };
 		5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementResetTableViewCell.swift; sourceTree = "<group>"; };
@@ -1465,14 +1465,10 @@
 		15874BA72127493E00A3A4A6 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				5BE35AA124913A1F00AC605C /* AccountSettingsSwitchTableViewCell.swift */,
-				5BE35A9C24913A1800AC605C /* AccountSettingsDangerousTableViewCell.swift */,
-				5BE35A9D24913A1800AC605C /* AccountSettingsKeyValueTableViewCell.swift */,
-				5BE35A9B24913A1700AC605C /* AccountSettingsOAuthTableViewCell.swift */,
+				5BE35AA5249219AD00AC605C /* Cells */,
 				5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */,
 				5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */,
 				5BE35AA324913B4700AC605C /* SettingsViewModel.swift */,
-				15874BA82127493E00A3A4A6 /* SettingSwitchTableViewCell.swift */,
 				1521B78C241BDAD3000EAE57 /* UIUtils+Settings.swift */,
 				15874BAF2127493E00A3A4A6 /* Setting */,
 			);
@@ -2362,6 +2358,18 @@
 				151C67FC2418158B00481F75 /* SFUIText-Semibold.ttf */,
 			);
 			path = SF;
+			sourceTree = "<group>";
+		};
+		5BE35AA5249219AD00AC605C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				15874BA82127493E00A3A4A6 /* SettingSwitchTableViewCell.swift */,
+				5BE35AA124913A1F00AC605C /* AccountSettingsSwitchTableViewCell.swift */,
+				5BE35A9C24913A1800AC605C /* AccountSettingsDangerousTableViewCell.swift */,
+				5BE35A9D24913A1800AC605C /* AccountSettingsKeyValueTableViewCell.swift */,
+				5BE35A9B24913A1700AC605C /* AccountSettingsOAuthTableViewCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		B706C0EF1EA8C378006B2F6C /* StoryboardFiles */ = {
