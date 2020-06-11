@@ -383,6 +383,7 @@
 		B72C7BAA2395182F0013B12E /* AccountTypeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72C7BA92395182F0013B12E /* AccountTypeSelectorViewController.swift */; };
 		B72C7BAC2395198D0013B12E /* AccountTypeSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72C7BAB2395198D0013B12E /* AccountTypeSelectorViewModel.swift */; };
 		B73123CA23D07739009EDC62 /* SettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73123C923D07739009EDC62 /* SettingsViewModelTest.swift */; };
+		B74F37C7249234BD0083501B /* UITableViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F37C6249234BD0083501B /* UITableViewController+Extension.swift */; };
 		B74F81021EB0E20000519FCC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F81011EB0E20000519FCC /* LoginViewModel.swift */; };
 		B756E57523ED99FA0007D535 /* AccountTypeSelectorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B756E57423ED99FA0007D535 /* AccountTypeSelectorCollectionViewCell.swift */; };
 		B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */; };
@@ -956,6 +957,7 @@
 		B72C7BA92395182F0013B12E /* AccountTypeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorViewController.swift; sourceTree = "<group>"; };
 		B72C7BAB2395198D0013B12E /* AccountTypeSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorViewModel.swift; sourceTree = "<group>"; };
 		B73123C923D07739009EDC62 /* SettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTest.swift; sourceTree = "<group>"; };
+		B74F37C6249234BD0083501B /* UITableViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewController+Extension.swift"; sourceTree = "<group>"; };
 		B74F81011EB0E20000519FCC /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B756E57423ED99FA0007D535 /* AccountTypeSelectorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorCollectionViewCell.swift; sourceTree = "<group>"; };
 		B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModel.swift; sourceTree = "<group>"; };
@@ -2497,6 +2499,14 @@
 			name = ViewModel;
 			sourceTree = "<group>";
 		};
+		B74F37C5249234A70083501B /* UITableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B74F37C6249234BD0083501B /* UITableViewController+Extension.swift */,
+			);
+			path = UITableViewController;
+			sourceTree = "<group>";
+		};
 		B76CF8B420D273A4002429A8 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -2535,6 +2545,7 @@
 		B7DB7FC22215C484003968DA /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B74F37C5249234A70083501B /* UITableViewController */,
 				B7DB7FDB221ADDBD003968DA /* UIImageView+Extension.swift */,
 				B7DB7FD9221ADDAF003968DA /* UIBarButtonItem+Extension.swift */,
 				B7DB7FD4221AD3BB003968DA /* UIButton+Extension.swift */,
@@ -2864,6 +2875,7 @@
 				220DCE351E0AB5CC002FE716 /* MessageContentCell.swift in Sources */,
 				158A56522403F05B003C0D7E /* ClientCertificateManagementViewModel.swift in Sources */,
 				1526597A21623652006A78DF /* SuggestViewModel.swift in Sources */,
+				B74F37C7249234BD0083501B /* UITableViewController+Extension.swift in Sources */,
 				4351C2D31F4441190053381F /* inlines.c in Sources */,
 				5B41C6082418F15100C268CE /* TutorialStep3ViewController.swift in Sources */,
 				220DCE361E0AB5CC002FE716 /* MessageSenderCell.swift in Sources */,
