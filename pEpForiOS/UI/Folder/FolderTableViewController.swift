@@ -11,6 +11,9 @@ import pEpIOSToolbox
 import MessageModel
 
 class FolderTableViewController: BaseTableViewController {
+
+    private var hiddenSections = Set<Int>()
+
     var folderVM: FolderViewModel?
     var showNext: Bool = true
 
@@ -112,18 +115,55 @@ class FolderTableViewController: BaseTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.hiddenSections.contains(section) {
+            return 0
+        }
+
         return folderVM?[section].count ?? 0
+    }
+
+    @objc
+    private func hideSection(sender: UIButton) {
+        let section = sender.tag
+        func indexPathsForSection() -> [IndexPath] {
+            var indexPaths = [IndexPath]()
+            let numberOfRows = folderVM?[section].count ?? 0
+            for row in 0 ..< numberOfRows {
+                let ip = IndexPath(row: row, section: section)
+                indexPaths.append(ip)
+            }
+            return indexPaths
+        }
+        if hiddenSections.contains(section) {
+            sender.imageView?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
+            hiddenSections.remove(section)
+            tableView.insertRows(at: indexPathsForSection(), with: .fade)
+        } else {
+            sender.imageView?.transform = .identity
+            hiddenSections.insert(section)
+            tableView.deleteRows(at: indexPathsForSection(), with: .top)
+        }
     }
 
     override func tableView(_ tableView: UITableView,
                             viewForHeaderInSection section: Int) -> UIView? {
-        let header :CollapsibleTableViewHeader?
+        let header: CollapsibleTableViewHeader?
         if let head = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header")
-            as? CollapsibleTableViewHeader{
+            as? CollapsibleTableViewHeader {
             header = head
         } else {
             header = CollapsibleTableViewHeader(reuseIdentifier: "header")
         }
+        header?.transparentButton.tag = section
+        header?.transparentButton.addTarget(self, action: #selector(hideSection(sender:)), for: .touchUpInside)
+//        let arrow = UIImage(named:"chevron-icon")
+        let arrow = UIImage(named:"compose")
+
+        header?.transparentButton.setImage(arrow, for: .normal)
+        header?.transparentButton.contentHorizontalAlignment = .trailing
+        header?.transparentButton.contentVerticalAlignment = .top
+        header?.transparentButton.imageView?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
+
         guard let vm = folderVM, let safeHeader = header else {
             Log.shared.errorAndCrash("No header or no model.")
             return header

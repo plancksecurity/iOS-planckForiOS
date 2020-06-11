@@ -15,7 +15,6 @@ protocol CollapsibleTableViewHeaderDelegate {
 
 class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     var section: Int = 0
-
     let topStackView = UIStackView()
     let labelStackView = UIStackView()
     let profileImage = UIImageView()
@@ -25,7 +24,11 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     let rightStackView = UIStackView()
     let arrowImageView = UIImageView()
     let arrowLabel = UILabel()
-    
+    lazy var transparentButton: UIButton = {
+        let button = UIButton()
+        return UIButton()
+    }()
+
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
 
@@ -58,10 +61,16 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         labelStackView.distribution = .fillEqually
         labelStackView.spacing = 5.0
         labelStackView.translatesAutoresizingMaskIntoConstraints = false
+
+        transparentButton.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(profileImage)
         contentView.addSubview(rightStackView)
         contentView.addSubview(labelStackView)
+        contentView.addSubview(transparentButton)
+
         contentView.backgroundColor = UIColor.white
+
+
         autolayout()
     }
 
@@ -107,6 +116,21 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
             metrics: nil,
             views: ["stackView" : rightStackView ]
         ))
+
+        contentView.addConstraints(NSLayoutConstraint.constraints(
+            withVisualFormat: "V:|-0-[button]-0-|",
+            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
+            metrics: nil,
+            views: ["button" : transparentButton ]
+        ))
+
+        contentView.addConstraints(NSLayoutConstraint.constraints(
+            withVisualFormat: "H:|-0-[button]-16-|",
+            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
+            metrics: nil,
+            views: ["button" : transparentButton ]
+        ))
+
     }
 
     override func layoutSubviews() {
