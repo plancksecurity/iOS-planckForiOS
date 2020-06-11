@@ -122,7 +122,7 @@ extension SettingsTableViewController {
             return prepareSwipeTableViewCell(dequeuedCell, for: row)
         case .resetAccounts, .resetTrust:
             return prepareActionCell(dequeuedCell, for: row)
-        case .defaultAccount, .pgpKeyImport, .credits, .trustedServer, .extraKeys:
+        case .defaultAccount, .pgpKeyImport, .credits, .trustedServer, .extraKeys, .tutorial:
             guard let row = row as? SettingsViewModel.NavigationRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -247,6 +247,10 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let identifier = segueIdentifier(for: indexPath)
         switch identifier {
+        case .tutorial:
+            TutorialWizardViewController.presentTutorialWizard(viewController: self)
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
         case .passiveMode, .pEpSync, .protectMessageSubject, .unsecureReplyWarningEnabled:
             return
         case .resetAccounts:
@@ -318,6 +322,7 @@ extension SettingsTableViewController {
         case pEpSync
         case resetAccounts
         case unsecureReplyWarningEnabled
+        case tutorial
     }
 
     /// Provides the segue identifier for the cell in the passed index path
@@ -350,6 +355,8 @@ extension SettingsTableViewController {
             return .resetAccounts
         case .unsecureReplyWarningEnabled:
             return .unsecureReplyWarningEnabled
+        case .tutorial:
+            return .tutorial
         }
     }
 
@@ -395,6 +402,8 @@ extension SettingsTableViewController {
              .resetAccounts,
              .unsecureReplyWarningEnabled:
             // It's all rows that never segue anywhere (e.g. SwitchRow).
+            break
+        case .tutorial:
             break
         }
     }
