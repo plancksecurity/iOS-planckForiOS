@@ -13,6 +13,11 @@ import CoreData
 
     // Commented as randomly failing. See IOS-1382.
 class MoveToFolderOperationTest: PersistentStoreDrivenTestBase {
+    func testCreateFolders() {
+        cdAccount.createRequiredFoldersAndWait(testCase: self)
+        moc.saveAndLogErrors()
+        checkFolders(cdAccount: cdAccount)
+    }
 
     // MARK: - Trash message
 
@@ -22,10 +27,7 @@ class MoveToFolderOperationTest: PersistentStoreDrivenTestBase {
         cdAccount.createRequiredFoldersAndWait(testCase: self)
         moc.saveAndLogErrors()
 
-        checkFolders(cdAccount: cdAccount)
-
         // the sender
-        /*
         let cdAccount2 = SecretTestData().createWorkingCdAccount(context: moc, number: 1)
         moc.saveAndLogErrors()
         cdAccount2.createRequiredFoldersAndWait(testCase: self)
@@ -45,7 +47,6 @@ class MoveToFolderOperationTest: PersistentStoreDrivenTestBase {
 
         // Assure deleted messages are in trash
         checkExistance(ofMessages: receivedMsgs, inFolderOfType: .trash, in: cdAccount, mustExist: true)
-         */
     }
 
     // MARK: - Move from inbox to different folder
