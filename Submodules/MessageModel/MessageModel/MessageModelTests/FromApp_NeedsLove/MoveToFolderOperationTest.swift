@@ -22,7 +22,7 @@ class MoveToFolderOperationTest: PersistentStoreDrivenTestBase {
         cdAccount.createRequiredFoldersAndWait(testCase: self)
         moc.saveAndLogErrors()
 
-        let msgsInFolderToTest = cdAccount.allMessages(inFolderOfType: .drafts)
+        checkFolders(cdAccount: cdAccount)
 
         // the sender
         /*
@@ -210,5 +210,14 @@ class MoveToFolderOperationTest: PersistentStoreDrivenTestBase {
         let result = messagesReceived.map { MessageModelObjectUtils.getMessage(fromCdMessage: $0) }
 
         return result
+    }
+
+    private func checkFolders(cdAccount: CdAccount) {
+        for ft in FolderType.requiredTypes {
+            guard let _ = CdFolder.by(folderType: ft, account: cdAccount, context: moc) else {
+                XCTFail()
+                return
+            }
+        }
     }
 }
