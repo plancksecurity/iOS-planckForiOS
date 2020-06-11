@@ -233,7 +233,6 @@ class ImapConnection: ImapConnectionProtocol {
             return
         }
         imapStore.sendIdle()
-//        imapStore.send(IMAP_IDLE, info: nil, string: "IDLE") //BUFF
     }
 
     func exitIdle() {
