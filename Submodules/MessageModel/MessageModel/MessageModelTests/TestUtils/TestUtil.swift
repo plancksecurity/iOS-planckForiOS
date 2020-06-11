@@ -57,22 +57,6 @@ class TestUtil {
 // MARK: - MUST NOT use MM's Interface. MAY use Secret test data after moving
 
 extension TestUtil {
-
-    static public func createMessages(numMessages numM: Int,
-                                      outgoing: Bool = false,
-                                      moc: NSManagedObjectContext) -> [CdMessage] {
-        var createes = [CdMessage]()
-        if numM <= 0 {
-            return createes
-        }
-        for i in 1...numM {
-            let createe = createMessage(stringData: "stringData \(i)", outgoing: outgoing, moc: moc)
-            createes.append(createe)
-        }
-
-        return createes
-    }
-
     static public func createMessage(stringData: String = "test",
                                      sentDate: Date? = nil,
                                      outgoing: Bool = false,
