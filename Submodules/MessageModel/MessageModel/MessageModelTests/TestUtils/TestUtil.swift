@@ -362,11 +362,6 @@ extension TestUtil {
         return nil
     }
 
-    static func createCdAttachment(inlined: Bool = true) -> CdAttachment {
-        let attachment = createAttachment(inlined: inlined)
-        return attachment.cdObject
-    }
-
     static func createAttachments(number: Int) -> [Attachment] {
         var attachments: [Attachment] = []
 
