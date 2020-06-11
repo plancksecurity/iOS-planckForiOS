@@ -362,15 +362,6 @@ extension TestUtil {
         return nil
     }
 
-    static func createAttachments(number: Int) -> [Attachment] {
-        var attachments: [Attachment] = []
-
-        for _ in 0..<number {
-            attachments.append(createAttachment())
-        }
-        return attachments
-    }
-
     static func createAttachment(inlined: Bool = true) -> Attachment {
 
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
