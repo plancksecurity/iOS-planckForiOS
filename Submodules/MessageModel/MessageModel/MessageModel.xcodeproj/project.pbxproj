@@ -224,6 +224,7 @@
 		43607DE423FE8D6F00FA66B8 /* ClientCertificateUtilTestInternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43607DE323FE8D6F00FA66B8 /* ClientCertificateUtilTestInternal.swift */; };
 		43607DF6240031FE00FA66B8 /* CdClientCertificate+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43607DF5240031FE00FA66B8 /* CdClientCertificate+Extension.swift */; };
 		4360AA1A22281B7100E62E5A /* PEPSession+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4360AA1922281B7100E62E5A /* PEPSession+Extensions.swift */; };
+		43648283249246FF00DD44ED /* XCTestCase+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43648282249246FF00DD44ED /* XCTestCase+IMAP.swift */; };
 		4367342F22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4367342E22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift */; };
 		4368309F22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4368309E22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift */; };
 		436981B52282F8D40006FA2D /* PEPObjCAdapterFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436981B42282F8D40006FA2D /* PEPObjCAdapterFramework.framework */; };
@@ -703,6 +704,7 @@
 		43607DEC2400201300FA66B8 /* 1.0.913.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.0.913.xcdatamodel; sourceTree = "<group>"; };
 		43607DF5240031FE00FA66B8 /* CdClientCertificate+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdClientCertificate+Extension.swift"; sourceTree = "<group>"; };
 		4360AA1922281B7100E62E5A /* PEPSession+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEPSession+Extensions.swift"; sourceTree = "<group>"; };
+		43648282249246FF00DD44ED /* XCTestCase+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+IMAP.swift"; sourceTree = "<group>"; };
 		4367342E22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessagePredicateFactory+KeySync.swift"; sourceTree = "<group>"; };
 		4368309E22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteOldSyncMailsOperationTest.swift; sourceTree = "<group>"; };
 		436981B42282F8D40006FA2D /* PEPObjCAdapterFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PEPObjCAdapterFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2176,6 +2178,7 @@
 				15ECD7051F5430C1002889B8 /* Message+TestUtils.swift */,
 				43607DE023FE870C00FA66B8 /* ClientCertificates+TestUtils.swift */,
 				43F86BA124503E61008961DA /* Keychain+TestUtils.swift */,
+				43648282249246FF00DD44ED /* XCTestCase+IMAP.swift */,
 			);
 			path = TestUtils;
 			sourceTree = "<group>";
@@ -2924,6 +2927,7 @@
 				490FF8161E79942500BC15F9 /* CdImapFlags+TestHelper.swift in Sources */,
 				153E4E4D1F5038E00021CBD8 /* MessageTest.swift in Sources */,
 				158BCFF22423800400E41F67 /* SecretTestData.swift in Sources */,
+				43648283249246FF00DD44ED /* XCTestCase+IMAP.swift in Sources */,
 				4368309F22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift in Sources */,
 				430CDA892296BEFC00AAC37F /* CdMessageCreation.swift in Sources */,
 				B78ACA662304798F00F8A396 /* FetchMessagesServiceTest.swift in Sources */,
