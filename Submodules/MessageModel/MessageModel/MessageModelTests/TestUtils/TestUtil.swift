@@ -363,7 +363,6 @@ extension TestUtil {
     }
 
     static func createAttachment(inlined: Bool = true) -> Attachment {
-
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard let imageData = TestUtil.loadData(testClass: self, fileName: imageFileName) else {
             XCTAssertTrue(false)
