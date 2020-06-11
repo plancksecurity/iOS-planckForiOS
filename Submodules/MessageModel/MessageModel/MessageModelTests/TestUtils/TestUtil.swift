@@ -349,13 +349,6 @@ extension TestUtil {
                return (identity, receiver1, receiver2, receiver3, receiver4)
        }
 
-    static func importKeyByFileName(_ session: PEPSession = PEPSession(), fileName: String)
-        throws {
-            if let content = loadString(fileName: fileName) {
-                try session.importKey(content as String)
-            }
-    }
-
     static func loadString(fileName: String) -> String? {
         if let data = MiscUtil.loadData(bundleClass: self, fileName: fileName) {
             guard let content = NSString(data: data, encoding: String.Encoding.ascii.rawValue)
