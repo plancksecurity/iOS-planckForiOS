@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19D76" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="refactor0.1">
+    <entity name="CdAccount" representedClassName="CdAccount" syncable="YES" codeGenerationType="category">
+        <relationship name="folders" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CdFolder" inverseName="account" inverseEntity="CdFolder"/>
+        <relationship name="identity" maxCount="1" deletionRule="Nullify" destinationEntity="CdIdentity" inverseName="accounts" inverseEntity="CdIdentity"/>
+        <relationship name="servers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CdServer" inverseName="account" inverseEntity="CdServer"/>
+    </entity>
+    <entity name="CdAttachment" representedClassName="CdAttachment" syncable="YES" codeGenerationType="category">
+        <attribute name="assetUrl" optional="YES" attributeType="String"/>
+        <attribute name="contentDispositionTypeRawValue" attributeType="Integer 16" defaultValueString="-3" usesScalarValueType="YES"/>
+        <attribute name="data" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="fileName" optional="YES" attributeType="String"/>
+        <attribute name="mimeType" attributeType="String"/>
+        <relationship name="message" maxCount="1" deletionRule="Nullify" destinationEntity="CdMessage" inverseName="attachments" inverseEntity="CdMessage"/>
+        <fetchIndex name="byDataIndex">
+            <fetchIndexElement property="data" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="CdClientCertificate" representedClassName="CdClientCertificate" syncable="YES" codeGenerationType="class">
+        <attribute name="importDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="keychainUuid" attributeType="String"/>
+        <attribute name="label" attributeType="String"/>
+        <relationship name="serverCredential" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CdServerCredentials" inverseName="clientCertificate" inverseEntity="CdServerCredentials"/>
+        <fetchIndex name="byKeychainUuidIndex">
+            <fetchIndexElement property="keychainUuid" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byLabelIndex">
+            <fetchIndexElement property="label" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="CdExtraKey" representedClassName="CdExtraKey" parentEntity="CdKey" syncable="YES" codeGenerationType="category"/>
+    <entity name="CdFolder" representedClassName="CdFolder" syncable="YES" codeGenerationType="category">
+        <attribute name="existsCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="folderSeparator" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="folderTypeRawValue" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="lastLookedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="selectable" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="shouldDelete" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="uidNext" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="uidValidity" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="account" maxCount="1" deletionRule="Nullify" destinationEntity="CdAccount" inverseName="folders" inverseEntity="CdAccount"/>
+        <relationship name="hasToBeMovedHere" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CdMessage" inverseName="targetFolder" inverseEntity="CdMessage"/>
+        <relationship name="messages" toMany="YES" deletionRule="Cascade" destinationEntity="CdMessage" inverseName="parent" inverseEntity="CdMessage"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CdFolder" inverseName="subFolders" inverseEntity="CdFolder"/>
+        <relationship name="subFolders" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CdFolder" inverseName="parent" inverseEntity="CdFolder"/>
+        <fetchIndex name="byNameIndex">
+            <fetchIndexElement property="name" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="CdHeaderField" representedClassName="CdHeaderField" syncable="YES" codeGenerationType="category">
+        <attribute name="name" attributeType="String"/>
+        <attribute name="value" attributeType="String"/>
+        <relationship name="message" maxCount="1" deletionRule="Nullify" destinationEntity="CdMessage" inverseName="optionalFields" inverseEntity="CdMessage"/>
+    </entity>
+    <entity name="CdIdentity" representedClassName="CdIdentity" syncable="YES" codeGenerationType="category">
+        <attribute name="address" attributeType="String"/>
+        <attribute name="addressBookID" optional="YES" attributeType="String"/>
+        <attribute name="flags" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="language" optional="YES" attributeType="String"/>
+        <attribute name="userID" attributeType="String"/>
+        <attribute name="userName" optional="YES" attributeType="String"/>
+        <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="CdAccount" inverseName="identity" inverseEntity="CdAccount"/>
+        <relationship name="messageFrom" toMany="YES" deletionRule="Deny" destinationEntity="CdMessage" inverseName="from" inverseEntity="CdMessage"/>
+        <relationship name="messagesBcc" toMany="YES" deletionRule="Deny" destinationEntity="CdMessage" inverseName="bcc" inverseEntity="CdMessage"/>
+        <relationship name="messagesCc" toMany="YES" deletionRule="Deny" destinationEntity="CdMessage" inverseName="cc" inverseEntity="CdMessage"/>
+        <relationship name="messagesReceivedBy" toMany="YES" deletionRule="Deny" destinationEntity="CdMessage" inverseName="receivedBy" inverseEntity="CdMessage"/>
+        <relationship name="messagesReplyTo" toMany="YES" deletionRule="Deny" destinationEntity="CdMessage" inverseName="replyTo" inverseEntity="CdMessage"/>
+        <relationship name="messagesTo" toMany="YES" deletionRule="Deny" destinationEntity="CdMessage" inverseName="to" inverseEntity="CdMessage"/>
+        <fetchIndex name="byAddressIndex">
+            <fetchIndexElement property="address" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byFlagsIndex">
+            <fetchIndexElement property="flags" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byLanguageIndex">
+            <fetchIndexElement property="language" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byUserIDIndex">
+            <fetchIndexElement property="userID" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byUserNameIndex">
+            <fetchIndexElement property="userName" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="CdImapFields" representedClassName="CdImapFields" syncable="YES" codeGenerationType="category">
+        <attribute name="contentType" optional="YES" attributeType="String"/>
+        <attribute name="messageNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="mimeBoundary" optional="YES" attributeType="String"/>
+        <relationship name="localFlags" maxCount="1" deletionRule="Cascade" destinationEntity="CdImapFlags" inverseName="imapLocalFields" inverseEntity="CdImapFlags"/>
+        <relationship name="message" maxCount="1" deletionRule="Nullify" destinationEntity="CdMessage" inverseName="imap" inverseEntity="CdMessage"/>
+        <relationship name="serverFlags" maxCount="1" deletionRule="Cascade" destinationEntity="CdImapFlags" inverseName="imapServerFields" inverseEntity="CdImapFlags"/>
+    </entity>
+    <entity name="CdImapFlags" representedClassName="CdImapFlags" syncable="YES" codeGenerationType="category">
+        <attribute name="flagAnswered" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="flagDeleted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="flagDraft" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="flagFlagged" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="flagRecent" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="flagSeen" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <relationship name="imapLocalFields" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CdImapFields" inverseName="localFlags" inverseEntity="CdImapFields"/>
+        <relationship name="imapServerFields" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CdImapFields" inverseName="serverFlags" inverseEntity="CdImapFields"/>
+    </entity>
+    <entity name="CdKey" representedClassName="CdKey" syncable="YES" codeGenerationType="category">
+        <attribute name="fingerprint" attributeType="String"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CdMessage" inverseName="keysFromDecryption" inverseEntity="CdMessage"/>
+    </entity>
+    <entity name="CdMessage" representedClassName="CdMessage" syncable="YES" codeGenerationType="category">
+        <attribute name="comments" optional="YES" attributeType="String"/>
+        <attribute name="flagsFromDecryptionRawValue" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="longMessage" optional="YES" attributeType="String"/>
+        <attribute name="longMessageFormatted" optional="YES" attributeType="String"/>
+        <attribute name="needsDecrypt" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="pEpProtected" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="pEpRating" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="received" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="sent" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="shortMessage" optional="YES" attributeType="String"/>
+        <attribute name="uid" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="uuid" attributeType="String"/>
+        <relationship name="attachments" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CdAttachment" inverseName="message" inverseEntity="CdAttachment"/>
+        <relationship name="bcc" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CdIdentity" inverseName="messagesBcc" inverseEntity="CdIdentity"/>
+        <relationship name="cc" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CdIdentity" inverseName="messagesCc" inverseEntity="CdIdentity"/>
+        <relationship name="from" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CdIdentity" inverseName="messageFrom" inverseEntity="CdIdentity"/>
+        <relationship name="imap" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CdImapFields" inverseName="message" inverseEntity="CdImapFields"/>
+        <relationship name="inReplyTo" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CdMessageReference" inverseName="messagesInReplyTo" inverseEntity="CdMessageReference"/>
+        <relationship name="keysFromDecryption" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CdKey" inverseName="message" inverseEntity="CdKey"/>
+        <relationship name="keywords" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CdMessageKeyword" inverseName="messages" inverseEntity="CdMessageKeyword"/>
+        <relationship name="optionalFields" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CdHeaderField" inverseName="message" inverseEntity="CdHeaderField"/>
+        <relationship name="parent" maxCount="1" deletionRule="Nullify" destinationEntity="CdFolder" inverseName="messages" inverseEntity="CdFolder"/>
+        <relationship name="receivedBy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CdIdentity" inverseName="messagesReceivedBy" inverseEntity="CdIdentity"/>
+        <relationship name="references" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CdMessageReference" inverseName="messagesReferencing" inverseEntity="CdMessageReference"/>
+        <relationship name="replyTo" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CdIdentity" inverseName="messagesReplyTo" inverseEntity="CdIdentity"/>
+        <relationship name="targetFolder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CdFolder" inverseName="hasToBeMovedHere" inverseEntity="CdFolder"/>
+        <relationship name="to" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CdIdentity" inverseName="messagesTo" inverseEntity="CdIdentity"/>
+        <fetchIndex name="byLongMessageIndex">
+            <fetchIndexElement property="longMessage" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byLongMessageFormattedIndex">
+            <fetchIndexElement property="longMessageFormatted" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byReceivedIndex">
+            <fetchIndexElement property="received" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="bySentIndex">
+            <fetchIndexElement property="sent" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byShortMessageIndex">
+            <fetchIndexElement property="shortMessage" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byUidIndex">
+            <fetchIndexElement property="uid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="CdMessageKeyword" representedClassName="CdMessageKeyword" syncable="YES" codeGenerationType="category">
+        <attribute name="keyword" attributeType="String"/>
+        <relationship name="messages" toMany="YES" deletionRule="Nullify" destinationEntity="CdMessage" inverseName="keywords" inverseEntity="CdMessage"/>
+    </entity>
+    <entity name="CdMessageReference" representedClassName="CdMessageReference" syncable="YES" codeGenerationType="category">
+        <attribute name="reference" attributeType="String"/>
+        <relationship name="messagesInReplyTo" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CdMessage" inverseName="inReplyTo" inverseEntity="CdMessage"/>
+        <relationship name="messagesReferencing" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CdMessage" inverseName="references" inverseEntity="CdMessage"/>
+        <fetchIndex name="byReferenceIndex">
+            <fetchIndexElement property="reference" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="CdServer" representedClassName="CdServer" syncable="YES" codeGenerationType="category">
+        <attribute name="address" attributeType="String"/>
+        <attribute name="authMethod" optional="YES" attributeType="String"/>
+        <attribute name="automaticallyTrusted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="dateLastAuthenticationErrorShown" optional="YES" transient="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="imapFolderSeparator" optional="YES" attributeType="String"/>
+        <attribute name="manuallyTrusted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="port" attributeType="Integer 16" usesScalarValueType="YES"/>
+        <attribute name="serverTypeRawValue" attributeType="Integer 16" usesScalarValueType="YES"/>
+        <attribute name="transportRawValue" attributeType="Integer 16" usesScalarValueType="YES"/>
+        <relationship name="account" maxCount="1" deletionRule="Nullify" destinationEntity="CdAccount" inverseName="servers" inverseEntity="CdAccount"/>
+        <relationship name="credentials" maxCount="1" deletionRule="Cascade" destinationEntity="CdServerCredentials" inverseName="servers" inverseEntity="CdServerCredentials"/>
+    </entity>
+    <entity name="CdServerCredentials" representedClassName="CdServerCredentials" syncable="YES" codeGenerationType="category">
+        <attribute name="key" attributeType="String"/>
+        <attribute name="loginName" attributeType="String"/>
+        <relationship name="clientCertificate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CdClientCertificate" inverseName="serverCredential" inverseEntity="CdClientCertificate"/>
+        <relationship name="servers" toMany="YES" deletionRule="Nullify" destinationEntity="CdServer" inverseName="credentials" inverseEntity="CdServer"/>
+    </entity>
+    <elements>
+        <element name="CdAccount" positionX="-756" positionY="50" width="128" height="90"/>
+        <element name="CdAttachment" positionX="-18" positionY="126" width="128" height="135"/>
+        <element name="CdClientCertificate" positionX="-867.265625" positionY="185.22265625" width="128" height="103"/>
+        <element name="CdExtraKey" positionX="-846" positionY="-90" width="128" height="45"/>
+        <element name="CdFolder" positionX="43" positionY="-234" width="128" height="255"/>
+        <element name="CdHeaderField" positionX="27" positionY="189" width="128" height="90"/>
+        <element name="CdIdentity" positionX="-288" positionY="180" width="128" height="240"/>
+        <element name="CdImapFields" positionX="-531" positionY="-15" width="128" height="135"/>
+        <element name="CdImapFlags" positionX="-729" positionY="-108" width="128" height="165"/>
+        <element name="CdKey" positionX="-1044" positionY="258" width="128" height="75"/>
+        <element name="CdMessage" positionX="151" positionY="27" width="128" height="28"/>
+        <element name="CdMessageKeyword" positionX="0" positionY="171" width="128" height="75"/>
+        <element name="CdMessageReference" positionX="-9" positionY="162" width="128" height="90"/>
+        <element name="CdServer" positionX="-722" positionY="135" width="128" height="208"/>
+        <element name="CdServerCredentials" positionX="-673.68359375" positionY="178.3359375" width="128" height="103"/>
+    </elements>
+</model>
