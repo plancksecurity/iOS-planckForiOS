@@ -421,7 +421,6 @@ extension XCTestCase {
         })
     }
 
-    //!!!: used in tests only! move to test target
     func appendMailsIMAP(folder: CdFolder,
                          imapConnection: ImapConnectionProtocol,
                          errorContainer: ErrorContainerProtocol,
