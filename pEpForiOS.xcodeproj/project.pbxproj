@@ -941,7 +941,7 @@
 		5BC4E5FE240E99C2008C01ED /* CustomTraitCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTraitCollectionViewController.swift; sourceTree = "<group>"; };
 		5BC4E600240FF155008C01ED /* TutorialStep1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep1ViewController.swift; sourceTree = "<group>"; };
 		5BC4E60624113659008C01ED /* TutorialStep2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep2ViewController.swift; sourceTree = "<group>"; };
-		5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsViewController.swift; path = Setting/AccountSettings/AccountSettingsViewController.swift; sourceTree = "<group>"; };
+		5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewController.swift; sourceTree = "<group>"; };
 		5BE35A9B24913A1700AC605C /* AccountSettingsOAuthTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsOAuthTableViewCell.swift; sourceTree = "<group>"; };
 		5BE35A9C24913A1800AC605C /* AccountSettingsDangerousTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsDangerousTableViewCell.swift; sourceTree = "<group>"; };
 		5BE35A9D24913A1800AC605C /* AccountSettingsKeyValueTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsKeyValueTableViewCell.swift; sourceTree = "<group>"; };
@@ -1465,8 +1465,6 @@
 		15874BA72127493E00A3A4A6 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				5BE35AA5249219AD00AC605C /* Cells */,
-				5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */,
 				5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */,
 				5BE35AA324913B4700AC605C /* SettingsViewModel.swift */,
 				1521B78C241BDAD3000EAE57 /* UIUtils+Settings.swift */,
@@ -1494,6 +1492,8 @@
 		15874BB62127493E00A3A4A6 /* AccountSettings */ = {
 			isa = PBXGroup;
 			children = (
+				5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */,
+				5BE35AA5249219AD00AC605C /* Cells */,
 				37156E42234CD43600845A28 /* EditableAccountSettings */,
 				15874BB72127493E00A3A4A6 /* ViewModel */,
 			);
@@ -2369,7 +2369,8 @@
 				5BE35A9D24913A1800AC605C /* AccountSettingsKeyValueTableViewCell.swift */,
 				5BE35A9B24913A1700AC605C /* AccountSettingsOAuthTableViewCell.swift */,
 			);
-			path = Cells;
+			name = Cells;
+			path = ../../Cells;
 			sourceTree = "<group>";
 		};
 		B706C0EF1EA8C378006B2F6C /* StoryboardFiles */ = {
