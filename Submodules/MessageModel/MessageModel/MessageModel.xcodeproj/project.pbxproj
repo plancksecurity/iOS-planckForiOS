@@ -172,7 +172,6 @@
 		430CCC6B1F73AD9F004BDD17 /* NSDictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CCC6A1F73AD9F004BDD17 /* NSDictionary+Extensions.swift */; };
 		430CDA4D2293FBB300AAC37F /* Attachment+ContentDispositionType+PEPContentDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA4C2293FBB300AAC37F /* Attachment+ContentDispositionType+PEPContentDisposition.swift */; };
 		430CDA4F2293FE6100AAC37F /* CdMessage+PEPMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA4E2293FE6100AAC37F /* CdMessage+PEPMessage.swift */; };
-		430CDA532294306100AAC37F /* SendMessageCallbackHandlerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA522294306100AAC37F /* SendMessageCallbackHandlerTest.swift */; };
 		430CDA5B22952A5000AAC37F /* PEPMessageToCdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA5A22952A5000AAC37F /* PEPMessageToCdMessageTest.swift */; };
 		430CDA5D22952CC200AAC37F /* PEPMessageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA5C22952CC200AAC37F /* PEPMessageUtil.swift */; };
 		430CDA852296BC7A00AAC37F /* CdMessage+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA842296BC7A00AAC37F /* CdMessage+KeySync.swift */; };
@@ -653,7 +652,6 @@
 		430CCC6A1F73AD9F004BDD17 /* NSDictionary+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSDictionary+Extensions.swift"; sourceTree = "<group>"; };
 		430CDA4C2293FBB300AAC37F /* Attachment+ContentDispositionType+PEPContentDisposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+ContentDispositionType+PEPContentDisposition.swift"; sourceTree = "<group>"; };
 		430CDA4E2293FE6100AAC37F /* CdMessage+PEPMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+PEPMessage.swift"; sourceTree = "<group>"; };
-		430CDA522294306100AAC37F /* SendMessageCallbackHandlerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageCallbackHandlerTest.swift; sourceTree = "<group>"; };
 		430CDA5A22952A5000AAC37F /* PEPMessageToCdMessageTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPMessageToCdMessageTest.swift; sourceTree = "<group>"; };
 		430CDA5C22952CC200AAC37F /* PEPMessageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPMessageUtil.swift; sourceTree = "<group>"; };
 		430CDA842296BC7A00AAC37F /* CdMessage+KeySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+KeySync.swift"; sourceTree = "<group>"; };
@@ -2220,7 +2218,6 @@
 			children = (
 				490FF8121E79726300BC15F9 /* Extensions */,
 				434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */,
-				430CDA522294306100AAC37F /* SendMessageCallbackHandlerTest.swift */,
 				430CDA5A22952A5000AAC37F /* PEPMessageToCdMessageTest.swift */,
 				43AE48E81EEFDD2100B92BB6 /* MergeConflictTests.swift */,
 				4355E4D2233C9C4E005772D5 /* CdMessageIsAutoConsumeableTest.swift */,
@@ -2980,7 +2977,6 @@
 				43BBB4992448676B00A88B39 /* CdMessagePEPMessageTests.swift in Sources */,
 				490FF8081E795B6C00BC15F9 /* Int16+FlagBitsTest.swift in Sources */,
 				153E4E4F1F5039C00021CBD8 /* PersistentStoreDrivenTestBase.swift in Sources */,
-				430CDA532294306100AAC37F /* SendMessageCallbackHandlerTest.swift in Sources */,
 				154D173023732FF7001FDF78 /* LoginImapOperationTest.swift in Sources */,
 				152881B422E1D7D000BBE7AE /* CdFolder+VirtualMailboxTest.swift in Sources */,
 				4331CE75229BD7E100DDDC65 /* UseFirstHTMLPartAsBodyTest.swift in Sources */,
