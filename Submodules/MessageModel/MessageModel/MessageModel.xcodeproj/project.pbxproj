@@ -170,6 +170,7 @@
 		37FED9712283354B004C7804 /* jsonMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = 37FED9702283354A004C7804 /* jsonMimeType.txt */; };
 		3A318597246C308A00EE3D4D /* CdClientCertificate+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A318596246C308A00EE3D4D /* CdClientCertificate+PredicateFactory.swift */; };
 		3A3FAC892451CB1000239FFC /* Query+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FAC882451CB1000239FFC /* Query+PredicateFactory.swift */; };
+		3A7400BE2492235F00AE6A79 /* CdMessageReference+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7400BD2492235F00AE6A79 /* CdMessageReference+PredicateFactory.swift */; };
 		3A798E0A2476754200510B02 /* CdMessage+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A798E092476754200510B02 /* CdMessage+PredicateFactory.swift */; };
 		3AECFB772462B93C004842D6 /* CdAccount+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECFB762462B93C004842D6 /* CdAccount+PredicateFactory.swift */; };
 		3AECFB792462C690004842D6 /* CdAttachment+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECFB782462C690004842D6 /* CdAttachment+PredicateFactory.swift */; };
@@ -659,6 +660,7 @@
 		37FED9702283354A004C7804 /* jsonMimeType.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jsonMimeType.txt; sourceTree = "<group>"; };
 		3A318596246C308A00EE3D4D /* CdClientCertificate+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdClientCertificate+PredicateFactory.swift"; sourceTree = "<group>"; };
 		3A3FAC882451CB1000239FFC /* Query+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Query+PredicateFactory.swift"; sourceTree = "<group>"; };
+		3A7400BD2492235F00AE6A79 /* CdMessageReference+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessageReference+PredicateFactory.swift"; sourceTree = "<group>"; };
 		3A798E092476754200510B02 /* CdMessage+PredicateFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PredicateFactory.swift"; sourceTree = "<group>"; };
 		3AECFB762462B93C004842D6 /* CdAccount+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+PredicateFactory.swift"; sourceTree = "<group>"; };
 		3AECFB782462C690004842D6 /* CdAttachment+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAttachment+PredicateFactory.swift"; sourceTree = "<group>"; };
@@ -1506,6 +1508,7 @@
 				43EA47EF221E9518006E8F83 /* CdMessagePredicateFactory+Imap.swift */,
 				4367342E22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift */,
 				152F09662126D27E001BCF20 /* CdServer+PredicateFactory.swift */,
+				3A7400BD2492235F00AE6A79 /* CdMessageReference+PredicateFactory.swift */,
 			);
 			path = CdPedicateFactory;
 			sourceTree = "<group>";
@@ -2917,6 +2920,7 @@
 				37FAA37F22EF15D700A06668 /* Account+KeySync.swift in Sources */,
 				43EA4875221E9518006E8F83 /* ImapSyncOperation.swift in Sources */,
 				15F274F8233CAEB10069C1E0 /* EncryptAndSendService.swift in Sources */,
+				3A7400BE2492235F00AE6A79 /* CdMessageReference+PredicateFactory.swift in Sources */,
 				43AB6A112248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift in Sources */,
 				43FFEE4723E17B2F005FE498 /* String+InboxFolderName.swift in Sources */,
 				3A318597246C308A00EE3D4D /* CdClientCertificate+PredicateFactory.swift in Sources */,

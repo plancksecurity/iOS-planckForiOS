@@ -88,7 +88,7 @@ extension CdMessage {
         }
 
         static func parentFolder(_ parent: CdFolder,
-                                 uid: UInt) -> NSPredicate {
+                                 uid: Int) -> NSPredicate {
             return NSPredicate(format: "parent = %@ and uid = %d",
                                parent,
                                uid)

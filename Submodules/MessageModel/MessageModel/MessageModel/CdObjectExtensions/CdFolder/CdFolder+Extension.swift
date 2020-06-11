@@ -116,7 +116,7 @@ extension CdFolder {
 
 extension CdFolder {
     func message(byUID: UInt, context: NSManagedObjectContext) -> CdMessage? {
-        let p = CdMessage.PredicateFactory.parentFolder(self, uid: byUID)
+        let p = CdMessage.PredicateFactory.parentFolder(self, uid: Int(byUID))
         return CdMessage.first(predicate: p, in: context)
     }
 }

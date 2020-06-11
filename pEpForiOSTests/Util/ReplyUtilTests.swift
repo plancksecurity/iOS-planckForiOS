@@ -174,7 +174,9 @@ extension ReplyUtilTests {
         return Message(uuid: "001", uid: 1, parentFolder: folder)
     }
 
-    private func showDifference(string1: String, string2: String, onlyFirstChar: Bool = false) -> String {
+    private func showDifference(string1: String,
+                                string2: String,
+                                onlyFirstChar: Bool = false) -> String {
         let difference = zip(string1, string2).filter { $0 != $1 }
         var diff1 = ""
         var diff2 = ""

@@ -28,9 +28,10 @@ extension CdMessage {
                              referenceType: MessageReferenceType,
                              context: NSManagedObjectContext) -> CdMessageReference {
 
-        let predicate = NSPredicate(format: "%K = %@",
-                                    CdMessageReference.AttributeName.reference,
-                                    messageID)
+//        let predicate = NSPredicate(format: "%K = %@",
+//                                    CdMessageReference.AttributeName.reference,
+//                                    messageID)
+        let predicate = CdMessageReference.PredicateFactory.with(messageID: messageID)
         let cdRefMaybe = CdMessageReference.first(
             predicate:predicate,
             in: context)
