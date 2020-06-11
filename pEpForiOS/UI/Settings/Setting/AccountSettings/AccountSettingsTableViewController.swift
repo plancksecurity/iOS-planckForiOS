@@ -187,7 +187,6 @@ extension AccountSettingsTableViewController {
                 Log.shared.errorAndCrash("No VM")
                 return
             }
-            editableAccountSettingsViewController.appConfig = appConfig
             editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account)
         default:
             break
@@ -268,7 +267,8 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
 extension AccountSettingsTableViewController: OAuthAuthorizerDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         oauth2ActivityIndicator.stopAnimating()
-        shouldHandleErrors = true
+        //shouldHandleErrors = true
+        //!!!: this comment should be temporal
 
         if let error = oauth2Error {
             showErrorAlert(error: error)
@@ -353,7 +353,6 @@ extension AccountSettingsTableViewController {
         guard let vc = UIStoryboard.init(name: "AccountCreation", bundle: nil).instantiateViewController(withIdentifier: "ClientCertificateManagementViewController") as? ClientCertificateManagementViewController else {
             return
         }
-        vc.appConfig = appConfig
         let nextViewModel = viewModel?.clientCertificateViewModel()
         nextViewModel?.delegate = vc
         vc.viewModel = nextViewModel
@@ -374,11 +373,12 @@ extension AccountSettingsTableViewController {
         oauth2ActivityIndicator.startAnimating()
 
         // don't accept errors form other places
-        shouldHandleErrors = false
+        //shouldHandleErrors = false
+        //!!!: this comment is temporal
 
         oauthViewModel.delegate = self
         oauthViewModel.authorize(
-            authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
+            authorizer: OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer(),
             emailAddress: vm.account.user.address,
             accountType: accountType,
             viewController: self)
