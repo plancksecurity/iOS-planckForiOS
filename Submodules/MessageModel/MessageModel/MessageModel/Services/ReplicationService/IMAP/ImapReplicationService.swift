@@ -141,6 +141,7 @@ class ImapReplicationService: OperationBasedService {
                 willIdle = true
             }
             if !willIdle {
+                // The server does not support idle mode. So we must poll frequently.
                 createes.append(me.pollingPausingOp(errorContainer: me.errorPropagator))
             }
             createes.append(me.errorHandlerOp())
