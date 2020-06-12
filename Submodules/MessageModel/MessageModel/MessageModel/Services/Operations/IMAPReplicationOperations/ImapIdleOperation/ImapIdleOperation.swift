@@ -21,7 +21,7 @@ class ImapIdleOperation: ImapSyncOperation {
     /// MOC to use with FRC
     private let frcMoc: NSManagedObjectContext = Stack.shared.changePropagatorContext
     /// Monitiors all messages of the 
-    private var frc: NSFetchedResultsController<CdMessage> = NSFetchedResultsController() // Dummy FRC to be able to initialize in init(). Do NOT use this.
+    private var frc: NSFetchedResultsController<CdMessage>?
 
     override init(parentName: String = #function,
                   context: NSManagedObjectContext? = nil,
@@ -32,7 +32,11 @@ class ImapIdleOperation: ImapSyncOperation {
                    errorContainer: errorContainer,
                    imapConnection: imapConnection)
 
-        frcMoc.performAndWait {
+        frcMoc.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
             let fetchRequest = NSFetchRequest<CdMessage>()
             fetchRequest.sortDescriptors = []
             fetchRequest.entity = CdMessage.entity()
@@ -42,11 +46,11 @@ class ImapIdleOperation: ImapSyncOperation {
                 Log.shared.errorAndCrash("No CdAccount")
             }
 
-            frc = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                             managedObjectContext: frcMoc,
-                                             sectionNameKeyPath: nil,
-                                             cacheName: nil)
-            frc.delegate = self
+            me.frc = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                managedObjectContext: me.frcMoc,
+                                                sectionNameKeyPath: nil,
+                                                cacheName: nil)
+            me.frc?.delegate = self
         }
     }
 
@@ -67,13 +71,18 @@ class ImapIdleOperation: ImapSyncOperation {
             markAsFinished()
             return
         }
+        guard let frc = frc else {
+            Log.shared.errorAndCrash("FRC must exist @ this point.")
+            markAsFinished()
+            return
+        }
         frcMoc.perform { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
             do {
-                try me.frc.performFetch()
+                try frc.performFetch()
             } catch {
                 Log.shared.errorAndCrash("Error fetching: %@", error.localizedDescription)
             }
@@ -99,7 +108,7 @@ class ImapIdleOperation: ImapSyncOperation {
 
     private func sendDone() {
         Log.shared.info("Stopping IDLE mode")
-       imapConnection.exitIdle()
+        imapConnection.exitIdle()
     }
 
     fileprivate func handleIdleNewMessages() {
@@ -124,7 +133,6 @@ class ImapIdleOperation: ImapSyncOperation {
 
 // MARK: - ImapIdleDelegate
 
-//BUFF: cleanup
 class ImapIdleDelegate: DefaultImapConnectionDelegate {
     
     override func authenticationFailed(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
