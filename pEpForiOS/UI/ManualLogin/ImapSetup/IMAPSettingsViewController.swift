@@ -125,7 +125,6 @@ extension IMAPSettingsViewController: SegueHandlerType {
         switch segueIdentifier(for: segue) {
         case .SMTPSettings:
             if let destination = segue.destination as? SMTPSettingsViewController {
-                destination.appConfig = appConfig
                 destination.verifiableAccount = verifiableAccount
             } else {
                 Log.shared.errorAndCrash(
