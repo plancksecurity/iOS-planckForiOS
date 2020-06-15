@@ -379,7 +379,7 @@ extension EmailDetailViewController {
     @objc
     private func showSettingsViewController() {
         splitViewController?.preferredDisplayMode = .allVisible
-        UIUtils.presentSettings(appConfig: appConfig)
+        UIUtils.presentSettings()
     }
 
     private func setupEmailViewController(forRowAt indexPath: IndexPath) -> EmailViewController? {
@@ -390,7 +390,6 @@ extension EmailDetailViewController {
                 Log.shared.errorAndCrash("No V[M|C]")
                 return nil
         }
-        createe.appConfig = appConfig
         createe.message = vm.message(representedByRowAt: indexPath) //!!!: EmailVC should have a VM which should be created in our VM. This VC should not be aware of `Message`s!
         createe.delegate = self
         emailSubViewControllers.append(createe)
@@ -543,7 +542,6 @@ extension EmailDetailViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("No DVC?")
                     break
             }
-            destination.appConfig = appConfig
             destination.viewModel = vm.composeViewModel(forMessageRepresentedByItemAt: indexPath,
                                                         composeMode: composeMode(for: theId))
         case .segueShowMoveToFolder:
@@ -552,7 +550,6 @@ extension EmailDetailViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("No DVC?")
                     break
             }
-            destination.appConfig = appConfig
             destination.viewModel = viewModel?.getMoveToFolderViewModel(forMessageRepresentedByItemAt: indexPath)
         case .segueTrustManagement:
             guard let nv = segue.destination as? UINavigationController,
@@ -573,7 +570,6 @@ extension EmailDetailViewController: SegueHandlerType {
                                                                   width: 0,
                                                                   height: 0)
             
-            vc.appConfig = appConfig
             vc.viewModel = trustManagementViewModel
 
             break

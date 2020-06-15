@@ -48,7 +48,6 @@ final class EditableAccountSettingsViewController: BaseViewController {
                 EditableAccountSettingsTableViewModel(account: account,
                                                       delegate: tableViewController)
             viewModel?.tableViewModel = tableViewController.viewModel
-            tableViewController.appConfig = appConfig
         default:
             break
         }

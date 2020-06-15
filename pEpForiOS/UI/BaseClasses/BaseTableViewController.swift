@@ -11,7 +11,7 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber {
+class BaseTableViewController: UITableViewController {
 
     /// Indicates when the navigation bar tint color must be white.
     /// As in iOS 13 the property to set that color changed, we use this flag to set it properly.
@@ -34,38 +34,12 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         }
     }
 
-    private var _appConfig: AppConfig?
-    var appConfig: AppConfig {
-        get {
-            guard let safeConfig = _appConfig else {
-                Log.shared.errorAndCrash("No appConfig?")
-
-                // We have no config. Return nonsense.
-                let errorPropagator = ErrorPropagator()
-                return AppConfig(errorPropagator: errorPropagator,
-                                 oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider())
-            }
-            return safeConfig
-        }
-        set {
-            _appConfig = newValue
-            didSetAppConfig()
-        }
-    }
-
     func didSetAppConfig() {
         // Do nothing. Meant to override in subclasses.
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        guard _appConfig != nil else {
-            if !MiscUtil.isUnitTest() {
-                Log.shared.errorAndCrash("AppConfig is nil in viewWillAppear!")
-            }
-            return
-        }
-        appConfig.errorPropagator.subscriber = self
         self.navigationController?.title = title
         BaseTableViewController.setupCommonSettings(tableView: tableView)
     }
@@ -121,75 +95,6 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         case .onlyMaster:
             // nothing to do
             break
-        }
-    }
-
-    // MARK: - ErrorPropagatorSubscriber
-
-    var shouldHandleErrors: Bool = true
-
-    func error(propagator: ErrorPropagator, error: Error) {
-        if shouldHandleErrors {
-            if error is SmtpSendError || error is ImapSyncOperationError {
-                smtpOrImapAuthError(error: error)
-            } else {
-                UIUtils.show(error: error)
-            }
-        }
-    }
-
-    func smtpOrImapAuthError(error: Error) {
-        var extraInfo = ""
-
-        if let smtpError = error as? SmtpSendError {
-            switch smtpError {
-            case .authenticationFailed( _, let account):
-                extraInfo = account
-            case .illegalState(_):
-                break
-            case .connectionLost(_):
-                break
-            case .connectionTerminated(_):
-                break
-            case .connectionTimedOut(_):
-                break
-            case .badResponse(_):
-                break
-            case .clientCertificateNotAccepted:
-                break
-            }
-        } else if let imapError = error as? ImapSyncOperationError {
-            switch imapError {
-            case .authenticationFailed(_, let account):
-                extraInfo = account
-            case .illegalState(_):
-                break
-            case .connectionLost(_):
-                break
-            case .connectionTerminated(_):
-                break
-            case .connectionTimedOut(_):
-                break
-            case .folderAppendFailed:
-                break
-            case .badResponse(_):
-                break
-            case .actionFailed:
-                break
-            case .clientCertificateNotAccepted:
-                break
-            }
-        }
-        let showed = appConfig.showedAccountsError[extraInfo]
-        if let swd = showed, swd  {
-            //this error must not be shown
-        } else {
-            UIUtils.show(error: error)
-            if showed == nil {
-                appConfig.showedAccountsError[extraInfo] = false
-            } else if showed == false {
-                appConfig.showedAccountsError[extraInfo] = true
-            }
         }
     }
 }
