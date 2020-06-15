@@ -57,7 +57,8 @@ class ImapIdleOperation: ImapSyncOperation {
 
             // frcForFolders
             let fetchRequestFolders = NSFetchRequest<CdFolder>()
-            fetchRequestFolders.sortDescriptors = []
+            fetchRequestFolders.sortDescriptors =
+                [NSSortDescriptor(key: CdFolder.AttributeName.lastLookedAt, ascending: false)]
             fetchRequestFolders.entity = CdFolder.entity()
             if let cdAccount = imapConnection.cdAccount(moc: frcMoc) {
                 fetchRequestFolders.predicate =
@@ -220,7 +221,25 @@ extension ImapIdleOperation: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         // We are using a trivial implementation until we need somthing more sofisticated.
         // Any change on any CdMessage will stop idle mode.
-        handleLocalChangeHappened()
+        if controller == frcForMessages {
+            handleLocalChangeHappened()
+        }
+    }
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any,
+                    at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType,
+                    newIndexPath: IndexPath?) {
+        guard controller == frcForFolders else {
+            // Messages are handled in controllerDidChangeContent.
+            return
+        }
+        if type == .move {
+            // We are sorting folders by lastLookat date, thus the order changes if a different
+            // folder is entered by the user (folders last lookat has been updated).
+            handleLocalChangeHappened()
+        }
     }
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
