@@ -12,6 +12,7 @@ import SwipeCellKit
 import Photos
 import pEpIOSToolbox
 import PEPObjCAdapterFramework
+import ContactsUI
 
 class ComposeTableViewController: BaseTableViewController {
     @IBOutlet var sendButton: UIBarButtonItem!
@@ -276,6 +277,10 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         presentDocumentAttachmentPicker()
     }
 
+    func showContacts() {
+        presentContactPicker()
+    }
+
     func documentAttachmentPickerDone() {
         self.setPreviousFocusAfterPicker()
     }
@@ -367,6 +372,38 @@ extension ComposeTableViewController {
 extension ComposeTableViewController {
     private func presentDocumentAttachmentPicker() {
         present(documentAttachmentPicker, animated: true, completion: nil)
+    }
+}
+
+// MARK: - CNContactPicker
+
+extension ComposeTableViewController: CNContactPickerDelegate {
+    private func presentContactPicker() {
+        let contactPickerVC = CNContactPickerViewController()
+        contactPickerVC.delegate = self
+        present(contactPickerVC, animated: true) { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.hideContactPicker()
+        }
+    }
+
+    private func hideContactPicker() {
+        setPreviousFocusAfterPicker()
+    }
+
+    // TODO: - AK - more cases
+
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
+        if let emailAddress = contactProperty.contact.emailAddresses.first {
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("No VM")
+                return
+            }
+            vm.handleContactSelected(emails: [String(emailAddress.value)])
+        }
     }
 }
 

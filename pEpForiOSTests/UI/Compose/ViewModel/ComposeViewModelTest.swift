@@ -1627,7 +1627,8 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         testDelegate?.expColorBatchNeedsUpdateCalled = expColorBatchNeedsUpdateCalled
     }
 
-    private class TestDelegate:  ComposeViewModelDelegate {
+    private class TestDelegate: ComposeViewModelDelegate {
+
         func showTwoButtonAlert(withTitle title: String, message: String, cancelButtonText: String, positiveButtonText: String, cancelButtonAction: @escaping () -> Void, positiveButtonAction: @escaping () -> Void) {
         }
 
@@ -1790,6 +1791,10 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             if let expected = expectedShowSuggestionsIndexPath {
                 XCTAssertEqual(indexPath, expected)
             }
+        }
+
+        func showContacts() {
+            // TODO: - AK, IOS-1275
         }
 
         func suggestions(haveScrollFocus: Bool) {

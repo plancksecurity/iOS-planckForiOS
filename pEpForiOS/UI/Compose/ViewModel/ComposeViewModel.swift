@@ -44,6 +44,8 @@ protocol ComposeViewModelDelegate: class {
 
     func showDocumentAttachmentPicker()
 
+    func showContacts()
+
     func documentAttachmentPickerDone()
 
     func showTwoButtonAlert(withTitle title: String,
@@ -757,6 +759,23 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         delegate?.contentChanged(inRowAt: idxPath)
         delegate?.showSuggestions(forRowAt: idxPath)
         suggestionsVM?.updateSuggestion(searchString: newText.cleanAttachments)
+    }
+
+// MARK: - Add Contact
+
+    func addContactTapped() {
+        delegate?.showContacts()
+    }
+
+    func handleContactSelected(emails: [String]) {
+        guard
+            let idxPath = lastRowWithSuggestions,
+            let recipientVM = sections[idxPath.section].rows[idxPath.row] as? RecipientCellViewModel
+            else {
+                Log.shared.errorAndCrash("No row VM")
+                return
+        }
+        emails.forEach { recipientVM.add(recipient: Identity(address: $0)) }
     }
 }
 

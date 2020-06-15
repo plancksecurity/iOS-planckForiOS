@@ -17,10 +17,13 @@ protocol RecipientCellViewModelResultDelegate: class {
     func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel)
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, textChanged newText: String)
+
+    func addContactTapped()
 }
 
 class RecipientCellViewModel: CellViewModel {
     public let title: String
+    private(set) var focused: Bool
     public var content = NSMutableAttributedString(string: "")
     public let type: FieldType
     private var initialRecipients = [Identity]()
@@ -30,6 +33,7 @@ class RecipientCellViewModel: CellViewModel {
     }
 
     weak public var resultDelegate: RecipientCellViewModelResultDelegate?
+    weak var recipientCellDelegate: RecipientCellDelegate?
 
     init(resultDelegate: RecipientCellViewModelResultDelegate?,
          type: FieldType,
@@ -38,10 +42,15 @@ class RecipientCellViewModel: CellViewModel {
         self.type = type
         self.initialRecipients = recipients
         self.title = type.localizedTitle()
+        self.focused = false
     }
 
     public func add(recipient: Identity) {
         textViewModel?.add(recipient: recipient)
+    }
+
+    func addContactAction() {
+        resultDelegate?.addContactTapped()
     }
 
     func recipientTextViewModel() -> RecipientTextViewModel {
@@ -63,10 +72,14 @@ extension RecipientCellViewModel: RecipientTextViewModelResultDelegate {
     }
 
     func recipientTextViewModel(_ vm: RecipientTextViewModel, didBeginEditing text: String) {
+        focused = true
+        recipientCellDelegate?.focusChanged()
         resultDelegate?.recipientCellViewModel(self, didBeginEditing: text)
     }
 
     func recipientTextViewModelDidEndEditing(_ vm: RecipientTextViewModel) {
+        focused = false
+        recipientCellDelegate?.focusChanged()
         resultDelegate?.recipientCellViewModelDidEndEditing(self)
     }
 
