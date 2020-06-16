@@ -21,7 +21,7 @@ extension ImapReplicationService {
 class ImapReplicationService: OperationBasedService {
     private var pollingMode: PollingMode
     /// Amount of time to "sleep" between polling cycles
-    private var sleepTimeInSeconds = MiscUtil.isUnitTest() ? 1.0 : 10.0
+    private var sleepTimeInSeconds = MiscUtil.isUnitTest() ? 1.0 : 3.0
     private var cdAccount: CdAccount? = nil
     private var imapConnectionCache = ImapConnectionCache()
     private var idleOperation: ImapIdleOperation?
