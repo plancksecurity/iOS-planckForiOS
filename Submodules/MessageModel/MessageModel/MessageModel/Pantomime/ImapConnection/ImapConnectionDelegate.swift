@@ -39,7 +39,7 @@ protocol ImapConnectionDelegate: class {
     func badResponse(_ imapConnection: ImapConnectionProtocol, response: String?)
     func actionFailed(_ imapConnection: ImapConnectionProtocol, response: String?)
     func idleEntered(_ imapConnection: ImapConnectionProtocol, notification: Notification?)
-    func idleNewMessages(_ imapConnection: ImapConnectionProtocol, notification: Notification?)
+    func idleChangeOnServer(_ imapConnection: ImapConnectionProtocol, notification: Notification?)
     func idleFinished(_ imapConnection: ImapConnectionProtocol, notification: Notification?)
     func folderExpungeCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?)
 }

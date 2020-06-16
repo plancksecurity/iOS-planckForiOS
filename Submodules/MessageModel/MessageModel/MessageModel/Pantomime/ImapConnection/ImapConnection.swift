@@ -560,9 +560,9 @@ extension ImapConnection: CWServiceClient {
         }
     }
 
-    public func idleNewMessages(_ notification: Notification?) {
+    public func idleChange(onServer notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
-            theDelegate.idleNewMessages(self, notification: notification)
+            theDelegate.idleChangeOnServer(self, notification: notification)
         }
     }
 

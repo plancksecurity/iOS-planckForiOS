@@ -140,8 +140,10 @@ extension ImapIdleOperation {
         imapConnection.exitIdle()
     }
 
-    fileprivate func handleIdleNewMessages() {
-        sendDone()
+    fileprivate func handleChangeOnServer() {
+        if imapConnection.isIdling {
+            sendDone()
+        }
     }
 
     fileprivate func handleIdleFinished() {
@@ -194,8 +196,9 @@ class ImapIdleDelegate: DefaultImapConnectionDelegate {
         // Do nothing, keep idleing
     }
 
-    override func idleNewMessages(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
-        imapIdleOp()?.handleIdleNewMessages()
+
+    override func idleChangeOnServer(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
+        imapIdleOp()?.handleChangeOnServer()
     }
 
     override func idleFinished(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
@@ -203,11 +206,11 @@ class ImapIdleDelegate: DefaultImapConnectionDelegate {
         imapIdleOp()?.handleIdleFinished()
     }
 
-    /// We did stop ideling by sending DONE, so the server returns the actual changes.
-    /// We are currently ignoring those reports and signal to our client that ideling finished.
-    override func messageChanged(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
-        imapIdleOp()?.handleIdleFinished()
-    }
+//    /// We did stop ideling by sending DONE, so the server returns the actual changes.
+//    /// We are currently ignoring those reports and signal to our client that ideling finished.
+//    override func messageChanged(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
+//        imapIdleOp()?.handleChangeOnServer()
+//    } //BUFF: clean
 
     // MARK: - Helper 
 

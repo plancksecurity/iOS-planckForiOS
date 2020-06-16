@@ -185,14 +185,12 @@ class DefaultImapConnectionDelegate: ImapConnectionDelegate {
         forceErrorDelegate().handle(error: ImapSyncOperationError.illegalState(#function))
     }
 
-    func idleNewMessages(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
+    func idleChangeOnServer(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
         forceErrorDelegate().handle(error: ImapSyncOperationError.illegalState(#function))
     }
 
     func idleFinished(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
-        // I consider it OK to ignore this in all OPs but IDLE-OP. Comment in in case of problems.
-//        forceErrorDelegate().handle(error: ImapSyncOperationError.illegalState(#function)) //BUFF:
-        Log.shared.info("DefaultImapConnectionDelegate: unhandled call to idleFinished")
+        forceErrorDelegate().handle(error: ImapSyncOperationError.illegalState(#function))
     }
 
     func folderExpungeCompleted(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
