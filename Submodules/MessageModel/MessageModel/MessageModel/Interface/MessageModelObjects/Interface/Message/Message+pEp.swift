@@ -22,6 +22,7 @@ extension Message {
         setOriginalRatingHeader(rating: rating.asString())
     }
 
+
     /// - returns: the pepRating
     public func pEpRating() -> PEPRating {
         //see: https://dev.pep.security/Common%20App%20Documentation/algorithms/MessageColors

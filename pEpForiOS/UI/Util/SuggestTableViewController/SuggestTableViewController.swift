@@ -64,16 +64,15 @@ extension SuggestTableViewController {
         guard
             let viewModel = viewModel,
             let cell = tableView.dequeueReusableCell(withIdentifier: ContactCell.reuseId,
-                                                       for: indexPath)
-            as? ContactCell else {
-                Log.shared.errorAndCrash("Illegal state")
-                return UITableViewCell()
+                                                     for: indexPath)
+                as? ContactCell else {
+                    Log.shared.errorAndCrash("Illegal state")
+                    return UITableViewCell()
         }
         let row = viewModel[indexPath.row]
-        cell.nameLabel.text = row.name
-        cell.emailLabel.text = row.email
-        cell.nameLabel.font = UIFont.pepFont(style: .callout, weight: .regular)
-        cell.emailLabel.font = UIFont.pepFont(style: .footnote, weight: .regular)
+
+        cell.updateCell(name: row.name, email: row.email)
+
         return cell
     }
 }
