@@ -114,20 +114,25 @@ class ImapIdleOperation: ImapSyncOperation {
         }
     }
 
+    override func markAsFinished() {
+        syncDelegate = nil
+        super.markAsFinished()
+    }
+}
+
+// MARK: - Private
+
+extension ImapIdleOperation {
+
     private func process() {
         syncDelegate = ImapIdleDelegate(errorHandler: self)
         imapConnection.delegate = syncDelegate
 
-        startIdle(context: self.privateMOC)
+        startIdle(context: privateMOC)
     }
 
     private func startIdle(context: NSManagedObjectContext) {
         imapConnection.sendIdle()
-    }
-
-    override func markAsFinished() {
-        syncDelegate = nil
-        super.markAsFinished()
     }
 
     private func sendDone() {
