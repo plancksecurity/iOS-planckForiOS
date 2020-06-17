@@ -44,7 +44,6 @@ final class AccountSettingsViewController: BaseViewController {
         showNavigationBar()
         title = NSLocalizedString("Account", comment: "Account view title")
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
-        tableView.reloadData()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -363,9 +362,18 @@ extension AccountSettingsViewController: AccountSettingsSwitchTableViewCellDeleg
 
 extension AccountSettingsViewController: EditableAccountSettingsDelegate {
     func didChange() {
-        let account = Account.all().filter { $0 == self.viewModel?.account }
-        print(account)
-//        self.viewModel = AccountSettingsViewModel(account: account)
-//        tableView.reloadData()
+        func reload() {
+            /// As the data source of this table view provides the rows generated at the vm initialization,
+            /// we re-init the view model in order re-generate those rows.
+            /// With the rows having the data up-to-date we reload the table view.
+            if let account = viewModel?.account {
+                viewModel = AccountSettingsViewModel(account: account)
+                tableView.reloadData()
+            }
+        }
+
+        DispatchQueue.main.async {
+            reload()
+        }
     }
 }
