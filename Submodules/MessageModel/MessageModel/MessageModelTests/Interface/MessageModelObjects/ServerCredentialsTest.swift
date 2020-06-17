@@ -55,28 +55,4 @@ class ServerCredentialsTest: PersistentStoreDrivenTestBase {
         XCTAssertNotNil(keychainPasswordAfter)
         XCTAssertEqual(keychainPasswordAfter, newPass)
     }
-
-    func testPasswordRemovedFromKeychainAfterDeletingCredentials() {
-        guard let server = account.servers?.first else {
-            XCTFail("No server")
-            return
-        }
-        let testCredetials = server.credentials
-        guard let key = testCredetials.key else {
-            XCTFail("No key")
-            return
-        }
-        // Assure Passowrd is setup correctly
-        XCTAssertNotNil(key)
-        let passBefore = testCredetials.password
-        XCTAssertNotNil(passBefore)
-        let keychainPasswordBefore = KeyChain.password(key: key)
-        XCTAssertNotNil(keychainPasswordBefore, "No password for key")
-        XCTAssertEqual(passBefore, keychainPasswordBefore)
-        // Delete account incl. credentials ...
-        account.delete()
-        // ... and assure it has been removed from KeyChain as well.
-        let keychainPasswordAfter = KeyChain.password(key: key)
-        XCTAssertNil(keychainPasswordAfter, "Password not removed from Keychain")
-    }
 }
