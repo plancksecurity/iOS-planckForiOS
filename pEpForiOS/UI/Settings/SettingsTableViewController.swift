@@ -381,7 +381,7 @@ extension SettingsTableViewController {
              .ResetTrust,
              .segueExtraKeys,
              .segueShowSettingTrustedServers:
-            guard let destination = segue.destination as? BaseViewController else { return }
+            guard let destination = segue.destination as? UIViewController else { return }
         case .none:
             break
         case .seguePgpKeyImport:

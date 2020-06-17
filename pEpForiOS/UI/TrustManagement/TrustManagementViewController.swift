@@ -9,7 +9,7 @@
 import UIKit
 
 /// View Controller to handle the HandshakeView.
-class TrustManagementViewController: BaseViewController {
+class TrustManagementViewController: UIViewController {
     private let onlyMasterCellIdentifier = "TrustManagementTableViewCell_OnlyMaster"
     private let masterAndDetailCellIdentifier = "TrustManagementTableViewCell_Detailed"
     private let resetCellIdentifier = "TrustManagementTableViewResetCell"

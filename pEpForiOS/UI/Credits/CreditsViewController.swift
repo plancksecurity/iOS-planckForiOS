@@ -8,7 +8,7 @@
 
 import WebKit
 
-class CreditsViewController: BaseViewController {
+class CreditsViewController: UIViewController {
     
     override var collapsedBehavior: CollapsedSplitViewBehavior {
         return .needed
