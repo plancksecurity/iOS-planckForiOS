@@ -10,7 +10,7 @@ import Foundation
 
 extension CdMessageReference {
     struct PredicateFactory {
-        static public func with(messageID: String) -> NSPredicate {
+        static func with(messageID: String) -> NSPredicate {
             return NSPredicate(format: "%K = %@",
                                CdMessageReference.AttributeName.reference,
                                messageID)

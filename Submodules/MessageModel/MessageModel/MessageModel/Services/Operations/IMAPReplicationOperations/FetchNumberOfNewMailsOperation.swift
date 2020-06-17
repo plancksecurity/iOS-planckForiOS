@@ -117,9 +117,6 @@ extension FetchNumberOfNewMailsOperation {
                 // There are zero mails on server.
                 return
             }
-//            let messageForUidPredicate = NSPredicate(format: "%K = %@ AND %K = %d",
-//                                                     CdMessage.RelationshipName.parent, cdFolderToOpen,
-//                                                     CdMessage.AttributeName.uid, theOneAndOnlyUid)
             let messageForUidPredicate = CdMessage.PredicateFactory.parentFolder(cdFolderToOpen,
                                                                                  uid: theOneAndOnlyUid)
             if let _ = CdMessage.all(predicate: messageForUidPredicate, in: me.privateMOC) {
