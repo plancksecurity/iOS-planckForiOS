@@ -123,8 +123,8 @@ class FolderTableViewController: BaseTableViewController {
     }
 
     @objc
-    private func hideSection(sender: UIButton) {
-        let section = sender.tag
+    private func hideSection(sender: SectionButton) {
+        let section = sender.section
         func indexPathsForSection() -> [IndexPath] {
             var indexPaths = [IndexPath]()
             let numberOfRows = folderVM?[section].count ?? 0
@@ -154,11 +154,11 @@ class FolderTableViewController: BaseTableViewController {
         } else {
             header = CollapsibleTableViewHeader(reuseIdentifier: "header")
         }
-        //TODO: avoid tag. 
-        header?.transparentButton.tag = section
+        //TODO: avoid tag.
+
+        header?.transparentButton.section = section
         header?.transparentButton.addTarget(self, action: #selector(hideSection(sender:)), for: .touchUpInside)
-//        let arrow = UIImage(named:"chevron-icon")
-        let arrow = UIImage(named:"compose")
+        let arrow = UIImage(named:"chevron-icon-right")
 
         header?.transparentButton.setImage(arrow, for: .normal)
         header?.transparentButton.contentHorizontalAlignment = .trailing

@@ -13,6 +13,10 @@ protocol CollapsibleTableViewHeaderDelegate {
     func toggleSection(header: CollapsibleTableViewHeader, section: Int)
 }
 
+class SectionButton : UIButton {
+    var section: Int = -1 // Invalid default value
+}
+
 class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     var section: Int = 0
     let topStackView = UIStackView()
@@ -24,9 +28,8 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     let rightStackView = UIStackView()
     let arrowImageView = UIImageView()
     let arrowLabel = UILabel()
-    lazy var transparentButton: UIButton = {
-        let button = UIButton()
-        return UIButton()
+    lazy var transparentButton: SectionButton = {
+        return SectionButton()
     }()
 
     override init(reuseIdentifier: String?) {
