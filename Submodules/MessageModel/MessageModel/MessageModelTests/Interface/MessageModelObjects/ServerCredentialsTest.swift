@@ -17,11 +17,18 @@ class ServerCredentialsTest: PersistentStoreDrivenTestBase {
     //!!!: Test fails due to an Xcode 9 Bug. See: IOS-733
     // Uncomment after Apple has fixed the issue.
     func testUpdatePassword() {
-        guard let server = account.servers?.first else {
+        let servers1 = cdAccount.servers?.allObjects as? [CdServer] ?? []
+
+        guard let server = servers1.first else {
             XCTFail("No server")
             return
         }
-        let testCredetials = server.credentials
+
+        guard let testCredetials = server.credentials else {
+            XCTFail("No server credentials")
+            return
+        }
+
         guard let key = testCredetials.key else {
             XCTFail("No key")
             return
