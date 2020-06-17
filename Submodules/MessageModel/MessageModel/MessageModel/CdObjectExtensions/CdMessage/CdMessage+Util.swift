@@ -17,18 +17,18 @@ extension CdMessage {
     /**
      For use by `sorted`, `sort`, sorts a sequence so that earlier messages appear first.
      */
-    public static func areInIncreasingOrder(_ cdMsg1: CdMessage, cdMsg2: CdMessage) -> Bool {
+    static func areInIncreasingOrder(_ cdMsg1: CdMessage, cdMsg2: CdMessage) -> Bool {
         return cdMsg1.isEarlierTo(cdMessage2: cdMsg2)
     }
 
     /**
      For use by `sorted`, `sort`, sorts a sequence so that earlier messages appear last.
      */
-    public static func areInDecreasingOrder(_ cdMsg1: CdMessage, cdMsg2: CdMessage) -> Bool {
+    static func areInDecreasingOrder(_ cdMsg1: CdMessage, cdMsg2: CdMessage) -> Bool {
         return cdMsg1.isLaterTo(cdMessage2: cdMsg2)
     }
 
-    public func dumpReferences() {
+    func dumpReferences() {
         let theUuid = uuid ?? "unknown"
         let theRefs = references?.array as? [CdMessageReference] ?? []
         if !theRefs.isEmpty {
