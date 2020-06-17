@@ -264,7 +264,3 @@ extension VerifiableAccountTest {
         }
     }
 }
-
-
-
-
