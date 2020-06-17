@@ -26,7 +26,6 @@
 		37954C6E227C90C10099B8D8 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37954C6D227C90C10099B8D8 /* Log.swift */; };
 		3A0CBAAB23F582B900AE200C /* UITextView+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0CBAAA23F582B900AE200C /* UITextView+Font.swift */; };
 		3AE10B7D249282D80050BFB0 /* String+HtmlTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE10B7B249282D80050BFB0 /* String+HtmlTest.swift */; };
-		3AE10B7E249282D80050BFB0 /* StringExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE10B7C249282D80050BFB0 /* StringExtensionsTest.swift */; };
 		3AE10B80249282F80050BFB0 /* String+EmailHtml.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE10B7F249282F80050BFB0 /* String+EmailHtml.swift */; };
 		3AE10BA7249A5DB80050BFB0 /* UILabel+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE10BA6249A5DB80050BFB0 /* UILabel+Font.swift */; };
 		431E68AC246C00F200B3A977 /* DocumentsDirectoryBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68AB246C00F200B3A977 /* DocumentsDirectoryBrowser.swift */; };
@@ -95,7 +94,6 @@
 		37954C6D227C90C10099B8D8 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		3A0CBAAA23F582B900AE200C /* UITextView+Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UITextView+Font.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/UIKit/UITextView+Font.swift"; sourceTree = "<group>"; };
 		3AE10B7B249282D80050BFB0 /* String+HtmlTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+HtmlTest.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Foundation/String+HtmlTest.swift"; sourceTree = "<group>"; };
-		3AE10B7C249282D80050BFB0 /* StringExtensionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringExtensionsTest.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Foundation/StringExtensionsTest.swift; sourceTree = "<group>"; };
 		3AE10B7F249282F80050BFB0 /* String+EmailHtml.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+EmailHtml.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/String+EmailHtml.swift"; sourceTree = "<group>"; };
 		3AE10BA6249A5DB80050BFB0 /* UILabel+Font.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UILabel+Font.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/UIKit/UILabel+Font.swift"; sourceTree = "<group>"; };
 		431E68AB246C00F200B3A977 /* DocumentsDirectoryBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsDirectoryBrowser.swift; sourceTree = "<group>"; };
@@ -160,7 +158,6 @@
 			isa = PBXGroup;
 			children = (
 				3AE10B7B249282D80050BFB0 /* String+HtmlTest.swift */,
-				3AE10B7C249282D80050BFB0 /* StringExtensionsTest.swift */,
 				B7371AA0230175B7007B37A3 /* String+ExtensionsTest.swift */,
 				1522956523044FD000204FD3 /* String+FPRTest.swift */,
 			);
@@ -524,7 +521,6 @@
 				378B76552240F93A00D6662C /* TestUtils.swift in Sources */,
 				B7371AA1230175B7007B37A3 /* String+ExtensionsTest.swift in Sources */,
 				1522956623044FD000204FD3 /* String+FPRTest.swift in Sources */,
-				3AE10B7E249282D80050BFB0 /* StringExtensionsTest.swift in Sources */,
 				431E68B0246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift in Sources */,
 				3AE10B7D249282D80050BFB0 /* String+HtmlTest.swift in Sources */,
 			);
