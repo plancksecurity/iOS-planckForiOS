@@ -360,6 +360,8 @@ extension AccountSettingsViewController: AccountSettingsSwitchTableViewCellDeleg
     }
 }
 
+// MARK: - EditableAccountSettingsDelegate
+
 extension AccountSettingsViewController: EditableAccountSettingsDelegate {
     func didChange() {
         func reload() {
