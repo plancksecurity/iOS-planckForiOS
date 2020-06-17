@@ -29,7 +29,6 @@ protocol AccountSettingsRowProtocol {
     /// Indicates if the row action is dangerous.
     var isDangerous: Bool { get }
     /// Returns the cell identifier based on the index path.
-    /// - Parameter type: The row type
     var cellIdentifier: String { get }
 }
 
@@ -148,46 +147,6 @@ extension AccountSettingsViewModel {
         var action: AlertActionBlock?
         /// The cell identifier
         var cellIdentifier: String
-    }
-}
-
-//MARK: - Layout
-
-extension AccountSettingsViewModel {
-
-    /// Indicates if the device is in a group.
-    /// - Returns: True if the device is in a group.
-    public func isPEPSyncSwitchGreyedOut() -> Bool {
-        return KeySyncUtil.isInDeviceGroup
-    }
-}
-
-// MARK: - Client Certificate
-
-extension AccountSettingsViewModel {
-    /// Provides information about the certificate
-    /// - Returns: Certificate's name and date.
-    /// If fails, returns empty string.
-    public func certificateInfo() -> String {
-        guard let certificate = account.imapServer?.credentials.clientCertificate else {
-            return ""
-        }
-        let name = certificate.label ?? "--"
-        let date = certificate.date?.fullString() ?? ""
-        let separator = NSLocalizedString("Exp. date:", comment: "spearator string bewtween name and date")
-        return "\(name), \(separator) \(date)"
-    }
-
-    /// Returns the client certificate View Model
-    /// - Returns: Client certificate view model for current account.
-    public func clientCertificateViewModel() -> ClientCertificateManagementViewModel {
-        return ClientCertificateManagementViewModel(account: account)
-    }
-
-    /// Indicates if the account has a client certificate
-    /// - Returns: True if the account has a client certificate
-    public func hasCertificate() -> Bool {
-        return account.imapServer?.credentials.clientCertificate != nil
     }
 }
 
@@ -323,6 +282,35 @@ extension AccountSettingsViewModel {
         }
     }
 
+    /// Setup the server fields.
+    /// - Parameters:
+    ///   - server: The server from which to take the values
+    ///   - rows: The rows to populate the fields.
+    private func setupServerFields(_ server: Server, _ rows: inout [AccountSettingsRowProtocol]) {
+        let serverRow = DisplayRow(type: .server,
+                                   title: rowTitle(for: .server),
+                                   text: server.address,
+                                   cellIdentifier: CellsIdentifiers.displayCell)
+        rows.append(serverRow)
+
+        let resetRow = DisplayRow(type: .port,
+                                  title: rowTitle(for: .port),
+                                  text: String(server.port),
+                                  cellIdentifier: CellsIdentifiers.displayCell)
+        rows.append(resetRow)
+
+        let transportSecurityRow = DisplayRow(type: .tranportSecurity,
+                                              title: rowTitle(for: .tranportSecurity),
+                                              text: server.transport.asString(),
+                                              cellIdentifier: CellsIdentifiers.displayCell)
+        rows.append(transportSecurityRow)
+
+        let usernameRow = DisplayRow(type: .username,
+                                     title: rowTitle(for: .username),
+                                     text: server.credentials.loginName, cellIdentifier: CellsIdentifiers.displayCell)
+        rows.append(usernameRow)
+    }
+
     /// This method generates all the rows for the section type passed
     /// - Parameter type: The type of the section to generate the rows.
     /// - Returns: An array with the settings rows. Every setting row must conform the SettingsRowProtocol.
@@ -395,58 +383,15 @@ extension AccountSettingsViewModel {
                 Log.shared.errorAndCrash("Account without IMAP server")
                 return rows
             }
-
-            let serverRow = DisplayRow(type: .server,
-                                       title: rowTitle(for: .server),
-                                       text: imapServer.address,
-                                       cellIdentifier: CellsIdentifiers.displayCell)
-            rows.append(serverRow)
-
-            let resetRow = DisplayRow(type: .port,
-                                      title: rowTitle(for: .port),
-                                      text: String(imapServer.port),
-                                      cellIdentifier: CellsIdentifiers.displayCell)
-            rows.append(resetRow)
-
-            let transportSecurityRow = DisplayRow(type: .tranportSecurity,
-                                                  title: rowTitle(for: .tranportSecurity),
-                                                  text: imapServer.transport.asString(),
-                                                  cellIdentifier: CellsIdentifiers.displayCell)
-            rows.append(transportSecurityRow)
-
-            let usernameRow = DisplayRow(type: .username,
-                                         title: rowTitle(for: .username),
-                                         text: imapServer.credentials.loginName, cellIdentifier: CellsIdentifiers.displayCell)
-            rows.append(usernameRow)
+            setupServerFields(imapServer, &rows)
 
         case .smtp:
             guard let smtpServer = account.smtpServer else {
                 Log.shared.errorAndCrash("Account without SMTP server")
                 return rows
             }
-            let serverRow = DisplayRow(type: .server,
-                                       title: rowTitle(for: .server),
-                                       text: smtpServer.address,
-                                       cellIdentifier: CellsIdentifiers.displayCell)
-            rows.append(serverRow)
 
-            let resetRow = DisplayRow(type: .port,
-                                      title: rowTitle(for: .port),
-                                      text: String(smtpServer.port),
-                                      cellIdentifier: CellsIdentifiers.displayCell)
-            rows.append(resetRow)
-
-            let transportSecurityRow = DisplayRow(type: .tranportSecurity,
-                                                  title: rowTitle(for: .tranportSecurity),
-                                                  text: smtpServer.transport.asString(),
-                                                  cellIdentifier: CellsIdentifiers.displayCell)
-            rows.append(transportSecurityRow)
-
-            let usernameRow = DisplayRow(type: .username,
-                                         title: rowTitle(for: .username),
-                                         text: smtpServer.credentials.loginName,
-                                         cellIdentifier: CellsIdentifiers.displayCell)
-            rows.append(usernameRow)
+            setupServerFields(smtpServer, &rows)
         }
         return rows
 
