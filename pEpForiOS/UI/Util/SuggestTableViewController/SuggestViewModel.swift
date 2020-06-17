@@ -201,22 +201,19 @@ extension SuggestViewModel {
         return mergedRows
     }
 
-    static func calculatePepRating(from: Identity,
-                                    to: [Identity],
-                                    cc: [Identity],
-                                    bcc: [Identity]) -> PEPRating {
+    func calculatePepRating(toEmailAddress: String) -> PEPRating {
 
+        guard let from = from else {
+            return .undefined
+        }
         let session = Session.main
         let safeFrom = from.safeForSession(session)
-        let safeTo = Identity.makeSafe(to, forSession: session)
-        let safeCc = Identity.makeSafe(cc, forSession: session)
-        let safeBcc = Identity.makeSafe(bcc, forSession: session)
+        let safeTo = Identity.makeSafe(Identity(address: toEmailAddress), forSession: session)
         let pEpsession = PEPSession()
-
         let rating = pEpsession.outgoingMessageRating(from: safeFrom,
-                                                      to: safeTo,
-                                                      cc: safeCc,
-                                                      bcc: safeBcc)
+                                                      to: [safeTo],
+                                                      cc: [],
+                                                      bcc: [])
 
         return rating
     }

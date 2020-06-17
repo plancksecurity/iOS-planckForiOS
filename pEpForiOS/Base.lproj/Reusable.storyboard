@@ -45,8 +45,8 @@
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lcu-U0-qEs">
-                                            <rect key="frame" x="82.5" y="6" width="32.5" height="18"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email fjhdakjfskdf kajsfhkjsadhf kajsdhf jkasfjahf vlk lkxczjvlkzjvlk" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="1" translatesAutoresizingMaskIntoConstraints="NO" id="Lcu-U0-qEs">
+                                            <rect key="frame" x="82.5" y="6" width="201" height="18"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
@@ -61,13 +61,16 @@
                                     <color key="backgroundColor" red="0.98209856250160643" green="0.98657392187620485" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstItem="Lcu-U0-qEs" firstAttribute="leading" secondItem="aAW-1y-cXc" secondAttribute="trailing" constant="4" id="9tS-in-E9b"/>
+                                        <constraint firstItem="Lcu-U0-qEs" firstAttribute="top" secondItem="4of-pf-Zww" secondAttribute="top" constant="6" id="Jle-tC-3n1"/>
                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Lcu-U0-qEs" secondAttribute="trailing" constant="8" id="LDX-1W-VGZ"/>
                                         <constraint firstItem="Lcu-U0-qEs" firstAttribute="centerY" secondItem="aAW-1y-cXc" secondAttribute="centerY" id="LOF-uo-p9o"/>
                                         <constraint firstItem="aAW-1y-cXc" firstAttribute="top" secondItem="4of-pf-Zww" secondAttribute="top" constant="8" id="Npt-Iy-0Of"/>
                                         <constraint firstItem="Lcu-U0-qEs" firstAttribute="centerY" secondItem="4of-pf-Zww" secondAttribute="centerY" id="Rdx-5f-gue"/>
+                                        <constraint firstItem="Lcu-U0-qEs" firstAttribute="leading" secondItem="aAW-1y-cXc" secondAttribute="trailing" constant="4" id="Tyy-Rr-2rA"/>
                                         <constraint firstAttribute="bottom" secondItem="GZe-Hg-5CB" secondAttribute="bottom" constant="6" id="U2i-dc-CHw"/>
                                         <constraint firstItem="GZe-Hg-5CB" firstAttribute="leading" secondItem="4of-pf-Zww" secondAttribute="leading" constant="14" id="Zwi-sT-xhG"/>
                                         <constraint firstItem="aAW-1y-cXc" firstAttribute="centerY" secondItem="4of-pf-Zww" secondAttribute="centerY" id="eA5-xr-ALW"/>
+                                        <constraint firstAttribute="bottom" secondItem="Lcu-U0-qEs" secondAttribute="bottom" constant="6" id="euS-jA-qIj"/>
                                         <constraint firstItem="aAW-1y-cXc" firstAttribute="leading" secondItem="GZe-Hg-5CB" secondAttribute="trailing" constant="8" id="iUE-qs-5Ca"/>
                                         <constraint firstItem="GZe-Hg-5CB" firstAttribute="top" secondItem="Lcu-U0-qEs" secondAttribute="top" id="kAP-Px-eDr"/>
                                         <constraint firstItem="GZe-Hg-5CB" firstAttribute="top" secondItem="4of-pf-Zww" secondAttribute="top" constant="6" id="p4A-hZ-8eq"/>
