@@ -28,10 +28,9 @@ public class FolderSectionViewModel {
             self.account = ac
             generateAccountCells()
         }
-
-
     }
 
+    //TODO: take a look
     private func generateAccountCells() {
         guard let ac = account else {
             Log.shared.errorAndCrash("No account selected")
@@ -45,6 +44,7 @@ public class FolderSectionViewModel {
         }
     }
 
+    //TODO: indent sub-folder.
     private func calculateChildFolder(root folder: Folder, level: Int) {
         let sorted = folder.subFolders().sorted()
         for subFolder in sorted {

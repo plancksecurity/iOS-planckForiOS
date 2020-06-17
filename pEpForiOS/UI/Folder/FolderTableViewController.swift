@@ -154,6 +154,7 @@ class FolderTableViewController: BaseTableViewController {
         } else {
             header = CollapsibleTableViewHeader(reuseIdentifier: "header")
         }
+        //TODO: avoid tag. 
         header?.transparentButton.tag = section
         header?.transparentButton.addTarget(self, action: #selector(hideSection(sender:)), for: .touchUpInside)
 //        let arrow = UIImage(named:"chevron-icon")
