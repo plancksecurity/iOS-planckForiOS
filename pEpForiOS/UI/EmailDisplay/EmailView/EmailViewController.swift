@@ -18,7 +18,7 @@ protocol EmailViewControllerDelegate: class {
     func showPdfPreview(forPdfAt url: URL)
 }
 
-class EmailViewController: BaseTableViewController {
+class EmailViewController: UITableViewController {
     private var tableData: ComposeDataSource?
     lazy private var documentInteractionController = UIDocumentInteractionController()
     private var clientCertificateImportViewController: ClientCertificateImportViewController?
@@ -42,6 +42,8 @@ class EmailViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.title = title
+        UITableViewController.setupCommonSettings(tableView: tableView)
         configureTableRows()
     }
 

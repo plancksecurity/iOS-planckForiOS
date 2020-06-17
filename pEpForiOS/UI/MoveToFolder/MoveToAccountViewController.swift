@@ -30,7 +30,7 @@ class MoveToAccountViewController: UIViewController {
     }
 
     private func setupTableView() {
-        BaseTableViewController.setupCommonSettings(tableView: tableview)
+        UITableViewController.setupCommonSettings(tableView: tableview)
     }
 
     private func setupNavigationBar() {
