@@ -263,4 +263,8 @@ extension VerifiableAccountTest {
             XCTFail()
         }
     }
+
+    class MockCNContactsAccessPermissionProvider: CNContactsAccessPermissionProviderProtocol {
+        var userHasBeenAskedForContactAccessPermissions = true
+    }
 }
