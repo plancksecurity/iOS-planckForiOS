@@ -11,9 +11,8 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
-    private var _appConfig: AppConfig?
-
+class BaseViewController: UIViewController {
+    
     /// Indicates when the navigation bar tint color must be white.
     /// As in iOS 13 the property to set that color changed, we use this flag to set it properly.
     /// Use it if for an specific view, the navigation bar tint color must be white.
@@ -35,101 +34,17 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
         }
     }
 
-    var appConfig: AppConfig! {
-        get {
-            guard _appConfig != nil else {
-                Log.shared.errorAndCrash("No appConfig?")
-                return nil
-            }
-            return _appConfig
-        }
-        set {
-            _appConfig = newValue
-            didSetAppConfig()
-        }
-    }
-
     func didSetAppConfig() {
         // Do nothing. Meant to override in subclasses.
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        appConfig?.errorPropagator.subscriber = self
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationBarTintColorWhite = false
-    }
-
-    // MARK: - ErrorPropagatorSubscriber
-
-    var shouldHandleErrors: Bool = true
-
-    func error(propagator: ErrorPropagator, error: Error) {
-        if shouldHandleErrors {
-            if error is SmtpSendError || error is ImapSyncOperationError {
-                smtpOrImapAuthError(error: error)
-            } else {
-                UIUtils.show(error: error)
-            }
-        }
-    }
-
-    func smtpOrImapAuthError(error: Error) {
-        var extraInfo = ""
-
-        if let smtpError = error as? SmtpSendError {
-            switch smtpError {
-            case .authenticationFailed( _, let account):
-                extraInfo = account
-            case .illegalState(_):
-                break
-            case .connectionLost(_):
-                break
-            case .connectionTerminated(_):
-                break
-            case .connectionTimedOut(_):
-                break
-            case .badResponse(_):
-                break
-            case .clientCertificateNotAccepted:
-                break
-            }
-        } else if let imapError = error as? ImapSyncOperationError {
-            switch imapError {
-            case .authenticationFailed(_, let account):
-                extraInfo = account
-            case .illegalState(_):
-                break
-            case .connectionLost(_):
-                break
-            case .connectionTerminated(_):
-                break
-            case .connectionTimedOut(_):
-                break
-            case .folderAppendFailed:
-                break
-            case .badResponse(_):
-                break
-            case .actionFailed:
-                break
-            case .clientCertificateNotAccepted:
-                break
-            }
-        }
-        let showed = appConfig.showedAccountsError[extraInfo]
-        if let swd = showed, swd  {
-            //this error must not be shown
-        } else {
-            UIUtils.show(error: error)
-            if showed == nil {
-                appConfig.showedAccountsError[extraInfo] = false
-            } else if showed == false {
-                appConfig.showedAccountsError[extraInfo] = true
-            }
-        }
     }
 }
 

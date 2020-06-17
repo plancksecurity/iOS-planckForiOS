@@ -93,6 +93,16 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
             return ServerCredentials(cdObject: cdObject.credentials!, context: moc)
         }
     }
+    
+    public var dateLastAuthenticationErrorShown: Date? {
+        get {
+            return cdObject.dateLastAuthenticationErrorShown    
+        }
+        
+        set {
+            cdObject.dateLastAuthenticationErrorShown = newValue
+        }
+    }
 
     //!!!: needs refactor. Topic: Verifyable account...
     // Used in test and in UI Account Setup
@@ -190,5 +200,14 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
                   automaticallyTrusted: server.automaticallyTrusted,
                   manuallyTrusted: server.manuallyTrusted,
                   credentials: ServerCredentials(withDataFrom: server.credentials))
+    }
+    
+    public static func by(account: Account, serverType: ServerType) -> Server? {
+        let cdAccount = account.cdObject
+        guard let cdServer = cdAccount.server(type: serverType) else {
+            Log.shared.errorAndCrash("Server not found")
+            return nil
+        }
+        return MessageModelObjectUtils.getServer(fromCdObject: cdServer)
     }
 }

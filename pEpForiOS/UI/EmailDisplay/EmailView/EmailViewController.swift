@@ -28,7 +28,7 @@ class EmailViewController: BaseTableViewController {
     weak var delegate: EmailViewControllerDelegate?
     var message: Message?
     lazy var clickHandler: UrlClickHandler = {
-        return UrlClickHandler(appConfig: appConfig)
+        return UrlClickHandler()
     }()
 
     // MARK: - LIFE CYCLE
