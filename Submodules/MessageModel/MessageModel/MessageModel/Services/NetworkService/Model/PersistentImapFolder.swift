@@ -180,7 +180,7 @@ class PersistentImapFolder: CWIMAPFolder {
     private func cdMessage(withUID uid: UInt) -> CdMessage? {
 
         let p = CdMessage.PredicateFactory.parentFolder(cdFolder,
-                                                        uid: Int(uid))
+                                                        uid: uid)
 
         return CdMessage.first(predicate: p, in: privateMOC)
     }

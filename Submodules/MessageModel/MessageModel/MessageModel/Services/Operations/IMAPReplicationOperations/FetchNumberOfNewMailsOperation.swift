@@ -98,8 +98,8 @@ extension FetchNumberOfNewMailsOperation {
     /// - Parameter uids: uids to validate
     /// - Returns:  empty array if uids contains only one, locally existing UID,
     ///             the unmodified uids otherwize
-    private func validateResult(uids: [Int]?) ->[Int]? {
-        var result: [Int]? = nil
+    private func validateResult(uids: [UInt]?) ->[UInt]? {
+        var result: [UInt]? = nil
         privateMOC.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -149,7 +149,7 @@ extension FetchNumberOfNewMailsOperation {
 
 extension FetchNumberOfNewMailsOperation {
 
-    fileprivate func handleResult(uids: [Int]?) {
+    fileprivate func handleResult(uids: [UInt]?) {
         let uids = validateResult(uids: uids)
         numNewMailsFetchedBlock?(uids?.count)
         waitForBackgroundTasksAndFinish()
@@ -168,7 +168,7 @@ class FetchNumberOfNewMailsSyncDelegate: DefaultImapConnectionDelegate {
             Log.shared.errorAndCrash("No OP")
             return
         }
-        op.handleResult(uids: notification?.userInfo?["Uids"] as? [Int])
+        op.handleResult(uids: notification?.userInfo?["Uids"] as? [UInt])
     }
 
     public override func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
