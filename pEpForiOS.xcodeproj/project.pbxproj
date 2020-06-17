@@ -109,7 +109,6 @@
 		152A39E721905C3E00D9F8E4 /* RecipientTextViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39C321905C3D00D9F8E4 /* RecipientTextViewModel.swift */; };
 		152A39E821905C3E00D9F8E4 /* RecipientCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39C421905C3D00D9F8E4 /* RecipientCellViewModel.swift */; };
 		153B2188219472A400497D3D /* BodyCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153B2187219472A400497D3D /* BodyCellViewModelTest.swift */; };
-		153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */; };
 		15410D1D2199C2E500BBF65F /* SubjectCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15410D1C2199C2E500BBF65F /* SubjectCellViewModelTest.swift */; };
 		15410D1F2199CA1100BBF65F /* XCTTestCase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15410D1E2199CA1100BBF65F /* XCTTestCase+Utils.swift */; };
 		15410D222199D83200BBF65F /* AccountCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15410D212199D83200BBF65F /* AccountCellViewModelTest.swift */; };
@@ -550,7 +549,6 @@
 		152A39C321905C3D00D9F8E4 /* RecipientTextViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientTextViewModel.swift; sourceTree = "<group>"; };
 		152A39C421905C3D00D9F8E4 /* RecipientCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientCellViewModel.swift; sourceTree = "<group>"; };
 		153B2187219472A400497D3D /* BodyCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyCellViewModelTest.swift; sourceTree = "<group>"; };
-		153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-duplicated-attachments.txt"; sourceTree = "<group>"; };
 		15410D1C2199C2E500BBF65F /* SubjectCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectCellViewModelTest.swift; sourceTree = "<group>"; };
 		15410D1E2199CA1100BBF65F /* XCTTestCase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTTestCase+Utils.swift"; sourceTree = "<group>"; };
 		15410D212199D83200BBF65F /* AccountCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCellViewModelTest.swift; sourceTree = "<group>"; };
@@ -2139,7 +2137,6 @@
 				1512132624166AD8009B7C88 /* large-animated-gif.gif */,
 				1512132524166AD8009B7C88 /* small-animated-gif.gif */,
 				4395CDEF20AAD0D6003FC5F1 /* icon_001.gif */,
-				153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */,
 				43FC02111F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html */,
 				431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */,
 			);
@@ -2731,7 +2728,6 @@
 				4395CDF020AAD0D7003FC5F1 /* icon_001.gif in Resources */,
 				1512132824166AD9009B7C88 /* large-animated-gif.gif in Resources */,
 				43FC02121F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html in Resources */,
-				153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */,
 				1512132724166AD9009B7C88 /* small-animated-gif.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
