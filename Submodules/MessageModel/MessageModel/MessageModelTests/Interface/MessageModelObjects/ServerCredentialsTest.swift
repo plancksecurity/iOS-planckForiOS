@@ -14,45 +14,53 @@ class ServerCredentialsTest: PersistentStoreDrivenTestBase {
 
     // MARK: - Password, Key and KeyChain
 
-    //!!!: Test fails due to an Xcode 9 Bug. See: IOS-733
-    // Uncomment after Apple has fixed the issue.
     func testUpdatePassword() {
         let servers1 = cdAccount.servers?.allObjects as? [CdServer] ?? []
 
-        guard let server = servers1.first else {
+        guard let server1 = servers1.first else {
             XCTFail("No server")
             return
         }
 
-        guard let testCredetials = server.credentials else {
+        guard let testCredentials1 = server1.credentials else {
             XCTFail("No server credentials")
             return
         }
 
-        guard let key = testCredetials.key else {
+        guard let key = testCredentials1.key else {
             XCTFail("No key")
             return
         }
         // Assure Passowrd is setup correctly
         XCTAssertNotNil(key)
-        let passBefore = testCredetials.password
+        let passBefore = testCredentials1.password
         XCTAssertNotNil(passBefore)
         let keychainPasswordBefore = KeyChain.password(key: key)
         XCTAssertNotNil(keychainPasswordBefore, "No password for key")
         XCTAssertEqual(passBefore, keychainPasswordBefore)
         // Update password ...
         let newPass = "newPass"
-        testCredetials.password = newPass
-        account.session.commit()
-        // ... and assure it has been updated in Core Data, Message Model and KeyChain correctly.
-        XCTAssertNotNil(testCredetials.key)
-        XCTAssertEqual(testCredetials.key, key)
-        guard let server2 = account.servers?.first else {
+        testCredentials1.password = newPass
+
+        moc.saveAndLogErrors()
+
+        let servers2 = cdAccount.servers?.allObjects as? [CdServer] ?? []
+
+        guard let server2 = servers2.first else {
             XCTFail("No server")
             return
         }
-        let testCredetials2 = server2.credentials
-        guard let keyAfter = testCredetials2.key else {
+
+        guard let testCredentials2 = server2.credentials else {
+            XCTFail("No server credentials")
+            return
+        }
+
+        // ... and assure it has been updated in Core Data, Message Model and KeyChain correctly.
+        XCTAssertNotNil(testCredentials2.key)
+        XCTAssertEqual(testCredentials2.key, key)
+
+        guard let keyAfter = testCredentials2.key else {
             XCTFail("No key")
             return
         }
