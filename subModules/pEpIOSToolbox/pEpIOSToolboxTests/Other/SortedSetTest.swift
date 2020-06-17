@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import pEpIOSToolbox
+import pEpIOSToolbox
 
 struct TestObject: Equatable {
     let date: Date
