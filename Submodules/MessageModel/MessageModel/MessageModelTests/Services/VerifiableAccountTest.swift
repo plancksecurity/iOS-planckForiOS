@@ -23,10 +23,7 @@ class VerifiableAccountTest: PersistentStoreDrivenTestBase {
     }
 
     func testBasicSuccess() {
-        let theMessageModelService = MessageModelService(
-            errorPropagator: ErrorPropagator(),
-            notifyHandShakeDelegate: MockNotifyHandshakeDelegate())
-        let verifier = VerifiableAccount(messageModelService: theMessageModelService)
+        let verifier = VerifiableAccount()
 
         var verifierType: VerifiableAccountProtocol = verifier
         SecretTestData().populateVerifiableAccount(
@@ -100,10 +97,7 @@ class VerifiableAccountTest: PersistentStoreDrivenTestBase {
     /// - Returns: A tuple of Bool denoting if `verify()` and `save()` threw exceptions.
     func checkFailingValidation(
         modifier: (VerifiableAccountProtocol) -> VerifiableAccountProtocol) -> (Bool, Bool) {
-        let theMessageModelService = MessageModelService(
-            errorPropagator: ErrorPropagator(),
-            notifyHandShakeDelegate: MockNotifyHandshakeDelegate())
-        let verifier = VerifiableAccount(messageModelService: theMessageModelService)
+        let verifier = VerifiableAccount()
 
         var verifierType: VerifiableAccountProtocol = verifier
         SecretTestData().populateVerifiableAccount(
@@ -143,10 +137,7 @@ class VerifiableAccountTest: PersistentStoreDrivenTestBase {
     func checkBasicVerification(
         modifier: (VerifiableAccountProtocol) -> VerifiableAccountProtocol)
         -> Result<Void, Error> {
-            let theMessageModelService = MessageModelService(
-                errorPropagator: ErrorPropagator(),
-                notifyHandShakeDelegate: MockNotifyHandshakeDelegate())
-            let verifier = VerifiableAccount(messageModelService: theMessageModelService)
+            let verifier = VerifiableAccount()
 
             var verifiable: VerifiableAccountProtocol = verifier
             SecretTestData().populateVerifiableAccount(
@@ -218,58 +209,5 @@ extension VerifiableAccountTest {
             moc.delete(account)
         })
         moc.saveAndLogErrors()
-    }
-
-    class MessageModelServiceMock: MessageModelServiceProtocol {
-        var startExpectation: XCTestExpectation
-
-        init(startExpectation _startExpectation: XCTestExpectation) {
-            startExpectation = _startExpectation
-        }
-
-        func start_old() throws {
-            startExpectation.fulfill()
-        }
-
-        func processAllUserActionsAndStop_old() {
-            XCTFail()
-        }
-
-        func cancel_old() {
-            XCTFail()
-        }
-
-        func checkForNewMails_old(completionHandler: @escaping (Int?) -> ()) {
-            XCTFail()
-        }
-
-        func enableKeySync() {
-            XCTFail()
-        }
-
-        func disableKeySync() {
-            XCTFail()
-        }
-
-        func start() {
-            startExpectation.fulfill()
-        }
-
-        func stop() {
-            XCTFail()
-        }
-
-        func finish() {
-            XCTFail()
-        }
-    }
-
-    class MockCNContactsAccessPermissionProvider: CNContactsAccessPermissionProviderProtocol {
-        var userHasBeenAskedForContactAccessPermissions = true
-    }
-
-    class MockKeySyncStateProvider: KeySyncStateProvider {
-        var stateChangeHandler: ((NewState)->Void)?
-        var isKeySyncEnabled = false
     }
 }
