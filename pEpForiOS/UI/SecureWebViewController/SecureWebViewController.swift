@@ -297,18 +297,7 @@ extension SecureWebViewController: UIScrollViewDelegate {
 }
 
 // MARK: -
-// MARK: !! EXTREMELY DIRTY HACK !! ( START )
 
-/// This is the only hack found to intercept WKWebViews default long-press on mailto: URL
-/// behaviour.
-/// !! IF YOU ARE AWARE OF A BETTER SOLUTION, PLEASE LET US KNOW OR IMPLEMENT !!
-/// We must intercept it to show our custom action sheet.
-/// The hack overrrides present(...) in the root view controller of the App (!).
-
-extension SecureWebViewController {
-    /// DIRTY HACK. Find details in below UISplitViewController extension
-    static var appConfigDirtyHack: AppConfig?
-}
 extension UISplitViewController {
 
     override open func present(_ viewControllerToPresent: UIViewController,
@@ -327,8 +316,7 @@ extension UISplitViewController {
 
         let alertTitle = alertController.title ?? ""
 
-        if alertTitle.isProbablyValidEmail(),
-            let appConfig = SecureWebViewController.appConfigDirtyHack {
+        if alertTitle.isProbablyValidEmail() {
             // It *is* an Action Sheet shown due to long-press on mailto: URL and we know the
             // clicked address.
             // Forward for custom handling.
@@ -346,8 +334,7 @@ extension UISplitViewController {
 
             UIUtils.presentActionSheetWithContactOptions(forContactWithEmailAddress: mailAddress,
                                                          at: alertRect,
-                                                         at: self.view,
-                                                         appConfig: appConfig)
+                                                         at: self.view)
         } else if alertTitle.hasPrefix(UrlClickHandler.Scheme.mailto.rawValue) {
             // It *is* an Action Sheet shown due to long-press on mailto: URL, but we do not know
             // the clicked address.

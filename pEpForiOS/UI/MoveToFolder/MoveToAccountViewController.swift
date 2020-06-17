@@ -90,8 +90,7 @@ extension MoveToAccountViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showAccount" {
-            if let vc = segue.destination as? MoveToFolderTableViewController, let appCfg = self.appConfig, let vm = selectedViewModel {
-                vc.appConfig = appCfg
+            if let vc = segue.destination as? MoveToFolderTableViewController, let vm = selectedViewModel {
                 vc.viewModel = vm
             }
         }
