@@ -118,7 +118,7 @@ final class LoginViewController: BaseViewController {
         // isOAuth2Possible is use to hide password field only if isOauthAccount is false and the
         // user type a possible ouath in the email textfield.
         if vm.verifiableAccount.accountType.isOauth {
-            let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
+            let oauth = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
             vm.loginWithOAuth2(viewController: self,
                                emailAddress: email,
                                userName: userName,
@@ -250,7 +250,6 @@ extension LoginViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("fail to cast to UserInfoViewController")
                     return
             }
-            vc.appConfig = appConfig
             // Give the next model all that we know.
             vc.verifiableAccount = vm.verifiableAccount
         default:

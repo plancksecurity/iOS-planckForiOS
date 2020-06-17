@@ -83,7 +83,7 @@ extension CdFolder {
 
 extension CdFolder {
 
-    ///!!!: test only. maybe move
+    ///!!!: test only.Move!
     static func countBy(predicate: NSPredicate, context: NSManagedObjectContext) -> Int {
         let objs = CdFolder.all(predicate: predicate, in: context)
         return objs?.count ?? 0
