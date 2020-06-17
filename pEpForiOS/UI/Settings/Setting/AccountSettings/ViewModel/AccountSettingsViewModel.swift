@@ -90,17 +90,13 @@ extension AccountSettingsViewModel {
     }
 
     /// Struct that represents a section in Account Settings View Controller
-     public struct Section: Equatable {
+     public struct Section {
         /// Title of the section
         var title: String
         /// list of rows in the section
         var rows: [AccountSettingsRowProtocol]
         /// type of the section
         var type: SectionType
-
-        static func == (lhs: Section, rhs: Section) -> Bool {
-            return false
-        }
     }
 
     /// Struct that is used to show and interact with a switch.
@@ -282,35 +278,6 @@ extension AccountSettingsViewModel {
         }
     }
 
-    /// Setup the server fields.
-    /// - Parameters:
-    ///   - server: The server from which to take the values
-    ///   - rows: The rows to populate the fields.
-    private func setupServerFields(_ server: Server, _ rows: inout [AccountSettingsRowProtocol]) {
-        let serverRow = DisplayRow(type: .server,
-                                   title: rowTitle(for: .server),
-                                   text: server.address,
-                                   cellIdentifier: CellsIdentifiers.displayCell)
-        rows.append(serverRow)
-
-        let resetRow = DisplayRow(type: .port,
-                                  title: rowTitle(for: .port),
-                                  text: String(server.port),
-                                  cellIdentifier: CellsIdentifiers.displayCell)
-        rows.append(resetRow)
-
-        let transportSecurityRow = DisplayRow(type: .tranportSecurity,
-                                              title: rowTitle(for: .tranportSecurity),
-                                              text: server.transport.asString(),
-                                              cellIdentifier: CellsIdentifiers.displayCell)
-        rows.append(transportSecurityRow)
-
-        let usernameRow = DisplayRow(type: .username,
-                                     title: rowTitle(for: .username),
-                                     text: server.credentials.loginName, cellIdentifier: CellsIdentifiers.displayCell)
-        rows.append(usernameRow)
-    }
-
     /// This method generates all the rows for the section type passed
     /// - Parameter type: The type of the section to generate the rows.
     /// - Returns: An array with the settings rows. Every setting row must conform the SettingsRowProtocol.
@@ -394,6 +361,34 @@ extension AccountSettingsViewModel {
             setupServerFields(smtpServer, &rows)
         }
         return rows
+    }
 
+    /// Setup the server fields.
+    /// - Parameters:
+    ///   - server: The server from which to take the values
+    ///   - rows: The rows to populate the fields.
+    private func setupServerFields(_ server: Server, _ rows: inout [AccountSettingsRowProtocol]) {
+        let serverRow = DisplayRow(type: .server,
+                                   title: rowTitle(for: .server),
+                                   text: server.address,
+                                   cellIdentifier: CellsIdentifiers.displayCell)
+        rows.append(serverRow)
+
+        let resetRow = DisplayRow(type: .port,
+                                  title: rowTitle(for: .port),
+                                  text: String(server.port),
+                                  cellIdentifier: CellsIdentifiers.displayCell)
+        rows.append(resetRow)
+
+        let transportSecurityRow = DisplayRow(type: .tranportSecurity,
+                                              title: rowTitle(for: .tranportSecurity),
+                                              text: server.transport.asString(),
+                                              cellIdentifier: CellsIdentifiers.displayCell)
+        rows.append(transportSecurityRow)
+
+        let usernameRow = DisplayRow(type: .username,
+                                     title: rowTitle(for: .username),
+                                     text: server.credentials.loginName, cellIdentifier: CellsIdentifiers.displayCell)
+        rows.append(usernameRow)
     }
 }
