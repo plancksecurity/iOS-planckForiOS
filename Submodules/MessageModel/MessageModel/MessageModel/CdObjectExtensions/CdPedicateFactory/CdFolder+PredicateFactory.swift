@@ -39,10 +39,10 @@ extension CdFolder {
                                FolderType.pEpSync.rawValue)
         }
 
-        static func foldersFromInboxImap(for cdAccount: CdAccount, earlierThan timestamp: Date) -> NSPredicate {
+        static func folders(for cdAccount: CdAccount, lastLookedAfter date: Date) -> NSPredicate {
             return NSPredicate(format: "%K = %@ AND %K > %@ AND %K IN %@",
                                CdFolder.RelationshipName.account, cdAccount,
-                               CdFolder.AttributeName.lastLookedAt, timestamp as CVarArg,
+                               CdFolder.AttributeName.lastLookedAt, date as CVarArg,
                                CdFolder.AttributeName.folderTypeRawValue, FolderType.typesSyncedWithImapServerRawValues)
         }
     }
