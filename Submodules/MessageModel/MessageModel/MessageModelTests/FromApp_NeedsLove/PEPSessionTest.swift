@@ -82,34 +82,6 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
         }
     }
 
-    func testDecryptMessageHeapBufferOverflow() {
-        let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
-
-        let folder = CdFolder(context: moc)
-        folder.account = cdAccount
-        folder.name = ImapConnection.defaultInboxName
-        moc.saveAndLogErrors()
-
-        guard
-            let cdMessage = TestUtil.cdMessage(testClass:  type(of: self),
-                                               fileName: "MessageHeapBufferOverflow.txt",
-                                               cdOwnAccount: cdAccount)
-            else {
-                XCTFail()
-                return
-        }
-
-        let pEpMessage = cdMessage.pEpMessage(outgoing: false)
-        let session = PEPSession()
-        var keys: NSArray?
-        let pepDecryptedMessage = try! session.decryptMessage(pEpMessage,
-                                                              flags: nil,
-                                                              rating: nil,
-                                                              extraKeys: &keys,
-                                                              status: nil)
-        XCTAssertNotNil(pepDecryptedMessage.longMessage)
-    }
-
     // IOS-211
     func testAttachmentsDoNotGetDuplilcated() {
         let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
