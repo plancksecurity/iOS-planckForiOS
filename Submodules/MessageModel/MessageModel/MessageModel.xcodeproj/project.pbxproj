@@ -397,7 +397,6 @@
 		B751B99F22D4D5110018DE0D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B751B99D22D4D5110018DE0D /* LaunchScreen.storyboard */; };
 		B7789CCA22243DC800AB08F4 /* MessageQueryResultsFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7789CC922243DC800AB08F4 /* MessageQueryResultsFilter.swift */; };
 		B7789CCC222446EC00AB08F4 /* MessageQueryResultsSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7789CCB222446EC00AB08F4 /* MessageQueryResultsSearch.swift */; };
-		B7789CCF2225A5FE00AB08F4 /* MessageQueryResultsFilterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7789CCE2225A5FE00AB08F4 /* MessageQueryResultsFilterTest.swift */; };
 		B78ACA622304584800F8A396 /* FetchMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78ACA612304584800F8A396 /* FetchMessagesService.swift */; };
 		B78ACA662304798F00F8A396 /* FetchMessagesServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78ACA652304798F00F8A396 /* FetchMessagesServiceTest.swift */; };
 		B78ACA73230D408500F8A396 /* FetchServiceBaseClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78ACA72230D408500F8A396 /* FetchServiceBaseClass.swift */; };
@@ -884,7 +883,6 @@
 		B751B9A622D4D56C0018DE0D /* MessageModelTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MessageModelTestApp.entitlements; sourceTree = "<group>"; };
 		B7789CC922243DC800AB08F4 /* MessageQueryResultsFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageQueryResultsFilter.swift; sourceTree = "<group>"; };
 		B7789CCB222446EC00AB08F4 /* MessageQueryResultsSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageQueryResultsSearch.swift; sourceTree = "<group>"; };
-		B7789CCE2225A5FE00AB08F4 /* MessageQueryResultsFilterTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageQueryResultsFilterTest.swift; sourceTree = "<group>"; };
 		B78ACA612304584800F8A396 /* FetchMessagesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMessagesService.swift; sourceTree = "<group>"; };
 		B78ACA652304798F00F8A396 /* FetchMessagesServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMessagesServiceTest.swift; sourceTree = "<group>"; };
 		B78ACA72230D408500F8A396 /* FetchServiceBaseClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchServiceBaseClass.swift; sourceTree = "<group>"; };
@@ -1735,7 +1733,6 @@
 		37BC7AF72226DB540047267A /* MessageQueryResultsTest */ = {
 			isa = PBXGroup;
 			children = (
-				B7789CCE2225A5FE00AB08F4 /* MessageQueryResultsFilterTest.swift */,
 				B7E02ABE2227F49600741157 /* MessageQueryResultsSearchTest.swift */,
 				37BC7AF22220187E0047267A /* MessageQueryResultsTest.swift */,
 			);
@@ -2992,7 +2989,6 @@
 				4331CE75229BD7E100DDDC65 /* UseFirstHTMLPartAsBodyTest.swift in Sources */,
 				158A6E042305C2F5006A9ECE /* PEPUtil+EncryptionTest.swift in Sources */,
 				154D173B237331FE001FDF78 /* ImapFlagsTests.swift in Sources */,
-				B7789CCF2225A5FE00AB08F4 /* MessageQueryResultsFilterTest.swift in Sources */,
 				4384D3F4243F2B82006CCBA2 /* QualifyServerIsLocalServiceTest.swift in Sources */,
 				43607DE123FE870C00FA66B8 /* ClientCertificates+TestUtils.swift in Sources */,
 				4384D402243F3626006CCBA2 /* MimeTests.swift in Sources */,
