@@ -6,7 +6,7 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 /// Automatically keeps containted objects sorted to the criteria of a given sort block.
 /// The implementation is completely trival and unperformant.
