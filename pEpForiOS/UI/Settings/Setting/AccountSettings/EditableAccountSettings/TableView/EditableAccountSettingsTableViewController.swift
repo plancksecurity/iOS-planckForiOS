@@ -42,6 +42,7 @@ final class EditableAccountSettingsTableViewController: UITableViewController {
     private var firstResponder: UITextField?
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         navigationController?.title = title
         UITableViewController.setupCommonSettings(tableView: tableView)
     }
