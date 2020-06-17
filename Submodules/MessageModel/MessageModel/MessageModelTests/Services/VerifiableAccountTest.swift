@@ -267,4 +267,9 @@ extension VerifiableAccountTest {
     class MockCNContactsAccessPermissionProvider: CNContactsAccessPermissionProviderProtocol {
         var userHasBeenAskedForContactAccessPermissions = true
     }
+
+    class MockKeySyncStateProvider: KeySyncStateProvider {
+        var stateChangeHandler: ((NewState)->Void)?
+        var isKeySyncEnabled = false
+    }
 }
