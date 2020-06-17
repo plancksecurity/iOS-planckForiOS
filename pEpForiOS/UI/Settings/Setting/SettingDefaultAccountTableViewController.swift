@@ -21,7 +21,6 @@ class SettingDefaultAccountTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.title = title
         showNavigationBar()
         title = NSLocalizedString("Default Account", comment: "Default account view title")
         navigationController?.title = title
