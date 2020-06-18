@@ -397,12 +397,28 @@ extension ComposeTableViewController {
 extension ComposeTableViewController: CNContactPickerDelegate {
     private func presentContactPicker() {
         let contactPickerVC = CNContactPickerViewController()
+        contactPickerVC.predicateForEnablingContact = NSPredicate(format: "emailAddresses.@count > 0")
+        contactPickerVC.predicateForSelectionOfContact = NSPredicate(format: "emailAddresses.@count == 1")
+        contactPickerVC.predicateForSelectionOfProperty = NSPredicate(format: "key == 'emailAddresses'")
         contactPickerVC.delegate = self
         present(contactPickerVC, animated: true)
     }
 
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
-        if let emailAddress = contactProperty.contact.emailAddresses.first {
+        if let emailAddress = contactProperty.value as? String
+        {
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("No VM")
+                return
+            }
+            vm.handleContactSelected(emails: [String(emailAddress)])
+            didHideContactPicker()
+        }
+    }
+
+    // If contact has only one e-mail we choose that one
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
+        if let emailAddress = contact.emailAddresses.first {
             guard let vm = viewModel else {
                 Log.shared.errorAndCrash("No VM")
                 return

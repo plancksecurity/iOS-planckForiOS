@@ -23,9 +23,9 @@ protocol RecipientCellViewModelResultDelegate: class {
 
 class RecipientCellViewModel: CellViewModel {
     public let title: String
-    private(set) var focused: Bool
     public var content = NSMutableAttributedString(string: "")
     public let type: FieldType
+    private(set) var focused = false
     private var initialRecipients = [Identity]()
     private var textViewModel: RecipientTextViewModel?
     public var isDirty: Bool {
@@ -42,7 +42,6 @@ class RecipientCellViewModel: CellViewModel {
         self.type = type
         self.initialRecipients = recipients
         self.title = type.localizedTitle()
-        self.focused = false
     }
 
     public func add(recipient: Identity) {

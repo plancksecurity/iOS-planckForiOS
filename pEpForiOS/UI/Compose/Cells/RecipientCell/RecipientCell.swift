@@ -18,7 +18,7 @@ final class RecipientCell: TextViewContainingTableViewCell {
     @IBOutlet private weak var title: UILabel!
     @IBOutlet private weak var addContact: UIButton!
 
-    private var viewModel: RecipientCellViewModel?
+    private weak var viewModel: RecipientCellViewModel?
 
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -743,6 +743,7 @@
                                         <constraint firstItem="XHB-or-DzF" firstAttribute="leading" secondItem="hxy-pu-b9D" secondAttribute="leading" constant="20" symbolic="YES" id="TNf-Fc-ApB"/>
                                         <constraint firstItem="XHB-or-DzF" firstAttribute="top" secondItem="hxy-pu-b9D" secondAttribute="top" constant="6" id="nUt-Hq-D0G"/>
                                         <constraint firstAttribute="trailing" secondItem="XHB-or-DzF" secondAttribute="trailing" id="ngL-Rg-CuY"/>
+                                        <constraint firstAttribute="trailing" secondItem="XHB-or-DzF" secondAttribute="trailing" id="uB8-Tf-zz9"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
