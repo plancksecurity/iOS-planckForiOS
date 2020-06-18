@@ -12,8 +12,9 @@ import XCTest
 import PEPObjCAdapterFramework
 
 class DecryptionTest: PersistentStoreDrivenTestBase {
-    /// See IOS-1432. The message itself is reliable, but at least one of its extra
-    /// keys has an undefined rating, which the message inherits.
+    /// See IOS-1432. The message itself should be reliable,
+    /// but at least one of its extra keys has an undefined rating.
+    /// 353E7B7239A9B7B0F8419CB3924B17115179C280 expires 2023-01-15.
     func testLoadAndDecryptOutlookMessage() {
         guard let keyString = TestUtil.loadString(fileName: "IOS-1432_keypair.asc") else {
             XCTFail()
@@ -57,7 +58,7 @@ class DecryptionTest: PersistentStoreDrivenTestBase {
                                     status: &status)
 
         XCTAssertEqual(status, PEPStatus.OK)
-        XCTAssertEqual(rating.rawValue, PEPRating.undefined.rawValue)
+        XCTAssertEqual(rating.rawValue, PEPRating.unreliable.rawValue)
         XCTAssertNotNil(extraKeys)
     }
 }
