@@ -12,6 +12,8 @@ import MessageModel
 
 class KeyImportUtilTest: XCTestCase {
     /// A key pair that can be imported. Gets loaded from the test bundle.
+    /// 353E7B7239A9B7B0F8419CB3924B17115179C280 expires: 2023-01-15
+    /// uid [unknown] test006@peptest.ch <test006@peptest.ch>
     let keyResourceName = "IOS-1432_keypair.asc"
 
     func testImportNonExistentKey() throws {
