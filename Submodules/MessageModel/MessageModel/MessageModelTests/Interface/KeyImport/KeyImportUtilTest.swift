@@ -66,7 +66,8 @@ class KeyImportUtilTest: XCTestCase {
                              userName: "some name",
                              session: nil)
 
-        let _ = Account(user: ident, servers: [])
+        let account = Account(user: ident, servers: [])
+        account.session.commit()
 
         try keyImport.setOwnKey(address: keyData.address, fingerprint: keyData.fingerprint)
     }
