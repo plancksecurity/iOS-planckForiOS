@@ -8,6 +8,49 @@
 
 import CoreData
 
+extension ImapIdleOperation {
+    /// The servers IDLE state
+    private enum IdleState {
+        // The OP did not communicate to the server yet
+        case none
+        // We asked the server to IDLE, but have no answer yet
+        case requestedIdle
+        // The servier is in IDLE mode
+        case idling
+        // The server is in IDLE mode, we send a request to stop IDLing but have no naswer yet
+        case requestedDone
+        // The server reported it successfully stopped IDLing
+        case idleFinished
+        // The server has reported an error
+        case error
+
+        var debugString: String {
+            switch self {
+            case .none:
+                return "none"
+            case .requestedIdle:
+                return "requestedIdle"
+            case .idling:
+                return "idling"
+            case .requestedDone:
+                return "requestedDone"
+            case .idleFinished:
+                return "idleFinished"
+            case .error:
+                return "error"
+            }
+        }
+    }
+
+    /// Commands send from outside, where "outside" is the client or a FetchedResultsController reporting local changes.
+    private enum Command {
+        // The OP did not communicate to the server yet
+        case none
+        // We asked the server to IDLE, but have no answer yet
+        case stopIdle
+    }
+}
+
 /// Sets and keeps an account in IDLE mode 
 /// if:
 ///     * IDLE is supported by server
@@ -25,6 +68,17 @@ class ImapIdleOperation: ImapSyncOperation {
     /// Monitiors all folders of the account.
     /// We need that to pull for "interesting folder" changes
     private var frcForFolders: NSFetchedResultsController<CdFolder>?
+
+    private var state: IdleState = .none {
+        didSet {
+            Log.shared.info("IdleState has been set to %@", state.debugString)
+        }
+    }
+    private var lastCommand: Command = .none {
+        didSet {
+            Log.shared.info("new command:%@", lastCommand == .none ? "none" : "stopIdle")
+        }
+    }
 
     override init(parentName: String = #function,
                   context: NSManagedObjectContext? = nil,
@@ -50,9 +104,9 @@ class ImapIdleOperation: ImapSyncOperation {
                 Log.shared.errorAndCrash("No CdAccount")
             }
             me.frcForMessages = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                managedObjectContext: me.frcMoc,
-                                                sectionNameKeyPath: nil,
-                                                cacheName: nil)
+                                                           managedObjectContext: me.frcMoc,
+                                                           sectionNameKeyPath: nil,
+                                                           cacheName: nil)
             me.frcForMessages?.delegate = self
 
             // frcForFolders
@@ -67,19 +121,64 @@ class ImapIdleOperation: ImapSyncOperation {
                 Log.shared.errorAndCrash("No CdAccount")
             }
             me.frcForFolders = NSFetchedResultsController(fetchRequest: fetchRequestFolders,
-                                                managedObjectContext: me.frcMoc,
-                                                sectionNameKeyPath: nil,
-                                                cacheName: nil)
+                                                          managedObjectContext: me.frcMoc,
+                                                          sectionNameKeyPath: nil,
+                                                          cacheName: nil)
             me.frcForFolders?.delegate = self
         }
     }
 
     func stopIdling() {
-        if imapConnection.isIdling {
-            sendDone()
-        } else {
-            cancel()
+        lastCommand = .stopIdle
+        next()
+
+        //        if imapConnection.isIdling {
+        //            sendDone()
+        //        } else {
+        //            cancel()
+        //        }
+    }
+
+    private func next() {
+        switch lastCommand {
+
+        case .none:
+            switch state {
+            case .none:
+            break // Nothing to do.
+            case .requestedIdle:
+                imapConnection.sendIdle()
+            case .idling:
+                break // Do nothing
+            case .requestedDone:
+                break // Do nothing
+            case .idleFinished:
+                waitForBackgroundTasksAndFinish()
+            case .error:
+                cancel()
+            }
+        case .stopIdle:
+            switch state {
+            case .none:
+                cancel() //BUFF: OK?
+            case .requestedIdle:
+                // We have asked the server to idle and the client asked us to stop.
+                // We do nothing, wait for server response and handle the clients
+                // request after the server has answered.
+                break
+            case .idling:
+                state = .requestedDone
+                sendDone()
+                next()
+            case .requestedDone:
+                break // Do nothing
+            case .idleFinished:
+                waitForBackgroundTasksAndFinish()
+            case .error:
+                cancel()
+            }
         }
+
     }
 
     override func main() {
@@ -128,11 +227,13 @@ extension ImapIdleOperation {
         syncDelegate = ImapIdleDelegate(errorHandler: self)
         imapConnection.delegate = syncDelegate
 
-        startIdle(context: privateMOC)
+        requestIdle(context: privateMOC)
     }
 
-    private func startIdle(context: NSManagedObjectContext) {
-        imapConnection.sendIdle()
+    private func requestIdle(context: NSManagedObjectContext) {
+        state = .requestedIdle
+        next()
+//        imapConnection.sendIdle()
     }
 
     private func sendDone() {
@@ -141,24 +242,32 @@ extension ImapIdleOperation {
     }
 
     fileprivate func handleChangeOnServer() {
-        if imapConnection.isIdling {
-            sendDone()
-        }
+        stopIdling()
+//        if imapConnection.isIdling {
+//            sendDone()
+//        }
+    }
+
+    fileprivate func handleIdleEntered() {
+        state = .idling
+        next()
     }
 
     fileprivate func handleIdleFinished() {
-        markAsFinished()
+        state = .idleFinished
+        next()
     }
 
     fileprivate func handleError() {
-        Log.shared.info("We intentionally ignore an error here.")
+        state = .error
+        next()
     }
 
     fileprivate func handleLocalChangeHappened() {
         // The user changes a message (delted, flagged, moved, ...).
         // Exit idle mode to sync those changes to the IMAP server.
         Log.shared.info("%@: Local change reported", type(of: self).description())
-        sendDone()
+        stopIdling()
     }
 }
 
@@ -193,7 +302,7 @@ class ImapIdleDelegate: DefaultImapConnectionDelegate {
 
     override func idleEntered(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
         Log.shared.info("IDLE mode entered")
-        // Do nothing, keep idleing
+        imapIdleOp()?.handleIdleEntered()
     }
 
 
