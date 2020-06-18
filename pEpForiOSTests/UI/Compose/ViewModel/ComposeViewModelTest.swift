@@ -1616,7 +1616,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
                          expectedProtectionEnabled: expectedProtectionEnabled,
                          expHideSuggestionsCalled: expHideSuggestionsCalled,
                          expShowSuggestionsCalled: expShowSuggestionsCalled,
-                         expShowContactsCalled: expShowContactsCalled,
+                         expShowContactsPickerCalled: expShowContactsCalled,
                          expSuggestionsScrollFocusChangedCalled: expSuggestionsScrollFocusChangedCalled,
                          expectedScrollFocus: expectedNewSuggestionsScrollFocusIsVisible,
                          expectedShowSuggestionsIndexPath: expectedShowSuggestionsIndexPath,
@@ -1663,7 +1663,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         let expHideSuggestionsCalled: XCTestExpectation?
 
         let expShowSuggestionsCalled: XCTestExpectation?
-        let expShowContactsCalled: XCTestExpectation?
+        let expShowContactsPickerCalled: XCTestExpectation?
         let expectedShowSuggestionsIndexPath: IndexPath?
 
         let expSuggestionsScrollFocusChangedCalled: XCTestExpectation?
@@ -1690,7 +1690,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
              expectedProtectionEnabled: Bool?,
              expHideSuggestionsCalled: XCTestExpectation?,
              expShowSuggestionsCalled: XCTestExpectation?,
-             expShowContactsCalled: XCTestExpectation?,
+             expShowContactsPickerCalled: XCTestExpectation?,
              expSuggestionsScrollFocusChangedCalled: XCTestExpectation?,
              expectedScrollFocus: Bool?,
              expectedShowSuggestionsIndexPath: IndexPath?,
@@ -1711,7 +1711,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             self.expectedProtectionEnabled = expectedProtectionEnabled
             self.expHideSuggestionsCalled = expHideSuggestionsCalled
             self.expShowSuggestionsCalled = expShowSuggestionsCalled
-            self.expShowContactsCalled = expShowContactsCalled
+            self.expShowContactsPickerCalled = expShowContactsPickerCalled
             self.expSuggestionsScrollFocusChangedCalled = expSuggestionsScrollFocusChangedCalled
             self.expectedScrollFocus = expectedScrollFocus
             self.expectedShowSuggestionsIndexPath = expectedShowSuggestionsIndexPath
@@ -1804,8 +1804,8 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             }
         }
 
-        func showContacts() {
-            guard let exp = expShowContactsCalled else {
+        func showContactsPicker() {
+            guard let exp = expShowContactsPickerCalled else {
                 // We ignore called or not
                 return
             }
