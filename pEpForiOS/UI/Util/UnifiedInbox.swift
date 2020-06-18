@@ -52,7 +52,7 @@ public class UnifiedInbox: VirtualFolderProtocol {
                     Log.shared.errorAndCrash("Unexpected error")
                     return
             }
-            // Alredy fetching do nothing
+            // Already fetching do nothing
         }
     }
 

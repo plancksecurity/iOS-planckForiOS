@@ -10,7 +10,7 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 class KeySyncHandshakeService {
-    private var pEpSyncWizard: KeySyncWizardViewController?
+    private weak var pEpSyncWizard: KeySyncWizardViewController?
 
     init() {
         registerForKeySyncDeviceGroupStateChangeNotification()

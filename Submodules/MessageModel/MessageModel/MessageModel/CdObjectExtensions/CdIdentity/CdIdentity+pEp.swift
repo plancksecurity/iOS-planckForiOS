@@ -53,8 +53,7 @@ extension CdIdentity {
                            language: nil)
     }
 
-    //!!!: MUST become internal after tests have been moved
-    public static func from(pEpContact: PEPIdentity?,
+    static func from(pEpContact: PEPIdentity?,
                             context: NSManagedObjectContext) -> CdIdentity? {
         guard let pEpC = pEpContact else {
             return nil
