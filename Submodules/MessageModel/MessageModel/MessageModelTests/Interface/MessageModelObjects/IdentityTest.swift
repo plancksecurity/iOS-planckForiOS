@@ -73,24 +73,25 @@ class MessageModelTests: PersistentStoreDrivenTestBase {
     func testAccountSave() {
         let account = SecretTestData().createWorkingAccount()
         account.session.commit()
-        
-        let cdAccounts = CdAccount.all(in: moc) as? [CdAccount] ?? []
-        XCTAssertFalse(cdAccounts.isEmpty)
-        for cdAcc in cdAccounts {
-            guard let cdId = cdAcc.identity else {
-                XCTFail()
-                return
-            }
 
-            XCTAssertTrue(cdId.isMySelf)
+        guard let cdAcc = CdAccount.searchAccount(withAddress: account.user.address, context: moc) else {
+            XCTFail()
+            return
         }
-        moc.saveAndLogErrors()
-        
-        let accounts = Account.all()
-        XCTAssertFalse(accounts.isEmpty)
-        for acc in accounts {
-            XCTAssertTrue(acc.user.isMySelf)
+
+        guard let cdId = cdAcc.identity else {
+            XCTFail()
+            return
         }
+
+        XCTAssertTrue(cdId.isMySelf)
+
+        guard let account2 = Account.by(address: account.user.address) else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertTrue(account2.user.isMySelf)
     }
 
     func testCdAccountDelete() {
