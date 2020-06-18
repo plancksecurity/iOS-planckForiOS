@@ -71,7 +71,8 @@ class TestDataBase {
             let id = CdIdentity(context: context)
             id.address = idAddress
             id.userName = idUserName
-            id.userID = UUID().uuidString
+            // The identity of an account is mySelf by definion.
+            id.userID = CdIdentity.pEpOwnUserID
 
             let acc = CdAccount(context: context)
             acc.identity = id
@@ -116,7 +117,8 @@ class TestDataBase {
             id.address = idAddress
             id.userName = idUserName
             if isMyself {
-                id.userID = UUID().uuidString
+                // Note that it's probably meaningless to have an own identity without an account
+                id.userID = CdIdentity.pEpOwnUserID
             } else {
                 id.userID = UUID().uuidString
             }
@@ -236,10 +238,7 @@ class TestDataBase {
      - Returns: A valid `CdAccount`.
      */
     func createWorkingCdAccount(context: NSManagedObjectContext = Stack.shared.mainContext, number: Int = 0) -> CdAccount {
-        let result = createWorkingAccountSettings(number: number).cdAccount(context: context)
-        // The identity of an account is mySelf by definion.
-        result.identity?.userID = CdIdentity.pEpOwnUserID
-        return result
+        return createWorkingAccountSettings(number: number).cdAccount(context: context)
     }
 
     /**
