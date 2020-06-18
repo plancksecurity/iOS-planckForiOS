@@ -44,7 +44,7 @@ protocol ComposeViewModelDelegate: class {
 
     func showDocumentAttachmentPicker()
 
-    func showContacts()
+    func showContactsPicker()
 
     func documentAttachmentPickerDone()
 
@@ -143,8 +143,12 @@ class ComposeViewModel {
         }
     }
 
-    public func beforePickerFocus() -> IndexPath {
+    public func beforeDocumentAttachmentPickerFocus() -> IndexPath {
         return indexPathBodyVm
+    }
+
+    public func beforeContactsPickerFocus() -> IndexPath {
+        return lastRowWithSuggestions ?? indexPathBodyVm
     }
 
     public func handleUserSelectedRow(at indexPath: IndexPath) {
@@ -764,7 +768,8 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 // MARK: - Add Contact
 
     func addContactTapped() {
-        delegate?.showContacts()
+
+        delegate?.showContactsPicker()
     }
 
     func handleContactSelected(emails: [String]) {

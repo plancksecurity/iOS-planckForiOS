@@ -278,8 +278,24 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         presentDocumentAttachmentPicker()
     }
 
-    func showContacts() {
+    func showContactsPicker() {
         presentContactPicker()
+    }
+
+    private func didHideContactPicker() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(message: "No VM!")
+            return
+        }
+        let idxPath = vm.beforeContactsPickerFocus()
+        guard let cellToFocus = tableView.cellForRow(at: idxPath)
+            as? TextViewContainingTableViewCell else {
+                Log.shared.errorAndCrash("Error casting")
+                return
+        }
+        DispatchQueue.main.async {
+            cellToFocus.setFocus()
+        }
     }
 
     func documentAttachmentPickerDone() {
@@ -382,20 +398,8 @@ extension ComposeTableViewController: CNContactPickerDelegate {
     private func presentContactPicker() {
         let contactPickerVC = CNContactPickerViewController()
         contactPickerVC.delegate = self
-        present(contactPickerVC, animated: true) { [weak self] in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            me.hideContactPicker()
-        }
+        present(contactPickerVC, animated: true)
     }
-
-    private func hideContactPicker() {
-        setPreviousFocusAfterPicker()
-    }
-
-    // TODO: - AK - more cases
 
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
         if let emailAddress = contactProperty.contact.emailAddresses.first {
@@ -404,6 +408,7 @@ extension ComposeTableViewController: CNContactPickerDelegate {
                 return
             }
             vm.handleContactSelected(emails: [String(emailAddress.value)])
+            didHideContactPicker()
         }
     }
 }
@@ -612,7 +617,7 @@ extension ComposeTableViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        let idxPath = vm.beforePickerFocus()
+        let idxPath = vm.beforeDocumentAttachmentPickerFocus()
         guard let cellToFocus = tableView.cellForRow(at: idxPath)
             as? TextViewContainingTableViewCell else {
                 Log.shared.errorAndCrash("Error casting")

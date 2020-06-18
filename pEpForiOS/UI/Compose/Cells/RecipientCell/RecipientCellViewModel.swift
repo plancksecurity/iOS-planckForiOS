@@ -68,6 +68,8 @@ class RecipientCellViewModel: CellViewModel {
 extension RecipientCellViewModel: RecipientTextViewModelResultDelegate {
 
     func recipientTextViewModel(_ vm: RecipientTextViewModel, didChangeRecipients newRecipients: [Identity]) {
+        focused = true
+        recipientCellDelegate?.focusChanged()
         resultDelegate?.recipientCellViewModel(self, didChangeRecipients: newRecipients)
     }
 

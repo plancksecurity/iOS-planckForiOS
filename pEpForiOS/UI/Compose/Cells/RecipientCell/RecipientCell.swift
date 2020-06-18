@@ -15,10 +15,10 @@ protocol RecipientCellDelegate: class {
 final class RecipientCell: TextViewContainingTableViewCell {
     static let reuseId = "RecipientCell"
 
-    @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var addContact: UIButton!
+    @IBOutlet private weak var title: UILabel!
+    @IBOutlet private weak var addContact: UIButton!
 
-    var viewModel: RecipientCellViewModel?
+    private var viewModel: RecipientCellViewModel?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -39,8 +39,10 @@ final class RecipientCell: TextViewContainingTableViewCell {
     }
 
     private func setFonts() {
-        title.font = UIFont.pepFont(style: .footnote, weight: .regular)
-        recipientTextView?.font = UIFont.pepFont(style: .footnote, weight: .regular)
+        title.font = UIFont.pepFont(style: .footnote,
+                                    weight: .regular)
+        recipientTextView?.font = UIFont.pepFont(style: .footnote,
+                                                 weight: .regular)
     }
 
     private var recipientTextView: RecipientTextView? {
@@ -55,12 +57,8 @@ final class RecipientCell: TextViewContainingTableViewCell {
 
 extension RecipientCell: RecipientCellDelegate {
     func focusChanged() {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash(message: "viewModel is missing!")
-            return
-        }
-        if !addContact.isHidden != vm.focused {
-            addContact.isHidden = !vm.focused
+        if !addContact.isHidden != textView.isFirstResponder {
+            addContact.isHidden = !textView.isFirstResponder
         }
     }
 }

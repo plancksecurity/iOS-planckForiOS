@@ -1193,7 +1193,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             return
         }
         let beforeFocus = indexPath(for: bodyVm)
-        let testee = vm?.beforePickerFocus()
+        let testee = vm?.beforeDocumentAttachmentPickerFocus()
         XCTAssertEqual(testee, beforeFocus)
         let toRecipientsIndPath = IndexPath(row: 0, section: 0)
         XCTAssertNotEqual(testee, toRecipientsIndPath)
