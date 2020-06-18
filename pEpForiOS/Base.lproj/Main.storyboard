@@ -714,7 +714,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4nS-8y-LLg" userLabel="RecipientTextView" customClass="RecipientTextView" customModule="pEpForiOS" customModuleProvider="target">
-                                                    <rect key="frame" x="18.5" y="0.0" width="336.5" height="46"/>
+                                                    <rect key="frame" x="18.5" y="0.0" width="290.5" height="46"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
@@ -722,10 +722,10 @@
                                                         <fragment content="Not user-visible"/>
                                                     </attributedString>
                                                 </textView>
-                                                <button hidden="YES" opaque="NO" tag="666" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fA4-Qp-TNO">
-                                                    <rect key="frame" x="355" y="0.0" width="48" height="46"/>
+                                                <button opaque="NO" alpha="0.0" tag="666" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fA4-Qp-TNO">
+                                                    <rect key="frame" x="309" y="0.0" width="46" height="46"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="48" id="abn-II-AQx"/>
+                                                        <constraint firstAttribute="width" constant="46" id="abn-II-AQx"/>
                                                     </constraints>
                                                     <color key="tintColor" red="0.0064750583839999999" green="0.7039813399" blue="0.30714368819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <connections>
@@ -747,7 +747,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="addContact" destination="fA4-Qp-TNO" id="d3l-b8-o6V"/>
+                                    <outlet property="addButton" destination="fA4-Qp-TNO" id="d3l-b8-o6V"/>
                                     <outlet property="textView" destination="4nS-8y-LLg" id="ejK-Dq-T14"/>
                                     <outlet property="title" destination="Bd2-Nr-sTF" id="3Df-Pu-hFO"/>
                                 </connections>

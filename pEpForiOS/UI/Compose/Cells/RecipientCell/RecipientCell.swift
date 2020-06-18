@@ -16,7 +16,7 @@ final class RecipientCell: TextViewContainingTableViewCell {
     static let reuseId = "RecipientCell"
 
     @IBOutlet private weak var title: UILabel!
-    @IBOutlet private weak var addContact: UIButton!
+    @IBOutlet private weak var addButton: UIButton!
 
     private weak var viewModel: RecipientCellViewModel?
 
@@ -57,8 +57,10 @@ final class RecipientCell: TextViewContainingTableViewCell {
 
 extension RecipientCell: RecipientCellDelegate {
     func focusChanged() {
-        if !addContact.isHidden != textView.isFirstResponder {
-            addContact.isHidden = !textView.isFirstResponder
+        if addButton.isEnabled != textView.isFirstResponder {
+            let hasFocus = textView.isFirstResponder
+            addButton.isEnabled = hasFocus
+            addButton.alpha = hasFocus ? 1 : 0
         }
     }
 }

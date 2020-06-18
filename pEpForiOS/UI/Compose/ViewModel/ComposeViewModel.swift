@@ -768,7 +768,6 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 // MARK: - Add Contact
 
     func addContactTapped() {
-
         delegate?.showContactsPicker()
     }
 
