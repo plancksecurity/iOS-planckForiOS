@@ -71,7 +71,6 @@ class Acount_FetchingTest: PersistentStoreDrivenTestBase {
         // Then
         XCTAssertEqual(cdAccount1.account(), account1)
         XCTAssertEqual(cdAccount2.account(), account2)
-        XCTAssertEqual(cdAccount3.account(), account3)
-        XCTAssertNotEqual(cdAccount3.account(), account1)
+        XCTAssertNil(account3) // automatically trusted already, cannot trust manually
     }
 }
