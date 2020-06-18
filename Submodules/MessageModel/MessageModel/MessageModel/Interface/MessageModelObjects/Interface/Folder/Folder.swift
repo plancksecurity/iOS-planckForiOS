@@ -130,7 +130,6 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         return cdObject.folderType
     }
 
-    ///TODO:
     public func subFolders () -> [Folder]{
         let cdSubFolders = cdObject.subFolders?.array as? [CdFolder] ?? []
         let cdDisplayableSubfolders = cdSubFolders.filter { !$0.folderType.neverShowToUser }

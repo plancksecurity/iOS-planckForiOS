@@ -91,15 +91,14 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
     public func configureView() {
         Log.shared.errorAndCrash("This method must be overriden")
     }
+}
 
-    /// Util class to detect if the device is an iPhone 5
-    private struct Device {
-        private static let isIphone = UIDevice.current.userInterfaceIdiom == .phone
-        private static let screenWidth = Int(UIScreen.main.bounds.size.width)
-        private static let screenHeight = Int(UIScreen.main.bounds.size.height)
-        private static let screenMaxLength = Int(max(screenWidth, screenHeight))
-        private static let SCREEN_MIN_LENGTH = Int(min(screenWidth, screenHeight))
-        static let isIphone5 = isIphone && screenMaxLength == 568 // 5, 5S, 5C, SE
-    }
-    
+/// Util class to detect if the device is an iPhone 5
+struct Device {
+    private static let isIphone = UIDevice.current.userInterfaceIdiom == .phone
+    private static let screenWidth = Int(UIScreen.main.bounds.size.width)
+    private static let screenHeight = Int(UIScreen.main.bounds.size.height)
+    private static let screenMaxLength = Int(max(screenWidth, screenHeight))
+    private static let SCREEN_MIN_LENGTH = Int(min(screenWidth, screenHeight))
+    static let isIphone5 = isIphone && screenMaxLength == 568 // 5, 5S, 5C, SE
 }

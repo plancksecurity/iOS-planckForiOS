@@ -12,6 +12,7 @@ import MessageModel
 
 class FolderTableViewController: BaseTableViewController {
 
+    private let subFolderIndentationWidth: CGFloat = 25.0
     private var hiddenSections = Set<Int>()
 
     var folderVM: FolderViewModel?
@@ -24,6 +25,8 @@ class FolderTableViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initialConfig()
+        tableView.cellLayoutMarginsFollowReadableWidth = false
+
         addAccountButton.titleLabel?.numberOfLines = 0
         addAccountButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
         addAccountButton.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -104,7 +107,7 @@ class FolderTableViewController: BaseTableViewController {
     }
 
     private func setSelectableStyle(to cell: UITableViewCell) {
-        cell.accessoryType = .disclosureIndicator
+//        cell.accessoryType = .disclosureIndicator
         cell.textLabel?.textColor = UIColor.black
     }
 
@@ -154,12 +157,9 @@ class FolderTableViewController: BaseTableViewController {
         } else {
             header = CollapsibleTableViewHeader(reuseIdentifier: "header")
         }
-        //TODO: avoid tag.
-
         header?.transparentButton.section = section
         header?.transparentButton.addTarget(self, action: #selector(hideSection(sender:)), for: .touchUpInside)
         let arrow = UIImage(named:"chevron-icon-right")
-
         header?.transparentButton.setImage(arrow, for: .normal)
         header?.transparentButton.contentHorizontalAlignment = .trailing
         header?.transparentButton.contentVerticalAlignment = .top
@@ -183,7 +183,9 @@ class FolderTableViewController: BaseTableViewController {
                             heightForFooterInSection section: Int) -> CGFloat {
         return 0.0
     }
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+
+    override func tableView(_ tableView: UITableView,
+                            heightForHeaderInSection section: Int) -> CGFloat {
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("No model.")
             return 0.0
@@ -197,31 +199,30 @@ class FolderTableViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Default", for: indexPath)
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("No model")
-            return cell
+            return UITableViewCell()
         }
         let fcvm = vm[indexPath.section][indexPath.item]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Default", for: indexPath)
         cell.textLabel?.text = fcvm.title
         cell.imageView?.image = fcvm.image
-
         if fcvm.isSelectable {
             setSelectableStyle(to: cell)
         } else {
             setNotSelectableStyle(to: cell)
         }
-        cell.indentationWidth = 20.0
+        cell.shouldIndentWhileEditing = true
+        cell.indentationWidth = indentationWidth(forRowAt: indexPath)
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath)
-        -> Int {
-            guard let vm = folderVM else {
-                Log.shared.errorAndCrash("No model")
-                return 0
-            }
-            return vm[indexPath.section][indexPath.item].level
+    override func tableView(_ tableView: UITableView,
+                            indentationLevelForRowAt indexPath: IndexPath) -> Int {
+        if isSubfolder(indexPath: indexPath) {
+            return 2
+        }
+        return 0
     }
 
     // MARK: - TableViewDelegate
@@ -321,5 +322,30 @@ extension FolderTableViewController: SegueHandlerType {
             dvc.appConfig = self.appConfig
             dvc.hidesBottomBarWhenPushed = true
         }
+    }
+}
+
+// MARK: - Subfolder Indentation
+
+extension FolderTableViewController {
+    private func isSubfolder(indexPath: IndexPath) -> Bool {
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash("No model")
+            return false
+        }
+
+        if let folder = vm[indexPath.section][indexPath.item].folder as? Folder {
+            if folder.folderType == .normal && folder.folderType != .outbox {
+                return true
+            }
+        }
+        return false
+    }
+
+    private func indentationWidth(forRowAt indexPath: IndexPath) -> CGFloat {
+        if isSubfolder(indexPath: indexPath) {
+            return subFolderIndentationWidth
+        }
+        return 0
     }
 }
