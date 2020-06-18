@@ -95,15 +95,20 @@ class MessageModelTests: PersistentStoreDrivenTestBase {
     }
 
     func testCdAccountDelete() {
-        let account1 = SecretTestData().createWorkingAccount(number: 0)
-        let user = account1.user.address
-        
-        if let account2 = Account.by(address: user) {
-            XCTAssertEqual(account1.user, account2.user)
+        guard let userAddress = cdAccount.identity?.address else {
+            XCTFail()
+            return
         }
+
+        guard let account1 = Account.by(address: userAddress) else {
+            XCTFail()
+            return
+        }
+
         account1.delete()
-        XCTAssertNil(Account.by(address: user))
-        XCTAssertNil(CdServer.all(in: moc))
+        account1.session.commit()
+
+        XCTAssertNil(Account.by(address: userAddress))
     }
 
     func testExistingAccount() {
